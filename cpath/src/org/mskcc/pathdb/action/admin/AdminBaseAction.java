@@ -44,7 +44,7 @@ public class AdminBaseAction extends BaseAction {
                 removeTask(request, xdebug);
             }
         }
-        return mapping.findForward("success");
+        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 
     private void removeTask(HttpServletRequest request, XDebug xdebug) {

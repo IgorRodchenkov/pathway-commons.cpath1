@@ -11,6 +11,7 @@ import org.mskcc.pathdb.task.ImportRecordTask;
 import org.mskcc.pathdb.task.ImportReferencesTask;
 import org.mskcc.pathdb.util.XmlValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.action.BaseAction;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -49,7 +50,7 @@ public class AdminImportData extends AdminBaseAction {
         } else {
             this.setUserMessage(request, "You must select a file for import.");
         }
-        return mapping.findForward("success");
+        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 
     private void importFile(XDebug xdebug, FormFile file,
@@ -67,8 +68,6 @@ public class AdminImportData extends AdminBaseAction {
             //  Assume this is a list of external refs.
             importRefs(data, xdebug, request);
         }
-
-
     }
 
     private void importPsi(String data, XDebug xdebug,

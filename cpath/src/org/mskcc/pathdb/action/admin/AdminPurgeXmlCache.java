@@ -1,21 +1,16 @@
 package org.mskcc.pathdb.action.admin;
 
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.task.IndexLuceneTask;
+import org.apache.struts.action.ActionForm;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.action.BaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Administrative Action for Running the Full Text Indexer.
- *
- * @author Ethan Cerami.
- */
-public class AdminFullTextIndexer extends AdminBaseAction {
+public class AdminPurgeXmlCache extends AdminBaseAction {
 
     /**
      * Executes Action.
@@ -31,11 +26,10 @@ public class AdminFullTextIndexer extends AdminBaseAction {
     public ActionForward subExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
-        xdebug.logMsg(this, "Running Full Text Indexer");
-
-        IndexLuceneTask task = new IndexLuceneTask(false);
-        task.start();
-        this.setUserMessage(request, "Index task is now running.");
+        DaoXmlCache dao = new DaoXmlCache(xdebug);
+        dao.deleteAllRecords();
+        this.setUserMessage(request, "All Records in XML Cache have "
+                + "been purged.");
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 }

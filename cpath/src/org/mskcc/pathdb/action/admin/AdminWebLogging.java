@@ -4,6 +4,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.action.BaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +44,6 @@ public class AdminWebLogging extends AdminBaseAction {
             session.setAttribute(WEB_LOGGING, "on");
             this.setUserMessage(request, "Web Diagnostics Activated");
         }
-        return mapping.findForward("success");
+        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 }

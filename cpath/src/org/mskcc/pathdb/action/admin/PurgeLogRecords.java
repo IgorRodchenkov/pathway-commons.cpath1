@@ -5,6 +5,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.action.BaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,6 @@ public class PurgeLogRecords extends AdminBaseAction {
         DaoLog adminLogger = new DaoLog();
         adminLogger.deleteAllLogRecords();
         this.setUserMessage(request, "All Log Records have been purged.");
-        return mapping.findForward("success");
+        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 }
