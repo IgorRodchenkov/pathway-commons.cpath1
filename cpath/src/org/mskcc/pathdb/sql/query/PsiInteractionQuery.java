@@ -45,12 +45,16 @@ public abstract class PsiInteractionQuery extends InteractionQuery {
     protected void createPsi(Collection interactors,
             Collection interactions) throws ValidationException,
             MarshalException, MapperException {
+        System.out.println("START:  PSI Builder");
         PsiBuilder psiBuilder = new PsiBuilder();
         this.entrySet = psiBuilder.generatePsi(interactors, interactions);
         String xml = generateXml(entrySet);
+        System.out.println("START:  PSI Builder");
+        System.out.println("START:  Map to DS");
         ArrayList list = mapToInteractions(xml);
         this.setXml(xml);
         this.setInteractions(list);
+        System.out.println("STOP:  Map to DS");
     }
 
     /**

@@ -58,7 +58,7 @@ public class SearchResultsTable extends HtmlTable {
      */
     public void setProtocolRequest(ProtocolRequest request) {
         this.pRequest = request;
-        this.uid = request.getUid();
+        this.uid = request.getQuery();
     }
 
     /**

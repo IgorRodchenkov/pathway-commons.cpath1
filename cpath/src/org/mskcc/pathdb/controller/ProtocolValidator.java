@@ -53,9 +53,6 @@ public class ProtocolValidator {
         validateEmptySet();
         validateCommand();
         validateVersion();
-//      Database validation is currently disabled.  This may be
-//      only temporary.
-//      validateDatabase();
         validateFormat();
         validateUid();
     }
@@ -69,8 +66,8 @@ public class ProtocolValidator {
             NeedsHelpException {
         if (request.getCommand() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
-                    "Argument:  'cmd' is not specified."
-                    + HELP_MESSAGE);
+                    "Argument:  '" + ProtocolRequest.ARG_COMMAND
+                    + "' is not specified." + HELP_MESSAGE);
         }
         HashMap map = constants.getValidCommands();
         if (!map.containsKey(request.getCommand())) {
@@ -84,32 +81,14 @@ public class ProtocolValidator {
     }
 
     /**
-     * Validates the Database Parameter.
-     * @throws ProtocolException Indicates Violation of Protocol.
-     */
-    private void validateDatabase() throws ProtocolException {
-        if (request.getDatabase() == null) {
-            throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
-                    "Argument:  'db' is not specified."
-                    + HELP_MESSAGE);
-        }
-        HashMap map = constants.getValidDatabases();
-        if (!map.containsKey(request.getDatabase())) {
-            throw new ProtocolException(ProtocolStatusCode.BAD_DATA_SOURCE,
-                    "Datasource:  '" + request.getDatabase()
-                    + "' is not recognized.  " + HELP_MESSAGE);
-        }
-    }
-
-    /**
      * Validates the Format Parameter.
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateFormat() throws ProtocolException {
         if (request.getFormat() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
-                    "Argument:  'format' is not specified."
-                    + HELP_MESSAGE);
+                    "Argument:  '" + ProtocolRequest.ARG_FORMAT
+                    + "' is not specified." + HELP_MESSAGE);
         }
         HashMap map = constants.getValidFormats();
         if (!map.containsKey(request.getFormat())) {
@@ -124,10 +103,10 @@ public class ProtocolValidator {
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateUid() throws ProtocolException {
-        if (request.getUid() == null || request.getUid().length() == 0) {
+        if (request.getQuery() == null || request.getQuery().length() == 0) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
-                    "Argument:  'uid' is not specified."
-                    + HELP_MESSAGE);
+                    "Argument:  '" + ProtocolRequest.ARG_QUERY
+                    + "' is not specified." + HELP_MESSAGE);
         }
     }
 
@@ -138,8 +117,8 @@ public class ProtocolValidator {
     private void validateVersion() throws ProtocolException {
         if (request.getVersion() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
-                    "Argument: 'version' is not specified."
-                    + HELP_MESSAGE);
+                    "Argument: '" + ProtocolRequest.ARG_VERSION
+                    + "' is not specified." + HELP_MESSAGE);
         }
         if (!request.getVersion().equals(CURRENT_VERSION)) {
             throw new ProtocolException

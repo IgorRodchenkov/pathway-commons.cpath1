@@ -23,16 +23,14 @@ public class TestProtocol extends TestCase {
     public void testValidRequest() throws Exception {
         HttpClient client = new HttpClient();
         GetMethod method = new GetMethod(TestConstants.LOCAL_HOST_URL);
-        NameValuePair nvps[] = new NameValuePair[5];
+        NameValuePair nvps[] = new NameValuePair[4];
         nvps[0] = new NameValuePair(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS);
-        nvps[1] = new NameValuePair(ProtocolRequest.ARG_DB,
-                ProtocolConstants.DATABASE_GRID);
-        nvps[2] = new NameValuePair(ProtocolRequest.ARG_FORMAT,
+                ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME);
+        nvps[1] = new NameValuePair(ProtocolRequest.ARG_FORMAT,
                 ProtocolConstants.FORMAT_PSI);
-        nvps[3] = new NameValuePair(ProtocolRequest.ARG_VERSION,
+        nvps[2] = new NameValuePair(ProtocolRequest.ARG_VERSION,
                 ProtocolConstants.CURRENT_VERSION);
-        nvps[4] = new NameValuePair(ProtocolRequest.ARG_UID,
+        nvps[3] = new NameValuePair(ProtocolRequest.ARG_QUERY,
                 "YER006W");
         method.setQueryString(nvps);
         int statusCode = client.executeMethod(method);

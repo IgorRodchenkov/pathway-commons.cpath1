@@ -19,16 +19,6 @@ public class ProtocolConstants {
     private static HashMap validFormats;
 
     /**
-     * HashMap of Valid Databases.
-     */
-    private static HashMap validDatabases;
-
-    /**
-     * GRID Database.
-     */
-    public static final String DATABASE_GRID = "grid";
-
-    /**
      * PSI Format.
      */
     public static final String FORMAT_PSI = "psi";
@@ -44,10 +34,40 @@ public class ProtocolConstants {
     public static final String CURRENT_VERSION = "1.0";
 
     /**
-     * Retrieve Interaction Command.
+     * Get Interactions By Interactor Name.
      */
-    public static final String COMMAND_RETRIEVE_INTERACTIONS =
-            "retrieve_interactions";
+    public static final String COMMAND_GET_BY_INTERACTOR_NAME =
+            "get_by_interactor_name";
+
+    /**
+     * Get Interactions By Interactor ID.
+     */
+    public static final String COMMAND_GET_BY_INTERACTOR_ID =
+            "get_by_interactor_id";
+
+    /**
+     * Get Interactions By Interactor Taxonomy ID.
+     */
+    public static final String COMMAND_GET_BY_INTERACTOR_TAX_ID =
+            "get_by_interactor_tax_id";
+
+    /**
+     * Get Interactions By Interactor Keyword.
+     */
+    public static final String COMMAND_GET_BY_INTERACTOR_KEYWORD =
+            "get_by_interactor_keyword";
+
+    /**
+     * Get Interactions By Interaction Database.
+     */
+    public static final String COMMAND_GET_BY_INTERACTION_DB =
+            "get_by_interaction_db";
+
+    /**
+     * Get Interactions By Interaction PubMedId.
+     */
+    public static final String COMMAND_GET_BY_INTERACTION_PMID =
+            "get_by_interaction_pmid";
 
     /**
      * Help Command.
@@ -76,7 +96,12 @@ public class ProtocolConstants {
     public HashMap getValidCommands() {
         if (validCommands == null) {
             validCommands = new HashMap();
-            validCommands.put(COMMAND_RETRIEVE_INTERACTIONS, null);
+            validCommands.put(COMMAND_GET_BY_INTERACTOR_NAME, null);
+            validCommands.put(COMMAND_GET_BY_INTERACTOR_ID, null);
+            validCommands.put(COMMAND_GET_BY_INTERACTOR_TAX_ID, null);
+            validCommands.put(COMMAND_GET_BY_INTERACTOR_KEYWORD, null);
+            validCommands.put(COMMAND_GET_BY_INTERACTION_DB, null);
+            validCommands.put(COMMAND_GET_BY_INTERACTION_PMID, null);
             validCommands.put(COMMAND_HELP, null);
         }
         return validCommands;
@@ -93,17 +118,5 @@ public class ProtocolConstants {
             validFormats.put(FORMAT_HTML, null);
         }
         return validFormats;
-    }
-
-    /**
-     * Gets HashMap of Valid Databases.
-     * @return HashMap of Valid Databases.
-     */
-    public HashMap getValidDatabases() {
-        if (validDatabases == null) {
-            validDatabases = new HashMap();
-            validDatabases.put(DATABASE_GRID, null);
-        }
-        return validDatabases;
     }
 }

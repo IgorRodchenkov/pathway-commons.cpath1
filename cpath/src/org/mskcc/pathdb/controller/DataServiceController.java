@@ -1,9 +1,7 @@
 package org.mskcc.pathdb.controller;
 
 import org.mskcc.dataservices.core.EmptySetException;
-import org.mskcc.pathdb.sql.query.InteractionQuery;
-import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.sql.query.GetInteractionsByInteractorName;
+import org.mskcc.pathdb.sql.query.*;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.RequestDispatcher;
@@ -51,35 +49,24 @@ public class DataServiceController {
     public void processRequest(ProtocolRequest protocolRequest)
             throws Exception {
         try {
-            if (protocolRequest.getCommand().equals
-                    (ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS)) {
-                processGetInteractions(protocolRequest);
-            }
+            processGetInteractions(protocolRequest);
         } catch (EmptySetException e) {
-            throw new ProtocolException(ProtocolStatusCode.BAD_UID,
-                    "UID:  " + protocolRequest.getUid()
-                    + " not found in database");
+            throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
+                    "No Results Found for:  " + protocolRequest.getQuery());
         }
     }
 
     private void processGetInteractions(ProtocolRequest protocolRequest)
-            throws QueryException, IOException, ServletException,
-            EmptySetException {
-        String uid = protocolRequest.getUid();
+            throws IOException, ServletException, EmptySetException,
+            QueryException {
         if (protocolRequest.getFormat().equals
                 (ProtocolConstants.FORMAT_PSI)) {
-            InteractionQuery query = new GetInteractionsByInteractorName(uid);
+            InteractionQuery query = determineQueryType(protocolRequest);
             String xml = query.getXml();
             this.returnXml(xml);
         } else {
             try {
-                //  If the UID contains quotes, skip straight to
-                //  text indexer.
-                if (uid.indexOf("\"") > -1) {
-                    throw new EmptySetException();
-                }
-                InteractionQuery query = new
-                        GetInteractionsByInteractorName(uid);
+                InteractionQuery query = determineQueryType(protocolRequest);
                 ArrayList interactions = query.getInteractions();
                 request.setAttribute("interactions", interactions);
             } catch (EmptySetException e) {
@@ -89,6 +76,38 @@ public class DataServiceController {
             }
             forwardToJsp();
         }
+    }
+
+    /**
+     * Instantiates Correct Query based on Protocol Request.
+     */
+    private InteractionQuery determineQueryType(ProtocolRequest request)
+            throws QueryException, EmptySetException {
+        String command = request.getCommand();
+        String q = request.getQuery();
+        InteractionQuery query = null;
+        if (command.equals(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID)) {
+            long cpathId = Long.parseLong(q);
+            query = new GetInteractionsByInteractorId(cpathId);
+        } else if (command.equals
+                (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME)) {
+            query = new GetInteractionsByInteractorName(q);
+        } else if (command.equals
+                (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID)) {
+            int taxId = Integer.parseInt(q);
+            query = new GetInteractionsByInteractorTaxonomyId(taxId);
+        } else if (command.equals
+                (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_KEYWORD)) {
+            query = new GetInteractionsByInteractorKeyword (q);
+        } else if (command.equals
+                (ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB)) {
+            query = new GetInteractionsByInteractionDbSource(q);
+        } else if (command.equals
+                (ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID)) {
+            query = new GetInteractionsByInteractionPmid(q);
+        }
+        query.execute();
+        return query;
     }
 
     private void forwardToJsp() throws ServletException, IOException {
@@ -111,8 +130,10 @@ public class DataServiceController {
         response.setContentType("text/xml");
         ServletOutputStream stream = response.getOutputStream();
         stream.println(xmlResponse);
+        System.out.println("NOW FLUSHING OUT XML");
         stream.flush();
         stream.close();
+        System.out.println("FLUSH....");
     }
 
     /**

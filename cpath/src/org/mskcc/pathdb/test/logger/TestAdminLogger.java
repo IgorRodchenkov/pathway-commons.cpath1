@@ -27,7 +27,7 @@ public class TestAdminLogger extends TestCase {
 
         //  Add a sample log Message.
         ConfigLogger.configureLogger();
-        log.info("Testing 1-2-3");
+        log.fatal("Testing 1-2-3");
 
         // Verify it goes in.
         ArrayList records = admin.getLogRecords();

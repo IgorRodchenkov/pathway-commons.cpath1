@@ -3,8 +3,10 @@ package org.mskcc.pathdb.sql.query;
 import org.apache.log4j.Logger;
 import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +33,8 @@ public abstract class InteractionQuery {
     public void execute() throws QueryException, EmptySetException {
         try {
             executeSub();
+        } catch (EmptySetException e) {
+            throw e;
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         }
@@ -117,16 +121,24 @@ public abstract class InteractionQuery {
      */
     protected HashMap extractInteractors(ArrayList interactions)
             throws DaoException {
+        System.out.println("START  :Extracting Interactors");
         HashMap interactorMap = new HashMap();
         DaoInternalLink linker = new DaoInternalLink();
+        DaoCPath cpath = new DaoCPath();
         for (int i = 0; i < interactions.size(); i++) {
             CPathRecord record = (CPathRecord) interactions.get(i);
-            ArrayList list = linker.getInternalLinksWithLookup(record.getId());
+            ArrayList list = linker.getInternalLinks(record.getId());
             for (int j = 0; j < list.size(); j++) {
-                CPathRecord temp = (CPathRecord) list.get(j);
-                interactorMap.put(new Long(temp.getId()), temp);
+                InternalLinkRecord link = (InternalLinkRecord) list.get(j);
+                Long key = new Long (link.getCpathIdB());
+                if (!interactorMap.containsKey(key)) {
+                    CPathRecord interactor = cpath.getRecordById
+                            (link.getCpathIdB());
+                    interactorMap.put(key, interactor);
+                }
             }
         }
+        System.out.println("STOP  :Extracting Interactors");
         return interactorMap;
     }
 }

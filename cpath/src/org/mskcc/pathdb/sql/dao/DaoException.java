@@ -6,6 +6,7 @@ package org.mskcc.pathdb.sql.dao;
  * @author Ethan Cerami
  */
 public class DaoException extends Exception {
+    private String msg;
 
     /**
      * Constructor.
@@ -13,5 +14,14 @@ public class DaoException extends Exception {
      */
     public DaoException(String msg) {
         super(msg);
+        this.msg = msg;
+    }
+
+    /**
+     * Gets Message.
+     * @return Error Message.
+     */
+    public String getMessage() {
+        return this.msg;
     }
 }

@@ -186,8 +186,6 @@ public class DaoCPath {
         }
     }
 
-    //  TODO Next Phase:  Get all Records by External DB Source
-
     /**
      * Gets Record by specified CPath ID.
      * @param cpathId cPath ID.

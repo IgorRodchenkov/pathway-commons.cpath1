@@ -31,8 +31,9 @@ public class GetInteractionsByInteractionDbSource extends PsiInteractionQuery {
     protected void executeSub() throws Exception {
         DaoExternalLink linker = new DaoExternalLink();
         ExternalReference ref = new ExternalReference(db, null);
+        System.out.println("START:  Look up by External Ref");
         ArrayList records = linker.lookUpByExternalRef(ref);
-
+        System.out.println("STOP:  Look up by External Ref");
         //  Filter for Interactions Only.
         ArrayList interactions = filterForInteractionsOnly(records);
 

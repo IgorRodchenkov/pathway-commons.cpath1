@@ -19,14 +19,9 @@ public class ProtocolRequest implements PagedResult {
     public static final String ARG_COMMAND = "cmd";
 
     /**
-     * Database Argument.
-     */
-    public static final String ARG_DB = "db";
-
-    /**
      * Uid Argument.
      */
-    public static final String ARG_UID = "uid";
+    public static final String ARG_QUERY = "q";
 
     /**
      * Format Argument.
@@ -49,14 +44,9 @@ public class ProtocolRequest implements PagedResult {
     private String command;
 
     /**
-     * Database.
+     * Query Parameter.
      */
-    private String database;
-
-    /**
-     * UID.
-     */
-    private String uid;
+    private String query;
 
     /**
      * Format.
@@ -81,7 +71,6 @@ public class ProtocolRequest implements PagedResult {
     private static final char DOUBLE_QUOTE = '"';
     private static final char SINGLE_QUOTE = '\'';
 
-
     /**
      * Constructor.
      */
@@ -96,9 +85,8 @@ public class ProtocolRequest implements PagedResult {
      */
     public ProtocolRequest(Map parameterMap) {
         this.command = (String) parameterMap.get(ProtocolRequest.ARG_COMMAND);
-        this.database = (String) parameterMap.get(ProtocolRequest.ARG_DB);
-        this.uid = (String) parameterMap.get(ProtocolRequest.ARG_UID);
-        this.uid = massageUid(uid);
+        this.query = (String) parameterMap.get(ProtocolRequest.ARG_QUERY);
+        this.query = massageQuery(query);
         this.format = (String) parameterMap.get(ProtocolRequest.ARG_FORMAT);
         this.version = (String) parameterMap.get(ProtocolRequest.ARG_VERSION);
         String startStr =
@@ -120,7 +108,7 @@ public class ProtocolRequest implements PagedResult {
      * 0.  Trim and make upper case.
      * 1.  Replace single quotes with double quotes.
      */
-    private String massageUid(String temp) {
+    private String massageQuery(String temp) {
         if (temp != null && temp.length() > 0) {
             temp = temp.replace(SINGLE_QUOTE, DOUBLE_QUOTE);
             temp = temp.toUpperCase();
@@ -131,11 +119,11 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
-     * Gets the UID value.
-     * @return uid value.
+     * Gets the Query value.
+     * @return query value.
      */
-    public String getUid() {
-        return uid;
+    public String getQuery() {
+        return query;
     }
 
     /**
@@ -144,14 +132,6 @@ public class ProtocolRequest implements PagedResult {
      */
     public String getCommand() {
         return command;
-    }
-
-    /**
-     * Gets the Database value.
-     * @return database value.
-     */
-    public String getDatabase() {
-        return database;
     }
 
     /**
@@ -179,19 +159,11 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
-     * Sets Database Argument.
-     * @param database Database Argument.
+     * Sets the Query Argument.
+     * @param query Query Argument.
      */
-    public void setDatabase(String database) {
-        this.database = database;
-    }
-
-    /**
-     * Sets the UID Argument.
-     * @param uid UID Argument.
-     */
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     /**
@@ -242,13 +214,12 @@ public class ProtocolRequest implements PagedResult {
         String uri = null;
         String url = "webservice";
         GetMethod method = new GetMethod(url);
-        NameValuePair nvps[] = new NameValuePair[6];
+        NameValuePair nvps[] = new NameValuePair[5];
         nvps[0] = new NameValuePair(ARG_VERSION, version);
         nvps[1] = new NameValuePair(ARG_COMMAND, command);
-        nvps[2] = new NameValuePair(ARG_DB, database);
-        nvps[3] = new NameValuePair(ARG_UID, uid);
-        nvps[4] = new NameValuePair(ARG_FORMAT, format);
-        nvps[5] = new NameValuePair(ARG_START_INDEX,
+        nvps[2] = new NameValuePair(ARG_QUERY, query);
+        nvps[3] = new NameValuePair(ARG_FORMAT, format);
+        nvps[4] = new NameValuePair(ARG_START_INDEX,
                 Long.toString(startIndex));
         method.setQueryString(nvps);
         try {

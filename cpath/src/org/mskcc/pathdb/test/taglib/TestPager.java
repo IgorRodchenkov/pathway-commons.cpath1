@@ -18,7 +18,7 @@ public class TestPager extends TestCase {
      */
     public void testAccess1() throws Exception {
         ProtocolRequest request = new ProtocolRequest ();
-        request.setUid("ABC123");
+        request.setQuery("ABC123");
         request.setStartIndex(0);
         Pager pager = new Pager (request, 250);
         long start = pager.getStartIndex();
@@ -41,7 +41,7 @@ public class TestPager extends TestCase {
      */
     public void testAccess2() throws Exception {
         ProtocolRequest request = new ProtocolRequest ();
-        request.setUid("ABC123");
+        request.setQuery("ABC123");
         request.setStartIndex(20);
         Pager pager = new Pager (request, 250);
         long start = pager.getStartIndex();
@@ -66,7 +66,7 @@ public class TestPager extends TestCase {
      */
     public void testAccess3() throws Exception {
         ProtocolRequest request = new ProtocolRequest ();
-        request.setUid("ABC123");
+        request.setQuery("ABC123");
         request.setStartIndex(240);
         Pager pager = new Pager (request, 255);
         long start = pager.getStartIndex();
@@ -90,7 +90,7 @@ public class TestPager extends TestCase {
      */
     public void testAccess4() throws Exception {
         ProtocolRequest request = new ProtocolRequest ();
-        request.setUid("ABC123");
+        request.setQuery("ABC123");
         request.setStartIndex(-11);
         Pager pager = new Pager (request, 255);
         assertEquals (0, pager.getStartIndex());
@@ -103,7 +103,7 @@ public class TestPager extends TestCase {
      */
     public void testAccess5() throws Exception {
         ProtocolRequest request = new ProtocolRequest ();
-        request.setUid("ABC123");
+        request.setQuery("ABC123");
         request.setStartIndex(2800);
         Pager pager = new Pager (request, 255);
         assertEquals (240, pager.getStartIndex());

@@ -1,6 +1,7 @@
 package org.mskcc.pathdb.controller;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Enumeration of Protocol Status Codes.
@@ -9,59 +10,49 @@ import java.util.HashMap;
  */
 public class ProtocolStatusCode {
     /**
-     * Error Code Number.
-     */
-    private int errorCode;
-
-    /**
-     * Error Code Message.
-     */
-    private String errorMsg;
-
-    /**
-     * Status Code:  200 OK.
+     * Status Code:  OK.
      */
     public static final ProtocolStatusCode OK =
             new ProtocolStatusCode(200);
 
     /**
-     * Status Code:  400 Bad Command.
+     * Status Code:  Bad Command.
      */
     public static final ProtocolStatusCode BAD_COMMAND =
-            new ProtocolStatusCode(400);
-
-    /**
-     * Status Code:  401 Bad Data Source.
-     */
-    public static final ProtocolStatusCode BAD_DATA_SOURCE =
-            new ProtocolStatusCode(401);
-
-    /**
-     * Status Code:  450 Unknown UID.
-     */
-    public static final ProtocolStatusCode BAD_UID =
             new ProtocolStatusCode(450);
 
     /**
-     * Status Code:  451 Unsupported Format.
+     * Status Code:  Bad Format.
      */
     public static final ProtocolStatusCode BAD_FORMAT =
             new ProtocolStatusCode(451);
 
     /**
-     * Status Code:  460 Bad Request, Missing Arguments.
+     * Status Code:  Bad Request, Missing Arguments.
      */
     public static final ProtocolStatusCode MISSING_ARGUMENTS =
+            new ProtocolStatusCode(452);
+
+    /**
+     * Status Code:  Bad Request, Invalid Argument.
+     */
+    public static final ProtocolStatusCode INVALID_ARGUMENT =
+            new ProtocolStatusCode(453);
+
+    /**
+     * Status Code:  No Results Found.
+     */
+    public static final ProtocolStatusCode NO_RESULTS_FOUND =
             new ProtocolStatusCode(460);
 
     /**
-     * Status Code:  470 Version Not Supported.
+     * Status Code:  Version Not Supported.
      */
     public static final ProtocolStatusCode VERSION_NOT_SUPPORTED =
             new ProtocolStatusCode(470);
 
     /**
-     * Status Code:  500 Internal Server Error.
+     * Status Code:  Internal Server Error.
      */
     public static final ProtocolStatusCode INTERNAL_ERROR =
             new ProtocolStatusCode(500);
@@ -70,6 +61,11 @@ public class ProtocolStatusCode {
      * HashMap of Error Codes to Error Messages.
      */
     private static HashMap messageMap;
+
+    /**
+     * Error Code Number.
+     */
+    private int errorCode;
 
     /**
      * Gets Error Code.
@@ -84,7 +80,27 @@ public class ProtocolStatusCode {
      * @return Error Message.
      */
     public String getErrorMsg() {
-        return errorMsg;
+        if (messageMap == null) {
+            initMessageMap();
+        }
+        return (String) messageMap.get(new Integer(errorCode));
+    }
+
+    /**
+     * Gets Complete List of all Status Codes.
+     * @return ArrayList of ProtocolStatusCode Objects.
+     */
+    public static ArrayList getAllStatusCodes() {
+        ArrayList list = new ArrayList();
+        list.add(ProtocolStatusCode.OK);
+        list.add(ProtocolStatusCode.BAD_COMMAND);
+        list.add(ProtocolStatusCode.BAD_FORMAT);
+        list.add(ProtocolStatusCode.MISSING_ARGUMENTS);
+        list.add(ProtocolStatusCode.INVALID_ARGUMENT);
+        list.add(ProtocolStatusCode.NO_RESULTS_FOUND);
+        list.add(ProtocolStatusCode.VERSION_NOT_SUPPORTED);
+        list.add(ProtocolStatusCode.INTERNAL_ERROR);
+        return list;
     }
 
     /**
@@ -92,11 +108,7 @@ public class ProtocolStatusCode {
      * @param errorCode Error Code.
      */
     private ProtocolStatusCode(int errorCode) {
-        if (messageMap == null) {
-            initMessageMap();
-        }
         this.errorCode = errorCode;
-        this.errorMsg = (String) messageMap.get(Integer.toString(errorCode));
     }
 
     /**
@@ -104,19 +116,29 @@ public class ProtocolStatusCode {
      */
     private void initMessageMap() {
         messageMap = new HashMap();
-        //  DAS Adopted Status Codes.
-        messageMap.put("200", "OK, data follows");
-        messageMap.put("400", "Bad Command (command not recognized)");
-        messageMap.put("401", "Bad Data Source (data source not recognized)");
-
-        //  Data Service Specific Status Codes start at 450.
-        messageMap.put("450",
-                "Bad UID (UID not available in specified database)");
-        messageMap.put("451", "Bad Data Format (data format not recognized)");
-        messageMap.put("452", "Bad Request (missing arguments)");
-        messageMap.put("453", "Version not supported");
-
-        //  Server Errors
-        messageMap.put("500", "Internal Server Error");
+        messageMap.put (new Integer
+                (ProtocolStatusCode.OK.getErrorCode()),
+                "OK, data follows");
+        messageMap.put (new Integer
+                (ProtocolStatusCode.BAD_COMMAND.getErrorCode()),
+                "Bad Command (command not recognized)");
+        messageMap.put (new Integer(
+                ProtocolStatusCode.BAD_FORMAT.getErrorCode()),
+                "Bad Data Format (data format not recognized)");
+        messageMap.put (new Integer(
+                ProtocolStatusCode.MISSING_ARGUMENTS.getErrorCode()),
+                "Bad Request (missing arguments)");
+        messageMap.put (new Integer(
+                ProtocolStatusCode.INVALID_ARGUMENT.getErrorCode()),
+                "Bad Request (invalid arguments)");
+        messageMap.put (new Integer
+                (ProtocolStatusCode.NO_RESULTS_FOUND.getErrorCode()),
+                "No Results Found");
+        messageMap.put (new Integer
+                (ProtocolStatusCode.VERSION_NOT_SUPPORTED.getErrorCode()),
+                "Version not supported");
+        messageMap.put(new Integer
+                (ProtocolStatusCode.INTERNAL_ERROR.getErrorCode()),
+                "Internal Server Error");
     }
 }

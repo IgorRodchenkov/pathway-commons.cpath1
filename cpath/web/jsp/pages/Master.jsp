@@ -26,7 +26,7 @@
 <%
 } else if (interactions != null) { %>
     <cbio:interactionTable interactions="<%= interactions %>"
-        uid="<%= protocolRequest.getUid() %>"/>
+        uid="<%= protocolRequest.getQuery() %>"/>
 <% } else if (doFullTextSearch != null) { %>
     <cbio:searchResultsTable protocolRequest="<%= protocolRequest %>"/>
 <% } else if (showHelp != null) { %>

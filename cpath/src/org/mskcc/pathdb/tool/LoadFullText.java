@@ -67,7 +67,9 @@ public class LoadFullText {
         lucene.initIndex();
         ArrayList records = dao.getAllRecords();
         for (int i = 0; i < records.size(); i++) {
-            outputMsg(".");
+            if (verbose) {
+                System.out.print(".");
+            }
             CPathRecord record = (CPathRecord) records.get(i);
             if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
                 lucene.addRecord(record.getName(), record.getDescription(),
