@@ -420,6 +420,7 @@
                         <fileset dir="${src.home}">
                                 <include name="**/*.java"/>
 				<exclude name="org/mskcc/pathdb/xml/**/*.java"/>
+				<exclude name="org/jdom/**/*.java"/>
                         </fileset>
                 </checkstyle>
         </target>
@@ -433,6 +434,10 @@
                         classpathref="compile.classpath" fork="true" dir="xml">
                         <arg line="-i MIF.xsd -package org.mskcc.pathdb.xml.psi -dest ${src.home}"/>
                 </java>
+		<replace file="${src.home}/org/mskcc/pathdb/xml/psi/AvailabilityList.java">
+			<replaceToken>private java.util.Vector _availabilityList = new org.mskcc.pathdb.xml.psi.Availability("free");</replaceToken>
+			<replaceValue>private java.util.Vector _availabilityList = new Vector();</replaceValue>
+		</replace>
                 <echo message="End Castor Source Generator"/>
         </target>
 </project>
