@@ -16,6 +16,10 @@
 # Last update: May 25, 2004 at 04:56 PM
 #
 
+DROP DATABASE IF EXISTS cpath;
+CREATE DATABASE cpath;
+USE cpath;
+
 CREATE TABLE `cpath` (
   `CPATH_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(255) NOT NULL default '',
