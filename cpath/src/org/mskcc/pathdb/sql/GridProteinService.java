@@ -1,11 +1,11 @@
 package org.mskcc.pathdb.sql;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
 import org.mskcc.pathdb.model.Protein;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

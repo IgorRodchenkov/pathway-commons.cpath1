@@ -10,7 +10,7 @@ public class ConfigLogger {
     /**
      * Configures the Apache Commons Logger Logger.
      */
-    public static void configureLogger () {
+    public static void configureLogger() {
         //  Use the Apache Simple Log
         System.setProperty("org.apache.commons.logging.Log",
                 "org.apache.commons.logging.impl.SimpleLog");

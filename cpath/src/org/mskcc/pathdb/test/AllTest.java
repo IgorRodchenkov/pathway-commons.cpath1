@@ -3,8 +3,8 @@ package org.mskcc.pathdb.test;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.test.sql.SqlSuite;
 import org.mskcc.pathdb.config.ConfigLogger;
+import org.mskcc.pathdb.test.sql.SqlSuite;
 
 /**
  * Runs all Unit Tests.

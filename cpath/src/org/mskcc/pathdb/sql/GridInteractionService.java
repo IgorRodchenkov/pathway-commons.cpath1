@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.pathdb.model.Interaction;
-import org.mskcc.pathdb.model.Protein;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mskcc.pathdb.model.Interaction;
+import org.mskcc.pathdb.model.Protein;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,7 +46,7 @@ public class GridInteractionService extends GridBase {
      * @return ArrayList of Interaction objects.
      * @throws SQLException Error connecting to data base.
      * @throws ClassNotFoundException Could not located JDBC Driver.
-    */
+     */
     public ArrayList getInteractions(String orfName)
             throws SQLException, ClassNotFoundException {
         log.info("Getting Interactions for:  " + orfName);
@@ -93,7 +93,7 @@ public class GridInteractionService extends GridBase {
         pstmt.setString(1, localId);
         pstmt.setString(2, localId);
 
-        log.info ("Executing SQL Query:  " + pstmt.toString());
+        log.info("Executing SQL Query:  " + pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
         return rs;
     }
