@@ -35,6 +35,11 @@ URL parameters.  Parameters are as follows:
 		    <LI>q:  Indicates the query parameter.  Depending on the command,
             this is used to indicate a unique ID or a search term.
             For example, "P09097".
+            <li>organism:  an optional parameter used to filter for
+            specific organisms.  The value of this parameter must be set
+            to an <A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=Taxonomy">
+            NCBI Taxonomy Identifier</A>.   For example, organism=9606 will
+            filter for Homo Sapiens.
             <li>maxHits:  Maximum number of interactions returned in response.
             If maxHits is not specified, it will default to:
             <%= ProtocolRequest.DEFAULT_MAX_HITS %>.  If you want all matching
