@@ -185,7 +185,7 @@ public class LuceneIndexer {
         //  dir should only be null when run from the command line.
         if (dir == null) {
             String cPathHome = System.getProperty("CPATH_HOME");
-            dir = cPathHome +"/build/" + INDEX_DIR_PREFIX;
+            dir = cPathHome +"/build/WEB-INF/" + INDEX_DIR_PREFIX;
         }
         return dir;
     }

@@ -76,8 +76,11 @@ public final class CPathServlet extends ActionServlet {
         verifyDbConnection();
 
         //  Set Location of TextIndexer based on servlet real path.
+        //  Hide within the WEB-INF subdirectory, so that browsers
+        //  cannot view textIndex contents directly.
         ServletContext context = getServletContext();
-        String dir = context.getRealPath(LuceneIndexer.INDEX_DIR_PREFIX);
+        String dir = context.getRealPath("WEB-INF/"
+                + LuceneIndexer.INDEX_DIR_PREFIX);
         manager.setProperty(LuceneIndexer.PROPERTY_LUCENE_DIR, dir);
 
         System.err.println("Registering CPath Data Services");
