@@ -13,58 +13,100 @@ This document contains cPath Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
-0.  Modify Cytoscape PlugIn to recognize n-ary interactions when n > 2.
+1.  Add Field Specific Lucene Searching, e.g. "name:RAS".
+    ---> current priority:  low.
+    [Will be implemented in Phase 9]
+
+2.  Add new query:  query by experimental method (e.g. all the data from
+    two-hybrid)
+	---> current priority:  hi.
+    [Will be implemented in Phase 9]
+
+3.  Add Indexing of interactions.
+    Requires changes to web interface.  Needs more exploration.
+    ---> current priority:  low.
+    [Will be implemented in Phase 9]
+
+4.  For HTML front end of cPath query API: pageinate results
+    (only text index results currently paginated)
+	---> current priority:  low.
+    [Will probably be implemented in Phase 9]
+
+5.  Import Complete Data Set
+
+    From Gary:  DIP, MINT and IntAct now all have downloadable full data
+    sets.  We should think about creating an official inhouse release of cpath
+    containing all of the data we can get (since the DIP data is proprietary, we
+    can't give it to anyone else externally).
+    [Will be implemented in Phase 9]
+
+4.  Modify Cytoscape PlugIn to recognize n-ary interactions when n > 2.
 	-->  current priority:  high
 
-0.  From Gary's Email:
+5.  Use IntAct External Database File
 
-I just noticed that the IntAct database is maintaining a small file
-of external databases 
-http://cvs.sourceforge.net/viewcvs.py/intact/intactCore/data/controlledVocab/CvDatabase.def?rev=1.7&amp;view=auto
+    From Gary:  "I just noticed that the IntAct database is maintaining a small
+    file of external databases
+    http://cvs.sourceforge.net/viewcvs.py/intact/intactCore/data/
+    controlledVocab/CvDatabase.def?rev=1.7&amp;view=auto
 
-We might be able to eventually collaborate with them on this list.
-Something to just keep in mind.
+    We might be able to eventually collaborate with them on this list.
+    Something to just keep in mind."
 
-1.  Field Specific Lucene Searching, e.g. "name:RAS".
-	---> current priority:  low.
-2.  Indexing of interactions.
-	Requires changes to web interface.  Needs more exploration.
-	---> current priority:  low.
-3.  Build a Front-end administrative interface to the External Database Tables
+6.  Build a Front-end administrative interface to the External Database Tables
 	(more details are included in phase 6 doc, before being deferred)
 	---> current priority:  low.
-4.  Add new query:  query by experimental method (e.g. all the data from two-hybrid)
-	---> current priority:  ???.
-5.  Provide query API functionality to get a list of valid query API commands.
+
+7.  Provide query API functionality to get a list of valid query API commands.
 	E.g. for getInteractionsBySource, we could have getValidSources
 	---> current priority:  low.
-6.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape
+
+8.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape
 	to easily create external links.
 	---> current priority:  medium.
-7.  For HTML front end of cPath query API: pageinate results (only text index results currently
-    paginated)
-	---> current priority:  low.
-8.  Support content-length calculation of PSI-MI queries, where possible, to support more accurate
-    progress metering on the client side.  We might be able to easily do it for queries that are
-    cached and for the precomputed queries.  For queries that aren't, we could at least provide
+
+9.  Support content-length calculation of PSI-MI queries, where possible,
+    to support more accurate progress metering on the client side.  We might
+    be able to easily do it for queries that are cached and for the precomputed
+    queries.  For queries that aren't, we could at least provide
     updates of the parsing progress as it happens (Rob's idea)
 	---> Current priority: low.
-9.  Resolve cross-species interaction issue.
-10. Implement a full statistics page.  This could be precomputed regularly (e.g. weekly),
-    not computed on the fly.  The best example of a stats page is currently the MINT page:
-    http://160.80.34.4/mint/statistics/statistics.php
+
+11.  Resolve cross-species interaction issue.
+
+12. Implement a full statistics page.  This could be precomputed regularly
+    (e.g. weekly), not computed on the fly.  The best example of a stats page
+    is currently the MINT page: http://160.80.34.4/mint/statistics/statistics.php
 	---> Current priority: low.
-11. Add support to cPath and data services layer for importing PSI-MI files that contain
-    interactions with more than two proteins (e.g. 5 protein complex).  This would allow us to
-    import data from the PIN database in the Tempst lab at MSKCC (http://pin.mskcc.org).
+
+13. Add support to cPath and data services layer for importing PSI-MI files
+    that contain interactions with more than two proteins (e.g. 5 protein complex).  This would allow us to
+    import data from the PIN database in the Tempst lab at MSKCC
+    (http://pin.mskcc.org).
 	---> Current priority: medium.
-12.  From Gary:  DIP, MINT and IntAct now all have downloadable full data
-sets.  We should think about creating an official inhouse release of cpath
-containing all of the data we can get (since the DIP data is proprietary, we
-can't give it to anyone else externally).
-13.  Create an advanced query system for xml records that supports xquery or something similar.
-     This could regularly index XML from cpath for advanced queries.  Only internal users would use this
-     system and it would probably be slow.  Investigate databases that support xpath or libraries such as OJB.
+
+15.  Create an advanced query system for xml records that supports xquery or
+     something similar. This could regularly index XML from cpath for advanced
+     queries.  Only internal users would use this system and it would probably
+     be slow.  Investigate databases that support xpath or libraries such as OJB.
+
+16.  Add generic support for an ontology data objects.
+
+    From Gary:  "As per our discussion today regarding PSI-MI controlled
+    vocabularies, here is an implementation of a basic hierarchy from the
+    GK project.
+
+    Example 1:
+    http://www.genomeknowledge.org/cgi-bin/classbrowser?DB=gk_current
+
+    Example 2:
+    http://www.genomeknowledge.org/cgi-bin/eventbrowser?DB=gk_current&ID=69231&P
+    REVIOUS_ID=69236&RORDER=69278&E=69236&E=69278
+
+    (mind the wrapping)
+
+    I'm not saying that we should implement this scheme eventually, we should
+    just note the example.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
@@ -72,15 +114,17 @@ cPath Performance/Reliability/Security Issues
 
 Data Service Specific Items:
 -----------------------------
-1.  Add an Ontology object to the dataservices bio package to allow retrieval of Gene Ontology type
-    information.
-2.  Add Gene Name/Synonym Look up to data services (requires a back-end, may be able to use Entrez
-    Gene DB).
-3.  Create a service for reading in Cytoscape node/edge attributes to go with sif reader.
-4.  Create an "About Data Services PlugIn", with version #, list of all registered
-	(more details are included in phase 6 doc, before being deferred)
+1.  Add Gene Name/Synonym Look up to data services (requires a back-end, may
+    be able to use Entrez Gene DB).
+
+2.  Create a service for reading in Cytoscape node/edge attributes to go with
+    sif reader.
+
+3.  Create an "About Data Services PlugIn", with version #, list of all
+    registered (more details are included in phase 6 doc, before being deferred)
 	---> current priority:  low.
-5.  Resurrect the GRID Plugin - retrieves data from GRID directly into Cytoscape
+
+4.  Resurrect the GRID Plugin - retrieves data from GRID directly into Cytoscape
 </source>
         </p>
      </section>
