@@ -98,7 +98,9 @@
     <module name="InnerAssignment"/>
 
     <!-- don't allow imports from the sun.* package hierarchy -->
+    <!--
     <module name="IllegalImport"/>
+    -->
 
     <!-- don't allow public members -->
     <module name="VisibilityModifier">
