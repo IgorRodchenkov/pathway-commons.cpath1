@@ -188,6 +188,9 @@ public class CountAffymetrixIdsTask extends Task {
 
     private void incrementMapCounter (DbReferenceType dbRef, HashMap dbMap) {
         String db  = dbRef.getDb();
+        if (db.equals("unitprot")) {
+            System.out.println("uniprot: " + dbRef.getId());
+        }
         if (dbMap.containsKey(db)) {
             Integer counter = (Integer) dbMap.get(db);
             counter = new Integer (counter.intValue() + 1);
