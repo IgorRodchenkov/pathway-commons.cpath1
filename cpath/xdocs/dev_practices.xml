@@ -68,9 +68,9 @@ There are four types of documentation considered here.
 </p>
 </section>
 
-<section name="Analysis and estimation (A&E)">
+<section name="Analysis and estimation (A&amp;E)">
 <p>
-Feature prioritization and planning are important things to consider in any software development project and should allow the most important features to be implemented to a stable level first.  Currently, cPath performs A&E in weekly meetings in the Sander group.
+Feature prioritization and planning are important things to consider in any software development project and should allow the most important features to be implemented to a stable level first.  Currently, cPath performs A&amp;E in weekly meetings in the Sander group.
 </p>
 </section>
 
