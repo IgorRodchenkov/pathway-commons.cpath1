@@ -53,11 +53,13 @@
     <tag-class>org.mskcc.pathdb.taglib.ImportTable</tag-class>
     <body-content>empty</body-content>
     <description>Displays Import Table</description>
-    <attribute>
-    <name>adminView</name>
-    <required>false</required>
-    <rtexprvalue>true</rtexprvalue>
-    </attribute>
+  </tag>
+
+  <tag>
+    <name>organismTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.OrganismTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Organism Table</description>
   </tag>
 
   <tag>
