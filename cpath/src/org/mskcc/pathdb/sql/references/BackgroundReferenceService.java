@@ -30,7 +30,7 @@
 package org.mskcc.pathdb.sql.references;
 
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.model.CPathXRef;
+import org.mskcc.pathdb.model.BackgroundReference;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.DaoBackgroundReferences;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -40,85 +40,88 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * cPath ID Mapping Service.
+ * cPath Background Reference Service.
  * <P>
- * The cPath ID Mapping Service is a distinct subsystem of cPath responsible
- * for storing external references for uniquely identifying biological entities.
+ * The cPath Background Reference Service is a distinct subsystem of cPath
+ * responsible for storing external references for biological entities.
  * <P>
- * For example, the ID Mapping Service may store multiple external references
- * for identifying a single protein, e.g. Affymetrix ID, LocusLink ID, etc.
- * Upon data import, cPath will query the ID subsystem for any matching
- * identifiers, and transfer them to the core cPath database.
- * <P>
- * Here is a concrete example:  user imports a PSI-MI file which contains
- * the Q6PK17_HUMAN protein.  This protein defines a single external reference
- * pointing to SWISSPROT:AAH08943.  Upon import, cPath queries the ID mapping
- * subsystem for all equivalent identifiers, and finds the following three
- * matches:  Affymetrix:1552275_3p_s_at, UniGene:Hs.77646, and
- * RefSeq:NP_060241.  Based on this data, cPath updates the PSI-MI protein
- * record to include a total of four external references, and the new
- * identifiers are permanently linked to the protein.  An end-user searching
- * for 1552275_3p_s_at will therefore find a link to Q6PK17_HUMAN, even though
- * the original PSI-MI file did not contain this information.
+ * There are two main types of external references:
+ * <UL>
+ * <LI>Unification:  A unification reference uniquely identifies a biological
+ * entity.  It can be used to unify multiple entity records into a single
+ * record.  For example, UnitProt:P10275 and PIR:A39248 uniquely
+ * identify the Androgen Receptor protein in human.  Using unification
+ * references, cPath will create a single entity reference containing
+ * both references.
+ * <LI>LinkOut:  A linkout reference provides a linkout from one biological
+ * entity to another, or from one biological entity to an external annotation.
+ * For example, UniProt:P10275 may contain a reference to the Ensembl Gene:
+ * ENSG00000169083, and may also contain multiple references to Gene
+ * Ontology (GO), such as: GO:0005497:androgen binding, and GO:0004882:androgen
+ * receptor activity.
+ * </UL>
  *
  * @author Ethan Cerami.
  */
 public class BackgroundReferenceService {
 
     /**
-     * Queries the ID Mapping Subsystem for a list of equivalent external
-     * references.
+     * Queries the background reference subsystem for a complete list of
+     * unification references.
      *
      * @param refs Array of External Reference Objects.
-     * @return ArrayList of All Equivalent External Reference Objects.
-     *         External Reference objects are normalized to the
-     *         cPath Database fixed controlled vocabularly term.
+     * @return ArrayList of all equivalent External Reference Objects.
+     *         This represents the union of External References derived from
+     *         the parameter list plus all newly discovered External Reference
+     *         as derived from the Bacgkround Reference service.
+     *         External Reference objects are normalized to the cPath Database
+     *         fixed controlled vocabularly term.
      * @throws DaoException Error Accessing Database.
      */
-    public ArrayList getEquivalenceList(ExternalReference[] refs)
+    public ArrayList getUnificationReferences(ExternalReference[] refs)
             throws DaoException {
         //  Create Normalized Set of Initial XRefs.
-        //  We want to return a list of external references which is
-        //  distinct from the parameter list.  The only way to ensure this
-        //  is to normalize the incoming list to use fixed controlled
-        //  vocabularly terms.
         HashSet initialSet = createNormalizedXRefSet(refs);
-
-        //  Create a Non-Redundant Set of External References
-        HashSet hitList = new HashSet();
 
         //  Iterate through all existing External References
         for (int i = 0; i < refs.length; i++) {
 
             //  Finds a Complete List of Equivalent External References
-            ArrayList list = getEquivalenceList(refs[i]);
+            ArrayList list = getUnificationReferences(refs[i]);
 
             //  Add Each Equivalent Reference to the Non-Redundant Set
             for (int j = 0; j < list.size(); j++) {
                 ExternalReference ref = (ExternalReference) list.get(j);
                 if (!initialSet.contains(ref)) {
-                    hitList.add(ref);
+                    initialSet.add(ref);
                 }
             }
         }
-        return new ArrayList(hitList);
+        return new ArrayList(initialSet);
     }
 
     /**
-     * Queries the ID Mapping Subsystem for a list of equivalent external
-     * references.
-     * <P>
-     * Implementation Note:  both dao.getRecordByTerm() and dao.getRecordById()
-     * use an internal cache, and will therefore be very fast.
+     * Queries the background reference subsystem for a list of
+     * unification references.
      *
      * @param xref External Reference Object.
-     * @return ArrayList of All Equivalent External Reference Objects.
+     * @return ArrayList of all equivalent External Reference Objects.
+     *         This represents the union of the single External Reference
+     *         derived from the parameter list plus all newly discovered
+     *         External Reference as derived from the Bacgkround Reference
+     *         service.  External Reference objects are normalized to the
+     *         cPath Database fixed controlled vocabularly term.
      * @throws DaoException Error Accessing Database.
      */
-    public ArrayList getEquivalenceList(ExternalReference xref)
+    public ArrayList getUnificationReferences(ExternalReference xref)
             throws DaoException {
+        //  Implementation Note:  both dao.getRecordByTerm() and
+        //  dao.getRecordById() use an internal cache, and will therefore
+        //  be very fast.
+
         //  Create a Non-Redundant Set of External References
-        HashSet hitList = new HashSet();
+        HashSet unionSet = new HashSet();
+        unionSet.add(xref);
 
         //  Look up Primary ID of Database, as stored in cPath.
         DaoExternalDb dao = new DaoExternalDb();
@@ -134,43 +137,77 @@ public class BackgroundReferenceService {
         xref.setDatabase(dbRecord.getFixedCvTerm());
 
         //  Look up Equivalence List
-        CPathXRef cpathXRef = new CPathXRef(dbRecord.getId(), xref.getId());
+        BackgroundReference cpathXRef = new BackgroundReference
+                (dbRecord.getId(), xref.getId());
         DaoBackgroundReferences daoId = new DaoBackgroundReferences();
-        ArrayList list = daoId.getEquivalenceList(cpathXRef);
+        ArrayList backgroundRefList = daoId.getEquivalenceList(cpathXRef);
 
-        //  Transform all Matches into External Reference Objects.
-        for (int i = 0; i < list.size(); i++) {
-            CPathXRef cPathMatch = (CPathXRef) list.get(i);
-
-            //  Look up Database Name
-            dbRecord = dao.getRecordById(cPathMatch.getDbId());
-
-            //  Create New External Reference Object.
-            ExternalReference match = new ExternalReference
-                    (dbRecord.getFixedCvTerm(), cPathMatch.getLinkedToId());
-            if (!match.equals(xref)) {
-                hitList.add(match);
-            }
-        }
-        return new ArrayList(hitList);
+        transformToExternalReferenceList(unionSet, backgroundRefList);
+        return new ArrayList(unionSet);
     }
 
     /**
-     * Utility method for creating a union of two lists of External References.
+     * Queries the Background Reference Service for a List of Link Out
+     * References.
      *
-     * @param refList ArrayList of External Reference Object.
-     * @param refs    Array of External Objects.
-     * @return ArrayList of ExternalReference Objects.
+     * @param refs Array of External Reference Objects
+     * @return ArrayList of External Reference Objects.
      */
-    public ArrayList createUnifiedList(ArrayList refList,
-            ExternalReference[] refs) {
-        HashSet union = new HashSet();
-        union.addAll(refList);
-        for (int i = 0; i < refs.length; i++) {
-            union.add(refs[i]);
+    public ArrayList getLinkOutReferences (ExternalReference refs[])
+        throws DaoException {
+        HashSet set = new HashSet();
+        for (int i=0; i<refs.length; i++) {
+            ArrayList linkOuts = getLinkOutReferences (refs[i]);
+            set.addAll(linkOuts);
         }
-        ArrayList list = new ArrayList(union);
-        return list;
+        return new ArrayList (set);
+    }
+
+    /**
+     * Queries the Background Reference Service for a List of Link Out
+     * References.
+     *
+     * @param ref External Reference Object.
+     * @return ArrayList of External Reference Objects.
+     */
+    public ArrayList getLinkOutReferences (ExternalReference ref)
+        throws DaoException {
+        DaoExternalDb dao = new DaoExternalDb();
+        ExternalDatabaseRecord dbRecord = dao.getRecordByTerm
+                (ref.getDatabase());
+        if (dbRecord == null) {
+            throw new IllegalArgumentException("External Database: "
+                    + ref.getDatabase() + " does not exist in database.");
+        }
+        BackgroundReference backgroundRef = new BackgroundReference
+                (dbRecord.getId(), ref.getId());
+        DaoBackgroundReferences dao2 = new DaoBackgroundReferences();
+        ArrayList backgroundRefList = dao2.getLinkOutList(backgroundRef);
+        HashSet set = new HashSet();
+        transformToExternalReferenceList(set, backgroundRefList);
+        return new ArrayList (set);
+    }
+
+    /**
+     * Transform BackgroundReference Objects to External Reference Object.
+     */
+    private void transformToExternalReferenceList(HashSet unionSet,
+            ArrayList backgroundRefList) throws DaoException {
+        DaoExternalDb dao = new DaoExternalDb();
+        ExternalDatabaseRecord dbRecord;
+        //  Transform all Matches into External Reference Objects.
+        for (int i = 0; i < backgroundRefList.size(); i++) {
+            BackgroundReference cPathMatch = (BackgroundReference)
+                    backgroundRefList.get(i);
+
+            //  Look up Database Name
+            dbRecord = dao.getRecordById(cPathMatch.getDbId1());
+
+            //  Create New External Reference Object.
+            ExternalReference match = new ExternalReference
+                    (dbRecord.getFixedCvTerm(), cPathMatch.getLinkedToId1());
+            unionSet.add(match);
+        }
     }
 
     /**
