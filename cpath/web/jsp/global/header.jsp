@@ -12,6 +12,8 @@
     ArrayList navURLList = new ArrayList();
     navTextList.add("Help");
     navURLList.add("/ds/dataservice");
+    navTextList.add("Admin");
+    navURLList.add("/ds/jsp/pages/Admin.jsp");
     navTextList.add("News");
     navURLList.add("");
     navTextList.add("About");
