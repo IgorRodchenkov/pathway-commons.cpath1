@@ -98,19 +98,37 @@ public class DaoExternalDb {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT * FROM external_db WHERE EXTERNAL_DB_ID = ?");
-            pstmt.setInt(1, id);
-            rs = pstmt.executeQuery();
-            return extractRecord(rs);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+
+        // First Check Global Cache
+        String key = this.getClass().getName() + ".getRecordById." + id;
+        GlobalCache cache = GlobalCache.getInstance();
+        ExternalDatabaseRecord dbRecord = (ExternalDatabaseRecord)
+                cache.get(key);
+
+        //  If not in cache, get from Database
+        if (dbRecord == null) {
+            try {
+                con = JdbcUtil.getCPathConnection();
+                pstmt = con.prepareStatement
+                        ("SELECT * FROM external_db WHERE EXTERNAL_DB_ID = ?");
+                pstmt.setInt(1, id);
+                rs = pstmt.executeQuery();
+                dbRecord =  extractRecord(rs);
+
+                //  Store to Cache
+                if (dbRecord != null) {
+                    cache.put(key, dbRecord);
+                }
+                return dbRecord;
+            } catch (ClassNotFoundException e) {
+                throw new DaoException(e);
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            } finally {
+                JdbcUtil.closeAll(con, pstmt, rs);
+            }
+        } else {
+            return dbRecord;
         }
     }
 
@@ -166,16 +184,17 @@ public class DaoExternalDb {
         }
 
         // First Check Global Cache
+        String key = this.getClass().getName() + ".getRecordByTerm." + term;
         GlobalCache cache = GlobalCache.getInstance();
         ExternalDatabaseRecord dbRecord = (ExternalDatabaseRecord)
-                cache.get(term);
+                cache.get(key);
 
         //  If not in cache, get from Database
         if (dbRecord == null) {
             DaoExternalDbCv dao = new DaoExternalDbCv();
             dbRecord = dao.getExternalDbByTerm(term);
             if (dbRecord != null) {
-                cache.put(term, dbRecord);
+                cache.put(key, dbRecord);
             }
         }
         return dbRecord;
@@ -232,6 +251,11 @@ public class DaoExternalDb {
             //  Delete all associated terms.
             DaoExternalDbCv dao = new DaoExternalDbCv();
             dao.deleteTermsByDbId(id);
+
+            //  Remove from internal cache
+            GlobalCache cache = GlobalCache.getInstance();
+            String key = this.getClass().getName() + ".getRecordById." + id;
+            cache.remove(key);
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
