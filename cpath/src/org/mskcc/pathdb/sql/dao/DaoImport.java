@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ImportRecord;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.Md5Util;
 import org.mskcc.pathdb.util.ZipUtil;
-import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -8,8 +8,8 @@ import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.dataservices.live.DataServiceFactory;
 import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.ReadInteractors;
-import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.util.CPathConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,8 +31,8 @@ public class DaoInteractor {
      * Local IDs are stored with the attribute key:  InteractorVocab.LOCAL_ID.
      * @param interactors ArrayList of Interactors.
      * @return HashMap of Names to LocalIds.
-     * @throws org.mskcc.dataservices.core.DataServiceException Error Connecting to data service.
-     * @throws org.mskcc.dataservices.core.EmptySetException No Results Found.
+     * @throws DataServiceException Error Connecting to data service.
+     * @throws EmptySetException No Results Found.
      */
     public HashMap getLocalInteractorIds(ArrayList interactors)
             throws DataServiceException, EmptySetException {
@@ -66,7 +66,7 @@ public class DaoInteractor {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
+            con = JdbcUtil.getGridConnection();
             pstmt = con.prepareStatement
                     ("select * from orf_info");
             rs = pstmt.executeQuery();

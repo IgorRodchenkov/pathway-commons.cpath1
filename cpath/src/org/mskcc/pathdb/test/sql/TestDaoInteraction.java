@@ -7,10 +7,9 @@ import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.sql.dao.DaoInteraction;
-import org.mskcc.pathdb.sql.JdbcUtil;
 
-import java.util.ArrayList;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  * Tests the DaoInteraction Class.

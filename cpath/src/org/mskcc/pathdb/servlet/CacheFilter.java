@@ -3,8 +3,7 @@ package org.mskcc.pathdb.servlet;
 import com.opensymphony.module.oscache.base.Cache;
 import com.opensymphony.module.oscache.base.NeedsRefreshException;
 import com.opensymphony.module.oscache.web.ServletCacheAdministrator;
-import com.opensymphony.module.oscache.web.filter.
-        CacheHttpServletResponseWrapper;
+import com.opensymphony.module.oscache.web.filter.CacheHttpServletResponseWrapper;
 import com.opensymphony.module.oscache.web.filter.ResponseContent;
 import org.apache.log4j.Logger;
 

@@ -7,13 +7,11 @@ import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.PsiBuilder;
 
 import java.io.StringWriter;
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 

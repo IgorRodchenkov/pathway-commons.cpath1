@@ -10,14 +10,12 @@ import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
-import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
 import java.io.StringWriter;
-import java.sql.Connection;
 
 /**
  * Tests the ImportPsiToCPath, the InteractionQuery

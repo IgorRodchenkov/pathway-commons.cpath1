@@ -45,6 +45,7 @@ import org.mskcc.dataservices.live.DataServiceBase;
 import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.ReadInteractors;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoException;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -61,7 +62,6 @@ import java.util.HashMap;
  */
 public class ReadInteractorsFromGrid extends DataServiceBase
         implements ReadInteractors {
-    private Connection con;
 
     /**
      * HashMap of ORF Names to Local IDs.
@@ -84,8 +84,6 @@ public class ReadInteractorsFromGrid extends DataServiceBase
             throw  e;
         } catch (Exception e) {
             throw new DataServiceException(e);
-        } finally {
-            JdbcUtil.freeConnection(con);
         }
     }
 
@@ -117,11 +115,9 @@ public class ReadInteractorsFromGrid extends DataServiceBase
      * @param uid Unique ID.
      * @param lookUpKey Database LookUp Key.
      * @return Interactor object.
-     * @throws java.sql.SQLException Database error.
-     * @throws java.lang.ClassNotFoundException Could not find JDBC Driver.
      */
     protected Interactor getLiveInteractor(String uid, String lookUpKey)
-            throws SQLException, ClassNotFoundException, JDOMException,
+            throws DaoException, JDOMException,
             IOException, EmptySetException {
         Document doc = this.getSingleInteractor(uid, lookUpKey);
         GridInteractorUtil util = new GridInteractorUtil();
@@ -143,26 +139,36 @@ public class ReadInteractorsFromGrid extends DataServiceBase
      * @param uid Unique ID.
      * @param lookUpKey Database LookUp Key.
      * @return Database Result Set.
-     * @throws java.sql.SQLException Database error.
-     * @throws java.lang.ClassNotFoundException Could not find JDBC Driver.
      */
     private Document getSingleInteractor(String uid, String lookUpKey)
-            throws SQLException, ClassNotFoundException, JDOMException,
-            EmptySetException {
-        con = JdbcUtil.getGridConnection();
-        PreparedStatement pstmt = con.prepareStatement
-                ("select * from orf_info where " + lookUpKey + "=?");
-        pstmt.setString(1, uid);
-        ResultSet rs = pstmt.executeQuery();
-
-        if (!rs.next()) {
-            throw new EmptySetException();
-        } else {
+            throws DaoException, JDOMException, EmptySetException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            con = JdbcUtil.getGridConnection();
+            pstmt = con.prepareStatement
+                    ("select * from orf_info where " + lookUpKey + "=?");
+            pstmt.setString(1, uid);
             rs = pstmt.executeQuery();
-            ResultSetBuilder builder = new ResultSetBuilder(rs);
-            Document document = builder.build();
-            rs.close();
-            return document;
+
+            if (!rs.next()) {
+                throw new EmptySetException();
+            } else {
+                rs = pstmt.executeQuery();
+                ResultSetBuilder builder = new ResultSetBuilder(rs);
+                Document document = builder.build();
+                rs.close();
+                return document;
+            }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 }

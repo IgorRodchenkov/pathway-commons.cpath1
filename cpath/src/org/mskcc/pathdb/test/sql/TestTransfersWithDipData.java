@@ -5,17 +5,13 @@ import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.transfer.TransferImportToCPath;
+import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
-import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.transfer.TransferImportToCPath;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**

@@ -80,8 +80,6 @@ public class WriteInteractorsToGrid extends DataServiceBase
             }
         } catch (Exception e) {
             throw new DataServiceException(e);
-        } finally {
-            JdbcUtil.freeConnection(con);
         }
         return counter;
     }

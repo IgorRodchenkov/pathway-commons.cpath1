@@ -2,13 +2,12 @@ package org.mskcc.pathdb.util;
 
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
-import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.dataservices.schemas.psi.*;
 
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Normalizes a PSI-MI XML Document in preparation for submission to cPath.

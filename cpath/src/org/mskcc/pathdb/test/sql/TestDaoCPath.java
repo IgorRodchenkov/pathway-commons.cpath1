@@ -6,12 +6,9 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**

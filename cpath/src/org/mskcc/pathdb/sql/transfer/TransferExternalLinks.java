@@ -7,16 +7,14 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.util.BatchTool;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.sql.dao.DaoInteractor;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoInteractor;
+import org.mskcc.pathdb.util.BatchTool;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -89,7 +87,6 @@ public class TransferExternalLinks extends BatchTool {
      */
     public static void main(String[] args) throws Exception {
         try {
-            Connection con = JdbcUtil.getCPathConnection();
             if (args.length > 0) {
                 PropertyManager manager = PropertyManager.getInstance();
                 manager.setProperty(PropertyManager.DB_LOCATION, args[0]);

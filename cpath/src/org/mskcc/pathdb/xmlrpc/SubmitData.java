@@ -2,14 +2,9 @@ package org.mskcc.pathdb.xmlrpc;
 
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcHandler;
-import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoImport;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.Vector;
 
 /**

@@ -1,7 +1,6 @@
 package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;

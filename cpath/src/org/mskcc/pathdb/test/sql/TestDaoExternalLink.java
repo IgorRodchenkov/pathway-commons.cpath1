@@ -5,13 +5,10 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.JdbcUtil;
 
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -51,7 +48,7 @@ public class TestDaoExternalLink extends TestCase {
         ExternalReference refs[] = new ExternalReference[1];
         refs[0] = new ExternalReference(DB_NAME, DB_ID);
         CPathRecord record = db.lookUpByByExternalRefs(refs);
-        assertEquals ("JUNIT_ENTITY", record.getName());
+        assertEquals ("P06139", record.getName());
 
         //  Test deleteRecordById() Method.
         boolean success = db.deleteRecordById(link.getId());

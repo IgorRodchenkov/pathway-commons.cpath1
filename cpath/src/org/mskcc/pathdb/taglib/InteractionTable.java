@@ -39,13 +39,10 @@ import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**

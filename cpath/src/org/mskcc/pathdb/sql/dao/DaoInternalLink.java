@@ -2,7 +2,6 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;

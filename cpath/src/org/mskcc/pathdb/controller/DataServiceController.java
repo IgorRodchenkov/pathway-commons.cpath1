@@ -13,11 +13,10 @@ import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.services.ReadInteractions;
 import org.mskcc.dataservices.services.ReadInteractors;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.query.InteractionQuery;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.sql.query.InteractionQuery;
-import org.mskcc.pathdb.sql.JdbcUtil;
-import org.mskcc.pathdb.sql.dao.DaoException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -28,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.sql.SQLException;
-import java.sql.Connection;
 
 /**
  * DataService Controller.

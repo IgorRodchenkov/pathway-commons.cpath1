@@ -1,24 +1,16 @@
 package org.mskcc.pathdb.sql.transfer;
 
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
-import org.mskcc.dataservices.core.DataServiceException;
-import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.model.ImportRecord;
 import org.mskcc.pathdb.service.RegisterCPathServices;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.util.BatchTool;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.sql.dao.DaoImport;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**

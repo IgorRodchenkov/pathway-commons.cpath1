@@ -1,13 +1,13 @@
 package org.mskcc.pathdb.util;
 
-import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.pathdb.model.CPathRecord;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.schemas.psi.*;
+import org.mskcc.pathdb.model.CPathRecord;
 
-import java.util.Iterator;
-import java.util.Collection;
 import java.io.StringReader;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Given a series of XML Fragments, this class builds one complete

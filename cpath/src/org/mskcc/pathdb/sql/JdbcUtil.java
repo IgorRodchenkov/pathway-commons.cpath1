@@ -68,8 +68,7 @@ public class JdbcUtil {
      * Frees Database Connection.
      * @param con Connection Object.
      */
-    public static void freeConnection(Connection con) {
-        counter--;
+    private static void closeConnection(Connection con) {
 //        if (con != null) {
 //            try {
 //                con.close();
@@ -87,7 +86,7 @@ public class JdbcUtil {
      */
     public static void closeAll(Connection con, PreparedStatement ps,
             ResultSet rs) {
-        freeConnection(con);
+        closeConnection(con);
         if (ps != null) {
             try {
                 ps.close();

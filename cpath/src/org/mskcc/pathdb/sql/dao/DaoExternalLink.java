@@ -4,8 +4,6 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.*;

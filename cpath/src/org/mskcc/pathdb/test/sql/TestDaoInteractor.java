@@ -6,11 +6,9 @@ import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.service.WriteInteractionsToGrid;
 import org.mskcc.pathdb.sql.dao.DaoInteractor;
-import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.sql.Connection;
 
 /**
  * Tests the DaoInteractor Class.

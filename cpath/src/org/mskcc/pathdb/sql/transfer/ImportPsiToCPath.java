@@ -1,19 +1,19 @@
 package org.mskcc.pathdb.sql.transfer;
 
-import org.mskcc.pathdb.util.PsiUtil;
-import org.mskcc.pathdb.model.ImportSummary;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.dataservices.mapper.MapPsiToInteractions;
+import org.mskcc.dataservices.mapper.MapperException;
+import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.sql.dao.*;
-import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.dataservices.mapper.MapperException;
-import org.mskcc.dataservices.mapper.MapPsiToInteractions;
-import org.mskcc.dataservices.bio.ExternalReference;
-import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.MarshalException;
+import org.mskcc.pathdb.util.PsiUtil;
 
-import java.util.HashMap;
 import java.io.StringWriter;
+import java.util.HashMap;
 
 /**
  * Imports a single PSI-MI record into cPath.
@@ -131,7 +131,6 @@ public class ImportPsiToCPath {
         } catch (ExternalDatabaseNotFoundException e) {
             throw new ImportException(e);
         } catch (MapperException e) {
-
             throw new ImportException(e);
         }
     }

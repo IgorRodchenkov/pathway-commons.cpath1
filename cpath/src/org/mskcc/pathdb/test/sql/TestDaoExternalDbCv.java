@@ -2,13 +2,10 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.JdbcUtil;
 
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**

@@ -5,7 +5,6 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.util.PsiUtil;
-import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -144,7 +143,7 @@ public class TestPsiUtil extends TestCase {
             if (id.equals("YCR038C")) {
                 counter++;
                 ExternalReference refs[] = util.extractRefs(protein);
-                assertEquals ("RefSeq GI", refs[0].getDatabase());
+                assertEquals ("Entrez GI", refs[0].getDatabase());
             }
         }
         assertEquals(1, counter);

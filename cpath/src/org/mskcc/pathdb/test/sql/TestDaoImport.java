@@ -2,15 +2,12 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ImportRecord;
-import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoImport;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**

@@ -74,7 +74,7 @@ public class DaoInteraction {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
+            con = JdbcUtil.getGridConnection();
             pstmt = con.prepareStatement
                     ("select interaction_id from interactions where "
                     + "((geneA = ? and geneB = ?) "

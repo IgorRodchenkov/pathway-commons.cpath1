@@ -44,6 +44,7 @@ import org.mskcc.dataservices.live.DataServiceBase;
 import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.ReadInteractions;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoException;
 
 import java.io.File;
 import java.net.URL;
@@ -62,7 +63,6 @@ import java.util.ArrayList;
  */
 public class ReadInteractionsFromGrid extends DataServiceBase
         implements ReadInteractions {
-    private Connection con;
 
     /**
      * Cache Options.
@@ -87,12 +87,8 @@ public class ReadInteractionsFromGrid extends DataServiceBase
             return interactions;
         } catch (EmptySetException e) {
             throw e;
-        } catch (SQLException e) {
+        } catch (DaoException e) {
             throw new DataServiceException(e);
-        } catch (ClassNotFoundException e) {
-            throw new DataServiceException(e);
-        } finally {
-            JdbcUtil.freeConnection(con);
         }
     }
 
@@ -120,50 +116,70 @@ public class ReadInteractionsFromGrid extends DataServiceBase
      * Gets Live Data from GRID_LOCAL.
      * @param orfName ORF Name.
      * @return ArrayList of Interactin objects.
-     * @throws DataServiceException Error connecting to data service.
-     * @throws java.sql.SQLException Error connecting to data base.
-     * @throws java.lang.ClassNotFoundException Could not located JDBC Driver.
      */
     private ArrayList getLiveInteractions(String orfName)
-            throws DataServiceException, SQLException,
-            ClassNotFoundException {
+            throws DataServiceException, DaoException {
         ArrayList interactions = null;
-        // 1.  Get Local ID for ORF Name.
-        interactorService =
-                new ReadInteractorsFromGrid();
-        interactorService.setLocation(this.getLocation());
-        Interactor interactor = interactorService.getInteractor(orfName);
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            // 1.  Get Local ID for ORF Name.
+            interactorService =
+                    new ReadInteractorsFromGrid();
+            interactorService.setLocation(this.getLocation());
+            Interactor interactor = interactorService.getInteractor(orfName);
 
-        if (interactor != null) {
+            if (interactor != null) {
 
-            // 2.  Get all interactions for local ID.
-            String localId = (String) interactor.getAttribute
-                    (InteractorVocab.LOCAL_ID);
-            ResultSet rs = connect(localId);
+                // 2.  Get all interactions for local ID.
+                String localId = (String) interactor.getAttribute
+                        (InteractorVocab.LOCAL_ID);
+                rs = connect(localId);
 
-            // 3.  Iterate through all results.
-            interactions = processResults(rs);
+                // 3.  Iterate through all results.
+                interactions = processResults(rs);
+            }
+            return interactions;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
-        return interactions;
     }
 
     /**
      * Gets Live Interaction Data from GRID_LOCAL.
      * @param localId Local ID.
      * @return Database Result Set.
-     * @throws java.sql.SQLException Database error.
-     * @throws java.lang.ClassNotFoundException Could not find JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    private ResultSet connect(String localId)
-            throws SQLException, ClassNotFoundException {
-        con = JdbcUtil.getGridConnection();
-        PreparedStatement pstmt = con.prepareStatement
-                ("select * from interactions where (geneA = ? or geneB = ?) "
-                + " and (deprecated='F') ORDER BY interaction_id");
-        pstmt.setString(1, localId);
-        pstmt.setString(2, localId);
-        ResultSet rs = pstmt.executeQuery();
-        return rs;
+    private ResultSet connect(String localId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("select * from interactions where "
+                    +"(geneA = ? or geneB = ?) "
+                    + " and (deprecated='F') ORDER BY interaction_id");
+            pstmt.setString(1, localId);
+            pstmt.setString(2, localId);
+            rs = pstmt.executeQuery();
+            return rs;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
     }
 
     /**
