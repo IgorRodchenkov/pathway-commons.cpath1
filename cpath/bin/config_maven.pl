@@ -1,13 +1,35 @@
 #!/usr/bin/perl
+# Script to auto-configure Maven with the correct JAR depedencies.
+
+# Program Description:  Maven is our open source tool for
+# automatically generating the cPath Developer Site.
+# Maven recommends the use of a central JAR repository, and
+# advises against checking JAR files into CVS.
+#
+# For cPath, we want to avoid the central JAR repository,
+# and instead place all our JAR files in the cpath/lib
+# directory.
+#
+# To do so, you must explicitly tell Maven all your JAR files
+# and to manually override the auto-loading.  This requires that
+# you update the project.xml and the project.properties  file.
+#
+# This script automates the whole process by finding all the
+# JAR files in cpath/lib and updating project.xml and project.
+# properties as needed.
+#
+# Author:  Ethan Cerami (cerami@cbio.mskcc.org).
+
 use XML::LibXML;
 use strict;
 
+# Check Environment
 my $cpathHome = $ENV{CPATH_HOME};
 if ($cpathHome eq "") {
 	die "CPATH_HOME Environment Variable is not set.  Please set, and try again.\n";
 }
 
-# Get All Jars
+# Get All Jars in cpath/lib
 chdir ("$cpathHome/lib") or die;
 my @jar_files = glob ("*.jar");
 my (@names, $over_ride);
@@ -42,7 +64,7 @@ sub update_override_file {
 	close OUT;
 }
 
-# Update project.xml File
+# Update project.xml File via Document Object Model (DOM)
 sub update_project_xml {
 	my $project_file = "project.xml";
 	chdir ($cpathHome) or die;
@@ -77,6 +99,6 @@ sub update_project_xml {
 
 		$dependency_root->addChild ($depend_child);
 	}
-	print $document->toString(1);
-	$document->toFile ("project_new.xml", 1);
+	$document->toFile ("project.xml", 1);
+	print "Modified file:  project.xml\n";
 }
