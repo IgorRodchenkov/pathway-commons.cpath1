@@ -6,6 +6,7 @@ import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.util.ArrayList;
@@ -21,17 +22,15 @@ abstract class InteractionQuery {
     protected XDebug xdebug;
 
     /**
-     * Logger.
-     */
-    protected Logger logger = Logger.getLogger(this.getClass().getName());
-
-    /**
      * Executes Query.
      * @param xdebug XDebug Object.
+     * @return XmlAssembly XML Assembly Object.
      * @throws QueryException Error Executing Query.
      */
-    public QueryResult execute(XDebug xdebug) throws QueryException {
+    public XmlAssembly execute(XDebug xdebug) throws QueryException {
         this.xdebug = xdebug;
+        xdebug.logMsg(this, "Executing Interaction Type:  " +
+                getClass().getName());
         try {
             return executeSub();
         } catch (Exception e) {
@@ -41,88 +40,8 @@ abstract class InteractionQuery {
 
     /**
      * Must be subclassed.
+     * @return XmlAssembly XML Assembly Object.
      * @throws Exception All Exceptions.
      */
-    protected abstract QueryResult executeSub() throws Exception;
-
-    /**
-     * Given a List of Interactor Records, retrieve all
-     * associated interactions.
-     * @param cpathRecords ArrayList of CPath Record Objects
-     * containing Interactors.
-     * @return ArrayList of CPathRecord Objects containing Interactions.
-     * @throws DaoException Error Retrieving Data from Database.
-     */
-    protected ArrayList extractInteractions(ArrayList cpathRecords)
-            throws DaoException {
-        ArrayList interactions = new ArrayList();
-        DaoInternalLink linker = new DaoInternalLink();
-        for (int i = 0; i < cpathRecords.size(); i++) {
-            CPathRecord record = (CPathRecord) cpathRecords.get(i);
-            ArrayList list = linker.getInternalLinksWithLookup(record.getId());
-            interactions.addAll(list);
-        }
-        return interactions;
-    }
-
-    /**
-     * Given an Interactor Record, retrieve all associated interactions.
-     * @param record CPathRecord Object
-     * @return ArrayList of CPathRecord Objects containing Interactions.
-     * @throws DaoException Error Retrieving Data from Database.
-     */
-    protected ArrayList extractInteractions(CPathRecord record)
-            throws DaoException {
-        ArrayList interactors = new ArrayList();
-        interactors.add(record);
-        return this.extractInteractions(interactors);
-    }
-
-    /**
-     * Given a List of Interaction Records, retrieve all associated
-     * interactors.
-     * @param interactions ArrayList of CPathRecord Objects containing
-     * Interactions.
-     * @return HashMap of All Interactors, indexed by cpath ID.
-     * @throws DaoException Error Retrieving Data from Database.
-     */
-    protected HashMap extractInteractors(ArrayList interactions)
-            throws DaoException {
-        HashMap interactorMap = new HashMap();
-        DaoInternalLink linker = new DaoInternalLink();
-        DaoCPath cpath = new DaoCPath();
-        for (int i = 0; i < interactions.size(); i++) {
-            CPathRecord record = (CPathRecord) interactions.get(i);
-            ArrayList list = linker.getInternalLinks(record.getId());
-            for (int j = 0; j < list.size(); j++) {
-                InternalLinkRecord link = (InternalLinkRecord) list.get(j);
-                Long key = new Long(link.getCpathIdB());
-                if (!interactorMap.containsKey(key)) {
-                    CPathRecord interactor = cpath.getRecordById
-                            (link.getCpathIdB());
-                    interactorMap.put(key, interactor);
-                }
-            }
-        }
-        xdebug.logMsg(this, "Total number of Interactors found:  "
-                + interactorMap.size());
-        return interactorMap;
-    }
-
-    /**
-     * Truncate Results to Max Hits.
-     * @param records ArrayList of CPath Records
-     * @param max Max Number of Hits Requested.
-     */
-    protected ArrayList truncateResultSet(ArrayList records, int max) {
-        ArrayList newList = null;
-        if (records.size() > max) {
-            List subSet = records.subList(0, max);
-            newList = new ArrayList(subSet);
-            xdebug.logMsg(this, "Extracting first " + max + " results");
-            return newList;
-        } else {
-            return records;
-        }
-    }
+    protected abstract XmlAssembly executeSub() throws Exception;
 }
