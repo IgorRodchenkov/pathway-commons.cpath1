@@ -86,27 +86,40 @@ the error.  Error documents have the following format:
             <% } %>
         </TABLE>
 
+
+<%
+    ProtocolRequest pRequest = new ProtocolRequest();
+    pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF);
+    pRequest.setQuery("P04273");
+    pRequest.setFormat(ProtocolConstants.FORMAT_PSI);
+%>
 <div class="h3">
     <h3>Examples of Usage</h3>
 </div>
 		The following query requests all cPath interactions for protein "P04273".
         Data will be formatted in the PSI XML format.
         <UL>
-            <LI><SMALL><A HREF="webservice.do?cmd=get_by_interactor_name&format=psi&version=1.0&q=P04273">webservice.do?cmd=get_by_interactor_name&format=psi&version=1.0&q=P04273</A>
+            <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
             </SMALL>
         </UL>
 
 		The following query requests all cPath interactions for protein "P04273".
         Data will be formatted in HTML.
+        <% pRequest.setFormat(ProtocolConstants.FORMAT_HTML); %>
         <UL>
-            <LI><SMALL><A HREF="webservice.do?cmd=get_by_interactor_name&format=html&version=1.0&q=P04273">webservice.do?cmd=get_by_interactor_name&format=html&version=1.0&q=P04273</A>
+            <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
             </SMALL>
         </UL>
-		The following query is invalid.
+
+        <%
+            pRequest.setVersion("0.9");
+            pRequest.setFormat(ProtocolConstants.FORMAT_PSI);
+        %>
+        The following query is invalid.
         The web service will return an XML document with a specific error code
         and error message.
         <UL>
-            <LI><SMALL><A HREF="webservice.do?cmd=get_by_interactor_name&format=psi&version=0.9&q=P04273">webservice.do?cmd=get_by_interactor_name&format=psi&version=0.9&q=P04273</A>
+            <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
             </SMALL>
         </UL>
         </BLOCKQUOTE>
