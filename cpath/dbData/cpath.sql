@@ -139,15 +139,15 @@ CREATE TABLE `log` (
 #
 # Table structure for table `organism`
 #
-# Creation: May 13, 2004 at 01:00 PM
-# Last update: May 13, 2004 at 01:02 PM
+# Creation: May 17, 2004 at 03:22 PM
+# Last update: May 17, 2004 at 03:24 PM
 #
 
 CREATE TABLE `organism` (
-  `ncbi_taxonomy_id` int(11) NOT NULL default '0',
-  `species_name` varchar(255) NOT NULL default '',
-  `common_name` varchar(255) NOT NULL default '',
-  UNIQUE KEY `ncbi_taxonomy_id` (`ncbi_taxonomy_id`)
+  `NCBI_TAXONOMY_ID` int(11) NOT NULL default '0',
+  `SPECIES_NAME` varchar(255) NOT NULL default '',
+  `COMMON_NAME` varchar(255) NOT NULL default '',
+  UNIQUE KEY `ncbi_taxonomy_id` (`NCBI_TAXONOMY_ID`)
 ) TYPE=MyISAM COMMENT='Stores Organism Data';
 # --------------------------------------------------------
 
