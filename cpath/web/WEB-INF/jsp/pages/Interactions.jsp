@@ -1,7 +1,8 @@
 <%@ page import="org.mskcc.pathdb.controller.ProtocolRequest,
                  java.util.ArrayList,
                  org.mskcc.pathdb.controller.ProtocolConstants,
-                 org.mskcc.pathdb.action.BaseAction"%>
+                 org.mskcc.pathdb.action.BaseAction,
+                 org.mskcc.pathdb.sql.assembly.XmlAssembly"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -10,8 +11,10 @@
 <%
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute("protocol_request");
-    ArrayList interactions = (ArrayList) request.getAttribute("interactions");
+    XmlAssembly xmlAssembly = (XmlAssembly)
+            request.getAttribute(BaseAction.ATTRIBUTE_XML_ASSEMBLY);
 %>
-<cbio:interactionTable interactions="<%= interactions %>"
+
+<cbio:interactionTable xmlAssembly="<%= xmlAssembly %>"
         protocolRequest="<%= protocolRequest %>"/>
 <jsp:include page="../global/footer.jsp" flush="true" />
