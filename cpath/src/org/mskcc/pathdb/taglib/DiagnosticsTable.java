@@ -130,9 +130,10 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runThirdBatch() throws IOException {
-        DiagnosticTestResults test = new DiagnosticTestResults
-                ("Testing access to Lucene Full Text Index");
         LuceneIndexer indexer = new LuceneIndexer();
+        DiagnosticTestResults test = new DiagnosticTestResults
+                ("Testing access to Lucene Full Text Index<BR>"
+                +"Lucene Directory:  " + indexer.getDirectory());
         try {
             indexer.executeQuery("dna");
         } catch (QueryException e) {
