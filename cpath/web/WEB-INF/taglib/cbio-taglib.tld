@@ -14,7 +14,7 @@
     <body-content>empty</body-content>
     <description>Displays Interaction Table</description>
     <attribute>
-       <name>interactions</name>
+       <name>xmlAssembly</name>
        <required>true</required>
        <rtexprvalue>true</rtexprvalue>
     </attribute>
@@ -23,18 +23,6 @@
          <required>true</required>
          <rtexprvalue>true</rtexprvalue>
       </attribute>
-  </tag>
-
-  <tag>
-    <name>searchResultsTable</name>
-    <tag-class>org.mskcc.pathdb.taglib.SearchResultsTable</tag-class>
-    <body-content>empty</body-content>
-    <description>Displays Search Results Table</description>
-    <attribute>
-         <name>protocolRequest</name>
-         <required>true</required>
-         <rtexprvalue>true</rtexprvalue>
-    </attribute>
   </tag>
 
   <tag>
@@ -87,12 +75,5 @@
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
     </attribute>
-  </tag>
-
-  <tag>
-    <name>interactorTable</name>
-    <tag-class>org.mskcc.pathdb.taglib.CPathDetailsTable</tag-class>
-    <body-content>empty</body-content>
-    <description>Displays Interactor Information</description>
   </tag>
 </taglib>
