@@ -75,4 +75,35 @@ public class TestDaoXmlCache extends TestCase {
         assembly = dao.getXmlAssemblyByKey(HASH_KEY);
         assertEquals(null, assembly);
     }
+
+    /**
+     * Tests Auto-Purge Feature.
+     * @throws Exception All Exceptions.
+     */
+    public void testAutoPurge() throws Exception {
+        XDebug xdebug = new XDebug();
+        DaoXmlCache dao = new DaoXmlCache(xdebug);
+
+        //  Override default values
+        dao.setMaxCacheRecords(100);
+        dao.setPurgeIncrement(50);
+
+        //  Purge Cache;  starts with clean slate
+        dao.deleteAllRecords();
+
+        //  Get a Sample Assembly
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
+                (4, 1, xdebug);
+        assembly.setNumHits(100);
+
+        //  Add 500 Records
+        for (int i=0; i<200; i++) {
+            String hash = "hash" + i;
+            dao.addRecord(hash, hash, assembly);
+        }
+
+        //  Verify we now have 50 records in cache
+        ArrayList records = dao.getAllRecords();
+        assertEquals (50, records.size());
+    }
 }
