@@ -11,14 +11,18 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.jdom.JDOMException;
+import org.jdom.Attribute;
+import org.jdom.input.SAXBuilder;
+import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.util.XmlStripper;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.dataservices.util.PropertyManager;
 
-import javax.servlet.ServletContext;
-import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
 
 /**
  * Provides access to the Lucene Full Text Indexer.
@@ -27,19 +31,9 @@ import java.io.IOException;
  */
 public class LuceneIndexer {
     /**
-     * Lucene Field for Storing XML Content.
+     * Default Lucene Field for Storing All Terms.
      */
-    public static final String FIELD_XML = "xml";
-
-    /**
-     *  Lucene Field for Storing Entity Name.
-     */
-    public static final String FIELD_NAME = "name";
-
-    /**
-     *  Lucene Field for Storing Entity Description.
-     */
-    public static final String FIELD_DESCRIPTION = "description";
+    public static final String FIELD_ALL = "all";
 
     /**
      * Lucene Field for Storing CPath ID.
@@ -58,7 +52,6 @@ public class LuceneIndexer {
 
     private IndexWriter indexWriter = null;
     private IndexSearcher indexSearcher = null;
-    private String dir = null;
 
     /**
      * Initializes Index with Fresh Database.
@@ -73,37 +66,26 @@ public class LuceneIndexer {
 
     /**
      * Adds New Record to Full Text Indexer.
-     * @param name Entity Name.
-     * @param description Entity Description.
-     * @param xml XML String.
-     * @param cpathId CPath ID.
+     * @param item ItemToIndex.
      * @throws ImportException Error Importing Record to Full Text Engine.
      */
-    public void addRecord(String name, String description, String xml,
-            long cpathId) throws ImportException {
+    public void addRecord(ItemToIndex item)
+            throws ImportException {
         try {
             String dir = this.getDirectory();
             Analyzer analyzer = this.getAnalyzer();
             IndexWriter writer = new IndexWriter(dir, analyzer, false);
-            XmlStripper stripper = new XmlStripper();
-            String terms = stripper.stripTags(xml);
+
             Document document = new Document();
-
-            //  XML Terms are indexed, but not stored.
-            document.add(Field.Text(FIELD_XML, terms));
-
-            //  Name, Description and ID are stored, but not indexed.
-            document.add(Field.UnIndexed(FIELD_NAME, name));
-            document.add(Field.UnIndexed(FIELD_DESCRIPTION, description));
-            document.add(Field.UnIndexed(FIELD_CPATH_ID,
-                    Long.toString(cpathId)));
-
+            int numFields = item.getNumFields();
+            for (int i=0; i<numFields; i++) {
+                Field field = item.getField(i);
+                document.add(field);
+            }
             writer.addDocument(document);
             writer.close();
         } catch (IOException e) {
             throw new ImportException("IOException:  " + e.getMessage());
-        } catch (JDOMException e) {
-            throw new ImportException("JDOMException:  " + e.getMessage());
         }
     }
 
@@ -138,21 +120,6 @@ public class LuceneIndexer {
     }
 
     /**
-     * Adds New Record to Full Text Indexer.
-     * @param text Text To Index
-     * @throws ImportException Error Importing Record to Full Text Engine.
-     */
-    public void addRecord(String text) throws ImportException {
-        try {
-            Document document = new Document();
-            document.add(Field.Text(FIELD_XML, text));
-            indexWriter.addDocument(document);
-        } catch (IOException e) {
-            throw new ImportException("IOException:  " + e.getMessage());
-        }
-    }
-
-    /**
      * Executes Query
      * @param term Search Term.
      * @return Lucene Hits Object
@@ -164,7 +131,7 @@ public class LuceneIndexer {
             String dir = this.getDirectory();
             indexSearcher = new IndexSearcher(dir);
             Analyzer analyzer = this.getAnalyzer();
-            Query query = QueryParser.parse(term, FIELD_XML, analyzer);
+            Query query = QueryParser.parse(term, FIELD_ALL, analyzer);
             Hits hits = indexSearcher.search(query);
             return hits;
         } catch (IOException e) {
