@@ -166,6 +166,14 @@ screen for the precedence order 'interactor' then 'experimental evidence'.
 
 For example, try searching cpath on cbio for:  interactor_id:55
 
+28. Batch or list queries. It makes sense to be able to submit a list of things to some queries e.g.
+Give me all the interactions for this list of protein IDs.  This could be used for a custom pathway
+definition if people know all of the proteins in a pathway
+
+29. Make cPath easier to install by optionally packaging data with it.  Specifically:
+-All publicly available interactions
+-All ID tables
+
 Data Service Specific Items:
 -----------------------------
 1.  Add Gene Name/Synonym Look up to data services (requires a back-end, may
