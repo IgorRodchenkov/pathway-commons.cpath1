@@ -7,9 +7,12 @@
                  java.util.ArrayList,
                  org.mskcc.pathdb.model.Organism"%>
 <%
+    try {
     ProtocolRequest pRequest = new ProtocolRequest();
     pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
     pRequest.setFormat(ProtocolConstants.FORMAT_HTML);
+    DaoOrganism dao = new DaoOrganism ();
+    ArrayList organisms = dao.getAllOrganisms();
 %>
 
 <div id="dbstats" class="toolgroup">
@@ -18,10 +21,7 @@
     </div>
 
     <div class="body">
-        <%
-            DaoOrganism dao = new DaoOrganism ();
-            ArrayList organisms = dao.getAllOrganisms();
-        %>
+
         <% for (int i=0; i<organisms.size(); i++) {
             Organism organism = (Organism) organisms.get(i);
         %>
@@ -37,3 +37,5 @@
         </div>
     </div>
 </div>
+<% } catch (Exception e) {
+} %>

@@ -81,6 +81,7 @@
         </SELECT>
         <% } %>
 
+        <% try { %>
         <P>Filter by Organism:
         <BR>
         <SELECT NAME="<%= ProtocolRequest.ARG_ORGANISM %>">
@@ -102,6 +103,9 @@
             <% } %>
         <% } %>
         </SELECT>
+        <% } catch (Exception e) { %>
+            </SELECT>
+        <% } %>
 
         <% if (searchOptionsFlag != null
                 && searchOptionsFlag.booleanValue() == true) { %>

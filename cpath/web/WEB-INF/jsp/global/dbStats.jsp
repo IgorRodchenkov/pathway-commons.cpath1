@@ -1,7 +1,9 @@
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.util.XssFilter"%>
+
 <%
+try {
     DaoCPath dao = new DaoCPath();
     int numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
     int numPhysicalEntities = dao.getNumEntities
@@ -25,3 +27,6 @@
         </div>
     </div>
 </div>
+<% } catch (Exception e) {
+
+} %>
