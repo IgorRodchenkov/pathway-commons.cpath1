@@ -22,9 +22,22 @@ public class JdbcUtil {
     private static DataSource dataSource;
     private static GenericObjectPool connectionPool;
     private static final String DB_CPATH = "cpath";
+    private static boolean isCommandLineApplication = false;
+    private static Connection commandLineConnection;
+
+    /**
+     * Special Setting for Command Line Applications
+     * @param flag true or false.
+     */
+    public static void isCommandLineApplication (boolean flag) {
+        isCommandLineApplication = true;
+    }
 
     /**
      * Gets Connection to the CPath Database.
+     * If this is a command line connection, reuse the static
+     * commandLienConnection object.  Otherwise, get a connection from the
+     * database pool.
      *
      * @return Live Connection to Database.
      * @throws SQLException           Error Connecting to Database.
@@ -35,8 +48,16 @@ public class JdbcUtil {
         if (dataSource == null) {
             initDataSource();
         }
-        Connection con = dataSource.getConnection();
-        return con;
+        if (isCommandLineApplication) {
+            if (commandLineConnection == null
+                    || commandLineConnection.isClosed()) {
+                commandLineConnection = dataSource.getConnection();
+            }
+            return commandLineConnection;
+        } else {
+            Connection con = dataSource.getConnection();
+            return con;
+        }
     }
 
     /**
@@ -56,15 +77,19 @@ public class JdbcUtil {
 
     /**
      * Frees Database Connection.
+     * If this is a command line application, we keep the connection open
+     * (this improves overall performance).
      *
      * @param con Connection Object.
      */
     private static void closeConnection(Connection con) {
-        if (con != null) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        if (!isCommandLineApplication) {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
