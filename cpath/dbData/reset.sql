@@ -48,6 +48,7 @@ INSERT INTO `external_db` VALUES (21, 'MINT', 'http://mint.bio.uniroma2.it/mint/
 INSERT INTO `external_db` VALUES (22, 'Reactome', 'http://www.reactome.org/cgi-bin/search?SUBMIT=1&QUERY_CLASS=DatabaseIdentifier&QUERY=SWALL:%ID%', 'Reactome - a knowledgebase of biological processes', 32, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (23, 'HUGE', 'http://www.kazusa.or.jp/huge/gfpage/%ID%/', 'HUGE Protein Database', 33, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (24, 'Unigene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene', 'Unigene Database', 35, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (25, 'Ensembl', 'http://www.ensembl.org/Homo_sapiens/textview?species=All&idx=All&q=%ID%&x=20&y=11', 'Ensembl Database', 36, NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
@@ -89,3 +90,4 @@ INSERT INTO `external_db_cv` VALUES (32, 22, 'Reactome');
 INSERT INTO `external_db_cv` VALUES (33, 23, 'HUGE');
 INSERT INTO `external_db_cv` VALUES (34, 9, 'Locus-Link');
 INSERT INTO `external_db_cv` VALUES (35, 24, 'Unigene');
+INSERT INTO `external_db_cv` VALUES (36, 25, 'Ensembl');
