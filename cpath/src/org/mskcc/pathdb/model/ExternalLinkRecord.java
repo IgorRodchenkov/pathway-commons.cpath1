@@ -12,8 +12,6 @@ public class ExternalLinkRecord {
     private long cpathId;
     private int externalDbId;
     private String linkedToId;
-    private Date createTime;
-    private Date updateTime;
     private ExternalDatabaseRecord db;
 
     /**
@@ -86,42 +84,6 @@ public class ExternalLinkRecord {
      */
     public void setLinkedToId(String linkedToId) {
         this.linkedToId = linkedToId;
-    }
-
-    /**
-     * Gets Creation Time.
-     *
-     * @return Date Object.
-     */
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * Sets Creation Time.
-     *
-     * @param createTime Date Object.
-     */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * Gets Update Time.
-     *
-     * @return Date Object.
-     */
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    /**
-     * Sets Update Time.
-     *
-     * @param updateTime Date Object.
-     */
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     /**
