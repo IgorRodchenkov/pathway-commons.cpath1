@@ -83,7 +83,7 @@ public class InteractionTable extends HtmlTable {
         startTable();
         outputNumInteractions(url);
         String headers[] = {
-            "Interactor", "Interactor", "Experimental System",
+            "Interactor", "Description", "Experimental System",
             "PubMed Reference"};
 
         createTableHeaders(headers);

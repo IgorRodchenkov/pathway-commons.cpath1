@@ -39,6 +39,7 @@ import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.PsiInteractionToIndex;
 
 import java.io.IOException;
 
@@ -71,7 +72,8 @@ public class SearchResultsTable extends HtmlTable {
             Hits hits = lucene.executeQuery(uid);
             this.pager = new Pager(pRequest, hits.length());
             createHeader(hits);
-            String headers[] = {"", "Name", "Description", "Interactions"};
+            String headers[] = {"", "Name", "Description", "Notes",
+                "Details"};
             createTableHeaders(headers);
             outputResults(hits);
             endTable();
@@ -106,24 +108,71 @@ public class SearchResultsTable extends HtmlTable {
     private void outputResults(Hits hits) throws IOException {
         if (hits.length() == 0) {
             append("<TR>");
-            append("<TD COLSPAN=4>No Matching Results found!");
+            append("<TD COLSPAN=4>No Matching Results found for:  " + uid);
             append("</TR>");
         } else {
             for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
                 this.startRow(i);
                 Document doc = hits.doc(i);
-                Field name = doc.getField(LuceneIndexer.FIELD_NAME);
-                Field desc = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
+//                Field name = doc.getField(LuceneIndexer.FIELD_NAME);
+//                Field desc = doc.getField
+//                        (LuceneIndexer.FIELD_DESCRIPTION);
+//                Field tax_id = doc.getField
+//                        (PsiInteractorToIndex.FIELD_TAXONOMY_ID);
+//                Field species = doc.getField
+//                        (PsiInteractorToIndex.FIELD_SPECIES);
+//                Field database = doc.getField
+//                        (PsiInteractionToIndex.FIELD_DATABASE);
+//                Field interactionType = doc.getField
+//                        (PsiInteractionToIndex.FIELD_INTERACTION_TYPE_NAME);
+                Field pmid = doc.getField(PsiInteractionToIndex.FIELD_PMID);
+
                 Field cpathId = doc.getField(LuceneIndexer.FIELD_CPATH_ID);
                 append("<TD VALIGN=TOP WIDTH=20>");
                 append(Integer.toString(i + 1) + ".");
                 append("</TD>");
                 append("<TD VALIGN=TOP WIDTH=60>");
                 String url = "interactor.do?id=" + cpathId.stringValue();
-                append("<A HREF='" + url + "'>" + name.stringValue() + "</A>");
+
+//                if (name == null) {
+//                    append("[No Name]");
+//                } else {
+//                    append(name.stringValue());
+//                }
+                Field all = doc.getField(LuceneIndexer.FIELD_ALL);
+                outputDataField(all.stringValue());
                 append("</TD>");
-                outputDataField(desc.stringValue());
-                outputInteractionLink(cpathId.stringValue());
+
+//                if (desc == null) {
+//                    outputDataField ("[No Description]");
+//                } else {
+//                    outputDataField(desc.stringValue());
+//                }
+
+                StringBuffer notes = new StringBuffer();
+//                if (species != null) {
+//                    notes.append(species.stringValue()
+//                            + "<BR>[NCBI Taxonomy ID:  "
+//                            + tax_id.stringValue() + "]<BR>");
+//                }
+//                if (database != null) {
+//                    notes.append("Database Source:  " + database.stringValue());
+//                    notes.append("<BR>");
+//                }
+//                if (interactionType != null) {
+//                    notes.append("Interaction Type:  " +
+//                            interactionType.stringValue());
+//                    notes.append("<BR>");
+//                }
+                if (pmid != null) {
+                    notes.append("PMID Reference:  " + pmid.stringValue());
+                    notes.append("<BR>");
+                }
+                outputDataField (notes.toString());
+
+                this.outputDataField("<A HREF='"+url+"'>View Details</A>");
+
+                //  outputInteractionLink(cpathId.stringValue());
                 this.endRow();
             }
         }
