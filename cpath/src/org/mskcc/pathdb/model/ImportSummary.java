@@ -10,6 +10,7 @@ public class ImportSummary {
     private int numInteractorsSaved;
     private int numInteractorsFound;
     private int numInteractionsSaved;
+    private int numInteractionsClobbered;
 
     /**
      * Gets Total Number of Interactors Processed.
@@ -73,4 +74,21 @@ public class ImportSummary {
     public void incrementNumInteractionsSaved() {
         this.numInteractionsSaved++;
     }
+
+    /**
+     * Gets Number of Interactions Saved to the cPath Database.
+     * @return integer.
+     */
+    public int getNumInteractionsClobbered() {
+        return this.numInteractionsClobbered;
+    }
+
+    /**
+     * Increments Number of New Interactions which clobbered old interactions.
+     */
+    public void incrementNumInteractionsClobbered() {
+        this.numInteractionsClobbered++;
+    }
+
+
 }

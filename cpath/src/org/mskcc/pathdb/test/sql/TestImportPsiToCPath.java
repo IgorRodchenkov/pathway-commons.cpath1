@@ -16,7 +16,6 @@ import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
-import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -37,13 +36,13 @@ public class TestImportPsiToCPath extends TestCase {
         ContentReader reader = new ContentReader();
         String file = new String("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
-        XDebug xdebug = new XDebug();
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml, true, false);
         assertEquals(7, summary.getNumInteractorsProcessed());
         assertEquals(0, summary.getNumInteractorsFound());
         assertEquals(7, summary.getNumInteractorsSaved());
         assertEquals(6, summary.getNumInteractionsSaved());
+        assertEquals(0, summary.getNumInteractionsClobbered());
 
         DaoExternalLink linker = new DaoExternalLink();
         ExternalReference refs[] = new ExternalReference[1];
@@ -55,9 +54,15 @@ public class TestImportPsiToCPath extends TestCase {
 
         validateData();
 
-        // Try Saving Again
+        //  Try Saving Again
+        //  Validate that no new interactors are saved.
+        //  Validate that new interactions clobbered old interactions.
+        //  Only one interaction in psi_sample_mixed.xml has an external ref.
+        //  Hence, only one interaction gets clobbered.
         summary = importer.addRecord(xml, true, false);
         assertEquals(0, summary.getNumInteractorsSaved());
+        assertEquals(6, summary.getNumInteractionsSaved());
+        assertEquals(1, summary.getNumInteractionsClobbered());
     }
 
     /**

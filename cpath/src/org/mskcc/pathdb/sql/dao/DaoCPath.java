@@ -228,13 +228,14 @@ public class DaoCPath {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
+            //  Step 1:  Delete the Primary Record
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("DELETE FROM CPATH WHERE CPATH_ID = ?");
             pstmt.setLong(1, cpathId);
             int rows = pstmt.executeUpdate();
 
-            //  Delete all External Links too
+            //  Step 2:  Delete all Associted External Links
             DaoExternalLink linker = new DaoExternalLink();
             ArrayList links = linker.getRecordsByCPathId(cpathId);
             for (int i = 0; i < links.size(); i++) {
@@ -242,7 +243,7 @@ public class DaoCPath {
                 linker.deleteRecordById(link.getId());
             }
 
-            //  Delete all Internal Links
+            //  Step 3: Delete all Associated Internal Links
             DaoInternalLink internalLinker = new DaoInternalLink();
             internalLinker.deleteRecordsByCPathId(cpathId);
 

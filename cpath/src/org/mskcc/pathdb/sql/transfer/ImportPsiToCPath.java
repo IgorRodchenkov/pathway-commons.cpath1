@@ -280,7 +280,6 @@ public class ImportPsiToCPath {
                 if (verbose) {
                     System.out.print(".");
                 }
-                summary.incrementNumInteractionsSaved();
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
                 saveInteraction(interaction);
@@ -343,6 +342,14 @@ public class ImportPsiToCPath {
     private void saveInteraction(InteractionElementType interaction)
             throws MarshalException, ValidationException, DaoException {
         DaoCPath cpath = new DaoCPath();
+        summary.incrementNumInteractionsSaved();
+
+        //  Extract primary reference (if it exists)
+        ExternalReference refs[] = extractExternalReference(interaction);
+
+        //  Conditionally delete existing interaction (if it exists)
+        //  New Interactions clobber old interactions.
+        conditionallyDeleteInteraction(refs);
 
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = this.marshalInteraction(interaction);
@@ -350,7 +357,40 @@ public class ImportPsiToCPath {
         String desc = "Interaction";
         int taxId = CPathRecord.TAXONOMY_NOT_SPECIFIED;
 
-        //  Extract primary reference (if it exists)
+        //  Add New Record to cPath
+        long cpathId = cpath.addRecord(name, desc, taxId,
+                CPathRecordType.INTERACTION, xml, refs);
+
+        //  Creates Internal Links Between Interaction Record
+        //  and all Interactor Records.
+        long idList[] = psiUtil.extractInteractorIds(interaction);
+        DaoInternalLink linker = new DaoInternalLink();
+        linker.addRecords(cpathId, idList);
+    }
+
+    /**
+     * Conditional Deletes the Specified Interaction.
+     */
+    private void conditionallyDeleteInteraction (ExternalReference refs[])
+            throws DaoException {
+        DaoExternalLink linker = new DaoExternalLink();
+        DaoCPath cpath = new DaoCPath();
+        CPathRecord record = linker.lookUpByExternalRefs(refs);
+        if (record != null) {
+            //  Delete the Interaction Record and all
+            //  associated internal/external links.
+            cpath.deleteRecordById(record.getId());
+            summary.incrementNumInteractionsClobbered();
+        }
+    }
+
+    /**
+     * Extracts the External Reference for the specified Interaction object.
+     * @param interaction Castor Interaction object.
+     * @return Array of External Reference objects.
+     */
+    private ExternalReference[] extractExternalReference
+            (InteractionElementType interaction) {
         ExternalReference refs[] = null;
         XrefType xref = interaction.getXref();
         if (xref != null) {
@@ -362,16 +402,7 @@ public class ImportPsiToCPath {
                 refs[0] = new ExternalReference(db, id);
             }
         }
-
-        //  Add New Record to cPath
-        long cpathId = cpath.addRecord(name, desc, taxId,
-                CPathRecordType.INTERACTION, xml, refs);
-
-        //  Creates Internal Links Between Interaction Record
-        //  and all Interactor Records.
-        long idList[] = psiUtil.extractInteractorIds(interaction);
-        DaoInternalLink linker = new DaoInternalLink();
-        linker.addRecords(cpathId, idList);
+        return refs;
     }
 
     /**
