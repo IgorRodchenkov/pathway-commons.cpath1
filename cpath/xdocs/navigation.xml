@@ -5,6 +5,7 @@
 
   <body>
     <links>
+      <item name="cPath"  href="http://cbio.mskcc.org/cpath"/>
       <item name="cBio"  href="http://cbio.mskcc.org/"/>
     </links>
     <menu name="Project Status">

@@ -8,12 +8,11 @@
   <body>
     <section name="About cPath">
         <p>
-        cPath is a freely available cancer pathway database.
-        We are building this as a resource to the community.
+        cPath is a freely available cancer pathway database built as a community resource.
         Currently, basic protein-protein interaction functionality
-        is available. We expect to make a preliminary version of
-        cPath available to the public in early 2004. In the near
-        future, we also plan to make cPath BioPax compatibile.
+        is available. We expect to make a preliminary version of cPath
+        available to the public in early 2004. In the near future, we
+        also plan to make cPath <a href="http://www.biopax.org">BioPAX</a> compatible.
         </p>
         <p>
         cPath is currently being developed by the
@@ -26,8 +25,8 @@
     <p>
     The goal of this site is to provide timely information for cPath developers.
     The site is automatically updated every 24 hours, and provides a snapshot
-    of all development work, currently checked into CVS.  Here, you can browse
-    the latest JavaDocs, Source Code, and automatically generated reports.
+    of all publicly available development work, currently checked into CVS.  Here, you can browse
+    the latest JavaDocs, source code, and automatically generated reports.
     You can also browse the latest release notes, installation instructions,
     and technical architecture documents.
     </p>
