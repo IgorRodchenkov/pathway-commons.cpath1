@@ -142,12 +142,14 @@ public class ImportPsiToCPath {
      *
      * @param xml                  PSI-MI XML Record.
      * @param validateExternalRefs Validates External References.
+     * @param removeAllXrefs       Automatically Removes all Xrefs (not recmd).
      * @param pMonitor             Progress Monitor Object.
      * @return Import Summary Object.
      * @throws ImportException Indicates Error in Import.
      */
     public ImportSummary addRecord(String xml, boolean validateExternalRefs,
-            ProgressMonitor pMonitor) throws ImportException {
+            boolean removeAllXrefs, ProgressMonitor pMonitor)
+            throws ImportException {
         summary = new ImportSummary();
         idMap = new HashMap();
         this.pMonitor = pMonitor;
@@ -157,7 +159,7 @@ public class ImportPsiToCPath {
                     + "Normalizing PSI Document");
             psiUtil = new PsiUtil(pMonitor);
             EntrySet entrySet = null;
-            entrySet = psiUtil.getNormalizedDocument(xml);
+            entrySet = psiUtil.getNormalizedDocument(xml, removeAllXrefs);
             pMonitor.setCurrentMessage
                 ("Normalization Complete:  Document is valid.");
 
@@ -258,7 +260,7 @@ public class ImportPsiToCPath {
                 e.getMessage() + " Protein is located at " +
                 "index position " + (j+1) + " of " +
                 interactors.getProteinInteractorCount() +"."
-                + "\n\nData Dump of Protein XML follows:  \n\n"
+                + "\n\nData Dump of Offending Protein XML follows:  \n\n"
                 + writer.toString());
     }
 
@@ -278,7 +280,8 @@ public class ImportPsiToCPath {
             + "is missing data:  " + e.getMessage()
             + " Interaction is located at index position "
             + (j+1) + " of " + interactions.getInteractionCount()
-            + "." + "  \n\nData Dump of Interaction XML follows:  \n\n"
+            + "." + "  \n\nData Dump of Offending Interaction XML "
+            + "follows:  \n\n"
             + writer.toString());
     }
 
@@ -323,6 +326,9 @@ public class ImportPsiToCPath {
                     updater.doUpdate();
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumInteractorsFound();
+                    String refListText = this.getReferencesAsText(filteredRefs);
+                    pMonitor.setCurrentMessage("\nExisting interactor found "
+                        + " in cPath,  " + "based on xrefs:  " + refListText);
                 } else {
                     saveInteractor(protein, refs);
                     summary.incrementNumInteractorsSaved();
@@ -346,7 +352,7 @@ public class ImportPsiToCPath {
      */
     private void processInteractions(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
-            IOException, MissingDataException {
+            IOException, MissingDataException, ImportException {
         pMonitor.setCurrentMessage("Step 4 of 4:  Process all Interactions");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
@@ -428,25 +434,14 @@ public class ImportPsiToCPath {
      */
     private void saveInteraction(InteractionElementType interaction)
             throws MarshalException, ValidationException, DaoException,
-            IOException, MissingDataException {
+            IOException, MissingDataException, ImportException {
         DaoCPath cpath = new DaoCPath();
         summary.incrementNumInteractionsSaved();
 
         //  Extract References, if they exist.
         XrefType xref = interaction.getXref();
-        ExternalReference refs[] = psiUtil.extractXrefs(xref);
-
-        // Filter out References which are not used for unique
-        // identification.  For example, filter out all GO and
-        // InterPro references.
-        ExternalReference[] filteredRefs =
-                psiUtil.filterOutNonIdReferences(refs);
-
-        //  Conditionally delete existing interaction (if it exists)
-        //  New Interaction clobbers old interaction.
-        if (filteredRefs != null) {
-            conditionallyDeleteInteraction(filteredRefs);
-        }
+        ExternalReference allRefs[] = psiUtil.extractXrefs(xref);
+        conditionallyDeleteInteraction(allRefs);
 
         //  Set Name, Description; and Marshal XML.
         String xml = this.marshalInteraction(interaction);
@@ -456,7 +451,7 @@ public class ImportPsiToCPath {
 
         //  Add New Record to cPath
         long cpathId = cpath.addRecord(name, desc, taxId,
-                CPathRecordType.INTERACTION, xml, refs);
+                CPathRecordType.INTERACTION, xml, allRefs);
 
         //  Creates Internal Links Between Interaction Record
         //  and all Interactor Records.
@@ -469,17 +464,46 @@ public class ImportPsiToCPath {
      * Conditional Deletes the Specified Interaction.
      */
     private void conditionallyDeleteInteraction(ExternalReference refs[])
-            throws DaoException {
+            throws DaoException, ImportException {
+        // Filter out References which are not used for unique
+        // identification.  For example, filter out all GO, PubMed and
+        // InterPro references.
+        ExternalReference[] filteredRefs =
+                psiUtil.filterOutNonIdReferences(refs);
         DaoExternalLink linker = new DaoExternalLink();
         DaoCPath cpath = new DaoCPath();
-        ArrayList records = linker.lookUpByExternalRefs(refs);
+        ArrayList records = linker.lookUpByExternalRefs(filteredRefs);
         if (records.size() > 0) {
             CPathRecord record = (CPathRecord) records.get(0);
-            //  Delete the Interaction Record and all
-            //  associated internal/external links.
-            cpath.deleteRecordById(record.getId());
-            summary.incrementNumInteractionsClobbered();
+
+            //  Make sure this is an interaction; part of bug #524.
+            if (record.getType() == CPathRecordType.INTERACTION) {
+                //  Delete the Interaction Record and all
+                //  associated internal/external links.
+                cpath.deleteRecordById(record.getId());
+                summary.incrementNumInteractionsClobbered();
+                String refList = getReferencesAsText(filteredRefs);
+                pMonitor.setCurrentMessage("\nWarning!  Clobbering existing " +
+                        "interaction, based on xrefs:  " + refList.toString());
+            } else {
+                String refStr = getReferencesAsText(refs);
+                throw new ImportException ("Interaction contains the "
+                    + "following xrefs:  " + refStr + ".  However, one of "
+                    + "these xrefs is already used by an interactor. "
+                    + "The interaction xrefs therefore cannot be trusted.  "
+                    + "Please double check them.  Aborting import.");
+            }
         }
+    }
+
+    private String getReferencesAsText(ExternalReference[] refs) {
+        StringBuffer refList = new StringBuffer();
+        for (int i=0; i<refs.length; i++) {
+            String db = refs[i].getDatabase();
+            String id = refs[i].getId();
+            refList.append(" [db=" + db + ", id=" + id + "]");
+        }
+        return refList.toString();
     }
 
     /**
