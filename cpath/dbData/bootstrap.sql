@@ -23,7 +23,7 @@ truncate table internal_link;
 #
 # Insert Data into table 'cpath'
 #
-INSERT INTO `cpath` VALUES (1, 'JUNIT_ENTITY', 'JUnit Entity Description', 'PHYSICAL_ENTITY', '', 101, 'XML goes here', 20031020125251, 20031020125251);
+INSERT INTO `cpath` VALUES (1, 'JUNIT_ENTITY', 'JUnit Entity Description', 'PHYSICAL_ENTITY', '', 101, '<?xml version="1.0" encoding="UTF-8"?><note>testing</note>', 20031020125251, 20031020125251);
 
 #
 #  Insert data into table 'external_db'
@@ -34,7 +34,7 @@ INSERT INTO `external_db` VALUES (2, 'PIR', 'http://pir.georgetown.edu/cgi-bin/n
 INSERT INTO `external_db` VALUES (3, 'RefSeq', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=Protein&dopt=GenPept&list_uids=%ID%', 'The Reference Sequence (RefSeq) collection aims to provide a comprehensive, integrated, non-redundant set of sequences, including genomic DNA, transcript (RNA), and protein products, for major research organisms.', NULL, NULL, 20031002163800, 20031002103655);
 INSERT INTO `external_db` VALUES (4, 'InterPro', 'http://www.ebi.ac.uk/interpro/IEntry?ac=%ID%', ' InterPro is a database of protein families, domains and functional sites in which identifiable features found in known proteins can be applied to unknown protein sequences.', NULL, NULL, 20031002162303, 20031002162303);
 INSERT INTO `external_db` VALUES (5, 'PROSITE', 'http://us.expasy.org/cgi-bin/nicedoc.pl?%ID%', 'Database of protein families and domains', NULL, NULL, 20031002162542, 20031002162542);
-INSERT INTO `external_db` VALUES (6, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=%ID%&Search2=Query+DIP', 'Database of Interacting Proteins', NULL, NULL, 20031002162656, 20031002162656);
+INSERT INTO `external_db` VALUES (6, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=%ID%&Search2=Query+DIP&GE=&DS=&PIR=&GB=&TX=&SF=&FN=&LO=&KW=', 'Database of Interacting Proteins', NULL, NULL, 20031002162656, 20031002162656);
 INSERT INTO `external_db` VALUES (7, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%', 'Protein families database of alignments and HMMs.', NULL, NULL, 20031002162804, 20031002162804);
 INSERT INTO `external_db` VALUES (8, 'Entrez GI', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=protein&list_uids=%ID%&dopt=GenPept&term=%ID%&qty=1', 'NCBI Entrez System', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (9, 'Locus Link', 'http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l=%ID%', 'NCBI Locus Link', NULL, NULL, 20031002163709, 20031002163709);
