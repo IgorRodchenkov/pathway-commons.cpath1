@@ -81,6 +81,15 @@ public class TestAssembly extends TestCase {
                 ("http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
         assertTrue(index > 0);
 
-        System.out.println(xmlAssembly);
+        //  Verify that CPathIDFilter Works Correctly
+        String xml = assembly.getXmlStringWithCPathIdPrefix();
+        interactor1 = xml.indexOf("<proteinInteractor id=\"CPATH-2\">");
+        interactorRef1 = xml.indexOf
+                ("<proteinInteractorRef ref=\"CPATH-2\"/>");
+        interactorRef2 = xml.indexOf
+                ("<proteinInteractorRef ref=\"CPATH-3\"/>");
+        assertTrue(interactor1 >= 1);
+        assertTrue(interactorRef1 >= 1);
+        assertTrue(interactorRef2 >= 1);
     }
 }
