@@ -76,6 +76,7 @@ public class RequestAdapter {
                     query);
         }
         query = reviseByOrganism(request, query);
+        query = LuceneUtil.cleanQuery(query);
         return query;
     }
 
