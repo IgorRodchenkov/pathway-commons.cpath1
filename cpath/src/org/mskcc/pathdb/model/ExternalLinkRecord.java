@@ -7,20 +7,20 @@ import java.util.Date;
  *
  * @author Ethan Cerami
  */
-public class ExternalLink {
-    private int id;
-    private int cpathId;
+public class ExternalLinkRecord {
+    private long id;
+    private long cpathId;
     private int externalDbId;
     private String linkedToId;
     private Date createTime;
     private Date updateTime;
-    private ExternalDatabase db;
+    private ExternalDatabaseRecord db;
 
     /**
      * Gets External Link ID.
      * @return External Link ID.
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public class ExternalLink {
      * Sets External Link ID.
      * @param id External Link ID.
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -36,7 +36,7 @@ public class ExternalLink {
      * Gets CPath ID.
      * @return CPath ID.
      */
-    public int getCpathId() {
+    public long getCpathId() {
         return cpathId;
     }
 
@@ -44,7 +44,7 @@ public class ExternalLink {
      * Sets CPath ID.
      * @param cpathId CPath ID.
      */
-    public void setCpathId(int cpathId) {
+    public void setCpathId(long cpathId) {
         this.cpathId = cpathId;
     }
 
@@ -116,7 +116,7 @@ public class ExternalLink {
      * Gets the External Database.
      * @return External Database Record.
      */
-    public ExternalDatabase getExternalDatabase() {
+    public ExternalDatabaseRecord getExternalDatabase() {
         return db;
     }
 
@@ -124,7 +124,7 @@ public class ExternalLink {
      * Sets the External Database.
      * @param db External Database Record.
      */
-    public void setExternalDatabase(ExternalDatabase db) {
+    public void setExternalDatabase(ExternalDatabaseRecord db) {
         this.db = db;
         if (db != null) {
             this.externalDbId = db.getId();

@@ -3,7 +3,6 @@ package org.mskcc.pathdb.action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.dataservices.cache.CacheManager;
 import org.mskcc.pathdb.model.ImportRecord;
 import org.mskcc.pathdb.sql.DaoImport;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -11,8 +10,6 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Action for Displaying Import Records.
@@ -44,13 +41,6 @@ public class AdminDisplay extends BaseAction {
             out.println(record.getData());
             return null;
         } else {
-            CacheManager cacheManager = CacheManager.getInstance();
-            HashMap map = cacheManager.getEntireCache();
-            Iterator keys = map.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = (String) keys.next();
-                xdebug.logMsg(this, "Cache:  " + key);
-            }
             return mapping.findForward("display");
         }
     }

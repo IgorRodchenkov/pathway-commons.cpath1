@@ -1,6 +1,6 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.pathdb.model.ExternalDatabase;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class DaoExternalDbCv {
 
     /**
-     * Adds New ExternalDatabase CV Term.
+     * Adds New ExternalDatabaseRecord CV Term.
      * @param dbId External Database ID.
      * @param term Term.
      * @return true indicates success.
@@ -43,11 +43,11 @@ public class DaoExternalDbCv {
     /**
      * Gets Database by Term.
      * @param term Term to search.
-     * @return ExternalDatabase Object.
+     * @return ExternalDatabaseRecord Object.
      * @throws SQLException Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating JDBC Driver.
      */
-    public ExternalDatabase getExternalDbByTerm(String term)
+    public ExternalDatabaseRecord getExternalDbByTerm(String term)
             throws SQLException,
             ClassNotFoundException {
         Connection con = JdbcUtil.getCPathConnection();

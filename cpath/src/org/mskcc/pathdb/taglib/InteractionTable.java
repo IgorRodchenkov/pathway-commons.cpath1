@@ -37,8 +37,8 @@ import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
-import org.mskcc.pathdb.model.ExternalDatabase;
-import org.mskcc.pathdb.model.ExternalLink;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.DaoExternalLink;
 
 import java.io.IOException;
@@ -145,8 +145,8 @@ public class InteractionTable extends HtmlTable {
         ArrayList links = dao.getRecordsByCPathId(Integer.parseInt(id));
         append("<TD VALIGN=TOP><UL>");
         for (int i = 0; i < links.size(); i++) {
-            ExternalLink link = (ExternalLink) links.get(i);
-            ExternalDatabase db = link.getExternalDatabase();
+            ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
+            ExternalDatabaseRecord db = link.getExternalDatabase();
             append("<LI>" + db.getName() + ": ");
             outputLink(link.getLinkedToId(), link.getWebLink(),
                     db.getDescription());

@@ -19,6 +19,7 @@ public class UtilSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestZipUtil.class);
         suite.addTestSuite(TestMd5Util.class);
+        suite.addTestSuite(TestPsiNormalizer.class);
         suite.setName("Utility Tests");
         return suite;
     }

@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.pathdb.model.ExternalDatabase;
-import org.mskcc.pathdb.model.ExternalLink;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,12 +15,12 @@ public class DaoExternalLink {
 
     /**
      * Adds New External Link Record.
-     * @param link ExternalLink Object.
+     * @param link ExternalLinkRecord Object.
      * @return true if saved successfully.
      * @throws SQLException Error connecting to database.
      * @throws ClassNotFoundException Error locating correct SQL driver.
      */
-    public boolean addRecord(ExternalLink link)
+    public boolean addRecord(ExternalLinkRecord link)
             throws ClassNotFoundException, SQLException {
         Connection con = JdbcUtil.getCPathConnection();
         PreparedStatement pstmt = null;
@@ -30,7 +30,7 @@ public class DaoExternalLink {
                         ("INSERT INTO external_link (`CPATH_ID`, "
                         + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`, `CREATE_TIME`)"
                         + " VALUES (?,?,?,?)");
-                pstmt.setInt(1, link.getCpathId());
+                pstmt.setLong(1, link.getCpathId());
                 pstmt.setInt(2, link.getExternalDbId());
                 pstmt.setString(3, link.getLinkedToId());
                 java.util.Date date = new java.util.Date();
@@ -53,13 +53,13 @@ public class DaoExternalLink {
      * @throws SQLException Error connecting to database.
      * @throws ClassNotFoundException Error locating correct SQL driver.
      */
-    public ExternalLink getRecordById(int externalLinkId)
+    public ExternalLinkRecord getRecordById(long externalLinkId)
             throws ClassNotFoundException, SQLException {
         Connection con = JdbcUtil.getCPathConnection();
         try {
             PreparedStatement pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_LINK_ID = ?");
-            pstmt.setInt(1, externalLinkId);
+            pstmt.setLong(1, externalLinkId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return createBean(rs);
@@ -78,17 +78,18 @@ public class DaoExternalLink {
      * @throws SQLException Error connecting to database.
      * @throws ClassNotFoundException Error locating correct SQL driver.
      */
-    public ArrayList getRecordsByCPathId(int cpathId)
+    public ArrayList getRecordsByCPathId(long cpathId)
             throws ClassNotFoundException, SQLException {
         Connection con = JdbcUtil.getCPathConnection();
         ArrayList links = new ArrayList();
         try {
             PreparedStatement pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_LINK WHERE CPATH_ID = ?");
-            pstmt.setInt(1, cpathId);
+                    ("SELECT * FROM EXTERNAL_LINK WHERE CPATH_ID = ? "
+                    + "ORDER BY EXTERNAL_LINK_ID");
+            pstmt.setLong(1, cpathId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                ExternalLink link = createBean(rs);
+                ExternalLinkRecord link = createBean(rs);
                 links.add(link);
             }
             return links;
@@ -104,13 +105,13 @@ public class DaoExternalLink {
      * @throws SQLException Error connecting to database.
      * @throws ClassNotFoundException Error locating correct SQL driver.
      */
-    public boolean deleteRecordById(int externalLinkId)
+    public boolean deleteRecordById(long externalLinkId)
             throws ClassNotFoundException, SQLException {
         Connection con = JdbcUtil.getCPathConnection();
         try {
             PreparedStatement pstmt = con.prepareStatement
                     ("DELETE FROM EXTERNAL_LINK WHERE EXTERNAL_LINK_ID = ?");
-            pstmt.setInt(1, externalLinkId);
+            pstmt.setLong(1, externalLinkId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } finally {
@@ -120,19 +121,19 @@ public class DaoExternalLink {
 
     /**
      * Determines if the specified record already exists.
-     * @param link ExternalLink Object.
+     * @param link ExternalLinkRecord Object.
      * @return true if record already exists in database.
      * @throws SQLException Error connecting to database.
      * @throws ClassNotFoundException Error locating correct SQL driver.
      */
-    public boolean recordExists(ExternalLink link)
+    public boolean recordExists(ExternalLinkRecord link)
             throws ClassNotFoundException, SQLException {
         Connection con = JdbcUtil.getCPathConnection();
         try {
             PreparedStatement pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_LINK WHERE CPATH_ID = ? "
                     + " AND EXTERNAL_DB_ID = ? AND LINKED_TO_ID = ?");
-            pstmt.setInt(1, link.getCpathId());
+            pstmt.setLong(1, link.getCpathId());
             pstmt.setInt(2, link.getExternalDbId());
             pstmt.setString(3, link.getLinkedToId());
             ResultSet rs = pstmt.executeQuery();
@@ -142,9 +143,9 @@ public class DaoExternalLink {
         }
     }
 
-    private ExternalLink createBean(ResultSet rs) throws SQLException,
+    private ExternalLinkRecord createBean(ResultSet rs) throws SQLException,
             ClassNotFoundException {
-        ExternalLink link = new ExternalLink();
+        ExternalLinkRecord link = new ExternalLinkRecord();
         link.setId(rs.getInt("EXTERNAL_LINK_ID"));
         link.setCpathId(rs.getInt("CPATH_ID"));
         link.setExternalDbId(rs.getInt("EXTERNAL_DB_ID"));
@@ -154,7 +155,7 @@ public class DaoExternalLink {
 
         //  Get Associated External Database Record
         DaoExternalDb table = new DaoExternalDb();
-        ExternalDatabase db = table.getRecordById(link.getExternalDbId());
+        ExternalDatabaseRecord db = table.getRecordById(link.getExternalDbId());
         link.setExternalDatabase(db);
         return link;
     }

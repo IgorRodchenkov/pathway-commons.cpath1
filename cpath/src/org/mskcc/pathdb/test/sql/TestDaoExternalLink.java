@@ -1,8 +1,8 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.model.ExternalDatabase;
-import org.mskcc.pathdb.model.ExternalLink;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.DaoExternalDb;
 import org.mskcc.pathdb.sql.DaoExternalLink;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class TestDaoExternalLink extends TestCase {
 
     /**
-     * Tests Access to the ExternalLink Table.
+     * Tests Access to the ExternalLinkRecord Table.
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
@@ -27,8 +27,8 @@ public class TestDaoExternalLink extends TestCase {
         // Test getRecordsByCPathId() Method.
         ArrayList list = db.getRecordsByCPathId(1);
         assertEquals(1, list.size());
-        ExternalLink link = (ExternalLink) list.get(0);
-        ExternalDatabase externalDb = link.getExternalDatabase();
+        ExternalLinkRecord link = (ExternalLinkRecord) list.get(0);
+        ExternalDatabaseRecord externalDb = link.getExternalDatabase();
         assertEquals("PIR", externalDb.getName());
 
         //  Test getRecordsById() Method
@@ -51,9 +51,9 @@ public class TestDaoExternalLink extends TestCase {
     private void addSampleRecord() throws SQLException,
             ClassNotFoundException {
         DaoExternalDb dbTable = new DaoExternalDb();
-        ExternalDatabase externalDb = dbTable.getRecordByTerm("PIR");
+        ExternalDatabaseRecord externalDb = dbTable.getRecordByTerm("PIR");
         DaoExternalLink db = new DaoExternalLink();
-        ExternalLink link = new ExternalLink();
+        ExternalLinkRecord link = new ExternalLinkRecord();
         link.setCpathId(1);
         link.setExternalDatabase(externalDb);
         link.setLinkedToId("BVECGL");

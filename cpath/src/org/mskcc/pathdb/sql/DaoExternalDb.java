@@ -1,6 +1,6 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.pathdb.model.ExternalDatabase;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class DaoExternalDb {
      * @throws SQLException Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating JDBC Driver.
      */
-    public boolean addRecord(ExternalDatabase db) throws SQLException,
+    public boolean addRecord(ExternalDatabaseRecord db) throws SQLException,
             ClassNotFoundException {
         Connection con = JdbcUtil.getCPathConnection();
         PreparedStatement pstmt = null;
@@ -58,7 +58,7 @@ public class DaoExternalDb {
      * @throws SQLException Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating JDBC Driver.
      */
-    public ExternalDatabase getRecordById(int id) throws SQLException,
+    public ExternalDatabaseRecord getRecordById(int id) throws SQLException,
             ClassNotFoundException {
         Connection con = JdbcUtil.getCPathConnection();
         ResultSet rs = null;
@@ -80,8 +80,8 @@ public class DaoExternalDb {
      * @throws SQLException Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating JDBC Driver.
      */
-    public ExternalDatabase getRecordByName(String name) throws SQLException,
-            ClassNotFoundException {
+    public ExternalDatabaseRecord getRecordByName(String name)
+            throws SQLException, ClassNotFoundException {
         Connection con = JdbcUtil.getCPathConnection();
         ResultSet rs = null;
         try {
@@ -102,7 +102,7 @@ public class DaoExternalDb {
      * @throws SQLException Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating JDBC Driver.
      */
-    public ExternalDatabase getRecordByTerm(String term)
+    public ExternalDatabaseRecord getRecordByTerm(String term)
             throws SQLException, ClassNotFoundException {
         DaoExternalDbCv dao = new DaoExternalDbCv();
         return dao.getExternalDbByTerm(term);
@@ -124,7 +124,7 @@ public class DaoExternalDb {
             rs = pstmt.executeQuery();
             ArrayList records = new ArrayList();
             while (rs.next()) {
-                ExternalDatabase db = this.createBean(rs);
+                ExternalDatabaseRecord db = this.createBean(rs);
                 records.add(db);
             }
             return records;
@@ -166,7 +166,7 @@ public class DaoExternalDb {
      * @throws SQLException Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating JDBC Driver.
      */
-    public boolean updateRecord(ExternalDatabase db)
+    public boolean updateRecord(ExternalDatabaseRecord db)
             throws SQLException, ClassNotFoundException {
         Connection con = JdbcUtil.getCPathConnection();
         try {
@@ -203,7 +203,7 @@ public class DaoExternalDb {
     /**
      * Extracts Database Record into Java Bean.
      */
-    private ExternalDatabase extractRecord(ResultSet rs)
+    private ExternalDatabaseRecord extractRecord(ResultSet rs)
             throws SQLException, ClassNotFoundException {
         try {
             if (rs.next()) {
@@ -219,9 +219,9 @@ public class DaoExternalDb {
     /**
      * Creates External Database Java Bean.
      */
-    private ExternalDatabase createBean(ResultSet rs)
+    private ExternalDatabaseRecord createBean(ResultSet rs)
             throws SQLException, ClassNotFoundException {
-        ExternalDatabase record = new ExternalDatabase();
+        ExternalDatabaseRecord record = new ExternalDatabaseRecord();
         record.setId(rs.getInt("EXTERNAL_DB_ID"));
         record.setName(rs.getString("NAME"));
         record.setUrl(rs.getString("URL"));

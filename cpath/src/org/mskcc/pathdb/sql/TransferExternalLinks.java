@@ -4,8 +4,8 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.dataservices.util.PropertyManager;
-import org.mskcc.pathdb.model.ExternalDatabase;
-import org.mskcc.pathdb.model.ExternalLink;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.util.BatchTool;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -58,13 +58,13 @@ public class TransferExternalLinks extends BatchTool {
         for (int i = 0; i < refs.length; i++) {
             String term = refs[i].getDatabase();
             String linkedToId = refs[i].getId();
-            ExternalDatabase externalDb = dbTable.getRecordByTerm(term);
+            ExternalDatabaseRecord externalDb = dbTable.getRecordByTerm(term);
             if (externalDb == null) {
                 outputMsg("Error:  Could not locate database for Interactor:  "
                         + interactor.getName() + " -->"
                         + term + " [" + linkedToId + "]");
             } else {
-                ExternalLink link = new ExternalLink();
+                ExternalLinkRecord link = new ExternalLinkRecord();
                 String localId = (String) interactor.getAttribute
                         (InteractorVocab.LOCAL_ID);
                 link.setCpathId(Integer.parseInt(localId));

@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.model.ExternalDatabase;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.DaoExternalDb;
 import org.mskcc.pathdb.sql.DaoExternalDbCv;
 
@@ -34,7 +34,7 @@ public class TestDaoExternalDbCv extends TestCase {
         assertTrue(success);
 
         //  Get Matching Database
-        ExternalDatabase db = dao.getExternalDbByTerm(TERM1);
+        ExternalDatabaseRecord db = dao.getExternalDbByTerm(TERM1);
         assertEquals(DB_NAME, db.getName());
         db = dao.getExternalDbByTerm(TERM2);
         assertEquals(DB_NAME, db.getName());
@@ -58,7 +58,7 @@ public class TestDaoExternalDbCv extends TestCase {
 
     private int createSampleDb() throws SQLException, ClassNotFoundException {
         DaoExternalDb dao = new DaoExternalDb();
-        ExternalDatabase db = new ExternalDatabase();
+        ExternalDatabaseRecord db = new ExternalDatabaseRecord();
         db.setName(DB_NAME);
         db.setDescription("Test");
         dao.addRecord(db);

@@ -15,7 +15,7 @@ import java.util.Date;
  *
  * @author Ethan Cerami
  */
-public class ExternalDatabase {
+public class ExternalDatabaseRecord {
     private int id;
     private String name;
     private String description;

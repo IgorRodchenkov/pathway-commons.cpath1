@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.model.ExternalDatabase;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.DaoExternalDb;
 
 import java.sql.SQLException;
@@ -33,7 +33,7 @@ public class TestDaoExternalDb extends TestCase {
         addSampleRecord();
 
         //  Test getRecordByName() Method.
-        ExternalDatabase record = dao.getRecordByName(NAME);
+        ExternalDatabaseRecord record = dao.getRecordByName(NAME);
         validateRecord(record);
 
         //  Test getRecordById() Method.
@@ -64,7 +64,7 @@ public class TestDaoExternalDb extends TestCase {
         assertEquals(null, record);
     }
 
-    private void validateRecord(ExternalDatabase record) {
+    private void validateRecord(ExternalDatabaseRecord record) {
         assertEquals(NAME, record.getName());
         assertEquals(DESC, record.getDescription());
         ArrayList terms = record.getCvTerms();
@@ -77,7 +77,7 @@ public class TestDaoExternalDb extends TestCase {
 
     private void addSampleRecord() throws SQLException,
             ClassNotFoundException {
-        ExternalDatabase db = new ExternalDatabase();
+        ExternalDatabaseRecord db = new ExternalDatabaseRecord();
         db.setName(NAME);
         db.setDescription(DESC);
         ArrayList terms = new ArrayList();
