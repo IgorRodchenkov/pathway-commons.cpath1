@@ -161,11 +161,15 @@ public class CountAffymetrixIdsTask extends Task {
                     ProteinInteractorType.unmarshalProteinInteractorType
                     (reader);
             XrefType xref = protein.getXref();
-            DbReferenceType primaryRef = xref.getPrimaryRef();
-            incrementMapCounter (primaryRef, dbMap);
-            for (int i=0; i < xref.getSecondaryRefCount(); i++) {
-                DbReferenceType secondaryRef = xref.getSecondaryRef(i);
-                incrementMapCounter (secondaryRef, dbMap);
+            if (xref != null) {
+                DbReferenceType primaryRef = xref.getPrimaryRef();
+                if (primaryRef != null) {
+                    incrementMapCounter (primaryRef, dbMap);
+                    for (int i=0; i < xref.getSecondaryRefCount(); i++) {
+                        DbReferenceType secondaryRef = xref.getSecondaryRef(i);
+                        incrementMapCounter (secondaryRef, dbMap);
+                    }
+                }
             }
         } catch (ValidationException e) {
             System.err.println("Failed while processing XML:  " + xmlContent);
