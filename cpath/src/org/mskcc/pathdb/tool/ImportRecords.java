@@ -59,9 +59,7 @@ public class ImportRecords {
      */
     public void transferData(boolean validateExternalReferences, boolean
             removeAllXrefs) throws DaoException, ImportException {
-        System.out.println("Transferring Import Records");
         transferAllImportRecords(validateExternalReferences, removeAllXrefs);
-        System.out.println("Transfer Complete");
     }
 
     /**
@@ -71,9 +69,6 @@ public class ImportRecords {
             boolean removeAllXrefs) throws DaoException, ImportException {
         dbImport = new DaoImport();
         ArrayList records = dbImport.getAllRecords();
-        if (records.size() == 0) {
-            System.out.println("No records to transferData");
-        }
         for (int i = 0; i < records.size(); i++) {
             ImportRecord record = (ImportRecord) records.get(i);
             String status = record.getStatus();
@@ -102,7 +97,7 @@ public class ImportRecords {
         ImportPsiToCPath importer = new ImportPsiToCPath();
         if (removeAllXrefs) {
             pMonitor.setCurrentMessage("Warning!  Data Import will "
-                    + "automatically remove all PSI-MI xrefs.");
+                    + "automatically remove all PSI-MI interaction xrefs.");
         }
         ImportSummary summary = importer.addRecord(xml,
                 validateExternalReferences, removeAllXrefs, pMonitor);
