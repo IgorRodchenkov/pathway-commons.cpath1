@@ -32,14 +32,20 @@ package org.mskcc.pathdb.test.sql;
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
+import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.task.ParseIdMappingsTask;
 
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Tests the ImportPsiToCPath class.
@@ -96,4 +102,59 @@ public class TestImportPsiToCPath extends TestCase {
         records = internalLinker.getInternalLinksWithLookup(interactionId);
         assertEquals(3, records.size());
     }
+
+    /**
+     * Tests Data Import with ID Mapping Service
+     */
+    public void testImportWithIdMappingService() throws DaoException,
+            IOException, DataServiceException, ImportException {
+        //  Try to locate Q727A4 by its Affymetrix ID.
+        //  This should fail.
+        DaoExternalLink linker = new DaoExternalLink();
+        ExternalReference ref = new ExternalReference("Affymetrix",
+                "1552275_3p_s_at");
+        ArrayList records = linker.lookUpByExternalRef(ref);
+        assertEquals (0, records.size());
+
+        //  First, load a small set of ids into the id mapping subsystem.
+        File file = new File("testData/id_map.txt");
+        ParseIdMappingsTask task = new ParseIdMappingsTask(file, false);
+        task.parseAndStoreToDb();
+
+        //  Then, load a small PSI-MI File.
+        //  This file contains Q727A4, and equivalent Ids for Q727A4
+        //  exist in id_map.txt.
+        ProgressMonitor pMonitor = new ProgressMonitor();
+        ContentReader reader = new ContentReader();
+        String psiFile = new String("testData/psi_sample_id_map.xml");
+        String xml = reader.retrieveContent(psiFile);
+        ImportPsiToCPath importer = new ImportPsiToCPath();
+        ImportSummary summary = importer.addRecord(xml, true,
+                false, pMonitor);
+
+        //  Now, try to locate Q727A4 by its Affymetrix ID.
+        linker = new DaoExternalLink();
+        ref = new ExternalReference("Affymetrix",
+                "1552275_3p_s_at");
+        records = linker.lookUpByExternalRef(ref);
+
+        //  Verify that we have correctly located the record.
+        assertEquals (1, records.size());
+        CPathRecord record = (CPathRecord) records.get(0);
+
+        //  Verify that XML has been modified to include external
+        //  references derived from the ID mapping subsystem.
+        assertTrue (record.getXmlContent().indexOf
+                ("<primaryRef db=\"SwissProt\" id=\"Q727A4\"/>") > 0);
+        assertTrue (record.getXmlContent().indexOf
+                ("<secondaryRef db=\"Affymetrix\" " +
+                "id=\"1552275_3p_s_at\"/>") > 0);
+        assertTrue (record.getXmlContent().indexOf
+                ("<secondaryRef db=\"SwissProt\" id=\"AAH08943\"/>") > 0);
+        assertTrue (record.getXmlContent().indexOf
+                ("<secondaryRef db=\"RefSeq\" id=\"NP_060241\"/>") > 0);
+        assertTrue (record.getXmlContent().indexOf
+                ("<secondaryRef db=\"Unigene\" id=\"Hs.77646\"/>") > 0);
+    }
+
 }
