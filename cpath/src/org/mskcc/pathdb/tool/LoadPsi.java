@@ -4,9 +4,7 @@ import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * Command Line Tool for Loading PSI Data into cPath.
@@ -27,8 +25,7 @@ public class LoadPsi {
         String description = getDescription();
         System.out.println("Loading data file:  " + fileName);
         System.out.println("Description:  " + description);
-        ContentReader reader = new ContentReader();
-        String data = reader.retrieveContent(fileName);
+        String data = retrieveContentFromFile(new File(fileName));
         DaoImport dbImport = new DaoImport();
         dbImport.addRecord(description, data);
         System.out.println("XML Document Loaded.  Ready for Import.");
@@ -48,5 +45,24 @@ public class LoadPsi {
             line = input.readLine();
         }
         return line;
+    }
+
+
+    /**
+     * Retrieves Content from local File System.
+     * @param file File Object
+     * @return File contents.
+     * @throws java.io.IOException Error Retrieving file.
+     */
+    private static String retrieveContentFromFile(File file) throws IOException {
+        StringBuffer content = new StringBuffer();
+        FileReader reader = new FileReader(file);
+        BufferedReader buffered = new BufferedReader(reader);
+        long len = file.length();
+        char cbuf[] = new char[(int) len];
+        while (buffered.read(cbuf) != -1) {
+            content.append(cbuf);
+        }
+        return content.toString();
     }
 }
