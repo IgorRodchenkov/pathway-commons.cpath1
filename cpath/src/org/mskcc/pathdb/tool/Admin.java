@@ -33,11 +33,14 @@ import gnu.getopt.Getopt;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.JdbcUtil;
-import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
-import org.mskcc.pathdb.task.*;
+import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
+import org.mskcc.pathdb.task.ExportInteractionsToText;
+import org.mskcc.pathdb.task.IndexLuceneTask;
+import org.mskcc.pathdb.task.ValidateXmlTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
@@ -105,7 +108,7 @@ public class Admin {
                 validator.validate(true);
             } else if (command.equals(COMMAND_EXPORT)) {
                 ExportInteractionsToText export =
-                        new ExportInteractionsToText (true);
+                        new ExportInteractionsToText(true);
                 export.executeTask();
             } else {
                 throw new IllegalArgumentException("Command Not Recognized");
