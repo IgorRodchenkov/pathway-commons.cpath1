@@ -34,26 +34,9 @@
 		<report>maven-javadoc-plugin</report>
 	</reports>
 	-->
-    <dependencies>
-        <dependency>
-          <groupId>servlet</groupId>
-          <artifactId>servlet</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>jdom</groupId>
-          <artifactId>jdom</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>lucene</groupId>
-          <artifactId>lucene</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>dataservices</groupId>
-          <artifactId>dataservices</artifactId>
-        </dependency>
-    </dependencies>
-
-    <build>
+    	<dependencies>
+    	</dependencies>
+    	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<sourceModifications>
 			<excludes>src/org/mskcc/pathdb/**/*.java</excludes>
