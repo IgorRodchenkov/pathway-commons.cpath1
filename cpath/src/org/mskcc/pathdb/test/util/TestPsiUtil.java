@@ -60,10 +60,6 @@ public class TestPsiUtil extends TestCase {
         PsiUtil normalizer = new PsiUtil(new ProgressMonitor());
 
         EntrySet entrySet = normalizer.getNormalizedDocument(xml, false);
-        StringWriter writer = new StringWriter();
-        //entrySet.marshal(writer);
-        //System.out.println(writer.toString());
-
         Entry entry = entrySet.getEntry(0);
         validateAvailability(entry);
         validateExperiments(entry);
