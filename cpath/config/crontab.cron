@@ -1,0 +1,5 @@
+# You must set CPATH_HOME to point to the root CPATH Directory
+CPATH_HOME="/Users/cerami/dev/sander/cpath"
+
+#  Run PreComputed Queries, pipe output to log file
+45	16	*	*	*	$CPATH_HOME/bin/loadQueries.sh $CPATH_HOME/testData/precompute_junit.txt > $CPATH_HOME/log/cron_cpath.log
