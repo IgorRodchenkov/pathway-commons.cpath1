@@ -30,9 +30,6 @@
                 <P>Currently, you can import interaction
                 records formatted in the PSI-MI XML Format (see
                 <A HREF="jsp/sampleData/dipSample.xml">example</A>).
-                You can also import text files containing
-                external references (see
-                <A HREF="jsp/sampleData/affySample.txt">example</A>).
                 <P>
                 <INPUT TYPE="FILE" SIZE=10 NAME="file">
                 &nbsp;<INPUT TYPE="SUBMIT" VALUE="Go">
