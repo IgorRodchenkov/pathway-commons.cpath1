@@ -159,7 +159,7 @@ public class DaoExternalLink {
     /**
      * Validates all External References.
      *
-     * @param refs ArrayList of External Reference objects.
+     * @param refs Array of External Reference objects.
      * @return true is all ref.getDatabase() items match.
      * @throws DaoException Error Retrieving Data.
      * @throws ExternalDatabaseNotFoundException
