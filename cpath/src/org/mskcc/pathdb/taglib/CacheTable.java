@@ -59,17 +59,22 @@ public class CacheTable extends HtmlTable {
     }
 
     private void outputProtocolRequest(XmlCacheRecord record) {
-        Hashtable params1 = HttpUtils.parseQueryString(record.getUrl());
-        HashMap params2 = XssFilter.filterAllParameters(params1);
-        ProtocolRequest request = new ProtocolRequest(params2);
-        outputDataField("<A HREF='" + request.getUri() + "'>URL Link</A>");
-        append("<TD><UL>");
-        Iterator keys = params2.keySet().iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-            Object value = params2.get(key);
-            append("<LI>" + key + ":  " + value);
+        try {
+            Hashtable params1 = HttpUtils.parseQueryString(record.getUrl());
+            HashMap params2 = XssFilter.filterAllParameters(params1);
+            ProtocolRequest request = new ProtocolRequest(params2);
+            outputDataField("<A HREF='" + request.getUri() + "'>URL Link</A>");
+            append("<TD><UL>");
+            Iterator keys = params2.keySet().iterator();
+            while (keys.hasNext()) {
+                String key = (String) keys.next();
+                Object value = params2.get(key);
+                append("<LI>" + key + ":  " + value);
+            }
+            append("</UL></TD>");
+        } catch (Exception e) {
+            append ("<TD>" + record.getUrl() + "</TD>");
+            append ("<TD>N/A</TD>");
         }
-        append("</UL></TD>");
     }
 }
