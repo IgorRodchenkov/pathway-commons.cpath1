@@ -438,6 +438,21 @@
         </target>
 
         <!-- Target to run Castor Source Generator -->
+        <!-- Target to run Castor Source Generator -->
+        <target name="castor_psi" description="Generate Castor Files">
+                <echo message="Start Castor Source Generator"/>
+                <delete dir="${src.home}/org/mskcc/pathdb/xml"/>
+                <java classname="org.exolab.castor.builder.SourceGenerator"
+                        classpathref="compile.classpath" fork="true" dir="xml">
+                        <arg line="-i MIF.xsd -package org.mskcc.pathdb.xml.psi -verbose -dest ${src.home} -binding-file castor_psi.xml"/>
+                </java>
+                <replace file="${src.home}/org/mskcc/pathdb/xml/psi/AvailabilityList.java">
+                        <replaceToken>private java.util.Vector _availabilityList = new org.mskcc.pathdb.xml.psi.AvailabilityType("free");</replaceToken>
+                        <replaceValue>private java.util.Vector _availabilityList = new Vector();</replaceValue>
+                </replace>
+                <echo message="End Castor Source Generator"/>
+        </target>
+<!--
         <target name="castor" description="Generate Castor Files">
                 <echo message="Start Castor Source Generator"/>
                 <delete dir="${src.home}/org/mskcc/pathdb/xml"/>
@@ -451,4 +466,5 @@
 		</replace>
                 <echo message="End Castor Source Generator"/>
         </target>
+-->
 </project>
