@@ -23,7 +23,7 @@ truncate table INTERNAL_LINK;
 #
 # Insert Data into table 'cpath'
 #
-INSERT INTO `CPATH` VALUES (1, 'JUNIT_ENTITY', 'JUnit Entity Description', 'PHYSICAL_ENTITY', '', 101, '<?xml version="1.0" encoding="UTF-8"?><note>testing</note>', 20031020125251, 20031020125251);
+INSERT INTO `CPATH` VALUES (1, 'JUNIT_ENTITY', 'JUnit Entity Description', 'PHYSICAL_ENTITY', '', 9606, '<?xml version="1.0" encoding="UTF-8"?><note>testing</note>', 20031020125251, 20031020125251);
 
 #
 #  Insert data into table 'EXTERNAL_DB'
