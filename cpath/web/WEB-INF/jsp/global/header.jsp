@@ -53,7 +53,7 @@
             </td>
             <td>
                 <div align="right" id="login">
-                Version 0.1 (Beta)
+                Version 0.2 (Beta)
 
                 <jsp:include page="../global/printFriendlyLink.jsp" flush="true" />
                 </div>

@@ -4,7 +4,7 @@
     </div>
     <div class="body">
         <div>
-            <a href="#">Export Data to PSI-MI Format?</a>
+            <a href="dev.do?page=install">Install a copy of cPath locally?</a>
         </div>
     </div>
 </div>
