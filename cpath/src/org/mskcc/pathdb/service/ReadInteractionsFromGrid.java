@@ -201,6 +201,7 @@ public class ReadInteractionsFromGrid extends DataServiceBase
             }
             list.add(interaction);
         }
+        rs.close();
         return list;
     }
 }

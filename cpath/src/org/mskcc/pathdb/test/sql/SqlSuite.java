@@ -20,6 +20,7 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestDatabaseImport.class);
         suite.addTestSuite(TestGridInteractorTable.class);
         suite.addTestSuite(TestGridInteractionTable.class);
+        suite.addTestSuite(TestTransferImportToGrid.class);
         suite.setName("SQL Database Tests");
         return suite;
     }

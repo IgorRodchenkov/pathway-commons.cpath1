@@ -18,6 +18,16 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class DatabaseImport {
+    /**
+     * New Record Status.
+     */
+    public static final String STATUS_NEW = "NEW";
+
+    /**
+     * Transferred Record Status.
+     */
+    public static final String STATUS_TRANSFERRED = "TRANSFERRED";
+
     private static final String IMPORT_ID = "IMPORT_ID";
     private static final String STATUS = "STATUS";
     private static final String CREATE_TIME = "CREATE_TIME";
@@ -107,7 +117,7 @@ public class DatabaseImport {
                 + " VALUES (?,?,?,?)");
         pstmt.setBytes(1, zippedData);
         pstmt.setString(2, hash);
-        pstmt.setString(3, "NEW");
+        pstmt.setString(3, STATUS_NEW);
         java.util.Date date = new java.util.Date();
         Timestamp timeStamp = new Timestamp(date.getTime());
         pstmt.setTimestamp(4, timeStamp);
@@ -123,7 +133,7 @@ public class DatabaseImport {
      * @param importID Import ID of record to delete.
      * @return returns true if deletion was successful.
      * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL drier.
+     * @throws ClassNotFoundException Error locating correct SQL driver.
      */
     public boolean deleteImportRecord(int importID)
             throws SQLException, ClassNotFoundException {
@@ -137,6 +147,24 @@ public class DatabaseImport {
             successFlag = true;
         }
         return successFlag;
+    }
+
+    /**
+     * Updates Record Status.
+     * @param importID Import ID.
+     * @return Number of Rows Affected.
+     * @throws SQLException Error connecting to database.
+     * @throws ClassNotFoundException Error locating correct SQL driver.
+     */
+    public boolean markRecordAsTransferred (int importID) throws SQLException,
+            ClassNotFoundException {
+        Connection con = getConnection();
+        PreparedStatement pstmt = con.prepareStatement
+                ("UPDATE import set STATUS=? WHERE IMPORT_ID=?");
+        pstmt.setString(1, STATUS_TRANSFERRED);
+        pstmt.setInt(2, importID);
+        int rows = pstmt.executeUpdate();
+        return (rows>0) ? true : false;
     }
 
     /**

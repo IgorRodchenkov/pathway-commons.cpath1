@@ -117,17 +117,19 @@ public class InteractionTable extends HtmlTable {
         ExternalReference refs[] = interactor.getExternalRefs();
         if (refs != null) {
             append("<TD VALIGN=TOP>");
-            append("<UL");
+            append("<UL>");
             for (int i = 0; i < refs.length; i++) {
                 String db = refs[i].getDatabase();
                 String id = refs[i].getId();
-                append("<LI>" + db);
-                append(":  ");
-                String url = links.getExternalLink(db, id);
-                if (url != null) {
-                    append("<A HREF=\"" + url + "\">" + id + "</A>");
-                } else {
-                    append(id);
+                if (id.length()> 0){
+                    append("<LI>" + db);
+                    append(":  ");
+                    String url = links.getExternalLink(db, id);
+                    if (url != null) {
+                        append("<A HREF=\"" + url + "\">" + id + "</A>");
+                    } else {
+                        append(id);
+                    }
                 }
             }
             append("</TD>");

@@ -181,8 +181,14 @@ public class WriteInteractionsToGrid extends DataServiceBase
      * Extracts PubMedIds.
      */
     private StringBuffer getPmids(Interaction interaction) {
-        String pmids[] = (String[]) interaction.getAttribute
-                (InteractionVocab.PUB_MED_ID);
+        String pmids[] = null;
+        Object object = interaction.getAttribute(InteractionVocab.PUB_MED_ID);
+        if (object instanceof String) {
+            pmids = new String[1];
+            pmids[0] = (String) object;
+        } else if (object instanceof String[]) {
+            pmids = (String[]) object;
+        }
         StringBuffer pmidStr = new StringBuffer();
         if (pmids != null && pmids.length > 0) {
             pmidStr.append(";");

@@ -157,6 +157,7 @@ public class ReadInteractorsFromGrid extends DataServiceBase
             rs = pstmt.executeQuery();
             ResultSetBuilder builder = new ResultSetBuilder(rs);
             Document document = builder.build();
+            rs.close();
             return document;
         }
     }

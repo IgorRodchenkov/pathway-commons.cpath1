@@ -42,7 +42,7 @@ public class ImportTable extends HtmlTable {
             outputDataField(record.getUpdateTime());
             outputDataField(new String(size + " kb"));
             append("<TD>");
-            this.outputLink("View Contents", "Admin.jsp?import_id="
+            this.outputLink("View Contents", "adminDisplay.do?import_id="
                     + record.getImportId());
             append("</TD>");
             append("</TR>");
