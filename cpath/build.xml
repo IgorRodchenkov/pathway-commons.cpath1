@@ -442,7 +442,7 @@
         </target>
 
 	<!-- Target to Load Bootstrap data into MySQL -->
-	<target name="boot" description="Loads Bootstrap data into MySQL">
+	<target name="boot" depends="compile" description="Loads Bootstrap data into MySQL">
 		<exec dir="." executable="scripts/boot.pl"/>
 	</target>
 </project>
