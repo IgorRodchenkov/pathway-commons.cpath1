@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.tool;
 
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.task.ImportReferencesTask;
 
 import java.io.File;
@@ -49,8 +50,10 @@ public class LoadExternalReferences {
      * @param file File.
      * @throws IOException  File Input Error.
      * @throws DaoException Data Access Error.
+     * @throws MissingDataException XML is missing data. 
      */
-    public void load(File file) throws DaoException, IOException {
+    public void load(File file) throws DaoException, IOException,
+            MissingDataException {
         FileReader reader = new FileReader(file);
         ImportReferencesTask task =
                 new ImportReferencesTask(true, reader);

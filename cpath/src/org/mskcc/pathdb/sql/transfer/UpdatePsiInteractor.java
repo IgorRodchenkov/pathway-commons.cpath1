@@ -58,12 +58,14 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      * Constructor.
      *
      * @param newProtein new protein Record, scheduled for import.
-     * @throws DaoException        Error Adding new data to database.
-     * @throws ValidationException Invalid XML
-     * @throws MarshalException    Error Marshaling to XML.
+     * @throws DaoException         Error Adding new data to database.
+     * @throws ValidationException  Invalid XML
+     * @throws MarshalException     Error Marshaling to XML.
+     * @throws MissingDataException XML is missing data.
      */
     public UpdatePsiInteractor(ProteinInteractorType newProtein)
-            throws DaoException, ValidationException, MarshalException {
+            throws DaoException, ValidationException, MarshalException,
+            MissingDataException {
         //  Normalize XRefs
         PsiUtil psiUtil = new PsiUtil();
         psiUtil.normalizeXrefs(newProtein.getXref());
@@ -88,12 +90,13 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      *
      * @param existingProtein Existing Protein, in database.
      * @param newProtein      new protein Record, scheduled for import.
-     * @throws ValidationException Invalid XML
-     * @throws MarshalException    Error Marshaling to XML.
+     * @throws ValidationException  Invalid XML
+     * @throws MarshalException     Error Marshaling to XML.
+     * @throws MissingDataException XML is missing data.*
      */
     public UpdatePsiInteractor(CPathRecord existingProtein,
             ProteinInteractorType newProtein) throws ValidationException,
-            MarshalException {
+            MarshalException, MissingDataException {
         PsiUtil psiUtil = new PsiUtil();
         ExternalReference newRefs[] = psiUtil.extractRefs(newProtein);
         extractExistingRefs(existingProtein);
@@ -106,11 +109,12 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      * @param newRef            New Reference to Add.
      * @param existingRef       Existing Reference.
      * @param refsAreNormalized References have already been normalized.
-     * @throws DaoException Error Adding new data to database.
+     * @throws DaoException         Error Adding new data to database.
+     * @throws MissingDataException XML is missing data.
      */
     public UpdatePsiInteractor(ExternalReference existingRef,
             ExternalReference newRef, boolean refsAreNormalized)
-            throws DaoException {
+            throws DaoException, MissingDataException {
         ExternalReference newRefs[] = new ExternalReference[2];
         if (!refsAreNormalized) {
             normalizeExternalRef(newRef);
@@ -150,7 +154,7 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      * @throws MarshalException    Error Marshaling to XML.
      */
     private void extractExistingRefs(CPathRecord record)
-            throws MarshalException, ValidationException {
+            throws MarshalException, ValidationException, MissingDataException {
         PsiUtil psiUtil = new PsiUtil();
         String xml = record.getXmlContent();
         StringReader reader = new StringReader(xml);

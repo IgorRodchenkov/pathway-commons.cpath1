@@ -34,6 +34,7 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.util.PsiUtil;
+import org.mskcc.pathdb.sql.transfer.MissingDataException;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -162,7 +163,7 @@ public class TestPsiUtil extends TestCase {
      *
      * @param entry
      */
-    private void validateInteractors(Entry entry) {
+    private void validateInteractors(Entry entry) throws MissingDataException {
         PsiUtil util = new PsiUtil();
         int counter = 0;
         InteractorList interactorList = entry.getInteractorList();

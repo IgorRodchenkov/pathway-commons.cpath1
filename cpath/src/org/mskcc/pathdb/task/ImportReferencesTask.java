@@ -33,6 +33,7 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
+import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.util.ConsoleUtil;
 
 import java.io.BufferedReader;
@@ -87,8 +88,10 @@ public class ImportReferencesTask extends Task {
      *
      * @throws IOException  Error Reading File.
      * @throws DaoException Error Accessing Database.
+     * @throws MissingDataException XML is missing data. 
      */
-    public void importReferences() throws IOException, DaoException {
+    public void importReferences() throws IOException, DaoException,
+            MissingDataException {
         readFile(reader);
         pMonitor.setMaxValue(lines.size());
         outputMsg("Importing External References");
@@ -133,7 +136,7 @@ public class ImportReferencesTask extends Task {
     /**
      * Read In File Data.
      */
-    private void processData() throws DaoException {
+    private void processData() throws DaoException, MissingDataException {
         boolean dbNamesSet = false;
         for (int i = 0; i < lines.size(); i++) {
             String line = (String) lines.get(i);
@@ -167,7 +170,7 @@ public class ImportReferencesTask extends Task {
      */
     private void updateRefs(ExternalReference existingRef,
             ExternalReference newRef)
-            throws DaoException {
+            throws DaoException, MissingDataException {
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(pMonitor);
         int index1 = existingRef.getId().indexOf(EMPTY_FLAG);

@@ -35,6 +35,7 @@ package org.mskcc.pathdb.sql.transfer;
  * @author Ethan Cerami
  */
 public class ImportException extends Exception {
+    private String msg;
 
     /**
      * Constructor.
@@ -43,5 +44,14 @@ public class ImportException extends Exception {
      */
     public ImportException(Throwable e) {
         super(e);
+        this.msg = e.getMessage();
+    }
+
+    /**
+     * Gets Error Message.
+     * @return
+     */
+    public String getMessage() {
+        return msg;
     }
 }

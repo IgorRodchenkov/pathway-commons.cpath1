@@ -159,7 +159,7 @@ public class ImportPsiToCPath {
             EntrySet entrySet = null;
             entrySet = psiUtil.getNormalizedDocument(xml);
             pMonitor.setCurrentMessage
-                ("Normalization Complete:  Document is valid");
+                ("Normalization Complete:  Document is valid.");
 
             //  Validate Interactors / External References.
             if (validateExternalRefs) {
@@ -178,6 +178,8 @@ public class ImportPsiToCPath {
             throw new ImportException(e);
         } catch (MarshalException e) {
             throw new ImportException(e);
+        } catch (MissingDataException e) {
+            throw new ImportException(e);
         } catch (DaoException e) {
             throw new ImportException(e);
         } catch (ExternalDatabaseNotFoundException e) {
@@ -189,7 +191,8 @@ public class ImportPsiToCPath {
      * Validates all Interactors and External References.
      */
     private void validateExternalRefs(EntrySet entrySet)
-            throws DaoException, ExternalDatabaseNotFoundException {
+            throws DaoException, ExternalDatabaseNotFoundException,
+            MissingDataException {
         pMonitor.setCurrentMessage("Step 2 of 4:  Validating All External "
                 + "References");
         DaoExternalLink linker = new DaoExternalLink();
@@ -208,8 +211,20 @@ public class ImportPsiToCPath {
                 ConsoleUtil.showProgress(pMonitor);
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
-                ExternalReference[] refs = extractExternalReferences(protein);
-                linker.validateExternalReferences(refs);
+                try {
+                    ExternalReference[] refs =
+                            extractExternalReferences(protein);
+                    linker.validateExternalReferences(refs);
+                } catch (MissingDataException e) {
+                    //  Provide context sensitive error details.
+                    throw new MissingDataException ("PSI-MI Protein ["
+                            + protein.getNames().getShortLabel() + ":"
+                            + protein.getNames().getFullName() + ":"
+                            + protein.getId() + "] is missing data:  " +
+                            e.getMessage() + " Protein is located at " +
+                            "index position " + (j+1) + " of " +
+                            interactors.getProteinInteractorCount() +".");
+                }
             }
 
             //  Validate All Interactions
@@ -218,9 +233,18 @@ public class ImportPsiToCPath {
                 ConsoleUtil.showProgress(pMonitor);
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
-                ExternalReference refs[] =
-                        psiUtil.extractXrefs(interaction.getXref());
-                linker.validateExternalReferences(refs);
+                try {
+                    ExternalReference refs[] =
+                            psiUtil.extractXrefs(interaction.getXref());
+                    linker.validateExternalReferences(refs);
+                } catch (MissingDataException e) {
+                    //  Provide context sensitive error details.
+                    throw new MissingDataException ("PSI-MI Interaction "
+                        + "is missing data:  " + e.getMessage()
+                        + " Interaction is located at index position "
+                        + (j+1) + " of " + interactions.getInteractionCount()
+                        + ".");
+                }
             }
         }
     }
@@ -230,7 +254,7 @@ public class ImportPsiToCPath {
      */
     private void processInteractors(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
-            IOException {
+            IOException, MissingDataException {
         DaoExternalLink externalLinker = new DaoExternalLink();
         pMonitor.setCurrentMessage("Step 3 of 4:  Process all Interactors");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
@@ -279,7 +303,7 @@ public class ImportPsiToCPath {
      * Extracts External References from Protein Interactor.
      */
     private ExternalReference[] extractExternalReferences
-            (ProteinInteractorType protein) {
+            (ProteinInteractorType protein) throws MissingDataException {
         ExternalReference refs[] = psiUtil.extractRefs(protein);
         return refs;
     }
@@ -289,7 +313,7 @@ public class ImportPsiToCPath {
      */
     private void processInteractions(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
-            IOException {
+            IOException, MissingDataException {
         pMonitor.setCurrentMessage("Step 4 of 4:  Process all Interactions");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
@@ -371,7 +395,7 @@ public class ImportPsiToCPath {
      */
     private void saveInteraction(InteractionElementType interaction)
             throws MarshalException, ValidationException, DaoException,
-            IOException {
+            IOException, MissingDataException {
         DaoCPath cpath = new DaoCPath();
         summary.incrementNumInteractionsSaved();
 
