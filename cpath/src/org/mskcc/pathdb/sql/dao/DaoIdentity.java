@@ -31,7 +31,7 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.IdMapRecord;
+import org.mskcc.pathdb.model.IdentityRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.apache.commons.dbcp.DelegatingPreparedStatement;
 
@@ -43,21 +43,21 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- * Data Access Object to the Id Map Table.
+ * Data Access Object to the identity_background table.
  *
  * @author Ethan Cerami
  */
-public class DaoIdMap {
+public class DaoIdentity {
 
     /**
-     * Adds New ID Map Record.
+     * Adds New Identity Record.
      * <P>
      * This method ensures that duplicate records are not stored to the
      * database.  Check the return value to determine if record was saved
      * successfully.  A true value indicates success.  A false value indicates
      * that the record already exists and was not saved, or an error occurred.
      *
-     * @param record         IdMapRecord Object.
+     * @param record         Identity Object.
      * @param validateRecord Validates DB1 and DB2 to ensure that these
      *                       actually exist in the database.  When set to true,
      *                       full validation check is run.  When set to false,
@@ -68,7 +68,7 @@ public class DaoIdMap {
      * @return true if saved successfully.
      * @throws DaoException Error Saving Data.
      */
-    public boolean addRecord(IdMapRecord record, boolean validateRecord)
+    public boolean addRecord(IdentityRecord record, boolean validateRecord)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -103,13 +103,13 @@ public class DaoIdMap {
         }
 
         //  Validate that the record does not already exist in the database
-        IdMapRecord dbRecord = getRecord(record);
+        IdentityRecord dbRecord = getRecord(record);
         if (dbRecord == null) {
             try {
                 //  Note that we store a hash code to enable very fast lookups.
                 con = JdbcUtil.getCPathConnection();
                 pstmt = con.prepareStatement
-                        ("INSERT INTO id_map (`DB_1`, `ID_1`, "
+                        ("INSERT INTO identity_background (`DB_1`, `ID_1`, "
                         + "`DB_2`, `ID_2`, `HASH_CODE`) VALUES (?,?,?,?,?)");
                 pstmt.setInt(1, record.getDb1());
                 pstmt.setString(2, record.getId1().trim());
@@ -131,13 +131,13 @@ public class DaoIdMap {
     }
 
     /**
-     * Gets ID Map Record specified by Primary ID.
+     * Gets Identity Record specified by Primary ID.
      *
-     * @param idMapId ID Map Primary ID.
-     * @return IdMap Record
+     * @param identityId Identity Primary ID.
+     * @return Identity Record
      * @throws DaoException Error Retrieving Data.
      */
-    public IdMapRecord getRecordById(int idMapId)
+    public IdentityRecord getRecordById(int identityId)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -145,8 +145,8 @@ public class DaoIdMap {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM id_map WHERE ID_MAP_ID = ?");
-            pstmt.setInt(1, idMapId);
+                    ("SELECT * FROM identity_background WHERE ID_MAP_ID = ?");
+            pstmt.setInt(1, identityId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 return createBean(rs);
@@ -165,19 +165,19 @@ public class DaoIdMap {
     /**
      * Deletes Record specified by Primary ID.
      *
-     * @param idMapId ID Map Primary ID.
+     * @param identityId Identity Record Primary ID.
      * @return true if deletion is successful.
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean deleteRecordById(int idMapId) throws DaoException {
+    public boolean deleteRecordById(int identityId) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("DELETE FROM id_map WHERE ID_MAP_ID = ?");
-            pstmt.setInt(1, idMapId);
+                    ("DELETE FROM identity_background WHERE ID_MAP_ID = ?");
+            pstmt.setInt(1, identityId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
@@ -197,7 +197,7 @@ public class DaoIdMap {
      * <P>Affymetrix:155_s_at -- SwissProt: Q7272
      * <BR>SwissProt: Q7272 -- Affymetrix:155_s_at
      * <P>
-     * Given an IdMapRecord, this method will therefore check for both
+     * Given an Identity record, this method will therefore check for both
      * equivalent possibilities.  Either match will return a hit, and the
      * Data Access Object ensures that both options will never exist
      * simultaneously in the database.
@@ -206,12 +206,13 @@ public class DaoIdMap {
      * @return IdMapRecord, if the record exists;  otherwise, null.
      * @throws DaoException Error Retrieving Data.
      */
-    public IdMapRecord getRecord(IdMapRecord idRecord) throws DaoException {
+    public IdentityRecord getRecord(IdentityRecord idRecord)
+            throws DaoException {
         return getRecord(idRecord.hashCode());
     }
 
     /**
-     * Deletes all IdMap Records.  Use with extreme caution!
+     * Deletes all Identity Records.  Use with extreme caution!
      *
      * @return true indicates success.
      * @throws DaoException Error Deleting Records.
@@ -223,7 +224,7 @@ public class DaoIdMap {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("TRUNCATE table id_map;");
+                    ("TRUNCATE table identity_background;");
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
@@ -340,7 +341,7 @@ public class DaoIdMap {
     private void processResultSet(ResultSet rs, CPathXRef xref,
             ArrayList neighborList) throws SQLException {
         while (rs.next()) {
-            IdMapRecord idRecord = createBean(rs);
+            IdentityRecord idRecord = createBean(rs);
             CPathXRef neighbor = null;
             if (idRecord.getDb1() == xref.getDbId()
                     && idRecord.getId1().equals(xref.getLinkedToId())) {
@@ -359,10 +360,10 @@ public class DaoIdMap {
      * enables very quick lookups.
      *
      * @param hashCode Integer HashCode.
-     * @return IdMapRecord, if the record exists;  otherwise, null.
+     * @return IdentityRecord, if the record exists;  otherwise, null.
      * @throws DaoException Error Retrieving Data.
      */
-    private IdMapRecord getRecord(int hashCode) throws DaoException {
+    private IdentityRecord getRecord(int hashCode) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -390,8 +391,8 @@ public class DaoIdMap {
     /**
      * Creates an IdMapRecord Bean.
      */
-    private IdMapRecord createBean(ResultSet rs) throws SQLException {
-        IdMapRecord record = new IdMapRecord();
+    private IdentityRecord createBean(ResultSet rs) throws SQLException {
+        IdentityRecord record = new IdentityRecord();
         record.setPrimaryId(rs.getInt("ID_MAP_ID"));
         record.setDb1(rs.getInt("DB_1"));
         record.setId1(rs.getString("ID_1"));

@@ -34,7 +34,7 @@ import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
-import org.mskcc.pathdb.sql.dao.DaoIdMap;
+import org.mskcc.pathdb.sql.dao.DaoIdentity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -135,7 +135,7 @@ public class IdMappingService {
 
         //  Look up Equivalence List
         CPathXRef cpathXRef = new CPathXRef(dbRecord.getId(), xref.getId());
-        DaoIdMap daoId = new DaoIdMap();
+        DaoIdentity daoId = new DaoIdentity();
         ArrayList list = daoId.getEquivalenceList(cpathXRef);
 
         //  Transform all Matches into External Reference Objects.
