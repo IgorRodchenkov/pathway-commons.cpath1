@@ -98,7 +98,6 @@ public class IndexLuceneTask extends Task {
         pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.INTERACTION));
 
         LuceneWriter indexWriter = new LuceneWriter(true);
-
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -112,6 +111,9 @@ public class IndexLuceneTask extends Task {
             while (rs.next()) {
                 indexRecord(cpath, rs, indexWriter);
             }
+            outputMsg("\nOptimizing Indexes");
+            indexWriter.optimize();
+            indexWriter.closeWriter();
             outputMsg("\nIndexing Complete");
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);

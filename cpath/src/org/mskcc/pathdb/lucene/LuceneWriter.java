@@ -16,6 +16,7 @@ import java.io.IOException;
 public class LuceneWriter {
     private String dir = LuceneConfig.getLuceneDirectory();
     private Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
+    private IndexWriter writer = null;
 
     /**
      * Constructor.
@@ -23,10 +24,20 @@ public class LuceneWriter {
      * @param resetFlag If Set to True, Existing Index is deleted!
      */
     public LuceneWriter(boolean resetFlag) throws IOException {
-        if (resetFlag) {
-            IndexWriter writer = new IndexWriter(dir, analyzer, resetFlag);
-            writer.close();
-        }
+        writer = new IndexWriter(dir, analyzer, resetFlag);
+
+        //  Set CompoundFile to True
+        //  From Lucene Javadoc:  When on, multiple files for each segment
+        //  are merged into a single file once the segment creation is
+        //  finished.  Setting to true is one of the recommended solutions
+        //  for resolving the "too many open files" error which occurs
+        //  on Linux.
+        writer.setUseCompoundFile(true);
+
+        //  Increase the Merge Factor.
+        //  Results in faster indexing.  For details, refer to:
+        //  http://www.onjava.com/pub/a/onjava/2003/03/05/lucene.html
+        writer.mergeFactor = 1000;
     }
 
     /**
@@ -35,21 +46,8 @@ public class LuceneWriter {
      * @param item ItemToIndex.
      * @throws ImportException Error Adding New Record to Lucene.
      */
-    public void addRecord(ItemToIndex item)
-            throws ImportException {
-        IndexWriter writer = null;
+    public void addRecord(ItemToIndex item) throws ImportException {
         try {
-            //  Create Index Writer
-            writer = new IndexWriter(dir, analyzer, false);
-
-            //  Set CompoundFile to True
-            //  From Lucene Javadoc:  When on, multiple files for each segment
-            //  are merged into a single file once the segment creation is
-            //  finished.  Setting to true is one of the recommended solutions
-            //  for resolving the "too many open files" error which occurs
-            //  on Linux.
-            writer.setUseCompoundFile(true);
-
             //  Index all Fields in ItemToIndex
             Document document = new Document();
             int numFields = item.getNumFields();
@@ -59,18 +57,25 @@ public class LuceneWriter {
             }
             //  Add New Document to Lucene
             writer.addDocument(document);
-            writer.close();
         } catch (IOException e) {
             throw new ImportException(e);
         }
     }
 
-//    /**
-//     * Optimizes Lucene Index Files.
-//     */
-//    public void optimize() throws IOException {
-//        IndexWriter writer = new IndexWriter(dir, analyzer, false);
-//        System.out.println("Optimizing Lucene Indexes...");
-//        writer.optimize();
-//    }
+    /**
+     * Optimizes Lucene Index Files.
+     * For details:  http://www.onjava.com/pub/a/onjava/2003/03/05/lucene.html.
+     * @throws IOException File Error.
+     */
+    public void optimize() throws IOException {
+        writer.optimize();
+    }
+
+    /**
+     * Closes the Indexer Writer.
+     * @throws IOException File Error.
+     */
+    public void closeWriter() throws IOException {
+        writer.close();
+    }
 }
