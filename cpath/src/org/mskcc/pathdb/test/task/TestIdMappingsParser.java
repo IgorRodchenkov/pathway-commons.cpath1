@@ -59,10 +59,10 @@ public class TestIdMappingsParser extends TestCase {
 
         //  Validate the first four id mappings.
         validateIdMapRecord(0, list, "Affymetrix", "1552275_3p_s_at",
-                "UniGene", "Hs.77646");
-        validateIdMapRecord(1, list, "UniGene", "Hs.77646",
+                "Unigene", "Hs.77646");
+        validateIdMapRecord(1, list, "Unigene", "Hs.77646",
                 "Swiss-Prot", "AAH08943");
-        validateIdMapRecord(2, list, "UniGene", "Hs.77646",
+        validateIdMapRecord(2, list, "Unigene", "Hs.77646",
                 "Swiss-Prot", "Q727A4");
         validateIdMapRecord(3, list, "Swiss-Prot", "AAH08943",
                 "RefSeq", "NP_060241");
