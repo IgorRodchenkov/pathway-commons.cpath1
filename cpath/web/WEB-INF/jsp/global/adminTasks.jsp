@@ -11,6 +11,9 @@
             <A HREF="adminRunFullTextIndexer.do">Run Full Text Indexer</A>
         </div>
         <div>
+            <A HREF="adminCache.do">View XML Cache</A>
+        </div>
+        <div>
             <A HREF="adminDiagnostics.do">Run cPath Diagnostics</A>
         </div>
     </div>
