@@ -131,7 +131,6 @@ public class ProtocolRequest implements PagedResult {
     private String massageQuery(String temp) {
         if (temp != null && temp.length() > 0) {
             temp = temp.replace(SINGLE_QUOTE, DOUBLE_QUOTE);
-            temp = temp.toUpperCase();
             return temp;
         } else {
             return null;
