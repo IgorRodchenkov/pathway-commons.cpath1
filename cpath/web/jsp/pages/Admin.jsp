@@ -1,4 +1,4 @@
-<%@ page import="org.mskcc.pathdb.sql.DaoImport,
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoImport,
                  org.mskcc.pathdb.model.ImportRecord"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "Error.jsp" %>
