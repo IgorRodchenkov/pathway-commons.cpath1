@@ -81,7 +81,7 @@ public class ImportRecordTask extends Task {
         ImportRecord record = dbImport.getRecordById(importId);
         String xml = record.getData();
         ImportPsiToCPath importer = new ImportPsiToCPath();
-        summary = importer.addRecord(xml, true, pMonitor);
+        summary = importer.addRecord(xml, true, false, pMonitor);
         pMonitor.setCurrentMessage("Importing Complete<BR>-->  Total Number "
                 + "of Interactions Processed:  "
                 + summary.getNumInteractionsSaved());
