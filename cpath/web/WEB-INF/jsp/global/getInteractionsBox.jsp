@@ -106,7 +106,7 @@
                 <%= getByInteractor %>>Interactor</OPTION>
             <OPTION
                 VALUE="<%= ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE %>"
-                <%= getByExperimentType %>>Experiment Type</OPTION>
+                <%= getByExperimentType %>>Experimental Evidence</OPTION>
             <OPTION
                 VALUE="<%= ProtocolConstants.COMMAND_GET_BY_PMID %>"
                 <%= getByPmid %>>Pub Med ID</OPTION>
@@ -116,15 +116,19 @@
         </SELECT>
         <% } %>
         <P>
-
+        Example Searches:
+        <BR>- dna repair
+        <BR>- dna AND repair
+        <BR>- "dna repair"
+        <P>
         <span style="text-align:right">
             <% if (searchOptionsFlag != null
                     && searchOptionsFlag.booleanValue() == true) { %>
-                <A HREF="toggleSearchOptions.do">[Less Options...]</A>
+                <A HREF="toggleSearchOptions.do">[Hide Options...]</A>
             <% } else { %>
             <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
                 value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
-            <A HREF="toggleSearchOptions.do">[More Options...]</A>
+            <A HREF="toggleSearchOptions.do">[Show Options...]</A>
             <% } %>
         </span>
 

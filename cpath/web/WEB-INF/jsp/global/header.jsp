@@ -50,7 +50,7 @@
     <table border="0" cellspacing="0" cellpadding="8" width="100%">
         <tr>
             <td>
-                <h1>cPath</h1>
+                <h1>cPath:  Cancer Pathway Database</h1>
                 <small>Memorial Sloan-Kettering
                 Cancer Center</small>
             </td>
