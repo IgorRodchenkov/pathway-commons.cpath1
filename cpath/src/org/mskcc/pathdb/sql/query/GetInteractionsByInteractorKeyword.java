@@ -22,6 +22,7 @@ public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
     /**
      * Constructor.
      * @param searchTerms Search term(s) or search phrase.
+     * @param maxHits Maximum Number of Hits.
      */
     public GetInteractionsByInteractorKeyword(String searchTerms, int maxHits) {
         this.searchTerms = searchTerms;
@@ -34,7 +35,7 @@ public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
      */
     protected void executeSub() throws Exception {
         xdebug.logMsg(this, "Getting Interactions for all Interactors with "
-            +"search term(s):  " + searchTerms);
+            + "search term(s):  " + searchTerms);
 
         DaoCPath cpath = new DaoCPath();
         LuceneIndexer indexer = new LuceneIndexer();

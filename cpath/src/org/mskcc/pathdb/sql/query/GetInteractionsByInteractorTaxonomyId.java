@@ -19,6 +19,7 @@ public class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
     /**
      * Constructor.
      * @param taxonomyId NCBI Taxonomy ID.
+     * @param maxHits Maximum Number of Hits.
      */
     public GetInteractionsByInteractorTaxonomyId(int taxonomyId, int maxHits) {
         this.taxonomyId = taxonomyId;
@@ -31,7 +32,7 @@ public class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
      */
     protected void executeSub() throws Exception {
         xdebug.logMsg(this, "Getting Interactions for all interactors with "
-            +" NCBI Taxonomy ID:  " + taxonomyId);
+            + " NCBI Taxonomy ID:  " + taxonomyId);
         DaoCPath cpath = new DaoCPath();
         ArrayList records = cpath.getRecordByTaxonomyID
                 (CPathRecordType.PHYSICAL_ENTITY, taxonomyId);

@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class TestImportPsiToCPath extends TestCase {
-    XDebug xdebug = new XDebug();
+    private XDebug xdebug = new XDebug();
 
     /**
      * Tests Import.

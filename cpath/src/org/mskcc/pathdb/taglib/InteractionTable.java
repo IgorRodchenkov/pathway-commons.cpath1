@@ -149,7 +149,7 @@ public class InteractionTable extends HtmlTable {
             StringBuffer interactorHtml = new StringBuffer();
             interactorHtml.append(name + "<BR><UL>");
             if (desc != null) {
-                interactorHtml.append("<LI>"+desc);
+                interactorHtml.append("<LI>" + desc);
             }
             if (org != null) {
                 interactorHtml.append("<LI>Organism:  " + org);

@@ -138,8 +138,8 @@ public abstract class InteractionQuery {
                 }
             }
         }
-        xdebug.logMsg(this, "Total number of Interactors found:  " +
-                interactorMap.size());
+        xdebug.logMsg(this, "Total number of Interactors found:  "
+                + interactorMap.size());
         return interactorMap;
     }
 

@@ -358,6 +358,7 @@ public class DaoCPath {
      * Extracts cPath Record from Result Set.
      * @param rs ResultSet Object.
      * @return cPath Record Object.
+     * @throws SQLException Error Connecting to database.
      */
     public CPathRecord extractRecord(ResultSet rs) throws SQLException {
         CPathRecord record = new CPathRecord();

@@ -19,6 +19,7 @@ public class GetInteractionsByInteractionDbSource extends PsiInteractionQuery {
     /**
      * Constructor.
      * @param db Database Source.
+     * @param maxHits Max Number of Hits.
      */
     public GetInteractionsByInteractionDbSource(String db, int maxHits) {
         this.db = db;
