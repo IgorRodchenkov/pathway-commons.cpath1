@@ -52,9 +52,20 @@ public class TestDaoIdMap extends TestCase {
         //  This should trigger an exception.
         IdMapRecord record = new IdMapRecord(100, "ABCD", 200, "XYZ");
         try {
-            dao.addRecord(record);
+            dao.addRecord(record, true);
             fail("Illegal Argument Exception should have been thrown.  "
                     + " DB1 and DB2 are not stored in the database.");
+        } catch (IllegalArgumentException e) {
+            String msg = e.getMessage();
+        }
+
+        //  Now, try adding a sample record with an empty Id.
+        //  This should trigger an exception.
+        record = new IdMapRecord(1, "ABCD", 2, "");
+        try {
+            dao.addRecord(record, true);
+            fail("Illegal Argument Exception should have been thrown.  "
+                    + " ID2 is null");
         } catch (IllegalArgumentException e) {
             String msg = e.getMessage();
         }
@@ -62,7 +73,7 @@ public class TestDaoIdMap extends TestCase {
         //  Now, try adding a sample record, based on external databases
         //  defined in reset.sql
         record = new IdMapRecord(1, "ABCD", 2, "XYZ");
-        boolean success = dao.addRecord(record);
+        boolean success = dao.addRecord(record, true);
         assertTrue(success);
 
         //  Verify that the record 1:ABCD <--> 2:XYZ now exists within
