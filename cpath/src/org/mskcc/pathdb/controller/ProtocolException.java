@@ -9,6 +9,7 @@ import org.jdom.output.XMLOutputter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Stack;
 
 /**
  * Encapsulates a Violation of the Data Service Protocol.
@@ -95,7 +96,6 @@ public class ProtocolException extends Exception {
     public ProtocolException(ProtocolStatusCode statusCode, Exception e) {
         super(e);
         this.statusCode = statusCode;
-        this.xmlErrorMessage = "Internal Error";
     }
 
     /**
@@ -170,19 +170,38 @@ public class ProtocolException extends Exception {
         errorElement.addContent(errorCodeElement);
         errorElement.addContent(errorMsgElement);
 
+        Throwable rootCause = getRootCause(this);
         if (xmlErrorMessage != null) {
             Element errorDetailsElement = new Element(ERROR_DETAILS_ELEMENT);
             errorDetailsElement.setText(xmlErrorMessage);
             errorElement.addContent(errorDetailsElement);
-        } else if (this.getCause() != null) {
+        } else if (rootCause != null) {
             Element errorDetailsElement = new Element(ERROR_DETAILS_ELEMENT);
             StringWriter writer = new StringWriter();
             PrintWriter pwriter = new PrintWriter(writer);
-            this.getCause().printStackTrace(pwriter);
+            rootCause.printStackTrace(pwriter);
             CDATA cdata = new CDATA(writer.toString());
             errorDetailsElement.addContent(cdata);
             errorElement.addContent(errorDetailsElement);
         }
         return document;
+    }
+
+    /**
+     * Gets the Root Cause of this Exception.
+     */
+    private Throwable getRootCause(Throwable throwable) {
+        Stack stack = new Stack();
+        stack.push(throwable);
+        try {
+            Throwable temp = throwable.getCause();
+            while (temp != null) {
+                stack.push(temp);
+                temp = temp.getCause();
+            }
+            return (Throwable) stack.pop();
+        } catch (NullPointerException e) {
+            return throwable;
+        }
     }
 }
