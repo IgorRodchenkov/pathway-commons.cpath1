@@ -29,15 +29,13 @@
  **/
 package org.mskcc.pathdb.sql.references;
 
-import org.mskcc.pathdb.model.BackgroundReferenceRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
-import org.mskcc.pathdb.sql.dao.DaoBackgroundReferences;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.task.Task;
-import org.mskcc.pathdb.util.ConsoleUtil;
 import org.mskcc.pathdb.util.FileUtil;
 
 import java.io.BufferedReader;
@@ -48,78 +46,123 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
- * Parses a tab-delimited text file of ID mappings, and stores the new ID
- * mappings to the database.
- * <P>
- * Here is an example ID mappings file (see:  testData/id_map.txt):
- * <PRE>
- * Affymetrix       UniGene        LocusLink       SwissProt       RefSeq
- * 1552275_3p_s_at  Hs.77646                       AAH08943 Q727A4 NP_060241
- * 1552275_3p_s_at                                                 NP_06024
- * </PRE>
- * <P>A few items to note:
+ * Parses and Imports Background Reference Files.
+ * <P>Background reference files must adhere to the following set of rules:
  * <UL>
- * <LI>The file is tab-delimited.
+ * <LI>The file must be tab-delimited.
  * <LI>The column headings must match controlled vocabulary terms for
- * external databases, as already defined in cPath. If an input file contains
- * invalid heading names, this class will immediately halt processing and
- * report the error to the end user.
- * <LI>Multiple IDs can be are specified within a single column by using a
- * space delimeter. For example, see the SwissProt column above.
- * <LI>Any field can be blank, and this class will take appropriate action to
- * process blank fields.
+ * external databases, as already defined in cPath. For example, "SWP" and
+ * "SWISSPROT" are valid terms used for referring to the SWISSPROT databse.
+ * <LI>Multiple identifiers can be are specified within a single column by
+ * using a space delimeter.
+ * <LI>Any data field can be blank.
+ * <LI>If the file specifies XXXX_UNIFICATION references, all databases
+ * specified in the header must be of type:  XXXX_UNIFICATION.
+ * <LI>If the file specifies LINK_OUT references, the first column of data
+ * must be of type:  LINK_OUT.  All links will be directional, and will point
+ * to this first column of data.  For example, if a data file consists of three
+ * columns:  Affymetrix, SwissProt, and LocusLink, two sets of links will
+ * be created:  SwissProt --&gt; Affymetrix, and LocusLink --&gt; Affymetrix.
  * </UL>
  * <P>
- * This class uses a simple "stone-skipping" algorithm to create links
- * between IDs and stores these links within the database.  This is best
- * illustrated with sample data.  For example, the first line of data above
- * generates the following set of internal links:
- * <P>
- * <IMG SRC="doc-files/link_graph.png"/>
- * <P>
+ * Here is an example PROTEIN_UNIFICATION reference file
+ * (see:  testData/unification_refs.txt):
+ * <BR>
+ * <TABLE>
+ * <TR>
+ * <TH ALIGN=LEFT>UniProt</TH>
+ * <TH ALIGN=LEFT>PIR</TH>
+ * <TH ALIGN=LEFT>HUGE</TH>
+ * </TR>
+ * <TR>
+ * <TD>UNIPROT_1234</TD>
+ * <TD>PIR_1234 PIR_4321</TD>
+ * <TD>HUGE_1234</TD>
+ * </TR>
+ * <TR>
+ * <TD>UNIPROT_XYZ</TD>
+ * <TD>PIR_XYZ</TD>
+ * <TD>HUGE_XYZ</TD>
+ * </TR>
+ * <TR>
+ * <TD>UNIPROT_1234</TD>
+ * <TD></TD>
+ * <TD>HUGE_4321</TD>
+ * </TR>
+ * </TABLE>
+ * </UL>
  *
  * @author Ethan Cerami.
  */
 public class ParseBackgroundReferencesTask extends Task {
     /**
-     * File containing ID Mappings.
+     * Data File containing Background References.
      */
     private File file;
 
     /**
-     * Flag to save all IdMapRecord objects to the database.
-     * If this is set to false, all IdMapRecords will be stored in an
-     * ArrayList, instead of the Database.
+     * Flag to save all records to the database.
+     * If this is set to false, all records will be stored in an
+     * ArrayList, instead of the Database.  Primarily used for JUnit testing
+     * purposes only.
      */
     private boolean saveToDatabase = true;
 
     /**
-     * Array List of All IdMapRecord Objects.
+     * Array List of All BackgroundReference Objects.
      */
-    private ArrayList idList = new ArrayList();
+    private ArrayList backgroundRefList = new ArrayList();
+
+    /**
+     * Number of Protein Unification Databases Referenced in Data File.
+     */
+    private int numProteinUnificationDbs = 0;
+
+    /**
+     * Number of LinkOut Database Reference in Data File.
+     */
+    private int numLinkOutDbs = 0;
+
+    /**
+     * List of database terms, as originally specified in the file header.
+     */
+    private ArrayList dbTermList = new ArrayList();
+
+    /**
+     * Tab Character.
+     */
+    private static final String TAB_CHAR = "\t";
+
+    /**
+     * ReferenceType Object.
+     * Stores the type of data in the data file.  Can currently be of type:
+     * PROTEIN_UNIFICATION or LINK_OUT.
+     */
+    private ReferenceType referenceType;
 
     /**
      * Constructor.
      *
-     * @param file        File Containing ID Mappings.
+     * @param file        File Containing Background References.
      * @param consoleMode Console Mode.
      */
     public ParseBackgroundReferencesTask(File file, boolean consoleMode) {
-        super("Parse ID Mapping File", consoleMode);
+        super("Parse Background References File", consoleMode);
         this.file = file;
     }
 
     /**
-     * Parses the ID Mappings File, and automatically stores all new
-     * ID mappings to the database.
+     * Parses a Background References File, and automatically stores all new
+     * records to the database.
      *
-     * @return number of new id mapping records saved to database.
+     * @return number of new background reference records saved to database.
      * @throws IOException  Error Reading Data File.
      * @throws DaoException Error Connecting to Database.
      */
-    public int parseAndStoreToDb() throws IOException, DaoException {
-        //  Initialize Number of Records Saved To Database
-        int numRecordsSaved = 0;
+    public int parseAndStoreToDb() throws IOException, DaoException,
+            ImportException {
+        this.numLinkOutDbs = 0;
+        this.numProteinUnificationDbs = 0;
 
         //  Initialize Progress Monitor.
         initProgressMonitor();
@@ -129,93 +172,75 @@ public class ParseBackgroundReferencesTask extends Task {
         BufferedReader buf = new BufferedReader(fReader);
 
         //  Extract Database Headers
-        String line = getNextLine(buf);
+        String line = FileUtil.getNextLine(buf);
+
+        //  Verify that the file header is tab delimited.
+        if (line.indexOf(TAB_CHAR) == -1) {
+            throw new ImportException ("Unable to import background "
+                    + "reference file.  File must be tab delimited.  Check "
+                    + "the file and try again.");
+        }
+
         StringTokenizer tokenizer = tokenize(line);
         ArrayList dbList = extractDatabaseList(tokenizer);
 
-        //  For each line of data
-        while ((line = getNextLine(buf)) != null) {
-            ProgressMonitor pMonitor = this.getProgressMonitor();
-            ConsoleUtil.showProgress(pMonitor);
-            ExternalDatabaseRecord dbRecord1 = null;
-            String id1 = null;
-
-            //  Split line, based on tab delimiter.
-            String tokens[] = line.split("\t");
-
-            //  Process all IDs
-            for (int i = 0; i < tokens.length; i++) {
-                ExternalDatabaseRecord dbRecord2;
-                try {
-                    dbRecord2 =
-                            (ExternalDatabaseRecord) dbList.get(i);
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Error Occurred in line:  " + line);
-                    throw e;
-                }
-                if (dbRecord1 != null && id1 != null
-                        && tokens[i].length() > 0) {
-
-                    //  Process Multiple IDs in Each Column
-                    String ids[] = tokens[i].split("\\s+");
-                    if (ids.length > 50) {
-                        pMonitor.setCurrentMessage("\nWarning!  "
-                                + " Data line beginning with:  "
-                                + tokens[0] + " contains " + ids.length
-                                + " identifiers");
-                    }
-                    for (int j = 0; j < ids.length; j++) {
-                        BackgroundReferenceRecord idRecord =
-                                new BackgroundReferenceRecord
-                                        (dbRecord1.getId(), id1, dbRecord2.getId(),
-                                                ids[j], ReferenceType.IDENTITY);
-                        if (saveToDatabase) {
-                            numRecordsSaved += storeToDatabase(idRecord);
-                        } else {
-                            idList.add(idRecord);
-                        }
-                    }
-                }
-
-                //  Update Current DB/ID Pair
-                if (tokens[i].length() > 0) {
-                    dbRecord1 = dbRecord2;
-                    String ids[] = tokens[i].split("\\s+");
-                    id1 = ids[0];
-                }
-            }
-            pMonitor.incrementCurValue();
+        //  Verify that we have at least two databases in data file.
+        if (dbList.size() < 2) {
+            throw new ImportException ("Unable to import background "
+                    + "reference file.  File must contain at least "
+                    + "two columns of data.");
         }
-        return numRecordsSaved;
+
+        //  Check if these are all UNIFICATION References
+        if (numProteinUnificationDbs == dbList.size()) {
+            this.referenceType = ReferenceType.PROTEIN_UNIFICATION;
+            this.getProgressMonitor().setCurrentMessage
+                    ("Saving PROTEIN_UNIFICATION References.");
+            ImportUnificationRefs importUnificationRefs = new
+                    ImportUnificationRefs(dbList, backgroundRefList,
+                            getProgressMonitor(), saveToDatabase);
+            return importUnificationRefs.parseData(buf);
+        } else {
+            ExternalDatabaseRecord db = (ExternalDatabaseRecord)
+                dbList.get(0);
+            if (!db.getDbType().equals(ReferenceType.LINK_OUT)) {
+                throw new ImportException ("Unable to import background "
+                    + "reference file of " + ReferenceType.LINK_OUT
+                    + " data.  First column must be of type:  "
+                    + ReferenceType.LINK_OUT + ".");
+            }
+            this.referenceType = ReferenceType.LINK_OUT;
+            this.getProgressMonitor().setCurrentMessage
+                    ("Saving LINK_OUT References.");
+            ImportLinkOutRefs imporLinkOutRefs = new ImportLinkOutRefs
+                    (dbList, backgroundRefList, getProgressMonitor(),
+                    saveToDatabase);
+            return imporLinkOutRefs.parseData(buf);
+        }
     }
 
     /**
-     * Parses the ID Mappings File, and automatically generates a list of
-     * IdMapRecords.  No data is saved to the database.
+     * Gets ReferenceType of Data File.
+     * @return ReferenceType Object.
+     */
+    public ReferenceType getReferenceType () {
+        return referenceType;
+    }
+
+    /**
+     * Parses the Background References File, and automatically generates a
+     * list of BackgroundReference Records.  No data is saved to the database.
      * This method is primarily used by the JUnit test.
      *
      * @return ArrayList of IdMapRecord Objects.
      * @throws IOException  Error Reading Data File.
      * @throws DaoException Error Connecting to Database.
      */
-    public ArrayList parseAndGenerateList() throws IOException, DaoException {
+    public ArrayList parseAndGenerateList() throws IOException, DaoException,
+            ImportException {
         saveToDatabase = false;
         this.parseAndStoreToDb();
-        return this.idList;
-    }
-
-    /**
-     * Conditionally Saves Record to Database.
-     *
-     * @param idRecord IdMapRecord.
-     * @return 1 indicates record was saved;  0 indicates record was not saved.
-     */
-    private int storeToDatabase(BackgroundReferenceRecord idRecord) throws DaoException {
-        //  The Database Access Object ensures that the record does not
-        //  already exist in the db
-        DaoBackgroundReferences dao = new DaoBackgroundReferences();
-        boolean success = dao.addRecord(idRecord, false);
-        return success ? 1 : 0;
+        return this.backgroundRefList;
     }
 
     /**
@@ -225,7 +250,8 @@ public class ParseBackgroundReferencesTask extends Task {
      */
     private void initProgressMonitor() throws IOException {
         ProgressMonitor pMonitor = this.getProgressMonitor();
-        pMonitor.setCurrentMessage("Parsing ID Mappings File:  " + file);
+        pMonitor.setCurrentMessage("Parsing Background Reference File:  "
+                + file);
         int numLines = FileUtil.getNumLines(file);
         pMonitor.setCurrentMessage
                 ("Number of Lines of Data in File:  " + numLines);
@@ -234,45 +260,44 @@ public class ParseBackgroundReferencesTask extends Task {
     }
 
     /**
-     * Extracts database records for all those specified in the file header.
+     * Extracts external database records for all those specified in the
+     * file header.
      */
     private ArrayList extractDatabaseList(StringTokenizer tokenizer)
-            throws DaoException {
+            throws DaoException, ImportException {
         ArrayList dbList = new ArrayList();
         DaoExternalDb dao = new DaoExternalDb();
         while (tokenizer.hasMoreTokens()) {
             String dbTerm = tokenizer.nextToken();
+            dbTermList.add(dbTerm);
             ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(dbTerm);
             if (dbRecord == null) {
-                throw new DaoException("Database:  " + dbTerm
-                        + " is not known.");
+                throw new ImportException("Unable to import background "
+                        + "references data file.  Database:  " + dbTerm
+                        + " is not known to cPath.  Check the file and "
+                        + "try again.");
             } else {
                 dbList.add(dbRecord);
+                if (dbRecord.getDbType().equals
+                        (ReferenceType.PROTEIN_UNIFICATION)) {
+                    numProteinUnificationDbs++;
+                } else if (dbRecord.getDbType().equals
+                        (ReferenceType.LINK_OUT)) {
+                    numLinkOutDbs++;
+                }
             }
         }
         return dbList;
     }
 
     /**
-     * Gets Next Line of Input.  Filters out Empty Lines and Comments.
-     */
-    private String getNextLine(BufferedReader buf) throws IOException {
-        String line = buf.readLine();
-        while (line != null && (line.trim().length() == 0
-                || line.trim().startsWith("#"))) {
-            line = buf.readLine();
-        }
-        return line;
-    }
-
-    /**
-     * Tokenize based on default white space delimeters
+     * Tokenize based on tab character.
      *
      * @param line String line.
      * @return String Tokenizer.
      */
     private StringTokenizer tokenize(String line) {
-        StringTokenizer tokenizer = new StringTokenizer(line);
+        StringTokenizer tokenizer = new StringTokenizer(line, TAB_CHAR);
         return tokenizer;
     }
 }
