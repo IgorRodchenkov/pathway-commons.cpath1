@@ -178,6 +178,15 @@ definition if people know all of the proteins in a pathway
 (like that provided in Web Browsers)
 Request by:  Ioannis.Xenarios@serono.com
 
+31. When importing PSI-MI files, if the xref database name is not known to cPath, then maybe the user should
+be asked for it during the import process.  One possible implementation - if PSI-MI import fails because of a
+database name mapping issue, then save the import file, ask the user to fill in the details of the database and
+use the saved PSI-MI file to try the import again. (Sep.13.2004)
+
+32. Some databases, like HPRD and IntAct, put xrefs in proteins that are not 1:1 with proteins.  E.g. HPRD
+adds pubmed papers and IntAct adds GO annotation.  These might be used for protein xref lookup. There should be a list of ID types that should not be used for xref lookup for proteins.  Maybe another field to add to the external ref DB.
+ (Sep.13.2004)
+
 Data Service Specific Items:
 -----------------------------
 1.  Add Gene Name/Synonym Look up to data services (requires a back-end, may
