@@ -39,18 +39,18 @@ CREATE TABLE `cpath` (
 # Creation: Jan 02, 2004 at 09:46 AM
 # Last update: Jan 02, 2004 at 09:46 AM
 #
-
 CREATE TABLE `external_db` (
   `EXTERNAL_DB_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(100) NOT NULL default '',
   `URL` varchar(255) default NULL,
   `DESC` varchar(255) default NULL,
+  `FIXED_CV_TERM` int(11) NOT NULL default '0',
   `DBDB_ID` int(11) default NULL,
   `DBDB_URL` varchar(255) default NULL,
   `CREATE_TIME` timestamp(14) NOT NULL,
   `UPDATE_TIME` timestamp(14) NOT NULL,
   PRIMARY KEY  (`EXTERNAL_DB_ID`)
-) TYPE=MyISAM COMMENT='Contains information about external databases.' AUTO_INCREMENT=14 ;
+) TYPE=MyISAM COMMENT='Contains information about external databases.' AUTO_INCREMENT=12 ;
 # --------------------------------------------------------
 
 #
