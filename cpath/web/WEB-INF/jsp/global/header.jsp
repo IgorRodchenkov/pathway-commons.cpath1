@@ -1,6 +1,7 @@
 <%@ page import="java.net.URL,
                  org.mskcc.pathdb.action.QueryAction,
-                 org.mskcc.pathdb.action.BaseAction"%>
+                 org.mskcc.pathdb.action.BaseAction,
+                 org.mskcc.pathdb.util.CPathConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
 <%
     String title = (String) request.getAttribute(BaseAction.ATTRIBUTE_TITLE);
@@ -26,7 +27,8 @@
             (BaseAction.PAGE_AUTO_UPDATE);
         if (autoUpdate != null) { %>
         <meta http-equiv="refresh" content="10;url=adminHome.do">
-        <% } %>
+        <% }
+    %>
 
     <%-- Include cPath JavaScript module --%>
     <script src="jsp/javascript/cpath.js" LANGUAGE="JAVASCRIPT"
@@ -52,7 +54,7 @@
             </td>
             <td>
                 <div align="right" id="login">
-                Version 0.2 (Beta)
+                Version:  <%= CPathConstants.VERSION %>
 
                 <jsp:include page="../global/printFriendlyLink.jsp" flush="true" />
                 </div>
