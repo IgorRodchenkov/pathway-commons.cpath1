@@ -10,8 +10,9 @@ public class QueryException extends Exception {
     /**
      * Constructor.
      * @param msg Error Message.
+     * @param cause Root Throwable Object.
      */
-    public QueryException(String msg) {
-        super(msg);
+    public QueryException(String msg, Throwable cause) {
+        super(msg, cause);
     }
 }

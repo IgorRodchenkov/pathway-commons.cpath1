@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.action;
+package org.mskcc.pathdb.action.admin;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
 /**
- * Action for Displaying Import Records.
+ * Action for Displaying Import Record XML.
  *
  * @author Ethan Cerami
  */
-public class AdminDisplay extends BaseAction {
+public class DisplayImportXml extends AdminBaseAction {
 
     /**
      * Executes Action.
@@ -39,9 +39,7 @@ public class AdminDisplay extends BaseAction {
             response.setContentType("text/plain");
             PrintWriter out = response.getWriter();
             out.println(record.getData());
-            return null;
-        } else {
-            return mapping.findForward("display");
         }
+        return null;
     }
 }

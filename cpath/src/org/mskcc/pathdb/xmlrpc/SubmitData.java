@@ -29,7 +29,7 @@ public class SubmitData implements XmlRpcHandler {
         try {
             //  Import to Database.
             DaoImport dbImport = new DaoImport();
-            dbImport.addRecord(data);
+            dbImport.addRecord("Cytoscape Submission", data);
         } catch (DaoException e) {
             throw new XmlRpcException(1, e.toString());
         }

@@ -25,6 +25,11 @@ import java.util.HashMap;
  */
 public class CPathController {
     /**
+     * Request Attribue:  SHOW_HELP.
+     */
+    public static final String SHOW_HELP = "show_help";
+
+    /**
      * Servlet Request.
      */
     private HttpServletRequest request;
@@ -94,11 +99,12 @@ public class CPathController {
         xdebug.logMsg(this, "Entering CPath Controller");
         HashMap parameterMap = getParameterMap(request);
         protocolRequest = new ProtocolRequest(parameterMap);
+        request.setAttribute("protocol_request", protocolRequest);
         ProtocolValidator validator = new ProtocolValidator(protocolRequest);
         validator.validate();
-        DataServiceController gridController = new DataServiceController
+        DataServiceController dsController = new DataServiceController
                 (request, response, servletContext, xdebug);
-        gridController.processRequest(protocolRequest);
+        dsController.processRequest(protocolRequest);
     }
 
     /**
@@ -107,7 +113,7 @@ public class CPathController {
     private void initXDebug() throws IOException, ServletException {
         xdebug = new XDebug();
         xdebug.startTimer();
-        SnoopHttp snoop = new SnoopHttp(xdebug);
+        SnoopHttp snoop = new SnoopHttp(xdebug, servletContext);
         snoop.process(request, response);
         request.setAttribute("xdebug", xdebug);
     }
@@ -118,6 +124,7 @@ public class CPathController {
      * @param exception ProtocolException object.
      */
     private void returnError(ProtocolException exception) {
+        log.error("Exception thrown:  " + exception.getMessage());
         setHeaderStatus(ProtocolConstants.DS_ERROR_STATUS);
         try {
             if (protocolRequest.getFormat() != null
@@ -177,6 +184,7 @@ public class CPathController {
         xdebug.stopTimer();
         xdebug.logMsg(this, "Showing Help Page");
         try {
+            request.setAttribute(SHOW_HELP, "yes");
             setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
             RequestDispatcher dispatcher =
                     servletContext.getRequestDispatcher

@@ -37,6 +37,7 @@ import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
+import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -74,7 +75,19 @@ public class InteractionTable extends HtmlTable {
      * @throws DaoException Database Access Error.
      */
     protected void subDoStartTag() throws DaoException {
-        startTable("Interactions for:  " + uid);
+        String title = "Interactions for:  " + uid;
+
+        append("<table width=100% cellpadding=7 cellspacing=0>"
+                + "<tr><td colspan=2 bgcolor=#666699><u>"
+                + "<b><big>" + title + "</big>"
+                + "</b></u><br></td>");
+        append("<td colspan=2>");
+        String url = getInteractionLink(uid,
+                ProtocolConstants.FORMAT_PSI);
+        append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
+        outputLink("View PSI-MI XML Format", url);
+        append("</td>");
+        append("</tr>");
         String headers[] = {
             "Interactor", "External References",
             "Experimental System", "PubMed Reference"};
@@ -93,7 +106,8 @@ public class InteractionTable extends HtmlTable {
             ArrayList interactors = interaction.getInteractors();
             append("<TR>");
             Interactor interactor = pickInteractorToDisplay(interactors);
-            String url = getInteractionLink(interactor.getName());
+            String url = getInteractionLink(interactor.getName(),
+                    ProtocolConstants.FORMAT_HTML);
             outputDataField(interactor.getName(), url);
             outputExternalReferences(interactor);
             String expSystem = (String) interaction.getAttribute
@@ -115,17 +129,6 @@ public class InteractionTable extends HtmlTable {
     private String getPubMedLink(String pmid) {
         String url = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?"
                 + "cmd=Retrieve&db=PubMed&list_uids=" + pmid + "&dopt=Abstract";
-        return url;
-    }
-
-    /**
-     * Gets Internal Link to "get interactions".
-     * @param id Unique ID.
-     * @return URL back to CPath.
-     */
-    private String getInteractionLink(String id) {
-        String url = "/ds/dataservice?version=1.0&cmd=retrieve_interactions&"
-                + "db=grid&format=html&uid=" + id;
         return url;
     }
 

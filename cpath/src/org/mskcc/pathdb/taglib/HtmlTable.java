@@ -1,5 +1,8 @@
 package org.mskcc.pathdb.taglib;
 
+import org.mskcc.pathdb.controller.ProtocolConstants;
+import org.mskcc.pathdb.controller.ProtocolRequest;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -15,7 +18,7 @@ public abstract class HtmlTable extends TagSupport {
     /**
      * Executes JSP Custom Tag
      * @return SKIP_BODY Option.
-     * @throws javax.servlet.jsp.JspException Exception in writing to JspWriter.
+     * @throws JspException Exception in writing to JspWriter.
      */
     public int doStartTag() throws JspException {
         JspWriter out = null;
@@ -44,17 +47,33 @@ public abstract class HtmlTable extends TagSupport {
      * Starts HTML Table.
      */
     protected void startTable(String title) {
-        append("<table width=100% cellpadding=7 cellspacing=0>"
+        append("<table valign=top width=100% cellpadding=7 border=0 "
+                + "cellspacing=0>"
                 + "<tr><td colspan=4 bgcolor=#666699><u>"
                 + "<b><big>" + title + "</big>"
                 + "</b></u><br></td></tr>");
     }
+
 
     /**
      * Appends to String Buffer.
      */
     protected void append(String text) {
         html.append(text + "\n");
+    }
+
+    /**
+     * Start New Html Row.
+     */
+    protected void startRow() {
+        html.append("<TR>\n");
+    }
+
+    /**
+     * Ends Html Row.
+     */
+    protected void endRow() {
+        html.append("</TR>\n");
     }
 
     /**
@@ -127,5 +146,20 @@ public abstract class HtmlTable extends TagSupport {
      */
     public String getHtml() {
         return html.toString();
+    }
+
+    /**
+     * Gets Internal Link to "get interactions".
+     * @param id Unique ID.
+     * @return URL back to CPath.
+     */
+    protected String getInteractionLink(String id, String format) {
+        ProtocolRequest request = new ProtocolRequest();
+        request.setCommand(ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS);
+        request.setVersion(ProtocolConstants.CURRENT_VERSION);
+        request.setFormat(format);
+        request.setDatabase(ProtocolConstants.DATABASE_GRID);
+        request.setUid(id);
+        return request.getUri();
     }
 }

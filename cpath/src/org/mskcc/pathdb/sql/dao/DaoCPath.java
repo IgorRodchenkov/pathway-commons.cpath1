@@ -18,6 +18,38 @@ import java.util.ArrayList;
 public class DaoCPath {
 
     /**
+     * Gets Total Number of Entities which match the specified Record Type.
+     * @param recordType RecordType Object.
+     * @return number of entities.
+     * @throws DaoException Indicates Error in Data access.
+     */
+    public int getNumEntities(CPathRecordType recordType)
+            throws DaoException {
+        int num = -1;
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("select count(CPATH_ID) from CPATH where type = ?");
+            pstmt.setString(1, recordType.toString());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                num = rs.getInt(1);
+            }
+            return num;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
      * Adds Specified Record to the cPath Table.
      * @param name Enity Name
      * @param description Enty Description

@@ -12,6 +12,7 @@ public class LogRecord {
     private String priority;
     private String logger;
     private String message;
+    private String ip;
 
     /**
      * Constructor.
@@ -19,13 +20,15 @@ public class LogRecord {
      * @param priority Log Priority.
      * @param logger Logger.
      * @param message Message.
+     * @param ip remote IP Address.
      */
     public LogRecord(Date date, String priority, String logger,
-            String message) {
+            String message, String ip) {
         this.date = date;
         this.priority = priority;
         this.logger = logger;
         this.message = message;
+        this.ip = ip;
     }
 
     /**
@@ -58,5 +61,13 @@ public class LogRecord {
      */
     public String getMessage() {
         return message;
+    }
+
+    /**
+     * Gets Remote IP for Client.
+     * @return Remote IP Address.
+     */
+    public String getRemoteIp() {
+        return this.ip;
     }
 }

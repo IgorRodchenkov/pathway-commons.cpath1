@@ -2,17 +2,29 @@
                  org.mskcc.pathdb.xdebug.XDebugMessage,
                  org.mskcc.pathdb.xdebug.XDebugParameter,
                  java.util.Date,
-                 java.util.Vector" %>
-
+                 java.util.Vector,
+                 java.util.Enumeration,
+                 org.mskcc.pathdb.action.admin.AdminWebLogging" %>
+<P>&nbsp;
+<P>&nbsp;
+<P>&nbsp;
 <%
-//String xdebugFlag = (String) session.getAttribute ("xdebug");
-//if (xdebugFlag != null && xdebugFlag.equals ("on")) {
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
+    Enumeration enum = request.getAttributeNames();
+    while (enum.hasMoreElements()) {
+        String name = (String) enum.nextElement();
+        Object value = request.getAttribute(name);
+        xdebug.addParameter(XDebugParameter.REQUEST_ATTRIBUTE_TYPE, name,
+                value.toString());
+    }
 %>
-<P>&nbsp;
-<P>&nbsp;
-<P>&nbsp;
+<%
+    String xdebugSession = (String) session.getAttribute
+            (AdminWebLogging.WEB_LOGGING);
+    String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
+    if (xdebugSession != null || xdebugParameter != null) {
+%>
 <TABLE width="100%">
 	<TR BGCOLOR="#9999cc">
 		<TD>
@@ -50,7 +62,6 @@ if (xdebug != null) {
 				***********************************
 	--%>
 	<%
-		if (xdebug != null) {
 		Vector messages = xdebug.getDebugMessages();
 		for (int msgIndex=0; msgIndex<messages.size(); msgIndex++) {
 			XDebugMessage msg = (XDebugMessage) messages.elementAt(msgIndex);
@@ -65,8 +76,7 @@ if (xdebug != null) {
 				</FONT>
             </TD>
 		</TR>
-	<% } %>
-
+    <% } %>
 	<%--
 				***********************************
 				Output Parameter Values
@@ -94,7 +104,11 @@ if (xdebug != null) {
 			else if (param.getType()==XDebugParameter.ENVIRONMENT_TYPE)
                 bgcolor="LIGHTYELLOW";
 			else if (param.getType()==XDebugParameter.HTTP_TYPE)
+                bgcolor="LIGHTGREEN";
+			else if (param.getType()==XDebugParameter.REQUEST_ATTRIBUTE_TYPE)
                 bgcolor="LIGHTYELLOW";
+            else if (param.getType()==XDebugParameter.SERVLET_CONTEXT_TYPE)
+                bgcolor="LIGHTBLUE";
 			else bgcolor = "WHITE";
 	%>
 
@@ -104,8 +118,8 @@ if (xdebug != null) {
 			<TD><FONT SIZE=1 COLOR=BLACK><%= wrapText(param.getValue()) %></FONT></TD>
 		</TR>
 		<% } %>
-	<% } %>
 </TABLE>
+<% } %>
 <% } %>
 
 <%!

@@ -31,7 +31,8 @@ public abstract class BaseAction extends Action {
             HttpServletResponse response) throws Exception {
         XDebug xdebug = new XDebug();
         xdebug.startTimer();
-        SnoopHttp snoop = new SnoopHttp(xdebug);
+        SnoopHttp snoop = new SnoopHttp(xdebug,
+                getServlet().getServletContext());
         snoop.process(request, response);
         request.setAttribute("xdebug", xdebug);
         ActionForward forward =

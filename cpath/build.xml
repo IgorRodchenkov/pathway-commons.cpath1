@@ -93,7 +93,7 @@
 
 -->
 
-  <property name="app.name"      value="ds"/>
+  <property name="app.name"      value="cpath"/>
   <property name="app.path"      value="/${app.name}"/>
   <property name="app.version"   value="0.1-dev"/>
   <property name="build.home"    value="${basedir}/build"/>
@@ -228,6 +228,9 @@
 
    <!-- Copy oscache.properties -->
    <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/oscache.properties"/>
+
+   <!-- Copy cpathResources.properties -->
+   <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/cpathResources.properties"/>
 
    <!-- Copy logger properties -->
    <copy todir="${build.home}/WEB-INF/config" file="${config.dir}/config-JDBC.properties"/>

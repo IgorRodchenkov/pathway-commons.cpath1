@@ -1,5 +1,7 @@
 package org.mskcc.pathdb.controller;
 
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 
 /**
@@ -21,12 +23,17 @@ public class ProtocolValidator {
     /**
      * Help Message
      */
-    private static final String HELP_MESSAGE = "  Try cmd=help for Help";
+    private static final String HELP_MESSAGE = "  Please try again.";
 
     /**
      * Protocol Constants.
      */
     private ProtocolConstants constants = new ProtocolConstants();
+
+    /**
+     * Logger.
+     */
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
      * Constructor.
@@ -42,10 +49,13 @@ public class ProtocolValidator {
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
     public void validate() throws ProtocolException, NeedsHelpException {
+        logger.info("Validating Request Parameters");
         validateEmptySet();
         validateCommand();
         validateVersion();
-        validateDatabase();
+//      Database validation is currently disabled.  This may be
+//      only temporary.
+//      validateDatabase();
         validateFormat();
         validateUid();
     }
@@ -114,7 +124,7 @@ public class ProtocolValidator {
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateUid() throws ProtocolException {
-        if (request.getUid() == null) {
+        if (request.getUid() == null || request.getUid().length() == 0) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  'uid' is not specified."
                     + HELP_MESSAGE);

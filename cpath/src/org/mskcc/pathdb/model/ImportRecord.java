@@ -9,11 +9,20 @@ import java.util.Date;
  */
 public class ImportRecord {
     private String data;
+    private String description;
     private int importId;
     private String status;
     private Date createTime;
     private Date updateTime;
     private String md5Hash;
+    /**
+     * New Record Status.
+     */
+    public static final String STATUS_NEW = "NEW";
+    /**
+     * Transferred Record Status.
+     */
+    public static final String STATUS_TRANSFERRED = "TRANSFERRED";
 
     /**
      * Gets Import Record Data.
@@ -29,6 +38,22 @@ public class ImportRecord {
      */
     public void setData(String data) {
         this.data = data;
+    }
+
+    /**
+     * Gets the Import Description.
+     * @return Description String.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the Import Description.
+     * @param description Description String.
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**

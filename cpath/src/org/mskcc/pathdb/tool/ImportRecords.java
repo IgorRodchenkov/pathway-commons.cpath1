@@ -66,9 +66,10 @@ public class ImportRecords {
             String status = record.getStatus();
             System.out.println("Checking record:  " + record.getImportId()
                     + ", Status:  " + record.getStatus());
-            if (status.equals(DaoImport.STATUS_NEW)) {
+            if (status.equals(ImportRecord.STATUS_NEW)) {
                 System.out.println("   -->  Transferring record");
-                transferRecord(record, validateExternalReferences);
+                transferRecord(record.getImportId(),
+                        validateExternalReferences);
             } else {
                 System.out.println("    -->  Already Transferred");
             }
@@ -78,9 +79,10 @@ public class ImportRecords {
     /**
      * Transfers Single Import Record.
      */
-    private void transferRecord(ImportRecord record,
+    private void transferRecord(long importId,
             boolean validateExternalReferences) throws ImportException,
             DaoException {
+        ImportRecord record = dbImport.getRecordById(importId);
         String xml = record.getData();
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml,

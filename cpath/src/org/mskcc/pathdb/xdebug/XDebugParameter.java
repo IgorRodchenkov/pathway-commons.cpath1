@@ -45,14 +45,25 @@ public class XDebugParameter {
     /**
      * User Session Type
      */
-    public static final int SESSION_TYPE = 6;
+    public static final int REQUEST_ATTRIBUTE_TYPE = 6;
+
+    /**
+     * User Session Type
+     */
+    public static final int SESSION_TYPE = 7;
+
+    /**
+     * Servlet Context Type
+     */
+    public static final int SERVLET_CONTEXT_TYPE = 8;
 
     private String name;
     private String value;
     private int type;
     private final String[] paramTypes =
             {"Cookie", "User Parameter", "Internal", "Environment",
-             "HTTP", "HTTP Header", "Session"};
+             "HTTP", "HTTP Header", "Internal Request Attribute", "Session",
+             "Servlet Context"};
 
     private static final String UNDEFINED = "Undefined";
 

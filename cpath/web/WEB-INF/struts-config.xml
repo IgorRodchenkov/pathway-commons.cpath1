@@ -2,9 +2,40 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
                                "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
 <struts-config>
+    <global-forwards>
+        <forward name="go_home" path="home.do"></forward>
+    </global-forwards>
+
     <action-mappings>
-        <action path="/adminDisplay" scope="request" type="org.mskcc.pathdb.action.AdminDisplay">
-            <forward name="display" path="/jsp/pages/Admin.jsp"/>
+        <action path="/home"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/jsp/pages/Master.jsp"/>
+        </action>
+        <!-- Admin Actions -->
+        <action path="/adminHome"
+            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            <forward name="success" path="/jsp/pages/Admin.jsp"/>
+        </action>
+        <action path="/adminViewLogRecords"
+            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            <forward name="success" path="/jsp/pages/Admin.jsp"/>
+        </action>
+        <action path="/adminPurgeLogRecords"
+            type="org.mskcc.pathdb.action.admin.PurgeLogRecords">
+            <forward name="success" path="/jsp/pages/Admin.jsp"/>
+        </action>
+        <action path="/adminViewImportRecords"
+            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            <forward name="success" path="/jsp/pages/Admin.jsp"/>
+        </action>
+        <action path="/adminViewImportRecordXml"
+            type="org.mskcc.pathdb.action.admin.DisplayImportXml">
+            <forward name="success" path="/jsp/pages/Admin.jsp"/>
+        </action>
+        <action path="/adminWebLogging"
+            type="org.mskcc.pathdb.action.admin.AdminWebLogging">
+            <forward name="success" path="/home.do"/>
         </action>
     </action-mappings>
+    <message-resources parameter="cpathResources"/>
 </struts-config>

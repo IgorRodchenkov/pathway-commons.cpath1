@@ -33,46 +33,28 @@
  **/
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.pathdb.controller.ProtocolConstants;
-import org.mskcc.pathdb.lucene.CPathResult;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.logger.AdminLogger;
+import org.mskcc.pathdb.logger.LogRecord;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Custom JSP Tag for Displaying Search Results Table.
+ * Custom JSP Tag for Displaying cPath Logs.
  *
  * @author Ethan Cerami
  */
-public class SearchResultsTable extends HtmlTable {
-    private String uid;
-    private ArrayList searchResults;
-
-    /**
-     * Sets Interaction Parameter.
-     * @param searchResults ArrayList of CPathResult objects.
-     */
-    public void setSearchResults(ArrayList searchResults) {
-        this.searchResults = searchResults;
-    }
-
-    /**
-     * Sets UID Parameter.
-     * @param uid UID String.
-     */
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
+public class LogTable extends HtmlTable {
 
     /**
      * Start Tag Processing.
-     * @throws DaoException Database Access Error.
+     * @throws SQLException Database Error.
+     * @throws ClassNotFoundException Cannot Locate JDBC Driver.
      */
-    protected void subDoStartTag() throws DaoException {
-        startTable("Matching Results found for:  " + uid.toUpperCase());
-        String headers[] = {"Rank", "Score", "Name", "Description",
-                            "Interactions"};
+    protected void subDoStartTag() throws SQLException, ClassNotFoundException {
+        startTable("cPath Log Records");
+        String headers[] = {"Timestamp", "Remote IP", "Priority", "Logger",
+                            "Message"};
         createTableHeaders(headers);
         outputResults();
         endTable();
@@ -81,30 +63,23 @@ public class SearchResultsTable extends HtmlTable {
     /**
      * Outputs Interaction Data.
      */
-    private void outputResults() throws DaoException {
-        if (searchResults.size() == 0) {
+    private void outputResults() throws SQLException, ClassNotFoundException {
+        AdminLogger adminLogger = new AdminLogger();
+        ArrayList logRecords = adminLogger.getLogRecords();
+        if (logRecords.size() == 0) {
             append("<TR>");
-            append("<TD COLSPAN=4>No Matching Results found!");
+            append("<TD COLSPAN=4>No Log Records Available!");
             append("</TR>");
         }
-        for (int i = 0; i < searchResults.size(); i++) {
+        for (int i = 0; i < logRecords.size(); i++) {
             append("<TR>");
-            CPathResult result = (CPathResult) searchResults.get(i);
-            CPathRecord record = result.getRecord();
-            outputDataField(Integer.toString(i));
-            outputDataField(Float.toString(result.getScore()));
-            outputDataField(record.getName());
-            outputDataField(record.getDescription());
-            outputInteractionLink(record.getName());
+            LogRecord record = (LogRecord) logRecords.get(i);
+            outputDataField(record.getDate());
+            outputDataField(record.getRemoteIp());
+            outputDataField(record.getPriority());
+            outputDataField(record.getLogger());
+            outputDataField(record.getMessage());
             append("</TR>");
         }
-    }
-
-    private void outputInteractionLink(String uid) {
-        String url = this.getInteractionLink
-                (uid, ProtocolConstants.FORMAT_HTML);
-        append("<TD>");
-        this.outputLink("View Interactions", url);
-        append("</TD>");
     }
 }

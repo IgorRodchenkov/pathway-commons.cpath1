@@ -1,6 +1,7 @@
 package org.mskcc.pathdb.servlet;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.NDC;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.controller.CPathController;
@@ -42,15 +43,20 @@ public final class DataService extends HttpServlet {
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        logger.info("Data Servlet Invoked.  Getting live data");
-        response.setHeader("Cache-control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-        CPathController controller = new CPathController
-                (request, response, this.getServletContext());
-        controller.execute();
-        PrintWriter writer = response.getWriter();
-        writer.flush();
-        writer.close();
+        try {
+            logger.info("Data Servlet Invoked.  Getting live data");
+            NDC.push(request.getRemoteHost());
+            response.setHeader("Cache-control", "no-cache");
+            response.setHeader("Pragma", "no-cache");
+            CPathController controller = new CPathController
+                    (request, response, this.getServletContext());
+            controller.execute();
+            PrintWriter writer = response.getWriter();
+            writer.flush();
+            writer.close();
+        } finally {
+            NDC.pop();
+        }
     }
 
     /**

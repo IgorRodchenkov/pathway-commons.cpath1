@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class TestDaoImport extends TestCase {
+    private static final String DESCRIPTION = "Test Import Record";
 
     /**
      * Tests the DaoImport Class.
@@ -38,13 +39,9 @@ public class TestDaoImport extends TestCase {
         records = dbImport.getAllRecords();
         for (int i = 0; i < records.size(); i++) {
             ImportRecord record = (ImportRecord) records.get(i);
-            // Verify Start of XML Document.
-            String data = record.getData();
-            assertTrue(data.startsWith("<?xml version="));
 
-            // Verify End of XML Document.
-            int end = data.indexOf("</interactionList>");
-            assertEquals(58419, end);
+            // Verify Description
+            assertEquals(DESCRIPTION, record.getDescription());
 
             // Verify Status
             assertEquals("NEW", record.getStatus());
@@ -53,6 +50,15 @@ public class TestDaoImport extends TestCase {
             assertEquals("Z80/GqKi48wil7K3j88IGQ==", record.getMd5Hash());
 
             getIndividualRecord(record.getImportId(), record.getMd5Hash());
+
+            record = dbImport.getRecordById(record.getImportId());
+            // Verify Start of XML Document.
+            String data = record.getData();
+            assertTrue(data.startsWith("<?xml version="));
+
+            // Verify End of XML Document.
+            int end = data.indexOf("</interactionList>");
+            assertEquals(58419, end);
         }
     }
 
@@ -72,7 +78,7 @@ public class TestDaoImport extends TestCase {
     public void addTestRecords() throws Exception {
         DaoImport dbImport = new DaoImport();
         String sampleData = getTextFromSampleFile();
-        dbImport.addRecord(sampleData);
+        dbImport.addRecord(DESCRIPTION, sampleData);
     }
 
     /**

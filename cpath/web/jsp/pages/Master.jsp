@@ -1,8 +1,13 @@
-<%@ page errorPage = "Error.jsp" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
+<%@ page errorPage = "Error.jsp" %>
+
 <%@ page import="java.util.ArrayList,
                  org.mskcc.pathdb.controller.ProtocolRequest,
-                 org.mskcc.pathdb.controller.ProtocolException"%>
+                 org.mskcc.pathdb.controller.ProtocolException,
+                 org.mskcc.pathdb.controller.CPathController"%>
+<%
+    String showHelp = (String) request.getAttribute(CPathController.SHOW_HELP);
+%>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 <%
@@ -14,20 +19,19 @@
     ProtocolException exception = (ProtocolException)
             request.getAttribute("exception");
 %>
-
 <jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
-
-<% if (exception != null) { %>
-    <jsp:include page="../global/error.jsp" flush="true" />
-<% } else if (interactions != null) { %>
+<% if (exception != null) {
+    throw exception;
+} else if (interactions != null) { %>
     <cbio:interactionTable interactions="<%= interactions %>"
         uid="<%= protocolRequest.getUid() %>"/>
 <% } else if (searchResults != null) { %>
     <cbio:searchResultsTable searchResults="<%= searchResults %>"
         uid="<%= protocolRequest.getUid() %>"/>
-<% } else { %>
+<% } else if (showHelp != null) { %>
     <jsp:include page="../global/help.jsp" flush="true" />
+<% } else { %>
+    <jsp:include page="../global/home.jsp" flush="true" />
 <% } %>
-
 <jsp:include page="../global/xdebug.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />

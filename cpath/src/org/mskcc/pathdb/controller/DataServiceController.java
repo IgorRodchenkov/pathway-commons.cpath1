@@ -73,6 +73,11 @@ public class DataServiceController {
             this.returnXml(xml);
         } else {
             try {
+                //  If the UID contains quotes, skip straight to
+                //  text indexer.
+                if (uid.indexOf("\"") > -1) {
+                    throw new EmptySetException();
+                }
                 InteractionQuery query = new InteractionQuery(uid);
                 ArrayList interactions = query.getInteractions();
                 request.setAttribute("interactions", interactions);
@@ -83,7 +88,6 @@ public class DataServiceController {
                 ArrayList results = lucene.executeQueryWithLookUp(uid);
                 request.setAttribute("textSearchResults", results);
             }
-            request.setAttribute("protocol_request", protocolRequest);
             forwardToJsp();
         }
     }

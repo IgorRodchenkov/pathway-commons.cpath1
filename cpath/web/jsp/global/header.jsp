@@ -1,72 +1,34 @@
-<%@ page import="java.util.ArrayList"%>
-<% String userMessage = (String) request.getAttribute("userMsg"); %>
-<!--  Title Bar -->
-<!--  Includes:
-      1.  HTML Header
-      2.  Main Header
-      3.  Main Navigation Elements
--->
-
-<%
-    ArrayList navTextList = new ArrayList();
-    ArrayList navURLList = new ArrayList();
-    navTextList.add("Help");
-    navURLList.add("/ds/dataservice");
-    navTextList.add("News");
-    navURLList.add("");
-    navTextList.add("About");
-    navURLList.add("");
-    navTextList.add("Documents");
-    navURLList.add("");
-    navTextList.add("Links");
-    navURLList.add("");
-%>
+<%@ page import="java.net.URL"%><!-- Use the Struts Custom Bean Tags -->
+<%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
 
 <html>
     <head>
-        <title>CPath Database</title>
-        <link rel="stylesheet" href="/ds/jsp/css/style.css" type="text/css">
+        <title><bean:message key="cpath.name"/></title>
+        <link rel="stylesheet" href="jsp/css/style.css" type="text/css">
     </head>
     <body bgcolor="#ccccff" marginwidth="0" marginheight="0"
         leftmargin="0" topmargin="0" text="#ffffff">
-
-<div id="TitleBar">
+    <div id="TitleBar">
     <br><br>
     <table cellpadding="2" cellspacing="0" border="0" width="90%">
         <tr>
             <td colspan=3 valign="Top" align="Right" bgcolor="#9999cc" NOWRAP>
             <big><big>
             <b>
-            <font color="#ffffff">cPath:</font>
-            <font color="#333366">CBio Pathways Database</font>
+            <font color="#ffffff"><bean:message key="cpath.name"/>:</font>
+            <font color="#333366"><bean:message key="cpath.tagline"/></font>
             </b>
             </big></big>
             <br>
         </td>
     </tr>
     <tr bgcolor="#333366">
-        <td width="150"></td>
+        <td width="140"></td>
         <td>
-            <% if (userMessage != null) { %>
-            <B>Message:  <%= userMessage %></B>
-            <% } %>
+            <jsp:include page="userMessage.jsp" flush="true" />
         </td>
         <td valign="Top" align="Right" >
-        <table>
-        <tr>
-        <% for (int i=0; i<navTextList.size(); i++) {
-            String navText = (String) navTextList.get(i);
-            String navURL = (String) navURLList.get(i);
-        %>
-            <td valign="Top" NOWRAP>
-                <div align="Right">
-                <a href="<%= navURL %>" class="HereSideBarLinks"> <%= navText %> </a>
-                </div>
-            </td>
-            <td>&nbsp;</td>
-        <% } %>
-        </tr>
-        </table>
+            <jsp:include page="navBar.jsp" flush="true" />
         </td>
     </tr>
     </table>

@@ -90,9 +90,9 @@ public class LuceneIndexer {
             Hits hits = searcher.search(query);
             return hits;
         } catch (IOException e) {
-            throw new QueryException("IOException:  " + e.getMessage());
+            throw new QueryException("IOException:  " + e.getMessage(), e);
         } catch (ParseException e) {
-            throw new QueryException("ParseException:  " + e.getMessage());
+            throw new QueryException("ParseException:  " + e.getMessage(), e);
         }
     }
 
@@ -117,16 +117,16 @@ public class LuceneIndexer {
                 addCPathRecord(idField, score, records);
             }
         } catch (IOException e) {
-            throw new QueryException("IOException:  " + e.getMessage());
+            throw new QueryException("IOException:  " + e.getMessage(), e);
         } catch (DaoException e) {
-            throw new QueryException("DaoException:  " + e.getMessage());
+            throw new QueryException("DaoException:  " + e.getMessage(), e);
         } finally {
             try {
                 if (searcher != null) {
                     searcher.close();
                 }
             } catch (IOException e) {
-                throw new QueryException("IOException:  " + e.getMessage());
+                throw new QueryException("IOException:  " + e.getMessage(), e);
             }
         }
         return records;

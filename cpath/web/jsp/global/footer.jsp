@@ -1,6 +1,7 @@
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%><table cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr bgcolor="#333366" valign="Top">
-        <td><div align="Right">
+        <td>
+        <div align="Right">
         <small><small>
         2003 (c) Computational Biology Center,
         Memorial Sloan Kettering Cancer Center.</a>&nbsp;

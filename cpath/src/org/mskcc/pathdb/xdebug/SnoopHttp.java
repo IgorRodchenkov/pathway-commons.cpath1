@@ -1,5 +1,6 @@
 package org.mskcc.pathdb.xdebug;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Properties;
 
 /**
  * Action for Snooping on the Current HTTP Request.
@@ -31,13 +31,16 @@ import java.util.Properties;
  */
 public class SnoopHttp {
     private XDebug xdebug;
+    private ServletContext servletContext;
 
     /**
      *  Constructor
-     *  @param xdebug XDebug object for real-time debugging
+     * @param xdebug XDebug object for real-time debugging
+     * @param servletContext Servlet Context Object.
      */
-    public SnoopHttp(XDebug xdebug) {
+    public SnoopHttp(XDebug xdebug, ServletContext servletContext) {
         this.xdebug = xdebug;
+        this.servletContext = servletContext;
     }
 
     /**
@@ -52,6 +55,7 @@ public class SnoopHttp {
             throws IOException, ServletException {
         extractServerInformation(request);
         extractClientInformation(request);
+        extractServletContext();
         extractHTTPInformation(request);
         extractUserParameters(request);
         extractCookies(request);
@@ -69,13 +73,13 @@ public class SnoopHttp {
                 "Server Port", request.getServerPort());
         xdebug.addParameter(XDebugParameter.ENVIRONMENT_TYPE,
                 "Request Is Secure", request.isSecure());
-        Properties properties = System.getProperties();
-        Enumeration enum = properties.keys();
-        while (enum.hasMoreElements()) {
-            String key = (String) enum.nextElement();
-            String value = properties.getProperty(key);
-            xdebug.addParameter(XDebugParameter.ENVIRONMENT_TYPE, key, value);
-        }
+//        Properties properties = System.getProperties();
+//        Enumeration enum = properties.keys();
+//        while (enum.hasMoreElements()) {
+//            String key = (String) enum.nextElement();
+//            String value = properties.getProperty(key);
+//            xdebug.addParameter(XDebugParameter.ENVIRONMENT_TYPE, key, value);
+//        }
     }
 
     /**
@@ -118,7 +122,6 @@ public class SnoopHttp {
      * @param request The HTTP request we are processing
      */
     private void extractUserParameters(HttpServletRequest request) {
-        //xdebug.logMsg (this, "Extracting User Parameters");
         Enumeration names = request.getParameterNames();
         while (names.hasMoreElements()) {
             String name = (String) names.nextElement();
@@ -162,6 +165,21 @@ public class SnoopHttp {
                 Object object = session.getAttribute(name);
                 xdebug.addParameter(XDebugParameter.SESSION_TYPE,
                         name, object.toString());
+            }
+        }
+    }
+
+    /**
+     * Extracts Everything in the Servlet Context.
+     */
+    private void extractServletContext() {
+        Enumeration enum = servletContext.getAttributeNames();
+        while (enum.hasMoreElements()) {
+            String name = (String) enum.nextElement();
+            Object value = servletContext.getAttribute(name);
+            if (!name.equals("org.apache.catalina.jsp_classpath")) {
+                xdebug.addParameter(XDebugParameter.SERVLET_CONTEXT_TYPE,
+                        name, value.toString());
             }
         }
     }

@@ -43,10 +43,18 @@ public class TestDaoCPath extends TestCase {
         refs[0] = new ExternalReference(DB_NAME_0, DB_ID_0);
         refs[1] = new ExternalReference(DB_NAME_1, DB_ID_1);
 
+        //  Test getNumEntities()
+        int numInteractionsBefore = dao.getNumEntities
+                (CPathRecordType.PHYSICAL_ENTITY);
+
         //  Test addRecord()
         long cpathId = dao.addRecord(NAME, DESCRIPTION, YEAST_NCBI_ID,
                 CPathRecordType.PHYSICAL_ENTITY, XML, refs);
         assertTrue(cpathId > 0);
+
+        int numInteractionsAfter = dao.getNumEntities
+                (CPathRecordType.PHYSICAL_ENTITY);
+        assertTrue(numInteractionsAfter > numInteractionsBefore);
 
         //  Test getRecordById()
         CPathRecord record = dao.getRecordById(cpathId);

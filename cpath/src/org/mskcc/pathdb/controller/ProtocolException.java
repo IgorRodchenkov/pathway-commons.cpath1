@@ -27,11 +27,6 @@ public class ProtocolException extends Exception {
     private String details;
 
     /**
-     * Root Exception (if needed).
-     */
-    private Exception rootException;
-
-    /**
      * Error XML Element Name.
      */
     private static final String ERROR_ELEMENT = "error";
@@ -80,8 +75,9 @@ public class ProtocolException extends Exception {
      * @param e Root Exception.
      */
     public ProtocolException(ProtocolStatusCode statusCode, Exception e) {
+        super(e);
         this.statusCode = statusCode;
-        this.rootException = e;
+        this.details = "Internal Error";
     }
 
     /**
@@ -98,6 +94,15 @@ public class ProtocolException extends Exception {
      */
     public String getDetails() {
         return this.details;
+    }
+
+    /**
+     * Gets Error Message.
+     * @return Error Message.
+     */
+    public String getMessage() {
+        return new String(statusCode.getErrorCode() + ":  "
+                + statusCode.getErrorMsg() + ": " + this.details);
     }
 
     /**
@@ -139,11 +144,11 @@ public class ProtocolException extends Exception {
             Element errorDetailsElement = new Element(ERROR_DETAILS_ELEMENT);
             errorDetailsElement.setText(details);
             errorElement.addContent(errorDetailsElement);
-        } else if (rootException != null) {
+        } else if (this.getCause() != null) {
             Element errorDetailsElement = new Element(ERROR_DETAILS_ELEMENT);
             StringWriter writer = new StringWriter();
             PrintWriter pwriter = new PrintWriter(writer);
-            rootException.printStackTrace(pwriter);
+            this.getCause().printStackTrace(pwriter);
             CDATA cdata = new CDATA(writer.toString());
             errorDetailsElement.addContent(cdata);
             errorElement.addContent(errorDetailsElement);

@@ -18,17 +18,9 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class DaoImport {
-    /**
-     * New Record Status.
-     */
-    public static final String STATUS_NEW = "NEW";
-
-    /**
-     * Transferred Record Status.
-     */
-    public static final String STATUS_TRANSFERRED = "TRANSFERRED";
 
     private static final String IMPORT_ID = "IMPORT_ID";
+    private static final String DESCRIPTION = "DESC";
     private static final String STATUS = "STATUS";
     private static final String CREATE_TIME = "CREATE_TIME";
     private static final String UPDATE_TIME = "UPDATE_TIME";
@@ -37,6 +29,7 @@ public class DaoImport {
 
     /**
      * Gets all Import Records.
+     * Note:  this method does not retrieve the associated XML Blob.
      * @return ArrayList of ImportRecord Objects.
      * @throws DaoException Error Retrieving Data.
      */
@@ -48,10 +41,12 @@ public class DaoImport {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select * from import order by IMPORT_ID");
+                    ("select `IMPORT_ID`, `DESC`, `DOC_MD5`, `STATUS`, "
+                    + "`CREATE_TIME`, `UPDATE_TIME`"
+                    + " from import order by IMPORT_ID");
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                ImportRecord record = extractRecord(rs);
+                ImportRecord record = extractRecord(rs, false);
                 records.add(record);
             }
             return records;
@@ -73,7 +68,7 @@ public class DaoImport {
      * @return ImportRecord Object.
      * @throws DaoException Error Retrieving Data.
      */
-    public ImportRecord getRecordById(int importId) throws DaoException {
+    public ImportRecord getRecordById(long importId) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -82,10 +77,10 @@ public class DaoImport {
             pstmt = con.prepareStatement
                     ("select * from import  where IMPORT_ID=? order "
                     + "by IMPORT_ID");
-            pstmt.setInt(1, importId);
+            pstmt.setLong(1, importId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                return extractRecord(rs);
+                return extractRecord(rs, true);
             } else {
                 return null;
             }
@@ -121,11 +116,13 @@ public class DaoImport {
 
     /**
      * Adds New Database Import Record.
+     * @param description Import Record Description.
      * @param data String data.
      * @return indicate success (true) or failure (false).
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean addRecord(String data) throws DaoException {
+    public boolean addRecord(String description, String data)
+            throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -135,15 +132,17 @@ public class DaoImport {
             String hash = Md5Util.createMd5Hash(data);
             byte zippedData[] = ZipUtil.zip(data);
             pstmt = con.prepareStatement
-                    ("INSERT INTO import (DOC_BLOB,DOC_MD5,STATUS,"
-                    + "CREATE_TIME)"
-                    + " VALUES (?,?,?,?)");
-            pstmt.setBytes(1, zippedData);
-            pstmt.setString(2, hash);
-            pstmt.setString(3, STATUS_NEW);
+                    ("INSERT INTO import (`DESC`, `DOC_BLOB`,`DOC_MD5`,"
+                    + " `STATUS`, `CREATE_TIME`)"
+                    + " VALUES (?,?,?,?,?)");
+            pstmt.setString(1, description);
+            ;
+            pstmt.setBytes(2, zippedData);
+            pstmt.setString(3, hash);
+            pstmt.setString(4, ImportRecord.STATUS_NEW);
             java.util.Date date = new java.util.Date();
             Timestamp timeStamp = new Timestamp(date.getTime());
-            pstmt.setTimestamp(4, timeStamp);
+            pstmt.setTimestamp(5, timeStamp);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
@@ -202,7 +201,7 @@ public class DaoImport {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("UPDATE import set STATUS=? WHERE IMPORT_ID=?");
-            pstmt.setString(1, STATUS_TRANSFERRED);
+            pstmt.setString(1, ImportRecord.STATUS_TRANSFERRED);
             pstmt.setInt(2, importID);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
@@ -219,20 +218,23 @@ public class DaoImport {
     /**
      * Extracts Database Record into Java class.
      */
-    private ImportRecord extractRecord(ResultSet rs) throws SQLException,
-            IOException {
+    private ImportRecord extractRecord(ResultSet rs, boolean extractBlob)
+            throws SQLException, IOException {
         ImportRecord record = new ImportRecord();
         record.setImportId(rs.getInt(IMPORT_ID));
+        record.setDescription(rs.getString(DESCRIPTION));
         record.setStatus(rs.getString(STATUS));
         record.setCreateTime(rs.getTimestamp(CREATE_TIME));
         record.setUpdateTime(rs.getTimestamp(UPDATE_TIME));
         record.setMd5Hash(rs.getString(DOC_MD5));
 
         //  Unzip Blob
-        Blob blob = rs.getBlob(DOC_BLOB);
-        byte blobData[] = extractBlobData(blob);
-        String data = ZipUtil.unzip(blobData);
-        record.setData(data);
+        if (extractBlob) {
+            Blob blob = rs.getBlob(DOC_BLOB);
+            byte blobData[] = extractBlobData(blob);
+            String data = ZipUtil.unzip(blobData);
+            record.setData(data);
+        }
         return record;
     }
 }

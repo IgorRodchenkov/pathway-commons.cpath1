@@ -39,11 +39,6 @@ public class ProtocolConstants {
     public static final String FORMAT_HTML = "html";
 
     /**
-     * Default Result Set Format.
-     */
-    public static final String FORMAT_RS = "rs";
-
-    /**
      * Currently Supported Version.
      */
     public static final String CURRENT_VERSION = "1.0";
@@ -53,11 +48,6 @@ public class ProtocolConstants {
      */
     public static final String COMMAND_RETRIEVE_INTERACTIONS =
             "retrieve_interactions";
-
-    /**
-     * Retrieve Go Command.
-     */
-    public static final String COMMAND_RETRIEVE_GO = "retrieve_go";
 
     /**
      * Help Command.
@@ -87,7 +77,6 @@ public class ProtocolConstants {
         if (validCommands == null) {
             validCommands = new HashMap();
             validCommands.put(COMMAND_RETRIEVE_INTERACTIONS, null);
-            validCommands.put(COMMAND_RETRIEVE_GO, null);
             validCommands.put(COMMAND_HELP, null);
         }
         return validCommands;
@@ -101,7 +90,6 @@ public class ProtocolConstants {
         if (validFormats == null) {
             validFormats = new HashMap();
             validFormats.put(FORMAT_PSI, null);
-            validFormats.put(FORMAT_RS, null);
             validFormats.put(FORMAT_HTML, null);
         }
         return validFormats;

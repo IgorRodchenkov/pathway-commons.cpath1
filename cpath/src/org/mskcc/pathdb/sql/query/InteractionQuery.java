@@ -1,5 +1,6 @@
 package org.mskcc.pathdb.sql.query;
 
+import org.apache.log4j.Logger;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.core.EmptySetException;
@@ -28,6 +29,11 @@ public class InteractionQuery {
     private String xml;
 
     /**
+     * Logger.
+     */
+    private Logger logger = Logger.getLogger(this.getClass().getName());
+
+    /**
      * Constructor.
      * @param interactorName Unique Interactor Name.
      * @throws QueryException Error Performing Query.
@@ -35,26 +41,30 @@ public class InteractionQuery {
      */
     public InteractionQuery(String interactorName) throws QueryException,
             EmptySetException {
+        logger.info("Executing Interaction Query for:  " + interactorName);
         interactions = new ArrayList();
         try {
             DaoCPath cpath = new DaoCPath();
             CPathRecord record = cpath.getRecordByName(interactorName);
             if (record != null) {
+                logger.info("Matching Interactor Found for:  "
+                        + record.getDescription());
                 entrySet = aggregateXml(record);
                 mapToInteractions();
                 xml = this.generateXml();
             } else {
+                logger.info("No Matching Interactors Found");
                 throw new EmptySetException();
             }
         } catch (DaoException e) {
-            throw new QueryException("DaoException:  " + e.getMessage());
+            throw new QueryException("DaoException:  " + e.getMessage(), e);
         } catch (ValidationException e) {
             throw new QueryException("ValidationException:  "
-                    + e.getMessage());
+                    + e.getMessage(), e);
         } catch (MarshalException e) {
-            throw new QueryException("MarshalException:  " + e.getMessage());
+            throw new QueryException("MarshalException:  " + e.getMessage(), e);
         } catch (MapperException e) {
-            throw new QueryException("MapperException:  " + e.getMessage());
+            throw new QueryException("MapperException:  " + e.getMessage(), e);
         }
     }
 
@@ -111,11 +121,13 @@ public class InteractionQuery {
      */
     private EntrySet aggregateXml(CPathRecord record)
             throws DaoException, MarshalException, ValidationException {
+        logger.info("Aggregating XML Documents");
         HashMap interactorMap = new HashMap();
         DaoInternalLink linker = new DaoInternalLink();
         PsiBuilder psiBuilder = new PsiBuilder();
         long id = record.getId();
         ArrayList interactions = linker.getInternalLinksWithLookup(id);
+        logger.info("Number of Interactions Found:  " + interactions.size());
         for (int i = 0; i < interactions.size(); i++) {
             CPathRecord intxRecord = (CPathRecord) interactions.get(i);
             long intxId = intxRecord.getId();
@@ -123,6 +135,7 @@ public class InteractionQuery {
                     linker.getInternalLinksWithLookup(intxId);
             addInteractorsToMap(interactorMap, interactors);
         }
+        logger.info("Creating Final PSI-MI XML Document");
         EntrySet entrySet = psiBuilder.generatePsi(interactorMap.values(),
                 interactions);
         return entrySet;

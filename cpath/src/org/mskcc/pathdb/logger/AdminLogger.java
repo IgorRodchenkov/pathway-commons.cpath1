@@ -54,7 +54,9 @@ public class AdminLogger {
             String logger = rs.getString("logger");
             String priority = rs.getString("priority");
             String message = rs.getString("message");
-            LogRecord record = new LogRecord(date, priority, logger, message);
+            String ip = rs.getString("ip");
+            LogRecord record = new LogRecord(date, priority, logger,
+                    message, ip);
             records.add(record);
         }
     }
