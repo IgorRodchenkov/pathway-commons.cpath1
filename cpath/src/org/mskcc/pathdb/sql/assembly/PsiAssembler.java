@@ -85,17 +85,15 @@ public class PsiAssembler {
 
             //  Append cPath ID as a Reference
             XrefType xref = cInteraction.getXref();
-            if (xref == null) {
-                xref = new XrefType();
-                cInteraction.setXref(xref);
-            }
-            DbReferenceType ref = new DbReferenceType();
-            ref.setDb(CPATH_DB);
-            ref.setId(Long.toString(record.getId()));
-            if (xref.getPrimaryRef() == null) {
-                xref.setPrimaryRef(ref);
-            } else {
-                xref.addSecondaryRef(ref);
+            if (xref != null) {
+                DbReferenceType ref = new DbReferenceType();
+                ref.setDb(CPATH_DB);
+                ref.setId(Long.toString(record.getId()));
+                if (xref.getPrimaryRef() == null) {
+                    xref.setPrimaryRef(ref);
+                } else {
+                    xref.addSecondaryRef(ref);
+                }
             }
             interactionList.addInteraction(cInteraction);
         }
