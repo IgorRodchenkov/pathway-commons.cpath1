@@ -223,6 +223,8 @@ public class DaoImport {
     private String implementJdkWorkAround(String data) {
         if (data.length() > 16777217 && data.length() % 4 == 1) {
             StringBuffer dataBuffer = new StringBuffer(data);
+            //  Append two meaningless new line characters.
+            //  Appending only one new line character does not fix the problem.
             dataBuffer.append("\n\n");
             return dataBuffer.toString();
         } else {
