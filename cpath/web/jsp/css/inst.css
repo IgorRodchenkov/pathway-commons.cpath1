@@ -1,4 +1,4 @@
-/* $Id: inst.css,v 1.1 2004-02-09 20:11:53 cerami Exp $
+/* $Id: inst.css,v 1.2 2004-05-17 18:36:17 cerami Exp $
 
 This file contains rules that extend or override the more basic formatting defined in tigris.css. Edit it to customize the look of applications using tigris.css (instances). You are responsible for maintaining your own set of (optional) deltas from tigris.css defaults; this file is intended as an example.
 
@@ -74,6 +74,10 @@ body #banner td a, .app h3 a, .app h4 a {
 #helptext .body {
 	border-bottom: 1px solid #cc9;
 	border-right: 1px solid #cc9;
+}
+
+#highlight {
+	background-color: #CCFFCC;
 }
 
 #topmodule {
