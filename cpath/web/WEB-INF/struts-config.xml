@@ -3,16 +3,16 @@
  "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
  "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
 <struts-config>
+    <form-beans>
+        <form-bean name="importDataForm"
+            type="org.mskcc.pathdb.form.FileUploadForm"/>
+    </form-beans>
+    
     <global-forwards>
         <forward name="go_home" path="home.do"/>
         <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
         <forward name="unauthorized" path="/WEB-INF/jsp/pages/Unauthorized.jsp"/>
     </global-forwards>
-
-    <form-beans>
-        <form-bean name="importDataForm"
-            type="org.mskcc.pathdb.form.FileUploadForm"/>
-    </form-beans>
 
     <action-mappings>
         <!--  Home Page -->
