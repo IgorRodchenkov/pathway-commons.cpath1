@@ -15,3 +15,9 @@ INSERT INTO cpath VALUES ('4', 'Interaction', 'Interaction', 'INTERACTION', NULL
 
 INSERT INTO internal_link VALUES ('1', '4', '2');
 INSERT INTO internal_link VALUES ('2', '4', '3');
+
+#
+# Create External Links (or at least one)
+#
+INSERT INTO `external_link` ( `EXTERNAL_LINK_ID` , `CPATH_ID` , `EXTERNAL_DB_ID` , `LINKED_TO_ID` )
+VALUES ( '1', '2', '1', 'P06139');
