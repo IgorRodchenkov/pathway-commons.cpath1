@@ -31,8 +31,8 @@ package org.mskcc.pathdb.test.util;
 
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.util.ExternalReferenceUtil;
 import org.mskcc.pathdb.model.ReferenceType;
+import org.mskcc.pathdb.util.ExternalReferenceUtil;
 
 /**
  * Tests the ExternalReferenceUtil Class.
@@ -79,9 +79,9 @@ public class TestExternalReferenceUtil extends TestCase {
 
         ExternalReference union[] =
                 ExternalReferenceUtil.createUnifiedList(refs1, refs2);
-        assertEquals (4, union.length);
+        assertEquals(4, union.length);
         ExternalReference ref4 = union[3];
-        assertEquals ("UniGene", ref4.getDatabase());
+        assertEquals("UniGene", ref4.getDatabase());
     }
 
     /**
@@ -94,6 +94,6 @@ public class TestExternalReferenceUtil extends TestCase {
         refs[2] = new ExternalReference("SwissProt", "P25300");
         refs[3] = new ExternalReference("SwissProt", "ABCD");
         refs = ExternalReferenceUtil.removeDuplicates(refs);
-        assertEquals (3, refs.length);
+        assertEquals(3, refs.length);
     }
 }

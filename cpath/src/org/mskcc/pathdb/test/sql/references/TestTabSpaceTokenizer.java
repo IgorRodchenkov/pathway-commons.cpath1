@@ -1,8 +1,37 @@
+/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+ **
+ ** Code written by: Ethan Cerami
+ ** Authors: Ethan Cerami, Gary Bader, Chris Sander
+ **
+ ** This library is free software; you can redistribute it and/or modify it
+ ** under the terms of the GNU Lesser General Public License as published
+ ** by the Free Software Foundation; either version 2.1 of the License, or
+ ** any later version.
+ **
+ ** This library is distributed in the hope that it will be useful, but
+ ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
+ ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
+ ** documentation provided hereunder is on an "as is" basis, and
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has no obligations to provide maintenance, support,
+ ** updates, enhancements or modifications.  In no event shall
+ ** Memorial Sloan-Kettering Cancer Center
+ ** be liable to any party for direct, indirect, special,
+ ** incidental or consequential damages, including lost profits, arising
+ ** out of the use of this software and its documentation, even if
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has been advised of the possibility of such damage.  See
+ ** the GNU Lesser General Public License for more details.
+ **
+ ** You should have received a copy of the GNU Lesser General Public License
+ ** along with this library; if not, write to the Free Software Foundation,
+ ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+ **/
 package org.mskcc.pathdb.test.sql.references;
 
-import org.mskcc.pathdb.sql.references.TabSpaceTokenizer;
-import org.mskcc.pathdb.sql.references.IndexedToken;
 import junit.framework.TestCase;
+import org.mskcc.pathdb.sql.references.IndexedToken;
+import org.mskcc.pathdb.sql.references.TabSpaceTokenizer;
 
 /**
  * Tests the TabSpaceTokenizer Object.
@@ -16,37 +45,37 @@ public class TestTabSpaceTokenizer extends TestCase {
      */
     public void testTokenizer1() {
         String line = "A B \tC D\tE F\t\tG\tH I";
-        TabSpaceTokenizer tokenizer = new TabSpaceTokenizer (line);
+        TabSpaceTokenizer tokenizer = new TabSpaceTokenizer(line);
         int index = 0;
         while (tokenizer.hasMoreElements()) {
             IndexedToken token = (IndexedToken) tokenizer.nextElement();
-            if (index ==0) {
-                assertEquals ("A", token.getToken());
-                assertEquals (0, token.getColumnNumber());
+            if (index == 0) {
+                assertEquals("A", token.getToken());
+                assertEquals(0, token.getColumnNumber());
             } else if (index == 1) {
-                assertEquals ("B", token.getToken());
-                assertEquals (0, token.getColumnNumber());
+                assertEquals("B", token.getToken());
+                assertEquals(0, token.getColumnNumber());
             } else if (index == 2) {
-                assertEquals ("C", token.getToken());
-                assertEquals (1, token.getColumnNumber());
+                assertEquals("C", token.getToken());
+                assertEquals(1, token.getColumnNumber());
             } else if (index == 3) {
-                assertEquals ("D", token.getToken());
-                assertEquals (1, token.getColumnNumber());
+                assertEquals("D", token.getToken());
+                assertEquals(1, token.getColumnNumber());
             } else if (index == 4) {
-                assertEquals ("E", token.getToken());
-                assertEquals (2, token.getColumnNumber());
+                assertEquals("E", token.getToken());
+                assertEquals(2, token.getColumnNumber());
             } else if (index == 5) {
-                assertEquals ("F", token.getToken());
-                assertEquals (2, token.getColumnNumber());
+                assertEquals("F", token.getToken());
+                assertEquals(2, token.getColumnNumber());
             } else if (index == 6) {
-                assertEquals ("G", token.getToken());
-                assertEquals (4, token.getColumnNumber());
+                assertEquals("G", token.getToken());
+                assertEquals(4, token.getColumnNumber());
             } else if (index == 7) {
-                assertEquals ("H", token.getToken());
-                assertEquals (5, token.getColumnNumber());
+                assertEquals("H", token.getToken());
+                assertEquals(5, token.getColumnNumber());
             } else if (index == 8) {
-                assertEquals ("I", token.getToken());
-                assertEquals (5, token.getColumnNumber());
+                assertEquals("I", token.getToken());
+                assertEquals(5, token.getColumnNumber());
             }
             index++;
         }
@@ -58,19 +87,19 @@ public class TestTabSpaceTokenizer extends TestCase {
     public void testTokenizer2() {
         //  Try an input line with no tabs;  should work.
         String line = "A B C";
-        TabSpaceTokenizer tokenizer = new TabSpaceTokenizer (line);
+        TabSpaceTokenizer tokenizer = new TabSpaceTokenizer(line);
         int index = 0;
         while (tokenizer.hasMoreElements()) {
             IndexedToken token = (IndexedToken) tokenizer.nextElement();
-            if (index ==0) {
-                assertEquals ("A", token.getToken());
-                assertEquals (0, token.getColumnNumber());
+            if (index == 0) {
+                assertEquals("A", token.getToken());
+                assertEquals(0, token.getColumnNumber());
             } else if (index == 1) {
-                assertEquals ("B", token.getToken());
-                assertEquals (0, token.getColumnNumber());
+                assertEquals("B", token.getToken());
+                assertEquals(0, token.getColumnNumber());
             } else if (index == 2) {
-                assertEquals ("C", token.getToken());
-                assertEquals (0, token.getColumnNumber());
+                assertEquals("C", token.getToken());
+                assertEquals(0, token.getColumnNumber());
             }
             index++;
         }

@@ -156,8 +156,8 @@ public class ParseBackgroundReferencesTask extends Task {
      * records to the database.
      *
      * @return number of new background reference records saved to database.
-     * @throws IOException  Error Reading Data File.
-     * @throws DaoException Error Connecting to Database.
+     * @throws IOException     Error Reading Data File.
+     * @throws DaoException    Error Connecting to Database.
      * @throws ImportException Error importing data.
      */
     public int parseAndStoreToDb() throws IOException, DaoException,
@@ -235,9 +235,9 @@ public class ParseBackgroundReferencesTask extends Task {
      * This method is primarily used by the JUnit test.
      *
      * @return ArrayList of BackgroundReference Objects.
-     * @throws IOException  Error Reading Data File.
-     * @throws DaoException Error Connecting to Database.
-     * @throws ImportException Error importing data. 
+     * @throws IOException     Error Reading Data File.
+     * @throws DaoException    Error Connecting to Database.
+     * @throws ImportException Error importing data.
      */
     public ArrayList parseAndGenerateList() throws IOException, DaoException,
             ImportException {

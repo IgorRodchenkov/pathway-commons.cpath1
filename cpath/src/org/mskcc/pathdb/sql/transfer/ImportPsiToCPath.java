@@ -349,7 +349,7 @@ public class ImportPsiToCPath {
 
                     //  Query Background Reference Service for LinkOuts
                     ExternalReference backgroundLinkOutRefs[] =
-                            queryLinkOutService (unificationRefs);
+                            queryLinkOutService(unificationRefs);
 
                     //  Create the union of all  UNIFICATION Refs and
                     //  LINK_OUT Refs
@@ -357,10 +357,10 @@ public class ImportPsiToCPath {
                             ExternalReferenceUtil.createUnifiedList
                             (unificationRefs, linkOutRefs);
                     if (backgroundLinkOutRefs != null
-                        && backgroundLinkOutRefs.length > 0) {
+                            && backgroundLinkOutRefs.length > 0) {
                         allRefs =
                                 ExternalReferenceUtil.createUnifiedList(allRefs,
-                                backgroundLinkOutRefs);
+                                        backgroundLinkOutRefs);
                     }
 
                     //  Remove any duplicates in the Reference List
@@ -595,10 +595,10 @@ public class ImportPsiToCPath {
      * Queries the Background Reference Service for a list of
      * PROTEIN_UNIFICATION References.
      *
-     * @param unificationRefs    Array of External Reference Objects.
+     * @param unificationRefs Array of External Reference Objects.
      * @return Array of External Reference Objects.
      */
-    private ExternalReference[] queryUnificationService (ExternalReference[]
+    private ExternalReference[] queryUnificationService(ExternalReference[]
             unificationRefs) throws DaoException {
         //  Only execute query if we have existing unification references.
         if (unificationRefs != null && unificationRefs.length > 0) {
@@ -619,10 +619,10 @@ public class ImportPsiToCPath {
      * Queries the Background Reference Service for a list of LINK_OUT
      * References.
      *
-     * @param unificationRefs    Array of External Reference Objects.
+     * @param unificationRefs Array of External Reference Objects.
      * @return Array of External Reference Objects.
      */
-    private ExternalReference[] queryLinkOutService (ExternalReference[]
+    private ExternalReference[] queryLinkOutService(ExternalReference[]
             unificationRefs) throws DaoException {
         //  Only execute query if we have existing unification references.
         if (unificationRefs != null && unificationRefs.length > 0) {

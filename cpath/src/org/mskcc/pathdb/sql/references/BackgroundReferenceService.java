@@ -170,7 +170,7 @@ public class BackgroundReferenceService {
      *
      * @param ref External Reference Object.
      * @return ArrayList of External Reference Objects.
-     * @throws DaoException Error accessing database. 
+     * @throws DaoException Error accessing database.
      */
     public ArrayList getLinkOutReferences(ExternalReference ref)
             throws DaoException {

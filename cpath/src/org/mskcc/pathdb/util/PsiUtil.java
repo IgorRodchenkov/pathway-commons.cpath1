@@ -512,7 +512,7 @@ public class PsiUtil {
      * Adds New External References to the PSI-MI XRef Object.
      * Ensures that a single External Reference is not added twice.
      *
-     * @param xref PSI-MI XRef Object.
+     * @param xref      PSI-MI XRef Object.
      * @param extraRefs Array of External Reference Objects.
      * @throws MissingDataException Indicates Missing Data.
      */
@@ -523,7 +523,7 @@ public class PsiUtil {
         //  Track existing set of references.
         ExternalReference existingRefs[] = extractXrefs(xref);
         HashSet set = new HashSet();
-        for (int i=0; i< existingRefs.length; i++) {
+        for (int i = 0; i < existingRefs.length; i++) {
             set.add(existingRefs[i]);
         }
 

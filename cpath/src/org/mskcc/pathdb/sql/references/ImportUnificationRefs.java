@@ -129,12 +129,12 @@ public class ImportUnificationRefs {
             ConsoleUtil.showProgress(pMonitor);
 
             //  Tokenize the Input Line
-            TabSpaceTokenizer tokenizer = new TabSpaceTokenizer (line);
+            TabSpaceTokenizer tokenizer = new TabSpaceTokenizer(line);
             IndexedToken indexedToken = (IndexedToken) tokenizer.nextElement();
 
             //  Prime the loop by extracting the first ID record.
             ExternalDatabaseRecord dbRecord1 = (ExternalDatabaseRecord)
-                    dbList.get (indexedToken.getColumnNumber());
+                    dbList.get(indexedToken.getColumnNumber());
             String id1 = indexedToken.getToken();
 
             //  Iterate through all remaining records.
@@ -147,8 +147,8 @@ public class ImportUnificationRefs {
 
                 //  Create Link between record1 and record2
                 BackgroundReferencePair idPair = new BackgroundReferencePair
-                    (dbRecord1.getId(), id1, dbRecord2.getId(), id2,
-                    ReferenceType.PROTEIN_UNIFICATION);
+                        (dbRecord1.getId(), id1, dbRecord2.getId(), id2,
+                                ReferenceType.PROTEIN_UNIFICATION);
 
                 if (saveToDatabase) {
                     numRecordsSaved += storeToDatabase(idPair);

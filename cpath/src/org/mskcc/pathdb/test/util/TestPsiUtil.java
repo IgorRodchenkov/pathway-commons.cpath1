@@ -38,7 +38,6 @@ import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

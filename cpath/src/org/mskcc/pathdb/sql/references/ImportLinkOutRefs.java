@@ -159,7 +159,7 @@ public class ImportLinkOutRefs {
         while ((line = FileUtil.getNextLine(buf)) != null) {
             ConsoleUtil.showProgress(pMonitor);
 
-            TabSpaceTokenizer tokenizer = new TabSpaceTokenizer (line);
+            TabSpaceTokenizer tokenizer = new TabSpaceTokenizer(line);
 
             //  Extract the LINK_OUT ID
             IndexedToken token = (IndexedToken) tokenizer.nextElement();
@@ -173,52 +173,19 @@ public class ImportLinkOutRefs {
                             (ExternalDatabaseRecord) dbList.get
                             (token.getColumnNumber());
                     BackgroundReferencePair idPair =
-                        new BackgroundReferencePair
-                        (dbRecord.getId(), token.getToken(), linkOutDb.getId(),
-                                linkOutId, ReferenceType.LINK_OUT);
+                            new BackgroundReferencePair
+                                    (dbRecord.getId(), token.getToken(),
+                                            linkOutDb.getId(),
+                                            linkOutId, ReferenceType.LINK_OUT);
                     if (saveToDatabase) {
-                        numRecordsSaved += storeToDatabase (idPair);
+                        numRecordsSaved += storeToDatabase(idPair);
                     } else {
                         backgroundRefList.add(idPair);
                     }
                 }
 
-                }
             }
-
-//            //  Split line, based on tab delimiter.
-//            String tokens[] = line.split("\t");
-//
-//            //  Extract the LINK_OUT ID.
-//            String linkOutId = tokens[0];
-//
-//            if (linkOutId.trim().length() > 0) {
-//
-//                //  Process all IDs
-//                for (int i = 1; i < tokens.length; i++) {
-//                    ExternalDatabaseRecord dbRecord =
-//                            (ExternalDatabaseRecord) dbList.get(i);
-//
-//                    //  Handle Blank Columns, and
-//                    //  Process Multiple IDs in Each Column
-//                    if (tokens[i].trim().length() > 0) {
-//                        String ids[] = tokens[i].split("\\s+");
-//                        for (int j = 0; j < ids.length; j++) {
-//                            BackgroundReferencePair idPair =
-//                                    createBackgroundReference(dbRecord, ids, j,
-//                                            linkOutDb, linkOutId);
-//                            if (saveToDatabase) {
-//                                numRecordsSaved += storeToDatabase
-//                                        (idPair);
-//                            } else {
-//                                backgroundRefList.add(idPair);
-//                            }
-//                        }
-//                    }
-//                }
-//                pMonitor.incrementCurValue();
-//            }
-//        }
+        }
         return numRecordsSaved;
     }
 

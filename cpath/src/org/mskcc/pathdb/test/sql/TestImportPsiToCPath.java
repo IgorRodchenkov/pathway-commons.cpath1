@@ -34,9 +34,8 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoBackgroundReferences;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.task.ProgressMonitor;
@@ -97,7 +96,8 @@ public class TestImportPsiToCPath extends TestCase {
 //        long interactionId = record.getId();
 //        DaoInternalLink internalLinker = new DaoInternalLink();
 //        records = internalLinker.getInternalLinksWithLookup(interactionId);
-//        assertEquals(3, records.size());        ProgressMonitor pMonitor = new ProgressMonitor();
+//        assertEquals(3, records.size());
+//        ProgressMonitor pMonitor = new ProgressMonitor();
 //        ContentReader reader = new ContentReader();
 //        String file = new String("testData/psi_mi/psi_sample_mixed.xml");
 //        String xml = reader.retrieveContent(file);
@@ -158,8 +158,8 @@ public class TestImportPsiToCPath extends TestCase {
         int recordsSaved = task.parseAndStoreToDb();
 
         //  Load a small set of affymetrix ids into the background ref server
-        file = new File ("testData/references/link_out_refs2.txt");
-        task =  new ParseBackgroundReferencesTask(file, false);
+        file = new File("testData/references/link_out_refs2.txt");
+        task = new ParseBackgroundReferencesTask(file, false);
         recordsSaved = task.parseAndStoreToDb();
 
         //  Then, load a small PSI-MI File.
@@ -195,21 +195,21 @@ public class TestImportPsiToCPath extends TestCase {
         //  note that this tests only a handful of the new refs,
         //  not all of them
         xml = record.getXmlContent();
-        assertTrue (xml.indexOf(
-                "<primaryRef db=\"UNIPROT\" id=\"Q16848\"/>") > 0);
-        assertTrue (xml.indexOf(
-                "<secondaryRef db=\"UNIPROT\" id=\"Q9NP68\"/>") > 0);
-        assertTrue (xml.indexOf(
-                "<secondaryRef db=\"UNIPROT\" id=\"Q9NPJ2\"/>") > 0);
-        assertTrue (xml.indexOf(
-                "<secondaryRef db=\"PIR\" id=\"DNHU53\"/>") > 0);
-        assertTrue (xml.indexOf(
-                "<secondaryRef db=\"UNIPROT\" id=\"Q99659\"/>") > 0);
+        assertTrue(xml.indexOf("<primaryRef db=\"UNIPROT\" "
+            + "id=\"Q16848\"/>") > 0);
+        assertTrue(xml.indexOf("<secondaryRef db=\"UNIPROT\" "
+            + "id=\"Q9NP68\"/>") > 0);
+        assertTrue(xml.indexOf("<secondaryRef db=\"UNIPROT\" "
+            + "id=\"Q9NPJ2\"/>") > 0);
+        assertTrue(xml.indexOf("<secondaryRef db=\"PIR\" "
+            + "id=\"DNHU53\"/>") > 0);
+        assertTrue(xml.indexOf("<secondaryRef db=\"UNIPROT\" "
+            + "id=\"Q99659\"/>") > 0);
 
         //  Verify that XML has been modified to include linkouts
         //  derived from the background reference subsystem.
-        assertTrue (xml.indexOf("<secondaryRef db=\"AFFYMETRIX\" "
-            + "id=\"1939_at\"/>") > 0);
+        assertTrue(xml.indexOf("<secondaryRef db=\"AFFYMETRIX\" "
+                + "id=\"1939_at\"/>") > 0);
 
     }
 }
