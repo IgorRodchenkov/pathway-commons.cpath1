@@ -36,10 +36,7 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
-import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
-import org.mskcc.pathdb.task.IndexLuceneTask;
-import org.mskcc.pathdb.task.ParseIdMappingsTask;
-import org.mskcc.pathdb.task.ValidateXmlTask;
+import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
@@ -159,7 +156,8 @@ public class Admin {
     }
 
     private static void importDataFromSingleFile(File file) throws IOException,
-            DaoException, SAXException, DataServiceException {
+            DaoException, SAXException, DataServiceException,
+            MissingDataException {
         String fileName = file.getName();
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
                 || fileName.endsWith("mif")) {
@@ -179,11 +177,15 @@ public class Admin {
                 System.exit(-1);
             }
         } else {
-            ParseIdMappingsTask task = new ParseIdMappingsTask(file, true);
-            int numRecordsSaved = task.parseAndStoreToDb();
-            NumberFormat formatter = new DecimalFormat("#,###,###");
-            System.out.println("\nTotal Number of ID Mappings Stored:  "
-                    + formatter.format(numRecordsSaved));
+//            Temporarily returned back to the original import references task.           
+//            ParseIdMappingsTask task = new ParseIdMappingsTask(file, true);
+//            int numRecordsSaved = task.parseAndStoreToDb();
+//            NumberFormat formatter = new DecimalFormat("#,###,###");
+//            System.out.println("\nTotal Number of ID Mappings Stored:  "
+//                    + formatter.format(numRecordsSaved));
+            FileReader reader = new FileReader (file);
+            ImportReferencesTask task = new ImportReferencesTask(true, reader);
+            task.importReferences();
         }
     }
 
