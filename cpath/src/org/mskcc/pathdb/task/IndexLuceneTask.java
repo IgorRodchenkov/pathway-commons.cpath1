@@ -108,11 +108,19 @@ public class IndexLuceneTask extends Task {
                     ("select * from cpath WHERE TYPE = ?  order by CPATH_ID ");
             pstmt.setString(1, CPathRecordType.INTERACTION.toString());
             rs = pstmt.executeQuery();
+
+            int counter = 0;
             while (rs.next()) {
                 indexRecord(cpath, rs, indexWriter);
+                if (counter % 1000 ==0) {
+                    System.out.println("#");
+                    indexWriter.optimize();
+                    indexWriter.commit();
+                    indexWriter = new LuceneWriter(true);
+                }
             }
-            indexWriter.commit();
             indexWriter.optimize();
+            indexWriter.commit();
             outputMsg("\nIndexing Complete");
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);

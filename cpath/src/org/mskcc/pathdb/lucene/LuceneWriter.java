@@ -30,7 +30,7 @@ public class LuceneWriter {
      */
     public LuceneWriter(boolean resetFlag) throws IOException {
         writer = new IndexWriter(dir, analyzer, resetFlag);
-        writer.mergeFactor = 1000;
+        writer.mergeFactor = 500;
         //writer.close();
     }
 
