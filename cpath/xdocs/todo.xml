@@ -201,6 +201,17 @@ Data Service Specific Items:
 
 4.  Resurrect the GRID Plugin - retrieves data from GRID directly into Cytoscape
 
+cPath Cytoscape Plugin Functionality Issues:
+--------------------------------------------
+1.  We should have hyperlinks from the accession numbers displayed on the interactor and interaction details window to the various databases, taxonomy information to the NCBI taxonomy database and from any PSI CV terms to a term definition DB (like QuickGO).  We should extend the web service to provide these links (this could be a really! popular web service!!!)  - We could just include it as attributes in the PSI-MI file in the meantime as an alternative if we want. This might be faster than polling a web service.
+
+2.  From Niki: We should list the chip type as part of the Affymetrix identifier information
+
+3.  Ability to select multiple nodes and edges and see all the information in an Excel type table (later, allow users to select which columns of data are available) - maybe this will be better done by the attribute browser.
+
+4. Ability to specify chunk size for chunked downloads in preferences (up to a point to protect the web service).
+
+
 Archive:  Items which are now complete:
 --------------------------------------------------
 1.  Add Field Specific Lucene Searching, e.g. "name:RAS".
