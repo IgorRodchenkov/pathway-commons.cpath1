@@ -177,4 +177,27 @@ public class IdMapRecord {
         return new String(db1Name + ": " + id1 + " <--> "
                 + db2Name + ": " + id2);
     }
+
+    /**
+     * Generates an integer hash code for quick lookups.
+     * Consider that we have two IdMapRecord Objects:
+     * <P>
+     * 1:ABC -- 2:XYZ; and 2:XYZ -- 1:ABC
+     * <BR>
+     * These two records are functionaly equivalent, and therefore
+     * result in identical hash codes.
+     *
+     * @return hashcode integer value.
+     */
+    public int hashCode() {
+        StringBuffer code = new StringBuffer();
+        if (db1 < db2) {
+            code.append (db1+":"+id1 +"#");
+            code.append (db2+":"+id2);
+        } else {
+            code.append (db2+":"+id2 +"#");
+            code.append (db1+":"+id1);
+        }
+        return code.toString().hashCode();
+    }
 }
