@@ -37,6 +37,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.util.ConsoleUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -119,17 +120,22 @@ public class CountAffymetrixIdsTask extends Task {
 
         //  Examine Each Physical Entity
         for (int i = 0; i < records.size(); i++) {
+            ConsoleUtil.showProgress(verbose, pMonitor);
             CPathRecord record = (CPathRecord) records.get(i);
             ArrayList links =
                     externalLinker.getRecordsByCPathId(record.getId());
 
             //  Look for Affymetrix Link
+            boolean hasOneOrMoreAffyIds = false;
             for (int j = 0; j < links.size(); j++) {
                 ExternalLinkRecord link = (ExternalLinkRecord) links.get(j);
                 int dbId = link.getExternalDbId();
                 if (dbId == affyDbId) {
-                    affyCount++;
+                    hasOneOrMoreAffyIds = true;
                 }
+            }
+            if (hasOneOrMoreAffyIds) {
+                affyCount++;
             }
         }
     }
