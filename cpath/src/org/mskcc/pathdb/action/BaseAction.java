@@ -67,7 +67,12 @@ public abstract class BaseAction extends Action {
     /**
      * Page Attribute:  INTERACTIONS ArrayList.
      */
-    public static final String ATTRIBUTE_XML_ASSEMBLY = "interactions";
+    public static final String ATTRIBUTE_XML_ASSEMBLY = "xml_assembly";
+
+    /**
+     * Page Attribute:  INTERACTOR Set.
+     */
+    public static final String ATTRIBUTE_INTERACTOR_SET = "interactor_set";
 
     /**
      * Page Attribtue:  TITLE of HTML Page.
