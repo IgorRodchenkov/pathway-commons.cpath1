@@ -2,6 +2,7 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.util.GlobalCache;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -121,8 +122,20 @@ public class DaoExternalDb {
      */
     public ExternalDatabaseRecord getRecordByTerm(String term)
             throws DaoException {
-        DaoExternalDbCv dao = new DaoExternalDbCv();
-        return dao.getExternalDbByTerm(term);
+        // First Check Global Cache
+        GlobalCache cache = GlobalCache.getInstance();
+        ExternalDatabaseRecord dbRecord = (ExternalDatabaseRecord)
+                cache.get(term);
+
+        //  If not in cache, get from Database
+        if (dbRecord == null) {
+            DaoExternalDbCv dao = new DaoExternalDbCv();
+            dbRecord = dao.getExternalDbByTerm(term);
+            if (dbRecord != null) {
+                cache.put(term, dbRecord);
+            }
+        }
+        return dbRecord;
     }
 
     /**
