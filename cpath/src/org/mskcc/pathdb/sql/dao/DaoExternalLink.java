@@ -30,7 +30,7 @@ public class DaoExternalLink {
             con = JdbcUtil.getCPathConnection();
             if (!recordExists(link)) {
                 pstmt = con.prepareStatement
-                        ("INSERT INTO external_link (`CPATH_ID`, "
+                        ("INSERT INTO EXTERNAL_LINK (`CPATH_ID`, "
                         + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`, `CREATE_TIME`)"
                         + " VALUES (?,?,?,?)");
                 pstmt.setLong(1, link.getCpathId());

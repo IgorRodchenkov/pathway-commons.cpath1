@@ -8,6 +8,9 @@ import org.mskcc.pathdb.controller.CPathController;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
 import org.mskcc.pathdb.service.RegisterCPathServices;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.model.CPathRecordType;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -51,9 +54,6 @@ public final class DataService extends HttpServlet {
             CPathController controller = new CPathController
                     (request, response, this.getServletContext());
             controller.execute();
-            PrintWriter writer = response.getWriter();
-            writer.flush();
-            writer.close();
         } finally {
             NDC.pop();
         }
@@ -131,6 +131,9 @@ public final class DataService extends HttpServlet {
         AdminLogger adminLogger = new AdminLogger();
         try {
             adminLogger.getLogRecords();
+            DaoCPath dao = new DaoCPath();
+            int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
+            System.err.println("Number of Physical Entities:  " + num);
             System.err.println("Database Connection -->  OK");
         } catch (SQLException e) {
             while (e != null) {
@@ -144,6 +147,10 @@ public final class DataService extends HttpServlet {
                 e = e.getNextException();
             }
         } catch (ClassNotFoundException e) {
+            System.err.println("****  Error Connecting to Database");
+            System.err.println(e.toString());
+        }  catch (DaoException e) {
+            System.err.println("****  Error Connecting to Database");
             System.err.println(e.toString());
         }
     }

@@ -43,7 +43,7 @@ public class DaoImport {
             pstmt = con.prepareStatement
                     ("select `IMPORT_ID`, `DESC`, `DOC_MD5`, `STATUS`, "
                     + "`CREATE_TIME`, `UPDATE_TIME`"
-                    + " from import order by IMPORT_ID");
+                    + " from IMPORT order by IMPORT_ID");
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 ImportRecord record = extractRecord(rs, false);
@@ -75,7 +75,7 @@ public class DaoImport {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select * from import  where IMPORT_ID=? order "
+                    ("select * from IMPORT where IMPORT_ID=? order "
                     + "by IMPORT_ID");
             pstmt.setLong(1, importId);
             rs = pstmt.executeQuery();
@@ -132,7 +132,7 @@ public class DaoImport {
             String hash = Md5Util.createMd5Hash(data);
             byte zippedData[] = ZipUtil.zip(data);
             pstmt = con.prepareStatement
-                    ("INSERT INTO import (`DESC`, `DOC_BLOB`,`DOC_MD5`,"
+                    ("INSERT INTO IMPORT (`DESC`, `DOC_BLOB`,`DOC_MD5`,"
                     + " `STATUS`, `CREATE_TIME`)"
                     + " VALUES (?,?,?,?,?)");
             pstmt.setString(1, description);
@@ -200,7 +200,7 @@ public class DaoImport {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("UPDATE import set STATUS=? WHERE IMPORT_ID=?");
+                    ("UPDATE IMPORT set STATUS=? WHERE IMPORT_ID=?");
             pstmt.setString(1, ImportRecord.STATUS_TRANSFERRED);
             pstmt.setInt(2, importID);
             int rows = pstmt.executeUpdate();
