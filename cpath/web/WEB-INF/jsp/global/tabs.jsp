@@ -63,7 +63,9 @@
 
     String isAdmin = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
     String host = request.getRemoteHost();
-    if (isAdmin != null || (host != null && host.indexOf("mskcc.org") > -1)) {
+    if (isAdmin != null
+            || (host != null && host.indexOf("mskcc.org") > -1)
+            || (host != null && host.indexOf("localhost") > -1)) {
         tabNames.add("Administration");
         String adminUrl = "adminHome.do";
         tabUrls.add(adminUrl);
