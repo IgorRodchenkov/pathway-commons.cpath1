@@ -1,0 +1,59 @@
+<HTML>
+	<HEADER>
+	<TITLE>CBio Data Service Help
+	</TITLE>
+	<link rel="stylesheet" type="text/css" href="jsp/style.css" />
+	</HEADER>
+	<BODY>
+	<TABLE WIDTH="600" CELLPADDING=5 CELLSPACING=5>
+		<TR>
+			<TD><img src="jsp/images/ds_header.gif"></TD>
+		</TR>
+		<TR>
+			<TD>
+			<P>&lt;Under Construction&gt;
+			<P>This page provides a quick reference help guide to using
+			the CBio Data Service.
+			</TD>
+		</TR>
+		<TR>
+			<TD><B>URLParameters</B></TD>
+		</TR>
+		<TR>
+			<TD>
+			Requests to the CBio Data Service are formed by specifying URL parameters.  Parameters
+			are as follows:
+	    <UL>
+		    <LI>cmd:  Indicates the command to execute.  Current valid commands are:  "help", "retrieve_interactions" and "retrieve_go".
+		    <LI>db:  Indicates the requested database.  Current valid databases are: "grid".
+		    <LI>uid:  Indicates a unique identifier.  For example, "YCR038C".
+		    <LI>format:  Indicates the format of returned results.  Current valid formats are:  "psi" and "rs".
+			<LI>version:  Indicates the version of the dataservice protocol.  Must be
+			    specified.  The only supported version is "1.0".
+		    </LI>
+	    </UL>
+			</TD>
+		</TR>
+		<TR>
+			<TD><B>Examples of Usage</B></TD>
+		</TR>
+		<TR>
+		<TD>
+		The following query requests all GRID interactions for gene YCR038C.  Data will be formatted in the PSI XML format.
+<UL>
+	<LI><A HREF="http://192.168.73.53:8080/ds/dataservice?cmd=retrieve_interactions&db=grid&format=psi&version=1.0&uid=YCR038C">http://192.168.73.53:8080/ds/dataservice?cmd=retrieve_interactions&db=grid&format=psi&version=1.0&uid=YCR038C</A>
+</UL>
+		The following query requests GO Terms for the gene YHR199W.  Data will be formatted in the default result set format:
+<UL>
+	<LI><A HREF="http://192.168.73.53:8080/ds/dataservice?cmd=retrieve_go&db=grid&format=rs&version=1.0&uid=YHR119W">http://192.168.73.53:8080/ds/dataservice?cmd=retrieve_go&db=grid&format=rs&version=1.0&uid=YHR119W</A>
+</UL>
+		The following query requests all GRID interactions for an invalid Gene UID.  The data service will return
+		an XML document with a specific error code and error message.
+		<UL>
+		<LI>	<LI><A HREF="http://192.168.73.53:8080/ds/dataservice?cmd=retrieve_interactions&db=grid&format=psi&version=1.0&uid=YCR038CEE">http://192.168.73.53:8080/ds/dataservice?cmd=retrieve_interactions&db=grid&format=psi&version=1.0&uid=YCR038CEE</A>
+		</UL>
+			</TD>
+		</TR>
+	</TABLE>
+	</BODY>
+</HTML>
