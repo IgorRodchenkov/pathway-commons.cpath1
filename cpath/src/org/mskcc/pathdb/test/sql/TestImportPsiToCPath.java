@@ -36,8 +36,8 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
-import org.mskcc.pathdb.task.ParseIdMappingsTask;
 import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.io.File;
@@ -115,7 +115,7 @@ public class TestImportPsiToCPath extends TestCase {
 
         //  First, load a small set of ids into the id mapping subsystem.
         File file = new File("testData/id_map.txt");
-        ParseIdMappingsTask task = new ParseIdMappingsTask(file, false);
+        ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask(file, false);
         task.parseAndStoreToDb();
 
         //  Then, load a small PSI-MI File.
