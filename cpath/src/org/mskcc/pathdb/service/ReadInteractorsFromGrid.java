@@ -44,6 +44,7 @@ import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.dataservices.live.DataServiceBase;
 import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.ReadInteractors;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -60,6 +61,7 @@ import java.util.HashMap;
  */
 public class ReadInteractorsFromGrid extends DataServiceBase
         implements ReadInteractors {
+    private Connection con;
 
     /**
      * HashMap of ORF Names to Local IDs.
@@ -82,6 +84,8 @@ public class ReadInteractorsFromGrid extends DataServiceBase
             throw  e;
         } catch (Exception e) {
             throw new DataServiceException(e);
+        } finally {
+            JdbcUtil.freeConnection(con);
         }
     }
 
@@ -119,7 +123,7 @@ public class ReadInteractorsFromGrid extends DataServiceBase
     protected Interactor getLiveInteractor(String uid, String lookUpKey)
             throws SQLException, ClassNotFoundException, JDOMException,
             IOException, EmptySetException {
-        Document doc = this.connect(uid, lookUpKey);
+        Document doc = this.getSingleInteractor(uid, lookUpKey);
         GridInteractorUtil util = new GridInteractorUtil();
         Interactor interactor = util.parseResults(doc);
 
@@ -142,10 +146,10 @@ public class ReadInteractorsFromGrid extends DataServiceBase
      * @throws java.sql.SQLException Database error.
      * @throws java.lang.ClassNotFoundException Could not find JDBC Driver.
      */
-    private Document connect(String uid, String lookUpKey)
+    private Document getSingleInteractor(String uid, String lookUpKey)
             throws SQLException, ClassNotFoundException, JDOMException,
             EmptySetException {
-        Connection con = GridProtocol.getConnection(this.getLocation());
+        con = JdbcUtil.getGridConnection();
         PreparedStatement pstmt = con.prepareStatement
                 ("select * from orf_info where " + lookUpKey + "=?");
         pstmt.setString(1, uid);

@@ -5,10 +5,11 @@ import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.WriteInteractions;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.sql.GridInteractionTable;
+import org.mskcc.pathdb.sql.DaoInteraction;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.CPathConstants;
 
 import java.sql.Connection;
@@ -64,7 +65,9 @@ public class TestWriteInteractionsToGrid extends TestCase {
         int numSaved = service.writeInteractions(interactions);
         assertEquals(1, numSaved);
 
-        int id = GridInteractionTable.getInteractionId(interaction);
+        PropertyManager manager = PropertyManager.getInstance();
+        String location = manager.getProperty(PropertyManager.DB_LOCATION);
+        int id = DaoInteraction.getInteractionId(interaction, location);
         validateInteraction(id);
         this.deleteJUnitInteractions();
     }
@@ -74,7 +77,7 @@ public class TestWriteInteractionsToGrid extends TestCase {
      */
     private void validateInteraction(int id) throws ClassNotFoundException,
             SQLException {
-        Connection con = GridProtocol.getConnection("localhost");
+        Connection con = JdbcUtil.getGridConnection();
         PreparedStatement pstmt = con.prepareStatement
                 ("SELECT * FROM interactions WHERE interaction_id = ?");
         pstmt.setInt(1, id);
@@ -95,7 +98,7 @@ public class TestWriteInteractionsToGrid extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void deleteJUnitInteractions() throws Exception {
-        Connection con = GridProtocol.getConnection("localhost");
+        Connection con = JdbcUtil.getGridConnection();
         PreparedStatement pstmt = con.prepareStatement
                 ("DELETE FROM interactions WHERE OWNER = ?");
         pstmt.setString(1, "JUNIT");

@@ -3,18 +3,19 @@ package org.mskcc.pathdb.test.sql;
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
+import org.mskcc.dataservices.bio.vocab.InteractionVocab;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.sql.GridInteractionTable;
-import org.mskcc.pathdb.sql.GridInteractorTable;
+import org.mskcc.pathdb.sql.DaoInteraction;
 
 import java.util.ArrayList;
 
 /**
- * Tests the GridInteractionTable Class.
+ * Tests the DaoInteraction Class.
  *
  * @author Ethan Cerami
  */
-public class TestGridInteractionTable extends TestCase {
+public class TestDaoInteraction extends TestCase {
 
     /**
      * Tests that Interaction Exists.
@@ -32,9 +33,16 @@ public class TestGridInteractionTable extends TestCase {
 
         Interaction interaction = new Interaction();
         interaction.setInteractors(interactors);
+        interaction.addAttribute(InteractionVocab.EXPERIMENTAL_SYSTEM_NAME,
+                "Affinity Precipitation");
+        interaction.addAttribute(InteractionVocab.PUB_MED_ID,
+                "11583615");
 
         //  This one does exist.
-        boolean exists = GridInteractionTable.interactionExists(interaction);
+        PropertyManager manager = PropertyManager.getInstance();
+        String location = manager.getProperty(PropertyManager.DB_LOCATION);
+        boolean exists = DaoInteraction.interactionExists(interaction,
+                location);
         assertTrue(exists);
 
         //  This is the same as above, except interactors have been swapped.
@@ -43,7 +51,7 @@ public class TestGridInteractionTable extends TestCase {
         interactors.add(interactor1);
         interaction.setInteractors(interactors);
 
-        exists = GridInteractionTable.interactionExists(interaction);
+        exists = DaoInteraction.interactionExists(interaction, location);
         assertTrue(exists);
 
         //  This one does not exist
@@ -53,8 +61,7 @@ public class TestGridInteractionTable extends TestCase {
         interactor2.setName("JUNIT_123");
         interactors.add(interactor2);
         interaction.setInteractors(interactors);
-        GridInteractorTable.getLocalInteractorIds(interactors);
-        exists = GridInteractionTable.interactionExists(interaction);
+        exists = DaoInteraction.interactionExists(interaction, location);
         assertTrue(!exists);
     }
 
@@ -73,7 +80,15 @@ public class TestGridInteractionTable extends TestCase {
         interactors.add(interactor2);
         Interaction interaction = new Interaction();
         interaction.setInteractors(interactors);
-        int id = GridInteractionTable.getInteractionId(interaction);
+
+        interaction.addAttribute(InteractionVocab.EXPERIMENTAL_SYSTEM_NAME,
+                "Affinity Precipitation");
+        interaction.addAttribute(InteractionVocab.PUB_MED_ID,
+                "11583615");
+
+        PropertyManager manager = PropertyManager.getInstance();
+        String location = manager.getProperty(PropertyManager.DB_LOCATION);
+        int id = DaoInteraction.getInteractionId(interaction, location);
         assertEquals(2, id);
     }
 }

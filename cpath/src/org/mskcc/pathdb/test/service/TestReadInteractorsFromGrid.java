@@ -42,6 +42,7 @@ import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.live.DataServiceFactory;
 import org.mskcc.dataservices.services.ReadInteractors;
 import org.mskcc.pathdb.service.ReadInteractorsFromGrid;
+import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.util.CPathConstants;
 
 import java.util.ArrayList;
@@ -162,6 +163,7 @@ public class TestReadInteractorsFromGrid extends TestCase {
      * @throws Exception Indicates Error.
      */
     public void testCbioGridService() throws Exception {
+        RegisterCPathServices.registerServices();
         try {
             DataServiceFactory factory = DataServiceFactory.getInstance();
             ReadInteractors service = (ReadInteractors)

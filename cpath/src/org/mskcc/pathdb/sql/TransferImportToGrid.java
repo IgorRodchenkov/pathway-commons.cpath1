@@ -1,34 +1,39 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.pathdb.model.ImportRecord;
-import org.mskcc.pathdb.util.CPathConstants;
-import org.mskcc.pathdb.service.RegisterCPathServices;
+import org.mskcc.dataservices.core.DataServiceException;
+import org.mskcc.dataservices.live.DataServiceFactory;
 import org.mskcc.dataservices.mapper.MapPsiToInteractions;
 import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.services.WriteInteractions;
-import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.core.DataServiceException;
+import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.model.ImportRecord;
+import org.mskcc.pathdb.service.RegisterCPathServices;
+import org.mskcc.pathdb.util.BatchTool;
+import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.util.ArrayList;
-import java.sql.SQLException;
+import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Transfers Data from the Import Table to the GRID Table.
  *
  * @author Ethan Cerami
  */
-public class TransferImportToGrid {
-    private DatabaseImport dbImport;
-    private String location;
-    private boolean verbose;
+public class TransferImportToGrid extends BatchTool {
+    private DaoImport dbImport;
 
     /**
      * Constructor.
-     * @param verbose Turn verbosity on or off.
+     * @param runningFromCommandLine Running from Command Line.
+     * @param xdebug XDebug Object.
      */
-    public TransferImportToGrid(boolean verbose) {
-        this.verbose = verbose;
+    public TransferImportToGrid(boolean runningFromCommandLine, XDebug xdebug) {
+        super(runningFromCommandLine, xdebug);
     }
 
     /**
@@ -42,43 +47,25 @@ public class TransferImportToGrid {
     public void transferData()
             throws SQLException, ClassNotFoundException,
             IOException, MapperException, DataServiceException {
-        outputVerbose("Transferring Import Records");
-        dbImport = new DatabaseImport();
-        ArrayList records = dbImport.getAllImportRecords();
+        outputMsg("Transferring Import Records");
+        dbImport = new DaoImport();
+        ArrayList records = dbImport.getAllRecords();
         if (records.size() == 0) {
-            outputVerbose("No records to transfer");
+            outputMsg("No records to transferData");
         }
         for (int i = 0; i < records.size(); i++) {
             ImportRecord record = (ImportRecord) records.get(i);
             String status = record.getStatus();
-            outputVerbose("Checking record:  " + record.getImportId()
+            outputMsg("Checking record:  " + record.getImportId()
                     + ", Status:  " + record.getStatus());
-            if (status.equals(DatabaseImport.STATUS_NEW)) {
-                outputVerbose("   -->  Transferring record");
+            if (status.equals(DaoImport.STATUS_NEW)) {
+                outputMsg("   -->  Transferring record");
                 transferRecord(record);
             } else {
-                outputVerbose("    -->  Already Transferred");
+                outputMsg("    -->  Already Transferred");
             }
         }
-        outputVerbose("Transfer Complete");
-    }
-
-    /**
-     * Sets Location of the Database.
-     * @param location Database Location
-     */
-    public void setDatabaseLocation(String location) {
-        this.location = location;
-    }
-
-    /**
-     * Conditionally output messages to the console.
-     * @param message User message.
-     */
-    private void outputVerbose(String message) {
-        if (verbose) {
-            System.out.println(message);
-        }
+        outputMsg("Transfer Complete");
     }
 
     /**
@@ -95,9 +82,6 @@ public class TransferImportToGrid {
         DataServiceFactory factory = DataServiceFactory.getInstance();
         WriteInteractions service = (WriteInteractions) factory.getService
                 (CPathConstants.WRITE_INTERACTIONS_TO_GRID);
-        if (location != null) {
-            service.setLocation(location);
-        }
         service.writeInteractions(interactions);
 
         dbImport.markRecordAsTransferred(record.getImportId());
@@ -109,11 +93,33 @@ public class TransferImportToGrid {
      * @throws Exception All Exceptions.
      */
     public static void main(String[] args) throws Exception {
-        RegisterCPathServices.registerServices();
-        TransferImportToGrid transfer = new TransferImportToGrid(true);
-        if (args.length > 0) {
-            transfer.setDatabaseLocation(args[0]);
+        try {
+            if (args.length > 0) {
+                PropertyManager manager = PropertyManager.getInstance();
+                manager.setProperty(PropertyManager.DB_LOCATION, args[0]);
+            } else {
+                System.out.println("Command line usage:  TransferImportToGrid "
+                        + "host_name [datafile]");
+            }
+            RegisterCPathServices.registerServices();
+            if (args.length > 1) {
+                loadDataFile(args[1]);
+            }
+            TransferImportToGrid transfer = new TransferImportToGrid
+                    (true, null);
+            transfer.transferData();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        transfer.transferData();
+    }
+
+    private static void loadDataFile(String fileName) throws IOException,
+            NoSuchAlgorithmException, SQLException, ClassNotFoundException {
+        System.out.println("Loading data file:  " + fileName);
+        File file = new File(fileName);
+        ContentReader reader = new ContentReader();
+        String data = reader.retrieveContentFromFile(file);
+        DaoImport dbImport = new DaoImport();
+        dbImport.addRecord(data);
     }
 }

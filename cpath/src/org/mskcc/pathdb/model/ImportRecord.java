@@ -3,9 +3,9 @@ package org.mskcc.pathdb.model;
 import java.util.Date;
 
 /**
- * Encapsulates a Database Import Record.
+ * JavaBean to Encapsulate an Import Record.
  *
- * @author Ethan Cerami.
+ * @author Ethan Cerami
  */
 public class ImportRecord {
     private String data;

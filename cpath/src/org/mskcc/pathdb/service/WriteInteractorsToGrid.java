@@ -39,9 +39,9 @@ import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.dataservices.live.DataServiceBase;
 import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.ReadInteractors;
 import org.mskcc.dataservices.services.WriteInteractors;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.CPathConstants;
 
 import java.sql.Connection;
@@ -58,6 +58,7 @@ import java.util.ArrayList;
  */
 public class WriteInteractorsToGrid extends DataServiceBase
         implements WriteInteractors {
+    private Connection con;
 
     /**
      * Conditionally saves all specified Interactors to the GRID Database.
@@ -79,6 +80,8 @@ public class WriteInteractorsToGrid extends DataServiceBase
             }
         } catch (Exception e) {
             throw new DataServiceException(e);
+        } finally {
+            JdbcUtil.freeConnection(con);
         }
         return counter;
     }
@@ -106,10 +109,12 @@ public class WriteInteractorsToGrid extends DataServiceBase
         if (desc == null) {
             desc = "No description available";
         }
-        StringBuffer externalNames = new StringBuffer(";");
-        StringBuffer externalIds = new StringBuffer(";");
+        StringBuffer externalNames = new StringBuffer();
+        StringBuffer externalIds = new StringBuffer();
         ExternalReference refs[] = interactor.getExternalRefs();
         if (refs != null) {
+            externalNames = new StringBuffer(";");
+            externalIds = new StringBuffer(";");
             for (int i = 0; i < refs.length; i++) {
                 ExternalReference ref = refs[i];
                 String dbName = ref.getDatabase();
@@ -118,8 +123,8 @@ public class WriteInteractorsToGrid extends DataServiceBase
                 externalIds.append(dbId + ";");
             }
         }
-        Connection connection = GridProtocol.getConnection(this.getLocation());
-        PreparedStatement pstmt = connection.prepareStatement
+        con = JdbcUtil.getGridConnection();
+        PreparedStatement pstmt = con.prepareStatement
                 ("INSERT INTO orf_info (orf_name, description, "
                 + "external_names, external_ids, status) "
                 + "VALUES (?, ?, ?, ?, ?)");

@@ -2,7 +2,7 @@ package org.mskcc.pathdb.xmlrpc;
 
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcHandler;
-import org.mskcc.pathdb.sql.DatabaseImport;
+import org.mskcc.pathdb.sql.DaoImport;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -29,10 +29,10 @@ public class SubmitData implements XmlRpcHandler {
         String data = (String) params.get(0);
 
         //  Import to Database.
-        DatabaseImport dbImport = new DatabaseImport();
+        DaoImport dbImport = new DaoImport();
 
         try {
-            dbImport.addImportRecord(data);
+            dbImport.addRecord(data);
         } catch (NoSuchAlgorithmException e) {
             throw new XmlRpcException(1, e.toString());
         } catch (SQLException e) {

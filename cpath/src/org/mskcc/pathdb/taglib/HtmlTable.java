@@ -112,6 +112,15 @@ public abstract class HtmlTable extends TagSupport {
     }
 
     /**
+     * Outputs Link with Alt Tag
+     */
+    protected void outputLink(String name, String url, String alt) {
+        append("<A TITLE=\"" + alt + "\" HREF=\"" + url + "\">");
+        append(name);
+        append("</A>");
+    }
+
+    /**
      * Gets HTML String.
      * Primarily used by the JUnit Test Case Class.
      * @return HTML String.

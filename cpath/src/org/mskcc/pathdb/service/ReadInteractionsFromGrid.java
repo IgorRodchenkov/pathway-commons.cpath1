@@ -43,6 +43,7 @@ import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.dataservices.live.DataServiceBase;
 import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.ReadInteractions;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.File;
 import java.net.URL;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
  */
 public class ReadInteractionsFromGrid extends DataServiceBase
         implements ReadInteractions {
+    private Connection con;
 
     /**
      * Cache Options.
@@ -89,6 +91,8 @@ public class ReadInteractionsFromGrid extends DataServiceBase
             throw new DataServiceException(e);
         } catch (ClassNotFoundException e) {
             throw new DataServiceException(e);
+        } finally {
+            JdbcUtil.freeConnection(con);
         }
     }
 
@@ -152,10 +156,10 @@ public class ReadInteractionsFromGrid extends DataServiceBase
      */
     private ResultSet connect(String localId)
             throws SQLException, ClassNotFoundException {
-        Connection con = GridProtocol.getConnection(this.getLocation());
+        con = JdbcUtil.getGridConnection();
         PreparedStatement pstmt = con.prepareStatement
                 ("select * from interactions where (geneA = ? or geneB = ?) "
-                + " and (deprecated='F')");
+                + " and (deprecated='F') ORDER BY interaction_id");
         pstmt.setString(1, localId);
         pstmt.setString(2, localId);
         ResultSet rs = pstmt.executeQuery();

@@ -33,12 +33,16 @@
  **/
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
+import org.mskcc.dataservices.bio.vocab.InteractorVocab;
+import org.mskcc.pathdb.model.ExternalDatabase;
+import org.mskcc.pathdb.model.ExternalLink;
+import org.mskcc.pathdb.sql.DaoExternalLink;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -49,7 +53,6 @@ import java.util.ArrayList;
 public class InteractionTable extends HtmlTable {
     private String uid;
     private ArrayList interactions;
-    private ExternalLinks links;
 
     /**
      * Sets Interaction Parameter.
@@ -72,69 +75,102 @@ public class InteractionTable extends HtmlTable {
      * @throws IOException Input Output Exceptions.
      */
     protected void subDoStartTag() throws IOException {
-        links = new ExternalLinks();
-        startTable("Interactions for:  " + uid);
-        String headers[] = {
-            "Interactor", "External References",
-            "Experimental System", "PubMed Reference"};
+        try {
+            startTable("Interactions for:  " + uid);
+            String headers[] = {
+                "Interactor", "External References",
+                "Experimental System", "PubMed Reference"};
 
-        createTableHeaders(headers);
-        outputInteractions();
-        endTable();
+            createTableHeaders(headers);
+            outputInteractions();
+            endTable();
+        } catch (Exception e) {
+            this.append("Error:  " + e);
+        }
     }
 
     /**
      * Outputs Interaction Data.
      */
-    private void outputInteractions() {
+    private void outputInteractions() throws SQLException,
+            ClassNotFoundException {
         for (int i = 0; i < interactions.size(); i++) {
             Interaction interaction = (Interaction) interactions.get(i);
             ArrayList interactors = interaction.getInteractors();
             append("<TR>");
-            for (int j = 0; j < interactors.size(); j++) {
-                Interactor interactor = (Interactor) interactors.get(j);
-                if (!interactor.getName().equalsIgnoreCase(uid)) {
-                    String url = links.getInteractionLink(interactor.getName());
-                    outputDataField(interactor.getName(), url);
-                    outputExternalReferences(interactor);
-                }
-            }
+            Interactor interactor = pickInteractorToDisplay(interactors);
+            String url = getInteractionLink(interactor.getName());
+            outputDataField(interactor.getName(), url);
+            outputExternalReferences(interactor);
             String expSystem = (String) interaction.getAttribute
                     (InteractionVocab.EXPERIMENTAL_SYSTEM_NAME);
             outputDataField(expSystem);
             String pmid = (String) interaction.getAttribute
                     (InteractionVocab.PUB_MED_ID);
-            String url = links.getNcbiLink(pmid);
+            url = getPubMedLink(pmid);
             outputDataField(pmid, url);
         }
         append("</TR>");
     }
 
     /**
+     * Gets PubMedLink.
+     * @param pmid PMID.
+     * @return URL to PubMed.
+     */
+    private String getPubMedLink(String pmid) {
+        String url = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?"
+                + "cmd=Retrieve&db=PubMed&list_uids=" + pmid + "&dopt=Abstract";
+        return url;
+    }
+
+    /**
+     * Gets Internal Link to "get interactions".
+     * @param id Unique ID.
+     * @return URL back to CPath.
+     */
+    private String getInteractionLink(String id) {
+        String url = "/ds/dataservice?version=1.0&cmd=retrieve_interactions&"
+                + "db=grid&format=html&uid=" + id;
+        return url;
+    }
+
+    /**
      * Outputs External References.
      */
-    private void outputExternalReferences(Interactor interactor) {
-        ExternalReference refs[] = interactor.getExternalRefs();
-        if (refs != null) {
-            append("<TD VALIGN=TOP>");
-            append("<UL>");
-            for (int i = 0; i < refs.length; i++) {
-                String db = refs[i].getDatabase();
-                String id = refs[i].getId();
-                if (id.length() > 0) {
-                    append("<LI>" + db);
-                    append(":  ");
-                    String url = links.getExternalLink(db, id);
-                    if (url != null) {
-                        append("<A HREF=\"" + url + "\">" + id + "</A>");
-                    } else {
-                        append(id);
-                    }
-                }
-            }
-            append("</TD>");
+    private void outputExternalReferences(Interactor interactor)
+            throws SQLException, ClassNotFoundException {
+        DaoExternalLink dao = new DaoExternalLink();
+        String id = (String) interactor.getAttribute(InteractorVocab.LOCAL_ID);
+        ArrayList links = dao.getRecordsByCPathId(Integer.parseInt(id));
+        append("<TD VALIGN=TOP><UL>");
+        for (int i = 0; i < links.size(); i++) {
+            ExternalLink link = (ExternalLink) links.get(i);
+            ExternalDatabase db = link.getExternalDatabase();
+            append("<LI>" + db.getName() + ": ");
+            outputLink(link.getLinkedToId(), link.getWebLink(),
+                    db.getDescription());
+        }
+        append("</UL></TD>");
+    }
+
+    /**
+     * Picks correct interactor to display to User.
+     */
+    private Interactor pickInteractorToDisplay(ArrayList interactors) {
+        Interactor interactor0 = (Interactor) interactors.get(0);
+        Interactor interactor1 = (Interactor) interactors.get(1);
+        String name0 = interactor0.getName();
+        String name1 = interactor1.getName();
+
+        // If both interactors are the same, this is a self-interacting
+        // interaction.
+        if (name0.equals(uid) && name1.equals(uid)) {
+            return interactor0;
+        } else if (name0.equals(uid)) {
+            return interactor1;
         } else {
-            append("<TD>&nbsp;</TD>");
+            return interactor0;
         }
     }
 }

@@ -2,7 +2,7 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ImportRecord;
-import org.mskcc.pathdb.sql.DatabaseImport;
+import org.mskcc.pathdb.sql.DaoImport;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,31 +11,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Tests the DatabaseImport Class.
+ * Tests the DaoImport Class.
  *
  * @author Ethan Cerami
  */
-public class TestDatabaseImport extends TestCase {
+public class TestDaoImport extends TestCase {
 
     /**
-     * Tests the DatabaseImport Class.
+     * Tests the DaoImport Class.
      * @throws Exception All Exceptions.
      */
     public void testDatabaseImport() throws Exception {
-        DatabaseImport dbImport = new DatabaseImport();
+        DaoImport dbImport = new DaoImport();
 
         //  First Delete All Existing Records.
-        ArrayList records = dbImport.getAllImportRecords();
+        ArrayList records = dbImport.getAllRecords();
         for (int i = 0; i < records.size(); i++) {
             ImportRecord record = (ImportRecord) records.get(i);
-            dbImport.deleteImportRecord(record.getImportId());
+            dbImport.deleteRecordById(record.getImportId());
         }
 
         //  Add Test Records
         addTestRecords();
 
         //  Verify New Records
-        records = dbImport.getAllImportRecords();
+        records = dbImport.getAllRecords();
         for (int i = 0; i < records.size(); i++) {
             ImportRecord record = (ImportRecord) records.get(i);
             // Verify Start of XML Document.
@@ -57,12 +57,12 @@ public class TestDatabaseImport extends TestCase {
     }
 
     /**
-     * Tests the getImportRecordById() method.
+     * Tests the getRecordById() method.
      */
     private void getIndividualRecord(int id, String hash)
             throws SQLException, ClassNotFoundException, IOException {
-        DatabaseImport dbImport = new DatabaseImport();
-        ImportRecord record = dbImport.getImportRecordById(id);
+        DaoImport dbImport = new DaoImport();
+        ImportRecord record = dbImport.getRecordById(id);
         assertEquals(hash, record.getMd5Hash());
     }
 
@@ -71,9 +71,9 @@ public class TestDatabaseImport extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void addTestRecords() throws Exception {
-        DatabaseImport dbImport = new DatabaseImport();
+        DaoImport dbImport = new DaoImport();
         String sampleData = getTextFromSampleFile();
-        dbImport.addImportRecord(sampleData);
+        dbImport.addRecord(sampleData);
     }
 
     /**

@@ -37,15 +37,14 @@ import org.mskcc.dataservices.bio.AttributeBag;
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
-import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.live.DataServiceBase;
 import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.WriteInteractions;
 import org.mskcc.dataservices.services.WriteInteractors;
-import org.mskcc.pathdb.sql.GridInteractionTable;
-import org.mskcc.pathdb.sql.GridInteractorTable;
+import org.mskcc.pathdb.sql.DaoInteraction;
+import org.mskcc.pathdb.sql.DaoInteractor;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.CPathConstants;
 
 import java.sql.Connection;
@@ -64,6 +63,7 @@ import java.util.Iterator;
  */
 public class WriteInteractionsToGrid extends DataServiceBase
         implements WriteInteractions {
+    private Connection con;
 
     /**
      * Write Interactions to GRID.
@@ -76,13 +76,16 @@ public class WriteInteractionsToGrid extends DataServiceBase
         int numSavedInteractions = 0;
         ArrayList interactors = createInteractorSet(interactions);
         int numSavedInteractors = saveInteractors(interactors);
-        GridInteractorTable.getLocalInteractorIds(interactors);
+        HashMap localIdMap = DaoInteractor.getLocalInteractorIds
+                (interactors);
         try {
-            numSavedInteractions = saveInteractions(interactions);
+            numSavedInteractions = saveInteractions(interactions, localIdMap);
         } catch (ClassNotFoundException e) {
             throw new DataServiceException(e);
         } catch (SQLException e) {
             throw new DataServiceException(e);
+        } finally {
+            JdbcUtil.freeConnection(con);
         }
         return numSavedInteractions;
     }
@@ -110,15 +113,17 @@ public class WriteInteractionsToGrid extends DataServiceBase
     /**
      * Conditionally Saves all Specified Interactions.
      */
-    private int saveInteractions(ArrayList interactions)
+    private int saveInteractions(ArrayList interactions,
+            HashMap localIdMap)
             throws ClassNotFoundException, SQLException, DataServiceException {
         int counter = 0;
         for (int i = 0; i < interactions.size(); i++) {
             Interaction interaction = (Interaction) interactions.get(i);
             boolean exists =
-                    GridInteractionTable.interactionExists(interaction);
+                    DaoInteraction.interactionExists(interaction,
+                            getLocation());
             if (!exists) {
-                counter += saveInteraction(interaction, false);
+                counter += saveInteraction(interaction, localIdMap, false);
             }
         }
         return counter;
@@ -132,16 +137,15 @@ public class WriteInteractionsToGrid extends DataServiceBase
      * @throws ClassNotFoundException Could not locate Database driver.
      * @throws SQLException Error connecting to database.
      */
-    private int saveInteraction(Interaction interaction, boolean isTest)
+    private int saveInteraction(Interaction interaction, HashMap localIdMap,
+            boolean isTest)
             throws ClassNotFoundException, SQLException {
         ArrayList interactors = interaction.getInteractors();
         Interactor interactor0 = (Interactor) interactors.get(0);
         Interactor interactor1 = (Interactor) interactors.get(1);
 
-        String localId0 = (String) interactor0.getAttribute
-                (InteractorVocab.LOCAL_ID);
-        String localId1 = (String) interactor1.getAttribute
-                (InteractorVocab.LOCAL_ID);
+        String localId0 = (String) localIdMap.get(interactor0.getName());
+        String localId1 = (String) localIdMap.get(interactor1.getName());
 
         String expSystem = getAttribute(interaction,
                 InteractionVocab.EXPERIMENTAL_SYSTEM_NAME);
@@ -151,10 +155,10 @@ public class WriteInteractionsToGrid extends DataServiceBase
         if (direction == null) {
             direction = "AB";
         }
-        StringBuffer pmidStr = getPmids(interaction);
+        String pmidStr = DaoInteraction.getPmids(interaction);
 
-        Connection connection = GridProtocol.getConnection(this.getLocation());
-        PreparedStatement pstmt = connection.prepareStatement
+        con = JdbcUtil.getGridConnection();
+        PreparedStatement pstmt = con.prepareStatement
                 ("INSERT INTO interactions (geneA, geneB, "
                 + "experimental_system, owner, pubmed_id, direction, "
                 + "bait_allele, prey_allele, deprecated, status)"
@@ -163,7 +167,7 @@ public class WriteInteractionsToGrid extends DataServiceBase
         pstmt.setString(2, localId1);
         pstmt.setString(3, expSystem);
         pstmt.setString(4, owner);
-        pstmt.setString(5, pmidStr.toString());
+        pstmt.setString(5, pmidStr);
         pstmt.setString(6, direction);
         pstmt.setString(7, "Not Reported");
         pstmt.setString(8, "Not Reported");
@@ -177,27 +181,6 @@ public class WriteInteractionsToGrid extends DataServiceBase
         return rows;
     }
 
-    /**
-     * Extracts PubMedIds.
-     */
-    private StringBuffer getPmids(Interaction interaction) {
-        String pmids[] = null;
-        Object object = interaction.getAttribute(InteractionVocab.PUB_MED_ID);
-        if (object instanceof String) {
-            pmids = new String[1];
-            pmids[0] = (String) object;
-        } else if (object instanceof String[]) {
-            pmids = (String[]) object;
-        }
-        StringBuffer pmidStr = new StringBuffer();
-        if (pmids != null && pmids.length > 0) {
-            pmidStr.append(";");
-            for (int i = 0; i < pmids.length; i++) {
-                pmidStr.append(pmids[i] + ";");
-            }
-        }
-        return pmidStr;
-    }
 
     /**
      * Sets Attribute.  If none if specified, use the value, "Not Reported."

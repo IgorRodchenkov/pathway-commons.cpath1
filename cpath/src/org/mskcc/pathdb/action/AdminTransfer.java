@@ -3,6 +3,7 @@ package org.mskcc.pathdb.action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.mskcc.pathdb.sql.TransferExternalLinks;
 import org.mskcc.pathdb.sql.TransferImportToGrid;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -29,9 +30,18 @@ public class AdminTransfer extends BaseAction {
     public ActionForward subExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
-        TransferImportToGrid transfer = new TransferImportToGrid(true);
-        transfer.transferData();
+        String action = request.getParameter("action");
+        ;
+        if (action.equals("transfer1")) {
+            TransferImportToGrid transfer = new TransferImportToGrid(false,
+                    xdebug);
+            transfer.transferData();
+        } else {
+            TransferExternalLinks transfer = new TransferExternalLinks(false,
+                    xdebug);
+            transfer.transferData();
+        }
         this.setUserMessage(request, "Transfer Complete");
-        return actionMapping.findForward("display");
+        return mapping.findForward("display");
     }
 }

@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.ImportRecord;
-import org.mskcc.pathdb.sql.DatabaseImport;
+import org.mskcc.pathdb.sql.DaoImport;
 
 import java.util.ArrayList;
 
@@ -17,8 +17,8 @@ public class ImportTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {
-        DatabaseImport dbImport = new DatabaseImport();
-        ArrayList records = dbImport.getAllImportRecords();
+        DaoImport dbImport = new DaoImport();
+        ArrayList records = dbImport.getAllRecords();
         String headers[] = {
             "Status", "Creation Time",
             "Update Time", "File Size (kb)", "View"};

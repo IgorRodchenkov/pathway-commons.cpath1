@@ -3,13 +3,16 @@ package org.mskcc.pathdb.action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.mskcc.dataservices.cache.CacheManager;
 import org.mskcc.pathdb.model.ImportRecord;
-import org.mskcc.pathdb.sql.DatabaseImport;
+import org.mskcc.pathdb.sql.DaoImport;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Action for Displaying Import Records.
@@ -33,15 +36,22 @@ public class AdminDisplay extends BaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
         String importID = request.getParameter("import_id");
         if (importID != null) {
-            DatabaseImport dbImport = new DatabaseImport();
+            DaoImport dbImport = new DaoImport();
             int id = Integer.parseInt(importID);
-            ImportRecord record = dbImport.getImportRecordById(id);
+            ImportRecord record = dbImport.getRecordById(id);
             response.setContentType("text/plain");
             PrintWriter out = response.getWriter();
             out.println(record.getData());
             return null;
         } else {
-            return actionMapping.findForward("display");
+            CacheManager cacheManager = CacheManager.getInstance();
+            HashMap map = cacheManager.getEntireCache();
+            Iterator keys = map.keySet().iterator();
+            while (keys.hasNext()) {
+                String key = (String) keys.next();
+                xdebug.logMsg(this, "Cache:  " + key);
+            }
+            return mapping.findForward("display");
         }
     }
 }

@@ -38,9 +38,9 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.protocol.GridProtocol;
 import org.mskcc.dataservices.services.ReadInteractors;
 import org.mskcc.dataservices.services.WriteInteractors;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.CPathConstants;
 
 import java.sql.Connection;
@@ -121,7 +121,7 @@ public class TestWriteInteractorsToGrid extends TestCase {
      * @throws Exception All Exceptions.
      */
     public static void deleteJUnitInteractors() throws Exception {
-        Connection con = GridProtocol.getConnection("localhost");
+        Connection con = JdbcUtil.getGridConnection();
         PreparedStatement pstmt = con.prepareStatement
                 ("DELETE FROM ORF_INFO WHERE orf_name = ?");
         pstmt.setString(1, ORF_NAME);

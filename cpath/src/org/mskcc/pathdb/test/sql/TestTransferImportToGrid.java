@@ -5,7 +5,7 @@ import org.mskcc.dataservices.live.DataServiceFactory;
 import org.mskcc.dataservices.services.ReadInteractions;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.sql.DatabaseImport;
+import org.mskcc.pathdb.sql.DaoImport;
 import org.mskcc.pathdb.sql.TransferImportToGrid;
 import org.mskcc.pathdb.util.CPathConstants;
 
@@ -29,7 +29,7 @@ public class TestTransferImportToGrid extends TestCase {
     public void testTransfer() throws Exception {
         RegisterCPathServices.registerServices();
         addSampleRecord();
-        TransferImportToGrid transfer = new TransferImportToGrid(false);
+        TransferImportToGrid transfer = new TransferImportToGrid(false, null);
         transfer.transferData();
 
         DataServiceFactory factory = DataServiceFactory.getInstance();
@@ -45,11 +45,11 @@ public class TestTransferImportToGrid extends TestCase {
     private void addSampleRecord() throws IOException,
             NoSuchAlgorithmException, SQLException, ClassNotFoundException {
         ContentReader reader = new ContentReader();
-        //File file = new File ("testData/psi_subway.xml");
-        File file = new File("testData/dip_psi.xml");
+        File file = new File("testData/psi_subway.xml");
+        //File file = new File("testData/dip_psi.xml");
         String psi = reader.retrieveContentFromFile(file);
 
-        DatabaseImport dbImport = new DatabaseImport();
-        dbImport.addImportRecord(psi);
+        DaoImport dbImport = new DaoImport();
+        dbImport.addRecord(psi);
     }
 }

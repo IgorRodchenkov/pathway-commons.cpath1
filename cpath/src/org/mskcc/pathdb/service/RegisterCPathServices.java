@@ -3,6 +3,7 @@ package org.mskcc.pathdb.service;
 import org.mskcc.dataservices.core.DataServiceDescription;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.live.DataServiceFactory;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.util.CPathConstants;
 
 import java.util.ArrayList;
@@ -42,12 +43,15 @@ public class RegisterCPathServices {
 
         ArrayList services = new ArrayList();
 
+        PropertyManager manager = PropertyManager.getInstance();
+        String dbLocation = manager.getProperty(PropertyManager.DB_LOCATION);
+
         String desc = "Reads Interactors from GRID";
         DataServiceDescription dsDesc = new DataServiceDescription
                 (CPathConstants.READ_INTERACTORS_FROM_GRID,
                         desc, version, provider,
                         org.mskcc.pathdb.service.ReadInteractorsFromGrid.class,
-                        "localhost");
+                        dbLocation);
         services.add(dsDesc);
 
         desc = "Reads Interactions from GRID";
@@ -55,7 +59,7 @@ public class RegisterCPathServices {
                 (CPathConstants.READ_INTERACTIONS_FROM_GRID,
                         desc, version, provider,
                         org.mskcc.pathdb.service.ReadInteractionsFromGrid.class,
-                        "localhost");
+                        dbLocation);
         services.add(dsDesc);
 
         desc = "Writes Interactors to GRID";
@@ -63,7 +67,7 @@ public class RegisterCPathServices {
                 (CPathConstants.WRITE_INTERACTORS_TO_GRID,
                         desc, version, provider,
                         org.mskcc.pathdb.service.WriteInteractorsToGrid.class,
-                        "localhost");
+                        dbLocation);
         services.add(dsDesc);
 
         desc = "Writes Interactions to GRID";
@@ -71,7 +75,7 @@ public class RegisterCPathServices {
                 (CPathConstants.WRITE_INTERACTIONS_TO_GRID,
                         desc, version, provider,
                         org.mskcc.pathdb.service.WriteInteractionsToGrid.class,
-                        "localhost");
+                        dbLocation);
         services.add(dsDesc);
         return services;
     }

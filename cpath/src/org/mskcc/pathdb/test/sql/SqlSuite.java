@@ -17,10 +17,14 @@ public class SqlSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestDatabaseImport.class);
-        suite.addTestSuite(TestGridInteractorTable.class);
-        suite.addTestSuite(TestGridInteractionTable.class);
+        suite.addTestSuite(TestDaoImport.class);
+        suite.addTestSuite(TestDaoInteractor.class);
+        suite.addTestSuite(TestDaoInteraction.class);
         suite.addTestSuite(TestTransferImportToGrid.class);
+        suite.addTestSuite(TestTransfersWithDipData.class);
+        suite.addTestSuite(TestDaoExternalDb.class);
+        suite.addTestSuite(TestDaoExternalDbCv.class);
+        suite.addTestSuite(TestDaoExternalLink.class);
         suite.setName("SQL Database Tests");
         return suite;
     }
