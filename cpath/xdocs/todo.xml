@@ -13,24 +13,30 @@ This document contains cPath Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
+0.  We still don't have any way of adding new external databases,
+    and the controlled vocabulary terms and URLs associated with each database.
+    As a first step, we should definitely add a command line script to
+    do this.
+    --->  current priority:  I think this is relatively high.
+
 1.  Add Field Specific Lucene Searching, e.g. "name:RAS".
     ---> current priority:  low.
-    [Will be implemented in Phase 9]
+    [NOW COMPLETE]
 
 2.  Add new query:  query by experimental method (e.g. all the data from
     two-hybrid)
 	---> current priority:  hi.
-    [Will be implemented in Phase 9]
+    [NOW COMPLETE]
 
 3.  Add Indexing of interactions.
     Requires changes to web interface.  Needs more exploration.
     ---> current priority:  low.
-    [Will be implemented in Phase 9]
+    [NOW COMPLETE]
 
 4.  For HTML front end of cPath query API: pageinate results
     (only text index results currently paginated)
 	---> current priority:  low.
-    [Will probably be implemented in Phase 9]
+    [NOW COMPLETE]
 
 5.  Import Complete Data Set
 
@@ -74,9 +80,10 @@ cPath Functionality Issues:
 
 11.  Resolve cross-species interaction issue.
 
-12. Implement a full statistics page.  This could be precomputed regularly
-    (e.g. weekly), not computed on the fly.  The best example of a stats page
-    is currently the MINT page: http://160.80.34.4/mint/statistics/statistics.php
+12. Implement a full database/ web  statistics page.
+    This could be precomputed regularly (e.g. weekly), not computed on the
+    fly.  The best example of a stats page is currently the MINT page:
+    http://160.80.34.4/mint/statistics/statistics.php
 	---> Current priority: low.
 
 13. Add support to cPath and data services layer for importing PSI-MI files
