@@ -18,7 +18,7 @@ Once you have verified that the installations are working correctly, proceed to 
 
 2.  Create a mysql user for cPath.  For easiest installation, use the following:
 
-	user:  		tomcat
+	user:  		tomcat@localhost
 	password:	kitty
 
 If you choose a different user/password combination, see Appendix A below.
