@@ -32,7 +32,7 @@ public class AdminWebLogging extends AdminBaseAction {
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
      */
-    public ActionForward subExecute(ActionMapping mapping,
+    public ActionForward adminExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
         HttpSession session = request.getSession();

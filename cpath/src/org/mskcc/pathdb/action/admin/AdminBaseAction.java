@@ -19,7 +19,7 @@ import java.io.IOException;
  *
  * @author Ethan Cerami
  */
-public class AdminBaseAction extends BaseAction {
+public abstract class AdminBaseAction extends BaseAction {
 
     /**
      * Executes Action.
@@ -35,30 +35,25 @@ public class AdminBaseAction extends BaseAction {
     public ActionForward subExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
-        LuceneIndexer indexer = new LuceneIndexer();
-        String dir = indexer.getDirectory();
-        xdebug.logMsg(this, "Lucene Index Directory:  " + dir);
-        String action = request.getParameter("action");
-        if (action != null) {
-            if (action.equals("remove")) {
-                removeTask(request, xdebug);
-            }
-        }
-        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+        request.setAttribute(BaseAction.PAGE_IS_ADMIN, "YES");
+        checkErrorPage(request, xdebug);
+        return adminExecute(mapping, form, request, response, xdebug);
     }
 
-    private void removeTask(HttpServletRequest request, XDebug xdebug) {
-        String index = request.getParameter("index");
-        try {
-            int i = Integer.parseInt(index);
-            xdebug.logMsg(this, "Removing Task:  " + i);
-            GlobalTaskList globalTaskList = GlobalTaskList.getInstance();
-            globalTaskList.removeTask(i);
-            setUserMessage(request, "Task Removed.");
-        } catch (NumberFormatException e) {
-            setUserMessage(request, "Invalid Index Number.");
-        }
-    }
+    /**
+     * Must Be Implemented By Subclass.
+     *
+     * @param mapping  Struts ActionMapping Object.
+     * @param form     Struts ActionForm Object.
+     * @param request  Http Servlet Request.
+     * @param response Http Servlet Response.
+     * @param xdebug   XDebug Object.
+     * @return Struts Action Forward Object.
+     * @throws Exception All Exceptions.
+     */
+    protected abstract ActionForward adminExecute(ActionMapping mapping,
+            ActionForm form, HttpServletRequest request,
+            HttpServletResponse response, XDebug xdebug) throws Exception;
 
     protected boolean isUserAuthorized(ActionMapping mapping,
             HttpServletRequest request, HttpServletResponse response,
@@ -101,5 +96,19 @@ public class AdminBaseAction extends BaseAction {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setHeader("WWW-Authenticate",
                 "BASIC realm=\"cPath Admin\"");
+    }
+
+    /**
+     * This method generates a sample Error Page.  It is useful for testing
+     * purposes only.
+     */
+    private void checkErrorPage(HttpServletRequest request, XDebug xdebug)
+            throws Exception {
+        String testError = request.getParameter(PARAMETER_TEST_ERROR_PAGE);
+        if (testError != null) {
+            xdebug.logMsg(this, "Throwing an Exception to Test Error Page");
+            throw new Exception ("This is a test of the Error"
+                    + " page functionality");
+        }
     }
 }

@@ -28,7 +28,7 @@ public class PurgeLogRecords extends AdminBaseAction {
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
      */
-    public ActionForward subExecute(ActionMapping mapping,
+    public ActionForward adminExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
         xdebug.logMsg(this, "Purging All Log Records");

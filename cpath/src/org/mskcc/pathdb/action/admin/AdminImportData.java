@@ -39,7 +39,7 @@ public class AdminImportData extends AdminBaseAction {
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
      */
-    public ActionForward subExecute(ActionMapping mapping,
+    public ActionForward adminExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
         xdebug.logMsg(this, "Importing Data to cPath");
@@ -68,6 +68,10 @@ public class AdminImportData extends AdminBaseAction {
             //  Assume this is a list of external refs.
             importRefs(data, xdebug, request);
         }
+
+        //  Set Auto-Update Flag
+        request.setAttribute(BaseAction.PAGE_AUTO_UPDATE,
+                BaseAction.YES);        
     }
 
     private void importPsi(String data, XDebug xdebug,

@@ -28,14 +28,19 @@ public class AdminFullTextIndexer extends AdminBaseAction {
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
      */
-    public ActionForward subExecute(ActionMapping mapping,
+    public ActionForward adminExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
         xdebug.logMsg(this, "Running Full Text Indexer");
 
-        IndexLuceneTask task = new IndexLuceneTask(false);
+        IndexLuceneTask task = new IndexLuceneTask(false, xdebug);
         task.start();
         this.setUserMessage(request, "Index task is now running.");
+
+        //  Set Auto-Update Flag
+        request.setAttribute(BaseAction.PAGE_AUTO_UPDATE,
+                BaseAction.YES);
+
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 }

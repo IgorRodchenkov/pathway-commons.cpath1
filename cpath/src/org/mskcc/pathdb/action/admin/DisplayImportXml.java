@@ -29,7 +29,7 @@ public class DisplayImportXml extends AdminBaseAction {
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
      */
-    public ActionForward subExecute(ActionMapping mapping,
+    public ActionForward adminExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
         String importID = request.getParameter("import_id");
