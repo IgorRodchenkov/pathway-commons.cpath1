@@ -1,5 +1,5 @@
 #  Sample ID Mappings File				
 
 Affymetrix	UniGene	LocusLink	SwissProt	RefSeq
-1552275_3p_s_at	Hs.77646		AAH08943 Q727A4	NP_060241
+1552275_3p_s_at	Hs.77646		AAH08943   Q727A4	NP_060241
 1552275_3p_s_at				NP_060241
