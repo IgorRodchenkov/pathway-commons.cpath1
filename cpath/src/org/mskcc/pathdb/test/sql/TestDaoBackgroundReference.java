@@ -30,7 +30,7 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.model.BackgroundReferenceRecord;
+import org.mskcc.pathdb.model.BackgroundReferencePair;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.dao.DaoBackgroundReferences;
 
@@ -51,10 +51,10 @@ public class TestDaoBackgroundReference extends TestCase {
 
         //  First, try adding a sample record with invalid DB Ids.
         //  This should trigger an exception.
-        BackgroundReferenceRecord record = new BackgroundReferenceRecord
-                (100, "ABCD", 200, "XYZ", ReferenceType.IDENTITY);
+        BackgroundReferencePair pair = new BackgroundReferencePair
+                (100, "ABCD", 200, "XYZ", ReferenceType.PROTEIN_UNIFICATION);
         try {
-            dao.addRecord(record, true);
+            dao.addRecord(pair, true);
             fail("Illegal Argument Exception should have been thrown.  "
                     + " DB1 and DB2 are not stored in the database.");
         } catch (IllegalArgumentException e) {
@@ -63,71 +63,74 @@ public class TestDaoBackgroundReference extends TestCase {
 
         //  Now, try adding a sample record with an empty Id.
         //  This should trigger an exception.
-        record = new BackgroundReferenceRecord(1, "ABCD", 2, "",
-                ReferenceType.IDENTITY);
+        pair = new BackgroundReferencePair(1, "ABCD", 2, "",
+                ReferenceType.PROTEIN_UNIFICATION);
         try {
-            dao.addRecord(record, true);
+            dao.addRecord(pair, true);
             fail("Illegal Argument Exception should have been thrown.  "
                     + " ID2 is null");
         } catch (IllegalArgumentException e) {
             String msg = e.getMessage();
         }
 
-        //  Now, try adding a sample IDENTITY record with a LINK_OUT Reference
-        record = new BackgroundReferenceRecord(3, "ABCD", 2, "XYZ",
-                ReferenceType.IDENTITY);
+        //  Now, try adding a sample PROTEIN_UNIFICATION record with a
+        //  LINK_OUT Reference.  This should trigger an Exception.
+        pair = new BackgroundReferencePair(1, "ABCD", 3, "XYZ",
+                ReferenceType.PROTEIN_UNIFICATION);
         try {
-            dao.addRecord(record, true);
-            fail("Illegal Argument Exception should have been throw.  "
-                    + " First Database is of type:  LINK_OUT");
+            dao.addRecord(pair, true);
+            fail("Illegal Argument Exception should have been thrown.  "
+                    + " Second Database not a PROTEIN_UNIFICATION Database.");
         } catch (IllegalArgumentException e) {
             String msg = e.getMessage();
         }
 
-        //  Now, try adding a sample LINK_OUT record with two IDENTITY Refs.
-        record = new BackgroundReferenceRecord(1, "ABCD", 2, "XYZ",
+        //  Now, try adding a sample LINK_OUT record with two
+        //  PROTEIN_UNIFICATION References.  This should trigger an Exception.
+        pair = new BackgroundReferencePair(1, "ABCD", 6, "XYZ",
                 ReferenceType.LINK_OUT);
         try {
-            dao.addRecord(record, true);
-            fail("Illegal Argument Exception should have been throw.  "
-                    + " Both Databases are of type:  IDENTITY.");
+            dao.addRecord(pair, true);
+            fail("Illegal Argument Exception should have been thrown.  "
+                    + " Both databases are of type: PROTEIN_UNIFICATION.");
         } catch (IllegalArgumentException e) {
             String msg = e.getMessage();
         }
 
-        //  Now, try adding a sample record, based on external databases
-        //  defined in reset.sql
-        record = new BackgroundReferenceRecord(1, "ABCD", 2, "XYZ",
-                ReferenceType.IDENTITY);
-        boolean success = dao.addRecord(record, true);
+        //  Now, try adding a valid sample PROTEIN_UNIFICATION record
+        pair = new BackgroundReferencePair(1, "ABCD", 6, "XYZ",
+                ReferenceType.PROTEIN_UNIFICATION);
+        boolean success = dao.addRecord(pair, true);
         assertTrue(success);
 
-        //  Verify that the record 1:ABCD <--> 2:XYZ now exists within
+        //  Verify that the record 1:ABCD <--> 6:XYZ now exists within
         //  the database
-        BackgroundReferenceRecord record2 = dao.getRecord(record);
+        BackgroundReferencePair record2 = dao.getRecord(pair);
         assertTrue(record2 != null);
-        assertEquals(1, record2.getDb1());
-        assertEquals(2, record2.getDb2());
-        assertEquals("ABCD", record2.getId1());
-        assertEquals("XYZ", record2.getId2());
-        assertEquals(ReferenceType.IDENTITY, record2.getReferenceType());
+        assertEquals(1, record2.getDbId1());
+        assertEquals(6, record2.getDbId2());
+        assertEquals("ABCD", record2.getLinkedToId1());
+        assertEquals("XYZ", record2.getLinkedToId2());
+        assertEquals(ReferenceType.PROTEIN_UNIFICATION,
+                record2.getReferenceType());
 
-        //  Verify that the record 2:XYZ <--> 1:ABCD generates the same hit.
-        record2 = dao.getRecord(new BackgroundReferenceRecord(2, "XYZ",
-                1, "ABCD", ReferenceType.IDENTITY));
+        //  Verify that the record 6:XYZ <--> 1:ABCD generates the same hit.
+        record2 = dao.getRecord(new BackgroundReferencePair(6, "XYZ",
+                1, "ABCD", ReferenceType.PROTEIN_UNIFICATION));
         assertTrue(record2 != null);
-        assertEquals(1, record2.getDb1());
-        assertEquals(2, record2.getDb2());
-        assertEquals("ABCD", record2.getId1());
-        assertEquals("XYZ", record2.getId2());
-        assertEquals(ReferenceType.IDENTITY, record2.getReferenceType());
+        assertEquals(1, record2.getDbId1());
+        assertEquals(6, record2.getDbId2());
+        assertEquals("ABCD", record2.getLinkedToId1());
+        assertEquals("XYZ", record2.getLinkedToId2());
+        assertEquals(ReferenceType.PROTEIN_UNIFICATION,
+                record2.getReferenceType());
 
         //  Now Delete it
         success = dao.deleteRecordById(record2.getPrimaryId());
         assertTrue(success);
 
         //  Verify that record is indeed deleted.
-        record2 = dao.getRecord(record);
+        record2 = dao.getRecord(pair);
         assertTrue(record2 == null);
     }
 }
