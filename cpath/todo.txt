@@ -22,6 +22,7 @@ cPath Functionality Issues:
 	---> current priority:  low.
 8.  Support content-length calculation of PSI-MI queries, where possible, to support more accurate progress metering on the client side.  We might be able to easily do it for queries that are cached and for the precomputed queries.  For queries that aren't, we could at least provide updates of the parsing progress as it happens (Rob's idea)
 	---> Current priority: low.
+9.  Resolve cross-species interaction issue.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
