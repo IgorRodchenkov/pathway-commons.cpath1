@@ -4,6 +4,7 @@
 -->
 
 <project name="CPath" default="compile" basedir=".">
+	<!-- ==================== File and Directory Names ======================== -->
 
         <!-- The directory containing the configuration files -->
         <property name="config.dir" value="config"/>
@@ -17,200 +18,61 @@
 	<!-- Lucene Directory -->
         <property name="lucene.dir" value="textIndex"/>
 
+	<!-- Junit Directory -->
+	<property name="junit.dir" value="junit"/>
 
-<!-- ===================== Property Definitions =========================== -->
+  	<property file="build.properties"/>
+  	<property file="${user.home}/build.properties"/>
 
+	<property name="app.name"      value="cpath"/>
+  	<property name="app.path"      value="/${app.name}"/>
+  	<property name="app.version"   value="0.1-dev"/>
+  	<property name="build.home"    value="${basedir}/build"/>
+  	<property name="catalina.home" value="../../../.."/> <!-- UPDATE THIS! -->
+  	<property name="dist.home"     value="${basedir}/dist"/>
+  	<property name="manager.url"   value="http://localhost:8080/manager"/>
+  	<property name="src.home"      value="${basedir}/src"/>
+  	<property name="web.home"      value="${basedir}/web"/>
 
-<!--
-
-  Each of the following properties are used in the build script.
-  Values for these properties are set by the first place they are
-  defined, from the following list:
-
-  * Definitions on the "ant" command line (ant -Dfoo=bar compile).
-
-  * Definitions from a "build.properties" file in the top level
-    source directory of this application.
-
-  * Definitions from a "build.properties" file in the developer's
-    home directory.
-
-  * Default definitions in this build.xml file.
-
-  You will note below that property values can be composed based on the
-  contents of previously defined properties.  This is a powerful technique
-  that helps you minimize the number of changes required when your development
-  environment is modified.  Note that property composition is allowed within
-  "build.properties" files as well as in the "build.xml" script.
-
--->
-
-  <property file="build.properties"/>
-  <property file="${user.home}/build.properties"/>
+	<!-- ================== Custom Ant Task Definitions ======================= -->
+  	<taskdef name="install" classname="org.apache.catalina.ant.InstallTask"/>
+  	<taskdef name="list"    classname="org.apache.catalina.ant.ListTask"/>
+  	<taskdef name="reload"  classname="org.apache.catalina.ant.ReloadTask"/>
+  	<taskdef name="remove"  classname="org.apache.catalina.ant.RemoveTask"/>
+  	<taskdef resource="checkstyletask.properties"/>
 
 
-<!-- ==================== File and Directory Names ======================== -->
+	<!--  ==================== Compilation Control Options ==================== -->
+  	<property name="compile.debug"       value="true"/>
+  	<property name="compile.deprecation" value="false"/>
+  	<property name="compile.optimize"    value="true"/>
 
-
-<!--
-
-  These properties generally define file and directory names (or paths) that
-  affect where the build process stores its outputs.
-
-  app.name             Base name of this application, used to
-                       construct filenames and directories.
-                       Defaults to "myapp".
-
-  app.path             Context path to which this application should be
-                       deployed (defaults to "/" plus the value of the
-                       "app.name" property).
-
-  app.version          Version number of this iteration of the application.
-
-  build.home           The directory into which the "prepare" and
-                       "compile" targets will generate their output.
-                       Defaults to "build".
-
-  catalina.home        The directory in which you have installed
-                       a binary distribution of Tomcat 4.  This will
-                       be used by the "deploy" target.
-
-  dist.home            The name of the base directory in which
-                       distribution files are created.
-                       Defaults to "dist".
-
-  manager.password     The login password of a user that is assigned the
-                       "manager" role (so that he or she can execute
-                       commands via the "/manager" web application)
-
-  manager.url          The URL of the "/manager" web application on the
-                       Tomcat installation to which we will deploy web
-                       applications and web services.
-
-  manager.username     The login username of a user that is assigned the
-                       "manager" role (so that he or she can execute
-                       commands via the "/manager" web application)
-
--->
-
-  <property name="app.name"      value="cpath"/>
-  <property name="app.path"      value="/${app.name}"/>
-  <property name="app.version"   value="0.1-dev"/>
-  <property name="build.home"    value="${basedir}/build"/>
-  <property name="catalina.home" value="../../../.."/> <!-- UPDATE THIS! -->
-  <property name="dist.home"     value="${basedir}/dist"/>
-  <property name="dev_docs.home" value="${basedir}/web/WEB-INF/jsp/dev"/>
-  <property name="api_docs.home" value="${basedir}/web/jsp/api"/>
-  <property name="manager.url"   value="http://localhost:8080/manager"/>
-  <property name="src.home"      value="${basedir}/src"/>
-  <property name="web.home"      value="${basedir}/web"/>
-
-
-<!-- ================== Custom Ant Task Definitions ======================= -->
-
-
-<!--
-
-  These properties define custom tasks for the Ant build tool that interact
-  with the "/manager" web application installed with Tomcat 4.  Before they
-  can be successfully utilized, you must perform the following steps:
-
-  - Copy the file "server/lib/catalina-ant.jar" from your Tomcat 4
-    installation into the "lib" directory of your Ant installation.
-
-  - Create a "build.properties" file in your application's top-level
-    source directory (or your user login home directory) that defines
-    appropriate values for the "manager.password", "manager.url", and
-    "manager.username" properties described above.
-
-  For more information about the Manager web application, and the functionality
-  of these tasks, see <http://localhost:8080/tomcat-docs/manager-howto.html>.
-
--->
-
-  <taskdef name="install" classname="org.apache.catalina.ant.InstallTask"/>
-  <taskdef name="list"    classname="org.apache.catalina.ant.ListTask"/>
-  <taskdef name="reload"  classname="org.apache.catalina.ant.ReloadTask"/>
-  <taskdef name="remove"  classname="org.apache.catalina.ant.RemoveTask"/>
-  <taskdef resource="checkstyletask.properties"/>
-
-
-<!--  ==================== Compilation Control Options ==================== -->
-
-<!--
-
-  These properties control option settings on the Javac compiler when it
-  is invoked using the <javac> task.
-
-  compile.debug        Should compilation include the debug option?
-
-  compile.deprecation  Should compilation include the deprecation option?
-
-  compile.optimize     Should compilation include the optimize option?
-
--->
-
-  <property name="compile.debug"       value="true"/>
-  <property name="compile.deprecation" value="false"/>
-  <property name="compile.optimize"    value="true"/>
-
-<!-- ==================== Compilation Classpath =========================== -->
-
-  <path id="compile.classpath">
-	<pathelement path="${build.home}/WEB-INF/classes"/>
-	<fileset dir="${lib.dir}">
-        	<include name="**/*.jar"/>
-	</fileset>
-  </path>
+	<!-- ==================== Compilation Classpath =========================== -->
+ 	<path id="compile.classpath">
+		<pathelement path="${build.home}/WEB-INF/classes"/>
+		<fileset dir="${lib.dir}">
+       		 	<include name="**/*.jar"/>
+		</fileset>
+  	</path>
 
 <!-- ==================== All Target ====================================== -->
-
-<!--
-
-  The "all" target is a shortcut for running the "clean" target followed
-  by the "compile" target, to force a complete recompile.
-
--->
 
   <target name="all" depends="clean,compile"
    description="Clean build and dist directories, then compile"/>
 
 
-
 <!-- ==================== Clean Target ==================================== -->
 
-<!--
-
-  The "clean" target deletes any previous "build" and "dist" directory,
-  so that you can be ensured the application can be built from scratch.
-
--->
-
-  <target name="clean"
-   description="Delete old build and dist directories">
+  <target name="clean" description="Delete old build and dist directories">
     <delete dir="${build.home}"/>
     <delete dir="${dist.home}"/>
     <delete dir="${lucene.dir}"/>
-    <delete dir="${api_docs.home}"/>
-    <delete file="${dev_docs.home}/todo.txt"/>
+    <delete dir="${junit.dir}"/>
   </target>
-
-
 
 <!-- ==================== Compile Target ================================== -->
 
-<!--
-
-  The "compile" target transforms source files (from your "src" directory)
-  into object files in the appropriate location in the build directory.
-  This example assumes that you will be including your classes in an
-  unpacked directory hierarchy under "/WEB-INF/classes".
-
--->
-
-  <target name="compile" depends="prepare"
-   description="Compile Java sources">
-
+  <target name="compile" depends="prepare" description="Compile Java sources">
     <!-- Compile Java classes as necessary -->
     <mkdir    dir="${build.home}/WEB-INF/classes"/>
     <javac srcdir="${src.home}"
@@ -237,28 +99,11 @@
 
    <!-- Copy logger properties -->
    <copy todir="${build.home}/WEB-INF/config" file="${config.dir}/config-JDBC.properties"/>
-
-   <!-- Copy to do file -->
-   <copy todir="${dev_docs.home}" file="todo.txt"/>
   </target>
 
-<!-- ==================== Dist Target ===================================== -->
+<!-- ==================== War Target ===================================== -->
 
-
-<!--
-
-  The "dist" target creates a binary distribution of your application
-  in a directory structure ready to be archived in a tar.gz or zip file.
-  Note that this target depends on two others:
-
-  * "compile" so that the entire web application (including external
-    dependencies) will have been assembled
-
-  * "javadoc" so that the application Javadocs will have been created
-
--->
-
-  <target name="war" depends="compile, javadoc"
+  <target name="war" depends="compile"
    description="Create binary WAR distribution">
     <mkdir  dir="${dist.home}"/>
     <!-- Create application WAR file -->
@@ -308,26 +153,6 @@
 
   </target>
 
-
-<!-- ==================== Javadoc Target ================================== -->
-
-<!--
-
-  The "javadoc" target creates Javadoc API documentation for the Java
-  classes included in your application.  Normally, this is only required
-  when preparing a distribution release, but is available as a separate
-  target in case the developer wants to create Javadocs independently.
-
--->
-
-  <target name="javadoc" depends="compile" description="Create Javadoc API documentation">
-	<mkdir dir="${api_docs.home}"/>
-	<javadoc sourcepath="${src.home}" destdir="${api_docs.home}" packagenames="*">
-      	<classpath refid="compile.classpath"/>
-    	</javadoc>
-  </target>
-
-
 <!-- ====================== List Target =================================== -->
 
 <!--
@@ -369,6 +194,7 @@
     <mkdir  dir="${build.home}/WEB-INF"/>
     <mkdir  dir="${lucene.dir}"/>
     <mkdir  dir="${build.home}/WEB-INF/classes"/>
+    <mkdir  dir="${junit.dir}"/>
 
     <!-- Copy static content of this web application -->
     <copy todir="${build.home}">
@@ -378,9 +204,6 @@
     <!-- Copy external dependencies as required -->
     <!-- *** CUSTOMIZE HERE AS REQUIRED BY YOUR APPLICATION *** -->
     <mkdir  dir="${build.home}/WEB-INF/lib"/>
-<!--
-    <copy todir="${build.home}/WEB-INF/lib" file="${foo.jar}"/>
--->
 
     <!-- Copy static files from external dependencies as needed -->
     <!-- *** CUSTOMIZE HERE AS REQUIRED BY YOUR APPLICATION *** -->
@@ -444,4 +267,13 @@
 	<target name="boot" depends="compile" description="Loads Bootstrap data into MySQL">
 		<exec dir="." executable="scripts/boot.pl"/>
 	</target>
+
+	<target name="test" depends="compile" description="Runs JUnit Tests">
+		<junit printsummary="yes" fork="yes" haltonfailure="no">
+			<formatter type="xml"/>
+			<test name="org.mskcc.pathdb.test.AllTest"
+				todir="${junit.dir}"/>
+			<classpath refid="compile.classpath"/>
+		</junit>
+	 </target>
 </project>
