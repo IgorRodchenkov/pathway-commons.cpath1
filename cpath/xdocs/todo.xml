@@ -100,8 +100,8 @@ cPath Functionality Issues:
     http://www.genomeknowledge.org/cgi-bin/classbrowser?DB=gk_current
 
     Example 2:
-    http://www.genomeknowledge.org/cgi-bin/eventbrowser?DB=gk_current&ID=69231&P
-    REVIOUS_ID=69236&RORDER=69278&E=69236&E=69278
+    http://www.genomeknowledge.org/cgi-bin/eventbrowser?DB=gk_current&amp;
+    ID=69231&amp;PREVIOUS_ID=69236&amp;RORDER=69278&amp;E=69236&amp;E=69278
 
     (mind the wrapping)
 
