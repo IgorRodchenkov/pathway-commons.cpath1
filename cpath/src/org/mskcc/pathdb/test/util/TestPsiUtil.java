@@ -152,8 +152,10 @@ public class TestPsiUtil extends TestCase {
 
     /**
      * Tests the addExternalReferences() method.
+     *
+     * @throws Exception All Exceptions.
      */
-    public void testAddXRefs() {
+    public void testAddXRefs() throws Exception {
         //  Create Initial XRef
         XrefType xref = new XrefType();
         DbReferenceType primaryRef = new DbReferenceType();
@@ -162,11 +164,9 @@ public class TestPsiUtil extends TestCase {
         xref.setPrimaryRef(primaryRef);
 
         //  Create some new External References that we want to add
-        ArrayList refs = new ArrayList();
-        ExternalReference xref1 = new ExternalReference("LocusLink", "ABCDE");
-        ExternalReference xref2 = new ExternalReference("RefSeq", "NP_060241");
-        refs.add(xref1);
-        refs.add(xref2);
+        ExternalReference refs[] = new ExternalReference[2];
+        refs[0] = new ExternalReference("LocusLink", "ABCDE");
+        refs[1] = new ExternalReference("RefSeq", "NP_060241");
 
         //  Add the New External References to the XRef.
         PsiUtil util = new PsiUtil(null);
