@@ -58,10 +58,10 @@ It will not work with earlier versions of Cytoscape.
     <LI>View the
     <A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/README.txt">README.txt</A>
     File (includes Installation Instructions and Release Notes).
-    <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath.tar.gz">
-    Download Beta2 Version tar.gz</A> [2.5 MB]
-    <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath.zip">
-    Download Beta2 Version .zip</A> [2.5 MB]
+    <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath-beta2.tar.gz">
+    Download Beta2 Version tar.gz</A> [2.7 MB]
+    <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath-beta2.zip">
+    Download Beta2 Version .zip</A> [2.7 MB]
     </UL>
 </DIV>
 
