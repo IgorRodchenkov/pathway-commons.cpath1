@@ -29,22 +29,26 @@ public class TestItemToIndex extends TestCase {
 
         assertTrue (item instanceof PsiInteractionToIndex);
         int numFields = item.getNumFields();
-        assertEquals (7, numFields);
+        assertEquals (8, numFields);
 
         String fieldNames[] = {
             PsiInteractionToIndex.FIELD_INTERACTOR,
+            LuceneIndexer.FIELD_INTERACTOR_ID,
             PsiInteractionToIndex.FIELD_ORGANISM,
             PsiInteractionToIndex.FIELD_PMID,
             PsiInteractionToIndex.FIELD_INTERACTION_TYPE,
             PsiInteractionToIndex.FIELD_DATABASE,
             LuceneIndexer.FIELD_ALL,
-            LuceneIndexer.FIELD_CPATH_ID
+            LuceneIndexer.FIELD_INTERACTION_ID,
         };
         String fieldValues[] = {
             "60 kDa chaperonin (Protein Cpn60) (groEL protein) (AMS) DIP "
                 + "339N PIR BVECGL SwissProt P06139 Entrez GI 7429025 RefSeq "
                 + "NP_313151 major prion PrP-Sc protein precursor DIP 1081N "
                 + "PIR UJHYIH Entrez GI 2144854",
+
+            "2 3",
+
             "562 Escherichia coli 10036 Mesocricetus auratus",
 
             "pubmed 11821039 pubmed 9174345 pubmed 9174345 pubmed 10587438 "
@@ -73,8 +77,8 @@ public class TestItemToIndex extends TestCase {
             Field field = item.getField(i);
             String name = field.name();
             String value = field.stringValue();
-            //  System.out.println("Field:  " + name);
-            //  System.out.println(".....:  " + value);
+//              System.out.println("Field:  " + name);
+//              System.out.println(".....:  " + value);
             assertEquals (name, fieldNames[i]);
             assertTrue (value.startsWith(fieldValues[i]));
         }
