@@ -1,0 +1,6 @@
+CVSROOT="/var/lib/cvs"
+MAVEN_HOME="/home/cerami/libraries/maven-1.0-rc1"
+JAVA_HOME="/usr/lib/j2se/1.4/"
+PATH="${PATH}":/home/cerami/libraries/maven-1.0-rc1/bin:/usr/bin/
+30	4	*	*	*	/home/cerami/cron/dev_site.pl
+30	4	*	*	* 	echo "Running Dev Site Script"
