@@ -94,6 +94,9 @@ public class TestTagUtil extends TestCase {
         assertEquals("A Short Protein", label);
     }
 
+    /**
+     * Tests the CreateLink method.
+     */
     public void testCreateLink() {
         String link = TagUtil.createLink("Tip", "http://www.yahoo.com",
                 "Click for yahoo");
