@@ -204,7 +204,9 @@ public class DaoCPath {
                 linker.deleteRecordById(link.getId());
             }
 
-            //  TODO:  Delete all Internal Links too
+            //  Delete all Internal Links
+            DaoInternalLink internalLinker = new DaoInternalLink();
+            internalLinker.deleteRecordsByCPathId(cpathId);
 
             return (rows > 0) ? true : false;
         } finally {
