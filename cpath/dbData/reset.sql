@@ -27,7 +27,7 @@ truncate table background_reference;
 INSERT INTO `external_db` VALUES (1, 'UniProt', 'http://www.pir.uniprot.org/cgi-bin/upEntry?id=%ID%', 'Universal Protein Resource (UniProt)', 6, 'PROTEIN_UNIFICATION', NULL, NULL, 20031002162924, 20031002102704);
 INSERT INTO `external_db` VALUES (2, 'Entrez Gene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=search&term=%ID%', 'NCBI Entrez Gene', 21, 'LINK_OUT', NULL, NULL, 20031002163800, 20031002103655);
 INSERT INTO `external_db` VALUES (3, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%ID%&dopt=Abstract', 'NCBI PubMed', 29, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (4, 'Unigene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene&cmd=search&term=%ID%', 'NCBI Unigene Database', 31, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (4, 'UniGene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene&cmd=search&term=%ID%', 'NCBI UniGene Database', 31, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (5, 'OMIM', 'http://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%ID%', 'Online Mendelian Inheritance in Man (OMIM)', 32, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (6, 'PIR', 'http://pir.georgetown.edu/cgi-bin/nbrfget?uid=%ID%', 'The Protein Information Resource (PIR)', 50, 'PROTEIN_UNIFICATION', NULL, NULL, 20031002103329, 20031002103329);
 INSERT INTO `external_db` VALUES (7, 'InterPro', 'http://www.ebi.ac.uk/interpro/IEntry?ac=%ID%', ' InterPro database of protein families, domains and functional sites.', 52, 'LINK_OUT', NULL, NULL, 20031002162303, 20031002162303);
