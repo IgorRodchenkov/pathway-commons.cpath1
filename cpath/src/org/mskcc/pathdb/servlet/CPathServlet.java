@@ -65,6 +65,7 @@ public final class CPathServlet extends ActionServlet {
     public void init() throws ServletException {
         super.init();
         System.err.println("Starting up cPath...");
+        System.err.println("Using cPath Version:  " + CPathConstants.VERSION);
         System.err.println("Reading in init parameters from web.xml");
         PropertyManager manager = PropertyManager.getInstance();
         ServletConfig config = this.getServletConfig();
@@ -112,8 +113,10 @@ public final class CPathServlet extends ActionServlet {
         System.err.println("Verifying Database Connection...");
         DaoLog adminLogger = new DaoLog();
         try {
+            System.err.println("Attempting to retrieve Log Records...");
             adminLogger.getLogRecords();
             DaoCPath dao = new DaoCPath();
+            System.err.println("Attempting to retrieve Entitiy Records...");
             int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
             System.err.println("Database Connection -->  [OK]");
         } catch (DaoException e) {
