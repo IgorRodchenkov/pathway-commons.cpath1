@@ -145,3 +145,21 @@ monitoring (i.e. SiteScope or HP OpenView Internet Services)."
 A copy of TinyMonitor (along with a sample config file for monitoring cPath)
 is available in bin/tinymonitor.
 
+Appendix D:  Where to Look When Things Go Wrong
+-----------------------------------------------
+
+If you experience difficulty with cPath or notice unusual errors, there are two places
+you should look first:
+
+1.  Real-time Web Diagnostics:  Each time cPath generates a web page, it can generate
+real-time web diagnostics, which are appended to the bottom of the page.  To activate
+web diagnostics, go to the Admin page, and click the "Activate" link under Web Diagnostics.
+If the page generates an error, the web diagnostics section will include detailed error
+information, which would not normally be shown.  This may help track down the source
+of the error.
+
+2.  Servlet Engine Logs:  In the event of an error, cPath will also write the error to
+the standard servlet engine log.  For example, when using Apache Tomcat, error messages
+are written to catalina.out
+
+
