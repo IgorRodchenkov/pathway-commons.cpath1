@@ -33,6 +33,7 @@ import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.IdMapRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.apache.commons.dbcp.DelegatingPreparedStatement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -247,8 +248,7 @@ public class DaoIdMap {
      * @return ArrayList of XRef Objects.
      * @throws DaoException Error Connecting to Database.
      */
-    public ArrayList getEquivalenceList(CPathXRef xref)
-            throws DaoException {
+    public ArrayList getEquivalenceList(CPathXRef xref) throws DaoException {
         //  Represents List of Nodes to Visit
         LinkedList openQueue = new LinkedList();
 
@@ -260,7 +260,6 @@ public class DaoIdMap {
 
         //  While there are still nodes to visit
         while (openQueue.size() > 0) {
-
             //  Get the Next Item in the Queue
             CPathXRef current = (CPathXRef) openQueue.removeFirst();
 
@@ -300,29 +299,34 @@ public class DaoIdMap {
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
+
+            //  Issue two separate queries instead of one logical OR query
+            //  Why do we do this?  Because we have indexes on DB1:ID1,
+            //  and DB2:ID2, but cannot create an index on all four values.
+            //  By using the two queries, we get *much* faster performance.
+
+            //  Issue and Process First Query
             pstmt = con.prepareStatement
-                    ("SELECT * FROM id_map WHERE (DB_1 = ? AND ID_1 = ?) "
-                    + "OR (DB_2 = ? AND ID_2 = ?)");
+                    ("SELECT * FROM id_map WHERE (DB_1 = ? AND ID_1 = ?)");
             pstmt.setInt(1, xref.getDbId());
             pstmt.setString(2, xref.getLinkedToId());
-            pstmt.setInt(3, xref.getDbId());
-            pstmt.setString(4, xref.getLinkedToId());
             rs = pstmt.executeQuery();
-            while (rs.next()) {
-                IdMapRecord idRecord = createBean(rs);
-//                System.out.println("Running query:  "+ xref.toString()
-//                    + " Gets:  " + idRecord.toString());
-                CPathXRef neighbor = null;
-                if (idRecord.getDb1() == xref.getDbId()
-                        && idRecord.getId1().equals(xref.getLinkedToId())) {
-                    neighbor = new CPathXRef(idRecord.getDb2(),
-                            idRecord.getId2());
-                } else {
-                    neighbor = new CPathXRef(idRecord.getDb1(),
-                            idRecord.getId1());
-                }
-                neighborList.add(neighbor);
+            processResultSet(rs, xref, neighborList);
+
+            //  Issue and Process Second Query
+            pstmt = con.prepareStatement
+                    ("SELECT * FROM id_map WHERE (DB_2 = ? AND ID_2 = ?)");
+            pstmt.setInt(1, xref.getDbId());
+            pstmt.setString(2, xref.getLinkedToId());
+            rs = pstmt.executeQuery();
+            processResultSet(rs, xref, neighborList);
+
+            if (neighborList.size() > 100) {
+                System.err.println("Warning!  Got "
+                        + neighborList.size() + " hits");
+                System.err.println("Quering for:  " + xref.toString());
             }
+
             return neighborList;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
@@ -330,6 +334,23 @@ public class DaoIdMap {
             throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    private void processResultSet(ResultSet rs, CPathXRef xref,
+            ArrayList neighborList) throws SQLException {
+        while (rs.next()) {
+            IdMapRecord idRecord = createBean(rs);
+            CPathXRef neighbor = null;
+            if (idRecord.getDb1() == xref.getDbId()
+                    && idRecord.getId1().equals(xref.getLinkedToId())) {
+                neighbor = new CPathXRef(idRecord.getDb2(),
+                        idRecord.getId2());
+            } else {
+                neighbor = new CPathXRef(idRecord.getDb1(),
+                        idRecord.getId1());
+            }
+            neighborList.add(neighbor);
         }
     }
 
