@@ -48,6 +48,16 @@ public class ImportException extends Exception {
     }
 
     /**
+     * Constructor.
+     *
+     * @param msg Error Message.
+     */
+    public ImportException(String msg) {
+        super();
+        this.msg = msg;
+    }
+
+    /**
      * Gets Error Message.
      * @return
      */
