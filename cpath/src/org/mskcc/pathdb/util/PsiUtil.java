@@ -194,34 +194,58 @@ public class PsiUtil {
 
     /**
      * Normalizes all XRefs to FIXED_CV_TERMS.
-     * As a temporary measure, we now remove version information from
+     *
+     * As a first temporary measure, we now remove version information from
      * linked ids.  For example, the following ID:  NP_000680.2 is transformed
      * to:  NP_000680.  This enables us to import HPRD data and map RefSeq
      * IDs to Affymetrix IDs.
+     *
+     * As a second temporary measure, we divide RefSeq IDs into RefSeq Proteins
+     * and all other RefSeq IDs.  This enables us to use RefSeq proteins for
+     * PROTEIN_UNIFICATION.
      *
      * @param xref XrefType Object.
      * @throws DaoException Data Access Exception.
      */
     public void normalizeXrefs(XrefType xref) throws DaoException {
-        DaoExternalDb dao = new DaoExternalDb();
         if (xref != null) {
             DbReferenceType primaryRef = xref.getPrimaryRef();
             if (primaryRef != null) {
+                String id = primaryRef.getId();
                 String db = primaryRef.getDb();
-                ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(db);
-                String newDb = dbRecord.getFixedCvTerm();
-                primaryRef.setDb(newDb);
+                String normalizedDb = getNormalizedDatabase(db, id);
+                primaryRef.setDb(normalizedDb);
                 primaryRef.setId(stripVersionInfo(primaryRef.getId()));
             }
             for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
                 DbReferenceType secondaryRef = xref.getSecondaryRef(i);
+                String id = secondaryRef.getId();
                 String db = secondaryRef.getDb();
-                ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(db);
-                String newDb = dbRecord.getFixedCvTerm();
-                secondaryRef.setDb(newDb);
+                String normalizedDb = getNormalizedDatabase(db, id);
+                secondaryRef.setDb(normalizedDb);
                 secondaryRef.setId(stripVersionInfo(secondaryRef.getId()));
             }
         }
+    }
+
+    /**
+     * Looks up a Database Term, and Normalizes it to the Fixed Controlled
+     * Vocabulary Term.
+     *
+     * Also provides a bit of hardcoded work for handling REF_SEQ IDs.
+     */
+    private String getNormalizedDatabase(String db, String id)
+            throws DaoException {
+        DaoExternalDb dao = new DaoExternalDb();
+        ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(db);
+
+        //  If this is a REF_SEQ ID, determine if it's a PROTEIN.
+        if (dbRecord.getFixedCvTerm().equalsIgnoreCase("REF_SEQ")
+            && id != null && id.charAt(1) == 'P') {
+            dbRecord = dao.getRecordByTerm("REF_SEQ PROTEIN");
+        }
+        String newDb = dbRecord.getFixedCvTerm();
+        return newDb;
     }
 
     /**
