@@ -18,13 +18,13 @@
     tabNames.add("Home");
     String homeUrl = "home.do";
     tabUrls.add(homeUrl);
-    if (url.equals(homeUrl)) {
+    if (url.equals(homeUrl) || url.equals("toggleSearchOptions.do")) {
         tabActive.add (Boolean.TRUE);
     } else {
         tabActive.add (Boolean.FALSE);
     }
 
-    tabNames.add("Advanced Search");
+    tabNames.add("Search FAQ");
     String advancedSearchUrl = "advancedSearch.do";
     tabUrls.add(advancedSearchUrl);
     if (url.equals(advancedSearchUrl)) {
@@ -34,9 +34,9 @@
     }
 
     tabNames.add("Web Services API");
-    String webServiceUrl = "webservice.do";
+    String webServiceUrl = "webservice.do?cmd=help";
     tabUrls.add(webServiceUrl);
-    if (url.equals(webServiceUrl) && xmlAssemblyTemp == null) {
+    if (url.equals("webservice.do") && xmlAssemblyTemp == null) {
         tabActive.add (Boolean.TRUE);
     } else {
         tabActive.add (Boolean.FALSE);
