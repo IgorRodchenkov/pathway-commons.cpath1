@@ -27,11 +27,16 @@ Option 1:  We store multiple formats in cPath at the same time.  Each snippet
 
 Option 2:  We transform all snippets upon import into one common data format.
 Upon exporting of data for presentation on web site or distribution via web
-service, we simply "copy and paste" all the snippets together.
+service, we simply "copy and paste" all the snippets together.  However,
+if a client application requests a format other than the common format we have
+chosen, we will also need a set of converters/transformers.
 
 This requires more extensive analysis and conversations between Ethan, Gary
-and Iain.  I think option 1 makes the most sense, but worry about the
-performance hit on the web site and the web service.
+and Iain.  However, we mostly agree that option 1 makes the most sense.
+Option 2 has two serious drawbacks: 1) it may result in some loss of
+information, and 2) it will require that we upgrade all of cPath each time
+our common data format is superseded with a different level or a different
+version.
 
 Time Estimate:  3 days
 
