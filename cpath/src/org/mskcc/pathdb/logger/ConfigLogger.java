@@ -2,7 +2,7 @@ package org.mskcc.pathdb.logger;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.Logger;
-import org.mskcc.pathdb.util.PropertyManager;
+import org.mskcc.dataservices.util.PropertyManager;
 
 /**
  * Configures the Log4J Logging Feature.
@@ -19,7 +19,8 @@ public class ConfigLogger {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             PropertyManager propertyManager = PropertyManager.getInstance();
-            String logFile = propertyManager.getLogConfigFile();
+            String logFile = propertyManager.getProperty
+                    (PropertyManager.PROPERTY_LOG_CONFIG_FILE);
             PropertyConfigurator.configure(logFile);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

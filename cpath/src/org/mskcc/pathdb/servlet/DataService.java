@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.mskcc.pathdb.controller.DataServiceController;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
-import org.mskcc.pathdb.util.PropertyManager;
+import org.mskcc.dataservices.util.PropertyManager;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -97,10 +97,11 @@ public final class DataService extends HttpServlet {
         System.err.println("web.xml param:  db_host --> " + dbHost);
         System.err.println("web.xml param:  db_user --> " + dbUser);
         System.err.println("web.xml param:  db_password --> " + dbPassword);
-        manager.setDbHost(dbHost);
-        manager.setDbUser(dbUser);
-        manager.setDbPassword(dbPassword);
-        manager.setLogConfigFile(realLogPath);
+        manager.setProperty(PropertyManager.PROPERTY_GRID_DB_USER, dbUser);
+        manager.setProperty(PropertyManager.PROPERTY_GRID_DB_PASSWORD,
+                dbPassword);
+        manager.setProperty(PropertyManager.PROPERTY_LOG_CONFIG_FILE,
+                realLogPath);
         System.err.println("Starting up Log4J Logging System");
         ConfigLogger.configureLogger();
         verifyDbConnection();

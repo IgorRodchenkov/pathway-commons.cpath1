@@ -1,6 +1,6 @@
 package org.mskcc.pathdb.logger;
 
-import org.mskcc.pathdb.util.PropertyManager;
+import org.mskcc.dataservices.util.PropertyManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,9 +71,11 @@ public class AdminLogger {
         Connection con = null;
         //  Get Database Properties from PropertyManager.
         PropertyManager manager = PropertyManager.getInstance();
-        String host = manager.getDbHost();
-        String user = manager.getDbUser();
-        String password = manager.getDbPassword();
+        String host = new String ("localhost");
+        String user = manager.getProperty
+                (PropertyManager.PROPERTY_GRID_DB_USER);
+        String password = manager.getProperty
+                (PropertyManager.PROPERTY_GRID_DB_PASSWORD);
         String url =
                 new String("jdbc:mysql://" + host + "/"
                 + db + "?user=" + user
