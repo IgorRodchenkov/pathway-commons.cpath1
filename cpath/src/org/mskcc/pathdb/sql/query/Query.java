@@ -44,6 +44,10 @@ public class Query {
      */
     public XmlAssembly executeQuery(ProtocolRequest request,
             boolean checkCache) throws QueryException {
+
+        // TODO:  REMOVE THIS LINE
+        checkCache = false;
+
         DaoXmlCache dao = new DaoXmlCache(xdebug);
         XmlAssembly xmlAssembly = null;
         XmlAssembly cachedXml = null;
@@ -68,7 +72,7 @@ public class Query {
                         xdebug.logMsg(this, "Storing XML to Database Cache");
                         dao.addRecord(hashKey, xmlAssembly);
                     } else {
-                        xdebug.logMsg(this, "Updaing XML in Database Cache");
+                        xdebug.logMsg(this, "Updating XML in Database Cache");
                         dao.updateXmlAssemblyByKey(hashKey, xmlAssembly);
                     }
                 }
