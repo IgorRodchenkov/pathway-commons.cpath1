@@ -57,7 +57,7 @@
 
     <SPAN CLASS="hide" SIZE=25 ID="searchOrganismBox">
 		<select ID="selectOrganism" name="q">
-			<option VALUE="9609">Homo Sapiens
+			<option VALUE="9606">Homo Sapiens
 			<option VALUE="562">Escherichia coli
             <option value="10090">Mus musculus
 			<option VALUE="4932">Saccharomyces cerevisiae
