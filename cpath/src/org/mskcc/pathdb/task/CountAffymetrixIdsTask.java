@@ -95,7 +95,9 @@ public class CountAffymetrixIdsTask extends Task {
         while (keys.hasNext()) {
             String dbName = (String) keys.next();
             Integer counter = (Integer) dbMap.get(dbName);
-            System.out.println(dbName + ":  " + counter);
+            if (consoleMode) {
+                System.out.println(dbName + ":  " + counter);
+            }
         }
         pMonitor.setCurrentMessage("\nTotal Number of Proteins that have no "
                 + "external database identifiers:  " + numProteinsWithoutXrefs);
