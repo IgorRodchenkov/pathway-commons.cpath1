@@ -131,15 +131,17 @@ public class Admin {
      */
     private static void importData() throws IOException, DaoException,
             ImportException, MissingDataException, SAXException {
-        File file = new File(fileName);
-        if (file.isDirectory()) {
-            File files[] = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                System.out.println("Loading File:  " + files[i].getName());
-                importDataFromSingleFile(files[i]);
+        if (fileName != null) {
+            File file = new File(fileName);
+            if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    System.out.println("Loading File:  " + files[i].getName());
+                    importDataFromSingleFile(files[i]);
+                }
+            } else {
+                importDataFromSingleFile(file);
             }
-        } else {
-            importDataFromSingleFile(file);
         }
         ImportRecords importer = new ImportRecords();
         importer.transferData(validateExternalReferences, removeAllXrefs);
@@ -240,10 +242,6 @@ public class Admin {
             System.out.print("Enter Database Password: ");
             pwd = in.readLine();
             propertyManager.setProperty(PropertyManager.DB_PASSWORD, pwd);
-        }
-        if (command.equals(COMMAND_IMPORT) && fileName == null) {
-            System.out.print("Enter Path to Import File:  ");
-            fileName = in.readLine();
         }
         if (command.equals(COMMAND_PRE_COMPUTE) && fileName == null) {
             System.out.print("Enter Path to Precompute Config File:  ");
