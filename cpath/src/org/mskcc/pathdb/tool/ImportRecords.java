@@ -86,7 +86,7 @@ public class ImportRecords {
         String xml = record.getData();
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml,
-                validateExternalReferences);
+                validateExternalReferences, true);
         this.outputSummary(summary);
         dbImport.markRecordAsTransferred(record.getImportId());
     }

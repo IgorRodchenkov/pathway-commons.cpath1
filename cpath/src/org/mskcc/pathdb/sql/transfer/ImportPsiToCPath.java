@@ -49,7 +49,7 @@ import java.util.HashMap;
  *              <OL>
  *                  <LI>Determine if this interactor already exists within
  *                  the database.  We determine existence of interactors
- *                  via the DaoExternalLink.lookUpByByExternalRefs() method.
+ *                  via the DaoExternalLink.lookUpByExternalRefs() method.
  *                  This method checks all external references of the
  *                  interactor.  If a match is found, the cPath record
  *                  is returned.
@@ -109,28 +109,34 @@ public class ImportPsiToCPath {
      * @return Import Summary Object.
      * @throws ImportException Indicates Error in Import.
      */
-    public ImportSummary addRecord(String xml, boolean validateExternalRefs)
+    public ImportSummary addRecord(String xml, boolean validateExternalRefs,
+            boolean verbose)
             throws ImportException {
         summary = new ImportSummary();
         idMap = new HashMap();
         try {
             // Steps 1-2:  Normalize PSI Document, chop into parts.
-            System.out.println("Normalizing PSI Document...");
+            if (verbose) {
+                System.out.println("Normalizing PSI Document...");
+            }
             psiUtil = new PsiUtil();
             EntrySet entrySet = null;
             entrySet = psiUtil.getNormalizedDocument(xml);
-            System.out.println("Normalization Complete:  Document is valid");
+            if (verbose) {
+                System.out.println
+                        ("Normalization Complete:  Document is valid");
+            }
 
             //  Validate Interactors / External References.
             if (validateExternalRefs) {
-                validateInteractors(entrySet);
+                validateExternalRefs(entrySet, verbose);
             }
 
             //  Step 3:  Process all Interactors.
-            processInteractors(entrySet);
+            processInteractors(entrySet, verbose);
 
             //  Step 4:  Process all Interactions.
-            processInteractions(entrySet);
+            processInteractions(entrySet, verbose);
             return summary;
         } catch (ValidationException e) {
             throw new ImportException("ValidationException:  "
@@ -153,44 +159,78 @@ public class ImportPsiToCPath {
     /**
      * Validates all Interactors and External References.
      */
-    private void validateInteractors(EntrySet entrySet) throws DaoException,
-            ExternalDatabaseNotFoundException {
-        System.out.print("Validating all External References:  ");
+    private void validateExternalRefs(EntrySet entrySet, boolean verbose)
+            throws DaoException, ExternalDatabaseNotFoundException {
+        if (verbose) {
+            System.out.print("Validating all External References:  ");
+        }
         DaoExternalLink linker = new DaoExternalLink();
+
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
+
+            //  Validate All Interactors
             InteractorList interactors = entry.getInteractorList();
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
-                System.out.print(".");
+                if (verbose) {
+                    System.out.print(".");
+                }
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
                 ExternalReference[] refs = extractExternalReferences(protein);
                 linker.validateExternalReferences(refs);
             }
+
+            //  Validate All Interactions
+            InteractionList interactions = entry.getInteractionList();
+            for (int j=0; j < interactions.getInteractionCount(); j++) {
+                if (verbose) {
+                    System.out.print(".");
+                }
+                InteractionElementType interaction =
+                        interactions.getInteraction(j);
+                XrefType xref = interaction.getXref();
+                if (xref != null) {
+                    DbReferenceType primaryRef = xref.getPrimaryRef();
+                    if (primaryRef != null) {
+                        String db = primaryRef.getDb();
+                        String id = primaryRef.getId();
+                        ExternalReference refs[] = new ExternalReference[1];
+                        refs[0] = new ExternalReference (db, id);
+                        linker.validateExternalReferences(refs);
+                    }
+                }
+            }
         }
-        System.out.println();
+        if (verbose) {
+            System.out.println();
+        }
     }
 
     /**
      * Processes all Interactors
      */
-    private void processInteractors(EntrySet entrySet)
+    private void processInteractors(EntrySet entrySet, boolean verbose)
             throws DaoException, MarshalException, ValidationException,
             MapperException {
         DaoExternalLink externalLinker = new DaoExternalLink();
 
-        System.out.print("Processing all Interactors:  ");
+        if (verbose) {
+            System.out.print("Processing all Interactors:  ");
+        }
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractorList interactors = entry.getInteractorList();
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
-                System.out.print(".");
+                if (verbose) {
+                    System.out.print(".");
+                }
                 summary.incrementNumInteractorsProcessed();
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
                 ExternalReference[] refs = extractExternalReferences(protein);
                 CPathRecord record =
-                        externalLinker.lookUpByByExternalRefs(refs);
+                        externalLinker.lookUpByExternalRefs(refs);
                 //  Step 3.1.2 - 3.1.3
                 if (record != null) {
                     idMap.put(protein.getId(), new Long(record.getId()));
@@ -201,7 +241,9 @@ public class ImportPsiToCPath {
                 }
             }
         }
-        System.out.println();
+        if (verbose) {
+            System.out.println();
+        }
     }
 
     /**
@@ -216,9 +258,11 @@ public class ImportPsiToCPath {
     /**
      * Processes all Interactors
      */
-    private void processInteractions(EntrySet entrySet)
+    private void processInteractions(EntrySet entrySet, boolean verbose)
             throws DaoException, MarshalException, ValidationException {
-        System.out.print("Processing all Interactions:  ");
+        if (verbose) {
+            System.out.print("Processing all Interactions:  ");
+        }
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractionList interactions = entry.getInteractionList();
@@ -227,14 +271,18 @@ public class ImportPsiToCPath {
             psiUtil.updateInteractions(interactions, idMap);
 
             for (int j = 0; j < interactions.getInteractionCount(); j++) {
-                System.out.print(".");
+                if (verbose) {
+                    System.out.print(".");
+                }
                 summary.incrementNumInteractionsSaved();
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
                 saveInteraction(interaction);
             }
         }
-        System.out.println();
+        if (verbose) {
+            System.out.println();
+        }
     }
 
     /**
@@ -296,10 +344,25 @@ public class ImportPsiToCPath {
         String desc = "Interaction";
         int taxId = CPathRecord.TAXONOMY_NOT_SPECIFIED;
 
+        //  Extract primary reference (if it exists)
+        ExternalReference refs[] = null;
+        XrefType xref = interaction.getXref();
+        if (xref != null) {
+            DbReferenceType primaryRef = xref.getPrimaryRef();
+            if (primaryRef != null) {
+                String db = primaryRef.getDb();
+                String id = primaryRef.getId();
+                refs = new ExternalReference[1];
+                refs[0] = new ExternalReference (db, id);
+            }
+        }
+
         //  Add New Record to cPath
         long cpathId = cpath.addRecord(name, desc, taxId,
-                CPathRecordType.INTERACTION, xml);
+                CPathRecordType.INTERACTION, xml, refs);
 
+        //  Creates Internal Links Between Interaction Record
+        //  and all Interactor Records.
         long idList[] = psiUtil.extractInteractorIds(interaction);
         DaoInternalLink linker = new DaoInternalLink();
         linker.addRecords(cpathId, idList);

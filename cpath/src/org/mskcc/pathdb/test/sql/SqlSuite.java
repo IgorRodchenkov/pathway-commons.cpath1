@@ -25,6 +25,7 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestDaoExternalLink.class);
         suite.addTestSuite(TestDaoCPath.class);
         suite.addTestSuite(TestDaoInternalLink.class);
+        suite.addTestSuite(TestImportPsiToCPath.class);
         suite.setName("SQL Database Tests");
         return suite;
     }

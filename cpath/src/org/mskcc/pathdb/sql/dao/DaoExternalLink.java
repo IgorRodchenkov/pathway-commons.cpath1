@@ -106,6 +106,19 @@ public class DaoExternalLink {
     }
 
     /**
+     * Looks Up the cPath Record that matches the specified External Reference.
+     * @param ref An External Reference.
+     * @return Matching cPath Record or Null.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public CPathRecord lookUpByExternalRef (ExternalReference ref)
+            throws DaoException {
+        ExternalReference refs[] = new ExternalReference [1];
+        refs[0] = ref;
+        return lookUpByExternalRefs(refs);
+    }
+
+    /**
      * Looks Up the cPath Record that matches any of the specified External
      * References.
      * @param refs An Array of External References.  All these references
@@ -113,7 +126,7 @@ public class DaoExternalLink {
      * @return Matching cPath Record or Null.
      * @throws DaoException Error Retrieving Data.
      */
-    public CPathRecord lookUpByByExternalRefs(ExternalReference refs[])
+    public CPathRecord lookUpByExternalRefs(ExternalReference refs[])
             throws DaoException {
         //  Iterate through all External References.
         if (refs != null) {
