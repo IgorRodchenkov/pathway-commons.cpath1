@@ -3,7 +3,7 @@
 # http://www.phpmyadmin.net/ (download page)
 #
 # Host: localhost
-# Generation Time: May 21, 2004 at 10:49 AM
+# Generation Time: May 27, 2004 at 10:01 AM
 # Server version: 4.0.12
 # PHP Version: 4.3.2
 # Database : `cpath`
@@ -12,8 +12,8 @@
 #
 # Table structure for table `cpath`
 #
-# Creation: May 21, 2004 at 10:43 AM
-# Last update: May 21, 2004 at 10:47 AM
+# Creation: May 25, 2004 at 03:36 PM
+# Last update: May 25, 2004 at 04:56 PM
 #
 
 CREATE TABLE `cpath` (
@@ -27,14 +27,14 @@ CREATE TABLE `cpath` (
   `CREATE_TIME` timestamp(14) NOT NULL,
   `UPDATE_TIME` timestamp(14) NOT NULL,
   PRIMARY KEY  (`CPATH_ID`)
-) TYPE=MyISAM COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=944 ;
+) TYPE=MyISAM COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1 ;
 # --------------------------------------------------------
 
 #
 # Table structure for table `external_db`
 #
-# Creation: May 21, 2004 at 10:43 AM
-# Last update: May 21, 2004 at 10:43 AM
+# Creation: May 25, 2004 at 03:36 PM
+# Last update: May 25, 2004 at 03:37 PM
 #
 
 CREATE TABLE `external_db` (
@@ -48,47 +48,47 @@ CREATE TABLE `external_db` (
   `CREATE_TIME` timestamp(14) NOT NULL,
   `UPDATE_TIME` timestamp(14) NOT NULL,
   PRIMARY KEY  (`EXTERNAL_DB_ID`)
-) TYPE=MyISAM COMMENT='Contains information about external databases.' AUTO_INCREMENT=13 ;
+) TYPE=MyISAM COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
 # --------------------------------------------------------
 
 #
 # Table structure for table `external_db_cv`
 #
-# Creation: May 21, 2004 at 10:43 AM
-# Last update: May 21, 2004 at 10:43 AM
+# Creation: May 25, 2004 at 03:36 PM
+# Last update: May 25, 2004 at 03:37 PM
 #
 
 CREATE TABLE `external_db_cv` (
   `CV_ID` int(11) NOT NULL auto_increment,
   `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
-  `CV_TERM` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`CV_ID`)
-) TYPE=MyISAM COMMENT='Contains controlled vocabulary terms for external databases.' AUTO_INCREMENT=21 ;
+  `CV_TERM` char(25) NOT NULL default '',
+  PRIMARY KEY  (`CV_ID`),
+  KEY `QUERY` (`CV_TERM`)
+) TYPE=MyISAM COMMENT='Contains controlled vocabulary terms for external databases.' AUTO_INCREMENT=1 ;
 # --------------------------------------------------------
 
 #
 # Table structure for table `external_link`
 #
-# Creation: May 21, 2004 at 10:43 AM
-# Last update: May 21, 2004 at 10:47 AM
+# Creation: May 25, 2004 at 03:36 PM
+# Last update: May 25, 2004 at 04:56 PM
 #
 
 CREATE TABLE `external_link` (
   `EXTERNAL_LINK_ID` int(11) NOT NULL auto_increment,
   `CPATH_ID` int(11) NOT NULL default '0',
   `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
-  `LINKED_TO_ID` varchar(255) NOT NULL default '',
-  `CREATE_TIME` timestamp(14) NOT NULL,
-  `UPDATE_TIME` timestamp(14) NOT NULL,
-  PRIMARY KEY  (`EXTERNAL_LINK_ID`)
-) TYPE=MyISAM COMMENT='Contains links to external databases.' AUTO_INCREMENT=3262 ;
+  `LINKED_TO_ID` char(25) NOT NULL default '',
+  PRIMARY KEY  (`EXTERNAL_LINK_ID`),
+  KEY `QUERY_INDEX` (`EXTERNAL_DB_ID`,`LINKED_TO_ID`)
+) TYPE=MyISAM COMMENT='Contains links to external databases.' AUTO_INCREMENT=1 ;
 # --------------------------------------------------------
 
 #
 # Table structure for table `import`
 #
-# Creation: May 21, 2004 at 10:43 AM
-# Last update: May 21, 2004 at 10:47 AM
+# Creation: May 25, 2004 at 03:36 PM
+# Last update: May 25, 2004 at 04:56 PM
 #
 
 CREATE TABLE `import` (
@@ -102,14 +102,14 @@ CREATE TABLE `import` (
   `EX_DB_ID` varchar(30) default NULL,
   `LO_ID` int(11) default NULL,
   PRIMARY KEY  (`IMPORT_ID`,`IMPORT_ID`)
-) TYPE=MyISAM COMMENT='Contains import records from external sources.' AUTO_INCREMENT=2 ;
+) TYPE=MyISAM COMMENT='Contains import records from external sources.' AUTO_INCREMENT=1 ;
 # --------------------------------------------------------
 
 #
 # Table structure for table `internal_link`
 #
-# Creation: May 21, 2004 at 10:43 AM
-# Last update: May 21, 2004 at 10:47 AM
+# Creation: May 25, 2004 at 03:36 PM
+# Last update: May 25, 2004 at 04:56 PM
 #
 
 CREATE TABLE `internal_link` (
@@ -117,14 +117,14 @@ CREATE TABLE `internal_link` (
   `CPATH_ID_A` int(11) NOT NULL default '0',
   `CPATH_ID_B` int(11) NOT NULL default '0',
   PRIMARY KEY  (`INTERNAL_LINK_ID`)
-) TYPE=MyISAM COMMENT='Contains all Internal cPath Links' AUTO_INCREMENT=1033 ;
+) TYPE=MyISAM COMMENT='Contains all Internal cPath Links' AUTO_INCREMENT=1 ;
 # --------------------------------------------------------
 
 #
 # Table structure for table `log`
 #
-# Creation: May 20, 2004 at 12:29 PM
-# Last update: May 20, 2004 at 01:07 PM
+# Creation: May 24, 2004 at 10:53 AM
+# Last update: May 27, 2004 at 09:39 AM
 #
 
 CREATE TABLE `log` (
@@ -141,8 +141,8 @@ CREATE TABLE `log` (
 #
 # Table structure for table `organism`
 #
-# Creation: May 21, 2004 at 10:43 AM
-# Last update: May 21, 2004 at 10:47 AM
+# Creation: May 25, 2004 at 03:36 PM
+# Last update: May 25, 2004 at 03:41 PM
 #
 
 CREATE TABLE `organism` (
@@ -156,16 +156,17 @@ CREATE TABLE `organism` (
 #
 # Table structure for table `xml_cache`
 #
-# Creation: May 21, 2004 at 10:43 AM
-# Last update: May 21, 2004 at 10:49 AM
+# Creation: May 25, 2004 at 03:36 PM
+# Last update: May 27, 2004 at 09:39 AM
 #
 
 CREATE TABLE `xml_cache` (
   `CACHE_ID` int(11) NOT NULL auto_increment,
   `URL` text NOT NULL,
-  `DOC_MD5` varchar(255) NOT NULL default '',
+  `DOC_MD5` varchar(100) NOT NULL default '',
   `NUM_HITS` int(11) NOT NULL default '0',
   `DOC_BLOB` longblob NOT NULL,
   `LAST_USED` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`CACHE_ID`)
-) TYPE=MyISAM COMMENT='Contains Cached XML Documents' AUTO_INCREMENT=2 ;
+  PRIMARY KEY  (`CACHE_ID`),
+  KEY `QUERY` (`DOC_MD5`)
+) TYPE=MyISAM COMMENT='Contains Cached XML Documents' AUTO_INCREMENT=1 ;
