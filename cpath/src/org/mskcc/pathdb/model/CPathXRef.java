@@ -6,11 +6,13 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 /**
  * Stores a Single External Reference.
  * <P>
- * An External Reference consists of a Database:ID Pair.
+ * An External Reference consists of a Database:ID Pair.  This is similar
+ * to the External Reference Object in the Data Services layer, except that
+ * it stores primary Ids to the cPath External Database Table.
  *
  * @author Ethan Cerami
  */
-public class XRef {
+public class CPathXRef {
     private int dbId;
     private String linkedToId;
 
@@ -19,7 +21,7 @@ public class XRef {
      * @param dbId          Primary ID of External Database.
      * @param linkedToId    Identifier, as stored in the External Database.
      */
-    public XRef (int dbId, String linkedToId) {
+    public CPathXRef (int dbId, String linkedToId) {
         this.dbId = dbId;
         this.linkedToId = linkedToId;
     }
@@ -79,8 +81,8 @@ public class XRef {
      * @return true or false.
      */
     public boolean equals(Object obj) {
-        if (obj instanceof XRef) {
-            XRef xref = (XRef) obj;
+        if (obj instanceof CPathXRef) {
+            CPathXRef xref = (CPathXRef) obj;
             if (xref.getDbId() == dbId
                     && xref.getLinkedToId().equals(linkedToId)) {
                 return true;

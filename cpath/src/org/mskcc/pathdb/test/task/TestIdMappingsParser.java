@@ -32,7 +32,7 @@ package org.mskcc.pathdb.test.task;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.IdMapRecord;
-import org.mskcc.pathdb.model.XRef;
+import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoIdMap;
@@ -88,12 +88,12 @@ public class TestIdMappingsParser extends TestCase {
 
         //  Now try getting all equivalent Identifiers;  there should be 4
         DaoIdMap dao = new DaoIdMap();
-        XRef xref = new XRef (1, "AAH08943");
+        CPathXRef xref = new CPathXRef (1, "AAH08943");
         ArrayList equivalenceList = dao.getEquivalenceList(xref);
-        XRef match0 = (XRef) equivalenceList.get(0);
-        XRef match1 = (XRef) equivalenceList.get(1);
-        XRef match2 = (XRef) equivalenceList.get(2);
-        XRef match3 = (XRef) equivalenceList.get(3);
+        CPathXRef match0 = (CPathXRef) equivalenceList.get(0);
+        CPathXRef match1 = (CPathXRef) equivalenceList.get(1);
+        CPathXRef match2 = (CPathXRef) equivalenceList.get(2);
+        CPathXRef match3 = (CPathXRef) equivalenceList.get(3);
         assertEquals ("Unigene: Hs.77646", match0.toString());
         assertEquals ("RefSeq: NP_060241", match1.toString());
         assertEquals ("Affymetrix: 1552275_3p_s_at", match2.toString());

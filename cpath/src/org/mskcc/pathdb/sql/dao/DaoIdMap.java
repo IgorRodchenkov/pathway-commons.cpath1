@@ -31,7 +31,7 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.IdMapRecord;
-import org.mskcc.pathdb.model.XRef;
+import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
@@ -236,7 +236,7 @@ public class DaoIdMap {
      * @return      ArrayList of XRef Objects.
      * @throws DaoException Error Connecting to Database.
      */
-    public ArrayList getEquivalenceList (XRef xref)
+    public ArrayList getEquivalenceList (CPathXRef xref)
         throws DaoException {
         //  Represents List of Nodes to Visit
         LinkedList openQueue = new LinkedList();
@@ -251,14 +251,14 @@ public class DaoIdMap {
         while (openQueue.size() > 0) {
 
             //  Get the Next Item in the Queue
-            XRef current = (XRef) openQueue.removeFirst();
+            CPathXRef current = (CPathXRef) openQueue.removeFirst();
 
             //  Get all Immediate Neighbors
             ArrayList neighbors = getImmediateNeighbors(current);
 
             //  Iterate through all neighbors;  only enqueue new nodes
             for (int i=0; i<neighbors.size(); i++) {
-                XRef neighbor = (XRef) neighbors.get(i);
+                CPathXRef neighbor = (CPathXRef) neighbors.get(i);
                 if (! closedList.contains(neighbor)
                     && ! openQueue.contains(neighbor)) {
                     openQueue.add(neighbor);
@@ -281,7 +281,7 @@ public class DaoIdMap {
      * @return      ArrayList of XRef Objects.
      * @throws DaoException Error Connecting to Database.
      */
-    private ArrayList getImmediateNeighbors (XRef xref)
+    private ArrayList getImmediateNeighbors (CPathXRef xref)
             throws DaoException {
         ArrayList neighborList = new ArrayList();
         Connection con = null;
@@ -299,12 +299,12 @@ public class DaoIdMap {
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 IdMapRecord idRecord = createBean(rs);
-                XRef neighbor = null;
+                CPathXRef neighbor = null;
                 if (idRecord.getDb1() == xref.getDbId()
                         && idRecord.getId1().equals(xref.getLinkedToId())) {
-                    neighbor = new XRef (idRecord.getDb2(), idRecord.getId2());
+                    neighbor = new CPathXRef (idRecord.getDb2(), idRecord.getId2());
                 } else {
-                    neighbor = new XRef(idRecord.getDb1(), idRecord.getId1());
+                    neighbor = new CPathXRef(idRecord.getDb1(), idRecord.getId1());
                 }
                 neighborList.add(neighbor);
             }
