@@ -112,7 +112,7 @@ public class TestDaoExternalDb extends TestCase {
             dao.getRecordByTerm("");
             fail("IllegalArgumentException should have been throw.");
         } catch (IllegalArgumentException e) {
-            String msg = e.toString();            
+            String msg = e.toString();
         }
     }
 

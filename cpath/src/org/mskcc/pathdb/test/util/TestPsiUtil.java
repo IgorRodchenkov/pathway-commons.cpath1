@@ -38,8 +38,8 @@ import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Tests the PsiUtil Class.
@@ -137,6 +137,7 @@ public class TestPsiUtil extends TestCase {
 
     /**
      * Tests Removal of Version Information.
+     *
      * @throws Exception All Exceptions.
      */
     public void testRemovalOfVersionInformation() throws Exception {
@@ -156,7 +157,7 @@ public class TestPsiUtil extends TestCase {
     /**
      * Tests the addExternalReferences() method.
      */
-    public void testAddXRefs () {
+    public void testAddXRefs() {
         //  Create Initial XRef
         XrefType xref = new XrefType();
         DbReferenceType primaryRef = new DbReferenceType();
@@ -166,8 +167,8 @@ public class TestPsiUtil extends TestCase {
 
         //  Create some new External References that we want to add
         ArrayList refs = new ArrayList();
-        ExternalReference xref1 = new ExternalReference ("LocusLink", "ABCDE");
-        ExternalReference xref2 = new ExternalReference ("RefSeq", "NP_060241");
+        ExternalReference xref1 = new ExternalReference("LocusLink", "ABCDE");
+        ExternalReference xref2 = new ExternalReference("RefSeq", "NP_060241");
         refs.add(xref1);
         refs.add(xref2);
 
@@ -176,14 +177,14 @@ public class TestPsiUtil extends TestCase {
         util.addExternalReferences(xref, refs);
 
         //  Validate that the Xref has the new references
-        assertEquals (2, xref.getSecondaryRefCount());
+        assertEquals(2, xref.getSecondaryRefCount());
         DbReferenceType x0 = xref.getSecondaryRef(0);
         DbReferenceType x1 = xref.getSecondaryRef(1);
 
-        assertEquals ("LocusLink", x0.getDb());
-        assertEquals ("ABCDE", x0.getId());
-        assertEquals ("RefSeq", x1.getDb());
-        assertEquals ("NP_060241", x1.getId());
+        assertEquals("LocusLink", x0.getDb());
+        assertEquals("ABCDE", x0.getId());
+        assertEquals("RefSeq", x1.getDb());
+        assertEquals("NP_060241", x1.getId());
     }
 
     private void validateInteractionUpdate(Entry entry) throws Exception {

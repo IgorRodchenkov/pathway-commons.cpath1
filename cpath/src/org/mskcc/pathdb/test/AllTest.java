@@ -34,6 +34,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.test.lucene.IndexerSuite;
+import org.mskcc.pathdb.test.model.ModelSuite;
 import org.mskcc.pathdb.test.protocol.ProtocolSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
 import org.mskcc.pathdb.test.sql.assembly.AssemblySuite;
@@ -42,7 +43,6 @@ import org.mskcc.pathdb.test.task.TaskSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
-import org.mskcc.pathdb.test.model.ModelSuite;
 
 /**
  * Runs all Unit Tests.

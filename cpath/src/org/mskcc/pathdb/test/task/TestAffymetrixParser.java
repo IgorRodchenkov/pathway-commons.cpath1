@@ -34,7 +34,6 @@ import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.task.ParseAffymetrixFileTask;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Tests the AffymetrixParser Task.

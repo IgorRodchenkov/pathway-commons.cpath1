@@ -31,21 +31,21 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.dataservices.core.DataServiceException;
+import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.task.ParseIdMappingsTask;
+import org.mskcc.pathdb.task.ProgressMonitor;
 
-import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Tests the ImportPsiToCPath class.
@@ -114,7 +114,7 @@ public class TestImportPsiToCPath extends TestCase {
         ExternalReference ref = new ExternalReference("Affymetrix",
                 "1552275_3p_s_at");
         ArrayList records = linker.lookUpByExternalRef(ref);
-        assertEquals (0, records.size());
+        assertEquals(0, records.size());
 
         //  First, load a small set of ids into the id mapping subsystem.
         File file = new File("testData/id_map.txt");
@@ -139,21 +139,21 @@ public class TestImportPsiToCPath extends TestCase {
         records = linker.lookUpByExternalRef(ref);
 
         //  Verify that we have correctly located the record.
-        assertEquals (1, records.size());
+        assertEquals(1, records.size());
         CPathRecord record = (CPathRecord) records.get(0);
 
         //  Verify that XML has been modified to include external
         //  references derived from the ID mapping subsystem.
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<primaryRef db=\"SwissProt\" id=\"Q727A4\"/>") > 0);
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"Affymetrix\" " +
                 "id=\"1552275_3p_s_at\"/>") > 0);
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"SwissProt\" id=\"AAH08943\"/>") > 0);
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"RefSeq\" id=\"NP_060241\"/>") > 0);
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"Unigene\" id=\"Hs.77646\"/>") > 0);
     }
 
