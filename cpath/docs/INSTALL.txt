@@ -78,3 +78,50 @@ update two configuration files:
 
 Replace the words tomcat/kitty with your own username/password.
 
+Appendix B:  Running Pre-Computed Queries
+-----------------------------------------
+
+Depending on your data set, some cPath queries may take several seconds to execute.
+For example, if a user requests all interactions from the DIP database via the
+Advanced Search page, this query may take several seconds (perhaps even 10-20 seconds)
+to complete.  To address this situation, cPath includes a generalized framework for
+pre-computing queries.  You simply create a text file with your designated queries,
+add it to a cron job, and cPath will automatically pre-compute these queries on
+a regular schedule.  If a user executes a query which matches one of the pre-computed
+queries, the result is returned immediately, resulting in very fast performance.
+
+Here is a sample configuration file with two pre-computed queries 
+(see testData/precompute_junit.txt for the full text.)
+
+-------------------------
+# Relative URLs for Sample Pre-Computed Queries
+# URLs Must be specified as name / value pairs separated by & character.
+
+# Retrieve all Human Data
+version=1.0&cmd=get_by_interactor_tax_id&q=9606&q=&maxHits=unbounded&format=psi
+
+# Retrieve all DIP Data
+version=1.0&cmd=get_by_interaction_db&q=DIP&maxHits=unbounded&format=psi
+-------------------------
+
+Each query is specified as a Web Service API call (see /cpath/webservice?cmd=help
+for complete details on the Web Service API.) In the example above, we have specified
+two queries:  the first retrieves all Human data; the second retrieves all DIP data.
+
+To run the pre-computed queries:
+
+1.  Set a CPATH_HOME environment variable to point to the root CPATH directory.  For example, on
+Linux/Mac OS X:
+
+export CPATH_HOME=/Users/cerami/dev/sander/cpath
+
+2.  Run the batch script:  bin/loadQueries.sh and specify the query file.
+
+For example:
+
+bin/loadQueries.sh testData/precompute_junit.txt
+
+If you want to schedule pre-computed queries with a cron job, a sample cron file is 
+provided in config/crontab.cron.  Make sure that your crontab file specifies a CPATH_HOME
+environment variable (see crontab.cron for details.)
+
