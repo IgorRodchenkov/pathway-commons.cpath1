@@ -54,15 +54,24 @@ public class ExternalReferenceUtil {
      */
     public static ExternalReference[] createUnifiedList(ExternalReference[]
             refs1, ExternalReference[] refs2) {
-        ExternalReference union[] = new ExternalReference[refs1.length
-                + refs2.length];
-        for (int i = 0; i < refs1.length; i++) {
-            union[i] = refs1[i];
+        ExternalReference union[] = null;
+        if (refs1 != null && refs2 != null) {
+            union = new ExternalReference[refs1.length
+                    + refs2.length];
+            for (int i = 0; i < refs1.length; i++) {
+                union[i] = refs1[i];
+            }
+            for (int i = 0; i < refs2.length; i++) {
+                union[refs1.length + i] = refs2[i];
+            }
+            return union;
+        } else if (refs1 != null) {
+            return refs1;
+        } else if (refs2 != null) {
+            return refs2;
+        } else {
+            return null;
         }
-        for (int i = 0; i < refs2.length; i++) {
-            union[refs1.length + i] = refs2[i];
-        }
-        return union;
     }
 
     /**
@@ -102,11 +111,15 @@ public class ExternalReferenceUtil {
      */
     public static ExternalReference[] removeDuplicates(ExternalReference
             refs[]) {
-        HashSet set = new HashSet();
-        for (int i = 0; i < refs.length; i++) {
-            set.add(refs[i]);
+        if (refs != null) {
+            HashSet set = new HashSet();
+            for (int i = 0; i < refs.length; i++) {
+                set.add(refs[i]);
+            }
+            return (ExternalReference[]) set.toArray
+                    (new ExternalReference[set.size()]);
+        } else {
+            return null;
         }
-        return (ExternalReference[]) set.toArray
-                (new ExternalReference[set.size()]);
     }
 }

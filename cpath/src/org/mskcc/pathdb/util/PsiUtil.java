@@ -523,23 +523,27 @@ public class PsiUtil {
         //  Track existing set of references.
         ExternalReference existingRefs[] = extractXrefs(xref);
         HashSet set = new HashSet();
-        for (int i = 0; i < existingRefs.length; i++) {
-            set.add(existingRefs[i]);
+        if (existingRefs != null) {
+            for (int i = 0; i < existingRefs.length; i++) {
+                set.add(existingRefs[i]);
+            }
         }
 
-        for (int i = 0; i < extraRefs.length; i++) {
-            ExternalReference ref = extraRefs[i];
-            if (!set.contains(ref)) {
-                if (xref.getPrimaryRef() == null) {
-                    DbReferenceType primaryRef = new DbReferenceType();
-                    primaryRef.setDb(ref.getDatabase());
-                    primaryRef.setId(ref.getId());
-                    xref.setPrimaryRef(primaryRef);
-                } else {
-                    DbReferenceType secondaryRef = new DbReferenceType();
-                    secondaryRef.setDb(ref.getDatabase());
-                    secondaryRef.setId(ref.getId());
-                    xref.addSecondaryRef(secondaryRef);
+        if (extraRefs != null) {
+            for (int i = 0; i < extraRefs.length; i++) {
+                ExternalReference ref = extraRefs[i];
+                if (!set.contains(ref)) {
+                    if (xref.getPrimaryRef() == null) {
+                        DbReferenceType primaryRef = new DbReferenceType();
+                        primaryRef.setDb(ref.getDatabase());
+                        primaryRef.setId(ref.getId());
+                        xref.setPrimaryRef(primaryRef);
+                    } else {
+                        DbReferenceType secondaryRef = new DbReferenceType();
+                        secondaryRef.setDb(ref.getDatabase());
+                        secondaryRef.setId(ref.getId());
+                        xref.addSecondaryRef(secondaryRef);
+                    }
                 }
             }
         }
