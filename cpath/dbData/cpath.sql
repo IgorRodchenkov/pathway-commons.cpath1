@@ -37,8 +37,8 @@ CREATE TABLE `cpath` (
 #
 # Table structure for table `external_db`
 #
-# Creation: May 25, 2004 at 03:36 PM
-# Last update: May 25, 2004 at 03:37 PM
+# Creation: Mar 14, 2005 at 03:55 PM
+# Last update: Mar 14, 2005 at 03:55 PM
 #
 
 CREATE TABLE `external_db` (
@@ -47,13 +47,13 @@ CREATE TABLE `external_db` (
   `URL` varchar(255) default NULL,
   `DESC` varchar(255) default NULL,
   `FIXED_CV_TERM` int(11) NOT NULL default '0',
+  `DB_TYPE` varchar(25) NOT NULL default '',
   `DBDB_ID` int(11) default NULL,
   `DBDB_URL` varchar(255) default NULL,
   `CREATE_TIME` timestamp(14) NOT NULL,
   `UPDATE_TIME` timestamp(14) NOT NULL,
   PRIMARY KEY  (`EXTERNAL_DB_ID`)
 ) TYPE=MyISAM COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
-# --------------------------------------------------------
 
 #
 # Table structure for table `external_db_cv`
@@ -176,22 +176,22 @@ CREATE TABLE `xml_cache` (
 ) TYPE=MyISAM COMMENT='Contains Cached XML Documents' AUTO_INCREMENT=1 ;
 
 #
-# Table structure for table `id_map`
+# Table structure for table `background_reference`
 #
-# Creation: Feb 15, 2005 at 04:20 PM
-# Last update: Feb 15, 2005 at 04:39 PM
+# Creation: Mar 14, 2005 at 03:55 PM
+# Last update: Mar 14, 2005 at 03:55 PM
 #
 
-CREATE TABLE `id_map` (
-  `ID_MAP_ID` int(11) NOT NULL auto_increment,
+CREATE TABLE `background_reference` (
+  `BACKGROUND_REFERENCE_ID` int(11) NOT NULL auto_increment,
+  `REFERENCE_TYPE` varchar(25) NOT NULL default '',
   `DB_1` int(11) NOT NULL default '0',
   `ID_1` varchar(255) NOT NULL default '',
   `DB_2` int(11) NOT NULL default '0',
   `ID_2` varchar(255) NOT NULL default '',
   `HASH_CODE` int(30) NOT NULL default '0',
-  PRIMARY KEY  (`ID_MAP_ID`),
+  PRIMARY KEY  (`BACKGROUND_REFERENCE_ID`),
   KEY `HASH_CODE` (`HASH_CODE`),
   KEY `DB ID Pair1` (`DB_1`,`ID_1`),
   KEY `DB ID Pair2` (`DB_2`,`ID_2`)
-) TYPE=MyISAM COMMENT='ID Mapping Service' AUTO_INCREMENT=1 ;
-# --------------------------------------------------------
+) TYPE=MyISAM COMMENT='Background References' AUTO_INCREMENT=1 ;
