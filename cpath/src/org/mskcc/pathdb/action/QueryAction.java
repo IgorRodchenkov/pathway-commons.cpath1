@@ -39,6 +39,7 @@ import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.query.Query;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.util.XssFilter;
@@ -123,9 +124,11 @@ public class QueryAction extends BaseAction {
                                 "No Results Found for:  "
                         + protocolRequest.getQuery());
             }
-            xml = xmlAssembly.getXmlString();
+            xml = xmlAssembly.getXmlStringWithCPathIdPrefix();
         } catch (ProtocolException e) {
             xml = e.toXml();
+        } catch (AssemblyException e) {
+            xml = e.getMessage();
         } finally {
             returnXml(response, xml);
         }
