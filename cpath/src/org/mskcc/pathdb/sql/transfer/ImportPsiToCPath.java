@@ -385,7 +385,7 @@ public class ImportPsiToCPath {
         String xml = marshalProtein(protein);
         String name = protein.getNames().getShortLabel();
 
-        if (name == null || name.length() == 0) {
+        if (name == null || name.trim().length() == 0) {
             name = protein.getNames().getFullName();
         }
 
