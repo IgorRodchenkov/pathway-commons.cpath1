@@ -26,6 +26,7 @@ system "maven pdf";
 system "maven site:fsdeploy";
 
 # Create source distribition
+system "ant war";
 system "tar -cvf cpath.tar *";
 system "gzip cpath.tar";
 system "cp cpath.tar.gz /var/www/dev_site/cpath";
