@@ -46,8 +46,8 @@ public class TestIndexer extends TestCase {
         queryInteraction("organism:562");
         queryInteraction("Genetic");
         queryInteraction("\"MI:0045\"");
-        queryInteraction("interaction_type:\"MI:0045\"");
-        queryInteraction("interaction_type:Genetic");
+        queryInteraction("experiment_type:\"MI:0045\"");
+        queryInteraction("experiment_type:Genetic");
         queryInteraction("pmid:11821039");
         queryInteraction("database:DIP");
     }

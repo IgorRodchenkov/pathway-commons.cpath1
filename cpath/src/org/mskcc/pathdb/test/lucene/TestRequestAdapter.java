@@ -70,7 +70,7 @@ public class TestRequestAdapter extends TestCase {
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE);
         request.setQuery("Two Hybrid");
         terms = RequestAdapter.getSearchTerms(request);
-        assertEquals("interaction_type:Two Hybrid",
+        assertEquals("experiment_type:Two Hybrid",
                 terms);
 
         request = new ProtocolRequest();
@@ -78,7 +78,7 @@ public class TestRequestAdapter extends TestCase {
         request.setQuery("Two Hybrid");
         request.setOrganism("homo sapiens");
         terms = RequestAdapter.getSearchTerms(request);
-        assertEquals("+(interaction_type:Two Hybrid) "
+        assertEquals("+(experiment_type:Two Hybrid) "
                 + "+organism:homo sapiens", terms);
 
         request = new ProtocolRequest();
