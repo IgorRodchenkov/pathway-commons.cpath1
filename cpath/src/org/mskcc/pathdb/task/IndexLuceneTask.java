@@ -11,6 +11,7 @@ import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -45,6 +46,9 @@ public class IndexLuceneTask extends Task {
      */
     public void run() {
         try {
+            pMonitor.setCurrentMessage("Clearing XML Cache");
+            DaoXmlCache dao = new DaoXmlCache(new XDebug());
+            dao.deleteAllRecords();
             indexAllInteractions();
             pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
                     + "Entities Indexed:  " + pMonitor.getCurValue());
