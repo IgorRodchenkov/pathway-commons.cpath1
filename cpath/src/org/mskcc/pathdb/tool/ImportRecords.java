@@ -20,38 +20,14 @@ public class ImportRecords {
     private DaoImport dbImport;
 
     /**
-     * Main Method.
-     *
-     * @param args Command Line Arguments.
-     */
-    public static void main(String[] args) {
-        boolean validateExternalReferences = true;
-        if (args.length > 0) {
-            if (args[0].equals("-skipValidation")) {
-                validateExternalReferences = false;
-            }
-        }
-        ImportRecords importer = new ImportRecords();
-        importer.transferData(validateExternalReferences);
-    }
-
-    /**
      * Transfers Data.
      *
      * @param validateExternalReferences Flag to Validate External References.
      */
-    public void transferData(boolean validateExternalReferences) {
+    public void transferData(boolean validateExternalReferences)
+            throws DaoException, ImportException {
         System.out.println("Transferring Import Records");
-        try {
-            transferAllImportRecords(validateExternalReferences);
-        } catch (DaoException e) {
-            System.out.println("\n!!!!  Transfer aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-            e.printStackTrace();
-        } catch (ImportException e) {
-            System.out.println("\n!!!!  Transfer aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-        }
+        transferAllImportRecords(validateExternalReferences);
         System.out.println("Transfer Complete");
     }
 

@@ -9,26 +9,32 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Command Line Tool for Loading PSI Data to the CPath Import Table.
+ * Command Line Tool for Loading PSI Data into cPath.
  *
  * @author Ethan Cerami
  */
 public class LoadPsi {
 
     /**
-     * Main Method.
+     * Imports PSI-MI Data File.
      *
-     * @param args Command Line Arguments.
+     * @param fileName File Name.
      */
-    public static void main(String[] args) {
-        if (args.length == 1) {
-            loadDataFile(args[0]);
-        } else {
-            System.out.println("Command line usage:  admin.pl psi"
-                    + " filename");
-        }
+    public static void importDataFile(String fileName) throws IOException,
+            DaoException {
+        String description = getDescription();
+        System.out.println("Loading data file:  " + fileName);
+        System.out.println("Description:  " + description);
+        ContentReader reader = new ContentReader();
+        String data = reader.retrieveContent(fileName);
+        DaoImport dbImport = new DaoImport();
+        dbImport.addRecord(description, data);
+        System.out.println("XML Document Loaded.  Ready for Import.");
     }
 
+    /**
+     * Gets Description of Data File.
+     */
     private static String getDescription() throws IOException {
         System.out.print("Please enter a description [minimum 5 chars]:  ");
         BufferedReader input = new BufferedReader
@@ -40,29 +46,5 @@ public class LoadPsi {
             line = input.readLine();
         }
         return line;
-    }
-
-    /**
-     * Loads Data File.
-     *
-     * @param fileName File Name.
-     */
-    private static void loadDataFile(String fileName) {
-        try {
-            String description = getDescription();
-            System.out.println("Loading data file:  " + fileName);
-            System.out.println("Description:  " + description);
-            ContentReader reader = new ContentReader();
-            String data = reader.retrieveContent(fileName);
-            DaoImport dbImport = new DaoImport();
-            dbImport.addRecord(description, data);
-            System.out.println("Loading complete.");
-        } catch (DaoException e) {
-            System.out.println("\n!!!!  Loading of data aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("\n!!!!  Loading of data aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-        }
     }
 }

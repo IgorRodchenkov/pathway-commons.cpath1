@@ -13,7 +13,6 @@ import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Loads PreComputed Queries.
@@ -21,72 +20,33 @@ import java.util.Date;
  * @author Ethan Cerami
  */
 public class LoadPreComputedQueries {
-    private XDebug xdebug = new XDebug();
 
     /**
      * Processes all Queries in Specified File.
      *
-     * @param file File Name.
+     * @param file File Name
+     * @throws DaoException       Date Access Error.
+     * @throws IOException        File Input Error.
+     * @throws NeedsHelpException Protocol Error.
+     * @throws ProtocolException  Protocol Error.
+     * @throws QueryException     Query Error.
      */
-    public void process(String file) {
+    public void preCompute(String file, XDebug xdebug)
+            throws DaoException, IOException,
+            NeedsHelpException, ProtocolException, QueryException {
         QueryFileReader reader = new QueryFileReader();
-        try {
-            System.out.println("START:  " + new Date());
-            System.out.println("Clearing Database Cache");
-            DaoXmlCache dao = new DaoXmlCache(xdebug);
-            dao.deleteAllRecords();
-            ArrayList list = reader.getProtocolRequests(file);
-            for (int i = 0; i < list.size(); i++) {
-                ProtocolRequest request = (ProtocolRequest) list.get(i);
-                ProtocolValidator validator = new ProtocolValidator(request);
-                validator.validate();
-                System.out.print("Running Query:  " + request.getUri());
-                Query executeQuery = new Query(xdebug);
-                executeQuery.executeQuery(request, false);
-                System.out.println(" -->  OK");
-            }
-            System.out.println("DONE:  " + new Date());
-        } catch (IOException e) {
-            System.out.println("\n!!!!  Script aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-            e.printStackTrace();
-        } catch (QueryException e) {
-            System.out.println("\n!!!!  Script aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            System.out.println("\n!!!!  Script aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-            e.printStackTrace();
-        } catch (NeedsHelpException e) {
-            System.out.println("\n!!!!  Script aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-            e.printStackTrace();
-        } catch (DaoException e) {
-            System.out.println("\n!!!!  Script aborted due to error!");
-            System.out.println("-->  " + e.getMessage());
-            e.printStackTrace();
+        System.out.println("Clearing Database Cache");
+        DaoXmlCache dao = new DaoXmlCache(xdebug);
+        dao.deleteAllRecords();
+        ArrayList list = reader.getProtocolRequests(file);
+        for (int i = 0; i < list.size(); i++) {
+            ProtocolRequest request = (ProtocolRequest) list.get(i);
+            ProtocolValidator validator = new ProtocolValidator(request);
+            validator.validate();
+            System.out.print("Running Query:  " + request.getUri());
+            Query executeQuery = new Query(xdebug);
+            executeQuery.executeQuery(request, false);
+            System.out.println(" -->  OK");
         }
-    }
-
-    /**
-     * Main Method.
-     *
-     * @param args Command Line Arguments.
-     */
-    public static void main(String[] args) {
-        if (args.length > 0) {
-            LoadPreComputedQueries loader = new LoadPreComputedQueries();
-            loader.process(args[0]);
-        } else {
-            displayUsage();
-        }
-    }
-
-    /**
-     * Displays Command Line Usage.
-     */
-    public static void displayUsage() {
-        System.out.println("Command line usage:  admin.pl precompute filename");
     }
 }

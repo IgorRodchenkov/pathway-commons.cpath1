@@ -9,9 +9,13 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.xdebug.XDebugMessage;
 
 import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Command Line Tool for Querying Full Text Indexer.
+ *
+ * This is a legacy tool, which is not used much anymore.
+ * I am keeping it here until I decide what to do with it.
  *
  * @author Ethan Cerami
  */
@@ -34,7 +38,7 @@ public class QueryFullText {
             queryFullText(terms.toString(), xdebug);
             System.out.println("XDebug Log:");
             System.out.println("----------------");
-            Vector list = xdebug.getDebugMessages();
+            ArrayList list = xdebug.getDebugMessages();
             for (int i = 0; i < list.size(); i++) {
                 XDebugMessage msg = (XDebugMessage) list.get(i);
                 System.out.println(msg.getMessage());
