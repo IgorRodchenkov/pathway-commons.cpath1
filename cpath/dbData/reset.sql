@@ -43,7 +43,7 @@ INSERT INTO `external_db` VALUES (17, 'SGD', '', 'SGD', 25, NULL, NULL, 20031002
 INSERT INTO `external_db` VALUES (18, 'HPRD', 'http://hprd.ibioinformatics.org/hprdId?hprdId=%ID%', 'Human Protein Reference Database', 26, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (19, 'OMIM', 'http://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%ID%', 'Online Mendelian Inheritance in Man', 28, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (20, 'GenBank', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=Protein&doptcmdl=GenPept&term=%ID%', 'GenBank', 29, NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (21, 'MINT', 'http://newton.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%', 'MINT (Molecular INTeraction database)', 31, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (21, 'MINT', 'http://mint.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%', 'MINT (Molecular INTeraction database)', 31, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (22, 'Reactome', 'http://www.reactome.org/cgi-bin/search?SUBMIT=1&QUERY_CLASS=DatabaseIdentifier&QUERY=SWALL:%ID%', 'Reactome - a knowledgebase of biological processes', 32, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (23, 'HUGE', 'http://www.kazusa.or.jp/huge/gfpage/%ID%/', 'HUGE Protein Database', 33, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (24, 'Unigene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene', 'Unigene Database', 35, NULL, NULL, 20031002163709, 20031002163709);
