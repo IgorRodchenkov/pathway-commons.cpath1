@@ -3,6 +3,7 @@ package org.mskcc.pathdb.test.sql;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.mskcc.pathdb.test.sql.assembly.AssemblySuite;
 
 /**
  * Suite of all SQL Unit Tests.
@@ -27,6 +28,7 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestUpdatePsiInteractor.class);
         suite.addTestSuite(TestDaoXmlCache.class);
         suite.addTestSuite(TestQueryFileReader.class);
+        suite.addTest(AssemblySuite.suite());
         suite.setName("SQL Database Tests");
         return suite;
     }
