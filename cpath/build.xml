@@ -280,4 +280,12 @@
 			<classpath refid="compile.classpath"/>
 		</junit>
 	 </target>
+
+	<target name="prepare_dev_site" depends="prepare"
+		description="Prepares Dev Site">
+		<replace file="${basedir}/project.xml">
+ 		<replacetoken>scm:cvs:ext:cerami@cbio.mskcc.org:/var/lib/cvs:cpath</replacetoken>
+  		<replacevalue>scm:cvs:local:ignored:/var/lib/cvs:cpath</replacevalue>
+		</replace>
+	</target>
 </project>
