@@ -12,6 +12,7 @@ import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.PsiUtil;
+import org.mskcc.pathdb.util.ConsoleUtil;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -181,10 +182,8 @@ public class ImportPsiToCPath {
             pMonitor.setMaxValue(interactors.getProteinInteractorCount()
                     + interactions.getInteractionCount());
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
-                if (verbose) {
-                    System.out.print(".");
-                }
                 pMonitor.incrementCurValue();
+                ConsoleUtil.showProgress(verbose, pMonitor);
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
                 ExternalReference[] refs = extractExternalReferences(protein);
@@ -193,10 +192,8 @@ public class ImportPsiToCPath {
 
             //  Validate All Interactions
             for (int j = 0; j < interactions.getInteractionCount(); j++) {
-                if (verbose) {
-                    System.out.print(".");
-                }
                 pMonitor.incrementCurValue();
+                ConsoleUtil.showProgress(verbose, pMonitor);
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
                 ExternalReference refs[] =
@@ -226,9 +223,7 @@ public class ImportPsiToCPath {
             InteractorList interactors = entry.getInteractorList();
             pMonitor.setMaxValue(interactors.getProteinInteractorCount());
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
-                if (verbose) {
-                    System.out.print(".");
-                }
+                ConsoleUtil.showProgress(verbose, pMonitor);
                 pMonitor.incrementCurValue();
                 summary.incrementNumInteractorsProcessed();
                 ProteinInteractorType protein =
@@ -287,10 +282,8 @@ public class ImportPsiToCPath {
 
             pMonitor.setMaxValue(interactions.getInteractionCount());
             for (int j = 0; j < interactions.getInteractionCount(); j++) {
-                if (verbose) {
-                    System.out.print(".");
-                }
                 pMonitor.incrementCurValue();
+                ConsoleUtil.showProgress(verbose, pMonitor);
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
                 saveInteraction(interaction);
@@ -353,7 +346,7 @@ public class ImportPsiToCPath {
                 daoOrganism.addRecord(taxId, namesType.getFullName(),
                         namesType.getShortLabel());
             }
-        }
+        } 
     }
 
     /**
