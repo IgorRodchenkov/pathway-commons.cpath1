@@ -109,10 +109,10 @@ public class IndexLuceneTask extends Task {
             pstmt.setString(1, CPathRecordType.INTERACTION.toString());
             rs = pstmt.executeQuery();
 
-            int counter = 0;
+            int counter = 1;
             while (rs.next()) {
                 indexRecord(cpath, rs, indexWriter);
-                if (counter % 1000 ==0) {
+                if (counter % 300 ==0) {
                     System.out.println("#");
                     indexWriter.optimize();
                     indexWriter.commit();

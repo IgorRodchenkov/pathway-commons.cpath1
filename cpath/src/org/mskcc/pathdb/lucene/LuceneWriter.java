@@ -30,7 +30,7 @@ public class LuceneWriter {
      */
     public LuceneWriter(boolean resetFlag) throws IOException {
         writer = new IndexWriter(dir, analyzer, resetFlag);
-        writer.mergeFactor = 500;
+        writer.mergeFactor = 100;
         //writer.close();
     }
 
@@ -71,7 +71,7 @@ public class LuceneWriter {
      */
     public void optimize() {
         try {
-            System.out.println("Attempting to Optimize the Indexes");
+            System.out.println("Optimizing Lucene Indexes...");
             writer.optimize();
         } catch (IOException e) {
             System.out.println("Optimization Failed:  " + e.toString());
