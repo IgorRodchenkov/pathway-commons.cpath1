@@ -124,3 +124,24 @@ If you want to schedule pre-computed queries with a cron job, a sample cron file
 provided in config/crontab.cron.  Make sure that your crontab file specifies a CPATH_HOME
 environment variable (see crontab.cron for details.)
 
+Appendix C:  Monitoring cPath for Constant Uptime
+--------------------------------------------------
+
+Once installed, it is useful to monitor cPath on a periodic basis, and verify that it
+is running correctly.  A recommended tool is TinyMonitor, available from:  
+http://www.glug.com/projects/TinyMonitor/.  From the Glug.com site:
+
+"TinyMonitor was written out of pure necessity for a simple monitoring program that 
+watched the actual content of returned pages rather than simply checking to see if 
+the httpd service was running. (Experience has proven that the web server running 
+doesn't necessarily mean it's reporting the content you want.).
+
+This program can be used for simple web server monitoring (i.e. is it actually 
+delivering content?) or can be used to verify a page is returning what you expect
+(i.e. a 200 rather than a 404). This is an excellent choice for someone who 
+doesn't want to spend thousands on a program that will do actual http content 
+monitoring (i.e. SiteScope or HP OpenView Internet Services)."
+
+A copy of TinyMonitor (along with a sample config file for monitoring cPath)
+is available in bin/tinymonitor.
+
