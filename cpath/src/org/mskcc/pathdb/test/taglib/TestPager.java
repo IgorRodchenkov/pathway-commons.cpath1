@@ -82,10 +82,10 @@ public class TestPager extends TestCase {
         assertEquals(240, start);
         assertEquals(255, end);
         assertEquals("webservice.do?version=1.0&cmd=&q=ABC123&format=&"
-            + "startIndex=0&organism=&maxHits=20", firstUrl);
+                + "startIndex=0&organism=&maxHits=20", firstUrl);
         assertEquals(null, nextUrl);
         assertEquals("webservice.do?version=1.0&cmd=&q=ABC123&format=&"
-            + "startIndex=220&organism=&maxHits=20", prevUrl);
+                + "startIndex=220&organism=&maxHits=20", prevUrl);
     }
 
     /**

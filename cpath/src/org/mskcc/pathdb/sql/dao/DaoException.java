@@ -9,6 +9,7 @@ public class DaoException extends Exception {
 
     /**
      * Constructor.
+     *
      * @param throwable Throwable Object containing root cause.
      */
     public DaoException(Throwable throwable) {

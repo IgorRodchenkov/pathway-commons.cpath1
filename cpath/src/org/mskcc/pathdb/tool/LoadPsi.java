@@ -19,6 +19,8 @@ public class LoadPsi {
      * Imports PSI-MI Data File.
      *
      * @param fileName File Name.
+     * @throws IOException  File Input Error.
+     * @throws DaoException Data Access Error.
      */
     public static void importDataFile(String fileName) throws IOException,
             DaoException {

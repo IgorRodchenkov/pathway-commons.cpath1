@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.lucene;
 
-import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 
 /**
  * This class takes in a ProtocolRequest object, and outputs its
@@ -19,6 +19,7 @@ public class RequestAdapter {
 
     /**
      * Gets Revised Search Terms.
+     *
      * @param request ProtocolRequest Object.
      * @return Search Terms.
      */
@@ -50,7 +51,7 @@ public class RequestAdapter {
     }
 
     private static String addField(String field, String query) {
-        query = new String (field + COLON + query);
+        query = new String(field + COLON + query);
         return query;
     }
 

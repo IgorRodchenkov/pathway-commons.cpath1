@@ -23,6 +23,8 @@ public class ImportRecords {
      * Transfers Data.
      *
      * @param validateExternalReferences Flag to Validate External References.
+     * @throws DaoException Data Access Error.
+     * @throws ImportException Data Import Error.
      */
     public void transferData(boolean validateExternalReferences)
             throws DaoException, ImportException {

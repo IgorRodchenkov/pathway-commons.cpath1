@@ -4,7 +4,7 @@ import com.opensymphony.module.oscache.base.Cache;
 import com.opensymphony.module.oscache.base.NeedsRefreshException;
 import com.opensymphony.module.oscache.web.ServletCacheAdministrator;
 import com.opensymphony.module.oscache.web.filter.
-    CacheHttpServletResponseWrapper;
+        CacheHttpServletResponseWrapper;
 import com.opensymphony.module.oscache.web.filter.ResponseContent;
 
 import javax.servlet.*;

@@ -101,7 +101,7 @@ public class DaoLog {
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement ("SELECT COUNT(*) FROM log");
+            pstmt = con.prepareStatement("SELECT COUNT(*) FROM log");
             rs = pstmt.executeQuery();
             rs.next();
             int count = rs.getInt(1);
@@ -137,7 +137,7 @@ public class DaoLog {
                 String stackTrace = rs.getString("STACK_TRACE");
                 String webUrl = rs.getString("WEB_URL");
                 String remoteHost = rs.getString("REMOTE_HOST");
-                String remoteIp= rs.getString("REMOTE_IP");
+                String remoteIp = rs.getString("REMOTE_IP");
 
                 LogRecord record = new LogRecord();
                 record.setDate(date);

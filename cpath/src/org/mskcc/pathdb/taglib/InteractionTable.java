@@ -35,16 +35,15 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.pathdb.protocol.ProtocolConstants;
-import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.ProteinWithWeight;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -359,13 +358,13 @@ public class InteractionTable extends HtmlTable {
                 //  links for viewing interaction records.  It requires that
                 //  you remove the last letter in the interaction ID.
                 if (db.equals("DIP")) {
-                    String trucatedId = id.substring(0, id.length()-1);
+                    String trucatedId = id.substring(0, id.length() - 1);
                     String url = "http://dip.doe-mbi.ucla.edu/dip/DIPview."
                             + "cgi?IK=" + trucatedId;
-                    append (db + ":  ");
-                    append ("<A HREF='"+url+"'>"+id+"</A>");
+                    append(db + ":  ");
+                    append("<A HREF='" + url + "'>" + id + "</A>");
                 } else {
-                    append (db + ":  " + id);
+                    append(db + ":  " + id);
                 }
             }
         }
@@ -397,13 +396,13 @@ public class InteractionTable extends HtmlTable {
             if (primaryRef != null) {
                 outputPmid(primaryRef);
             }
-            for (int i=0; i<xref.getSecondaryRefCount(); i++) {
+            for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
                 DbReferenceType secondaryRef = xref.getSecondaryRef(i);
                 append("<BR>");
                 outputPmid(secondaryRef);
             }
         }
-        append ("</TD>");
+        append("</TD>");
     }
 
     private void outputPmid(DbReferenceType primaryRef) {

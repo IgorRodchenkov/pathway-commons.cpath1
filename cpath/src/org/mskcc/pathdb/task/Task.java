@@ -1,7 +1,6 @@
 package org.mskcc.pathdb.task;
 
-import java.text.NumberFormat;
-import java.text.DecimalFormat;
+
 
 /**
  * Wrapper for Background Threads.

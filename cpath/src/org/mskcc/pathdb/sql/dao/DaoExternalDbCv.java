@@ -58,8 +58,8 @@ public class DaoExternalDbCv {
             throws DaoException {
         ExternalDatabaseRecord exDb = getExternalDbByTerm(dbTerm);
         if (exDb == null) {
-            throw new DaoException (new NullPointerException
-                ("No matching database found for: " + dbTerm));
+            throw new DaoException(new NullPointerException
+                    ("No matching database found for: " + dbTerm));
         }
         return exDb.getFixedCvTerm();
     }

@@ -51,11 +51,12 @@ public class GlobalTaskList {
 
     /**
      * Returns True if One or More Tasks are Currently Active.
+     *
      * @return true or false;
      */
     public boolean oneOrMoreTasksAreActive() {
         if (tasks != null) {
-            for (int i=0; i<tasks.size(); i++) {
+            for (int i = 0; i < tasks.size(); i++) {
                 Task task = (Task) tasks.get(i);
                 if (task.isAlive()) {
                     return true;

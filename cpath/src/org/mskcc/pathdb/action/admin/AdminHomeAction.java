@@ -3,9 +3,9 @@ package org.mskcc.pathdb.action.admin;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.task.GlobalTaskList;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +34,7 @@ public class AdminHomeAction extends AdminBaseAction {
         GlobalTaskList list = GlobalTaskList.getInstance();
         if (list.oneOrMoreTasksAreActive()) {
             request.setAttribute(BaseAction.PAGE_AUTO_UPDATE,
-                BaseAction.YES);
+                    BaseAction.YES);
         }
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }

@@ -16,6 +16,7 @@ public class XmlCacheRecord {
 
     /**
      * Gets Cache ID.
+     *
      * @return Cache ID.
      */
     public int getCacheId() {
@@ -24,6 +25,7 @@ public class XmlCacheRecord {
 
     /**
      * Sets Cache ID.
+     *
      * @param cacheId Cache ID.
      */
     public void setCacheId(int cacheId) {
@@ -32,6 +34,7 @@ public class XmlCacheRecord {
 
     /**
      * Gets URL that generates Cache Record.
+     *
      * @return URL.
      */
     public String getUrl() {
@@ -40,6 +43,7 @@ public class XmlCacheRecord {
 
     /**
      * Sets URL that generates Cache Record.
+     *
      * @param url URL.
      */
     public void setUrl(String url) {
@@ -48,6 +52,7 @@ public class XmlCacheRecord {
 
     /**
      * Gets MD5 Hash of URL Request.
+     *
      * @return MD5 Hash of URL Request.
      */
     public String getMd5() {
@@ -56,6 +61,7 @@ public class XmlCacheRecord {
 
     /**
      * Sets MD5 Hash of URL Request.
+     *
      * @param md5 MD5 Hash of URL Request.
      */
     public void setMd5(String md5) {
@@ -64,6 +70,7 @@ public class XmlCacheRecord {
 
     /**
      * Gets Number of Hits.
+     *
      * @return Number of Hits.
      */
     public int getNumHits() {
@@ -72,6 +79,7 @@ public class XmlCacheRecord {
 
     /**
      * Sets Number of Hits.
+     *
      * @param numHits Number of Hits.
      */
     public void setNumHits(int numHits) {
@@ -80,6 +88,7 @@ public class XmlCacheRecord {
 
     /**
      * Gets Date/Time When Last Used.
+     *
      * @return Date/Time Last Used.
      */
     public Date getLastUsed() {
@@ -88,6 +97,7 @@ public class XmlCacheRecord {
 
     /**
      * Sets Date/Time When Last Used.
+     *
      * @param lastUsed Date/Time Last Used.
      */
     public void setLastUsed(Date lastUsed) {

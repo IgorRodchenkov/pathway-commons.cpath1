@@ -1,11 +1,11 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
+import org.mskcc.pathdb.model.XmlCacheRecord;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.model.XmlCacheRecord;
 
 import java.util.ArrayList;
 
@@ -60,11 +60,11 @@ public class TestDaoXmlCache extends TestCase {
 
         //  Get all Records (there should only be 1)
         ArrayList records = dao.getAllRecords();
-        assertEquals (1, records.size());
+        assertEquals(1, records.size());
         XmlCacheRecord record = (XmlCacheRecord) records.get(0);
-        assertEquals (URL, record.getUrl());
-        assertEquals (HASH_KEY, record.getMd5());
-        assertEquals (200, record.getNumHits());
+        assertEquals(URL, record.getUrl());
+        assertEquals(HASH_KEY, record.getMd5());
+        assertEquals(200, record.getNumHits());
 
         //  Delete record, and verify success.
         success = dao.deleteRecordByKey(HASH_KEY);
@@ -78,6 +78,7 @@ public class TestDaoXmlCache extends TestCase {
 
     /**
      * Tests Auto-Purge Feature.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAutoPurge() throws Exception {
@@ -97,13 +98,13 @@ public class TestDaoXmlCache extends TestCase {
         assembly.setNumHits(100);
 
         //  Add 500 Records
-        for (int i=0; i<200; i++) {
+        for (int i = 0; i < 200; i++) {
             String hash = "hash" + i;
             dao.addRecord(hash, hash, assembly);
         }
 
         //  Verify we now have 50 records in cache
         ArrayList records = dao.getAllRecords();
-        assertEquals (50, records.size());
+        assertEquals(50, records.size());
     }
 }

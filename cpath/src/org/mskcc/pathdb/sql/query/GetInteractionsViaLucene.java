@@ -3,9 +3,9 @@ package org.mskcc.pathdb.sql.query;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
-import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.lucene.RequestAdapter;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
@@ -62,7 +62,7 @@ class GetInteractionsViaLucene extends InteractionQuery {
         XmlAssembly xmlAssembly;
         if (cpathIds != null && cpathIds.length > 0) {
             xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
-                hits.length(), xdebug);
+                    hits.length(), xdebug);
         } else {
             xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
         }

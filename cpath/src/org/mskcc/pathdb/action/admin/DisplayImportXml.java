@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
 /**
- * Action for Displaying Import Record XML.
+ * Administrative Action for Displaying Import Record XML.
  *
  * @author Ethan Cerami
  */

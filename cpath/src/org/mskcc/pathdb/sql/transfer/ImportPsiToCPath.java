@@ -11,8 +11,8 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.util.PsiUtil;
 import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -346,7 +346,7 @@ public class ImportPsiToCPath {
                 daoOrganism.addRecord(taxId, namesType.getFullName(),
                         namesType.getShortLabel());
             }
-        } 
+        }
     }
 
     /**

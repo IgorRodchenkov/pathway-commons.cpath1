@@ -20,13 +20,14 @@ public class ImportTable extends HtmlTable {
     public void subDoStartTag() throws Exception {
         DaoImport dbImport = new DaoImport();
         ArrayList records = dbImport.getAllRecords();
-        createHeader("cPath currently contains the following imported records:");
+        createHeader("cPath currently contains the following imported "
+                + "records:");
         this.startTable();
-            String headers[] = {
-                "Status", "Description", "Upload Time",
-                "Update Time", "View"
-            };
-            createTableHeaders(headers);
+        String headers[] = {
+            "Status", "Description", "Upload Time",
+            "Update Time", "View"
+        };
+        createTableHeaders(headers);
         outputRecords(records);
         endTable();
     }

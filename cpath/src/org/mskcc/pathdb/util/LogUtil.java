@@ -46,12 +46,12 @@ public class LogUtil {
             dao.addRecord(record);
         } catch (DaoException e) {
             //  If we can't log to Database, log to catalina.out
-            System.err.println("An Error Has Occured, and the Database " +
-                    "is down!");
-            System.err.println("Error occurred while processing web request: " +
-                    url);
-            System.err.println("Got the Error Message:  " +
-                    throwable.getMessage());
+            System.err.println("An Error Has Occured, and the Database "
+                    + "is down!");
+            System.err.println("Error occurred while processing web request: "
+                    + url);
+            System.err.println("Got the Error Message:  "
+                    + throwable.getMessage());
             System.err.println("Stack Trace Follows:\n" + writer.toString());
         }
     }

@@ -2,15 +2,13 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.Organism;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.protocol.ProtocolRequest;
-import org.mskcc.pathdb.protocol.ProtocolConstants;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Custom JSP Tag for Displaying Organism Data Plus Links.
@@ -43,10 +41,11 @@ public class OrganismTable extends HtmlTable {
         createHeader("Organism Information");
         startTable();
         startRow();
-        append ("<TH><A HREF='browse.do?"+SORT_BY_PARAMETER+"="+
-                SORT_BY_NAME+"'>Species</A></TH>");
-        append ("<TH><A HREF='browse.do?"+SORT_BY_PARAMETER+"="+
-                SORT_BY_NUM_INTERACTIONS+"'>Number of Interactions</A></TH>");
+        append("<TH><A HREF='browse.do?" + SORT_BY_PARAMETER + "="
+                + SORT_BY_NAME + "'>Species</A></TH>");
+        append("<TH><A HREF='browse.do?" + SORT_BY_PARAMETER + "="
+                + SORT_BY_NUM_INTERACTIONS + "'>Number of "
+                + "Interactions</A></TH>");
         outputRecords();
         endTable();
     }
@@ -56,10 +55,10 @@ public class OrganismTable extends HtmlTable {
      */
     private void outputRecords() throws DaoException, IOException,
             QueryException {
-        OrganismStats orgStats = new OrganismStats ();
+        OrganismStats orgStats = new OrganismStats();
         ArrayList records = null;
         String sortOrder = pageContext.getRequest().
-        getParameter(SORT_BY_PARAMETER);
+                getParameter(SORT_BY_PARAMETER);
         if (sortOrder != null
                 && sortOrder.equals(SORT_BY_NUM_INTERACTIONS)) {
             records = orgStats.getOrganismsSortedByNumInteractions();

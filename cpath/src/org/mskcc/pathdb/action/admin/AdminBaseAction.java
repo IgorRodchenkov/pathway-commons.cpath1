@@ -5,8 +5,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.pathdb.task.GlobalTaskList;
 import org.mskcc.pathdb.xdebug.XDebug;
 import sun.misc.BASE64Decoder;
 
@@ -107,7 +105,7 @@ public abstract class AdminBaseAction extends BaseAction {
         String testError = request.getParameter(PARAMETER_TEST_ERROR_PAGE);
         if (testError != null) {
             xdebug.logMsg(this, "Throwing an Exception to Test Error Page");
-            throw new Exception ("This is a test of the Error"
+            throw new Exception("This is a test of the Error"
                     + " page functionality");
         }
     }

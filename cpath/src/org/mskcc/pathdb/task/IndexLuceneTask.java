@@ -14,16 +14,14 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.text.DecimalFormat;
 
 /**
  * Runs the Lucene Text Indexer on all Records in CPath.
@@ -37,6 +35,7 @@ public class IndexLuceneTask extends Task {
      * Constructor.
      *
      * @param verbose Verbose flag.
+     * @param xdebug  XDebug Object.
      */
     public IndexLuceneTask(boolean verbose, XDebug xdebug) {
         super("Run Full Text Indexer");

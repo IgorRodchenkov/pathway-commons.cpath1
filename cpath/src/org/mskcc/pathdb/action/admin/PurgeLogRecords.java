@@ -3,15 +3,15 @@ package org.mskcc.pathdb.action.admin;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.action.BaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Administrative Action to Purge all Log Records.
+ * Administrative Action for purging all log records.
  *
  * @author Ethan Cerami.
  */

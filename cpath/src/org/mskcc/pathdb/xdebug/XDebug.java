@@ -1,8 +1,7 @@
 package org.mskcc.pathdb.xdebug;
 
-import java.util.Date;
-import java.util.Vector;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Encapsulates Real-time debugging information.
@@ -137,16 +136,17 @@ public class XDebug {
     /**
      * Gets Complete Log.
      * Useful for command line utilities.
+     *
      * @return Complete Log.
      */
-    public String getCompleteLog () {
+    public String getCompleteLog() {
         StringBuffer log = new StringBuffer();
-        if (messages == null || messages.size() ==0) {
+        if (messages == null || messages.size() == 0) {
             log.append("No Log Messages");
         }
-        for (int i=0; i<messages.size(); i++) {
+        for (int i = 0; i < messages.size(); i++) {
             XDebugMessage msg = (XDebugMessage) messages.get(i);
-            log.append(msg.getMessage()+"\n");
+            log.append(msg.getMessage() + "\n");
         }
         return log.toString();
     }

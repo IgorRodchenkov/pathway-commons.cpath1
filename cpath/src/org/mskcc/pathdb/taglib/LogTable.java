@@ -36,7 +36,6 @@ package org.mskcc.pathdb.taglib;
 import org.mskcc.pathdb.model.LogRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
-import org.mskcc.pathdb.model.LogRecord;
 import org.mskcc.pathdb.util.HtmlUtil;
 
 import java.util.ArrayList;
@@ -74,18 +73,18 @@ public class LogTable extends HtmlTable {
             append("</TR>");
         }
         for (int i = 0; i < logRecords.size(); i++) {
-            startRow(i-1);
+            startRow(i - 1);
             LogRecord record = (LogRecord) logRecords.get(i);
-            append ("<TD>");
-            append ("<B>Error Logged at:  " + record.getDate()
+            append("<TD>");
+            append("<B>Error Logged at:  " + record.getDate()
                     + "</B>");
-            append ("<P>Web URL:  <A HREF='" + record.getWebUrl()
-                +"'>" + record.getWebUrl() + "</A>");
-            append ("<P>Remote Host:  " + record.getRemoteHost());
-            append ("<P>Remote IP:  " + record.getRemoteIp());
-            append ("<P>Error Message:  " + record.getMessage());
+            append("<P>Web URL:  <A HREF='" + record.getWebUrl()
+                    + "'>" + record.getWebUrl() + "</A>");
+            append("<P>Remote Host:  " + record.getRemoteHost());
+            append("<P>Remote IP:  " + record.getRemoteIp());
+            append("<P>Error Message:  " + record.getMessage());
             String html = HtmlUtil.convertToHtml(record.getStackTrace());
-            append ("<P>Stack Trace:  " + html);
+            append("<P>Stack Trace:  " + html);
             endRow();
         }
     }

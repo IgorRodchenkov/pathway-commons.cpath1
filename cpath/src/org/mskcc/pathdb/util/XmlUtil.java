@@ -12,8 +12,9 @@ public class XmlUtil {
     /**
      * Normalizes Text.
      * Replaces all whitespace characters with a single whitespace.
-     * @param str   Text to Normalize.
-     * @return      Normalized Text.
+     *
+     * @param str Text to Normalize.
+     * @return Normalized Text.
      */
     public static String normalizeText(String str) {
         Text text = new Text(str);

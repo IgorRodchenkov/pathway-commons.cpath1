@@ -1,8 +1,8 @@
 package org.mskcc.pathdb.action;
 
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionForm;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +39,10 @@ public class ToggleSearchOptions extends BaseAction {
         Boolean searchOptionsFlag = (Boolean)
                 session.getAttribute(SESSION_SEARCH_OPTIONS_FLAG);
         if (searchOptionsFlag == null) {
-            searchOptionsFlag = new Boolean (false);
+            searchOptionsFlag = new Boolean(false);
         }
         xdebug.logMsg(this, "Search Options Flag was:  " + searchOptionsFlag);
-        searchOptionsFlag = new Boolean (!searchOptionsFlag.booleanValue());
+        searchOptionsFlag = new Boolean(!searchOptionsFlag.booleanValue());
         session.setAttribute(SESSION_SEARCH_OPTIONS_FLAG, searchOptionsFlag);
         xdebug.logMsg(this, "Search Options Flag is:  " + searchOptionsFlag);
         if (searchOptionsFlag.booleanValue()) {

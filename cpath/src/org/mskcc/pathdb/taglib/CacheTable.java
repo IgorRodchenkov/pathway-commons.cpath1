@@ -73,8 +73,8 @@ public class CacheTable extends HtmlTable {
             }
             append("</UL></TD>");
         } catch (Exception e) {
-            append ("<TD>" + record.getUrl() + "</TD>");
-            append ("<TD>N/A</TD>");
+            append("<TD>" + record.getUrl() + "</TD>");
+            append("<TD>N/A</TD>");
         }
     }
 }

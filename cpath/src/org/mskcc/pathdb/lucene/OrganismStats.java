@@ -1,21 +1,32 @@
 package org.mskcc.pathdb.lucene;
 
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.sql.dao.DaoOrganism;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.model.Organism;
 import org.apache.lucene.search.Hits;
+import org.mskcc.pathdb.model.Organism;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoOrganism;
+import org.mskcc.pathdb.sql.query.QueryException;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Collections;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+/**
+ * Encapsulates Stats on All Organisms in cPath.
+ *
+ * @author Ethan Cerami
+ */
 public class OrganismStats {
     private static ArrayList organismListSortedByName;
     private static ArrayList organismListSortedByNumInteractions;
 
+    /**
+     * Gets All Organisms Sorted by Name.
+     * @return ArrayList of Organism Objects.
+     * @throws DaoException     Data Access Error.
+     * @throws QueryException   Query Error.
+     * @throws IOException      Input / Output Error.
+     */
     public ArrayList getOrganismsSortedByName() throws DaoException,
             QueryException, IOException {
         if (organismListSortedByName == null) {
@@ -24,6 +35,13 @@ public class OrganismStats {
         return organismListSortedByName;
     }
 
+    /**
+     * Gets All Organisms Sorted by Number of Interactions.
+     * @return ArrayList of Organism Objects.
+     * @throws DaoException     Data Access Error.
+     * @throws QueryException   Query Error.
+     * @throws IOException      Input / Output Error.
+     */
     public ArrayList getOrganismsSortedByNumInteractions() throws DaoException,
             QueryException, IOException {
         if (organismListSortedByNumInteractions == null) {
@@ -34,6 +52,9 @@ public class OrganismStats {
 
     /**
      * Restets Organism Stats.
+     * @throws DaoException     Data Access Error.
+     * @throws QueryException   Query Error.
+     * @throws IOException      Input / Output Error.
      */
     public void restetStats() throws DaoException, IOException,
             QueryException {
@@ -45,13 +66,13 @@ public class OrganismStats {
 
     private void lookUpOrganisms() throws DaoException, QueryException,
             IOException {
-        DaoOrganism dao = new DaoOrganism ();
+        DaoOrganism dao = new DaoOrganism();
         organismListSortedByName = dao.getAllOrganisms();
         LuceneIndexer indexer = new LuceneIndexer();
         try {
-            for (int i=1; i<organismListSortedByName.size(); i++) {
+            for (int i = 0; i < organismListSortedByName.size(); i++) {
                 Organism organism = (Organism) organismListSortedByName.get(i);
-                String query = new String (PsiInteractionToIndex.FIELD_ORGANISM
+                String query = new String(PsiInteractionToIndex.FIELD_ORGANISM
                         + ":" + organism.getTaxonomyId());
                 Hits hits = indexer.executeQuery(query);
                 organism.setNumInteractions(hits.length());
@@ -69,14 +90,25 @@ public class OrganismStats {
     }
 }
 
+/**
+ * Organism Sorter.  Sorts By Number of Interactions.
+ *
+ * @author Ethan Cerami
+ */
 class SortByInteractionCount implements Comparator {
 
+    /**
+     * Compares Two Organisms.
+     * @param o1 Organism 1.
+     * @param o2 Organism 2.
+     * @return integer indicating results of comparison.
+     */
     public int compare(Object o1, Object o2) {
         Organism organism1 = (Organism) o1;
         Organism organism2 = (Organism) o2;
         int count1 = organism1.getNumInteractions();
         int count2 = organism2.getNumInteractions();
-        int compare =  count1 - count2;
+        int compare = count1 - count2;
         if (compare == 0) {
             String name1 = organism1.getSpeciesName();
             String name2 = organism2.getSpeciesName();
@@ -86,8 +118,19 @@ class SortByInteractionCount implements Comparator {
     }
 }
 
+/**
+ * Organism Sorter.  Sorts By Organism Name.
+ *
+ * @author Ethan Cerami
+ */
 class SortByName implements Comparator {
 
+    /**
+     * Compares Two Organisms.
+     * @param o1 Organism 1.
+     * @param o2 Organism 2.
+     * @return integer indicating results of comparison.
+     */    
     public int compare(Object o1, Object o2) {
         Organism organism1 = (Organism) o1;
         Organism organism2 = (Organism) o2;

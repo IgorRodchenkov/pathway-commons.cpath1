@@ -4,6 +4,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.form.FileUploadForm;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
@@ -11,7 +12,6 @@ import org.mskcc.pathdb.task.ImportRecordTask;
 import org.mskcc.pathdb.task.ImportReferencesTask;
 import org.mskcc.pathdb.util.XmlValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.action.BaseAction;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -22,7 +22,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 /**
- * Action for importing data files into cPath.
+ * Administrative Action for importing data files into cPath.
  *
  * @author Ethan Cerami.
  */
@@ -71,7 +71,7 @@ public class AdminImportData extends AdminBaseAction {
 
         //  Set Auto-Update Flag
         request.setAttribute(BaseAction.PAGE_AUTO_UPDATE,
-                BaseAction.YES);        
+                BaseAction.YES);
     }
 
     private void importPsi(String data, XDebug xdebug,

@@ -22,6 +22,7 @@ public class TestLogUtil extends TestCase {
 
     /**
      * Tests Log Util Class.
+     *
      * @throws DaoException Data Access Error
      */
     public void testUtil() throws DaoException {

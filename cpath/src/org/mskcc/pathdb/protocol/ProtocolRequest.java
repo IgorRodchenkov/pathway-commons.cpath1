@@ -274,6 +274,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets Organism.
+     *
      * @return Organism String.
      */
     public String getOrganism() {
@@ -282,6 +283,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Sets Organism.
+     *
      * @param organism Organism String.
      */
     public void setOrganism(String organism) {
@@ -309,9 +311,10 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets URL Parameter String
+     *
      * @return URL Parameter String.
      */
-    public String getUrlParameterString () {
+    public String getUrlParameterString() {
         GetMethod method = new GetMethod();
         return createUri(method).substring(1);
     }

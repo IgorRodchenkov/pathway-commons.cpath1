@@ -2,8 +2,8 @@ package org.mskcc.pathdb.util;
 
 import org.mskcc.pathdb.task.ProgressMonitor;
 
-import java.text.NumberFormat;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Misc Utility Methods for Console Applications.
@@ -14,6 +14,8 @@ public class ConsoleUtil {
 
     /**
      * Outputs Progress Messages to Console.
+     * @param verbose   Verbose Flag
+     * @param pMonitor  ProgressMonitor Object.
      */
     public static void showProgress(boolean verbose, ProgressMonitor pMonitor) {
         if (verbose) {
@@ -21,8 +23,8 @@ public class ConsoleUtil {
             System.out.print(".");
             if (currentValue % 100 == 0) {
                 NumberFormat format = DecimalFormat.getPercentInstance();
-                System.out.println("\nPercentage Complete:  " +
-                        format.format(pMonitor.getPercentComplete()));
+                System.out.println("\nPercentage Complete:  "
+                    + format.format(pMonitor.getPercentComplete()));
             }
         }
     }

@@ -24,6 +24,7 @@ public class ProteinWithWeight implements Comparator {
 
     /**
      * Constructor.
+     *
      * @param protein Protein Object.
      * @param numHits Number of Hits.
      */
@@ -34,6 +35,7 @@ public class ProteinWithWeight implements Comparator {
 
     /**
      * Gets Number of Hits.
+     *
      * @return Number of Hits.
      */
     public int getNumHits() {
@@ -42,6 +44,7 @@ public class ProteinWithWeight implements Comparator {
 
     /**
      * Gets Protein Object.
+     *
      * @return Protein Object.
      */
     public ProteinInteractorType getProtein() {
@@ -50,6 +53,7 @@ public class ProteinWithWeight implements Comparator {
 
     /**
      * Compares/orders two proteins.
+     *
      * @param object1 Protein1
      * @param object2 Protein2
      * @return int value indicating sort order.

@@ -82,6 +82,7 @@ public class Organism {
 
     /**
      * Gets Number of Interactions.
+     *
      * @return Number of Interactions.
      */
     public int getNumInteractions() {
@@ -90,6 +91,7 @@ public class Organism {
 
     /**
      * Sets Number of Interactions.
+     *
      * @param numInteractions Number of Interactions.
      */
     public void setNumInteractions(int numInteractions) {

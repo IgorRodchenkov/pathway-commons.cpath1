@@ -1,12 +1,12 @@
 package org.mskcc.pathdb.sql.dao;
 
+import org.mskcc.pathdb.model.XmlCacheRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.util.ZipUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.model.XmlCacheRecord;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -46,6 +46,7 @@ public class DaoXmlCache {
 
     /**
      * Sets Max Number of Records Allowed in Cache.
+     *
      * @param maxCacheRecords Max Number of Records in Cache.
      */
     public void setMaxCacheRecords(int maxCacheRecords) {
@@ -56,6 +57,7 @@ public class DaoXmlCache {
      * Sets the Purge Increment.
      * When Cache reaches the MaxCacheRecords limit, XX number of records
      * are automatically purged.
+     *
      * @param purgeIncrement Purge Increment Level.
      */
     public void setPurgeIncrement(int purgeIncrement) {
@@ -92,7 +94,7 @@ public class DaoXmlCache {
             pstmt.setBytes(4, zippedData);
             pstmt.setTimestamp(5, timeStamp);
             int rows = pstmt.executeUpdate();
-            conditionallyDeleteEldest ();
+            conditionallyDeleteEldest();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
@@ -131,7 +133,7 @@ public class DaoXmlCache {
                 XmlAssembly xmlAssembly =
                         XmlAssemblyFactory.createXmlAssembly
                         (xml, numHits, xdebug);
-                updateLastUsedField (hashKey);
+                updateLastUsedField(hashKey);
                 return xmlAssembly;
             } else {
                 return null;
@@ -245,7 +247,7 @@ public class DaoXmlCache {
     /**
      * Updates the LastUsed Field for specified Record.
      *
-     * @param hashKey     Unique Hash Key.
+     * @param hashKey Unique Hash Key.
      * @return true indicates success.
      * @throws DaoException Error Updating Data.
      */
@@ -278,6 +280,7 @@ public class DaoXmlCache {
 
     /**
      * Gets all Records in Cache (most recently used appear first).
+     *
      * @return ArrayList of XmlCacheRecord Objects.
      * @throws DaoException Error Connecting to Database.
      */
@@ -288,7 +291,7 @@ public class DaoXmlCache {
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement ("SELECT * FROM xml_cache "
+            pstmt = con.prepareStatement("SELECT * FROM xml_cache "
                     + "ORDER BY LAST_USED DESC");
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -323,7 +326,7 @@ public class DaoXmlCache {
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement ("SELECT COUNT(*) FROM xml_cache");
+            pstmt = con.prepareStatement("SELECT COUNT(*) FROM xml_cache");
             rs = pstmt.executeQuery();
             rs.next();
             int count = rs.getInt(1);
@@ -342,6 +345,7 @@ public class DaoXmlCache {
 
     /**
      * Finds and Deletes the LRU Record.
+     *
      * @throws DaoException Error Accessing Database.
      */
     private void deleteEldest() throws DaoException {

@@ -46,11 +46,11 @@ public final class CPathServlet extends ActionServlet {
         System.err.println("web.xml param:  db_host --> " + dbHost + " [OK]");
         System.err.println("web.xml param:  db_user --> " + dbUser + " [OK]");
         System.err.println("web.xml param:  db_password --> " + dbPassword
-            + " [OK]");
+                + " [OK]");
         System.err.println("web.xml param:  admin_user --> " + adminUser
-            + " [OK]");
+                + " [OK]");
         System.err.println("web.xml param:  admin_password --> "
-            + adminPassword + " [OK]");
+                + adminPassword + " [OK]");
 
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
@@ -81,8 +81,8 @@ public final class CPathServlet extends ActionServlet {
             int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
             System.err.println("Database Connection -->  [OK]");
         } catch (DaoException e) {
-            System.err.println("****  Fatal Error.  Could not connect to " +
-                    "database");
+            System.err.println("****  Fatal Error.  Could not connect to "
+                    + "database");
             System.err.println("DaoException:  " + e.toString());
         }
     }

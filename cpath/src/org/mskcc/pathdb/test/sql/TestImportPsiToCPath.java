@@ -20,6 +20,7 @@ public class TestImportPsiToCPath extends TestCase {
 
     /**
      * Tests Import.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
@@ -29,7 +30,7 @@ public class TestImportPsiToCPath extends TestCase {
         String xml = reader.retrieveContent(file);
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml, true, false,
-              pMonitor);
+                pMonitor);
         assertEquals(7, summary.getNumInteractorsProcessed());
         assertEquals(0, summary.getNumInteractorsFound());
         assertEquals(7, summary.getNumInteractorsSaved());

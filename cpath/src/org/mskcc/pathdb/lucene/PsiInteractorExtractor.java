@@ -45,13 +45,14 @@ public class PsiInteractorExtractor {
 
     /**
      * Constructor
+     *
      * @param entrySet PSI-MI Entry Set Object.
      * @param queryStr Query String.
-     * @param xdebug XDebug Object.
-     * @throws IOException Input Output Exception.
-     * @throws ParseException Parsing Exception.
+     * @param xdebug   XDebug Object.
+     * @throws IOException         Input Output Exception.
+     * @throws ParseException      Parsing Exception.
      * @throws ValidationException Validation Exception.
-     * @throws MarshalException Marshaling Exception.
+     * @throws MarshalException    Marshaling Exception.
      */
     public PsiInteractorExtractor(EntrySet entrySet, String queryStr,
             XDebug xdebug) throws IOException, ParseException,

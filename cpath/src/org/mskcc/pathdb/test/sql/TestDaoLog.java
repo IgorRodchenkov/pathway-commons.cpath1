@@ -2,8 +2,8 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.LogRecord;
-import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoLog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +23,7 @@ public class TestDaoLog extends TestCase {
 
     /**
      * Tests Data Access.
+     *
      * @throws DaoException Data Access Error.
      */
     public void testAccess() throws DaoException {
@@ -46,25 +47,25 @@ public class TestDaoLog extends TestCase {
         //  Verify the Record we just added
         ArrayList records = dao.getLogRecords();
         record = (LogRecord) records.get(0);
-        assertTrue (record.getDate() != null);
-        assertEquals (LogRecord.PRIORITY_ERROR, record.getPriority());
-        assertEquals (MESSAGE, record.getMessage());
-        assertEquals (STACK_TRACE, record.getStackTrace());
-        assertEquals (WEB_URL, record.getWebUrl());
-        assertEquals (REMOTE_HOST, record.getRemoteHost());
-        assertEquals (REMOTE_IP, record.getRemoteIp());
+        assertTrue(record.getDate() != null);
+        assertEquals(LogRecord.PRIORITY_ERROR, record.getPriority());
+        assertEquals(MESSAGE, record.getMessage());
+        assertEquals(STACK_TRACE, record.getStackTrace());
+        assertEquals(WEB_URL, record.getWebUrl());
+        assertEquals(REMOTE_HOST, record.getRemoteHost());
+        assertEquals(REMOTE_IP, record.getRemoteIp());
 
         //  Delete all records, and verify deletion works.
         dao.deleteAllLogRecords();
         records = dao.getLogRecords();
-        assertEquals (0, records.size());
+        assertEquals(0, records.size());
 
         //  Now Add a Whole bunch of records, and verify that we do
         //  not exceed MAX_NUM_RECORDS
-        for (int i=0; i < DaoLog.MAX_NUM_RECORDS * 2; i++) {
+        for (int i = 0; i < DaoLog.MAX_NUM_RECORDS * 2; i++) {
             dao.addRecord(record);
         }
         records = dao.getLogRecords();
-        assertTrue (records.size() <= DaoLog.MAX_NUM_RECORDS);
+        assertTrue(records.size() <= DaoLog.MAX_NUM_RECORDS);
     }
 }

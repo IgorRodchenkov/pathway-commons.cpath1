@@ -23,6 +23,7 @@ public interface PagedResult {
 
     /**
      * Gets Max Hits.
+     *
      * @return max hits.
      */
     int getMaxHitsInt();
