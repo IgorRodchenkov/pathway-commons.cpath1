@@ -32,6 +32,7 @@ package org.mskcc.pathdb.test.task;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.mskcc.pathdb.test.sql.references.TestBackgroundReferenceParser;
 
 /**
  * Suite of all Utility Unit Tests.
@@ -49,7 +50,6 @@ public class TaskSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestAffymetrixParser.class);
         suite.addTestSuite(TestCountAffymetrixId.class);
-        suite.addTestSuite(TestIdMappingsParser.class);
         suite.setName("Task Tests");
         return suite;
     }
