@@ -123,17 +123,21 @@ if (xdebug != null) {
 
 <%!
 private String wrapText (String text) {
-    if (text.length() > 200) {
-        text = text.substring(0, 200) + " [data string truncated]...";
-    }
-    if (text.length() < 60) {
-        return text;
-    } else  {
-        StringBuffer newText = new StringBuffer(text);
-        for (int i=60; i<text.length(); i+=60) {
-            newText.insert(i, "<BR>");
+    if (text != null) {
+        if (text.length() > 200) {
+            text = text.substring(0, 200) + " [data string truncated]...";
         }
-        return newText.toString();
+        if (text.length() < 60) {
+            return text;
+        } else  {
+            StringBuffer newText = new StringBuffer(text);
+            for (int i=60; i<text.length(); i+=60) {
+                newText.insert(i, "<BR>");
+            }
+            return newText.toString();
+        }
+    } else {
+        return new String ("Not Available");
     }
 }
 %>
