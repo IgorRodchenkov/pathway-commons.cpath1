@@ -4,7 +4,7 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest"%>
 
 <div id="apphead">
-    <h2>Web Service API Help</h2>
+    <h2>Web Service API</h2>
 </div>
 
 <div class="h3">
