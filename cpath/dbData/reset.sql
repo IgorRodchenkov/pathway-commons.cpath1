@@ -32,7 +32,8 @@ INSERT INTO `EXTERNAL_DB` VALUES (7, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pf
 INSERT INTO `EXTERNAL_DB` VALUES (8, 'Entrez GI', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=protein&list_uids=%ID%&dopt=GenPept&term=%ID%&qty=1', 'NCBI Entrez System', 12, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `EXTERNAL_DB` VALUES (9, 'Locus Link', 'http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l=%ID%', 'NCBI Locus Link', 14, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `EXTERNAL_DB` VALUES (10, 'GO', 'http://godatabase.org/cgi-bin/go.cgi?view=query&query=%ID%', 'Gene Ontology', 15, NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `EXTERNAL_DB` VALUES (11, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%ID%&dopt=Abstract', 'NCBI PubMed', 15, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `EXTERNAL_DB` VALUES (11, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%ID%&dopt=Abstract', 'NCBI PubMed', 16, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `EXTERNAL_DB` VALUES (12, 'Affymetrix', '', 'Affymetrix ID', 20, NULL, NULL, 20031002163709, 20031002163709);
 #
 #  Insert data into table 'EXTERNAL_DB_CV'
 #
@@ -56,3 +57,4 @@ INSERT INTO `EXTERNAL_DB_CV` VALUES (16, 11, 'PubMed');
 INSERT INTO `EXTERNAL_DB_CV` VALUES (17, 11, 'pubmed');
 INSERT INTO `EXTERNAL_DB_CV` VALUES (18, 11, 'PMID');
 INSERT INTO `EXTERNAL_DB_CV` VALUES (19, 11, 'pmid');
+INSERT INTO `EXTERNAL_DB_CV` VALUES (20, 12, 'Affymetrix');
