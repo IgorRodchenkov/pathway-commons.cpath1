@@ -64,8 +64,6 @@ public abstract class HtmlTable extends TagSupport {
      * Starts HTML Table.
      */
     protected void startTable() {
-//        append ("<div class='app'>");
-//        append ("<div class='colbar'>");
         append("<table border='1' cellspacing='2' cellpadding='3' "
                 + "width='100%'>");
     }
@@ -75,8 +73,6 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected void endTable() {
         append("</table>");
-//        append("</div>");
-//        append("</div>");
     }
 
 
@@ -85,6 +81,13 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected void append(String text) {
         html.append(text + "\n");
+    }
+
+    /**
+     * Start New Html Row.
+     */
+    protected void startRow() {
+        append("<tr>");
     }
 
     /**
@@ -181,6 +184,20 @@ public abstract class HtmlTable extends TagSupport {
         request.setVersion(ProtocolConstants.CURRENT_VERSION);
         request.setFormat(format);
         request.setQuery(id);
+        return request.getUri();
+    }
+
+    /**
+     * Gets Internal Link to All Interactions for Specified Organism.
+     * @param taxonomyId TaxonomyId
+     * @return URL back to CPath.
+     */
+    protected String getOrganismLink(int taxonomyId) {
+        ProtocolRequest request = new ProtocolRequest();
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+        request.setVersion(ProtocolConstants.CURRENT_VERSION);
+        request.setFormat(ProtocolConstants.FORMAT_HTML);
+        request.setOrganism(Integer.toString(taxonomyId));
         return request.getUri();
     }
 }
