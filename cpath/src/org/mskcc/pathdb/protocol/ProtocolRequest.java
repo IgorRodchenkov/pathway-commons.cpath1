@@ -303,9 +303,21 @@ public class ProtocolRequest implements PagedResult {
      * @return URI String.
      */
     public String getUri() {
-        String uri = null;
-        String url = "webservice.do";
-        GetMethod method = new GetMethod(url);
+        GetMethod method = new GetMethod("webservice.do");
+        return createUri(method);
+    }
+
+    /**
+     * Gets URL Parameter String
+     * @return URL Parameter String.
+     */
+    public String getUrlParameterString () {
+        GetMethod method = new GetMethod();
+        return createUri(method).substring(1);
+    }
+
+    private String createUri(GetMethod method) {
+        String uri;
         NameValuePair nvps[] = new NameValuePair[7];
         nvps[0] = new NameValuePair(ARG_VERSION, version);
         nvps[1] = new NameValuePair(ARG_COMMAND, command);
