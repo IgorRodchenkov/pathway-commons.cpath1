@@ -44,8 +44,9 @@ public class LuceneIndexer {
      */
     public static final String FIELD_CPATH_ID = "cpath_id";
 
-    private static IndexWriter indexWriter = null;
-    private static IndexSearcher indexSearcher = null;
+    private IndexWriter indexWriter = null;
+    private IndexSearcher indexSearcher = null;
+
 
     /**
      * Initializes Index with Fresh Database.
