@@ -1,7 +1,5 @@
 package org.mskcc.pathdb.protocol;
 
-import org.apache.log4j.Logger;
-
 import java.util.HashMap;
 
 /**
@@ -31,11 +29,6 @@ public class ProtocolValidator {
     private ProtocolConstants constants = new ProtocolConstants();
 
     /**
-     * Logger.
-     */
-    private Logger logger = Logger.getLogger(this.getClass().getName());
-
-    /**
      * Constructor.
      *
      * @param request Protocol Request.
@@ -51,7 +44,6 @@ public class ProtocolValidator {
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
     public void validate() throws ProtocolException, NeedsHelpException {
-        logger.info("Validating Request Parameters");
         validateEmptySet();
         validateCommand();
         validateVersion();

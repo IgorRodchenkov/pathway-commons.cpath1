@@ -6,7 +6,6 @@ import com.opensymphony.module.oscache.web.ServletCacheAdministrator;
 import com.opensymphony.module.oscache.web.filter.
     CacheHttpServletResponseWrapper;
 import com.opensymphony.module.oscache.web.filter.ResponseContent;
-import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -43,11 +42,6 @@ public class CacheFilter implements Filter {
     private int time;
 
     /**
-     * Logger.
-     */
-    private Logger logger = Logger.getLogger(this.getClass().getName());
-
-    /**
      * Initialize the filter
      *
      * @param filterConfig The filter configuration
@@ -60,7 +54,6 @@ public class CacheFilter implements Filter {
             time = Integer.parseInt(config.getInitParameter("time"));
         } catch (Exception e) {
             time = 60 * 60;
-            logger.error("Error Parsing Time Parameter:  " + e.toString());
         }
     }
 
@@ -68,7 +61,7 @@ public class CacheFilter implements Filter {
      * Filter clean-up
      */
     public void destroy() {
-        logger.info("Shuting down CacheFilter");
+        // No Op
     }
 
     /**
@@ -112,6 +105,5 @@ public class CacheFilter implements Filter {
 
     private void log(String msg) {
         System.err.println(msg);
-        logger.info(msg);
     }
 }

@@ -1,6 +1,5 @@
 package org.mskcc.pathdb.protocol;
 
-import org.apache.log4j.Logger;
 import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -51,11 +50,6 @@ public class ProtocolException extends Exception {
      * Error Message XML Element Name.
      */
     private static final String ERROR_DETAILS_ELEMENT = "error_details";
-
-    /**
-     * Logger.
-     */
-    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
      * Constructor.
@@ -157,9 +151,7 @@ public class ProtocolException extends Exception {
         try {
             outputter.output(document, writer);
         } catch (IOException e) {
-            logger.error
-                    ("Exception thrown while outputting XML Error Protocol:  "
-                    + e.getMessage());
+            e.printStackTrace();
         }
         return writer.toString();
     }
