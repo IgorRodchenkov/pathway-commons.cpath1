@@ -5,7 +5,13 @@
 
     <div class="body">
         <div>
-        <a href="http://cbio.mskcc.org/dev_site/cpath">Developer Site</a>
+        <a href="http://cbio.mskcc.org/dev_site/cpath">Developer Site</a>:
+        Download latest source code, and get involved.
+        </div>
+        <div>
+        <a href="http://groups-beta.google.com/group/cpath-dev/">cpath-dev</a>:
+        Developer Mailing List.
+        </div>
         </div>
     </div>
 </div>

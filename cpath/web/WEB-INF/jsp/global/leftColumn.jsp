@@ -28,6 +28,7 @@
         <jsp:include page="../global/browse.jsp" flush="true" />
 
         <% if (protocolRequest1 == null) { %>
+        <jsp:include page="../global/community.jsp" flush="true" />
         <jsp:include page="../global/docs.jsp" flush="true" />
         <% } %>
         <jsp:include page="../global/howto.jsp" flush="true" />
