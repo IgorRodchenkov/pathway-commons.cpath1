@@ -36,6 +36,7 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.test.lucene.IndexerSuite;
 import org.mskcc.pathdb.test.protocol.ProtocolSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
+import org.mskcc.pathdb.test.sql.assembly.AssemblySuite;
 import org.mskcc.pathdb.test.taglib.TagLibSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
@@ -59,6 +60,7 @@ public class AllTest extends TestCase {
         suite.addTest(UtilSuite.suite());
         suite.addTest(IndexerSuite.suite());
         suite.addTest(SqlSuite.suite());
+        suite.addTest(AssemblySuite.suite());
         suite.addTest(TagLibSuite.suite());
         suite.addTest(WebSuite.suite());
         suite.addTest(XmlRpcSuite.suite());
