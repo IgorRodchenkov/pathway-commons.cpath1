@@ -82,6 +82,15 @@
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
+        <!--  Todo -->
+        <action path="/todo"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/dev/todo.jsp"/>
+        </action>
+        <action path="/dev"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/dev/dev.jsp"/>
+        </action>
     </action-mappings>
     <message-resources parameter="cpathResources"/>
 </struts-config>
