@@ -52,21 +52,22 @@ public class ImportRecords {
      * Transfers Data.
      *
      * @param validateExternalReferences Flag to Validate External References.
+     * @param removeAllXrefs Removes All PSI-MI XRefs (Not recommended!)
      * @throws DaoException    Data Access Error.
      * @throws ImportException Data Import Error.
      */
-    public void transferData(boolean validateExternalReferences)
-            throws DaoException, ImportException {
+    public void transferData(boolean validateExternalReferences, boolean
+            removeAllXrefs) throws DaoException, ImportException {
         System.out.println("Transferring Import Records");
-        transferAllImportRecords(validateExternalReferences);
+        transferAllImportRecords(validateExternalReferences, removeAllXrefs);
         System.out.println("Transfer Complete");
     }
 
     /**
      * Transfers all Import Records.
      */
-    private void transferAllImportRecords(boolean validateExternalReferences)
-            throws DaoException, ImportException {
+    private void transferAllImportRecords(boolean validateExternalReferences,
+            boolean removeAllXrefs) throws DaoException, ImportException {
         dbImport = new DaoImport();
         ArrayList records = dbImport.getAllRecords();
         if (records.size() == 0) {
@@ -80,7 +81,7 @@ public class ImportRecords {
             if (status.equals(ImportRecord.STATUS_NEW)) {
                 System.out.println("   -->  Transferring record");
                 transferRecord(record.getImportId(),
-                        validateExternalReferences);
+                        validateExternalReferences, removeAllXrefs);
             } else {
                 System.out.println("    -->  Already Transferred");
             }
@@ -91,15 +92,19 @@ public class ImportRecords {
      * Transfers Single Import Record.
      */
     private void transferRecord(long importId,
-            boolean validateExternalReferences) throws ImportException,
-            DaoException {
+            boolean validateExternalReferences, boolean removeAllXrefs)
+            throws ImportException, DaoException {
         ProgressMonitor pMonitor = new ProgressMonitor();
         pMonitor.setConsoleMode(true);
         ImportRecord record = dbImport.getRecordById(importId);
         String xml = record.getData();
         ImportPsiToCPath importer = new ImportPsiToCPath();
+        if (removeAllXrefs) {
+            pMonitor.setCurrentMessage("Warning!  Data Import will " +
+                    "automatically remove all PSI-MI xrefs.");
+        }
         ImportSummary summary = importer.addRecord(xml,
-                validateExternalReferences, pMonitor);
+                validateExternalReferences, removeAllXrefs, pMonitor);
         this.outputSummary(summary);
         dbImport.markRecordAsTransferred(record.getImportId());
     }
@@ -119,6 +124,8 @@ public class ImportRecords {
                 + summary.getNumInteractorsSaved());
         System.out.println("# of Interactions saved to DB:          "
                 + summary.getNumInteractionsSaved());
+        System.out.println("# of Interactions clobbered:            "
+                + summary.getNumInteractionsClobbered());
         System.out.println("-----------------------------------------------");
         System.out.println();
     }
