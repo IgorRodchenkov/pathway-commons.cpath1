@@ -234,15 +234,21 @@ public class ImportPsiToCPath {
                 psiUtil.normalizeXrefs(protein.getXref());
                 ExternalReference[] refs = extractExternalReferences(protein);
 
-                ArrayList records = externalLinker.lookUpByExternalRefs(refs);
+                // Filter out References which are not used for unique
+                // identification.  For example, filter out all GO and
+                // InterPro references.
+                ExternalReference[] filteredRefs =
+                        psiUtil.filterOutNonIdReferences(refs);
+
+                ArrayList records = externalLinker.lookUpByExternalRefs
+                        (filteredRefs);
                 //  Step 3.1.2 - 3.1.3
                 if (records.size() > 0) {
-                    System.out.print("#");
                     CPathRecord record = (CPathRecord) records.get(0);
                     //  Conditionally Update the Interactor Record with
                     //  new external references.
                     UpdatePsiInteractor updater = new UpdatePsiInteractor
-                            (protein);
+                            (protein, record);
                     updater.doUpdate();
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumInteractorsFound();
@@ -256,6 +262,8 @@ public class ImportPsiToCPath {
             System.out.println();
         }
     }
+
+
 
     /**
      * Extracts External References from Protein Interactor.
@@ -367,10 +375,16 @@ public class ImportPsiToCPath {
         XrefType xref = interaction.getXref();
         ExternalReference refs[] = psiUtil.extractXrefs(xref);
 
+        // Filter out References which are not used for unique
+        // identification.  For example, filter out all GO and
+        // InterPro references.
+        ExternalReference[] filteredRefs =
+                psiUtil.filterOutNonIdReferences(refs);
+
         //  Conditionally delete existing interaction (if it exists)
         //  New Interaction clobbers old interaction.
-        if (refs != null) {
-            conditionallyDeleteInteraction(refs);
+        if (filteredRefs != null) {
+            conditionallyDeleteInteraction(filteredRefs);
         }
 
         //  Set Name, Description; and Marshal XML.
