@@ -11,7 +11,7 @@
 	<currentVersion>.02_Beta</currentVersion>
 	<organization>
 		<name>Memorial Sloan-Kettering Cancer Center</name>
-		<url>http://cbio.mskcc.org</url>
+		<url>http://cbio.mskcc.org/dev_site/cpath</url>
         <logo>/images/logo.jpg</logo>
 	</organization>
 	<inceptionYear>2003</inceptionYear>
