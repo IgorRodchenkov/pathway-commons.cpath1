@@ -35,10 +35,9 @@ public class TestProtocol extends TestCase {
         method.setQueryString(nvps);
         int statusCode = client.executeMethod(method);
 
-        //  Ds-status header should be: error
-        Header header =
-                method.getResponseHeader(ProtocolConstants.DS_HEADER_NAME);
-        assertEquals(ProtocolConstants.DS_ERROR_STATUS, header.getValue());
+        String response = method.getResponseBodyAsString();
+        int index = response.indexOf("<error_code>460</error_code>");
+        assertTrue (index > 0);
     }
 
     /**
@@ -48,14 +47,14 @@ public class TestProtocol extends TestCase {
     public void testInvalidRequest() throws Exception {
         HttpClient client = new HttpClient();
         GetMethod method = new GetMethod(TestConstants.LOCAL_HOST_URL);
-        NameValuePair nvps[] = new NameValuePair[1];
+        NameValuePair nvps[] = new NameValuePair[2];
         nvps[0] = new NameValuePair(ProtocolRequest.ARG_COMMAND,
                 "get_invalid");
+        nvps[1] = new NameValuePair(ProtocolRequest.ARG_FORMAT,
+                ProtocolConstants.FORMAT_PSI);
         method.setQueryString(nvps);
         int statusCode = client.executeMethod(method);
-        //  Ds-status header should be: "error"
-        Header header =
-                method.getResponseHeader(ProtocolConstants.DS_HEADER_NAME);
-        assertEquals(ProtocolConstants.DS_ERROR_STATUS, header.getValue());
-    }
+        String response = method.getResponseBodyAsString();
+        int index = response.indexOf("<error_code>450</error_code>");
+        assertTrue (index > 0);    }
 }

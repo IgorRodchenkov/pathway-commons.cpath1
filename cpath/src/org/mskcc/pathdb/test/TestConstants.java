@@ -31,5 +31,5 @@ public class TestConstants {
      * Local Host URL.
      */
     public static final String LOCAL_HOST_URL =
-            "http://localhost:8080/cpath/webservice";
+            "http://localhost:8080/cpath/webservice.do";
 }
