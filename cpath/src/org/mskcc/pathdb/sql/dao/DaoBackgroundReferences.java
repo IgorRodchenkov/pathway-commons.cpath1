@@ -29,8 +29,8 @@
  **/
 package org.mskcc.pathdb.sql.dao;
 
-import org.mskcc.pathdb.model.BackgroundReferenceRecord;
-import org.mskcc.pathdb.model.CPathXRef;
+import org.mskcc.pathdb.model.BackgroundReference;
+import org.mskcc.pathdb.model.BackgroundReferencePair;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.JdbcUtil;
@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- * Data Access Object to the background_reference table.
+ * Data Access Object to the Background References table.
  *
  * @author Ethan Cerami
  */
@@ -51,14 +51,14 @@ public class DaoBackgroundReferences {
     protected String tableName = "background_reference";
 
     /**
-     * Adds New Background Reference Record.
+     * Adds New Background Reference Pair Record.
      * <P>
      * This method ensures that duplicate records are not stored to the
      * database.  Check the return value to determine if record was saved
      * successfully.  A true value indicates success.  A false value indicates
      * that the record already exists and was not saved, or an error occurred.
      *
-     * @param record         BackgroundReference Object.
+     * @param pair           BackgroundReference Object.
      * @param validateRecord Validates DB1 and DB2 to ensure that these
      *                       actually exist in the database.  When set to true,
      *                       full validation check is run.  When set to false,
@@ -69,7 +69,7 @@ public class DaoBackgroundReferences {
      * @return true if saved successfully.
      * @throws DaoException Error Saving Data.
      */
-    public boolean addRecord(BackgroundReferenceRecord record,
+    public boolean addRecord(BackgroundReferencePair pair,
             boolean validateRecord) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -79,43 +79,50 @@ public class DaoBackgroundReferences {
         if (validateRecord) {
             DaoExternalDb dao = new DaoExternalDb();
             ExternalDatabaseRecord dbRecord1 = dao.getRecordById
-                    (record.getDb1());
+                    (pair.getDbId1());
             if (dbRecord1 == null) {
                 throw new IllegalArgumentException
                         ("External Database, DB1:  "
-                        + record.getDb1() + " does not exist in database.");
+                        + pair.getDbId1() + " does not exist in database.");
             }
             ExternalDatabaseRecord dbRecord2 = dao.getRecordById
-                    (record.getDb1());
+                    (pair.getDbId2());
             if (dbRecord2 == null) {
                 throw new IllegalArgumentException("External Database, DB2:  "
-                        + record.getDb2() + " does not exist in database.");
+                        + pair.getDbId2() + " does not exist in database.");
             }
 
-            //  Validate the Reference Types
-            //  If this is an IDENTITY Record, both databases must be of
-            //  type IDENTITY.
-            if (record.getReferenceType().equals(ReferenceType.IDENTITY)) {
-                if (dbRecord1.getDbType().equals(ReferenceType.LINK_OUT)
-                        || dbRecord2.getDbType().equals(ReferenceType.LINK_OUT)) {
-                    throw new IllegalArgumentException("This is an IDENTITY "
-                            + "record.  However, one of the specified databases "
-                            + "is of type:  LINK_OUT."
+            //  Validate the Reference Type
+            //  If this is an PROTEIN_UNIFICATION Record, both databases
+            //  must be of type PROTEIN_UNIFICATION.
+            if (pair.getReferenceType().equals
+                    (ReferenceType.PROTEIN_UNIFICATION)) {
+                if (!(dbRecord1.getDbType().equals
+                        (ReferenceType.PROTEIN_UNIFICATION)
+                        && dbRecord2.getDbType().equals
+                        (ReferenceType.PROTEIN_UNIFICATION))) {
+                    throw new IllegalArgumentException("This is a "
+                            + "PROTEIN_UNIFICATION record.  "
+                            + "However, one of the specified "
+                            + "databases is not of type:  PROTEIN_UNIFICATION."
                             + "  You have specified database 1:  "
                             + dbRecord1.getDbType()
                             + ", database 2:  " + dbRecord2.getDbType());
                 }
             }
 
-            //  If this is a LINK_OUT Record, the first database must be of
-            //  type IDENTITY, and the second must be of type:  LINK_OUT.
-            else {
-                if (!(dbRecord1.getDbType().equals(ReferenceType.IDENTITY)
-                        && dbRecord2.getDbType().equals(ReferenceType.LINK_OUT))) {
-                    throw new IllegalArgumentException("This is a LINKOUT "
-                            + "record.  To comply, the first database must be of "
-                            + "type:  IDENTITY, and the second database must be of "
-                            + "type:  LINK_OUT."
+            //  If this is a LINK_OUT Record, first database must be of
+            //  type:  PROTEIN_UNIFICATION, and second must be of type:
+            //  LINK_OUT.
+            if (pair.getReferenceType().equals(ReferenceType.LINK_OUT)) {
+                if (!(dbRecord1.getDbType().equals
+                        (ReferenceType.PROTEIN_UNIFICATION)
+                        && dbRecord2.getDbType().equals
+                        (ReferenceType.LINK_OUT))) {
+                    throw new IllegalArgumentException("This is a "
+                            + "LINK_OUT record.  The first database must"
+                            + "be of type:  PROTEIN_UNIFICATION, and the "
+                            + "second must be of type:  LINK_OUT."
                             + "  You have specified database 1:  "
                             + dbRecord1.getDbType()
                             + ", database 2:  " + dbRecord2.getDbType());
@@ -124,8 +131,8 @@ public class DaoBackgroundReferences {
         }
 
         //  Validate the Incoming Ids
-        String id1 = record.getId1();
-        String id2 = record.getId2();
+        String id1 = pair.getLinkedToId1();
+        String id2 = pair.getLinkedToId2();
         if (id1 == null || id1.trim().length() == 0) {
             throw new IllegalArgumentException("ID1 is null or empty");
         }
@@ -134,21 +141,21 @@ public class DaoBackgroundReferences {
         }
 
         //  Validate that the record does not already exist in the database
-        BackgroundReferenceRecord dbRecord = getRecord(record);
-        if (dbRecord == null) {
+        BackgroundReferencePair dbPair = getRecord(pair);
+        if (dbPair == null) {
             try {
-                //  Note that we store a hash code to enable very fast lookups.
+                //  Note that we store a hash code to enable fast lookups.
                 con = JdbcUtil.getCPathConnection();
                 pstmt = con.prepareStatement
                         ("INSERT INTO " + tableName + " (`DB_1`, `ID_1`, "
                         + "`DB_2`, `ID_2`, `REFERENCE_TYPE`, `HASH_CODE`) "
                         + " VALUES (?,?,?,?,?,?)");
-                pstmt.setInt(1, record.getDb1());
-                pstmt.setString(2, record.getId1().trim());
-                pstmt.setInt(3, record.getDb2());
-                pstmt.setString(4, record.getId2().trim());
-                pstmt.setString(5, record.getReferenceType().toString());
-                pstmt.setInt(6, record.hashCode());
+                pstmt.setInt(1, pair.getDbId1());
+                pstmt.setString(2, pair.getLinkedToId1().trim());
+                pstmt.setInt(3, pair.getDbId2());
+                pstmt.setString(4, pair.getLinkedToId2().trim());
+                pstmt.setString(5, pair.getReferenceType().toString());
+                pstmt.setInt(6, pair.hashCode());
                 int rows = pstmt.executeUpdate();
                 return (rows > 0) ? true : false;
             } catch (ClassNotFoundException e) {
@@ -164,13 +171,13 @@ public class DaoBackgroundReferences {
     }
 
     /**
-     * Gets Background Reference Record specified by Primary ID.
+     * Gets Background Reference Pair Record specified by Primary ID.
      *
      * @param identityId Identity Primary ID.
      * @return BackgroundReference Record
      * @throws DaoException Error Retrieving Data.
      */
-    public BackgroundReferenceRecord getRecordById(int identityId)
+    public BackgroundReferencePair getRecordById(int identityId)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -225,10 +232,10 @@ public class DaoBackgroundReferences {
     }
 
     /**
-     * Gets the Record Specified by idRecord.
+     * Gets the Record Specified by refRecord.
      * <P>
-     * All ID Mappings are undirected.  Therefore the following are considered
-     * equivalent:
+     * All Background References are undirected.  Therefore the following
+     * are considered equivalent:
      * <P>Affymetrix:155_s_at -- SwissProt: Q7272
      * <BR>SwissProt: Q7272 -- Affymetrix:155_s_at
      * <P>
@@ -237,14 +244,13 @@ public class DaoBackgroundReferences {
      * Data Access Object ensures that both options will never exist
      * simultaneously in the database.
      *
-     * @param refRecord BackgroundReferenceRecord Object.
+     * @param pair BackgroundReferenceRecord Object.
      * @return IdMapRecord, if the record exists;  otherwise, null.
      * @throws DaoException Error Retrieving Data.
      */
-    public BackgroundReferenceRecord getRecord
-            (BackgroundReferenceRecord refRecord)
-            throws DaoException {
-        return getRecord(refRecord.hashCode());
+    public BackgroundReferencePair getRecord(BackgroundReferencePair
+            pair) throws DaoException {
+        return getRecord(pair.hashCode());
     }
 
     /**
@@ -273,7 +279,8 @@ public class DaoBackgroundReferences {
     }
 
     /**
-     * Given a XRef DB:ID pair, finds all equivalent XRef DB:ID pairs.
+     * Finds all references which are equivalent to the specified Background
+     * Reference object.
      * <p/>
      * Uses a bread-first search algorithm to determine complete set of
      * equivalent IDs.
@@ -281,11 +288,12 @@ public class DaoBackgroundReferences {
      * Implementation note:  JUnit Test for this method is in
      * TestIdMappingsParser.java, not TestDaoIdMap.java.
      *
-     * @param xref XRef Object
-     * @return ArrayList of XRef Objects.
+     * @param xref BackgroundReference Object.
+     * @return ArrayList of BackgroundReference Objects.
      * @throws DaoException Error Connecting to Database.
      */
-    public ArrayList getEquivalenceList(CPathXRef xref) throws DaoException {
+    public ArrayList getEquivalenceList(BackgroundReference xref)
+            throws DaoException {
         //  Represents List of Nodes to Visit
         LinkedList openQueue = new LinkedList();
 
@@ -298,14 +306,14 @@ public class DaoBackgroundReferences {
         //  While there are still nodes to visit
         while (openQueue.size() > 0) {
             //  Get the Next Item in the Queue
-            CPathXRef current = (CPathXRef) openQueue.removeFirst();
+            BackgroundReference current = (BackgroundReference) openQueue.removeFirst();
 
             //  Get all Immediate Neighbors
             ArrayList neighbors = getImmediateNeighbors(current);
 
             //  Iterate through all neighbors;  only enqueue new nodes
             for (int i = 0; i < neighbors.size(); i++) {
-                CPathXRef neighbor = (CPathXRef) neighbors.get(i);
+                BackgroundReference neighbor = (BackgroundReference) neighbors.get(i);
                 if (!closedList.contains(neighbor)
                         && !openQueue.contains(neighbor)) {
                     openQueue.add(neighbor);
@@ -322,13 +330,48 @@ public class DaoBackgroundReferences {
     }
 
     /**
-     * Gets All Immediate Neighbors of the Specified DB:ID pair.
+     * Gets a complete list of link out references for the specified
+     * BackgroundReference record.
+     *
+     * @param xref XRef Object
+     * @return ArrayList of XRef Objects.
+     * @throws DaoException Error Connecting to Database.
+     */
+    public ArrayList getLinkOutList(BackgroundReference xref)
+            throws DaoException {
+        ArrayList neighborList = new ArrayList();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT * FROM " + tableName + " WHERE "
+                    + "(DB_1 = ? AND ID_1 = ? AND REFERENCE_TYPE = ?)");
+            pstmt.setInt(1, xref.getDbId1());
+            pstmt.setString(2, xref.getLinkedToId1());
+            pstmt.setString(3, ReferenceType.LINK_OUT.toString());
+            rs = pstmt.executeQuery();
+            processResultSet(rs, xref, neighborList);
+            return neighborList;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets All Immediate Neighbors of the Specified Background
+     * Reference Object.
      *
      * @param xref XRef Object.
      * @return ArrayList of XRef Objects.
      * @throws DaoException Error Connecting to Database.
      */
-    private ArrayList getImmediateNeighbors(CPathXRef xref)
+    private ArrayList getImmediateNeighbors(BackgroundReference xref)
             throws DaoException {
         ArrayList neighborList = new ArrayList();
         Connection con = null;
@@ -345,18 +388,20 @@ public class DaoBackgroundReferences {
             //  Issue and Process First Query
             pstmt = con.prepareStatement
                     ("SELECT * FROM " + tableName + " WHERE "
-                    + "(DB_1 = ? AND ID_1 = ?)");
-            pstmt.setInt(1, xref.getDbId());
-            pstmt.setString(2, xref.getLinkedToId());
+                    + "(DB_1 = ? AND ID_1 = ? AND REFERENCE_TYPE = ?)");
+            pstmt.setInt(1, xref.getDbId1());
+            pstmt.setString(2, xref.getLinkedToId1());
+            pstmt.setString(3, ReferenceType.PROTEIN_UNIFICATION.toString());
             rs = pstmt.executeQuery();
             processResultSet(rs, xref, neighborList);
 
             //  Issue and Process Second Query
             pstmt = con.prepareStatement
                     ("SELECT * FROM " + tableName
-                    + " WHERE (DB_2 = ? AND ID_2 = ?)");
-            pstmt.setInt(1, xref.getDbId());
-            pstmt.setString(2, xref.getLinkedToId());
+                    + " WHERE (DB_2 = ? AND ID_2 = ? AND REFERENCE_TYPE = ?)");
+            pstmt.setInt(1, xref.getDbId1());
+            pstmt.setString(2, xref.getLinkedToId1());
+            pstmt.setString(3, ReferenceType.PROTEIN_UNIFICATION.toString());
             rs = pstmt.executeQuery();
             processResultSet(rs, xref, neighborList);
 
@@ -376,18 +421,18 @@ public class DaoBackgroundReferences {
         }
     }
 
-    private void processResultSet(ResultSet rs, CPathXRef xref,
+    private void processResultSet(ResultSet rs, BackgroundReference xref,
             ArrayList neighborList) throws SQLException {
         while (rs.next()) {
-            BackgroundReferenceRecord idRecord = createBean(rs);
-            CPathXRef neighbor = null;
-            if (idRecord.getDb1() == xref.getDbId()
-                    && idRecord.getId1().equals(xref.getLinkedToId())) {
-                neighbor = new CPathXRef(idRecord.getDb2(),
-                        idRecord.getId2());
+            BackgroundReferencePair refPair = createBean(rs);
+            BackgroundReference neighbor = null;
+            if (refPair.getDbId1() == xref.getDbId1()
+                    && refPair.getLinkedToId1().equals(xref.getLinkedToId1())) {
+                neighbor = new BackgroundReference(refPair.getDbId2(),
+                        refPair.getLinkedToId2());
             } else {
-                neighbor = new CPathXRef(idRecord.getDb1(),
-                        idRecord.getId1());
+                neighbor = new BackgroundReference(refPair.getDbId1(),
+                        refPair.getLinkedToId1());
             }
             neighborList.add(neighbor);
         }
@@ -401,7 +446,7 @@ public class DaoBackgroundReferences {
      * @return IdentityRecord, if the record exists;  otherwise, null.
      * @throws DaoException Error Retrieving Data.
      */
-    private BackgroundReferenceRecord getRecord(int hashCode)
+    private BackgroundReferencePair getRecord(int hashCode)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -430,15 +475,15 @@ public class DaoBackgroundReferences {
     /**
      * Creates an BackgroundReference Bean.
      */
-    private BackgroundReferenceRecord createBean(ResultSet rs) throws SQLException {
-        BackgroundReferenceRecord record = new BackgroundReferenceRecord();
-        record.setPrimaryId(rs.getInt("BACKGROUND_REFERENCE_ID"));
-        record.setDb1(rs.getInt("DB_1"));
-        record.setId1(rs.getString("ID_1"));
-        record.setDb2(rs.getInt("DB_2"));
-        record.setId2(rs.getString("ID_2"));
-        record.setReferenceType(ReferenceType.getType
+    private BackgroundReferencePair createBean(ResultSet rs) throws SQLException {
+        BackgroundReferencePair pair = new BackgroundReferencePair();
+        pair.setPrimaryId(rs.getInt("BACKGROUND_REFERENCE_ID"));
+        pair.setDbId1(rs.getInt("DB_1"));
+        pair.setLinkedToId1(rs.getString("ID_1"));
+        pair.setDbId2(rs.getInt("DB_2"));
+        pair.setLinkedToId2(rs.getString("ID_2"));
+        pair.setReferenceType(ReferenceType.getType
                 (rs.getString("REFERENCE_TYPE")));
-        return record;
+        return pair;
     }
 }
