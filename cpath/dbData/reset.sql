@@ -35,6 +35,11 @@ INSERT INTO `external_db` VALUES (9, 'Locus Link', 'http://www.ncbi.nlm.nih.gov/
 INSERT INTO `external_db` VALUES (10, 'GO', 'http://godatabase.org/cgi-bin/go.cgi?view=query&query=%ID%', 'Gene Ontology', 15, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (11, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%ID%&dopt=Abstract', 'NCBI PubMed', 16, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (12, 'Affymetrix', '', 'Affymetrix ID', 20, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (13, 'UniProt', 'http://www.pir.uniprot.org/cgi-bin/upEntry?id=%ID%', 'UniProt (Universal Protein Resource) is the world\'s most comprehensive catalog of information on proteins.', 21, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (14, 'IntAct', 'http://www.ebi.ac.uk/intact/search/do/hvWelcome?searchString=%ID%', 'IntAct', 22, NULL, NULL, 20031002163709, 20031002163709); 
+INSERT INTO `external_db` VALUES (15, 'FlyBase', 'http://flybase.bio.indiana.edu/.bin/fbidq.html?%ID%', 'FlyBase', 23, NULL, NULL, 20031002163709, 20031002163709); 
+INSERT INTO `external_db` VALUES (16, 'PDB', 'http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=%ID%', 'PDB', 23, NULL, NULL, 20031002163709, 20031002163709); 
+INSERT INTO `external_db` VALUES (17, 'SGD', '', 'SGD', 23, NULL, NULL, 20031002163709, 20031002163709); 
 #
 #  Insert data into table 'external_db_cv'
 #
@@ -59,3 +64,10 @@ INSERT INTO `external_db_cv` VALUES (17, 11, 'pubmed');
 INSERT INTO `external_db_cv` VALUES (18, 11, 'PMID');
 INSERT INTO `external_db_cv` VALUES (19, 11, 'pmid');
 INSERT INTO `external_db_cv` VALUES (20, 12, 'Affymetrix');
+INSERT INTO `external_db_cv` VALUES (21, 13, 'uniprot');
+INSERT INTO `external_db_cv` VALUES (22, 14, 'intact');
+INSERT INTO `external_db_cv` VALUES (23, 15, 'flybase');
+INSERT INTO `external_db_cv` VALUES (24, 16, 'pdb');
+INSERT INTO `external_db_cv` VALUES (25, 17, 'sgd');
+
+
