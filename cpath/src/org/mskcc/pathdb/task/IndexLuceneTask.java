@@ -59,7 +59,7 @@ import java.sql.SQLException;
  * @author Ethan Cerami.
  */
 public class IndexLuceneTask extends Task {
-    private static final int BLOCK_SIZE = 100;
+    private static final int BLOCK_SIZE = 1000;
     private XDebug xdebug;
 
     /**
