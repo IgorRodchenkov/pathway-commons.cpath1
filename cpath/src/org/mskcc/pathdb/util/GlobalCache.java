@@ -88,9 +88,10 @@ public class GlobalCache {
 
     /**
      * Removes Object from Cache.
-     * @param key   Key.
+     *
+     * @param key Key.
      */
-    public void remove (String key) {
+    public void remove(String key) {
         hash.remove(key);
     }
 }

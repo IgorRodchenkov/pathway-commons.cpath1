@@ -36,15 +36,16 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
-import org.mskcc.pathdb.task.*;
+import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
+import org.mskcc.pathdb.task.ImportReferencesTask;
+import org.mskcc.pathdb.task.IndexLuceneTask;
+import org.mskcc.pathdb.task.ValidateXmlTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import java.io.*;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 /**
  * Command Line cPath Administrator.
@@ -177,13 +178,13 @@ public class Admin {
                 System.exit(-1);
             }
         } else {
-//            Temporarily returned back to the original import references task.           
+//            Temporarily returned back to the original import references task.
 //            ParseIdMappingsTask task = new ParseIdMappingsTask(file, true);
 //            int numRecordsSaved = task.parseAndStoreToDb();
 //            NumberFormat formatter = new DecimalFormat("#,###,###");
 //            System.out.println("\nTotal Number of ID Mappings Stored:  "
 //                    + formatter.format(numRecordsSaved));
-            FileReader reader = new FileReader (file);
+            FileReader reader = new FileReader(file);
             ImportReferencesTask task = new ImportReferencesTask(true, reader);
             task.importReferences();
         }
