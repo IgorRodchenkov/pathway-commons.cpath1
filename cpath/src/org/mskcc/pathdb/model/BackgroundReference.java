@@ -33,80 +33,81 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 /**
- * Stores a Single External Reference.
- * <P>
- * An External Reference consists of a Database:ID Pair.  This is similar
- * to the External Reference Object in the Data Services layer, except that
- * it stores primary Ids to the cPath External Database Table.
+ * Stores a Single Background Reference Record.
  *
  * @author Ethan Cerami
  */
-public class CPathXRef {
-    private int dbId;
-    private String linkedToId;
+public class BackgroundReference {
+    private int dbId1;
+    private String linkedToId1;
+
+    /**
+     * No-arg constructor.
+     */
+    public BackgroundReference () { }
 
     /**
      * Constructor.
      *
-     * @param dbId       Primary ID of External Database.
-     * @param linkedToId Identifier, as stored in the External Database.
+     * @param dbId1       External Database ID for Reference #1.
+     * @param linkedToId1 LinkedToId for Reference #1.
      */
-    public CPathXRef(int dbId, String linkedToId) {
-        this.dbId = dbId;
-        this.linkedToId = linkedToId;
+    public BackgroundReference(int dbId1, String linkedToId1) {
+        this.dbId1 = dbId1;
+        this.linkedToId1 = linkedToId1;
     }
 
     /**
-     * Get the Primary ID of the External Database.
+     * Get the External Database ID for Reference #1.
      *
      * @return integer id.
      */
-    public int getDbId() {
-        return dbId;
+    public int getDbId1() {
+        return dbId1;
     }
 
     /**
-     * Sets the Primary ID of the External Database.
+     * Sets the External Database ID for Reference #1.
      *
      * @param dbId integer id.
      */
-    public void setDbId(int dbId) {
-        this.dbId = dbId;
+    public void setDbId1(int dbId) {
+        this.dbId1 = dbId;
     }
 
     /**
-     * Gets the Identifier, as stored in the External Database.
+     * Gets the Linked To Identifer for Reference #1.
      *
      * @return String id.
      */
-    public String getLinkedToId() {
-        return linkedToId;
+    public String getLinkedToId1() {
+        return linkedToId1;
     }
 
     /**
-     * Sets te Identifier, as stored in the External Database.
+     * Sets the Linked To Identifier for Reference #1.
      *
      * @param linkedToId String id.
      */
-    public void setLinkedToId(String linkedToId) {
-        this.linkedToId = linkedToId;
+    public void setLinkedToId1(String linkedToId) {
+        this.linkedToId1 = linkedToId;
     }
 
     /**
-     * Provides a Text Description of the Xref.
+     * Provides a Text Description.
      *
-     * @return Description of ID Mapping.
+     * @return Text Description..
      */
     public String toString() {
         DaoExternalDb dao = new DaoExternalDb();
         String dbName = null;
         try {
-            ExternalDatabaseRecord dbRecord1 = dao.getRecordById(dbId);
+            ExternalDatabaseRecord dbRecord1 = dao.getRecordById(dbId1);
             dbName = dbRecord1.getFixedCvTerm();
         } catch (DaoException e) {
             dbName = "Unknown";
         }
-        return new String(dbName + ": " + linkedToId);
+        return new String(dbName + ": " + linkedToId1);
     }
 
     /**
@@ -116,10 +117,10 @@ public class CPathXRef {
      * @return true or false.
      */
     public boolean equals(Object obj) {
-        if (obj instanceof CPathXRef) {
-            CPathXRef xref = (CPathXRef) obj;
-            if (xref.getDbId() == dbId
-                    && xref.getLinkedToId().equals(linkedToId)) {
+        if (obj instanceof BackgroundReference) {
+            BackgroundReference xref = (BackgroundReference) obj;
+            if (xref.getDbId1() == dbId1
+                    && xref.getLinkedToId1().equals(linkedToId1)) {
                 return true;
             }
         }

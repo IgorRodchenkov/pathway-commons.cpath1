@@ -33,113 +33,77 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 /**
- * Java Bean for Storing Background Reference Records.
+ * Stores a pair of Background Reference Records.
  *
  * @author Ethan Cerami.
  */
-public class BackgroundReferenceRecord {
-    private int db1, db2;
-    private String id1, id2;
+public class BackgroundReferencePair extends BackgroundReference {
+    private int dbId2;
+    private String linkedToId2;
     private int primaryId;
     private ReferenceType refType;
 
     /**
      * No-arg Constructor.
      */
-    public BackgroundReferenceRecord() {
+    public BackgroundReferencePair() {
     }
 
     /**
      * Constructor.
      *
-     * @param db1 Primary ID of Database 1.
-     * @param id1 ID used in Database 1.
-     * @param db2 Primary ID of Database 2.
-     * @param id2 ID used in Database 2.
+     * @param dbId1       External Database ID for Reference #1.
+     * @param linkedToId1 LinkedToId for Reference #1.
+     * @param dbId2       External Databse ID for Reference #2.
+     * @param linkedToId2 LinkedToId for Reference #2.
+     *
      */
-    public BackgroundReferenceRecord(int db1, String id1, int db2, String id2,
-            ReferenceType refType) {
-        this.db1 = db1;
-        this.db2 = db2;
-        this.id1 = id1;
-        this.id2 = id2;
+    public BackgroundReferencePair(int dbId1, String linkedToId1, int dbId2,
+            String linkedToId2, ReferenceType refType) {
+        super (dbId1, linkedToId1);
+        this.dbId2 = dbId2;
+        this.linkedToId2 = linkedToId2;
         this.refType = refType;
     }
 
     /**
-     * Gets Primary ID of Database 1.
+     * Get the External Database ID for Reference #2.
      *
      * @return integer id.
      */
-    public int getDb1() {
-        return db1;
+    public int getDbId2() {
+        return dbId2;
     }
 
     /**
-     * Sets Primary ID of Database 1.
-     *
-     * @param db1 integer id.
-     */
-    public void setDb1(int db1) {
-        this.db1 = db1;
-    }
-
-    /**
-     * Gets Primary ID of Database 2.
-     *
-     * @return integer id.
-     */
-    public int getDb2() {
-        return db2;
-    }
-
-    /**
-     * Sets Primary ID of Database 2.
+     * Sets the External Database ID for Reference #2.
      *
      * @param db2 integer id.
      */
-    public void setDb2(int db2) {
-        this.db2 = db2;
+    public void setDbId2(int db2) {
+        this.dbId2 = db2;
     }
 
     /**
-     * Gets ID in Database 1.
+     * Gets the LinkedToID for Reference #2.
      *
      * @return ID string.
      */
-    public String getId1() {
-        return id1;
+    public String getLinkedToId2() {
+        return linkedToId2;
     }
 
     /**
-     * Sets ID in Databse 1.
+     * Sets the LinkedToID for Reference #2.
      *
-     * @param id1 ID String.
+     * @param linkedToId2 ID String.
      */
-    public void setId1(String id1) {
-        this.id1 = id1;
+    public void setLinkedToId2 (String linkedToId2) {
+        this.linkedToId2 = linkedToId2;
     }
 
     /**
-     * Gets ID in Database 2.
-     *
-     * @return ID string.
-     */
-    public String getId2() {
-        return id2;
-    }
-
-    /**
-     * Sets ID in Databse 1.
-     *
-     * @param id2 ID String.
-     */
-    public void setId2(String id2) {
-        this.id2 = id2;
-    }
-
-    /**
-     * Gets Primary ID of this ID Map Record.
+     * Gets Primary ID of this Background Reference Pair, as stored in cPath.
      *
      * @return integer id.
      */
@@ -148,7 +112,7 @@ public class BackgroundReferenceRecord {
     }
 
     /**
-     * Sets Primary ID of this ID Map Record.
+     * Sets Primary ID of this Background Reference Pair.
      *
      * @param primaryId integer id.
      */
@@ -184,19 +148,20 @@ public class BackgroundReferenceRecord {
         String db1Name = null;
         String db2Name = null;
         try {
-            ExternalDatabaseRecord dbRecord1 = dao.getRecordById(db1);
+            ExternalDatabaseRecord dbRecord1 = dao.getRecordById(getDbId1());
             db1Name = dbRecord1.getName();
         } catch (DaoException e) {
             db1Name = "Unknown";
         }
         try {
-            ExternalDatabaseRecord dbRecord2 = dao.getRecordById(db2);
+            ExternalDatabaseRecord dbRecord2 = dao.getRecordById(dbId2);
             db2Name = dbRecord2.getName();
         } catch (DaoException e) {
             db2Name = "Unknown";
         }
-        return new String(db1Name + ": " + id1 + " <--> "
-                + db2Name + ": " + id2);
+        String linkGraphic = " <--> ";
+        return new String(refType + ", " + db1Name + ": " + getLinkedToId1()
+                + linkGraphic + db2Name + ": " + linkedToId2);
     }
 
     /**
@@ -211,13 +176,15 @@ public class BackgroundReferenceRecord {
      * @return hashcode integer value.
      */
     public int hashCode() {
-        StringBuffer code = new StringBuffer(refType.toString() + ":");
-        if (db1 < db2) {
-            code.append(db1 + ":" + id1 + "#");
-            code.append(db2 + ":" + id2);
+        StringBuffer code = new StringBuffer(refType + ":");
+        int dbId1 = getDbId1();
+        String linkedToId1 = getLinkedToId1();
+        if (dbId1 < dbId2) {
+            code.append(dbId1 + ":" + linkedToId1 + "#");
+            code.append(dbId2 + ":" + linkedToId2);
         } else {
-            code.append(db2 + ":" + id2 + "#");
-            code.append(db1 + ":" + id1);
+            code.append(dbId2 + ":" + linkedToId2 + "#");
+            code.append(dbId1 + ":" + linkedToId1);
         }
         return code.toString().hashCode();
     }
