@@ -24,12 +24,13 @@ URL parameters.  Parameters are as follows:
             Current valid commands are:
                 <UL>
                 <LI><%= ProtocolConstants.COMMAND_HELP %>
-                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID %>
-                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME %>
-                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID %>
                 <LI><%= ProtocolConstants.COMMAND_GET_BY_KEYWORD  %>
-                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB %>
-                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_ORGANISM %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_PMID %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_DATABASE %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID %>
             </UL>
 		    <LI>q:  Indicates the query parameter.  Depending on the command,
             this is used to indicate a unique ID or a search term.
