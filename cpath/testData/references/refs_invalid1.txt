@@ -1,0 +1,8 @@
+#  Sample Background References File, used by JUnit
+#  This file is invalid because the header contains a database
+#  called SANDER, which does not exist in cPath.
+
+UniProt	SANDER	HUGE
+UNIPROT_1234	PIR_1234 PIR_4321	HUGE_1234
+UNIPROT_XYZ	PIR_XYZ	HUGE_XYZ
+UNIPROT_1234		HUGE_4321

@@ -1,0 +1,7 @@
+#  Sample LinkOut References File
+#  This file is invalid because the first column is not of type:  LINK_OUT
+
+SWP	GO
+A	X
+B	Y
+C	Z

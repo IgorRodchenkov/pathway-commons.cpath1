@@ -1,0 +1,7 @@
+#  Sample Background References File, used by JUnit.
+#  This file is invalid because it only has one column of data.
+
+UniProt	
+UNIPROT_1234
+UNIPROT_XYZ
+UNIPROT_1234

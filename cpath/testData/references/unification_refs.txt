@@ -1,0 +1,7 @@
+#  Sample Unification References File
+#  All Data is (obviously) Fake
+
+UniProt	PIR	HUGE
+UNIPROT_1234	PIR_1234 PIR_4321	HUGE_1234
+UNIPROT_XYZ	PIR_XYZ	HUGE_XYZ
+UNIPROT_1234		HUGE_4321
