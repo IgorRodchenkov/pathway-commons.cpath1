@@ -4,9 +4,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.controller.*;
-import org.mskcc.pathdb.sql.query.ExecuteQuery;
+import org.mskcc.pathdb.sql.query.Query;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.sql.query.QueryResult;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.util.XssFilter;
 
@@ -81,15 +81,14 @@ public class QueryAction extends BaseAction {
             ProtocolValidator validator =
                     new ProtocolValidator(protocolRequest);
             validator.validate();
-            QueryResult result = executeQuery(xdebug, protocolRequest);
-            ArrayList interactions = result.getInteractions();
-            if (interactions.size() == 0) {
+            XmlAssembly xmlAssembly = executeQuery(xdebug, protocolRequest);
+            if (xmlAssembly.isEmpty()) {
                 throw new ProtocolException
                         (ProtocolStatusCode.NO_RESULTS_FOUND,
                                 "No Results Found for:  "
                         + protocolRequest.getQuery());
             }
-            xml = result.getXml();
+            xml = xmlAssembly.getXmlString();
         } catch (ProtocolException e) {
             xml = e.toXml();
         } finally {
@@ -106,29 +105,21 @@ public class QueryAction extends BaseAction {
         ProtocolValidator validator =
                 new ProtocolValidator(protocolRequest);
         validator.validate();
-        QueryResult result = executeQuery(xdebug, protocolRequest);
-        ArrayList interactions = result.getInteractions();
-        request.setAttribute(ATTRIBUTE_INTERACTIONS, interactions);
-        if (interactions.size() == 0 && protocolRequest.getCommand().
-                equals(ProtocolConstants.
-                COMMAND_GET_BY_INTERACTOR_NAME)) {
-            return mapping.findForward(BaseAction.FORWARD_FULL_TEXT_SEARCH);
-        } else {
-            return mapping.findForward(BaseAction.FORWARD_SUCCESS);
-        }
+        XmlAssembly xmlAssembly = executeQuery(xdebug, protocolRequest);
+        request.setAttribute(ATTRIBUTE_XML_ASSEMBLY, xmlAssembly);
+        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 
-
-    private QueryResult executeQuery(XDebug xdebug,
+    private XmlAssembly executeQuery(XDebug xdebug,
             ProtocolRequest protocolRequest) throws ProtocolException {
-        QueryResult result;
+        XmlAssembly xmlAssembly;
         try {
-            ExecuteQuery executeQuery = new ExecuteQuery(xdebug);
-            result = executeQuery.executeQuery(protocolRequest, true);
+            Query executeQuery = new Query(xdebug);
+            xmlAssembly = executeQuery.executeQuery(protocolRequest, true);
         } catch (QueryException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
-        return result;
+        return xmlAssembly;
     }
 
     /**
