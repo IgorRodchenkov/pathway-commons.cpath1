@@ -70,7 +70,7 @@ public class QueryFullText {
             if (cpathId != null) {
                 System.out.println("cPath ID:  " + cpathId.stringValue());
             }
-            Field xml = doc.getField(LuceneIndexer.FIELD_XML);
+            Field xml = doc.getField(LuceneIndexer.FIELD_ALL);
             if (xml != null) {
                 System.out.println("Data record:  \n" + xml.stringValue());
             }
