@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.transfer;
 
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
@@ -10,11 +10,15 @@ import org.mskcc.pathdb.model.ImportRecord;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.util.BatchTool;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -37,20 +41,12 @@ public class TransferImportToCPath extends BatchTool {
 
     /**
      * Transfers Data.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
-     * @throws IOException Error Reading Files.
-     * @throws MapperException Error Mapping to Interaction objects.
-     * @throws DataServiceException Error Connecting to Data Service.
-     * @throws ExternalDatabaseNotFoundException Could not find database.
-     * @throws MarshalException Marshal Exception
-     * @throws ValidationException Validation Exception.
+     * @throws java.io.IOException Error Reading Files.
+     * @throws DaoException Error Retrieving Data.
+     * @throws ImportException Error Importing Data.
      */
-    public void transferData()
-            throws SQLException, ClassNotFoundException,
-            IOException, MapperException, DataServiceException,
-            ExternalDatabaseNotFoundException, MarshalException,
-            ValidationException {
+    public void transferData() throws IOException, DaoException,
+            ImportException {
         outputMsg("Transferring Import Records");
         dbImport = new DaoImport();
         ArrayList records = dbImport.getAllRecords();
@@ -75,12 +71,10 @@ public class TransferImportToCPath extends BatchTool {
     /**
      * Transfers Single Import Record.
      */
-    private void transferRecord(ImportRecord record) throws MapperException,
-            DataServiceException, ClassNotFoundException, SQLException,
-            ExternalDatabaseNotFoundException, MarshalException,
-            ValidationException {
+    private void transferRecord(ImportRecord record) throws ImportException,
+            DaoException {
         String xml = record.getData();
-        ImportPsiToCPath importer = new ImportPsiToCPath(this.getXDebug());
+        ImportPsiToCPath importer = new ImportPsiToCPath();
         importer.addRecord(xml);
         dbImport.markRecordAsTransferred(record.getImportId());
     }
@@ -88,7 +82,7 @@ public class TransferImportToCPath extends BatchTool {
     /**
      * Main method.
      * @param args Command Line Argument.
-     * @throws Exception All Exceptions.
+     * @throws java.lang.Exception All Exceptions.
      */
     public static void main(String[] args) throws Exception {
         try {
@@ -111,8 +105,8 @@ public class TransferImportToCPath extends BatchTool {
         }
     }
 
-    private static void loadDataFile(String fileName) throws IOException,
-            NoSuchAlgorithmException, SQLException, ClassNotFoundException {
+    private static void loadDataFile(String fileName)
+            throws IOException, DaoException {
         System.out.println("Loading data file:  " + fileName);
         File file = new File(fileName);
         ContentReader reader = new ContentReader();

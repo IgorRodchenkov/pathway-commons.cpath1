@@ -16,6 +16,8 @@ import org.mskcc.dataservices.services.ReadInteractors;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
+import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -27,6 +29,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.sql.Connection;
 
 /**
  * DataService Controller.
@@ -80,9 +83,8 @@ public class DataServiceController {
     }
 
     private void processGetInteractions(ProtocolRequest protocolRequest)
-            throws DataServiceException, MarshalException, ValidationException,
-            ServletException, IOException, ClassNotFoundException,
-            SQLException, MapperException {
+            throws MarshalException, ValidationException,
+            ServletException, IOException, DaoException, MapperException {
         InteractionQuery query = new InteractionQuery
                 (protocolRequest.getUid());
         EntrySet entrySet = query.getEntrySet();

@@ -4,12 +4,14 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.model.ImportRecord;
-import org.mskcc.pathdb.sql.DaoImport;
+import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.sql.Connection;
 
 /**
  * Action for Displaying Import Records.

@@ -5,14 +5,17 @@ import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.sql.DaoImport;
-import org.mskcc.pathdb.sql.TransferImportToCPath;
+import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.transfer.TransferImportToCPath;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -32,7 +35,8 @@ public class TestTransfersWithDipData extends TestCase {
         addDipDataToImportTable();
 
         //  Transfer DIP data to GRID
-        TransferImportToCPath transfer = new TransferImportToCPath(false, null);
+        TransferImportToCPath transfer = new TransferImportToCPath
+                (false, null);
         transfer.transferData();
 
         //  Verify Contents
@@ -66,8 +70,7 @@ public class TestTransfersWithDipData extends TestCase {
     /**
      * Gets Sample PSI File from local directory.
      */
-    private void addDipDataToImportTable() throws IOException,
-            NoSuchAlgorithmException, SQLException, ClassNotFoundException {
+    private void addDipDataToImportTable() throws IOException, DaoException {
         File file = new File("testData/dip_sample.xml");
         ContentReader reader = new ContentReader();
         String data = reader.retrieveContentFromFile(file);

@@ -1,9 +1,12 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,14 +22,14 @@ public class DaoExternalLink {
      * Adds New External Link Record.
      * @param link ExternalLinkRecord Object.
      * @return true if saved successfully.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean addRecord(ExternalLinkRecord link)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean addRecord(ExternalLinkRecord link) throws DaoException {
+        Connection con = null;
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
+            con = JdbcUtil.getCPathConnection();
             if (!recordExists(link)) {
                 pstmt = con.prepareStatement
                         ("INSERT INTO external_link (`CPATH_ID`, "
@@ -43,8 +46,13 @@ public class DaoExternalLink {
             } else {
                 return false;
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con, pstmt, null);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -52,13 +60,11 @@ public class DaoExternalLink {
      * Adds All External References to Database.
      * @param cpathId cPath ID.
      * @param refs Array of External Reference Objects.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      * @throws ExternalDatabaseNotFoundException Database Not Found.
      */
     public void addMulipleRecords(long cpathId, ExternalReference refs[])
-            throws ClassNotFoundException, SQLException,
-            ExternalDatabaseNotFoundException {
+            throws DaoException, ExternalDatabaseNotFoundException {
         if (refs != null) {
             for (int i = 0; i < refs.length; i++) {
                 String dbName = refs[i].getDatabase();
@@ -86,11 +92,10 @@ public class DaoExternalLink {
      * @param refs An Array of External References.  All these references
      * refer to the same interactor, as defined in different databases.
      * @return Matching cPath Record or Null.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
     public CPathRecord lookUpByByExternalRefs(ExternalReference refs[])
-            throws SQLException, ClassNotFoundException {
+            throws DaoException {
         //  Iterate through all External References.
         if (refs != null) {
             for (int i = 0; i < refs.length; i++) {
@@ -121,24 +126,31 @@ public class DaoExternalLink {
      * Gets Record by specified External Link ID.
      * @param externalLinkId External Link ID.
      * @return External Link Object.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
     public ExternalLinkRecord getRecordById(long externalLinkId)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+            throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_LINK_ID = ?");
             pstmt.setLong(1, externalLinkId);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 return createBean(rs);
             } else {
                 return null;
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -147,27 +159,33 @@ public class DaoExternalLink {
      * @param externalDbId External Database ID.
      * @param linkedToId Linked To ID String.
      * @return External Link Object.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
     private ExternalLinkRecord getRecordByDbAndLinkedToId(long externalDbId,
-            String linkedToId)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+            String linkedToId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_DB_ID = ? "
                     + "AND LINKED_TO_ID =?");
             pstmt.setLong(1, externalDbId);
             pstmt.setString(2, linkedToId);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 return createBean(rs);
             } else {
                 return null;
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -175,26 +193,32 @@ public class DaoExternalLink {
      * Gets All External Link Records Associated with specified CPath ID.
      * @param cpathId CPath ID.
      * @return ArrayList of External Link Objects.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public ArrayList getRecordsByCPathId(long cpathId)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public ArrayList getRecordsByCPathId(long cpathId) throws DaoException {
         ArrayList links = new ArrayList();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_LINK WHERE CPATH_ID = ? "
                     + "ORDER BY EXTERNAL_LINK_ID");
             pstmt.setLong(1, cpathId);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 ExternalLinkRecord link = createBean(rs);
                 links.add(link);
             }
             return links;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -202,20 +226,26 @@ public class DaoExternalLink {
      * Gets Record by specified External Link ID.
      * @param externalLinkId External Link ID.
      * @return true if deletion is successful.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean deleteRecordById(long externalLinkId)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean deleteRecordById(long externalLinkId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("DELETE FROM EXTERNAL_LINK WHERE EXTERNAL_LINK_ID = ?");
             pstmt.setLong(1, externalLinkId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -223,28 +253,34 @@ public class DaoExternalLink {
      * Determines if the specified record already exists.
      * @param link ExternalLinkRecord Object.
      * @return true if record already exists in database.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean recordExists(ExternalLinkRecord link)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean recordExists(ExternalLinkRecord link) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_LINK WHERE CPATH_ID = ? "
                     + " AND EXTERNAL_DB_ID = ? AND LINKED_TO_ID = ?");
             pstmt.setLong(1, link.getCpathId());
             pstmt.setInt(2, link.getExternalDbId());
             pstmt.setString(3, link.getLinkedToId());
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             return (rs.next()) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
     private ExternalLinkRecord createBean(ResultSet rs) throws SQLException,
-            ClassNotFoundException {
+            DaoException {
         ExternalLinkRecord link = new ExternalLinkRecord();
         link.setId(rs.getInt("EXTERNAL_LINK_ID"));
         link.setCpathId(rs.getInt("CPATH_ID"));

@@ -1,9 +1,10 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.IOException;
 import java.sql.*;
@@ -25,16 +26,16 @@ public class DaoCPath {
      * @param type CPathRecordType Object.
      * @param xml XML Content
      * @return cPath Id for newly saved record
-     * @throws ClassNotFoundException Could not located JDBC Driver.
-     * @throws SQLException Error Connecting to Database
+     * @throws DaoException Error Retrieving Data.
      */
     public synchronized long addRecord(String name, String description,
             int ncbiTaxonomyId, CPathRecordType type, String xml)
-            throws ClassNotFoundException,
-            SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+            throws DaoException {
+        Connection con = null;
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
+            con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO CPATH (`NAME`,`DESC`,"
                     + "`TYPE`,`NCBI_TAX_ID`, `XML_CONTENT` ,"
@@ -47,16 +48,21 @@ public class DaoCPath {
             java.util.Date now = new java.util.Date();
             Timestamp timeStamp = new Timestamp(now.getTime());
             pstmt.setTimestamp(6, timeStamp);
-            int rows = pstmt.executeUpdate();
+            pstmt.executeUpdate();
 
             //  Get New CPath ID
             pstmt = con.prepareStatement("SELECT MAX(CPATH_ID) from CPATH");
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             rs.next();
             long cpathId = rs.getLong(1);
             return cpathId;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con, pstmt, null);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -69,61 +75,50 @@ public class DaoCPath {
      * @param xml XML Content
      * @param refs Array of External References
      * @return cPath Id for newly saved record
-     * @throws ClassNotFoundException Could not located JDBC Driver.
-     * @throws SQLException Error Connecting to Database
+     * @throws DaoException Error Retrieving Data.
      * @throws ExternalDatabaseNotFoundException ExternalDatabase Not Found.
      */
     public synchronized long addRecord(String name, String description,
             int ncbiTaxonomyId, CPathRecordType type, String xml,
-            ExternalReference refs[])
-            throws ClassNotFoundException, SQLException,
+            ExternalReference refs[]) throws DaoException,
             ExternalDatabaseNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
-        con.setAutoCommit(false);
-        PreparedStatement pstmt = null;
-        try {
-            long cpathId = this.addRecord(name, description, ncbiTaxonomyId,
-                    type, xml);
-            DaoExternalLink linker = new DaoExternalLink();
-            linker.addMulipleRecords(cpathId, refs);
-            con.commit();
-            return cpathId;
-        } catch (ExternalDatabaseNotFoundException e) {
-            // If ExternalDatabaseNotFoundException is thrown,
-            // roll back everything, and rethrow exception.
-            con.rollback();
-            throw e;
-        } finally {
-            con.setAutoCommit(true);
-            JdbcUtil.freeConnection(con, pstmt, null);
-        }
+        long cpathId = this.addRecord(name, description, ncbiTaxonomyId,
+                type, xml);
+        DaoExternalLink linker = new DaoExternalLink();
+        linker.addMulipleRecords(cpathId, refs);
+        return cpathId;
     }
 
     /**
      * Gets all cPath Records.
      * @return ArrayList of CPath Records.
-     * @throws ClassNotFoundException Error Locating Correct Database Driver.
-     * @throws SQLException Error Connecting to Database.
+     * @throws DaoException Error Retrieving Data.
      * @throws java.io.IOException Error Performing I/O.
      */
-    public ArrayList getAllRecords()
-            throws ClassNotFoundException, SQLException, IOException {
-        ArrayList records = new ArrayList();
-        Connection con = JdbcUtil.getCPathConnection();
+    public ArrayList getAllRecords() throws DaoException, IOException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
+        ArrayList records = new ArrayList();
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("select * from CPATH order by CPATH_ID");
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 CPathRecord record = extractRecord(rs);
                 records.add(record);
             }
-            return records;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            rs.close();
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
+        return records;
     }
 
     //  TODO Next Phase:  Get all Records by Species NCBI Taxonomy ID
@@ -133,24 +128,30 @@ public class DaoCPath {
      * Gets Record by specified CPath ID.
      * @param cpathId cPath ID.
      * @return cPath Record.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public CPathRecord getRecordById(long cpathId)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public CPathRecord getRecordById(long cpathId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM CPATH WHERE CPATH_ID = ?");
             pstmt.setLong(1, cpathId);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 return this.extractRecord(rs);
             } else {
                 return null;
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -158,24 +159,30 @@ public class DaoCPath {
      * Gets Record by specified Name.
      * @param name Name.
      * @return cPath Record.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public CPathRecord getRecordByName(String name)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public CPathRecord getRecordByName(String name) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM CPATH WHERE NAME = ?");
             pstmt.setString(1, name);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 return this.extractRecord(rs);
             } else {
                 return null;
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -184,14 +191,15 @@ public class DaoCPath {
      * This will also delete all external links associated with this record.
      * @param cpathId cPath ID of record to delete.
      * @return returns true if deletion was successful.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean deleteRecordById(long cpathId)
-            throws SQLException, ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean deleteRecordById(long cpathId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("DELETE FROM CPATH WHERE CPATH_ID = ?");
             pstmt.setLong(1, cpathId);
             int rows = pstmt.executeUpdate();
@@ -209,8 +217,13 @@ public class DaoCPath {
             internalLinker.deleteRecordsByCPathId(cpathId);
 
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -219,14 +232,15 @@ public class DaoCPath {
      * @param cpathId cPath Id.
      * @param newXml New XML Content.
      * @return true indicates success.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean updateXml(long cpathId, String newXml)
-            throws SQLException, ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean updateXml(long cpathId, String newXml) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("UPDATE CPATH SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
                     + "WHERE `CPATH_ID` = ?");
             pstmt.setString(1, newXml);
@@ -236,8 +250,13 @@ public class DaoCPath {
             pstmt.setLong(3, cpathId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -260,6 +279,4 @@ public class DaoCPath {
         record.setUpdateTime(rs.getTimestamp("UPDATE_TIME"));
         return record;
     }
-
-
 }

@@ -85,7 +85,7 @@ public class JdbcUtil {
      * @param ps Prepared Statement Object.
      * @param rs ResultSet Object.
      */
-    public static void freeConnection(Connection con, PreparedStatement ps,
+    public static void closeAll(Connection con, PreparedStatement ps,
             ResultSet rs) {
         freeConnection(con);
         if (ps != null) {

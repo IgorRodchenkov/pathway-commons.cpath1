@@ -5,10 +5,13 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.sql.DaoExternalDb;
-import org.mskcc.pathdb.sql.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -58,8 +61,7 @@ public class TestDaoExternalLink extends TestCase {
         assertTrue(!exists);
     }
 
-    private void addSampleRecord() throws SQLException,
-            ClassNotFoundException {
+    private void addSampleRecord() throws DaoException {
         DaoExternalDb dbTable = new DaoExternalDb();
         ExternalDatabaseRecord externalDb = dbTable.getRecordByTerm(DB_NAME);
         DaoExternalLink db = new DaoExternalLink();

@@ -9,13 +9,15 @@ import org.mskcc.dataservices.schemas.psi.InteractorList;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
-import org.mskcc.pathdb.sql.DaoExternalLink;
-import org.mskcc.pathdb.sql.ImportPsiToCPath;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
 import java.io.StringWriter;
+import java.sql.Connection;
 
 /**
  * Tests the ImportPsiToCPath, the InteractionQuery
@@ -34,7 +36,7 @@ public class TestImportPsiToCPath extends TestCase {
         File file = new File("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContentFromFile(file);
         XDebug xdebug = new XDebug();
-        ImportPsiToCPath importer = new ImportPsiToCPath(xdebug);
+        ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml);
         assertEquals (7, summary.getNumInteractorsProcessed());
         assertEquals (0, summary.getNumInteractorsFound());

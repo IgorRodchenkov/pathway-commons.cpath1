@@ -39,10 +39,13 @@ import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.sql.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -92,8 +95,7 @@ public class InteractionTable extends HtmlTable {
     /**
      * Outputs Interaction Data.
      */
-    private void outputInteractions() throws SQLException,
-            ClassNotFoundException {
+    private void outputInteractions() throws DaoException {
         for (int i = 0; i < interactions.size(); i++) {
             Interaction interaction = (Interaction) interactions.get(i);
             ArrayList interactors = interaction.getInteractors();
@@ -139,7 +141,7 @@ public class InteractionTable extends HtmlTable {
      * Outputs External References.
      */
     private void outputExternalReferences(Interactor interactor)
-            throws SQLException, ClassNotFoundException {
+            throws DaoException {
         DaoExternalLink dao = new DaoExternalLink();
         String id = (String) interactor.getAttribute(InteractorVocab.LOCAL_ID);
         if (id != null) {

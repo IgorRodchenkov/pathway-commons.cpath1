@@ -6,12 +6,14 @@ import org.mskcc.dataservices.mapper.MapPsiToInteractions;
 import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.sql.DaoCPath;
-import org.mskcc.pathdb.sql.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.PsiBuilder;
 
 import java.io.StringWriter;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,12 +32,11 @@ public class InteractionQuery {
      * @param interactorName Unique Interactor Name.
      * @throws ValidationException XML String is invalid.
      * @throws MarshalException Error Marshaling Object.
-     * @throws ClassNotFoundException JDBC Driver not found.
-     * @throws SQLException Error Connecting to Database.
+     * @throws DaoException Error Retrieving Data.
      * @throws MapperException Error Mapping to Data Service objects.
      */
     public InteractionQuery (String interactorName)
-        throws ClassNotFoundException, SQLException, MarshalException,
+        throws DaoException, MarshalException,
         ValidationException, MapperException {
         interactions = new ArrayList();
         HashMap interactorMap = new HashMap();
@@ -80,8 +81,8 @@ public class InteractionQuery {
      * Generates PSI XML.
      */
     private EntrySet generateXml(CPathRecord record, DaoInternalLink linker,
-            HashMap interactorMap) throws ClassNotFoundException,
-            SQLException, MarshalException, ValidationException {
+            HashMap interactorMap) throws DaoException, MarshalException,
+            ValidationException {
         PsiBuilder psiBuilder = new PsiBuilder();
         long id = record.getId();
         ArrayList interactions = linker.getInternalLinksWithLookup(id);

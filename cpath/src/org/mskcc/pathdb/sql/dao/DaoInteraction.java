@@ -1,10 +1,11 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.core.EmptySetException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,20 +25,17 @@ import java.util.HashMap;
  * @author Ethan Cerami
  */
 public class DaoInteraction {
-
     /**
-     * Does the specified Interaction Exist?
+     * Determines if the interaction exists.
      * See note regarding interaction identity above.
      * @param interaction Interaction Object.
      * @param dbLocation Database Location.
      * @return true or false.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      * @throws DataServiceException Error Connecting to data source.
      */
-    public static boolean interactionExists(Interaction interaction,
-            String dbLocation)
-            throws SQLException, ClassNotFoundException, DataServiceException {
+    public boolean interactionExists(Interaction interaction,
+            String dbLocation) throws DaoException, DataServiceException {
         int id = getInteractionId(interaction, dbLocation);
         return (id >= 0) ? true : false;
     }
@@ -47,19 +45,18 @@ public class DaoInteraction {
      * @param interaction Interaction Object.
      * @param dbLocation Database Location.
      * @return Local ID
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error locating Database Driver.
+     * @throws DaoException Error Retrieving Data.
      * @throws DataServiceException Error Connecting to Data Service.
      */
-    public static int getInteractionId(Interaction interaction,
-            String dbLocation)
-            throws SQLException, ClassNotFoundException, DataServiceException {
+    public int getInteractionId(Interaction interaction,
+            String dbLocation) throws DaoException, DataServiceException {
         HashMap localIdMap = null;
         int id = -1;
         ArrayList interactors = interaction.getInteractors();
 
         try {
-            localIdMap = DaoInteractor.getLocalInteractorIds(interactors);
+            DaoInteractor daoInteractor = new DaoInteractor();
+            localIdMap = daoInteractor.getLocalInteractorIds(interactors);
         } catch (EmptySetException e) {
             return -1;
         }
@@ -73,23 +70,35 @@ public class DaoInteraction {
                 (InteractionVocab.EXPERIMENTAL_SYSTEM_NAME);
         String pmid = getPmids(interaction);
 
-        Connection con = JdbcUtil.getGridConnection();
-        PreparedStatement pstmt = con.prepareStatement
-                ("select interaction_id from interactions where "
-                + "((geneA = ? and geneB = ?) "
-                + " or (geneA = ? and geneB= ?)) and (deprecated='F'"
-                + " and experimental_system = ? and pubmed_id = ?)");
-        pstmt.setString(1, localId0);
-        pstmt.setString(2, localId1);
-        pstmt.setString(3, localId1);
-        pstmt.setString(4, localId0);
-        pstmt.setString(5, expSystem);
-        pstmt.setString(6, pmid);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            id = rs.getInt("interaction_id");
+                Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("select interaction_id from interactions where "
+                    + "((geneA = ? and geneB = ?) "
+                    + " or (geneA = ? and geneB= ?)) and (deprecated='F'"
+                    + " and experimental_system = ? and pubmed_id = ?)");
+            pstmt.setString(1, localId0);
+            pstmt.setString(2, localId1);
+            pstmt.setString(3, localId1);
+            pstmt.setString(4, localId0);
+            pstmt.setString(5, expSystem);
+            pstmt.setString(6, pmid);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("interaction_id");
+            }
+            return id;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
-        return id;
     }
 
     /**

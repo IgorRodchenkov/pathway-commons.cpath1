@@ -6,9 +6,11 @@ import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.sql.DaoInteraction;
+import org.mskcc.pathdb.sql.dao.DaoInteraction;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.util.ArrayList;
+import java.sql.Connection;
 
 /**
  * Tests the DaoInteraction Class.
@@ -41,7 +43,8 @@ public class TestDaoInteraction extends TestCase {
         //  This one does exist.
         PropertyManager manager = PropertyManager.getInstance();
         String location = manager.getProperty(PropertyManager.DB_LOCATION);
-        boolean exists = DaoInteraction.interactionExists(interaction,
+        DaoInteraction daoInteraction = new DaoInteraction();
+        boolean exists = daoInteraction.interactionExists(interaction,
                 location);
         assertTrue(exists);
 
@@ -51,7 +54,7 @@ public class TestDaoInteraction extends TestCase {
         interactors.add(interactor1);
         interaction.setInteractors(interactors);
 
-        exists = DaoInteraction.interactionExists(interaction, location);
+        exists = daoInteraction.interactionExists(interaction, location);
         assertTrue(exists);
 
         //  This one does not exist
@@ -61,7 +64,7 @@ public class TestDaoInteraction extends TestCase {
         interactor2.setName("JUNIT_123");
         interactors.add(interactor2);
         interaction.setInteractors(interactors);
-        exists = DaoInteraction.interactionExists(interaction, location);
+        exists = daoInteraction.interactionExists(interaction, location);
         assertTrue(!exists);
     }
 
@@ -69,7 +72,7 @@ public class TestDaoInteraction extends TestCase {
      * Tests Getting of Interaction IDs.
      * @throws Exception All Exceptions.
      */
-    public void testGetInteractionId() throws Exception {
+    public void testGetInteractionId(Connection con) throws Exception {
         RegisterCPathServices.registerServices();
         ArrayList interactors = new ArrayList();
         Interactor interactor1 = new Interactor();
@@ -88,7 +91,8 @@ public class TestDaoInteraction extends TestCase {
 
         PropertyManager manager = PropertyManager.getInstance();
         String location = manager.getProperty(PropertyManager.DB_LOCATION);
-        int id = DaoInteraction.getInteractionId(interaction, location);
+        DaoInteraction daoInteraction = new DaoInteraction();
+        int id = daoInteraction.getInteractionId(interaction, location);
         assertEquals(2, id);
     }
 }

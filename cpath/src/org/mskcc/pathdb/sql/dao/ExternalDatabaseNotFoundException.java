@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.dao;
 
 /**
  * Indicates that the requested External Database could not be found.

@@ -1,7 +1,9 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,14 +23,14 @@ public class DaoInternalLink {
      * @param cpathIdA cPath ID of Entity A.
      * @param cpathIdB cPath ID of Entity B.
      * @return True if Internal Links was stored successfully.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Connecting to Database.
      */
-    public boolean addRecord(long cpathIdA, long cpathIdB)
-            throws SQLException, ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean addRecord(long cpathIdA, long cpathIdB) throws DaoException {
+        Connection con = null;
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
+            con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO INTERNAL_LINK (`CPATH_ID_A`,`CPATH_ID_B`)"
                     + " VALUES (?,?)");
@@ -36,8 +38,13 @@ public class DaoInternalLink {
             pstmt.setLong(2, cpathIdB);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con, pstmt, null);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -46,11 +53,9 @@ public class DaoInternalLink {
      * @param cpathIdA cPath ID of Entity A.
      * @param cpathIdsB Array of CPath IDs for Entity B.
      * @return Number of New Internal Links Stored.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public int addRecords(long cpathIdA, long cpathIdsB[])
-            throws SQLException, ClassNotFoundException {
+    public int addRecords(long cpathIdA, long cpathIdsB[]) throws DaoException {
         int counter = 0;
         for (int i = 0; i < cpathIdsB.length; i++) {
             boolean flag = this.addRecord(cpathIdA, cpathIdsB[i]);
@@ -65,43 +70,57 @@ public class DaoInternalLink {
      * Gets all Internal Links for Specified cPath ID.
      * @param cpathId CPath ID.
      * @return ArrayList of CPath Records.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
     public ArrayList getInternalLinksWithLookup(long cpathId)
-            throws ClassNotFoundException, SQLException {
+            throws DaoException {
         ArrayList records = new ArrayList();
-        ArrayList links = getInternalLinks(cpathId);
-        for (int i = 0; i < links.size(); i++) {
-            DaoCPath dao = new DaoCPath();
-            InternalLinkRecord link = (InternalLinkRecord) links.get(i);
-            long cpathIdA = link.getCpathIdA();
-            long cpathIdB = link.getCpathIdB();
-            long cpathNew = (cpathId == cpathIdA) ? cpathIdB : cpathIdA;
-            CPathRecord record = dao.getRecordById(cpathNew);
-            records.add(record);
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+
+            ArrayList links = getInternalLinks(cpathId);
+            for (int i = 0; i < links.size(); i++) {
+                DaoCPath dao = new DaoCPath();
+                InternalLinkRecord link = (InternalLinkRecord) links.get(i);
+                long cpathIdA = link.getCpathIdA();
+                long cpathIdB = link.getCpathIdB();
+                long cpathNew = (cpathId == cpathIdA) ? cpathIdB : cpathIdA;
+                CPathRecord record = dao.getRecordById(cpathNew);
+                records.add(record);
+            }
+            return records;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
-        return records;
     }
 
     /**
      * Gets all Internal Links for Specified cPath ID.
      * @param cpathId CPath ID.
      * @return ArrayList of InternalLinkRecords.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public ArrayList getInternalLinks(long cpathId)
-            throws ClassNotFoundException, SQLException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public ArrayList getInternalLinks(long cpathId) throws DaoException {
         ArrayList records = new ArrayList();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM INTERNAL_LINK WHERE CPATH_ID_A = ?"
                     + " OR CPATH_ID_B = ?");
             pstmt.setLong(1, cpathId);
             pstmt.setLong(2, cpathId);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 long cpathA = rs.getLong("CPATH_ID_A");
                 long cpathB = rs.getLong("CPATH_ID_B");
@@ -112,36 +131,46 @@ public class DaoInternalLink {
                 records.add(link);
             }
             return records;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
-
 
     /**
      * Deletes all Internal Links associated with the specified cpathId.
      * @param cpathId cPath ID of record to delete.
      * @return returns number of internal links deleted.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public int deleteRecordsByCPathId(long cpathId)
-            throws SQLException, ClassNotFoundException {
-        int counter = 0;
-        Connection con = JdbcUtil.getCPathConnection();
+    public int deleteRecordsByCPathId(long cpathId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
+            con = JdbcUtil.getCPathConnection();
+            int counter = 0;
             ArrayList links = getInternalLinks(cpathId);
             for (int i = 0; i < links.size(); i++) {
                 InternalLinkRecord link = (InternalLinkRecord) links.get(i);
-                PreparedStatement pstmt = con.prepareStatement
+                pstmt = con.prepareStatement
                         ("DELETE FROM INTERNAL_LINK WHERE "
                         + "INTERNAL_LINK_ID = ?");
                 pstmt.setLong(1, link.getId());
                 counter += pstmt.executeUpdate();
             }
             return counter;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 }

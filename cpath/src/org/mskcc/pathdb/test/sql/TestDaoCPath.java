@@ -5,10 +5,13 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.sql.DaoCPath;
-import org.mskcc.pathdb.sql.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -80,8 +83,7 @@ public class TestDaoCPath extends TestCase {
         assertTrue(links.size() == 0);
     }
 
-    private void validateRecord(CPathRecord record) throws SQLException,
-            ClassNotFoundException {
+    private void validateRecord(CPathRecord record) throws DaoException {
         assertEquals(NAME, record.getName());
         assertEquals(DESCRIPTION, record.getDescription());
         assertEquals(XML, record.getXmlContent());

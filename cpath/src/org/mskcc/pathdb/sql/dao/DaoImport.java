@@ -1,8 +1,9 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ImportRecord;
 import org.mskcc.pathdb.util.Md5Util;
 import org.mskcc.pathdb.util.ZipUtil;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -37,17 +38,16 @@ public class DaoImport {
     /**
      * Gets all Import Records.
      * @return ArrayList of ImportRecord Objects.
-     * @throws ClassNotFoundException Error Locating Correct Database Driver.
-     * @throws SQLException Error Connecting to Database.
-     * @throws IOException Error Performing I/O.
+     * @throws DaoException Error Retrieving Data.
      */
-    public ArrayList getAllRecords()
-            throws ClassNotFoundException, SQLException, IOException {
+    public ArrayList getAllRecords() throws DaoException {
         ArrayList records = new ArrayList();
-        Connection con = JdbcUtil.getCPathConnection();
+        Connection con = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("select * from import order by IMPORT_ID");
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -55,9 +55,15 @@ public class DaoImport {
                 records.add(record);
             }
             return records;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } catch (IOException e) {
+            throw new DaoException("IOException:  "+ e.getMessage());
         } finally {
-            rs.close();
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -65,16 +71,15 @@ public class DaoImport {
      * Gets Individual Import Record.
      * @param importId ImportID of Record to Retrieve.
      * @return ImportRecord Object.
-     * @throws ClassNotFoundException Error Locating Correct Database Driver.
-     * @throws SQLException Error Connecting to Database.
-     * @throws IOException Error Performing I/O.
+     * @throws DaoException Error Retrieving Data.
      */
-    public ImportRecord getRecordById(int importId)
-            throws ClassNotFoundException, SQLException, IOException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public ImportRecord getRecordById(int importId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("select * from import  where IMPORT_ID=? order "
                     + "by IMPORT_ID");
             pstmt.setInt(1, importId);
@@ -84,9 +89,15 @@ public class DaoImport {
             } else {
                 return null;
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } catch (IOException e) {
+            throw new DaoException("IOException:  "+ e.getMessage());
         } finally {
-            rs.close();
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -112,18 +123,18 @@ public class DaoImport {
      * Adds New Database Import Record.
      * @param data String data.
      * @return indicate success (true) or failure (false).
-     * @throws NoSuchAlgorithmException Could not locate MD5 Hash Algorithm.
-     * @throws SQLException Could not insert new data.
-     * @throws ClassNotFoundException Could not locate SQL Driver.
-     * @throws IOException Input Output Exception.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean addRecord(String data) throws NoSuchAlgorithmException,
-            SQLException, ClassNotFoundException, IOException {
-        String hash = Md5Util.createMd5Hash(data);
-        byte zippedData[] = ZipUtil.zip(data);
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean addRecord(String data) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+
+            String hash = Md5Util.createMd5Hash(data);
+            byte zippedData[] = ZipUtil.zip(data);
+            pstmt = con.prepareStatement
                     ("INSERT INTO import (DOC_BLOB,DOC_MD5,STATUS,"
                     + "CREATE_TIME)"
                     + " VALUES (?,?,?,?)");
@@ -135,8 +146,18 @@ public class DaoImport {
             pstmt.setTimestamp(4, timeStamp);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } catch (IOException e) {
+            throw new DaoException("IOException:  " + e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new DaoException("NoSuchAlgorithmException:  "
+                    + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -144,20 +165,26 @@ public class DaoImport {
      * Deletes Import Record with the specified IMPORT_ID.
      * @param importID Import ID of record to delete.
      * @return returns true if deletion was successful.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean deleteRecordById(int importID)
-            throws SQLException, ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean deleteRecordById(int importID) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("DELETE FROM IMPORT WHERE IMPORT_ID = ?");
             pstmt.setInt(1, importID);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -165,21 +192,27 @@ public class DaoImport {
      * Updates Record Status.
      * @param importID Import ID.
      * @return Number of Rows Affected.
-     * @throws SQLException Error connecting to database.
-     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean markRecordAsTransferred(int importID) throws SQLException,
-            ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean markRecordAsTransferred(int importID) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("UPDATE import set STATUS=? WHERE IMPORT_ID=?");
             pstmt.setString(1, STATUS_TRANSFERRED);
             pstmt.setInt(2, importID);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 

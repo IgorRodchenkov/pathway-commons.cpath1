@@ -1,6 +1,7 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,14 +17,14 @@ public class DaoExternalDb {
      * Adds Specified External Database Record to the CPath Database.
      * @param db External Database Record.
      * @return true if record was successfully added.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean addRecord(ExternalDatabaseRecord db) throws SQLException,
-            ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean addRecord(ExternalDatabaseRecord db) throws DaoException {
+        Connection con = null;
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
+            con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO EXTERNAL_DB (`NAME`,`URL`,"
                     + "`DESC`,`CREATE_TIME`) VALUES (?,?,?,?)");
@@ -45,8 +46,13 @@ public class DaoExternalDb {
                 }
             }
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con, pstmt, null);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -55,21 +61,26 @@ public class DaoExternalDb {
      * Retrieves the External Database Record with the specified ID.
      * @param id External Database ID.
      * @return External Database Record.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public ExternalDatabaseRecord getRecordById(int id) throws SQLException,
-            ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public ExternalDatabaseRecord getRecordById(int id) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_DB WHERE EXTERNAL_DB_ID = ?");
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             return extractRecord(rs);
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -77,21 +88,27 @@ public class DaoExternalDb {
      * Retrieves the External Database Record with the specified name.
      * @param name External Database Name
      * @return External Database Record.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
     public ExternalDatabaseRecord getRecordByName(String name)
-            throws SQLException, ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+            throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_DB WHERE NAME = ?");
             pstmt.setString(1, name);
             rs = pstmt.executeQuery();
             return extractRecord(rs);
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -99,11 +116,10 @@ public class DaoExternalDb {
      * Retrieves the External Database Record with the matching pattern.
      * @param term String Term
      * @return External Database Record.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
     public ExternalDatabaseRecord getRecordByTerm(String term)
-            throws SQLException, ClassNotFoundException {
+            throws DaoException {
         DaoExternalDbCv dao = new DaoExternalDbCv();
         return dao.getExternalDbByTerm(term);
     }
@@ -111,15 +127,15 @@ public class DaoExternalDb {
     /**
      * Gets a Complete List of All External Database Records.
      * @return ArrayList of External Database object.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public ArrayList getAllRecords() throws SQLException,
-            ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public ArrayList getAllRecords() throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_DB");
             rs = pstmt.executeQuery();
             ArrayList records = new ArrayList();
@@ -128,9 +144,13 @@ public class DaoExternalDb {
                 records.add(db);
             }
             return records;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            rs.close();
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -138,14 +158,15 @@ public class DaoExternalDb {
      * Delete External Database Record with the Specified ID.
      * @param id External Database ID.
      * @return true indicates record was successfully deleted.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean deleteRecordById(int id) throws SQLException,
-            ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean deleteRecordById(int id) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("DELETE FROM EXTERNAL_DB WHERE EXTERNAL_DB_ID = ?");
             pstmt.setInt(1, id);
             int rows = pstmt.executeUpdate();
@@ -154,8 +175,13 @@ public class DaoExternalDb {
             DaoExternalDbCv dao = new DaoExternalDbCv();
             dao.deleteTermsByDbId(id);
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -163,14 +189,15 @@ public class DaoExternalDb {
      * Update External Database Record with the Specified ID.
      * @param db External Database Record.
      * @return true indicates record was successfully update.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
+     * @throws DaoException Error Retrieving Data.
      */
-    public boolean updateRecord(ExternalDatabaseRecord db)
-            throws SQLException, ClassNotFoundException {
-        Connection con = JdbcUtil.getCPathConnection();
+    public boolean updateRecord(ExternalDatabaseRecord db) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
                     ("UPDATE EXTERNAL_DB SET `NAME` = ?, "
                     + "`DESC` = ?, `URL` = ?, `UPDATE_TIME` = ? "
                     + "WHERE `EXTERNAL_DB_ID` = ?");
@@ -193,10 +220,14 @@ public class DaoExternalDb {
             for (int i = 0; i < terms.size(); i++) {
                 dao.addRecord(db.getId(), (String) terms.get(i));
             }
-
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
-            JdbcUtil.freeConnection(con);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
@@ -204,15 +235,11 @@ public class DaoExternalDb {
      * Extracts Database Record into Java Bean.
      */
     private ExternalDatabaseRecord extractRecord(ResultSet rs)
-            throws SQLException, ClassNotFoundException {
-        try {
-            if (rs.next()) {
-                return createBean(rs);
-            } else {
-                return null;
-            }
-        } finally {
-            rs.close();
+            throws SQLException, DaoException {
+        if (rs.next()) {
+            return createBean(rs);
+        } else {
+            return null;
         }
     }
 
@@ -220,7 +247,7 @@ public class DaoExternalDb {
      * Creates External Database Java Bean.
      */
     private ExternalDatabaseRecord createBean(ResultSet rs)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, DaoException {
         ExternalDatabaseRecord record = new ExternalDatabaseRecord();
         record.setId(rs.getInt("EXTERNAL_DB_ID"));
         record.setName(rs.getString("NAME"));

@@ -2,9 +2,12 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.sql.DaoExternalDb;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -75,8 +78,7 @@ public class TestDaoExternalDb extends TestCase {
         assertEquals(URL, record.getUrl());
     }
 
-    private void addSampleRecord() throws SQLException,
-            ClassNotFoundException {
+    private void addSampleRecord() throws DaoException {
         ExternalDatabaseRecord db = new ExternalDatabaseRecord();
         db.setName(NAME);
         db.setDescription(DESC);

@@ -6,15 +6,18 @@ import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractionList;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.sql.DaoImport;
-import org.mskcc.pathdb.sql.TransferImportToCPath;
+import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.transfer.TransferImportToCPath;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.sql.Connection;
 
 /**
  * Tests Transfer of Data from Import Table to Grid Table.
@@ -45,8 +48,7 @@ public class TestTransferImportToCPath extends TestCase {
     /**
      * Adds the sample Cancer Subway Map.
      */
-    private void addSampleRecord() throws IOException,
-            NoSuchAlgorithmException, SQLException, ClassNotFoundException {
+    private void addSampleRecord() throws IOException, DaoException {
         ContentReader reader = new ContentReader();
         File file = new File("testData/psi_subway.xml");
         String psi = reader.retrieveContentFromFile(file);

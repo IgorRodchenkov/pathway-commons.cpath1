@@ -26,8 +26,7 @@ public class TestPsiUtil extends TestCase {
         ContentReader reader = new ContentReader();
         File file = new File("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContentFromFile(file);
-        XDebug xdebug = new XDebug();
-        PsiUtil normalizer = new PsiUtil(xdebug);
+        PsiUtil normalizer = new PsiUtil();
 
         EntrySet entrySet = normalizer.getNormalizedDocument(xml);
         StringWriter writer = new StringWriter();
@@ -43,8 +42,7 @@ public class TestPsiUtil extends TestCase {
     }
 
     private void validateInteractionUpdate(Entry entry) throws Exception {
-        XDebug xdebug = new XDebug();
-        PsiUtil util = new PsiUtil(xdebug);
+        PsiUtil util = new PsiUtil();
         HashMap idMap = new HashMap();
         idMap.put("YAL036C", new Long(1));
         idMap.put("YCR038C", new Long(2));
@@ -136,8 +134,7 @@ public class TestPsiUtil extends TestCase {
      * @param entry
      */
     private void validateInteractors(Entry entry) {
-        XDebug xdebug = new XDebug();
-        PsiUtil util = new PsiUtil(xdebug);
+        PsiUtil util = new PsiUtil();
         int counter = 0;
         InteractorList interactorList = entry.getInteractorList();
         for (int i = 0; i < interactorList.getProteinInteractorCount(); i++) {

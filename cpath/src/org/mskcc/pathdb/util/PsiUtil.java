@@ -20,14 +20,11 @@ public class PsiUtil {
     private HashMap availabilityMap;
     private HashMap experimentMap;
     private EntrySet entrySet;
-    private XDebug xdebug;
 
     /**
      * Constructor.
-     * @param xdebug XDebug Object.
      */
-    public PsiUtil(XDebug xdebug) {
-        this.xdebug = xdebug;
+    public PsiUtil() {
     }
 
     /**

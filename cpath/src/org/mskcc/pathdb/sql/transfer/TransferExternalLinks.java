@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.sql;
+package org.mskcc.pathdb.sql.transfer;
 
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.Interactor;
@@ -9,9 +9,15 @@ import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.util.BatchTool;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.sql.dao.DaoInteractor;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -34,23 +40,21 @@ public class TransferExternalLinks extends BatchTool {
 
     /**
      * Transfers Data.
-     * @throws SQLException Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating JDBC Driver.
-     * @throws IOException Input Output Exception.
+     * @throws DaoException Error Retrieving Data.
+     * @throws java.io.IOException Input Output Exception.
      */
-    public void transferData() throws ClassNotFoundException, SQLException,
-            IOException {
-        ArrayList interactors = DaoInteractor.getAllInteractors();
+    public void transferData() throws DaoException, IOException {
+        DaoInteractor daoInteractor = new DaoInteractor();
+        ArrayList interactors = daoInteractor.getAllInteractors();
         for (int i = 0; i < interactors.size(); i++) {
             Interactor interactor = (Interactor) interactors.get(i);
             saveNewLinks(interactor);
         }
         this.outputMsg("Total Number of New Links created:  " + counter);
-        ;
     }
 
-    private void saveNewLinks(Interactor interactor)
-            throws SQLException, ClassNotFoundException, IOException {
+    private void saveNewLinks(Interactor interactor) throws DaoException,
+            IOException {
         DaoExternalDb dbTable = new DaoExternalDb();
         DaoExternalLink linkTable = new DaoExternalLink();
 
@@ -81,10 +85,11 @@ public class TransferExternalLinks extends BatchTool {
     /**
      * Main method.
      * @param args Command Line Argument.
-     * @throws Exception All Exceptions.
+     * @throws java.lang.Exception All Exceptions.
      */
     public static void main(String[] args) throws Exception {
         try {
+            Connection con = JdbcUtil.getCPathConnection();
             if (args.length > 0) {
                 PropertyManager manager = PropertyManager.getInstance();
                 manager.setProperty(PropertyManager.DB_LOCATION, args[0]);

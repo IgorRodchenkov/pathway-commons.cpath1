@@ -1,9 +1,11 @@
 package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.ImportRecord;
-import org.mskcc.pathdb.sql.DaoImport;
+import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.util.ArrayList;
+import java.sql.Connection;
 
 /**
  * Custom JSP Tag for Displaying Import Table.

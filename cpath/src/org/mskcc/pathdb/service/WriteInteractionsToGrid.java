@@ -42,14 +42,16 @@ import org.mskcc.dataservices.live.DataServiceBase;
 import org.mskcc.dataservices.live.DataServiceFactory;
 import org.mskcc.dataservices.services.WriteInteractions;
 import org.mskcc.dataservices.services.WriteInteractors;
-import org.mskcc.pathdb.sql.DaoInteraction;
-import org.mskcc.pathdb.sql.DaoInteractor;
+import org.mskcc.pathdb.sql.dao.DaoInteraction;
+import org.mskcc.pathdb.sql.dao.DaoInteractor;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.CPathConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,16 +78,14 @@ public class WriteInteractionsToGrid extends DataServiceBase
         int numSavedInteractions = 0;
         ArrayList interactors = createInteractorSet(interactions);
         int numSavedInteractors = saveInteractors(interactors);
-        HashMap localIdMap = DaoInteractor.getLocalInteractorIds
-                (interactors);
+
         try {
+            DaoInteractor daoInteractor = new DaoInteractor();
+            HashMap localIdMap = daoInteractor.getLocalInteractorIds
+                    (interactors);
             numSavedInteractions = saveInteractions(interactions, localIdMap);
-        } catch (ClassNotFoundException e) {
+        } catch (DaoException e) {
             throw new DataServiceException(e);
-        } catch (SQLException e) {
-            throw new DataServiceException(e);
-        } finally {
-            JdbcUtil.freeConnection(con);
         }
         return numSavedInteractions;
     }
@@ -114,13 +114,12 @@ public class WriteInteractionsToGrid extends DataServiceBase
      * Conditionally Saves all Specified Interactions.
      */
     private int saveInteractions(ArrayList interactions,
-            HashMap localIdMap)
-            throws ClassNotFoundException, SQLException, DataServiceException {
+            HashMap localIdMap) throws DaoException, DataServiceException {
+        DaoInteraction daoInteraction = new DaoInteraction();
         int counter = 0;
         for (int i = 0; i < interactions.size(); i++) {
             Interaction interaction = (Interaction) interactions.get(i);
-            boolean exists =
-                    DaoInteraction.interactionExists(interaction,
+            boolean exists = daoInteraction.interactionExists(interaction,
                             getLocation());
             if (!exists) {
                 counter += saveInteraction(interaction, localIdMap, false);
@@ -134,12 +133,10 @@ public class WriteInteractionsToGrid extends DataServiceBase
      * @param interaction Interaction Object.
      * @param isTest Is this a Test Interaction.
      * @return number of new interactions successfully added to database.
-     * @throws ClassNotFoundException Could not locate Database driver.
-     * @throws SQLException Error connecting to database.
+     * @throws DaoException Error Retrieving Data.
      */
     private int saveInteraction(Interaction interaction, HashMap localIdMap,
-            boolean isTest)
-            throws ClassNotFoundException, SQLException {
+            boolean isTest) throws DaoException {
         ArrayList interactors = interaction.getInteractors();
         Interactor interactor0 = (Interactor) interactors.get(0);
         Interactor interactor1 = (Interactor) interactors.get(1);
@@ -157,28 +154,41 @@ public class WriteInteractionsToGrid extends DataServiceBase
         }
         String pmidStr = DaoInteraction.getPmids(interaction);
 
-        con = JdbcUtil.getGridConnection();
-        PreparedStatement pstmt = con.prepareStatement
-                ("INSERT INTO interactions (geneA, geneB, "
-                + "experimental_system, owner, pubmed_id, direction, "
-                + "bait_allele, prey_allele, deprecated, status)"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        pstmt.setString(1, localId0);
-        pstmt.setString(2, localId1);
-        pstmt.setString(3, expSystem);
-        pstmt.setString(4, owner);
-        pstmt.setString(5, pmidStr);
-        pstmt.setString(6, direction);
-        pstmt.setString(7, "Not Reported");
-        pstmt.setString(8, "Not Reported");
-        pstmt.setString(9, "F");
-        if (isTest) {
-            pstmt.setString(10, "JUNIT");
-        } else {
-            pstmt.setString(10, "NEW");
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            con = JdbcUtil.getGridConnection();
+            pstmt = con.prepareStatement
+                    ("INSERT INTO interactions (geneA, geneB, "
+                    + "experimental_system, owner, pubmed_id, direction, "
+                    + "bait_allele, prey_allele, deprecated, status)"
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            pstmt.setString(1, localId0);
+            pstmt.setString(2, localId1);
+            pstmt.setString(3, expSystem);
+            pstmt.setString(4, owner);
+            pstmt.setString(5, pmidStr);
+            pstmt.setString(6, direction);
+            pstmt.setString(7, "Not Reported");
+            pstmt.setString(8, "Not Reported");
+            pstmt.setString(9, "F");
+            if (isTest) {
+                pstmt.setString(10, "JUNIT");
+            } else {
+                pstmt.setString(10, "NEW");
+            }
+            int rows = pstmt.executeUpdate();
+            return rows;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
-        int rows = pstmt.executeUpdate();
-        return rows;
     }
 
 

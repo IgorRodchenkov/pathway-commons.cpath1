@@ -4,10 +4,12 @@ import junit.framework.TestCase;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.sql.DaoCPath;
-import org.mskcc.pathdb.sql.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.util.ArrayList;
+import java.sql.Connection;
 
 /**
  * Tests the DaoInternalLink Class.

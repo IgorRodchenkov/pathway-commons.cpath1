@@ -2,11 +2,14 @@ package org.mskcc.pathdb.xmlrpc;
 
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcHandler;
-import org.mskcc.pathdb.sql.DaoImport;
+import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.Vector;
 
 /**
@@ -28,19 +31,12 @@ public class SubmitData implements XmlRpcHandler {
         //  Get Data in First Parameter.
         String data = (String) params.get(0);
 
-        //  Import to Database.
-        DaoImport dbImport = new DaoImport();
-
         try {
+            //  Import to Database.
+            DaoImport dbImport = new DaoImport();
             dbImport.addRecord(data);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (DaoException e) {
             throw new XmlRpcException(1, e.toString());
-        } catch (SQLException e) {
-            throw new XmlRpcException(2, e.toString());
-        } catch (ClassNotFoundException e) {
-            throw new XmlRpcException(3, e.toString());
-        } catch (IOException e) {
-            throw new XmlRpcException(4, e.toString());
         }
         return new String("Data Submission Successful!");
     }
