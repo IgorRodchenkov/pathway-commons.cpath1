@@ -30,7 +30,8 @@
 package org.mskcc.pathdb.test.model;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.model.IdentityRecord;
+import org.mskcc.pathdb.model.BackgroundReferenceRecord;
+import org.mskcc.pathdb.model.ReferenceType;
 
 /**
  * Tests the IdMapRecord.
@@ -44,8 +45,10 @@ public class TestIdMapRecord extends TestCase {
      */
     public void testHashCode() {
         //  These two records are functionally equivalent
-        IdentityRecord record1 = new IdentityRecord(1, "ABC", 2, "XYZ");
-        IdentityRecord record2 = new IdentityRecord(2, "XYZ", 1, "ABC");
+        BackgroundReferenceRecord record1 = new BackgroundReferenceRecord
+                (1, "ABC", 2, "XYZ", ReferenceType.IDENTITY);
+        BackgroundReferenceRecord record2 = new BackgroundReferenceRecord
+                (2, "XYZ", 1, "ABC", ReferenceType.IDENTITY);
 
         //  They should therefore result in identical hash codes
         assertTrue(record1.hashCode() == record2.hashCode());
