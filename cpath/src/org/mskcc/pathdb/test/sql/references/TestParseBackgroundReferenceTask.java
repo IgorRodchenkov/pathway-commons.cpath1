@@ -30,8 +30,8 @@
 package org.mskcc.pathdb.test.sql.references;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.model.BackgroundReferencePair;
 import org.mskcc.pathdb.model.BackgroundReference;
+import org.mskcc.pathdb.model.BackgroundReferencePair;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.dao.DaoBackgroundReferences;
@@ -63,7 +63,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
 
         //  Validate that this data is of type:  PROTEIN_UNIFICATION
         ReferenceType refType = task.getReferenceType();
-        assertEquals (ReferenceType.PROTEIN_UNIFICATION, refType);
+        assertEquals(ReferenceType.PROTEIN_UNIFICATION, refType);
 
         //  Validate the first five background references
         validateBackgroundReferenceRecord(0, list, "UNIPROT",
@@ -118,7 +118,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         int numRecordsSaved = task.parseAndStoreToDb();
 
         //  Validate that we saved data as PROTEIN_UNIFICATION.
-        assertEquals (ReferenceType.PROTEIN_UNIFICATION,
+        assertEquals(ReferenceType.PROTEIN_UNIFICATION,
                 task.getReferenceType());
 
         //  Validate Number of Records Saved
@@ -131,11 +131,12 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         //  Now try getting all equivalent Identifiers
         BackgroundReference xref = new BackgroundReference(1, "UNIPROT_1234");
         ArrayList equivalenceList = dao.getEquivalenceList(xref);
-        assertEquals (4, equivalenceList.size());
+        assertEquals(4, equivalenceList.size());
         boolean got[] = new boolean[4];
 
         for (int i = 0; i < equivalenceList.size(); i++) {
-            BackgroundReference match = (BackgroundReference) equivalenceList.get(i);
+            BackgroundReference match = (BackgroundReference)
+                    equivalenceList.get(i);
             if (match.toString().equals("PIR: PIR_1234")) {
                 got[0] = true;
             } else if (match.toString().equals("HUGE: HUGE_1234")) {
@@ -171,7 +172,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         int numRecordsSaved = task.parseAndStoreToDb();
 
         //  Validate that we saved data as LINK_OUT.
-        assertEquals (ReferenceType.LINK_OUT, task.getReferenceType());
+        assertEquals(ReferenceType.LINK_OUT, task.getReferenceType());
 
         //  Validate Number of Records Saved
         assertEquals(45, numRecordsSaved);
@@ -187,9 +188,9 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         BackgroundReference linkOut1 = (BackgroundReference) linkOutList.get(1);
 
         //  Verify that UniProt: Q8NHX0 points to two Affymetrix IDs. 
-        assertEquals (2, linkOutList.size());
-        assertEquals ("AFFYMETRIX: 1000_at", linkOut0.toString());
-        assertEquals ("AFFYMETRIX: 1008_f_at", linkOut1.toString());
+        assertEquals(2, linkOutList.size());
+        assertEquals("AFFYMETRIX: 1000_at", linkOut0.toString());
+        assertEquals("AFFYMETRIX: 1008_f_at", linkOut1.toString());
 
         //  Delete all records, so that we can rerun this unit test again
         dao.deleteAllRecords();
@@ -197,33 +198,35 @@ public class TestParseBackgroundReferenceTask extends TestCase {
 
     /**
      * Tests the Import Parser with a Series of Invalid Data Files.
+     *
+     * @throws Exception All Exceptions.
      */
     public void testParserWithInvalidDataFiles() throws Exception {
         //  Test:  This file is invalid because it contains a non-existent
         //  database called 'SANDER.'
-        File file = new File ("testData/references/refs_invalid1.txt");
+        File file = new File("testData/references/refs_invalid1.txt");
         ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
                 (file, false);
         try {
             task.parseAndGenerateList();
-            fail ("ImportException should have been thrown.  Data file "
-                + " contains and invalid database, named 'SANDER'.");
+            fail("ImportException should have been thrown.  Data file "
+                    + " contains and invalid database, named 'SANDER'.");
         } catch (ImportException e) {
             //  Validate the actual exception message.
-            assertTrue (e.getMessage().indexOf
+            assertTrue(e.getMessage().indexOf
                     ("Unable to import background references data file.  "
                     + "Database:  SANDER is not known to cPath.") >= 0);
         }
 
         //  Test:  This file is invalid because it is not tab-delimited.
-        file = new File ("testData/references/refs_invalid2.txt");
-        task = new ParseBackgroundReferencesTask (file, false);
+        file = new File("testData/references/refs_invalid2.txt");
+        task = new ParseBackgroundReferencesTask(file, false);
         try {
             task.parseAndGenerateList();
-            fail ("ImportException should have been thrown.  Data file "
-                + " is not tab delimited.");
+            fail("ImportException should have been thrown.  Data file "
+                    + " is not tab delimited.");
         } catch (ImportException e) {
-            assertTrue (e.getMessage().indexOf
+            assertTrue(e.getMessage().indexOf
                     ("Unable to import background reference file.  "
                     + "File must be tab delimited.  Check the file and "
                     + "try again.") >= 0);
@@ -231,29 +234,29 @@ public class TestParseBackgroundReferenceTask extends TestCase {
 
         //  Test:  This file is invalid because it contains only one column
         //  of data.
-        file = new File ("testData/references/refs_invalid3.txt");
-        task = new ParseBackgroundReferencesTask (file, false);
+        file = new File("testData/references/refs_invalid3.txt");
+        task = new ParseBackgroundReferencesTask(file, false);
         try {
             task.parseAndGenerateList();
-            fail ("ImportException should have been thrown.  Data file "
-                + " contains only one column of data.");
+            fail("ImportException should have been thrown.  Data file "
+                    + " contains only one column of data.");
         } catch (ImportException e) {
-            assertTrue (e.getMessage().indexOf
+            assertTrue(e.getMessage().indexOf
                     ("Unable to import background reference file.  "
                     + "File must contain at least two columns of data.") >= 0);
         }
 
         //  Test:  This file is invalid because it is a LINK_OUT file,
         //  but the first column is not of type:  LINK_OUT.
-        file = new File ("testData/references/refs_invalid4.txt");
-        task = new ParseBackgroundReferencesTask (file, false);
+        file = new File("testData/references/refs_invalid4.txt");
+        task = new ParseBackgroundReferencesTask(file, false);
         try {
             task.parseAndGenerateList();
-            fail ("ImportException should have been thrown.  Data file "
-                + " contains more than one column of "
-                + ReferenceType.LINK_OUT + " data.");
+            fail("ImportException should have been thrown.  Data file "
+                    + " contains more than one column of "
+                    + ReferenceType.LINK_OUT + " data.");
         } catch (ImportException e) {
-            assertTrue (e.getMessage().indexOf
+            assertTrue(e.getMessage().indexOf
                     ("Unable to import background reference file of LINK_OUT "
                     + "data.  First column must be of type:  "
                     + ReferenceType.LINK_OUT) >= 0);

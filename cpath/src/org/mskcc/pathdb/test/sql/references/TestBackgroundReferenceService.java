@@ -87,32 +87,32 @@ public class TestBackgroundReferenceService extends TestCase {
             ExternalReference xref = (ExternalReference) unifiedList.get(i);
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [UNIPROT], ID:  "
-                     + "[UNIPROT_1234]")) {
+                    + "[UNIPROT_1234]")) {
                 got1 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [HUGE], ID:  "
-                        + "[HUGE_4321]")) {
+                    + "[HUGE_4321]")) {
                 got2 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [PIR], ID:  "
-                        + "[PIR_4321]")) {
+                    + "[PIR_4321]")) {
                 got3 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [PIR], ID:  "
-                        +"[SANDER_123]")) {
+                    + "[SANDER_123]")) {
                 got4 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [PIR], ID:  "
-                        + "[PIR_1234]")) {
+                    + "[PIR_1234]")) {
                 got5 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [HUGE], ID:  "
-                        +"[HUGE_1234]"))  {
+                    + "[HUGE_1234]")) {
                 got6 = true;
             }
         }
@@ -132,7 +132,7 @@ public class TestBackgroundReferenceService extends TestCase {
      *
      * @throws Exception All Exceptions.
      */
-    public void testLinkOutService () throws Exception {
+    public void testLinkOutService() throws Exception {
         //  Delete all records, so that we start with a clean slate.
         DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
@@ -149,16 +149,16 @@ public class TestBackgroundReferenceService extends TestCase {
 
         ExternalReference xrefs[] = new ExternalReference[1];
         xrefs[0] = new ExternalReference("UNIPROT", "Q8NHX0");
-        ArrayList linkOutList = refService.getLinkOutReferences (xrefs);
+        ArrayList linkOutList = refService.getLinkOutReferences(xrefs);
 
         //  There should be two Affymetrix LinkOuts
-        assertEquals (2, linkOutList.size());
+        assertEquals(2, linkOutList.size());
         ExternalReference xref0 = (ExternalReference) linkOutList.get(0);
         ExternalReference xref1 = (ExternalReference) linkOutList.get(1);
 
-        assertEquals ("External Reference  -->  Database:  [AFFYMETRIX], "
-            + "ID:  [1008_f_at]", xref0.toString());
-        assertEquals ("External Reference  -->  Database:  [AFFYMETRIX], "
-            + "ID:  [1000_at]", xref1.toString());
+        assertEquals("External Reference  -->  Database:  [AFFYMETRIX], "
+                + "ID:  [1008_f_at]", xref0.toString());
+        assertEquals("External Reference  -->  Database:  [AFFYMETRIX], "
+                + "ID:  [1000_at]", xref1.toString());
     }
 }

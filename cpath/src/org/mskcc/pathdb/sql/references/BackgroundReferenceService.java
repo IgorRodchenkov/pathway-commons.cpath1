@@ -152,15 +152,16 @@ public class BackgroundReferenceService {
      *
      * @param refs Array of External Reference Objects
      * @return ArrayList of External Reference Objects.
+     * @throws DaoException Error accessing database.
      */
-    public ArrayList getLinkOutReferences (ExternalReference refs[])
-        throws DaoException {
+    public ArrayList getLinkOutReferences(ExternalReference refs[])
+            throws DaoException {
         HashSet set = new HashSet();
-        for (int i=0; i<refs.length; i++) {
-            ArrayList linkOuts = getLinkOutReferences (refs[i]);
+        for (int i = 0; i < refs.length; i++) {
+            ArrayList linkOuts = getLinkOutReferences(refs[i]);
             set.addAll(linkOuts);
         }
-        return new ArrayList (set);
+        return new ArrayList(set);
     }
 
     /**
@@ -169,9 +170,10 @@ public class BackgroundReferenceService {
      *
      * @param ref External Reference Object.
      * @return ArrayList of External Reference Objects.
+     * @throws DaoException Error accessing database. 
      */
-    public ArrayList getLinkOutReferences (ExternalReference ref)
-        throws DaoException {
+    public ArrayList getLinkOutReferences(ExternalReference ref)
+            throws DaoException {
         DaoExternalDb dao = new DaoExternalDb();
         ExternalDatabaseRecord dbRecord = dao.getRecordByTerm
                 (ref.getDatabase());
@@ -185,7 +187,7 @@ public class BackgroundReferenceService {
         ArrayList backgroundRefList = dao2.getLinkOutList(backgroundRef);
         HashSet set = new HashSet();
         transformToExternalReferenceList(set, backgroundRefList);
-        return new ArrayList (set);
+        return new ArrayList(set);
     }
 
     /**

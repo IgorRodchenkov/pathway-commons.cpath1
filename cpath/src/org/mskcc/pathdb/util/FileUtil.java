@@ -65,6 +65,10 @@ public class FileUtil {
 
     /**
      * Gets Next Line of Input.  Filters out Empty Lines and Comments.
+     *
+     * @param buf BufferedReader Object.
+     * @return next line of input.
+     * @throws IOException Error reading input stream.
      */
     public static String getNextLine(BufferedReader buf) throws IOException {
         String line = buf.readLine();

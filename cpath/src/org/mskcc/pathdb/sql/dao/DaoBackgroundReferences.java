@@ -246,7 +246,7 @@ public class DaoBackgroundReferences {
      *
      * @param pair BackgroundReferenceRecord Object.
      * @return BackgroundReference Object, if the record exists;
-     *          otherwise, null.
+     *         otherwise, null.
      * @throws DaoException Error Retrieving Data.
      */
     public BackgroundReferencePair getRecord(BackgroundReferencePair
@@ -307,14 +307,16 @@ public class DaoBackgroundReferences {
         //  While there are still nodes to visit
         while (openQueue.size() > 0) {
             //  Get the Next Item in the Queue
-            BackgroundReference current = (BackgroundReference) openQueue.removeFirst();
+            BackgroundReference current = (BackgroundReference)
+                    openQueue.removeFirst();
 
             //  Get all Immediate Neighbors
             ArrayList neighbors = getImmediateNeighbors(current);
 
             //  Iterate through all neighbors;  only enqueue new nodes
             for (int i = 0; i < neighbors.size(); i++) {
-                BackgroundReference neighbor = (BackgroundReference) neighbors.get(i);
+                BackgroundReference neighbor = (BackgroundReference)
+                        neighbors.get(i);
                 if (!closedList.contains(neighbor)
                         && !openQueue.contains(neighbor)) {
                     openQueue.add(neighbor);
@@ -476,7 +478,8 @@ public class DaoBackgroundReferences {
     /**
      * Creates an BackgroundReference Bean.
      */
-    private BackgroundReferencePair createBean(ResultSet rs) throws SQLException {
+    private BackgroundReferencePair createBean(ResultSet rs)
+            throws SQLException {
         BackgroundReferencePair pair = new BackgroundReferencePair();
         pair.setPrimaryId(rs.getInt("BACKGROUND_REFERENCE_ID"));
         pair.setDbId1(rs.getInt("DB_1"));

@@ -573,7 +573,7 @@ public class ImportPsiToCPath {
         //  Only check id mapping service if we have existing references.
         if (refs != null && refs.length > 0) {
             BackgroundReferenceService idService =
-                new BackgroundReferenceService();
+                    new BackgroundReferenceService();
             ArrayList extraRefs = idService.getUnificationReferences(refs);
 
             //  If we find no equivalent IDs, do nothing, and return original

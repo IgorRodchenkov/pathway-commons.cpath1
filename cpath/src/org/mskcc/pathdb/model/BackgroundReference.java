@@ -44,7 +44,8 @@ public class BackgroundReference {
     /**
      * No-arg constructor.
      */
-    public BackgroundReference () { }
+    public BackgroundReference() {
+    }
 
     /**
      * Constructor.

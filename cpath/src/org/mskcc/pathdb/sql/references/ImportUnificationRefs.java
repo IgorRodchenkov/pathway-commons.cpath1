@@ -1,13 +1,42 @@
+/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+ **
+ ** Code written by: Ethan Cerami
+ ** Authors: Ethan Cerami, Gary Bader, Chris Sander
+ **
+ ** This library is free software; you can redistribute it and/or modify it
+ ** under the terms of the GNU Lesser General Public License as published
+ ** by the Free Software Foundation; either version 2.1 of the License, or
+ ** any later version.
+ **
+ ** This library is distributed in the hope that it will be useful, but
+ ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
+ ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
+ ** documentation provided hereunder is on an "as is" basis, and
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has no obligations to provide maintenance, support,
+ ** updates, enhancements or modifications.  In no event shall
+ ** Memorial Sloan-Kettering Cancer Center
+ ** be liable to any party for direct, indirect, special,
+ ** incidental or consequential damages, including lost profits, arising
+ ** out of the use of this software and its documentation, even if
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has been advised of the possibility of such damage.  See
+ ** the GNU Lesser General Public License for more details.
+ **
+ ** You should have received a copy of the GNU Lesser General Public License
+ ** along with this library; if not, write to the Free Software Foundation,
+ ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+ **/
 package org.mskcc.pathdb.sql.references;
 
-import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.model.BackgroundReferencePair;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.dao.DaoBackgroundReferences;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ConsoleUtil;
 import org.mskcc.pathdb.util.FileUtil;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.BackgroundReferencePair;
-import org.mskcc.pathdb.model.ReferenceType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,24 +51,24 @@ import java.util.ArrayList;
  * <BR>
  * <TABLE>
  * <TR>
- *  <TH ALIGN=LEFT>UniProt</TH>
- *  <TH ALIGN=LEFT>PIR</TH>
- *  <TH ALIGN=LEFT>HUGE</TH>
+ * <TH ALIGN=LEFT>UniProt</TH>
+ * <TH ALIGN=LEFT>PIR</TH>
+ * <TH ALIGN=LEFT>HUGE</TH>
  * </TR>
  * <TR>
- *  <TD>UNIPROT_1234</TD>
- *  <TD>PIR_1234 PIR_4321</TD>
- *  <TD>HUGE_1234</TD>
+ * <TD>UNIPROT_1234</TD>
+ * <TD>PIR_1234 PIR_4321</TD>
+ * <TD>HUGE_1234</TD>
  * </TR>
  * <TR>
- *  <TD>UNIPROT_XYZ</TD>
- *  <TD>PIR_XYZ</TD>
- *  <TD>HUGE_XYZ</TD>
+ * <TD>UNIPROT_XYZ</TD>
+ * <TD>PIR_XYZ</TD>
+ * <TD>HUGE_XYZ</TD>
  * </TR>
  * <TR>
- *  <TD>UNIPROT_1234</TD>
- *  <TD></TD>
- *  <TD>HUGE_4321</TD>
+ * <TD>UNIPROT_1234</TD>
+ * <TD></TD>
+ * <TD>HUGE_4321</TD>
  * </TR>
  * </TABLE>
  * <P>
@@ -60,7 +89,7 @@ import java.util.ArrayList;
  * </UL>
  *
  * @author Ethan Cerami.
-*/
+ */
 public class ImportUnificationRefs {
     private ArrayList dbList;
     private ArrayList backgroundRefList;
@@ -69,13 +98,14 @@ public class ImportUnificationRefs {
 
     /**
      * Constructor.
-     * @param dbList                ArrayList of External Databases
-     * @param backgroundRefList     ArrayList of Background References
-     * @param pMonitor              Progress Monitor
-     * @param saveToDatabase        Flag to Save New Background Reference
-     *                              To Database
-    */
-    public ImportUnificationRefs (ArrayList dbList, ArrayList backgroundRefList,
+     *
+     * @param dbList            ArrayList of External Databases
+     * @param backgroundRefList ArrayList of Background References
+     * @param pMonitor          Progress Monitor
+     * @param saveToDatabase    Flag to Save New Background Reference
+     *                          To Database
+     */
+    public ImportUnificationRefs(ArrayList dbList, ArrayList backgroundRefList,
             ProgressMonitor pMonitor, boolean saveToDatabase) {
         this.dbList = dbList;
         this.backgroundRefList = backgroundRefList;
@@ -85,8 +115,9 @@ public class ImportUnificationRefs {
 
     /**
      * Parses Data in Buffered Reader Object.
-     * @param buf       Bufferred Reader Object
-     * @return          Number of New Background Referenes Stored.
+     *
+     * @param buf Bufferred Reader Object
+     * @return Number of New Background Referenes Stored.
      * @throws IOException  Error Reading Data File.
      * @throws DaoException Error Accessing Database.
      */
@@ -119,8 +150,8 @@ public class ImportUnificationRefs {
                     checkForManyIdentifiers(ids, tokens);
                     for (int j = 0; j < ids.length; j++) {
                         BackgroundReferencePair idPair =
-                            createBackgroundReference(dbRecord1, id1,
-                                    dbRecord2, ids, j);
+                                createBackgroundReference(dbRecord1, id1,
+                                        dbRecord2, ids, j);
                         if (saveToDatabase) {
                             numRecordsSaved += storeToDatabase(idPair);
                         } else {
@@ -149,8 +180,8 @@ public class ImportUnificationRefs {
             ExternalDatabaseRecord dbRecord2, String[] ids, int j) {
         BackgroundReferencePair idPair =
                 new BackgroundReferencePair
-                    (dbRecord1.getId(), id1, dbRecord2.getId(), ids[j],
-                    ReferenceType.PROTEIN_UNIFICATION);
+                        (dbRecord1.getId(), id1, dbRecord2.getId(), ids[j],
+                                ReferenceType.PROTEIN_UNIFICATION);
         return idPair;
     }
 

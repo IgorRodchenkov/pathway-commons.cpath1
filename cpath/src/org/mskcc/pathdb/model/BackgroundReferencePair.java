@@ -56,11 +56,11 @@ public class BackgroundReferencePair extends BackgroundReference {
      * @param linkedToId1 LinkedToId for Reference #1.
      * @param dbId2       External Databse ID for Reference #2.
      * @param linkedToId2 LinkedToId for Reference #2.
-     *
+     * @param refType     Reference Type Object.
      */
     public BackgroundReferencePair(int dbId1, String linkedToId1, int dbId2,
             String linkedToId2, ReferenceType refType) {
-        super (dbId1, linkedToId1);
+        super(dbId1, linkedToId1);
         this.dbId2 = dbId2;
         this.linkedToId2 = linkedToId2;
         this.refType = refType;
@@ -98,7 +98,7 @@ public class BackgroundReferencePair extends BackgroundReference {
      *
      * @param linkedToId2 ID String.
      */
-    public void setLinkedToId2 (String linkedToId2) {
+    public void setLinkedToId2(String linkedToId2) {
         this.linkedToId2 = linkedToId2;
     }
 

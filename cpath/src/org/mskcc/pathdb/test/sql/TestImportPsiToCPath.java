@@ -117,7 +117,7 @@ public class TestImportPsiToCPath extends TestCase {
         //  the background reference server.
         File file = new File("testData/references/unification_refs.txt");
         ParseBackgroundReferencesTask task =
-            new ParseBackgroundReferencesTask(file, false);
+                new ParseBackgroundReferencesTask(file, false);
         task.parseAndStoreToDb();
 
         //  Then, load a small PSI-MI File.
@@ -142,15 +142,15 @@ public class TestImportPsiToCPath extends TestCase {
 
         //  Verify that XML has been modified to include external
         //  references derived from the background reference subsystem.
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<primaryRef db=\"UNIPROT\" id=\"UNIPROT_1234\"/>") > 0);
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"HUGE\" id=\"HUGE_4321\"/>") > 0);
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"PIR\" id=\"PIR_4321\"/>") > 0);
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"PIR\" id=\"PIR_1234\"/>") > 0);
-        assertTrue (record.getXmlContent().indexOf
+        assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"HUGE\" id=\"HUGE_1234\"/>") > 0);
     }
 }

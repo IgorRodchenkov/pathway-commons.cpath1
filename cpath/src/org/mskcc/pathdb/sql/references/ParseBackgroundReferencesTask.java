@@ -158,6 +158,7 @@ public class ParseBackgroundReferencesTask extends Task {
      * @return number of new background reference records saved to database.
      * @throws IOException  Error Reading Data File.
      * @throws DaoException Error Connecting to Database.
+     * @throws ImportException Error importing data.
      */
     public int parseAndStoreToDb() throws IOException, DaoException,
             ImportException {
@@ -176,7 +177,7 @@ public class ParseBackgroundReferencesTask extends Task {
 
         //  Verify that the file header is tab delimited.
         if (line.indexOf(TAB_CHAR) == -1) {
-            throw new ImportException ("Unable to import background "
+            throw new ImportException("Unable to import background "
                     + "reference file.  File must be tab delimited.  Check "
                     + "the file and try again.");
         }
@@ -186,7 +187,7 @@ public class ParseBackgroundReferencesTask extends Task {
 
         //  Verify that we have at least two databases in data file.
         if (dbList.size() < 2) {
-            throw new ImportException ("Unable to import background "
+            throw new ImportException("Unable to import background "
                     + "reference file.  File must contain at least "
                     + "two columns of data.");
         }
@@ -202,28 +203,29 @@ public class ParseBackgroundReferencesTask extends Task {
             return importUnificationRefs.parseData(buf);
         } else {
             ExternalDatabaseRecord db = (ExternalDatabaseRecord)
-                dbList.get(0);
+                    dbList.get(0);
             if (!db.getDbType().equals(ReferenceType.LINK_OUT)) {
-                throw new ImportException ("Unable to import background "
-                    + "reference file of " + ReferenceType.LINK_OUT
-                    + " data.  First column must be of type:  "
-                    + ReferenceType.LINK_OUT + ".");
+                throw new ImportException("Unable to import background "
+                        + "reference file of " + ReferenceType.LINK_OUT
+                        + " data.  First column must be of type:  "
+                        + ReferenceType.LINK_OUT + ".");
             }
             this.referenceType = ReferenceType.LINK_OUT;
             this.getProgressMonitor().setCurrentMessage
                     ("Saving LINK_OUT References.");
             ImportLinkOutRefs imporLinkOutRefs = new ImportLinkOutRefs
                     (dbList, backgroundRefList, getProgressMonitor(),
-                    saveToDatabase);
+                            saveToDatabase);
             return imporLinkOutRefs.parseData(buf);
         }
     }
 
     /**
      * Gets ReferenceType of Data File.
+     *
      * @return ReferenceType Object.
      */
-    public ReferenceType getReferenceType () {
+    public ReferenceType getReferenceType() {
         return referenceType;
     }
 
@@ -235,6 +237,7 @@ public class ParseBackgroundReferencesTask extends Task {
      * @return ArrayList of BackgroundReference Objects.
      * @throws IOException  Error Reading Data File.
      * @throws DaoException Error Connecting to Database.
+     * @throws ImportException Error importing data. 
      */
     public ArrayList parseAndGenerateList() throws IOException, DaoException,
             ImportException {
