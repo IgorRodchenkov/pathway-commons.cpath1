@@ -26,7 +26,9 @@
 <module name="Checker">
 
   <module name="TreeWalker">
-
+    <module name="Header">
+	<property name="headerFile" value="config/license.txt"/>
+    </module>
     <!--                         code conventions -->
 
     <!-- naming conventions -->
