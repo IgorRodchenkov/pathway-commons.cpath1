@@ -65,7 +65,14 @@ genomics data is essential to the achievement of these goals.
     </small>
     </center>
 </TD>
-
 </TR>
+
+<TR>
+<TD>
+<jsp:include page="../global/dbStats.jsp" flush="true" />
+</TD>
+</TR>
+
 </TABLE>
+
 <jsp:include page="../global/footer.jsp" flush="true" />
