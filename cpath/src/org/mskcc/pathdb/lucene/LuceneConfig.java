@@ -33,6 +33,8 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.mskcc.dataservices.util.PropertyManager;
 
+import java.io.File;
+
 /**
  * Lucene Config Class.
  *
@@ -73,10 +75,11 @@ public class LuceneConfig {
     public static String getLuceneDirectory() {
         PropertyManager manager = PropertyManager.getInstance();
         String dir = manager.getProperty(PROPERTY_LUCENE_DIR);
-        //  dir should only be null when run from the command line.
+        //  dir should only be null when run from the command line.        
         if (dir == null) {
             String cPathHome = System.getProperty("CPATH_HOME");
-            dir = cPathHome + "/build/WEB-INF/" + INDEX_DIR_PREFIX;
+            dir = cPathHome + File.separator + "build" + File.separator
+                    + "WEB-INF" + File.separator + INDEX_DIR_PREFIX;
         }
         return dir;
     }
