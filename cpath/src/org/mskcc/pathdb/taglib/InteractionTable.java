@@ -328,6 +328,8 @@ public class InteractionTable extends HtmlTable {
                     + "<A TITLE='View All Records for Organism:  "
                     + fullName + "' HREF='" + url + "'>"
                     + fullName + "</A></TD>");
+        } else {
+            append("<TD class='cpath3'>Not Specified</TD>");            
         }
     }
 
@@ -531,21 +533,24 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Outputs Target Organism.
+     * Make sure to check for null organism (see bug report # 0000469).
      */
     private void outputTargetOrganism(Organism organism) {
         startRow();
-        this.append("<td class='cpath1'>Organism:</th>");
-        NamesType names = organism.getNames();
-        if (names != null) {
-            String shortName = names.getShortLabel();
-            String fullName = names.getFullName();
-            append("<TD>");
-            if (fullName != null && fullName.length() > 0) {
-                append(fullName);
-            } else if (shortName != null && shortName.length() > 0) {
-                append(shortName);
-            } else {
-                append("Not Specified");
+        append("<td class='cpath1'>Organism:</th>");
+        append("<TD>");
+        if (organism != null && organism.getNames() != null) {
+            NamesType names = organism.getNames();
+            if (names != null) {
+                String shortName = names.getShortLabel();
+                String fullName = names.getFullName();
+                if (fullName != null && fullName.length() > 0) {
+                    append(fullName);
+                } else if (shortName != null && shortName.length() > 0) {
+                    append(shortName);
+                } else {
+                    append("Not Specified");
+                }
             }
         } else {
             append("Not Specified");
