@@ -136,9 +136,11 @@ public class IndexLuceneTask extends Task {
         try {
             for (int i=0; i <= numInteractions; i+= BLOCK_SIZE) {
                 con = JdbcUtil.getCPathConnection();
+                int end = i + BLOCK_SIZE;
+                System.out.println("<getting batch:  " + i + ", " + end + ">");
                 pstmt = con.prepareStatement
                         ("select * from cpath WHERE TYPE = ?  order by "
-                        + "CPATH_ID LIMIT " + i + ", " + (i + BLOCK_SIZE));
+                        + "CPATH_ID LIMIT " + i + ", " + end);
                 pstmt.setString(1, CPathRecordType.INTERACTION.toString());
                 rs = pstmt.executeQuery();
 
@@ -146,7 +148,6 @@ public class IndexLuceneTask extends Task {
                     indexRecord(cpath, rs, indexWriter);
                 }
                 JdbcUtil.closeAll(con, pstmt, rs);
-                System.out.println("<next batch>");
             }
             pMonitor.setCurrentMessage("\nOptimizing Indexes");
             indexWriter.optimize();
