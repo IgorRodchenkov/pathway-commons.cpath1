@@ -31,6 +31,7 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
@@ -125,6 +126,7 @@ public class TestDaoExternalDb extends TestCase {
         assertEquals(TERM1, term1);
         assertEquals(TERM2, term2);
         assertEquals(URL, record.getUrl());
+        assertEquals(ReferenceType.IDENTITY, record.getDbType());
     }
 
     private void addSampleRecord() throws DaoException {
@@ -136,6 +138,7 @@ public class TestDaoExternalDb extends TestCase {
         terms.add(TERM2);
         db.setCvTerms(terms);
         db.setUrl(URL);
+        db.setDbType(ReferenceType.IDENTITY);
         DaoExternalDb cpath = new DaoExternalDb();
         cpath.addRecord(db);
     }
