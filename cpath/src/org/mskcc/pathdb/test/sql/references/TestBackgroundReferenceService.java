@@ -39,72 +39,126 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Tests the ID Mapping Service Class.
+ * Tests the Background Reference Service Class.
  *
  * @author Ethan Cerami.
  */
 public class TestBackgroundReferenceService extends TestCase {
 
     /**
-     * Tests the ID Mapping Service Class.
+     * Tests the Unification Look up Service.
      *
      * @throws Exception All Exceptions.
      */
-    public void testIdMappingService() throws Exception {
+    public void testUnificationService() throws Exception {
         //  Delete all records, so that we start with a clean slate.
         DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
 
-        //  First, store some ID Mappings to the Database
-        File file = new File("testData/id_map.txt");
+        //  Store some background references to the Database
+        File file = new File("testData/references/unification_refs.txt");
         ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
                 (file, false);
         task.parseAndStoreToDb();
 
-        //  Now, query the ID Mapping Service for Equivalent Refs.
-        BackgroundReferenceService idService = new BackgroundReferenceService();
+        //  Now, query the Background Reference Service for Unification Refs.
+        BackgroundReferenceService refService =
+                new BackgroundReferenceService();
 
-        //  Let's assume we start out with three references
-        //  The first and third are already stored in the database.
-        //  The second is not stored in the database.
-        ExternalReference xrefs[] = new ExternalReference[3];
-        xrefs[0] = new ExternalReference("SwissProt", "AAH08943");
-        xrefs[1] = new ExternalReference("LocusLink", "ABCDE");
-        xrefs[2] = new ExternalReference("RefSeq", "NP_060241");
+        //  Let's assume we start out with two references
+        ExternalReference xrefs[] = new ExternalReference[2];
+        xrefs[0] = new ExternalReference("UNIPROT", "UNIPROT_1234");
+        xrefs[1] = new ExternalReference("PIR", "SANDER_123");
 
         //  Now, get a complete list of Equivalent References
-        ArrayList hitList = idService.getEquivalenceList(xrefs);
+        ArrayList unifiedList = refService.getUnificationReferences(xrefs);
 
-        //  There should be a total of 3 hits
-        assertEquals(3, hitList.size());
+        //  There should now be a total of 6 equivalent references.
+        assertEquals(6, unifiedList.size());
 
         //  Verify the Database List
         boolean got1 = false;
         boolean got2 = false;
         boolean got3 = false;
-        for (int i = 0; i < hitList.size(); i++) {
-            ExternalReference xref = (ExternalReference) hitList.get(i);
+        boolean got4 = false;
+        boolean got5 = false;
+        boolean got6 = false;
+        for (int i = 0; i < unifiedList.size(); i++) {
+            ExternalReference xref = (ExternalReference) unifiedList.get(i);
             if (xref.toString().equals
-                    ("External Reference  -->  Database:  [UNIGENE], "
-                    + "ID:  [Hs.77646]")) {
+                    ("External Reference  -->  Database:  [UNIPROT], ID:  "
+                     + "[UNIPROT_1234]")) {
                 got1 = true;
             }
             if (xref.toString().equals
-                    ("External Reference  -->  Database:  [UNIPROT], "
-                    + "ID:  [Q727A4]")) {
+                    ("External Reference  -->  Database:  [HUGE], ID:  "
+                        + "[HUGE_4321]")) {
                 got2 = true;
             }
             if (xref.toString().equals
-                    ("External Reference  -->  Database:  [AFFYMETRIX], "
-                    + "ID:  [1552275_3p_s_at]")) {
+                    ("External Reference  -->  Database:  [PIR], ID:  "
+                        + "[PIR_4321]")) {
                 got3 = true;
+            }
+            if (xref.toString().equals
+                    ("External Reference  -->  Database:  [PIR], ID:  "
+                        +"[SANDER_123]")) {
+                got4 = true;
+            }
+            if (xref.toString().equals
+                    ("External Reference  -->  Database:  [PIR], ID:  "
+                        + "[PIR_1234]")) {
+                got5 = true;
+            }
+            if (xref.toString().equals
+                    ("External Reference  -->  Database:  [HUGE], ID:  "
+                        +"[HUGE_1234]"))  {
+                got6 = true;
             }
         }
         assertTrue(got1);
         assertTrue(got2);
         assertTrue(got3);
+        assertTrue(got4);
+        assertTrue(got5);
+        assertTrue(got6);
 
         //  Delete all records, so that we can rerun this unit test again
         dao.deleteAllRecords();
+    }
+
+    /**
+     * Tests the LinkOut Service.
+     *
+     * @throws Exception All Exceptions.
+     */
+    public void testLinkOutService () throws Exception {
+        //  Delete all records, so that we start with a clean slate.
+        DaoBackgroundReferences dao = new DaoBackgroundReferences();
+        dao.deleteAllRecords();
+
+        //  Store some background references to the Database
+        File file = new File("testData/references/link_out_refs.txt");
+        ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
+                (file, false);
+        task.parseAndStoreToDb();
+
+        //  Now, query the Background Reference Service for LinkOut Refs.
+        BackgroundReferenceService refService =
+                new BackgroundReferenceService();
+
+        ExternalReference xrefs[] = new ExternalReference[1];
+        xrefs[0] = new ExternalReference("UNIPROT", "Q8NHX0");
+        ArrayList linkOutList = refService.getLinkOutReferences (xrefs);
+
+        //  There should be two Affymetrix LinkOuts
+        assertEquals (2, linkOutList.size());
+        ExternalReference xref0 = (ExternalReference) linkOutList.get(0);
+        ExternalReference xref1 = (ExternalReference) linkOutList.get(1);
+
+        assertEquals ("External Reference  -->  Database:  [AFFYMETRIX], "
+            + "ID:  [1008_f_at]", xref0.toString());
+        assertEquals ("External Reference  -->  Database:  [AFFYMETRIX], "
+            + "ID:  [1000_at]", xref1.toString());
     }
 }
