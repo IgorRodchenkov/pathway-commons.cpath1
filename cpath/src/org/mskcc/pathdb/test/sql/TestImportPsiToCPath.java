@@ -31,20 +31,16 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.task.ParseIdMappingsTask;
 import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -105,9 +101,10 @@ public class TestImportPsiToCPath extends TestCase {
 
     /**
      * Tests Data Import with ID Mapping Service
+     *
+     * @throws Exception All Exceptions.
      */
-    public void testImportWithIdMappingService() throws DaoException,
-            IOException, DataServiceException, ImportException {
+    public void testImportWithIdMappingService() throws Exception {
         //  Try to locate Q727A4 by its Affymetrix ID.
         //  This should fail.
         DaoExternalLink linker = new DaoExternalLink();
@@ -147,8 +144,8 @@ public class TestImportPsiToCPath extends TestCase {
         assertTrue(record.getXmlContent().indexOf
                 ("<primaryRef db=\"SwissProt\" id=\"Q727A4\"/>") > 0);
         assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"Affymetrix\" " +
-                "id=\"1552275_3p_s_at\"/>") > 0);
+                ("<secondaryRef db=\"Affymetrix\" "
+                + "id=\"1552275_3p_s_at\"/>") > 0);
         assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"SwissProt\" id=\"AAH08943\"/>") > 0);
         assertTrue(record.getXmlContent().indexOf
@@ -156,5 +153,4 @@ public class TestImportPsiToCPath extends TestCase {
         assertTrue(record.getXmlContent().indexOf
                 ("<secondaryRef db=\"Unigene\" id=\"Hs.77646\"/>") > 0);
     }
-
 }
