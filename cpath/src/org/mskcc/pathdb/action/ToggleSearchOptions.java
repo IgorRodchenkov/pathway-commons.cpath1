@@ -45,11 +45,6 @@ public class ToggleSearchOptions extends BaseAction {
         searchOptionsFlag = new Boolean(!searchOptionsFlag.booleanValue());
         session.setAttribute(SESSION_SEARCH_OPTIONS_FLAG, searchOptionsFlag);
         xdebug.logMsg(this, "Search Options Flag is:  " + searchOptionsFlag);
-        if (searchOptionsFlag.booleanValue()) {
-            this.setUserMessage(request, "Now Showing Field Specific Filter.");
-        } else {
-            this.setUserMessage(request, "Now Hiding Field Specific Filter.");
-        }
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 }
