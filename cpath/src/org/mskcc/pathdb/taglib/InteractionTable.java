@@ -369,8 +369,10 @@ public class InteractionTable extends HtmlTable {
             startRow();
             ExperimentListItem expItem = expList.getExperimentListItem(i);
             ExperimentType expType = expItem.getExperimentDescription();
-            outputCvType(expType.getInteractionDetection());
-            outputBibRef(expType.getBibref());
+            if (expType != null) {
+                outputCvType(expType.getInteractionDetection());
+                outputBibRef(expType.getBibref());
+            }
             append("</tr>");
         }
         append("</table>");
