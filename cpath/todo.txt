@@ -12,6 +12,9 @@ cPath Functionality Issues:
 7.  Provide query API functionality to get a list of valid query API commands.  E.g. for getInteractionsBySource,
 	we could have getValidSources
 8.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape to easily create external links.
+9.  For HTML front end of cPath query API: paginate results
+10. Issue of large result sets returned from query API.  One possible solution is to write a getQuerySize query, which
+    takes as input another query and returns the result size.  If there is a performance issue, queries can be precomputed.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
