@@ -134,7 +134,7 @@
                     <experimentDescription id="no_id">
                         <bibref>
                             <xref>
-                                <primaryRef db="pubmed" id="11283351"/>
+				    <primaryRef db="pubmed" id="12345678"/>
                             </xref>
                         </bibref>
                         <interactionDetection>
