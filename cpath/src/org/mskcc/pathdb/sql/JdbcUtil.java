@@ -1,7 +1,10 @@
 package org.mskcc.pathdb.sql;
 
 import org.mskcc.dataservices.util.PropertyManager;
+import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.commons.dbcp.*;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 /**
@@ -10,7 +13,9 @@ import java.sql.*;
  * @author Ethan Cerami
  */
 public class JdbcUtil {
-    private static int counter = 0;
+    private static DataSource dataSource;
+    private static GenericObjectPool connectionPool;
+    private static final String DB_CPATH = "cpath";
 
     /**
      * Gets Connection to the CPath Database.
@@ -43,17 +48,26 @@ public class JdbcUtil {
      */
     private static Connection connect(String db)
             throws ClassNotFoundException, SQLException {
-        counter++;
+        if (dataSource == null) {
+            initDataSource();
+        }
+        Connection con = dataSource.getConnection();
+        return con;
+    }
+
+    /**
+     * Initializes Data Source.
+     */
+    private static void initDataSource() throws ClassNotFoundException {
         PropertyManager manager = PropertyManager.getInstance();
         String host = manager.getProperty(PropertyManager.DB_LOCATION);
         String userName = manager.getProperty(PropertyManager.DB_USER);
         String password = manager.getProperty(PropertyManager.DB_PASSWORD);
         String url =
-                new String("jdbc:mysql://" + host + "/" + db
+                new String("jdbc:mysql://" + host + "/" + DB_CPATH
                 + "?user=" + userName + "&password=" + password);
         Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection(url);
-        return con;
+        dataSource = setupDataSource(url);
     }
 
     /**
@@ -93,5 +107,48 @@ public class JdbcUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Initializes Database Connection Pool.
+     */
+    public static DataSource setupDataSource(String connectURI) {
+        //
+        // First, we'll need a ObjectPool that serves as the
+        // actual pool of connections.
+        //
+        // We'll use a GenericObjectPool instance, although
+        // any ObjectPool implementation will suffice.
+        //
+        connectionPool = new GenericObjectPool(null);
+        connectionPool.setMaxActive(10);
+
+        //
+        // Next, we'll create a ConnectionFactory that the
+        // pool will use to create Connections.
+        // We'll use the DriverManagerConnectionFactory,
+        // using the connect string passed in the command line
+        // arguments.
+        //
+        ConnectionFactory connectionFactory =
+                new DriverManagerConnectionFactory(connectURI, null);
+
+        //
+        // Now we'll create the PoolableConnectionFactory, which wraps
+        // the "real" Connections created by the ConnectionFactory with
+        // the classes that implement the pooling functionality.
+        //
+        PoolableConnectionFactory poolableConnectionFactory =
+                new PoolableConnectionFactory
+                        (connectionFactory, connectionPool, null,
+                                null, false, true);
+
+        //
+        // Finally, we create the PoolingDriver itself,
+        // passing in the object pool we created.
+        //
+        PoolingDataSource dataSource = new PoolingDataSource(connectionPool);
+
+        return dataSource;
     }
 }
