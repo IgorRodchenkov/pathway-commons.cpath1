@@ -6,12 +6,21 @@
   </properties>
 
   <body>
+
+    <section name="CVS Access">
+        <p>
+        We do not (yet) provide anonymous access to our CVS server.  We plan
+        to address this issue in the short-term.  In the meantime, if
+        you are looking for the source code to cPath, download a nightly
+        snapshot from the section below.
+        </p>
+     </section>
+
     <section name="Automated Nightly Snapshots">
         <p>
         Automated Nightly Snapshots are created every 24 hours directly from
-        the active CVS repository. This is for developers who are helping to
-        develop cPath and want the very latest code.
-        Use at your own risk!
+        the active CVS repository.  The snapshot includes all source code,
+        the Ant build file, all configuration files, and sample data files.
         </p>
         <p>
         <A HREF="cpath.tar.gz">Download Nightly Snapshot</A> [tar.gz format]
