@@ -9,7 +9,6 @@ import org.mskcc.pathdb.xml.psi.ExperimentDescription;
 import org.mskcc.pathdb.xml.psi.ExperimentList;
 import org.mskcc.pathdb.xml.psi.InteractionDetection;
 import org.mskcc.pathdb.xml.psi.InteractionList;
-import org.mskcc.pathdb.xml.psi.InteractionType;
 import org.mskcc.pathdb.xml.psi.InteractorList;
 import org.mskcc.pathdb.xml.psi.InteractorRef;
 import org.mskcc.pathdb.xml.psi.Names;
@@ -25,6 +24,7 @@ import org.mskcc.pathdb.xml.psi.Xref;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.HashSet;
 
 /**
  * Converts Internal Object Model to PSI-MI Format.
@@ -119,10 +119,6 @@ public class PsiFormatter {
             ParticipantList participantList = getParticipantList(interaction);
             castorInteraction.setParticipantList(participantList);
 
-            //  Add InteractionType
-            InteractionType interactionType = getInteractionType(interaction);
-            castorInteraction.addInteractionType(interactionType);
-
             //  Add to Interaction List
             interactionList.addInteraction(castorInteraction);
         }
@@ -151,26 +147,6 @@ public class PsiFormatter {
     }
 
     /**
-     * Gets the Interaction Type.
-     * @param interaction Intraction object.
-     * @return Castor InteractionType object.
-     */
-    private InteractionType getInteractionType(Interaction interaction) {
-        InteractionType interactionType = new InteractionType();
-
-        //  Create Interaction Name
-        Names interactionNames = createName
-                ("aggregation", "aggregation");
-        interactionType.setNames(interactionNames);
-
-        //  Reference Controlled Vocabulary.
-        Xref xref = createXRef("goid", "MI:0191");
-        interactionType.setXref(xref);
-
-        return interactionType;
-    }
-
-    /**
      * Gets Experiment Description.
      * @param interaction Interaction object.
      * @return Castor InteractionElementTypeChoice object.
@@ -187,8 +163,12 @@ public class PsiFormatter {
         expDescription.setId("no_id");
 
         //  Set Bibliographic Reference
-        Bibref bibRef = createBibRef("N/A", "N/A");
-        expDescription.setBibref(bibRef);
+        Bibref bibRef = null;
+        String pmids[] = interaction.getPubMedIds();
+        if (pmids.length > 0) {
+            bibRef = createBibRef(PUB_MED_DB, pmids[0]);
+            expDescription.setBibref(bibRef);
+        }
 
         //  Set Interaction Detection
         InteractionDetection interactionDetection =
@@ -260,29 +240,67 @@ public class PsiFormatter {
 
     /**
      * Sets Protein External References.
+     * Filters out any redundant external references.
      * @param protein Protein Object.
      * @param interactor Castor Protein Interactor Object.
      */
     private void setExternalRefs(Protein protein,
             ProteinInteractor interactor) {
+        HashSet set = new HashSet();
         ExternalReference refs [] = protein.getExternalRefs();
         if (refs.length > 0) {
             Xref xref = new Xref();
             //  First External Reference becomes the Primary Reference
-            PrimaryRef primaryRef = new PrimaryRef();
-            primaryRef.setDb(refs[0].getDatabase());
-            primaryRef.setId(refs[0].getId());
-            xref.setPrimaryRef(primaryRef);
+            String key = generateXRefKey(refs[0]);
+            createPrimaryKey(refs[0], xref);
+            set.add(key);
 
             //  All others become Secondary References
-            for (int i = 0; i < refs.length; i++) {
-                SecondaryRef secondaryRef = new SecondaryRef();
-                secondaryRef.setDb(refs[i].getDatabase());
-                secondaryRef.setId(refs[i].getId());
-                xref.addSecondaryRef(secondaryRef);
+            if (refs.length > 1) {
+                for (int i = 1; i < refs.length; i++) {
+                    key = this.generateXRefKey(refs[i]);
+                    if (!set.contains(key)) {
+                        createSecondaryKey(refs[i], xref);
+                        set.add(key);
+                    }
+                }
             }
             interactor.setXref(xref);
         }
+    }
+
+    /**
+     * Generates XRef Key.
+     * @param ref External Reference
+     * @return Hash Key.
+     */
+    private String generateXRefKey(ExternalReference ref) {
+        String key = ref.getDatabase() + "." + ref.getId();
+        return key;
+    }
+
+    /**
+     * Creates Primary Key.
+     * @param ref External Reference.
+     * @param xref Castor XRef.
+     */
+    private void createPrimaryKey(ExternalReference ref, Xref xref) {
+        PrimaryRef primaryRef = new PrimaryRef();
+        primaryRef.setDb(ref.getDatabase());
+        primaryRef.setId(ref.getId());
+        xref.setPrimaryRef(primaryRef);
+    }
+
+    /**
+     * Creates Secondary Key.
+     * @param ref External Reference
+     * @param xref Castro XRef.
+     */
+    private void createSecondaryKey(ExternalReference ref, Xref xref) {
+        SecondaryRef secondaryRef = new SecondaryRef();
+        secondaryRef.setDb(ref.getDatabase());
+        secondaryRef.setId(ref.getId());
+        xref.addSecondaryRef(secondaryRef);
     }
 
     /**

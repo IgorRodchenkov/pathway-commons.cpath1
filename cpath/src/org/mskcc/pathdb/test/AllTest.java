@@ -3,10 +3,11 @@ package org.mskcc.pathdb.test;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.config.ConfigLogger;
+import org.mskcc.pathdb.util.ConfigLogger;
 import org.mskcc.pathdb.test.controller.ControllerSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
+import org.mskcc.pathdb.test.format.FormatSuite;
 
 /**
  * Runs all Unit Tests.
@@ -23,6 +24,7 @@ public class AllTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(SqlSuite.suite());
+        suite.addTest(FormatSuite.suite());
         suite.addTest(ControllerSuite.suite());
         suite.addTest(WebSuite.suite());
         suite.setName("PathDB Tests");

@@ -1,17 +1,17 @@
 package org.mskcc.pathdb.controller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * Data Service Controller.
@@ -37,7 +37,7 @@ public class DataServiceController {
     /**
      * Logger.
      */
-    private Log log = LogFactory.getLog(this.getClass());
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
      * Constructor.
@@ -79,7 +79,7 @@ public class DataServiceController {
         ProtocolValidator validator = new ProtocolValidator(protocolRequest);
         validator.validate();
         GridController gridController = new GridController();
-        String xmlResponse = gridController.retrieveInteractions
+        String xmlResponse = gridController.retrieveData
                 (protocolRequest);
         returnXml(xmlResponse);
     }
@@ -92,10 +92,13 @@ public class DataServiceController {
         response.setContentType("text/xml");
         setHeaderStatus(ProtocolConstants.DS_ERROR_STATUS);
         try {
-            PrintWriter out = response.getWriter();
-            out.println(exception.toXml());
+            ServletOutputStream stream = response.getOutputStream();
+            stream.println(exception.toXml());
+            stream.flush();
+            stream.close();
         } catch (IOException e) {
-            log.error("Exception thrown while writing out XML Error:  "
+            logger.log(Level.WARNING,
+                    "Exception thrown while writing out XML Error:  "
                     + e.getMessage());
         }
     }
@@ -109,7 +112,10 @@ public class DataServiceController {
         PrintWriter out = response.getWriter();
         setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
         response.setContentType("text/xml");
-        out.println(xmlResponse);
+        ServletOutputStream stream = response.getOutputStream();
+        stream.println(xmlResponse);
+        stream.flush();
+        stream.close();
     }
 
     /**
@@ -138,10 +144,12 @@ public class DataServiceController {
                     servletContext.getRequestDispatcher("/jsp/protocol.html");
             dispatcher.forward(request, response);
         } catch (IOException e) {
-            log.error("IOException thrown while writing out Help page:  "
+            logger.log(Level.WARNING,
+                "IOException thrown while writing out Help page:  "
                     + e.getMessage());
         } catch (ServletException e) {
-            log.error("ServletException thrown while writing out Help page:  "
+            logger.log(Level.WARNING,
+                "ServletException thrown while writing out Help page:  "
                     + e.getMessage());
         }
     }

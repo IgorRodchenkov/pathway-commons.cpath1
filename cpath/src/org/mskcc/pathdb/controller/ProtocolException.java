@@ -1,7 +1,5 @@
 package org.mskcc.pathdb.controller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -10,6 +8,8 @@ import org.jdom.output.XMLOutputter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * Encapsulates a Violation of the Data Service Protocol.
@@ -55,7 +55,7 @@ public class ProtocolException extends Exception {
     /**
      * Logger.
      */
-    private Log log = LogFactory.getLog(this.getClass());
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
      * Constructor.
@@ -106,7 +106,8 @@ public class ProtocolException extends Exception {
         try {
             outputter.output(document, writer);
         } catch (IOException e) {
-            log.error("Exception thrown while outputting XML Error Protocol:  "
+            logger.log(Level.WARNING,
+                    "Exception thrown while outputting XML Error Protocol:  "
                     + e.getMessage());
         }
         return writer.toString();

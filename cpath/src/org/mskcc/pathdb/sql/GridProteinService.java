@@ -1,7 +1,5 @@
 package org.mskcc.pathdb.sql;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
@@ -17,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.io.StringWriter;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Live GRID Protein Service.
@@ -31,7 +30,7 @@ public class GridProteinService extends GridBase {
     /**
      * Logger.
      */
-    private Log log = LogFactory.getLog(this.getClass());
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
      * Constructor.
@@ -53,7 +52,7 @@ public class GridProteinService extends GridBase {
      */
     public Protein getProteinByOrf(String orfName)
             throws SQLException, ClassNotFoundException, EmptySetException {
-        log.info("Retrieving Protein, using ORFName:  " + orfName);
+        logger.info("Retrieving Protein, using ORFName:  " + orfName);
         Protein protein = getLiveProtein(orfName, GridBase.KEY_ORF);
         return protein;
     }
@@ -68,7 +67,7 @@ public class GridProteinService extends GridBase {
      */
     public Protein getProteinByLocalId(String localId)
             throws SQLException, ClassNotFoundException, EmptySetException {
-        log.info("Retrieving Protein, using ORFName:  " + localId);
+        logger.info("Retrieving Protein, using ORFName:  " + localId);
         Protein protein = getLiveProtein(localId, GridBase.KEY_LOCAL_ID);
         return protein;
     }
@@ -138,7 +137,7 @@ public class GridProteinService extends GridBase {
         PreparedStatement pstmt = con.prepareStatement
                 ("select * from orf_info where " + lookUpKey + "=?");
         pstmt.setString(1, uid);
-        log.info("Executing SQL Query:  " + pstmt.toString());
+        logger.info("Executing SQL Query:  " + pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
         return rs;
     }

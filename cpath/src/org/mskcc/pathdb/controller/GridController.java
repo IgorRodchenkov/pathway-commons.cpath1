@@ -6,6 +6,7 @@ import org.mskcc.pathdb.sql.GridInteractionService;
 import org.mskcc.pathdb.sql.GridProteinService;
 import org.mskcc.pathdb.test.TestConstants;
 import org.mskcc.pathdb.xml.psi.Entry;
+import org.mskcc.pathdb.util.PropertyManager;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class GridController {
      * @return XML Response String.
      * @throws Exception All Exceptions.
      */
-    public String retrieveInteractions(ProtocolRequest request)
+    public String retrieveData(ProtocolRequest request)
             throws Exception {
         try {
             String xml = getXmlData(request);
@@ -60,9 +61,10 @@ public class GridController {
      * @throws Exception All Exceptions.
      */
     private String getInteractions(String uid) throws Exception {
+        PropertyManager manager = PropertyManager.getInstance();
         GridInteractionService service = new GridInteractionService
-                (TestConstants.DB_HOST, TestConstants.USER,
-                        TestConstants.PASSWORD);
+                (manager.getGridHost(), manager.getGridUser(),
+                        manager.getGridPassword());
         ArrayList interactions =
                 service.getInteractions(uid);
         PsiFormatter formatter = new PsiFormatter(interactions);
@@ -79,9 +81,10 @@ public class GridController {
      * @throws Exception All Exceptions.
      */
     private String getGo(String uid) throws Exception {
+        PropertyManager manager = PropertyManager.getInstance();
         GridProteinService service = new GridProteinService
-                (TestConstants.DB_HOST, TestConstants.USER,
-                        TestConstants.PASSWORD);
+                (manager.getGridHost(), manager.getGridUser(),
+                        manager.getGridPassword());
         String xml = service.getProteinXmlByOrf(uid);
         return xml;
     }
