@@ -1,12 +1,21 @@
 package org.mskcc.pathdb.task;
 
 import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.IndexFactory;
+import org.mskcc.pathdb.lucene.ItemToIndex;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
+import org.mskcc.pathdb.xdebug.XDebug;
+import org.jdom.JDOMException;
+import org.exolab.castor.xml.ValidationException;
+import org.exolab.castor.xml.MarshalException;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -38,7 +47,7 @@ public class IndexLuceneTask extends Task {
      */
     public void run() {
         try {
-            indexAllPhysicalEntities();
+            indexAllInteractions();
             pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
                     + "Entities Indexed:  " + pMonitor.getCurValue());
         } catch (Exception e) {
@@ -58,13 +67,13 @@ public class IndexLuceneTask extends Task {
     /**
      * Run Full Text Indexing on all Physical Entities.
      * Made public, if you want to run this from the current thread.
-     * @throws DaoException Data Accession Exception.
-     * @throws IOException Input Output Exception.
+     * @throws DaoException Data Access Exception.
+     * @throws IOException Input/Output Exception.
      * @throws ImportException Import Exception.
      */
-    public void indexAllPhysicalEntities() throws DaoException, IOException,
-            ImportException {
-        outputMsg("Indexing all Records in Lucene");
+    public void indexAllInteractions() throws DaoException, IOException,
+            ImportException, AssemblyException  {
+        outputMsg("Indexing all CPath Entities");
         DaoCPath cpath = new DaoCPath();
         pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.
                 PHYSICAL_ENTITY));
@@ -77,8 +86,8 @@ public class IndexLuceneTask extends Task {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select * from cpath WHERE TYPE=? order by CPATH_ID");
-            pstmt.setString(1, CPathRecordType.PHYSICAL_ENTITY.toString());
+                    ("select * from cpath WHERE TYPE = ?  order by CPATH_ID ");
+            pstmt.setString(1, CPathRecordType.INTERACTION.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 indexRecord(cpath, rs, lucene);
@@ -95,13 +104,17 @@ public class IndexLuceneTask extends Task {
     }
 
     private void indexRecord(DaoCPath cpath, ResultSet rs, LuceneIndexer lucene)
-            throws SQLException, ImportException {
+            throws SQLException, AssemblyException, IOException,
+            ImportException {
         pMonitor.incrementCurValue();
         CPathRecord record = cpath.extractRecord(rs);
         if (verbose) {
             System.out.print(".");
         }
-        lucene.addRecord(record.getName(), record.getDescription(),
-                record.getXmlContent(), record.getId());
+        XmlAssembly xmlAssembly = XmlAssemblyFactory.getXmlAssembly
+                (record, new XDebug());
+        ItemToIndex item = IndexFactory.createItemToIndex
+                (record.getId(), xmlAssembly);
+        lucene.addRecord(item);
     }
 }
