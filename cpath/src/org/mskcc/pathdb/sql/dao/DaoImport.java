@@ -121,7 +121,7 @@ public class DaoImport {
      * @return indicate success (true) or failure (false).
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean addRecord(String description, String data)
+    public synchronized long addRecord(String description, String data)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -143,7 +143,13 @@ public class DaoImport {
             Timestamp timeStamp = new Timestamp(date.getTime());
             pstmt.setTimestamp(5, timeStamp);
             int rows = pstmt.executeUpdate();
-            return (rows > 0) ? true : false;
+
+            //  Get New ID
+            pstmt = con.prepareStatement("SELECT MAX(IMPORT_ID) from import");
+            rs = pstmt.executeQuery();
+            rs.next();
+            long importId = rs.getLong(1);
+            return importId;
         } catch (ClassNotFoundException e) {
             throw new DaoException("ClassNotFoundException:  "
                     + e.getMessage());

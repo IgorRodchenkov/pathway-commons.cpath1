@@ -3,7 +3,7 @@ package org.mskcc.pathdb.action.admin;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.tool.LoadFullText;
+import org.mskcc.pathdb.task.IndexLuceneTask;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +31,9 @@ public class AdminFullTextIndexer extends AdminBaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
         xdebug.logMsg(this, "Running Full Text Indexer");
 
-        LoadFullText indexer = new LoadFullText(false);
-        indexer.indexAllPhysicalEntities();
-        this.setUserMessage(request, "All Records have been indexed");
+        IndexLuceneTask task = new IndexLuceneTask(false);
+        task.start();
+        this.setUserMessage(request, "Index task is now running.");
         return mapping.findForward("success");
     }
 }

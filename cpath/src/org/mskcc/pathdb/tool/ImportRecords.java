@@ -6,6 +6,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
+import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.util.ArrayList;
 
@@ -83,11 +84,12 @@ public class ImportRecords {
     private void transferRecord(long importId,
             boolean validateExternalReferences) throws ImportException,
             DaoException {
+        ProgressMonitor pMonitor = new ProgressMonitor();
         ImportRecord record = dbImport.getRecordById(importId);
         String xml = record.getData();
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml,
-                validateExternalReferences, true);
+                validateExternalReferences, true, pMonitor);
         this.outputSummary(summary);
         dbImport.markRecordAsTransferred(record.getImportId());
     }

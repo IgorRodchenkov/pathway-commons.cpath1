@@ -1,19 +1,24 @@
 package org.mskcc.pathdb.util;
 
-import org.xml.sax.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
 
 /**
- * Command Line Tool XML Validator.
+ * XML Validator Utility.
  *
  * @author Ethan Cerami
  */
 public class XmlValidator extends DefaultHandler {
 
-    /** Default parser name. */
+    // Default parser name
     protected static final String DEFAULT_PARSER_NAME =
             "org.apache.xerces.parsers.SAXParser";
 
@@ -25,33 +30,47 @@ public class XmlValidator extends DefaultHandler {
     protected static final String SCHEMA_VALIDATION_FEATURE_ID =
             "http://apache.org/xml/features/validation/schema";
 
-    // Schema full checking feature id
-    protected static final String SCHEMA_FULL_CHECKING_FEATURE_ID =
-            "http://apache.org/xml/features/validation/schema-full-checking";
-
     // Dynamic validation feature id
     protected static final String DYNAMIC_VALIDATION_FEATURE_ID
             = "http://apache.org/xml/features/validation/dynamic";
 
-    private int errorCounter = 0;
+    protected static final String EXTERNAL_SCHEMA_LOCATION
+            = "http://apache.org/xml/properties/schema/external-schemaLocation";
+
+    private ArrayList errorList;
 
     /**
-     * Prints the Results.
-     * @param out PrintWriter Object.
+     * Validates the Specified XML File.
+     * @param xml XML Document (String representation).
+     * @return ArrayList of all Errors.
+     * @throws SAXException Error Parsing Document.
+     * @throws IOException Error Reading Document.
      */
-    public void printResults(PrintWriter out) {
-        out.println("Total Number of Errors:  " + errorCounter);
-        out.flush();
-
+    public ArrayList validate(String xml) throws SAXException, IOException {
+        return execute(xml, null);
     }
 
-    /**
-     * Warning.
-     * @param ex SAXParseException Object.
-     * @throws SAXException SAXException.
-     */
-    public void warning(SAXParseException ex) throws SAXException {
-        printError("Warning", ex);
+    private ArrayList execute(String xmlData, String schemaLocation)
+            throws IOException {
+        errorList = new ArrayList();
+        try {
+            XMLReader parser = XMLReaderFactory.createXMLReader
+                    (DEFAULT_PARSER_NAME);
+            parser.setFeature(VALIDATION_FEATURE_ID, true);
+            parser.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
+            if (schemaLocation != null) {
+                parser.setProperty(EXTERNAL_SCHEMA_LOCATION, schemaLocation);
+            }
+            parser.setContentHandler(this);
+            parser.setErrorHandler(this);
+
+            StringReader reader = new StringReader(xmlData);
+            InputSource source = new InputSource(reader);
+            parser.parse(source);
+        } catch (SAXException e) {
+            errorList.add(e);
+        }
+        return errorList;
     }
 
     /**
@@ -60,7 +79,7 @@ public class XmlValidator extends DefaultHandler {
      * @throws SAXException SAXException.
      */
     public void error(SAXParseException ex) throws SAXException {
-        printError("Error", ex);
+        errorList.add(ex);
     }
 
     /**
@@ -69,77 +88,6 @@ public class XmlValidator extends DefaultHandler {
      * @throws SAXException SAXException.
      */
     public void fatalError(SAXParseException ex) throws SAXException {
-        printError("Fatal Error", ex);
-    }
-
-    /**
-     * Prints the error message.
-     */
-    protected void printError(String type, SAXParseException ex) {
-        errorCounter++;
-
-        System.err.print("[");
-        System.err.print(type);
-        System.err.print("] ");
-        if (ex == null) {
-            System.out.println("!!!");
-        }
-        String systemId = ex.getSystemId();
-        if (systemId != null) {
-            int index = systemId.lastIndexOf('/');
-            if (index != -1) {
-                systemId = systemId.substring(index + 1);
-            }
-            System.err.print(systemId);
-        }
-        System.err.print(':');
-        System.err.print(ex.getLineNumber());
-        System.err.print(':');
-        System.err.print(ex.getColumnNumber());
-        System.err.print(": ");
-        System.err.print(ex.getMessage());
-        System.err.println();
-        System.err.flush();
-
-    }
-
-    /**
-     * Main program entry point.
-     * @param argv Command Line Arguments.
-     */
-    public static void main(String argv[]) {
-
-        if (argv.length == 0) {
-            printUsage();
-            System.exit(1);
-        }
-
-        XmlValidator validator = new XmlValidator();
-        PrintWriter out = new PrintWriter(System.out);
-        try {
-            XMLReader parser = XMLReaderFactory.createXMLReader
-                    (DEFAULT_PARSER_NAME);
-            parser.setFeature(VALIDATION_FEATURE_ID, true);
-            parser.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
-            parser.setFeature(SCHEMA_FULL_CHECKING_FEATURE_ID, true);
-            parser.setFeature(DYNAMIC_VALIDATION_FEATURE_ID, true);
-            parser.setContentHandler(validator);
-            parser.setErrorHandler(validator);
-            parser.parse(argv[0]);
-            validator.printResults(out);
-        } catch (SAXNotRecognizedException e) {
-            e.printStackTrace();
-        } catch (SAXNotSupportedException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Prints the usage.
-     */
-    private static void printUsage() {
-        System.out.println("usage: validate.sh file_name");
+        errorList.add(ex);
     }
 }

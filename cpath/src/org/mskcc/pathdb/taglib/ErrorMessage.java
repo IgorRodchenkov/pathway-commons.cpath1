@@ -4,6 +4,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.struts.util.PropertyMessageResources;
 import org.mskcc.pathdb.action.admin.AdminWebLogging;
 import org.mskcc.pathdb.controller.ProtocolException;
+import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -96,6 +97,13 @@ public class ErrorMessage extends HtmlTable {
             userMsg = pException.getWebErrorMessage();
         } else if (rootCause instanceof FileNotFoundException) {
             userMsg = resource.getMessage(MSG_LUCENE_INDEX_NOT_FOUND);
+        } else if (rootCause instanceof SAXParseException) {
+            SAXParseException sexc = (SAXParseException) rootCause;
+            userMsg = "Your XML document contains the "
+                    + "following error:<P>" + rootCause.getMessage()
+                    + "<P>Error occurred at line number:   "
+                    + sexc.getLineNumber()
+                    + "<P>Please correct the error and try again.";
         }
         this.outputDataField(userMsg);
         endRow();
@@ -128,11 +136,15 @@ public class ErrorMessage extends HtmlTable {
     private Throwable getRootCause(Throwable throwable) {
         Stack stack = new Stack();
         stack.push(throwable);
-        Throwable temp = throwable.getCause();
-        while (temp != null) {
-            stack.push(temp);
-            temp = temp.getCause();
+        try {
+            Throwable temp = throwable.getCause();
+            while (temp != null) {
+                stack.push(temp);
+                temp = temp.getCause();
+            }
+            return (Throwable) stack.pop();
+        } catch (NullPointerException e) {
+            return throwable;
         }
-        return (Throwable) stack.pop();
     }
 }

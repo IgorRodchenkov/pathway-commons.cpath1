@@ -260,7 +260,7 @@ public class ProtocolRequest implements PagedResult {
      */
     public String getUri() {
         String uri = null;
-        String url = "webservice";
+        String url = "webservice.do";
         GetMethod method = new GetMethod(url);
         NameValuePair nvps[] = new NameValuePair[6];
         nvps[0] = new NameValuePair(ARG_VERSION, version);

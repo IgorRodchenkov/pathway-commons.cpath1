@@ -23,7 +23,7 @@ public class LoadPsi {
         if (args.length == 1) {
             loadDataFile(args[0]);
         } else {
-            System.out.println("Command line usage:  load_psi.sh"
+            System.out.println("Command line usage:  admin.pl psi"
                     + " filename");
         }
     }

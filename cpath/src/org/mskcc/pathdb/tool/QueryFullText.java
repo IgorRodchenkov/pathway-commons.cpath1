@@ -34,7 +34,7 @@ public class QueryFullText {
             System.out.println("Total Time for Query:  "
                     + xdebug.getTimeElapsed() + " ms");
         } else {
-            System.out.println("Command line usage:  queryText.sh"
+            System.out.println("Command line usage:  admin.pl ft_query"
                     + " search_terms");
         }
     }

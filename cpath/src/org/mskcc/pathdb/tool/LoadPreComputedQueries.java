@@ -85,6 +85,6 @@ public class LoadPreComputedQueries {
      * Displays Command Line Usage.
      */
     public static void displayUsage() {
-        System.out.println("Command line usage:  loadQueries.sh filename");
+        System.out.println("Command line usage:  admin.pl precompute filename");
     }
 }

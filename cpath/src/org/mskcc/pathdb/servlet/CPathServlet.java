@@ -1,10 +1,10 @@
 package org.mskcc.pathdb.servlet;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
+import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
-import org.mskcc.pathdb.controller.CPathController;
+import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
 import org.mskcc.pathdb.model.CPathRecordType;
@@ -15,71 +15,25 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * Data Service Servlet.
+ * CPath Servlet.
  *
  * @author Ethan Cerami
  */
-public final class DataService extends HttpServlet {
+public final class CPathServlet extends ActionServlet {
     /**
      * Logger.
      */
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
-     * Responds to a GET request for the content produced by
-     * this servlet.
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are producing
-     *
-     * @exception java.io.IOException if an input/output error occurs
-     * @exception javax.servlet.ServletException if a servlet error occurs
-     */
-    public void doGet(HttpServletRequest request,
-            HttpServletResponse response)
-            throws IOException, ServletException {
-        try {
-            logger.info("Data Servlet Invoked.  Getting live data");
-            NDC.push(request.getRemoteHost());
-            response.setHeader("Cache-control", "no-cache");
-            response.setHeader("Pragma", "no-cache");
-            CPathController controller = new CPathController
-                    (request, response, this.getServletContext());
-            controller.execute();
-        } finally {
-            NDC.pop();
-        }
-    }
-
-    /**
      * Shutdown the Servlet.
      */
     public void destroy() {
         super.destroy();
-        logger.info("Data Servlet Servlet is shutting down");
-    }
-
-    /**
-     * Responds to a POST request for the content produced by
-     * this servlet.
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are producing
-     *
-     * @exception java.io.IOException if an input/output error occurs
-     * @exception javax.servlet.ServletException if a servlet error occurs
-     */
-    public void doPost(HttpServletRequest request,
-            HttpServletResponse response)
-            throws IOException, ServletException {
-        doGet(request, response);
+        logger.info("cPath is shutting down");
     }
 
     /**
@@ -95,6 +49,8 @@ public final class DataService extends HttpServlet {
         String dbHost = config.getInitParameter("db_host");
         String dbUser = config.getInitParameter("db_user");
         String dbPassword = config.getInitParameter("db_password");
+        String adminUser = config.getInitParameter("admin_user");
+        String adminPassword = config.getInitParameter("admin_password");
         String logConfigFile = config.getInitParameter("log_config_file");
         ServletContext ctx = this.getServletContext();
         String realLogPath = ctx.getRealPath(logConfigFile);
@@ -104,9 +60,15 @@ public final class DataService extends HttpServlet {
         System.err.println("web.xml param:  db_host --> " + dbHost);
         System.err.println("web.xml param:  db_user --> " + dbUser);
         System.err.println("web.xml param:  db_password --> " + dbPassword);
+        System.err.println("web.xml param:  admin_user --> " + adminUser);
+        System.err.println("web.xml param:  admin_password --> "
+                + adminPassword);
+
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
                 dbPassword);
+        manager.setProperty(BaseAction.PROPERTY_ADMIN_USER, adminUser);
+        manager.setProperty(BaseAction.PROPERTY_ADMIN_PASSWORD, adminPassword);
         manager.setProperty(PropertyManager.LOG_CONFIG_FILE,
                 realLogPath);
         System.err.println("Starting up Log4J Logging System");

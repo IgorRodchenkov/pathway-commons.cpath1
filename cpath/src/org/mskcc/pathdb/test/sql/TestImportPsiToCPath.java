@@ -20,7 +20,8 @@ import org.mskcc.pathdb.sql.query.ExecuteQuery;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryResult;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
-import org.mskcc.pathdb.tool.LoadFullText;
+import org.mskcc.pathdb.task.IndexLuceneTask;
+import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.Md5Util;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -41,11 +42,12 @@ public class TestImportPsiToCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
+        ProgressMonitor pMonitor = new ProgressMonitor();
         ContentReader reader = new ContentReader();
         String file = new String("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
         ImportPsiToCPath importer = new ImportPsiToCPath();
-        ImportSummary summary = importer.addRecord(xml, true, false);
+        ImportSummary summary = importer.addRecord(xml, true, false, pMonitor);
         assertEquals(7, summary.getNumInteractorsProcessed());
         assertEquals(0, summary.getNumInteractorsFound());
         assertEquals(7, summary.getNumInteractorsSaved());
@@ -62,8 +64,8 @@ public class TestImportPsiToCPath extends TestCase {
                 record.getDescription());
 
         //  Run Full Text Indexer
-        LoadFullText batch = new LoadFullText(false);
-        batch.indexAllPhysicalEntities();
+        IndexLuceneTask task = new IndexLuceneTask(false);
+        task.indexAllPhysicalEntities();
 
         validateQueries();
 
@@ -72,7 +74,7 @@ public class TestImportPsiToCPath extends TestCase {
         //  Validate that new interactions clobbered old interactions.
         //  Only one interaction in psi_sample_mixed.xml has an external ref.
         //  Hence, only one interaction gets clobbered.
-        summary = importer.addRecord(xml, true, false);
+        summary = importer.addRecord(xml, true, false, pMonitor);
         assertEquals(0, summary.getNumInteractorsSaved());
         assertEquals(6, summary.getNumInteractionsSaved());
         assertEquals(1, summary.getNumInteractionsClobbered());

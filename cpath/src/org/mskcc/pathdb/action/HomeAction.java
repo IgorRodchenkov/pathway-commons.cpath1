@@ -3,8 +3,6 @@ package org.mskcc.pathdb.action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,14 +38,6 @@ public class HomeAction extends BaseAction {
     public ActionForward subExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
-        DaoCPath dao = new DaoCPath();
-        int numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
-        int numPhysicalEntities = dao.getNumEntities
-                (CPathRecordType.PHYSICAL_ENTITY);
-        request.setAttribute(NUM_INTERACTIONS,
-                Integer.toString(numInteractions));
-        request.setAttribute(NUM_PHYSICAL_ENTITIES,
-                Integer.toString(numPhysicalEntities));
-        return mapping.findForward("success");
+        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 }

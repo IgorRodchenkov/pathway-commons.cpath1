@@ -21,7 +21,7 @@ public class QueryCPath {
         if (args.length == 1) {
             queryCPath(args);
         } else {
-            System.out.println("Command line usage:  queryCPath.sh"
+            System.out.println("Command line usage:  admin.pl ft_query"
                     + " interactor_name");
         }
     }
