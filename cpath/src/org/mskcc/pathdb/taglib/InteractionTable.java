@@ -335,7 +335,7 @@ public class InteractionTable extends HtmlTable {
                 getProteinParticipantCount();
         if (targetProtein == null) {
 
-            append("<td width='300' rowspan='"+ count + "' class='cpath2'>");
+            append("<td width='300' rowspan='" + count + "' class='cpath2'>");
         } else {
             append("<td width='300' rowspan=1 class='cpath2'>");
         }
@@ -357,7 +357,7 @@ public class InteractionTable extends HtmlTable {
         int count = interaction.getParticipantList().
                 getProteinParticipantCount();
         if (targetProtein == null) {
-            append("<td rowspan='"+count+"' class='cpath2'>");
+            append("<td rowspan='" + count + "' class='cpath2'>");
         } else {
             append("<td rowspan=1 class='cpath2'>");
         }

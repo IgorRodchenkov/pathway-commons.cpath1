@@ -75,15 +75,14 @@ public class Admin {
      */
     private static void importData() throws IOException, DaoException,
             ImportException {
-        File file = new File (fileName);
+        File file = new File(fileName);
         if (file.isDirectory()) {
             File files[] = file.listFiles();
-            for (int i=0; i<files.length; i++) {
+            for (int i = 0; i < files.length; i++) {
                 System.out.println("Loading File:  " + files[i].getName());
-                importDataFromSingleFile (files[i]);
+                importDataFromSingleFile(files[i]);
             }
-        }
-        else {
+        } else {
             importDataFromSingleFile(file);
         }
         ImportRecords importer = new ImportRecords();

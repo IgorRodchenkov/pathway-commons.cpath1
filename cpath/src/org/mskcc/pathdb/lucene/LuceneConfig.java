@@ -4,7 +4,11 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.mskcc.dataservices.util.PropertyManager;
 
-
+/**
+ * Lucene Config Class.
+ *
+ * @author Ethan Cerami
+ */
 public class LuceneConfig {
 
     /**

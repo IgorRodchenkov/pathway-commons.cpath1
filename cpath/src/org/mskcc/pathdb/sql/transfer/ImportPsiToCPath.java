@@ -265,7 +265,6 @@ public class ImportPsiToCPath {
     }
 
 
-
     /**
      * Extracts External References from Protein Interactor.
      */

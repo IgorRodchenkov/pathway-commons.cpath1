@@ -3,9 +3,9 @@ package org.mskcc.pathdb.tool;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.task.ImportReferencesTask;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.File;
 
 /**
  * Loads External References from text file.

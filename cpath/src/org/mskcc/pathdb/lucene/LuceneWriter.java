@@ -22,6 +22,7 @@ public class LuceneWriter {
      * Constructor.
      *
      * @param resetFlag If Set to True, Existing Index is deleted!
+     * @throws IOException IO Error.
      */
     public LuceneWriter(boolean resetFlag) throws IOException {
         writer = new IndexWriter(dir, analyzer, resetFlag);
@@ -65,6 +66,7 @@ public class LuceneWriter {
     /**
      * Optimizes Lucene Index Files.
      * For details:  http://www.onjava.com/pub/a/onjava/2003/03/05/lucene.html.
+     *
      * @throws IOException File Error.
      */
     public void optimize() throws IOException {
@@ -73,6 +75,7 @@ public class LuceneWriter {
 
     /**
      * Closes the Indexer Writer.
+     *
      * @throws IOException File Error.
      */
     public void closeWriter() throws IOException {
