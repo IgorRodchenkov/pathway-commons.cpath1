@@ -20,15 +20,16 @@
     </shortDescription>
 
     <description>
-        cPath is a freely available cancer pathway database.
-        We are building this as a resource to the community.
+        cPath is a freely available cancer pathway database built
+        as a community resource.
         Currently, basic protein-protein interaction functionality
         is available. We expect to make a preliminary version of cPath
         available to the public in early 2004. In the near future, we
-        also plan to make cPath BioPax compatibile.
+        also plan to make cPath <a href="http://www.biopax.org">BioPAX</a> compatible.
         <P/>
-        cPath is currently being developed by the Computational Biology
-        Center of Memorial Sloan-Kettering Cancer Center.
+        cPath is currently being developed by the <a href="http://www.cbio.mskcc.org">
+	Computational Biology Center</a> of <a href="http://www.mskcc.org">Memorial
+	Sloan-Kettering Cancer Center</a>.
     </description>
 
 	<!--  Specifies current temporary location of public web site -->
@@ -51,14 +52,17 @@
         <developer>
           <name>Ethan Cerami</name>
           <id>cerami</id>
-          <email>cerami AT cbio.mskc.org</email>
+          <email>cerami A@T cbio.mskc.org</email>
           <organization>Memorial Sloan-Kettering Cancer Center</organization>
+	  <timezone>-5</timezone>
         </developer>
         <developer>
           <name>Gary Bader</name>
           <id>bader</id>
-          <email>bader AT cbio.mskc.org</email>
+          <email>bader A@T cbio.mskc.org</email>
           <organization>Memorial Sloan-Kettering Cancer Center</organization>
+	  <url>http://www.cbio.mskcc.org/~bader</url>
+	  <timezone>-5</timezone>
         </developer>
     </developers>
 
