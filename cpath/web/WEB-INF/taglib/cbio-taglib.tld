@@ -31,4 +31,11 @@
     <body-content>empty</body-content>
     <description>Displays Import Table</description>
   </tag>
+
+  <tag>
+    <name>cacheTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.CacheTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Cache Contents</description>
+  </tag>
 </taglib>
