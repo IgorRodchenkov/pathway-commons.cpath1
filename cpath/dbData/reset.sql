@@ -32,7 +32,7 @@ INSERT INTO `external_db` VALUES (6, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Sea
 INSERT INTO `external_db` VALUES (7, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%', 'Protein families database of alignments and HMMs.', 11, NULL, NULL, 20031002162804, 20031002162804);
 INSERT INTO `external_db` VALUES (8, 'Entrez GI', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=protein&list_uids=%ID%&dopt=GenPept&term=%ID%&qty=1', 'NCBI Entrez System', 12, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (9, 'Locus Link', 'http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l=%ID%', 'NCBI Locus Link', 14, NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (10, 'GO', 'http://godatabase.org/cgi-bin/go.cgi?view=query&query=%ID%', 'Gene Ontology', 15, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (10, 'GO', 'http://www.godatabase.org/cgi-bin/amigo/go.cgi?open_1=%ID%', 'Gene Ontology', 15, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (11, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%ID%&dopt=Abstract', 'NCBI PubMed', 16, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (12, 'Affymetrix', '', 'Affymetrix ID', 20, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (13, 'UniProt', 'http://www.pir.uniprot.org/cgi-bin/upEntry?id=%ID%', 'UniProt (Universal Protein Resource) is the world\'s most comprehensive catalog of information on proteins.', 21, NULL, NULL, 20031002163709, 20031002163709);
