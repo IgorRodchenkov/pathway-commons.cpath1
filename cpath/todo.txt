@@ -18,7 +18,7 @@ cPath Functionality Issues:
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
-1.  Add support for Tomcat JDBC Connection Pooling.
+1.  Add support for Tomcat JDBC Connection Pooling. [done]
 2.  Load Testing via JMeter.
 3.  Prevent against cross-scripting vulnerability.
 4.  Set up auto-emails upon fatal cPath errors.
