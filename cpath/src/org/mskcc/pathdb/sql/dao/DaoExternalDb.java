@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.GlobalCache;
 
@@ -58,13 +59,14 @@ public class DaoExternalDb {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO external_db (`NAME`,`URL`,"
-                    + "`DESC`,`CREATE_TIME`) VALUES (?,?,?,?)");
+                    + "`DESC`,`CREATE_TIME`, `DB_TYPE`) VALUES (?,?,?,?,?)");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getUrl());
             pstmt.setString(3, db.getDescription());
             java.util.Date now = new java.util.Date();
             Timestamp timeStamp = new Timestamp(now.getTime());
             pstmt.setTimestamp(4, timeStamp);
+            pstmt.setString(5, db.getDbType().toString());
             int rows = pstmt.executeUpdate();
 
             // Save CV Terms.
@@ -113,7 +115,7 @@ public class DaoExternalDb {
                         ("SELECT * FROM external_db WHERE EXTERNAL_DB_ID = ?");
                 pstmt.setInt(1, id);
                 rs = pstmt.executeQuery();
-                dbRecord =  extractRecord(rs);
+                dbRecord = extractRecord(rs);
 
                 //  Store to Cache
                 if (dbRecord != null) {
@@ -336,6 +338,9 @@ public class DaoExternalDb {
         record.setDescription(rs.getString("DESC"));
         record.setCreateTime(rs.getTimestamp("CREATE_TIME"));
         record.setUpdateTime(rs.getTime("UPDATE_TIME"));
+        ReferenceType type = ReferenceType.getType
+                (rs.getString("DB_TYPE"));
+        record.setDbType(type);
         int cvId = rs.getInt("FIXED_CV_TERM");
 
         DaoExternalDbCv dao = new DaoExternalDbCv();
