@@ -83,7 +83,7 @@
 		The following query requests all cPath interactions for protein "P09097".
         Data will be formatted in HTML.
         <UL>
-            <LI><SMALL><A HREF="webservice?cmd=retrieve_interactions&format=html&version=1.0&uid=P09097">webservice?cmd=retrieve_interactions&format=psi&version=1.0&uid=P09097</A>
+            <LI><SMALL><A HREF="webservice?cmd=retrieve_interactions&format=html&version=1.0&uid=P09097">webservice?cmd=retrieve_interactions&format=html&version=1.0&uid=P09097</A>
                 </SMALL>
         </UL>
 		The following query requests all cPath interactions for an invalid UID.
