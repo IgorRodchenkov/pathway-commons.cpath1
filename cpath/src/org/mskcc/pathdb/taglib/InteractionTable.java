@@ -45,6 +45,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * Custom JSP Tag for Displaying Interactions.
@@ -186,8 +187,8 @@ public class InteractionTable extends HtmlTable {
         String pagerLinks = pager.getHeaderHtml();
 
         startRow();
-        this.append("<td colspan=2>" + pagerLinks + "</td>");
-        this.append("<td colspan=2 align=right>");
+        this.append("<td colspan=3>" + pagerLinks + "</td>");
+        this.append("<td colspan=1 align=right>");
         this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
         outputLink("View PSI-MI XML Format", psiUrl,
                 "View Data in PSI-MI XML Format");
@@ -567,27 +568,58 @@ public class InteractionTable extends HtmlTable {
      * Outputs External References.
      */
     private void outputExternalReferences(String id) throws DaoException {
+        ArrayList affyList = new ArrayList();
         startRow();
         this.append("<td class='cpath1'>External References:</th>");
         DaoExternalLink dao = new DaoExternalLink();
         ArrayList links = dao.getRecordsByCPathId(Long.parseLong(id));
+        Collections.sort(links);
         append("<TD VALIGN=TOP>");
         for (int i = 0; i < links.size(); i++) {
             ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
             ExternalDatabaseRecord db = link.getExternalDatabase();
-            append("- " + db.getName() + ": ");
-            if (link.getWebLink() != null) {
-                outputLink(link.getLinkedToId(), link.getWebLink(),
-                        "External Link to:  " + db.getName());
+            if (db.getFixedCvTerm().equalsIgnoreCase("Affymetrix")) {
+                affyList.add (link);
             } else {
-                append(link.getLinkedToId());
+                append("- " + db.getName() + ": ");
+                if (link.getWebLink() != null) {
+                    outputLink(link.getLinkedToId(), link.getWebLink(),
+                            "External Link to:  " + db.getName());
+                } else {
+                    append(link.getLinkedToId());
+                }
+                append("<BR>");
             }
-            append("<BR>");
         }
         if (links.size() == 0) {
             append("No External References Specified");
         }
         append("</UL></TD>");
         endRow();
+
+        if (affyList.size() > 0) {
+            startRow();
+            append ("<td class='cpath1'>Affymetrix IDs:</th>");
+            append ("<td>");
+            append ("<DIV id='showAffy' class='show'>"
+                    + "[<A href='#' onClick=\"changeStyle('affy', 'show'); "
+                    + "changeStyle('showAffy', 'hide'); "
+                    + "changeStyle('hideAffy', 'show'); "
+                    + "return false;\">"
+                    + "Show Affymetrix IDs</A>]</DIV>");
+            append ("<DIV id='hideAffy' class='hide'>"
+                    + "[<A href='#' onClick=\"changeStyle('affy', 'hide'); "
+                    + "changeStyle('showAffy', 'show'); "
+                    + "changeStyle('hideAffy', 'hide'); "
+                    + "return false;\">Hide Affymetrix IDs</A>]</DIV>");
+            append ("<DIV id='affy' class='hide'>");
+            for (int i=0; i<affyList.size(); i++) {
+                ExternalLinkRecord link = (ExternalLinkRecord) affyList.get(i);
+                append ("- " + link.getLinkedToId() +"<BR>");
+            }
+            append ("</DIV>");
+            append("</TD>");
+            endRow();
+        }
     }
 }
