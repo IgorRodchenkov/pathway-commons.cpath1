@@ -44,9 +44,6 @@ public class Query {
         DaoXmlCache dao = new DaoXmlCache(xdebug);
         XmlAssembly xmlAssembly = null;
         XmlAssembly cachedXml = null;
-
-        //TODO:  REMOVE
-        checkCache = false;
         try {
             String hashKey = getHashKey(request);
             xdebug.logMsg(this, "Checking cache for pre-computed XML");
