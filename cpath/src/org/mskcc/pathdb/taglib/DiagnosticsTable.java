@@ -39,7 +39,8 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runFirstBatch() {
-        DiagnosticTestResults test = new DiagnosticTestResults("Testing access to Table:  cpath");
+        DiagnosticTestResults test = new DiagnosticTestResults
+                ("Testing access to Table:  cpath");
         DaoCPath cpath = new DaoCPath();
         try {
             cpath.getRecordById(12345);
@@ -48,7 +49,8 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new DiagnosticTestResults("Testing access to Table:  external_db");
+        test = new DiagnosticTestResults
+                ("Testing access to Table:  external_db");
         DaoExternalDb externalDb = new DaoExternalDb();
         try {
             externalDb.getRecordById(12345);
@@ -57,7 +59,8 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new DiagnosticTestResults("Testing access to Table:  external_db_cv");
+        test = new DiagnosticTestResults
+                ("Testing access to Table:  external_db_cv");
         DaoExternalDbCv externalDbCv = new DaoExternalDbCv();
         try {
             externalDbCv.getTermByDbCvId(12345);
@@ -66,7 +69,8 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new DiagnosticTestResults("Testing access to Table:  external_link");
+        test = new DiagnosticTestResults
+                ("Testing access to Table:  external_link");
         DaoExternalLink externalLink = new DaoExternalLink();
         try {
             externalLink.getRecordById(12345);
@@ -77,7 +81,8 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runSecondBatch() {
-        DiagnosticTestResults test = new DiagnosticTestResults("Testing access to Table:  import");
+        DiagnosticTestResults test = new DiagnosticTestResults
+                ("Testing access to Table:  import");
         DaoImport daoImport = new DaoImport();
         try {
             daoImport.getRecordById(12345);
@@ -86,7 +91,8 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new DiagnosticTestResults("Testing access to Table:  internal_link");
+        test = new DiagnosticTestResults
+                ("Testing access to Table:  internal_link");
         DaoInternalLink internalLink = new DaoInternalLink();
         try {
             internalLink.getInternalLinks(12345);
@@ -124,7 +130,8 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runThirdBatch() throws IOException {
-        DiagnosticTestResults test = new DiagnosticTestResults("Testing access to Lucene Full Text Index");
+        DiagnosticTestResults test = new DiagnosticTestResults
+                ("Testing access to Lucene Full Text Index");
         LuceneIndexer indexer = new LuceneIndexer();
         try {
             indexer.executeQuery("dna");
@@ -142,7 +149,8 @@ public class DiagnosticsTable extends HtmlTable {
     private void outputTests() {
         for (int i = 0; i < testList.size(); i++) {
             this.startRow(i);
-            DiagnosticTestResults test = (DiagnosticTestResults) testList.get(i);
+            DiagnosticTestResults test = (DiagnosticTestResults)
+                    testList.get(i);
             Exception e = test.getException();
             if (e == null) {
                 outputDataField("<IMG SRC='jsp/images/icon_success_sml.gif'>");
