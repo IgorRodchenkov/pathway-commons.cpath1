@@ -39,7 +39,6 @@ import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 
 import java.io.IOException;
 
@@ -89,13 +88,13 @@ public class SearchResultsTable extends HtmlTable {
         if (hits.length() > 0) {
             this.startTable();
             this.startRow(1);
-            this.append("<td colspan='3'>Total Number of Matches:  " +
-                    hits.length());
+            this.append("<td colspan='3'>Total Number of Matches:  "
+                    + hits.length());
             this.append("</td>");
             this.append("<td colspan='2'>");
             this.append("<div class='right'>");
             append(pager.getHeaderHtml());
-            append ("</div></td>");
+            append("</div></td>");
             this.endRow();
             this.endTable();
         }

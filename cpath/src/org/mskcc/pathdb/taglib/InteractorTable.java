@@ -3,13 +3,13 @@ package org.mskcc.pathdb.taglib;
 import org.mskcc.dataservices.schemas.psi.NamesType;
 import org.mskcc.dataservices.schemas.psi.Organism;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
+import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.controller.ProtocolConstants;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -36,7 +36,8 @@ public class InteractorTable extends HtmlTable {
             StringReader reader = new StringReader(xml);
             String title = "Interactor:  " + record.getName();
             ProteinInteractorType interactor =
-                    ProteinInteractorType.unmarshalProteinInteractorType(reader);
+                    ProteinInteractorType.unmarshalProteinInteractorType
+                    (reader);
             outputHeader(title);
             outputName(interactor.getNames());
             outputOrganism(interactor.getOrganism());
@@ -81,7 +82,7 @@ public class InteractorTable extends HtmlTable {
             } else if (shortName != null && shortName.length() > 0) {
                 append(shortName);
             } else {
-                append ("Not Specified");
+                append("Not Specified");
             }
         } else {
             append("Not specified");
@@ -103,11 +104,11 @@ public class InteractorTable extends HtmlTable {
             ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
             ExternalDatabaseRecord db = link.getExternalDatabase();
             append("<LI>" + db.getName() + ": ");
-            if (link.getWebLink()!= null) {
+            if (link.getWebLink() != null) {
                 outputLink(link.getLinkedToId(), link.getWebLink(),
-                    db.getDescription());
+                        db.getDescription());
             } else {
-                append (link.getLinkedToId());
+                append(link.getLinkedToId());
             }
         }
         if (links.size() == 0) {
@@ -116,7 +117,7 @@ public class InteractorTable extends HtmlTable {
         append("</UL></TD>");
         startRow(1);
         String url = this.getInteractionLink
-            (id, ProtocolConstants.FORMAT_HTML);
+                (id, ProtocolConstants.FORMAT_HTML);
         this.outputDataField("Interactions");
         this.outputDataField("View All Interactions", url);
         endRow();

@@ -48,10 +48,10 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected abstract void subDoStartTag() throws Exception;
 
-    protected void createHeader (String title) {
-        append ("<div id='axial' class='h3'>");
-        append ("<h3>" + title + "</h3>");
-        append ("</div>");
+    protected void createHeader(String title) {
+        append("<div id='axial' class='h3'>");
+        append("<h3>" + title + "</h3>");
+        append("</div>");
     }
 
     /**
@@ -60,8 +60,8 @@ public abstract class HtmlTable extends TagSupport {
     protected void startTable() {
 //        append ("<div class='app'>");
 //        append ("<div class='colbar'>");
-        append ("<table border='1' cellspacing='2' cellpadding='3' " +
-            "width='100%'>");
+        append("<table border='1' cellspacing='2' cellpadding='3' "
+                + "width='100%'>");
     }
 
     /**
@@ -86,9 +86,9 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected void startRow(int row) {
         if (row % 2 == 0) {
-            append ("<tr class='a'>");
+            append("<tr class='a'>");
         } else {
-            append ("<tr class='b'>");
+            append("<tr class='b'>");
         }
     }
 

@@ -78,7 +78,7 @@ public class InteractionTable extends HtmlTable {
         String url = protocolRequest.getUri();
         String title = "Matching Interactions";
 
-        createHeader (title);
+        createHeader(title);
 
         startTable();
         outputNumInteractions(url);
@@ -94,8 +94,8 @@ public class InteractionTable extends HtmlTable {
     private void outputNumInteractions(String url) {
         if (interactions.size() > 0) {
             this.startRow(1);
-            this.append("<td colspan=2>Total Number of Interactions:  " +
-                    interactions.size());
+            this.append("<td colspan=2>Total Number of Interactions:  "
+                    + interactions.size());
             this.append("</td>");
             this.append("<td colspan=3>");
             this.append("<div class='right'>");
@@ -112,7 +112,7 @@ public class InteractionTable extends HtmlTable {
      */
     private void outputInteractions() throws DaoException {
         if (interactions.size() == 0) {
-            append ("<tr class='a'>");
+            append("<tr class='a'>");
             append("<td colspan=4>No Matching Interactions Found.  "
                     + "Please try again.</td>");
             append("</tr>");
@@ -154,12 +154,12 @@ public class InteractionTable extends HtmlTable {
             }
             StringBuffer interactorHtml = new StringBuffer();
             interactorHtml.append("<A HREF='" + url + "'>"
-                    + name +"</A><br/><ul>");
+                    + name + "</A><br/><ul>");
             if (desc != null) {
-                interactorHtml.append("<li>" + desc+"</li>");
+                interactorHtml.append("<li>" + desc + "</li>");
             }
             if (org != null) {
-                interactorHtml.append("<li>Organism:  " + org+"</li>");
+                interactorHtml.append("<li>Organism:  " + org + "</li>");
             }
             interactorHtml.append("</ul>");
             outputDataField(interactorHtml.toString());

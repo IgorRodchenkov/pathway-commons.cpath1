@@ -1,12 +1,11 @@
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.pathdb.sql.dao.*;
-import org.mskcc.pathdb.sql.dao.DaoLog;
-import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.sql.dao.*;
+import org.mskcc.pathdb.sql.query.QueryException;
 
-import java.util.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Custom JSP Tag for Displaying cPath Diagnostics.
@@ -15,7 +14,6 @@ import java.io.IOException;
  */
 public class DiagnosticsTable extends HtmlTable {
     private ArrayList testList;
-
 
     /**
      * Executes JSP Custom Tag
@@ -32,7 +30,7 @@ public class DiagnosticsTable extends HtmlTable {
         endTable();
     }
 
-    private void runTests () throws IOException {
+    private void runTests() throws IOException {
         runFirstBatch();
         runSecondBatch();
         runThirdBatch();
@@ -86,7 +84,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test ("Testing access to Table:  INTERNAL_LINK");
+        test = new Test("Testing access to Table:  INTERNAL_LINK");
         DaoInternalLink internalLink = new DaoInternalLink();
         try {
             internalLink.getInternalLinks(12345);
@@ -95,7 +93,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test ("Testing access to Table:  LOG");
+        test = new Test("Testing access to Table:  LOG");
         DaoLog logger = new DaoLog();
         try {
             logger.getLogRecords();
@@ -104,8 +102,8 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test ("Testing access to Table:  XML_CACHE");
-        DaoXmlCache cache = new DaoXmlCache ();
+        test = new Test("Testing access to Table:  XML_CACHE");
+        DaoXmlCache cache = new DaoXmlCache();
         try {
             cache.getXmlByKey("12345");
         } catch (DaoException e) {
@@ -114,8 +112,8 @@ public class DiagnosticsTable extends HtmlTable {
         testList.add(test);
     }
 
-    private void  runThirdBatch () throws IOException {
-        Test test = new Test ("Testing access to Lucene Full Text Index");
+    private void runThirdBatch() throws IOException {
+        Test test = new Test("Testing access to Lucene Full Text Index");
         LuceneIndexer indexer = new LuceneIndexer();
         try {
             indexer.executeQuery("dna");
@@ -131,7 +129,7 @@ public class DiagnosticsTable extends HtmlTable {
      * Output Diagnostic Tests.
      */
     private void outputTests() {
-        for (int i=0; i<testList.size(); i++) {
+        for (int i = 0; i < testList.size(); i++) {
             this.startRow(i);
             Test test = (Test) testList.get(i);
             Exception e = test.getException();
@@ -141,8 +139,8 @@ public class DiagnosticsTable extends HtmlTable {
                 outputDataField("<IMG SRC='jsp/images/icon_error_sml.gif'>");
             }
             outputDataField(test.getName());
-            if (e!=null) {
-                outputDataField (e.getMessage());
+            if (e != null) {
+                outputDataField(e.getMessage());
             } else {
                 outputDataField("");
             }
@@ -151,11 +149,16 @@ public class DiagnosticsTable extends HtmlTable {
     }
 }
 
+/**
+ * Encapsulates Test Results.
+ *
+ * @author Ethan Cerami.
+ */
 class Test {
     private String name;
     private Exception e;
 
-    public Test (String name) {
+    public Test(String name) {
         this.name = name;
     }
 

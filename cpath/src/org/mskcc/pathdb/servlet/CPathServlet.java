@@ -15,7 +15,6 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import java.sql.SQLException;
 
 /**
  * CPath Servlet.

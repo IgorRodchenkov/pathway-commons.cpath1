@@ -20,7 +20,7 @@ public class TaskTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {
-        createHeader ("Active Tasks");
+        createHeader("Active Tasks");
         startTable();
         outputRecords();
         endTable();
@@ -64,7 +64,7 @@ public class TaskTable extends HtmlTable {
                 }
             }
             if (img != null) {
-                status = "<img src='jsp/images/"+img+"'/>&nbsp;" + status;
+                status = "<img src='jsp/images/" + img + "'/>&nbsp;" + status;
             }
             outputDataField("<small>" + status + "</small>");
             if (!isAlive) {
@@ -74,7 +74,7 @@ public class TaskTable extends HtmlTable {
                         + i + "'>Clear Task</A>"
                         + "</small>");
             } else {
-                outputDataField ("");
+                outputDataField("");
             }
             endRow();
         }

@@ -58,7 +58,7 @@ public class ErrorMessage extends HtmlTable {
 
         String header = resource.getMessage(MSG_ERROR_HEADER);
         this.append("<div class=\"errormessage\">");
-        this.append("<p><strong>"+ header+"</strong></p>");
+        this.append("<p><strong>" + header + "</strong></p>");
         Throwable rootCause = getRootCause(throwable);
         outputUserMessage(rootCause, resource);
         if (xdebugFlag) {

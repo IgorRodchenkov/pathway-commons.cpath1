@@ -1,7 +1,6 @@
 package org.mskcc.pathdb.test.web;
 
 import junit.framework.TestCase;
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;

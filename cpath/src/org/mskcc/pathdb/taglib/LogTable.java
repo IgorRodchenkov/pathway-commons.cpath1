@@ -33,9 +33,9 @@
  **/
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.pathdb.sql.dao.DaoLog;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.logger.LogRecord;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoLog;
 
 import java.util.ArrayList;
 

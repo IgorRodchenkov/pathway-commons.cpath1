@@ -94,9 +94,19 @@ public abstract class BaseAction extends Action {
      */
     public static final String PAGE_AUTO_UPDATE = "auto_update";
 
-
+    /**
+     * Page Attribute:  Servlet Name (before passage to struts).
+     */
     public static final String ATTRIBUTE_SERVLET_NAME = "servlet_name";
+
+    /**
+     * Page Attribute:  Page Style.
+     */
     public static final String ATTRIBUTE_STYLE = "style";
+
+    /**
+     * Page Attribute:  Page Print Style.
+     */
     public static final String ATTRIBUTE_STYLE_PRINT = "print";
 
     /**
