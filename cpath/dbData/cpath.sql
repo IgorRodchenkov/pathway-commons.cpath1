@@ -178,8 +178,8 @@ CREATE TABLE `xml_cache` (
 #
 # Table structure for table `id_map`
 #
-# Creation: Feb 03, 2005 at 03:41 PM
-# Last update: Feb 03, 2005 at 03:41 PM
+# Creation: Feb 15, 2005 at 04:20 PM
+# Last update: Feb 15, 2005 at 04:39 PM
 #
 
 CREATE TABLE `id_map` (
@@ -188,5 +188,10 @@ CREATE TABLE `id_map` (
   `ID_1` varchar(255) NOT NULL default '',
   `DB_2` int(11) NOT NULL default '0',
   `ID_2` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`ID_MAP_ID`)
+  `HASH_CODE` int(30) NOT NULL default '0',
+  PRIMARY KEY  (`ID_MAP_ID`),
+  KEY `HASH_CODE` (`HASH_CODE`),
+  KEY `DB ID Pair1` (`DB_1`,`ID_1`),
+  KEY `DB ID Pair2` (`DB_2`,`ID_2`)
 ) TYPE=MyISAM COMMENT='ID Mapping Service' AUTO_INCREMENT=1 ;
+# --------------------------------------------------------
