@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +39,6 @@ public final class DataService extends HttpServlet {
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-
         logger.info("Data Servlet Invoked.  Getting live data");
         response.setHeader("Cache-control", "no-cache");
         response.setHeader("Pragma", "no-cache");
@@ -80,22 +80,27 @@ public final class DataService extends HttpServlet {
      */
     public void init() throws ServletException {
         super.init();
-        logger.info("Data Service Servlet Starting up");
+        System.err.println("Starting up CBio Data Service...");
+        System.err.println("Reading in init parameters from web.xml");
         PropertyManager manager = PropertyManager.getInstance();
         ServletConfig config = this.getServletConfig();
         String dbHost = config.getInitParameter("db_host");
         String dbUser = config.getInitParameter("db_user");
         String dbPassword = config.getInitParameter("db_password");
         String logConfigFile = config.getInitParameter("log_config_file");
-        logger.info("Found dbHost:  " + dbHost);
-        logger.info("Found dbUser:  " + dbUser);
-        logger.info("Found Log Configuration File:  " + logConfigFile);
+        ServletContext ctx = this.getServletContext();
+        String realLogPath = ctx.getRealPath(logConfigFile);
+        System.err.println("web.xml param:  log_config_file --> "+logConfigFile);
+        System.err.println("Real Path for log config file:  "+realLogPath);
+        System.err.println("web.xml param:  db_host --> "+dbHost);
+        System.err.println("web.xml param:  db_user --> "+dbUser);
+        System.err.println("web.xml param:  db_password --> "+dbPassword);
         manager.setDbHost(dbHost);
         manager.setDbUser(dbUser);
         manager.setDbPassword(dbPassword);
-        manager.setLogConfigFile(logConfigFile);
-        File file = new File(logConfigFile);
-        logger.info("Absolute Path for Log File:  " + file.getAbsolutePath());
+        manager.setLogConfigFile(realLogPath);
+        System.err.println ("Starting up Log4J Logging System");
         ConfigLogger.configureLogger();
+        System.err.println("Data Service Initialization Complete --> OK");
     }
 }

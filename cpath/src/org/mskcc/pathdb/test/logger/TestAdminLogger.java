@@ -3,7 +3,6 @@ package org.mskcc.pathdb.test.logger;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
-import org.mskcc.pathdb.util.PropertyManager;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -21,8 +20,6 @@ public class TestAdminLogger extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAdminLogger() throws Exception {
-        PropertyManager propertyManager = PropertyManager.getInstance();
-        propertyManager.setLogConfigFile("config/config-JDBC.properties");
 
         //  First, delete all exiting log messages.
         AdminLogger admin = new AdminLogger ();

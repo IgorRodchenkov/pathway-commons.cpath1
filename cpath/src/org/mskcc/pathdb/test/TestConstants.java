@@ -15,7 +15,7 @@ public class TestConstants {
     /**
      * Database User Name.
      */
-    public static final String USER = "reader";
+    public static final String USER = "user";
 
     /**
      * Database Password.

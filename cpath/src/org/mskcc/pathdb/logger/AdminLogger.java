@@ -1,5 +1,7 @@
 package org.mskcc.pathdb.logger;
 
+import org.mskcc.pathdb.util.PropertyManager;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Connection;
@@ -14,10 +16,7 @@ import java.sql.ResultSet;
  * @author Ethan Cerami
  */
 public class AdminLogger {
-    private String host = "localhost";
     private String db = "log";
-    private String user = "logger";
-    private String password = "cbio1";
     private ArrayList records;
 
     /**
@@ -70,6 +69,11 @@ public class AdminLogger {
     private Connection getConnection() throws ClassNotFoundException,
             SQLException {
         Connection con = null;
+        //  Get Database Properties from PropertyManager.
+        PropertyManager manager = PropertyManager.getInstance();
+        String host = manager.getDbHost();
+        String user = manager.getDbUser();
+        String password = manager.getDbPassword();
         String url =
                 new String("jdbc:mysql://" + host + "/"
                 + db + "?user=" + user
