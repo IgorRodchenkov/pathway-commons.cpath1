@@ -114,7 +114,7 @@ public class SnoopHttp {
         while (enum.hasMoreElements()) {
             String headerName = (String) enum.nextElement();
             String value = request.getHeader(headerName);
-            //  Filter out referer;  not really important
+            //  Filter out referer;  not really important right now
             if (!(headerName.equals("referer")
                     || headerName.equals("accept"))) {
                 xdebug.addParameter(XDebugParameter.HTTP_HEADER_TYPE,
