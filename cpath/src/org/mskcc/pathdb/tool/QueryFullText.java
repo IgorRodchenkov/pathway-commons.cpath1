@@ -5,9 +5,15 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.sql.query.Query;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.xdebug.XDebugMessage;
+import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.controller.ProtocolConstants;
 
 import java.io.IOException;
+import java.util.Vector;
 
 /**
  * Command Line Tool for Querying Full Text Indexer.
@@ -29,8 +35,15 @@ public class QueryFullText {
                 terms.append(args[i] + " ");
             }
             System.out.println("Using search terms:  " + terms.toString());
-            queryFullText(terms.toString());
-            xdebug.stopTimer();
+            queryFullText(terms.toString(), xdebug);
+            System.out.println("XDebug Log:");
+            System.out.println("----------------");
+            Vector list = xdebug.getDebugMessages();
+            for (int i=0; i<list.size(); i++) {
+                XDebugMessage msg = (XDebugMessage) list.get(i);
+                System.out.println(msg.getMessage());
+            }
+
             System.out.println("Total Time for Query:  "
                     + xdebug.getTimeElapsed() + " ms");
         } else {
@@ -43,37 +56,26 @@ public class QueryFullText {
      * Perform Query.
      * @param terms Search Terms.
      */
-    private static void queryFullText(String terms) {
+    private static void queryFullText(String terms, XDebug xdebug) {
         try {
-            LuceneIndexer lucene = new LuceneIndexer();
-            Hits hits = lucene.executeQuery(terms);
-            displayHits(hits);
+            ProtocolRequest request = new ProtocolRequest();
+            request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+            request.setQuery(terms);
+            request.setMaxHits("1");
+            Query query = new Query(xdebug);
+            XmlAssembly xmlAssembly = query.executeQuery(request, true);
+            xdebug.stopTimer();
+            if (xmlAssembly.isEmpty()) {
+                System.out.println("No Macthing Hits");
+            } else {
+                String xmlString = xmlAssembly.getXmlString();
+                System.out.println("Showing Top Hit Only:");
+                System.out.println(xmlString);
+            }
         } catch (QueryException e) {
             System.out.println("\n!!!!  An Error Has Occurred!");
             System.out.println("-->  " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("\n!!!!  An Error Has Occurred!");
-            System.out.println("-->  " + e.getMessage());
-        }
-    }
-
-    /**
-     * Display all Results.
-     */
-    private static void displayHits(Hits hits) throws IOException {
-        if (hits.length() == 0) {
-            System.out.println("No matching records found.");
-        } else {
-            System.out.println("Showing Top Hit Only:");
-            Document doc = hits.doc(0);
-            Field cpathId = doc.getField(LuceneIndexer.FIELD_CPATH_ID);
-            if (cpathId != null) {
-                System.out.println("cPath ID:  " + cpathId.stringValue());
-            }
-            Field xml = doc.getField(LuceneIndexer.FIELD_ALL);
-            if (xml != null) {
-                System.out.println("Data record:  \n" + xml.stringValue());
-            }
+            e.printStackTrace();
         }
     }
 }
