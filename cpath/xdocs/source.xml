@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>Source Downloads</title>
+  </properties>
+
+  <body>
+    <section name="Automated Nightly Snapshots">
+        <p>
+        Automated Nightly Snapshots are created every 24 hours directly from
+        the active CVS repository. This is for developers who are helping to
+        develop cPath and want the very latest code.
+        Use at your own risk!
+        </p>
+        <p>
+        <A HREF="cyto.tar.gz">Download Source</A> [tar.gz format]
+        </p>
+     </section>
+  </body>
+</document>

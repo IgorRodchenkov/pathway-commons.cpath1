@@ -30,7 +30,7 @@
 	      <item name="Installation Guide"   href="/installation.pdf"/>
     </menu>
     <menu name="Downloads">
-          <item name="Download Source" href="cpath.tar.gz"/>
+          <item name="Source Downloads" href="source.html"/>
     </menu>
   </body>
 </project>
