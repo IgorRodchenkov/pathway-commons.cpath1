@@ -77,6 +77,7 @@
                 <jsp:include page="../global/adminTasks.jsp" flush="true" />
                 <% } %>
 
+                <jsp:include page="../global/browse.jsp" flush="true" />
                 <jsp:include page="../global/dbStats.jsp" flush="true" />
                 <jsp:include page="../global/docs.jsp" flush="true" />
                 <jsp:include page="../global/howto.jsp" flush="true" />
