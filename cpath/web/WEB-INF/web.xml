@@ -5,7 +5,8 @@
 <web-app>
 
     <display-name>CBio Data Services Application</display-name>
-    
+
+    <!--
     <filter>
         <filter-name>Cache</filter-name>
         <filter-class>org.mskcc.pathdb.servlet.CacheFilter</filter-class>
@@ -15,7 +16,8 @@
         <filter-name>Cache</filter-name>
         <servlet-name>DataServiceServlet</servlet-name>
     </filter-mapping>
-    
+    -->
+
     <servlet>
         <servlet-name>DataServiceServlet</servlet-name>
         <servlet-class>org.mskcc.pathdb.servlet.DataService</servlet-class>
