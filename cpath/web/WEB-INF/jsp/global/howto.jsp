@@ -1,3 +1,4 @@
+<!--
 <div id="helptext" class="toolgroup">
     <div class="label">
         <strong>How do I...</strong>
@@ -8,3 +9,4 @@
         </div>
     </div>
 </div>
+-->
