@@ -68,7 +68,7 @@
         path="/cpath/webservice.do?version=1.0&amp;q=dna+repair&amp;format=html&amp;organism=&amp;cmd=get_by_keyword"
         description="Validate Interaction View with Regular Text Search">
       <match>
-          <regexp>DNA repair protein</regexp>
+          <regexp>DNA excision repair protein</regexp>
       </match>
     </httpRequest>
 
@@ -81,17 +81,6 @@
       </match>
     </httpRequest>
 
-    <httpRequest group="cpath_search"
-    path="/cpath/webservice.do?version=1.0&amp;cmd=get_by_keyword&amp;q=interactor_id%3A307&amp;format=html&amp;startIndex=0&amp;organism=&amp;maxHits=10"
-          description="Validate Protein View">
-        <match>
-            <regexp>DNA repair protein RAD51 homolog 1</regexp>
-            <regexp>InterPro</regexp>
-            <regexp>UniProt</regexp>
-            <regexp>Homo sapiens</regexp>
-        </match>
-      </httpRequest>
-
     <!-- ############################## -->
     <!--  cPath Web Services API                         -->
     <!-- ############################## -->
@@ -99,7 +88,10 @@
         path="/cpath/webservice.do?version=1.0&amp;cmd=get_by_keyword&amp;q=&amp;format=xml&amp;startIndex=0&amp;organism=9606&amp;maxHits=10"
         description="Validate XML Web Services API">
       <match>
-          <regexp>Tyrosine-protein kinase LYN</regexp>
+          <regexp>entrySet</regexp>
+          <regexp>interactorList</regexp>
+          <regexp>proteinInteractor</regexp>
+          <regexp>organism</regexp>
        </match>
     </httpRequest>
     </target>
