@@ -6,7 +6,8 @@
                  java.util.ArrayList,
                  org.mskcc.pathdb.model.Organism,
                  org.mskcc.pathdb.lucene.OrganismStats,
-                 org.mskcc.pathdb.xdebug.XDebug"%>
+                 org.mskcc.pathdb.xdebug.XDebug,
+                 java.util.Collections"%>
 <%
     try {
     ProtocolRequest pRequest = new ProtocolRequest();
@@ -14,6 +15,10 @@
     pRequest.setFormat(ProtocolConstants.FORMAT_HTML);
     OrganismStats orgStats = new OrganismStats();
     ArrayList orgList = orgStats.getOrganismsSortedByNumInteractions();
+
+    //  Clone the ArrayList Locally and Reverse Sort
+    orgList = (ArrayList) orgList.clone();
+    Collections.reverse(orgList);
 %>
 
 <div id="dbstats" class="toolgroup">
