@@ -6,11 +6,10 @@ import org.mskcc.pathdb.sql.GridInteractionService;
 import org.mskcc.pathdb.test.TestConstants;
 import org.mskcc.pathdb.xml.psi.Entry;
 import org.mskcc.pathdb.xml.psi.InteractorList;
-import org.mskcc.pathdb.xml.psi.PrimaryRef;
-import org.mskcc.pathdb.xml.psi.ProteinInteractor;
-import org.mskcc.pathdb.xml.psi.SecondaryRef;
-import org.mskcc.pathdb.xml.psi.Xref;
 import org.mskcc.pathdb.xml.psi.EntrySet;
+import org.mskcc.pathdb.xml.psi.ProteinInteractorType;
+import org.mskcc.pathdb.xml.psi.XrefType;
+import org.mskcc.pathdb.xml.psi.DbReferenceType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,9 +47,9 @@ public class TestPsiFormatter extends TestCase {
     private void validateProteinInteractor(Entry entry) {
         HashSet set = new HashSet();
         InteractorList interactorList = entry.getInteractorList();
-        ProteinInteractor protein = interactorList.getProteinInteractor(0);
-        Xref xref = protein.getXref();
-        PrimaryRef primaryRef = xref.getPrimaryRef();
+        ProteinInteractorType protein = interactorList.getProteinInteractor(0);
+        XrefType xref = protein.getXref();
+        DbReferenceType primaryRef = xref.getPrimaryRef();
         String db = primaryRef.getDb();
         String id = primaryRef.getId();
         String key = this.generateXRefKey(db, id);
@@ -65,10 +64,10 @@ public class TestPsiFormatter extends TestCase {
      * @param xref Castor XRef.
      * @param set Set of External References.
      */
-    private void validateNonRedundantXRefs(Xref xref, HashSet set) {
+    private void validateNonRedundantXRefs(XrefType xref, HashSet set) {
         int count = xref.getSecondaryRefCount();
         for (int i = 0; i < count; i++) {
-            SecondaryRef secondaryRef = xref.getSecondaryRef(i);
+            DbReferenceType secondaryRef = xref.getSecondaryRef(i);
             String db = secondaryRef.getDb();
             String id = secondaryRef.getId();
             String key = this.generateXRefKey(db, id);

@@ -1,31 +1,33 @@
 package org.mskcc.pathdb.format;
 
-import org.mskcc.pathdb.model.ExternalReference;
+import org.mskcc.pathdb.xml.psi.EntrySet;
+import org.mskcc.pathdb.xml.psi.Entry;
+import org.mskcc.pathdb.xml.psi.InteractorList;
+import org.mskcc.pathdb.xml.psi.InteractionList;
+import org.mskcc.pathdb.xml.psi.ParticipantList;
+import org.mskcc.pathdb.xml.psi.ExperimentList;
+import org.mskcc.pathdb.xml.psi.Organism;
+import org.mskcc.pathdb.xml.psi.ProteinParticipantTypeChoice;
+import org.mskcc.pathdb.xml.psi.ProteinInteractorType;
+import org.mskcc.pathdb.xml.psi.NamesType;
+import org.mskcc.pathdb.xml.psi.ProteinParticipantType;
+import org.mskcc.pathdb.xml.psi.RefType;
+import org.mskcc.pathdb.xml.psi.XrefType;
+import org.mskcc.pathdb.xml.psi.BibrefType;
+import org.mskcc.pathdb.xml.psi.DbReferenceType;
+import org.mskcc.pathdb.xml.psi.ExperimentListItem;
+import org.mskcc.pathdb.xml.psi.ExperimentType;
+import org.mskcc.pathdb.xml.psi.CvType;
 import org.mskcc.pathdb.model.Interaction;
 import org.mskcc.pathdb.model.Protein;
-import org.mskcc.pathdb.xml.psi.Bibref;
-import org.mskcc.pathdb.xml.psi.Entry;
-import org.mskcc.pathdb.xml.psi.ExperimentDescription;
-import org.mskcc.pathdb.xml.psi.ExperimentList;
-import org.mskcc.pathdb.xml.psi.InteractionDetection;
-import org.mskcc.pathdb.xml.psi.InteractionList;
-import org.mskcc.pathdb.xml.psi.InteractorList;
-import org.mskcc.pathdb.xml.psi.InteractorRef;
-import org.mskcc.pathdb.xml.psi.Names;
-import org.mskcc.pathdb.xml.psi.Organism;
-import org.mskcc.pathdb.xml.psi.ParticipantList;
-import org.mskcc.pathdb.xml.psi.PrimaryRef;
-import org.mskcc.pathdb.xml.psi.ProteinInteractor;
-import org.mskcc.pathdb.xml.psi.ProteinParticipant;
-import org.mskcc.pathdb.xml.psi.ProteinParticipantTypeChoice;
-import org.mskcc.pathdb.xml.psi.SecondaryRef;
-import org.mskcc.pathdb.xml.psi.Xref;
-import org.mskcc.pathdb.xml.psi.EntrySet;
+import org.mskcc.pathdb.model.ExternalReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+
+import sun.rmi.rmic.Names;
 
 /**
  * Converts Internal Object Model to PSI-MI Format.
@@ -96,7 +98,7 @@ public class PsiFormatter {
         while (iterator.hasNext()) {
 
             //  Create new Interactor
-            ProteinInteractor interactor = new ProteinInteractor();
+            ProteinInteractorType interactor = new ProteinInteractorType();
             Protein protein = (Protein) iterator.next();
             setNameId(protein, interactor);
             setOrganism(interactor);
@@ -118,8 +120,8 @@ public class PsiFormatter {
         for (int i = 0; i < interactions.size(); i++) {
 
             //  Create New Interaction
-            org.mskcc.pathdb.xml.psi.Interaction castorInteraction =
-                    new org.mskcc.pathdb.xml.psi.Interaction();
+            org.mskcc.pathdb.xml.psi.InteractionElementType castorInteraction =
+                    new org.mskcc.pathdb.xml.psi.InteractionElementType();
             Interaction interaction = (Interaction) interactions.get(i);
 
             //  Add Experiment List
@@ -146,12 +148,12 @@ public class PsiFormatter {
 
         //  Add Node A
         String nodeId1 = interaction.getNodeA().getOrfName();
-        ProteinParticipant participant1 = createParticipant(nodeId1);
+        ProteinParticipantType participant1 = createParticipant(nodeId1);
         participantList.addProteinParticipant(participant1);
 
         //  Add Node B
         String nodeId2 = interaction.getNodeB().getOrfName();
-        ProteinParticipant participant2 = createParticipant(nodeId2);
+        ProteinParticipantType participant2 = createParticipant(nodeId2);
         participantList.addProteinParticipant(participant2);
 
         return participantList;
@@ -168,13 +170,15 @@ public class PsiFormatter {
         ExperimentList expList = new ExperimentList();
 
         //  Create New Experiment Description
-        ExperimentDescription expDescription = new ExperimentDescription();
+        ExperimentListItem expItem = new ExperimentListItem();
+        ExperimentType expDescription = new ExperimentType();
+        expItem.setExperimentDescription(expDescription);
 
         //  Set Experimental ID
         expDescription.setId("no_id");
 
         //  Set Bibliographic Reference
-        Bibref bibRef = null;
+        BibrefType bibRef = null;
         String pmids[] = interaction.getPubMedIds();
         if (pmids.length > 0) {
             bibRef = createBibRef(PUB_MED_DB, pmids[0]);
@@ -182,12 +186,12 @@ public class PsiFormatter {
         }
 
         //  Set Interaction Detection
-        InteractionDetection interactionDetection =
+        CvType interactionDetection =
                 getInteractionDetection(interaction);
         expDescription.setInteractionDetection(interactionDetection);
 
         //  Set Choice Element
-        expList.addExperimentDescription(expDescription);
+        expList.addExperimentListItem(expItem);
         return expList;
     }
 
@@ -196,25 +200,25 @@ public class PsiFormatter {
      * @param interaction Interaction.
      * @return InteractionDetection Object.
      */
-    private InteractionDetection getInteractionDetection
+    private CvType getInteractionDetection
             (Interaction interaction) {
-        InteractionDetection interactionDetection = new InteractionDetection();
+        CvType interactionDetection = new CvType();
         String idStr = interaction.getExperimentalSystem();
         if (idStr.equals("Affinity Precipitation")) {
-            Names names = createName("affinity chromatography technologies",
+            NamesType names = createName("affinity chromatography technologies",
                     null);
             interactionDetection.setNames(names);
-            Xref xref = createXRef(PSI_MI, "MI:0004");
+            XrefType xref = createXRef(PSI_MI, "MI:0004");
             interactionDetection.setXref(xref);
         } else if (idStr.equals("Two Hybrid")) {
-            Names names = createName("classical two hybrid", null);
+            NamesType names = createName("classical two hybrid", null);
             interactionDetection.setNames(names);
-            Xref xref = createXRef(PSI_MI, "MI:0018");
+            XrefType xref = createXRef(PSI_MI, "MI:0018");
             interactionDetection.setXref(xref);
         } else {
-            Names names = createName(idStr, null);
+            NamesType names = createName(idStr, null);
             interactionDetection.setNames(names);
-            Xref xref = createXRef("N/A", "N/A");
+            XrefType xref = createXRef("N/A", "N/A");
             interactionDetection.setXref(xref);
         }
         return interactionDetection;
@@ -225,8 +229,8 @@ public class PsiFormatter {
      * @param protein Protein Object
      * @param interactor Castor Protein Interactor Object.
      */
-    private void setNameId(Protein protein, ProteinInteractor interactor) {
-        Names names = new Names();
+    private void setNameId(Protein protein, ProteinInteractorType interactor) {
+        NamesType names = new NamesType();
         names.setShortLabel(protein.getOrfName());
         names.setFullName(protein.getDescription());
         interactor.setNames(names);
@@ -238,10 +242,10 @@ public class PsiFormatter {
      * Currently Hard-coded to Yeast.
      * @param interactor Castor Protein Interactor Object.
      */
-    private void setOrganism(ProteinInteractor interactor) {
+    private void setOrganism(ProteinInteractorType interactor) {
         Organism organism = new Organism();
         organism.setNcbiTaxId(4932);
-        Names orgNames = new Names();
+        NamesType orgNames = new NamesType();
         orgNames.setShortLabel("baker's yeast");
         orgNames.setFullName("Saccharomyces cerevisiae");
         organism.setNames(orgNames);
@@ -255,11 +259,11 @@ public class PsiFormatter {
      * @param interactor Castor Protein Interactor Object.
      */
     private void setExternalRefs(Protein protein,
-            ProteinInteractor interactor) {
+            ProteinInteractorType interactor) {
         HashSet set = new HashSet();
         ExternalReference refs [] = protein.getExternalRefs();
         if (refs.length > 0) {
-            Xref xref = new Xref();
+            XrefType xref = new XrefType();
             //  First External Reference becomes the Primary Reference
             String key = generateXRefKey(refs[0]);
             createPrimaryKey(refs[0], xref);
@@ -294,8 +298,8 @@ public class PsiFormatter {
      * @param ref External Reference.
      * @param xref Castor XRef.
      */
-    private void createPrimaryKey(ExternalReference ref, Xref xref) {
-        PrimaryRef primaryRef = new PrimaryRef();
+    private void createPrimaryKey(ExternalReference ref, XrefType xref) {
+        DbReferenceType primaryRef = new DbReferenceType();
         primaryRef.setDb(ref.getDatabase());
         primaryRef.setId(ref.getId());
         xref.setPrimaryRef(primaryRef);
@@ -306,8 +310,8 @@ public class PsiFormatter {
      * @param ref External Reference
      * @param xref Castro XRef.
      */
-    private void createSecondaryKey(ExternalReference ref, Xref xref) {
-        SecondaryRef secondaryRef = new SecondaryRef();
+    private void createSecondaryKey(ExternalReference ref, XrefType xref) {
+        DbReferenceType secondaryRef = new DbReferenceType();
         secondaryRef.setDb(ref.getDatabase());
         secondaryRef.setId(ref.getId());
         xref.addSecondaryRef(secondaryRef);
@@ -347,8 +351,8 @@ public class PsiFormatter {
      * @param fullName Full Name/Description.
      * @return Castor Names Object.
      */
-    private Names createName(String shortLabel, String fullName) {
-        Names names = new Names();
+    private NamesType createName(String shortLabel, String fullName) {
+        NamesType names = new NamesType();
         names.setShortLabel(shortLabel);
         if (fullName != null) {
             names.setFullName(fullName);
@@ -362,9 +366,9 @@ public class PsiFormatter {
      * @param id ID String.
      * @return Castor XRef object
      */
-    private Xref createXRef(String database, String id) {
-        Xref xref = new Xref();
-        PrimaryRef primaryRef = new PrimaryRef();
+    private XrefType createXRef(String database, String id) {
+        XrefType xref = new XrefType();
+        DbReferenceType primaryRef = new DbReferenceType();
         primaryRef.setDb(database);
         primaryRef.setId(id);
         xref.setPrimaryRef(primaryRef);
@@ -377,9 +381,9 @@ public class PsiFormatter {
      * @param id ID String.
      * @return Castor Bibref Object.
      */
-    private Bibref createBibRef(String database, String id) {
-        Xref xref = createXRef(database, id);
-        Bibref bibRef = new Bibref();
+    private BibrefType createBibRef(String database, String id) {
+        XrefType xref = createXRef(database, id);
+        BibrefType bibRef = new BibrefType();
         bibRef.setXref(xref);
         return bibRef;
     }
@@ -389,13 +393,13 @@ public class PsiFormatter {
      * @param id Protein ID.
      * @return Castor Protein Participant Object.
      */
-    private ProteinParticipant createParticipant(String id) {
-        ProteinParticipant participant = new ProteinParticipant();
+    private ProteinParticipantType createParticipant(String id) {
+        ProteinParticipantType participant = new ProteinParticipantType();
         ProteinParticipantTypeChoice choice =
                 new ProteinParticipantTypeChoice();
-        InteractorRef ref = new InteractorRef();
+        RefType ref = new RefType();
         ref.setRef(id);
-        choice.setInteractorRef(ref);
+        choice.setProteinInteractorRef(ref);
         participant.setProteinParticipantTypeChoice(choice);
         return participant;
     }

@@ -18,7 +18,7 @@ public class LoggerSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestPsiFormatter.class);
+        suite.addTestSuite(TestAdminLogger.class);
         suite.setName("Logger Tests");
         return suite;
     }
