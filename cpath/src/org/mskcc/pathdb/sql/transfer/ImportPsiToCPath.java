@@ -153,9 +153,9 @@ public class ImportPsiToCPath {
         this.pMonitor = pMonitor;
         try {
             // Steps 1-2:  Normalize PSI Document, chop into parts.
-             pMonitor.setCurrentMessage("Step 1 of 4:  "
+            pMonitor.setCurrentMessage("Step 1 of 4:  "
                     + "Normalizing PSI Document");
-            psiUtil = new PsiUtil();
+            psiUtil = new PsiUtil(pMonitor);
             EntrySet entrySet = null;
             entrySet = psiUtil.getNormalizedDocument(xml);
             pMonitor.setCurrentMessage
@@ -216,14 +216,7 @@ public class ImportPsiToCPath {
                             extractExternalReferences(protein);
                     linker.validateExternalReferences(refs);
                 } catch (MissingDataException e) {
-                    //  Provide context sensitive error details.
-                    throw new MissingDataException ("PSI-MI Protein ["
-                            + protein.getNames().getShortLabel() + ":"
-                            + protein.getNames().getFullName() + ":"
-                            + protein.getId() + "] is missing data:  " +
-                            e.getMessage() + " Protein is located at " +
-                            "index position " + (j+1) + " of " +
-                            interactors.getProteinInteractorCount() +".");
+                    reportInteractorErrorDetails(protein, e, j, interactors);
                 }
             }
 
@@ -238,15 +231,55 @@ public class ImportPsiToCPath {
                             psiUtil.extractXrefs(interaction.getXref());
                     linker.validateExternalReferences(refs);
                 } catch (MissingDataException e) {
-                    //  Provide context sensitive error details.
-                    throw new MissingDataException ("PSI-MI Interaction "
-                        + "is missing data:  " + e.getMessage()
-                        + " Interaction is located at index position "
-                        + (j+1) + " of " + interactions.getInteractionCount()
-                        + ".");
+                    reportInteractionErrorDetails(interaction, e, j,
+                            interactions);
                 }
             }
         }
+
+    }
+
+    /**
+     * Provide Context Sensitive Error Details for Interactors.
+     */
+    private void reportInteractorErrorDetails(ProteinInteractorType protein,
+            MissingDataException e, int j, InteractorList interactors)
+            throws MissingDataException {
+        StringWriter writer = new StringWriter();
+        try {
+            protein.marshal(writer);
+        } catch (MarshalException e1) {
+        } catch (ValidationException e1) {
+        }
+        throw new MissingDataException ("PSI-MI Protein ["
+                + protein.getNames().getShortLabel() + ":"
+                + protein.getNames().getFullName() + ":"
+                + protein.getId() + "] is missing data:  " +
+                e.getMessage() + " Protein is located at " +
+                "index position " + (j+1) + " of " +
+                interactors.getProteinInteractorCount() +"."
+                + "\n\nData Dump of Protein XML follows:  \n\n"
+                + writer.toString());
+    }
+
+    /**
+     * Provide Context Sensitive Error Details for Interactions.
+     */
+    private void reportInteractionErrorDetails(InteractionElementType
+            interaction, MissingDataException e, int j,
+            InteractionList interactions) throws MissingDataException {
+        StringWriter writer = new StringWriter();
+        try {
+            interaction.marshal(writer);
+        } catch (MarshalException e1) {
+        } catch (ValidationException e1) {
+        }
+        throw new MissingDataException ("PSI-MI Interaction "
+            + "is missing data:  " + e.getMessage()
+            + " Interaction is located at index position "
+            + (j+1) + " of " + interactions.getInteractionCount()
+            + "." + "  \n\nData Dump of Interaction XML follows:  \n\n"
+            + writer.toString());
     }
 
     /**
@@ -262,8 +295,8 @@ public class ImportPsiToCPath {
             InteractorList interactors = entry.getInteractorList();
             pMonitor.setMaxValue(interactors.getProteinInteractorCount());
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
-                ConsoleUtil.showProgress(pMonitor);
                 pMonitor.incrementCurValue();
+                ConsoleUtil.showProgress(pMonitor);
                 summary.incrementNumInteractorsProcessed();
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
@@ -286,7 +319,7 @@ public class ImportPsiToCPath {
                     //  Conditionally Update the Interactor Record with
                     //  new external references.
                     UpdatePsiInteractor updater = new UpdatePsiInteractor
-                            (record, protein);
+                            (record, protein, pMonitor);
                     updater.doUpdate();
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumInteractorsFound();
