@@ -111,6 +111,7 @@ public class IndexLuceneTask extends Task {
             while (rs.next()) {
                 indexRecord(cpath, rs, indexWriter);
             }
+            indexWriter.commit();
             outputMsg("\nIndexing Complete");
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
