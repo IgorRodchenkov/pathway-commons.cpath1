@@ -58,12 +58,12 @@
 <!-- ==================== All Target ====================================== -->
 
   <target name="all" depends="clean,compile"
-   description="Clean build and dist directories, then compile"/>
+   description="Performs a complete and clean build."/>
 
 
 <!-- ==================== Clean Target ==================================== -->
 
-  <target name="clean" description="Delete old build and dist directories">
+  <target name="clean" description="Deletes all build files and starts fresh.">
     <delete dir="${build.home}"/>
     <delete dir="${dist.home}"/>
     <delete dir="${lucene.dir}"/>
@@ -76,7 +76,7 @@
 
 <!-- ==================== Compile Target ================================== -->
 
-  <target name="compile" depends="prepare" description="Compile Java sources">
+  <target name="compile" depends="prepare" description="Compile all Java sources.">
     <!-- Compile Java classes as necessary -->
     <mkdir    dir="${build.home}/WEB-INF/classes"/>
     <javac srcdir="${src.home}"
@@ -108,14 +108,15 @@
 <!-- ==================== War Target ===================================== -->
 
   <target name="war" depends="compile"
-   description="Create binary WAR distribution">
+   description="Creates binary WAR distribution.">
     <mkdir  dir="${dist.home}"/>
     <!-- Create application WAR file -->
     <jar jarfile="${dist.home}/${app.name}.war"
          basedir="${build.home}"/>
   </target>
 
-  <target name="deploy_war" depends="war" description="Deploy WAR to cBIO Production">
+  <target name="deploy_war" depends="war"
+      description="Deploy WAR to cBIO Production server.">
     <apply executable="scp">
    	<srcfile/>
         <fileset dir="${dist.home}">
@@ -147,7 +148,7 @@
 -->
 
   <target name="install" depends="compile"
-   description="Install application to servlet container">
+   description="Installs cPath to local development servlet container.">
 
     <install url="${manager.url}"
         username="${manager.username}"
@@ -169,7 +170,7 @@
 -->
 
   <target name="list"
-   description="List installed applications on servlet container">
+   description="Lists installed applications on servlet container">
 
     <list    url="${manager.url}"
         username="${manager.username}"
@@ -226,7 +227,7 @@
 -->
 
   <target name="reload" depends="compile"
-   description="Reload application on servlet container">
+   description="Reloads cPath application on servlet container.">
 
     <reload url="${manager.url}"
        username="${manager.username}"
@@ -248,7 +249,7 @@
 -->
 
   <target name="remove"
-   description="Remove application on servlet container">
+   description="Removes cpath application on servlet container.">
 
     <remove url="${manager.url}"
        username="${manager.username}"
@@ -268,11 +269,12 @@
         </target>
 
 	<!-- Target to Load Bootstrap data into MySQL -->
-	<target name="boot" depends="compile" description="Loads Bootstrap data into MySQL">
+	<target name="boot" depends="compile" description="Loads Bootstrap data into MySQL.
+        Required for running JUnit Tests.">
 		<exec dir="." executable="scripts/boot.pl"/>
 	</target>
 
-	<target name="test" depends="compile" description="Runs JUnit Tests">
+	<target name="test" depends="compile" description="Runs JUnit Test Suite.">
 		<junit printsummary="yes" fork="yes" haltonfailure="no">
 			<formatter type="xml"/>
 			<test name="org.mskcc.pathdb.test.AllTest"
