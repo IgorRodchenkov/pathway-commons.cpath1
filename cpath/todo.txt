@@ -49,7 +49,8 @@ Data Service Specific Items:
 -----------------------------
 1.  Add an Ontology object to the dataservices bio package to allow retrieval of Gene Ontology type 
     information.
-2.  Add Gene Name/Synonym Look up to data services (requires a back-end, may be able to use Entrez Gene DB).
+2.  Add Gene Name/Synonym Look up to data services (requires a back-end, may be able to use Entrez 
+    Gene DB).
 3.  Create a service for reading in Cytoscape node/edge attributes to go with sif reader.
 4.  Create an "About Data Services PlugIn", with version #, list of all registered
 	(more details are included in phase 6 doc, before being deferred)
