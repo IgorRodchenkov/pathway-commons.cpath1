@@ -4,7 +4,8 @@
                  java.util.Date,
                  java.util.Vector,
                  java.util.Enumeration,
-                 org.mskcc.pathdb.action.admin.AdminWebLogging" %>
+                 org.mskcc.pathdb.action.admin.AdminWebLogging,
+                 java.util.ArrayList" %>
 <%
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
@@ -61,9 +62,9 @@ if (xdebug != null) {
 				***********************************
 	--%>
 	<%
-		Vector messages = xdebug.getDebugMessages();
+		ArrayList messages = xdebug.getDebugMessages();
 		for (int msgIndex=0; msgIndex<messages.size(); msgIndex++) {
-			XDebugMessage msg = (XDebugMessage) messages.elementAt(msgIndex);
+			XDebugMessage msg = (XDebugMessage) messages.get(msgIndex);
 	%>
 		<TR BGCOLOR="#ccccff" VALIGN=TOP>
 			<TD WIDTH=30%>
@@ -87,11 +88,11 @@ if (xdebug != null) {
 		<TH>Value</FONT></TH>
 	</TR>
 	<%
-		Vector parameters = xdebug.getParameters();
+		ArrayList parameters = xdebug.getParameters();
 		String bgcolor;
 		for (int paramIndex=0; paramIndex<parameters.size(); paramIndex++) {
 			XDebugParameter param = (XDebugParameter)
-                    parameters.elementAt(paramIndex);
+                    parameters.get(paramIndex);
 			if (param.getType()==XDebugParameter.USER_TYPE)
                 bgcolor = "#C9FFD3";
 			else if (param.getType()==XDebugParameter.HTTP_HEADER_TYPE)
