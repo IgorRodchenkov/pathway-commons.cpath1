@@ -29,10 +29,7 @@
  **/
 package org.mskcc.pathdb.sql;
 
-import org.apache.commons.dbcp.ConnectionFactory;
-import org.apache.commons.dbcp.DriverManagerConnectionFactory;
-import org.apache.commons.dbcp.PoolableConnectionFactory;
-import org.apache.commons.dbcp.PoolingDataSource;
+import org.apache.commons.dbcp.*;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.mskcc.dataservices.util.PropertyManager;
 
@@ -194,5 +191,30 @@ public class JdbcUtil {
         PoolingDataSource dataSource = new PoolingDataSource(connectionPool);
 
         return dataSource;
+    }
+
+    /**
+     * Gets the SQL string statement associated with a PreparedStatement.
+     * <P>
+     * This method compensates for a bug in the DBCP Code.  DBCP wraps an
+     * original PreparedStatement object, but when you call toString() on the
+     * wrapper, it returns a generic String representation that does not include
+     * the actual SQL code which gets executed.  To get around this bug, this
+     * method checks to see if we have a DBCP wrapper.  If we do, we get the
+     * original delegate, and properly call its toString() method.  This
+     * results in the actual SQL statement sent to the database.
+     *
+     * @param pstmt PreparedStatement Object.
+     * @return toString value.
+     */
+    public static String getSqlQuery (PreparedStatement pstmt) {
+        if (pstmt instanceof DelegatingPreparedStatement) {
+            DelegatingPreparedStatement dp =
+                    (DelegatingPreparedStatement) pstmt;
+            PreparedStatement delegate = dp.getDelegate();
+            return delegate.toString();
+        } else {
+            return pstmt.toString();
+        }
     }
 }
