@@ -42,8 +42,8 @@ public class ProtocolConstants {
     /**
      * Get Interactions By Interactor ID.
      */
-    public static final String COMMAND_GET_BY_INTERACTOR_ID =
-            "get_by_interactor_id";
+    public static final String COMMAND_GET_BY_ID =
+            "get_by_id";
 
     /**
      * Get Interactions By Interactor Taxonomy ID.
@@ -54,8 +54,8 @@ public class ProtocolConstants {
     /**
      * Get Interactions By Interactor Keyword.
      */
-    public static final String COMMAND_GET_BY_INTERACTOR_KEYWORD =
-            "get_by_interactor_keyword";
+    public static final String COMMAND_GET_BY_KEYWORD =
+            "get_by_keyword";
 
     /**
      * Get Interactions By Interaction Database.
@@ -97,9 +97,9 @@ public class ProtocolConstants {
         if (validCommands == null) {
             validCommands = new HashMap();
             validCommands.put(COMMAND_GET_BY_INTERACTOR_NAME, null);
-            validCommands.put(COMMAND_GET_BY_INTERACTOR_ID, null);
+            validCommands.put(COMMAND_GET_BY_ID, null);
             validCommands.put(COMMAND_GET_BY_INTERACTOR_TAX_ID, null);
-            validCommands.put(COMMAND_GET_BY_INTERACTOR_KEYWORD, null);
+            validCommands.put(COMMAND_GET_BY_KEYWORD, null);
             validCommands.put(COMMAND_GET_BY_INTERACTION_DB, null);
             validCommands.put(COMMAND_GET_BY_INTERACTION_PMID, null);
             validCommands.put(COMMAND_HELP, null);
