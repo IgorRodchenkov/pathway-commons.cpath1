@@ -27,7 +27,7 @@ if ($command eq "psi") {
 } elsif ($command eq "import") {
 	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.ImportRecords @ARGV");
 } elsif ($command eq "index") {
-	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.LoadFullText  @ARGV");
+	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.RunIndexer  @ARGV");
 } elsif ($command eq "refs") {
 	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.LoadExternalReferences  @ARGV");
 } elsif ($command eq "precompute") {
