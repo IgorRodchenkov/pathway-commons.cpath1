@@ -104,15 +104,15 @@ public class IndexLuceneTask extends Task {
     }
 
     private void indexRecord(DaoCPath cpath, ResultSet rs, LuceneIndexer lucene)
-            throws SQLException, AssemblyException, IOException,
-            ImportException {
+            throws SQLException, IOException, ImportException,
+            AssemblyException {
         pMonitor.incrementCurValue();
         CPathRecord record = cpath.extractRecord(rs);
         if (verbose) {
             System.out.print(".");
         }
-        XmlAssembly xmlAssembly = XmlAssemblyFactory.getXmlAssembly
-                (record, new XDebug());
+        XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly
+                (record, 1, new XDebug());
         ItemToIndex item = IndexFactory.createItemToIndex
                 (record.getId(), xmlAssembly);
         lucene.addRecord(item);
