@@ -19,7 +19,7 @@ USE cpath
 # Last update: Jan 02, 2004 at 09:46 AM
 #
 
-CREATE TABLE `CPATH` (
+CREATE TABLE `cpath` (
   `CPATH_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(255) NOT NULL default '',
   `DESC` varchar(255) default NULL,
@@ -39,7 +39,7 @@ CREATE TABLE `CPATH` (
 # Creation: Jan 02, 2004 at 09:46 AM
 # Last update: Jan 02, 2004 at 09:46 AM
 #
-CREATE TABLE `EXTERNAL_DB` (
+CREATE TABLE `external_db` (
   `EXTERNAL_DB_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(100) NOT NULL default '',
   `URL` varchar(255) default NULL,
@@ -60,7 +60,7 @@ CREATE TABLE `EXTERNAL_DB` (
 # Last update: Jan 02, 2004 at 09:46 AM
 #
 
-CREATE TABLE `EXTERNAL_DB_CV` (
+CREATE TABLE `external_db_cv` (
   `CV_ID` int(11) NOT NULL auto_increment,
   `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
   `CV_TERM` varchar(255) NOT NULL default '',
@@ -75,7 +75,7 @@ CREATE TABLE `EXTERNAL_DB_CV` (
 # Last update: Jan 02, 2004 at 09:46 AM
 #
 
-CREATE TABLE `EXTERNAL_LINK` (
+CREATE TABLE `external_link` (
   `EXTERNAL_LINK_ID` int(11) NOT NULL auto_increment,
   `CPATH_ID` int(11) NOT NULL default '0',
   `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
@@ -93,7 +93,7 @@ CREATE TABLE `EXTERNAL_LINK` (
 # Last update: Jan 02, 2004 at 09:46 AM
 #
 
-CREATE TABLE `IMPORT` (
+CREATE TABLE `import` (
   `IMPORT_ID` int(11) NOT NULL auto_increment,
   `DESC` varchar(255) NOT NULL default '',
   `DOC_BLOB` longblob NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE `IMPORT` (
 # Last update: Jan 02, 2004 at 09:46 AM
 #
 
-CREATE TABLE `INTERNAL_LINK` (
+CREATE TABLE `internal_link` (
   `INTERNAL_LINK_ID` int(11) NOT NULL auto_increment,
   `CPATH_ID_A` int(11) NOT NULL default '0',
   `CPATH_ID_B` int(11) NOT NULL default '0',
@@ -138,7 +138,7 @@ CREATE TABLE `INTERNAL_LINK` (
 # Last update: Jan 02, 2004 at 09:54 AM
 #
 
-CREATE TABLE `LOG` (
+CREATE TABLE `log` (
   `date` datetime NOT NULL default '0000-00-00 00:00:00',
   `logger` varchar(255) NOT NULL default '',
   `priority` varchar(255) NOT NULL default '',
@@ -153,7 +153,7 @@ CREATE TABLE `LOG` (
 # Last update: Jan 15, 2004 at 04:54 PM
 #
 
-CREATE TABLE `XML_CACHE` (
+CREATE TABLE `xml_cache` (
   `CACHE_ID` int(11) NOT NULL auto_increment,
   `DOC_MD5` varchar(255) NOT NULL default '',
   `DOC_BLOB` longblob NOT NULL,
