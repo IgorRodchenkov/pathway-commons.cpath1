@@ -7,6 +7,7 @@ import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.ProteinWithWeight;
 
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -34,7 +35,9 @@ public class TestPsiInteractorExtractor extends TestCase {
 
         assertEquals(1, proteins.size());
         Iterator iterator = proteins.iterator();
-        ProteinInteractorType protein = (ProteinInteractorType) iterator.next();
+        ProteinWithWeight proteinWithWeight = (ProteinWithWeight)
+                iterator.next();
+        ProteinInteractorType protein = proteinWithWeight.getProtein();
         assertEquals("2", protein.getId());
     }
 }

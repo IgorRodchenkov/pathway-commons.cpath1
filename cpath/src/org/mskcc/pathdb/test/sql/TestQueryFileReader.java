@@ -30,6 +30,6 @@ public class TestQueryFileReader extends TestCase {
         assertEquals("psi", request.getFormat());
         assertEquals("webservice.do?version=1.0&cmd="
                 + "get_by_interactor_tax_id&q=9606&format=psi&startIndex=0"
-                + "&maxHits=unbounded", request.getUri());
+                + "&organism=&maxHits=unbounded", request.getUri());
     }
 }

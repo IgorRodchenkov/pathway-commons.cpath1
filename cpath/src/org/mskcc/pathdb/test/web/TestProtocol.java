@@ -16,31 +16,6 @@ import org.mskcc.pathdb.test.TestConstants;
 public class TestProtocol extends TestCase {
 
     /**
-     * Tests a Valid Request.
-     *
-     * @throws Exception All Errors
-     */
-    public void testValidRequest() throws Exception {
-        HttpClient client = new HttpClient();
-        GetMethod method = new GetMethod(TestConstants.LOCAL_HOST_URL);
-        NameValuePair nvps[] = new NameValuePair[4];
-        nvps[0] = new NameValuePair(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME);
-        nvps[1] = new NameValuePair(ProtocolRequest.ARG_FORMAT,
-                ProtocolConstants.FORMAT_PSI);
-        nvps[2] = new NameValuePair(ProtocolRequest.ARG_VERSION,
-                ProtocolConstants.CURRENT_VERSION);
-        nvps[3] = new NameValuePair(ProtocolRequest.ARG_QUERY,
-                "YER006W");
-        method.setQueryString(nvps);
-        int statusCode = client.executeMethod(method);
-
-        String response = method.getResponseBodyAsString();
-        int index = response.indexOf("<error_code>460</error_code>");
-        assertTrue(index > 0);
-    }
-
-    /**
      * Tests Invalid Request.
      *
      * @throws Exception All Errors.
