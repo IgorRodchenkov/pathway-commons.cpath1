@@ -24,15 +24,14 @@
 
         <% if (isAdminPage != null) { %>
         <jsp:include page="../global/adminTasks.jsp" flush="true" />
-        <% } %>
-
+        <% } else { %>
         <jsp:include page="../global/browse.jsp" flush="true" />
 
         <% if (protocolRequest1 == null) { %>
-        <jsp:include page="../global/dbStats.jsp" flush="true" />
         <jsp:include page="../global/docs.jsp" flush="true" />
         <% } %>
         <jsp:include page="../global/howto.jsp" flush="true" />
+        <% } %>
     </div>
 </td>
 <!-- End NavColumn -->
