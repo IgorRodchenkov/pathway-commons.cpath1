@@ -152,12 +152,7 @@ public class ExternalLinkRecord {
      */
     public String getWebLink() {
         if (db != null) {
-            String dbUrl = db.getUrl();
-            if (dbUrl != null) {
-                return dbUrl.replaceAll("%ID%", this.linkedToId);
-            } else {
-                return null;
-            }
+            return db.getUrlWithId(this.linkedToId);
         } else {
             return null;
         }

@@ -107,6 +107,20 @@ public class ExternalDatabaseRecord {
     }
 
     /**
+     * Gets URL for Retrieving a specific individual record from the database.
+     *
+     * @param primaryId Primary ID.
+     * @return URL String.
+     */
+    public String getUrlWithId (String primaryId) {
+        if (url != null) {
+            return url.replaceAll("%ID%", primaryId);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Sets URL for Retrieving individual record from the database.
      *
      * @param url URL String.
