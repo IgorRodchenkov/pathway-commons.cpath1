@@ -9,7 +9,7 @@
         Sign-up to receive cPath announcements.
         </div>
         <div>
-        <a href="http://groups-beta.google.com/group/cpath/">cpath-announce</a>:
+        <a href="http://groups-beta.google.com/group/cpath/">cpath</a>:
         Open forum for discussing cPath.
         </div>
     </div>

@@ -60,7 +60,8 @@ genomics data is essential to the achievement of these goals.
         Download cPath Poster from
         <A HREF="http://www.iscb.org/ismbeccb2004/">ISMB 2004</A>.
         <BR>
-        <A HREF="http://www.cbio.mskcc.org/dev_site/cpath_poster.pdf">PDF Format</A> [4.3 MB]
+        <A HREF="http://www.cbio.mskcc.org/dev_site/cpath_poster.pdf">PDF Format</A>
+        [3.9 MB]
     </small>
     </center>
 </TD>
