@@ -10,7 +10,7 @@
 <TABLE WIDTH="100%" CELLPADDING=5 CELLSPACING=5 BGCOLOR="#9999cc">
     <TR>
         <TD class="table_data">UID:</TD>
-        <TD><INPUT TYPE=TEXT name="uid" value="<%= uid %>"></TD>
+        <TD><INPUT TYPE=TEXT name="uid" value="<%= uid.toUpperCase() %>"></TD>
         <TD class="table_data">Format:</TD>
         <TD>
             <SELECT NAME="format">

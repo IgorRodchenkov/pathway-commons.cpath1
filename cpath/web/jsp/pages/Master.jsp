@@ -23,4 +23,5 @@
     <jsp:include page="../global/help.jsp" flush="true" />
 <% } %>
 
+<jsp:include page="../global/xdebug.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />
