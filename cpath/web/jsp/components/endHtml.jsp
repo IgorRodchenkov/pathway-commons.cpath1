@@ -1,3 +1,0 @@
-</CENTER>
-</BODY>
-</HTML>
