@@ -179,6 +179,62 @@ of cancer specific pathways.
 <div class="h4" id="construct">
     <h4>How do I construct an advanced search query?</h4>
 </div>
+    <p>Here are a few advanced search queries to get you started:
+
+<%
+    String searchTerm = null;
+    ProtocolRequest pRequest = new ProtocolRequest();
+    pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+    pRequest.setFormat(ProtocolConstants.FORMAT_HTML);
+%>
+    <P>
+    <TABLE WIDTH=100% CELLPADDING=2>
+    <TR>
+        <TH>Search Terms</TH>
+        <TH>Description</TH>
+    </TR>
+    <TR>
+        <%
+        searchTerm = "dna AND repair";
+        pRequest.setQuery(searchTerm);
+        %>
+       <TD><A HREF="<%= pRequest.getUri() %>">
+        <%= searchTerm %></A></TD>
+        <TD>Uses a logical AND operator.</TD>
+    </TR>
+
+    <TR>
+        <%
+        searchTerm = "\"dna repair\"";
+        pRequest.setQuery(searchTerm);
+        %>
+       <TD><A HREF="<%= pRequest.getUri() %>">
+        <%= searchTerm %></A></TD>
+        <TD>Finds an exact match for the specified string.</TD>
+    </TR>
+
+    <TR>
+        <%
+        searchTerm = "helica*";
+        pRequest.setQuery(searchTerm);
+        %>
+       <TD><A HREF="<%= pRequest.getUri() %>">
+        <%= searchTerm %></A></TD>
+        <TD>Uses a wild card option to find all terms beginning with the
+        word "helica".</TD>
+    </TR>
+
+    <TR>
+        <%
+        searchTerm = "experiment_type:\"Two hybrid\"";
+        pRequest.setQuery(searchTerm);
+        %>
+       <TD><A HREF="<%= pRequest.getUri() %>">
+        <%= searchTerm %></A></TD>
+        <TD>Finds all interaction records discovered via "Two hybrid".</TD>
+    </TR>
+    </TABLE>
+
     <p><strong>Terms</strong>
 
     <p>A query is broken up into terms and operators. There are two types of
@@ -266,20 +322,16 @@ of cancer specific pathways.
     name followed by a colon ":" and then the term you are looking for.
 
     <p>For example:
-
-<%
-    String searchTerm = "organism:\"Homo Sapiens\"";
-    ProtocolRequest pRequest = new ProtocolRequest();
-    pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-    pRequest.setQuery(searchTerm);
-    pRequest.setFormat(ProtocolConstants.FORMAT_HTML);
-%>
+    <%
+        searchTerm = "organism:\"Homo Sapiens\"";
+        pRequest.setQuery(searchTerm);
+    %>
     <UL>
     <LI><A HREF="<%= pRequest.getUri() %>">
     <%= searchTerm %></A> will retrieve all interaction records
     for Homo sapiens.
     <%
-        searchTerm = "interaction_type:\"Two hybrid\"";
+        searchTerm = "experiment_type:\"Two hybrid\"";
         pRequest.setQuery(searchTerm);
     %>
 
