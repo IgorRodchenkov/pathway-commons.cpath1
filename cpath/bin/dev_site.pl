@@ -8,3 +8,4 @@ system "cvs checkout -P sander/cpath";
 chdir "sander/cpath" or die;
 system "ant prepare_dev_site";
 system "maven site:deploy";
+system "mv sander sander_bak";
