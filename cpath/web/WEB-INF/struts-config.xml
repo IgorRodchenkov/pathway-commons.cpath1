@@ -108,6 +108,11 @@
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
+        <action path="/adminResetOrganismStats"
+            type="org.mskcc.pathdb.action.admin.AdminResetOrganismStats">
+            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+        </action>
+
         <action path="/adminImportData"
             type="org.mskcc.pathdb.action.admin.AdminImportData"
             name="importDataForm"

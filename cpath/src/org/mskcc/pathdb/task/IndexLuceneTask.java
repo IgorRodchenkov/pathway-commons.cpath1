@@ -56,7 +56,7 @@ public class IndexLuceneTask extends Task {
             indexAllInteractions();
 
             OrganismStats orgStats = new OrganismStats();
-            orgStats.restetStats();
+            orgStats.resetStats();
 
             pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
                     + "Entities Indexed:  " + pMonitor.getCurValue());

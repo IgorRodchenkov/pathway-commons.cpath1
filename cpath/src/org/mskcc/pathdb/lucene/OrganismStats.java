@@ -56,7 +56,7 @@ public class OrganismStats {
      * @throws QueryException   Query Error.
      * @throws IOException      Input / Output Error.
      */
-    public void restetStats() throws DaoException, IOException,
+    public void resetStats() throws DaoException, IOException,
             QueryException {
         organismListSortedByNumInteractions = null;
         organismListSortedByName = null;
@@ -130,7 +130,7 @@ class SortByName implements Comparator {
      * @param o1 Organism 1.
      * @param o2 Organism 2.
      * @return integer indicating results of comparison.
-     */    
+     */
     public int compare(Object o1, Object o2) {
         Organism organism1 = (Organism) o1;
         Organism organism2 = (Organism) o2;
