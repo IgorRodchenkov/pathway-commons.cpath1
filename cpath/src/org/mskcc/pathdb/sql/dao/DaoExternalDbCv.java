@@ -102,6 +102,8 @@ public class DaoExternalDbCv {
      */
     public ExternalDatabaseRecord getExternalDbByTerm(String term)
             throws DaoException {
+        //  Convert to Uppercase
+        term = term.toUpperCase();
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
