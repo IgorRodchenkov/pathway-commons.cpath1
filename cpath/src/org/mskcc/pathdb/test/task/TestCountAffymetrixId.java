@@ -33,6 +33,7 @@ import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
+import org.mskcc.pathdb.task.ProgressMonitor;
 
 /**
  * Tests the CountAffymetrixIdTask.
@@ -60,7 +61,7 @@ public class TestCountAffymetrixId extends TestCase {
         ExternalReference newRef = new ExternalReference
                 ("Affymetrix", "a100_at");
         UpdatePsiInteractor updater = new UpdatePsiInteractor
-                (existingRef, newRef, false);
+                (existingRef, newRef, false, new ProgressMonitor());
         updater.doUpdate();
 
         //  Shoulw now be 1 Record, with 1 Affy Id.

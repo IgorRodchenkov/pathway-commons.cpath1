@@ -43,6 +43,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.util.PsiUtil;
+import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -67,14 +68,15 @@ public class TestUpdatePsiInteractor extends TestCase {
         ProteinInteractorType proteinB = createProtein(NAME, DESCRIPTION,
                 "SWP", "ABC123", "LocusLink", "LOCUS123");
         DaoCPath cpath = new DaoCPath();
-        PsiUtil util = new PsiUtil();
+        PsiUtil util = new PsiUtil(new ProgressMonitor());
         util.normalizeXrefs(proteinA.getXref());
         ExternalReference refsA[] = util.extractRefs(proteinA);
         StringWriter writer = new StringWriter();
         proteinA.marshal(writer);
         long cpathId = cpath.addRecord(NAME, DESCRIPTION, 25,
                 CPathRecordType.PHYSICAL_ENTITY, writer.toString(), refsA);
-        UpdatePsiInteractor updater = new UpdatePsiInteractor(proteinB);
+        UpdatePsiInteractor updater = new UpdatePsiInteractor(proteinB,
+                new ProgressMonitor());
         boolean needsUpdating = updater.needsUpdating();
         assertEquals(true, needsUpdating);
         updater.doUpdate();

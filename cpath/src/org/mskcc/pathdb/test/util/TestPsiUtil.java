@@ -35,6 +35,7 @@ import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.util.PsiUtil;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
+import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class TestPsiUtil extends TestCase {
         ContentReader reader = new ContentReader();
         String file = new String("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
-        PsiUtil normalizer = new PsiUtil();
+        PsiUtil normalizer = new PsiUtil(new ProgressMonitor());
 
         EntrySet entrySet = normalizer.getNormalizedDocument(xml);
         StringWriter writer = new StringWriter();
@@ -70,8 +71,70 @@ public class TestPsiUtil extends TestCase {
         validateInteractionUpdate(entry);
     }
 
+    /**
+     * Tests PsiUtil.removeEmptySecondaryRefs()
+     * @throws Exception All Exceptions.
+     */
+    public void testRemovalOfSecondaryRefs () throws Exception {
+        // An actual excerpt from HPRD:
+        // <xref>
+        //   <primaryRef db="HPRD" id="HPRD_00400"/>
+        //   <secondaryRef db="PubMed" id="10610782"/>
+        //   <secondaryRef db="PubMed" id=" 8648130"/>
+        //   <secondaryRef db="PubMed" id=" "/>
+        //   <secondaryRef db="PubMed" id=""/>
+        //   <secondaryRef db="PubMed" id=" 11367533"/>
+        // </xref>
+        XrefType xref = new XrefType();
+        DbReferenceType primaryRef = new DbReferenceType();
+        primaryRef.setDb("HPRD");
+        primaryRef.setId("HPRD_00400");
+        xref.setPrimaryRef(primaryRef);
+
+        DbReferenceType secondaryRefs[] = new DbReferenceType[5];
+        DbReferenceType secondaryRef = new DbReferenceType();
+        secondaryRef.setDb("PubMed");
+        secondaryRef.setId("10610782");
+        secondaryRefs[0] = secondaryRef;
+        secondaryRef = new DbReferenceType();
+        secondaryRef.setDb("PubMed");
+        secondaryRef.setId(" 8648130");
+        secondaryRefs[1] = secondaryRef;
+        secondaryRef = new DbReferenceType();
+        secondaryRef.setDb("PubMed");
+        secondaryRef.setId(" ");
+        secondaryRefs[2] = secondaryRef;
+        secondaryRef = new DbReferenceType();
+        secondaryRef.setDb("PubMed");
+        secondaryRef.setId("");
+        secondaryRefs[3] = secondaryRef;
+        secondaryRef = new DbReferenceType();
+        secondaryRef.setDb("PubMed");
+        secondaryRef.setId(" 11367533");
+        secondaryRefs[4] = secondaryRef;
+        xref.setSecondaryRef(secondaryRefs);
+
+        //  Now remove empty secondary refs
+        PsiUtil psiUtil = new PsiUtil (new ProgressMonitor());
+        psiUtil.removeEmptySecondaryRefs(xref);
+
+        //  Validate that empty refs are now removed.
+        //  Should only be 3 refs remaining.
+        assertEquals (3, xref.getSecondaryRefCount());
+
+        //  Validate 0th Element
+        secondaryRef = xref.getSecondaryRef(0);
+        assertEquals ("PubMed", secondaryRef.getDb());
+        assertEquals ("10610782", secondaryRef.getId());
+
+        //  Validate Last Element
+        secondaryRef = xref.getSecondaryRef(2);
+        assertEquals ("PubMed", secondaryRef.getDb());
+        assertEquals ("11367533", secondaryRef.getId());
+    }
+
     private void validateInteractionUpdate(Entry entry) throws Exception {
-        PsiUtil util = new PsiUtil();
+        PsiUtil util = new PsiUtil(new ProgressMonitor());
         HashMap idMap = new HashMap();
         idMap.put("YAL036C", new Long(1));
         idMap.put("YCR038C", new Long(2));
@@ -164,7 +227,7 @@ public class TestPsiUtil extends TestCase {
      * @param entry
      */
     private void validateInteractors(Entry entry) throws MissingDataException {
-        PsiUtil util = new PsiUtil();
+        PsiUtil util = new PsiUtil(new ProgressMonitor());
         int counter = 0;
         InteractorList interactorList = entry.getInteractorList();
         for (int i = 0; i < interactorList.getProteinInteractorCount(); i++) {
