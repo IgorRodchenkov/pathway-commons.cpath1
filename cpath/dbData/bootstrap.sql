@@ -12,6 +12,9 @@
 # Dumping data for table `orf_info`
 #
 
+use cpath;
+truncate table import;
+
 use grid;
 truncate table orf_info;
 truncate table interactions;
