@@ -118,6 +118,7 @@ public class IndexLuceneTask extends Task {
                     indexWriter.commit();
                     indexWriter = new LuceneWriter(true);
                 }
+                counter++;
             }
             indexWriter.optimize();
             indexWriter.commit();
