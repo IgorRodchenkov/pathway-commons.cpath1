@@ -30,6 +30,12 @@ package org.mskcc.pathdb.sql.assembly;
 public interface XmlAssembly {
 
     /**
+     * Indicates that the Assembly is Empty (contains no data).
+     * @return true or false.
+     */
+    public boolean isEmpty();
+
+    /**
      * Gets Comlete Xml Assembly (in String form).
      * @return XML Document String.
      */
@@ -41,4 +47,21 @@ public interface XmlAssembly {
      */
     public Object getXmlObject ();
 
+    /**
+     * Gets Total Number of Hits.
+     * This Assembly may be a subset of a larger set.
+     * This method returns the total number of records in the larger,
+     * complete set.
+     * @return int number of records.
+     */
+    public int getNumHits();
+
+    /**
+     * Sets Total Number of Hits.
+     * This Assembly may be a subset of a larger set.
+     * This method returns the total number of records in the larger,
+     * complete set.
+     * @param numRecords Total Number of Records.
+     */
+    public void setNumHits(int numRecords);
 }

@@ -3,6 +3,8 @@ package org.mskcc.pathdb.sql.assembly;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.mskcc.dataservices.schemas.psi.Entry;
+import org.mskcc.dataservices.schemas.psi.InteractionList;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
@@ -11,6 +13,7 @@ import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.StringWriter;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +29,8 @@ public class PsiAssembly implements XmlAssembly {
     private XDebug xdebug;
     private String xml;
     private EntrySet entrySet;
+    private int numHits = 0;
+    private ArrayList interactions = null;
 
     /**
      * Package Only Constructor.  Class must be instantiated via the
@@ -33,10 +38,12 @@ public class PsiAssembly implements XmlAssembly {
      *
      * @param interactions ArrayList of CPathRecord objects.  Each CPathRecord
      *                     contains an Interaction.
+     * @param xdebug XDebug Object.
      * @throws AssemblyException Error In Assembly.
      */
     PsiAssembly(ArrayList interactions, XDebug xdebug)
             throws AssemblyException {
+        this.interactions = interactions;
         this.xdebug = xdebug;
         try {
             HashMap interactors = extractInteractors(interactions);
@@ -48,6 +55,40 @@ public class PsiAssembly implements XmlAssembly {
         } catch (ValidationException e) {
             throw new AssemblyException(e);
         }
+    }
+
+    /**
+     * Package Only Constructor.  Class must be instantiated via the
+     * XmlAssembly Factory.
+     * @param xmlDocumentComplete Complete XML Document.
+     * @param xdebug XDebug Object.
+     * @throws AssemblyException Error In Assembly.
+     */
+    PsiAssembly (String xmlDocumentComplete, XDebug xdebug)
+            throws AssemblyException {
+        this.xml = xmlDocumentComplete;
+        if (xml != null) {
+            StringReader xmlReader = new StringReader(xml);
+            try {
+                this.entrySet = EntrySet.unmarshalEntrySet(xmlReader);
+            } catch (MarshalException e) {
+                throw new AssemblyException (e);
+            } catch (ValidationException e) {
+                throw new AssemblyException (e);
+            }
+        }
+    }
+
+    /**
+     * Package Only Constructor.  Class must be instantiated via the
+     * XmlAssembly Factory.
+     * @param xdebug XDebug Object.
+     * @throws AssemblyException Error In Assembly.
+     */
+    PsiAssembly (XDebug xdebug) throws AssemblyException {
+        this.xdebug = xdebug;
+        this.xml = null;
+        this.entrySet = null;
     }
 
     /**
@@ -65,6 +106,46 @@ public class PsiAssembly implements XmlAssembly {
      */
     public Object getXmlObject () {
         return entrySet;
+    }
+
+    /**
+     * Indicates is Assembly is Empty (contains no data).
+     * @return true or false.
+     */
+    public boolean isEmpty() {
+        boolean emptyFlag = true;
+        if (entrySet != null) {
+            if (entrySet.getEntryCount() > 0) {
+                Entry entry = entrySet.getEntry(0);
+                InteractionList list = entry.getInteractionList();
+                if (list.getInteractionCount() > 0) {
+                    emptyFlag = false;
+                }
+            }
+        }
+        return emptyFlag;
+    }
+
+    /**
+     * Gets Total Number of Records.
+     * This Assembly may be a subset of a larger set.
+     * This method returns the total number of records in the larger,
+     * complete set.
+     * @return int number of records.
+     */
+    public int getNumHits() {
+        return this.numHits;
+    }
+
+    /**
+     * Sets Total Number of Records.
+     * This Assembly may be a subset of a larger set.
+     * This method returns the total number of records in the larger,
+     * complete set.
+     * @param numRecords Total Number of Records.
+     */
+    public void setNumHits(int numRecords) {
+        this.numHits = numRecords;
     }
 
     /**
