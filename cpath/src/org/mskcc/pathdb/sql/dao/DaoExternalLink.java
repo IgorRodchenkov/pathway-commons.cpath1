@@ -196,6 +196,9 @@ public class DaoExternalLink {
                         DaoCPath cpathDao = new DaoCPath();
                         CPathRecord record = cpathDao.getRecordById(cpathId);
                         records.add(record);
+//                        System.out.println("\nMatching Record Found, "
+//                                + "Based on:  " + externalDb.getName()
+//                                + ":  " + linkedToId);
                     }
                 }
             }

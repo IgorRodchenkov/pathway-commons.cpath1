@@ -244,6 +244,7 @@ public class ImportPsiToCPath {
                         (filteredRefs);
                 //  Step 3.1.2 - 3.1.3
                 if (records.size() > 0) {
+                    System.out.print("#");
                     CPathRecord record = (CPathRecord) records.get(0);
                     //  Conditionally Update the Interactor Record with
                     //  new external references.
