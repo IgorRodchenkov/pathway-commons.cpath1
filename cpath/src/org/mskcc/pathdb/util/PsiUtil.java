@@ -169,8 +169,12 @@ public class PsiUtil {
                 }
             }
         }
-        refs = (ExternalReference[]) refList.toArray(refs);
-        return refs;
+        if (refList.size() > 0) {
+            refs = (ExternalReference[]) refList.toArray(refs);
+            return refs;
+        } else {
+            return null;
+        }
     }
 
     private void addToExternalRefList(ExternalReference[] refs,
@@ -244,9 +248,15 @@ public class PsiUtil {
                 if (ref != null) {
                     String id = ref.getRef();
                     ExperimentType exp = (ExperimentType) experimentMap.get(id);
-                    exp.setId("NO_ID");
-                    expItem.setExperimentDescription(exp);
-                    expItem.setExperimentRef(null);
+                    if (exp != null) {
+
+                        exp.setId("NO_ID");
+                        expItem.setExperimentDescription(exp);
+                        expItem.setExperimentRef(null);
+                    } else {
+                        System.out.println("Warning!  No Experiment found "
+                                + " for experiment ref:  " + id);
+                    }
                 }
             }
         }

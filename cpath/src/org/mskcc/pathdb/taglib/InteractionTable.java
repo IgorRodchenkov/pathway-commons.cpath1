@@ -75,7 +75,7 @@ public class InteractionTable extends HtmlTable {
      * @throws DaoException Database Access Error.
      */
     protected void subDoStartTag() throws DaoException {
-        String title = "Interactions for:  " + uid;
+        String title = "Matching Interactions";
 
         append("<table width=100% cellpadding=7 cellspacing=0>"
                 + "<tr><td colspan=2 bgcolor=#666699><u>"
@@ -84,13 +84,16 @@ public class InteractionTable extends HtmlTable {
         append("<td colspan=2>");
         String url = getInteractionLink(uid,
                 ProtocolConstants.FORMAT_PSI);
-        append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
-        outputLink("View PSI-MI XML Format", url);
+        if (interactions.size() > 0) {
+            append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
+            outputLink("View PSI-MI XML Format", url);
+        }
+
         append("</td>");
         append("</tr>");
         String headers[] = {
-            "Interactor", "External References",
-            "Experimental System", "PubMed Reference"};
+            "Interactor", "Interactor", "Experimental System",
+            "PubMed Reference"};
 
         createTableHeaders(headers);
         outputInteractions();
@@ -101,24 +104,54 @@ public class InteractionTable extends HtmlTable {
      * Outputs Interaction Data.
      */
     private void outputInteractions() throws DaoException {
+        if (interactions.size() == 0) {
+            append("<TR>");
+            append("<TD COLSPAN=4>No Matching Interactions Found.  "
+                    + "Please try again.</TD>");
+            append("</TR>");
+        }
         for (int i = 0; i < interactions.size(); i++) {
             Interaction interaction = (Interaction) interactions.get(i);
             ArrayList interactors = interaction.getInteractors();
             append("<TR>");
-            Interactor interactor = pickInteractorToDisplay(interactors);
-            String url = getInteractionLink(interactor.getName(),
-                    ProtocolConstants.FORMAT_HTML);
-            outputDataField(interactor.getName(), url);
-            outputExternalReferences(interactor);
+            Interactor interactor = (Interactor) interactors.get(0);
+//            String url = getInteractionLink(interactor0.getName(),
+//                    ProtocolConstants.FORMAT_HTML);
+            outputInteractor(interactor);
+
+            interactor = (Interactor) interactors.get(1);
+            outputInteractor(interactor);
+
             String expSystem = (String) interaction.getAttribute
                     (InteractionVocab.EXPERIMENTAL_SYSTEM_NAME);
             outputDataField(expSystem);
             String pmid = (String) interaction.getAttribute
                     (InteractionVocab.PUB_MED_ID);
-            url = getPubMedLink(pmid);
+            String url = getPubMedLink(pmid);
             outputDataField(pmid, url);
+            append("</TR>");
+            append("<TR><TD COLSPAN=4><HR></TD></TR>");
         }
-        append("</TR>");
+    }
+
+    private void outputInteractor(Interactor interactor) {
+        if (interactor != null) {
+            String name = interactor.getName();
+            String desc = (String) interactor.getAttribute
+                    (InteractorVocab.FULL_NAME);
+            String org = (String) interactor.getAttribute
+                    (InteractorVocab.ORGANISM_SPECIES_NAME);
+            StringBuffer interactorHtml = new StringBuffer();
+            interactorHtml.append(name + "<BR><UL><LI>");
+            if (desc != null) {
+                interactorHtml.append(desc);
+            }
+            if (org != null) {
+                interactorHtml.append("<LI>Organism:  " + org);
+            }
+            interactorHtml.append("</UL>");
+            this.outputDataField(interactorHtml.toString());
+        }
     }
 
     /**

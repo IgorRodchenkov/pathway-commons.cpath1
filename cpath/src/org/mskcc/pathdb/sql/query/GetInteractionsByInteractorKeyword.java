@@ -3,7 +3,6 @@ package org.mskcc.pathdb.sql.query;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
-import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
@@ -48,8 +47,6 @@ public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
                 ArrayList interactions = this.extractInteractions(records);
                 HashMap interactors = this.extractInteractors(interactions);
                 createPsi(interactors.values(), interactions);
-            } else {
-                throw new EmptySetException();
             }
         } finally {
             indexer.closeIndexSearcher();

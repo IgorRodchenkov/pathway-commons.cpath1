@@ -17,20 +17,20 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess1() throws Exception {
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery("ABC123");
         request.setStartIndex(0);
-        Pager pager = new Pager (request, 250);
+        Pager pager = new Pager(request, 250);
         long start = pager.getStartIndex();
         long end = pager.getEndIndex();
         String html = pager.getHeaderHtml();
         String firstUrl = pager.getFirstUrl();
         String nextUrl = pager.getNextUrl();
         String prevUrl = pager.getPreviousUrl();
-        assertEquals (0, start);
-        assertEquals (20, end);
+        assertEquals(0, start);
+        assertEquals(20, end);
         assertEquals("webservice?version=1.0&cmd=&db=&uid=ABC123&"
-            + "format=&startIndex=20", nextUrl);
+                + "format=&startIndex=20", nextUrl);
         assertEquals(null, firstUrl);
         assertEquals(null, prevUrl);
     }
@@ -40,24 +40,24 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess2() throws Exception {
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery("ABC123");
         request.setStartIndex(20);
-        Pager pager = new Pager (request, 250);
+        Pager pager = new Pager(request, 250);
         long start = pager.getStartIndex();
         long end = pager.getEndIndex();
         String html = pager.getHeaderHtml();
         String firstUrl = pager.getFirstUrl();
         String nextUrl = pager.getNextUrl();
         String prevUrl = pager.getPreviousUrl();
-        assertEquals (20, start);
-        assertEquals (40, end);
+        assertEquals(20, start);
+        assertEquals(40, end);
         assertEquals("webservice?version=1.0&cmd=&db=&uid=ABC123&"
-            + "format=&startIndex=0", firstUrl);
+                + "format=&startIndex=0", firstUrl);
         assertEquals("webservice?version=1.0&cmd=&db=&uid=ABC123&"
-            + "format=&startIndex=40", nextUrl);
+                + "format=&startIndex=40", nextUrl);
         assertEquals("webservice?version=1.0&cmd=&db=&uid=ABC123&"
-            + "format=&startIndex=0", prevUrl);
+                + "format=&startIndex=0", prevUrl);
     }
 
     /**
@@ -65,23 +65,23 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess3() throws Exception {
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery("ABC123");
         request.setStartIndex(240);
-        Pager pager = new Pager (request, 255);
+        Pager pager = new Pager(request, 255);
         long start = pager.getStartIndex();
         long end = pager.getEndIndex();
         String html = pager.getHeaderHtml();
         String firstUrl = pager.getFirstUrl();
         String nextUrl = pager.getNextUrl();
         String prevUrl = pager.getPreviousUrl();
-        assertEquals (240, start);
-        assertEquals (255, end);
+        assertEquals(240, start);
+        assertEquals(255, end);
         assertEquals("webservice?version=1.0&cmd=&db=&uid=ABC123&"
-            + "format=&startIndex=0", firstUrl);
+                + "format=&startIndex=0", firstUrl);
         assertEquals(null, nextUrl);
         assertEquals("webservice?version=1.0&cmd=&db=&uid=ABC123&"
-            + "format=&startIndex=220", prevUrl);
+                + "format=&startIndex=220", prevUrl);
     }
 
     /**
@@ -89,12 +89,12 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess4() throws Exception {
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery("ABC123");
         request.setStartIndex(-11);
-        Pager pager = new Pager (request, 255);
-        assertEquals (0, pager.getStartIndex());
-        assertEquals (20, pager.getEndIndex());
+        Pager pager = new Pager(request, 255);
+        assertEquals(0, pager.getStartIndex());
+        assertEquals(20, pager.getEndIndex());
     }
 
     /**
@@ -102,12 +102,12 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess5() throws Exception {
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery("ABC123");
         request.setStartIndex(2800);
-        Pager pager = new Pager (request, 255);
-        assertEquals (240, pager.getStartIndex());
-        assertEquals (255, pager.getEndIndex());
+        Pager pager = new Pager(request, 255);
+        assertEquals(240, pager.getStartIndex());
+        assertEquals(255, pager.getEndIndex());
     }
 
 }

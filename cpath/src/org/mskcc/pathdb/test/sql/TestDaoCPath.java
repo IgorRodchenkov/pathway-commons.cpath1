@@ -106,4 +106,15 @@ public class TestDaoCPath extends TestCase {
         assertEquals(DB_NAME_1, link.getExternalDatabase().getName());
         assertEquals(DB_ID_1, link.getLinkedToId());
     }
+
+    /**
+     * Tests the GetAllTaxonomyIds Method.
+     * @throws Exception All Exceptions.
+     */
+    public void testGetAllTaxonomyIds() throws Exception {
+        DaoCPath cpath = new DaoCPath();
+        ArrayList taxonomyList = cpath.getAllTaxonomyIds();
+        Integer taxId = (Integer) taxonomyList.get(0);
+        assertEquals(9606, taxId.intValue());
+    }
 }

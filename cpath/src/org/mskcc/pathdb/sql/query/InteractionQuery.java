@@ -1,12 +1,11 @@
 package org.mskcc.pathdb.sql.query;
 
 import org.apache.log4j.Logger;
-import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +16,7 @@ import java.util.HashMap;
  * @author Ethan Cerami
  */
 public abstract class InteractionQuery {
-    private ArrayList interactions;
+    private ArrayList interactions = new ArrayList();
     private String xml;
 
     /**
@@ -28,13 +27,10 @@ public abstract class InteractionQuery {
     /**
      * Executes Query.
      * @throws QueryException Error Executing Query.
-     * @throws EmptySetException No Results Found.
      */
-    public void execute() throws QueryException, EmptySetException {
+    public void execute() throws QueryException {
         try {
             executeSub();
-        } catch (EmptySetException e) {
-            throw e;
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         }
@@ -121,7 +117,6 @@ public abstract class InteractionQuery {
      */
     protected HashMap extractInteractors(ArrayList interactions)
             throws DaoException {
-        System.out.println("START  :Extracting Interactors");
         HashMap interactorMap = new HashMap();
         DaoInternalLink linker = new DaoInternalLink();
         DaoCPath cpath = new DaoCPath();
@@ -130,7 +125,7 @@ public abstract class InteractionQuery {
             ArrayList list = linker.getInternalLinks(record.getId());
             for (int j = 0; j < list.size(); j++) {
                 InternalLinkRecord link = (InternalLinkRecord) list.get(j);
-                Long key = new Long (link.getCpathIdB());
+                Long key = new Long(link.getCpathIdB());
                 if (!interactorMap.containsKey(key)) {
                     CPathRecord interactor = cpath.getRecordById
                             (link.getCpathIdB());
@@ -138,7 +133,6 @@ public abstract class InteractionQuery {
                 }
             }
         }
-        System.out.println("STOP  :Extracting Interactors");
         return interactorMap;
     }
 }

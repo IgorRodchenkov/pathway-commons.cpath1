@@ -54,7 +54,7 @@ public class ProtocolValidator {
         validateCommand();
         validateVersion();
         validateFormat();
-        validateUid();
+        validateQuery();
     }
 
     /**
@@ -102,11 +102,36 @@ public class ProtocolValidator {
      * Validates the UID Parameter.
      * @throws ProtocolException Indicates Violation of Protocol.
      */
-    private void validateUid() throws ProtocolException {
-        if (request.getQuery() == null || request.getQuery().length() == 0) {
+    private void validateQuery() throws ProtocolException {
+        String q = request.getQuery();
+        String command = request.getCommand();
+        if (q == null || q.length() == 0) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_QUERY
-                    + "' is not specified." + HELP_MESSAGE);
+                    + "' is not specified." + HELP_MESSAGE,
+                    "You did not specify a search term.  Please try again.");
+        }
+        if (command.equals(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID)) {
+            try {
+                Integer.parseInt(q);
+            } catch (NumberFormatException e) {
+                throw new ProtocolException(ProtocolStatusCode.
+                        INVALID_ARGUMENT, "Argument:  '" + ProtocolRequest.
+                        ARG_QUERY + "' must be specified as an integer value",
+                        "Interaction ID must be specified as an integer"
+                        + " value.  Please try again.");
+            }
+        }
+        if (command.equals(ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID)) {
+            try {
+                Integer.parseInt(q);
+            } catch (NumberFormatException e) {
+                throw new ProtocolException(ProtocolStatusCode.
+                        INVALID_ARGUMENT, "Argument:  '" + ProtocolRequest.
+                        ARG_QUERY + "' must be specified as an integer value.",
+                        "Pub Med ID must be specified as an integer"
+                        + " value.  Please try again.");
+            }
         }
     }
 

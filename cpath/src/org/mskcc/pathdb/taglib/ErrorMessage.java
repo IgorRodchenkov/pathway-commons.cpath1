@@ -4,7 +4,6 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.struts.util.PropertyMessageResources;
 import org.mskcc.pathdb.action.admin.AdminWebLogging;
 import org.mskcc.pathdb.controller.ProtocolException;
-import org.mskcc.pathdb.controller.ProtocolStatusCode;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -94,13 +93,7 @@ public class ErrorMessage extends HtmlTable {
             userMsg = resource.getMessage(MSG_ERROR_PARSING);
         } else if (rootCause instanceof ProtocolException) {
             ProtocolException pException = (ProtocolException) rootCause;
-            if (pException.getStatusCode()
-                    == ProtocolStatusCode.MISSING_ARGUMENTS) {
-                userMsg = resource.getMessage(MSG_ERROR_MISSING_SEARCH_TERM);
-            } else {
-                userMsg = resource.getMessage(MSG_ERROR_INTERNAL_WITH_DETAILS,
-                        pException.getMessage());
-            }
+            userMsg = pException.getWebErrorMessage();
         } else if (rootCause instanceof FileNotFoundException) {
             userMsg = resource.getMessage(MSG_LUCENE_INDEX_NOT_FOUND);
         }

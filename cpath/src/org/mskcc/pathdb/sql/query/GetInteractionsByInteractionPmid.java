@@ -1,7 +1,6 @@
 package org.mskcc.pathdb.sql.query;
 
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 
 import java.util.ArrayList;
@@ -40,8 +39,6 @@ public class GetInteractionsByInteractionPmid extends PsiInteractionQuery {
         if (interactions.size() > 0) {
             HashMap interactors = this.extractInteractors(interactions);
             createPsi(interactors.values(), interactions);
-        } else {
-            throw new EmptySetException();
         }
     }
 }

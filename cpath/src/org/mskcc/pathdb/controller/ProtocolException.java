@@ -24,7 +24,12 @@ public class ProtocolException extends Exception {
     /**
      * Error Message Details.
      */
-    private String details;
+    private String xmlErrorMessage;
+
+    /**
+     *  Error Message for Displaying to End User of Web Interface.
+     */
+    private String webErrorMessage;
 
     /**
      * Error XML Element Name.
@@ -66,7 +71,20 @@ public class ProtocolException extends Exception {
      */
     public ProtocolException(ProtocolStatusCode statusCode, String details) {
         this.statusCode = statusCode;
-        this.details = details;
+        this.xmlErrorMessage = details;
+    }
+
+    /**
+     * Constructor.
+     * @param statusCode Protocol Status Code.
+     * @param xmlErrorMessage Error Message Details (for xml user)
+     * @param webErrorMessage Error Message Details (for web user)
+     */
+    public ProtocolException(ProtocolStatusCode statusCode,
+            String xmlErrorMessage, String webErrorMessage) {
+        this.statusCode = statusCode;
+        this.xmlErrorMessage = xmlErrorMessage;
+        this.webErrorMessage = webErrorMessage;
     }
 
     /**
@@ -77,7 +95,7 @@ public class ProtocolException extends Exception {
     public ProtocolException(ProtocolStatusCode statusCode, Exception e) {
         super(e);
         this.statusCode = statusCode;
-        this.details = "Internal Error";
+        this.xmlErrorMessage = "Internal Error";
     }
 
     /**
@@ -89,11 +107,23 @@ public class ProtocolException extends Exception {
     }
 
     /**
-     * Gets Error Details.
+     * Gets XML Error Message
      * @return Error Details String.
      */
-    public String getDetails() {
-        return this.details;
+    public String getXmlErrorMessage() {
+        return this.xmlErrorMessage;
+    }
+
+    /**
+     * Gets Web Error Message
+     * @return Error Details String.
+     */
+    public String getWebErrorMessage() {
+        if (webErrorMessage != null) {
+            return webErrorMessage;
+        } else {
+            return this.xmlErrorMessage;
+        }
     }
 
     /**
@@ -102,7 +132,7 @@ public class ProtocolException extends Exception {
      */
     public String getMessage() {
         return new String(statusCode.getErrorCode() + ":  "
-                + statusCode.getErrorMsg() + ": " + this.details);
+                + statusCode.getErrorMsg() + ": " + this.xmlErrorMessage);
     }
 
     /**
@@ -140,9 +170,9 @@ public class ProtocolException extends Exception {
         errorElement.addContent(errorCodeElement);
         errorElement.addContent(errorMsgElement);
 
-        if (details != null) {
+        if (xmlErrorMessage != null) {
             Element errorDetailsElement = new Element(ERROR_DETAILS_ELEMENT);
-            errorDetailsElement.setText(details);
+            errorDetailsElement.setText(xmlErrorMessage);
             errorElement.addContent(errorDetailsElement);
         } else if (this.getCause() != null) {
             Element errorDetailsElement = new Element(ERROR_DETAILS_ELEMENT);

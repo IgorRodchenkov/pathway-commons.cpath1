@@ -1,6 +1,5 @@
 package org.mskcc.pathdb.sql.query;
 
-import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
@@ -37,8 +36,6 @@ public class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
             ArrayList interactions = this.extractInteractions(record);
             HashMap interactors = this.extractInteractors(interactions);
             createPsi(interactors.values(), interactions);
-        } else {
-            throw new EmptySetException();
         }
     }
 }

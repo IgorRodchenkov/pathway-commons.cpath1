@@ -25,9 +25,14 @@ import java.util.HashMap;
  */
 public class CPathController {
     /**
-     * Request Attribue:  SHOW_HELP.
+     * Request Attribue:  PAGE_COMMAND.
      */
-    public static final String SHOW_HELP = "show_help";
+    public static final String PAGE_COMMAND = "page_command";
+
+    /**
+     * Request Attribue:  SHOW_ADVANCED_SEARCH.
+     */
+    public static final String SHOW_ADVANCED_SEARCH = "show_advanced_search";
 
     /**
      * Servlet Request.
@@ -170,8 +175,12 @@ public class CPathController {
         Enumeration names = request.getParameterNames();
         while (names.hasMoreElements()) {
             String name = (String) names.nextElement();
-            String value = request.getParameter(name);
-            map.put(name, value);
+            String values[] = request.getParameterValues(name);
+            for (int i = 0; i < values.length; i++) {
+                if (values[i] != null && values[i].length() > 0) {
+                    map.put(name, values[i]);
+                }
+            }
         }
         return map;
     }
@@ -184,7 +193,6 @@ public class CPathController {
         xdebug.stopTimer();
         xdebug.logMsg(this, "Showing Help Page");
         try {
-            request.setAttribute(SHOW_HELP, "yes");
             setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
             RequestDispatcher dispatcher =
                     servletContext.getRequestDispatcher

@@ -32,6 +32,11 @@ public abstract class HtmlTable extends TagSupport {
                 out.println(html.toString());
             }
         } catch (Exception e) {
+            try {
+                e.printStackTrace();
+            } catch (Exception exc) {
+                e.printStackTrace();
+            }
             throw new JspException(e.getMessage(), e);
         }
         return TagSupport.SKIP_BODY;

@@ -1,11 +1,17 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.dataservices.util.PropertyManager;
+import org.apache.commons.dbcp.ConnectionFactory;
+import org.apache.commons.dbcp.DriverManagerConnectionFactory;
+import org.apache.commons.dbcp.PoolableConnectionFactory;
+import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.pool.impl.GenericObjectPool;
-import org.apache.commons.dbcp.*;
+import org.mskcc.dataservices.util.PropertyManager;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Connection Utility for JDBC.
@@ -111,6 +117,8 @@ public class JdbcUtil {
 
     /**
      * Initializes Database Connection Pool.
+     * @param connectURI Connection URI.
+     * @return DataSource Object.
      */
     public static DataSource setupDataSource(String connectURI) {
         //

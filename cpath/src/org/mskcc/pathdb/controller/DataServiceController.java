@@ -1,6 +1,5 @@
 package org.mskcc.pathdb.controller;
 
-import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.sql.query.*;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -48,30 +47,28 @@ public class DataServiceController {
      */
     public void processRequest(ProtocolRequest protocolRequest)
             throws Exception {
-        try {
-            processGetInteractions(protocolRequest);
-        } catch (EmptySetException e) {
-            throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
-                    "No Results Found for:  " + protocolRequest.getQuery());
-        }
+        processGetInteractions(protocolRequest);
     }
 
     private void processGetInteractions(ProtocolRequest protocolRequest)
-            throws IOException, ServletException, EmptySetException,
-            QueryException {
-        if (protocolRequest.getFormat().equals
-                (ProtocolConstants.FORMAT_PSI)) {
+            throws IOException, ServletException, QueryException,
+            ProtocolException {
+        if (protocolRequest.getFormat().equals(ProtocolConstants.FORMAT_PSI)) {
             InteractionQuery query = determineQueryType(protocolRequest);
+            ArrayList interactions = query.getInteractions();
+            if (interactions.size() == 0) {
+                throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
+                        "No Results Found for:  " + protocolRequest.getQuery());
+            }
             String xml = query.getXml();
             this.returnXml(xml);
         } else {
-            try {
-                InteractionQuery query = determineQueryType(protocolRequest);
-                ArrayList interactions = query.getInteractions();
-                request.setAttribute("interactions", interactions);
-            } catch (EmptySetException e) {
-                xdebug.logMsg(this, "No Exact Matches Found.  "
-                        + "Trying full text search");
+            InteractionQuery query = determineQueryType(protocolRequest);
+            ArrayList interactions = query.getInteractions();
+            request.setAttribute("interactions", interactions);
+            if (interactions.size() == 0 && protocolRequest.getCommand().
+                    equals(ProtocolConstants.
+                    COMMAND_GET_BY_INTERACTOR_NAME)) {
                 request.setAttribute("doFullTextSearch", "true");
             }
             forwardToJsp();
@@ -82,7 +79,7 @@ public class DataServiceController {
      * Instantiates Correct Query based on Protocol Request.
      */
     private InteractionQuery determineQueryType(ProtocolRequest request)
-            throws QueryException, EmptySetException {
+            throws QueryException {
         String command = request.getCommand();
         String q = request.getQuery();
         InteractionQuery query = null;
@@ -98,7 +95,7 @@ public class DataServiceController {
             query = new GetInteractionsByInteractorTaxonomyId(taxId);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_KEYWORD)) {
-            query = new GetInteractionsByInteractorKeyword (q);
+            query = new GetInteractionsByInteractorKeyword(q);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB)) {
             query = new GetInteractionsByInteractionDbSource(q);
@@ -130,10 +127,8 @@ public class DataServiceController {
         response.setContentType("text/xml");
         ServletOutputStream stream = response.getOutputStream();
         stream.println(xmlResponse);
-        System.out.println("NOW FLUSHING OUT XML");
         stream.flush();
         stream.close();
-        System.out.println("FLUSH....");
     }
 
     /**

@@ -106,21 +106,22 @@ public class SearchResultsTable extends HtmlTable {
             append("<TR>");
             append("<TD COLSPAN=4>No Matching Results found!");
             append("</TR>");
-        }
-        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
-            append("<TR>");
-            Document doc = hits.doc(i);
-            Field name = doc.getField(LuceneIndexer.FIELD_NAME);
-            Field desc = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
-            append("<TD VALIGN=TOP WIDTH=20>");
-            append(Integer.toString(i + 1) + ".");
-            append("</TD>");
-            append("<TD VALIGN=TOP WIDTH=60>");
-            append(name.stringValue());
-            append("</TD>");
-            outputDataField(desc.stringValue());
-            outputInteractionLink(name.stringValue());
-            append("</TR>");
+        } else {
+            for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
+                append("<TR>");
+                Document doc = hits.doc(i);
+                Field name = doc.getField(LuceneIndexer.FIELD_NAME);
+                Field desc = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
+                append("<TD VALIGN=TOP WIDTH=20>");
+                append(Integer.toString(i + 1) + ".");
+                append("</TD>");
+                append("<TD VALIGN=TOP WIDTH=60>");
+                append(name.stringValue());
+                append("</TD>");
+                outputDataField(desc.stringValue());
+                outputInteractionLink(name.stringValue());
+                append("</TR>");
+            }
         }
     }
 

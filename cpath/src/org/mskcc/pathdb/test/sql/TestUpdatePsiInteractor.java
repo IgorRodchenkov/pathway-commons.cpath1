@@ -1,19 +1,19 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
-import org.mskcc.dataservices.schemas.psi.NamesType;
-import org.mskcc.dataservices.schemas.psi.XrefType;
-import org.mskcc.dataservices.schemas.psi.DbReferenceType;
 import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.dataservices.schemas.psi.DbReferenceType;
+import org.mskcc.dataservices.schemas.psi.NamesType;
+import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
+import org.mskcc.dataservices.schemas.psi.XrefType;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.util.PsiUtil;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
 
 import java.io.StringWriter;
 import java.util.ArrayList;

@@ -8,13 +8,13 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.logger.ConfigLogger;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.test.controller.ControllerSuite;
+import org.mskcc.pathdb.test.indexer.IndexerSuite;
 import org.mskcc.pathdb.test.logger.LoggerSuite;
 import org.mskcc.pathdb.test.service.ServiceSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
-import org.mskcc.pathdb.test.indexer.IndexerSuite;
 
 /**
  * Runs all Unit Tests.

@@ -187,6 +187,37 @@ public class DaoCPath {
     }
 
     /**
+     * Gets a complete list of all TaxonomyIds stored in the database.
+     * This effectively returns a list of all indexed organisms.
+     * @return ArrayList of Integer NCBI Taxonomy Ids.
+     * @throws DaoException Database Access Error.
+     */
+    public ArrayList getAllTaxonomyIds() throws DaoException {
+        ArrayList taxonomyList = new ArrayList();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT DISTINCT NCBI_TAX_ID FROM CPATH");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int taxId = rs.getInt("NCBI_TAX_ID");
+                taxonomyList.add(new Integer(taxId));
+            }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+        return taxonomyList;
+    }
+
+    /**
      * Gets Record by specified CPath ID.
      * @param cpathId cPath ID.
      * @return cPath Record.

@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.controller;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Enumeration of Protocol Status Codes.
@@ -116,25 +116,25 @@ public class ProtocolStatusCode {
      */
     private void initMessageMap() {
         messageMap = new HashMap();
-        messageMap.put (new Integer
+        messageMap.put(new Integer
                 (ProtocolStatusCode.OK.getErrorCode()),
                 "OK, data follows");
-        messageMap.put (new Integer
+        messageMap.put(new Integer
                 (ProtocolStatusCode.BAD_COMMAND.getErrorCode()),
                 "Bad Command (command not recognized)");
-        messageMap.put (new Integer(
+        messageMap.put(new Integer(
                 ProtocolStatusCode.BAD_FORMAT.getErrorCode()),
                 "Bad Data Format (data format not recognized)");
-        messageMap.put (new Integer(
+        messageMap.put(new Integer(
                 ProtocolStatusCode.MISSING_ARGUMENTS.getErrorCode()),
                 "Bad Request (missing arguments)");
-        messageMap.put (new Integer(
+        messageMap.put(new Integer(
                 ProtocolStatusCode.INVALID_ARGUMENT.getErrorCode()),
                 "Bad Request (invalid arguments)");
-        messageMap.put (new Integer
+        messageMap.put(new Integer
                 (ProtocolStatusCode.NO_RESULTS_FOUND.getErrorCode()),
                 "No Results Found");
-        messageMap.put (new Integer
+        messageMap.put(new Integer
                 (ProtocolStatusCode.VERSION_NOT_SUPPORTED.getErrorCode()),
                 "Version not supported");
         messageMap.put(new Integer

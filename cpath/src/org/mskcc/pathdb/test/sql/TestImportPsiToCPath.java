@@ -1,25 +1,25 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.dataservices.schemas.psi.Entry;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractionList;
 import org.mskcc.dataservices.schemas.psi.InteractorList;
 import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.query.*;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.tool.LoadFullText;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class TestImportPsiToCPath extends TestCase {
         DaoCPath cpath = new DaoCPath();
         CPathRecord record = cpath.getRecordByName("YCR038C");
         PsiInteractionQuery query =
-                new GetInteractionsByInteractorId (record.getId());
+                new GetInteractionsByInteractorId(record.getId());
         query.execute();
         EntrySet entrySet = query.getEntrySet();
         validateInteractionSet(entrySet);
@@ -122,69 +122,69 @@ public class TestImportPsiToCPath extends TestCase {
             EmptySetException {
         int taxId = 4932;
         PsiInteractionQuery query =
-                new GetInteractionsByInteractorTaxonomyId (taxId);
+                new GetInteractionsByInteractorTaxonomyId(taxId);
         query.execute();
         EntrySet entrySet = query.getEntrySet();
-        assertEquals (5, entrySet.getEntry(0).getInteractorList().
+        assertEquals(5, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
-        assertEquals (4, entrySet.getEntry(0).getInteractionList()
+        assertEquals(4, entrySet.getEntry(0).getInteractionList()
                 .getInteractionCount());
         String xml = query.getXml();
         int index = xml.indexOf(Integer.toString(taxId));
-        assertTrue (index > 0);
+        assertTrue(index > 0);
     }
 
     /**
      * Verifies that GetInteractionsByInteractionPmid Works.
      */
-    private void validateGetByPmid() throws  QueryException,
+    private void validateGetByPmid() throws QueryException,
             EmptySetException {
         String pmid = "12345678";
-        PsiInteractionQuery query = new GetInteractionsByInteractionPmid (pmid);
+        PsiInteractionQuery query = new GetInteractionsByInteractionPmid(pmid);
         query.execute();
         EntrySet entrySet = query.getEntrySet();
-        assertEquals (2, entrySet.getEntry(0).getInteractorList().
+        assertEquals(2, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
-        assertEquals (1, entrySet.getEntry(0).getInteractionList()
+        assertEquals(1, entrySet.getEntry(0).getInteractionList()
                 .getInteractionCount());
         String xml = query.getXml();
         int index = xml.indexOf(pmid);
-        assertTrue (index > 0);
+        assertTrue(index > 0);
     }
 
     /**
      * Verifies that GetInteractionsByIntractionDbSource Works.
      */
-    private void validateGetByDbSource() throws  QueryException,
+    private void validateGetByDbSource() throws QueryException,
             EmptySetException {
         String db = "DIP";
         PsiInteractionQuery query =
-                new GetInteractionsByInteractionDbSource (db);
+                new GetInteractionsByInteractionDbSource(db);
         query.execute();
         String xml = query.getXml();
         EntrySet entrySet = query.getEntrySet();
-        assertEquals (2, entrySet.getEntry(0).getInteractorList().
+        assertEquals(2, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
-        assertEquals (1, entrySet.getEntry(0).getInteractionList()
+        assertEquals(1, entrySet.getEntry(0).getInteractionList()
                 .getInteractionCount());
     }
 
     /**
      * Verifies that GetInteractionsByKeyword Works.
      */
-    private void validateGetByKeyword() throws  QueryException,
+    private void validateGetByKeyword() throws QueryException,
             EmptySetException {
         String term = "Xenopus";
         PsiInteractionQuery query =
-                new GetInteractionsByInteractorKeyword (term);
+                new GetInteractionsByInteractorKeyword(term);
         query.execute();
         String xml = query.getXml();
         EntrySet entrySet = query.getEntrySet();
         int index = xml.indexOf(term);
-        assertTrue (index > 0);
-        assertEquals (2, entrySet.getEntry(0).getInteractorList().
+        assertTrue(index > 0);
+        assertEquals(2, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
-        assertEquals (1, entrySet.getEntry(0).getInteractionList()
+        assertEquals(1, entrySet.getEntry(0).getInteractionList()
                 .getInteractionCount());
     }
 
@@ -207,7 +207,7 @@ public class TestImportPsiToCPath extends TestCase {
     private void validateInteractionSource() throws DaoException {
         //  Do a look up based on External Reference
         DaoExternalLink linker = new DaoExternalLink();
-        ExternalReference ref = new ExternalReference ("DIP", "58E");
+        ExternalReference ref = new ExternalReference("DIP", "58E");
         ArrayList records = linker.lookUpByExternalRef(ref);
         CPathRecord record = (CPathRecord) records.get(0);
 
@@ -221,7 +221,7 @@ public class TestImportPsiToCPath extends TestCase {
         ArrayList links = internalLinker.getInternalLinks(record.getId());
         InternalLinkRecord link1 = (InternalLinkRecord) links.get(0);
         InternalLinkRecord link2 = (InternalLinkRecord) links.get(1);
-        assertEquals (interactor1.getId(), link1.getCpathIdB());
-        assertEquals (interactor2.getId(), link2.getCpathIdB());
+        assertEquals(interactor1.getId(), link1.getCpathIdB());
+        assertEquals(interactor2.getId(), link2.getCpathIdB());
     }
 }

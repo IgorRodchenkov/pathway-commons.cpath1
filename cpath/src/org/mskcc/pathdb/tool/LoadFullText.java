@@ -106,15 +106,15 @@ public class LoadFullText {
                 }
                 numRecords++;
                 if (numRecords % 100 == 0) {
-                    outputMsg ("\nNumber Indexed so far:  "
-                                + numRecords);
+                    outputMsg("\nNumber Indexed so far:  "
+                            + numRecords);
                 }
                 indexRecord(lucene, record.toString());
             }
         }
         lucene.closeIndexWriter();
-        outputMsg ("Total Number of Records Indexed:  "
-                    + numRecords);
+        outputMsg("Total Number of Records Indexed:  "
+                + numRecords);
     }
 
     private void indexRecord(LuceneIndexer lucene, String record)
