@@ -138,6 +138,35 @@ public class PsiAssembly implements XmlAssembly {
     }
 
     /**
+     * Gets Comlete Xml Assembly (in String form).
+     * All Internal IDs are converted from the form: 1234 to CPATH-1234.
+     * See org.mskcc.pathdb.sql.assembly.CPathIdFilter for more details.
+     *
+     * Note that calling this method has an intentional side effect of
+     * modifying the embedded EntrySet object.  For example, if you call
+     * getXmlStringWithCPathIdPrefix(), and then you call getXmlObject(),
+     * the returned EntrySet object will now have IDs of the form, "CPATH-123".
+     *
+     * @return XML Document String.
+     * @throws AssemblyException Error Assembling XML Document.
+     */
+    public String getXmlStringWithCPathIdPrefix() throws AssemblyException {
+        if (entrySet != null) {
+            entrySet = CPathIdFilter.addCPathIdPrefix(entrySet);
+            try {
+                this.xml = generateXml(entrySet);
+            } catch (MarshalException e) {
+                throw new AssemblyException(e);
+            } catch (ValidationException e) {
+                throw new AssemblyException(e);
+            } catch (IOException e) {
+                throw new AssemblyException(e);
+            }
+        }
+        return this.xml;
+    }
+
+    /**
      * Gets Complete XML Assembly (in object form).
      *
      * @return Java Object encapsulating XML Document.

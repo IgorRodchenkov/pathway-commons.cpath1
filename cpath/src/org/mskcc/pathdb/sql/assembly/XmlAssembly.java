@@ -73,6 +73,15 @@ public interface XmlAssembly {
     String getXmlString();
 
     /**
+     * Gets Complete Xml Assembly (in String form).
+     * All Internal IDs are converted from the form: 1234 to CPATH-1234.
+     * See org.mskcc.pathdb.sql.assembly.CPathIdFilter for more details.
+     *
+     * @return XML Document String.
+     */
+    String getXmlStringWithCPathIdPrefix() throws AssemblyException;
+
+    /**
      * Gets Complete XML Assembly (in object form).
      *
      * @return Java Object encapsulating XML Document.
