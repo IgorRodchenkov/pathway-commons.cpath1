@@ -21,7 +21,6 @@ if ($numArgs < 1) {
 print ("Using cPath Home:  $cpathHome\n");
 
 my $command = shift (@ARGV);
-print "Using Command:  $command\n";
 
 if ($command eq "psi") {
 	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.LoadPsi @ARGV");
