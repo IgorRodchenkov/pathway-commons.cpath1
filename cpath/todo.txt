@@ -1,9 +1,9 @@
 Short Term Items:
 ----------------
 1.  Test Lucene with Large data set from Alex:
-ftp://ftp.ncbi.nih.gov/repository/UniGene/Hs.data.gz
+ftp://ftp.ncbi.nih.gov/repository/UniGene/Hs.data.gz [done]
 2.  Update Data Services Developer Docs.
-3.  Update GRID PlugIn to use cPath Only.
+3.  Update GRID PlugIn to use cPath Only [done]
 
 Longer Term Items:
 ------------------
@@ -11,4 +11,13 @@ Longer Term Items:
 2.  Add support for Tomcat JDBC Connection Pooling.
 3.  Create paged result sets, e.g. next/previous buttons for search results.
 4.  Load Testing
+5.  Optimize searching by going only to Lucene (no need to go against mySQL).
 
+
+Other Items:
+------------
+1.  Add an Ontology object to the dataservices bio package.
+2.  Prevent against cross-scripting vulnerability.
+3.  Set up auto-emails upon fatal cPath errors.
+4.  Add Gene Name/Synonym Look up to data services.
+5.  Create set of developer docs for cPath.
