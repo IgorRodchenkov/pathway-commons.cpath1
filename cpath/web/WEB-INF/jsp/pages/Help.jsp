@@ -2,7 +2,7 @@
  <%-- Displays Query / Web Service Help Page --%>
 <%@ page errorPage = "JspError.jsp" %>
 
-<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath Help"); %>
+<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath::Web Service API"); %>
 <jsp:include page="../global/header.jsp" flush="true" />
 <jsp:include page="../global/help.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />

@@ -1,8 +1,14 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolException,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
-                 org.mskcc.pathdb.action.HomeAction"%>
+                 org.mskcc.pathdb.action.HomeAction,
+                 org.mskcc.pathdb.action.BaseAction"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
+
+<%
+    String title = "cPath Home";
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
+
 <jsp:include page="../global/header.jsp" flush="true" />
 
 <div id="apphead">

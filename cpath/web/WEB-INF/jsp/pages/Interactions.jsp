@@ -6,7 +6,7 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
-<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath Search Results"); %>
+<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath::Search Results"); %>
 <jsp:include page="../global/header.jsp" flush="true" />
 <%
     ProtocolRequest protocolRequest = (ProtocolRequest)
