@@ -1,7 +1,7 @@
 <%@ page import="org.mskcc.pathdb.sql.DaoImport,
                  org.mskcc.pathdb.model.ImportRecord"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
-
+<%@ page errorPage = "Error.jsp" %>
 <jsp:include page="../global/header.jsp" flush="true" />
 <jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
 <TABLE WIDTH=700>
@@ -27,5 +27,8 @@
 </TABLE>
 <P>
 <cbio:importTable />
+<P>
+<cbio:cacheTable />
+
 <jsp:include page="../global/xdebug.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />
