@@ -31,7 +31,7 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.sql.dao.DaoIdMap;
+import org.mskcc.pathdb.sql.dao.DaoIdentity;
 import org.mskcc.pathdb.sql.transfer.IdMappingService;
 import org.mskcc.pathdb.task.ParseIdMappingsTask;
 
@@ -101,7 +101,7 @@ public class TestIdMappingService extends TestCase {
 
 
         //  Delete all records, so that we can rerun this unit test again
-        DaoIdMap dao = new DaoIdMap();
+        DaoIdentity dao = new DaoIdentity();
         dao.deleteAllRecords();
     }
 }

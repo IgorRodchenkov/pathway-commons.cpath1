@@ -32,10 +32,10 @@ package org.mskcc.pathdb.test.task;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.IdMapRecord;
+import org.mskcc.pathdb.model.IdentityRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
-import org.mskcc.pathdb.sql.dao.DaoIdMap;
+import org.mskcc.pathdb.sql.dao.DaoIdentity;
 import org.mskcc.pathdb.task.ParseIdMappingsTask;
 
 import java.io.File;
@@ -87,7 +87,7 @@ public class TestIdMappingsParser extends TestCase {
         assertEquals(0, numRecordsSaved);
 
         //  Now try getting all equivalent Identifiers;  there should be 4
-        DaoIdMap dao = new DaoIdMap();
+        DaoIdentity dao = new DaoIdentity();
         CPathXRef xref = new CPathXRef(1, "AAH08943");
         ArrayList equivalenceList = dao.getEquivalenceList(xref);
         boolean got[] = new boolean[4];
@@ -116,7 +116,7 @@ public class TestIdMappingsParser extends TestCase {
     private void validateIdMapRecord(int index, ArrayList idList,
             String expectedDb1, String expectedId1, String expectedDb2,
             String expectedId2) throws DaoException {
-        IdMapRecord id = (IdMapRecord) idList.get(index);
+        IdentityRecord id = (IdentityRecord) idList.get(index);
         DaoExternalDb dao = new DaoExternalDb();
         int db1 = id.getDb1();
         ExternalDatabaseRecord dbRecord1 = dao.getRecordById(db1);

@@ -30,10 +30,10 @@
 package org.mskcc.pathdb.task;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.IdMapRecord;
+import org.mskcc.pathdb.model.IdentityRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
-import org.mskcc.pathdb.sql.dao.DaoIdMap;
+import org.mskcc.pathdb.sql.dao.DaoIdentity;
 import org.mskcc.pathdb.util.ConsoleUtil;
 import org.mskcc.pathdb.util.FileUtil;
 
@@ -162,7 +162,7 @@ public class ParseIdMappingsTask extends Task {
                                 + " identifiers");
                     }
                     for (int j = 0; j < ids.length; j++) {
-                        IdMapRecord idRecord = new IdMapRecord
+                        IdentityRecord idRecord = new IdentityRecord
                                 (dbRecord1.getId(), id1, dbRecord2.getId(),
                                         ids[j]);
                         if (saveToDatabase) {
@@ -206,10 +206,10 @@ public class ParseIdMappingsTask extends Task {
      * @param idRecord IdMapRecord.
      * @return 1 indicates record was saved;  0 indicates record was not saved.
      */
-    private int storeToDatabase(IdMapRecord idRecord) throws DaoException {
+    private int storeToDatabase(IdentityRecord idRecord) throws DaoException {
         //  The Database Access Object ensures that the record does not
         //  already exist in the db
-        DaoIdMap dao = new DaoIdMap();
+        DaoIdentity dao = new DaoIdentity();
         boolean success = dao.addRecord(idRecord, false);
         return success ? 1 : 0;
     }
