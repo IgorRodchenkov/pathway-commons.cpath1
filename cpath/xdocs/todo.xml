@@ -13,6 +13,9 @@ This document contains cPath Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
+0.  Modify Cytoscape PlugIn to recognize n-ary interactions when n > 2.
+	-->  current priority:  high
+
 0.  From Gary's Email:
 
 I just noticed that the IntAct database is maintaining a small file
