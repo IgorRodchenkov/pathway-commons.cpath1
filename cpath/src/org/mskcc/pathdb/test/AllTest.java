@@ -6,6 +6,7 @@ import junit.framework.TestSuite;
 import org.mskcc.pathdb.config.ConfigLogger;
 import org.mskcc.pathdb.test.controller.ControllerSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
+import org.mskcc.pathdb.test.web.WebSuite;
 
 /**
  * Runs all Unit Tests.
@@ -17,13 +18,13 @@ public class AllTest extends TestCase {
     /**
      * The suite method kicks off all of the tests.
      *
-     *
      * @return junit.framework.Test
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(SqlSuite.suite());
         suite.addTest(ControllerSuite.suite());
+        suite.addTest(WebSuite.suite());
         suite.setName("PathDB Tests");
         return suite;
     }

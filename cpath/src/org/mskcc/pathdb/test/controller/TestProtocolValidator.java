@@ -1,6 +1,7 @@
 package org.mskcc.pathdb.test.controller;
 
 import junit.framework.TestCase;
+import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolException;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.controller.ProtocolStatusCode;
@@ -21,6 +22,8 @@ public class TestProtocolValidator extends TestCase {
      */
     public void testProtocolValidator() throws Exception {
         HashMap map = new HashMap();
+        map.put(ProtocolRequest.ARG_COMMAND,
+                ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS);
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
@@ -30,7 +33,20 @@ public class TestProtocolValidator extends TestCase {
             ProtocolStatusCode statusCode = e.getStatusCode();
             assertEquals(ProtocolStatusCode.MISSING_ARGUMENTS, statusCode);
         }
-
     }
 
+    /**
+     * Tests the Protocol Validator.
+     * @throws Exception General Error.
+     */
+    public void testEmptyParameterSet() throws Exception {
+        HashMap map = new HashMap();
+        ProtocolRequest request = new ProtocolRequest(map);
+        ProtocolValidator validator = new ProtocolValidator(request);
+        try {
+            validator.validate();
+        } catch (ProtocolException e) {
+            fail("ProtocolException should not have been thrown");
+        }
+    }
 }

@@ -43,9 +43,10 @@ public class GridProteinService extends GridBase {
      * @return Protein object.
      * @throws SQLException Database error.
      * @throws ClassNotFoundException Could not find JDBC Driver.
+     * @throws EmptySetException Indicates No Results Found.
      */
     public Protein getProteinByOrf(String orfName)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, ClassNotFoundException, EmptySetException {
         log.info("Retrieving Protein, using ORFName:  " + orfName);
         Protein protein = getLiveProtein(orfName, GridBase.KEY_ORF);
         return protein;
@@ -57,9 +58,10 @@ public class GridProteinService extends GridBase {
      * @return Protein object.
      * @throws SQLException Database error.
      * @throws ClassNotFoundException Could not find JDBC Driver.
+     * @throws EmptySetException Indicates No Results Found.
      */
     public Protein getProteinByLocalId(String localId)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, ClassNotFoundException, EmptySetException {
         log.info("Retrieving Protein, using ORFName:  " + localId);
         Protein protein = getLiveProtein(localId, GridBase.KEY_LOCAL_ID);
         return protein;
@@ -72,9 +74,11 @@ public class GridProteinService extends GridBase {
      * @return Protein objct.
      * @throws SQLException Database error.
      * @throws ClassNotFoundException Could not find JDBC Driver.
+     * @throws EmptySetException Indicates No Results Found.
      */
     private Protein getLiveProtein(String uid, String lookUpKey)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, ClassNotFoundException,
+            EmptySetException {
         Protein protein = new Protein();
         ResultSet rs = this.connect(uid, lookUpKey);
         getBasicInformation(rs, protein);
@@ -90,9 +94,11 @@ public class GridProteinService extends GridBase {
      * @return Database Result Set.
      * @throws SQLException Database error.
      * @throws ClassNotFoundException Could not find JDBC Driver.
+     * @throws EmptySetException Indicates No Results Found.
      */
     private ResultSet connect(String uid, String lookUpKey)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, ClassNotFoundException,
+            EmptySetException {
         Connection con = getConnection();
         PreparedStatement pstmt = con.prepareStatement
                 ("select * from orf_info where " + lookUpKey + "=?");
@@ -100,6 +106,10 @@ public class GridProteinService extends GridBase {
         log.info("Executing SQL Query:  " + pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
         rs.next();
+        int numRows = rs.getRow();
+        if (numRows == 0) {
+            throw new EmptySetException ("No results found for id");
+        }
         return rs;
     }
 

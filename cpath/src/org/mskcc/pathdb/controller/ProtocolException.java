@@ -2,11 +2,13 @@ package org.mskcc.pathdb.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
@@ -24,6 +26,11 @@ public class ProtocolException extends Exception {
      * Error Message Details.
      */
     private String details;
+
+    /**
+     * Root Exception (if needed).
+     */
+    private Exception rootException;
 
     /**
      * Error XML Element Name.
@@ -66,6 +73,16 @@ public class ProtocolException extends Exception {
     public ProtocolException(ProtocolStatusCode statusCode, String details) {
         this.statusCode = statusCode;
         this.details = details;
+    }
+
+    /**
+     * Constructor.
+     * @param statusCode Protocol Status Code.
+     * @param e Root Exception.
+     */
+    public ProtocolException(ProtocolStatusCode statusCode, Exception e) {
+        this.statusCode = statusCode;
+        this.rootException = e;
     }
 
     /**
@@ -113,6 +130,14 @@ public class ProtocolException extends Exception {
         if (details != null) {
             Element errorDetailsElement = new Element(ERROR_DETAILS_ELEMENT);
             errorDetailsElement.setText(details);
+            errorElement.addContent(errorDetailsElement);
+        } else if (rootException != null) {
+            Element errorDetailsElement = new Element(ERROR_DETAILS_ELEMENT);
+            StringWriter writer = new StringWriter();
+            PrintWriter pwriter = new PrintWriter(writer);
+            rootException.printStackTrace(pwriter);
+            CDATA cdata = new CDATA(writer.toString());
+            errorDetailsElement.addContent(cdata);
             errorElement.addContent(errorDetailsElement);
         }
         return document;

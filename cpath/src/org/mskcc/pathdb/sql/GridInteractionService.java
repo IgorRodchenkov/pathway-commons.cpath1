@@ -46,9 +46,10 @@ public class GridInteractionService extends GridBase {
      * @return ArrayList of Interaction objects.
      * @throws SQLException Error connecting to data base.
      * @throws ClassNotFoundException Could not located JDBC Driver.
+     * @throws EmptySetException Indicates No Results Found.
      */
     public ArrayList getInteractions(String orfName)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, ClassNotFoundException, EmptySetException {
         log.info("Getting Interactions for:  " + orfName);
         ArrayList interactions = getLiveInteractions(orfName);
         return interactions;
@@ -60,9 +61,10 @@ public class GridInteractionService extends GridBase {
      * @return ArrayList of Interactin objects.
      * @throws SQLException Error connecting to data base.
      * @throws ClassNotFoundException Could not located JDBC Driver.
+     * @throws EmptySetException Indicates No Results Found.
      */
     private ArrayList getLiveInteractions(String orfName)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, ClassNotFoundException, EmptySetException {
         ArrayList interactions;
         // 1.  Get Local ID for ORF Name.
         proteinService =
@@ -104,9 +106,10 @@ public class GridInteractionService extends GridBase {
      * @return ArrayList of Interaction objects.
      * @throws SQLException Error connecting database.
      * @throws ClassNotFoundException Could not located JDBC Driver.
+     * @throws EmptySetException Indicates No Results Found.
      */
     private ArrayList processResults(ResultSet rs)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, ClassNotFoundException, EmptySetException {
         ArrayList list = new ArrayList();
         while (rs.next()) {
             Interaction interaction = new Interaction();

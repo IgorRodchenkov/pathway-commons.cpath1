@@ -29,8 +29,10 @@ public final class DataService extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
 
+        response.setHeader ("Cache-control", "no-cache");
+        response.setHeader ("Pragma", "no-cache");
         DataServiceController controller = new DataServiceController
-                (request, response);
+                (request, response, this.getServletContext());
         controller.execute();
     }
 

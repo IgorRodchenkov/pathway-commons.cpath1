@@ -26,4 +26,10 @@ public class TestConstants {
      * A Sample ORF Name.
      */
     public static final String SAMPLE_ORF_1 = "YLR002C";
+
+    /**
+     * Local Host URL.
+     */
+    public static final String LOCAL_HOST_URL =
+            "http://localhost:8080/ds/dataservice";
 }

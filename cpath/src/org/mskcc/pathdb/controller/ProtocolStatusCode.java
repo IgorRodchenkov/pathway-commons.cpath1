@@ -39,13 +39,13 @@ public class ProtocolStatusCode {
     /**
      * Status Code:  450 Unknown UID.
      */
-    public static final ProtocolStatusCode UNKNOWN_UID =
+    public static final ProtocolStatusCode BAD_UID =
             new ProtocolStatusCode(450);
 
     /**
      * Status Code:  451 Unsupported Format.
      */
-    public static final ProtocolStatusCode UNSUPPORTED_FORMAT =
+    public static final ProtocolStatusCode BAD_FORMAT =
             new ProtocolStatusCode(451);
 
     /**
@@ -107,11 +107,12 @@ public class ProtocolStatusCode {
         //  DAS Adopted Status Codes.
         messageMap.put("200", "OK, data follows");
         messageMap.put("400", "Bad Command (command not recognized)");
-        messageMap.put("401", "Bad Data Source (Data source unknown)");
+        messageMap.put("401", "Bad Data Source (data source not recognized)");
 
         //  Data Service Specific Status Codes start at 450.
-        messageMap.put("450", "Unknown UID");
-        messageMap.put("451", "Specified format is not supported");
+        messageMap.put("450",
+                "Bad UID (UID not available in specified database)");
+        messageMap.put("451", "Bad Data Format (data format not recognized)");
         messageMap.put("452", "Bad Request (missing arguments)");
         messageMap.put("453", "Version not supported");
 
