@@ -6,40 +6,107 @@
 	####################################################
 	-->
 	<pomVersion>1</pomVersion>
-	<name>Cytoscape Tech Docs</name>
-	<id>cytoscape</id>
-	<currentVersion>.01</currentVersion>
+	<name>cPath</name>
+	<id>cpath</id>
+	<currentVersion>.02 Beta</currentVersion>
 	<organization>
-		<name>Cytoscape.org</name>
-		<url>http://www.cytoscape.org</url>
-		<logo>/images/cytoCrop.gif</logo>
+		<name>Memorial Sloan-Kettering Cancer Center</name>
+		<url>http://cbio.mskcc.org</url>
+        <logo>/images/logo.jpg</logo>
 	</organization>
 	<inceptionYear>2003</inceptionYear>
+    <package>org.mskcc.pathdb</package>
+   	<shortDescription>cPath is a freely available cancer pathway database.
+    </shortDescription>
 
-    	<shortDescription>Cytoscape</shortDescription>
+    <description>
+        cPath is a freely available cancer pathway database.
+        We are building this as a resource to the community.
+        Currently, basic protein-protein interaction functionality
+        is available. We expect to make a preliminary version of cPath
+        available to the public in early 2004. In the near future, we
+        also plan to make cPath BioPax compatibile.
+        <P/>
+        cPath is currently being developed by the Computational Biology
+        Center of Memorial Sloan-Kettering Cancer Center.
+    </description>
 
 	<!--  Specifies current temporary location of public web site -->
-    	<siteAddress>cbio.mskcc.org</siteAddress>
+   	<siteAddress>cbio.mskcc.org</siteAddress>
 	<siteDirectory>/var/www/cytoscape/cytodocs</siteDirectory>
+
+    <issueTrackingUrl>http://www.cbio.mskcc.org/cytoscape/bugs/main_page.php</issueTrackingUrl>
+
+    <!--  Specifies the CVS Server Connect String -->
+    <!--  This must be set properly in order to generate
+          all the file, developer activity reports.   -->
+    <repository>
+        <connection>scm:cvs:ext:cerami@cbio.mskcc.org:/var/lib/cvs:cpath</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cbio.mskcc.org:/var/lib/cvs:cpath</developerConnection>
+    </repository>
+
+    <developers>
+        <developer>
+          <name>Ethan Cerami</name>
+          <id>cerami</id>
+          <email>cerami AT cbio.mskc.org</email>
+          <organization>Memorial Sloan-Kettering Cancer Center</organization>
+        </developer>
+        <developer>
+          <name>Gary Bader</name>
+          <id>bader</id>
+          <email>bader AT cbio.mskc.org</email>
+          <organization>Memorial Sloan-Kettering Cancer Center</organization>
+        </developer>
+    </developers>
 
 	<!--
 	####################################################
-	Reports Information 
+	Reports Information
 	This section is temporarily commented out.
 	With no reports specified, maven defaults to most of
 	the major reports.
 	####################################################
+    -->
 	<reports>
-		<report>maven-changelog-plugin</report>
-		<report>maven-javadoc-plugin</report>
+        <report>maven-changelog-plugin</report>
+        <report>maven-changes-plugin</report>
+        <report>maven-developer-activity-plugin</report>
+        <report>maven-file-activity-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-jxr-plugin</report>
 	</reports>
-	-->
+
     	<dependencies>
-    	</dependencies>
-    	<build>
+<dependency><groupId>biojava-1.3pre2-jdk14</groupId><artifactId>biojava-1.3pre2-jdk14</artifactId></dependency>
+<dependency><groupId>castor-0.9.4.3</groupId><artifactId>castor-0.9.4.3</artifactId></dependency>
+<dependency><groupId>commons-beanutils</groupId><artifactId>commons-beanutils</artifactId></dependency>
+<dependency><groupId>commons-collections</groupId><artifactId>commons-collections</artifactId></dependency>
+<dependency><groupId>commons-dbcp-1.1</groupId><artifactId>commons-dbcp-1.1</artifactId></dependency>
+<dependency><groupId>commons-digester</groupId><artifactId>commons-digester</artifactId></dependency>
+<dependency><groupId>commons-fileupload</groupId><artifactId>commons-fileupload</artifactId></dependency>
+<dependency><groupId>commons-httpclient</groupId><artifactId>commons-httpclient</artifactId></dependency>
+<dependency><groupId>commons-lang</groupId><artifactId>commons-lang</artifactId></dependency>
+<dependency><groupId>commons-logging</groupId><artifactId>commons-logging</artifactId></dependency>
+<dependency><groupId>commons-pool-1.1</groupId><artifactId>commons-pool-1.1</artifactId></dependency>
+<dependency><groupId>commons-validator</groupId><artifactId>commons-validator</artifactId></dependency>
+<dependency><groupId>dataservices</groupId><artifactId>dataservices</artifactId></dependency>
+<dependency><groupId>jakarta-oro</groupId><artifactId>jakarta-oro</artifactId></dependency>
+<dependency><groupId>jdom</groupId><artifactId>jdom</artifactId></dependency>
+<dependency><groupId>jdom_result</groupId><artifactId>jdom_result</artifactId></dependency>
+<dependency><groupId>junit</groupId><artifactId>junit</artifactId></dependency>
+<dependency><groupId>log4j-1.2.8</groupId><artifactId>log4j-1.2.8</artifactId></dependency>
+<dependency><groupId>lucene-1.2</groupId><artifactId>lucene-1.2</artifactId></dependency>
+<dependency><groupId>mysql-connector-java-3.0.8-stable-bin</groupId><artifactId>mysql-connector-java-3.0.8-stable-bin</artifactId></dependency>
+<dependency><groupId>oscache</groupId><artifactId>oscache</artifactId></dependency>
+<dependency><groupId>servlet</groupId><artifactId>servlet</artifactId></dependency>
+<dependency><groupId>struts</groupId><artifactId>struts</artifactId></dependency>
+<dependency><groupId>xercesImpl</groupId><artifactId>xercesImpl</artifactId></dependency>
+<dependency><groupId>xmlParserAPIs</groupId><artifactId>xmlParserAPIs</artifactId></dependency>
+<dependency><groupId>xmlrpc-1.2-b1</groupId><artifactId>xmlrpc-1.2-b1</artifactId></dependency></dependencies>
+
+    <build>
 		<sourceDirectory>src</sourceDirectory>
-		<sourceModifications>
-			<excludes>src/org/mskcc/pathdb/**/*.java</excludes>
-		</sourceModifications>
+        <aspectSourceDirectory/>
 	</build>
 </project>
