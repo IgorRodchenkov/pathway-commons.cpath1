@@ -31,6 +31,7 @@ package org.mskcc.pathdb.tool;
 
 import gnu.getopt.Getopt;
 import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
@@ -38,12 +39,15 @@ import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
 import org.mskcc.pathdb.task.IndexLuceneTask;
 import org.mskcc.pathdb.task.ValidateXmlTask;
+import org.mskcc.pathdb.task.ParseIdMappingsTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import java.io.*;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 /**
  * Command Line cPath Administrator.
@@ -136,7 +140,8 @@ public class Admin {
      * Imports a PSI-MI File or an External Reference File.
      */
     private static void importData() throws IOException, DaoException,
-            ImportException, MissingDataException, SAXException {
+            ImportException, MissingDataException, SAXException,
+            DataServiceException {
         if (fileName != null) {
             File file = new File(fileName);
             if (file.isDirectory()) {
@@ -154,12 +159,11 @@ public class Admin {
     }
 
     private static void importDataFromSingleFile(File file) throws IOException,
-            DaoException, MissingDataException, SAXException {
+            DaoException, SAXException, DataServiceException {
         String fileName = file.getName();
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
                 || fileName.endsWith("mif")) {
-            System.out.println("Based on the file extension, I am concluding "
-                    + "that this is a PSI-MI File.");
+            System.out.println("Importing PSI-MI File.");
             ValidateXmlTask validator = new ValidateXmlTask(file);
             boolean isValid = validator.validate(false);
             if (isValid) {
@@ -175,10 +179,11 @@ public class Admin {
                 System.exit(-1);
             }
         } else {
-            System.out.println("Based on the file extension, I am concluding "
-                    + "that this is a List of External References.");
-            LoadExternalReferences loader = new LoadExternalReferences();
-            loader.load(file);
+            ParseIdMappingsTask task = new ParseIdMappingsTask(file, true);
+            int numRecordsSaved = task.parseAndStoreToDb();
+            NumberFormat formatter = new DecimalFormat("#,###,###");
+            System.out.println("\nTotal Number of ID Mappings Stored:  "
+                    + formatter.format(numRecordsSaved));
         }
     }
 
@@ -314,7 +319,7 @@ public class Admin {
         System.out.println("\nWhere command is a one of:  ");
         System.out.println("  import          Imports Specified File.");
         System.out.println("                  Used to Import PSI-MI Files "
-                + "or External Reference Files.");
+                + "or ID Mapping Files.");
         System.out.println("  index           Indexes All Items in cPath");
         System.out.println("  precompute      Precomputes all queries in "
                 + "specified config file.");
