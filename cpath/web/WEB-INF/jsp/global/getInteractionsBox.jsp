@@ -1,11 +1,21 @@
 <%@ page import="java.net.URLEncoder,
                  org.mskcc.pathdb.controller.ProtocolRequest,
-                 org.mskcc.pathdb.controller.ProtocolConstants"%>
+                 org.mskcc.pathdb.controller.ProtocolConstants,
+                 org.mskcc.pathdb.sql.dao.DaoOrganism,
+                 java.util.ArrayList,
+                 org.mskcc.pathdb.model.Organism,
+                 org.mskcc.pathdb.action.BaseAction"%>
 
 <%
-    String searchTerm = request.getParameter("q");
-    if (searchTerm == null) {
-        searchTerm = "";
+    String searchTerm = new String("");
+    String taxId = new String("");
+    ProtocolRequest pRequest = (ProtocolRequest) request.getAttribute
+            (BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
+    if (pRequest != null) {
+        if (pRequest.getQuery() != null) {
+            searchTerm = pRequest.getQuery();
+        }
+        taxId = pRequest.getOrganism();
     }
 %>
 <div id="search" class="toolgroup">
@@ -21,7 +31,29 @@
                         SIZE="20" VALUE="<%= searchTerm %>"/>
                     <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_FORMAT %>"
                         value="html"/>
-                    <INPUT TYPE="SUBMIT" value="Go"/>
+        <P>Organism:
+        <BR>
+        <SELECT NAME="<%= ProtocolRequest.ARG_ORGANISM %>">
+            <OPTION VALUE="">All</OPTION>
+        <%
+            DaoOrganism dao = new DaoOrganism ();
+            ArrayList organisms = dao.getAllOrganisms();
+        %>
+        <% for (int i=0; i<organisms.size(); i++) {
+            Organism organism = (Organism) organisms.get(i);
+            String currentTaxId = Integer.toString(organism.getTaxonomyId());
+        %>
+            <% if (currentTaxId.equals(taxId)) { %>
+                <OPTION VALUE="<%= organism.getTaxonomyId()%>" SELECTED>
+                <%= organism.getSpeciesName()%></OPTION>
+            <% } else { %>
+                <OPTION VALUE="<%= organism.getTaxonomyId()%>">
+                <%= organism.getSpeciesName()%></OPTION>
+            <% } %>
+        <% } %>
+        </SELECT>
+        <P>
+        <INPUT TYPE="SUBMIT" value="Go"/>
         </FORM>
     </div>
 </div>
