@@ -37,31 +37,31 @@ functionality.  The cPath PlugIn enables Cytoscape users to directly query,
 retrieve and visualize interactions retrieved from the cPath database.
 
 <p><B>Note:</B>  The cPath PlugIn currently only works with
-<A HREF="http://www.cytoscape.org/alpha.html">Cytoscape 2.0</A>.
+<A HREF="http://www.cytoscape.org/download.php?file=cyto2">Cytoscape 2.0</A>.
 It will not work with earlier versions of Cytoscape.
 
-<P>A sample screenshot of the PlugIn in action is shown below:
+<P>A sample screenshot of the cPath PlugIn Beta2 in action is shown below:
 
 <P>
-<A HREF="jsp/images/plugin/plugin1.gif">
+<A HREF="jsp/images/plugin/plugin_beta2.png">
 <IMG TITLE="Click to View Full Image"
-    SRC="jsp/images/plugin/plugin1_thumb.gif" BORDER=0>
+    SRC="jsp/images/plugin/plugin_beta2_thumb.png" BORDER=0>
 </A>
 </div>
 
 
 <div class="h3">
-    <h3>Download</h3>
+    <h3>Download cPath PlugIn Beta 2</h3>
 </div>
 <DIV>
     <UL>
     <LI>View the
-    <A HREF="http://cbio.mskcc.org/cytoscape/cpath/README.txt">README.txt</A>
-    File (includes Installation Instructions).
-    <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/cpath.tar.gz">
-    Download Beta Version tar.gz</A> [2.5 MB]
-    <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/cpath.zip">
-    Download Beta Version .zip</A> [2.5 MB]
+    <A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/README.txt">README.txt</A>
+    File (includes Installation Instructions and Release Notes).
+    <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath.tar.gz">
+    Download Beta2 Version tar.gz</A> [2.5 MB]
+    <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath.zip">
+    Download Beta2 Version .zip</A> [2.5 MB]
     </UL>
 </DIV>
 
