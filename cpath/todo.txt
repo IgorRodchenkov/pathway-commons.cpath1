@@ -23,6 +23,10 @@ cPath Functionality Issues:
 8.  Support content-length calculation of PSI-MI queries, where possible, to support more accurate progress metering on the client side.  We might be able to easily do it for queries that are cached and for the precomputed queries.  For queries that aren't, we could at least provide updates of the parsing progress as it happens (Rob's idea)
 	---> Current priority: low.
 9.  Resolve cross-species interaction issue.
+10. Implement a full statistics page.  This could be precomputed regularly (e.g. weekly),
+    not computed on the fly.  The best example of a stats page is currently the MINT page:
+    http://160.80.34.4/mint/statistics/statistics.php
+	---> Current priority: low.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
