@@ -3,12 +3,15 @@ package org.mskcc.pathdb.taglib;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.struts.util.PropertyMessageResources;
 import org.mskcc.pathdb.action.admin.AdminWebLogging;
+import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.protocol.ProtocolException;
+import org.mskcc.pathdb.util.LogUtil;
 import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -27,15 +30,10 @@ public class ErrorMessage extends HtmlTable {
             "error.header";
     private static final String MSG_ERROR_INTERNAL =
             "error.internal";
-    private static final String MSG_ERROR_INTERNAL_WITH_DETAILS =
-            "error.internalWithDetail";
     private static final String MSG_ERROR_PARSING =
             "error.parsing";
-    private static final String MSG_ERROR_MISSING_SEARCH_TERM =
-            "error.missingSearchTerm";
     private static final String MSG_LUCENE_INDEX_NOT_FOUND =
             "error.luceneIndexNotFound";
-
 
     /**
      * Sets the Throwable object with error/exception information.
@@ -48,10 +46,8 @@ public class ErrorMessage extends HtmlTable {
 
     /**
      * Executes JSP Custom Tag
-     *
-     * @throws Exception Exception in writing to JspWriter.
      */
-    public void subDoStartTag() throws Exception {
+    public void subDoStartTag() {
         boolean xdebugFlag = getXDebugFlag();
         ServletContext servletContext = pageContext.getServletContext();
         PropertyMessageResources resource =
@@ -63,10 +59,29 @@ public class ErrorMessage extends HtmlTable {
         this.append("<p><strong>" + header + "</strong></p>");
         Throwable rootCause = getRootCause(throwable);
         outputUserMessage(rootCause, resource);
+        logErrorMessage(rootCause);
         if (xdebugFlag) {
             outputDiagnostics(throwable, rootCause);
         }
         this.append("</div>");
+    }
+
+    /**
+     * Logs the Error Message.
+     * @param rootCause Root Cause.
+     */
+    private void logErrorMessage(Throwable rootCause) {
+        HttpServletRequest request = (HttpServletRequest)
+                pageContext.getRequest();
+
+        //  Get IP, Host, and Web URL.
+        String url = (String) request.getAttribute
+                (BaseAction.ATTRIBUTE_URL_BEFORE_FORWARDING);
+        String host = request.getRemoteAddr();
+        String ip = request.getRemoteHost();
+
+        //  Log to Database or Catalina.out
+        LogUtil.logException(rootCause, url, host, ip);
     }
 
     /**
