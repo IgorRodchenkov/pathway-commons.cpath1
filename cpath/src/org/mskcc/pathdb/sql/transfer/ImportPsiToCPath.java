@@ -172,7 +172,8 @@ public class ImportPsiToCPath {
             processInteractors(entrySet);
 
             //  Step 4:  Process all Interactions.
-            processInteractions(entrySet);
+            //  Temporarily disabled saving of interactions.
+            //  processInteractions(entrySet);
             return summary;
         } catch (IOException e) {
             throw new ImportException(e);
@@ -401,8 +402,6 @@ public class ImportPsiToCPath {
             ExternalReference[] refs) throws MarshalException,
             ValidationException, DaoException, IOException {
         DaoCPath cpath = new DaoCPath();
-        System.out.println("Saving new interactor:  " + protein.getNames()
-            + ", " + protein.getId());
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = marshalProtein(protein);
         String name = protein.getNames().getShortLabel();
