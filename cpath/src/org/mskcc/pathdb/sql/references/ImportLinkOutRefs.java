@@ -157,6 +157,7 @@ public class ImportLinkOutRefs {
 
         //  For each line of data
         while ((line = FileUtil.getNextLine(buf)) != null) {
+            pMonitor.incrementCurValue();
             ConsoleUtil.showProgress(pMonitor);
 
             TabSpaceTokenizer tokenizer = new TabSpaceTokenizer(line);
@@ -183,7 +184,6 @@ public class ImportLinkOutRefs {
                         backgroundRefList.add(idPair);
                     }
                 }
-
             }
         }
         return numRecordsSaved;

@@ -127,6 +127,7 @@ public class ImportUnificationRefs {
         //  For each line of data
         while ((line = FileUtil.getNextLine(buf)) != null) {
             ConsoleUtil.showProgress(pMonitor);
+            pMonitor.incrementCurValue();
 
             //  Tokenize the Input Line
             TabSpaceTokenizer tokenizer = new TabSpaceTokenizer(line);

@@ -41,7 +41,8 @@ public class IndexedToken {
 
     /**
      * Constructor.
-     * @param token Token String.
+     *
+     * @param token        Token String.
      * @param columnNumber Column Number.
      */
     public IndexedToken(String token, int columnNumber) {
@@ -51,6 +52,7 @@ public class IndexedToken {
 
     /**
      * Gets Token String.
+     *
      * @return token String.
      */
     public String getToken() {
@@ -59,6 +61,7 @@ public class IndexedToken {
 
     /**
      * Sets Token String.
+     *
      * @param token token String.
      */
     public void setToken(String token) {
@@ -67,6 +70,7 @@ public class IndexedToken {
 
     /**
      * Gets Column Number.
+     *
      * @return column number.
      */
     public int getColumnNumber() {
@@ -75,6 +79,7 @@ public class IndexedToken {
 
     /**
      * Sets Column Number.
+     *
      * @param columnNumber column number.
      */
     public void setColumnNumber(int columnNumber) {
@@ -83,6 +88,7 @@ public class IndexedToken {
 
     /**
      * Gets Text Representation of Token.
+     *
      * @return text representation.
      */
     public String toString() {
