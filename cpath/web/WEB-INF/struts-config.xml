@@ -34,10 +34,10 @@
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
         </action>
 
-        <!--  Advanced Search -->
-        <action path="/advancedSearch"
+        <!--  FAQ Page -->
+        <action path="/faq"
             type="org.mskcc.pathdb.action.HomeAction">
-            <forward name="success" path="/WEB-INF/jsp/pages/AdvancedSearch.jsp"/>
+            <forward name="success" path="/WEB-INF/jsp/pages/FAQ.jsp"/>
         </action>
 
         <!-- Admin Actions -->
@@ -51,9 +51,14 @@
             <forward name="success" path="/WEB-INF/jsp/pages/Diagnostics.jsp"/>
         </action>
 
-        <action path="/adminCache"
+        <action path="/adminViewXmlCache"
             type="org.mskcc.pathdb.action.admin.AdminBaseAction">
             <forward name="success" path="/WEB-INF/jsp/pages/ViewCache.jsp"/>
+        </action>
+
+        <action path="/adminPurgeXmlCache"
+            type="org.mskcc.pathdb.action.admin.AdminPurgeXmlCache">
+            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
         <action path="/adminViewLogRecords"
