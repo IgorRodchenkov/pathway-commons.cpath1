@@ -216,6 +216,9 @@ Data Service Specific Items:
 
 4.  Resurrect the GRID Plugin - retrieves data from GRID directly into Cytoscape
 
+5.  SOFT plugin: copy expression data directly to expression data object (if it still
+    exists after refactoring of the network data object)
+
 cPath Cytoscape Plugin Functionality Issues:
 --------------------------------------------
 1.  We should have hyperlinks from the accession numbers displayed on the
