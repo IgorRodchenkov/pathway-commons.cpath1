@@ -8,17 +8,16 @@
                  org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
-<%
-    request.setAttribute(BaseAction.PAGE_IS_ADMIN, "true");
-    request.setAttribute(BaseAction.PAGE_AUTO_UPDATE, "true");
-%>
 <%@ page errorPage = "JspError.jsp" %>
 
+<%
+    String title = "cPath::Administration";
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
 <div id="apphead">
-    <h2>cPath Administration</h2>
+    <h2>Administration</h2>
 </div>
 
 <cbio:taskTable/>
@@ -58,8 +57,15 @@
         %>
         <P>&nbsp;
         <P>
-<small>This page will auto-update every 10 seconds
-&nbsp;[<A HREF="adminHome.do">Update Now</A>]</small>
 
+    <%
+        String autoUpdate = (String) request.getAttribute
+            (BaseAction.PAGE_AUTO_UPDATE);
+        if (autoUpdate != null) { %>
+        <small>Tasks are active.  This page will auto-update every 10 seconds
+        until tasks are complete.&nbsp;
+        [<A HREF="adminHome.do">Update Now</A>]</small>
+        <% }
+    %>
 
 <jsp:include page="../global/footer.jsp" flush="true" />
