@@ -7,7 +7,6 @@
     if (title == null) {
         title = "cPath";
     }
-    String isAdminPage = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
     String style = request.getParameter(BaseAction.ATTRIBUTE_STYLE);
 %>
 <html>
@@ -67,24 +66,8 @@
 <!-- Start Main Table -->
 <table border="0" cellspacing="0" cellpadding="4" width="100%" id="main">
     <tr valign="top">
-        <!-- Start Left Column -->
-        <td id="leftcol" width="20%">
-            <div id="navcolumn">
 
-                <jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
-
-                <% if (isAdminPage != null) { %>
-                <jsp:include page="../global/adminTasks.jsp" flush="true" />
-                <% } %>
-
-                <jsp:include page="../global/browse.jsp" flush="true" />
-                <jsp:include page="../global/dbStats.jsp" flush="true" />
-                <jsp:include page="../global/docs.jsp" flush="true" />
-                <jsp:include page="../global/howto.jsp" flush="true" />
-
-            </div>
-        </td>
-        <!-- End NavColumn -->
+        <jsp:include page="../global/leftColumn.jsp" flush="true" />
 
         <!-- Start Body Column -->
         <td>
