@@ -6,6 +6,8 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -155,58 +157,22 @@ public class PsiUtil {
      * @throws DaoException Data Access Exception.
      */
     public void normalizeXrefs(XrefType xref) throws DaoException {
-        DaoExternalDbCv dao = new DaoExternalDbCv();
+        DaoExternalDb dao = new DaoExternalDb();
         if (xref != null) {
             DbReferenceType primaryRef = xref.getPrimaryRef();
             if (primaryRef != null) {
                 String db = primaryRef.getDb();
-                String newDb = dao.getFixedCvTerm(db);
+                ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(db);
+                String newDb = dbRecord.getFixedCvTerm();
                 primaryRef.setDb(newDb);
             }
             for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
                 DbReferenceType secondaryRef = xref.getSecondaryRef(i);
                 String db = secondaryRef.getDb();
-                String newDb = dao.getFixedCvTerm(db);
+                ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(db);
+                String newDb = dbRecord.getFixedCvTerm();
                 secondaryRef.setDb(newDb);
             }
-        }
-    }
-
-    /**
-     * Extracts the External Reference for the specified Interaction object.
-     *
-     * @param interaction Castor Interaction object.
-     * @return Array of External Reference objects.
-     */
-    public ExternalReference[] extractExternalRefs
-            (InteractionElementType interaction) {
-        ArrayList refList = new ArrayList();
-
-        //  Extract the Xref, if it exists.
-        //  This identifies the database source of the interaction.
-        XrefType xref = interaction.getXref();
-        ExternalReference refs[] = extractXrefs(xref);
-        addToExternalRefList(refs, refList);
-
-        //  Extract any bibrefs, if they exist
-        ExperimentList expList = interaction.getExperimentList();
-        if (expList != null) {
-            for (int i = 0; i < expList.getExperimentListItemCount(); i++) {
-                ExperimentListItem item = expList.getExperimentListItem(i);
-                ExperimentType type = item.getExperimentDescription();
-                if (type != null) {
-                    BibrefType bibRef = type.getBibref();
-                    xref = bibRef.getXref();
-                    refs = extractXrefs(xref);
-                    addToExternalRefList(refs, refList);
-                }
-            }
-        }
-        if (refList.size() > 0) {
-            refs = (ExternalReference[]) refList.toArray(refs);
-            return refs;
-        } else {
-            return null;
         }
     }
 
