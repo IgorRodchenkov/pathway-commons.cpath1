@@ -78,7 +78,7 @@ public class TestImportPsiToCPath extends TestCase {
         assertEquals("GTP/GDP exchange factor for Rsr1 protein",
                 record.getDescription());
 
-        //  Try Saving Again
+        //  Try Saving Again.
         //  Validate that no new interactors are saved.
         //  Validate that new interactions clobbered old interactions.
         //  Only one interaction in psi_sample_mixed.xml has an external ref.
@@ -113,14 +113,16 @@ public class TestImportPsiToCPath extends TestCase {
         ArrayList records = linker.lookUpByExternalRef(ref);
         assertEquals(0, records.size());
 
-        //  First, load a small set of ids into the id mapping subsystem.
-        File file = new File("testData/id_map.txt");
-        ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask(file, false);
+        //  First, load a small set of background references into
+        //  the background reference server.
+        File file = new File("testData/references/unification_refs.txt");
+        ParseBackgroundReferencesTask task =
+            new ParseBackgroundReferencesTask(file, false);
         task.parseAndStoreToDb();
 
         //  Then, load a small PSI-MI File.
-        //  This file contains Q727A4, and equivalent Ids for Q727A4
-        //  exist in id_map.txt.
+        //  This file contains UNIPROT_1234, and unification refs
+        //  for UNIPROT_1234 exist in unification_refs.txt.
         ProgressMonitor pMonitor = new ProgressMonitor();
         ContentReader reader = new ContentReader();
         String psiFile = new String("testData/psi_sample_id_map.xml");
@@ -129,10 +131,9 @@ public class TestImportPsiToCPath extends TestCase {
         ImportSummary summary = importer.addRecord(xml, true,
                 false, pMonitor);
 
-        //  Now, try to locate Q727A4 by its Affymetrix ID.
+        //  Now, try to locate UNIPROT_1234 by its PIR ID.
         linker = new DaoExternalLink();
-        ref = new ExternalReference("Affymetrix",
-                "1552275_3p_s_at");
+        ref = new ExternalReference("PIR", "PIR_1234");
         records = linker.lookUpByExternalRef(ref);
 
         //  Verify that we have correctly located the record.
@@ -140,17 +141,16 @@ public class TestImportPsiToCPath extends TestCase {
         CPathRecord record = (CPathRecord) records.get(0);
 
         //  Verify that XML has been modified to include external
-        //  references derived from the ID mapping subsystem.
-        assertTrue(record.getXmlContent().indexOf
-                ("<primaryRef db=\"UNIPROT\" id=\"Q727A4\"/>") > 0);
-        assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"AFFYMETRIX\" "
-                + "id=\"1552275_3p_s_at\"/>") > 0);
-        assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"UNIPROT\" id=\"AAH08943\"/>") > 0);
-        assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"REF_SEQ\" id=\"NP_060241\"/>") > 0);
-        assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"UNIGENE\" id=\"Hs.77646\"/>") > 0);
+        //  references derived from the background reference subsystem.
+        assertTrue (record.getXmlContent().indexOf
+                ("<primaryRef db=\"UNIPROT\" id=\"UNIPROT_1234\"/>") > 0);
+        assertTrue (record.getXmlContent().indexOf
+                ("<secondaryRef db=\"HUGE\" id=\"HUGE_4321\"/>") > 0);
+        assertTrue (record.getXmlContent().indexOf
+                ("<secondaryRef db=\"PIR\" id=\"PIR_4321\"/>") > 0);
+        assertTrue (record.getXmlContent().indexOf
+                ("<secondaryRef db=\"PIR\" id=\"PIR_1234\"/>") > 0);
+        assertTrue (record.getXmlContent().indexOf
+                ("<secondaryRef db=\"HUGE\" id=\"HUGE_1234\"/>") > 0);
     }
 }
