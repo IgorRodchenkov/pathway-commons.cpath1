@@ -3,6 +3,7 @@ package org.mskcc.pathdb.controller;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.mskcc.pathdb.model.PagedResult;
 
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import java.util.Map;
  *
  * @author Ethan Cerami
  */
-public class ProtocolRequest {
+public class ProtocolRequest implements PagedResult {
     /**
      * Command Argument.
      */
@@ -36,6 +37,11 @@ public class ProtocolRequest {
      * Version Argument.
      */
     public static final String ARG_VERSION = "version";
+
+    /**
+     * Start Index Argument.
+     */
+    public static final String ARG_START_INDEX = "startIndex";
 
     /**
      * Command.
@@ -63,6 +69,11 @@ public class ProtocolRequest {
     private String version;
 
     /**
+     * Start Index.
+     */
+    private int startIndex;
+
+    /**
      * EmptyParameterSet.
      */
     private boolean emptyParameterSet;
@@ -76,6 +87,7 @@ public class ProtocolRequest {
      */
     public ProtocolRequest() {
         this.version = "1.0";
+        this.startIndex = 0;
     }
 
     /**
@@ -89,7 +101,13 @@ public class ProtocolRequest {
         this.uid = massageUid(uid);
         this.format = (String) parameterMap.get(ProtocolRequest.ARG_FORMAT);
         this.version = (String) parameterMap.get(ProtocolRequest.ARG_VERSION);
-
+        String startStr =
+                (String) parameterMap.get(ProtocolRequest.ARG_START_INDEX);
+        if (startStr != null) {
+            this.startIndex = Integer.parseInt(startStr);
+        } else {
+            this.startIndex = 0;
+        }
         if (parameterMap.size() == 0) {
             emptyParameterSet = true;
         } else {
@@ -193,6 +211,22 @@ public class ProtocolRequest {
     }
 
     /**
+     * Gets the Start Index.
+     * @return Start Index.
+     */
+    public int getStartIndex() {
+        return startIndex;
+    }
+
+    /**
+     * Sets the Start Index.
+     * @param startIndex Start Index Int.
+     */
+    public void setStartIndex(int startIndex) {
+        this.startIndex = startIndex;
+    }
+
+    /**
      * Is this an empty request?
      * @return true or false.
      */
@@ -208,12 +242,14 @@ public class ProtocolRequest {
         String uri = null;
         String url = "webservice";
         GetMethod method = new GetMethod(url);
-        NameValuePair nvps[] = new NameValuePair[5];
+        NameValuePair nvps[] = new NameValuePair[6];
         nvps[0] = new NameValuePair(ARG_VERSION, version);
         nvps[1] = new NameValuePair(ARG_COMMAND, command);
         nvps[2] = new NameValuePair(ARG_DB, database);
         nvps[3] = new NameValuePair(ARG_UID, uid);
         nvps[4] = new NameValuePair(ARG_FORMAT, format);
+        nvps[5] = new NameValuePair(ARG_START_INDEX,
+                Long.toString(startIndex));
         method.setQueryString(nvps);
         try {
             uri = method.getURI().getEscapedURI();

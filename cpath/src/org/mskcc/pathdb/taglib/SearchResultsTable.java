@@ -37,6 +37,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.controller.ProtocolConstants;
+import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.QueryException;
@@ -49,14 +50,18 @@ import java.io.IOException;
  * @author Ethan Cerami
  */
 public class SearchResultsTable extends HtmlTable {
+    private int HITS_PER_PAGE = 10;
+    private ProtocolRequest pRequest;
     private String uid;
+    private Pager pager;
 
     /**
      * Sets UID Parameter.
-     * @param uid UID String.
+     * @param request ProtocolRequest.
      */
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setProtocolRequest(ProtocolRequest request) {
+        this.pRequest = request;
+        this.uid = request.getUid();
     }
 
     /**
@@ -67,13 +72,31 @@ public class SearchResultsTable extends HtmlTable {
             IOException {
         LuceneIndexer lucene = new LuceneIndexer();
         Hits hits = lucene.executeQuery(uid);
-        startTable("Matching Results found for:  " + uid.toUpperCase());
-        String headers[] = {"Rank", "Score", "Name", "Description",
-                            "Interactions"};
+        this.pager = new Pager (pRequest, hits.length());
+        createHeader(hits);
+        String headers[] = {"", "Name", "Description", "Interactions"};
         createTableHeaders(headers);
         outputResults(hits);
         endTable();
         lucene.closeIndexSearcher();
+    }
+
+    private void createHeader(Hits hits) {
+        String title = "Matching Results found for:  " + uid.toUpperCase();
+        append("<table valign=top width=100% cellpadding=7 border=0 "
+                + "cellspacing=0>"
+                + "<tr><td colspan=3 bgcolor=#666699><u>"
+                + "<b><big>" + title + "</big>"
+                + "</b></u><br></td>");
+        append("<td align=right nowrap width=1%>"
+            +"<font face=arial size=-1>");
+        if (hits.length() > 0) {
+            append (pager.getHeaderHtml());
+        }
+        append ("</td></tr>");
+        append ("</table>");
+        append("<table valign=top width=100% cellpadding=7 border=0 "
+                + "cellspacing=0>");
     }
 
     /**
@@ -85,14 +108,17 @@ public class SearchResultsTable extends HtmlTable {
             append("<TD COLSPAN=4>No Matching Results found!");
             append("</TR>");
         }
-        for (int i = 0; i < hits.length(); i++) {
+        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
             append("<TR>");
             Document doc = hits.doc(i);
-            outputDataField(Integer.toString(i));
-            outputDataField(Float.toString(hits.score(i)));
             Field name = doc.getField(LuceneIndexer.FIELD_NAME);
             Field desc = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
-            outputDataField(name.stringValue());
+            append("<TD VALIGN=TOP WIDTH=20>");
+            append(Integer.toString(i+1)+".");
+            append("</TD>");
+            append("<TD VALIGN=TOP WIDTH=60>");
+            append(name.stringValue());
+            append("</TD>");
             outputDataField(desc.stringValue());
             outputInteractionLink(name.stringValue());
             append("</TR>");

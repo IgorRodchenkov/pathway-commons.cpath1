@@ -28,7 +28,7 @@
     <cbio:interactionTable interactions="<%= interactions %>"
         uid="<%= protocolRequest.getUid() %>"/>
 <% } else if (doFullTextSearch != null) { %>
-    <cbio:searchResultsTable uid="<%= protocolRequest.getUid() %>"/>
+    <cbio:searchResultsTable protocolRequest="<%= protocolRequest %>"/>
 <% } else if (showHelp != null) { %>
     <jsp:include page="../global/help.jsp" flush="true" />
 <% } else { %>
