@@ -39,6 +39,8 @@ import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
 import org.mskcc.pathdb.task.IndexLuceneTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import java.io.*;
 
@@ -62,6 +64,7 @@ public class Admin {
     private static boolean validateExternalReferences = true;
     private static int taxonomyId = NOT_SET;
     private static boolean xdebugFlag = false;
+    private static boolean removeAllXrefs = false;
     private static String command = null;
 
     /**
@@ -101,6 +104,16 @@ public class Admin {
             xdebug.stopTimer();
             System.out.println("Total Time:  " + xdebug.getTimeElapsed()
                     + " ms");
+        } catch (SAXParseException e) {
+            System.out.println("\n\n-----------------------------------------");
+            System.out.println("XML Validation Error:  " + e.getMessage());
+            System.out.println("Error Located at line:  " + e.getLineNumber()
+                + ", column:  " + e.getColumnNumber());
+            System.out.println("-----------------------------------------");
+        } catch (SAXException e) {
+            System.out.println("\n\n-----------------------------------------");
+            System.out.println("XML Validation Error:  " + e.getMessage());
+            System.out.println("-----------------------------------------");
         } catch (Exception e) {
             System.out.println("\n\n-----------------------------------------");
             System.out.println("Fatal Error:  " + e.getMessage());
@@ -117,7 +130,7 @@ public class Admin {
      * Imports a PSI-MI File or an External Reference File.
      */
     private static void importData() throws IOException, DaoException,
-            ImportException, MissingDataException {
+            ImportException, MissingDataException, SAXException {
         File file = new File(fileName);
         if (file.isDirectory()) {
             File files[] = file.listFiles();
@@ -129,11 +142,11 @@ public class Admin {
             importDataFromSingleFile(file);
         }
         ImportRecords importer = new ImportRecords();
-        importer.transferData(validateExternalReferences);
+        importer.transferData(validateExternalReferences, removeAllXrefs);
     }
 
     private static void importDataFromSingleFile(File file) throws IOException,
-            DaoException, MissingDataException {
+            DaoException, MissingDataException, SAXException {
         String fileName = file.getName();
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
                 || fileName.endsWith("mif")) {
@@ -158,7 +171,7 @@ public class Admin {
         if (argv.length == 0) {
             displayHelp();
         }
-        Getopt g = new Getopt("admin.pl", argv, "o:u:p:f:xd");
+        Getopt g = new Getopt("admin.pl", argv, "o:u:p:f:xdr");
         int c;
         while ((c = g.getopt()) != -1) {
             switch (c) {
@@ -184,6 +197,9 @@ public class Admin {
                     break;
                 case 'x':
                     validateExternalReferences = false;
+                    break;
+                case 'r':
+                    removeAllXrefs = true;
                     break;
             }
         }
@@ -282,6 +298,12 @@ public class Admin {
                 + "specified config file.");
         System.out.println("  count_affy      Counts Records with Affymetrix "
                 + "identifiers.");
+        System.out.println("\n\nExtra Options (not guaranteed to be available "
+            + "in future versions of cPath)");
+        System.out.println("  -r              Removes all PSI-MI xrefs "
+            + "(not recommended)");
+        System.out.println("                  Used to temporarily import "
+            + "buggy HRPD PSI-MI Files.");
         System.exit(1);
     }
 }
