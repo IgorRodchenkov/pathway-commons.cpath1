@@ -38,6 +38,7 @@ import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
 import org.mskcc.pathdb.task.ProgressMonitor;
@@ -310,19 +311,23 @@ public class ImportPsiToCPath {
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
 
-                // Normalize, then extract External Refs
+                // Normalize, then extract all External Refs
                 psiUtil.normalizeXrefs(protein.getXref());
                 ExternalReference[] refs = extractExternalReferences(protein);
 
-                // Filter out References which are not used for unique
-                // identification.  For example, filter out all GO and
-                // InterPro references.
-                ExternalReference[] filteredRefs =
-                        ExternalReferenceUtil.extractProteinUnificationRefs
-                        (refs);
+                //  Split References into two subsets:  first subset
+                //  contains those used for UNIFICATION;  second subset
+                //  contains those used for LINK_OUT.
+                ExternalReference[] unificationRefs =
+                        ExternalReferenceUtil.filterByReferenceType
+                        (refs, ReferenceType.PROTEIN_UNIFICATION);
+
+                ExternalReference[] linkOutRefs =
+                        ExternalReferenceUtil.filterByReferenceType
+                        (refs, ReferenceType.LINK_OUT);
 
                 ArrayList records = externalLinker.lookUpByExternalRefs
-                        (filteredRefs);
+                        (unificationRefs);
                 //  Step 3.1.2 - 3.1.3
                 if (records.size() > 0) {
                     CPathRecord record = (CPathRecord) records.get(0);
@@ -333,18 +338,42 @@ public class ImportPsiToCPath {
                     updater.doUpdate();
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumInteractorsFound();
-                    String refListText = this.getReferencesAsText(filteredRefs);
+                    String refListText = getReferencesAsText(unificationRefs);
                     pMonitor.setCurrentMessage("\nExisting interactor found "
                             + " in cPath,  " + "based on xrefs:  "
                             + refListText);
                 } else {
-                    //  Query Bacgkround Reference SubSystem for other
+                    //  Query Background Reference Service for other
                     //  unification identifiers.
-                    refs = queryUnificationService(protein, refs);
+                    unificationRefs = queryUnificationService(unificationRefs);
+
+                    //  Query Background Reference Service for LinkOuts
+                    ExternalReference backgroundLinkOutRefs[] =
+                            queryLinkOutService (unificationRefs);
+
+                    //  Create the union of all  UNIFICATION Refs and
+                    //  LINK_OUT Refs
+                    ExternalReference allRefs[] =
+                            ExternalReferenceUtil.createUnifiedList
+                            (unificationRefs, linkOutRefs);
+                    if (backgroundLinkOutRefs != null
+                        && backgroundLinkOutRefs.length > 0) {
+                        allRefs =
+                                ExternalReferenceUtil.createUnifiedList(allRefs,
+                                backgroundLinkOutRefs);
+                    }
+
+                    //  Remove any duplicates in the Reference List
+                    allRefs = ExternalReferenceUtil.removeDuplicates(allRefs);
+
+                    //  Update the PSI-MI XRef Data Model with all newly derived
+                    //  External References.
+                    XrefType xref = protein.getXref();
+                    psiUtil.addExternalReferences(xref, allRefs);
 
                     //  Save the interactor to the database
                     try {
-                        saveInteractor(protein, refs);
+                        saveInteractor(protein, allRefs);
                     } catch (IllegalArgumentException e) {
                         pMonitor.setCurrentMessage("\nError occurred while "
                                 + "processing interator:  "
@@ -406,6 +435,7 @@ public class ImportPsiToCPath {
         DaoCPath cpath = new DaoCPath();
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = marshalProtein(protein);
+
         String name = protein.getNames().getShortLabel();
 
         if (name == null || name.trim().length() == 0) {
@@ -492,7 +522,8 @@ public class ImportPsiToCPath {
         // identification.  For example, filter out all GO, PubMed and
         // InterPro references.
         ExternalReference[] filteredRefs =
-                ExternalReferenceUtil.extractProteinUnificationRefs(refs);
+                ExternalReferenceUtil.filterByReferenceType
+                (refs, ReferenceType.PROTEIN_UNIFICATION);
         DaoExternalLink linker = new DaoExternalLink();
         DaoCPath cpath = new DaoCPath();
         ArrayList records = linker.lookUpByExternalRefs(filteredRefs);
@@ -561,39 +592,50 @@ public class ImportPsiToCPath {
     }
 
     /**
-     * Queries the ID Mapping Subsystem for Equivalent Ids.
+     * Queries the Background Reference Service for a list of
+     * PROTEIN_UNIFICATION References.
      *
-     * @param protein Protein Interactor Type Object.
-     * @param refs    Array of External Reference Objects.
+     * @param unificationRefs    Array of External Reference Objects.
      * @return Array of External Reference Objects.
      */
-    private ExternalReference[] queryUnificationService
-            (ProteinInteractorType protein, ExternalReference[] refs)
-            throws DaoException {
-        //  Only check id mapping service if we have existing references.
-        if (refs != null && refs.length > 0) {
-            BackgroundReferenceService idService =
+    private ExternalReference[] queryUnificationService (ExternalReference[]
+            unificationRefs) throws DaoException {
+        //  Only execute query if we have existing unification references.
+        if (unificationRefs != null && unificationRefs.length > 0) {
+            BackgroundReferenceService refService =
                     new BackgroundReferenceService();
-            ArrayList extraRefs = idService.getUnificationReferences(refs);
+            ArrayList backgroundUnificationRefs =
+                    refService.getUnificationReferences(unificationRefs);
 
-            //  If we find no equivalent IDs, do nothing, and return original
-            //  list of External References.
-            if (extraRefs == null || extraRefs.size() == 0) {
-                return refs;
-            } else {
-                //  Create Union of Existing Refs plus newly discovered refs
-                ArrayList union = ExternalReferenceUtil.createUnifiedList
-                        (extraRefs, refs);
-
-                //  Add Extra Refs to the PSI-MI Data Model
-                XrefType xref = protein.getXref();
-                psiUtil.addExternalReferences(xref, extraRefs);
-
-                //  Return the union list
-                return (ExternalReference[]) union.toArray(refs);
-            }
+            //  Return the complete unification list.
+            return (ExternalReference[]) backgroundUnificationRefs.toArray
+                    (new ExternalReference[backgroundUnificationRefs.size()]);
         } else {
-            return refs;
+            return unificationRefs;
+        }
+    }
+
+    /**
+     * Queries the Background Reference Service for a list of LINK_OUT
+     * References.
+     *
+     * @param unificationRefs    Array of External Reference Objects.
+     * @return Array of External Reference Objects.
+     */
+    private ExternalReference[] queryLinkOutService (ExternalReference[]
+            unificationRefs) throws DaoException {
+        //  Only execute query if we have existing unification references.
+        if (unificationRefs != null && unificationRefs.length > 0) {
+            BackgroundReferenceService refService =
+                    new BackgroundReferenceService();
+            ArrayList linkOutRefs =
+                    refService.getLinkOutReferences(unificationRefs);
+
+            //  Return the complete unification list.
+            return (ExternalReference[]) linkOutRefs.toArray
+                    (new ExternalReference[linkOutRefs.size()]);
+        } else {
+            return null;
         }
     }
 }
