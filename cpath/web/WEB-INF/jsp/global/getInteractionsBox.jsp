@@ -93,13 +93,17 @@
         <% for (int i=0; i<organisms.size(); i++) {
             Organism organism = (Organism) organisms.get(i);
             String currentTaxId = Integer.toString(organism.getTaxonomyId());
+            String species = organism.getSpeciesName();
+            if (species.length() > 25) {
+                species = new String (species.substring(0,25) + "...");
+            }
         %>
             <% if (currentTaxId.equals(taxId)) { %>
                 <OPTION VALUE="<%= organism.getTaxonomyId()%>" SELECTED>
-                <%= organism.getSpeciesName()%></OPTION>
+                <%= species %></OPTION>
             <% } else { %>
                 <OPTION VALUE="<%= organism.getTaxonomyId()%>">
-                <%= organism.getSpeciesName()%></OPTION>
+                <%= species %></OPTION>
             <% } %>
         <% } %>
         </SELECT>
@@ -110,18 +114,19 @@
         <% if (searchOptionsFlag != null
                 && searchOptionsFlag.booleanValue() == true) { %>
         <P>
-        <INPUT TYPE="SUBMIT" value="Go"/>
-        <P>
+        <INPUT TYPE="SUBMIT" value="Search"/>
+        <DIV>
             <A HREF="toggleSearchOptions.do">Hide Field Specific Filter...</A>
-        </FORM>
+        </DIV>
         <% } else { %>
         <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
             value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
         <P>
-        <INPUT TYPE="SUBMIT" value="Go"/>
-        <P>
+        <INPUT TYPE="SUBMIT" value="Search"/>
+        <DIV>
         <A HREF="toggleSearchOptions.do">Show Field Specific Filter...</A>
-        </FORM>
+        </DIV>
         <% } %>
+        </FORM>
     </div>
 </div>
