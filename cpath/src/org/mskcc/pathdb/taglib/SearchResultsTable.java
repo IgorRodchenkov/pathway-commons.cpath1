@@ -132,7 +132,7 @@ public class SearchResultsTable extends HtmlTable {
                 append(Integer.toString(i + 1) + ".");
                 append("</TD>");
                 append("<TD VALIGN=TOP WIDTH=60>");
-                String url = "interactor.do?id=" + cpathId.stringValue();
+                String url = "interactionDetails.do?id=" + cpathId.stringValue();
 
 //                if (name == null) {
 //                    append("[No Name]");
