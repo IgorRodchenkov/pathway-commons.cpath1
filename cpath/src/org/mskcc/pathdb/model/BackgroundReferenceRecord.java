@@ -33,19 +33,20 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 /**
- * Java Bean for Storing Background Identity Records.
+ * Java Bean for Storing Background Reference Records.
  *
  * @author Ethan Cerami.
  */
-public class IdentityRecord {
+public class BackgroundReferenceRecord {
     private int db1, db2;
     private String id1, id2;
     private int primaryId;
+    private ReferenceType refType;
 
     /**
      * No-arg Constructor.
      */
-    public IdentityRecord() {
+    public BackgroundReferenceRecord() {
     }
 
     /**
@@ -56,11 +57,13 @@ public class IdentityRecord {
      * @param db2 Primary ID of Database 2.
      * @param id2 ID used in Database 2.
      */
-    public IdentityRecord(int db1, String id1, int db2, String id2) {
+    public BackgroundReferenceRecord(int db1, String id1, int db2, String id2,
+            ReferenceType refType) {
         this.db1 = db1;
         this.db2 = db2;
         this.id1 = id1;
         this.id2 = id2;
+        this.refType = refType;
     }
 
     /**
@@ -154,7 +157,25 @@ public class IdentityRecord {
     }
 
     /**
-     * Provides a Text Description of the ID Mapping.
+     * Gets the Reference Type.
+     *
+     * @return ReferenceType Object.
+     */
+    public ReferenceType getReferenceType() {
+        return refType;
+    }
+
+    /**
+     * Sets the Reference Type.
+     *
+     * @param refType ReferenceType Object.
+     */
+    public void setReferenceType(ReferenceType refType) {
+        this.refType = refType;
+    }
+
+    /**
+     * Provides a Text Description of the Record.
      *
      * @return Description of ID Mapping.
      */
@@ -190,7 +211,7 @@ public class IdentityRecord {
      * @return hashcode integer value.
      */
     public int hashCode() {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(refType.toString() + ":");
         if (db1 < db2) {
             code.append(db1 + ":" + id1 + "#");
             code.append(db2 + ":" + id2);
