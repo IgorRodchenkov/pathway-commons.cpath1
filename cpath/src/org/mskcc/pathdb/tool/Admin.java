@@ -75,18 +75,34 @@ public class Admin {
      */
     private static void importData() throws IOException, DaoException,
             ImportException {
+        File file = new File (fileName);
+        if (file.isDirectory()) {
+            File files[] = file.listFiles();
+            for (int i=0; i<files.length; i++) {
+                System.out.println("Loading File:  " + files[i].getName());
+                importDataFromSingleFile (files[i]);
+            }
+        }
+        else {
+            importDataFromSingleFile(file);
+        }
+        ImportRecords importer = new ImportRecords();
+        importer.transferData(validateExternalReferences);
+    }
+
+    private static void importDataFromSingleFile(File file) throws IOException,
+            DaoException {
+        String fileName = file.getName();
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
                 || fileName.endsWith("mif")) {
             System.out.println("Based on the file extension, I am concluding "
                     + "that this is a PSI-MI File.");
-            LoadPsi.importDataFile(fileName);
-            ImportRecords importer = new ImportRecords();
-            importer.transferData(validateExternalReferences);
+            LoadPsi.importDataFile(file);
         } else {
             System.out.println("Based on the file extension, I am concluding "
                     + "that this is a List of External References.");
             LoadExternalReferences loader = new LoadExternalReferences();
-            loader.load(fileName);
+            loader.load(file);
         }
     }
 
@@ -182,7 +198,7 @@ public class Admin {
         System.out.println("Usage:  admin.pl [OPTIONS] command");
         System.out.println("  -u, -u=name     Database User Name");
         System.out.println("  -p, -p=name     Database Password");
-        System.out.println("  -f, -f=filename Name of File");
+        System.out.println("  -f, -f=filename Name of File / Directory");
         System.out.println("  -d,             Shows all Debug/Log Messages");
         System.out.println("  -x              Skips Validation of External "
                 + "References");
