@@ -91,6 +91,13 @@
                 <td>Finalize cPath for internal cBio/MSKCC Release.</td>
                 <td></td>
           </tr>
+          <tr>
+                <td><A HREF="phase10.html">Phase 10</A></td>
+                <td>Create Beta 2 Release of Cytoscape cPath PlugIn,
+                import HPRD into cPath, create PSI-MI/SOFT PlugIns for
+                Cytoscape 2.0, and misc. bug fixes.</td>
+                <td></td>
+          </tr>
       </table>
      </section>
   </body>
