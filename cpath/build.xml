@@ -14,6 +14,9 @@
 	<!-- The log directory -->
 	<property name="log.home" value="log"/>
 
+	<!-- Production Directory -->
+        <property name="prod.dir" value="/var/lib/tomcat4/webapps"/>
+
 <!-- ===================== Property Definitions =========================== -->
 
 
@@ -89,7 +92,7 @@
 
 -->
 
-  <property name="app.name"      value="myapp"/>
+  <property name="app.name"      value="ds"/>
   <property name="app.path"      value="/${app.name}"/>
   <property name="app.version"   value="0.1-dev"/>
   <property name="build.home"    value="${basedir}/build"/>
@@ -225,7 +228,7 @@
    <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/oscache.properties"/>
 
    <!-- Copy logger properties -->
-   <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/config-JDBC.properties"/>
+   <copy todir="${build.home}/WEB-INF/config" file="${config.dir}/config-JDBC.properties"/>
 
   </target>
 
@@ -245,24 +248,22 @@
 
 -->
 
-  <target name="dist" depends="compile,javadoc"
-   description="Create binary distribution">
-
-    <!-- Copy documentation subdirectories -->
-    <mkdir   dir="${dist.home}/docs"/>
-    <copy    todir="${dist.home}/docs">
-      <fileset dir="${docs.home}"/>
-    </copy>
-
+  <target name="war" depends="compile"
+   description="Create binary WAR distribution">
+    <mkdir  dir="${dist.home}"/>
     <!-- Create application JAR file -->
-    <jar jarfile="${dist.home}/${app.name}-${app.version}.war"
+    <jar jarfile="${dist.home}/${app.name}.war"
          basedir="${build.home}"/>
-
-    <!-- Copy additional files to ${dist.home} as necessary -->
-
+    <!--
+    <apply executable="scp">
+   	<srcfile/>
+        <fileset dir="${dist.home}">
+        	<include name="*.war"/>
+        </fileset>
+        <arg line="cerami@cbio:${prod.dir}"/>
+     </apply>
+     -->
   </target>
-
-
 
 <!-- ==================== Install Target ================================== -->
 
@@ -452,19 +453,4 @@
                 </replace>
                 <echo message="End Castor Source Generator"/>
         </target>
-<!--
-        <target name="castor" description="Generate Castor Files">
-                <echo message="Start Castor Source Generator"/>
-                <delete dir="${src.home}/org/mskcc/pathdb/xml"/>
-                <java classname="org.exolab.castor.builder.SourceGenerator"
-                        classpathref="compile.classpath" fork="true" dir="xml">
-                        <arg line="-i MIF.xsd -package org.mskcc.pathdb.xml.psi -dest ${src.home}"/>
-                </java>
-		<replace file="${src.home}/org/mskcc/pathdb/xml/psi/AvailabilityList.java">
-			<replaceToken>private java.util.Vector _availabilityList = new org.mskcc.pathdb.xml.psi.Availability("free");</replaceToken>
-			<replaceValue>private java.util.Vector _availabilityList = new Vector();</replaceValue>
-		</replace>
-                <echo message="End Castor Source Generator"/>
-        </target>
--->
 </project>
