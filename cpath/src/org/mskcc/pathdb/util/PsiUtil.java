@@ -508,42 +508,6 @@ public class PsiUtil {
     }
 
     /**
-     * Filters out non-identitiy references.  We don't want to use non-identity
-     * references, e.g. GO or PubMed to determine protein identity.
-     *
-     * @param refs Array of External References.
-     * @return Filtered Array of External References.
-     */
-    public ExternalReference[] filterOutNonIdReferences
-            (ExternalReference[] refs) {
-        ArrayList filteredRefList = new ArrayList();
-        if (refs == null) {
-            return null;
-        }
-        for (int k = 0; k < refs.length; k++) {
-            ExternalReference ref = refs[k];
-            String dbName = ref.getDatabase();
-            if (dbName.equalsIgnoreCase("GO")
-                    || dbName.equalsIgnoreCase("InterPro")
-                    || dbName.equalsIgnoreCase("PubMed")
-                    || dbName.equalsIgnoreCase("PDB")
-                    || dbName.equalsIgnoreCase("Unigene")) {
-                //  No-op
-            } else {
-                filteredRefList.add(ref);
-            }
-        }
-        ExternalReference filteredRefs[] =
-                new ExternalReference[filteredRefList.size()];
-        for (int i = 0; i < filteredRefList.size(); i++) {
-            ExternalReference ref = (ExternalReference)
-                    filteredRefList.get(i);
-            filteredRefs[i] = ref;
-        }
-        return filteredRefs;
-    }
-
-    /**
      * Adds New External References to the PSI-MI XRef Object.
      *
      * @param xref PSI-MI XRef Object.
