@@ -102,7 +102,7 @@ public class CPathXRef {
         String dbName = null;
         try {
             ExternalDatabaseRecord dbRecord1 = dao.getRecordById(dbId);
-            dbName = dbRecord1.getName();
+            dbName = dbRecord1.getFixedCvTerm();
         } catch (DaoException e) {
             dbName = "Unknown";
         }
