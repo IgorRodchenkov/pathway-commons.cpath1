@@ -85,4 +85,12 @@ public class GlobalCache {
     public void put(String key, Object object) {
         hash.put(key, object);
     }
+
+    /**
+     * Removes Object from Cache.
+     * @param key   Key.
+     */
+    public void remove (String key) {
+        hash.remove(key);
+    }
 }
