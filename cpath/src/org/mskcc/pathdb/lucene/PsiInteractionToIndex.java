@@ -74,8 +74,8 @@ public class PsiInteractionToIndex implements ItemToIndex {
         String terms = XmlStripper.stripTags(xml);
         fields.add(Field.Text(LuceneIndexer.FIELD_ALL, terms));
 
-        //  Store (but, don't index) cPath ID
-        fields.add(Field.UnIndexed(LuceneIndexer.FIELD_CPATH_ID,
+        //  Index cPath ID
+        fields.add(Field.Text(LuceneIndexer.FIELD_CPATH_ID,
                 Long.toString(cpathId)));
     }
 
