@@ -57,6 +57,7 @@ import java.util.List;
 public class InteractionTable extends HtmlTable {
     private ProtocolRequest protocolRequest;
     private XmlAssembly xmlAssembly;
+    private List interactorList;
     private EntrySet entrySet;
     private HashMap interactorMap = new HashMap();
     private ProteinInteractorType targetProtein;
@@ -65,7 +66,7 @@ public class InteractionTable extends HtmlTable {
     private int currentIndex;
 
     /**
-     * Sets Interaction Parameter.
+     * Sets the XML Assembly Parameter.
      *
      * @param xmlAssembly XmlAssembly Object
      */
@@ -77,7 +78,7 @@ public class InteractionTable extends HtmlTable {
     }
 
     /**
-     * Sets Protocol Request Parameter.
+     * Sets the Protocol Request Parameter.
      *
      * @param request Protocol Request
      */
@@ -86,12 +87,61 @@ public class InteractionTable extends HtmlTable {
     }
 
     /**
-     * Sets Interactor Set
+     * Sets the InteractorList.
+     * This represents a list of matching interactors which match the user's
+     * original query.
      *
      * @param interactorList Interactor List
      */
     public void setInteractorList(List interactorList) {
-        if (interactorList.size() == 1) {
+        this.interactorList = interactorList;
+    }
+
+    /**
+     * Resets all Variables back to null.
+     */
+    public void release() {
+        super.release();
+        protocolRequest = null;
+        xmlAssembly = null;
+        interactorList = null;
+        entrySet = null;
+        interactorMap = null;
+        targetProtein = null;
+        interactionDetailsShown = false;
+        pager = null;
+        currentIndex = 0;
+    }
+
+    /**
+     * Start Tag Processing.
+     *
+     * @throws DaoException Database Access Error.
+     */
+    protected void subDoStartTag() throws DaoException, MapperException {
+        //  Determine Protein or Interaction View
+        determineView();
+
+        //  Create Page Header / Title
+        String title = getPageTitle();
+        createHeader(title);
+
+        //  Output Target Interactor (optional)
+        if (targetProtein != null) {
+            outputTargetInteractor();
+        }
+
+        //  Output All Matching Interactions
+        outputInteractions();
+    }
+
+    /**
+     * Determine if this is a protein view or an interaction view.
+     */
+    private void determineView() {
+        if (protocolRequest.getQuery() != null
+            && protocolRequest.getQuery().indexOf
+                (LuceneConfig.FIELD_INTERACTOR_ID) >= 0) {
             ProteinWithWeight proteinWithWeight = (ProteinWithWeight)
                     interactorList.get(0);
             targetProtein = proteinWithWeight.getProtein();
@@ -101,30 +151,16 @@ public class InteractionTable extends HtmlTable {
     }
 
     /**
-     * Start Tag Processing.
-     *
-     * @throws DaoException Database Access Error.
+     * Gets Page Title:  Interaction View or Protein View
      */
-    protected void subDoStartTag() throws DaoException, MapperException {
-        //  Create Page Title
-        createPageTitle();
-
-        //  Output Target Interactor (optional)
-        outputTargetInteractor();
-
-        //  Output All Matching Interactions
-        outputInteractions();
-    }
-
-    /**
-     * Creates Page Title:  Interaction View or Protein View
-     */
-    private void createPageTitle() {
-        String title = "Interaction View";
-        if (targetProtein != null) {
+    private String getPageTitle() {
+        String title = null;
+        if (targetProtein == null) {
+            title = "Interaction View";
+        } else {
             title = "Protein View";
         }
-        createHeader(title);
+        return title;
     }
 
     /**
@@ -270,7 +306,7 @@ public class InteractionTable extends HtmlTable {
         String fullName = protein.getNames().getFullName();
         Organism organism = protein.getOrganism();
         startRow();
-        outputProteinName(proteinId, shortName, fullName, isSelfInteracting);
+        outputInteractorName(proteinId, shortName, fullName, isSelfInteracting);
         outputOrganism(organism);
         if (!interactionDetailsShown) {
             outputInteractionDetails(interaction);
@@ -300,9 +336,9 @@ public class InteractionTable extends HtmlTable {
     }
 
     /**
-     * Outputs Protein Name.
+     * Outputs Interactor Name.
      */
-    private void outputProteinName(String proteinId, String shortName,
+    private void outputInteractorName(String proteinId, String shortName,
             String fullName, boolean isSelfInteracting) {
         String link = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
                 + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
@@ -456,19 +492,17 @@ public class InteractionTable extends HtmlTable {
      * Outputs Target Interactors
      */
     private void outputTargetInteractor() throws DaoException {
-        if (targetProtein != null) {
-            startTable();
-            outputTargetName(targetProtein.getNames());
-            outputTargetOrganism(targetProtein.getOrganism());
-            outputExternalReferences(targetProtein.getId());
-            endTable();
-        }
+        startTable();
+        outputTargetNames(targetProtein.getNames());
+        outputTargetOrganism(targetProtein.getOrganism());
+        outputExternalReferences(targetProtein.getId());
+        endTable();
     }
 
     /**
-     * Outputs Target Interactor Name.
+     * Outputs Target Interactor Names.
      */
-    private void outputTargetName(NamesType names) {
+    private void outputTargetNames(NamesType names) {
         startRow();
         String shortLabel = names.getShortLabel();
         if (shortLabel != null && shortLabel.length() > 0) {

@@ -45,7 +45,11 @@ public class InteractorTable extends HtmlTable {
      */
     protected void subDoStartTag() throws Exception {
         protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
-        if (interactorList != null && interactorList.size() > 1) {
+        String query = protocolRequest.getQuery();
+        if (query != null
+            && (query.indexOf(LuceneConfig.FIELD_INTERACTOR_ID) == -1)
+            && interactorList != null
+            && interactorList.size() > 0) {
             append("<div id=\"highlight\" class=\"toolgroup\">\n"
                     + "<div class=\"label\">\n"
                     + "<strong>Matching Proteins</strong>\n"
@@ -70,9 +74,14 @@ public class InteractorTable extends HtmlTable {
             append("<div>");
             String link = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
                     + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
-            String name = names.getFullName().trim();
+            StringBuffer name = new StringBuffer();
+            if (names.getShortLabel() != null) {
+                name.append(names.getShortLabel().trim()+": ");
+            }
+            name.append(names.getFullName().trim());
             if (name.indexOf(" ") > 25) {
-                name = name.substring(0, 25) + "...";
+                name = new StringBuffer (name.substring(0, 25));
+                name.append("...");
             }
             append("<A HREF='" + link + "'>" + name + "</A>");
             append("</div>");
