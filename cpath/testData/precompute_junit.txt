@@ -1,12 +1,11 @@
 # Relative URLs for Sample Pre-Computed Queries
 # URLs Must be specified as name / value pairs separated by & character.
 
-# Retrieve all Human Data
-version=1.0&cmd=get_by_interactor_tax_id&q=9606&q=&maxHits=unbounded&format=psi
+# Retrieve Sample E-Coli
+version=1.0&cmd=get_by_keyword&q=&format=psi&startIndex=0&organism=562&maxHits=10
 
-# Retrieve all DIP Data
-version=1.0&cmd=get_by_interaction_db&q=DIP&maxHits=10&format=psi
-version=1.0&cmd=get_by_interaction_db&q=DIP&maxHits=unbounded&format=psi
+# Retrieve Sample DIP Data
+version=1.0&cmd=get_by_database&q=DIP&maxHits=10&format=psi
 
-# Retrieve all Data with Keyword:  "DNA Repair"
-version=1.0&cmd=get_by_interactor_keyword&q=dna+repair&maxHits=unbounded&format=psi
+# Retrieve all Data with Keyword:  dna repair
+version=1.0&cmd=get_by_keyword&q=dna+repair&maxHits=10&format=psi
