@@ -18,7 +18,7 @@ public class LoadExternalReferences {
      *
      * @param fileName File Name.
      * @throws IOException  File Input Error.
-     * @throws DaoException Data Access Error. 
+     * @throws DaoException Data Access Error.
      */
     public void load(String fileName) throws DaoException, IOException {
         FileReader reader = new FileReader(fileName);

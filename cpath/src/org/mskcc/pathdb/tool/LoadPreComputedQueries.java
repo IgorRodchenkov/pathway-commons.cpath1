@@ -24,8 +24,8 @@ public class LoadPreComputedQueries {
     /**
      * Processes all Queries in Specified File.
      *
-     * @param file      File Name
-     * @param xdebug    XDebug Object.
+     * @param file   File Name
+     * @param xdebug XDebug Object.
      * @throws DaoException       Date Access Error.
      * @throws IOException        File Input Error.
      * @throws NeedsHelpException Protocol Error.

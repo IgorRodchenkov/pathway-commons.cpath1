@@ -2,9 +2,9 @@ package org.mskcc.pathdb.tool;
 
 import gnu.getopt.Getopt;
 import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.task.IndexLuceneTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -76,7 +76,7 @@ public class Admin {
     private static void importData() throws IOException, DaoException,
             ImportException {
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
-            || fileName.endsWith("mif")) {
+                || fileName.endsWith("mif")) {
             System.out.println("Based on the file extension, I am concluding "
                     + "that this is a PSI-MI File.");
             LoadPsi.importDataFile(fileName);

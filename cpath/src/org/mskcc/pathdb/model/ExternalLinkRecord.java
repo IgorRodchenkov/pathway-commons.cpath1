@@ -1,6 +1,6 @@
 package org.mskcc.pathdb.model;
 
-import java.util.Date;
+
 
 /**
  * JavaBean to Encapsulate an External Link Record.

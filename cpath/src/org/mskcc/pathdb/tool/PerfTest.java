@@ -1,20 +1,20 @@
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 import org.exolab.castor.xml.Marshaller;
+import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.dataservices.schemas.psi.*;
+import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.io.StringReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Diagnostic Tool for Testing Peformance of Various cPath Components.
@@ -27,6 +27,7 @@ public class PerfTest {
      * Main Method.
      *
      * @param argv Command Line Arguments.
+     * @throws Exception All Exceptions.
      */
     public static void main(String[] argv) throws Exception {
         //testXmlBinding();
@@ -45,10 +46,10 @@ public class PerfTest {
     }
 
     private static void testExternalLinks() throws DaoException {
-        for (int i=0; i < 20; i++) {
+        for (int i = 0; i < 20; i++) {
             DaoExternalLink dao = new DaoExternalLink();
-            ExternalReference externalRef = new ExternalReference ("SWP",
-                    "id"+i);
+            ExternalReference externalRef = new ExternalReference("SWP",
+                    "id" + i);
             ArrayList list = dao.lookUpByExternalRef(externalRef);
             if (i % 10 == 0) {
                 System.out.print(".");
@@ -75,7 +76,7 @@ public class PerfTest {
         Entry entry = entrySet.getEntry(0);
 
         InteractorList interactorList = entry.getInteractorList();
-        for (int i=0; i<interactorList.getProteinInteractorCount(); i++) {
+        for (int i = 0; i < interactorList.getProteinInteractorCount(); i++) {
             StringWriter writer = new StringWriter();
             Marshaller marshaller = new Marshaller(writer);
             marshaller.setValidation(false);
@@ -88,7 +89,7 @@ public class PerfTest {
         }
 
         InteractionList interactionList = entry.getInteractionList();
-        for (int i=0; i<interactionList.getInteractionCount(); i++) {
+        for (int i = 0; i < interactionList.getInteractionCount(); i++) {
             StringWriter writer = new StringWriter();
             Marshaller marshaller = new Marshaller(writer);
             marshaller.setValidation(false);

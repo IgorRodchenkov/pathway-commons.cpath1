@@ -22,10 +22,11 @@ public class OrganismStats {
 
     /**
      * Gets All Organisms Sorted by Name.
+     *
      * @return ArrayList of Organism Objects.
-     * @throws DaoException     Data Access Error.
-     * @throws QueryException   Query Error.
-     * @throws IOException      Input / Output Error.
+     * @throws DaoException   Data Access Error.
+     * @throws QueryException Query Error.
+     * @throws IOException    Input / Output Error.
      */
     public ArrayList getOrganismsSortedByName() throws DaoException,
             QueryException, IOException {
@@ -37,10 +38,11 @@ public class OrganismStats {
 
     /**
      * Gets All Organisms Sorted by Number of Interactions.
+     *
      * @return ArrayList of Organism Objects.
-     * @throws DaoException     Data Access Error.
-     * @throws QueryException   Query Error.
-     * @throws IOException      Input / Output Error.
+     * @throws DaoException   Data Access Error.
+     * @throws QueryException Query Error.
+     * @throws IOException    Input / Output Error.
      */
     public ArrayList getOrganismsSortedByNumInteractions() throws DaoException,
             QueryException, IOException {
@@ -52,9 +54,10 @@ public class OrganismStats {
 
     /**
      * Restets Organism Stats.
-     * @throws DaoException     Data Access Error.
-     * @throws QueryException   Query Error.
-     * @throws IOException      Input / Output Error.
+     *
+     * @throws DaoException   Data Access Error.
+     * @throws QueryException Query Error.
+     * @throws IOException    Input / Output Error.
      */
     public void resetStats() throws DaoException, IOException,
             QueryException {
@@ -99,6 +102,7 @@ class SortByInteractionCount implements Comparator {
 
     /**
      * Compares Two Organisms.
+     *
      * @param o1 Organism 1.
      * @param o2 Organism 2.
      * @return integer indicating results of comparison.
@@ -127,6 +131,7 @@ class SortByName implements Comparator {
 
     /**
      * Compares Two Organisms.
+     *
      * @param o1 Organism 1.
      * @param o2 Organism 2.
      * @return integer indicating results of comparison.

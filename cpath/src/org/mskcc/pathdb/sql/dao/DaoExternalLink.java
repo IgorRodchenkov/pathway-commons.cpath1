@@ -14,7 +14,10 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -349,8 +352,9 @@ public class DaoExternalLink {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT EXTERNAL_LINK_ID FROM external_link WHERE " +
-                    "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND LINKED_TO_ID = ?");
+                    ("SELECT EXTERNAL_LINK_ID FROM external_link WHERE "
+                    + "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND "
+                    + "LINKED_TO_ID = ?");
             pstmt.setLong(1, link.getCpathId());
             pstmt.setInt(2, link.getExternalDbId());
             pstmt.setString(3, link.getLinkedToId());

@@ -1,6 +1,5 @@
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
 
@@ -50,11 +49,13 @@ public class LoadPsi {
 
     /**
      * Retrieves Content from local File System.
+     *
      * @param file File Object
      * @return File contents.
      * @throws java.io.IOException Error Retrieving file.
      */
-    private static String retrieveContentFromFile(File file) throws IOException {
+    private static String retrieveContentFromFile(File file)
+            throws IOException {
         StringBuffer content = new StringBuffer();
         FileReader reader = new FileReader(file);
         BufferedReader buffered = new BufferedReader(reader);

@@ -14,8 +14,9 @@ public class ConsoleUtil {
 
     /**
      * Outputs Progress Messages to Console.
-     * @param verbose   Verbose Flag
-     * @param pMonitor  ProgressMonitor Object.
+     *
+     * @param verbose  Verbose Flag
+     * @param pMonitor ProgressMonitor Object.
      */
     public static void showProgress(boolean verbose, ProgressMonitor pMonitor) {
         if (verbose) {
@@ -24,7 +25,7 @@ public class ConsoleUtil {
             if (currentValue % 100 == 0) {
                 NumberFormat format = DecimalFormat.getPercentInstance();
                 System.out.println("\nPercentage Complete:  "
-                    + format.format(pMonitor.getPercentComplete()));
+                        + format.format(pMonitor.getPercentComplete()));
             }
         }
     }

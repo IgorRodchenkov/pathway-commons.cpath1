@@ -1,7 +1,6 @@
 package org.mskcc.pathdb.task;
 
 
-
 /**
  * Wrapper for Background Threads.
  *

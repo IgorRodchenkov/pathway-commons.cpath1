@@ -1,11 +1,10 @@
 package org.mskcc.pathdb.sql.transfer;
 
 import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 import org.exolab.castor.xml.Marshaller;
+import org.exolab.castor.xml.ValidationException;
 import org.jdom.Text;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
@@ -14,10 +13,9 @@ import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ConsoleUtil;
 import org.mskcc.pathdb.util.PsiUtil;
-import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.io.StringWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -244,7 +242,7 @@ public class ImportPsiToCPath {
                     //  Conditionally Update the Interactor Record with
                     //  new external references.
                     UpdatePsiInteractor updater = new UpdatePsiInteractor
-                          (protein);
+                            (protein);
                     updater.doUpdate();
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumInteractorsFound();

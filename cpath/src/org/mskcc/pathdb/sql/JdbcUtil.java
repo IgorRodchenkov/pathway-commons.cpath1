@@ -27,9 +27,10 @@ public class JdbcUtil {
 
     /**
      * Special Setting for Command Line Applications
+     *
      * @param flag true or false.
      */
-    public static void isCommandLineApplication (boolean flag) {
+    public static void isCommandLineApplication(boolean flag) {
         isCommandLineApplication = true;
     }
 

@@ -24,6 +24,7 @@ public class LogRecord {
 
     /**
      * Gets Date/Time Stamp.
+     *
      * @return Date Object.
      */
     public Date getDate() {
@@ -32,6 +33,7 @@ public class LogRecord {
 
     /**
      * Sets Date/Time Stamp.
+     *
      * @param date Date Object.
      */
     public void setDate(Date date) {
@@ -40,6 +42,7 @@ public class LogRecord {
 
     /**
      * Sets Log Priority, e.g. PRIORITY_ERROR
+     *
      * @return Log Priority.
      */
     public String getPriority() {
@@ -48,6 +51,7 @@ public class LogRecord {
 
     /**
      * Gets Log Priority, e.g. PRIORITY_ERROR.
+     *
      * @param priority Log Priority.
      */
     public void setPriority(String priority) {
@@ -56,6 +60,7 @@ public class LogRecord {
 
     /**
      * Gets Log Message.
+     *
      * @return Log Message.
      */
     public String getMessage() {
@@ -64,6 +69,7 @@ public class LogRecord {
 
     /**
      * Sets Log Message.
+     *
      * @param message Log Message.
      */
     public void setMessage(String message) {
@@ -72,6 +78,7 @@ public class LogRecord {
 
     /**
      * Gets Stack Trace.
+     *
      * @return Stack Trace.
      */
     public String getStackTrace() {
@@ -80,6 +87,7 @@ public class LogRecord {
 
     /**
      * Sets Stack Trace.
+     *
      * @param stackTrace Stack Trace.
      */
     public void setStackTrace(String stackTrace) {
@@ -88,6 +96,7 @@ public class LogRecord {
 
     /**
      * Gets Web URL assocated with Log Message.
+     *
      * @return Web URL.
      */
     public String getWebUrl() {
@@ -96,6 +105,7 @@ public class LogRecord {
 
     /**
      * Sets Web URL associated with Log Message.
+     *
      * @param webUrl Web URL.
      */
     public void setWebUrl(String webUrl) {
@@ -104,6 +114,7 @@ public class LogRecord {
 
     /**
      * Gets Remote Host associated with Log Message.
+     *
      * @return Remote Host Name.
      */
     public String getRemoteHost() {
@@ -112,6 +123,7 @@ public class LogRecord {
 
     /**
      * Sets Remote Host associated with Log Message.
+     *
      * @param remoteHost Remote Host Name.
      */
     public void setRemoteHost(String remoteHost) {
@@ -120,6 +132,7 @@ public class LogRecord {
 
     /**
      * Gets Remote IP Addess associated with Log Message.
+     *
      * @return Remote IP Address.
      */
     public String getRemoteIp() {
@@ -128,6 +141,7 @@ public class LogRecord {
 
     /**
      * Sets Remote IP Address associated with Log Message.
+     *
      * @param remoteIp Remote IP Address.
      */
     public void setRemoteIp(String remoteIp) {
