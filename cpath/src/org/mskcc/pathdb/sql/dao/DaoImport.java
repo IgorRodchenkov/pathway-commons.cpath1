@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.nio.BufferOverflowException;
 
 /**
  * Data Access Object to the Import Table.
@@ -180,6 +181,16 @@ public class DaoImport {
             rs.next();
             long importId = rs.getLong(1);
             return importId;
+        } catch (BufferOverflowException e) {
+            IllegalArgumentException ie = new IllegalArgumentException
+                    ("BufferOverflowException occurred while trying to load a "
+                    + "large data file.  This is an existing bug in JDK 1.4,"
+                    + " and the work-around fixed has apparently failed.  "
+                    + "Please report this bug to the cPath Team and include a "
+                    + "copy of the data file while failed.  Alternatively, "
+                    + "refer to DaoImport.implementJdkWorkAround() for "
+                    + "complete details.");
+            throw new DaoException (ie);
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
@@ -210,11 +221,13 @@ public class DaoImport {
      * @return Massaged Data so that it gets around the JDK 1.4 bug.
      */
     private String implementJdkWorkAround(String data) {
-        StringBuffer dataBuffer = new StringBuffer(data);
         if (data.length() > 16777217 && data.length() % 4 == 1) {
-            dataBuffer.append("\n");
+            StringBuffer dataBuffer = new StringBuffer(data);
+            dataBuffer.append("\n\n");
+            return dataBuffer.toString();
+        } else {
+            return data;
         }
-        return dataBuffer.toString();
     }
 
     /**
