@@ -89,7 +89,7 @@ A minimal set of user tests should be performed before a public cPath release.  
 </p>
 </subsection>
 
-<subssection name="Release protocol">
+<subsection name="Release protocol">
 <p>
 Internal releases should be made every month.  This allows new projects (e.g. plugins) that need to be based on a stable core) to get started within the group.  The internal release should include the following steps: regression and integration testing, tagging the CVS repository with a release tag and documenting the release tag on a web page.  This release should be certified as stable and subsequent development of internal release of software (e.g. to internal users) should use this codebase.  Subsequent inter-release development could continue in the CVS repository, but that code should not be distributed to most users until the next stable release.
 </p>
