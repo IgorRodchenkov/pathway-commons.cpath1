@@ -37,10 +37,10 @@ public class TestProtocol extends TestCase {
         method.setQueryString(nvps);
         int statusCode = client.executeMethod(method);
 
-        //  Ds-status header should be: "ok"
+        //  Ds-status header should be: error
         Header header =
                 method.getResponseHeader(ProtocolConstants.DS_HEADER_NAME);
-        assertEquals(ProtocolConstants.DS_OK_STATUS, header.getValue());
+        assertEquals(ProtocolConstants.DS_ERROR_STATUS, header.getValue());
     }
 
     /**

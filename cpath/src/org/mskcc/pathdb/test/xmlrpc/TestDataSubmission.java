@@ -23,7 +23,7 @@ public class TestDataSubmission extends TestCase {
      */
     public void testDataSubmission() throws IOException, XmlRpcException {
         XmlRpcClient xmlrpc = new XmlRpcClient
-                ("http://localhost:8080/ds/xmlrpc");
+                ("http://localhost:8080/cpath/xmlrpc");
         Vector params = new Vector();
         params.addElement(this.getTextFromSampleFile());
         // this method returns a string

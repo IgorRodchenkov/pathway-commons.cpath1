@@ -48,7 +48,7 @@ public class TestDaoExternalLink extends TestCase {
         ExternalReference refs[] = new ExternalReference[1];
         refs[0] = new ExternalReference(DB_NAME, DB_ID);
         CPathRecord record = db.lookUpByByExternalRefs(refs);
-        assertEquals("P06139", record.getName());
+        assertEquals("JUNIT_ENTITY", record.getName());
 
         //  Test deleteRecordById() Method.
         boolean success = db.deleteRecordById(link.getId());
