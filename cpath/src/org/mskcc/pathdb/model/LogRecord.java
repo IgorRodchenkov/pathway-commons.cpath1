@@ -165,7 +165,11 @@ public class LogRecord {
      * @return Remote IP Address.
      */
     public String getRemoteIp() {
-        return remoteIp;
+        if (remoteIp == null) {
+            return NA_STRING;
+        } else {
+            return remoteIp;
+        }
     }
 
     /**
