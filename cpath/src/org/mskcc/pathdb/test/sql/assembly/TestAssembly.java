@@ -25,7 +25,7 @@ public class TestAssembly extends TestCase {
         //  Assemble Interaction with specified cPath ID (hard-coded value)
         XDebug xdebug = new XDebug();
         XmlAssembly assembly = XmlAssemblyFactory.getXmlAssembly(4, xdebug);
-        String xmlAssembly = assembly.getXmlAssembly();
+        String xmlAssembly = assembly.getXmlString();
 
         //  Verify that Assembled XML Record contains both interactors
         //  and references to those interactors.
