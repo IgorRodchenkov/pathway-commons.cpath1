@@ -18,6 +18,7 @@ public class IndexerSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestIndexer.class);
+        suite.addTestSuite(TestItemToIndex.class);
         suite.setName("Indexer Tests");
         return suite;
     }
