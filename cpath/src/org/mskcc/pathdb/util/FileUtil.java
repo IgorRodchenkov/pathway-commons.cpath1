@@ -62,4 +62,16 @@ public class FileUtil {
         reader.close();
         return numLines;
     }
+
+    /**
+     * Gets Next Line of Input.  Filters out Empty Lines and Comments.
+     */
+    public static String getNextLine(BufferedReader buf) throws IOException {
+        String line = buf.readLine();
+        while (line != null && (line.trim().length() == 0
+                || line.trim().startsWith("#"))) {
+            line = buf.readLine();
+        }
+        return line;
+    }
 }
