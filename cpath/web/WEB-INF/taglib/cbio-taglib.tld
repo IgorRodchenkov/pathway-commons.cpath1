@@ -71,6 +71,13 @@
   </tag>
 
   <tag>
+    <name>diagnosticsTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.DiagnosticsTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays cPath Diagnostics</description>
+  </tag>
+
+  <tag>
     <name>errorMessage</name>
     <tag-class>org.mskcc.pathdb.taglib.ErrorMessage</tag-class>
     <body-content>empty</body-content>
@@ -80,5 +87,12 @@
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
     </attribute>
+  </tag>
+
+  <tag>
+    <name>interactorTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.InteractorTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Interactor Information</description>
   </tag>
 </taglib>

@@ -33,10 +33,10 @@
  **/
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.pathdb.logger.AdminLogger;
+import org.mskcc.pathdb.sql.dao.DaoLog;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.logger.LogRecord;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -48,10 +48,9 @@ public class LogTable extends HtmlTable {
 
     /**
      * Start Tag Processing.
-     * @throws SQLException Database Error.
-     * @throws ClassNotFoundException Cannot Locate JDBC Driver.
+     * @throws DaoException Database Error.
      */
-    protected void subDoStartTag() throws SQLException, ClassNotFoundException {
+    protected void subDoStartTag() throws DaoException {
         startTable("cPath Log Records");
         String headers[] = {"Timestamp", "Remote IP", "Priority", "Logger",
                             "Message"};
@@ -63,8 +62,8 @@ public class LogTable extends HtmlTable {
     /**
      * Outputs Interaction Data.
      */
-    private void outputResults() throws SQLException, ClassNotFoundException {
-        AdminLogger adminLogger = new AdminLogger();
+    private void outputResults() throws DaoException {
+        DaoLog adminLogger = new DaoLog();
         ArrayList logRecords = adminLogger.getLogRecords();
         if (logRecords.size() == 0) {
             append("<TR>");

@@ -3,7 +3,7 @@ package org.mskcc.pathdb.action.admin;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.logger.AdminLogger;
+import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +30,7 @@ public class PurgeLogRecords extends AdminBaseAction {
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
         xdebug.logMsg(this, "Purging All Log Records");
-        AdminLogger adminLogger = new AdminLogger();
+        DaoLog adminLogger = new DaoLog();
         adminLogger.deleteAllLogRecords();
         this.setUserMessage(request, "All Log Records have been purged.");
         return mapping.findForward("success");

@@ -2,7 +2,7 @@ package org.mskcc.pathdb.test.logger;
 
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
-import org.mskcc.pathdb.logger.AdminLogger;
+import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.logger.ConfigLogger;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class TestAdminLogger extends TestCase {
     public void testAdminLogger() throws Exception {
 
         //  First, delete all exiting log messages.
-        AdminLogger admin = new AdminLogger();
+        DaoLog admin = new DaoLog();
         admin.deleteAllLogRecords();
 
         //  Add a sample log Message.

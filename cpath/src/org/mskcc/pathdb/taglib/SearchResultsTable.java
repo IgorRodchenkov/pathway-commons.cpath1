@@ -39,6 +39,7 @@ import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 
 import java.io.IOException;
 
@@ -112,14 +113,16 @@ public class SearchResultsTable extends HtmlTable {
                 Document doc = hits.doc(i);
                 Field name = doc.getField(LuceneIndexer.FIELD_NAME);
                 Field desc = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
+                Field cpathId = doc.getField(LuceneIndexer.FIELD_CPATH_ID);
                 append("<TD VALIGN=TOP WIDTH=20>");
                 append(Integer.toString(i + 1) + ".");
                 append("</TD>");
                 append("<TD VALIGN=TOP WIDTH=60>");
-                append(name.stringValue());
+                String url = "interactor.do?id=" + cpathId.stringValue();
+                append("<A HREF='" + url + "'>" + name.stringValue() + "</A>");
                 append("</TD>");
                 outputDataField(desc.stringValue());
-                outputInteractionLink(name.stringValue());
+                outputInteractionLink(cpathId.stringValue());
                 append("</TR>");
             }
         }

@@ -37,10 +37,15 @@
         <TD VALIGN=TOP BGCOLOR="#666699">
                   <UL>
                     <LI><A HREF="adminRunFullTextIndexer.do">Run Full Text Indexer</A>
+                    <LI><A HREF="adminDiagnostics.do">Run cPath Diagnostics</A>
                     </UL>
         </TD>
-        <TD BGCOLOR=#DDDDDD VALIGN=TOP>
+        <TD VALIGN=TOP>
+            <TABLE WIDTH=100% BGCOLOR=#FFFFCC>
+                 <TR><TD>
                  <cbio:taskTable/>
+                 </TD></TR>
+            </TABLE>
         </TD>
     </TR>
 
@@ -120,6 +125,7 @@
     </TR>
 
 </TABLE>
+
 <P>
 
 <jsp:include page="../global/xdebug.jsp" flush="true" />

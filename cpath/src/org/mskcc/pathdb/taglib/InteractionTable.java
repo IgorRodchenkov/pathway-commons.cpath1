@@ -116,8 +116,6 @@ public class InteractionTable extends HtmlTable {
             ArrayList interactors = interaction.getInteractors();
             append("<TR>");
             Interactor interactor = (Interactor) interactors.get(0);
-//            String url = getInteractionLink(interactor0.getName(),
-//                    ProtocolConstants.FORMAT_HTML);
             outputInteractor(interactor);
 
             interactor = (Interactor) interactors.get(1);
@@ -137,6 +135,8 @@ public class InteractionTable extends HtmlTable {
 
     private void outputInteractor(Interactor interactor) {
         if (interactor != null) {
+            String url = "interactor.do?id=" + interactor.getAttribute
+                    (InteractorVocab.LOCAL_ID);
             String name = interactor.getName();
             String desc = (String) interactor.getAttribute
                     (InteractorVocab.FULL_NAME);
@@ -147,7 +147,8 @@ public class InteractionTable extends HtmlTable {
                         (InteractorVocab.ORGANISM_COMMON_NAME);
             }
             StringBuffer interactorHtml = new StringBuffer();
-            interactorHtml.append(name + "<BR><UL>");
+            interactorHtml.append("<A HREF='" + url + "'>"
+                    + name +"</A><BR><UL>");
             if (desc != null) {
                 interactorHtml.append("<LI>" + desc);
             }
@@ -170,44 +171,5 @@ public class InteractionTable extends HtmlTable {
         return url;
     }
 
-    /**
-     * Outputs External References.
-     */
-    private void outputExternalReferences(Interactor interactor)
-            throws DaoException {
-        DaoExternalLink dao = new DaoExternalLink();
-        String id = (String) interactor.getAttribute(InteractorVocab.LOCAL_ID);
-        if (id != null) {
-            ArrayList links = dao.getRecordsByCPathId(Integer.parseInt(id));
-            append("<TD VALIGN=TOP><UL>");
-            for (int i = 0; i < links.size(); i++) {
-                ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
-                ExternalDatabaseRecord db = link.getExternalDatabase();
-                append("<LI>" + db.getName() + ": ");
-                outputLink(link.getLinkedToId(), link.getWebLink(),
-                        db.getDescription());
-            }
-        }
-        append("</UL></TD>");
-    }
 
-    /**
-     * Picks correct interactor to display to User.
-     */
-//    private Interactor pickInteractorToDisplay(ArrayList interactors) {
-//        Interactor interactor0 = (Interactor) interactors.get(0);
-//        Interactor interactor1 = (Interactor) interactors.get(1);
-//        String name0 = interactor0.getName();
-//        String name1 = interactor1.getName();
-//
-//        // If both interactors are the same, this is a self-interacting
-//        // interaction.
-//        if (name0.equals(uid) && name1.equals(uid)) {
-//            return interactor0;
-//        } else if (name0.equals(uid)) {
-//            return interactor1;
-//        } else {
-//            return interactor0;
-//        }
-//    }
 }

@@ -29,6 +29,11 @@
             <forward name="fullTextSearch" path="/WEB-INF/jsp/pages/FullTextSearch.jsp"/>
         </action>
 
+        <action path="/interactor"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/Interactor.jsp"/>
+        </action>
+
         <!--  Advanced Search -->
         <action path="/advancedSearch"
             type="org.mskcc.pathdb.action.HomeAction">
@@ -40,6 +45,12 @@
             type="org.mskcc.pathdb.action.admin.AdminBaseAction">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
+
+        <action path="/adminDiagnostics"
+            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/Diagnostics.jsp"/>
+        </action>
+
         <action path="/adminViewLogRecords"
             type="org.mskcc.pathdb.action.admin.AdminBaseAction">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>

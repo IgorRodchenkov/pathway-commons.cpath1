@@ -160,7 +160,7 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected String getInteractionLink(String id, String format) {
         ProtocolRequest request = new ProtocolRequest();
-        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID);
         request.setVersion(ProtocolConstants.CURRENT_VERSION);
         request.setFormat(format);
         request.setQuery(id);

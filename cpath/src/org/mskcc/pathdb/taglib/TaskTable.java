@@ -20,8 +20,8 @@ public class TaskTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {
-        append("<table valign=top width=100% cellpadding=2 border=0 "
-                + "cellspacing=2 BGCOLOR=#666699>");
+        append("<table height=100% width=100% cellpadding=2 border=0 "
+                + "cellspacing=1 BGCOLOR=#666699>");
         outputRecords();
         endTable();
     }

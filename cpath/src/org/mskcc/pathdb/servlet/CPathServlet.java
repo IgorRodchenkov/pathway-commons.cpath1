@@ -5,7 +5,7 @@ import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.logger.AdminLogger;
+import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.logger.ConfigLogger;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.service.RegisterCPathServices;
@@ -89,30 +89,16 @@ public final class CPathServlet extends ActionServlet {
      */
     private void verifyDbConnection() {
         System.err.println("Veriyfing Database Connection...");
-        AdminLogger adminLogger = new AdminLogger();
+        DaoLog adminLogger = new DaoLog();
         try {
             adminLogger.getLogRecords();
             DaoCPath dao = new DaoCPath();
             int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
             System.err.println("Number of Physical Entities:  " + num);
             System.err.println("Database Connection -->  OK");
-        } catch (SQLException e) {
-            while (e != null) {
-                System.err.println("****  Error Connecting to Database");
-                System.err.println("SQLException:  " + e.toString());
-                System.err.println("Message:  " + e.getMessage());
-                System.err.println("Error Code:  " + e.getErrorCode());
-                System.err.println("Localized Message:  "
-                        + e.getLocalizedMessage());
-                System.err.println("SQL State:  " + e.getSQLState());
-                e = e.getNextException();
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("****  Error Connecting to Database");
-            System.err.println(e.toString());
         } catch (DaoException e) {
-            System.err.println("****  Error Connecting to Database");
-            System.err.println(e.toString());
+            System.err.println("****  Error Connecting to Database:");
+            System.err.println("DaoException:  " + e.toString());
         }
     }
 }

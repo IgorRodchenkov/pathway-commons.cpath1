@@ -1,6 +1,7 @@
-package org.mskcc.pathdb.logger;
+package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.logger.LogRecord;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,27 +15,23 @@ import java.util.Date;
  *
  * @author Ethan Cerami
  */
-public class AdminLogger {
+public class DaoLog {
 
     /**
      * Gets all log messages.
      * @return ArrayList of LogRecord objects.
-     * @throws SQLException Indicates error connecting to database.
-     * @throws ClassNotFoundException Indicates error locating jdbc driver.
+     * @throws DaoException Error Accessing Database.
      */
-    public ArrayList getLogRecords() throws SQLException,
-            ClassNotFoundException {
+    public ArrayList getLogRecords() throws DaoException {
         ArrayList records = getRecords();
         return records;
     }
 
     /**
      * Deletes all existing Log messages.
-     * @throws SQLException Indicates error connecting to database.
-     * @throws ClassNotFoundException Indicates error locating jdbc driver.
+     * @throws DaoException Error Accessing Database.
      */
-    public void deleteAllLogRecords() throws SQLException,
-            ClassNotFoundException {
+    public void deleteAllLogRecords() throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -42,6 +39,11 @@ public class AdminLogger {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement("TRUNCATE TABLE log");
             pstmt.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -50,7 +52,7 @@ public class AdminLogger {
     /**
      * Gets all Log Records.
      */
-    private ArrayList getRecords() throws SQLException, ClassNotFoundException {
+    private ArrayList getRecords() throws DaoException {
         ArrayList records = new ArrayList();
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -60,7 +62,8 @@ public class AdminLogger {
             pstmt = con.prepareStatement
                     ("SELECT * FROM log order by date asc");
             rs = pstmt.executeQuery();
-            while (rs.next()) {
+            int counter = 0;
+            while (rs.next() && counter < 25) {
                 Date date = rs.getTimestamp("date");
                 String logger = rs.getString("logger");
                 String priority = rs.getString("priority");
@@ -69,7 +72,13 @@ public class AdminLogger {
                 LogRecord record = new LogRecord(date, priority, logger,
                         message, ip);
                 records.add(record);
+                counter++;
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }

@@ -1,10 +1,10 @@
-<%@ page import="org.mskcc.pathdb.logger.AdminLogger,
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoLog,
                  java.util.ArrayList,
                  org.mskcc.pathdb.logger.LogRecord"%>
 <%
     response.setHeader("Cache-control", "no-cache");
     response.setHeader("Pragma", "no-cache");
-    AdminLogger adminLogger = new AdminLogger();
+    DaoLog adminLogger = new DaoLog();
     String userMsg = null;
 %>
 

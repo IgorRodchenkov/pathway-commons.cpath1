@@ -16,5 +16,6 @@
 <P>
 <cbio:interactionTable interactions="<%= interactions %>"
         protocolRequest="<%= protocolRequest %>"/>
+
 <jsp:include page="../global/xdebug.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />
