@@ -31,6 +31,10 @@ cPath Functionality Issues:
     with more than two proteins (e.g. 5 protein complex).  This would allow us to import data
     from the PIN database in the Tempst lab at MSKCC (http://pin.mskcc.org).
 	---> Current priority: medium.
+12.  From Gary:  DIP, MINT and IntAct now all have downloadable full data
+sets.  We should think about creating an official inhouse release of cpath
+containing all of the data we can get (since the DIP data is proprietary, we
+can't give it to anyone else externally). 
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
