@@ -14,7 +14,7 @@
         <a href="dev.do?page=architecture">Architectural Overview</a>
         </div>
         <div>
-        <a href="jsp/dev/api">Java Docs</a>
+        <a href="jsp/api">Java Docs</a>
         </div>
         <div>
         <a href="http://www.cbio.mskcc.org/cytoscape/bugs/main_page.php">Bug Tracker</a>
