@@ -14,6 +14,10 @@
 	<!-- Production Directory -->
         <property name="prod.dir" value="/var/lib/tomcat4/webapps"/>
 
+	<!-- Lucene Directory -->
+        <property name="lucene.dir" value="textIndex"/>
+
+
 <!-- ===================== Property Definitions =========================== -->
 
 
@@ -185,6 +189,7 @@
    description="Delete old build and dist directories">
     <delete dir="${build.home}"/>
     <delete dir="${dist.home}"/>
+    <delete dir="${lucene.dir}"/>
   </target>
 
 
@@ -357,6 +362,7 @@
     <!-- Create build directories as needed -->
     <mkdir  dir="${build.home}"/>
     <mkdir  dir="${build.home}/WEB-INF"/>
+    <mkdir  dir="${lucene.dir}"/>
     <mkdir  dir="${build.home}/WEB-INF/classes"/>
 
     <!-- Copy static content of this web application -->
@@ -432,30 +438,6 @@
 	<!-- Target to Load Bootstrap data into MySQL -->
 	<target name="boot" description="Loads Bootstrap data into MySQL">
 		<exec dir="." executable="scripts/boot.pl"/>
-	</target>
-
-	<!-- Target to Transfer Import Records -->
-	<target name="transfer1" description="Transfer Target #1" depends="compile">
-		<java classname="org.mskcc.pathdb.sql.transfer.TransferImportToCPath">
-	         	<arg value="localhost"/> 
-       		 	<classpath refid="compile.classpath"/>
-       		</java>
-	</target>
-
-	<!-- Target to Transfer External Links -->
-	<target name="transfer2" description="Transfer Target #2" depends="compile">
-		<java classname="org.mskcc.pathdb.sql.transfer.TransferExternalLinks">
-	         	<arg value="localhost"/> 
-       		 	<classpath refid="compile.classpath"/>
-       		</java>
-	</target>
-
-	<!-- Target to Import DIP Database -->
-	<target name="load_dip" description="Load DIP Data into cPath" depends="compile">
-		<java classname="org.mskcc.pathdb.sql.transfer.TransferImportToCPath">
-			<arg line="localhost testData/dip_psi.xml"/>
-			<classpath refid="compile.classpath"/>
-		</java>
 	</target>
 
 </project>
