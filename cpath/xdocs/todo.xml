@@ -187,6 +187,22 @@ use the saved PSI-MI file to try the import again. (Sep.13.2004)
 adds pubmed papers and IntAct adds GO annotation.  These might be used for protein xref lookup. There should be a list of ID types that should not be used for xref lookup for proteins.  Maybe another field to add to the external ref DB.
  (Sep.13.2004)
 
+33.  Refactor pipeline for importing PSI-MI data to to check all those things
+which are not enforced by the PSI-MI XML Schema.  Here's how data import should
+really work:
+
+a.  XML Schema Validation
+b.  Semantic Validation:  checks things in PSI-MI that are not specified by the
+    Schema.
+c.  Data Integrity Validation:  checks things in PSI-MI with cross checks
+    against existing data in cPath.
+d.  Only if all three tests pass should we add to the import table.  And, once
+    something is in import, we chop it up into interactors/interactions, etc.
+
+We also need to reconsider whether we want to allow importing of data files
+from the Admin web front end, and if we do, how we report all errors/warnings
+to the end user.    
+
 Data Service Specific Items:
 -----------------------------
 1.  Add Gene Name/Synonym Look up to data services (requires a back-end, may
