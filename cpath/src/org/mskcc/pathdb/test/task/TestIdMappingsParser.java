@@ -32,6 +32,7 @@ package org.mskcc.pathdb.test.task;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.IdMapRecord;
+import org.mskcc.pathdb.model.XRef;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoIdMap;
@@ -79,14 +80,26 @@ public class TestIdMappingsParser extends TestCase {
         int numRecordsSaved = task.parseAndStoreToDb();
 
         //  Validate Number of Records Saved
-        assertEquals(7, numRecordsSaved);
+        assertEquals(5, numRecordsSaved);
 
         //  Now try saving again;  verify 0 records saved
         numRecordsSaved = task.parseAndStoreToDb();
         assertEquals(0, numRecordsSaved);
 
-        //  Delete all records, so that we can rerun this unit test again
+        //  Now try getting all equivalent Identifiers;  there should be 4
         DaoIdMap dao = new DaoIdMap();
+        XRef xref = new XRef (1, "AAH08943");
+        ArrayList equivalenceList = dao.getEquivalenceList(xref);
+        XRef match0 = (XRef) equivalenceList.get(0);
+        XRef match1 = (XRef) equivalenceList.get(1);
+        XRef match2 = (XRef) equivalenceList.get(2);
+        XRef match3 = (XRef) equivalenceList.get(3);
+        assertEquals ("Unigene: Hs.77646", match0.toString());
+        assertEquals ("RefSeq: NP_060241", match1.toString());
+        assertEquals ("Affymetrix: 1552275_3p_s_at", match2.toString());
+        assertEquals ("Swiss-Prot: Q727A4", match3.toString());
+
+        //  Delete all records, so that we can rerun this unit test again
         dao.deleteAllRecords();
     }
 
