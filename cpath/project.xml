@@ -48,6 +48,29 @@
         <developerConnection>scm:cvs:ext:${maven.username}@cbio.mskcc.org:/var/lib/cvs:cpath</developerConnection>
     </repository>
 
+    <mailingLists>
+        <mailingList>
+          <name>cpath-announce (Official Announcements)</name>
+          <subscribe>http://groups-beta.google.com/group/cpath-announce/</subscribe>
+          <unsubscribe>http://groups-beta.google.com/group/cpath-announce/</unsubscribe>
+          <archive>http://groups-beta.google.com/group/cpath-announce/</archive>
+        </mailingList>
+
+        <mailingList>
+          <name>cpath (Open Forum for cPath Users)</name>
+          <subscribe>http://groups-beta.google.com/group/cpath/</subscribe>
+          <unsubscribe>http://groups-beta.google.com/group/cpath/</unsubscribe>
+          <archive>http://groups-beta.google.com/group/cpath/</archive>
+        </mailingList>
+
+        <mailingList>
+          <name>cpath-dev (Open Forum for cPath Developers)</name>
+          <subscribe>http://groups-beta.google.com/group/cpath-dev/</subscribe>
+          <unsubscribe>http://groups-beta.google.com/group/cpath-dev/</unsubscribe>
+          <archive>http://groups-beta.google.com/group/cpath-dev/</archive>
+        </mailingList>
+    </mailingLists>
+
     <developers>
         <developer>
           <name>Ethan Cerami</name>
