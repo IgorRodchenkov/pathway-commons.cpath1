@@ -24,9 +24,16 @@ public class DaoXmlCache {
     /**
      * Maximum Number of Records Allowed in Cache.
      */
-    public static final int MAX_CACHE_RECORDS = 500;
+    public static final int DEFAULT_MAX_CACHE_RECORDS = 500;
+
+    /**
+     * Purge Increment.
+     */
+    public static final int DEFAULT_PURGE_INCREMENT = 100;
 
     private XDebug xdebug;
+    private int maxCacheRecords = DEFAULT_MAX_CACHE_RECORDS;
+    private int purgeIncrement = DEFAULT_PURGE_INCREMENT;
 
     /**
      * Constructor.
@@ -35,6 +42,24 @@ public class DaoXmlCache {
      */
     public DaoXmlCache(XDebug xdebug) {
         this.xdebug = xdebug;
+    }
+
+    /**
+     * Sets Max Number of Records Allowed in Cache.
+     * @param maxCacheRecords Max Number of Records in Cache.
+     */
+    public void setMaxCacheRecords(int maxCacheRecords) {
+        this.maxCacheRecords = maxCacheRecords;
+    }
+
+    /**
+     * Sets the Purge Increment.
+     * When Cache reaches the MaxCacheRecords limit, XX number of records
+     * are automatically purged.
+     * @param purgeIncrement Purge Increment Level.
+     */
+    public void setPurgeIncrement(int purgeIncrement) {
+        this.purgeIncrement = purgeIncrement;
     }
 
     /**
@@ -299,7 +324,7 @@ public class DaoXmlCache {
      *
      * @throws DaoException Error Accessing Database.
      */
-    public void conditionallyDeleteEldest() throws DaoException {
+    private void conditionallyDeleteEldest() throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -309,7 +334,8 @@ public class DaoXmlCache {
             rs = pstmt.executeQuery();
             rs.next();
             int count = rs.getInt(1);
-            if (count > MAX_CACHE_RECORDS) {
+            xdebug.logMsg(this, "Records in XML Cache:  " + count);
+            if (count >= maxCacheRecords) {
                 deleteEldest();
             }
         } catch (SQLException e) {
@@ -333,10 +359,12 @@ public class DaoXmlCache {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT DOC_MD5 FROM `xml_cache` ORDER BY "
-                    + "LAST_USED ASC LIMIT 0 , 1");
+                    + "LAST_USED ASC LIMIT 0 , " + purgeIncrement);
             rs = pstmt.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 String hashKey = rs.getString("DOC_MD5");
+                xdebug.logMsg(this, "Deleting Old Record in Cache:  "
+                        + hashKey);
                 deleteRecordByKey(hashKey);
             }
         } catch (ClassNotFoundException e) {
