@@ -33,6 +33,12 @@
     <script src="jsp/javascript/cpath.js" LANGUAGE="JAVASCRIPT"
         TYPE="TEXT/JAVASCRIPT">
     </script>
+
+    <%-- Explicitly Set Character Encoding
+    Helps prevent against Cross-site scripting attacks:
+    See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
+    --%>
+    <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 
 <body marginwidth="0" marginheight="0" class="composite">

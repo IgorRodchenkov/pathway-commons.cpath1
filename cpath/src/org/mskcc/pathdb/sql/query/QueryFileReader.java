@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.sql.query;
 
 import org.mskcc.pathdb.controller.ProtocolRequest;
-import org.mskcc.pathdb.test.util.UriUtil;
+import org.mskcc.pathdb.util.XssFilter;
 
 import javax.servlet.http.HttpUtils;
 import java.io.BufferedReader;
@@ -43,7 +43,7 @@ public class QueryFileReader {
         while (line != null) {
             if (!line.startsWith("#") && line.length() > 0) {
                 Hashtable params1 = HttpUtils.parseQueryString(line);
-                HashMap params2 = UriUtil.normalizeParameterMap(params1);
+                HashMap params2 = XssFilter.filterAllParameters(params1);
                 ProtocolRequest request = new ProtocolRequest(params2);
                 list.add(request);
             }

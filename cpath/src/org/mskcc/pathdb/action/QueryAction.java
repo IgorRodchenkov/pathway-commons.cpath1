@@ -7,8 +7,8 @@ import org.mskcc.pathdb.controller.*;
 import org.mskcc.pathdb.sql.query.ExecuteQuery;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryResult;
-import org.mskcc.pathdb.test.util.UriUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.util.XssFilter;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +48,7 @@ public class QueryAction extends BaseAction {
             XDebug xdebug) throws ProtocolException {
         ProtocolRequest protocolRequest = null;
         try {
-            HashMap parameterMap = UriUtil.normalizeParameterMap
+            HashMap parameterMap = XssFilter.filterAllParameters
                     (request.getParameterMap());
             protocolRequest = new ProtocolRequest(parameterMap);
             return processGetInteractions(mapping, protocolRequest, request,

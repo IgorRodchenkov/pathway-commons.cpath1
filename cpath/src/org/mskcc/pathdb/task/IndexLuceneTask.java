@@ -77,7 +77,7 @@ public class IndexLuceneTask extends Task {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select * from CPATH WHERE TYPE=? order by CPATH_ID");
+                    ("select * from cpath WHERE TYPE=? order by CPATH_ID");
             pstmt.setString(1, CPathRecordType.PHYSICAL_ENTITY.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {

@@ -37,7 +37,7 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runFirstBatch() {
-        Test test = new Test("Testing access to Table:  CPATH");
+        Test test = new Test("Testing access to Table:  cpath");
         DaoCPath cpath = new DaoCPath();
         try {
             cpath.getRecordById(12345);
@@ -46,7 +46,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  EXTERNAL_DB");
+        test = new Test("Testing access to Table:  external_db");
         DaoExternalDb externalDb = new DaoExternalDb();
         try {
             externalDb.getRecordById(12345);
@@ -55,7 +55,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  EXTERNAL_DB_CV");
+        test = new Test("Testing access to Table:  external_db_cv");
         DaoExternalDbCv externalDbCv = new DaoExternalDbCv();
         try {
             externalDbCv.getTermByDbCvId(12345);
@@ -64,7 +64,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  EXTERNAL_LINK");
+        test = new Test("Testing access to Table:  external_link");
         DaoExternalLink externalLink = new DaoExternalLink();
         try {
             externalLink.getRecordById(12345);
@@ -75,7 +75,7 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runSecondBatch() {
-        Test test = new Test("Testing access to Table:  IMPORT");
+        Test test = new Test("Testing access to Table:  import");
         DaoImport daoImport = new DaoImport();
         try {
             daoImport.getRecordById(12345);
@@ -84,7 +84,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  INTERNAL_LINK");
+        test = new Test("Testing access to Table:  internal_link");
         DaoInternalLink internalLink = new DaoInternalLink();
         try {
             internalLink.getInternalLinks(12345);
@@ -93,7 +93,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  LOG");
+        test = new Test("Testing access to Table:  log");
         DaoLog logger = new DaoLog();
         try {
             logger.getLogRecords();
@@ -102,7 +102,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  XML_CACHE");
+        test = new Test("Testing access to Table:  xml_cache");
         DaoXmlCache cache = new DaoXmlCache();
         try {
             cache.getXmlByKey("12345");
