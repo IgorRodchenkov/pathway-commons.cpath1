@@ -115,8 +115,6 @@ public class ImportReferencesTask extends Task {
     private void displayResults() {
         outputMsg("Total Number of References:  "
                 + pMonitor.getCurValue());
-        outputMsg("Total Number of NonEmpty Refs:  "
-                + numNonEmptyReferences);
         outputMsg("Total Number of Matching Interactors:  "
                 + numMatching);
         outputMsg("Total Number of Refs Saved:  "
@@ -174,9 +172,6 @@ public class ImportReferencesTask extends Task {
             throws DaoException {
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(verbose, pMonitor);
-        if (pMonitor.getCurValue() % 50 == 0) {
-            displayProgress();
-        }
         int index1 = ref1.getId().indexOf(EMPTY_FLAG);
         int index2 = ref2.getId().indexOf(EMPTY_FLAG);
         if (index1 == -1 && index2 == -1) {
@@ -193,16 +188,5 @@ public class ImportReferencesTask extends Task {
                 numUpdates++;
             }
         }
-    }
-
-    /**
-     * Display Progress Meter.
-     */
-    private void displayProgress() {
-        double percent = pMonitor.getPercentComplete();
-        NumberFormat format = DecimalFormat.getPercentInstance();
-        String perc = format.format(percent);
-        outputMsg("-->  " + pMonitor.getCurValue() + " / "
-                + pMonitor.getMaxValue() + "  [" + perc + "]");
     }
 }
