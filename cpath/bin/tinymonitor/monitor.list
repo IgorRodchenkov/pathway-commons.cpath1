@@ -1,0 +1,9 @@
+#### 
+# List of servers to minitor
+# The Syntax is ServerName<tab>URL<tab>Regex
+####
+
+# Server Name	URL			Regex
+cpath Home	http://cbio.mskcc.org/cpath/index.jsp	cancer
+cpath Help	http://www.cbio.mskcc.org/cpath/webservice?cmd=help help
+cPath Search	http://www.cbio.mskcc.org/cpath/webservice?version=1.0&cmd=get_by_interactor_name&q=dna&format=html dna

@@ -1,0 +1,92 @@
+
+TinyMonitor 0.9b -- Available at http://www.glug.com/projects/
+
+
+
+---[ What is this software? ]-----------------------------------------
+
+TinyMonitor was written out of pure necessity for a simple 
+monitoring program that watched the actual content of returned pages
+rather than simply checking to see if the httpd service was running.
+(Experience has proven that the web server running doesn't necessarily
+mean it's reporting the content you want.).
+
+This program can be used for simple web server monitoring (i.e. is it
+actually delivering content?) or can be used to verify a page is
+returning what you expect (i.e. a 200 rather than a 404). This is an
+excellent choice for someone who doesn't want to spend thousands on a
+program that will do actual http content monitoring (i.e. SiteScope or
+HP OpenView Internet Services).
+
+
+---[ Can you make it (insert anything)? ]----------------------------
+
+Probably not. I have no intention of turning this project into a
+full-scale development effort. You are welcome to modify it yourself
+(and I would be interested in receiving any new features you add).
+This is my primary reason for choosing the BSD license.
+
+
+---[ How do I use it? ]----------------------------------------------
+
+First, make sure you have installed LWP::Simple on your server.
+
+Next, create a home for TinyMonitor and unpack the archive. You
+should have 6 files:
+
+
+LICENSE		<-- terms of distribution
+README		<-- You are here
+monitor		<-- The perl script and actual executable
+monitor.conf	<-- Configuration file -- edit this first
+monitor.list	<-- List of servers to monitor -- edit this next
+monitor.status	<-- Internal cache file -- you should not need to touch this
+
+Edit the monitor.conf file and insert your own email address (or the
+email address to your pager) in the appropriate place. You may also need
+to alter some of the other settings to suit your installation.
+
+Next, edit the monitor.list file and plug in the appropriate values for the
+systems you wish to monitor. The three columns are the name of the server,
+the URL, and the regex you hope to match to return success. Make sure
+these fields are separated by a TAB.
+
+Run it by hand to test it out.
+
+Finally, you will probably want to add an entry to your crontab to run the
+monitor program every X minutes. Something like this should work on Linux
+or FreeBSD if you want to run it every 5 minutes.
+
+*/5 * * * * /usr/local/tinymonitor/monitor
+
+
+---[ How does it work ]--------------------------------------------------
+
+TinyMonitor will read in your list of servers to monitor and check
+them one by one -- comparing the content of the "get" request with
+the regex you provided.
+
+If a server fails (the regex doesn't match or the request times out)
+it will immediately try a second time. If this request fails again, it
+will flag the server as "suspect" and move on.
+
+On the next go-around, if a server that is flagged as "suspect" is still
+down, it will check it a 4th time. If it is STILL down, it will then alert
+you.
+
+Once you have been alerted, it will re-alert you every X seconds (in 
+increments of which you check it in crontab, of course). This makes it
+so you can be reminded every 30 or 60 minutes (or whatever you choose) that
+your server is down without constant nagging. Once the server comes back
+up, it will notify you.
+
+The program will combine all of the alerts for one "run" into a single
+message and send that to your pager. This is because most paging and SMS
+companies charge by the message. If you are monitoring 50 servers, it
+could become expensive to get a separate alert for each system.
+
+
+
+---[ Author ]--------------------------------------------------------
+TinyMonitor is written and distributed by Brian Shellabarger
+(brian@zyx.net) under the BSD license. 

@@ -1,0 +1,189 @@
+#!/usr/bin/perl
+
+###################################################################
+# TinyMonitor 0.9b -- http://www.glug.com/projects/
+#
+# Copyright (c) 2003, Brian Shellabarger All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or 
+# without modification, are permitted provided that the following 
+# conditions are met:
+# 
+# Redistributions of source code must retain the above copyright 
+# notice, this list of conditions and the following disclaimer. 
+# Redistributions in binary form must reproduce the above copyright 
+# notice, this list of conditions and the following disclaimer in 
+# the documentation and/or other materials provided with the 
+# distribution. The name of the author may not be used to endorse
+# or promote products derived from this software without specific
+# prior written permission. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
+# HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS 
+# BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+# TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
+# ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY 
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+# POSSIBILITY OF SUCH DAMAGE.
+###################################################################
+
+
+use LWP::Simple;
+use FindBin qw($Bin);
+$MyDir = $Bin;
+%config = &read_config("$MyDir/monitor.conf");
+
+
+#############################################################################
+#### Read in the list of systems we're supposed to monitor
+#############################################################################
+open(IN, "$MyDir/monitor.list") || die "Can't open $MyDir/monitor.list for read: $!";
+while(<IN>) {
+	chomp;
+	next if ( $_ =~ /^#/ );
+	next if ( ! $_ );
+	my($server,$url,$regex) = split(/\t+/, $_, 3);
+	$mondata{$server}{url} = $url;
+	$mondata{$server}{regex} = $regex;
+}
+close(IN);
+
+#############################################################################
+#### Read in the file containing the status of our servers from our last run
+#############################################################################
+open(CONF, "$MyDir/monitor.status") || warn "Unable to open $MyDir/monitor.status for read - $!";
+while(<CONF>) {
+	chomp;
+	next if ( ! $_ );
+	my ($server,$last,$http) = split(/\t/, $_, 3);
+	$status{$server}{last} = $last;
+	$status{$server}{http} = $http;
+}
+close(CONF);
+
+
+#############################################################################
+#### Check all of the servers
+#############################################################################
+foreach my $server ( keys %mondata ) {
+	### Verify the returned contents against the regex in the config file.
+	if ( &checkserver($server) ) {
+		print "-UP-\n";
+		### Status is UP!
+
+		#### Were we previously down?? If so, we had better tell them
+		#### that all is well now.
+		if ( $status{$server}{http} == 0 ) {
+			@alerts = (@alerts, "$server is back up.");
+		}
+
+
+		$status{$server}{http} = 1;
+		$status{$server}{last} = time();
+
+	} else {
+		print "-DOWN -- Checking again-->\n";
+		### Status is DOWN!
+
+		### Check it again -- I *HATE* false alarms.
+		next if ( &checkserver($server ) );
+
+		##### If this is our first "down" -- let's just tag is as SUSPECT (2)
+		##### and move on. If it's already tagged as "suspect", now we can
+		##### go ahead and page them. This means it has to fail our test
+		##### twice in a row before we actually send a page. Again, I hate
+		##### false alarms. This should minimize that.
+
+		### Are we "down" or "suspect" ? yes?
+		if ( $status{$server}{http} == 2 || $status{$server}{http} == 0 ) {
+			### When was the last time we squaked? If it's been
+			### more than our setting, we need to alert them again.
+			### Also -- if the server was up before and this is the
+			### first time it's been down, we need to let them know that
+			### it has failed.
+			print "Still Down - Alerting\n";
+			my $now = time();
+			if ( ($now - $status{$server}{last}) > $config{AlertEvery} 
+				|| $status{$server}{http} == 1 ) {
+				@alerts = (@alerts, "$server is down.");
+				$status{$server}{last} = $now;
+			}
+			$status{$server}{http} = 0;
+		} else {
+			#### This is our first time being down.. only tag it as suspect
+			print "Still Down - Tagging as Suspect\n";
+			$status{$server}{http} = 2;
+		}
+	}
+}
+
+
+#############################################################################
+#### Now see if we got any alerts from our checks. We like to send them
+#### all at once since most paging companies charge per message -- much
+#### better to combine them all into one message. If it's longer than 
+#### $config{TextLimit}, just cut it off (if you've got 50 servers down
+#### you've got a big problem, and I think you'll get the idea that
+#### something is broken without getting 12 pages in a row telling you
+#### everything is down.
+#############################################################################
+if ( @alerts ) {
+	my $pagemsg = join(" ", @alerts);
+	$pagemsg = substr($pagemsg,0,$config{TextLimit});
+	open(TMP, ">/tmp/page.$$") || die "Can't open /tmp/page.$$ for write: $!";
+	print TMP<<EOF;
+To: $config{Alert}
+From: WHMonitor <monitor\@westhost.com>
+Subject: 
+
+$pagemsg
+EOF
+	close(TMP);
+	system("$config{sendmail} -t < /tmp/page.$$");
+	unlink("/tmp/page.$$");
+}
+
+
+
+#############################################################################
+#### Take our NEW status hash and write it out to our status file
+#############################################################################
+open(OUT, ">$MyDir/monitor.status") || warn "Unable to open $MyDir/monitor.status for write - $!";
+foreach my $server ( keys %status ) {
+	print OUT "$server\t$status{$server}{last}\t$status{$server}{http}\n";
+}
+close(OUT);
+
+
+
+
+sub read_config {
+        my($file,$thisline,$var,$set);
+	my %config;
+        $file = shift @_;
+        open(CONF, "$file") || warn "Unable to open $file for read - $!";
+        while(<CONF>) {
+                chop($thisline = $_);
+                $thisline =~ s/#.*//;
+                next if ( ! $thisline );
+                ($var,$set) = split(/:\s*/, $thisline, 2);
+                $config{$var} = $set;
+        }
+        close(CONF);
+	return(%config);
+}
+
+
+sub checkserver {
+	my $server = shift;
+	my $reply = get $mondata{$server}{url};
+	print "Checking $server -> ";
+	if ( $reply =~ $mondata{$server}{regex} ) {
+		return 1;
+	}
+	return 0;
+}
