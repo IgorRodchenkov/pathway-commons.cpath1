@@ -78,8 +78,8 @@ import java.util.ArrayList;
  * generates the following set of background reference links:
  * <UL>
  * <LI>UNIPROT_1234 &lt;---&gt; PIR_1234
- * <LI>UNIPROT_1234 &lt;---&gt; PIR_4321
- * <LI>PIR_1234 &lt;---&gt; HUGE_1234
+ * <LI>PIR_4321 &lt;---&gt; PIR_4321
+ * <LI>PIR_4321 &lt;---&gt; HUGE_1234
  * </UL>
  * <P>
  * The parser is capable of handling blank columns.  For example, the third
@@ -121,80 +121,47 @@ public class ImportUnificationRefs {
      * @throws IOException  Error Reading Data File.
      * @throws DaoException Error Accessing Database.
      */
-    int parseData(BufferedReader buf)
-            throws IOException, DaoException {
+    int parseData(BufferedReader buf) throws IOException, DaoException {
         int numRecordsSaved = 0;
         String line;
         //  For each line of data
         while ((line = FileUtil.getNextLine(buf)) != null) {
             ConsoleUtil.showProgress(pMonitor);
-            ExternalDatabaseRecord dbRecord1 = null;
-            String id1 = null;
 
-            //  Split line, based on tab delimiter.
-            String tokens[] = line.split("\t");
+            //  Tokenize the Input Line
+            TabSpaceTokenizer tokenizer = new TabSpaceTokenizer (line);
+            IndexedToken indexedToken = (IndexedToken) tokenizer.nextElement();
 
-            //  Process all IDs
-            for (int i = 0; i < tokens.length; i++) {
-                ExternalDatabaseRecord dbRecord2;
-                try {
-                    dbRecord2 = (ExternalDatabaseRecord) dbList.get(i);
-                } catch (IndexOutOfBoundsException e) {
-                    throw e;
-                }
-                if (dbRecord1 != null && id1 != null
-                        && tokens[i].length() > 0) {
+            //  Prime the loop by extracting the first ID record.
+            ExternalDatabaseRecord dbRecord1 = (ExternalDatabaseRecord)
+                    dbList.get (indexedToken.getColumnNumber());
+            String id1 = indexedToken.getToken();
 
-                    //  Process Multiple IDs in Each Column
-                    String ids[] = tokens[i].split("\\s+");
-                    checkForManyIdentifiers(ids, tokens);
-                    for (int j = 0; j < ids.length; j++) {
-                        BackgroundReferencePair idPair =
-                                createBackgroundReference(dbRecord1, id1,
-                                        dbRecord2, ids, j);
-                        if (saveToDatabase) {
-                            numRecordsSaved += storeToDatabase(idPair);
-                        } else {
-                            backgroundRefList.add(idPair);
-                        }
-                    }
+            //  Iterate through all remaining records.
+            while (tokenizer.hasMoreElements()) {
+                pMonitor.incrementCurValue();
+                indexedToken = (IndexedToken) tokenizer.nextElement();
+                ExternalDatabaseRecord dbRecord2 = (ExternalDatabaseRecord)
+                        dbList.get(indexedToken.getColumnNumber());
+                String id2 = indexedToken.getToken();
+
+                //  Create Link between record1 and record2
+                BackgroundReferencePair idPair = new BackgroundReferencePair
+                    (dbRecord1.getId(), id1, dbRecord2.getId(), id2,
+                    ReferenceType.PROTEIN_UNIFICATION);
+
+                if (saveToDatabase) {
+                    numRecordsSaved += storeToDatabase(idPair);
+                } else {
+                    backgroundRefList.add(idPair);
                 }
 
-                //  Update Current DB/ID Pair
-                if (tokens[i].length() > 0) {
-                    dbRecord1 = dbRecord2;
-                    String ids[] = tokens[i].split("\\s+");
-                    id1 = ids[0];
-                }
+                //  record 2 now becomes the initial record.
+                dbRecord1 = dbRecord2;
+                id1 = id2;
             }
-            pMonitor.incrementCurValue();
         }
         return numRecordsSaved;
-    }
-
-    /**
-     * Creates Background Reference Object of type:  PROTEIN_UNIFICATION.
-     */
-    private BackgroundReferencePair createBackgroundReference
-            (ExternalDatabaseRecord dbRecord1, String id1,
-            ExternalDatabaseRecord dbRecord2, String[] ids, int j) {
-        BackgroundReferencePair idPair =
-                new BackgroundReferencePair
-                        (dbRecord1.getId(), id1, dbRecord2.getId(), ids[j],
-                                ReferenceType.PROTEIN_UNIFICATION);
-        return idPair;
-    }
-
-    /**
-     * Checks for Many Identifiers and Issues Warnings.
-     */
-    private void checkForManyIdentifiers(String[] ids, String[] tokens) {
-        if (ids.length > 50) {
-            pMonitor.setCurrentMessage("\nWarning!  "
-                    + " Data line beginning with:  "
-                    + tokens[0] + " contains " + ids.length
-                    + " identifiers");
-        }
     }
 
     /**
