@@ -1,10 +1,8 @@
 package org.mskcc.pathdb.xdebug;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
-
 import java.util.Date;
 import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Encapsulates Real-time debugging information.
@@ -15,8 +13,8 @@ import java.util.Vector;
  * @author Ethan Cerami
  */
 public class XDebug {
-    private Vector messages;
-    private Vector parameters;
+    private ArrayList messages;
+    private ArrayList parameters;
     private Date startTime;
     private Date stopTime;
     private long timeElapsed;
@@ -25,8 +23,8 @@ public class XDebug {
      * Constructor.
      */
     public XDebug() {
-        messages = new Vector();
-        parameters = new Vector();
+        messages = new ArrayList();
+        parameters = new ArrayList();
         startTime = null;
         stopTime = null;
         timeElapsed = -1;
@@ -43,9 +41,7 @@ public class XDebug {
         Class callerClass = caller.getClass();
         XDebugMessage message = new XDebugMessage
                 (callerClass.getName(), msg, color);
-        messages.addElement(message);
-        Category cat = Category.getInstance(callerClass.getName());
-        cat.log(callerClass.getName(), Priority.INFO, msg, null);
+        messages.add(message);
     }
 
     /**
@@ -67,7 +63,7 @@ public class XDebug {
      */
     public void addParameter(int type, String name, String value) {
         XDebugParameter param = new XDebugParameter(type, name, value);
-        parameters.addElement(param);
+        parameters.add(param);
     }
 
     /**
@@ -79,7 +75,7 @@ public class XDebug {
      */
     public void addParameter(int type, String name, int value) {
         XDebugParameter param = new XDebugParameter(type, name, value);
-        parameters.addElement(param);
+        parameters.add(param);
     }
 
     /**
@@ -91,7 +87,7 @@ public class XDebug {
      */
     public void addParameter(int type, String name, boolean value) {
         XDebugParameter param = new XDebugParameter(type, name, value);
-        parameters.addElement(param);
+        parameters.add(param);
     }
 
     /**
@@ -99,7 +95,7 @@ public class XDebug {
      *
      * @return Vector of XDebugMessage objects
      */
-    public Vector getDebugMessages() {
+    public ArrayList getDebugMessages() {
         return messages;
     }
 
@@ -108,7 +104,7 @@ public class XDebug {
      *
      * @return Vector of XDebugParameter objects
      */
-    public Vector getParameters() {
+    public ArrayList getParameters() {
         return parameters;
     }
 
@@ -136,5 +132,22 @@ public class XDebug {
      */
     public long getTimeElapsed() {
         return timeElapsed;
+    }
+
+    /**
+     * Gets Complete Log.
+     * Useful for command line utilities.
+     * @return Complete Log.
+     */
+    public String getCompleteLog () {
+        StringBuffer log = new StringBuffer();
+        if (messages == null || messages.size() ==0) {
+            log.append("No Log Messages");
+        }
+        for (int i=0; i<messages.size(); i++) {
+            XDebugMessage msg = (XDebugMessage) messages.get(i);
+            log.append(msg.getMessage()+"\n");
+        }
+        return log.toString();
     }
 }
