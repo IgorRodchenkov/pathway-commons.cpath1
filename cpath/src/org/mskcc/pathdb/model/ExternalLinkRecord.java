@@ -29,13 +29,15 @@
  **/
 package org.mskcc.pathdb.model;
 
+import org.mskcc.pathdb.util.NaturalOrderComparator;
+
 
 /**
  * JavaBean to Encapsulate an External Link Record.
  *
  * @author Ethan Cerami
  */
-public class ExternalLinkRecord {
+public class ExternalLinkRecord implements Comparable {
     private long id;
     private long cpathId;
     private int externalDbId;
@@ -145,6 +147,29 @@ public class ExternalLinkRecord {
             return db.getUrlWithId(this.linkedToId);
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Comparison Operator.
+     *
+     * @param o Other Object.
+     * @return integer value.
+     */
+    public int compareTo(Object o) {
+        if (o instanceof ExternalLinkRecord) {
+            ExternalLinkRecord other = (ExternalLinkRecord) o;
+            String otherDbName = other.getExternalDatabase().getName();
+            if (!otherDbName.equals(db.getName())) {
+                return db.getName().compareTo(otherDbName);
+            } else {
+                String otherId = other.getLinkedToId();
+                NaturalOrderComparator comparator =
+                        new NaturalOrderComparator();
+                return comparator.compare(linkedToId, otherId);
+            }
+        } else {
+            return 0;
         }
     }
 }
