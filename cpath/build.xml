@@ -224,6 +224,9 @@
    <!-- Copy oscache.properties -->
    <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/oscache.properties"/>
 
+   <!-- Copy logger properties -->
+   <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/config-JDBC.properties"/>
+
   </target>
 
 <!-- ==================== Dist Target ===================================== -->
@@ -435,7 +438,6 @@
         </target>
 
         <!-- Target to run Castor Source Generator -->
-        <!-- Temporary target to test Castor classes with SBML -->
         <target name="castor" description="Generate Castor Files">
                 <echo message="Start Castor Source Generator"/>
                 <delete dir="${src.home}/org/mskcc/pathdb/xml"/>
