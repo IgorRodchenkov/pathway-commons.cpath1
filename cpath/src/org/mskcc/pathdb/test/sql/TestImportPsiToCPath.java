@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 /**
  * Tests the ImportPsiToCPath, the InteractionQuery
- * and the PsiBuilder Classes.
+ * and the PsiAssembler Classes.
  *
  * @author Ethan Cerami
  */
@@ -65,7 +65,7 @@ public class TestImportPsiToCPath extends TestCase {
 
         //  Run Full Text Indexer
         IndexLuceneTask task = new IndexLuceneTask(false);
-        task.indexAllPhysicalEntities();
+        task.indexAllInteractions();
 
         validateQueries();
 
