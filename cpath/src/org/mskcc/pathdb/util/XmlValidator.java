@@ -40,14 +40,27 @@ public class XmlValidator extends DefaultHandler {
     private ArrayList errorList;
 
     /**
-     * Validates the Specified XML File.
-     * @param xml XML Document (String representation).
-     * @return ArrayList of all Errors.
+     * Validates Specified Document.
+     * @param xml XML Document (String Representation).
+     * @return ArrayList of SAXExceptions (if any).
      * @throws SAXException Error Parsing Document.
      * @throws IOException Error Reading Document.
      */
     public ArrayList validate(String xml) throws SAXException, IOException {
         return execute(xml, null);
+    }
+
+    /**
+     * Validates Specified Document, using designated schema location.
+     * @param xml XML Document (String Representation).
+     * @param schemaLocation Schema Location.
+     * @return ArrayList of SAXExceptions (if any).
+     * @throws SAXException Error Parsing Document.
+     * @throws IOException Error Reading Document.
+     */
+    public ArrayList validate(String xml, String schemaLocation)
+            throws SAXException, IOException {
+        return execute(xml, schemaLocation);
     }
 
     private ArrayList execute(String xmlData, String schemaLocation)
