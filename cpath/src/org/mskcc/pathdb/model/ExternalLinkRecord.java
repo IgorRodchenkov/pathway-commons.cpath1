@@ -29,8 +29,7 @@
  **/
 package org.mskcc.pathdb.model;
 
-import org.mskcc.pathdb.util.NaturalOrderComparator;
-
+import paour.NaturalOrderComparator;
 
 /**
  * JavaBean to Encapsulate an External Link Record.
