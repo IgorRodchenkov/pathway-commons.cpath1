@@ -107,6 +107,9 @@ public class IdMappingService {
     /**
      * Queries the ID Mapping Subsystem for a list of equivalent external
      * references.
+     * <P>
+     * Implementation Note:  both dao.getRecordByTerm() and dao.getRecordById()
+     * use an internal cache, and will therefore be very fast.
      *
      * @param xref External Reference Object.
      * @return ArrayList of All Equivalent External Reference Objects.
@@ -174,6 +177,9 @@ public class IdMappingService {
      * Creates a Non-Redundant Set of Normalized External Reference Objects.
      * Normalization sets the Database Name to the Fixed Controlled Vocabulary
      * Term, as defined by cPath.
+     * <P>
+     * Implementation Note:  dao.getRecordByTerm() uses an internal cache.
+     * In most cases, this method will therefore be extremely fast.
      */
     private HashSet createNormalizedXRefSet(ExternalReference[] xrefs)
             throws DaoException {
