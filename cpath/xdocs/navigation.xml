@@ -7,6 +7,7 @@
     <links>
       <item name="cPath"  href="http://cbio.mskcc.org/cpath"/>
       <item name="cBio"  href="http://cbio.mskcc.org/"/>
+      <item name="PDF Documentation" href="/cpath.pdf"   img="/images/pdf.gif"/>
     </links>
     <menu name="Project Status">
         <item name="Current To Do List"      href="/todo.html"/>
