@@ -51,6 +51,7 @@ public class ExternalDatabaseRecord {
     private ArrayList cvTerms;
     private String fixedCvTerm;
     private String url;
+    private ReferenceType dbType;
     private Date createTime;
     private Date updateTime;
 
@@ -216,5 +217,23 @@ public class ExternalDatabaseRecord {
      */
     public void setFixedCvTerm(String fixedCvTerm) {
         this.fixedCvTerm = fixedCvTerm;
+    }
+
+    /**
+     * Gets the External Reference Type
+     *
+     * @return ReferenceType Object.
+     */
+    public ReferenceType getDbType() {
+        return dbType;
+    }
+
+    /**
+     * Sets the External Reference Type Object.
+     *
+     * @param refType ReferenceType Object.
+     */
+    public void setDbType(ReferenceType refType) {
+        this.dbType = refType;
     }
 }
