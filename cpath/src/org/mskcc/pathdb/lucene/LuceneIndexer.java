@@ -14,7 +14,9 @@ import org.jdom.JDOMException;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.util.XmlStripper;
+import org.mskcc.dataservices.util.PropertyManager;
 
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 
@@ -44,9 +46,19 @@ public class LuceneIndexer {
      */
     public static final String FIELD_CPATH_ID = "cpath_id";
 
+    /**
+     * Text Index Directory.
+     */
+    public static final String INDEX_DIR_PREFIX = "textIndex";
+
+    /**
+     * Lucene Directory Property
+     */
+    public static final String PROPERTY_LUCENE_DIR = "lucene.dir";
+
     private IndexWriter indexWriter = null;
     private IndexSearcher indexSearcher = null;
-
+    private String dir = null;
 
     /**
      * Initializes Index with Fresh Database.
@@ -168,13 +180,14 @@ public class LuceneIndexer {
      * @return Directory Location.
      */
     public String getDirectory() {
-        String textIndexDir = "textIndex";
-        File dir = new File(System.getProperty("CPATH_HOME"), textIndexDir);
-        if (!dir.isDirectory()) {
-            File parentDir = dir.getParentFile().getParentFile();
-            dir = new File(parentDir, textIndexDir);
+        PropertyManager manager = PropertyManager.getInstance();
+        String dir = manager.getProperty(PROPERTY_LUCENE_DIR);
+        //  dir should only be null when run from the command line.
+        if (dir == null) {
+            String cPathHome = System.getProperty("CPATH_HOME");
+            dir = cPathHome +"/build/" + INDEX_DIR_PREFIX;
         }
-        return dir.toString();
+        return dir;
     }
 
     /**
