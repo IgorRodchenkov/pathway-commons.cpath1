@@ -60,6 +60,7 @@ public class CountAffymetrixIdsTask extends Task {
     private int totalNumRecords;
     private HashMap dbMap;
     private int numProteinsWithoutXrefs;
+    private ArrayList proteinsWithOutRefs = new ArrayList();
 
     /**
      * Constructor.
@@ -101,6 +102,13 @@ public class CountAffymetrixIdsTask extends Task {
         }
         pMonitor.setCurrentMessage("\nTotal Number of Proteins that have no "
                 + "external database identifiers:  " + numProteinsWithoutXrefs);
+        pMonitor.setCurrentMessage("\nThe following proteins have no "
+                + "external database identifiers:  ");
+        for (int i=0; i < proteinsWithOutRefs.size(); i++) {
+            ProteinInteractorType protein =
+                    (ProteinInteractorType) proteinsWithOutRefs.get(i);
+            pMonitor.setCurrentMessage(protein.getNames().getShortLabel());
+        }
     }
 
     /**
@@ -172,8 +180,12 @@ public class CountAffymetrixIdsTask extends Task {
                     }
                 }
                 if (primaryRef == null && xref.getSecondaryRefCount() == 0) {
+                    recordEmptyProtein (protein);
                     numProteinsWithoutXrefs++;
                 }
+            } else {
+                recordEmptyProtein (protein);
+                numProteinsWithoutXrefs++;
             }
         } catch (ValidationException e) {
             System.err.println("Failed while processing XML:  " + xmlContent);
@@ -182,6 +194,10 @@ public class CountAffymetrixIdsTask extends Task {
             System.err.println("Failed while processing XML:  " + xmlContent);
             throw new DaoException(e);
         }
+    }
+
+    private void recordEmptyProtein (ProteinInteractorType protein) {
+        proteinsWithOutRefs.add(protein);
     }
 
     private void incrementMapCounter(DbReferenceType dbRef, HashMap dbMap) {
