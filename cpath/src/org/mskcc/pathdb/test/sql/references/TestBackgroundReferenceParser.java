@@ -79,7 +79,7 @@ public class TestBackgroundReferenceParser extends TestCase {
         // Start with a clean slate
         DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
-        
+
         File file = new File("testData/id_map.txt");
         ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
                 (file, false);

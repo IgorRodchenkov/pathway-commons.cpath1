@@ -1,10 +1,10 @@
 package org.mskcc.pathdb.util;
 
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 import java.util.ArrayList;
 

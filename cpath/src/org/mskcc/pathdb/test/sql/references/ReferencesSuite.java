@@ -32,8 +32,6 @@ package org.mskcc.pathdb.test.sql.references;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.test.protocol.TestProtocolException;
-import org.mskcc.pathdb.test.protocol.TestProtocolValidator;
 
 /**
  * Suite of all Controller Unit Tests.

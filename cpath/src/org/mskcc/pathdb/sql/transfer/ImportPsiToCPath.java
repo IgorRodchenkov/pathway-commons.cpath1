@@ -42,8 +42,8 @@ import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ConsoleUtil;
-import org.mskcc.pathdb.util.PsiUtil;
 import org.mskcc.pathdb.util.ExternalReferenceUtil;
+import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.IOException;
 import java.io.StringWriter;
