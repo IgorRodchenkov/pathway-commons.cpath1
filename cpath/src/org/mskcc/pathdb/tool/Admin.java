@@ -30,24 +30,24 @@
 package org.mskcc.pathdb.tool;
 
 import gnu.getopt.Getopt;
-import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.dataservices.core.DataServiceException;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
 import org.mskcc.pathdb.task.IndexLuceneTask;
-import org.mskcc.pathdb.task.ValidateXmlTask;
 import org.mskcc.pathdb.task.ParseIdMappingsTask;
+import org.mskcc.pathdb.task.ValidateXmlTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import java.io.*;
-import java.text.NumberFormat;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Command Line cPath Administrator.
@@ -310,7 +310,7 @@ public class Admin {
         System.out.println("Usage:  admin.pl [OPTIONS] command");
         System.out.println("  -f, -f=filename Name of File / Directory");
         System.out.println("  -d,             Shows all Debug/Log "
-            + "Messages/Stack Traces");
+                + "Messages/Stack Traces");
         System.out.println("  -u, -u=name     Database User Name");
         System.out.println("  -p, -p=name     Database Password");
         System.out.println("  -x              Skips Validation of External "

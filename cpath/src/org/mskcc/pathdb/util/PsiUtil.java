@@ -549,9 +549,9 @@ public class PsiUtil {
      * @param xref PSI-MI XRef Object.
      * @param list ArrayList of External Reference Objects.
      */
-    public void addExternalReferences (XrefType xref, ArrayList list) {
-        for (int i=0; i < list.size(); i++) {
-            ExternalReference ref =  (ExternalReference) list.get(i);
+    public void addExternalReferences(XrefType xref, ArrayList list) {
+        for (int i = 0; i < list.size(); i++) {
+            ExternalReference ref = (ExternalReference) list.get(i);
             if (xref.getPrimaryRef() == null) {
                 DbReferenceType primaryRef = new DbReferenceType();
                 primaryRef.setDb(ref.getDatabase());
