@@ -69,6 +69,8 @@
     <delete dir="${lucene.dir}"/>
     <delete dir="${junit.dir}"/>
     <delete dir="target"/>
+    <delete dir="ant_eater/logs"/>
+    <delete dir="ant_eater/reports"/>
     <delete>
         <fileset dir="." includes="*.log*"/>
     </delete>
