@@ -73,7 +73,7 @@
                             databases have taken this approach, including <A
                                 HREF="http://cognia.com/products_cogniamolecular.htm">
                                 Cognia Molecular</A> and <A
-                            HREF="http://www.ebi.ac.uk/intact/index.html">Intact</A>.
+                            HREF="http://www.ebi.ac.uk/intact/">Intact</A>.
                             Note that Cognia currently uses <A
                             HREF="http://www.hibernate.org/">Hibernate</A> to
                             map relational tables to Java objects, and Intact
