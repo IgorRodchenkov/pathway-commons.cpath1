@@ -45,7 +45,9 @@
                     <LI>Resolution:  We stick to the PSI-MI controlled
                     vocabulary.  The latest cv terms are available
                     at:  <A HREF="http://psidev.sourceforge.net/mi/controlledVocab/">
-                    http://psidev.sourceforge.net/mi/controlledVocab/</A>.</LI>
+                    http://psidev.sourceforge.net/mi/controlledVocab/</A>.
+                    For the web site front end, we can create a pull-down
+                    menu of the 10-15 most common experimental types.</LI>
                 </UL>
                 </P>
 
@@ -57,6 +59,15 @@
                 external PSI-MI controlled vocabulary list?  This needs some
                 more thought.
                 </P>
+                <P>
+                    <UL>
+                        <LI>Resolution:  In our April 8 meeting, we decided
+                            to use Lucene for this type of indexing.  We need
+                            to document this design decision in the general
+                            cPath Architecture document.
+                        </LI>
+                    </UL>
+                </P>
                 <HR/>
             </subsection>
         </section>
@@ -64,7 +75,9 @@
         <section name="2.  Update the Activity Center PlugIn">
             <subsection name="2.1  Update to Cytoscape 2.0">
             <P>The Activity Center PlugIn currently works with Cytoscape 1.1.
-            We need to update it to work with Cytoscape 2.0.
+            We need to update it to work with Cytoscape 2.0.  Note that
+            we need to maintain the Cytoscape 1.1 compatible code too, as
+            Cytoscape 2.0 is still a few months away from being finalized.
             </P>
             </subsection>
             <subsection name="2.2  Modify Activity Center PlugIn to recognize Affymetrix IDs">
