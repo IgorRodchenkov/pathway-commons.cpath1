@@ -24,10 +24,11 @@ class GetInteractionsViaLucene extends InteractionQuery {
 
     /**
      * Constructor.
+     * Only available via Factory Class.
      *
      * @param request ProtocolRequest Object.
      */
-    public GetInteractionsViaLucene(ProtocolRequest request) {
+    GetInteractionsViaLucene(ProtocolRequest request) {
         this.request = request;
         this.searchTerms = RequestAdapter.getSearchTerms(request);
     }
@@ -44,19 +45,26 @@ class GetInteractionsViaLucene extends InteractionQuery {
         try {
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
-
             long[] cpathIds = extractHits(pager, hits);
-
-            if (cpathIds != null && cpathIds.length > 0) {
-                xmlAssembly =
-                        XmlAssemblyFactory.createXmlAssembly(cpathIds,
-                                hits.length(), xdebug);
-            } else {
-                xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
-            }
+            xmlAssembly = createXmlAssembly(cpathIds, hits);
             xmlAssembly.setNumHits(hits.length());
         } finally {
             indexer.closeIndexSearcher();
+        }
+        return xmlAssembly;
+    }
+
+    /**
+     * Creates XML Assembly.
+     */
+    private XmlAssembly createXmlAssembly(long[] cpathIds, Hits hits)
+            throws AssemblyException {
+        XmlAssembly xmlAssembly;
+        if (cpathIds != null && cpathIds.length > 0) {
+            xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
+                hits.length(), xdebug);
+        } else {
+            xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
         }
         return xmlAssembly;
     }
