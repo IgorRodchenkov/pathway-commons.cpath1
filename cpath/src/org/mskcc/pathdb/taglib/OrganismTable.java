@@ -125,7 +125,7 @@ public class OrganismTable extends HtmlTable {
                 iconUrl = new String(url.toString() + SORT_ASC);
                 iconGif = "icon_sortdown.gif";
             }
-            append("<A TITLE = '"  + title + " 'HREF='" + iconUrl
+            append("<A TITLE = '" + title + " 'HREF='" + iconUrl
                     + "'><B>" + columnHeading + "</B></A>");
             append("&nbsp;&nbsp;&nbsp;");
             append("<a TITLE = '" + title + " 'HREF='" + iconUrl + "'>"
@@ -178,9 +178,9 @@ public class OrganismTable extends HtmlTable {
                 request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
                 request.setFormat(ProtocolConstants.FORMAT_HTML);
                 String url = request.getUri();
-                outputDataField("<A HREF='" + url + "' TITLE='" +
-                        "View All Records for Organism:  "
-                        + organism.getSpeciesName() +"'>"
+                outputDataField("<A HREF='" + url + "' TITLE='"
+                        + "View All Records for Organism:  "
+                        + organism.getSpeciesName() + "'>"
                         + organism.getSpeciesName() + "</A>");
                 outputDataField(formatter.format
                         (organism.getNumInteractions()));

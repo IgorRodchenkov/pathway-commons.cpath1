@@ -96,6 +96,13 @@ public class TagUtil {
         return newLabel;
     }
 
+    /**
+     * Create HREF Link.
+     * @param toolTip ToolTip Text.
+     * @param href HREF URL.
+     * @param label Link Label.
+     * @return HTML HREF Link.
+     */
     public static String createLink(String toolTip, String href, String label) {
         StringBuffer html = new StringBuffer();
         html.append("<A TITLE='" + toolTip + "' HREF='"
