@@ -24,9 +24,9 @@ public class TestExternalReferenceUtil extends TestCase {
         refs[3] = new ExternalReference("PubMed", "ABCD");
         refs[4] = new ExternalReference("PDB", "ABCD");
         refs[5] = new ExternalReference("Unigene", "ABCD");
-        refs[6] = new ExternalReference("REF_SEQ", "ABCD");
+        refs[6] = new ExternalReference("REF_SEQ PROTEIN", "ABCD");
         ExternalReference filteredRefs[] =
-                ExternalReferenceUtil.filterOutNonIdReferences(refs);
+                ExternalReferenceUtil.extractProteinUnificationRefs(refs);
         //  Before filtering, we have 7 references.
         assertEquals(7, refs.length);
 
