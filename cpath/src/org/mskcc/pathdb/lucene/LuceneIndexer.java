@@ -166,7 +166,7 @@ public class LuceneIndexer {
      * Gets Directory for Full Text Indexer.
      * @return Directory Location.
      */
-    private String getDirectory() {
+    public String getDirectory() {
         String textIndexDir = "textIndex";
         File dir = new File(System.getProperty("user.dir"), textIndexDir);
         if (!dir.isDirectory()) {

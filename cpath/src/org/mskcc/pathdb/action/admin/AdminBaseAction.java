@@ -5,6 +5,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,9 @@ public class AdminBaseAction extends BaseAction {
     public ActionForward subExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
+        LuceneIndexer indexer = new LuceneIndexer();
+        String dir = indexer.getDirectory();
+        xdebug.logMsg(this, "Lucene Index Directory:  " + dir);
         return mapping.findForward("success");
     }
 }
