@@ -521,7 +521,8 @@ public class PsiUtil {
             String dbName = ref.getDatabase();
             if (dbName.equalsIgnoreCase("GO")
                     || dbName.equalsIgnoreCase("InterPro")
-                    || dbName.equalsIgnoreCase("PubMed")) {
+                    || dbName.equalsIgnoreCase("PubMed")
+                    || dbName.equalsIgnoreCase("Unigene")) {
                 //  No-op
             } else {
                 filteredRefList.add(ref);
