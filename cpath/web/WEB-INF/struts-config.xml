@@ -36,6 +36,10 @@
             type="org.mskcc.pathdb.action.admin.AdminWebLogging">
             <forward name="success" path="/home.do"/>
         </action>
+        <action path="/adminRunFullTextIndexer"
+            type="org.mskcc.pathdb.action.admin.AdminFullTextIndexer">
+            <forward name="success" path="/jsp/pages/Admin.jsp"/>
+        </action>
     </action-mappings>
     <message-resources parameter="cpathResources"/>
 </struts-config>

@@ -22,6 +22,21 @@
             </H3>
         </TD>
     </TR>
+
+    <TR VALIGN=TOP>
+        <TD WIDTH=35%>
+            <H3>
+            <A HREF="adminRunFullTextIndexer.do">Run Full Text Indexer</A>
+            </H3>
+        </TD>
+        <TD>
+            <H3>
+            Runs Full Text Indexer on all interactor records
+            currently in the cPath database.
+            </H3>
+        </TD>
+    </TR>
+
     <TR VALIGN=TOP>
         <TD>
             <H3>
