@@ -33,6 +33,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.pathdb.test.sql.assembly.AssemblySuite;
+import org.mskcc.pathdb.test.sql.references.ReferencesSuite;
+import org.mskcc.pathdb.test.sql.references.TestBackgroundReferenceService;
 
 /**
  * Suite of all SQL Unit Tests.
@@ -59,10 +61,10 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestDaoXmlCache.class);
         suite.addTestSuite(TestDaoOrganism.class);
         suite.addTestSuite(TestDaoLog.class);
-        suite.addTestSuite(TestDaoIdMap.class);
+        suite.addTestSuite(TestDaoBackgroundReference.class);
         suite.addTestSuite(TestQueryFileReader.class);
-        suite.addTestSuite(TestIdMappingService.class);
         suite.addTest(AssemblySuite.suite());
+        suite.addTest(ReferencesSuite.suite());
         suite.setName("SQL Database Tests");
         return suite;
     }
