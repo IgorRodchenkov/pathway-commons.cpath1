@@ -19,21 +19,7 @@ cPath Functionality Issues:
     do this.
     --->  current priority:  I think this is relatively high.
 
-2.  Import Complete Data Set
-
-    From Gary:  DIP, MINT and IntAct now all have downloadable full data
-    sets.  We should think about creating an official inhouse release of cpath
-    containing all of the data we can get (since the DIP data is proprietary, we
-    can't give it to anyone else externally).
-
-    [Status:  We now have DIP, MINT and Intact. We still need to import HPRD.]
-
-3.  Modify Cytoscape PlugIn to recognize n-ary interactions when n > 2.
-	-->  current priority:  high
-
-    [Status:  This functionality is working, but it still needs more testing.]
-
-4.  Use IntAct External Database File
+2.  Related to item 1, use IntAct External Database File
 
     From Gary:  "I just noticed that the IntAct database is maintaining a small
     file of external databases
@@ -43,39 +29,38 @@ cPath Functionality Issues:
     We might be able to eventually collaborate with them on this list.
     Something to just keep in mind."
 
-6.  Build a Front-end administrative interface to the External Database Tables
-	(more details are included in phase 6 doc, before being deferred)
+3.  Also related to item 1:  Build a Front-end administrative interface to the
+    External Database Tables (more details are included in phase 6 doc, before
+    being deferred)
 	---> current priority:  low.
 
-7.  Provide query API functionality to get a list of valid query API commands.
+4.  Modify Cytoscape PlugIn to recognize n-ary interactions when n > 2.
+	-->  current priority:  high
+
+    [Status:  This functionality is working, but it still needs more testing.]
+
+5.  Provide query API functionality to get a list of valid query API commands.
 	E.g. for getInteractionsBySource, we could have getValidSources
 	---> current priority:  low.
 
-8.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape
+6.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape
 	to easily create external links.
 	---> current priority:  medium.
 
-9.  Support content-length calculation of PSI-MI queries, where possible,
-    to support more accurate progress metering on the client side.  We might
-    be able to easily do it for queries that are cached and for the precomputed
-    queries.  For queries that aren't, we could at least provide
-    updates of the parsing progress as it happens (Rob's idea)
-	---> Current priority: low.
+7.  Resolve cross-species interaction issue.
 
-11.  Resolve cross-species interaction issue.
-
-12. Implement a full database/ web  statistics page.
+8. Implement a full database/ web  statistics page.
     This could be precomputed regularly (e.g. weekly), not computed on the
     fly.  The best example of a stats page is currently the MINT page:
     http://160.80.34.4/mint/statistics/statistics.php
 	---> Current priority: low.
 
-13.  Create an advanced query system for xml records that supports xquery or
+9.  Create an advanced query system for xml records that supports xquery or
      something similar. This could regularly index XML from cpath for advanced
      queries.  Only internal users would use this system and it would probably
      be slow.  Investigate databases that support xpath or libraries such as OJB.
 
-14.  Add generic support for an ontology data objects.
+10.  Add generic support for an ontology data objects.
 
     From Gary:  "As per our discussion today regarding PSI-MI controlled
     vocabularies, here is an implementation of a basic hierarchy from the
@@ -93,19 +78,19 @@ cPath Functionality Issues:
     I'm not saying that we should implement this scheme eventually, we should
     just note the example.
 
-15. Front end features (May31.2004):
+11. Front end features (May31.2004):
 -Save search options in a cookie
 -Database stats page - expand and for the current contents, link to the DBODBs
  for the database + the database itself.
 
-16. We need to be able to present Non-redundant interactions - all interactions
+12. We need to be able to present Non-redundant interactions - all interactions
 should be non-redundant. (May31.2004)
 
-17. Create a post-process for non-redundant interactors - once larger lists of
+13. Create a post-process for non-redundant interactors - once larger lists of
  xrefs are in cPath, process can optimize the interactors to find ones that
  overlap in xref space and put them together. (May31.2004)
 
-18.  Add support for incremental indexing.
+14.  Add support for incremental indexing.
 I think this would require a timestamp for each cPath record,
 so that we could easily determine the date/time the record was last
 indexed in Lucene.  (June3.2004)
@@ -279,6 +264,23 @@ Archive:  Items which are now complete:
     at MSKCC  (http://pin.mskcc.org).
 
     [Status:  NOW COMPLETE]
+
+6.  Import Complete Data Set
+
+    From Gary:  DIP, MINT and IntAct now all have downloadable full data
+    sets.  We should think about creating an official inhouse release of cpath
+    containing all of the data we can get (since the DIP data is proprietary, we
+    can't give it to anyone else externally).
+
+    [Status:  NOW COMPLETE. We now have DIP, MINT, Intact and HPRD on toro.]
+
+8.  Support content-length calculation of PSI-MI queries, where possible,
+    to support more accurate progress metering on the client side.  We might
+    be able to easily do it for queries that are cached and for the precomputed
+    queries.  For queries that aren't, we could at least provide
+    updates of the parsing progress as it happens (Rob's idea)
+
+    [Status:  The New Web Services API provides a comparable feature.]
 
 </source>
         </p>
