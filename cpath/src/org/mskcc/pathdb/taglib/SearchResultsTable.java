@@ -39,7 +39,6 @@ import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.pathdb.util.XssFilter;
 
 import java.io.IOException;
 

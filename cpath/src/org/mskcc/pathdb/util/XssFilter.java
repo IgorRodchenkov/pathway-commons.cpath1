@@ -54,22 +54,22 @@ public class XssFilter {
      * @param paramMap Parameter Map of all URL parameters.
      * @return a safe URL.
      */
-    public static StringBuffer getUrlFiltered (String base, Map paramMap) {
+    public static StringBuffer getUrlFiltered(String base, Map paramMap) {
         // Strip leading slash, if it exists.
         if (base.startsWith("/")) {
             base = base.substring(1);
         }
 
         //  Append all Form Parameters
-        StringBuffer url = new StringBuffer (base);
+        StringBuffer url = new StringBuffer(base);
         url.append("?");
 
-        HashMap filteredMap = filterAllParameters (paramMap);
+        HashMap filteredMap = filterAllParameters(paramMap);
         Iterator names = filteredMap.keySet().iterator();
         while (names.hasNext()) {
             String name = (String) names.next();
             String value = (String) filteredMap.get(name);
-            url.append (name+"="+value+"&");
+            url.append(name + "=" + value + "&");
         }
         return url;
     }
