@@ -13,6 +13,6 @@ public class AssemblyException extends Exception {
      * @param throwable Any Throwable Object.
      */
     public AssemblyException(Throwable throwable) {
-        super(throwable.getMessage(), throwable);
+        super(throwable);
     }
 }

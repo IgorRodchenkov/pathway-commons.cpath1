@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 /**
  * Factory for instantiaing XmlAssembly objects.
+ * This class always returns PsiAssembly objects.  However, in the future,
+ * it may support other types of assemblies, such as a BioPax Assembly.
  *
  * @author Ethan Cerami.
  */
@@ -113,7 +115,6 @@ public class XmlAssemblyFactory {
      */
     public static XmlAssembly createXmlAssembly(String xmlDocumentComplete,
             int numHits, XDebug xdebug) throws AssemblyException {
-        // TODO:  When we add support for BioPax, we need to update this.
         XmlAssembly xmlAssembly = new PsiAssembly(xmlDocumentComplete, xdebug);
         xmlAssembly.setNumHits(numHits);
         return xmlAssembly;
@@ -128,7 +129,6 @@ public class XmlAssemblyFactory {
      */
     public static XmlAssembly createEmptyXmlAssembly(XDebug xdebug)
             throws AssemblyException {
-        // TODO:  When we add support for BioPax, we need to update this.
         XmlAssembly xmlAssembly = new PsiAssembly(xdebug);
         return xmlAssembly;
     }
@@ -156,7 +156,6 @@ public class XmlAssemblyFactory {
      */
     private static XmlAssembly createAssemblyInstance(ArrayList interactions,
             int numHits, XDebug xdebug) throws AssemblyException {
-        // TODO:  When we add support for BioPax, we need to update this.
         XmlAssembly xmlAssembly = new PsiAssembly(interactions, xdebug);
         xmlAssembly.setNumHits(numHits);
         return xmlAssembly;

@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Task to Run the Lucene Full Text Indexer.
+ * Runs the Lucene Text Indexer on all Records in CPath.
  *
  * @author Ethan Cerami.
  */
@@ -64,8 +64,7 @@ public class IndexLuceneTask extends Task {
     }
 
     /**
-     * Run Full Text Indexing on all Physical Entities.
-     * Made public, if you want to run this from the current thread.
+     * Run Full Text Indexing on all Interaction Records.
      *
      * @throws DaoException      Data Access Exception.
      * @throws IOException       Input/Output Exception.
@@ -74,12 +73,12 @@ public class IndexLuceneTask extends Task {
      */
     public void indexAllInteractions() throws DaoException, IOException,
             ImportException, AssemblyException {
-        outputMsg("Indexing all CPath Entities");
+        outputMsg("Indexing all CPath Interactions");
         DaoCPath cpath = new DaoCPath();
-        pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.
-                PHYSICAL_ENTITY));
+        pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.INTERACTION));
+
         LuceneIndexer lucene = new LuceneIndexer();
-        lucene.initIndex();
+        lucene.resetIndex();
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -95,15 +94,25 @@ public class IndexLuceneTask extends Task {
             }
             outputMsg("\nIndexing Complete");
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
+    /**
+     * Indexes One cPathRecord in Lucene.
+     *
+     * @param cpath  cPathRecord.
+     * @param rs     ResultSet
+     * @param lucene LuceneIndexer
+     * @throws SQLException      Database Error
+     * @throws IOException       I/O Error
+     * @throws ImportException   Import Error
+     * @throws AssemblyException Assembly Error
+     */
     private void indexRecord(DaoCPath cpath, ResultSet rs, LuceneIndexer lucene)
             throws SQLException, IOException, ImportException,
             AssemblyException {
@@ -112,10 +121,16 @@ public class IndexLuceneTask extends Task {
         if (verbose) {
             System.out.print(".");
         }
+
+        //  Create XML Assembly Object of Specified Interaction Record
         XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly
                 (record, 1, new XDebug());
+
+        //  Determine which fields to index
         ItemToIndex item = IndexFactory.createItemToIndex
                 (record.getId(), xmlAssembly);
+
+        //  Then, index all fields in Lucene
         lucene.addRecord(item);
     }
 }

@@ -34,7 +34,7 @@ public class TestIndexer extends TestCase {
                 (4, 1, xdebug);
         ItemToIndex item = IndexFactory.createItemToIndex(4, assembly);
         LuceneIndexer lucene = new LuceneIndexer();
-        lucene.initIndex();
+        lucene.resetIndex();
         lucene.addRecord(item);
 
         queryInteraction("chaperonin");

@@ -1,10 +1,10 @@
 package org.mskcc.pathdb.lucene;
 
 import org.apache.lucene.document.Field;
-import org.jdom.Text;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.XmlStripper;
+import org.mskcc.pathdb.util.XmlUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,10 +14,13 @@ import java.util.ArrayList;
  * <P>
  * Indexes the following fields:
  * <UL>
- * <LI>Database Source Name
- * <LI>Experiment PMID
- * <LI>Experiment Interaction Type Name
- * <LI>Experiment Interaction Type Controlled Vocabulary ID.
+ * <LI>All terms in the defaul All Field.
+ * <LI>All interactor information, including name(s), organism, and external
+ * references.
+ * <LI>All interactor cPath IDs.
+ * <LI>All interaction information, including pmids, database source,
+ * and interaction type.
+ * <LI>Interaction cPath ID.
  * </UL>
  *
  * @author Ethan Cerami
@@ -50,10 +53,14 @@ public class PsiInteractionToIndex implements ItemToIndex {
      */
     public static final String FIELD_DATABASE = "database";
 
+    /**
+     * Internal List of all Fields scheduled for Indexing.
+     */
     private ArrayList fields = new ArrayList();
 
     /**
-     * Constructor.  Only available within the lucene package.
+     * Constructor.
+     * Only available within the Lucene package.
      * The only way to construct the object is via the Factory class.
      *
      * @param xmlAssembly XmlAssembly.
@@ -128,7 +135,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
 
     /**
      * Indexes all Interactions.
-     * This includes all pmids, and interaction detection data.
+     * This includes all pmids, interaction detection data, and database source.
      *
      * @param interactionList List of Interactions.
      */
@@ -195,20 +202,10 @@ public class PsiInteractionToIndex implements ItemToIndex {
         if (names != null) {
             String shortName = names.getShortLabel();
             String fullName = names.getFullName();
-            appendToken(tokens, normalizeText(shortName));
-            appendToken(tokens, normalizeText(fullName));
+            appendToken(tokens, XmlUtil.normalizeText(shortName));
+            appendToken(tokens, XmlUtil.normalizeText(fullName));
         }
     }
-
-    /**
-     * Normalizes Text.
-     * Rreplaces all whitespace characters with a single whitespace.
-     */
-    private String normalizeText(String str) {
-        Text text = new Text(str);
-        return text.getTextNormalize();
-    }
-
 
     /**
      * Appends CV Tokens.

@@ -10,9 +10,9 @@ public class ImportException extends Exception {
     /**
      * Constructor.
      *
-     * @param msg Error Message.
+     * @param e Throwable Object.
      */
-    public ImportException(String msg) {
-        super(msg);
+    public ImportException(Throwable e) {
+        super(e);
     }
 }

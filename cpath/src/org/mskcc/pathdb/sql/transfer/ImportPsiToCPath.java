@@ -148,20 +148,15 @@ public class ImportPsiToCPath {
             processInteractions(entrySet, verbose);
             return summary;
         } catch (ValidationException e) {
-            throw new ImportException("ValidationException:  "
-                    + e.getMessage());
+            throw new ImportException(e);
         } catch (MarshalException e) {
-            throw new ImportException("MarshalException:  "
-                    + e.getMessage());
+            throw new ImportException(e);
         } catch (DaoException e) {
-            throw new ImportException("DaoException:  "
-                    + e.getMessage());
+            throw new ImportException(e);
         } catch (ExternalDatabaseNotFoundException e) {
-            throw new ImportException("ExternalDatabaseNotFoundException:  "
-                    + e.getMessage());
+            throw new ImportException(e);
         } catch (MapperException e) {
-            throw new ImportException("MapperException:  "
-                    + e.getMessage());
+            throw new ImportException(e);
         }
     }
 

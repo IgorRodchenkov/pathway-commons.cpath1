@@ -43,19 +43,27 @@ public class LuceneIndexer {
     public static final String INDEX_DIR_PREFIX = "textIndex";
 
     /**
-     * Lucene Directory Property
+     * Lucene Directory System Property
      */
     public static final String PROPERTY_LUCENE_DIR = "lucene.dir";
 
+    /**
+     * Index Writer Object (for indexing new records in Lucene).
+     */
     private IndexWriter indexWriter = null;
+
+    /**
+     * Index Search Object (for querying Lucene).
+     */
     private IndexSearcher indexSearcher = null;
 
     /**
      * Initializes Index with Fresh Database.
+     * <B>Note:</B>  Call this method deletes all previous index files.
      *
      * @throws IOException InputOutput Exception.
      */
-    public void initIndex() throws IOException {
+    public void resetIndex() throws IOException {
         String dir = this.getDirectory();
         Analyzer analyzer = this.getAnalyzer();
         IndexWriter writer = new IndexWriter(dir, analyzer, true);
@@ -63,10 +71,10 @@ public class LuceneIndexer {
     }
 
     /**
-     * Adds New Record to Full Text Indexer.
+     * Adds New Record to the Lucene Index.
      *
      * @param item ItemToIndex.
-     * @throws ImportException Error Importing Record to Full Text Engine.
+     * @throws ImportException Error Adding New Record to Lucene.
      */
     public void addRecord(ItemToIndex item)
             throws ImportException {
@@ -75,38 +83,19 @@ public class LuceneIndexer {
             Analyzer analyzer = this.getAnalyzer();
             IndexWriter writer = new IndexWriter(dir, analyzer, false);
 
+            //  Index all Fields in ItemToIndex
             Document document = new Document();
             int numFields = item.getNumFields();
             for (int i = 0; i < numFields; i++) {
                 Field field = item.getField(i);
                 document.add(field);
             }
+
+            //  Add New Document to Lucene
             writer.addDocument(document);
             writer.close();
         } catch (IOException e) {
-            throw new ImportException("IOException:  " + e.getMessage());
-        }
-    }
-
-    /**
-     * Initializes Index Writer.
-     *
-     * @throws IOException Input Output Exception.
-     */
-    public void initIndexWriter() throws IOException {
-        String dir = this.getDirectory();
-        Analyzer analyzer = this.getAnalyzer();
-        indexWriter = new IndexWriter(dir, analyzer, false);
-    }
-
-    /**
-     * Closes the Index Writer.
-     *
-     * @throws IOException Input Output Exception.
-     */
-    public void closeIndexWriter() throws IOException {
-        if (indexWriter != null) {
-            indexWriter.close();
+            throw new ImportException(e);
         }
     }
 
@@ -122,7 +111,7 @@ public class LuceneIndexer {
     }
 
     /**
-     * Executes Query
+     * Executes Search Query
      *
      * @param term Search Term.
      * @return Lucene Hits Object

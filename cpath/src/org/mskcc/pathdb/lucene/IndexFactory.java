@@ -21,6 +21,9 @@ public class IndexFactory {
      */
     public static ItemToIndex createItemToIndex(long cpathId,
             XmlAssembly xmlAssembly) throws IOException {
+        //  Right now, we always return PSI Interactions.
+        //  In the future, we will probably add support to other formats,
+        //  such as BioPax.
         ItemToIndex item = new PsiInteractionToIndex(cpathId, xmlAssembly);
         return item;
     }
