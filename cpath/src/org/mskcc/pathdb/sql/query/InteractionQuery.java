@@ -17,9 +17,7 @@ import java.util.List;
  *
  * @author Ethan Cerami
  */
-public abstract class InteractionQuery {
-    private ArrayList interactions = new ArrayList();
-    private String xml;
+abstract class InteractionQuery {
     protected XDebug xdebug;
 
     /**
@@ -32,10 +30,10 @@ public abstract class InteractionQuery {
      * @param xdebug XDebug Object.
      * @throws QueryException Error Executing Query.
      */
-    public void execute(XDebug xdebug) throws QueryException {
+    public QueryResult execute(XDebug xdebug) throws QueryException {
         this.xdebug = xdebug;
         try {
-            executeSub();
+            return executeSub();
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         }
@@ -45,39 +43,7 @@ public abstract class InteractionQuery {
      * Must be subclassed.
      * @throws Exception All Exceptions.
      */
-    protected abstract void executeSub() throws Exception;
-
-    /**
-     * Gets the ArrayList of Interaction Objects.
-     * @return ArrayList of Interaction Objects.
-     */
-    public ArrayList getInteractions() {
-        return interactions;
-    }
-
-    /**
-     * Gets XML Response String.
-     * @return XML Response String.
-     */
-    public String getXml() {
-        return this.xml;
-    }
-
-    /**
-     * Sets the XML Response String.
-     * @param xml XML String.
-     */
-    public void setXml(String xml) {
-        this.xml = xml;
-    }
-
-    /**
-     * Sets the ArrayList of Interaction Objects.
-     * @param interactions
-     */
-    protected void setInteractions(ArrayList interactions) {
-        this.interactions = interactions;
-    }
+    protected abstract QueryResult executeSub() throws Exception;
 
     /**
      * Given a List of Interactor Records, retrieve all

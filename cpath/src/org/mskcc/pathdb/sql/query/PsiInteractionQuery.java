@@ -18,22 +18,13 @@ import java.util.Collection;
  *
  * @author Ethan Cerami
  */
-public abstract class PsiInteractionQuery extends InteractionQuery {
-    private EntrySet entrySet;
+abstract class PsiInteractionQuery extends InteractionQuery {
 
     /**
      * Must be subclassed.
      * @throws Exception All Exceptions.
      */
-    protected abstract void executeSub() throws Exception;
-
-    /**
-     * Gets the EntrySet Object or Results.
-     * @return PSI-MI Entry Set Castor Object.
-     */
-    public EntrySet getEntrySet() {
-        return entrySet;
-    }
+    protected abstract QueryResult executeSub() throws Exception;
 
     /**
      * Creates PSI XML Document.
@@ -42,16 +33,19 @@ public abstract class PsiInteractionQuery extends InteractionQuery {
      * @throws ValidationException Document is not valid.
      * @throws MarshalException Could not Marshal Document to XML.
      */
-    protected void createPsi(Collection interactors,
+    protected QueryResult generateQueryResult(Collection interactors,
             Collection interactions) throws ValidationException,
             MarshalException, MapperException {
+        QueryResult result = new QueryResult();
         xdebug.logMsg(this, "Creating Final PSI Document");
         PsiBuilder psiBuilder = new PsiBuilder();
-        this.entrySet = psiBuilder.generatePsi(interactors, interactions);
+        EntrySet entrySet = psiBuilder.generatePsi(interactors, interactions);
         String xml = generateXml(entrySet);
         ArrayList list = mapToInteractions(xml);
-        this.setXml(xml);
-        this.setInteractions(list);
+        result.setXml(xml);
+        result.setInteractions(list);
+        result.setEntrySet(entrySet);
+        return result;
     }
 
     /**

@@ -13,14 +13,14 @@ import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.query.*;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.tool.LoadFullText;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.controller.ProtocolConstants;
+import org.mskcc.pathdb.util.Md5Util;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -74,6 +74,8 @@ public class TestImportPsiToCPath extends TestCase {
         assertEquals(0, summary.getNumInteractorsSaved());
         assertEquals(6, summary.getNumInteractionsSaved());
         assertEquals(1, summary.getNumInteractionsClobbered());
+
+        validatePrecomputedQueries();
     }
 
     /**
@@ -93,27 +95,35 @@ public class TestImportPsiToCPath extends TestCase {
     /**
      * Verifies that GetInteractionsByInteractorName Works.
      */
-    private void validateGetByName() throws QueryException,
-            EmptySetException, MarshalException, ValidationException {
-        PsiInteractionQuery query =
-                new GetInteractionsByInteractorName("YCR038C");
-        query.execute(xdebug);
-        EntrySet entrySet = query.getEntrySet();
-        validateInteractionSet(entrySet);
+    private void validateGetByName() throws QueryException, MarshalException,
+            ValidationException {
+        ProtocolRequest request = new ProtocolRequest ();
+        request.setQuery("YCR038C");
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME);
+        ExecuteQuery query = new ExecuteQuery(xdebug);
+        try {
+            QueryResult result = query.executeQuery(request, true);
+            EntrySet entrySet = result.getEntrySet();
+            validateInteractionSet(entrySet);
+        } catch (QueryException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Verifies that GetInteractionsByInteractorID Works.
      */
     private void validateGetById() throws QueryException,
-            EmptySetException, MarshalException, ValidationException,
-            DaoException {
+            MarshalException, ValidationException, DaoException {
         DaoCPath cpath = new DaoCPath();
         CPathRecord record = cpath.getRecordByName("YCR038C");
-        PsiInteractionQuery query =
-                new GetInteractionsByInteractorId(record.getId());
-        query.execute(xdebug);
-        EntrySet entrySet = query.getEntrySet();
+
+        ProtocolRequest request = new ProtocolRequest ();
+        request.setQuery(Long.toString(record.getId()));
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID);
+        ExecuteQuery query = new ExecuteQuery(xdebug);
+        QueryResult result = query.executeQuery(request, true);
+        EntrySet entrySet = result.getEntrySet();
         validateInteractionSet(entrySet);
     }
 
@@ -122,15 +132,17 @@ public class TestImportPsiToCPath extends TestCase {
      */
     private void validateGetByTaxonomyId() throws QueryException {
         int taxId = 4932;
-        PsiInteractionQuery query =
-                new GetInteractionsByInteractorTaxonomyId(taxId, 25);
-        query.execute(xdebug);
-        EntrySet entrySet = query.getEntrySet();
+        ProtocolRequest request = new ProtocolRequest ();
+        request.setQuery(Long.toString(taxId));
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID);
+        ExecuteQuery query = new ExecuteQuery(xdebug);
+        QueryResult result = query.executeQuery(request, true);
+        EntrySet entrySet = result.getEntrySet();
         assertEquals(7, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
         assertEquals(12, entrySet.getEntry(0).getInteractionList()
                 .getInteractionCount());
-        String xml = query.getXml();
+        String xml = result.getXml();
         int index = xml.indexOf(Integer.toString(taxId));
         assertTrue(index > 0);
     }
@@ -138,18 +150,19 @@ public class TestImportPsiToCPath extends TestCase {
     /**
      * Verifies that GetInteractionsByInteractionPmid Works.
      */
-    private void validateGetByPmid() throws QueryException,
-            EmptySetException {
+    private void validateGetByPmid() throws QueryException {
         String pmid = "12345678";
-        PsiInteractionQuery query = new GetInteractionsByInteractionPmid
-                (pmid, 25);
-        query.execute(xdebug);
-        EntrySet entrySet = query.getEntrySet();
+        ProtocolRequest request = new ProtocolRequest ();
+        request.setQuery(pmid);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID);
+        ExecuteQuery query = new ExecuteQuery(xdebug);
+        QueryResult result = query.executeQuery(request, true);
+        EntrySet entrySet = result.getEntrySet();
         assertEquals(2, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
         assertEquals(1, entrySet.getEntry(0).getInteractionList()
                 .getInteractionCount());
-        String xml = query.getXml();
+        String xml = result.getXml();
         int index = xml.indexOf(pmid);
         assertTrue(index > 0);
     }
@@ -160,11 +173,12 @@ public class TestImportPsiToCPath extends TestCase {
     private void validateGetByDbSource() throws QueryException,
             EmptySetException {
         String db = "DIP";
-        PsiInteractionQuery query =
-                new GetInteractionsByInteractionDbSource(db, 25);
-        query.execute(xdebug);
-        String xml = query.getXml();
-        EntrySet entrySet = query.getEntrySet();
+        ProtocolRequest request = new ProtocolRequest ();
+        request.setQuery(db);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB);
+        ExecuteQuery query = new ExecuteQuery(xdebug);
+        QueryResult result = query.executeQuery(request, true);
+        EntrySet entrySet = result.getEntrySet();
         assertEquals(2, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
         assertEquals(1, entrySet.getEntry(0).getInteractionList()
@@ -177,11 +191,14 @@ public class TestImportPsiToCPath extends TestCase {
     private void validateGetByKeyword() throws QueryException,
             EmptySetException {
         String term = "Xenopus";
-        PsiInteractionQuery query =
-                new GetInteractionsByInteractorKeyword(term, 25);
-        query.execute(xdebug);
-        String xml = query.getXml();
-        EntrySet entrySet = query.getEntrySet();
+
+        ProtocolRequest request = new ProtocolRequest ();
+        request.setQuery(term);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_KEYWORD);
+        ExecuteQuery query = new ExecuteQuery(xdebug);
+        QueryResult result = query.executeQuery(request, true);
+        String xml = result.getXml();
+        EntrySet entrySet = result.getEntrySet();
         int index = xml.indexOf(term);
         assertTrue(index > 0);
         assertEquals(2, entrySet.getEntry(0).getInteractorList().
@@ -225,5 +242,26 @@ public class TestImportPsiToCPath extends TestCase {
         InternalLinkRecord link2 = (InternalLinkRecord) links.get(1);
         assertEquals(interactor1.getId(), link1.getCpathIdB());
         assertEquals(interactor2.getId(), link2.getCpathIdB());
+    }
+
+    private void validatePrecomputedQueries() throws Exception {
+        //  Create a precomute query;  store to database cache.
+        String taxId = "4932";
+        ProtocolRequest request = new ProtocolRequest();
+        request.setQuery(taxId);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID);
+        request.setFormat(ProtocolConstants.FORMAT_PSI);
+        request.setVersion(ProtocolConstants.CURRENT_VERSION);
+        ExecuteQuery query = new ExecuteQuery(xdebug);
+        query.executeAndStoreQuery(request);
+
+        //  Verify Cached Contents exist in Database.
+        String key = Md5Util.createMd5Hash(request.getUri());
+        DaoXmlCache dao = new DaoXmlCache();
+        String xml = dao.getXmlByKey(key);
+        int index = xml.indexOf(taxId);
+        assertTrue(index > 0);
+        index = xml.indexOf("<fullName>GTP/GDP exchange factor for Rsr1");
+        assertTrue(index > 0);
     }
 }

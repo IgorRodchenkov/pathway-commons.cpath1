@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @author Ethan Cerami
  */
-public class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
+class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
     private int taxonomyId;
     private int maxHits;
 
@@ -30,7 +30,8 @@ public class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
      * Executes Query.
      * @throws Exception All Exceptions.
      */
-    protected void executeSub() throws Exception {
+    protected QueryResult executeSub() throws Exception {
+        QueryResult result = new QueryResult();
         xdebug.logMsg(this, "Getting Interactions for all interactors with "
                 + " NCBI Taxonomy ID:  " + taxonomyId);
         DaoCPath cpath = new DaoCPath();
@@ -42,7 +43,8 @@ public class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
         if (records.size() > 0) {
             ArrayList interactions = this.extractInteractions(records);
             HashMap interactorMap = this.extractInteractors(interactions);
-            createPsi(interactorMap.values(), interactions);
+            result = generateQueryResult(interactorMap.values(), interactions);
         }
+        return result;
     }
 }

@@ -15,7 +15,7 @@ import java.util.HashMap;
  *
  * @author Ethan Cerami
  */
-public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
+class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
     private String searchTerms;
     private int maxHits;
 
@@ -33,7 +33,8 @@ public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
      * Executes Query.
      * @throws Exception All Exceptions.
      */
-    protected void executeSub() throws Exception {
+    protected QueryResult executeSub() throws Exception {
+        QueryResult result = new QueryResult();
         xdebug.logMsg(this, "Getting Interactions for all Interactors with "
                 + "search term(s):  " + searchTerms);
 
@@ -57,10 +58,11 @@ public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
             if (records.size() > 0) {
                 ArrayList interactions = this.extractInteractions(records);
                 HashMap interactors = this.extractInteractors(interactions);
-                createPsi(interactors.values(), interactions);
+                result = generateQueryResult(interactors.values(), interactions);
             }
         } finally {
             indexer.closeIndexSearcher();
         }
+        return result;
     }
 }

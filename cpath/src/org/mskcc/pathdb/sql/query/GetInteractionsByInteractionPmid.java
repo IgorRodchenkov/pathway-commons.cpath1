@@ -13,7 +13,7 @@ import java.util.HashMap;
  *
  * @author Ethan Cerami
  */
-public class GetInteractionsByInteractionPmid extends PsiInteractionQuery {
+class GetInteractionsByInteractionPmid extends PsiInteractionQuery {
     private String pmid;
     private int maxHits;
 
@@ -31,7 +31,8 @@ public class GetInteractionsByInteractionPmid extends PsiInteractionQuery {
      * Executes Query.
      * @throws Exception All Exceptions.
      */
-    protected void executeSub() throws Exception {
+    protected QueryResult executeSub() throws Exception {
+        QueryResult result = new QueryResult();
         xdebug.logMsg(this, "Getting Interactions for PMID:  " + pmid);
         DaoExternalLink linker = new DaoExternalLink();
         ExternalReference ref = new ExternalReference("PMID", pmid);
@@ -49,7 +50,8 @@ public class GetInteractionsByInteractionPmid extends PsiInteractionQuery {
 
         if (interactions.size() > 0) {
             HashMap interactors = this.extractInteractors(interactions);
-            createPsi(interactors.values(), interactions);
+            result = generateQueryResult(interactors.values(), interactions);
         }
+        return result;
     }
 }

@@ -61,7 +61,7 @@ public class TestUpdatePsiInteractor extends TestCase {
         String xml = record.getXmlContent();
         //  Note that SWP has been normalized to SWISS-PROT
         int index0 = xml.indexOf
-                ("<primaryRef db=\"SWISS-PROT\" id=\"ABC123\"/>");
+                ("<primaryRef db=\"SwissProt\" id=\"ABC123\"/>");
         //  Note that original link is still there
         int index1 = xml.indexOf("<secondaryRef db=\"PIR\" id=\"XYZ123\"/>");
         //  Note that new link is now there

@@ -53,18 +53,17 @@ public class DataServiceController {
     private void processGetInteractions(ProtocolRequest protocolRequest)
             throws IOException, ServletException, QueryException,
             ProtocolException {
+        ExecuteQuery executeQuery = new ExecuteQuery(xdebug);
+        QueryResult result = executeQuery.executeQuery(protocolRequest, true);
+        ArrayList interactions = result.getInteractions();
         if (protocolRequest.getFormat().equals(ProtocolConstants.FORMAT_PSI)) {
-            InteractionQuery query = determineQueryType(protocolRequest);
-            ArrayList interactions = query.getInteractions();
             if (interactions.size() == 0) {
                 throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
                         "No Results Found for:  " + protocolRequest.getQuery());
             }
-            String xml = query.getXml();
+            String xml = result.getXml();
             this.returnXml(xml);
         } else {
-            InteractionQuery query = determineQueryType(protocolRequest);
-            ArrayList interactions = query.getInteractions();
             request.setAttribute("interactions", interactions);
             if (interactions.size() == 0 && protocolRequest.getCommand().
                     equals(ProtocolConstants.
@@ -73,40 +72,6 @@ public class DataServiceController {
             }
             forwardToJsp();
         }
-    }
-
-    /**
-     * Instantiates Correct Query based on Protocol Request.
-     */
-    private InteractionQuery determineQueryType(ProtocolRequest request)
-            throws QueryException {
-        String command = request.getCommand();
-        String q = request.getQuery();
-        InteractionQuery query = null;
-        int maxHits = request.getMaxHitsInt();
-        if (command.equals(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID)) {
-            long cpathId = Long.parseLong(q);
-            query = new GetInteractionsByInteractorId(cpathId);
-        } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME)) {
-            query = new GetInteractionsByInteractorName(q);
-        } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID)) {
-            int taxId = Integer.parseInt(q);
-            query = new GetInteractionsByInteractorTaxonomyId(taxId,
-                    request.getMaxHitsInt());
-        } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_KEYWORD)) {
-            query = new GetInteractionsByInteractorKeyword(q, maxHits);
-        } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB)) {
-            query = new GetInteractionsByInteractionDbSource(q, maxHits);
-        } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID)) {
-            query = new GetInteractionsByInteractionPmid(q, maxHits);
-        }
-        query.execute(xdebug);
-        return query;
     }
 
     private void forwardToJsp() throws ServletException, IOException {

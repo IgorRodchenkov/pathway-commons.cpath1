@@ -3,6 +3,7 @@ package org.mskcc.pathdb.controller;
 import org.apache.log4j.Logger;
 import org.mskcc.pathdb.xdebug.SnoopHttp;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.test.util.UriUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Data Service Controller.
@@ -102,7 +104,8 @@ public class CPathController {
     private void processRequest() throws Exception {
         initXDebug();
         xdebug.logMsg(this, "Entering CPath Controller");
-        HashMap parameterMap = getParameterMap(request);
+        HashMap parameterMap = UriUtil.normalizeParameterMap
+                (request.getParameterMap());
         protocolRequest = new ProtocolRequest(parameterMap);
         request.setAttribute("protocol_request", protocolRequest);
         ProtocolValidator validator = new ProtocolValidator(protocolRequest);
@@ -163,26 +166,6 @@ public class CPathController {
             log.error("Exception thrown while writing out Error:  "
                     + e.getMessage());
         }
-    }
-
-    /**
-     * Get Parameter Map of all Client Name/value pairs.
-     * @param request HttpServletRequest request.
-     * @return HashMap of all Client Name/value pairs.
-     */
-    private HashMap getParameterMap(HttpServletRequest request) {
-        HashMap map = new HashMap();
-        Enumeration names = request.getParameterNames();
-        while (names.hasMoreElements()) {
-            String name = (String) names.nextElement();
-            String values[] = request.getParameterValues(name);
-            for (int i = 0; i < values.length; i++) {
-                if (values[i] != null && values[i].length() > 0) {
-                    map.put(name, values[i]);
-                }
-            }
-        }
-        return map;
     }
 
     /**

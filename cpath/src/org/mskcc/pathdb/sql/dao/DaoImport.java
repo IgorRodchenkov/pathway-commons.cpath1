@@ -136,7 +136,6 @@ public class DaoImport {
                     + " `STATUS`, `CREATE_TIME`)"
                     + " VALUES (?,?,?,?,?)");
             pstmt.setString(1, description);
-            ;
             pstmt.setBytes(2, zippedData);
             pstmt.setString(3, hash);
             pstmt.setString(4, ImportRecord.STATUS_NEW);

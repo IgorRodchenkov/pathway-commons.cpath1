@@ -223,7 +223,11 @@ public class ProtocolRequest implements PagedResult {
      * @return Max Number Hits
      */
     public int getMaxHitsInt() {
-        return Integer.parseInt(maxHits);
+        if (maxHits.equals("unbounded")) {
+            return Integer.MAX_VALUE;
+        } else {
+            return Integer.parseInt(maxHits);
+        }
     }
 
     /**
@@ -239,11 +243,7 @@ public class ProtocolRequest implements PagedResult {
      * @param str Max Number of Hits
      */
     public void setMaxHits(String str) {
-        if (str.equals("unbounded")) {
-            maxHits = Integer.toString(Integer.MAX_VALUE);
-        } else {
-            maxHits = str;
-        }
+        this.maxHits = str;
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @author Ethan Cerami
  */
-public class GetInteractionsByInteractionDbSource extends PsiInteractionQuery {
+class GetInteractionsByInteractionDbSource extends PsiInteractionQuery {
     private String db;
     private int maxHits;
 
@@ -30,7 +30,8 @@ public class GetInteractionsByInteractionDbSource extends PsiInteractionQuery {
      * Executes Query.
      * @throws Exception All Exceptions.
      */
-    protected void executeSub() throws Exception {
+    protected QueryResult executeSub() throws Exception {
+        QueryResult result = new QueryResult();
         xdebug.logMsg(this, "Getting Interactions with database source:  "
                 + db);
         DaoExternalLink linker = new DaoExternalLink();
@@ -47,7 +48,8 @@ public class GetInteractionsByInteractionDbSource extends PsiInteractionQuery {
 
         if (interactions.size() > 0) {
             HashMap interactors = this.extractInteractors(interactions);
-            createPsi(interactors.values(), interactions);
+            result = generateQueryResult(interactors.values(), interactions);
         }
+        return result;
     }
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
  *
  * @author Ethan Cerami
  */
-public class GetInteractionsByInteractorId extends PsiInteractionQuery {
+class GetInteractionsByInteractorId extends PsiInteractionQuery {
     private long interactorID;
 
     /**
@@ -26,13 +26,15 @@ public class GetInteractionsByInteractorId extends PsiInteractionQuery {
      * Executes Query.
      * @throws Exception All Exceptions.
      */
-    protected void executeSub() throws Exception {
+    protected QueryResult executeSub() throws Exception {
+        QueryResult result = new QueryResult();
         DaoCPath cpath = new DaoCPath();
         CPathRecord record = cpath.getRecordById(interactorID);
         if (record != null) {
             ArrayList interactions = this.extractInteractions(record);
             HashMap interactors = this.extractInteractors(interactions);
-            createPsi(interactors.values(), interactions);
+            result  = generateQueryResult(interactors.values(), interactions);
         }
+        return result;
     }
 }

@@ -44,6 +44,7 @@ public class ImportRecords {
         } catch (DaoException e) {
             System.out.println("\n!!!!  Transfer aborted due to error!");
             System.out.println("-->  " + e.getMessage());
+            e.printStackTrace();
         } catch (ImportException e) {
             System.out.println("\n!!!!  Transfer aborted due to error!");
             System.out.println("-->  " + e.getMessage());

@@ -169,7 +169,7 @@ public class LuceneIndexer {
      */
     public String getDirectory() {
         String textIndexDir = "textIndex";
-        File dir = new File(System.getProperty("user.dir"), textIndexDir);
+        File dir = new File(System.getProperty("CPATH_HOME"), textIndexDir);
         if (!dir.isDirectory()) {
             File parentDir = dir.getParentFile().getParentFile();
             dir = new File(parentDir, textIndexDir);
