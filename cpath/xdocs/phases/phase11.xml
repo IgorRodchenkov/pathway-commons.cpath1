@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <body>
+        <section name="Phase 11:  About this Document">
+            <P>This document describes functionality that will be built in
+                Phase 11 of the Cytoscape / cPath / Pathway Analysis project.
+                The overall goal of Phase 11 is to Update the Activity Center
+                plugin in order to fully execute the Neuroblastoma Use Case.
+            </P>
+        </section>
+        <section name="1.  Modify Activity Center PlugIn">
+            <P>
+            <UL>
+                <LI>
+                Refactor existing plugin code and add unit tests as needed:
+                Refactor the existing plugin code as needed and ensure that
+                all major components have comprehensive unit tests.
+                </LI>
+                <LI>Modify core activity center algorithm code:  the current
+                code includes neighbors which lack expression ratios in the
+                weighted average calculation.  We need to modify the core
+                algorithm code to ignore such nodes.
+                </LI>
+                <LI>
+                Modify plugin to use common task framework:  By using the
+                common task framework used by other cBio plugins, we
+                can provide more detailed progress feedback to end-users.
+                For example, we can show progress of each individual step
+                in the algorithm, e.g. calculating expression ratios,
+                calculating neighborhood scores, calculating p-values, etc.
+                </LI>
+                <LI>
+                Modify plugin to extract top scoring nodes in a network:
+                As it is currently coded, the plugin attempts to color code
+                all nodes in a network, regardless of network size.
+                However, the Neuroblastoma use case requires access to
+                a network of ~19,000 interactions, and it is not feasible
+                to color code this entire network.  We therefore need
+                to modify the plugin to extract a subgraph of high-scoring
+                nodes.
+                </LI>
+                <LI>
+                Save results to tab-delimited file:  after activity scores
+                are computed, the plugin will save a complete set of results
+                to a tab-delimited file.  This will enable further analysis
+                in other tools, such as Microsoft Excel.
+                </LI>
+                <LI>
+                Add p-value calculation:  modify the plugin to calculate
+                p-values, as described in the original Activity Centers Paper.
+                The number of Monte Carlo simulations should also be easily
+                settable by the end-user.
+                </LI>
+                <LI>
+                Support basic browsing functionality via score list:  After
+                activity scores are calculated, display an interactive list
+                of top-scoring nodes along with activity scores and p-values.
+                When user clicks on a node in this list, zoom into the node
+                and its immediate neighborhood.
+                </LI>
+                <LI>
+                Integrate with cPath PlugIn:  The Activity Center and cPath
+                PlugIns are entirely independent.  However, if the Activity
+                Center plugin extracts a subgraph of high scoring nodes, the
+                user should be able to select nodes in the subgraph and view
+                node details in the cPath node details panel.
+                </LI>
+                <LI>
+                Modify cPath PlugIn Node Details Panel: to provide a better
+                browsing experience, modify the cPath node details panel
+                to include:  a)  expression data (even if this data is spread
+                out across multiple Affymetrix probes);  and b)  any additional
+                numerical attributes associated with the node.  With these
+                two changes, we enables users to easily view all data about a
+                node in one place.  For example, users can view protein name,
+                description, external references, expression data, and
+                activity score all in one spot.
+                </LI>
+            </UL>
+            </P>
+        </section>
+        <section name="2.  Update ID Mappings In cPath">
+            <P>
+            In order to execute the full Neuroblastoma use case defined below,
+            we need to create a full test-bed of HPRD interactions, and ensure
+            that as many HPRD proteins as possible have Affymetrix Ids.
+            The following steps are defined:
+            <UL>
+                <LI>
+                Based on current Affymetrix annotation files, create a set
+                of RefSeq --> Affymetrix ID mapping files.
+                </LI>
+                <LI>
+                Load up very latest HPRD interaction data set into cPath.
+                </LI>
+                <LI>
+                Load up RefSeq --> Affymetrix ID Mapping files.
+                </LI>
+                <LI>Determine what percentage of human proteins in cPath
+                now have Affymetrix IDs.</LI>
+            </UL>
+            </P>
+        </section>
+        <section name="3.  Execute Full Neuroblastoma Use Case">
+            <P>
+            Steps in the full Neuroblastoma Use Case are defined below:
+            </P>
+            <UL>
+                <LI>Start Cytoscape.</LI>
+                <LI>Download all human protein interactions from cPath:
+                This is currently defined as all HPRD interactions.</LI>
+                <LI>Load up the Neuroblastoma expression data set.</LI>
+                <LI>Execute the Activity Center Algorithm.  Specify two
+                conditions:  Stage 4 v. Stage 4S.
+                </LI>
+                <LI>Browse high-scoring nodes in Cytoscape.</LI>
+                <LI>Save results to tab-delimited file format for further
+                analysis in Microsoft Excel.</LI>
+            </UL>
+        </section>
+        <section name="4.  Background Reading">
+            <UL>
+                <LI><A HREF="http://www.cancer.org/docroot/cri/cri_2_3x.asp?dt=31">
+                Detailed Guide to Neuroblastoma</A>
+                </LI>
+                <LI>Brodeur GM, "Neuroblastoma: biological insights into a
+                clinical enigma.", Nature Rev Cancer. 2003 Mar;3(3):203-16.
+                [<A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?holding=npg&amp;cmd=Retrieve&amp;db=PubMed&amp;list_uids=12612655&amp;dopt=Abstract">PubMed Reference</A>]
+                </LI>
+                <LI>Philip, T., "Neuroblastoma", Orphanet Encyclopedia.
+                [<A HREF="http://www.orpha.net/data/patho/GB/uk-neuroblastoma.pdf">
+                Link to PDF</A>]</LI>
+                <LI>Hanahan D, Weinberg RA., "The hallmarks of cancer."
+                [<A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?holding=npg&amp;cmd=Retrieve&amp;db=PubMed&amp;list_uids=10647931&amp;dopt=Abstract">PubMed Reference</A>]</LI>
+                <LI>J. Pradines et. al, "Using networks of protein functional
+                relationships to analyze genomic data."  (Copy of talk
+                sent to Chris Sander).</LI>
+            </UL>
+        </section>
+    </body>
+</document>

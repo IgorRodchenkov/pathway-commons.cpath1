@@ -89,14 +89,19 @@
           <tr>
                 <td><A HREF="phase9.html">Phase 9</A></td>
                 <td>Finalize cPath for internal cBio/MSKCC Release.</td>
-                <td></td>
+                <td>June, 2004</td>
           </tr>
           <tr>
                 <td><A HREF="phase10.html">Phase 10</A></td>
                 <td>Create Beta 2 Release of Cytoscape cPath PlugIn,
                 import HPRD into cPath, create PSI-MI/SOFT PlugIns for
                 Cytoscape 2.0, and misc. bug fixes.</td>
-                <td></td>
+                <td>Septmeber, 2004</td>
+          </tr>
+            <tr>
+                <td><A HREF="phase11.html">Phase 11</A></td>
+                <td>Focus on Neuroblastoma Use Case</td>
+                <td>December, 2004</td>
           </tr>
       </table>
      </section>
