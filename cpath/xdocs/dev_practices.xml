@@ -30,6 +30,7 @@ Issue tracking has the following advantages:
 <LI>Bugs and features can be searched for similar past issues</LI>
 <LI>Allows us to report back to end users</LI>
 </UL>
+</P>
 
 cPath is using the open-source mantis bug-tracking system (http://mantisbt.sourceforge.net/).
 </p>
