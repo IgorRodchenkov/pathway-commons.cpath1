@@ -38,6 +38,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.util.PsiUtil;
+import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -54,20 +55,25 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      */
     private ProteinInteractorType existingProtein;
 
+    private ProgressMonitor pMonitor;
+
     /**
      * Constructor.
      *
      * @param newProtein new protein Record, scheduled for import.
+     * @param pMonitor ProgressMonitor Object.
      * @throws DaoException         Error Adding new data to database.
      * @throws ValidationException  Invalid XML
      * @throws MarshalException     Error Marshaling to XML.
      * @throws MissingDataException XML is missing data.
      */
-    public UpdatePsiInteractor(ProteinInteractorType newProtein)
+    public UpdatePsiInteractor(ProteinInteractorType newProtein,
+            ProgressMonitor pMonitor)
             throws DaoException, ValidationException, MarshalException,
             MissingDataException {
+        this.pMonitor = pMonitor;
         //  Normalize XRefs
-        PsiUtil psiUtil = new PsiUtil();
+        PsiUtil psiUtil = new PsiUtil(pMonitor);
         psiUtil.normalizeXrefs(newProtein.getXref());
 
         //  Find a Match to Existing Interactor.
@@ -90,14 +96,17 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      *
      * @param existingProtein Existing Protein, in database.
      * @param newProtein      new protein Record, scheduled for import.
+     * @param pMonitor ProgressMonitor Object. 
      * @throws ValidationException  Invalid XML
      * @throws MarshalException     Error Marshaling to XML.
      * @throws MissingDataException XML is missing data.*
      */
     public UpdatePsiInteractor(CPathRecord existingProtein,
-            ProteinInteractorType newProtein) throws ValidationException,
+            ProteinInteractorType newProtein, ProgressMonitor pMonitor) 
+            throws ValidationException,
             MarshalException, MissingDataException {
-        PsiUtil psiUtil = new PsiUtil();
+        this.pMonitor = pMonitor;
+        PsiUtil psiUtil = new PsiUtil(pMonitor);
         ExternalReference newRefs[] = psiUtil.extractRefs(newProtein);
         extractExistingRefs(existingProtein);
         this.setNewExternalRefs(newRefs);
@@ -109,12 +118,15 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      * @param newRef            New Reference to Add.
      * @param existingRef       Existing Reference.
      * @param refsAreNormalized References have already been normalized.
+     * @param pMonitor ProgressMonitor Object. 
      * @throws DaoException         Error Adding new data to database.
      * @throws MissingDataException XML is missing data.
      */
     public UpdatePsiInteractor(ExternalReference existingRef,
-            ExternalReference newRef, boolean refsAreNormalized)
+            ExternalReference newRef, boolean refsAreNormalized,
+            ProgressMonitor pMonitor)
             throws DaoException, MissingDataException {
+        this.pMonitor = pMonitor;
         ExternalReference newRefs[] = new ExternalReference[2];
         if (!refsAreNormalized) {
             normalizeExternalRef(newRef);
@@ -155,7 +167,7 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      */
     private void extractExistingRefs(CPathRecord record)
             throws MarshalException, ValidationException, MissingDataException {
-        PsiUtil psiUtil = new PsiUtil();
+        PsiUtil psiUtil = new PsiUtil(pMonitor);
         String xml = record.getXmlContent();
         StringReader reader = new StringReader(xml);
         existingProtein = ProteinInteractorType.
