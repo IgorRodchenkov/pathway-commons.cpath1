@@ -100,7 +100,7 @@
   <property name="catalina.home" value="../../../.."/> <!-- UPDATE THIS! -->
   <property name="dist.home"     value="${basedir}/dist"/>
   <property name="dev_docs.home" value="${basedir}/web/WEB-INF/jsp/dev"/>
-  <property name="api_docs.home" value="${dev_docs.home}/api"/>
+  <property name="api_docs.home" value="${basedir}/web/jsp/api"/>
   <property name="manager.url"   value="http://localhost:8080/manager"/>
   <property name="src.home"      value="${basedir}/src"/>
   <property name="web.home"      value="${basedir}/web"/>
@@ -192,6 +192,7 @@
     <delete dir="${dist.home}"/>
     <delete dir="${lucene.dir}"/>
     <delete dir="${api_docs.home}"/>
+    <delete file="${dev_docs.home}/todo.txt"/>
   </target>
 
 
