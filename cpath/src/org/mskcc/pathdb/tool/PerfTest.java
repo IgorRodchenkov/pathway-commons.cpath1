@@ -35,6 +35,7 @@ import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -88,7 +89,7 @@ public class PerfTest {
     }
 
     private static void testXmlBinding() throws IOException, MarshalException,
-            ValidationException {
+            ValidationException, DataServiceException {
         ContentReader reader = new ContentReader();
         String xml = reader.retrieveContent("testData/dip_psi.xml");
         //String xml = reader.retrieveContent("testData/dip20040203.mif");
