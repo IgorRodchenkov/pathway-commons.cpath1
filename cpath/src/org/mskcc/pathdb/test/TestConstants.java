@@ -15,12 +15,12 @@ public class TestConstants {
     /**
      * Database User Name.
      */
-    public static final String USER = "user";
+    public static final String USER = "cbio";
 
     /**
      * Database Password.
      */
-    public static final String PASSWORD = "cbio1";
+    public static final String PASSWORD = "";
 
     /**
      * A Sample ORF Name.

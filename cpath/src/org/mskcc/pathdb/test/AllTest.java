@@ -58,7 +58,7 @@ public class AllTest extends TestCase {
         PropertyManager propertyManager = PropertyManager.getInstance();
         propertyManager.setLogConfigFile("config/config-JDBC.properties");
         propertyManager.setDbHost("localhost");
-        propertyManager.setDbUser("user");
-        propertyManager.setDbPassword("cbio1");
+        propertyManager.setDbUser("cbio");
+        propertyManager.setDbPassword("");
     }
 }

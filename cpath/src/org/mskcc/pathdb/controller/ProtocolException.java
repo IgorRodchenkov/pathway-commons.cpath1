@@ -4,12 +4,11 @@ import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Encapsulates a Violation of the Data Service Protocol.
@@ -106,8 +105,8 @@ public class ProtocolException extends Exception {
         try {
             outputter.output(document, writer);
         } catch (IOException e) {
-            logger.log(Level.WARNING,
-                    "Exception thrown while outputting XML Error Protocol:  "
+            logger.error
+                    ("Exception thrown while outputting XML Error Protocol:  "
                     + e.getMessage());
         }
         return writer.toString();

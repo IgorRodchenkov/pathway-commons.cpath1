@@ -2,6 +2,7 @@ package org.mskcc.pathdb.servlet;
 
 import org.mskcc.pathdb.controller.DataServiceController;
 import org.mskcc.pathdb.logger.ConfigLogger;
+import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.util.PropertyManager;
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
+import java.sql.SQLException;
 
 /**
  * Data Service Servlet.
@@ -90,17 +92,44 @@ public final class DataService extends HttpServlet {
         String logConfigFile = config.getInitParameter("log_config_file");
         ServletContext ctx = this.getServletContext();
         String realLogPath = ctx.getRealPath(logConfigFile);
-        System.err.println("web.xml param:  log_config_file --> "+logConfigFile);
-        System.err.println("Real Path for log config file:  "+realLogPath);
-        System.err.println("web.xml param:  db_host --> "+dbHost);
-        System.err.println("web.xml param:  db_user --> "+dbUser);
-        System.err.println("web.xml param:  db_password --> "+dbPassword);
+        System.err.println("web.xml param:  log_config_file --> " + logConfigFile);
+        System.err.println("Real Path for log config file:  " + realLogPath);
+        System.err.println("web.xml param:  db_host --> " + dbHost);
+        System.err.println("web.xml param:  db_user --> " + dbUser);
+        System.err.println("web.xml param:  db_password --> " + dbPassword);
         manager.setDbHost(dbHost);
         manager.setDbUser(dbUser);
         manager.setDbPassword(dbPassword);
         manager.setLogConfigFile(realLogPath);
-        System.err.println ("Starting up Log4J Logging System");
+        System.err.println("Starting up Log4J Logging System");
         ConfigLogger.configureLogger();
+        verifyDbConnection();
         System.err.println("Data Service Initialization Complete --> OK");
+    }
+
+    /**
+     * Verifies Database Connection.  In the event of an error, log
+     * messages are written out to catalina.out.
+     */
+    private void verifyDbConnection() {
+        System.err.println("Veriyfing Database Connection...");
+        AdminLogger adminLogger = new AdminLogger();
+        try {
+            adminLogger.getLogRecords();
+            System.err.println("Database Connection -->  OK");
+        } catch (SQLException e) {
+            while (e != null) {
+                System.err.println("****  Error Connecting to Database");
+                System.err.println("SQLException:  " + e.toString());
+                System.err.println("Message:  " + e.getMessage());
+                System.err.println("Error Code:  " + e.getErrorCode());
+                System.err.println("Localized Message:  "
+                        + e.getLocalizedMessage());
+                System.err.println("SQL State:  " + e.getSQLState());
+                e = e.getNextException();
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.toString());
+        }
     }
 }
