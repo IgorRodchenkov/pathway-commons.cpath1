@@ -436,7 +436,7 @@
 
 	<!-- Target to Transfer Import Records -->
 	<target name="transfer1" description="Transfer Target #1" depends="compile">
-		<java classname="org.mskcc.pathdb.sql.TransferImportToGrid">
+		<java classname="org.mskcc.pathdb.sql.TransferImportToCPath">
 	         	<arg value="localhost"/> 
        		 	<classpath refid="compile.classpath"/>
        		</java>
@@ -452,7 +452,7 @@
 
 	<!-- Target to Import DIP Database -->
 	<target name="load_dip" description="Load DIP Data into cPath" depends="compile">
-		<java classname="org.mskcc.pathdb.sql.TransferImportToGrid">
+		<java classname="org.mskcc.pathdb.sql.TransferImportToCPath">
 			<arg line="localhost testData/dip_psi.xml"/>
 			<classpath refid="compile.classpath"/>
 		</java>

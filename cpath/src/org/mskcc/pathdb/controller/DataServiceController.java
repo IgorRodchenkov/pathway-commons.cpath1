@@ -9,12 +9,13 @@ import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.mapper.MapInteractionsToPsi;
+import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.services.ReadInteractions;
 import org.mskcc.dataservices.services.ReadInteractors;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.sql.query.InteractionQuery;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 /**
  * DataService Controller.
@@ -57,16 +59,10 @@ public class DataServiceController {
     /**
      * Processes User Request.
      * @param protocolRequest Protocol Request object.
-     * @throws MarshalException Problem using Castor.
-     * @throws ValidationException XML Document is not valid.
-     * @throws DataServiceException Problem accessing data.
-     * @throws ProtocolException Problem with service.
-     * @throws IOException Problem writing out data.
-     * @throws ServletException Problem writing to servlet.
+     * @throws Exception All Exceptions.
      */
     public void processRequest(ProtocolRequest protocolRequest)
-            throws MarshalException, ValidationException, DataServiceException,
-            ProtocolException, IOException, ServletException {
+            throws Exception {
         try {
             if (protocolRequest.getCommand().equals
                     (ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS)) {
@@ -85,20 +81,19 @@ public class DataServiceController {
 
     private void processGetInteractions(ProtocolRequest protocolRequest)
             throws DataServiceException, MarshalException, ValidationException,
-            ServletException, IOException {
-        ArrayList interactions =
-                getInteractions(protocolRequest.getUid());
+            ServletException, IOException, ClassNotFoundException,
+            SQLException, MapperException {
+        InteractionQuery query = new InteractionQuery
+                (protocolRequest.getUid());
+        EntrySet entrySet = query.getEntrySet();
+        StringWriter writer = new StringWriter();
+        entrySet.marshal(writer);
+        String xml = writer.toString();
+        ArrayList interactions = query.getInteractions();
         xdebug.logMsg(this, "Number of Interactions Found:  "
                 + interactions.size());
         if (protocolRequest.getFormat().equals
                 (ProtocolConstants.FORMAT_PSI)) {
-            MapInteractionsToPsi mapper =
-                    new MapInteractionsToPsi(interactions);
-            mapper.doMapping();
-            EntrySet entrySet = mapper.getPsiXml();
-            StringWriter writer = new StringWriter();
-            entrySet.marshal(writer);
-            String xml = writer.toString();
             this.returnXml(xml);
         } else {
             request.setAttribute("interactions", interactions);

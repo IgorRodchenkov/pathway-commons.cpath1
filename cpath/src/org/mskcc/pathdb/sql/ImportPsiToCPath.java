@@ -1,18 +1,20 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.util.PsiUtil;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.dataservices.mapper.MapPsiToInteractions;
+import org.mskcc.dataservices.mapper.MapperException;
+import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
-import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.dataservices.bio.ExternalReference;
-import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.MarshalException;
+import org.mskcc.pathdb.util.PsiUtil;
+import org.mskcc.pathdb.xdebug.XDebug;
 
+import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.io.StringWriter;
 
 /**
  * Imports a single PSI-MI record into cPath.
@@ -117,11 +119,12 @@ public class ImportPsiToCPath {
      * @throws MarshalException Error Marshaling Object.
      * @throws ClassNotFoundException JDBC Driver not found.
      * @throws SQLException Error Connecting to Database.
+     * @throws MapperException Error Mapping to Data Service objects.
      * @throws ExternalDatabaseNotFoundException External DB Not Found.
      */
     public ImportSummary addRecord(String xml)
             throws ValidationException, MarshalException,
-            ClassNotFoundException, SQLException,
+            ClassNotFoundException, SQLException, MapperException,
             ExternalDatabaseNotFoundException {
         summary = new ImportSummary();
         idMap = new HashMap();
@@ -143,7 +146,8 @@ public class ImportPsiToCPath {
      */
     private void processInteractors(EntrySet entrySet)
             throws SQLException, ClassNotFoundException, MarshalException,
-            ValidationException, ExternalDatabaseNotFoundException {
+            ValidationException, ExternalDatabaseNotFoundException,
+            MapperException {
         DaoExternalLink externalLinker = new DaoExternalLink();
 
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
@@ -197,12 +201,16 @@ public class ImportPsiToCPath {
     private void saveInteractor(ProteinInteractorType protein,
             ExternalReference[] refs) throws MarshalException,
             ValidationException, ClassNotFoundException, SQLException,
-            ExternalDatabaseNotFoundException {
+            ExternalDatabaseNotFoundException, MapperException {
         DaoCPath cpath = new DaoCPath();
 
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = marshalProtein(protein);
         String name = protein.getNames().getShortLabel();
+        if (name == null || name.length() == 0) {
+            MapPsiToInteractions mapper = new MapPsiToInteractions(null, null);
+            name = mapper.extractNameSubstitute(protein.getId(), refs);
+        }
         String desc = protein.getNames().getFullName();
         Organism organism = protein.getOrganism();
         int taxId = CPathRecord.TAXONOMY_NOT_SPECIFIED;
@@ -216,9 +224,6 @@ public class ImportPsiToCPath {
 
         //  Add to Id Hash Map
         idMap.put(protein.getId(), new Long(cpathId));
-
-        xdebug.logMsg(this, "Saving new interactor:  "
-                + name + ", with cpathId:  " + cpathId);
 
         //  Step 3.1.3.2
         //  Update XML with new CPath ID.

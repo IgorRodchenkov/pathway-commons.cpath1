@@ -1,22 +1,25 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.sql.ImportPsiToCPath;
-import org.mskcc.pathdb.sql.DaoExternalLink;
-import org.mskcc.pathdb.sql.DaoCPath;
-import org.mskcc.pathdb.sql.DaoInternalLink;
-import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.dataservices.schemas.psi.Entry;
+import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.mskcc.dataservices.schemas.psi.InteractionList;
+import org.mskcc.dataservices.schemas.psi.InteractorList;
+import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.sql.DaoExternalLink;
+import org.mskcc.pathdb.sql.ImportPsiToCPath;
+import org.mskcc.pathdb.sql.query.InteractionQuery;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.io.StringWriter;
 
 /**
- * Tests the ImportPsiToCPath Class.
+ * Tests the ImportPsiToCPath, the InteractionQuery
+ * and the PsiBuilder Classes.
  *
  * @author Ethan Cerami
  */
@@ -53,19 +56,21 @@ public class TestImportPsiToCPath extends TestCase {
         assertEquals (0, summary.getNumInteractorsSaved());
     }
 
-    private void validateData() throws ClassNotFoundException, SQLException {
-        DaoCPath cpath = new DaoCPath();
-        CPathRecord record = cpath.getRecordByName("YCR038C");
-
-        DaoInternalLink linker = new DaoInternalLink();
-        ArrayList list = linker.getInternalLinksWithLookup(record.getId());
-        assertEquals (4, list.size());
-//      Useful for Debugging.
-//        for (int i=0; i<list.size(); i++) {
-//            record = (CPathRecord) list.get(i);
-//            String xml = record.getXmlContent();
-//            System.out.println(xml);
-//            System.out.println("--------------------------");
-//        }
+    /**
+     * Validates Data with InteractionQuery.
+     * @throws Exception All Exceptions.
+     */
+    private void validateData() throws Exception {
+        InteractionQuery query = new InteractionQuery("YCR038C");
+        EntrySet entrySet = query.getEntrySet();
+        StringWriter writer = new StringWriter();
+        entrySet.marshal(writer);
+        Entry entry = entrySet.getEntry(0);
+        InteractorList interactorList = entry.getInteractorList();
+        assertEquals (5, interactorList.getProteinInteractorCount());
+        InteractionList interactionList = entry.getInteractionList();
+        assertEquals (4, interactionList.getInteractionCount());
+        assertTrue (entrySet.isValid());
+        // System.out.println(writer.toString());
     }
 }

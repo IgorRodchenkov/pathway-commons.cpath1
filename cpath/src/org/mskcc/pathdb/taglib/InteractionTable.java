@@ -142,14 +142,16 @@ public class InteractionTable extends HtmlTable {
             throws SQLException, ClassNotFoundException {
         DaoExternalLink dao = new DaoExternalLink();
         String id = (String) interactor.getAttribute(InteractorVocab.LOCAL_ID);
-        ArrayList links = dao.getRecordsByCPathId(Integer.parseInt(id));
-        append("<TD VALIGN=TOP><UL>");
-        for (int i = 0; i < links.size(); i++) {
-            ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
-            ExternalDatabaseRecord db = link.getExternalDatabase();
-            append("<LI>" + db.getName() + ": ");
-            outputLink(link.getLinkedToId(), link.getWebLink(),
-                    db.getDescription());
+        if (id != null) {
+            ArrayList links = dao.getRecordsByCPathId(Integer.parseInt(id));
+            append("<TD VALIGN=TOP><UL>");
+            for (int i = 0; i < links.size(); i++) {
+                ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
+                ExternalDatabaseRecord db = link.getExternalDatabase();
+                append("<LI>" + db.getName() + ": ");
+                outputLink(link.getLinkedToId(), link.getWebLink(),
+                        db.getDescription());
+            }
         }
         append("</UL></TD>");
     }

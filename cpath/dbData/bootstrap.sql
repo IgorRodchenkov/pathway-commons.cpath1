@@ -37,6 +37,8 @@ INSERT INTO `external_db` VALUES (5, 'PROSITE', 'http://us.expasy.org/cgi-bin/ni
 INSERT INTO `external_db` VALUES (6, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=%ID%&Search2=Query+DIP', 'Database of Interacting Proteins', NULL, NULL, 20031002162656, 20031002162656);
 INSERT INTO `external_db` VALUES (7, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%', 'Protein families database of alignments and HMMs.', NULL, NULL, 20031002162804, 20031002162804);
 INSERT INTO `external_db` VALUES (8, 'Entrez GI', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=protein&list_uids=%ID%&dopt=GenPept&term=%ID%&qty=1', 'NCBI Entrez System', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (9, 'Locus Link', 'http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l=%ID%', 'NCBI Locus Link', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (10, 'GO', 'http://godatabase.org/cgi-bin/go.cgi?view=query&query=%ID%', 'Gene Ontology', NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #  Insert data into table 'external_db_cv'
@@ -54,6 +56,8 @@ INSERT INTO `external_db_cv` VALUES (9, 6, 'DIP');
 INSERT INTO `external_db_cv` VALUES (10, 7, 'Pfram');
 INSERT INTO `external_db_cv` VALUES (11, 8, 'Entrez GI');
 INSERT INTO `external_db_cv` VALUES (12, 8, 'GI');
+INSERT INTO `external_db_cv` VALUES (13, 9, 'LocusLink');
+INSERT INTO `external_db_cv` VALUES (14, 10, 'GO');
 
 use grid;
 truncate table orf_info;

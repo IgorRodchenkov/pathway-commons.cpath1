@@ -1,16 +1,14 @@
 package org.mskcc.pathdb.sql;
 
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.core.DataServiceException;
-import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.mapper.MapPsiToInteractions;
 import org.mskcc.dataservices.mapper.MapperException;
-import org.mskcc.dataservices.services.WriteInteractions;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.model.ImportRecord;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.util.BatchTool;
-import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
@@ -24,7 +22,7 @@ import java.util.ArrayList;
  *
  * @author Ethan Cerami
  */
-public class TransferImportToGrid extends BatchTool {
+public class TransferImportToCPath extends BatchTool {
     private DaoImport dbImport;
 
     /**
@@ -32,7 +30,8 @@ public class TransferImportToGrid extends BatchTool {
      * @param runningFromCommandLine Running from Command Line.
      * @param xdebug XDebug Object.
      */
-    public TransferImportToGrid(boolean runningFromCommandLine, XDebug xdebug) {
+    public TransferImportToCPath(boolean runningFromCommandLine,
+            XDebug xdebug) {
         super(runningFromCommandLine, xdebug);
     }
 
@@ -41,12 +40,17 @@ public class TransferImportToGrid extends BatchTool {
      * @throws SQLException Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating JDBC Driver.
      * @throws IOException Error Reading Files.
-     * @throws MapperException Error Mapping to PSI.
+     * @throws MapperException Error Mapping to Interaction objects.
      * @throws DataServiceException Error Connecting to Data Service.
+     * @throws ExternalDatabaseNotFoundException Could not find database.
+     * @throws MarshalException Marshal Exception
+     * @throws ValidationException Validation Exception.
      */
     public void transferData()
             throws SQLException, ClassNotFoundException,
-            IOException, MapperException, DataServiceException {
+            IOException, MapperException, DataServiceException,
+            ExternalDatabaseNotFoundException, MarshalException,
+            ValidationException {
         outputMsg("Transferring Import Records");
         dbImport = new DaoImport();
         ArrayList records = dbImport.getAllRecords();
@@ -72,18 +76,12 @@ public class TransferImportToGrid extends BatchTool {
      * Transfers Single Import Record.
      */
     private void transferRecord(ImportRecord record) throws MapperException,
-            DataServiceException, ClassNotFoundException, SQLException {
-        ArrayList interactions = new ArrayList();
-        String data = record.getData();
-        MapPsiToInteractions mapper = new MapPsiToInteractions(data,
-                interactions);
-        mapper.doMapping();
-
-        DataServiceFactory factory = DataServiceFactory.getInstance();
-        WriteInteractions service = (WriteInteractions) factory.getService
-                (CPathConstants.WRITE_INTERACTIONS_TO_GRID);
-        service.writeInteractions(interactions);
-
+            DataServiceException, ClassNotFoundException, SQLException,
+            ExternalDatabaseNotFoundException, MarshalException,
+            ValidationException {
+        String xml = record.getData();
+        ImportPsiToCPath importer = new ImportPsiToCPath(this.getXDebug());
+        importer.addRecord(xml);
         dbImport.markRecordAsTransferred(record.getImportId());
     }
 
@@ -98,14 +96,14 @@ public class TransferImportToGrid extends BatchTool {
                 PropertyManager manager = PropertyManager.getInstance();
                 manager.setProperty(PropertyManager.DB_LOCATION, args[0]);
             } else {
-                System.out.println("Command line usage:  TransferImportToGrid "
+                System.out.println("Command line usage:  TransferImportToCPath "
                         + "host_name [datafile]");
             }
             RegisterCPathServices.registerServices();
             if (args.length > 1) {
                 loadDataFile(args[1]);
             }
-            TransferImportToGrid transfer = new TransferImportToGrid
+            TransferImportToCPath transfer = new TransferImportToCPath
                     (true, null);
             transfer.transferData();
         } catch (Exception e) {

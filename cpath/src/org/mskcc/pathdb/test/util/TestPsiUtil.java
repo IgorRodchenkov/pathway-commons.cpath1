@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.test.util;
 
 import junit.framework.TestCase;
+import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.util.PsiUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 

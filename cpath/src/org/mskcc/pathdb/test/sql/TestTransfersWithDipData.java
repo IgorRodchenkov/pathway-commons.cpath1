@@ -3,13 +3,11 @@ package org.mskcc.pathdb.test.sql;
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
-import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.services.ReadInteractions;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.sql.DaoImport;
-import org.mskcc.pathdb.sql.TransferImportToGrid;
-import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.sql.TransferImportToCPath;
+import org.mskcc.pathdb.sql.query.InteractionQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,23 +32,23 @@ public class TestTransfersWithDipData extends TestCase {
         addDipDataToImportTable();
 
         //  Transfer DIP data to GRID
-        TransferImportToGrid transfer = new TransferImportToGrid(false, null);
+        TransferImportToCPath transfer = new TransferImportToCPath(false, null);
         transfer.transferData();
 
         //  Verify Contents
-        DataServiceFactory factory = DataServiceFactory.getInstance();
-        ReadInteractions service = (ReadInteractions) factory.getService
-                (CPathConstants.READ_INTERACTIONS_FROM_GRID);
-        ArrayList interactions = service.getInteractions("P06139");
+        InteractionQuery query = new InteractionQuery("P06139");
+        ArrayList interactions = query.getInteractions();
 
-        assertEquals(4, interactions.size());
+        assertEquals(5, interactions.size());
 
         validateInteraction(0, interactions, "Genetic", "11821039");
         validateInteraction(1, interactions, "x-ray crystallography",
                 "9174345");
         validateInteraction(2, interactions, "x-ray crystallography",
-                "10587438");
+                "9174345");
         validateInteraction(3, interactions, "x-ray crystallography",
+                "10587438");
+        validateInteraction(4, interactions, "x-ray crystallography",
                 "10089390");
     }
 

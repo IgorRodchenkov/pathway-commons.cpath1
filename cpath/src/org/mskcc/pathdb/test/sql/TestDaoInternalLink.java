@@ -1,11 +1,11 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.sql.DaoCPath;
-import org.mskcc.pathdb.sql.DaoInternalLink;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.sql.DaoCPath;
+import org.mskcc.pathdb.sql.DaoInternalLink;
 
 import java.util.ArrayList;
 

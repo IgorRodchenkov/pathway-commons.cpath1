@@ -28,9 +28,6 @@ public class PsiUtil {
      */
     public PsiUtil(XDebug xdebug) {
         this.xdebug = xdebug;
-        this.interactorMap = new HashMap();
-        this.availabilityMap = new HashMap();
-        this.experimentMap = new HashMap();
     }
 
     /**
@@ -42,6 +39,9 @@ public class PsiUtil {
      */
     public EntrySet getNormalizedDocument(String xml)
             throws ValidationException, MarshalException {
+        this.interactorMap = new HashMap();
+        this.availabilityMap = new HashMap();
+        this.experimentMap = new HashMap();
         return normalizeDoc(xml);
     }
 
@@ -62,7 +62,6 @@ public class PsiUtil {
      */
     public void updateInteractions(InteractionList interactions,
             HashMap idMap) {
-        xdebug.logMsg(this, "Updating Interactions with new Interactor IDs");
         for (int i = 0; i < interactions.getInteractionCount(); i++) {
             InteractionElementType interaction =
                     interactions.getInteraction(i);
@@ -74,8 +73,6 @@ public class PsiUtil {
                 RefType refType = choice.getProteinInteractorRef();
                 String ref = refType.getRef();
                 Long cPathId = (Long) idMap.get(ref);
-                xdebug.logMsg(this, "... Replacing:  " + ref
-                        + " with:  " + cPathId.longValue());
                 if (cPathId == null) {
                     throw new NullPointerException("No cPath ID found for: "
                             + ref);

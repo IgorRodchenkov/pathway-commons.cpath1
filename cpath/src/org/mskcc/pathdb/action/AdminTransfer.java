@@ -4,7 +4,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.sql.TransferExternalLinks;
-import org.mskcc.pathdb.sql.TransferImportToGrid;
+import org.mskcc.pathdb.sql.TransferImportToCPath;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class AdminTransfer extends BaseAction {
         String action = request.getParameter("action");
         ;
         if (action.equals("transfer1")) {
-            TransferImportToGrid transfer = new TransferImportToGrid(false,
+            TransferImportToCPath transfer = new TransferImportToCPath(false,
                     xdebug);
             transfer.transferData();
         } else {

@@ -1,12 +1,12 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
+import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.DaoExternalDb;
 import org.mskcc.pathdb.sql.DaoExternalLink;
-import org.mskcc.dataservices.bio.ExternalReference;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

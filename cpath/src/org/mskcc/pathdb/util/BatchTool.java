@@ -35,4 +35,8 @@ public abstract class BatchTool {
             xdebug.logMsg(this, message);
         }
     }
+
+    protected XDebug getXDebug() {
+        return this.xdebug;
+    }
 }

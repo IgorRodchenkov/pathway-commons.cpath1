@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Data Access Objct for the GRID Interaction Table.
+ * Data Access Object for the GRID Interaction Table.
  *
  * Interaction Identity is based on three rules:
  * 1.  A <--> B or B <--> A
