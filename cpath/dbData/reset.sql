@@ -67,6 +67,7 @@ INSERT INTO `external_db_cv` VALUES (6, 1, 'UNIPROT');
 INSERT INTO `external_db_cv` VALUES (21, 2, 'ENTREZ_GENE');
 INSERT INTO `external_db_cv` VALUES (22, 2, 'LOCUS_LINK');
 INSERT INTO `external_db_cv` VALUES (23, 2, 'LOCUSLINK');
+INSERT INTO `external_db_cv` VALUES (66, 2, 'LOCUS-LINK');
 
 #  Terms Associated with RefSeq
 INSERT INTO `external_db_cv` VALUES (24, 24, 'REFSEQ');
