@@ -4,6 +4,7 @@ import gnu.getopt.Getopt;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.task.IndexLuceneTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -28,7 +29,6 @@ public class Admin {
     private static boolean validateExternalReferences = true;
     private static boolean xdebugFlag = false;
     private static String command = null;
-    private static XDebug xdebug = new XDebug();
 
     /**
      * Main Method.
@@ -37,8 +37,14 @@ public class Admin {
      */
     public static void main(String[] argv) {
         try {
+            XDebug xdebug = new XDebug();
+            xdebug.startTimer();
             processCommandLineArgs(argv);
             getFromConsole();
+
+            //  Turn on Command Line JDBC Connection
+            JdbcUtil.isCommandLineApplication(true);
+
             if (command.equals(COMMAND_INDEX)) {
                 IndexLuceneTask indexer = new IndexLuceneTask(true, xdebug);
                 indexer.start();
@@ -55,6 +61,9 @@ public class Admin {
                 System.out.println("----------------------------------------");
                 System.out.println(xdebug.getCompleteLog());
             }
+            xdebug.stopTimer();
+            System.out.println("Total Time:  " + xdebug.getTimeElapsed()
+                    + " ms");
         } catch (Exception e) {
             System.out.println("**** ERROR:  " + e.getMessage());
             e.printStackTrace();
@@ -66,7 +75,8 @@ public class Admin {
      */
     private static void importData() throws IOException, DaoException,
             ImportException {
-        if (fileName.endsWith("xml") || fileName.endsWith("psi")) {
+        if (fileName.endsWith("xml") || fileName.endsWith("psi")
+            || fileName.endsWith("mif")) {
             System.out.println("Based on the file extension, I am concluding "
                     + "that this is a PSI-MI File.");
             LoadPsi.importDataFile(fileName);
