@@ -124,14 +124,14 @@ public class ProgressMonitor {
     }
 
     /**
-     * Sets the Current Task Message.
+     * Logs a Message.
      *
      * @param currentMessage Current Task Message.
      */
     public void setCurrentMessage(String currentMessage) {
         this.currentMessage = currentMessage;
         if (consoleMode) {
-            System.out.println("\n"+currentMessage);
+            System.out.println(currentMessage);
         }
     }
 }
