@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.pathdb.controller.ProtocolConstants;
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;

@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.query.QueryFileReader;
 
 import java.util.ArrayList;

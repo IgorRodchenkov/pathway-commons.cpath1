@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.pathdb.controller.ProtocolConstants;
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.query.Query;
 import org.mskcc.pathdb.sql.query.QueryException;

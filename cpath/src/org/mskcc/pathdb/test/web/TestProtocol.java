@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.mskcc.pathdb.controller.ProtocolConstants;
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.test.TestConstants;
 
 /**

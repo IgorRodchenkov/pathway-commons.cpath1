@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.controller;
+package org.mskcc.pathdb.protocol;
 
 import java.util.HashMap;
 

@@ -3,7 +3,7 @@ package org.mskcc.pathdb.sql.query;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.lucene.RequestAdapter;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;

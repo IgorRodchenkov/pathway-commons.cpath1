@@ -7,7 +7,7 @@ import org.apache.struts.action.ActionMapping;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
-import org.mskcc.pathdb.controller.*;
+import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.query.Query;

@@ -2,7 +2,7 @@ package org.mskcc.pathdb.test.taglib;
 
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.taglib.Pager;
 
 /**

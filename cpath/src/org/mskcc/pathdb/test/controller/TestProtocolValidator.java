@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.test.controller;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.controller.*;
+import org.mskcc.pathdb.protocol.*;
 
 import java.util.HashMap;
 

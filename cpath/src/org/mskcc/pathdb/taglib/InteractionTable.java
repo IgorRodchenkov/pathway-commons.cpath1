@@ -35,8 +35,8 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.pathdb.controller.ProtocolConstants;
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;

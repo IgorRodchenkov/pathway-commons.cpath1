@@ -2,8 +2,8 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.dataservices.schemas.psi.NamesType;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
-import org.mskcc.pathdb.controller.ProtocolConstants;
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.ProteinWithWeight;
 

@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.controller;
+package org.mskcc.pathdb.protocol;
 
 import org.apache.log4j.Logger;
 

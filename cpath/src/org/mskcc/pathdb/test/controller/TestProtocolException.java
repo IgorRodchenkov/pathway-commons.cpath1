@@ -1,8 +1,8 @@
 package org.mskcc.pathdb.test.controller;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.controller.ProtocolException;
-import org.mskcc.pathdb.controller.ProtocolStatusCode;
+import org.mskcc.pathdb.protocol.ProtocolException;
+import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 
 /**
  * Tests the ProtocolException object.

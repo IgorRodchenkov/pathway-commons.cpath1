@@ -3,7 +3,7 @@ package org.mskcc.pathdb.taglib;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.struts.util.PropertyMessageResources;
 import org.mskcc.pathdb.action.admin.AdminWebLogging;
-import org.mskcc.pathdb.controller.ProtocolException;
+import org.mskcc.pathdb.protocol.ProtocolException;
 import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;

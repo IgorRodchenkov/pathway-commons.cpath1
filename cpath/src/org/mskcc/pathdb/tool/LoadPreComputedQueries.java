@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.pathdb.controller.NeedsHelpException;
-import org.mskcc.pathdb.controller.ProtocolException;
-import org.mskcc.pathdb.controller.ProtocolRequest;
-import org.mskcc.pathdb.controller.ProtocolValidator;
+import org.mskcc.pathdb.protocol.NeedsHelpException;
+import org.mskcc.pathdb.protocol.ProtocolException;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolValidator;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.sql.query.Query;

@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.config;
+package org.mskcc.pathdb.util;
 
 /**
  * Configures the Apache Commons Logging.

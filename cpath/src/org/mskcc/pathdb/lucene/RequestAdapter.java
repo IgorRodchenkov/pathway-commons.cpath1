@@ -1,6 +1,6 @@
 package org.mskcc.pathdb.lucene;
 
-import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 
 /**
  * This class takes in a ProtocolRequest object, and outputs its
