@@ -4,6 +4,7 @@ import org.apache.lucene.document.Field;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.XmlStripper;
+import org.jdom.Text;
 
 import java.util.ArrayList;
 import java.io.IOException;
@@ -105,7 +106,8 @@ public class PsiInteractionToIndex implements ItemToIndex {
         StringBuffer interactorIdTokens = new StringBuffer();
         StringBuffer interactorTokens = new StringBuffer();
         StringBuffer organismTokens = new StringBuffer();
-        for (int i=0; i<interactorList.getProteinInteractorCount(); i++) {
+        int size = interactorList.getProteinInteractorCount();
+        for (int i=0; i<size; i++) {
             ProteinInteractorType protein =
                     interactorList.getProteinInteractor(i);
             appendNameTokens(protein.getNames(), interactorTokens);
@@ -185,10 +187,22 @@ public class PsiInteractionToIndex implements ItemToIndex {
      */
     private void appendNameTokens(NamesType names, StringBuffer tokens) {
          if (names != null) {
-            appendToken (tokens, names.getShortLabel());
-            appendToken (tokens, names.getFullName());
+            String shortName = names.getShortLabel();
+            String fullName = names.getFullName();
+            appendToken (tokens, normalizeText(shortName));
+            appendToken (tokens, normalizeText(fullName));
         }
     }
+
+    /**
+     * Normalizes Text.
+     * Rreplaces all whitespace characters with a single whitespace.
+     */ 
+    private String normalizeText (String str) {
+        Text text = new Text (str);
+        return text.getTextNormalize();
+    }
+
 
     /**
      * Appends CV Tokens.
