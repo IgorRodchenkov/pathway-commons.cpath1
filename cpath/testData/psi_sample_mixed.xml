@@ -123,6 +123,9 @@
                         <proteinInteractorRef ref="YAL036C"/>
                     </proteinParticipant>
                 </participantList>
+		<xref>
+			<primaryRef db="DIP" id="58E"/>
+		</xref>
             </interaction>
             <interaction>
                 <availabilityRef ref="avail1"/>
