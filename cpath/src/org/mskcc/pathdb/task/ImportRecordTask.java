@@ -13,7 +13,6 @@ import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
  * @author Ethan Cerami.
  */
 public class ImportRecordTask extends Task {
-    private ProgressMonitor pMonitor;
     private long importId;
     private ImportSummary summary;
 
