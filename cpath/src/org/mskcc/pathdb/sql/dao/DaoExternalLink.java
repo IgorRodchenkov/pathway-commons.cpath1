@@ -94,6 +94,14 @@ public class DaoExternalLink {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+
+        //  Validate Incoming Links are not Null or Empty, part of bug #0000508.
+        //  JUnit Test occurs in TestDaoExternalLinks.testEmptyIds();
+        String linkedToId = link.getLinkedToId();
+        if (linkedToId == null || linkedToId.length() ==0) {
+            throw new IllegalArgumentException ("External Reference "
+            + "ID is null or empty.");
+        }
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
@@ -163,6 +171,18 @@ public class DaoExternalLink {
             for (int i = 0; i < refs.length; i++) {
                 String dbName = refs[i].getDatabase();
                 String id = refs[i].getId();
+
+                //  Checks for Null or Empty DB Name, part of bug:  0000508.
+                if (dbName == null || dbName.length() == 0) {
+                    throw new ExternalDatabaseNotFoundException
+                            ("Database name is null or empty");
+                }
+                //  Checks for Null or Empty DB ID, part of bug:  0000508.
+                if (id == null || id.length() == 0) {
+                    throw new ExternalDatabaseNotFoundException
+                            ("Database ID is null or empty");
+                }
+
                 DaoExternalDb dao = new DaoExternalDb();
                 ExternalDatabaseRecord exDb =
                         dao.getRecordByTerm(refs[i].getDatabase());
@@ -225,9 +245,6 @@ public class DaoExternalLink {
                         DaoCPath cpathDao = new DaoCPath();
                         CPathRecord record = cpathDao.getRecordById(cpathId);
                         records.add(record);
-//                        System.out.println("\nMatching Record Found, "
-//                                + "Based on:  " + externalDb.getLabel()
-//                                + ":  " + linkedToId);
                     }
                 }
             }

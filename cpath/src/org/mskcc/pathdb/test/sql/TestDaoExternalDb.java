@@ -94,6 +94,25 @@ public class TestDaoExternalDb extends TestCase {
         assertEquals(null, record);
     }
 
+    /**
+     * Tests Empty Arguments.
+     * @throws Exception All Exceptions.
+     */
+    public void testEmptyRefs () throws Exception {
+        try {
+            DaoExternalDb dao = new DaoExternalDb();
+            dao.getRecordByName("");
+            fail ("IllegalArgumentException should have been throw.");
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+            DaoExternalDb dao = new DaoExternalDb();
+            dao.getRecordByTerm("");
+            fail ("IllegalArgumentException should have been throw.");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
     private void validateRecord(ExternalDatabaseRecord record) {
         assertEquals(NAME, record.getName());
         assertEquals(DESC, record.getDescription());

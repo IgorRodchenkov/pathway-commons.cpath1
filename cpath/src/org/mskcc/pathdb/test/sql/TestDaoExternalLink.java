@@ -37,6 +37,7 @@ import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.ExternalDatabaseNotFoundException;
 
 import java.util.ArrayList;
 
@@ -87,6 +88,37 @@ public class TestDaoExternalLink extends TestCase {
 
         boolean exists = db.recordExists(link);
         assertTrue(!exists);
+    }
+
+    /**
+     * Tests Empty ID Issue, related to bug #0000508.
+     * @throws Exception All Exceptions.
+     */
+    public void testEmptyIds() throws Exception {
+        DaoExternalDb dbTable = new DaoExternalDb();
+        ExternalDatabaseRecord externalDb = dbTable.getRecordByTerm(DB_NAME);
+        DaoExternalLink db = new DaoExternalLink();
+        ExternalLinkRecord link = new ExternalLinkRecord();
+        link.setCpathId(1);
+        link.setExternalDatabase(externalDb);
+        link.setLinkedToId("");
+
+        boolean success = false;
+        try {
+            success = db.addRecord(link, false);
+            fail ("IllegalArgumentException should have been thrown.");
+        } catch (IllegalArgumentException e) {
+            assertEquals (false, success);
+        }
+
+        ExternalReference refs[] = new ExternalReference[1];
+        refs[0] = new ExternalReference ("", "");
+        try {
+            db.validateExternalReferences(refs);
+            fail ("ExternalDatabaseNotFoundException should have been thrown.");
+        } catch (ExternalDatabaseNotFoundException e) {
+            assertEquals (false, success);
+        }
     }
 
     private void addSampleRecord() throws DaoException {
