@@ -33,19 +33,19 @@ import gnu.getopt.Getopt;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
-import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
-import org.mskcc.pathdb.task.ImportReferencesTask;
-import org.mskcc.pathdb.task.IndexLuceneTask;
-import org.mskcc.pathdb.task.ValidateXmlTask;
+import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Command Line cPath Administrator.
@@ -59,6 +59,7 @@ public class Admin {
     private static final String COMMAND_PRE_COMPUTE = "precompute";
     private static final String COMMAND_COUNT_AFFYMETRIX = "count_affy";
     private static final String COMMAND_VALIDATE = "validate";
+    private static final String COMMAND_EXPORT = "export";
     private static final int NOT_SET = -9999;
 
     //  User Parameters
@@ -102,6 +103,10 @@ public class Admin {
                 ValidateXmlTask validator = new ValidateXmlTask
                         (new File(fileName));
                 validator.validate(true);
+            } else if (command.equals(COMMAND_EXPORT)) {
+                ExportInteractionsToText export =
+                        new ExportInteractionsToText (true);
+                export.executeTask();
             } else {
                 throw new IllegalArgumentException("Command Not Recognized");
             }
@@ -158,7 +163,7 @@ public class Admin {
 
     private static void importDataFromSingleFile(File file) throws IOException,
             DaoException, SAXException, DataServiceException,
-            MissingDataException {
+            ImportException {
         String fileName = file.getName();
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
                 || fileName.endsWith("mif")) {
@@ -178,15 +183,15 @@ public class Admin {
                 System.exit(-1);
             }
         } else {
-//            Temporarily returned back to the original import references task.
-//            ParseIdMappingsTask task = new ParseIdMappingsTask(file, true);
-//            int numRecordsSaved = task.parseAndStoreToDb();
-//            NumberFormat formatter = new DecimalFormat("#,###,###");
-//            System.out.println("\nTotal Number of ID Mappings Stored:  "
-//                    + formatter.format(numRecordsSaved));
-            FileReader reader = new FileReader(file);
-            ImportReferencesTask task = new ImportReferencesTask(true, reader);
-            task.importReferences();
+            ParseBackgroundReferencesTask task =
+                    new ParseBackgroundReferencesTask(file, true);
+            int numRecordsSaved = task.parseAndStoreToDb();
+            NumberFormat formatter = new DecimalFormat("#,###,###");
+            System.out.println("\nTotal Number of Background References " +
+                    "Stored:  " + formatter.format(numRecordsSaved));
+//            FileReader reader = new FileReader(file);
+//            ImportReferencesTask task = new ImportReferencesTask(true, reader);
+//            task.importReferences();
         }
     }
 
