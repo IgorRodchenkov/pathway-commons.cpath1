@@ -18,8 +18,6 @@ public class SqlSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestDaoImport.class);
-        suite.addTestSuite(TestDaoInteractor.class);
-        suite.addTestSuite(TestDaoInteraction.class);
         suite.addTestSuite(TestDaoExternalDb.class);
         suite.addTestSuite(TestDaoExternalDbCv.class);
         suite.addTestSuite(TestDaoExternalLink.class);

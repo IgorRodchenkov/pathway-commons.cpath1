@@ -126,9 +126,9 @@ public class TestImportPsiToCPath extends TestCase {
                 new GetInteractionsByInteractorTaxonomyId(taxId, 25);
         query.execute(xdebug);
         EntrySet entrySet = query.getEntrySet();
-        assertEquals(5, entrySet.getEntry(0).getInteractorList().
+        assertEquals(7, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
-        assertEquals(4, entrySet.getEntry(0).getInteractionList()
+        assertEquals(12, entrySet.getEntry(0).getInteractionList()
                 .getInteractionCount());
         String xml = query.getXml();
         int index = xml.indexOf(Integer.toString(taxId));

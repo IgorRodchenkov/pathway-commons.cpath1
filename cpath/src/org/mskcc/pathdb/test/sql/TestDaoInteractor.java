@@ -12,6 +12,8 @@ import java.util.HashMap;
 
 /**
  * Tests the DaoInteractor Class.
+ * This test class uses GRID tables, and is therefore not included in
+ * any automated test suite.
  *
  * @author Ethan Cerami
  */

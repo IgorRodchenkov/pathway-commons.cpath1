@@ -17,10 +17,12 @@ public class ServiceSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestReadInteractorsFromGrid.class);
-        suite.addTestSuite(TestReadInteractionsFromGrid.class);
-        suite.addTestSuite(TestWriteInteractorsToGrid.class);
-        suite.addTestSuite(TestWriteInteractionsToGrid.class);
+        //  All of the following tests require access to GRID tables,
+        //  and are therefore no longer part of the core test suite.
+        //        suite.addTestSuite(TestReadInteractorsFromGrid.class);
+        //        suite.addTestSuite(TestReadInteractionsFromGrid.class);
+        //        suite.addTestSuite(TestWriteInteractorsToGrid.class);
+        //        suite.addTestSuite(TestWriteInteractionsToGrid.class);
         suite.setName("Data Service Tests");
         return suite;
     }
