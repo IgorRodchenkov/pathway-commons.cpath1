@@ -5,8 +5,9 @@
 use strict;
 
 my $tom = "/var/lib/tomcat4/webapps/cpath";
+my $home = "/home/cerami/dev/sander/cpath";
 
-# Update Passwords with User Input
+# Prompt for Passwords 
 print "Enter password for MySQL tomcat user:  ";
 chomp (my $mysql_password = <STDIN>);
 
@@ -14,28 +15,31 @@ print "Enter password for cPath Administrator:  ";
 chomp (my $admin_password = <STDIN>);
 
 # CD to the cpath tomcat dir
-#chdir "$tom" or die;
+chdir "$tom" or die;
 
 # Delete everything within cpath
-#system "rm -rf *";
+print "Deleting existing cpath web app\n";
+system "rm -rf *";
 
-# Update All Code
-chdir "/home/cerami/dev/sander/cpath" or die;
+# Update All Code from CVS
+chdir "$home" or die;
 #system "cvs update -d";
 
+# Update web.xml file with user-supplied passwords
+print "Updating web.xml File\n";
+chdir "web/WEB-INF" or die;
+system "sed 's/value\>kitty/value\>$mysql_password/' web.xml > web1.xml";
+system "sed 's/value\>cpath/value\>$admin_password/' web1.xml > web2.xml";
+system "mv web2.xml web.xml";
+system "rm web1.xml";
+
 # Create War File
-#system "ant war";
+chdir "$home" or die;
+system "ant war";
 
 # Copy War File over
 print "Copying war file to: $tom\n";
-#system "cp dist/cpath.war $tom";
-
-# Update web.xml file with correct passwords
-chdir "web/WEB-INF" or die;
-system "sed 's/kitty/$mysql_password/' web.xml";
-#system "mv web_new.xml web.xml";
-
-die;
+system "cp dist/cpath.war $tom";
 
 # Expand War File, and set permissions on textIndex dir
 chdir "$tom" or die;
