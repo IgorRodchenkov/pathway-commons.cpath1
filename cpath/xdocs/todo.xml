@@ -13,6 +13,11 @@ This document contains cPath Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
+0.  Add support for incremental indexing.
+     I think this would require a timestamp for each cPath record,
+     so that we could easily determine the date/time the record was last
+     indexed in Lucene.
+ 
 0.  We still don't have any way of adding new external databases,
     and the controlled vocabulary terms and URLs associated with each database.
     As a first step, we should definitely add a command line script to
