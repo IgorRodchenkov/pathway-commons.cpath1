@@ -32,6 +32,10 @@
                     <primaryRef db="Entrez GI" id="1907180"/>
                     <secondaryRef db="PIR" id="BWBYD5"/>
                     <secondaryRef db="SwissProt" id="P25300"/>
+                    <secondaryRef db="GO" id="0005935"/>
+                    <secondaryRef db="GO" id="0000131"/>
+                    <secondaryRef db="PMID" id="1789011"/>
+                    <secondaryRef db="PMID" id="1905982"/>
                 </xref>
                 <organism ncbiTaxId="4932">
                     <names>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  
 This file contains two proteins and a single interaction.
-It is used by unit tests in conjunction with the id_map.txt file.
+It is used by unit tests in conjunction with the unification_xrefs.txt file.
 
 Note!  The file contains fake data which has no biological meaning.
 -->
@@ -30,8 +30,8 @@ Note!  The file contains fake data which has no biological meaning.
         </experimentList>
         <interactorList>
             <!-- 
-                This protein contains a single xref, pointing to SWISS-PROT.
-                However, id_map.txt contains additional equivalent xrefs.
+                This protein contains a single xref, pointing to UNIPROT.
+                However, unification_refs.txt contains additional equivalent xrefs.
                 After import, this XML should be modified to include a complete
                 list of equivalent xrefs.
             -->
@@ -41,7 +41,7 @@ Note!  The file contains fake data which has no biological meaning.
                     <fullName> Membrane protein, putative</fullName>
                 </names>
                 <xref>
-                    <primaryRef db="SwissProt" id="Q727A4"/>
+                    <primaryRef db="UniProt" id="UNIPROT_1234"/>
                 </xref>
                 <organism ncbiTaxId="882">
                     <names>
