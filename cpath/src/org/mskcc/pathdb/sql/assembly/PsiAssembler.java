@@ -16,6 +16,10 @@ import java.util.Iterator;
  * @author Ethan Cerami
  */
 public class PsiAssembler {
+    /**
+     * Public CPath Identifier.
+     */
+    public static final String CPATH_DB = "CPATH";
 
     /**
      * Constructor.
@@ -48,6 +52,17 @@ public class PsiAssembler {
             InteractionElementType cInteraction =
                     InteractionElementType.unmarshalInteractionElementType
                     (reader);
+
+            //  Append cPath ID as a Reference
+            XrefType xref = cInteraction.getXref();
+            DbReferenceType ref = new DbReferenceType();
+            ref.setDb(CPATH_DB);
+            ref.setId(Long.toString(record.getId()));
+            if (xref.getPrimaryRef() == null) {
+                xref.setPrimaryRef(ref);
+            } else {
+                xref.addSecondaryRef(ref);
+            }
             interactionList.addInteraction(cInteraction);
         }
         return interactionList;
