@@ -1,9 +1,9 @@
 <!--
-	PathDB Ant Script.
+	CPath Ant Script.
 	Author:  Ethan Cerami
 -->
 
-<project name="PathDB" default="compile" basedir=".">
+<project name="CPath" default="compile" basedir=".">
 
         <!-- The directory containing the configuration files -->
         <property name="config.dir" value="config"/>
@@ -445,4 +445,9 @@
                 </replace>
                 <echo message="End Castor Source Generator"/>
         </target>
+
+	<!-- Target to Load Bootstrap data into MySQL -->
+	<target name="boot" description="Loads Bootstrap data into MySQL">
+		<exec dir="." executable="scripts/boot.pl"/>
+	</target>
 </project>

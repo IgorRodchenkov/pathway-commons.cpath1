@@ -4,7 +4,7 @@
 <INPUT TYPE="hidden" name="db" value="grid">
 
 <% String uid = request.getParameter("uid");
-    if (uid == null) uid = new String("YCR038C");
+    if (uid == null) uid = new String("YER006W");
 %>
 
 <TABLE WIDTH="100%" CELLPADDING=5 CELLSPACING=5 BGCOLOR="#9999cc">
