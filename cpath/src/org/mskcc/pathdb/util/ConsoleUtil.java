@@ -56,9 +56,13 @@ public class ConsoleUtil {
             System.out.print(".");
             if (currentValue % 100 == 0) {
                 NumberFormat format = DecimalFormat.getPercentInstance();
+                double percent = pMonitor.getPercentComplete();
                 msg = new String ("Percentage Complete:  "
-                        + format.format(pMonitor.getPercentComplete()));
+                        + format.format(percent));
                 System.out.println("\n" + msg);
+            }
+            if (currentValue == pMonitor.getMaxValue()) {
+                System.out.println("\n");
             }
         }
     }
