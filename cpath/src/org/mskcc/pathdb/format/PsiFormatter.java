@@ -3,11 +3,22 @@ package org.mskcc.pathdb.format;
 import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.Interaction;
 import org.mskcc.pathdb.model.Protein;
+import org.mskcc.pathdb.xml.psi.Bibref;
+import org.mskcc.pathdb.xml.psi.Entry;
+import org.mskcc.pathdb.xml.psi.ExperimentDescription;
+import org.mskcc.pathdb.xml.psi.InteractionDetection;
+import org.mskcc.pathdb.xml.psi.InteractionElementTypeChoice;
+import org.mskcc.pathdb.xml.psi.InteractionList;
+import org.mskcc.pathdb.xml.psi.InteractionType;
 import org.mskcc.pathdb.xml.psi.InteractorList;
+import org.mskcc.pathdb.xml.psi.InteractorRef;
 import org.mskcc.pathdb.xml.psi.Names;
 import org.mskcc.pathdb.xml.psi.Organism;
+import org.mskcc.pathdb.xml.psi.ParticipantList;
 import org.mskcc.pathdb.xml.psi.PrimaryRef;
 import org.mskcc.pathdb.xml.psi.ProteinInteractor;
+import org.mskcc.pathdb.xml.psi.ProteinParticipant;
+import org.mskcc.pathdb.xml.psi.ProteinParticipantTypeChoice;
 import org.mskcc.pathdb.xml.psi.SecondaryRef;
 import org.mskcc.pathdb.xml.psi.Xref;
 
@@ -30,6 +41,11 @@ public class PsiFormatter {
     private ArrayList interactions;
 
     /**
+     * Pub Med Database.
+     */
+    private static final String PUB_MED_DB = "pubmed";
+
+    /**
      * Constructor.
      * @param interactions ArrayList of Interactions.
      */
@@ -41,29 +57,172 @@ public class PsiFormatter {
      * Gets PSI XML.
      * @return Root PSI Element.
      */
-    public InteractorList getPsiXml() {
-        InteractorList interactorList = setInteractors();
+    public Entry getPsiXml() {
+        Entry entry = new Entry();
+
+        //  Get Interactor List
+        InteractorList interactorList = getInteractorList();
+
+        //  Get Interaction List
+        InteractionList interactionList = getInteractionList();
+
+        //  Add to Entry node
+        entry.setInteractorList(interactorList);
+        entry.setInteractionList(interactionList);
+        return entry;
+    }
+
+    /**
+     * Gets Interactor List.
+     * @return Castor InteractorList.
+     */
+    private InteractorList getInteractorList() {
+        HashMap proteinSet = getNonRedundantProteins();
+        InteractorList interactorList = new InteractorList();
+
+        //  Iterate through all Proteins
+        Iterator iterator = proteinSet.values().iterator();
+        while (iterator.hasNext()) {
+
+            //  Create new Interactor
+            ProteinInteractor interactor = new ProteinInteractor();
+            Protein protein = (Protein) iterator.next();
+            setNameId(protein, interactor);
+            setOrganism(interactor);
+            setExternalRefs(protein, interactor);
+
+            //  Add to Interactor List
+            interactorList.addProteinInteractor(interactor);
+        }
         return interactorList;
     }
 
     /**
-     * Sets all Protein Interactors.
-     * @return Castor InteractorList.
+     * Gets Interaction List.
+     * @return Castor InteractionList.
      */
-    private InteractorList setInteractors() {
-        HashMap proteinSet = getNonRedundantProteins();
-        InteractorList interactorList = new InteractorList();
+    private InteractionList getInteractionList() {
+        InteractionList interactionList = new InteractionList();
+        //  Iterate through all interactions
+        for (int i = 0; i < interactions.size(); i++) {
 
-        Iterator iterator = proteinSet.values().iterator();
-        while (iterator.hasNext()) {
-            Protein protein = (Protein) iterator.next();
-            ProteinInteractor interactor = new ProteinInteractor();
-            setNameId(protein, interactor);
-            setOrganism(interactor);
-            setExternalRefs(protein, interactor);
-            interactorList.addProteinInteractor(interactor);
+            //  Create New Interaction
+            org.mskcc.pathdb.xml.psi.Interaction castorInteraction =
+                    new org.mskcc.pathdb.xml.psi.Interaction();
+            Interaction interaction = (Interaction) interactions.get(i);
+
+            //  Add Participants
+            ParticipantList participantList = getParticipantList(interaction);
+            castorInteraction.setParticipantList(participantList);
+
+            //  Add InteractionType
+            InteractionType interactionType = getInteractionType(interaction);
+            castorInteraction.addInteractionType(interactionType);
+
+            //  Add Experimental Description
+            InteractionElementTypeChoice choice =
+                    getExperimentDescription(interaction);
+            castorInteraction.setInteractionElementTypeChoice(choice);
+
+            //  Add to Interaction List
+            interactionList.addInteraction(castorInteraction);
         }
-        return interactorList;
+        return interactionList;
+    }
+
+    /**
+     * Gets the Interaction Participant List.
+     * @param interaction Interaction object.
+     * @return Castor Participant List.
+     */
+    private ParticipantList getParticipantList(Interaction interaction) {
+        ParticipantList participantList = new ParticipantList();
+
+        //  Add Node A
+        String nodeId1 = interaction.getNodeA().getOrfName();
+        ProteinParticipant participant1 = createParticipant(nodeId1);
+        participantList.addProteinParticipant(participant1);
+
+        //  Add Node B
+        String nodeId2 = interaction.getNodeB().getOrfName();
+        ProteinParticipant participant2 = createParticipant(nodeId2);
+        participantList.addProteinParticipant(participant2);
+
+        return participantList;
+    }
+
+    /**
+     * Gets the Interaction Type.
+     * @param interaction Intraction object.
+     * @return Castor InteractionType object.
+     */
+    private InteractionType getInteractionType(Interaction interaction) {
+        InteractionType interactionType = new InteractionType();
+
+        //  Create Interaction Name
+        //  TODO:  What goes here?
+        Names interactionNames = createName
+                (interaction.getExperimentalSystem(),
+                        interaction.getExperimentalSystem());
+        interactionType.setNames(interactionNames);
+
+        //  Create External Reference
+        //  TODO:  What goes here?
+        String pmids[] = interaction.getPubMedIds();
+        Xref xref = createXRef(PUB_MED_DB, pmids[0]);
+        interactionType.setXref(xref);
+
+        return interactionType;
+    }
+
+    /**
+     * Gets Experiment Description.
+     * @param interaction Interaction object.
+     * @return Castor InteractionElementTypeChoice object.
+     */
+    private InteractionElementTypeChoice getExperimentDescription
+            (Interaction interaction) {
+        //  Create New Experiment Description
+        ExperimentDescription expDescription = new ExperimentDescription();
+
+        //  Set Experimental ID
+        //  TODO:  What goes here?
+        expDescription.setId("temp");
+
+        //  Set Bibliographic Reference
+        //  TODO:  What goes here?
+        String pmids[] = interaction.getPubMedIds();
+        Bibref bibRef = createBibRef(PUB_MED_DB, pmids[0]);
+        expDescription.setBibref(bibRef);
+
+        //  Set Interaction Detection
+        //  TODO:  What goes here?
+        InteractionDetection interactionDetection =
+                getInteractionDetection(interaction, pmids[0]);
+
+        //  Set Choice Element
+        expDescription.setInteractionDetection(interactionDetection);
+        InteractionElementTypeChoice choice =
+                new InteractionElementTypeChoice();
+        choice.setExperimentDescription(expDescription);
+        return choice;
+    }
+
+    /**
+     * Gets Interaction Detection element.
+     * @param interaction Interaction.
+     * @param pmid PubMed ID.
+     * @return InteractionDetection Object.
+     */
+    private InteractionDetection getInteractionDetection
+            (Interaction interaction, String pmid) {
+        InteractionDetection interactionDetection = new InteractionDetection();
+        Names names = createName(interaction.getExperimentalSystem(),
+                interaction.getExperimentalSystem());
+        interactionDetection.setNames(names);
+        Xref xref = createXRef(PUB_MED_DB, pmid);
+        interactionDetection.setXref(xref);
+        return interactionDetection;
     }
 
     /**
@@ -146,5 +305,62 @@ public class PsiFormatter {
         if (!proteins.containsKey(orfName)) {
             proteins.put(orfName, protein);
         }
+    }
+
+    /**
+     * Creates a new Names Object.
+     * @param shortLabel Short Name Label.
+     * @param fullName Full Name/Description.
+     * @return Castor Names Object.
+     */
+    private Names createName(String shortLabel, String fullName) {
+        Names names = new Names();
+        names.setShortLabel(shortLabel);
+        names.setFullName(fullName);
+        return names;
+    }
+
+    /**
+     * Creates a Primary Reference.
+     * @param database Database.
+     * @param id ID String.
+     * @return Castor XRef object
+     */
+    private Xref createXRef(String database, String id) {
+        Xref xref = new Xref();
+        PrimaryRef primaryRef = new PrimaryRef();
+        primaryRef.setDb(database);
+        primaryRef.setId(id);
+        xref.setPrimaryRef(primaryRef);
+        return xref;
+    }
+
+    /**
+     * Creates a Bibliography Reference.
+     * @param database Database.
+     * @param id ID String.
+     * @return Castor Bibref Object.
+     */
+    private Bibref createBibRef(String database, String id) {
+        Xref xref = createXRef(database, id);
+        Bibref bibRef = new Bibref();
+        bibRef.setXref(xref);
+        return bibRef;
+    }
+
+    /**
+     * Create New Protein Participant.
+     * @param id Protein ID.
+     * @return Castor Protein Participant Object.
+     */
+    private ProteinParticipant createParticipant(String id) {
+        ProteinParticipant participant = new ProteinParticipant();
+        ProteinParticipantTypeChoice choice =
+                new ProteinParticipantTypeChoice();
+        InteractorRef ref = new InteractorRef();
+        ref.setRef(id);
+        choice.setInteractorRef(ref);
+        participant.setProteinParticipantTypeChoice(choice);
+        return participant;
     }
 }

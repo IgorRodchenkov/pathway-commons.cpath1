@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.mskcc.pathdb.format.PsiFormatter;
 import org.mskcc.pathdb.sql.GridInteractionService;
 import org.mskcc.pathdb.test.TestConstants;
-import org.mskcc.pathdb.xml.psi.InteractorList;
+import org.mskcc.pathdb.xml.psi.Entry;
 
 import java.util.ArrayList;
 import java.io.StringWriter;
@@ -25,13 +25,15 @@ public class TestPsiFormatter extends TestCase {
                 (TestConstants.DB_HOST, TestConstants.USER,
                         TestConstants.PASSWORD);
         ArrayList interactions =
-                service.getInteractions(TestConstants.SAMPLE_ORF_1);
+                service.getInteractions("YFR039C");
         PsiFormatter formatter = new PsiFormatter(interactions);
-        InteractorList interactorList = formatter.getPsiXml();
-        boolean isValid = interactorList.isValid();
-        System.out.println("Is Valid?  " + isValid);
+        Entry entry = formatter.getPsiXml();
+
         StringWriter writer = new StringWriter();
-        interactorList.marshal(writer);
+        entry.marshal(writer);
         System.out.println(writer.toString());
+
+        boolean isValid = entry.isValid();
+        System.out.println("Is Valid?  " + isValid);
     }
 }
