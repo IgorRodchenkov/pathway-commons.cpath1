@@ -313,7 +313,7 @@ public class PsiUtil {
                 InteractionElementType interaction =
                         interactionList.getInteraction(j);
 
-                //  Conditionally Remove All XRefs
+                //  Conditionally Remove All Interaction XRefs
                 if (this.removeAllXRefs) {
                     interaction.setXref(null);
                 }
@@ -450,11 +450,6 @@ public class PsiUtil {
                  i++) {
                 ProteinInteractorType protein =
                         interactorList.getProteinInteractor(i);
-
-                //  Conditionally Remove All Xrefs
-                if (this.removeAllXRefs) {
-                    protein.setXref(null);
-                }
                 removeEmptySecondaryRefs(protein.getXref());
                 String id = protein.getId();
                 interactorMap.put(id, protein);

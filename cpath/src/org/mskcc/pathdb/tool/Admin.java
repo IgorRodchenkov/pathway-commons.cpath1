@@ -300,8 +300,8 @@ public class Admin {
                 + "identifiers.");
         System.out.println("\n\nExtra Options (not guaranteed to be available "
             + "in future versions of cPath)");
-        System.out.println("  -r              Removes all PSI-MI xrefs "
-            + "(not recommended)");
+        System.out.println("  -r              Removes all Interaction PSI-MI "
+            + "xrefs  (not recommended)");
         System.out.println("                  Used to temporarily import "
             + "buggy HRPD PSI-MI Files.");
         System.exit(1);
