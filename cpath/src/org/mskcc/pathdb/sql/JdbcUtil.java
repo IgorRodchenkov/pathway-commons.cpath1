@@ -31,7 +31,7 @@ public class JdbcUtil {
      */
     public static Connection getCPathConnection()
             throws SQLException, ClassNotFoundException {
-        return JdbcUtil.connect("cpath");
+        return JdbcUtil.connect(DB_CPATH);
     }
 
     /**
@@ -42,7 +42,7 @@ public class JdbcUtil {
      */
     public static Connection getGridConnection()
             throws SQLException, ClassNotFoundException {
-        return JdbcUtil.connect("grid");
+        return null;
     }
 
     /**

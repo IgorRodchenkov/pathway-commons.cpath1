@@ -1,6 +1,7 @@
 package org.mskcc.pathdb.logger;
 
 import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ import java.util.Date;
  * @author Ethan Cerami
  */
 public class AdminLogger {
-    private String db = "log";
-    private ArrayList records;
 
     /**
      * Gets all log messages.
@@ -23,9 +22,7 @@ public class AdminLogger {
      */
     public ArrayList getLogRecords() throws SQLException,
             ClassNotFoundException {
-        records = new ArrayList();
-        Connection con = getConnection();
-        getRecords(con);
+        ArrayList records = getRecords();
         return records;
     }
 
@@ -36,48 +33,44 @@ public class AdminLogger {
      */
     public void deleteAllLogRecords() throws SQLException,
             ClassNotFoundException {
-        Connection con = this.getConnection();
-        PreparedStatement pstmt = con.prepareStatement
-                ("TRUNCATE TABLE record");
-        pstmt.executeUpdate();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement ("TRUNCATE TABLE log");
+            pstmt.executeUpdate();
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
     }
 
     /**
      * Gets all Log Records.
      */
-    private void getRecords(Connection con) throws SQLException {
-        PreparedStatement pstmt = con.prepareStatement
-                ("SELECT * FROM record order by date asc");
-        ResultSet rs = pstmt.executeQuery();
-        while (rs.next()) {
-            Date date = rs.getTimestamp("date");
-            String logger = rs.getString("logger");
-            String priority = rs.getString("priority");
-            String message = rs.getString("message");
-            String ip = rs.getString("ip");
-            LogRecord record = new LogRecord(date, priority, logger,
-                    message, ip);
-            records.add(record);
-        }
-    }
-
-    /**
-     * Gets Database Connection.
-     */
-    private Connection getConnection() throws ClassNotFoundException,
-            SQLException {
+    private ArrayList getRecords() throws SQLException, ClassNotFoundException {
+        ArrayList records = new ArrayList();
         Connection con = null;
-        //  Get Database Properties from PropertyManager.
-        PropertyManager manager = PropertyManager.getInstance();
-        String host = new String("localhost");
-        String user = manager.getProperty(PropertyManager.DB_USER);
-        String password = manager.getProperty(PropertyManager.DB_PASSWORD);
-        String url =
-                new String("jdbc:mysql://" + host + "/"
-                + db + "?user=" + user
-                + "&password=" + password);
-        Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(url);
-        return con;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT * FROM log order by date asc");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Date date = rs.getTimestamp("date");
+                String logger = rs.getString("logger");
+                String priority = rs.getString("priority");
+                String message = rs.getString("message");
+                String ip = rs.getString("ip");
+                LogRecord record = new LogRecord(date, priority, logger,
+                        message, ip);
+                records.add(record);
+            }
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+        return records;
     }
 }
