@@ -7,7 +7,7 @@ import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.util.PsiBuilder;
+import org.mskcc.pathdb.sql.assembly.PsiAssembler;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ abstract class PsiInteractionQuery extends InteractionQuery {
             MarshalException, MapperException {
         QueryResult result = new QueryResult();
         xdebug.logMsg(this, "Creating Final PSI Document");
-        PsiBuilder psiBuilder = new PsiBuilder();
+        PsiAssembler psiBuilder = new PsiAssembler();
         EntrySet entrySet = psiBuilder.generatePsi(interactors, interactions);
         String xml = generateXml(entrySet);
         ArrayList list = mapToInteractions(xml);
