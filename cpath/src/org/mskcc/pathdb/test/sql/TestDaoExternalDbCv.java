@@ -31,6 +31,7 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
@@ -91,6 +92,7 @@ public class TestDaoExternalDbCv extends TestCase {
         ExternalDatabaseRecord db = new ExternalDatabaseRecord();
         db.setName(DB_NAME);
         db.setDescription("Test");
+        db.setDbType(ReferenceType.IDENTITY);
         dao.addRecord(db);
         db = dao.getRecordByName(DB_NAME);
         int dbId = db.getId();
