@@ -4,7 +4,6 @@ import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.jdom.Text;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.dataservices.mapper.MapPsiToInteractions;
 import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.model.CPathRecord;
@@ -316,8 +315,7 @@ public class ImportPsiToCPath {
         String name = protein.getNames().getShortLabel();
 
         if (name == null || name.length() == 0) {
-            MapPsiToInteractions mapper = new MapPsiToInteractions(null, null);
-            name = mapper.extractNameSubstitute(protein.getId(), refs);
+            name = protein.getNames().getFullName();
         }
 
         String desc = protein.getNames().getFullName();
