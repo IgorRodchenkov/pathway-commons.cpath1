@@ -1,0 +1,4 @@
+Swiss-Prot	Affymetrix
+P03005	1000_at
+P35590	1001_at
+Q16743	1002_f_at
