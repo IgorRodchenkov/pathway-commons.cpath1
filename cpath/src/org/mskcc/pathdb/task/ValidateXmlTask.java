@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.task;
 
 import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.pathdb.util.XmlValidator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -63,9 +64,10 @@ public class ValidateXmlTask {
      * @return true if valid;  false otherwise.
      * @throws IOException  Input/Output Exception.
      * @throws SAXException XML SAX Error.
+     * @throws DataServiceException Error Reading Data.
      */
     public boolean validate(boolean showErrors)
-            throws IOException, SAXException {
+            throws IOException, SAXException, DataServiceException {
         System.out.println("Validating XML File:   " + file.getAbsolutePath());
         XmlValidator validator = new XmlValidator();
         ContentReader reader = new ContentReader();
