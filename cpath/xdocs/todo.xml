@@ -13,6 +13,16 @@ This document contains cPath Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
+0.  From Gary's Email:
+
+I just noticed that the IntAct database is maintaining a small file
+of external databases:
+http://cvs.sourceforge.net/viewcvs.py/intact/intactCore/data/controlledVocab
+/CvDatabase.def?rev=1.7&view=auto
+
+We might be able to eventually collaborate with them on this list.
+Something to just keep in mind.
+
 1.  Field Specific Lucene Searching, e.g. "name:RAS".
 	---> current priority:  low.
 2.  Indexing of interactions.
