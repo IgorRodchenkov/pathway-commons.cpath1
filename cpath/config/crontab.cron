@@ -2,4 +2,4 @@
 CPATH_HOME="/Users/cerami/dev/sander/cpath"
 
 #  Run PreComputed Queries, pipe output to log file
-45	16	*	*	*	$CPATH_HOME/bin/loadQueries.sh $CPATH_HOME/testData/precompute_junit.txt > $CPATH_HOME/log/cron_cpath.log
+45	16	*	*	*	$CPATH_HOME/bin/admin.pl precompute $CPATH_HOME/testData/precompute_junit.txt > $CPATH_HOME/log/cron_cpath.log
