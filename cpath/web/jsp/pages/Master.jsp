@@ -20,8 +20,9 @@
             request.getAttribute("exception");
 %>
 <jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
-<% if (exception != null) {
-    throw exception;
+<% if (exception != null) { %>
+    <cbio:errorMessage throwable="<%= exception %>"/>
+<%
 } else if (interactions != null) { %>
     <cbio:interactionTable interactions="<%= interactions %>"
         uid="<%= protocolRequest.getUid() %>"/>
