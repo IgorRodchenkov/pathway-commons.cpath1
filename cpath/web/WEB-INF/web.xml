@@ -4,20 +4,15 @@
 
 <web-app>
 
-    <display-name>Hello, World Application</display-name>
-    <description>
-	This is a simple web application with a source code organization
-	based on the recommendations of the Application Developer's Guide.
-    </description>
-
+    <display-name>Data Service Application</display-name>
     <servlet>
-        <servlet-name>HelloServlet</servlet-name>
+        <servlet-name>DataServiceServlet</servlet-name>
         <servlet-class>org.mskcc.pathdb.servlet.DataService</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>HelloServlet</servlet-name>
-        <url-pattern>/hello</url-pattern>
+        <servlet-name>DataServiceServlet</servlet-name>
+        <url-pattern>/dataservice</url-pattern>
     </servlet-mapping>
 
 </web-app>
