@@ -2,12 +2,12 @@ This document contains cPath/Cytoscape Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
-1.  Field Specific Searching, e.g. "name:RAS". 
+1.  Field Specific Lucene Searching, e.g. "name:RAS". 
 	---> current priority:  low.
 2.  Indexing of interactions.
 	Requires changes to web interface.  Needs more exploration.
 	---> current priority:  low.
-3.  Build a Front-end interface to the External Database Tables
+3.  Build a Front-end administrative interface to the External Database Tables
 	(more details are included in phase 6 doc, before being deferred)
 	---> current priority:  low.
 4.  Add new query:  query by experimental method (e.g. all the data from two-hybrid)
@@ -18,20 +18,20 @@ cPath Functionality Issues:
 6.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape 
 	to easily create external links.
 	---> current priority:  medium.
-7.  For HTML front end of cPath query API: paginate results
+7.  For HTML front end of cPath query API: paginate results (only text index results currently paginated)
 	---> current priority:  low.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
-1.  Prevent against cross-scripting vulnerability.
-2.  Set up auto-emails upon fatal cPath errors.
+1.  Prevent against cross-scripting vulnerability (validate user input before use).
+2.  Set up auto-emails upon fatal cPath errors (how does a user deal with errors?).
 
 Data Service Specific Items:
 -----------------------------
-1.  Add an Ontology object to the dataservices bio package.
-2.  Add Gene Name/Synonym Look up to data services.
-3.  Create a service for reading in Cytoscape node/edge attributes.
+1.  Add an Ontology object to the dataservices bio package to allow retrieval of Gene Ontology type information.
+2.  Add Gene Name/Synonym Look up to data services (requires a back-end, may be able to use Entrez Gene DB).
+3.  Create a service for reading in Cytoscape node/edge attributes to go with sif reader.
 4.  Create an "About Data Services PlugIn", with version #, list of all registered
 	(more details are included in phase 6 doc, before being deferred)
 	---> current priority:  low.
-5.  Resurrect the GRID Plugin
+5.  Resurrect the GRID Plugin - retrieves data from GRID directly into Cytoscape
