@@ -34,6 +34,7 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
+import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
 import org.mskcc.pathdb.task.IndexLuceneTask;
 import org.mskcc.pathdb.util.CPathConstants;
@@ -101,8 +102,14 @@ public class Admin {
             System.out.println("Total Time:  " + xdebug.getTimeElapsed()
                     + " ms");
         } catch (Exception e) {
-            System.out.println("**** Error:  " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("\n\n-----------------------------------------");
+            System.out.println("Fatal Error:  " + e.getMessage());
+            if (xdebugFlag) {
+                System.out.println("\nFull Details are available in the "
+                    + "stack trace below.");
+                e.printStackTrace();
+            }
+            System.out.println("-----------------------------------------");
         }
     }
 
@@ -110,7 +117,7 @@ public class Admin {
      * Imports a PSI-MI File or an External Reference File.
      */
     private static void importData() throws IOException, DaoException,
-            ImportException {
+            ImportException, MissingDataException {
         File file = new File(fileName);
         if (file.isDirectory()) {
             File files[] = file.listFiles();
@@ -126,7 +133,7 @@ public class Admin {
     }
 
     private static void importDataFromSingleFile(File file) throws IOException,
-            DaoException {
+            DaoException, MissingDataException {
         String fileName = file.getName();
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
                 || fileName.endsWith("mif")) {
@@ -260,7 +267,7 @@ public class Admin {
         System.out.println("\nAdministration Program for the cPath Database");
         System.out.println("Usage:  admin.pl [OPTIONS] command");
         System.out.println("  -f, -f=filename Name of File / Directory");
-        System.out.println("  -d,             Shows all Debug/Log Messages");
+        System.out.println("  -d,             Shows all Debug/Log Messages/Stack Traces");
         System.out.println("  -u, -u=name     Database User Name");
         System.out.println("  -p, -p=name     Database Password");
         System.out.println("  -x              Skips Validation of External "
