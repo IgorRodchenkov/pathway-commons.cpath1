@@ -166,11 +166,13 @@ screen for the precedence order 'interactor' then 'experimental evidence'.
 
 For example, try searching cpath on cbio for:  interactor_id:55
 
-28. Batch or list queries. It makes sense to be able to submit a list of things to some queries e.g.
-Give me all the interactions for this list of protein IDs.  This could be used for a custom pathway
-definition if people know all of the proteins in a pathway
+28. Batch or list queries. It makes sense to be able to submit a list of things
+to some queries e.g.  Give me all the interactions for this list of protein IDs.
+This could be used for a custom pathway definition if people know all of the
+ proteins in a pathway
 
-29. Make cPath easier to install by optionally packaging data with it.  Specifically:
+29. Make cPath easier to install by optionally packaging data with it.
+ Specifically:
 -All publicly available interactions
 -All ID tables
 
@@ -178,14 +180,18 @@ definition if people know all of the proteins in a pathway
 (like that provided in Web Browsers)
 Request by:  Ioannis.Xenarios@serono.com
 
-31. When importing PSI-MI files, if the xref database name is not known to cPath, then maybe the user should
-be asked for it during the import process.  One possible implementation - if PSI-MI import fails because of a
-database name mapping issue, then save the import file, ask the user to fill in the details of the database and
-use the saved PSI-MI file to try the import again. (Sep.13.2004)
-
-32. Some databases, like HPRD and IntAct, put xrefs in proteins that are not 1:1 with proteins.  E.g. HPRD
-adds pubmed papers and IntAct adds GO annotation.  These might be used for protein xref lookup. There should be a list of ID types that should not be used for xref lookup for proteins.  Maybe another field to add to the external ref DB.
+31. When importing PSI-MI files, if the xref database name is not known to
+cPath, then maybe the user should be asked for it during the import process.
+One possible implementation - if PSI-MI import fails because of a database name
+mapping issue, then save the import file, ask the user to fill in the details
+of the database and use the saved PSI-MI file to try the import again.
  (Sep.13.2004)
+
+32. Some databases, like HPRD and IntAct, put xrefs in proteins that are
+not 1:1 with proteins.  E.g. HPRD adds pubmed papers and IntAct adds GO
+annotation.  These might be used for protein xref lookup. There should be a
+list of ID types that should not be used for xref lookup for proteins.
+Maybe another field to add to the external ref DB. (Sep.13.2004)
 
 33.  Refactor pipeline for importing PSI-MI data to to check all those things
 which are not enforced by the PSI-MI XML Schema.  Here's how data import should
@@ -201,7 +207,7 @@ d.  Only if all three tests pass should we add to the import table.  And, once
 
 We also need to reconsider whether we want to allow importing of data files
 from the Admin web front end, and if we do, how we report all errors/warnings
-to the end user.    
+to the end user.
 
 Data Service Specific Items:
 -----------------------------
@@ -219,13 +225,23 @@ Data Service Specific Items:
 
 cPath Cytoscape Plugin Functionality Issues:
 --------------------------------------------
-1.  We should have hyperlinks from the accession numbers displayed on the interactor and interaction details window to the various databases, taxonomy information to the NCBI taxonomy database and from any PSI CV terms to a term definition DB (like QuickGO).  We should extend the web service to provide these links (this could be a really! popular web service!!!)  - We could just include it as attributes in the PSI-MI file in the meantime as an alternative if we want. This might be faster than polling a web service.
+1.  We should have hyperlinks from the accession numbers displayed on the
+interactor and interaction details window to the various databases, taxonomy
+information to the NCBI taxonomy database and from any PSI CV terms to a term
+definition DB (like QuickGO).  We should extend the web service to provide these
+links (this could be a really! popular web service!!!)  - We could just include
+it as attributes in the PSI-MI file in the meantime as an alternative if we want.
+This might be faster than polling a web service.
 
-2.  From Niki: We should list the chip type as part of the Affymetrix identifier information
+2.  From Niki: We should list the chip type as part of the Affymetrix identifier
+information
 
-3.  Ability to select multiple nodes and edges and see all the information in an Excel type table (later, allow users to select which columns of data are available) - maybe this will be better done by the attribute browser.
+3.  Ability to select multiple nodes and edges and see all the information in
+ an Excel type table (later, allow users to select which columns of data are
+ available) - maybe this will be better done by the attribute browser.
 
-4. Ability to specify chunk size for chunked downloads in preferences (up to a point to protect the web service).
+4. Ability to specify chunk size for chunked downloads in preferences
+(up to a point to protect the web service).
 
 
 Archive:  Items which are now complete:
