@@ -142,6 +142,15 @@ As a temporary work-around, I currently filter out GO/InterPro
 references when looking for a match, but I think we should brainstorm
 about some better, more generic options going forward.
 
+22.  "My favorite gene list" - This would let you could select genes that
+cPath knows about and create a nice table for you.  E.g. all the cancer genes.
+	---> Current priority: low.
+
+23. Cache: include count of numer of times a request has been made and use this
+to prioritize the purging of the cache.  This will help keep often viewed pages in the cache.
+Possible prioritization: purge oldest and least viewed documents
+	---> Current priority: low.
+
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
 1.  Set up auto-emails upon fatal cPath errors
