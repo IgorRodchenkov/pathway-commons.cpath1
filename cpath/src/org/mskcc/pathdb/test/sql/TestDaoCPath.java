@@ -30,6 +30,7 @@ public class TestDaoCPath extends TestCase {
     private static final String DB_NAME_1 = "PIR";
     private static final String DB_ID_0 = "P25300";
     private static final String DB_ID_1 = "BWBYD5";
+    private static final String REVISED_XML = "<new>This is revised xml</new>";
 
     /**
      * Tests Dao Access.
@@ -58,6 +59,12 @@ public class TestDaoCPath extends TestCase {
         //  Test getAllRecords()
         ArrayList records = dao.getAllRecords();
         assertTrue(records.size() > 0);
+
+        //  Test UpdateXml() Method.
+        String newXml = REVISED_XML;
+        dao.updateXml(cpathId, newXml);
+        record = dao.getRecordByName(NAME);
+        assertEquals (REVISED_XML, record.getXmlContent());
 
         //  Test deleteRecordById()
         boolean success = dao.deleteRecordById(cpathId);

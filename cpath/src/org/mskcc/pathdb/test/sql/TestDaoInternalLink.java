@@ -68,6 +68,9 @@ public class TestDaoInternalLink extends TestCase {
         assertTrue (flag);
         links = linker.getInternalLinks(cPathIdA);
         assertEquals (0, links.size());
+
+        dao.deleteRecordById(cPathIdB);
+        dao.deleteRecordById(cPathIdC);
     }
 
     private void createSampleCPathRecords () throws Exception {

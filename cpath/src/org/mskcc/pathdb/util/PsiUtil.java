@@ -3,49 +3,153 @@ package org.mskcc.pathdb.util;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.*;
+import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Normalizes a PSI-MI XML Document in preparation for submission to cPath.
  *
  * @author Ethan Cerami
  */
-public class PsiNormalizer {
-    private String xml;
+public class PsiUtil {
     private HashMap interactorMap;
     private HashMap availabilityMap;
     private HashMap experimentMap;
     private EntrySet entrySet;
+    private XDebug xdebug;
 
     /**
      * Constructor.
-     * @param xml XML Document String.
+     * @param xdebug XDebug Object.
      */
-    public PsiNormalizer(String xml) {
-        this.xml = xml;
+    public PsiUtil(XDebug xdebug) {
+        this.xdebug = xdebug;
         this.interactorMap = new HashMap();
         this.availabilityMap = new HashMap();
         this.experimentMap = new HashMap();
     }
 
     /**
-     * Gets the Normalized Document.
+     * Gets the Normalized PSI Document.
+     * @param xml XML Document String.
      * @return PSI Entry Set Object.
      * @throws ValidationException Validation Error in Document.
      * @throws MarshalException Error Marshalling Document.
      */
-    public EntrySet getNormalizedDocument() throws ValidationException,
-            MarshalException {
-        normalizeDoc(xml);
-        return this.entrySet;
+    public EntrySet getNormalizedDocument(String xml)
+            throws ValidationException, MarshalException {
+        return normalizeDoc(xml);
+    }
+
+    /**
+     * Updates the Specified Interactor with a New ID.
+     * @param newId New Id, usually a cPath Id.
+     * @param interactor Castor Protein Interactor.
+     */
+    public void updateInteractorId(String newId,
+            ProteinInteractorType interactor) {
+        interactor.setId(newId);
+    }
+
+    /**
+     * Update Interactions with New Interactor Ids.
+     * @param interactions InteractionList Object.
+     * @param idMap HashMap of Interactor IDs to cPathIds.
+     */
+    public void updateInteractions(InteractionList interactions,
+            HashMap idMap) {
+        xdebug.logMsg(this, "Updating Interactions with new Interactor IDs");
+        for (int i = 0; i < interactions.getInteractionCount(); i++) {
+            InteractionElementType interaction =
+                    interactions.getInteraction(i);
+            ParticipantList pList = interaction.getParticipantList();
+            for (int j = 0; j < pList.getProteinParticipantCount(); j++) {
+                ProteinParticipantType type = pList.getProteinParticipant(j);
+                ProteinParticipantTypeChoice choice =
+                        type.getProteinParticipantTypeChoice();
+                RefType refType = choice.getProteinInteractorRef();
+                String ref = refType.getRef();
+                Long cPathId = (Long) idMap.get(ref);
+                xdebug.logMsg(this, "... Replacing:  " + ref
+                        + " with:  " + cPathId.longValue());
+                if (cPathId == null) {
+                    throw new NullPointerException("No cPath ID found for: "
+                            + ref);
+                }
+                refType.setRef(cPathId.toString());
+            }
+        }
+    }
+
+    /**
+     * Extract Interactor IDs.
+     * @param interaction Interaction Object.
+     * @return ArrayList of cPathIds.
+     */
+    public long[] extractInteractorIds
+            (InteractionElementType interaction) {
+        ArrayList ids = new ArrayList();
+        ParticipantList pList = interaction.getParticipantList();
+        for (int j = 0; j < pList.getProteinParticipantCount(); j++) {
+            ProteinParticipantType type = pList.getProteinParticipant(j);
+            ProteinParticipantTypeChoice choice =
+                    type.getProteinParticipantTypeChoice();
+            RefType refType = choice.getProteinInteractorRef();
+            String ref = refType.getRef();
+            ids.add(ref);
+        }
+        long longIds[] = new long[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            String ref = (String) ids.get(i);
+            longIds[i] = Long.parseLong(ref);
+        }
+        return longIds;
+    }
+
+    /**
+     * Extracts All Interactor External References.
+     * @param cProtein Castor Protein Object.
+     * @return Array of External Reference Objects.
+     */
+    public ExternalReference[] extractRefs(ProteinInteractorType cProtein) {
+        ArrayList refList = new ArrayList();
+        XrefType xref = cProtein.getXref();
+        if (xref != null) {
+            DbReferenceType primaryRef = xref.getPrimaryRef();
+            createExternalReference(primaryRef.getDb(), primaryRef.getId(),
+                    refList);
+            int count = xref.getSecondaryRefCount();
+            for (int i = 0; i < count; i++) {
+                DbReferenceType secondaryRef = xref.getSecondaryRef(i);
+                createExternalReference(secondaryRef.getDb(),
+                        secondaryRef.getId(), refList);
+            }
+            ExternalReference refs [] =
+                    new ExternalReference[refList.size()];
+            refs = (ExternalReference[]) refList.toArray(refs);
+            return refs;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Creates ExternalReference.
+     */
+    private void createExternalReference(String db, String id,
+            ArrayList refList) {
+        ExternalReference ref = new ExternalReference(db, id);
+        refList.add(ref);
     }
 
     /**
      * Normalize the Document.
      */
-    private void normalizeDoc(String xml) throws ValidationException,
+    private EntrySet normalizeDoc(String xml) throws ValidationException,
             MarshalException {
         StringReader reader = new StringReader(xml);
         entrySet = EntrySet.unmarshalEntrySet(reader);
@@ -79,6 +183,7 @@ public class PsiNormalizer {
                 }
             }
         }
+        return entrySet;
     }
 
     /**
@@ -94,6 +199,7 @@ public class PsiNormalizer {
                 if (ref != null) {
                     String id = ref.getRef();
                     ExperimentType exp = (ExperimentType) experimentMap.get(id);
+                    exp.setId("NO_ID");
                     expItem.setExperimentDescription(exp);
                     expItem.setExperimentRef(null);
                 }
@@ -115,6 +221,7 @@ public class PsiNormalizer {
                 AvailabilityType availability = (AvailabilityType)
                         availabilityMap.get(id);
                 choice = new InteractionElementTypeChoice();
+                availability.setId("NO_ID");
                 choice.setAvailabilityDescription(availability);
                 interaction.setInteractionElementTypeChoice(choice);
             }

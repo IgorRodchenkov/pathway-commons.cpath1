@@ -3,29 +3,33 @@ package org.mskcc.pathdb.test.util;
 import junit.framework.TestCase;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.pathdb.util.PsiNormalizer;
+import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.pathdb.util.PsiUtil;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
 import java.io.StringWriter;
+import java.util.HashMap;
 
 /**
- * Tests the PsiNormalizer Class.
+ * Tests the PsiUtil Class.
  *
  * @author Ethan Cerami
  */
-public class TestPsiNormalizer extends TestCase {
+public class TestPsiUtil extends TestCase {
 
     /**
-     * Tests the PsiNormalizer Class.
+     * Tests the PsiUtil Class.
      * @throws Exception All Exceptions.
      */
     public void testNormalization() throws Exception {
         ContentReader reader = new ContentReader();
         File file = new File("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContentFromFile(file);
-        PsiNormalizer normalizer = new PsiNormalizer(xml);
+        XDebug xdebug = new XDebug();
+        PsiUtil normalizer = new PsiUtil(xdebug);
 
-        EntrySet entrySet = normalizer.getNormalizedDocument();
+        EntrySet entrySet = normalizer.getNormalizedDocument(xml);
         StringWriter writer = new StringWriter();
         //entrySet.marshal(writer);
         //System.out.println(writer.toString());
@@ -35,6 +39,27 @@ public class TestPsiNormalizer extends TestCase {
         validateExperiments(entry);
         validateInteractors(entry);
         validateInteractions(entry);
+        validateInteractionUpdate (entry);
+    }
+
+    private void validateInteractionUpdate(Entry entry) throws Exception {
+        XDebug xdebug = new XDebug();
+        PsiUtil util = new PsiUtil(xdebug);
+        HashMap idMap = new HashMap();
+        idMap.put("YAL036C", new Long(1));
+        idMap.put("YCR038C", new Long(2));
+        idMap.put("YDL065C", new Long(3));
+        idMap.put("YDR532C", new Long(4));
+        idMap.put("YEL061C", new Long(5));
+        idMap.put("YBR200W", new Long(6));
+        idMap.put("YHR119W", new Long(7));
+
+        InteractionList interactions = entry.getInteractionList();
+        util.updateInteractions(interactions, idMap);
+        StringWriter writer = new StringWriter();
+        interactions.marshal(writer);
+        String xml = writer.toString();
+        assertTrue (xml.indexOf("<proteinInteractorRef ref=\"2\"/>") > 0);
     }
 
     /**
@@ -111,6 +136,8 @@ public class TestPsiNormalizer extends TestCase {
      * @param entry
      */
     private void validateInteractors(Entry entry) {
+        XDebug xdebug = new XDebug();
+        PsiUtil util = new PsiUtil(xdebug);
         int counter = 0;
         InteractorList interactorList = entry.getInteractorList();
         for (int i = 0; i < interactorList.getProteinInteractorCount(); i++) {
@@ -119,6 +146,8 @@ public class TestPsiNormalizer extends TestCase {
             String id = protein.getId();
             if (id.equals("YCR038C")) {
                 counter++;
+                ExternalReference refs[] = util.extractRefs(protein);
+                assertEquals ("RefSeq GI", refs[0].getDatabase());
             }
         }
         assertEquals(1, counter);

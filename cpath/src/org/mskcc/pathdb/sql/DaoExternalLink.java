@@ -2,6 +2,8 @@ package org.mskcc.pathdb.sql;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.dataservices.bio.ExternalReference;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,6 +49,71 @@ public class DaoExternalLink {
     }
 
     /**
+     * Adds All External References to Database.
+     * @param cpathId cPath ID.
+     * @param refs Array of External Reference Objects.
+     * @throws SQLException Error connecting to database.
+     * @throws ClassNotFoundException Error locating correct SQL driver.
+     * @throws ExternalDatabaseNotFoundException Database Not Found.
+     */
+    public void addMulipleRecords(long cpathId, ExternalReference refs[])
+            throws ClassNotFoundException, SQLException,
+            ExternalDatabaseNotFoundException {
+        for (int i = 0; i < refs.length; i++) {
+            String dbName = refs[i].getDatabase();
+            String id = refs[i].getId();
+            DaoExternalDb dao = new DaoExternalDb();
+            ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(dbName);
+            if (dbRecord != null) {
+                ExternalLinkRecord link = new ExternalLinkRecord();
+                link.setExternalDatabase(dbRecord);
+                link.setCpathId(cpathId);
+                link.setLinkedToId(id);
+                addRecord(link);
+            } else {
+                throw new ExternalDatabaseNotFoundException
+                        ("No matching database "
+                        + "found for:  " + dbName + "[" + id + "]");
+            }
+        }
+    }
+
+    /**
+     * Looks Up the cPath Record that matches any of the specified External
+     * References.
+     * @param refs An Array of External References.  All these references
+     * refer to the same interactor, as defined in different databases.
+     * @return Matching cPath Record or Null.
+     * @throws SQLException Error connecting to database.
+     * @throws ClassNotFoundException Error locating correct SQL driver.
+     */
+    public CPathRecord lookUpByByExternalRefs(ExternalReference refs[])
+            throws SQLException, ClassNotFoundException {
+        //  Iterate through all External References.
+        for (int i = 0; i < refs.length; i++) {
+            String dbName = refs[i].getDatabase();
+            String linkedToId = refs[i].getId();
+
+            // Find matching Database (if available).
+            DaoExternalDb dao = new DaoExternalDb();
+            ExternalDatabaseRecord externalDb = dao.getRecordByTerm(dbName);
+            if (externalDb != null) {
+                //  Find Record that already uses this DbId and linkedToId.
+                ExternalLinkRecord link = this.getRecordByDbAndLinkedToId
+                        (externalDb.getId(), linkedToId);
+                //  Retrieve the CPath Record for this match.
+                if (link != null) {
+                    long cpathId = link.getCpathId();
+                    DaoCPath cpathDao = new DaoCPath();
+                    CPathRecord record = cpathDao.getRecordById(cpathId);
+                    return record;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets Record by specified External Link ID.
      * @param externalLinkId External Link ID.
      * @return External Link Object.
@@ -60,6 +127,35 @@ public class DaoExternalLink {
             PreparedStatement pstmt = con.prepareStatement
                     ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_LINK_ID = ?");
             pstmt.setLong(1, externalLinkId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return createBean(rs);
+            } else {
+                return null;
+            }
+        } finally {
+            JdbcUtil.freeConnection(con);
+        }
+    }
+
+    /**
+     * Gets Record that matches specified ExternalDbId and LinkedToId.
+     * @param externalDbId External Database ID.
+     * @param linkedToId Linked To ID String.
+     * @return External Link Object.
+     * @throws SQLException Error connecting to database.
+     * @throws ClassNotFoundException Error locating correct SQL driver.
+     */
+    private ExternalLinkRecord getRecordByDbAndLinkedToId(long externalDbId,
+            String linkedToId)
+            throws ClassNotFoundException, SQLException {
+        Connection con = JdbcUtil.getCPathConnection();
+        try {
+            PreparedStatement pstmt = con.prepareStatement
+                    ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_DB_ID = ? "
+                    + "AND LINKED_TO_ID =?");
+            pstmt.setLong(1, externalDbId);
+            pstmt.setString(2, linkedToId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return createBean(rs);

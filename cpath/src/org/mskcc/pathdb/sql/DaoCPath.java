@@ -3,7 +3,6 @@ package org.mskcc.pathdb.sql;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 
 import java.io.IOException;
@@ -85,7 +84,8 @@ public class DaoCPath {
         try {
             long cpathId = this.addRecord(name, description, ncbiTaxonomyId,
                     type, xml);
-            addExternalReferences(refs, cpathId);
+            DaoExternalLink linker = new DaoExternalLink();
+            linker.addMulipleRecords(cpathId, refs);
             con.commit();
             return cpathId;
         } catch (ExternalDatabaseNotFoundException e) {
@@ -215,6 +215,33 @@ public class DaoCPath {
     }
 
     /**
+     * Updates XML Content for CPath Record.
+     * @param cpathId cPath Id.
+     * @param newXml New XML Content.
+     * @return true indicates success.
+     * @throws SQLException Error connecting to database.
+     * @throws ClassNotFoundException Error locating correct SQL driver.
+     */
+    public boolean updateXml(long cpathId, String newXml)
+            throws SQLException, ClassNotFoundException {
+        Connection con = JdbcUtil.getCPathConnection();
+        try {
+            PreparedStatement pstmt = con.prepareStatement
+                    ("UPDATE CPATH SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
+                    + "WHERE `CPATH_ID` = ?");
+            pstmt.setString(1, newXml);
+            java.util.Date now = new java.util.Date();
+            Timestamp timeStamp = new Timestamp(now.getTime());
+            pstmt.setTimestamp(2, timeStamp);
+            pstmt.setLong(3, cpathId);
+            int rows = pstmt.executeUpdate();
+            return (rows > 0) ? true : false;
+        } finally {
+            JdbcUtil.freeConnection(con);
+        }
+    }
+
+    /**
      * Extracts cPath Record from Result Set.
      * @param rs ResultSet Object.
      * @return cPath Record Object.
@@ -234,30 +261,5 @@ public class DaoCPath {
         return record;
     }
 
-    /**
-     * Adds All External References to Database.
-     * @param refs Array of External Reference Objects.
-     */
-    private void addExternalReferences(ExternalReference refs[], long cpathId)
-            throws ClassNotFoundException, SQLException,
-            ExternalDatabaseNotFoundException {
-        for (int i = 0; i < refs.length; i++) {
-            String dbName = refs[i].getDatabase();
-            String id = refs[i].getId();
-            DaoExternalDb dao = new DaoExternalDb();
-            ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(dbName);
-            if (dbRecord != null) {
-                DaoExternalLink linker = new DaoExternalLink();
-                ExternalLinkRecord link = new ExternalLinkRecord();
-                link.setExternalDatabase(dbRecord);
-                link.setCpathId(cpathId);
-                link.setLinkedToId(id);
-                linker.addRecord(link);
-            } else {
-                throw new ExternalDatabaseNotFoundException
-                        ("No matching database "
-                        + "found for:  " + dbName + "[" + id + "]");
-            }
-        }
-    }
+
 }
