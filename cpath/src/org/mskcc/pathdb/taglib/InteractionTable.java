@@ -290,6 +290,9 @@ public class InteractionTable extends HtmlTable {
             NamesType names = organism.getNames();
             int taxonomyId = organism.getNcbiTaxId();
             fullName = names.getFullName();
+            if (fullName == null) {
+                fullName = names.getShortLabel();
+            }
             String url = this.getOrganismLink(taxonomyId);
             append("<TD class='cpath3'>"
                     + "<A TITLE='Get All Records for Organism:  "
