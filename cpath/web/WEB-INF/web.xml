@@ -45,11 +45,6 @@
             <param-name>admin_password</param-name>
             <param-value>cpath</param-value>
         </init-param>
-
-        <init-param>
-            <param-name>log_config_file</param-name>
-            <param-value>/WEB-INF/config/config-JDBC.properties</param-value>
-        </init-param>
         <load-on-startup/>
     </servlet>
     
@@ -70,7 +65,7 @@
     </error-page>
     <error-page>
         <error-code>400</error-code>
-        <location>/WEB-INF/jsp/pages//NotFound.jsp</location>
+        <location>/WEB-INF/jsp/pages/NotFound.jsp</location>
     </error-page>
 
     <!-- Tag Libraries -->
