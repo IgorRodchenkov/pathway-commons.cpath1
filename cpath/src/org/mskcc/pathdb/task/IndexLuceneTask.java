@@ -53,13 +53,20 @@ public class IndexLuceneTask extends Task {
             pMonitor.setCurrentMessage("Indexing Records");
             DaoXmlCache dao = new DaoXmlCache(xdebug);
             dao.deleteAllRecords();
+            XDebug xdebug = new XDebug();
+            xdebug.startTimer();
             indexAllInteractions();
 
             OrganismStats orgStats = new OrganismStats();
             orgStats.resetStats();
+            xdebug.stopTimer();
 
             pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
                     + "Entities Indexed:  " + pMonitor.getCurValue());
+            if (verbose) {
+                System.out.println("Total Time Elapsed:  "
+                        + xdebug.getTimeElapsed());
+            }
         } catch (Exception e) {
             setException(e);
             System.err.println("**** ERROR:  " + e.getMessage());
