@@ -14,14 +14,14 @@ Mutually agreeable software development process guidelines should be documented 
 
 <section name="Development process guidelines">
 
-<section name="Version control">
+<subsection name="Version control">
 <p>
 Version control tracks and coordinates revisions to a set of resources (typically program source files) and makes it easier for multiple authors to revise files and maintain document integrity.  The cPath project uses CVS (Concurrent Versions System - http://www.cvshome.org/).  There are more advanced version control systems available these days, but CVS is free, the de facto standard and sufficient for our needs.
 </p>
-</section>
+</subsection>
 
 
-<section name="Issue tracking">
+<subsection name="Issue tracking">
 <p>
 Issue tracking has the following advantages:
 <UL>
@@ -33,24 +33,24 @@ Issue tracking has the following advantages:
 
 cPath is using the open-source mantis bug-tracking system (http://mantisbt.sourceforge.net/).
 </p>
-</section>
+</subsection>
 
-<section name="Regression testing">
+<subsection name="Regression testing">
 <p>
 Regression testing is the developer centric process of running an automated test suite to find out if recent changes have broken the software.  cPath uses the freely available JUnit tool (http://www.junit.org), which requires unit tests to be written for each test.  An example test would read in a file and check to see that values read from the file are properly stored in memory after the read operation.
 </p>
 <p>
 It is recommended that developers write unit tests, that these tests are organized into suites, and that all tests be organized to run from the single ant 'test' target.  This makes regression testing easier.  Unit tests are currently organized so they can be run individually and locally if desired.  Full details are available in the cPath.unitTests.AllTests class.
 </p>
-</section>
+</subsection>
 
-<section name="Integration and release testing">
+<subsection name="Integration and release testing">
 <p>
 This user-centric quality assurance process involves a typical user testing the application on a typical platform.  Currently cPath does not have dedicated QA staff, but a minimal integration test process is performed by the development team members before any major software release.
 </p>
-</section>
+</subsection>
 
-<section name="Documentation">
+<subsection name="Documentation">
 <p>
 <UL>
 There are four types of documentation considered here.
@@ -66,39 +66,39 @@ There are four types of documentation considered here.
 <LI>Project management documents include software status reports and implementation plans.  These should be posted on the Maven site.</LI>
 </UL>
 </p>
-</section>
+</subsection>
 
-<section name="Analysis and estimation (A&amp;E)">
+<subsection name="Analysis and estimation (A&amp;E)">
 <p>
 Feature prioritization and planning are important things to consider in any software development project and should allow the most important features to be implemented to a stable level first.  Currently, cPath performs A&amp;E in weekly meetings in the Sander group.
 </p>
-</section>
+</subsection>
 
-<section name="Build Process">
+<subsection name="Build Process">
 <p>
 cPath is currently built using Ant scripts.  Ant also automates testing and other tasks as well.  Changes to the build process should be localized to the single build.xml file for clarity.
 </p>
-</section>
+</subsection>
 </section>
 
 <section name="Protocols">
 
-<section name="User testing protocol (integration and release testing)">
+<subsection name="User testing protocol (integration and release testing)">
 <p>
 A minimal set of user tests should be performed before a public cPath release.  This should include some basic tests, such as loading up a few data sets and testing the web site.  This should be done at least to ensure basic functionality before a release.  Ideally, more testing should be done before a release, but the project currently doesn't have a dedicated QA person.  If one becomes available, then this protocol should be expanded.
 </p>
-</section>
+</subsection>
 
-<section name="Release protocol">
+<subssection name="Release protocol">
 <p>
 Internal releases should be made every month.  This allows new projects (e.g. plugins) that need to be based on a stable core) to get started within the group.  The internal release should include the following steps: regression and integration testing, tagging the CVS repository with a release tag and documenting the release tag on a web page.  This release should be certified as stable and subsequent development of internal release of software (e.g. to internal users) should use this codebase.  Subsequent inter-release development could continue in the CVS repository, but that code should not be distributed to most users until the next stable release.
 </p>
 <p>
 Public releases should occur when significant new features have been added to cPath.  A larger amount of integration testing should occur before public release than for an internal release.  User documentation should be updated and the binaries should be posted to the cPath.org website.
 </p>
-</section>
+</subsection>
 
-<section name="Communication">
+<subsection name="Communication">
 <p>
 The following communication tools are typically used in cPath development:
 <ul>
@@ -106,7 +106,7 @@ The following communication tools are typically used in cPath development:
 </ul>
 Otherwise, e-mail and phone calls are used for developer to developer communication.
 </p>
-</section>
+</subsection>
 </section>
 
   </body>
