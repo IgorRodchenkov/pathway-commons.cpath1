@@ -31,8 +31,11 @@ package org.mskcc.pathdb.tool;
 
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.util.XmlValidator;
+import org.xml.sax.SAXException;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Command Line Tool for Loading PSI Data into cPath.
@@ -46,14 +49,24 @@ public class LoadPsi {
      *
      * @param file File.
      * @throws IOException  File Input Error.
+     * @throws SAXException XML File is Invalid.
      * @throws DaoException Data Access Error.
      */
     public static void importDataFile(File file) throws IOException,
-            DaoException {
+            DaoException, SAXException {
         String description = file.getName();
         System.out.println("Loading data file:  " + file.getName());
         System.out.println("Description:  " + description);
         String data = retrieveContentFromFile(file);
+
+        //  Validate Data before adding it.
+        XmlValidator validator = new XmlValidator();
+        ArrayList errorList = validator.validate(data);
+        if (errorList != null && errorList.size() > 0) {
+            SAXException e = (SAXException) errorList.get(0);
+            throw e;
+        }
+
         DaoImport dbImport = new DaoImport();
         dbImport.addRecord(description, data);
         System.out.println("XML Document Loaded.  Ready for Import.");
