@@ -8,11 +8,11 @@ import org.mskcc.pathdb.model.PagedResult;
  * @author Ethan Cerami.
  */
 public class Pager {
-    private static final int HITS_PER_PAGE = 20;
     private PagedResult request;
     private int totalNumHits;
     private int startIndex;
     private int endIndex;
+    private int hitsPerPage;
 
     /**
      * Constructor.
@@ -21,12 +21,13 @@ public class Pager {
      */
     public Pager(PagedResult request, int totalNumHits) {
         this.request = request;
+        this.hitsPerPage = request.getMaxHitsInt();
         this.totalNumHits = totalNumHits;
         this.startIndex = Math.max(0, request.getStartIndex());
         if (startIndex >= totalNumHits) {
             this.startIndex = getRevisedStartIndex(totalNumHits);
         }
-        this.endIndex = Math.min(startIndex + HITS_PER_PAGE, totalNumHits);
+        this.endIndex = Math.min(startIndex + hitsPerPage, totalNumHits);
     }
 
     /**
@@ -35,9 +36,9 @@ public class Pager {
     private int getRevisedStartIndex(int totalNumHits) {
         int i = 0;
         while (i < totalNumHits) {
-            i += HITS_PER_PAGE;
+            i += hitsPerPage;
         }
-        return i - HITS_PER_PAGE;
+        return i - hitsPerPage;
     }
 
     /**
@@ -62,7 +63,7 @@ public class Pager {
      * @return url string or null value.
      */
     public String getNextUrl() {
-        int nextIndex = startIndex + HITS_PER_PAGE;
+        int nextIndex = startIndex + hitsPerPage;
         if (nextIndex >= totalNumHits) {
             return null;
         } else {
@@ -77,7 +78,7 @@ public class Pager {
      * @return url string or null value.
      */
     public String getPreviousUrl() {
-        int prevIndex = startIndex - HITS_PER_PAGE;
+        int prevIndex = startIndex - hitsPerPage;
         if (prevIndex < 0) {
             return null;
         } else {
@@ -118,11 +119,11 @@ public class Pager {
             text.append(bar + link);
         }
         if (previousUrl != null) {
-            String link = createLink("Previous " + HITS_PER_PAGE, previousUrl);
+            String link = createLink("Previous " + hitsPerPage, previousUrl);
             text.append(bar + link);
         }
         if (nextUrl != null) {
-            String link = createLink("Next " + HITS_PER_PAGE, nextUrl);
+            String link = createLink("Next " + hitsPerPage, nextUrl);
             text.append(bar + link);
         }
         return text.toString();
