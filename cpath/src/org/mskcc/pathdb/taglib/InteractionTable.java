@@ -44,6 +44,7 @@ import org.mskcc.pathdb.model.ProteinWithWeight;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,7 +154,7 @@ public class InteractionTable extends HtmlTable {
         String url = protocolRequest.getUri();
         startRow();
         this.append("<td colspan=2>" + pagerLinks + "</td>");
-        this.append("<td>");
+        this.append("<td colspan=2>");
         this.append("<div class='right'>");
         this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
         outputLink("View PSI-MI XML Format", url);
@@ -243,17 +244,18 @@ public class InteractionTable extends HtmlTable {
     private void outputInteractionHeaders(int index) {
         startRow();
         if (targetProtein == null) {
-            append("<th colspan=3>" + currentIndex + ". Interaction</th>");
+            append("<th colspan=4>" + currentIndex + ". Interaction</th>");
             currentIndex++;
         } else {
-            append("<th colspan=3>  This Protein interacts with the "
+            append("<th colspan=4>  This Protein interacts with the "
                     + "following other proteins:</th>");
         }
         endRow();
         append("<TR class='b'>");
         append("<td>Interactor</td>");
         append("<td>Organism</td>");
-        append("<td>Experiment Type</td>");
+        append("<td>Experimental Evidence</td>");
+        append("<td>Record Source</td>");
         endRow();
     }
 
@@ -337,6 +339,37 @@ public class InteractionTable extends HtmlTable {
         }
         append("</table>");
         append("</td>");
+        outputPrimaryRef(interaction);
+    }
+
+    private void outputPrimaryRef(InteractionElementType interaction) {
+        if (targetProtein == null) {
+            append("<td rowspan=2 class='cpath2'>");
+        } else {
+            append("<td rowspan=1 class='cpath2'>");
+        }
+        XrefType xref = interaction.getXref();
+        if (xref != null) {
+            DbReferenceType primaryRef = xref.getPrimaryRef();
+            if (primaryRef != null) {
+                String db = primaryRef.getDb();
+                String id = primaryRef.getId();
+
+                //  NOTE:  This code is here because DIP has annoying URL
+                //  links for viewing interaction records.  It requires that
+                //  you remove the last letter in the interaction ID.
+                if (db.equals("DIP")) {
+                    String trucatedId = id.substring(0, id.length()-1);
+                    String url = "http://dip.doe-mbi.ucla.edu/dip/DIPview."
+                            + "cgi?IK=" + trucatedId;
+                    append (db + ":  ");
+                    append ("<A HREF='"+url+"'>"+id+"</A>");
+                } else {
+                    append (db + ":  " + id);
+                }
+            }
+        }
+        append("</td>");
     }
 
     /**
@@ -353,18 +386,31 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Outputs Bibliographic Reference.
+     * Ensures that Primary Reference and all Secondary References
+     * are outputted correctly.
      */
     private void outputBibRef(BibrefType bibRef) {
+        append("<TD width=150>");
         if (bibRef != null) {
             XrefType xref = bibRef.getXref();
             DbReferenceType primaryRef = xref.getPrimaryRef();
             if (primaryRef != null) {
-                String pmid = primaryRef.getId();
-                String url = this.getPubMedLink(pmid);
-                append("<TD width=150><A TITLE='Link to PubMed Reference'"
-                        + " HREF='" + url + "'>" + pmid + "</A></TD>");
+                outputPmid(primaryRef);
+            }
+            for (int i=0; i<xref.getSecondaryRefCount(); i++) {
+                DbReferenceType secondaryRef = xref.getSecondaryRef(i);
+                append("<BR>");
+                outputPmid(secondaryRef);
             }
         }
+        append ("</TD>");
+    }
+
+    private void outputPmid(DbReferenceType primaryRef) {
+        String pmid = primaryRef.getId();
+        String url = this.getPubMedLink(pmid);
+        append("PMID:  <A TITLE='Link to PubMed Reference'"
+                + " HREF='" + url + "'>" + pmid + "</A>");
     }
 
     /**
@@ -422,7 +468,7 @@ public class InteractionTable extends HtmlTable {
         if (fullName == null || fullName.length() == 0) {
             fullName = "Not Specified";
         }
-        this.append("<td class='cpath1'>Full Name:</th>");
+        this.append("<td class='cpath1'>Full Name / Description:</th>");
         outputDataField(fullName);
         endRow();
     }
