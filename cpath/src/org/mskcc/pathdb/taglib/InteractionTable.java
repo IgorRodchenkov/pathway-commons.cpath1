@@ -405,6 +405,8 @@ public class InteractionTable extends HtmlTable {
                 //  NOTE:  The DIP code is here because DIP has annoying URL
                 //  links for viewing interaction records.  It requires that
                 //  you remove the last letter in the interaction ID.
+                //  Note also that DIP URLs for Interactions are distinct
+                //  from DIP URLs for Interactors.
                 if (db.equals("DIP")) {
                     String trucatedId = id.substring(0, id.length() - 1);
                     String url = "http://dip.doe-mbi.ucla.edu/dip/DIPview."

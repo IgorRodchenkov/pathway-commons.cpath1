@@ -60,12 +60,12 @@ public class LoadPsi {
         String data = retrieveContentFromFile(file);
 
         //  Validate Data before adding it.
-        XmlValidator validator = new XmlValidator();
-        ArrayList errorList = validator.validate(data);
-        if (errorList != null && errorList.size() > 0) {
-            SAXException e = (SAXException) errorList.get(0);
-            throw e;
-        }
+//        XmlValidator validator = new XmlValidator();
+//        ArrayList errorList = validator.validate(data);
+//        if (errorList != null && errorList.size() > 0) {
+//            SAXException e = (SAXException) errorList.get(0);
+//            throw e;
+//        }
 
         DaoImport dbImport = new DaoImport();
         dbImport.addRecord(description, data);
