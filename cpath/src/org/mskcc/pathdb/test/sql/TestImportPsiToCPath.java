@@ -58,7 +58,7 @@ public class TestImportPsiToCPath extends TestCase {
     public void testAccess() throws Exception {
         ProgressMonitor pMonitor = new ProgressMonitor();
         ContentReader reader = new ContentReader();
-        String file = new String("testData/psi_sample_mixed.xml");
+        String file = new String("testData/psi_mi/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml, true,
@@ -125,7 +125,7 @@ public class TestImportPsiToCPath extends TestCase {
         //  for UNIPROT_1234 exist in unification_refs.txt.
         ProgressMonitor pMonitor = new ProgressMonitor();
         ContentReader reader = new ContentReader();
-        String psiFile = new String("testData/psi_sample_id_map.xml");
+        String psiFile = new String("testData/psi_mi/psi_sample_id_map.xml");
         String xml = reader.retrieveContent(psiFile);
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml, true,

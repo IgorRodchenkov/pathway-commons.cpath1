@@ -105,7 +105,7 @@ public class TestIndexer extends TestCase {
      */
     public void testStripper() throws Exception {
         ContentReader reader = new ContentReader();
-        String file = new String("testData/psi_sample_mixed.xml");
+        String file = new String("testData/psi_mi/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
 
         //  Test the XML Stripper.

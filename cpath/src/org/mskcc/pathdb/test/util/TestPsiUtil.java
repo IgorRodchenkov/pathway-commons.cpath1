@@ -55,7 +55,7 @@ public class TestPsiUtil extends TestCase {
      */
     public void testNormalization() throws Exception {
         ContentReader reader = new ContentReader();
-        String file = new String("testData/psi_sample_mixed.xml");
+        String file = new String("testData/psi_mi/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
         PsiUtil normalizer = new PsiUtil(new ProgressMonitor());
 

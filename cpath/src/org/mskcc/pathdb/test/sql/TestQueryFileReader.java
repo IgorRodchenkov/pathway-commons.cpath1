@@ -50,7 +50,7 @@ public class TestQueryFileReader extends TestCase {
     public void testAccess() throws Exception {
         QueryFileReader reader = new QueryFileReader();
         ArrayList list = reader.getProtocolRequests
-                ("testData/precompute_junit.txt");
+                ("testData/pre_compute/precompute_junit.txt");
         assertEquals(3, list.size());
         ProtocolRequest request = (ProtocolRequest) list.get(0);
         assertEquals("get_by_keyword", request.getCommand());

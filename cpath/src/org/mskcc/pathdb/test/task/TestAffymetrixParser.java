@@ -48,9 +48,9 @@ public class TestAffymetrixParser extends TestCase {
      * @throws Exception Error Reading / Writing Files.
      */
     public void testParser() throws Exception {
-        String outFileName = "testData/AffyId_SampleOutput.txt";
+        String outFileName = "testData/affymetrix/AffyId_SampleOutput.txt";
         String lineSeparator = System.getProperty("line.separator");
-        File inFile = new File("testData/HG-U133_Sample.csv");
+        File inFile = new File("testData/affymetrix/HG-U133_Sample.csv");
         File outFile = new File(outFileName);
         ParseAffymetrixFileTask task =
                 new ParseAffymetrixFileTask(inFile, outFile, "SwissProt",

@@ -69,7 +69,7 @@ public class TestDataSubmission extends TestCase {
      */
     private String getTextFromSampleFile() throws IOException {
         FileReader fileReader = new FileReader
-                ("testData/HpDemoDataset_15PPI.xml");
+                ("testData/psi_mi/HpDemoDataset_15PPI.xml");
         StringBuffer data = new StringBuffer();
         BufferedReader reader = new BufferedReader(fileReader);
         String line = reader.readLine();
