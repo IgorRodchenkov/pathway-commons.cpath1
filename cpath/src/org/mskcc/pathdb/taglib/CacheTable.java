@@ -26,7 +26,9 @@ public class CacheTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {
-        String headers[] = {"#", "URL", "Query", "Key", "Last Used"};
+        String headers[] = {"#", "URL", "Command",
+                            "Query", "Format", "Organism",
+                            "Last Used"};
         createHeader("XML Cache Contents");
         startTable();
         createTableHeaders(headers);
@@ -49,9 +51,7 @@ public class CacheTable extends HtmlTable {
                 XmlCacheRecord record = (XmlCacheRecord) records.get(i);
                 startRow(i);
                 outputDataField(Integer.toString(i));
-
                 outputProtocolRequest(record);
-                outputDataField(record.getMd5());
                 outputDataField(record.getLastUsed());
                 endRow();
             }
@@ -64,14 +64,10 @@ public class CacheTable extends HtmlTable {
             HashMap params2 = XssFilter.filterAllParameters(params1);
             ProtocolRequest request = new ProtocolRequest(params2);
             outputDataField("<A HREF='" + request.getUri() + "'>URL Link</A>");
-            append("<TD><UL>");
-            Iterator keys = params2.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = (String) keys.next();
-                Object value = params2.get(key);
-                append("<LI>" + key + ":  " + value);
-            }
-            append("</UL></TD>");
+            outputDataField (request.getCommand());
+            outputDataField (request.getQuery());
+            outputDataField (request.getFormat());
+            outputDataField (request.getOrganism());
         } catch (Exception e) {
             append("<TD>" + record.getUrl() + "</TD>");
             append("<TD>N/A</TD>");

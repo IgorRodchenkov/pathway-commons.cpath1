@@ -131,7 +131,7 @@ public abstract class HtmlTable extends TagSupport {
      * Outputs Individual Data Field (with URL Link).
      */
     protected void outputDataField(Object data, String url) {
-        if (data != null) {
+        if (data != null && data.toString().length() > 0) {
             append("<td valign='TOP'>");
             if (url == null) {
                 html.append(data);

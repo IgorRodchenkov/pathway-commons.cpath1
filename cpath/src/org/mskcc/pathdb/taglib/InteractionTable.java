@@ -181,18 +181,19 @@ public class InteractionTable extends HtmlTable {
      * Outputs Number of Matching Interactions and PSI-MI Link.
      */
     private void outputNumInteractions() {
+        protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
+        String psiUrl = protocolRequest.getUri();
+
         pager = new Pager(protocolRequest, xmlAssembly.getNumHits());
         protocolRequest.setFormat(ProtocolConstants.FORMAT_HTML);
         String pagerLinks = pager.getHeaderHtml();
 
-        protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
-        String url = protocolRequest.getUri();
         startRow();
         this.append("<td colspan=2>" + pagerLinks + "</td>");
         this.append("<td colspan=2>");
         this.append("<div class='right'>");
         this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
-        outputLink("View PSI-MI XML Format", url);
+        outputLink("View PSI-MI XML Format", psiUrl);
         this.append("</div>");
         this.append("</td>");
         this.endRow();
