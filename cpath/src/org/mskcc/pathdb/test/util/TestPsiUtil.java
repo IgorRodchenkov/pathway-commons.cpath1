@@ -58,7 +58,7 @@ public class TestPsiUtil extends TestCase {
         String xml = reader.retrieveContent(file);
         PsiUtil normalizer = new PsiUtil(new ProgressMonitor());
 
-        EntrySet entrySet = normalizer.getNormalizedDocument(xml);
+        EntrySet entrySet = normalizer.getNormalizedDocument(xml, false);
         StringWriter writer = new StringWriter();
         //entrySet.marshal(writer);
         //System.out.println(writer.toString());
