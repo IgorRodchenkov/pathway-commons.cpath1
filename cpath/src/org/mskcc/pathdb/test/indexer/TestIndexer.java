@@ -10,7 +10,6 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.util.XmlStripper;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -27,8 +26,8 @@ public class TestIndexer extends TestCase {
      */
     public void testAccess() throws Exception {
         ContentReader reader = new ContentReader();
-        File file = new File("testData/psi_sample_mixed.xml");
-        String xml = reader.retrieveContentFromFile(file);
+        String file = new String("testData/psi_sample_mixed.xml");
+        String xml = reader.retrieveContent(file);
 
         DaoCPath dao = new DaoCPath();
         long cpathId = dao.addRecord(JUNIT_NAME, "JUNIT_DESCRIPTION", 1234,
@@ -61,8 +60,8 @@ public class TestIndexer extends TestCase {
      */
     public void testStripper() throws Exception {
         ContentReader reader = new ContentReader();
-        File file = new File("testData/psi_sample_mixed.xml");
-        String xml = reader.retrieveContentFromFile(file);
+        String file = new String("testData/psi_sample_mixed.xml");
+        String xml = reader.retrieveContent(file);
 
         //  Test the XML Stripper.
         XmlStripper stripper = new XmlStripper();

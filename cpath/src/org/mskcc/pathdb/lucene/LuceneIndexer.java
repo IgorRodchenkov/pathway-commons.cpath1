@@ -78,13 +78,21 @@ public class LuceneIndexer {
         }
     }
 
-    public void initIndexWriter () throws IOException {
+    /**
+     * Initializes Index Writer.
+     * @throws IOException Input Output Exception.
+     */
+    public void initIndexWriter() throws IOException {
         String dir = this.getDirectory();
         Analyzer analyzer = this.getAnalyzer();
         indexWriter = new IndexWriter(dir, analyzer, false);
     }
 
-    public void closeIndexWriter () throws IOException {
+    /**
+     * Closes the Index Writer.
+     * @throws IOException Input Output Exception.
+     */
+    public void closeIndexWriter() throws IOException {
         indexWriter.close();
     }
 

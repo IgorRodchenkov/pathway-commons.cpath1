@@ -8,10 +8,9 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -36,8 +35,8 @@ public class LoadFullText {
                 indexer.index();
             }
             xdebug.stopTimer();
-            System.out.println("\nTotal Time for Indexing:  " +
-                    xdebug.getTimeElapsed() + " ms");
+            System.out.println("\nTotal Time for Indexing:  "
+                    + xdebug.getTimeElapsed() + " ms");
         } catch (Exception e) {
             System.out.println("\n!!!!  Indexing aborted due to error!");
             System.out.println("-->  " + e.getMessage());
@@ -67,23 +66,29 @@ public class LoadFullText {
         System.out.println("\nIndexing complete");
     }
 
-    public void indexText (String fileName) throws IOException,
+    /**
+     * Indexes Text.
+     * @param fileName File Name.
+     * @throws IOException Input Output Exception.
+     * @throws ImportException Error performing Import.
+     */
+    public void indexText(String fileName) throws IOException,
             ImportException {
         System.out.println("Indexing File:  " + fileName);
         long numRecords = 0;
         LuceneIndexer lucene = new LuceneIndexer();
         lucene.initIndex();
         lucene.initIndexWriter();
-        FileReader fileReader = new FileReader (fileName);
-        BufferedReader bufferedReader = new BufferedReader (fileReader);
+        FileReader fileReader = new FileReader(fileName);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
         String line = bufferedReader.readLine();
         StringBuffer record = new StringBuffer();
         while (line != null) {
             if (line.startsWith("ID")) {
-                record = new StringBuffer (line+"\n");
+                record = new StringBuffer(line + "\n");
                 line = bufferedReader.readLine();
-                while (line != null && ! line.startsWith("ID")) {
-                    record.append(line+"\n");
+                while (line != null && !line.startsWith("ID")) {
+                    record.append(line + "\n");
                     line = bufferedReader.readLine();
                 }
                 numRecords++;
@@ -91,7 +96,7 @@ public class LoadFullText {
                     System.out.println("\nNumber Indexed so far:  "
                             + numRecords);
                 }
-                indexRecord (lucene, record.toString());
+                indexRecord(lucene, record.toString());
             }
         }
         lucene.closeIndexWriter();
@@ -99,7 +104,7 @@ public class LoadFullText {
                 + numRecords);
     }
 
-    private void indexRecord (LuceneIndexer lucene, String record)
+    private void indexRecord(LuceneIndexer lucene, String record)
             throws ImportException {
         System.out.print(".");
         lucene.addRecord(record);

@@ -14,7 +14,6 @@ import org.mskcc.pathdb.sql.query.InteractionQuery;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.io.File;
 import java.io.StringWriter;
 
 /**
@@ -31,8 +30,8 @@ public class TestImportPsiToCPath extends TestCase {
      */
     public void testAccess() throws Exception {
         ContentReader reader = new ContentReader();
-        File file = new File("testData/psi_sample_mixed.xml");
-        String xml = reader.retrieveContentFromFile(file);
+        String file = new String("testData/psi_sample_mixed.xml");
+        String xml = reader.retrieveContent(file);
         XDebug xdebug = new XDebug();
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml, true);

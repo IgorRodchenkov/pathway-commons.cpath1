@@ -6,7 +6,6 @@ import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.util.PsiUtil;
 
-import java.io.File;
 import java.io.StringWriter;
 import java.util.HashMap;
 
@@ -23,8 +22,8 @@ public class TestPsiUtil extends TestCase {
      */
     public void testNormalization() throws Exception {
         ContentReader reader = new ContentReader();
-        File file = new File("testData/psi_sample_mixed.xml");
-        String xml = reader.retrieveContentFromFile(file);
+        String file = new String("testData/psi_sample_mixed.xml");
+        String xml = reader.retrieveContent(file);
         PsiUtil normalizer = new PsiUtil();
 
         EntrySet entrySet = normalizer.getNormalizedDocument(xml);

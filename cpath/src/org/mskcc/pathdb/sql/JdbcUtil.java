@@ -11,8 +11,6 @@ import java.sql.*;
  */
 public class JdbcUtil {
     private static int counter = 0;
-    private static Connection gridCon;
-    private static Connection cpathCon;
 
     /**
      * Gets Connection to the CPath Database.
@@ -22,10 +20,7 @@ public class JdbcUtil {
      */
     public static Connection getCPathConnection()
             throws SQLException, ClassNotFoundException {
-        if (cpathCon == null || cpathCon.isClosed()) {
-            cpathCon = JdbcUtil.connect("cpath");
-        }
-        return cpathCon;
+        return JdbcUtil.connect("cpath");
     }
 
     /**
@@ -36,10 +31,7 @@ public class JdbcUtil {
      */
     public static Connection getGridConnection()
             throws SQLException, ClassNotFoundException {
-        if (gridCon == null || gridCon.isClosed()) {
-            gridCon = JdbcUtil.connect("grid");
-        }
-        return gridCon;
+        return JdbcUtil.connect("grid");
     }
 
     /**
@@ -69,13 +61,13 @@ public class JdbcUtil {
      * @param con Connection Object.
      */
     private static void closeConnection(Connection con) {
-//        if (con != null) {
-//            try {
-//                con.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if (con != null) {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

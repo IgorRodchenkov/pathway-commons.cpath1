@@ -47,7 +47,6 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 
 import java.io.File;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -80,7 +79,7 @@ public class ReadInteractionsFromGrid extends DataServiceBase
      * @return ArrayList of Interaction objects.
      * @throws DataServiceException Error connecting to data service.
      */
-    public ArrayList getInteractions(String orfName)
+    public ArrayList getInteractionsById(String orfName)
             throws DataServiceException {
         try {
             ArrayList interactions = getLiveInteractions(orfName);
@@ -94,11 +93,12 @@ public class ReadInteractionsFromGrid extends DataServiceBase
 
     /**
      * Method Not Supported.
-     * @param url URL Object.
+     * @param url URL String..
      * @return no data is returned.
      * @throws org.mskcc.dataservices.core.DataServiceException Always thrown.
      */
-    public ArrayList getInteractions(URL url) throws DataServiceException {
+    public ArrayList getInteractionsFromUrl(String url)
+            throws DataServiceException {
         throw new DataServiceException("Method is not supported");
     }
 

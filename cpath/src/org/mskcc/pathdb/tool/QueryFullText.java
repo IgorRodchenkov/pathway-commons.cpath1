@@ -1,15 +1,12 @@
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.pathdb.lucene.CPathResult;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.apache.lucene.search.Hits;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.search.Hits;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.util.ArrayList;
 import java.io.IOException;
 
 /**
@@ -34,8 +31,8 @@ public class QueryFullText {
             System.out.println("Using search terms:  " + terms.toString());
             queryFullText(terms.toString());
             xdebug.stopTimer();
-            System.out.println("Total Time for Query:  " +
-                    xdebug.getTimeElapsed() + " ms");
+            System.out.println("Total Time for Query:  "
+                    + xdebug.getTimeElapsed() + " ms");
         } else {
             System.out.println("Command line usage:  queryText.sh"
                     + " search_terms");
@@ -66,8 +63,7 @@ public class QueryFullText {
     private static void displayHits(Hits hits) throws IOException {
         if (hits.length() == 0) {
             System.out.println("No matching records found.");
-        }
-        else {
+        } else {
             System.out.println("Showing Top Hit Only:");
             Document doc = hits.doc(0);
             Field cpathId = doc.getField(LuceneIndexer.FIELD_NAME_CPATH_ID);

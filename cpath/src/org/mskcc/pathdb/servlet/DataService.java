@@ -7,10 +7,10 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.controller.CPathController;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.model.CPathRecordType;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
@@ -149,7 +148,7 @@ public final class DataService extends HttpServlet {
         } catch (ClassNotFoundException e) {
             System.err.println("****  Error Connecting to Database");
             System.err.println(e.toString());
-        }  catch (DaoException e) {
+        } catch (DaoException e) {
             System.err.println("****  Error Connecting to Database");
             System.err.println(e.toString());
         }

@@ -63,7 +63,7 @@ public class TestReadInteractionsFromGrid extends TestCase {
                     factory.getService
                     (CPathConstants.READ_INTERACTIONS_FROM_GRID);
             ArrayList interactions =
-                    service.getInteractions(SAMPLE_ORF);
+                    service.getInteractionsById(SAMPLE_ORF);
             validateData(interactions, 0, "YER006W", "YPL211W",
                     "Affinity Precipitation", "AB", "11583615");
             validateData(interactions, 6, "YER006W", "YPL146C",

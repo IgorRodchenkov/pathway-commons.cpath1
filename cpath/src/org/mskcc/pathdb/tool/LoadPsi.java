@@ -5,7 +5,6 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -51,9 +50,8 @@ public class LoadPsi {
             String description = getDescription();
             System.out.println("Loading data file:  " + fileName);
             System.out.println("Description:  " + description);
-            File file = new File(fileName);
             ContentReader reader = new ContentReader();
-            String data = reader.retrieveContentFromFile(file);
+            String data = reader.retrieveContent(fileName);
             DaoImport dbImport = new DaoImport();
             dbImport.addRecord(description, data);
             System.out.println("Loading complete.");
