@@ -27,7 +27,8 @@ public class TestIndexer extends TestCase {
      */
     public void testIndexer() throws Exception {
         XDebug xdebug = new XDebug();
-        XmlAssembly assembly = XmlAssemblyFactory.getXmlAssembly(4, xdebug);
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
+                (4, 1, xdebug);
         ItemToIndex item = IndexFactory.createItemToIndex (4, assembly);
         LuceneIndexer lucene = new LuceneIndexer();
         lucene.initIndex();

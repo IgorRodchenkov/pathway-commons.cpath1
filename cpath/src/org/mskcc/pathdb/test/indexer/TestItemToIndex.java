@@ -23,7 +23,8 @@ public class TestItemToIndex extends TestCase {
      */
     public void testInteraction() throws Exception {
         XDebug xdebug = new XDebug();
-        XmlAssembly assembly = XmlAssemblyFactory.getXmlAssembly(4, xdebug);
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
+                (4, 1, xdebug);
         ItemToIndex item = IndexFactory.createItemToIndex (4, assembly);
 
         assertTrue (item instanceof PsiInteractionToIndex);
