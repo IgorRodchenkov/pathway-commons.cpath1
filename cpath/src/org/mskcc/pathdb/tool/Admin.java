@@ -37,6 +37,7 @@ import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
 import org.mskcc.pathdb.task.IndexLuceneTask;
+import org.mskcc.pathdb.task.ValidateXmlTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
@@ -55,6 +56,7 @@ public class Admin {
     private static final String COMMAND_IMPORT = "import";
     private static final String COMMAND_PRE_COMPUTE = "precompute";
     private static final String COMMAND_COUNT_AFFYMETRIX = "count_affy";
+    private static final String COMMAND_VALIDATE = "validate";
     private static final int NOT_SET = -9999;
 
     //  User Parameters
@@ -94,6 +96,10 @@ public class Admin {
             } else if (command.equals(COMMAND_COUNT_AFFYMETRIX)) {
                 CountAffymetrixIdsTask task = new CountAffymetrixIdsTask
                         (taxonomyId, true);
+            } else if (command.equals(COMMAND_VALIDATE)) {
+                ValidateXmlTask validator = new ValidateXmlTask
+                        (new File(fileName));
+                validator.validate(true);
             } else {
                 throw new IllegalArgumentException("Command Not Recognized");
             }
@@ -154,7 +160,19 @@ public class Admin {
                 || fileName.endsWith("mif")) {
             System.out.println("Based on the file extension, I am concluding "
                     + "that this is a PSI-MI File.");
-            LoadPsi.importDataFile(file);
+            ValidateXmlTask validator = new ValidateXmlTask (file);
+            boolean isValid = validator.validate(false);
+            if (isValid) {
+                LoadPsi.importDataFile(file);
+            } else {
+                System.out.println("\n-------------------------------------");
+                System.out.println("Import aborted due to invalid XML.");
+                System.out.println("Use the validate command to view "
+                    + "a list of XML validation errors.\nFor example:  admin.pl"
+                    + " -f human_small.xml validate");
+                System.out.println("-------------------------------------");
+                System.exit(-1);
+            }
         } else {
             System.out.println("Based on the file extension, I am concluding "
                     + "that this is a List of External References.");
@@ -233,12 +251,12 @@ public class Admin {
         BufferedReader in = new BufferedReader
                 (new InputStreamReader(System.in));
         PropertyManager propertyManager = PropertyManager.getInstance();
-        if (userName == null) {
+        if (userName == null && ! command.equals(COMMAND_VALIDATE)) {
             System.out.print("Enter Database User Name: ");
             userName = in.readLine();
             propertyManager.setProperty(PropertyManager.DB_USER, userName);
         }
-        if (pwd == null) {
+        if (pwd == null && ! command.equals(COMMAND_VALIDATE)) {
             System.out.print("Enter Database Password: ");
             pwd = in.readLine();
             propertyManager.setProperty(PropertyManager.DB_PASSWORD, pwd);
@@ -249,6 +267,10 @@ public class Admin {
         }
         if (command.equals(COMMAND_COUNT_AFFYMETRIX) && taxonomyId == NOT_SET) {
             getTaxonomyId();
+        }
+        if (command.equals(COMMAND_VALIDATE) && fileName == null) {
+            System.out.print("Enter Path to XML File:  ");
+            fileName = in.readLine();
         }
     }
 
@@ -296,6 +318,8 @@ public class Admin {
                 + "specified config file.");
         System.out.println("  count_affy      Counts Records with Affymetrix "
                 + "identifiers.");
+        System.out.println("  validate        Valdates the specified XML " +
+                "file.");
         System.out.println("\n\nExtra Options (not guaranteed to be available "
             + "in future versions of cPath)");
         System.out.println("  -r              Removes all Interaction PSI-MI "
