@@ -409,14 +409,12 @@ public class PsiUtil {
         if (refs == null) {
             return null;
         }
-        int counter = 0;
         for (int k = 0; k < refs.length; k++) {
             ExternalReference ref = refs[k];
             String dbName = ref.getDatabase();
             if (dbName.equalsIgnoreCase("GO")
                     || dbName.equals("InterPro")) {
                 //  No-op
-                counter++;
             } else {
                 filteredRefList.add(ref);
             }
