@@ -1,23 +1,28 @@
-Short Term Items:
-----------------
-1.  Test Lucene with Large data set from Alex:
-ftp://ftp.ncbi.nih.gov/repository/UniGene/Hs.data.gz [done]
-2.  Update Data Services Developer Docs.
-3.  Update GRID PlugIn to use cPath Only [done]
+This document contains cPath/Cytoscape Items we want to implement someday:
 
-Longer Term Items:
-------------------
-1.  Deal with duplicate records issue.
-2.  Add support for Tomcat JDBC Connection Pooling.
-3.  Create paged result sets, e.g. next/previous buttons for search results.
-4.  Load Testing
-5.  Optimize searching by going only to Lucene (no need to go against mySQL).
+cPath Functionality Issues:
+----------------------------
+1.  Field Specific Searching, e.g. "name:RAS".
+2.  Indexing of interactions
+3.  Build a Front-end interface to the External Database Tables
+	(more details are included in phase 6 doc, before being deferred)
+4.  Create cPath Developer Docs
+5.  Add new query:  query by experimental method (e.g. all the data from two-hybrid)
+6.  Gary's latest idea:  re:  loading external references.
 
+cPath Performance/Reliability/Security Issues
+---------------------------------------------
+1.  Add support for Tomcat JDBC Connection Pooling.
+2.  Load Testing via JMeter.
+3.  Prevent against cross-scripting vulnerability.
+4.  Set up auto-emails upon fatal cPath errors.
 
-Other Items:
-------------
+Data Service Specific Items:
+-----------------------------
 1.  Add an Ontology object to the dataservices bio package.
-2.  Prevent against cross-scripting vulnerability.
-3.  Set up auto-emails upon fatal cPath errors.
-4.  Add Gene Name/Synonym Look up to data services.
-5.  Create set of developer docs for cPath.
+2.  Add Gene Name/Synonym Look up to data services.
+3.  Create a service for reading in Cytoscape node/edge attributes.
+4.  Create an "About Data Services PlugIn", with version #, list of all registered
+	(more details are included in phase 6 doc, before being deferred)
+5.  Resurrect the GRID Plugin
+6.  Revise API from client perspective
