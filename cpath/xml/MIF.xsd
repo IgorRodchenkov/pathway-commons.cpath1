@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Chris Sander (Memorial Sloan Kettering) -->
-<xs:schema targetNamespace="net:sf:psidev:mi" xmlns="net:sf:psidev:mi" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Swiss-Prot (EMBL OUTSTATION THE EBI WELLCOME TRUST GENOME CAMPUS) -->
+<xs:schema targetNamespace="net:sf:psidev:mi" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="net:sf:psidev:mi" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="entrySet">
 		<xs:annotation>
 			<xs:documentation>Root element of the Molecular Interaction Format</xs:documentation>
@@ -118,11 +118,11 @@
 						<xs:field xpath="@id"/>
 					</xs:key>
 					<xs:keyref name="experimentRef" refer="experimentKey">
-						<xs:selector xpath="interactionList/interaction/experimentRef"/>
+						<xs:selector xpath="interactionList/interaction/experimentsList/experimentRef"/>
 						<xs:field xpath="@ref"/>
 					</xs:keyref>
 					<xs:key name="interactorKey">
-						<xs:selector xpath="interactorList/interactor"/>
+						<xs:selector xpath="interactorList/proteinInteractor"/>
 						<xs:field xpath="@id"/>
 					</xs:key>
 					<xs:keyref name="interactorRef" refer="interactorKey">
@@ -201,7 +201,7 @@
 					<xs:documentation>Reference to an external feature description, for example InterPro entry.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="featureDescription" type="openCvType" minOccurs="0">
+			<xs:element name="featureDescription" type="cvType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Description and classification of the feature</xs:documentation>
 				</xs:annotation>
@@ -322,6 +322,11 @@
 					<xs:attribute name="value" type="xs:string" use="required"/>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="attributeList" type="attributeListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Semi-structured additional description of the data contained in the entry.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:string" use="required"/>
 	</xs:complexType>
@@ -386,23 +391,6 @@
 		<xs:annotation>
 			<xs:documentation>Allows to reference an external controlled vocabulary, or to directly include a value if no suitable external definition is available.</xs:documentation>
 		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="names" type="namesType">
-				<xs:annotation>
-					<xs:documentation>This contains the controlled vocabulary terms, as a short and optionally as a long form.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="xref" type="xrefType" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>Refers to the term of the controlled vocabulary in an external database.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="attributeList" type="attributeListType" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>If no suitable external controlled vocabulary is available, this attributeList can be used to describe the term. Example: Attribute name: Mouse atlas tissue name; attribute value: spinal cord, day 30.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="proteinInteractorType">
 		<xs:annotation>
@@ -459,13 +447,6 @@
 					<xs:documentation>Name(s) of the interacion.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:choice>
-				<xs:annotation>
-					<xs:documentation>Either refer to an experiment or insert description.</xs:documentation>
-				</xs:annotation>
-				<xs:element name="experimentRef" type="refType"/>
-				<xs:element name="experimentDescription" type="experimentType"/>
-			</xs:choice>
 			<xs:choice minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Describes the availability of the interaction data. If no availability is given, the data is assumed to be freely available.</xs:documentation>
@@ -473,6 +454,20 @@
 				<xs:element name="availabilityRef" type="refType"/>
 				<xs:element name="availabilityDescription" type="availabilityType"/>
 			</xs:choice>
+			<xs:element name="experimentList">
+				<xs:annotation>
+					<xs:documentation>List of experiments in which this interaction has been determined.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Either refer to an experiment or insert description.</xs:documentation>
+						</xs:annotation>
+						<xs:element name="experimentRef" type="refType"/>
+						<xs:element name="experimentDescription" type="experimentType"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="participantList">
 				<xs:annotation>
 					<xs:documentation>A list of molecules participating in this interaction.</xs:documentation>
@@ -503,6 +498,12 @@
 					<xs:attribute name="unit" type="xs:string" use="required"/>
 					<xs:attribute name="value" type="xs:string" use="required"/>
 				</xs:complexType>
+			</xs:element>
+			<xs:element name="xref" type="xrefType" minOccurs="0"/>
+			<xs:element name="attributeList" type="attributeListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Semi-structured additional description of the data contained in the entry.</xs:documentation>
+				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
