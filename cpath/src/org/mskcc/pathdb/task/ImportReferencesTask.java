@@ -4,6 +4,7 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
+import org.mskcc.pathdb.util.ConsoleUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +20,6 @@ import java.util.StringTokenizer;
  * @author Ethan Cerami.
  */
 public class ImportReferencesTask extends Task {
-    private ProgressMonitor pMonitor;
     private Reader reader;
     private static final String EMPTY_FLAG = "---";
     private String db1, db2;
@@ -144,7 +144,7 @@ public class ImportReferencesTask extends Task {
     private void updateRefs(ExternalReference ref1, ExternalReference ref2)
             throws DaoException {
         pMonitor.incrementCurValue();
-        System.out.print(".");
+        ConsoleUtil.showProgress(verbose, pMonitor);
         if (pMonitor.getCurValue() % 50 == 0) {
             displayProgress();
         }

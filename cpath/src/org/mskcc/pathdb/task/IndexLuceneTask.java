@@ -3,6 +3,7 @@ package org.mskcc.pathdb.task;
 import org.mskcc.pathdb.lucene.IndexFactory;
 import org.mskcc.pathdb.lucene.ItemToIndex;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
@@ -14,12 +15,15 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.util.ConsoleUtil;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 /**
  * Runs the Lucene Text Indexer on all Records in CPath.
@@ -27,14 +31,14 @@ import java.sql.SQLException;
  * @author Ethan Cerami.
  */
 public class IndexLuceneTask extends Task {
-    private ProgressMonitor pMonitor;
+    private XDebug xdebug;
 
     /**
      * Constructor.
      *
      * @param verbose Verbose flag.
      */
-    public IndexLuceneTask(boolean verbose) {
+    public IndexLuceneTask(boolean verbose, XDebug xdebug) {
         super("Run Full Text Indexer");
         this.setVerbose(verbose);
         pMonitor = new ProgressMonitor();
@@ -46,16 +50,20 @@ public class IndexLuceneTask extends Task {
      */
     public void run() {
         try {
-            pMonitor.setCurrentMessage("Clearing XML Cache");
+            outputMsg("Clearing XML Cache");
             pMonitor.setCurrentMessage("Indexing Records");
-            DaoXmlCache dao = new DaoXmlCache(new XDebug());
+            DaoXmlCache dao = new DaoXmlCache(xdebug);
             dao.deleteAllRecords();
             indexAllInteractions();
+
+            OrganismStats orgStats = new OrganismStats();
+            orgStats.restetStats();
+
             pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
                     + "Entities Indexed:  " + pMonitor.getCurValue());
         } catch (Exception e) {
             setException(e);
-            e.printStackTrace();
+            System.err.println("**** ERROR:  " + e.getMessage());
         }
     }
 
@@ -78,7 +86,7 @@ public class IndexLuceneTask extends Task {
      */
     public void indexAllInteractions() throws DaoException, IOException,
             ImportException, AssemblyException {
-        outputMsg("Indexing all CPath Interactions");
+        outputMsg("Indexing all cPath Interactions");
         DaoCPath cpath = new DaoCPath();
         pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.INTERACTION));
 
@@ -123,9 +131,7 @@ public class IndexLuceneTask extends Task {
             AssemblyException {
         pMonitor.incrementCurValue();
         CPathRecord record = cpath.extractRecord(rs);
-        if (verbose) {
-            System.out.print(".");
-        }
+        ConsoleUtil.showProgress(verbose, pMonitor);
 
         //  Create XML Assembly Object of Specified Interaction Record
         XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly
