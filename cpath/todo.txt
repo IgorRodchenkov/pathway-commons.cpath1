@@ -27,6 +27,10 @@ cPath Functionality Issues:
     not computed on the fly.  The best example of a stats page is currently the MINT page:
     http://160.80.34.4/mint/statistics/statistics.php
 	---> Current priority: low.
+11. Add support to cPath and data services layer for importing PSI-MI files that contain interactions
+    with more than two proteins (e.g. 5 protein complex).  This would allow us to import data
+    from the PIN database in the Tempst lab at MSKCC (http://pin.mskcc.org).
+	---> Current priority: medium.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
