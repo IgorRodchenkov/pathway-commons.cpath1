@@ -430,6 +430,8 @@ public class InteractionTable extends HtmlTable {
                     }
                 }
             }
+        } else {
+            append ("Source Information Not Available");
         }
         append("</td>");
     }
