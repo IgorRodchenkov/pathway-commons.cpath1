@@ -105,13 +105,15 @@ public class ProtocolValidator {
     private void validateQuery() throws ProtocolException {
         String q = request.getQuery();
         String command = request.getCommand();
-        if (q == null || q.length() == 0) {
+        if ((q == null || q.length() == 0)
+                && (request.getOrganism() == null ||
+                request.getOrganism().length()==0)) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_QUERY
                     + "' is not specified." + HELP_MESSAGE,
                     "You did not specify a search term.  Please try again.");
         }
-        if (command.equals(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID)) {
+        if (command.equals(ProtocolConstants.COMMAND_GET_BY_ID)) {
             try {
                 Integer.parseInt(q);
             } catch (NumberFormatException e) {
