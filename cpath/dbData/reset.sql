@@ -40,6 +40,11 @@ INSERT INTO `external_db` VALUES (14, 'IntAct', 'http://www.ebi.ac.uk/intact/sea
 INSERT INTO `external_db` VALUES (15, 'FlyBase', 'http://flybase.bio.indiana.edu/.bin/fbidq.html?%ID%', 'FlyBase', 23, NULL, NULL, 20031002163709, 20031002163709); 
 INSERT INTO `external_db` VALUES (16, 'PDB', 'http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=%ID%', 'PDB', 23, NULL, NULL, 20031002163709, 20031002163709); 
 INSERT INTO `external_db` VALUES (17, 'SGD', '', 'SGD', 23, NULL, NULL, 20031002163709, 20031002163709); 
+INSERT INTO `external_db` VALUES (18, 'HPRD', 'http://www.hprd.org/protein/%ID%', 'Human Protein Reference Database', 26, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (19, 'OMIM', 'http://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%ID%', 'Online Mendelian Inheritance in Man', 28, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (20, 'GenBank', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=Protein&doptcmdl=GenPept&term=%ID%', 'GenBank', 29, NULL, NULL, 20031002163709, 20031002163709);
+
+#
 #
 #  Insert data into table 'external_db_cv'
 #
@@ -69,5 +74,8 @@ INSERT INTO `external_db_cv` VALUES (22, 14, 'intact');
 INSERT INTO `external_db_cv` VALUES (23, 15, 'flybase');
 INSERT INTO `external_db_cv` VALUES (24, 16, 'pdb');
 INSERT INTO `external_db_cv` VALUES (25, 17, 'sgd');
-
-
+INSERT INTO `external_db_cv` VALUES (26, 18, 'HPRD');
+INSERT INTO `external_db_cv` VALUES (27, 3, 'Ref-Seq');
+INSERT INTO `external_db_cv` VALUES (28, 19, 'OMIM');
+INSERT INTO `external_db_cv` VALUES (29, 20, 'GenBank');
+INSERT INTO `external_db_cv` VALUES (30, 3, 'Ref_Seq');
