@@ -4,7 +4,7 @@
 
 <web-app>
 
-    <display-name>Data Service Application</display-name>
+	<display-name>CBio Data Services Application</display-name>
     
     <filter>
         <filter-name>Cache</filter-name>
@@ -33,8 +33,9 @@
 	</init-param>
 	<init-param>
 		<param-name>log_config_file</param-name>
-		<param-value>/Users/cerami/dev/sander/pathdb/build/WEB-INF/classes/config-JDBC.properties</param-value>
+		<param-value>/WEB-INF/config/config-JDBC.properties</param-value>
 	</init-param>
+	<load-on-startup />
     </servlet>
 
     <servlet-mapping>
