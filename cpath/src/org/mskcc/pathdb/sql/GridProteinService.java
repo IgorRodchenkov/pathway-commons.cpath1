@@ -4,6 +4,8 @@ import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
 import org.mskcc.pathdb.model.Protein;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +21,11 @@ import java.sql.SQLException;
  * @author Ethan Cerami
  */
 public class GridProteinService extends GridBase {
+
+    /**
+     * Logger.
+     */
+    private Log log = LogFactory.getLog(this.getClass());
 
     /**
      * Constructor.
@@ -39,6 +46,7 @@ public class GridProteinService extends GridBase {
      */
     public Protein getProteinByOrf(String orfName)
             throws SQLException, ClassNotFoundException {
+        log.info("Retrieving Protein, using ORFName:  " + orfName);
         Protein protein = getLiveProtein(orfName, GridBase.KEY_ORF);
         return protein;
     }
@@ -52,6 +60,7 @@ public class GridProteinService extends GridBase {
      */
     public Protein getProteinByLocalId(String localId)
             throws SQLException, ClassNotFoundException {
+        log.info("Retrieving Protein, using ORFName:  " + localId);
         Protein protein = getLiveProtein(localId, GridBase.KEY_LOCAL_ID);
         return protein;
     }
@@ -88,9 +97,7 @@ public class GridProteinService extends GridBase {
         PreparedStatement pstmt = con.prepareStatement
                 ("select * from orf_info where " + lookUpKey + "=?");
         pstmt.setString(1, uid);
-
-        //  Modify line below to use new logger.
-        //  System.out.println("SQL Query:  " + pstmt.toString());
+        log.info("Executing SQL Query:  " + pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
         rs.next();
         return rs;

@@ -2,6 +2,8 @@ package org.mskcc.pathdb.sql;
 
 import org.mskcc.pathdb.model.Interaction;
 import org.mskcc.pathdb.model.Protein;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +20,10 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class GridInteractionService extends GridBase {
+    /**
+     * Logger.
+     */
+    private Log log = LogFactory.getLog(this.getClass());
 
     /**
      * GRID Protein Service.
@@ -43,6 +49,7 @@ public class GridInteractionService extends GridBase {
     */
     public ArrayList getInteractions(String orfName)
             throws SQLException, ClassNotFoundException {
+        log.info("Getting Interactions for:  " + orfName);
         ArrayList interactions = getLiveInteractions(orfName);
         return interactions;
     }
@@ -86,9 +93,7 @@ public class GridInteractionService extends GridBase {
         pstmt.setString(1, localId);
         pstmt.setString(2, localId);
 
-        //TODO:  Modify line below to use new logger.
-        //  System.out.println("SQL Query:  " + pstmt.toString());
-
+        log.info ("Executing SQL Query:  " + pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
         return rs;
     }

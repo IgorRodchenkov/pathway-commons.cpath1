@@ -4,6 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
+import org.mskcc.pathdb.config.ConfigLogger;
 
 /**
  * Runs all Unit Tests.
@@ -31,6 +32,7 @@ public class AllTest extends TestCase {
      * @param args java.lang.String[]
      */
     public static void main(String[] args) {
+        ConfigLogger.configureLogger();
         if (args.length > 0 && args[0] != null && args[0].equals("-ui")) {
             String newargs[] = {"org.mskcc.pathdb.test.AllTest",
                                 "-noloading"};
