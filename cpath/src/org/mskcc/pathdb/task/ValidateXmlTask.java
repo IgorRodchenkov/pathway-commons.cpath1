@@ -29,8 +29,8 @@
  **/
 package org.mskcc.pathdb.task;
 
-import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.dataservices.core.DataServiceException;
+import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.util.XmlValidator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -60,10 +60,10 @@ public class ValidateXmlTask {
      * Validates the XML File, and outputs error messages to the Standard
      * Console.
      *
-     * @param showErrors  Show/Hide Error Messages on System.out.
+     * @param showErrors Show/Hide Error Messages on System.out.
      * @return true if valid;  false otherwise.
-     * @throws IOException  Input/Output Exception.
-     * @throws SAXException XML SAX Error.
+     * @throws IOException          Input/Output Exception.
+     * @throws SAXException         XML SAX Error.
      * @throws DataServiceException Error Reading Data.
      */
     public boolean validate(boolean showErrors)

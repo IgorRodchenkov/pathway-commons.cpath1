@@ -74,6 +74,7 @@ import java.util.StringTokenizer;
  * <P>
  * <IMG SRC="doc-files/link_graph.png"/>
  * <P>
+ *
  * @author Ethan Cerami.
  */
 public class ParseIdMappingsTask extends Task {

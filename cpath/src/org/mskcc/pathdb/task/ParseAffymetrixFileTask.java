@@ -50,10 +50,10 @@ public class ParseAffymetrixFileTask extends Task {
     /**
      * Constructor.
      *
-     * @param inFile  InputFile.
-     * @param outFile OutputFile.
+     * @param inFile       InputFile.
+     * @param outFile      OutputFile.
      * @param columnPrefix Column Prefix.
-     * @param consoleMode Console Mode Flag.
+     * @param consoleMode  Console Mode Flag.
      */
     public ParseAffymetrixFileTask(File inFile, File outFile,
             String columnPrefix, boolean consoleMode) {
