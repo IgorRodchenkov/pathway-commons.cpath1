@@ -36,6 +36,7 @@ import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.transfer.MissingDataException;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -144,8 +145,10 @@ public class PsiUtil {
      *
      * @param cProtein Castor Protein Object.
      * @return Array of External Reference Objects.
+     * @throws MissingDataException Indicates Missing Data.
      */
-    public ExternalReference[] extractRefs(ProteinInteractorType cProtein) {
+    public ExternalReference[] extractRefs(ProteinInteractorType cProtein)
+            throws MissingDataException {
         XrefType xref = cProtein.getXref();
         return this.extractXrefs(xref);
     }
@@ -155,8 +158,10 @@ public class PsiUtil {
      *
      * @param xref XrefType Object.
      * @return Array of External Reference Objects.
+     * @throws MissingDataException Indicates Missing Data.
      */
-    public ExternalReference[] extractXrefs(XrefType xref) {
+    public ExternalReference[] extractXrefs(XrefType xref)
+            throws MissingDataException {
         ArrayList refList = new ArrayList();
         if (xref != null) {
             DbReferenceType primaryRef = xref.getPrimaryRef();
@@ -208,12 +213,14 @@ public class PsiUtil {
      * Creates ExternalReference.
      */
     private void createExternalReference(String db, String id,
-            ArrayList refList) {
+            ArrayList refList) throws MissingDataException {
+        //  Added Check for Null or Empty DB;  part of bug fix #508
         if (db == null || db.length() == 0) {
-            throw new NullPointerException ("Xref db is null or empty");
+            throw new MissingDataException ("Xref db is null or empty.");
         }
+        //  Added Check for Null or Empty ID;  part of bug fix #508
         if (id == null || id.length() == 0) {
-            throw new NullPointerException ("Xref id is null or empty");
+            throw new MissingDataException ("Xref id is null or empty.");
         }
         ExternalReference ref = new ExternalReference(db, id);
         refList.add(ref);
