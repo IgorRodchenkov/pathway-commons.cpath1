@@ -24,14 +24,14 @@ truncate table id_map;
 #  Insert data into table 'external_db'
 #
 
-INSERT INTO `external_db` VALUES (1, 'Swiss-Prot', 'http://us.expasy.org/cgi-bin/niceprot.pl?%ID%', 'Swiss-Prot is a curated protein sequence database which strives to provide a high level of annotation, a minimal level of redundancy and high level of integration with other databases.', 3, NULL, NULL, 20031002162924, 20031002102704);
+INSERT INTO `external_db` VALUES (1, 'Swiss-Prot', 'http://www.pir.uniprot.org/cgi-bin/upEntry?id=%ID%', 'Swiss-Prot is a curated protein sequence database which strives to provide a high level of annotation, a minimal level of redundancy and high level of integration with other databases.', 3, NULL, NULL, 20031002162924, 20031002102704);
 INSERT INTO `external_db` VALUES (2, 'PIR', 'http://pir.georgetown.edu/cgi-bin/nbrfget?uid=%ID%', 'The Protein Information Resource (PIR), located at Georgetown University Medical Center (GUMC), is an integrated public bioinformatics resource that supports genomic and proteomic research and scientific studies.', 6, NULL, NULL, 20031002103329, 20031002103329);
-INSERT INTO `external_db` VALUES (3, 'RefSeq', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=Protein&doptcmdl=GenPept&term=%ID%', 'The Reference Sequence (RefSeq) collection aims to provide a comprehensive, integrated, non-redundant set of sequences, including genomic DNA, transcript (RNA), and protein products, for major research organisms.', 7, NULL, NULL, 20031002163800, 20031002103655);
+INSERT INTO `external_db` VALUES (3, 'Entrez Gene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=search&term=%ID%', 'NCBI Entrez Gene', 7, NULL, NULL, 20031002163800, 20031002103655);
 INSERT INTO `external_db` VALUES (4, 'InterPro', 'http://www.ebi.ac.uk/interpro/IEntry?ac=%ID%', ' InterPro is a database of protein families, domains and functional sites in which identifiable features found in known proteins can be applied to unknown protein sequences.', 8, NULL, NULL, 20031002162303, 20031002162303);
 INSERT INTO `external_db` VALUES (5, 'PROSITE', 'http://us.expasy.org/cgi-bin/nicedoc.pl?%ID%', 'Database of protein families and domains', 9, NULL, NULL, 20031002162542, 20031002162542);
 INSERT INTO `external_db` VALUES (6, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=DIP:%ID%&Search2=Query+DIP&GE=&DS=&PIR=&GB=&TX=&SF=&FN=&LO=&KW=', 'Database of Interacting Proteins', 10, NULL, NULL, 20031002162656, 20031002162656);
 INSERT INTO `external_db` VALUES (7, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%', 'Protein families database of alignments and HMMs.', 11, NULL, NULL, 20031002162804, 20031002162804);
-INSERT INTO `external_db` VALUES (8, 'Entrez GI', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=protein&list_uids=%ID%&dopt=GenPept&term=%ID%&qty=1', 'NCBI Entrez System', 12, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (8, 'Entrez GI', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=search&term=%ID%', 'NCBI Entrez System', 12, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (9, 'Locus Link', 'http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l=%ID%', 'NCBI Locus Link', 14, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (10, 'GO', 'http://www.godatabase.org/cgi-bin/amigo/go.cgi?open_1=%ID%', 'Gene Ontology', 15, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (11, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%ID%&dopt=Abstract', 'NCBI PubMed', 16, NULL, NULL, 20031002163709, 20031002163709);
@@ -47,7 +47,7 @@ INSERT INTO `external_db` VALUES (20, 'GenBank', 'http://www.ncbi.nlm.nih.gov/en
 INSERT INTO `external_db` VALUES (21, 'MINT', 'http://mint.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%', 'MINT (Molecular INTeraction database)', 31, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (22, 'Reactome', 'http://www.reactome.org/cgi-bin/search?SUBMIT=1&QUERY_CLASS=DatabaseIdentifier&QUERY=SWALL:%ID%', 'Reactome - a knowledgebase of biological processes', 32, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (23, 'HUGE', 'http://www.kazusa.or.jp/huge/gfpage/%ID%/', 'HUGE Protein Database', 33, NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (24, 'Unigene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene', 'Unigene Database', 35, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (24, 'Unigene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene&cmd=search&term=%ID%', 'Unigene Database', 35, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (25, 'Ensembl', 'http://www.ensembl.org/Homo_sapiens/textview?species=All&idx=All&q=%ID%&x=20&y=11', 'Ensembl Database', 36, NULL, NULL, 20031002163709, 20031002163709);
 
 #
