@@ -50,17 +50,27 @@ public class XmlStripper {
      * Strips all XML Markup from Document.
      *
      * @param xml XML Document.
+     * @param skipRoot Skips Processing of Root Node.
      * @return String of Tokens.
      * @throws IOException Error in JDOM.
      */
-    public static String stripTags(String xml) throws IOException {
+    public static String stripTags(String xml, boolean skipRoot)
+            throws IOException {
         StringBuffer textBuffer = new StringBuffer();
         try {
             StringReader reader = new StringReader(xml);
             SAXBuilder saxBuilder = new SAXBuilder();
             org.jdom.Document jdomDoc = saxBuilder.build(reader);
             Element element = jdomDoc.getRootElement();
-            processElement(element, textBuffer);
+            if (skipRoot) {
+                List children = element.getChildren();
+                for (int i = 0; i < children.size(); i++) {
+                    Element child = (Element) children.get(i);
+                    processElement(child, textBuffer);
+                }
+            } else {
+                processElement(element, textBuffer);
+            }
         } catch (JDOMException e) {
             e.printStackTrace();
         }

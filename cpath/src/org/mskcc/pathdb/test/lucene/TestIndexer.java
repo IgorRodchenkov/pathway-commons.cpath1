@@ -104,7 +104,7 @@ public class TestIndexer extends TestCase {
         String xml = reader.retrieveContent(file);
 
         //  Test the XML Stripper.
-        String text = XmlStripper.stripTags(xml);
+        String text = XmlStripper.stripTags(xml, true);
         int index = text.indexOf("classical two hybrid");
         assertTrue(index > 0);
     }

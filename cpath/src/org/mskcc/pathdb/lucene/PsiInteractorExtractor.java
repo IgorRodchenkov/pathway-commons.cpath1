@@ -132,7 +132,8 @@ public class PsiInteractorExtractor {
         //  Extract Interactor Field Text (with XML Tags Stripped Out)
         StringWriter writer = new StringWriter();
         protein.marshal(writer);
-        String interactorText = XmlStripper.stripTags(writer.toString());
+        String interactorText = XmlStripper.stripTags(writer.toString(),
+                true);
         xdebug.logMsg(this, "Checking interactor:  " + interactorText);
 
         if (interactorText != null) {

@@ -7,22 +7,22 @@
  ** under the terms of the GNU Lesser General Public License as published
  ** by the Free Software Foundation; either version 2.1 of the License, or
  ** any later version.
- ** 
+ **
  ** This library is distributed in the hope that it will be useful, but
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
- ** 
+ **
  ** You should have received a copy of the GNU Lesser General Public License
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
@@ -55,6 +55,7 @@ public class TestItemToIndex extends TestCase {
         XDebug xdebug = new XDebug();
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
                 (4, 1, xdebug);
+
         ItemToIndex item = IndexFactory.createItemToIndex(4, assembly);
 
         assertTrue(item instanceof PsiInteractionToIndex);
@@ -90,7 +91,7 @@ public class TestItemToIndex extends TestCase {
 
             "DIP 61E",
 
-            "1 1 2 60 kDa chaperonin (Protein Cpn60) (groEL protein) (AMS) "
+            "2 60 kDa chaperonin (Protein Cpn60) (groEL protein) (AMS) "
                 + "DIP 339N PIR BVECGL SwissProt P06139 Entrez GI 7429025 "
                 + "RefSeq "
                 + "NP_313151 562 Escherichia coli 3 major prion PrP-Sc protein "
@@ -108,8 +109,9 @@ public class TestItemToIndex extends TestCase {
             Field field = item.getField(i);
             String name = field.name();
             String value = field.stringValue();
-//              System.out.println("Field:  " + name);
-//              System.out.println(".....:  " + value);
+//          System.out.println("Field:  " + name);
+//          System.out.println("Actual:  " + value);
+//          System.out.println("Expected:  " + fieldValues[i]);
             assertEquals(name, fieldNames[i]);
             assertTrue(value.startsWith(fieldValues[i]));
         }

@@ -110,7 +110,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
 
         //  Index All Terms -->  Default Field.
         String xml = xmlAssembly.getXmlString();
-        String terms = XmlStripper.stripTags(xml);
+        String terms = XmlStripper.stripTags(xml, true);
         fields.add(Field.Text(LuceneConfig.FIELD_ALL, terms));
 
         //  Index cPath ID
