@@ -443,4 +443,9 @@
 		<exec dir="." executable="scripts/boot.pl"/>
 	</target>
 
+	<!-- Target to Load Bootstrap production data into MySQL -->
+	<target name="bootProduction" description="Resets Production MySQL">
+		<exec dir="." executable="scripts/bootProd.pl"/>
+	</target>
+
 </project>
