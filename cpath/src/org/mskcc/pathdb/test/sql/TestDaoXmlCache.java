@@ -2,6 +2,9 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 /**
  * Tests the DaoXmlCache Class.
@@ -10,31 +13,42 @@ import org.mskcc.pathdb.sql.dao.DaoXmlCache;
  */
 public class TestDaoXmlCache extends TestCase {
     private static final String HASH_KEY = "sander#bader#123";
-    private static final String XML_MSG_1 = "<msg>Hello, World</msg>";
-    private static final String XML_MSG_2 = "<msg>Hello, Moon</msg>";
 
     /**
      * Tests DaoXmlCache.
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
-        DaoXmlCache dao = new DaoXmlCache();
+        XDebug xdebug = new XDebug();
+        DaoXmlCache dao = new DaoXmlCache(xdebug);
 
         //  Add a new record, and verify success.
-        boolean success = dao.addRecord(HASH_KEY, XML_MSG_1);
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
+                (4, 1, xdebug);
+        String originalXml = assembly.getXmlString();
+        assembly.setNumHits(100);
+
+        boolean success = dao.addRecord(HASH_KEY, assembly);
         assertTrue(success);
 
         //  Get the record, and match xml content.
-        String xml = dao.getXmlByKey(HASH_KEY).trim();
-        assertEquals(XML_MSG_1, xml);
+        assembly= dao.getXmlAssemblyByKey(HASH_KEY);
+        assertTrue(assembly.getXmlString().length() > 50);
+        assertEquals(originalXml, assembly.getXmlString());
+        assertEquals(100, assembly.getNumHits());
 
         //  Update the record, and verify success.
-        success = dao.updateXmlByKey(HASH_KEY, XML_MSG_2);
+        assembly = XmlAssemblyFactory.createXmlAssembly(4, 1, xdebug);
+        assembly.setNumHits(200);
+
+        success = dao.updateXmlAssemblyByKey(HASH_KEY, assembly);
         assertTrue(success);
 
         //  Get the record again, and match against new xml content.
-        xml = dao.getXmlByKey(HASH_KEY).trim();
-        assertEquals(XML_MSG_2, xml);
+        assembly = dao.getXmlAssemblyByKey(HASH_KEY);
+        assertTrue(assembly.getXmlString().length() > 50);
+        assertEquals(originalXml, assembly.getXmlString());
+        assertEquals(200, assembly.getNumHits());
 
         //  Delete record, and verify success.
         success = dao.deleteRecordByKey(HASH_KEY);
@@ -42,7 +56,7 @@ public class TestDaoXmlCache extends TestCase {
 
         //  Verify that record is no longer here, and that no exceptions
         //  occur.
-        xml = dao.getXmlByKey(HASH_KEY);
-        assertEquals(null, xml);
+        assembly = dao.getXmlAssemblyByKey(HASH_KEY);
+        assertEquals(null, assembly);
     }
 }
