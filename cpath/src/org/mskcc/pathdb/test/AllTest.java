@@ -9,6 +9,7 @@ import org.mskcc.pathdb.test.logger.LoggerSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
+import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
 
 /**
  * Runs all Unit Tests.
@@ -29,6 +30,7 @@ public class AllTest extends TestCase {
         suite.addTest(UtilSuite.suite());
         suite.addTest(SqlSuite.suite());
         suite.addTest(WebSuite.suite());
+        suite.addTest(XmlRpcSuite.suite());
         suite.setName("PathDB Tests");
         return suite;
     }

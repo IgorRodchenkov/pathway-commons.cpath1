@@ -2,7 +2,7 @@ package org.mskcc.pathdb.servlet;
 
 import org.apache.log4j.Logger;
 import org.mskcc.dataservices.util.PropertyManager;
-import org.mskcc.pathdb.controller.DataServiceController;
+import org.mskcc.pathdb.controller.CPathController;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
 
@@ -43,7 +43,7 @@ public final class DataService extends HttpServlet {
         logger.info("Data Servlet Invoked.  Getting live data");
         response.setHeader("Cache-control", "no-cache");
         response.setHeader("Pragma", "no-cache");
-        DataServiceController controller = new DataServiceController
+        CPathController controller = new CPathController
                 (request, response, this.getServletContext());
         controller.execute();
         PrintWriter writer = response.getWriter();
@@ -97,8 +97,8 @@ public final class DataService extends HttpServlet {
         System.err.println("web.xml param:  db_host --> " + dbHost);
         System.err.println("web.xml param:  db_user --> " + dbUser);
         System.err.println("web.xml param:  db_password --> " + dbPassword);
-        manager.setProperty(PropertyManager.PROPERTY_GRID_DB_USER, dbUser);
-        manager.setProperty(PropertyManager.PROPERTY_GRID_DB_PASSWORD,
+        manager.setProperty(PropertyManager.PROPERTY_DB_USER, dbUser);
+        manager.setProperty(PropertyManager.PROPERTY_DB_PASSWORD,
                 dbPassword);
         manager.setProperty(PropertyManager.PROPERTY_LOG_CONFIG_FILE,
                 realLogPath);

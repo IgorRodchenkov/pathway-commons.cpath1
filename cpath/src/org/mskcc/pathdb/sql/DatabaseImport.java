@@ -5,7 +5,9 @@ import org.mskcc.pathdb.model.ImportRecord;
 import org.mskcc.pathdb.util.Md5Util;
 import org.mskcc.pathdb.util.ZipUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,23 +40,50 @@ public class DatabaseImport {
                 ("select * from import order by IMPORT_ID");
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {
-            ImportRecord record = new ImportRecord();
-            record.setImportId(rs.getInt(IMPORT_ID));
-            record.setStatus(rs.getString(STATUS));
-            record.setCreateTime(rs.getDate(CREATE_TIME));
-            record.setUpdateTime(rs.getDate(UPDATE_TIME));
-            record.setMd5Hash(rs.getString(DOC_MD5));
-
-            //  Unzip Blob
-            Blob blob = rs.getBlob(DOC_BLOB);
-            //  TODO:  FIX cast to int problem
-            byte bytes[] = blob.getBytes(1, (int) blob.length());
-            String data = ZipUtil.unzip(bytes);
-            record.setData(data);
-
+            ImportRecord record = extractRecord(rs);
             records.add(record);
         }
         return records;
+    }
+
+    /**
+     * Gets Individual Import Record.
+     * @param importId ImportID of Record to Retrieve.
+     * @return ImportRecord Object.
+     * @throws ClassNotFoundException Error Locating Correct Database Driver.
+     * @throws SQLException Error Connecting to Database.
+     * @throws IOException Error Performing I/O.
+     */
+    public ImportRecord getImportRecordById(int importId)
+            throws ClassNotFoundException, SQLException, IOException {
+        Connection con = getConnection();
+        PreparedStatement pstmt = con.prepareStatement
+                ("select * from import  where IMPORT_ID=? order by IMPORT_ID");
+        pstmt.setInt(1, importId);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            return extractRecord(rs);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Extracts Blob Data to Array of Bytes.
+     */
+    private byte[] extractBlobData(Blob blob) throws SQLException,
+            IOException {
+        InputStream in = blob.getBinaryStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[256];
+        while (true) {
+            int bytesRead = in.read(buffer);
+            if (bytesRead == -1) {
+                break;
+            }
+            out.write(buffer, 0, bytesRead);
+        }
+        return out.toByteArray();
     }
 
     /**
@@ -110,6 +139,25 @@ public class DatabaseImport {
         return successFlag;
     }
 
+    /**
+     * Extracts Database Record into Java class.
+     */
+    private ImportRecord extractRecord(ResultSet rs) throws SQLException,
+            IOException {
+        ImportRecord record = new ImportRecord();
+        record.setImportId(rs.getInt(IMPORT_ID));
+        record.setStatus(rs.getString(STATUS));
+        record.setCreateTime(rs.getTimestamp(CREATE_TIME));
+        record.setUpdateTime(rs.getTimestamp(UPDATE_TIME));
+        record.setMd5Hash(rs.getString(DOC_MD5));
+
+        //  Unzip Blob
+        Blob blob = rs.getBlob(DOC_BLOB);
+        byte blobData[] = extractBlobData(blob);
+        String data = ZipUtil.unzip(blobData);
+        record.setData(data);
+        return record;
+    }
 
     /**
      * Gets Connection to the CPath Database.
@@ -120,11 +168,10 @@ public class DatabaseImport {
     private static Connection getConnection()
             throws SQLException, ClassNotFoundException {
         PropertyManager manager = PropertyManager.getInstance();
-        // TODO:  Fix Properties
         String userName = manager.getProperty
-                (PropertyManager.PROPERTY_GRID_DB_USER);
+                (PropertyManager.PROPERTY_DB_USER);
         String password = manager.getProperty
-                (PropertyManager.PROPERTY_GRID_DB_PASSWORD);
+                (PropertyManager.PROPERTY_DB_PASSWORD);
         String url =
                 new String("jdbc:mysql://" + "localhost/cpath"
                 + "?user=" + userName + "&password=" + password);

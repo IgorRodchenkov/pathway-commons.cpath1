@@ -38,22 +38,18 @@ import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Outputs an HTML Table of Interaction Data.
+ * Custom JSP Tag for Displaying Interaction Table.
  *
  * @author Ethan Cerami
  */
-public class InteractionTable extends TagSupport {
+public class InteractionTable extends HtmlTable {
     private String uid;
     private ArrayList interactions;
     private ExternalLinks links;
-    private StringBuffer html;
 
     /**
      * Sets Interaction Parameter.
@@ -72,72 +68,19 @@ public class InteractionTable extends TagSupport {
     }
 
     /**
-     * Gets HTML String.
-     * Primarily used by the JUnit Test Case Class.
-     * @return HTML String.
+     * Start Tag Processing.
+     * @throws IOException Input Output Exceptions.
      */
-    public String getHtml() {
-        return html.toString();
-    }
-
-    /**
-     * Executes JSP Custom Tag
-     * @return SKIP_BODY Option.
-     * @throws JspException Exception in writing to JspWriter.
-     */
-    public int doStartTag() throws JspException {
-        JspWriter out = null;
+    protected void subDoStartTag() throws IOException {
         links = new ExternalLinks();
-        html = new StringBuffer();
-        if (pageContext != null) {
-            out = pageContext.getOut();
-        }
-        try {
-            startTable();
-            tableHeaders();
-            outputInteractions();
-            endTable();
-            if (out != null) {
-                out.println(html.toString());
-            }
-        } catch (IOException e) {
-            throw new JspException(e);
-        }
-        return TagSupport.SKIP_BODY;
-    }
-
-    /**
-     * Appends to String Buffer.
-     */
-    private void append(String text) {
-        html.append(text + "\n");
-    }
-
-    /**
-     * Starts HTML Table.
-     */
-    private void startTable() {
-        append("<table width=100% cellpadding=7 cellspacing=0>"
-                + "<tr><td colspan=4 bgcolor=#666699><u>"
-                + "<b><big>Interactions for:  " + uid + "</big>"
-                + "</b></u><br></td></tr>");
-    }
-
-    /**
-     * Outputs HTML Table Headers.
-     */
-    private void tableHeaders() {
+        startTable("Interactions for:  " + uid);
         String headers[] = {
             "Interactor", "External References",
             "Experimental System", "PubMed Reference"};
 
-        append("<tr bgcolor=#9999cc>");
-        for (int i = 0; i < headers.length; i++) {
-            append("<TD><font color=#333366>");
-            append(headers[i]);
-            append("</font></TD>");
-        }
-        append("</TR>");
+        createTableHeaders(headers);
+        outputInteractions();
+        endTable();
     }
 
     /**
@@ -168,39 +111,6 @@ public class InteractionTable extends TagSupport {
     }
 
     /**
-     * Outputs Individial Data Field.
-     */
-    private void outputDataField(String data) {
-        outputDataField(data, null);
-    }
-
-    /**
-     * Outputs Individual Data Field (with URL Link).
-     */
-    private void outputDataField(String data, String url) {
-        if (data != null) {
-            append("<TD VALIGN=TOP>");
-            if (url == null) {
-                html.append(data);
-            } else {
-                outputLink(data, url);
-            }
-            append("</TD>");
-        } else {
-            append("<TD>&nbsp;</TD>");
-        }
-    }
-
-    /**
-     * Outputs Link.
-     */
-    private void outputLink(String name, String url) {
-        append("<A HREF=\"" + url + "\">");
-        append(name);
-        append("</A>");
-    }
-
-    /**
      * Outputs External References.
      */
     private void outputExternalReferences(Interactor interactor) {
@@ -224,12 +134,5 @@ public class InteractionTable extends TagSupport {
         } else {
             append("<TD>&nbsp;</TD>");
         }
-    }
-
-    /**
-     * Ends HTML Table.
-     */
-    private void endTable() {
-        append("</TABLE>");
     }
 }

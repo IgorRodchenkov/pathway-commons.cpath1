@@ -16,14 +16,14 @@ import java.util.HashMap;
 
 /**
  * Data Service Controller.
- * All Client Application/Browser requests travel throught the Data
- * Service Controller.  The Controller forwards requests on to more
- * specific classes, such as the GridController.  It also centralizes
+ * All Client Application/Browser requests travel throught the CPath
+ * Controller.  The Controller forwards requests on to more
+ * specific classes, such as the DataServiceController.  It also centralizes
  * all exception handling in one place.
  *
  * @author Ethan Cerami
  */
-public class DataServiceController {
+public class CPathController {
     /**
      * Servlet Request.
      */
@@ -48,7 +48,7 @@ public class DataServiceController {
      * Logger.
      */
     private static Logger log =
-            Logger.getLogger(DataServiceController.class.getName());
+            Logger.getLogger(CPathController.class.getName());
 
     /**
      * Debug Object.
@@ -61,7 +61,7 @@ public class DataServiceController {
      * @param response Servlet Response.
      * @param servletContext Servlet Context object.
      */
-    public DataServiceController(HttpServletRequest request,
+    public CPathController(HttpServletRequest request,
             HttpServletResponse response, ServletContext servletContext) {
         this.request = request;
         this.response = response;
@@ -91,13 +91,13 @@ public class DataServiceController {
      */
     private void processRequest() throws Exception {
         initXDebug();
-        xdebug.logMsg(this, "Entering Data Service Controller");
+        xdebug.logMsg(this, "Entering CPath Controller");
         HashMap parameterMap = getParameterMap(request);
         protocolRequest = new ProtocolRequest(parameterMap);
         ProtocolValidator validator = new ProtocolValidator(protocolRequest);
         validator.validate();
-        GridController gridController = new GridController(request,
-                response, servletContext, xdebug);
+        DataServiceController gridController = new DataServiceController
+                (request, response, servletContext, xdebug);
         gridController.processRequest(protocolRequest);
     }
 
