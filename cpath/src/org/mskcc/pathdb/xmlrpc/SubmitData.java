@@ -1,13 +1,13 @@
 package org.mskcc.pathdb.xmlrpc;
 
-import org.apache.xmlrpc.XmlRpcHandler;
 import org.apache.xmlrpc.XmlRpcException;
+import org.apache.xmlrpc.XmlRpcHandler;
 import org.mskcc.pathdb.sql.DatabaseImport;
 
-import java.util.Vector;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.io.IOException;
+import java.util.Vector;
 
 /**
  * XML-RPC Service for Submitting New Data to the CPath Database.
@@ -34,14 +34,14 @@ public class SubmitData implements XmlRpcHandler {
         try {
             dbImport.addImportRecord(data);
         } catch (NoSuchAlgorithmException e) {
-            throw new XmlRpcException (1, e.toString());
+            throw new XmlRpcException(1, e.toString());
         } catch (SQLException e) {
-            throw new XmlRpcException (2, e.toString());
+            throw new XmlRpcException(2, e.toString());
         } catch (ClassNotFoundException e) {
-            throw new XmlRpcException (3, e.toString());
+            throw new XmlRpcException(3, e.toString());
         } catch (IOException e) {
-            throw new XmlRpcException (4, e.toString());
+            throw new XmlRpcException(4, e.toString());
         }
-        return new String ("Data Submission Successful!");
+        return new String("Data Submission Successful!");
     }
 }

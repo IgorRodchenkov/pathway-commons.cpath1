@@ -1,10 +1,12 @@
 package org.mskcc.pathdb.servlet;
 
 import org.apache.log4j.Logger;
+import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.controller.CPathController;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
+import org.mskcc.pathdb.service.RegisterCPathServices;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -97,14 +99,20 @@ public final class DataService extends HttpServlet {
         System.err.println("web.xml param:  db_host --> " + dbHost);
         System.err.println("web.xml param:  db_user --> " + dbUser);
         System.err.println("web.xml param:  db_password --> " + dbPassword);
-        manager.setProperty(PropertyManager.PROPERTY_DB_USER, dbUser);
-        manager.setProperty(PropertyManager.PROPERTY_DB_PASSWORD,
+        manager.setProperty(PropertyManager.DB_USER, dbUser);
+        manager.setProperty(PropertyManager.DB_PASSWORD,
                 dbPassword);
-        manager.setProperty(PropertyManager.PROPERTY_LOG_CONFIG_FILE,
+        manager.setProperty(PropertyManager.LOG_CONFIG_FILE,
                 realLogPath);
         System.err.println("Starting up Log4J Logging System");
         ConfigLogger.configureLogger();
         verifyDbConnection();
+        System.err.println("Registering CPath Data Services");
+        try {
+            RegisterCPathServices.registerServices();
+        } catch (DataServiceException e) {
+            throw new ServletException(e.toString());
+        }
         System.err.println("Data Service Initialization Complete --> OK");
     }
 

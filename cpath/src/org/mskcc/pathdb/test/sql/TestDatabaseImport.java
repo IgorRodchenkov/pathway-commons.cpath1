@@ -7,8 +7,8 @@ import org.mskcc.pathdb.sql.DatabaseImport;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Tests the DatabaseImport Class.
@@ -52,18 +52,18 @@ public class TestDatabaseImport extends TestCase {
             // Verify MD5 Hash
             assertEquals("Z80/GqKi48wil7K3j88IGQ==", record.getMd5Hash());
 
-            getIndividualRecord (record.getImportId(), record.getMd5Hash());
+            getIndividualRecord(record.getImportId(), record.getMd5Hash());
         }
     }
 
     /**
      * Tests the getImportRecordById() method.
      */
-    private void getIndividualRecord (int id, String hash)
+    private void getIndividualRecord(int id, String hash)
             throws SQLException, ClassNotFoundException, IOException {
-        DatabaseImport dbImport = new DatabaseImport ();
+        DatabaseImport dbImport = new DatabaseImport();
         ImportRecord record = dbImport.getImportRecordById(id);
-        assertEquals (hash, record.getMd5Hash());
+        assertEquals(hash, record.getMd5Hash());
     }
 
     /**

@@ -1,8 +1,8 @@
 package org.mskcc.pathdb.taglib;
 
-import javax.servlet.jsp.tagext.TagSupport;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Abstract Custom Tag for outputting HTML Tables.

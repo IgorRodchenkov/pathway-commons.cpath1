@@ -169,9 +169,9 @@ public class DatabaseImport {
             throws SQLException, ClassNotFoundException {
         PropertyManager manager = PropertyManager.getInstance();
         String userName = manager.getProperty
-                (PropertyManager.PROPERTY_DB_USER);
+                (PropertyManager.DB_USER);
         String password = manager.getProperty
-                (PropertyManager.PROPERTY_DB_PASSWORD);
+                (PropertyManager.DB_PASSWORD);
         String url =
                 new String("jdbc:mysql://" + "localhost/cpath"
                 + "?user=" + userName + "&password=" + password);

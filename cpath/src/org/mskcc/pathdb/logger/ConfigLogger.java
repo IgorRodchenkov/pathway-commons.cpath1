@@ -20,7 +20,7 @@ public class ConfigLogger {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             PropertyManager propertyManager = PropertyManager.getInstance();
             String logFile = propertyManager.getProperty
-                    (PropertyManager.PROPERTY_LOG_CONFIG_FILE);
+                    (PropertyManager.LOG_CONFIG_FILE);
             PropertyConfigurator.configure(logFile);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

@@ -33,9 +33,10 @@ public class TestProtocol extends TestCase {
         nvps[3] = new NameValuePair(ProtocolRequest.ARG_VERSION,
                 ProtocolConstants.CURRENT_VERSION);
         nvps[4] = new NameValuePair(ProtocolRequest.ARG_UID,
-                "YCR038C");
+                "YER006W");
         method.setQueryString(nvps);
         int statusCode = client.executeMethod(method);
+
         //  Ds-status header should be: "ok"
         Header header =
                 method.getResponseHeader(ProtocolConstants.DS_HEADER_NAME);

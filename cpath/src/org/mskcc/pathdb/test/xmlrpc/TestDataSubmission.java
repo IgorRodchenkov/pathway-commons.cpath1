@@ -4,10 +4,10 @@ import junit.framework.TestCase;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 
-import java.util.Vector;
-import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.Vector;
 
 /**
  * Tests XML-RPC Data Submission Service.
@@ -28,7 +28,7 @@ public class TestDataSubmission extends TestCase {
         params.addElement(this.getTextFromSampleFile());
         // this method returns a string
         String result = (String) xmlrpc.execute("import.submitData", params);
-        assertEquals ("Data Submission Successful!", result);
+        assertEquals("Data Submission Successful!", result);
     }
 
     /**

@@ -9,11 +9,11 @@ import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.live.LiveConstants;
 import org.mskcc.dataservices.mapper.MapInteractionsToPsi;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
-import org.mskcc.dataservices.services.InteractionService;
-import org.mskcc.dataservices.services.InteractorService;
+import org.mskcc.dataservices.services.ReadInteractions;
+import org.mskcc.dataservices.services.ReadInteractors;
+import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.RequestDispatcher;
@@ -139,9 +139,9 @@ public class DataServiceController {
         xdebug.logMsg(this, "Retrieving Interactions from GRID for UID:  "
                 + uid);
         DataServiceFactory factory = DataServiceFactory.getInstance();
-        InteractionService service =
-                (InteractionService) factory.getService
-                (LiveConstants.GRID_INTERACTION_SERVICE);
+        ReadInteractions service =
+                (ReadInteractions) factory.getService
+                (CPathConstants.READ_INTERACTIONS_FROM_GRID);
         ArrayList interactions = service.getInteractions(uid);
         interactions = this.filterInteractionList(interactions);
         return interactions;
@@ -182,9 +182,9 @@ public class DataServiceController {
         xdebug.logMsg(this, "Retrieving Interactor Data from GRID for UID:  "
                 + uid);
         DataServiceFactory factory = DataServiceFactory.getInstance();
-        InteractorService service =
-                (InteractorService) factory.getService
-                (LiveConstants.GRID_INTERACTOR_SERVICE);
+        ReadInteractors service =
+                (ReadInteractors) factory.getService
+                (CPathConstants.READ_INTERACTORS_FROM_GRID);
         Interactor interactor = service.getInteractor(uid);
 
         String xml = (String) interactor.getAttribute

@@ -68,10 +68,8 @@ public class AdminLogger {
         //  Get Database Properties from PropertyManager.
         PropertyManager manager = PropertyManager.getInstance();
         String host = new String("localhost");
-        String user = manager.getProperty
-                (PropertyManager.PROPERTY_DB_USER);
-        String password = manager.getProperty
-                (PropertyManager.PROPERTY_DB_PASSWORD);
+        String user = manager.getProperty(PropertyManager.DB_USER);
+        String password = manager.getProperty(PropertyManager.DB_PASSWORD);
         String url =
                 new String("jdbc:mysql://" + host + "/"
                 + db + "?user=" + user
