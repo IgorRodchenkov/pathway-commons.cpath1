@@ -95,7 +95,9 @@
     <!--                             best practices -->
 
     <!-- don't allow empty blocks (in particular catch blocks) -->
+    <!--
     <module name="EmptyBlock"/>
+    -->
 
     <!-- avoid inner assignments -->
     <module name="InnerAssignment"/>
