@@ -38,9 +38,17 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
+import org.mskcc.dataservices.schemas.psi.XrefType;
+import org.mskcc.dataservices.schemas.psi.DbReferenceType;
+import org.exolab.castor.xml.ValidationException;
+import org.exolab.castor.xml.MarshalException;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.io.StringReader;
 
 /**
  * Given a TaxonomyId, this class locates all physical entity records
@@ -54,6 +62,7 @@ public class CountAffymetrixIdsTask extends Task {
     private int taxonomyId;
     private int affyCount = 0;
     private int totalNumRecords;
+    private HashMap dbMap;
 
     /**
      * Constructor.
@@ -66,12 +75,14 @@ public class CountAffymetrixIdsTask extends Task {
             throws DaoException {
         super("Counting Affymetrix IDs", consoleMode);
         ProgressMonitor pMonitor = this.getProgressMonitor();
-        pMonitor.setCurrentMessage("Counting Affymetrix IDs for Organism:  "
-                + taxonomyId);
+        pMonitor.setCurrentMessage("Counting Affymetrix IDs for Organism  "
+                + " -->  NCBI Taxonomy ID:  " + taxonomyId);
         this.taxonomyId = taxonomyId;
         this.execute();
-        pMonitor.setCurrentMessage("\nTotal Number of Records for Organism:  "
+        pMonitor.setCurrentMessage("\nTotal Number of Records "
+                + "for NCBI Taxonomy ID " + taxonomyId + ":  "
                 + this.totalNumRecords);
+
         if (totalNumRecords > 0) {
             double percent = (affyCount / (double) totalNumRecords) * 100.0;
             DecimalFormat formatter = new DecimalFormat("###,###.##");
@@ -80,6 +91,15 @@ public class CountAffymetrixIdsTask extends Task {
                     + " (" + percentOut
                     + "%) have Affymetrix IDs.");
         }
+
+        pMonitor.setCurrentMessage("\nOf those proteins without Affymetrix " +
+                "IDs, the following databases were found:  ");
+        Iterator keys = dbMap.keySet().iterator();
+        while (keys.hasNext()) {
+            String dbName = (String) keys.next();
+            Integer counter = (Integer) dbMap.get(dbName);
+            System.out.println(dbName + ":  " + counter);
+         }
     }
 
     /**
@@ -107,13 +127,11 @@ public class CountAffymetrixIdsTask extends Task {
      * @throws DaoException Error Connecting to Database.
      */
     private void execute() throws DaoException {
+        dbMap = new HashMap();
         ProgressMonitor pMonitor = this.getProgressMonitor();
-        //  First, Look up Affymetrix Database Id.
-        int affyDbId = lookUpAffyDBId();
 
-        //  Next, retrieve all Physical Entities from Specified Organism
+        //  Retrieve all Physical Entities for Specified Organism
         DaoCPath dao = new DaoCPath();
-        DaoExternalLink externalLinker = new DaoExternalLink();
         ArrayList records = dao.getRecordByTaxonomyID
                 (CPathRecordType.PHYSICAL_ENTITY, taxonomyId);
 
@@ -125,35 +143,47 @@ public class CountAffymetrixIdsTask extends Task {
         for (int i = 0; i < records.size(); i++) {
             ConsoleUtil.showProgress(pMonitor);
             CPathRecord record = (CPathRecord) records.get(i);
-            ArrayList links =
-                    externalLinker.getRecordsByCPathId(record.getId());
-
-            //  Look for Affymetrix Link
-            boolean hasOneOrMoreAffyIds = false;
-            for (int j = 0; j < links.size(); j++) {
-                ExternalLinkRecord link = (ExternalLinkRecord) links.get(j);
-                int dbId = link.getExternalDbId();
-                if (dbId == affyDbId) {
-                    hasOneOrMoreAffyIds = true;
-                }
+            String xmlContent = record.getXmlContent();
+            if (xmlContent.toLowerCase().indexOf("affymetrix") > -1) {
+                affyCount++;
+            } else {
+                trackOtherIds(xmlContent, dbMap);
             }
             pMonitor.incrementCurValue();
-            if (hasOneOrMoreAffyIds) {
-                affyCount++;
-            }
         }
     }
 
-    /**
-     * Looks up Internal Identifier for Affymetrix External Database.
-     *
-     * @return Internal Database ID.
-     * @throws DaoException Error Connecting to Database.
-     */
-    private int lookUpAffyDBId() throws DaoException {
-        DaoExternalDb externalDb = new DaoExternalDb();
-        ExternalDatabaseRecord dbRecord =
-                externalDb.getRecordByTerm(AFFYMETRIX_NAME);
-        return dbRecord.getId();
+    private void trackOtherIds(String xmlContent, HashMap dbMap)
+            throws DaoException {
+        StringReader reader = new StringReader (xmlContent);
+        try {
+            ProteinInteractorType protein =
+                    ProteinInteractorType.unmarshalProteinInteractorType
+                    (reader);
+            XrefType xref = protein.getXref();
+            DbReferenceType primaryRef = xref.getPrimaryRef();
+            incrementMapCounter (primaryRef, dbMap);
+            for (int i=0; i < xref.getSecondaryRefCount(); i++) {
+                DbReferenceType secondaryRef = xref.getSecondaryRef(i);
+                incrementMapCounter (secondaryRef, dbMap);
+            }
+        } catch (ValidationException e) {
+            System.err.println("Failed while processing XML:  " + xmlContent);
+            throw new DaoException (e);
+        } catch (MarshalException e) {
+            System.err.println("Failed while processing XML:  " + xmlContent);
+            throw new DaoException (e);
+        }
+    }
+
+    private void incrementMapCounter (DbReferenceType dbRef, HashMap dbMap) {
+        String db  = dbRef.getDb();
+        if (dbMap.containsKey(db)) {
+            Integer counter = (Integer) dbMap.get(db);
+            counter = new Integer (counter.intValue() + 1);
+            dbMap.put(db, counter);
+        } else {
+            dbMap.put(db, new Integer (1));
+        }
     }
 }
