@@ -19,6 +19,10 @@
     <h3>About cPath</h3>
 </div>
 
+<TABLE WIDTH=100%>
+<TR>
+<TD>
+
 cPath aims to be a freely available cancer pathway database. Currently, only
 information about protein-protein interactions collected from major
 interaction databases that support the PSI-MI format is available. cPath is
@@ -43,5 +47,24 @@ interventions in biological systems and help improve the prevention,
 diagnosis, prognosis and therapy of cancer. Close collaboration with
 experimental and clinical groups using high-throughput and functional
 genomics data is essential to the achievement of these goals.
+</TD>
 
+<TD WIDTH=15>
+    &nbsp;
+</TD>
+
+<TD ALIGN="center">
+    <IMG SRC="jsp/images/ismb_poster_small.gif"/>
+    <center>
+    <small>
+        Download cPath Poster from
+        <A HREF="http://www.iscb.org/ismbeccb2004/">ISMB 2004</A>.
+        <BR>
+        <A HREF="http://www.cbio.mskcc.org/dev_site/cpath_poster.pdf">PDF Format</A> [4.3 MB]
+    </small>
+    </center>
+</TD>
+
+</TR>
+</TABLE>
 <jsp:include page="../global/footer.jsp" flush="true" />
