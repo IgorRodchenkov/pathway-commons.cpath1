@@ -1,5 +1,8 @@
 package org.mskcc.pathdb.task;
 
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
+
 /**
  * Wrapper for Background Threads.
  *
@@ -9,6 +12,8 @@ public abstract class Task extends Thread {
     protected boolean verbose;
     private String taskName;
     private Exception exception;
+    private int verboseCounter = 0;
+    protected ProgressMonitor pMonitor;
 
     /**
      * Constructor.
