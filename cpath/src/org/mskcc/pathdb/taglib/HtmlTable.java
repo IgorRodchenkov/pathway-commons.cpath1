@@ -37,7 +37,13 @@ public abstract class HtmlTable extends TagSupport {
             } catch (Exception exc) {
                 e.printStackTrace();
             }
-            throw new JspException(e.getMessage(), e);
+            //  Must specify initCause explicitly
+            //  If you pass exception to the Constructor, the
+            //  JspException will only save the error message,
+            //  and not the actual root cause object.
+            JspException jspException = new JspException();
+            jspException.initCause(e);
+            throw jspException;
         }
         return TagSupport.SKIP_BODY;
     }
