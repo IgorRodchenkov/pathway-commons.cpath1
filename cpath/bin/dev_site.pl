@@ -18,7 +18,9 @@ chdir "sander/cpath" or die;
 system "ant prepare_dev_site";
 
 # Run Maven
-system "maven site:deploy";
+system "maven site:generate";
+system "maven pdf";
+system "maven site:fsdeploy";
 
 # Create source distribition
 system "tar -cvf cpath.tar *";
