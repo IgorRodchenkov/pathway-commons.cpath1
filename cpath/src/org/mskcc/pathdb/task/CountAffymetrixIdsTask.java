@@ -63,6 +63,7 @@ public class CountAffymetrixIdsTask extends Task {
     private int affyCount = 0;
     private int totalNumRecords;
     private HashMap dbMap;
+    private int numProteinsWithoutXrefs;
 
     /**
      * Constructor.
@@ -100,6 +101,8 @@ public class CountAffymetrixIdsTask extends Task {
             Integer counter = (Integer) dbMap.get(dbName);
             System.out.println(dbName + ":  " + counter);
          }
+        pMonitor.setCurrentMessage("\nTotal Number of Proteins that have no "
+            + "external database identifiers:  " + numProteinsWithoutXrefs);
     }
 
     /**
@@ -169,6 +172,9 @@ public class CountAffymetrixIdsTask extends Task {
                         DbReferenceType secondaryRef = xref.getSecondaryRef(i);
                         incrementMapCounter (secondaryRef, dbMap);
                     }
+                }
+                if (primaryRef == null && xref.getSecondaryRefCount() ==0) {
+                    numProteinsWithoutXrefs++;
                 }
             }
         } catch (ValidationException e) {
