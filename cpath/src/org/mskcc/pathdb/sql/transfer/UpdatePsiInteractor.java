@@ -85,9 +85,9 @@ public class UpdatePsiInteractor extends UpdateInteractor {
             }
             setNewExternalRefs(newRefs);
         } catch (MarshalException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         } catch (ValidationException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
