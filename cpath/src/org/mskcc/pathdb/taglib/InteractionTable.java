@@ -91,7 +91,9 @@ public class InteractionTable extends HtmlTable {
      * @param interactorList Interactor List
      */
     public void setInteractorList(List interactorList) {
-        if (interactorList.size() == 1) {
+        if (interactorList.size() == 1
+                && protocolRequest.getQuery().indexOf
+                (LuceneConfig.FIELD_INTERACTOR_ID)>=-1) {
             ProteinWithWeight proteinWithWeight = (ProteinWithWeight)
                     interactorList.get(0);
             targetProtein = proteinWithWeight.getProtein();
