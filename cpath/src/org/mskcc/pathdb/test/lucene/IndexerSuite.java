@@ -51,6 +51,7 @@ public class IndexerSuite extends TestCase {
         suite.addTestSuite(TestItemToIndex.class);
         suite.addTestSuite(TestPsiInteractorExtractor.class);
         suite.addTestSuite(TestRequestAdapter.class);
+        suite.addTestSuite(TestLuceneUtil.class);
         suite.setName("Indexer Tests");
         return suite;
     }

@@ -3,8 +3,16 @@ package org.mskcc.pathdb.test.lucene;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.lucene.LuceneUtil;
 
+/**
+ * Tests Manda's LuceneUtil Class.
+ *
+ * @author Ethan Cerami
+ */
 public class TestLuceneUtil extends TestCase {
 
+    /**
+     * Tests Lucene Util Class.
+     */
     public void testLuceneUtil() {
         String query = LuceneUtil.cleanQuery("p-53 +helicase");
         assertEquals ("\"p-53\" +helicase", query);
