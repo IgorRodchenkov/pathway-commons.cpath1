@@ -61,7 +61,7 @@ public class DaoImport {
         } catch (SQLException e) {
             throw new DaoException("SQLException:  " + e.getMessage());
         } catch (IOException e) {
-            throw new DaoException("IOException:  "+ e.getMessage());
+            throw new DaoException("IOException:  " + e.getMessage());
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -95,7 +95,7 @@ public class DaoImport {
         } catch (SQLException e) {
             throw new DaoException("SQLException:  " + e.getMessage());
         } catch (IOException e) {
-            throw new DaoException("IOException:  "+ e.getMessage());
+            throw new DaoException("IOException:  " + e.getMessage());
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }

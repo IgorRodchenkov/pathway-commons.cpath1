@@ -33,9 +33,9 @@ public class InteractionQuery {
      * @throws DaoException Error Retrieving Data.
      * @throws MapperException Error Mapping to Data Service objects.
      */
-    public InteractionQuery (String interactorName)
-        throws DaoException, MarshalException,
-        ValidationException, MapperException {
+    public InteractionQuery(String interactorName)
+            throws DaoException, MarshalException,
+            ValidationException, MapperException {
         interactions = new ArrayList();
         HashMap interactorMap = new HashMap();
         DaoCPath cpath = new DaoCPath();

@@ -8,8 +8,8 @@ import org.mskcc.dataservices.live.DataServiceFactory;
 import org.mskcc.dataservices.services.WriteInteractions;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.service.RegisterCPathServices;
-import org.mskcc.pathdb.sql.dao.DaoInteraction;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoInteraction;
 import org.mskcc.pathdb.util.CPathConstants;
 
 import java.sql.Connection;

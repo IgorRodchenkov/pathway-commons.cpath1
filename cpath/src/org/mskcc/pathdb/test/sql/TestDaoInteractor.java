@@ -54,8 +54,9 @@ public class TestDaoInteractor extends TestCase {
      * Tests the getAllInteractors() method.
      * @throws Exception All Exceptions.
      */
-    public void testGetAllInteractors(DaoInteractor daoInteractor)
+    public void testGetAllInteractors()
             throws Exception {
+        DaoInteractor daoInteractor = new DaoInteractor();
         ArrayList list = daoInteractor.getAllInteractors();
         Interactor interactor = (Interactor) list.get(0);
         assertTrue(list.size() > 0);

@@ -8,7 +8,6 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.sql.dao.DaoInteraction;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -71,7 +70,7 @@ public class TestDaoInteraction extends TestCase {
      * Tests Getting of Interaction IDs.
      * @throws Exception All Exceptions.
      */
-    public void testGetInteractionId(Connection con) throws Exception {
+    public void testGetInteractionId() throws Exception {
         RegisterCPathServices.registerServices();
         ArrayList interactors = new ArrayList();
         Interactor interactor1 = new Interactor();

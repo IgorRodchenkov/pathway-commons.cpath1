@@ -15,7 +15,6 @@ import org.mskcc.pathdb.util.BatchTool;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -83,7 +82,7 @@ public class TransferExternalLinks extends BatchTool {
     /**
      * Main method.
      * @param args Command Line Argument.
-     * @throws java.lang.Exception All Exceptions.
+     * @throws Exception All Exceptions.
      */
     public static void main(String[] args) throws Exception {
         try {

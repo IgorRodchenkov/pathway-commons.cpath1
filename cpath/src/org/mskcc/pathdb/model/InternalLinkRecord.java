@@ -13,14 +13,15 @@ public class InternalLinkRecord {
     /**
      * No-arg Constructor.
      */
-    public InternalLinkRecord () { }
+    public InternalLinkRecord() {
+    }
 
     /**
      * Constructor.
      * @param cpathIdA CPath ID of Entity A.
      * @param cpathIdB CPath ID of Entity B.
      */
-    public InternalLinkRecord (long cpathIdA, long cpathIdB) {
+    public InternalLinkRecord(long cpathIdA, long cpathIdB) {
         this.cpathIdA = cpathIdA;
         this.cpathIdB = cpathIdB;
     }

@@ -123,15 +123,20 @@ public class ImportPsiToCPath {
             processInteractions(entrySet);
             return summary;
         } catch (ValidationException e) {
-            throw new ImportException(e);
+            throw new ImportException("ValidationException:  "
+                    + e.getMessage());
         } catch (MarshalException e) {
-            throw new ImportException(e);
+            throw new ImportException("MarshalException:  "
+                    + e.getMessage());
         } catch (DaoException e) {
-            throw new ImportException(e);
+            throw new ImportException("DaoException:  "
+                    + e.getMessage());
         } catch (ExternalDatabaseNotFoundException e) {
-            throw new ImportException(e);
+            throw new ImportException("ExternalDatabaseNotFoundException:  "
+                    + e.getMessage());
         } catch (MapperException e) {
-            throw new ImportException(e);
+            throw new ImportException("MapperException:  "
+                    + e.getMessage());
         }
     }
 
@@ -140,7 +145,8 @@ public class ImportPsiToCPath {
      */
     private void processInteractors(EntrySet entrySet)
             throws DaoException, MarshalException,
-            ValidationException, MapperException, ExternalDatabaseNotFoundException {
+            ValidationException, MapperException,
+            ExternalDatabaseNotFoundException {
         DaoExternalLink externalLinker = new DaoExternalLink();
 
         for (int i = 0; i < entrySet.getEntryCount(); i++) {

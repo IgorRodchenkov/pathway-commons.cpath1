@@ -70,7 +70,7 @@ public class DaoInteraction {
                 (InteractionVocab.EXPERIMENTAL_SYSTEM_NAME);
         String pmid = getPmids(interaction);
 
-                Connection con = null;
+        Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {

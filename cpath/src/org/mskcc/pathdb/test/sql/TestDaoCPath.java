@@ -64,7 +64,7 @@ public class TestDaoCPath extends TestCase {
         String newXml = REVISED_XML;
         dao.updateXml(cpathId, newXml);
         record = dao.getRecordByName(NAME);
-        assertEquals (REVISED_XML, record.getXmlContent());
+        assertEquals(REVISED_XML, record.getXmlContent());
 
         //  Test deleteRecordById()
         boolean success = dao.deleteRecordById(cpathId);

@@ -163,10 +163,10 @@ public class ReadInteractionsFromGrid extends DataServiceBase
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
+            con = JdbcUtil.getGridConnection();
             pstmt = con.prepareStatement
                     ("select * from interactions where "
-                    +"(geneA = ? or geneB = ?) "
+                    + "(geneA = ? or geneB = ?) "
                     + " and (deprecated='F') ORDER BY interaction_id");
             pstmt.setString(1, localId);
             pstmt.setString(2, localId);

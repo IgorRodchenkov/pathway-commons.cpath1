@@ -36,24 +36,24 @@ public class TestImportPsiToCPath extends TestCase {
         XDebug xdebug = new XDebug();
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml);
-        assertEquals (7, summary.getNumInteractorsProcessed());
-        assertEquals (0, summary.getNumInteractorsFound());
-        assertEquals (7, summary.getNumInteractorsSaved());
-        assertEquals (6, summary.getNumInteractionsSaved());
+        assertEquals(7, summary.getNumInteractorsProcessed());
+        assertEquals(0, summary.getNumInteractorsFound());
+        assertEquals(7, summary.getNumInteractorsSaved());
+        assertEquals(6, summary.getNumInteractionsSaved());
 
         DaoExternalLink linker = new DaoExternalLink();
         ExternalReference refs[] = new ExternalReference[1];
         refs[0] = new ExternalReference("PIR", "BWBYD5");
         CPathRecord record = linker.lookUpByByExternalRefs(refs);
-        assertEquals (4932, record.getNcbiTaxonomyId());
-        assertEquals ("GTP/GDP exchange factor for Rsr1 protein",
+        assertEquals(4932, record.getNcbiTaxonomyId());
+        assertEquals("GTP/GDP exchange factor for Rsr1 protein",
                 record.getDescription());
 
         validateData();
 
         // Try Saving Again
         summary = importer.addRecord(xml);
-        assertEquals (0, summary.getNumInteractorsSaved());
+        assertEquals(0, summary.getNumInteractorsSaved());
     }
 
     /**
@@ -67,10 +67,10 @@ public class TestImportPsiToCPath extends TestCase {
         entrySet.marshal(writer);
         Entry entry = entrySet.getEntry(0);
         InteractorList interactorList = entry.getInteractorList();
-        assertEquals (5, interactorList.getProteinInteractorCount());
+        assertEquals(5, interactorList.getProteinInteractorCount());
         InteractionList interactionList = entry.getInteractionList();
-        assertEquals (4, interactionList.getInteractionCount());
-        assertTrue (entrySet.isValid());
+        assertEquals(4, interactionList.getInteractionCount());
+        assertTrue(entrySet.isValid());
         // System.out.println(writer.toString());
     }
 }

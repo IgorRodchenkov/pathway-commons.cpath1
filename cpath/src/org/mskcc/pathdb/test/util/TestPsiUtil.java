@@ -37,7 +37,7 @@ public class TestPsiUtil extends TestCase {
         validateExperiments(entry);
         validateInteractors(entry);
         validateInteractions(entry);
-        validateInteractionUpdate (entry);
+        validateInteractionUpdate(entry);
     }
 
     private void validateInteractionUpdate(Entry entry) throws Exception {
@@ -56,7 +56,7 @@ public class TestPsiUtil extends TestCase {
         StringWriter writer = new StringWriter();
         interactions.marshal(writer);
         String xml = writer.toString();
-        assertTrue (xml.indexOf("<proteinInteractorRef ref=\"2\"/>") > 0);
+        assertTrue(xml.indexOf("<proteinInteractorRef ref=\"2\"/>") > 0);
     }
 
     /**
@@ -143,7 +143,7 @@ public class TestPsiUtil extends TestCase {
             if (id.equals("YCR038C")) {
                 counter++;
                 ExternalReference refs[] = util.extractRefs(protein);
-                assertEquals ("Entrez GI", refs[0].getDatabase());
+                assertEquals("Entrez GI", refs[0].getDatabase());
             }
         }
         assertEquals(1, counter);

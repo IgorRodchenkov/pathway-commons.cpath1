@@ -11,7 +11,7 @@ public class ImportException extends Exception {
      * Constructor.
      * @param msg Error Message.
      */
-    public ImportException(Throwable rootCause) {
-        super(rootCause);
+    public ImportException(String msg) {
+        super(msg);
     }
 }

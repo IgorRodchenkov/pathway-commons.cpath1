@@ -32,48 +32,48 @@ public class TestDaoInternalLink extends TestCase {
 
         // Add New Link between A and B.
         boolean flag = linker.addRecord(cPathIdA, cPathIdB);
-        assertTrue (flag);
+        assertTrue(flag);
 
         // Test Get Internal Links
         ArrayList links = linker.getInternalLinks(cPathIdA);
-        assertEquals (1, links.size());
+        assertEquals(1, links.size());
         InternalLinkRecord link = (InternalLinkRecord) links.get(0);
-        assertEquals (cPathIdA, link.getCpathIdA());
-        assertEquals (cPathIdB, link.getCpathIdB());
+        assertEquals(cPathIdA, link.getCpathIdA());
+        assertEquals(cPathIdB, link.getCpathIdB());
 
         // Test Get Internal Links with Lookup
         ArrayList records = linker.getInternalLinksWithLookup(cPathIdA);
-        assertEquals (1, records.size());
+        assertEquals(1, records.size());
         CPathRecord record = (CPathRecord) records.get(0);
-        assertEquals (PROTEIN_B, record.getName());
+        assertEquals(PROTEIN_B, record.getName());
 
         // Test Delete
         int count = linker.deleteRecordsByCPathId(cPathIdA);
-        assertEquals (1, count);
+        assertEquals(1, count);
         links = linker.getInternalLinks(cPathIdA);
-        assertEquals (0, links.size());
+        assertEquals(0, links.size());
 
         //  Add Multiple Links, Test, then Delete.
         long ids[] = new long[2];
         ids[0] = cPathIdB;
         ids[1] = cPathIdC;
         count = linker.addRecords(cPathIdA, ids);
-        assertEquals (2, count);
+        assertEquals(2, count);
         links = linker.getInternalLinks(cPathIdA);
-        assertEquals (2, links.size());
+        assertEquals(2, links.size());
 
         //  Delete A, and verify that links are automatically purged.
         DaoCPath dao = new DaoCPath();
         flag = dao.deleteRecordById(cPathIdA);
-        assertTrue (flag);
+        assertTrue(flag);
         links = linker.getInternalLinks(cPathIdA);
-        assertEquals (0, links.size());
+        assertEquals(0, links.size());
 
         dao.deleteRecordById(cPathIdB);
         dao.deleteRecordById(cPathIdC);
     }
 
-    private void createSampleCPathRecords () throws Exception {
+    private void createSampleCPathRecords() throws Exception {
         DaoCPath dao = new DaoCPath();
         cPathIdA = dao.addRecord(PROTEIN_A, "Protein A Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, "protein a xml here");

@@ -74,7 +74,7 @@ public class TransferImportToCPath extends BatchTool {
     /**
      * Main method.
      * @param args Command Line Argument.
-     * @throws java.lang.Exception All Exceptions.
+     * @throws Exception All Exceptions.
      */
     public static void main(String[] args) throws Exception {
         try {

@@ -120,7 +120,7 @@ public class WriteInteractionsToGrid extends DataServiceBase
         for (int i = 0; i < interactions.size(); i++) {
             Interaction interaction = (Interaction) interactions.get(i);
             boolean exists = daoInteraction.interactionExists(interaction,
-                            getLocation());
+                    getLocation());
             if (!exists) {
                 counter += saveInteraction(interaction, localIdMap, false);
             }
