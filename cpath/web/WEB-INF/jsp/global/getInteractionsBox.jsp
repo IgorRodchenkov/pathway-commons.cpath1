@@ -53,8 +53,8 @@
             Organism organism = (Organism) organisms.get(i);
             String currentTaxId = Integer.toString(organism.getTaxonomyId());
             String species = organism.getSpeciesName();
-            if (species.length() > 20) {
-                species = new String (species.substring(0,20) + "...");
+            if (species.length() > 12) {
+                species = new String (species.substring(0,12) + "...");
             }
         %>
             <% if (currentTaxId.equals(taxId)) { %>
