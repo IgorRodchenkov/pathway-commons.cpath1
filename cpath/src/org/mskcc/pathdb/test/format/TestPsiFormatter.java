@@ -6,8 +6,8 @@ import org.mskcc.pathdb.sql.GridInteractionService;
 import org.mskcc.pathdb.test.TestConstants;
 import org.mskcc.pathdb.xml.psi.Entry;
 
-import java.util.ArrayList;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 /**
  * Tests the PSI-MI XML Formatter.

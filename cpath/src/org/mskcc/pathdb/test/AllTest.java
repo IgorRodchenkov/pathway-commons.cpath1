@@ -4,6 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.pathdb.config.ConfigLogger;
+import org.mskcc.pathdb.test.controller.ControllerSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
 
 /**
@@ -22,6 +23,7 @@ public class AllTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(SqlSuite.suite());
+        suite.addTest(ControllerSuite.suite());
         suite.setName("PathDB Tests");
         return suite;
     }
