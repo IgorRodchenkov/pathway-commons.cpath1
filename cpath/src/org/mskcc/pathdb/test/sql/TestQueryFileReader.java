@@ -15,6 +15,7 @@ public class TestQueryFileReader extends TestCase {
 
     /**
      * Tests QueryFileReader.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {

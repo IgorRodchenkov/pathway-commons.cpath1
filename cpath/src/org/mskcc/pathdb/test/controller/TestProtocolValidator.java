@@ -14,6 +14,7 @@ public class TestProtocolValidator extends TestCase {
 
     /**
      * Tests the Protocol Validator.
+     *
      * @throws Exception General Error.
      */
     public void testProtocolValidator() throws Exception {
@@ -33,6 +34,7 @@ public class TestProtocolValidator extends TestCase {
 
     /**
      * Tests the Protocol Validator.
+     *
      * @throws Exception General Error.
      */
     public void testEmptyParameterSet() throws Exception {

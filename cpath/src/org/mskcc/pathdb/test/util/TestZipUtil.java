@@ -12,6 +12,7 @@ public class TestZipUtil extends TestCase {
 
     /**
      * Tests Roundtripping of Zipped Data.
+     *
      * @throws Exception All Exceptions.
      */
     public void testZipUtil() throws Exception {

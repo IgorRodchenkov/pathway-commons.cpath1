@@ -33,22 +33,17 @@
  **/
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.dataservices.bio.Interaction;
-import org.mskcc.dataservices.bio.Interactor;
-import org.mskcc.dataservices.bio.vocab.InteractionVocab;
-import org.mskcc.dataservices.bio.vocab.InteractorVocab;
-import org.mskcc.dataservices.mapper.MapPsiToInteractions;
 import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.ProteinWithWeight;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.pathdb.model.ProteinWithWeight;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +66,7 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Sets Interaction Parameter.
+     *
      * @param xmlAssembly XmlAssembly Object
      */
     public void setXmlAssembly(XmlAssembly xmlAssembly) {
@@ -82,6 +78,7 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Sets Protocol Request Parameter.
+     *
      * @param request Protocol Request
      */
     public void setProtocolRequest(ProtocolRequest request) {
@@ -105,6 +102,7 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Start Tag Processing.
+     *
      * @throws DaoException Database Access Error.
      */
     protected void subDoStartTag() throws DaoException, MapperException {
@@ -154,7 +152,7 @@ public class InteractionTable extends HtmlTable {
         protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
         String url = protocolRequest.getUri();
         startRow();
-        this.append("<td colspan=2>" + pagerLinks+"</td>");
+        this.append("<td colspan=2>" + pagerLinks + "</td>");
         this.append("<td>");
         this.append("<div class='right'>");
         this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
@@ -171,14 +169,14 @@ public class InteractionTable extends HtmlTable {
     private void outputInteractionList() {
         currentIndex = pager.getStartIndex() + 1;
         //  Iterate through all Entries
-        for (int i=0; i<entrySet.getEntryCount(); i++) {
+        for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractorList interactorList = entry.getInteractorList();
-            extractInteractors (interactorList);
+            extractInteractors(interactorList);
             InteractionList interactionList = entry.getInteractionList();
-            for (int j=0; j<interactionList.getInteractionCount(); j++) {
-                if (targetProtein == null ||
-                        (targetProtein != null && j==0)) {
+            for (int j = 0; j < interactionList.getInteractionCount(); j++) {
+                if (targetProtein == null
+                        || (targetProtein != null && j == 0)) {
                     outputInteractionHeaders(j);
                 }
                 InteractionElementType interaction =
@@ -186,9 +184,9 @@ public class InteractionTable extends HtmlTable {
                 ParticipantList pList = interaction.getParticipantList();
                 outputInteractorList(pList, interaction);
                 interactionDetailsShown = false;
-                if (targetProtein == null ||
-                        (targetProtein != null &&
-                        j== interactionList.getInteractionCount()-1)) {
+                if (targetProtein == null
+                        || (targetProtein != null
+                        && j == interactionList.getInteractionCount() - 1)) {
                     append("<TR><TD COLSPAN=3><BR></TD></TR>");
                 }
             }
@@ -197,14 +195,15 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Outputs All Interactors in List.
-     * @param pList Interactor List.
+     *
+     * @param pList       Interactor List.
      * @param interaction Interaction Object.
      */
     private void outputInteractorList(ParticipantList pList,
             InteractionElementType interaction) {
         int matches = 0;
         boolean isSelfInteracting = false;
-        for (int i=0; i<pList.getProteinParticipantCount(); i++) {
+        for (int i = 0; i < pList.getProteinParticipantCount(); i++) {
             ProteinParticipantType pType =
                     pList.getProteinParticipant(i);
             ProteinParticipantTypeChoice choice =
@@ -214,16 +213,16 @@ public class InteractionTable extends HtmlTable {
             ProteinInteractorType protein = (ProteinInteractorType)
                     interactorMap.get(refId);
             boolean localMatch = false;
-            if (targetProtein != null &&
-                    targetProtein.getId().equals(protein.getId())) {
+            if (targetProtein != null
+                    && targetProtein.getId().equals(protein.getId())) {
                 localMatch = true;
                 matches++;
             }
             if (matches > 1) {
                 isSelfInteracting = true;
             }
-            if (localMatch == false || isSelfInteracting) {
-                outputProtein (protein, interaction, isSelfInteracting);
+            if (!localMatch || isSelfInteracting) {
+                outputProtein(protein, interaction, isSelfInteracting);
             }
         }
     }
@@ -245,10 +244,10 @@ public class InteractionTable extends HtmlTable {
         append("<tr class='functnbar'>");
         if (targetProtein == null) {
             append("<th colspan=3>" + currentIndex + ". Interaction</th>");
-            currentIndex ++;
+            currentIndex++;
         } else {
-            append("<th colspan=3>  This Protein interacts with the " +
-                    "following other proteins:</th>");
+            append("<th colspan=3>  This Protein interacts with the "
+                    + "following other proteins:</th>");
         }
         endRow();
         append("<TR class='b'>");
@@ -260,6 +259,7 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Outputs Protein Information.
+     *
      * @param protein Protein Object.
      */
     private void outputProtein(ProteinInteractorType protein,
@@ -270,8 +270,8 @@ public class InteractionTable extends HtmlTable {
         startRow();
         outputProteinName(proteinId, fullName, isSelfInteracting);
         outputOrganism(organism);
-        if (interactionDetailsShown == false) {
-            outputInteractionDetails (interaction);
+        if (!interactionDetailsShown) {
+            outputInteractionDetails(interaction);
             interactionDetailsShown = true;
         }
         endRow();
@@ -287,9 +287,10 @@ public class InteractionTable extends HtmlTable {
             int taxonomyId = organism.getNcbiTaxId();
             fullName = names.getFullName();
             String url = this.getOrganismLink(taxonomyId);
-            append ("<TD class='cpath3'>"
-                    + "<A TITLE='Get All Records for Organism:  " +
-                    fullName+"' HREF='"+url+"'>"+fullName+"</A></TD>");
+            append("<TD class='cpath3'>"
+                    + "<A TITLE='Get All Records for Organism:  "
+                    + fullName + "' HREF='" + url + "'>"
+                    + fullName + "</A></TD>");
         }
     }
 
@@ -299,42 +300,43 @@ public class InteractionTable extends HtmlTable {
     private void outputProteinName(String proteinId, String fullName,
             boolean isSelfInteracting) {
         String link = getInteractionLink(LuceneIndexer.FIELD_INTERACTOR_ID
-                    + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
+                + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
         append("<TD class='cpath3'>");
         if (targetProtein != null) {
-            append (currentIndex + ".  ");
+            append(currentIndex + ".  ");
             currentIndex++;
         }
-        append ("<A TITLE='Link to Protein View' " +
-                "HREF='"+link+"'>" +  fullName+"</A>");
+        append("<A TITLE='Link to Protein View' "
+                + "HREF='" + link + "'>" + fullName + "</A>");
         if (isSelfInteracting) {
-            append ("[Self Interacting]");
+            append("[Self Interacting]");
         }
-        append ("</TD>");
+        append("</TD>");
     }
 
     /**
      * Outputs Experiment Information.
+     *
      * @param interaction Interaction Object.
      */
-    private void outputInteractionDetails (InteractionElementType interaction) {
+    private void outputInteractionDetails(InteractionElementType interaction) {
         ExperimentList expList = interaction.getExperimentList();
         if (targetProtein == null) {
-            append ("<td width='300' rowspan=2 class='cpath2'");
+            append("<td width='300' rowspan=2 class='cpath2'");
         } else {
-            append ("<td width='300' rowspan=1 class='cpath2'");
+            append("<td width='300' rowspan=1 class='cpath2'");
         }
-        append ("<table>");
-        for (int i=0; i<expList.getExperimentListItemCount(); i++) {
+        append("<table>");
+        for (int i = 0; i < expList.getExperimentListItemCount(); i++) {
             startRow();
             ExperimentListItem expItem = expList.getExperimentListItem(i);
             ExperimentType expType = expItem.getExperimentDescription();
             outputCvType(expType.getInteractionDetection());
             outputBibRef(expType.getBibref());
-            append ("</tr>");
+            append("</tr>");
         }
-        append ("</table>");
-        append ("</td>");
+        append("</table>");
+        append("</td>");
     }
 
     /**
@@ -344,7 +346,7 @@ public class InteractionTable extends HtmlTable {
         if (cvType != null) {
             NamesType names = cvType.getNames();
             if (names != null) {
-                append("<TD width=150>"+names.getShortLabel()+"</TD>");
+                append("<TD width=150>" + names.getShortLabel() + "</TD>");
             }
         }
     }
@@ -359,27 +361,29 @@ public class InteractionTable extends HtmlTable {
             if (primaryRef != null) {
                 String pmid = primaryRef.getId();
                 String url = this.getPubMedLink(pmid);
-                append ("<TD width=150><A TITLE='Link to PubMed Reference'"
-                        + " HREF='"+url+"'>"+pmid+"</A></TD>");
+                append("<TD width=150><A TITLE='Link to PubMed Reference'"
+                        + " HREF='" + url + "'>" + pmid + "</A></TD>");
             }
         }
     }
 
     /**
      * Extracts All Interactors and Places in Global HashMap.
+     *
      * @param interactorList List of Interactors
      */
-    private void extractInteractors (InteractorList interactorList) {
-        for (int i=0; i<interactorList.getProteinInteractorCount(); i++) {
+    private void extractInteractors(InteractorList interactorList) {
+        for (int i = 0; i < interactorList.getProteinInteractorCount(); i++) {
             ProteinInteractorType protein =
                     interactorList.getProteinInteractor(i);
             String id = protein.getId();
-            interactorMap.put (id, protein);
+            interactorMap.put(id, protein);
         }
     }
 
     /**
      * Gets PubMedLink.
+     *
      * @param pmid PMID.
      * @return URL to PubMed.
      */
@@ -395,17 +399,17 @@ public class InteractionTable extends HtmlTable {
     private void outputTargetInteractor() throws DaoException {
         if (targetProtein != null) {
             startTable();
-            outputTargetName (targetProtein.getNames(), targetProtein.getId());
-            outputTargetOrganism (targetProtein.getOrganism());
-            outputExternalReferences (targetProtein.getId());
+            outputTargetName(targetProtein.getNames());
+            outputTargetOrganism(targetProtein.getOrganism());
+            outputExternalReferences(targetProtein.getId());
             endTable();
         }
     }
 
     /**
-     * Outputs Target Interactor Name and ID.
+     * Outputs Target Interactor Name.
      */
-    private void outputTargetName(NamesType names, String proteinId) {
+    private void outputTargetName(NamesType names) {
         startRow();
         String shortLabel = names.getShortLabel();
         if (shortLabel != null && shortLabel.length() > 0) {

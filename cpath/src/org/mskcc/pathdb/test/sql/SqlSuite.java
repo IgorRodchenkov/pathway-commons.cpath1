@@ -14,6 +14,7 @@ public class SqlSuite extends TestCase {
 
     /**
      * The suite method runs all the tests.
+     *
      * @return Suite of JUnit tests.
      */
     public static Test suite() {

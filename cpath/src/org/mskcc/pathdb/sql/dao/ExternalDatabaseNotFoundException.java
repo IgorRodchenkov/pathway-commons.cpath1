@@ -9,6 +9,7 @@ public class ExternalDatabaseNotFoundException extends Exception {
 
     /**
      * Constructor.
+     *
      * @param msg Error Message.
      */
     public ExternalDatabaseNotFoundException(String msg) {

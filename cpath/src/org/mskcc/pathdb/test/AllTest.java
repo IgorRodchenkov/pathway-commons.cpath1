@@ -44,6 +44,7 @@ public class AllTest extends TestCase {
 
     /**
      * Run the all tests method.
+     *
      * @param args java.lang.String[]
      * @throws DataServiceException Error Connecting to Data Service.
      */

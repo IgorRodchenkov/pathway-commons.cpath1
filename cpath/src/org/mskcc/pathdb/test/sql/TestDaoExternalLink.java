@@ -22,6 +22,7 @@ public class TestDaoExternalLink extends TestCase {
 
     /**
      * Tests Access to the ExternalLinkRecord Table.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {

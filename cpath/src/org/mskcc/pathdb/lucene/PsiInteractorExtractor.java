@@ -2,24 +2,32 @@ package org.mskcc.pathdb.lucene;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.highlight.QueryHighlightExtractor;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.ParseException;
-import org.mskcc.dataservices.schemas.psi.*;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.schemas.psi.Entry;
+import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.mskcc.dataservices.schemas.psi.InteractorList;
+import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
+import org.mskcc.pathdb.model.ProteinWithWeight;
 import org.mskcc.pathdb.util.XmlStripper;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.model.ProteinWithWeight;
-import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.MarshalException;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * Extracts Matching Interactors from the PSI-MI Entry Set.
+ *
+ * @author Ethan Cerami
+ */
 public class PsiInteractorExtractor {
     private Set interactors;
     private Query query;
@@ -35,6 +43,16 @@ public class PsiInteractorExtractor {
     private static final String COLOR = "yellow";
     private static final String END_SPAN_TAG = "</SPAN>";
 
+    /**
+     * Constructor
+     * @param entrySet PSI-MI Entry Set Object.
+     * @param queryStr Query String.
+     * @param xdebug XDebug Object.
+     * @throws IOException Input Output Exception.
+     * @throws ParseException Parsing Exception.
+     * @throws ValidationException Validation Exception.
+     * @throws MarshalException Marshaling Exception.
+     */
     public PsiInteractorExtractor(EntrySet entrySet, String queryStr,
             XDebug xdebug) throws IOException, ParseException,
             ValidationException, MarshalException {
@@ -48,25 +66,32 @@ public class PsiInteractorExtractor {
             query = QueryParser.parse(queryStr, LuceneIndexer.FIELD_ALL,
                     analyzer);
             query = query.rewrite(reader);
-            highLighter = new QueryHighlightExtractor (query, analyzer,
-                   START_SPAN_TAG+COLOR+END_TAG, END_SPAN_TAG);
+            highLighter = new QueryHighlightExtractor(query, analyzer,
+                    START_SPAN_TAG + COLOR + END_TAG, END_SPAN_TAG);
             checkAllEntries();
         }
     }
 
-    private void checkAllEntries () throws MarshalException,
+    /**
+     * Checks all Entries for Matching Interactors.
+     */
+    private void checkAllEntries() throws MarshalException,
             ValidationException, IOException {
-        xdebug.logMsg(this, "Checking all interactors for matches:  " +
-                query.toString());
-        for (int i=0; i< entrySet.getEntryCount(); i++) {
+        xdebug.logMsg(this, "Checking all interactors for matches:  "
+                + query.toString());
+        for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractorList interactorList = entry.getInteractorList();
-            for (int j=0; j<interactorList.getProteinInteractorCount(); j++) {
+            for (int j = 0;
+                 j < interactorList.getProteinInteractorCount(); j++) {
                 checkInteractor(interactorList.getProteinInteractor(j));
             }
         }
     }
 
+    /**
+     * Checks Specified Interactor.
+     */
     private void checkInteractor(ProteinInteractorType protein)
             throws IOException, ValidationException, MarshalException {
         //  Extract Interactor Field Text (with XML Tags Stripped Out)
@@ -91,10 +116,11 @@ public class PsiInteractorExtractor {
 
     /**
      * Gets a Sorted List of Interactors.
+     *
      * @return ArrayList of ProteinWithWeight Objects.
      */
     public ArrayList getSortedInteractors() {
-        ArrayList list = new ArrayList (interactors);
+        ArrayList list = new ArrayList(interactors);
         Collections.sort(list, new ProteinWithWeight());
         return list;
     }

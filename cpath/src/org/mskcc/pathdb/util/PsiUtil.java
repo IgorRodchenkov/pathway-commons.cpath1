@@ -30,10 +30,11 @@ public class PsiUtil {
 
     /**
      * Gets the Normalized PSI Document.
+     *
      * @param xml XML Document String.
      * @return PSI Entry Set Object.
      * @throws ValidationException Validation Error in Document.
-     * @throws MarshalException Error Marshalling Document.
+     * @throws MarshalException    Error Marshalling Document.
      */
     public EntrySet getNormalizedDocument(String xml)
             throws ValidationException, MarshalException {
@@ -45,7 +46,8 @@ public class PsiUtil {
 
     /**
      * Updates the Specified Interactor with a New ID.
-     * @param newId New Id, usually a cPath Id.
+     *
+     * @param newId      New Id, usually a cPath Id.
      * @param interactor Castor Protein Interactor.
      */
     public void updateInteractorId(String newId,
@@ -55,8 +57,9 @@ public class PsiUtil {
 
     /**
      * Update Interactions with New Interactor Ids.
+     *
      * @param interactions InteractionList Object.
-     * @param idMap HashMap of Interactor IDs to cPathIds.
+     * @param idMap        HashMap of Interactor IDs to cPathIds.
      */
     public void updateInteractions(InteractionList interactions,
             HashMap idMap) {
@@ -82,6 +85,7 @@ public class PsiUtil {
 
     /**
      * Extract Interactor IDs.
+     *
      * @param interaction Interaction Object.
      * @return ArrayList of cPathIds.
      */
@@ -107,6 +111,7 @@ public class PsiUtil {
 
     /**
      * Extracts All External References for specified Protein Interactor.
+     *
      * @param cProtein Castor Protein Object.
      * @return Array of External Reference Objects.
      */
@@ -117,6 +122,7 @@ public class PsiUtil {
 
     /**
      * Extracts All External References for XrefType object.
+     *
      * @param xref XrefType Object.
      * @return Array of External Reference Objects.
      */
@@ -144,6 +150,7 @@ public class PsiUtil {
 
     /**
      * Normalizes all XRefs to FIXED_CV_TERMS.
+     *
      * @param xref XrefType Object.
      * @throws DaoException Data Access Exception.
      */
@@ -167,6 +174,7 @@ public class PsiUtil {
 
     /**
      * Extracts the External Reference for the specified Interaction object.
+     *
      * @param interaction Castor Interaction object.
      * @return Array of External Reference objects.
      */

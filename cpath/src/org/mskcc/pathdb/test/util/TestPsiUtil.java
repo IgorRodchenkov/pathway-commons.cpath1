@@ -18,6 +18,7 @@ public class TestPsiUtil extends TestCase {
 
     /**
      * Tests the PsiUtil Class.
+     *
      * @throws Exception All Exceptions.
      */
     public void testNormalization() throws Exception {
@@ -129,6 +130,7 @@ public class TestPsiUtil extends TestCase {
 
     /**
      * Verify that only one YCR038C interactor exists.
+     *
      * @param entry
      */
     private void validateInteractors(Entry entry) {

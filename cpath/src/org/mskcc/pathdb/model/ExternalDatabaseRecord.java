@@ -27,6 +27,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets the Database ID.
+     *
      * @return External Database ID.
      */
     public int getId() {
@@ -35,6 +36,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets the Database ID.
+     *
      * @param id External Database ID.
      */
     public void setId(int id) {
@@ -43,6 +45,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets Database Name.
+     *
      * @return Database Name.
      */
     public String getName() {
@@ -51,6 +54,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets Database Name.
+     *
      * @param name Databse Name.
      */
     public void setName(String name) {
@@ -59,6 +63,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets Database Description.
+     *
      * @return Database Description.
      */
     public String getDescription() {
@@ -67,6 +72,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets Database Description.
+     *
      * @param description Database Description.
      */
     public void setDescription(String description) {
@@ -75,6 +81,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets List of Controlled Vocabulary Terms which match this database.
+     *
      * @return ArrayList of String terms.
      */
     public ArrayList getCvTerms() {
@@ -83,6 +90,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets List of Controlled Vocabulary Terms which match this database.
+     *
      * @param terms ArrayList of String terms.
      */
     public void setCvTerms(ArrayList terms) {
@@ -91,6 +99,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets URL for Retrieving individual record from the database.
+     *
      * @return URL String.
      */
     public String getUrl() {
@@ -99,6 +108,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets URL for Retrieving individual record from the database.
+     *
      * @param url URL String.
      */
     public void setUrl(String url) {
@@ -107,6 +117,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets the TimeStamp when this record was created.
+     *
      * @return Time Created.
      */
     public Date getCreateTime() {
@@ -115,6 +126,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets the TimeStamp when this record was created.
+     *
      * @param createTime Date Object.
      */
     public void setCreateTime(Date createTime) {
@@ -123,6 +135,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets the TimeStamp when this record was updated.
+     *
      * @return Time Updated.
      */
     public Date getUpdateTime() {
@@ -131,6 +144,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets the TimeStamp when this records was updated.
+     *
      * @param updateTime Date Object.
      */
     public void setUpdateTime(Date updateTime) {
@@ -139,6 +153,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets the fixed (or normalized) CV Term.
+     *
      * @return CV Term.
      */
     public String getFixedCvTerm() {
@@ -147,6 +162,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets the fixed (or normalized) CV Term.
+     *
      * @param fixedCvTerm CV Term String.
      */
     public void setFixedCvTerm(String fixedCvTerm) {

@@ -11,6 +11,7 @@ public class LoadFullText {
 
     /**
      * Main Method.
+     *
      * @param args Command Line Arguments.
      */
     public static void main(String[] args) {

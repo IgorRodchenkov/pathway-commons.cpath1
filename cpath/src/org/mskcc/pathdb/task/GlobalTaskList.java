@@ -21,6 +21,7 @@ public class GlobalTaskList {
 
     /**
      * Gets Instance of the GlobalTaskList Singelton object.
+     *
      * @return GlobalTaskList Object.
      */
     public static GlobalTaskList getInstance() {
@@ -32,6 +33,7 @@ public class GlobalTaskList {
 
     /**
      * Gets list of all active/inactive tasks.
+     *
      * @return ArrayList of Task Objects.
      */
     public ArrayList getTaskList() {
@@ -40,6 +42,7 @@ public class GlobalTaskList {
 
     /**
      * Removes Task at specified index.
+     *
      * @param index Index value.
      */
     public void removeTask(int index) {
@@ -48,6 +51,7 @@ public class GlobalTaskList {
 
     /**
      * Adds New Task to Task List.
+     *
      * @param task Task Object.
      */
     void addTask(Task task) {

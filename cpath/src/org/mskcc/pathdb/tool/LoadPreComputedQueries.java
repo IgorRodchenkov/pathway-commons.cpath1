@@ -25,6 +25,7 @@ public class LoadPreComputedQueries {
 
     /**
      * Processes all Queries in Specified File.
+     *
      * @param file File Name.
      */
     public void process(String file) {
@@ -70,6 +71,7 @@ public class LoadPreComputedQueries {
 
     /**
      * Main Method.
+     *
      * @param args Command Line Arguments.
      */
     public static void main(String[] args) {

@@ -29,10 +29,11 @@ public class DaoInteractor {
      * Looks up local Ids for all Interactors.  We need localIds,
      * because localIds are used to store interactions.
      * Local IDs are stored with the attribute key:  InteractorVocab.LOCAL_ID.
+     *
      * @param interactors ArrayList of Interactors.
      * @return HashMap of Names to LocalIds.
      * @throws DataServiceException Error Connecting to data service.
-     * @throws EmptySetException No Results Found.
+     * @throws EmptySetException    No Results Found.
      */
     public HashMap getLocalInteractorIds(ArrayList interactors)
             throws DataServiceException, EmptySetException {
@@ -57,6 +58,7 @@ public class DaoInteractor {
 
     /**
      * Gets All Interactors.
+     *
      * @return ArrayList of Interactors.
      * @throws DaoException Error Retrieving Data.
      */

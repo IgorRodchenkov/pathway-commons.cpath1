@@ -75,6 +75,7 @@ public class ReadInteractionsFromGrid extends DataServiceBase
 
     /**
      * Gets Interaction data for specified GI Number.
+     *
      * @param orfName ORF Name.
      * @return ArrayList of Interaction objects.
      * @throws DataServiceException Error connecting to data service.
@@ -93,9 +94,11 @@ public class ReadInteractionsFromGrid extends DataServiceBase
 
     /**
      * Method Not Supported.
+     *
      * @param url URL String..
      * @return no data is returned.
-     * @throws org.mskcc.dataservices.core.DataServiceException Always thrown.
+     * @throws org.mskcc.dataservices.core.DataServiceException
+     *          Always thrown.
      */
     public ArrayList getInteractionsFromUrl(String url)
             throws DataServiceException {
@@ -104,9 +107,11 @@ public class ReadInteractionsFromGrid extends DataServiceBase
 
     /**
      * Method Not Supported.
+     *
      * @param file File Object.
      * @return no data is returned.
-     * @throws org.mskcc.dataservices.core.DataServiceException Always thrown.
+     * @throws org.mskcc.dataservices.core.DataServiceException
+     *          Always thrown.
      */
     public ArrayList getInteractions(File file) throws DataServiceException {
         throw new DataServiceException("Method is not supported");
@@ -114,6 +119,7 @@ public class ReadInteractionsFromGrid extends DataServiceBase
 
     /**
      * Gets Live Data from GRID_LOCAL.
+     *
      * @param orfName ORF Name.
      * @return ArrayList of Interactin objects.
      */
@@ -155,6 +161,7 @@ public class ReadInteractionsFromGrid extends DataServiceBase
 
     /**
      * Gets Live Interaction Data from GRID_LOCAL.
+     *
      * @param localId Local ID.
      * @return Database Result Set.
      * @throws DaoException Error Retrieving Data.
@@ -183,10 +190,11 @@ public class ReadInteractionsFromGrid extends DataServiceBase
 
     /**
      * Process Results of GRID_LOCAL Query.
+     *
      * @param rs Database Result Set.
      * @return ArrayList of Interaction objects.
      * @throws java.sql.SQLException Error connecting database.
-     * @throws DataServiceException Error connecting to data service.
+     * @throws DataServiceException  Error connecting to data service.
      */
     private ArrayList processResults(ResultSet rs)
             throws SQLException, DataServiceException {

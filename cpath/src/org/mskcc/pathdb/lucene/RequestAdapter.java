@@ -9,12 +9,16 @@ import org.mskcc.pathdb.controller.ProtocolRequest;
  * @author Ethan Cerami
  */
 public class RequestAdapter {
-    private static String AND_OPERATOR = "+";
-    private static String FIELD_SEPARATOR = ":";
-    private static String START_PAREN = "(";
-    private static String END_PAREN = ")";
+    private static final String AND_OPERATOR = "+";
+    private static final String FIELD_SEPARATOR = ":";
+    private static final String START_PAREN = "(";
+    private static final String END_PAREN = ")";
 
-    // TODO:  Write Unit Test
+    /**
+     * Gets Search Terms.
+     * @param request ProtocolRequest Object.
+     * @return Search Terms.
+     */
     public static String getSearchTerms(ProtocolRequest request) {
         String searchTerms = request.getQuery();
         StringBuffer temp = new StringBuffer();

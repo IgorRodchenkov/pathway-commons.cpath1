@@ -24,6 +24,7 @@ public class TestDaoInternalLink extends TestCase {
 
     /**
      * Tests Data Access.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {

@@ -1,31 +1,7 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
-import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.dataservices.core.EmptySetException;
-import org.mskcc.dataservices.schemas.psi.Entry;
-import org.mskcc.dataservices.schemas.psi.EntrySet;
-import org.mskcc.dataservices.schemas.psi.InteractionList;
-import org.mskcc.dataservices.schemas.psi.InteractorList;
-import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.pathdb.controller.ProtocolConstants;
-import org.mskcc.pathdb.controller.ProtocolRequest;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.ImportSummary;
-import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.sql.dao.*;
-import org.mskcc.pathdb.sql.query.Query;
-import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
-import org.mskcc.pathdb.task.IndexLuceneTask;
-import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.util.Md5Util;
 import org.mskcc.pathdb.xdebug.XDebug;
-
-import java.io.StringWriter;
-import java.util.ArrayList;
 
 /**
  * Tests the ImportPsiToCPath, the InteractionQuery
@@ -46,7 +22,8 @@ public class TestImportPsiToCPath extends TestCase {
 //        String file = new String("testData/psi_sample_mixed.xml");
 //        String xml = reader.retrieveContent(file);
 //        ImportPsiToCPath importer = new ImportPsiToCPath();
-//        ImportSummary summary = importer.addRecord(xml, true, false, pMonitor);
+//        ImportSummary summary = importer.addRecord(xml, true, false,
+//              pMonitor);
 //        assertEquals(7, summary.getNumInteractorsProcessed());
 //        assertEquals(0, summary.getNumInteractorsFound());
 //        assertEquals(7, summary.getNumInteractorsSaved());
@@ -137,7 +114,8 @@ public class TestImportPsiToCPath extends TestCase {
 //        int taxId = 4932;
 //        ProtocolRequest request = new ProtocolRequest();
 //        request.setQuery(Long.toString(taxId));
-//        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID);
+//        request.setCommand
+//              (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID);
 //        Query query = new Query(xdebug);
 //        QueryResult result = query.executeQuery(request, true);
 //        EntrySet entrySet = result.getEntrySet();
@@ -252,7 +230,8 @@ public class TestImportPsiToCPath extends TestCase {
 //        String taxId = "4932";
 //        ProtocolRequest request = new ProtocolRequest();
 //        request.setQuery(taxId);
-//        request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID);
+//        request.setCommand
+//              (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID);
 //        request.setFormat(ProtocolConstants.FORMAT_PSI);
 //        request.setVersion(ProtocolConstants.CURRENT_VERSION);
 //        Query query = new Query(xdebug);

@@ -25,8 +25,9 @@ public class JdbcUtil {
 
     /**
      * Gets Connection to the CPath Database.
+     *
      * @return Live Connection to Database.
-     * @throws SQLException Error Connecting to Database.
+     * @throws SQLException           Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating Correct Database Driver.
      */
     public static Connection getCPathConnection()
@@ -36,8 +37,9 @@ public class JdbcUtil {
 
     /**
      * Gets Connection to the GRID Database.
+     *
      * @return Live Connection to Database.
-     * @throws SQLException Error Connecting to Database.
+     * @throws SQLException           Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating Correct Database Driver.
      */
     public static Connection getGridConnection()
@@ -47,9 +49,10 @@ public class JdbcUtil {
 
     /**
      * Connects to Specified Database.
+     *
      * @param db Database Name.
      * @return Live Connection to Database.
-     * @throws SQLException Error Connecting to Database.
+     * @throws SQLException           Error Connecting to Database.
      * @throws ClassNotFoundException Error Locating Correct Database Driver.
      */
     private static Connection connect(String db)
@@ -78,6 +81,7 @@ public class JdbcUtil {
 
     /**
      * Frees Database Connection.
+     *
      * @param con Connection Object.
      */
     private static void closeConnection(Connection con) {
@@ -92,9 +96,10 @@ public class JdbcUtil {
 
     /**
      * Frees Database Connection.
+     *
      * @param con Connection Object.
-     * @param ps Prepared Statement Object.
-     * @param rs ResultSet Object.
+     * @param ps  Prepared Statement Object.
+     * @param rs  ResultSet Object.
      */
     public static void closeAll(Connection con, PreparedStatement ps,
             ResultSet rs) {
@@ -117,6 +122,7 @@ public class JdbcUtil {
 
     /**
      * Initializes Database Connection Pool.
+     *
      * @param connectURI Connection URI.
      * @return DataSource Object.
      */

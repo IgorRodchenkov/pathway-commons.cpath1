@@ -108,6 +108,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Constructor.
+     *
      * @param parameterMap Map of all Request Parameters.
      */
     public ProtocolRequest(Map parameterMap) {
@@ -152,6 +153,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets the Query value.
+     *
      * @return query value.
      */
     public String getQuery() {
@@ -160,6 +162,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets the Command value.
+     *
      * @return command value.
      */
     public String getCommand() {
@@ -168,6 +171,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets the Format value.
+     *
      * @return format value.
      */
     public String getFormat() {
@@ -176,6 +180,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets the Version value.
+     *
      * @return version value.
      */
     public String getVersion() {
@@ -184,6 +189,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Sets Command Argument.
+     *
      * @param command Command Argument.
      */
     public void setCommand(String command) {
@@ -192,6 +198,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Sets the Query Argument.
+     *
      * @param query Query Argument.
      */
     public void setQuery(String query) {
@@ -200,6 +207,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Sets the Format Argument.
+     *
      * @param format Format Argument.
      */
     public void setFormat(String format) {
@@ -208,6 +216,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Sets the Version Argument.
+     *
      * @param version Version Argument.
      */
     public void setVersion(String version) {
@@ -216,6 +225,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets the Start Index.
+     *
      * @return Start Index.
      */
     public int getStartIndex() {
@@ -224,6 +234,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Sets the Start Index.
+     *
      * @param startIndex Start Index Int.
      */
     public void setStartIndex(int startIndex) {
@@ -232,6 +243,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets Max Number of Hits.
+     *
      * @return Max Number Hits
      */
     public int getMaxHitsInt() {
@@ -244,6 +256,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Max hits (String value).
+     *
      * @return Max Hits (String value.)
      */
     public String getMaxHits() {
@@ -252,22 +265,32 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Sets Max Number of hits.
+     *
      * @param str Max Number of Hits
      */
     public void setMaxHits(String str) {
         this.maxHits = str;
     }
 
-    public String getOrganism () {
+    /**
+     * Gets Organism.
+     * @return Organism String.
+     */
+    public String getOrganism() {
         return this.organism;
     }
 
-    public void setOrganism (String organism) {
+    /**
+     * Sets Organism.
+     * @param organism Organism String.
+     */
+    public void setOrganism(String organism) {
         this.organism = organism;
     }
 
     /**
      * Is this an empty request?
+     *
      * @return true or false.
      */
     public boolean isEmpty() {
@@ -276,6 +299,7 @@ public class ProtocolRequest implements PagedResult {
 
     /**
      * Gets URI.
+     *
      * @return URI String.
      */
     public String getUri() {

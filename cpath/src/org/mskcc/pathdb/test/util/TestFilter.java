@@ -13,6 +13,7 @@ public class TestFilter extends TestCase {
 
     /**
      * Tests XXX.
+     *
      * @throws Exception All Exceptions.
      */
     public void testFilter() throws Exception {

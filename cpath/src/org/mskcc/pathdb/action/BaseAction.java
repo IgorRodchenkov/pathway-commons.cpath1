@@ -116,9 +116,10 @@ public abstract class BaseAction extends Action {
 
     /**
      * Executes Action.
-     * @param mapping Struts ActionMapping Object.
-     * @param form Struts ActionForm Object.
-     * @param request Http Servlet Request.
+     *
+     * @param mapping  Struts ActionMapping Object.
+     * @param form     Struts ActionForm Object.
+     * @param request  Http Servlet Request.
      * @param response Http Servlet Response.
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
@@ -151,15 +152,16 @@ public abstract class BaseAction extends Action {
             request.setAttribute(ATTRIBUTE_EXCEPTION, e);
             forward = mapping.findForward(BaseAction.FORWARD_FAILURE);
         }
-        xdebug.logMsg (this, "Forwarding to Struts:  " + forward.getName());
-        xdebug.logMsg (this, "Forwarding to Path:  " + forward.getPath());
+        xdebug.logMsg(this, "Forwarding to Struts:  " + forward.getName());
+        xdebug.logMsg(this, "Forwarding to Path:  " + forward.getPath());
         return forward;
     }
 
     /**
      * Sets User Display Message.
+     *
      * @param request Http Servlet Request.
-     * @param msg User Message.
+     * @param msg     User Message.
      */
     public void setUserMessage(HttpServletRequest request,
             String msg) {
@@ -169,10 +171,11 @@ public abstract class BaseAction extends Action {
     /**
      * Determine if User is Authorized to access this action.
      * May be overriden by sub-classes.
-     * @param mapping Struts ActionMapping Object.
-     * @param request Http Servlet Request.
+     *
+     * @param mapping  Struts ActionMapping Object.
+     * @param request  Http Servlet Request.
      * @param response Http Servlet Response.
-     * @param xdebug XDebug Object.
+     * @param xdebug   XDebug Object.
      */
     protected boolean isUserAuthorized(ActionMapping mapping,
             HttpServletRequest request, HttpServletResponse response,
@@ -185,11 +188,12 @@ public abstract class BaseAction extends Action {
     /**
      * Executes SubAction.
      * Must be implemented by Subclass.
-     * @param mapping Struts ActionMapping Object.
-     * @param form Struts ActionForm Object.
-     * @param request Http Servlet Request.
+     *
+     * @param mapping  Struts ActionMapping Object.
+     * @param form     Struts ActionForm Object.
+     * @param request  Http Servlet Request.
      * @param response Http Servlet Response.
-     * @param xdebug XDebug Object.
+     * @param xdebug   XDebug Object.
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
      */

@@ -1,21 +1,18 @@
 package org.mskcc.pathdb.task;
 
-import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.lucene.IndexFactory;
 import org.mskcc.pathdb.lucene.ItemToIndex;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
-import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.jdom.JDOMException;
-import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.MarshalException;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -33,6 +30,7 @@ public class IndexLuceneTask extends Task {
 
     /**
      * Constructor.
+     *
      * @param verbose Verbose flag.
      */
     public IndexLuceneTask(boolean verbose) {
@@ -58,6 +56,7 @@ public class IndexLuceneTask extends Task {
 
     /**
      * Gets the Progress Monitor.
+     *
      * @return Progress Monitor object.
      */
     public ProgressMonitor getProgressMonitor() {
@@ -67,12 +66,14 @@ public class IndexLuceneTask extends Task {
     /**
      * Run Full Text Indexing on all Physical Entities.
      * Made public, if you want to run this from the current thread.
-     * @throws DaoException Data Access Exception.
-     * @throws IOException Input/Output Exception.
-     * @throws ImportException Import Exception.
+     *
+     * @throws DaoException      Data Access Exception.
+     * @throws IOException       Input/Output Exception.
+     * @throws ImportException   Import Exception.
+     * @throws AssemblyException Assembly Exception.
      */
     public void indexAllInteractions() throws DaoException, IOException,
-            ImportException, AssemblyException  {
+            ImportException, AssemblyException {
         outputMsg("Indexing all CPath Entities");
         DaoCPath cpath = new DaoCPath();
         pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.

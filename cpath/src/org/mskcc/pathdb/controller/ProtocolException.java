@@ -28,7 +28,7 @@ public class ProtocolException extends Exception {
     private String xmlErrorMessage;
 
     /**
-     *  Error Message for Displaying to End User of Web Interface.
+     * Error Message for Displaying to End User of Web Interface.
      */
     private String webErrorMessage;
 
@@ -59,6 +59,7 @@ public class ProtocolException extends Exception {
 
     /**
      * Constructor.
+     *
      * @param statusCode Protocol Status Code.
      */
     public ProtocolException(ProtocolStatusCode statusCode) {
@@ -67,8 +68,9 @@ public class ProtocolException extends Exception {
 
     /**
      * Constructor.
+     *
      * @param statusCode Protocol Status Code.
-     * @param details Error Message Details.
+     * @param details    Error Message Details.
      */
     public ProtocolException(ProtocolStatusCode statusCode, String details) {
         this.statusCode = statusCode;
@@ -77,7 +79,8 @@ public class ProtocolException extends Exception {
 
     /**
      * Constructor.
-     * @param statusCode Protocol Status Code.
+     *
+     * @param statusCode      Protocol Status Code.
      * @param xmlErrorMessage Error Message Details (for xml user)
      * @param webErrorMessage Error Message Details (for web user)
      */
@@ -90,8 +93,9 @@ public class ProtocolException extends Exception {
 
     /**
      * Constructor.
+     *
      * @param statusCode Protocol Status Code.
-     * @param e Root Exception.
+     * @param e          Root Exception.
      */
     public ProtocolException(ProtocolStatusCode statusCode, Exception e) {
         super(e);
@@ -100,6 +104,7 @@ public class ProtocolException extends Exception {
 
     /**
      * Gets the Status Code.
+     *
      * @return Status Code.
      */
     public ProtocolStatusCode getStatusCode() {
@@ -108,6 +113,7 @@ public class ProtocolException extends Exception {
 
     /**
      * Gets XML Error Message
+     *
      * @return Error Details String.
      */
     public String getXmlErrorMessage() {
@@ -116,6 +122,7 @@ public class ProtocolException extends Exception {
 
     /**
      * Gets Web Error Message
+     *
      * @return Error Details String.
      */
     public String getWebErrorMessage() {
@@ -128,6 +135,7 @@ public class ProtocolException extends Exception {
 
     /**
      * Gets Error Message.
+     *
      * @return Error Message.
      */
     public String getMessage() {
@@ -137,6 +145,7 @@ public class ProtocolException extends Exception {
 
     /**
      * Gets XML Representation of Error.
+     *
      * @return XML String containing Error Message.
      */
     public String toXml() {
@@ -157,6 +166,7 @@ public class ProtocolException extends Exception {
 
     /**
      * Creates JDOM Representation of XML Document.
+     *
      * @return JDOM Document object.
      */
     private Document createXmlDocument() {

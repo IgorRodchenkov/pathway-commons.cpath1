@@ -13,14 +13,16 @@ public interface ItemToIndex {
 
     /**
      * Gets Total Number of Fields to Index.
+     *
      * @return total number of fields to index.
      */
-    public int getNumFields();
+    int getNumFields();
 
     /**
      * Gets Field at specified index.
+     *
      * @param index Index value.
      * @return Lucene Field Object.
      */
-    public Field getField(int index);
+    Field getField(int index);
 }

@@ -18,6 +18,7 @@ public class ExternalLinkRecord {
 
     /**
      * Gets External Link ID.
+     *
      * @return External Link ID.
      */
     public long getId() {
@@ -26,6 +27,7 @@ public class ExternalLinkRecord {
 
     /**
      * Sets External Link ID.
+     *
      * @param id External Link ID.
      */
     public void setId(long id) {
@@ -34,6 +36,7 @@ public class ExternalLinkRecord {
 
     /**
      * Gets CPath ID.
+     *
      * @return CPath ID.
      */
     public long getCpathId() {
@@ -42,6 +45,7 @@ public class ExternalLinkRecord {
 
     /**
      * Sets CPath ID.
+     *
      * @param cpathId CPath ID.
      */
     public void setCpathId(long cpathId) {
@@ -50,6 +54,7 @@ public class ExternalLinkRecord {
 
     /**
      * Gets External Database ID.
+     *
      * @return External Database ID.
      */
     public int getExternalDbId() {
@@ -58,6 +63,7 @@ public class ExternalLinkRecord {
 
     /**
      * Sets External Database ID.
+     *
      * @param externalDbId External Database ID.
      */
     public void setExternalDbId(int externalDbId) {
@@ -66,6 +72,7 @@ public class ExternalLinkRecord {
 
     /**
      * Gets Linked To ID.
+     *
      * @return Linked To ID.
      */
     public String getLinkedToId() {
@@ -74,6 +81,7 @@ public class ExternalLinkRecord {
 
     /**
      * Sets Linked To ID.
+     *
      * @param linkedToId Linked To ID.
      */
     public void setLinkedToId(String linkedToId) {
@@ -82,6 +90,7 @@ public class ExternalLinkRecord {
 
     /**
      * Gets Creation Time.
+     *
      * @return Date Object.
      */
     public Date getCreateTime() {
@@ -90,6 +99,7 @@ public class ExternalLinkRecord {
 
     /**
      * Sets Creation Time.
+     *
      * @param createTime Date Object.
      */
     public void setCreateTime(Date createTime) {
@@ -98,6 +108,7 @@ public class ExternalLinkRecord {
 
     /**
      * Gets Update Time.
+     *
      * @return Date Object.
      */
     public Date getUpdateTime() {
@@ -106,6 +117,7 @@ public class ExternalLinkRecord {
 
     /**
      * Sets Update Time.
+     *
      * @param updateTime Date Object.
      */
     public void setUpdateTime(Date updateTime) {
@@ -114,6 +126,7 @@ public class ExternalLinkRecord {
 
     /**
      * Gets the External Database.
+     *
      * @return External Database Record.
      */
     public ExternalDatabaseRecord getExternalDatabase() {
@@ -122,6 +135,7 @@ public class ExternalLinkRecord {
 
     /**
      * Sets the External Database.
+     *
      * @param db External Database Record.
      */
     public void setExternalDatabase(ExternalDatabaseRecord db) {
@@ -133,6 +147,7 @@ public class ExternalLinkRecord {
 
     /**
      * Gets the Web Link to the specified Resource.
+     *
      * @return URL String.
      */
     public String getWebLink() {

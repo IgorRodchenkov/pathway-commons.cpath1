@@ -45,6 +45,7 @@ public class TestImportTable extends TestCase {
 
     /**
      * Tests the InteractionTable Custom Tag.
+     *
      * @throws Exception All Exceptions.
      */
     public void testTag() throws Exception {

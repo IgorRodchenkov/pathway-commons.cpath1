@@ -5,10 +5,12 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
 import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.pathdb.lucene.*;
-import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.lucene.IndexFactory;
+import org.mskcc.pathdb.lucene.ItemToIndex;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.util.XmlStripper;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -23,13 +25,14 @@ public class TestIndexer extends TestCase {
 
     /**
      * Tests the Full Text Indexer.
+     *
      * @throws Exception All Exceptions.
      */
     public void testIndexer() throws Exception {
         XDebug xdebug = new XDebug();
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
                 (4, 1, xdebug);
-        ItemToIndex item = IndexFactory.createItemToIndex (4, assembly);
+        ItemToIndex item = IndexFactory.createItemToIndex(4, assembly);
         LuceneIndexer lucene = new LuceneIndexer();
         lucene.initIndex();
         lucene.addRecord(item);
@@ -64,6 +67,7 @@ public class TestIndexer extends TestCase {
 
     /**
      * Tests the XML Stripper Utility.
+     *
      * @throws Exception All Exceptions.
      */
     public void testStripper() throws Exception {

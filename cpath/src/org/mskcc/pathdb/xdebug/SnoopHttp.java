@@ -27,6 +27,7 @@ import java.util.Enumeration;
  * <LI>All HTTP Parameters
  * <LI>All Cookies
  * </UL>
+ *
  * @author Ethan Cerami
  */
 public class SnoopHttp {
@@ -34,8 +35,9 @@ public class SnoopHttp {
     private ServletContext servletContext;
 
     /**
-     *  Constructor
-     * @param xdebug XDebug object for real-time debugging
+     * Constructor
+     *
+     * @param xdebug         XDebug object for real-time debugging
      * @param servletContext Servlet Context Object.
      */
     public SnoopHttp(XDebug xdebug, ServletContext servletContext) {
@@ -45,9 +47,10 @@ public class SnoopHttp {
 
     /**
      * Performs snooping on the current HTTP Request
-     * @param request The HTTP request we are processing
+     *
+     * @param request  The HTTP request we are processing
      * @param response The HTTP response we are creating
-     * @throws IOException if an input/output error occurs
+     * @throws IOException      if an input/output error occurs
      * @throws ServletException if a servlet exception occurs
      */
     public void process(HttpServletRequest request,
@@ -64,6 +67,7 @@ public class SnoopHttp {
 
     /**
      * Extracts Server Information from the current HTTP Request.
+     *
      * @param request The HTTP request we are processing
      */
     private void extractServerInformation(HttpServletRequest request) {
@@ -84,6 +88,7 @@ public class SnoopHttp {
 
     /**
      * Extracts Client Information from the current HTTP Request.
+     *
      * @param request The HTTP request we are processing
      */
     private void extractClientInformation(HttpServletRequest request) {
@@ -95,6 +100,7 @@ public class SnoopHttp {
 
     /**
      * Extracts HTTP Information and Headers from the current HTTP Request.
+     *
      * @param request The HTTP request we are processing
      */
     private void extractHTTPInformation(HttpServletRequest request) {
@@ -119,6 +125,7 @@ public class SnoopHttp {
 
     /**
      * Extracts User Parameters from the current HTTP Request.
+     *
      * @param request The HTTP request we are processing
      */
     private void extractUserParameters(HttpServletRequest request) {
@@ -132,6 +139,7 @@ public class SnoopHttp {
 
     /**
      * Extracts Cookies from the current HTTP Request.
+     *
      * @param request The HTTP request we are processing
      */
     private void extractCookies(HttpServletRequest request) {
@@ -148,6 +156,7 @@ public class SnoopHttp {
 
     /**
      * Extracts Session Information for the current HTTP Request.
+     *
      * @param request The HTTP request we are processing
      */
     private void extractSession(HttpServletRequest request) {

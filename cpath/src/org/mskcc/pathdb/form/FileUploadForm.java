@@ -13,6 +13,7 @@ public class FileUploadForm extends ActionForm {
 
     /**
      * Gets the Form File.
+     *
      * @return Form File.
      */
     public FormFile getFile() {
@@ -21,6 +22,7 @@ public class FileUploadForm extends ActionForm {
 
     /**
      * Sets the Form File.
+     *
      * @param file Form File.
      */
     public void setFile(FormFile file) {

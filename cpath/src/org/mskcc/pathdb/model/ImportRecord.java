@@ -26,6 +26,7 @@ public class ImportRecord {
 
     /**
      * Gets Import Record Data.
+     *
      * @return Import Record Data String.
      */
     public String getData() {
@@ -34,6 +35,7 @@ public class ImportRecord {
 
     /**
      * Sets Import Data Record.
+     *
      * @param data Import Record Data String.
      */
     public void setData(String data) {
@@ -42,6 +44,7 @@ public class ImportRecord {
 
     /**
      * Gets the Import Description.
+     *
      * @return Description String.
      */
     public String getDescription() {
@@ -50,6 +53,7 @@ public class ImportRecord {
 
     /**
      * Sets the Import Description.
+     *
      * @param description Description String.
      */
     public void setDescription(String description) {
@@ -58,6 +62,7 @@ public class ImportRecord {
 
     /**
      * Gets Import Record ID.
+     *
      * @return Import Record ID.
      */
     public int getImportId() {
@@ -66,6 +71,7 @@ public class ImportRecord {
 
     /**
      * Gets Import Record ID.
+     *
      * @param importId Import Record ID.
      */
     public void setImportId(int importId) {
@@ -74,6 +80,7 @@ public class ImportRecord {
 
     /**
      * Gets Import Record Status.
+     *
      * @return Import Record Status.
      */
     public String getStatus() {
@@ -82,6 +89,7 @@ public class ImportRecord {
 
     /**
      * Sets Import Record Status.
+     *
      * @param status Import Record Status.
      */
     public void setStatus(String status) {
@@ -90,6 +98,7 @@ public class ImportRecord {
 
     /**
      * Gets Creation TimeStamp.
+     *
      * @return Creation Date Object.
      */
     public Date getCreateTime() {
@@ -98,6 +107,7 @@ public class ImportRecord {
 
     /**
      * Sets Creation TimeStamp.
+     *
      * @param createTime Creation Date Object.
      */
     public void setCreateTime(Date createTime) {
@@ -106,6 +116,7 @@ public class ImportRecord {
 
     /**
      * Gets Updated TimeStamp.
+     *
      * @return Updated Date Object.
      */
     public Date getUpdateTime() {
@@ -114,6 +125,7 @@ public class ImportRecord {
 
     /**
      * Sets Updated TimeStamp.
+     *
      * @param updateTime Data Object.
      */
     public void setUpdateTime(Date updateTime) {
@@ -122,6 +134,7 @@ public class ImportRecord {
 
     /**
      * Gets MD5 Hash.
+     *
      * @return Base64 Encoded MD5 Hash.
      */
     public String getMd5Hash() {
@@ -130,6 +143,7 @@ public class ImportRecord {
 
     /**
      * Sets MD5 Hash.
+     *
      * @param md5Hash Base64 Encoded MD5 Hash.
      */
     public void setMd5Hash(String md5Hash) {

@@ -1,17 +1,7 @@
 package org.mskcc.pathdb.sql.query;
 
-import org.apache.log4j.Logger;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.xdebug.XDebug;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Abstract Base Class for all queries which return interactions.
@@ -23,14 +13,15 @@ abstract class InteractionQuery {
 
     /**
      * Executes Query.
+     *
      * @param xdebug XDebug Object.
      * @return XmlAssembly XML Assembly Object.
      * @throws QueryException Error Executing Query.
      */
     public XmlAssembly execute(XDebug xdebug) throws QueryException {
         this.xdebug = xdebug;
-        xdebug.logMsg(this, "Executing Interaction Type:  " +
-                getClass().getName());
+        xdebug.logMsg(this, "Executing Interaction Type:  "
+                + getClass().getName());
         try {
             return executeSub();
         } catch (Exception e) {
@@ -40,6 +31,7 @@ abstract class InteractionQuery {
 
     /**
      * Must be subclassed.
+     *
      * @return XmlAssembly XML Assembly Object.
      * @throws Exception All Exceptions.
      */

@@ -1,13 +1,13 @@
 package org.mskcc.pathdb.lucene;
 
 import org.apache.lucene.document.Field;
+import org.jdom.Text;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.XmlStripper;
-import org.jdom.Text;
 
-import java.util.ArrayList;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Encapsulates a PSI-MI Interaction Record scheduled for indexing in Lucene.
@@ -19,7 +19,8 @@ import java.io.IOException;
  * <LI>Experiment Interaction Type Name
  * <LI>Experiment Interaction Type Controlled Vocabulary ID.
  * </UL>
- * @author  Ethan Cerami
+ *
+ * @author Ethan Cerami
  */
 public class PsiInteractionToIndex implements ItemToIndex {
 
@@ -54,20 +55,21 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Constructor.  Only available within the lucene package.
      * The only way to construct the object is via the Factory class.
+     *
      * @param xmlAssembly XmlAssembly.
      * @throws IOException Input Output Error.
      */
-    PsiInteractionToIndex (long cpathId, XmlAssembly xmlAssembly)
+    PsiInteractionToIndex(long cpathId, XmlAssembly xmlAssembly)
             throws IOException {
         EntrySet entrySet = (EntrySet) xmlAssembly.getXmlObject();
 
         //  Index All Interactors and Interactions.
-        for (int i=0; i< entrySet.getEntryCount(); i++) {
+        for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractorList interactorList = entry.getInteractorList();
             indexInteractorData(interactorList);
             InteractionList interactionList = entry.getInteractionList();
-            indexInteractionData (interactionList);
+            indexInteractionData(interactionList);
         }
 
         //  Index All Terms -->  Default Field.
@@ -82,6 +84,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
 
     /**
      * Gets Total Number of Fields to Index.
+     *
      * @return total number of fields to index.
      */
     public int getNumFields() {
@@ -90,6 +93,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
 
     /**
      * Gets Field at specified index.
+     *
      * @param index Index value.
      * @return Lucene Field Object.
      */
@@ -100,14 +104,15 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Indexes All Interactors.
      * This includes all names, xrefs, and organism data.
+     *
      * @param interactorList List of Interactors.
      */
-    private void indexInteractorData (InteractorList interactorList) {
+    private void indexInteractorData(InteractorList interactorList) {
         StringBuffer interactorIdTokens = new StringBuffer();
         StringBuffer interactorTokens = new StringBuffer();
         StringBuffer organismTokens = new StringBuffer();
         int size = interactorList.getProteinInteractorCount();
-        for (int i=0; i<size; i++) {
+        for (int i = 0; i < size; i++) {
             ProteinInteractorType protein =
                     interactorList.getProteinInteractor(i);
             appendNameTokens(protein.getNames(), interactorTokens);
@@ -124,18 +129,19 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Indexes all Interactions.
      * This includes all pmids, and interaction detection data.
+     *
      * @param interactionList List of Interactions.
      */
-    private void indexInteractionData (InteractionList interactionList) {
+    private void indexInteractionData(InteractionList interactionList) {
         StringBuffer pmidTokens = new StringBuffer();
         StringBuffer interactionTypeTokens = new StringBuffer();
         StringBuffer dbTokens = new StringBuffer();
-        for (int i=0; i<interactionList.getInteractionCount(); i++) {
+        for (int i = 0; i < interactionList.getInteractionCount(); i++) {
             InteractionElementType interaction =
                     interactionList.getInteraction(i);
             ExperimentList experimentList = interaction.getExperimentList();
             if (experimentList != null) {
-                appendExperimentTokens (experimentList, pmidTokens,
+                appendExperimentTokens(experimentList, pmidTokens,
                         interactionTypeTokens);
             }
             appendXrefTokens(interaction.getXref(), dbTokens);
@@ -149,9 +155,9 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Appends Experimental Data Tokens.
      */
-    private void appendExperimentTokens (ExperimentList experimentList,
+    private void appendExperimentTokens(ExperimentList experimentList,
             StringBuffer pmidTokens, StringBuffer interactionTypeTokens) {
-        for (int i=0; i<experimentList.getExperimentListItemCount(); i++) {
+        for (int i = 0; i < experimentList.getExperimentListItemCount(); i++) {
             ExperimentListItem expItem =
                     experimentList.getExperimentListItem(i);
             if (expItem != null) {
@@ -172,12 +178,12 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Appends Organism Tokens.
      */
-    private void appendOrganismTokens (ProteinInteractorType protein,
+    private void appendOrganismTokens(ProteinInteractorType protein,
             StringBuffer tokens) {
         Organism organism = protein.getOrganism();
         if (organism != null) {
-            int ncbi_tax_id = organism.getNcbiTaxId();
-            appendToken (tokens, Integer.toString(ncbi_tax_id));
+            int ncbiTaxId = organism.getNcbiTaxId();
+            appendToken(tokens, Integer.toString(ncbiTaxId));
             appendNameTokens(organism.getNames(), tokens);
         }
     }
@@ -186,20 +192,20 @@ public class PsiInteractionToIndex implements ItemToIndex {
      * Appends Name Tokens.
      */
     private void appendNameTokens(NamesType names, StringBuffer tokens) {
-         if (names != null) {
+        if (names != null) {
             String shortName = names.getShortLabel();
             String fullName = names.getFullName();
-            appendToken (tokens, normalizeText(shortName));
-            appendToken (tokens, normalizeText(fullName));
+            appendToken(tokens, normalizeText(shortName));
+            appendToken(tokens, normalizeText(fullName));
         }
     }
 
     /**
      * Normalizes Text.
      * Rreplaces all whitespace characters with a single whitespace.
-     */ 
-    private String normalizeText (String str) {
-        Text text = new Text (str);
+     */
+    private String normalizeText(String str) {
+        Text text = new Text(str);
         return text.getTextNormalize();
     }
 
@@ -218,13 +224,13 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Appends Xref Tokens.
      */
-    private void appendXrefTokens (XrefType xref, StringBuffer tokens) {
+    private void appendXrefTokens(XrefType xref, StringBuffer tokens) {
         if (xref != null) {
             DbReferenceType primaryRef = xref.getPrimaryRef();
-            appendDbRefTokens (tokens, primaryRef);
-            for (int i=0; i<xref.getSecondaryRefCount(); i++) {
+            appendDbRefTokens(tokens, primaryRef);
+            for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
                 DbReferenceType secondaryRef = xref.getSecondaryRef(i);
-                appendDbRefTokens (tokens, secondaryRef);
+                appendDbRefTokens(tokens, secondaryRef);
             }
         }
     }
@@ -232,11 +238,11 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Appends DbRef Tokens.
      */
-    private String appendDbRefTokens (StringBuffer tokens,
+    private String appendDbRefTokens(StringBuffer tokens,
             DbReferenceType dbRef) {
         if (dbRef != null) {
-            appendToken (tokens, dbRef.getDb());
-            appendToken (tokens, dbRef.getId());
+            appendToken(tokens, dbRef.getDb());
+            appendToken(tokens, dbRef.getId());
         }
         return tokens.toString();
     }
@@ -244,9 +250,9 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Appends New Token to List.
      */
-    private void appendToken (StringBuffer tokens, String token) {
+    private void appendToken(StringBuffer tokens, String token) {
         if (token != null && token.length() > 0) {
-            tokens.append(token+" ");
+            tokens.append(token + " ");
         }
     }
 }

@@ -5,8 +5,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import java.io.StringReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
 /**
@@ -19,6 +19,7 @@ public class XmlStripper {
 
     /**
      * Strips all XML Markup from Document.
+     *
      * @param xml XML Document.
      * @return String of Tokens.
      * @throws IOException Error in JDOM.
@@ -39,7 +40,8 @@ public class XmlStripper {
 
     /**
      * Recursive Method for Processing Elements.
-     * @param element Element.
+     *
+     * @param element    Element.
      * @param textBuffer StringBuffer.
      */
     private static void processElement(Element element,

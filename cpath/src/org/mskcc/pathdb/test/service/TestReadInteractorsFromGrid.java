@@ -144,6 +144,7 @@ public class TestReadInteractorsFromGrid extends TestCase {
 
     /**
      * Tests against live GRID_LOCAL Service.
+     *
      * @throws Exception Indicates Error
      */
     public void testSqlGridService() throws Exception {
@@ -160,6 +161,7 @@ public class TestReadInteractorsFromGrid extends TestCase {
 
     /**
      * Tests against live CBio Service.
+     *
      * @throws Exception Indicates Error.
      */
     public void testCbioGridService() throws Exception {
@@ -182,6 +184,7 @@ public class TestReadInteractorsFromGrid extends TestCase {
 
     /**
      * Validates Name, ID and Description.
+     *
      * @param interactor Interactor object.
      */
     private void validateNameIdDescription(Interactor interactor) {
@@ -197,6 +200,7 @@ public class TestReadInteractorsFromGrid extends TestCase {
 
     /**
      * Validates all GO Term Categories.
+     *
      * @param interactor Interactor object.
      */
     private void validateGoTerms(Interactor interactor) {
@@ -236,6 +240,7 @@ public class TestReadInteractorsFromGrid extends TestCase {
 
     /**
      * Validates External References.
+     *
      * @param interactor Interactor object.
      */
     private void validateExternalReferences(Interactor interactor) {

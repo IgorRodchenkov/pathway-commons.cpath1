@@ -48,6 +48,7 @@ public class LogTable extends HtmlTable {
 
     /**
      * Start Tag Processing.
+     *
      * @throws DaoException Database Error.
      */
     protected void subDoStartTag() throws DaoException {

@@ -20,79 +20,80 @@ import java.util.HashMap;
 
 /**
  * Imports a single PSI-MI record into cPath.
- *
+ * <p/>
  * <P>Below is pseudo-code for how the import works:
  * <OL>
- *  <LI>Normalize the XML Document
- *      <UL>
- *          <LI>Given a PSI-MI document, transform the document into a
- *          mixed canonical/noncanonical version. Specifically, move all
- *          interactors to the top of the document, and remove redundancy
- *          among interactors. Move all other top elements, e.g. experiment
- *          descriptions into the redundant, non-canonical form.  This
- *          operation is performed via PsiUti.getNormalizedDocument().
- *          </LI>
- *      </UL>
- *  </LI>
- *  <LI>Chop XML into Fragments
- *      <UL>
- *          <LI>Chop the XML document into multiple record-like XML
- *          documents. Each interactor becomes one XML document
- *          fragment, and each interaction becomes one XML document
- *          fragment. These will be well-formed, but invalid XML
- *          document fragments.  Chopping is currently done via
- *          Castor generated objects.
- *          </LI>
- *      </UL>
- *  </LI>
- *  <LI>Process all Interactors
- *      <OL>
- *          <LI>For each interacor:
- *              <OL>
- *                  <LI>Determine if this interactor already exists within
- *                  the database.  We determine existence of interactors
- *                  via the DaoExternalLink.lookUpByExternalRefs() method.
- *                  This method checks all external references of the
- *                  interactor.  If a match is found, the cPath record
- *                  is returned.
- *                  </LI>
- *                  <LI>If the interactor exists, extract its cPath ID
- *                  and add any new external references.</LI>
- *                  <LI>Else
- *                      <OL>
- *                          <LI>Add the new interactor XML Blob and all
- *                          external links to cPath.</LI>
- *                          <LI>Each new interactor will receive a new cPathId.
- *                              Update the XML Blob to contain this new
- *                              cPath Id.
- *                          </LI>
- *                      </OL>
- *                  </LI>
- *               </OL>
- *          </LI>
- *      </OL>
+ * <LI>Normalize the XML Document
+ * <UL>
+ * <LI>Given a PSI-MI document, transform the document into a
+ * mixed canonical/noncanonical version. Specifically, move all
+ * interactors to the top of the document, and remove redundancy
+ * among interactors. Move all other top elements, e.g. experiment
+ * descriptions into the redundant, non-canonical form.  This
+ * operation is performed via PsiUti.getNormalizedDocument().
  * </LI>
- * <LI>Process all Interactions
- *      <UL>
- *          <LI>Modify all interaction XML fragments by replacing all interactor
- *          Refs with the matching cPath Ids. For example, in the original
- *          document, we may have (A interacts with B). After processing
- *          is complete, we have something like (cpathID:22214 interacts with
- *          cpathID:58225).  This operation is performed via the PsiUtil.
- *          updateInteractions() method.
- *          </LI>
- *          <LI>For each interaction:
- *              <OL>
- *                  <LI>Store XML fragment as a blob to main cPath table.</LI>
- *                  <LI>Add internal links that point to
- *                  interactors. These can be used as bidirectional links.
- *                  For example, given an interactor, you can determine all the
- *                  interactions it is involved in; given an interaction,
- *                  you can determine all the interactors involved.
- *          </LI>
- *      </UL>
+ * </UL>
+ * </LI>
+ * <LI>Chop XML into Fragments
+ * <UL>
+ * <LI>Chop the XML document into multiple record-like XML
+ * documents. Each interactor becomes one XML document
+ * fragment, and each interaction becomes one XML document
+ * fragment. These will be well-formed, but invalid XML
+ * document fragments.  Chopping is currently done via
+ * Castor generated objects.
+ * </LI>
+ * </UL>
+ * </LI>
+ * <LI>Process all Interactors
+ * <OL>
+ * <LI>For each interacor:
+ * <OL>
+ * <LI>Determine if this interactor already exists within
+ * the database.  We determine existence of interactors
+ * via the DaoExternalLink.lookUpByExternalRefs() method.
+ * This method checks all external references of the
+ * interactor.  If a match is found, the cPath record
+ * is returned.
+ * </LI>
+ * <LI>If the interactor exists, extract its cPath ID
+ * and add any new external references.</LI>
+ * <LI>Else
+ * <OL>
+ * <LI>Add the new interactor XML Blob and all
+ * external links to cPath.</LI>
+ * <LI>Each new interactor will receive a new cPathId.
+ * Update the XML Blob to contain this new
+ * cPath Id.
  * </LI>
  * </OL>
+ * </LI>
+ * </OL>
+ * </LI>
+ * </OL>
+ * </LI>
+ * <LI>Process all Interactions
+ * <UL>
+ * <LI>Modify all interaction XML fragments by replacing all interactor
+ * Refs with the matching cPath Ids. For example, in the original
+ * document, we may have (A interacts with B). After processing
+ * is complete, we have something like (cpathID:22214 interacts with
+ * cpathID:58225).  This operation is performed via the PsiUtil.
+ * updateInteractions() method.
+ * </LI>
+ * <LI>For each interaction:
+ * <OL>
+ * <LI>Store XML fragment as a blob to main cPath table.</LI>
+ * <LI>Add internal links that point to
+ * interactors. These can be used as bidirectional links.
+ * For example, given an interactor, you can determine all the
+ * interactions it is involved in; given an interaction,
+ * you can determine all the interactors involved.
+ * </LI>
+ * </UL>
+ * </LI>
+ * </OL>
+ *
  * @author Ethan Cerami
  */
 public class ImportPsiToCPath {
@@ -108,10 +109,11 @@ public class ImportPsiToCPath {
 
     /**
      * Adds Specified PSI-MI Record.
-     * @param xml PSI-MI XML Record.
+     *
+     * @param xml                  PSI-MI XML Record.
      * @param validateExternalRefs Validates External References.
-     * @param verbose verbosity flag.
-     * @param pMonitor Progress Monitor Object.
+     * @param verbose              verbosity flag.
+     * @param pMonitor             Progress Monitor Object.
      * @return Import Summary Object.
      * @throws ImportException Indicates Error in Import.
      */
@@ -183,7 +185,7 @@ public class ImportPsiToCPath {
             InteractionList interactions = entry.getInteractionList();
 
             pMonitor.setMaxValue(interactors.getProteinInteractorCount()
-                + interactions.getInteractionCount());
+                    + interactions.getInteractionCount());
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
                 if (verbose) {
                     System.out.print(".");
@@ -356,7 +358,7 @@ public class ImportPsiToCPath {
             NamesType namesType = organism.getNames();
             if (namesType.getFullName() != null) {
                 daoOrganism.addRecord(taxId, namesType.getFullName(),
-                    namesType.getShortLabel());
+                        namesType.getShortLabel());
             }
         }
     }

@@ -3,20 +3,14 @@ package org.mskcc.pathdb.sql.query;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
+import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.pathdb.lucene.PsiInteractionToIndex;
 import org.mskcc.pathdb.lucene.RequestAdapter;
-import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
-import org.mskcc.pathdb.sql.assembly.AssemblyException;
-import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.taglib.Pager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.io.IOException;
 
 /**
@@ -30,6 +24,7 @@ class GetInteractionsViaLucene extends InteractionQuery {
 
     /**
      * Constructor.
+     *
      * @param request ProtocolRequest Object.
      */
     public GetInteractionsViaLucene(ProtocolRequest request) {
@@ -48,14 +43,14 @@ class GetInteractionsViaLucene extends InteractionQuery {
         XmlAssembly xmlAssembly;
         try {
             Hits hits = executeLuceneSearch(indexer);
-            Pager pager = new Pager (request, hits.length());
+            Pager pager = new Pager(request, hits.length());
 
             long[] cpathIds = extractHits(pager, hits);
 
             if (cpathIds != null && cpathIds.length > 0) {
                 xmlAssembly =
-                    XmlAssemblyFactory.createXmlAssembly(cpathIds,
-                            hits.length(), xdebug);
+                        XmlAssemblyFactory.createXmlAssembly(cpathIds,
+                                hits.length(), xdebug);
             } else {
                 xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
             }
@@ -68,13 +63,13 @@ class GetInteractionsViaLucene extends InteractionQuery {
 
     /**
      * Extracts Lucene Hits in Specified Range.
-     */ 
+     */
     private long[] extractHits(Pager pager, Hits hits) throws IOException {
         int size = pager.getEndIndex() - pager.getStartIndex();
         long cpathIds[] = new long[size];
         int index = 0;
         xdebug.logMsg(this, "Extracting hits:  " + pager.getStartIndex()
-            + " - " + pager.getEndIndex());
+                + " - " + pager.getEndIndex());
 
         for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
             Document doc = hits.doc(i);

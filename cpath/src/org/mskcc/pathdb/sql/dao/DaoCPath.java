@@ -19,6 +19,7 @@ public class DaoCPath {
 
     /**
      * Gets Total Number of Entities which match the specified Record Type.
+     *
      * @param recordType RecordType Object.
      * @return number of entities.
      * @throws DaoException Indicates Error in Data access.
@@ -51,12 +52,14 @@ public class DaoCPath {
 
     /**
      * Adds Specified Record to the cPath Table.
-     * @param name Enity Name
-     * @param description Enty Description
+     *
+     * @param name           Enity Name
+     * @param description    Enty Description
      * @param ncbiTaxonomyId NCBI Taxonomy ID.  If TaxonomyID is not available,
-     * use the constant CpathRecord.TAXONOMY_NOT_SPECIFIED.
-     * @param type CPathRecordType Object.
-     * @param xml XML Content
+     *                       use the constant
+     *                       CPathRecord.TAXONOMY_NOT_SPECIFIED.
+     * @param type           CPathRecordType Object.
+     * @param xml            XML Content
      * @return cPath Id for newly saved record
      * @throws DaoException Error Retrieving Data.
      */
@@ -100,12 +103,13 @@ public class DaoCPath {
 
     /**
      * Adds Specified Record to the cPath Table.
-     * @param name Enity Name
-     * @param description Enty Description
+     *
+     * @param name           Enity Name
+     * @param description    Enty Description
      * @param ncbiTaxonomyId NCBI Taxonomy ID.
-     * @param type CPathRecordType Object.
-     * @param xml XML Content
-     * @param refs Array of External References
+     * @param type           CPathRecordType Object.
+     * @param xml            XML Content
+     * @param refs           Array of External References
      * @return cPath Id for newly saved record
      * @throws DaoException Error Retrieving Data.
      */
@@ -121,8 +125,9 @@ public class DaoCPath {
 
     /**
      * Gets all cPath Records.
+     *
      * @return ArrayList of CPath Records.
-     * @throws DaoException Error Retrieving Data.
+     * @throws DaoException        Error Retrieving Data.
      * @throws java.io.IOException Error Performing I/O.
      */
     public ArrayList getAllRecords() throws DaoException, IOException {
@@ -153,6 +158,7 @@ public class DaoCPath {
 
     /**
      * Gets Records by Taxonomy ID.
+     *
      * @param recordType CPathRecordType.
      * @param taxonomyId NCBI Taxonomy ID.
      * @return ArrayList of CPath Record Objects.
@@ -189,6 +195,7 @@ public class DaoCPath {
     /**
      * Gets a complete list of all TaxonomyIds stored in the database.
      * This effectively returns a list of all indexed organisms.
+     *
      * @return ArrayList of Integer NCBI Taxonomy Ids.
      * @throws DaoException Database Access Error.
      */
@@ -219,6 +226,7 @@ public class DaoCPath {
 
     /**
      * Gets Record by specified CPath ID.
+     *
      * @param cpathId cPath ID.
      * @return cPath Record.
      * @throws DaoException Error Retrieving Data.
@@ -250,6 +258,7 @@ public class DaoCPath {
 
     /**
      * Gets Record by specified Name.
+     *
      * @param name Name.
      * @return cPath Record.
      * @throws DaoException Error Retrieving Data.
@@ -282,6 +291,7 @@ public class DaoCPath {
     /**
      * Deletes cPath Record with the specified CPATH_ID.
      * This will also delete all external links associated with this record.
+     *
      * @param cpathId cPath ID of record to delete.
      * @return returns true if deletion was successful.
      * @throws DaoException Error Retrieving Data.
@@ -323,8 +333,9 @@ public class DaoCPath {
 
     /**
      * Updates XML Content for CPath Record.
+     *
      * @param cpathId cPath Id.
-     * @param newXml New XML Content.
+     * @param newXml  New XML Content.
      * @return true indicates success.
      * @throws DaoException Error Retrieving Data.
      */
@@ -356,6 +367,7 @@ public class DaoCPath {
 
     /**
      * Extracts cPath Record from Result Set.
+     *
      * @param rs ResultSet Object.
      * @return cPath Record Object.
      * @throws SQLException Error Connecting to database.

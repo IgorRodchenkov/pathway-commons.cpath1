@@ -37,6 +37,7 @@ public class ProtocolValidator {
 
     /**
      * Constructor.
+     *
      * @param request Protocol Request.
      */
     public ProtocolValidator(ProtocolRequest request) {
@@ -45,7 +46,8 @@ public class ProtocolValidator {
 
     /**
      * Validates the Request object.
-     * @throws ProtocolException Indicates Violation of Protocol.
+     *
+     * @throws ProtocolException  Indicates Violation of Protocol.
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
     public void validate() throws ProtocolException, NeedsHelpException {
@@ -59,7 +61,8 @@ public class ProtocolValidator {
 
     /**
      * Validates the Command Parameter.
-     * @throws ProtocolException Indicates Violation of Protocol.
+     *
+     * @throws ProtocolException  Indicates Violation of Protocol.
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
     private void validateCommand() throws ProtocolException,
@@ -82,6 +85,7 @@ public class ProtocolValidator {
 
     /**
      * Validates the Format Parameter.
+     *
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateFormat() throws ProtocolException {
@@ -100,14 +104,15 @@ public class ProtocolValidator {
 
     /**
      * Validates the UID Parameter.
+     *
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateQuery() throws ProtocolException {
         String q = request.getQuery();
         String command = request.getCommand();
         if ((q == null || q.length() == 0)
-                && (request.getOrganism() == null ||
-                request.getOrganism().length()==0)) {
+                && (request.getOrganism() == null
+                || request.getOrganism().length() == 0)) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_QUERY
                     + "' is not specified." + HELP_MESSAGE,
@@ -139,6 +144,7 @@ public class ProtocolValidator {
 
     /**
      * Validates the Version Parameter.
+     *
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateVersion() throws ProtocolException {
@@ -158,6 +164,7 @@ public class ProtocolValidator {
     /**
      * Checks if no arguments are specified.
      * If none are specified, throws NeedsHelpException.
+     *
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
     private void validateEmptySet() throws NeedsHelpException {

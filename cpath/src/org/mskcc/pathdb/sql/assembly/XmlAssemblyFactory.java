@@ -90,10 +90,10 @@ public class XmlAssemblyFactory {
             int numHits, XDebug xdebug) throws AssemblyException {
         for (int i = 0; i < interactions.size(); i++) {
             Object object = interactions.get(i);
-            if (object instanceof CPathRecord == false) {
+            if (!(object instanceof CPathRecord)) {
                 throw new IllegalArgumentException("ArrayList must "
-                        + "contain objects of type:  " +
-                        CPathRecord.class.getName());
+                        + "contain objects of type:  "
+                        + CPathRecord.class.getName());
             } else {
                 CPathRecord record = (CPathRecord) object;
                 checkRecordType(record);
@@ -107,6 +107,7 @@ public class XmlAssemblyFactory {
      *
      * @param xmlDocumentComplete Complete XML Document.
      * @param numHits             Total Number of Hits.
+     * @param xdebug              XDebug Object.
      * @return XmlAssemblyObject.
      * @throws AssemblyException Error in Assembly.
      */

@@ -69,6 +69,7 @@ public class ProtocolStatusCode {
 
     /**
      * Gets Error Code.
+     *
      * @return Error Code.
      */
     public int getErrorCode() {
@@ -77,6 +78,7 @@ public class ProtocolStatusCode {
 
     /**
      * Gets Error Message.
+     *
      * @return Error Message.
      */
     public String getErrorMsg() {
@@ -88,6 +90,7 @@ public class ProtocolStatusCode {
 
     /**
      * Gets Complete List of all Status Codes.
+     *
      * @return ArrayList of ProtocolStatusCode Objects.
      */
     public static ArrayList getAllStatusCodes() {
@@ -105,6 +108,7 @@ public class ProtocolStatusCode {
 
     /**
      * Private Constructor.
+     *
      * @param errorCode Error Code.
      */
     private ProtocolStatusCode(int errorCode) {
@@ -122,14 +126,14 @@ public class ProtocolStatusCode {
         messageMap.put(new Integer
                 (ProtocolStatusCode.BAD_COMMAND.getErrorCode()),
                 "Bad Command (command not recognized)");
-        messageMap.put(new Integer(
-                ProtocolStatusCode.BAD_FORMAT.getErrorCode()),
+        messageMap.put(new Integer
+                (ProtocolStatusCode.BAD_FORMAT.getErrorCode()),
                 "Bad Data Format (data format not recognized)");
-        messageMap.put(new Integer(
-                ProtocolStatusCode.MISSING_ARGUMENTS.getErrorCode()),
+        messageMap.put(new Integer
+                (ProtocolStatusCode.MISSING_ARGUMENTS.getErrorCode()),
                 "Bad Request (missing arguments)");
-        messageMap.put(new Integer(
-                ProtocolStatusCode.INVALID_ARGUMENT.getErrorCode()),
+        messageMap.put(new Integer
+                (ProtocolStatusCode.INVALID_ARGUMENT.getErrorCode()),
                 "Bad Request (invalid arguments)");
         messageMap.put(new Integer
                 (ProtocolStatusCode.NO_RESULTS_FOUND.getErrorCode()),

@@ -12,11 +12,12 @@ public class Organism {
 
     /**
      * Constructor.
-     * @param taxonomyId TaxonomyID.
+     *
+     * @param taxonomyId  TaxonomyID.
      * @param speciesName SpeciesName.
-     * @param commonName CommonName.
+     * @param commonName  CommonName.
      */
-    public Organism (int taxonomyId, String speciesName,
+    public Organism(int taxonomyId, String speciesName,
             String commonName) {
         this.taxonomyId = taxonomyId;
         this.speciesName = speciesName;
@@ -25,6 +26,7 @@ public class Organism {
 
     /**
      * Gets NCBI Taxonomy ID.
+     *
      * @return Taxonomy Identifier.
      */
     public int getTaxonomyId() {
@@ -33,6 +35,7 @@ public class Organism {
 
     /**
      * Sets NCBI TaxonomyID.
+     *
      * @param taxonomyId Taxonomy Identifier.
      */
     public void setTaxonomyId(int taxonomyId) {
@@ -41,6 +44,7 @@ public class Organism {
 
     /**
      * Gets Species Name.
+     *
      * @return Species Name.
      */
     public String getSpeciesName() {
@@ -49,6 +53,7 @@ public class Organism {
 
     /**
      * Sets Species Name.
+     *
      * @param speciesName Species Name.
      */
     public void setSpeciesName(String speciesName) {
@@ -57,6 +62,7 @@ public class Organism {
 
     /**
      * Gets Common Name of Organism.
+     *
      * @return Common Name.
      */
     public String getCommonName() {
@@ -65,6 +71,7 @@ public class Organism {
 
     /**
      * Sets Common Name of Organism.
+     *
      * @param commonName Common Name.
      */
     public void setCommonName(String commonName) {

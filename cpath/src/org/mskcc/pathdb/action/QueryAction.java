@@ -1,22 +1,19 @@
 package org.mskcc.pathdb.action;
 
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.lucene.queryParser.ParseException;
-import org.mskcc.pathdb.controller.*;
-import org.mskcc.pathdb.sql.query.Query;
-import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.util.XssFilter;
-import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
-import org.mskcc.dataservices.schemas.psi.Entry;
-import org.mskcc.dataservices.schemas.psi.InteractorList;
-import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
-import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.mskcc.pathdb.controller.*;
+import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.query.Query;
+import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.util.XssFilter;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Action for cPath Queries.
@@ -36,11 +31,12 @@ public class QueryAction extends BaseAction {
 
     /**
      * Executes cPath Query.
-     * @param mapping Struts ActionMapping Object.
-     * @param form Struts ActionForm Object.
-     * @param request Http Servlet Request.
+     *
+     * @param mapping  Struts ActionMapping Object.
+     * @param form     Struts ActionForm Object.
+     * @param request  Http Servlet Request.
      * @param response Http Servlet Response.
-     * @param xdebug XDebug Object.
+     * @param xdebug   XDebug Object.
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
      */
@@ -118,10 +114,10 @@ public class QueryAction extends BaseAction {
         XmlAssembly xmlAssembly = executeQuery(xdebug, protocolRequest);
         request.setAttribute(ATTRIBUTE_XML_ASSEMBLY, xmlAssembly);
         try {
-            ArrayList interactorList = extractInteractors (xmlAssembly,
+            ArrayList interactorList = extractInteractors(xmlAssembly,
                     protocolRequest, xdebug);
             xdebug.logMsg(this, "Total Number of Interactors for "
-                + "Left Column:  " + interactorList.size());
+                    + "Left Column:  " + interactorList.size());
             if (interactorList != null) {
                 request.setAttribute(ATTRIBUTE_INTERACTOR_SET, interactorList);
             }
@@ -137,14 +133,14 @@ public class QueryAction extends BaseAction {
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 
-    private ArrayList extractInteractors (XmlAssembly xmlAssembly,
+    private ArrayList extractInteractors(XmlAssembly xmlAssembly,
             ProtocolRequest request, XDebug xdebug) throws MarshalException,
             ValidationException, IOException, ParseException {
         EntrySet entrySet = (EntrySet) xmlAssembly.getXmlObject();
         if (entrySet != null) {
             PsiInteractorExtractor interactorExtractor =
                     new PsiInteractorExtractor(entrySet,
-                    request.getQuery(), xdebug);
+                            request.getQuery(), xdebug);
             return interactorExtractor.getSortedInteractors();
         } else {
             return new ArrayList();
@@ -166,6 +162,7 @@ public class QueryAction extends BaseAction {
     /**
      * Returns XML Response to Client.
      * Automatically sets the Ds-status header = "ok".
+     *
      * @param xmlResponse XML Response Document.
      */
     private void returnXml(HttpServletResponse response, String xmlResponse) {

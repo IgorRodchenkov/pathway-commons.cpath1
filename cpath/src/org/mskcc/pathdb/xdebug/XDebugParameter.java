@@ -69,9 +69,10 @@ public class XDebugParameter {
 
     /**
      * Constructor for String parameter.
-     *  @param type    parameter type, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
-     *  @param name    parameter name
-     *  @param value   parameter String value
+     *
+     * @param type  parameter type, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
+     * @param name  parameter name
+     * @param value parameter String value
      */
     public XDebugParameter(int type, String name, String value) {
         this.type = type;
@@ -81,9 +82,10 @@ public class XDebugParameter {
 
     /**
      * Constructor for integer parameter.
-     *  @param type    parameter type, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
-     *  @param name    parameter name
-     *  @param value   parameter integer value
+     *
+     * @param type  parameter type, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
+     * @param name  parameter name
+     * @param value parameter integer value
      */
     public XDebugParameter(int type, String name, int value) {
         this.type = type;
@@ -93,9 +95,10 @@ public class XDebugParameter {
 
     /**
      * Constructor for boolean parameter.
-     *  @param type    parameter type, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
-     *  @param name    parameter name
-     *  @param value   parameter String value
+     *
+     * @param type  parameter type, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
+     * @param name  parameter name
+     * @param value parameter String value
      */
     public XDebugParameter(int type, String name, boolean value) {
         this.type = type;
@@ -105,6 +108,7 @@ public class XDebugParameter {
 
     /**
      * Get Parameter Name
+     *
      * @return name of parameter
      */
     public String getName() {
@@ -113,6 +117,7 @@ public class XDebugParameter {
 
     /**
      * Get Parameter Value
+     *
      * @return value of the parameter
      */
     public String getValue() {
@@ -121,6 +126,7 @@ public class XDebugParameter {
 
     /**
      * Get Parameter Type Name
+     *
      * @return parameter type name, e.g. "Cookie", Internal", etc.
      */
     public String getTypeName() {
@@ -135,6 +141,7 @@ public class XDebugParameter {
 
     /**
      * Get Parameter Type
+     *
      * @return parameter type integer code, e.g. COOKIE_TYPE, INTERNAL_TYPE
      */
     public int getType() {

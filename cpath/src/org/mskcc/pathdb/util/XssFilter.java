@@ -1,8 +1,8 @@
 package org.mskcc.pathdb.util;
 
-import java.util.Map;
-import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * General Filter to preventing Cross-Site Scripting Attacks.
@@ -10,15 +10,15 @@ import java.util.HashMap;
  * deemed safe, e.g. [A-Za-z0-9*@.' _-]
  * All other unsafe characters, e.g. angle brackets, parenthesis, ampersand,
  * etc. are filtered out and replaced with the _ character.
- *
+ * <p/>
  * This follows the recommended CERT practice:
  * "The recommended method is to select the set of characters that is
  * known to be safe rather than excluding the set of characters that
  * might be bad."
- *
+ * <p/>
  * This class can be used to filter incoming data from a client request,
  * or outgoing data from the server.  Again, according to CERT:
- *
+ * <p/>
  * "The filtering process can be done as part of the data input process,
  * the data output process, or both. Filtering the data during the
  * output process, just before it is rendered as part of the dynamic page,
@@ -26,7 +26,7 @@ import java.util.HashMap;
  * content is filtered. Filtering on the input side is less effective
  * because dynamic content can be entered into a web sites database(s)
  * via methods other than HTTP."
- *
+ * <p/>
  * Full details regarding the CERT recommendations are available at:
  * http://www.cert.org/tech_tips/malicious_code_mitigation.html
  *
@@ -36,6 +36,7 @@ public class XssFilter {
 
     /**
      * Filters for safe character data only.
+     *
      * @param data Data from client request, e.g. URL parameter, cookie, etc.
      * @return same string with safe characters only.
      */
@@ -50,7 +51,8 @@ public class XssFilter {
      * For example, the cPath "printer friendly" links need to recreate the
      * incoming URL, and append a stylesheet property.  This method
      * ensures that the printer friendly link contains safe character data only.
-     * @param base URL Base, e.g. "/home.do".
+     *
+     * @param base     URL Base, e.g. "/home.do".
      * @param paramMap Parameter Map of all URL parameters.
      * @return a safe URL.
      */
@@ -76,10 +78,10 @@ public class XssFilter {
 
     /**
      * Filters all Parameters to include only safe characters.
-     *
+     * <p/>
      * Given a HashMap of String arrays, this method extracts the zeroeth
      * element, and normalizes everything to a single filtered String.
-     *
+     * <p/>
      * Important Note:  If a parameter has more than one value, e.g. a
      * checkbox, this method can result is loss of data.
      *

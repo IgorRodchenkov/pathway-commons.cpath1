@@ -41,10 +41,11 @@ public class XmlValidator extends DefaultHandler {
 
     /**
      * Validates Specified Document.
+     *
      * @param xml XML Document (String Representation).
      * @return ArrayList of SAXExceptions (if any).
      * @throws SAXException Error Parsing Document.
-     * @throws IOException Error Reading Document.
+     * @throws IOException  Error Reading Document.
      */
     public ArrayList validate(String xml) throws SAXException, IOException {
         return execute(xml, null);
@@ -52,11 +53,12 @@ public class XmlValidator extends DefaultHandler {
 
     /**
      * Validates Specified Document, using designated schema location.
-     * @param xml XML Document (String Representation).
+     *
+     * @param xml            XML Document (String Representation).
      * @param schemaLocation Schema Location.
      * @return ArrayList of SAXExceptions (if any).
      * @throws SAXException Error Parsing Document.
-     * @throws IOException Error Reading Document.
+     * @throws IOException  Error Reading Document.
      */
     public ArrayList validate(String xml, String schemaLocation)
             throws SAXException, IOException {
@@ -88,6 +90,7 @@ public class XmlValidator extends DefaultHandler {
 
     /**
      * Error.
+     *
      * @param ex SAXParseException Object.
      * @throws SAXException SAXException.
      */
@@ -97,6 +100,7 @@ public class XmlValidator extends DefaultHandler {
 
     /**
      * Fatal Error.
+     *
      * @param ex SAXParseException Object.
      * @throws SAXException SAXException.
      */

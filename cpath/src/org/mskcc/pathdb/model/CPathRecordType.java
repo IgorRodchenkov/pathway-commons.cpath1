@@ -12,6 +12,7 @@ public class CPathRecordType {
 
     /**
      * Private Constructor. Enumeration Pattern.
+     *
      * @param name Type Name.
      */
     private CPathRecordType(String name) {
@@ -20,6 +21,7 @@ public class CPathRecordType {
 
     /**
      * Gets Type Name.
+     *
      * @return Type Name.
      */
     public String toString() {
@@ -28,8 +30,9 @@ public class CPathRecordType {
 
     /**
      * Get Type by Type Name.
+     *
      * @param typeName Type Name, e.g. "PHYSICAL_ENTITY", "INTERACTION"
-     * or "PATHWAY".
+     *                 or "PATHWAY".
      * @return correct CPathRecordType.
      */
     public static CPathRecordType getType(String typeName) {

@@ -29,6 +29,7 @@ public class TestUpdatePsiInteractor extends TestCase {
 
     /**
      * Tests the doUpdate() method.
+     *
      * @throws Exception All Exceptions.
      */
     public void testUpdate() throws Exception {

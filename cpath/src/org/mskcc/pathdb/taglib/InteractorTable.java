@@ -10,6 +10,11 @@ import org.mskcc.pathdb.model.ProteinWithWeight;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Custom JSP Tag for Displaying Matching Interactors.
+ *
+ * @author Ethan Cerami
+ */
 public class InteractorTable extends HtmlTable {
     private ProtocolRequest protocolRequest;
     private List interactorList;
@@ -41,14 +46,13 @@ public class InteractorTable extends HtmlTable {
     protected void subDoStartTag() throws Exception {
         protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
         if (interactorList != null && interactorList.size() > 1) {
-            append("<div id=\"proteinview\" class=\"toolgroup\">\n" +
-                    "<div class=\"label\">\n" +
-                    "<strong>Protein View</strong>\n" +
-                    "</div>" +
-                    "<div class=\"body\">");
+            append("<div id=\"proteinview\" class=\"toolgroup\">\n"
+                    + "<div class=\"label\">\n"
+                    + "<strong>Protein View</strong>\n"
+                    + "</div>"
+                    + "<div class=\"body\">");
             outputInteractors();
-            append("</div>\n" +
-                    "</div>");
+            append("</div>\n</div>");
         }
     }
 
@@ -59,7 +63,7 @@ public class InteractorTable extends HtmlTable {
         Iterator iterator = interactorList.iterator();
         while (iterator.hasNext()) {
             ProteinWithWeight proteinWithWeight = (ProteinWithWeight)
-                iterator.next();
+                    iterator.next();
             ProteinInteractorType protein = proteinWithWeight.getProtein();
             NamesType names = protein.getNames();
             String proteinId = protein.getId();

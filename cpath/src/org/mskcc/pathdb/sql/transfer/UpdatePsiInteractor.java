@@ -27,10 +27,11 @@ public class UpdatePsiInteractor extends UpdateInteractor {
 
     /**
      * Constructor.
+     *
      * @param newProtein new protein Record, scheduled for import.
-     * @throws DaoException Error Adding new data to database.
+     * @throws DaoException        Error Adding new data to database.
      * @throws ValidationException Invalid XML
-     * @throws MarshalException Error Marshaling to XML.
+     * @throws MarshalException    Error Marshaling to XML.
      */
     public UpdatePsiInteractor(ProteinInteractorType newProtein)
             throws DaoException, ValidationException, MarshalException {
@@ -51,8 +52,9 @@ public class UpdatePsiInteractor extends UpdateInteractor {
 
     /**
      * Constructor.
-     * @param ref1 External Reference 1.
-     * @param ref2 External Reference 2.
+     *
+     * @param ref1              External Reference 1.
+     * @param ref2              External Reference 2.
      * @param refsAreNormalized References have already been normalized.
      * @throws DaoException Error Adding new data to database.
      */
@@ -98,9 +100,10 @@ public class UpdatePsiInteractor extends UpdateInteractor {
 
     /**
      * Based on Matching CPath Record, define set of existing external refs.
+     *
      * @param record CPath Record.
      * @throws ValidationException Invalid XML.
-     * @throws MarshalException Error Marshaling to XML.
+     * @throws MarshalException    Error Marshaling to XML.
      */
     private void extractRefs(CPathRecord record)
             throws MarshalException, ValidationException {

@@ -33,6 +33,7 @@ public class CPathRecord {
 
     /**
      * Gets the Primary Key Id.
+     *
      * @return Primary Key Id.
      */
     public long getId() {
@@ -41,6 +42,7 @@ public class CPathRecord {
 
     /**
      * Sets the Primary Key Id.
+     *
      * @param id Primary Key Id.
      */
     public void setId(long id) {
@@ -49,6 +51,7 @@ public class CPathRecord {
 
     /**
      * Gets the Entity Name.
+     *
      * @return Entity Name.
      */
     public String getName() {
@@ -57,6 +60,7 @@ public class CPathRecord {
 
     /**
      * Sets the Entity Name.
+     *
      * @param name Entity Name.
      */
     public void setName(String name) {
@@ -65,6 +69,7 @@ public class CPathRecord {
 
     /**
      * Gets the Entity Description.
+     *
      * @return Entity Description.
      */
     public String getDescription() {
@@ -73,6 +78,7 @@ public class CPathRecord {
 
     /**
      * Sets the Entity Description.
+     *
      * @param description Entity Description.
      */
     public void setDescription(String description) {
@@ -82,6 +88,7 @@ public class CPathRecord {
     /**
      * Gets the Record Type.  Constrained to the Enumeration List
      * defined by CPathRecordType.
+     *
      * @return CPathRecordType Object.
      */
     public CPathRecordType getType() {
@@ -91,6 +98,7 @@ public class CPathRecord {
     /**
      * Sets the Record Type.  Constrained to the Enumeration List
      * defined by CPathRecordType.
+     *
      * @param type CPathRecordType Object.
      */
     public void setType(CPathRecordType type) {
@@ -99,6 +107,7 @@ public class CPathRecord {
 
     /**
      * Gets the most specific class type in the ontology for this record.
+     *
      * @return Specific Class Type String.
      */
     public String getSpecType() {
@@ -107,6 +116,7 @@ public class CPathRecord {
 
     /**
      * Sets the most specific class type in the ontology for this record.
+     *
      * @param specType Specific Class Type String.
      */
     public void setSpecType(String specType) {
@@ -116,6 +126,7 @@ public class CPathRecord {
     /**
      * Gets the NCBI Taxonomy ID.  If taxonomy Id is not specified, this
      * method will return CPathRecord.TAXONOMY_NOT_SPECIFIED.
+     *
      * @return Taxonomy ID or CPathRecord.TAXONOMY_NOT_SPECIFIED.
      */
     public int getNcbiTaxonomyId() {
@@ -124,6 +135,7 @@ public class CPathRecord {
 
     /**
      * Sets the NCBI Taxonomy ID.
+     *
      * @param ncbiTaxonomyId Taxonomy ID or CPathRecord.TAXONOMY_NOT_SPECIFIED.
      */
     public void setNcbiTaxonomyId(int ncbiTaxonomyId) {
@@ -134,6 +146,7 @@ public class CPathRecord {
      * Gets XML Content Associated with Record.
      * This is usually a well-formed, but not necessarily valid XML document
      * fragment.
+     *
      * @return XML String.
      */
     public String getXmlContent() {
@@ -144,6 +157,7 @@ public class CPathRecord {
      * Sets the XML Content Associated with Record.
      * This is usually a well-formed, but not necessarily valid XML document
      * fragment.
+     *
      * @param xmlContent XML String.
      */
     public void setXmlContent(String xmlContent) {
@@ -152,6 +166,7 @@ public class CPathRecord {
 
     /**
      * Gets Creation TimeStamp.
+     *
      * @return Date Created.
      */
     public Date getCreateTime() {
@@ -160,6 +175,7 @@ public class CPathRecord {
 
     /**
      * Sets Creation TimeStamp.
+     *
      * @param createTime Date Created.
      */
     public void setCreateTime(Date createTime) {
@@ -168,6 +184,7 @@ public class CPathRecord {
 
     /**
      * Gets Update TimeStamp.
+     *
      * @return Date Update.
      */
     public Date getUpdateTime() {
@@ -176,6 +193,7 @@ public class CPathRecord {
 
     /**
      * Sets Update TimeStamp.
+     *
      * @param updateTime Date Updated.
      */
     public void setUpdateTime(Date updateTime) {

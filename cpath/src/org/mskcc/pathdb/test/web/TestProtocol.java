@@ -17,6 +17,7 @@ public class TestProtocol extends TestCase {
 
     /**
      * Tests a Valid Request.
+     *
      * @throws Exception All Errors
      */
     public void testValidRequest() throws Exception {
@@ -36,11 +37,12 @@ public class TestProtocol extends TestCase {
 
         String response = method.getResponseBodyAsString();
         int index = response.indexOf("<error_code>460</error_code>");
-        assertTrue (index > 0);
+        assertTrue(index > 0);
     }
 
     /**
      * Tests Invalid Request.
+     *
      * @throws Exception All Errors.
      */
     public void testInvalidRequest() throws Exception {
@@ -55,5 +57,6 @@ public class TestProtocol extends TestCase {
         int statusCode = client.executeMethod(method);
         String response = method.getResponseBodyAsString();
         int index = response.indexOf("<error_code>450</error_code>");
-        assertTrue (index > 0);    }
+        assertTrue(index > 0);
+    }
 }

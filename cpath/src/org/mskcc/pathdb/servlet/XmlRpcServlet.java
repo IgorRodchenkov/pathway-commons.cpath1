@@ -21,6 +21,7 @@ public class XmlRpcServlet extends HttpServlet {
 
     /**
      * Initializes Servlet.
+     *
      * @param config Servlet Configuration Object.
      * @throws ServletException All Servlet Errors.
      */
@@ -31,10 +32,11 @@ public class XmlRpcServlet extends HttpServlet {
 
     /**
      * Handles Client Request.
+     *
      * @param req Http Servlet Request.
      * @param res Http Servlet Response.
      * @throws ServletException All Servlet Errors.
-     * @throws IOException All Input/Output Errors.
+     * @throws IOException      All Input/Output Errors.
      */
     public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {

@@ -2,8 +2,8 @@ package org.mskcc.pathdb.sql.assembly;
 
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
-import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.Entry;
+import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractionList;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
@@ -12,8 +12,8 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.io.StringWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class PsiAssembly implements XmlAssembly {
      *
      * @param interactions ArrayList of CPathRecord objects.  Each CPathRecord
      *                     contains an Interaction.
-     * @param xdebug XDebug Object.
+     * @param xdebug       XDebug Object.
      * @throws AssemblyException Error In Assembly.
      */
     PsiAssembly(ArrayList interactions, XDebug xdebug)
@@ -60,11 +60,12 @@ public class PsiAssembly implements XmlAssembly {
     /**
      * Package Only Constructor.  Class must be instantiated via the
      * XmlAssembly Factory.
+     *
      * @param xmlDocumentComplete Complete XML Document.
-     * @param xdebug XDebug Object.
+     * @param xdebug              XDebug Object.
      * @throws AssemblyException Error In Assembly.
      */
-    PsiAssembly (String xmlDocumentComplete, XDebug xdebug)
+    PsiAssembly(String xmlDocumentComplete, XDebug xdebug)
             throws AssemblyException {
         this.xml = xmlDocumentComplete;
         if (xml != null) {
@@ -72,9 +73,9 @@ public class PsiAssembly implements XmlAssembly {
             try {
                 this.entrySet = EntrySet.unmarshalEntrySet(xmlReader);
             } catch (MarshalException e) {
-                throw new AssemblyException (e);
+                throw new AssemblyException(e);
             } catch (ValidationException e) {
-                throw new AssemblyException (e);
+                throw new AssemblyException(e);
             }
         }
     }
@@ -82,10 +83,11 @@ public class PsiAssembly implements XmlAssembly {
     /**
      * Package Only Constructor.  Class must be instantiated via the
      * XmlAssembly Factory.
+     *
      * @param xdebug XDebug Object.
      * @throws AssemblyException Error In Assembly.
      */
-    PsiAssembly (XDebug xdebug) throws AssemblyException {
+    PsiAssembly(XDebug xdebug) throws AssemblyException {
         this.xdebug = xdebug;
         this.xml = null;
         this.entrySet = null;
@@ -102,14 +104,16 @@ public class PsiAssembly implements XmlAssembly {
 
     /**
      * Gets Complete XML Assembly (in object form).
+     *
      * @return Java Object encapsulating XML Document.
      */
-    public Object getXmlObject () {
+    public Object getXmlObject() {
         return entrySet;
     }
 
     /**
      * Indicates is Assembly is Empty (contains no data).
+     *
      * @return true or false.
      */
     public boolean isEmpty() {
@@ -131,6 +135,7 @@ public class PsiAssembly implements XmlAssembly {
      * This Assembly may be a subset of a larger set.
      * This method returns the total number of records in the larger,
      * complete set.
+     *
      * @return int number of records.
      */
     public int getNumHits() {
@@ -142,6 +147,7 @@ public class PsiAssembly implements XmlAssembly {
      * This Assembly may be a subset of a larger set.
      * This method returns the total number of records in the larger,
      * complete set.
+     *
      * @param numRecords Total Number of Records.
      */
     public void setNumHits(int numRecords) {

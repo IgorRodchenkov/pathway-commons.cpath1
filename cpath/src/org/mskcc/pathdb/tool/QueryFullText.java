@@ -1,18 +1,13 @@
 package org.mskcc.pathdb.tool;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.search.Hits;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.sql.query.Query;
+import org.mskcc.pathdb.controller.ProtocolConstants;
+import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.query.Query;
+import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.xdebug.XDebugMessage;
-import org.mskcc.pathdb.controller.ProtocolRequest;
-import org.mskcc.pathdb.controller.ProtocolConstants;
 
-import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -24,6 +19,7 @@ public class QueryFullText {
 
     /**
      * Main Method.
+     *
      * @param args Command Line Arguments.
      */
     public static void main(String[] args) {
@@ -39,7 +35,7 @@ public class QueryFullText {
             System.out.println("XDebug Log:");
             System.out.println("----------------");
             Vector list = xdebug.getDebugMessages();
-            for (int i=0; i<list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 XDebugMessage msg = (XDebugMessage) list.get(i);
                 System.out.println(msg.getMessage());
             }
@@ -54,6 +50,7 @@ public class QueryFullText {
 
     /**
      * Perform Query.
+     *
      * @param terms Search Terms.
      */
     private static void queryFullText(String terms, XDebug xdebug) {

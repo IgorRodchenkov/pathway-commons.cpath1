@@ -15,6 +15,7 @@ public class Md5Util {
     /**
      * Creates an MD5 Hash of the specified String, and returns
      * it as a Base64 Encoded String.
+     *
      * @param data String data.
      * @return Base64 Encoded MD5 Hash.
      * @throws NoSuchAlgorithmException MD5 Hash Algorithm Not Found

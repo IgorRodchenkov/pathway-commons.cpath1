@@ -21,6 +21,7 @@ public class TestDaoInteractor extends TestCase {
 
     /**
      * Tests Getting of Local IDs.
+     *
      * @throws Exception All Exceptions.
      */
     public void testGetLocalIds() throws Exception {
@@ -54,6 +55,7 @@ public class TestDaoInteractor extends TestCase {
 
     /**
      * Tests the getAllInteractors() method.
+     *
      * @throws Exception All Exceptions.
      */
     public void testGetAllInteractors()

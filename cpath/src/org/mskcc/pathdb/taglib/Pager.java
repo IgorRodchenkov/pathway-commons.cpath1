@@ -16,7 +16,8 @@ public class Pager {
 
     /**
      * Constructor.
-     * @param request PagedResult Request Object.
+     *
+     * @param request      PagedResult Request Object.
      * @param totalNumHits Total Number of Hits.
      */
     public Pager(PagedResult request, int totalNumHits) {
@@ -43,6 +44,7 @@ public class Pager {
 
     /**
      * Gets the Start Index Value.
+     *
      * @return start indexAllInteractions value.
      */
     public int getStartIndex() {
@@ -51,6 +53,7 @@ public class Pager {
 
     /**
      * Gets the End Index Value.
+     *
      * @return end indexAllInteractions value.
      */
     public int getEndIndex() {
@@ -60,6 +63,7 @@ public class Pager {
     /**
      * Gets URL for Next Page of Results.
      * Returns null if there is no next page.
+     *
      * @return url string or null value.
      */
     public String getNextUrl() {
@@ -75,6 +79,7 @@ public class Pager {
     /**
      * Gets URL for Previous Page of Results.
      * Returns null if there is no previous page.
+     *
      * @return url string or null value.
      */
     public String getPreviousUrl() {
@@ -90,6 +95,7 @@ public class Pager {
     /**
      * Gets URL for First Page of Results.
      * Returns null if this is the first page already.
+     *
      * @return url string or null value.
      */
     public String getFirstUrl() {
@@ -103,6 +109,7 @@ public class Pager {
 
     /**
      * Gets HTML Header with Next/Previous Links.
+     *
      * @return HTML Text.
      */
     public String getHeaderHtml() {

@@ -91,6 +91,7 @@ public class ProtocolConstants {
 
     /**
      * Gets HashMap of Valid Commands.
+     *
      * @return HashMap of Valid Commands.
      */
     public HashMap getValidCommands() {
@@ -109,6 +110,7 @@ public class ProtocolConstants {
 
     /**
      * Gets HashMap of Valid Formats.
+     *
      * @return HashMap of Valid Formats.
      */
     public HashMap getValidFormats() {

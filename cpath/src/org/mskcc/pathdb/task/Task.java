@@ -12,6 +12,7 @@ public abstract class Task extends Thread {
 
     /**
      * Constructor.
+     *
      * @param taskName Task Name.
      */
     public Task(String taskName) {
@@ -22,6 +23,7 @@ public abstract class Task extends Thread {
 
     /**
      * Sets Verbose Flag.
+     *
      * @param verbose Verbose Flag.
      */
     public void setVerbose(boolean verbose) {
@@ -30,6 +32,7 @@ public abstract class Task extends Thread {
 
     /**
      * Gets the Task Name.
+     *
      * @return Task Name.
      */
     public String getTaskName() {
@@ -38,6 +41,7 @@ public abstract class Task extends Thread {
 
     /**
      * Conditionally Output Message to System.out.
+     *
      * @param msg User Message.
      */
     public void outputMsg(String msg) {
@@ -48,6 +52,7 @@ public abstract class Task extends Thread {
 
     /**
      * Detects if an error has occurred.
+     *
      * @return true or false.
      */
     public boolean errorOccurred() {
@@ -56,6 +61,7 @@ public abstract class Task extends Thread {
 
     /**
      * Gets the Error Message.
+     *
      * @return Error Message.
      */
     public String getErrorMessage() {
@@ -64,6 +70,7 @@ public abstract class Task extends Thread {
 
     /**
      * Sets the Exception Object.
+     *
      * @param e Exception Object.
      */
     public void setException(Exception e) {
@@ -72,6 +79,7 @@ public abstract class Task extends Thread {
 
     /**
      * Gets the Progress Monitor.
+     *
      * @return Progress Monitor object.
      */
     public abstract ProgressMonitor getProgressMonitor();

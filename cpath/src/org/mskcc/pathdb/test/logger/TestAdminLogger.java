@@ -2,8 +2,8 @@ package org.mskcc.pathdb.test.logger;
 
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
-import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.logger.ConfigLogger;
+import org.mskcc.pathdb.sql.dao.DaoLog;
 
 import java.util.ArrayList;
 
@@ -17,6 +17,7 @@ public class TestAdminLogger extends TestCase {
 
     /**
      * Tests the Logger Admin / Viewer.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAdminLogger() throws Exception {

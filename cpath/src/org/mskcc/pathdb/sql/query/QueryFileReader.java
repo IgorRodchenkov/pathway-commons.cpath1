@@ -14,7 +14,7 @@ import java.util.Hashtable;
 /**
  * Reads in a Text File of Relative URLs and returns a List of
  * Protocol Request objects.
- *
+ * <p/>
  * <P>
  * Sample file format:
  * </P>
@@ -30,6 +30,7 @@ public class QueryFileReader {
 
     /**
      * Read in Text File, and extract Protocol Request Objects.
+     *
      * @param fileName File Name.
      * @return ArrayList of ProtocolRequest objects.
      * @throws IOException Error Reading in File.

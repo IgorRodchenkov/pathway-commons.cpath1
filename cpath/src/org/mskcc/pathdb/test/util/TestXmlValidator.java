@@ -16,6 +16,7 @@ public class TestXmlValidator extends TestCase {
 
     /**
      * Tests XML Validator.
+     *
      * @throws Exception All Exceptions.
      */
     public void testValidator() throws Exception {

@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 /**
  * Data Access Object for the GRID Interaction Table.
- *
+ * <p/>
  * Interaction Identity is based on three rules:
  * 1.  A <--> B or B <--> A
  * 2.  Exerimental System must be identical.
@@ -28,10 +28,11 @@ public class DaoInteraction {
     /**
      * Determines if the interaction exists.
      * See note regarding interaction identity above.
+     *
      * @param interaction Interaction Object.
-     * @param dbLocation Database Location.
+     * @param dbLocation  Database Location.
      * @return true or false.
-     * @throws DaoException Error Retrieving Data.
+     * @throws DaoException         Error Retrieving Data.
      * @throws DataServiceException Error Connecting to data source.
      */
     public boolean interactionExists(Interaction interaction,
@@ -42,10 +43,11 @@ public class DaoInteraction {
 
     /**
      * Gets Local ID of Specified Interaction.
+     *
      * @param interaction Interaction Object.
-     * @param dbLocation Database Location.
+     * @param dbLocation  Database Location.
      * @return Local ID
-     * @throws DaoException Error Retrieving Data.
+     * @throws DaoException         Error Retrieving Data.
      * @throws DataServiceException Error Connecting to Data Service.
      */
     public int getInteractionId(Interaction interaction,
@@ -103,6 +105,7 @@ public class DaoInteraction {
 
     /**
      * Extracts PubMedIds.
+     *
      * @param interaction Interaction Object.
      * @return semicolon delimited list of PMIDs.
      */

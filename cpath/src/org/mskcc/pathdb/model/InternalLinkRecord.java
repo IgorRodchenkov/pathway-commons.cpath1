@@ -18,6 +18,7 @@ public class InternalLinkRecord {
 
     /**
      * Constructor.
+     *
      * @param cpathIdA CPath ID of Entity A.
      * @param cpathIdB CPath ID of Entity B.
      */
@@ -28,6 +29,7 @@ public class InternalLinkRecord {
 
     /**
      * Gets Primary Internal Link ID.
+     *
      * @return Primary Internal Link ID.
      */
     public long getId() {
@@ -36,6 +38,7 @@ public class InternalLinkRecord {
 
     /**
      * Sets Primary Internal Link ID.
+     *
      * @param id Primary Internal Link ID.
      */
     public void setId(long id) {
@@ -44,6 +47,7 @@ public class InternalLinkRecord {
 
     /**
      * Gets CPath ID of Entity A.
+     *
      * @return cpath ID.
      */
     public long getCpathIdA() {
@@ -52,6 +56,7 @@ public class InternalLinkRecord {
 
     /**
      * Sets CPath ID of Entity A.
+     *
      * @param cpathIdA cpathID of Entity A.
      */
     public void setCpathIdA(long cpathIdA) {
@@ -60,6 +65,7 @@ public class InternalLinkRecord {
 
     /**
      * Gets CPath ID of Entity B.
+     *
      * @return cpath ID.
      */
     public long getCpathIdB() {
@@ -68,6 +74,7 @@ public class InternalLinkRecord {
 
     /**
      * Sets CPath ID of Entity B.
+     *
      * @param cpathIdB cpathID of Entity B.
      */
     public void setCpathIdB(long cpathIdB) {

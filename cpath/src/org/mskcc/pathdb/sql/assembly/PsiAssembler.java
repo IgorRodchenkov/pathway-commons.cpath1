@@ -23,10 +23,11 @@ public class PsiAssembler {
 
     /**
      * Constructor.
-     * @param interactors Collection of Castor ProteinIteractorType objects.
+     *
+     * @param interactors  Collection of Castor ProteinIteractorType objects.
      * @param interactions Collection of Castor InteractionElementType objects.
      * @return Castor Entry Set Object.
-     * @throws MarshalException Error Marshalling Object.
+     * @throws MarshalException    Error Marshalling Object.
      * @throws ValidationException XML is not valid.
      */
     public EntrySet generatePsi(Collection interactors,

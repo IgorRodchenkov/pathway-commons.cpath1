@@ -16,6 +16,7 @@ public class LoadExternalReferences {
 
     /**
      * Loads External References from Specified File.
+     *
      * @param fileName File Name.
      */
     public void load(String fileName) {
@@ -42,6 +43,7 @@ public class LoadExternalReferences {
 
     /**
      * Main Method.
+     *
      * @param args Command Line Arguments.
      */
     public static void main(String[] args) {

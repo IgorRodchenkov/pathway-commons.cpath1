@@ -14,6 +14,7 @@ public class ZipUtil {
 
     /**
      * Zips the specified Data String.
+     *
      * @param data Data String.
      * @return Array of bytes.
      * @throws IOException Input Output Exception.
@@ -33,6 +34,7 @@ public class ZipUtil {
 
     /**
      * Unzips the specified byte array.
+     *
      * @param zipData Array of Bytes.
      * @return Unzipped Data String.
      * @throws IOException Input Output Exception.

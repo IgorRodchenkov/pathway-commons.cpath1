@@ -8,11 +8,20 @@ import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.util.Set;
 import java.util.Iterator;
+import java.util.ArrayList;
 
+/**
+ * Tests the PsiInteractorExtractor.
+ *
+ * @author Ethan Cerami
+ */
 public class TestPsiInteractorExtractor extends TestCase {
 
+    /**
+     * Tests the Interactor Extractor.
+     * @throws Exception All Exceptions.
+     */
     public void testExtractor() throws Exception {
         XDebug xdebug = new XDebug();
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
@@ -21,11 +30,11 @@ public class TestPsiInteractorExtractor extends TestCase {
         PsiInteractorExtractor interactorExtractor = new PsiInteractorExtractor
                 (entrySet, "chaperonin +interaction_type:Genetic",
                         new XDebug());
-        Set proteins = interactorExtractor.getInteractors();
+        ArrayList proteins = interactorExtractor.getSortedInteractors();
 
-        assertEquals (1, proteins.size());
+        assertEquals(1, proteins.size());
         Iterator iterator = proteins.iterator();
         ProteinInteractorType protein = (ProteinInteractorType) iterator.next();
-        assertEquals ("2", protein.getId());
+        assertEquals("2", protein.getId());
     }
 }

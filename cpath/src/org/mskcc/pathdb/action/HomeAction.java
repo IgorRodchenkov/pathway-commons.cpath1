@@ -27,11 +27,12 @@ public class HomeAction extends BaseAction {
 
     /**
      * Executes Home Page.
-     * @param mapping Struts ActionMapping Object.
-     * @param form Struts ActionForm Object.
-     * @param request Http Servlet Request.
+     *
+     * @param mapping  Struts ActionMapping Object.
+     * @param form     Struts ActionForm Object.
+     * @param request  Http Servlet Request.
      * @param response Http Servlet Response.
-     * @param xdebug XDebug Object.
+     * @param xdebug   XDebug Object.
      * @return Struts Action Forward Object.
      * @throws Exception All Exceptions.
      */

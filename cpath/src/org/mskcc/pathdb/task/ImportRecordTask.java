@@ -19,8 +19,9 @@ public class ImportRecordTask extends Task {
 
     /**
      * Constructor.
+     *
      * @param importId Import ID.
-     * @param verbose Verbose Flag.
+     * @param verbose  Verbose Flag.
      */
     public ImportRecordTask(long importId, boolean verbose) {
         super("Import PSI-MI Record");
@@ -44,6 +45,7 @@ public class ImportRecordTask extends Task {
 
     /**
      * Gets the Progress Monitor.
+     *
      * @return Progress Monitor.
      */
     public ProgressMonitor getProgressMonitor() {

@@ -54,6 +54,7 @@ public class TestReadInteractionsFromGrid extends TestCase {
 
     /**
      * Tests against live GRID_LOCAL Service.
+     *
      * @throws Exception Indicates Error.
      */
     public void testGridService() throws Exception {
@@ -76,13 +77,14 @@ public class TestReadInteractionsFromGrid extends TestCase {
 
     /**
      * Validates Interaction Data.
-     * @param interactions ArrayList of Interactions.
-     * @param index Index value into ArrayList.
-     * @param geneA ORF Name for GeneA.
-     * @param geneB ORF Name for GeneB.
+     *
+     * @param interactions       ArrayList of Interactions.
+     * @param index              Index value into ArrayList.
+     * @param geneA              ORF Name for GeneA.
+     * @param geneB              ORF Name for GeneB.
      * @param expectedExperiment Experimental System.
-     * @param expectedDirection Direction of Interaction.
-     * @param pid PubMed Id.
+     * @param expectedDirection  Direction of Interaction.
+     * @param pid                PubMed Id.
      */
     private void validateData(ArrayList interactions, int index, String geneA,
             String geneB, String expectedExperiment, String expectedDirection,

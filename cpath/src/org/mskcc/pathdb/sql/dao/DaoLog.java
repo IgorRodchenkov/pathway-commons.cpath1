@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.sql.dao;
 
-import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.logger.LogRecord;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +19,7 @@ public class DaoLog {
 
     /**
      * Gets all log messages.
+     *
      * @return ArrayList of LogRecord objects.
      * @throws DaoException Error Accessing Database.
      */
@@ -29,6 +30,7 @@ public class DaoLog {
 
     /**
      * Deletes all existing Log messages.
+     *
      * @throws DaoException Error Accessing Database.
      */
     public void deleteAllLogRecords() throws DaoException {

@@ -12,6 +12,7 @@ public class ProgressMonitor {
 
     /**
      * Gets Percentage Complete.
+     *
      * @return double value.
      */
     public double getPercentComplete() {
@@ -24,6 +25,7 @@ public class ProgressMonitor {
 
     /**
      * Gets Max Value.
+     *
      * @return max value.
      */
     public int getMaxValue() {
@@ -32,6 +34,7 @@ public class ProgressMonitor {
 
     /**
      * Sets Max Value.
+     *
      * @param maxValue Max Value.
      */
     public void setMaxValue(int maxValue) {
@@ -41,6 +44,7 @@ public class ProgressMonitor {
 
     /**
      * Gets Current Value.
+     *
      * @return Current Value.
      */
     public int getCurValue() {
@@ -56,6 +60,7 @@ public class ProgressMonitor {
 
     /**
      * Sets the Current Value.
+     *
      * @param curValue Current Value.
      */
     public void setCurValue(int curValue) {
@@ -64,6 +69,7 @@ public class ProgressMonitor {
 
     /**
      * Gets the Current Task Message.
+     *
      * @return Currest Task Message.
      */
     public String getCurrentMessage() {
@@ -72,6 +78,7 @@ public class ProgressMonitor {
 
     /**
      * Sets the Current Task Message.
+     *
      * @param currentMessage Current Task Message.
      */
     public void setCurrentMessage(String currentMessage) {

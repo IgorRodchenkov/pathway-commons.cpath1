@@ -7,7 +7,7 @@ import org.mskcc.pathdb.xdebug.XDebug;
 
 /**
  * Tests the XML Assembly Functionality.
- *
+ * <p/>
  * <B>Note:</B>  In order for this test to succeed, the dbData/bootstrap.sql
  * file must already be loaded into the database.  To do so, simply type:
  * "ant boot" at the command line.
@@ -18,6 +18,7 @@ public class TestAssembly extends TestCase {
 
     /**
      * Tests the XML Assembly Functionality.
+     *
      * @throws Exception All Exceptions
      */
     public void testAssembly() throws Exception {
@@ -36,9 +37,9 @@ public class TestAssembly extends TestCase {
                 ("<proteinInteractorRef ref=\"2\"/>");
         int interactorRef2 = xmlAssembly.indexOf
                 ("<proteinInteractorRef ref=\"3\"/>");
-        assertTrue (interactor1 >= 1);
-        assertTrue (interactor2 >= 1);
-        assertTrue (interactorRef1 >= 1);
-        assertTrue (interactorRef2 >= 1);
+        assertTrue(interactor1 >= 1);
+        assertTrue(interactor2 >= 1);
+        assertTrue(interactorRef1 >= 1);
+        assertTrue(interactorRef2 >= 1);
     }
 }

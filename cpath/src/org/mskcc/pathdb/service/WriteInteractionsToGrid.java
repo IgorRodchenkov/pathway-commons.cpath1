@@ -69,6 +69,7 @@ public class WriteInteractionsToGrid extends DataServiceBase
 
     /**
      * Write Interactions to GRID.
+     *
      * @param interactions ArrayList of Interaction Objects.
      * @return Number of Interactions Saved.
      * @throws DataServiceException Error Connecting to Data Service.
@@ -92,6 +93,7 @@ public class WriteInteractionsToGrid extends DataServiceBase
 
     /**
      * Gets Server Response.
+     *
      * @return Server Response Message.
      */
     public String getServerResponse() {
@@ -130,8 +132,9 @@ public class WriteInteractionsToGrid extends DataServiceBase
 
     /**
      * Saves Individual Interaction.
+     *
      * @param interaction Interaction Object.
-     * @param isTest Is this a Test Interaction.
+     * @param isTest      Is this a Test Interaction.
      * @return number of new interactions successfully added to database.
      * @throws DaoException Error Retrieving Data.
      */
@@ -147,8 +150,8 @@ public class WriteInteractionsToGrid extends DataServiceBase
         String expSystem = getAttribute(interaction,
                 InteractionVocab.EXPERIMENTAL_SYSTEM_NAME);
         String owner = getAttribute(interaction, InteractionVocab.OWNER);
-        String direction = (String) interaction.getAttribute(
-                InteractionVocab.DIRECTION);
+        String direction = (String) interaction.getAttribute
+                (InteractionVocab.DIRECTION);
         if (direction == null) {
             direction = "AB";
         }

@@ -19,6 +19,7 @@ public class TestDaoInteraction extends TestCase {
 
     /**
      * Tests that Interaction Exists.
+     *
      * @throws Exception All Exceptions.
      */
     public void testInteractionExists() throws Exception {
@@ -68,6 +69,7 @@ public class TestDaoInteraction extends TestCase {
 
     /**
      * Tests Getting of Interaction IDs.
+     *
      * @throws Exception All Exceptions.
      */
     public void testGetInteractionId() throws Exception {

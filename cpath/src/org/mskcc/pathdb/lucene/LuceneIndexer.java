@@ -10,19 +10,11 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.jdom.JDOMException;
-import org.jdom.Attribute;
-import org.jdom.input.SAXBuilder;
-import org.jdom.xpath.XPath;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.util.XmlStripper;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.dataservices.util.PropertyManager;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.List;
 
 /**
  * Provides access to the Lucene Full Text Indexer.
@@ -60,6 +52,7 @@ public class LuceneIndexer {
 
     /**
      * Initializes Index with Fresh Database.
+     *
      * @throws IOException InputOutput Exception.
      */
     public void initIndex() throws IOException {
@@ -71,6 +64,7 @@ public class LuceneIndexer {
 
     /**
      * Adds New Record to Full Text Indexer.
+     *
      * @param item ItemToIndex.
      * @throws ImportException Error Importing Record to Full Text Engine.
      */
@@ -83,7 +77,7 @@ public class LuceneIndexer {
 
             Document document = new Document();
             int numFields = item.getNumFields();
-            for (int i=0; i<numFields; i++) {
+            for (int i = 0; i < numFields; i++) {
                 Field field = item.getField(i);
                 document.add(field);
             }
@@ -96,6 +90,7 @@ public class LuceneIndexer {
 
     /**
      * Initializes Index Writer.
+     *
      * @throws IOException Input Output Exception.
      */
     public void initIndexWriter() throws IOException {
@@ -106,6 +101,7 @@ public class LuceneIndexer {
 
     /**
      * Closes the Index Writer.
+     *
      * @throws IOException Input Output Exception.
      */
     public void closeIndexWriter() throws IOException {
@@ -116,6 +112,7 @@ public class LuceneIndexer {
 
     /**
      * Closes the Index Searcher.
+     *
      * @throws IOException Input Output Exception.
      */
     public void closeIndexSearcher() throws IOException {
@@ -126,6 +123,7 @@ public class LuceneIndexer {
 
     /**
      * Executes Query
+     *
      * @param term Search Term.
      * @return Lucene Hits Object
      * @throws QueryException Error Processing Query. I
@@ -149,6 +147,7 @@ public class LuceneIndexer {
 
     /**
      * Gets Directory for Full Text Indexer.
+     *
      * @return Directory Location.
      */
     public String getDirectory() {
@@ -157,7 +156,7 @@ public class LuceneIndexer {
         //  dir should only be null when run from the command line.
         if (dir == null) {
             String cPathHome = System.getProperty("CPATH_HOME");
-            dir = cPathHome +"/build/WEB-INF/" + INDEX_DIR_PREFIX;
+            dir = cPathHome + "/build/WEB-INF/" + INDEX_DIR_PREFIX;
         }
         return dir;
     }
@@ -165,6 +164,7 @@ public class LuceneIndexer {
     /**
      * Gets Analyzer.
      * Index and Query must use the same Analyzer.
+     *
      * @return Analyzer Object.
      */
     private Analyzer getAnalyzer() {

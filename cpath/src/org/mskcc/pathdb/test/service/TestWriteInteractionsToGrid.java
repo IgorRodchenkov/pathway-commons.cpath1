@@ -30,6 +30,7 @@ public class TestWriteInteractionsToGrid extends TestCase {
 
     /**
      * Tests Saving of New Interactions to GRID.
+     *
      * @throws Exception All Exceptions.
      */
     public void testWriteInteractions() throws Exception {
@@ -96,6 +97,7 @@ public class TestWriteInteractionsToGrid extends TestCase {
 
     /**
      * Delete all JUnit Interactors.
+     *
      * @throws Exception All Exceptions.
      */
     public void deleteJUnitInteractions() throws Exception {

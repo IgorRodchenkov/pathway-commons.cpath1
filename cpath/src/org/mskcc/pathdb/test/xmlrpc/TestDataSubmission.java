@@ -18,7 +18,8 @@ public class TestDataSubmission extends TestCase {
 
     /**
      * Tests Data Submission Service via XML-RPC Client.
-     * @throws IOException Input Output Exception.
+     *
+     * @throws IOException     Input Output Exception.
      * @throws XmlRpcException XML-RPC Exception.
      */
     public void testDataSubmission() throws IOException, XmlRpcException {
@@ -33,6 +34,7 @@ public class TestDataSubmission extends TestCase {
 
     /**
      * Gets Sample PSI File from local directory.
+     *
      * @return Sample PSI-MI Record.
      * @throws IOException Input Output Exception.
      */

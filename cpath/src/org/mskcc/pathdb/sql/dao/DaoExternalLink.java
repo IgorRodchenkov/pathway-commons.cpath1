@@ -51,7 +51,8 @@ public class DaoExternalLink {
     /**
      * Adds New External Link Record.
      * See class comments for details regarding data/xml synchronization.
-     * @param link ExternalLinkRecord Object.
+     *
+     * @param link           ExternalLinkRecord Object.
      * @param synchronizeXml Synchronize XML in CPath Record (true or false).
      * @return true if saved successfully.
      * @throws DaoException Error Retrieving Data.
@@ -95,8 +96,9 @@ public class DaoExternalLink {
     /**
      * Adds All External References to Database.
      * See class comments for details regarding data/xml synchronization.
-     * @param cpathId cPath ID.
-     * @param refs Array of External Reference Objects.
+     *
+     * @param cpathId        cPath ID.
+     * @param refs           Array of External Reference Objects.
      * @param synchronizeXml Synchronize XML in CPath Record (true or false).
      * @throws DaoException Error Retrieving Data.
      */
@@ -122,10 +124,12 @@ public class DaoExternalLink {
 
     /**
      * Validates all External References.
+     *
      * @param refs ArrayList of External Reference objects.
      * @return true is all ref.getDatabase() items match.
      * @throws DaoException Error Retrieving Data.
-     * @throws ExternalDatabaseNotFoundException Database Not Found.
+     * @throws ExternalDatabaseNotFoundException
+     *                      Database Not Found.
      */
     public boolean validateExternalReferences(ExternalReference refs[])
             throws DaoException, ExternalDatabaseNotFoundException {
@@ -148,6 +152,7 @@ public class DaoExternalLink {
 
     /**
      * Looks Up the cPath Records that matches the specified External Reference.
+     *
      * @param ref An External Reference.
      * @return ArrayList of Matching CPath Records.
      * @throws DaoException Error Retrieving Data.
@@ -162,8 +167,10 @@ public class DaoExternalLink {
     /**
      * Looks Up the cPath Record that matches any of the specified External
      * References.
+     *
      * @param refs An Array of External References.  All these references
-     * refer to the same interactor, as defined in different databases.
+     *             refer to the same interactor, as defined in different
+     *             databases.
      * @return ArrayList of Matching CPath Records.
      * @throws DaoException Error Retrieving Data.
      */
@@ -201,6 +208,7 @@ public class DaoExternalLink {
 
     /**
      * Gets Record by specified External Link ID.
+     *
      * @param externalLinkId External Link ID.
      * @return External Link Object.
      * @throws DaoException Error Retrieving Data.
@@ -233,8 +241,9 @@ public class DaoExternalLink {
 
     /**
      * Gets Record that matches specified ExternalDbId and LinkedToId.
+     *
      * @param externalDbId External Database ID.
-     * @param linkedToId Linked To ID String.
+     * @param linkedToId   Linked To ID String.
      * @return Array List of External Link Objects.
      * @throws DaoException Error Retrieving Data.
      */
@@ -275,6 +284,7 @@ public class DaoExternalLink {
 
     /**
      * Gets All External Link Records Associated with specified CPath ID.
+     *
      * @param cpathId CPath ID.
      * @return ArrayList of External Link Objects.
      * @throws DaoException Error Retrieving Data.
@@ -308,6 +318,7 @@ public class DaoExternalLink {
 
     /**
      * Gets Record by specified External Link ID.
+     *
      * @param externalLinkId External Link ID.
      * @return true if deletion is successful.
      * @throws DaoException Error Retrieving Data.
@@ -335,6 +346,7 @@ public class DaoExternalLink {
 
     /**
      * Determines if the specified record already exists.
+     *
      * @param link ExternalLinkRecord Object.
      * @return true if record already exists in database.
      * @throws DaoException Error Retrieving Data.
@@ -382,6 +394,7 @@ public class DaoExternalLink {
 
     /**
      * Synchonizes New External Link with Embedded XML.
+     *
      * @param externalLink ExternalLink Object.
      * @throws DaoException Data Access Exception.
      */

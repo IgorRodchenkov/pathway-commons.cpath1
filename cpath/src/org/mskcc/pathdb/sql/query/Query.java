@@ -1,23 +1,18 @@
 package org.mskcc.pathdb.sql.query;
 
-import org.mskcc.dataservices.mapper.MapPsiToInteractions;
-import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
-import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
-import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.util.Md5Util;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
 /**
  * Executes Interaction Queries.
- *
+ * <p/>
  * <P>Note:  JUnit testing for this class is performed in:
  * org.mskcc.pathdb.test.sql.TestImportPsiToCPath.
  *
@@ -28,6 +23,7 @@ public class Query {
 
     /**
      * Constructor.
+     *
      * @param xdebug XDebug Object.
      */
     public Query(XDebug xdebug) {
@@ -36,9 +32,10 @@ public class Query {
 
     /**
      * Execute Query.
-     * @param request ProtocolRequest object.
+     *
+     * @param request    ProtocolRequest object.
      * @param checkCache If set to true, method will check the XML cache for
-     * pre-computed results.
+     *                   pre-computed results.
      * @return XmlAssembly object.
      * @throws QueryException Indicates Query Error.
      */
@@ -89,6 +86,7 @@ public class Query {
 
     /**
      * Gets the HashKey for Specified Protocol Request.
+     *
      * @param request ProtocolRequest Object.
      * @return Hash Key.
      * @throws NoSuchAlgorithmException No Such Algorithm Exception

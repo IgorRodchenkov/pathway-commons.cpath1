@@ -9,9 +9,10 @@ public class AssemblyException extends Exception {
 
     /**
      * Constructor.
+     *
      * @param throwable Any Throwable Object.
      */
-    public AssemblyException (Throwable throwable) {
-        super (throwable.getMessage(), throwable);
+    public AssemblyException(Throwable throwable) {
+        super(throwable.getMessage(), throwable);
     }
 }

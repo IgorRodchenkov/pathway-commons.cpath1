@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 /**
@@ -16,6 +16,7 @@ public class TestDaoXmlCache extends TestCase {
 
     /**
      * Tests DaoXmlCache.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
@@ -32,7 +33,7 @@ public class TestDaoXmlCache extends TestCase {
         assertTrue(success);
 
         //  Get the record, and match xml content.
-        assembly= dao.getXmlAssemblyByKey(HASH_KEY);
+        assembly = dao.getXmlAssemblyByKey(HASH_KEY);
         assertTrue(assembly.getXmlString().length() > 50);
         assertEquals(originalXml, assembly.getXmlString());
         assertEquals(100, assembly.getNumHits());

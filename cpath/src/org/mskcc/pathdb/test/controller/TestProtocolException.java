@@ -18,6 +18,7 @@ public class TestProtocolException extends TestCase {
 
     /**
      * Verifies that ProtocolException returns an XML document.
+     *
      * @throws Exception General Error.
      */
     public void testProtocolException() throws Exception {

@@ -34,6 +34,7 @@ public class TestDaoCPath extends TestCase {
 
     /**
      * Tests Dao Access.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
@@ -109,6 +110,7 @@ public class TestDaoCPath extends TestCase {
 
     /**
      * Tests the GetAllTaxonomyIds Method.
+     *
      * @throws Exception All Exceptions.
      */
     public void testGetAllTaxonomyIds() throws Exception {

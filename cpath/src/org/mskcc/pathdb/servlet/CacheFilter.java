@@ -4,7 +4,7 @@ import com.opensymphony.module.oscache.base.Cache;
 import com.opensymphony.module.oscache.base.NeedsRefreshException;
 import com.opensymphony.module.oscache.web.ServletCacheAdministrator;
 import com.opensymphony.module.oscache.web.filter.
-        CacheHttpServletResponseWrapper;
+    CacheHttpServletResponseWrapper;
 import com.opensymphony.module.oscache.web.filter.ResponseContent;
 import org.apache.log4j.Logger;
 
@@ -74,11 +74,11 @@ public class CacheFilter implements Filter {
     /**
      * Process the doFilter
      *
-     * @param request The servlet request
+     * @param request  The servlet request
      * @param response The servlet response
-     * @param chain The filet chain
+     * @param chain    The filet chain
      * @throws ServletException Indicates Servlet Error.
-     * @throws IOException Indicates I/O Error.
+     * @throws IOException      Indicates I/O Error.
      */
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws ServletException, IOException {

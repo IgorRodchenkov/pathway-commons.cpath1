@@ -70,6 +70,7 @@ public class ReadInteractorsFromGrid extends DataServiceBase
 
     /**
      * Gets Interactor object for specified ORF.
+     *
      * @param orfName ORF Name.
      * @return Interactor object.
      * @throws DataServiceException Indicates Error connecting to data service.
@@ -89,6 +90,7 @@ public class ReadInteractorsFromGrid extends DataServiceBase
 
     /**
      * Gets Interactor object for specified Local ID.
+     *
      * @param localId Unique Local ID.
      * @return Interactor object.
      * @throws DataServiceException Indicates Error connecting to data service.
@@ -112,7 +114,8 @@ public class ReadInteractorsFromGrid extends DataServiceBase
 
     /**
      * Gets Live Interactor from GRID_LOCAL, and places in Local Cache.
-     * @param uid Unique ID.
+     *
+     * @param uid       Unique ID.
      * @param lookUpKey Database LookUp Key.
      * @return Interactor object.
      */
@@ -136,7 +139,8 @@ public class ReadInteractorsFromGrid extends DataServiceBase
 
     /**
      * Gets Live ORF Data from GRID_LOCAL.
-     * @param uid Unique ID.
+     *
+     * @param uid       Unique ID.
      * @param lookUpKey Database LookUp Key.
      * @return Database Result Set.
      */

@@ -19,6 +19,7 @@ public class DaoInternalLink {
 
     /**
      * Creates an Internal Link between A and B.
+     *
      * @param cpathIdA cPath ID of Entity A.
      * @param cpathIdB cPath ID of Entity B.
      * @return True if Internal Links was stored successfully.
@@ -49,7 +50,8 @@ public class DaoInternalLink {
 
     /**
      * Creates Internal Links between A and all B's.
-     * @param cpathIdA cPath ID of Entity A.
+     *
+     * @param cpathIdA  cPath ID of Entity A.
      * @param cpathIdsB Array of CPath IDs for Entity B.
      * @return Number of New Internal Links Stored.
      * @throws DaoException Error Retrieving Data.
@@ -67,6 +69,7 @@ public class DaoInternalLink {
 
     /**
      * Gets all Internal Links for Specified cPath ID.
+     *
      * @param cpathId CPath ID.
      * @return ArrayList of CPath Records.
      * @throws DaoException Error Retrieving Data.
@@ -103,6 +106,7 @@ public class DaoInternalLink {
 
     /**
      * Gets all Internal Links for Specified cPath ID.
+     *
      * @param cpathId CPath ID.
      * @return ArrayList of InternalLinkRecords.
      * @throws DaoException Error Retrieving Data.
@@ -142,6 +146,7 @@ public class DaoInternalLink {
 
     /**
      * Deletes all Internal Links associated with the specified cpathId.
+     *
      * @param cpathId cPath ID of record to delete.
      * @return returns number of internal links deleted.
      * @throws DaoException Error Retrieving Data.

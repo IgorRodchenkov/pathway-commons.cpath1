@@ -15,6 +15,7 @@ public class DaoExternalDb {
 
     /**
      * Adds Specified External Database Record to the CPath Database.
+     *
      * @param db External Database Record.
      * @return true if record was successfully added.
      * @throws DaoException Error Retrieving Data.
@@ -59,6 +60,7 @@ public class DaoExternalDb {
 
     /**
      * Retrieves the External Database Record with the specified ID.
+     *
      * @param id External Database ID.
      * @return External Database Record.
      * @throws DaoException Error Retrieving Data.
@@ -86,6 +88,7 @@ public class DaoExternalDb {
 
     /**
      * Retrieves the External Database Record with the specified name.
+     *
      * @param name External Database Name
      * @return External Database Record.
      * @throws DaoException Error Retrieving Data.
@@ -114,6 +117,7 @@ public class DaoExternalDb {
 
     /**
      * Retrieves the External Database Record with the matching pattern.
+     *
      * @param term String Term
      * @return External Database Record.
      * @throws DaoException Error Retrieving Data.
@@ -126,6 +130,7 @@ public class DaoExternalDb {
 
     /**
      * Gets a Complete List of All External Database Records.
+     *
      * @return ArrayList of External Database object.
      * @throws DaoException Error Retrieving Data.
      */
@@ -156,6 +161,7 @@ public class DaoExternalDb {
 
     /**
      * Delete External Database Record with the Specified ID.
+     *
      * @param id External Database ID.
      * @return true indicates record was successfully deleted.
      * @throws DaoException Error Retrieving Data.
@@ -187,6 +193,7 @@ public class DaoExternalDb {
 
     /**
      * Update External Database Record with the Specified ID.
+     *
      * @param db External Database Record.
      * @return true indicates record was successfully update.
      * @throws DaoException Error Retrieving Data.

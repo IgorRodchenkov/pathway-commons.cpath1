@@ -15,8 +15,9 @@ public abstract class BatchTool {
 
     /**
      * Constructor.
+     *
      * @param runningFromCommandLine Indicates that we are running from console.
-     * @param xdebug XDebug Object.
+     * @param xdebug                 XDebug Object.
      */
     public BatchTool(boolean runningFromCommandLine, XDebug xdebug) {
         this.runningFromCommandLine = runningFromCommandLine;
@@ -25,6 +26,7 @@ public abstract class BatchTool {
 
     /**
      * Conditionally output messages to the console and  xdebug
+     *
      * @param message User message.
      */
     protected void outputMsg(String message) throws IOException {

@@ -30,8 +30,9 @@ public class ImportReferencesTask extends Task {
 
     /**
      * Constructor.
+     *
      * @param verbose Verbose Flag.
-     * @param reader Reader object with file contents.
+     * @param reader  Reader object with file contents.
      */
     public ImportReferencesTask(boolean verbose, Reader reader) {
         super("Import External Refs");
@@ -57,7 +58,8 @@ public class ImportReferencesTask extends Task {
     /**
      * Imports External References.
      * This public is public, if you want to run within the existing thread.
-     * @throws IOException Error Reading File.
+     *
+     * @throws IOException  Error Reading File.
      * @throws DaoException Error Accessing Database.
      */
     public void importReferences() throws IOException, DaoException {
@@ -74,6 +76,7 @@ public class ImportReferencesTask extends Task {
 
     /**
      * Gets the Progress Monitor.
+     *
      * @return Progress Monitor Object.
      */
     public ProgressMonitor getProgressMonitor() {

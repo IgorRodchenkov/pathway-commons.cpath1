@@ -14,6 +14,7 @@ public class ImportSummary {
 
     /**
      * Gets Total Number of Interactors Processed.
+     *
      * @return integer.
      */
     public int getNumInteractorsProcessed() {
@@ -29,6 +30,7 @@ public class ImportSummary {
 
     /**
      * Gets Number of Interactors Saved to the cPath database.
+     *
      * @return integer.
      */
     public int getNumInteractorsSaved() {
@@ -47,6 +49,7 @@ public class ImportSummary {
      * Gets Number of Interactors Found in the Database.
      * These interactors were identified by their external references,
      * and will not be saved in the database.
+     *
      * @return integer.
      */
     public int getNumInteractorsFound() {
@@ -62,6 +65,7 @@ public class ImportSummary {
 
     /**
      * Gets Number of Interactions Saved to the cPath Database.
+     *
      * @return integer.
      */
     public int getNumInteractionsSaved() {
@@ -77,6 +81,7 @@ public class ImportSummary {
 
     /**
      * Gets Number of Interactions Saved to the cPath Database.
+     *
      * @return integer.
      */
     public int getNumInteractionsClobbered() {

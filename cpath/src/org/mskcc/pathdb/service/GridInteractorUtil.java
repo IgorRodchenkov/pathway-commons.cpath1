@@ -23,7 +23,8 @@ public class GridInteractorUtil {
 
     /**
      * Gets Basic information regarding interactor.
-     * @param doc XML Document containting Database Result Set.
+     *
+     * @param doc        XML Document containting Database Result Set.
      * @param interactor Interactor object.
      */
     private void getBasicInformation(Document doc, Interactor interactor) {
@@ -44,7 +45,8 @@ public class GridInteractorUtil {
 
     /**
      * Gets the GO (Gene Ontology) Terms.
-     * @param doc XML Document containting Database Result Set.
+     *
+     * @param doc        XML Document containting Database Result Set.
      * @param interactor Interactor object.
      */
     private void getGoTerms(Document doc, Interactor interactor) {
@@ -60,7 +62,8 @@ public class GridInteractorUtil {
 
     /**
      * Gets the list of External References.
-     * @param doc XML Document containting Database Result Set.
+     *
+     * @param doc        XML Document containting Database Result Set.
      * @param interactor Interactor object.
      */
     private void getExternalRefs(Document doc, Interactor interactor) {
@@ -78,6 +81,7 @@ public class GridInteractorUtil {
 
     /**
      * Parse Result Set.
+     *
      * @param doc JDOM Document object.
      * @return Interactor object.
      */
@@ -91,7 +95,8 @@ public class GridInteractorUtil {
 
     /**
      * Gets GO Terms.
-     * @param doc XML Document containting Database Result Set.
+     *
+     * @param doc          XML Document containting Database Result Set.
      * @param columnPrefix Column Prefix, for example "function".
      * @return ArrayList of HashMaps objects.
      */
@@ -112,6 +117,7 @@ public class GridInteractorUtil {
 
     /**
      * Splits and Massages GO Ids.
+     *
      * @param idStr String with multiple GoIDs.
      * @return Array of String Objects.
      */
@@ -127,7 +133,8 @@ public class GridInteractorUtil {
 
     /**
      * Extract String from XML Document.
-     * @param document JDOM Document.
+     *
+     * @param document    JDOM Document.
      * @param elementName Element Name Target.
      * @return String value.
      */

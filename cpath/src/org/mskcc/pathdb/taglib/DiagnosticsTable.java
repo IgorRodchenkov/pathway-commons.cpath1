@@ -18,6 +18,7 @@ public class DiagnosticsTable extends HtmlTable {
 
     /**
      * Executes JSP Custom Tag
+     *
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {

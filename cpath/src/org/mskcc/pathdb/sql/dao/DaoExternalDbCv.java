@@ -18,6 +18,7 @@ public class DaoExternalDbCv {
 
     /**
      * Adds New ExternalDatabaseRecord CV Term.
+     *
      * @param dbId External Database ID.
      * @param term Term.
      * @return true indicates success.
@@ -49,6 +50,7 @@ public class DaoExternalDbCv {
 
     /**
      * Normalizes External Reference to FIXED CV_TERM.
+     *
      * @param dbTerm External Database CV Term
      * @return Fixed CV Term.
      * @throws DaoException Data Access Exception.
@@ -65,6 +67,7 @@ public class DaoExternalDbCv {
 
     /**
      * Gets Database by Term.
+     *
      * @param term Term to search.
      * @return ExternalDatabaseRecord Object.
      * @throws DaoException Error Retrieving Data.
@@ -99,6 +102,7 @@ public class DaoExternalDbCv {
 
     /**
      * Gets all Terms Associated with the specified Database.
+     *
      * @param dbId External Database Id
      * @return ArrayList of Terms.
      * @throws DaoException Error Retrieving Data.
@@ -132,6 +136,7 @@ public class DaoExternalDbCv {
 
     /**
      * Gets Term Associated with the specified Db Cv Id.
+     *
      * @param cvId External Database CV ID.
      * @return String term.
      * @throws DaoException Error Retrieving Data.
@@ -162,6 +167,7 @@ public class DaoExternalDbCv {
 
     /**
      * Deletes All Terms Associated with Specified Database ID.
+     *
      * @param dbId Database ID.
      * @return true indicates success.
      * @throws DaoException Error Retrieving Data.

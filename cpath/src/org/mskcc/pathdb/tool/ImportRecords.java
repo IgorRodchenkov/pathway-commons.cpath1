@@ -21,6 +21,7 @@ public class ImportRecords {
 
     /**
      * Main Method.
+     *
      * @param args Command Line Arguments.
      */
     public static void main(String[] args) {
@@ -36,6 +37,7 @@ public class ImportRecords {
 
     /**
      * Transfers Data.
+     *
      * @param validateExternalReferences Flag to Validate External References.
      */
     public void transferData(boolean validateExternalReferences) {
@@ -96,6 +98,7 @@ public class ImportRecords {
 
     /**
      * Displays Summary of Import.
+     *
      * @param summary ImportSummary object.
      */
     private void outputSummary(ImportSummary summary) {

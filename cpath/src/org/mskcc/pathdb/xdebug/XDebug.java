@@ -11,6 +11,7 @@ import java.util.Vector;
  * XDebug provides a simple facility for logging debug messages,
  * and recording debug parameters. Results of XDebug are conditionally
  * displayed at the bottom of the JSP page.
+ *
  * @author Ethan Cerami
  */
 public class XDebug {
@@ -32,10 +33,11 @@ public class XDebug {
     }
 
     /**
-     *  Logs a new message with the specified color code.
-     *  @param caller object that is making the log request
-     *  @param msg message to log
-     *  @param color color of message, e.g. "RED, "GREEN"
+     * Logs a new message with the specified color code.
+     *
+     * @param caller object that is making the log request
+     * @param msg    message to log
+     * @param color  color of message, e.g. "RED, "GREEN"
      */
     public void logMsg(Object caller, String msg, String color) {
         Class callerClass = caller.getClass();
@@ -47,19 +49,21 @@ public class XDebug {
     }
 
     /**
-     *  Logs a new message.
-     *  @param caller object that is making the log request
-     *  @param msg message to log
+     * Logs a new message.
+     *
+     * @param caller object that is making the log request
+     * @param msg    message to log
      */
     public void logMsg(Object caller, String msg) {
         logMsg(caller, msg, "black");
     }
 
     /**
-     *  Adds a new String Parameter.
-     *  @param type parameter type code, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
-     *  @param name parameter name
-     *  @param value parameter String value
+     * Adds a new String Parameter.
+     *
+     * @param type  parameter type code, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
+     * @param name  parameter name
+     * @param value parameter String value
      */
     public void addParameter(int type, String name, String value) {
         XDebugParameter param = new XDebugParameter(type, name, value);
@@ -67,10 +71,11 @@ public class XDebug {
     }
 
     /**
-     *  Adds a new integer Parameter.
-     *  @param type    parameter type code, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
-     *  @param name    parameter name
-     *  @param value   parameter integer value
+     * Adds a new integer Parameter.
+     *
+     * @param type  parameter type code, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
+     * @param name  parameter name
+     * @param value parameter integer value
      */
     public void addParameter(int type, String name, int value) {
         XDebugParameter param = new XDebugParameter(type, name, value);
@@ -78,10 +83,11 @@ public class XDebug {
     }
 
     /**
-     *  Adds a new boolean Parameter.
-     *  @param type    parameter type code, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
-     *  @param name    parameter name
-     *  @param value   parameter boolean value
+     * Adds a new boolean Parameter.
+     *
+     * @param type  parameter type code, e.g. COOKIE_TYPE, ENVIRONMENT_TYPE
+     * @param name  parameter name
+     * @param value parameter boolean value
      */
     public void addParameter(int type, String name, boolean value) {
         XDebugParameter param = new XDebugParameter(type, name, value);
@@ -89,16 +95,18 @@ public class XDebug {
     }
 
     /**
-     *  Gets all Debug Messages.
-     *  @return Vector of XDebugMessage objects
+     * Gets all Debug Messages.
+     *
+     * @return Vector of XDebugMessage objects
      */
     public Vector getDebugMessages() {
         return messages;
     }
 
     /**
-     *  Gets all Parameters.
-     *  @return Vector of XDebugParameter objects
+     * Gets all Parameters.
+     *
+     * @return Vector of XDebugParameter objects
      */
     public Vector getParameters() {
         return parameters;
@@ -123,6 +131,7 @@ public class XDebug {
 
     /**
      * Gets the total time elapsed (in milliseconds.)
+     *
      * @return totalTimeElapsed (ms)
      */
     public long getTimeElapsed() {

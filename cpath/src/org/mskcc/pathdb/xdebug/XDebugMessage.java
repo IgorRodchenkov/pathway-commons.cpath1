@@ -8,6 +8,7 @@ package org.mskcc.pathdb.xdebug;
  * <LI>the log message
  * <LI>color of the log message (defaults to black)
  * </UL>
+ *
  * @author Ethan Cerami
  */
 public class XDebugMessage {
@@ -18,9 +19,10 @@ public class XDebugMessage {
 
     /**
      * Constructor.
-     * @param className    name of the class that invoke the logger
-     * @param message      the log message
-     **/
+     *
+     * @param className name of the class that invoke the logger
+     * @param message   the log message
+     */
     public XDebugMessage(String className, String message) {
         this.className = className;
         this.message = message;
@@ -29,10 +31,11 @@ public class XDebugMessage {
 
     /**
      * Constructor with Color Parameter.
-     * @param className    name of the class that invoke the logger
-     * @param message      the log message
-     * @param color        the log message color
-     **/
+     *
+     * @param className name of the class that invoke the logger
+     * @param message   the log message
+     * @param color     the log message color
+     */
     public XDebugMessage(String className, String message, String color) {
         this.className = className;
         this.message = message;
@@ -41,6 +44,7 @@ public class XDebugMessage {
 
     /**
      * Get Debug Message
+     *
      * @return the log message
      */
     public String getMessage() {
@@ -49,6 +53,7 @@ public class XDebugMessage {
 
     /**
      * Get Class Name
+     *
      * @return the class name of the object that invoked the logger
      */
     public String getClassName() {
@@ -57,6 +62,7 @@ public class XDebugMessage {
 
     /**
      * Get Color
+     *
      * @return color of the log message
      */
     public String getColor() {

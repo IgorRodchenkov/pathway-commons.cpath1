@@ -34,6 +34,7 @@ public abstract class UpdateInteractor {
 
     /**
      * Sets External References for Existing Interactor.
+     *
      * @param refs Array of External Reference objects.
      */
     protected void setExistingExternalRefs(ExternalReference refs[]) {
@@ -42,6 +43,7 @@ public abstract class UpdateInteractor {
 
     /**
      * Sets External References for New Interactor.
+     *
      * @param refs Array of External Reference objects.
      */
     protected void setNewExternalRefs(ExternalReference refs[]) {
@@ -50,6 +52,7 @@ public abstract class UpdateInteractor {
 
     /**
      * Sets the cPath ID for existing interactor.
+     *
      * @param id cPath Id.
      */
     protected void setcPathId(long id) {
@@ -58,6 +61,7 @@ public abstract class UpdateInteractor {
 
     /**
      * Gets the cPath ID for Interactor A.
+     *
      * @return cPath Id.
      */
     public long getcPathId() {
@@ -67,6 +71,7 @@ public abstract class UpdateInteractor {
     /**
      * Determines if Existing Interactor Record needs to be updated with
      * data defined by new interactor.
+     *
      * @return true or false.
      */
     public boolean needsUpdating() {
@@ -89,6 +94,7 @@ public abstract class UpdateInteractor {
 
     /**
      * Updates Existing Interactor with New External References.
+     *
      * @throws DaoException Error Adding new data to database.
      */
     public void doUpdate() throws DaoException {

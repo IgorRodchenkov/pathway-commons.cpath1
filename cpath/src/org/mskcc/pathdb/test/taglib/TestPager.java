@@ -14,6 +14,7 @@ public class TestPager extends TestCase {
 
     /**
      * Tests the Pager Class.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess1() throws Exception {
@@ -37,6 +38,7 @@ public class TestPager extends TestCase {
 
     /**
      * Tests the Pager Class.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess2() throws Exception {
@@ -62,6 +64,7 @@ public class TestPager extends TestCase {
 
     /**
      * Tests the Pager Class.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess3() throws Exception {
@@ -86,6 +89,7 @@ public class TestPager extends TestCase {
 
     /**
      * Verify that a negative startIndex becomes 0.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess4() throws Exception {
@@ -99,6 +103,7 @@ public class TestPager extends TestCase {
 
     /**
      * Verify that a startIndex > Total Num Hits shows last page of results.
+     *
      * @throws Exception All Exceptions.
      */
     public void testAccess5() throws Exception {

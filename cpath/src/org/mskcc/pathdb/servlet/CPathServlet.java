@@ -5,13 +5,13 @@ import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.logger.ConfigLogger;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.sql.dao.DaoLog;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -38,6 +38,7 @@ public final class CPathServlet extends ActionServlet {
 
     /**
      * Initializes Servlet with parameters in web.xml file.
+     *
      * @throws ServletException Servlet Initialization Error.
      */
     public void init() throws ServletException {

@@ -18,6 +18,7 @@ public class RegisterCPathServices {
 
     /**
      * Registers all CPath Data Services.
+     *
      * @throws DataServiceException Error Registering Services.
      */
     public static void registerServices() throws DataServiceException {
@@ -35,6 +36,7 @@ public class RegisterCPathServices {
 
     /**
      * Gets List of all CPath Data Services.
+     *
      * @return ArrayList of DataServiceDescription Objects.
      */
     private static ArrayList getServices() {

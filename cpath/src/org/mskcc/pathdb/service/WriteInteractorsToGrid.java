@@ -62,6 +62,7 @@ public class WriteInteractorsToGrid extends DataServiceBase
 
     /**
      * Conditionally saves all specified Interactors to the GRID Database.
+     *
      * @param interactors ArrayList of Interactors.
      * @return Number of Interactors Saved.
      * @throws DataServiceException Error connecting to data service.
@@ -86,6 +87,7 @@ public class WriteInteractorsToGrid extends DataServiceBase
 
     /**
      * Gets Server Response.
+     *
      * @return Server Response Message.
      */
     public String getServerResponse() {
@@ -95,10 +97,12 @@ public class WriteInteractorsToGrid extends DataServiceBase
     /**
      * Saves Specified Interactor.
      * Currently saves name, description and external references.
+     *
      * @param interactor Interactor Object.
      * @return Number of Rows of Data added.
      * @throws java.sql.SQLException Error Connecting to Database.
-     * @throws java.lang.ClassNotFoundException Error locating database driver.
+     * @throws java.lang.ClassNotFoundException
+     *                               Error locating database driver.
      */
     private int saveInteractor(Interactor interactor)
             throws SQLException, ClassNotFoundException {
@@ -137,6 +141,7 @@ public class WriteInteractorsToGrid extends DataServiceBase
 
     /**
      * Checks to see if Interactor already exists within the database.
+     *
      * @param orfName ORF Name.
      * @return true or false
      * @throws DataServiceException Error Connecting to GRID.

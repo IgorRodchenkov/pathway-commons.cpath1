@@ -13,6 +13,7 @@ public class IndexerSuite extends TestCase {
 
     /**
      * The suite method runs all the tests.
+     *
      * @return Suite of JUnit tests.
      */
     public static Test suite() {
