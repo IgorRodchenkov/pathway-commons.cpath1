@@ -126,7 +126,7 @@ public class TestDaoExternalDb extends TestCase {
         assertEquals(TERM1, term1);
         assertEquals(TERM2, term2);
         assertEquals(URL, record.getUrl());
-        assertEquals(ReferenceType.IDENTITY, record.getDbType());
+        assertEquals(ReferenceType.PROTEIN_UNIFICATION, record.getDbType());
     }
 
     private void addSampleRecord() throws DaoException {
@@ -138,7 +138,7 @@ public class TestDaoExternalDb extends TestCase {
         terms.add(TERM2);
         db.setCvTerms(terms);
         db.setUrl(URL);
-        db.setDbType(ReferenceType.IDENTITY);
+        db.setDbType(ReferenceType.PROTEIN_UNIFICATION);
         DaoExternalDb cpath = new DaoExternalDb();
         cpath.addRecord(db);
     }

@@ -31,7 +31,7 @@ package org.mskcc.pathdb.model;
 
 /**
  * Enumeration of ExternalDatabase Types.
- * This list is currently constrained to:  IDENTITY and LINK_OUT.
+ * This list is currently constrained to:  PROTEIN_UNIFICATION.
  *
  * @author Ethan Cerami
  */
@@ -59,30 +59,30 @@ public class ReferenceType {
     /**
      * Get Type by Type Name.
      *
-     * @param typeName Type Name, e.g. "IDENTITY", or "LINK_OUT".
+     * @param typeName Type Name, e.g. "PROTEIN_UNIFICATION".
      * @return correct ExternalDatabaseType.
      */
     public static ReferenceType getType(String typeName) {
-        if (typeName.equals(IDENTITY.toString())) {
-            return IDENTITY;
+        if (typeName == null) {
+            return null;
+        } else if (typeName.equals(PROTEIN_UNIFICATION.toString())) {
+            return PROTEIN_UNIFICATION;
         } else if (typeName.equals(LINK_OUT.toString())) {
             return LINK_OUT;
         } else {
-            throw new IllegalArgumentException("No Matching External"
-                    + "Database type for:  " + typeName);
+            return null;
         }
     }
 
     /**
-     * External Record Type:  IDENTITY.
+     * External Record Type:  PROTEIN_UNIFICATION.
      */
-    public static final ReferenceType IDENTITY
-            = new ReferenceType("IDENTITY");
+    public static final ReferenceType PROTEIN_UNIFICATION
+            = new ReferenceType("PROTEIN_UNIFICATION");
 
     /**
-     * External Record Type:  LINK_OUT
+     * External Record Type:  LINK_OUT.
      */
     public static final ReferenceType LINK_OUT
             = new ReferenceType("LINK_OUT");
-
 }

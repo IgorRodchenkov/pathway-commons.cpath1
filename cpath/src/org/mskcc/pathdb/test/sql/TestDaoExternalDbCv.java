@@ -92,7 +92,7 @@ public class TestDaoExternalDbCv extends TestCase {
         ExternalDatabaseRecord db = new ExternalDatabaseRecord();
         db.setName(DB_NAME);
         db.setDescription("Test");
-        db.setDbType(ReferenceType.IDENTITY);
+        db.setDbType(ReferenceType.PROTEIN_UNIFICATION);
         dao.addRecord(db);
         db = dao.getRecordByName(DB_NAME);
         int dbId = db.getId();
