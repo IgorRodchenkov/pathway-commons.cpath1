@@ -6,7 +6,50 @@
   </properties>
 
   <body>
-    <section name="Release 0.2 Beta">
+
+<section name="Release 0.3 Beta">
+<P>
+<UL>
+    <LI>Completely refactored the index/search framework.  Custom field
+    search is now available, all search results now support pagination,
+    and users can easily search by or browse by organism.  cPath also
+    now supports two types of search results:  "interaction view",
+    and "protein view."
+    </LI>
+    <LI>Search Box now supports multiple filters, including an organism
+    filter and a custom field filter.</LI>
+    <LI>Search Results now appear in a new Search Results Tab.</LI>
+    <LI>Added New Tab for Browse by Organism.  Users can sort the organism
+    list by name or by number of interactions.</LI>
+    <LI>Added New Database Stats Page.  Users can now view number of
+    interactors / interactions, plus a list of all imported data sources.</LI>
+    <LI>First draft of the cPath FAQ is now complete.</LI>
+    <LI>Updated the Web Service API to include revised command names, plus
+    a new maxHits parameter.</LI>
+    <LI>Changes to the cPath Web Administrator:
+        <UL>
+            <LI>Administrator can now view/purge the XML Cache.</LI>
+            <LI>Administrator can now view/purge the Error Log.</LI>
+            <LI>Administrator page now only updates when tasks are active.</LI>
+        </UL>
+    </LI>
+    <LI>Changes to the cPath Command Line Tool:
+        <UL>
+            <LI>All Administrator Tasks are centralized in a single command line tool.</LI>
+            <LI>Administrators can:  import new files, run the full text
+            indexer, and run precomputed config files.</LI>
+            <LI>Command Line tool supports command line arguments for
+            specifying the database user name / password.</LI>
+        </UL>
+    </LI>
+    <LI>XML Cache is now finalized, and automatically purges itself when
+        it hits a maximum number of records.
+    </LI>
+</UL>
+</P>
+</section>
+
+<section name="Release 0.2 Beta">
 <P>
 <UL>
 <LI>
