@@ -51,7 +51,7 @@ public class ReferencesSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestBackgroundReferenceParser.class);
         suite.addTestSuite(TestBackgroundReferenceService.class);
-        suite.setName("Protocol Tests");
+        suite.setName("Background Reference Tests");
         return suite;
     }
 }
