@@ -30,9 +30,15 @@ package org.mskcc.pathdb.sql.assembly;
 public interface XmlAssembly {
 
     /**
-     * Gets Comlete Xml Assembly.
+     * Gets Comlete Xml Assembly (in String form).
      * @return XML Document String.
      */
-    public String getXmlAssembly ();
+    public String getXmlString ();
+
+    /**
+     * Gets Complete XML Assembly (in object form).
+     * @return Java Object encapsulating XML Document.
+     */
+    public Object getXmlObject ();
 
 }

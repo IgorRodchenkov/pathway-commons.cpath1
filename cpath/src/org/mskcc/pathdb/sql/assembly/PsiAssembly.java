@@ -25,6 +25,7 @@ import java.util.HashMap;
 public class PsiAssembly implements XmlAssembly {
     private XDebug xdebug;
     private String xml;
+    private EntrySet entrySet;
 
     /**
      * Package Only Constructor.  Class must be instantiated via the
@@ -50,12 +51,20 @@ public class PsiAssembly implements XmlAssembly {
     }
 
     /**
-     * Gets Comlete Xml Assembly.
+     * Gets Comlete Xml Assembly (in String form).
      *
      * @return XML Document String.
      */
-    public String getXmlAssembly() {
+    public String getXmlString() {
         return xml;
+    }
+
+    /**
+     * Gets Complete XML Assembly (in object form).
+     * @return Java Object encapsulating XML Document.
+     */
+    public Object getXmlObject () {
+        return entrySet;
     }
 
     /**
@@ -102,7 +111,7 @@ public class PsiAssembly implements XmlAssembly {
             throws ValidationException, MarshalException {
         xdebug.logMsg(this, "Creating Final PSI-MI XML Document");
         PsiAssembler psiBuilder = new PsiAssembler();
-        EntrySet entrySet = psiBuilder.generatePsi(interactors, interactions);
+        entrySet = psiBuilder.generatePsi(interactors, interactions);
         xml = generateXml(entrySet);
     }
 
