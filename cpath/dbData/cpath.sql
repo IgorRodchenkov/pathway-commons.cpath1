@@ -145,3 +145,19 @@ CREATE TABLE `log` (
   `message` varchar(255) NOT NULL default '',
   `ip` varchar(255) NOT NULL default ''
 ) TYPE=MyISAM;
+
+#
+# Table structure for table `xml_cache`
+#
+# Creation: Jan 15, 2004 at 04:54 PM
+# Last update: Jan 15, 2004 at 04:54 PM
+#
+
+CREATE TABLE `xml_cache` (
+  `CACHE_ID` int(11) NOT NULL auto_increment,
+  `DOC_MD5` varchar(255) NOT NULL default '',
+  `DOC_BLOB` longblob NOT NULL,
+  `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`CACHE_ID`)
+) TYPE=MyISAM COMMENT='Contains Cached XML Documents' AUTO_INCREMENT=2 ;
+
