@@ -6,6 +6,7 @@ import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.util.GlobalCache;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,10 @@ public class AdminResetOrganismStats extends AdminBaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
         OrganismStats orgStats = new OrganismStats();
         orgStats.resetStats();
+
+        GlobalCache cache = GlobalCache.getInstance();
+        cache.resetCache();
+        
         this.setUserMessage(request, "Organism Stats have been reset.");
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
