@@ -3,21 +3,28 @@
                          "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
     <display-name>CBio Data Services Application</display-name>
-    <!--
-    <filter>
-        <filter-name>Cache</filter-name>
-        <filter-class>org.mskcc.pathdb.servlet.CacheFilter</filter-class>
-    </filter>
-    
-    <filter-mapping>
-        <filter-name>Cache</filter-name>
-        <servlet-name>DataServiceServlet</servlet-name>
-    </filter-mapping>
-    -->
-    <!--  Data Services Servlet -->
+    <!-- XML-RPC Servelt -->
     <servlet>
-        <servlet-name>DataServiceServlet</servlet-name>
-        <servlet-class>org.mskcc.pathdb.servlet.DataService</servlet-class>
+        <servlet-name>XmlRpcServlet</servlet-name>
+        <servlet-class>org.mskcc.pathdb.servlet.XmlRpcServlet</servlet-class>
+        <load-on-startup/>
+    </servlet>
+    <!-- Struts cPath Action Servlet Configuration -->
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.mskcc.pathdb.servlet.CPathServlet</servlet-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>/WEB-INF/struts-config.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>10</param-value>
+        </init-param>
+        <init-param>
+            <param-name>detail</param-name>
+            <param-value>10</param-value>
+        </init-param>
         <init-param>
             <param-name>db_host</param-name>
             <param-value>localhost</param-value>
@@ -31,41 +38,22 @@
             <param-value>kitty</param-value>
         </init-param>
         <init-param>
+            <param-name>admin_user</param-name>
+            <param-value>admin</param-value>
+        </init-param>
+        <init-param>
+            <param-name>admin_password</param-name>
+            <param-value>cpath</param-value>
+        </init-param>
+
+        <init-param>
             <param-name>log_config_file</param-name>
             <param-value>/WEB-INF/config/config-JDBC.properties</param-value>
         </init-param>
         <load-on-startup/>
     </servlet>
-    <!-- XML-RPC Servelt -->
-    <servlet>
-        <servlet-name>XmlRpcServlet</servlet-name>
-        <servlet-class>org.mskcc.pathdb.servlet.XmlRpcServlet</servlet-class>
-        <load-on-startup/>
-    </servlet>
-    <!-- Struts Action Servlet Configuration -->
-    <servlet>
-        <servlet-name>action</servlet-name>
-        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
-        <init-param>
-            <param-name>config</param-name>
-            <param-value>/WEB-INF/struts-config.xml</param-value>
-        </init-param>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>10</param-value>
-        </init-param>
-        <init-param>
-            <param-name>detail</param-name>
-            <param-value>10</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
     
     <!-- Servlet Mappings -->
-    <servlet-mapping>
-        <servlet-name>DataServiceServlet</servlet-name>
-        <url-pattern>/webservice</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>XmlRpcServlet</servlet-name>
         <url-pattern>/xmlrpc</url-pattern>
@@ -78,11 +66,11 @@
     <!-- Error Codes -->
     <error-page>
         <error-code>404</error-code>
-        <location>/jsp/pages/NotFound.jsp</location>
+        <location>/WEB-INF/jsp/pages/NotFound.jsp</location>
     </error-page>
     <error-page>
         <error-code>400</error-code>
-        <location>/jsp/pages/NotFound.jsp</location>
+        <location>/WEB-INF/jsp/pages//NotFound.jsp</location>
     </error-page>
 
     <!-- Tag Libraries -->
