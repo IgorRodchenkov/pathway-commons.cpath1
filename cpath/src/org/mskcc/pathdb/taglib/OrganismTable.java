@@ -9,6 +9,8 @@ import org.mskcc.pathdb.sql.query.QueryException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 /**
  * Custom JSP Tag for Displaying Organism Data Plus Links.
@@ -70,6 +72,7 @@ public class OrganismTable extends HtmlTable {
             append("<TD COLSPAN=5>No Organism Data Available</TD>");
             endRow();
         } else {
+            NumberFormat formatter = new DecimalFormat("#,###,###");
             for (int i = 0; i < records.size(); i++) {
                 Organism organism = (Organism) records.get(i);
                 startRow(i);
@@ -81,7 +84,7 @@ public class OrganismTable extends HtmlTable {
                 String url = request.getUri();
                 outputDataField("<A HREF='" + url + "'>"
                         + organism.getSpeciesName() + "</A>");
-                outputDataField(Integer.toString
+                outputDataField(formatter.format
                         (organism.getNumInteractions()));
                 endRow();
             }

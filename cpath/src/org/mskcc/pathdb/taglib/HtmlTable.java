@@ -61,7 +61,7 @@ public abstract class HtmlTable extends TagSupport {
      * Starts HTML Table.
      */
     protected void startTable() {
-        append("<table border='1' cellspacing='2' cellpadding='3' "
+        append("<table border='0' cellspacing='2' cellpadding='3' "
                 + "width='100%'>");
     }
 

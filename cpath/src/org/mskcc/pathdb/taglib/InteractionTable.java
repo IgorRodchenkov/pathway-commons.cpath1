@@ -190,11 +190,9 @@ public class InteractionTable extends HtmlTable {
 
         startRow();
         this.append("<td colspan=2>" + pagerLinks + "</td>");
-        this.append("<td colspan=2>");
-        this.append("<div class='right'>");
+        this.append("<td colspan=2 align=right>");
         this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
         outputLink("View PSI-MI XML Format", psiUrl);
-        this.append("</div>");
         this.append("</td>");
         this.endRow();
 
@@ -224,7 +222,7 @@ public class InteractionTable extends HtmlTable {
                 if (targetProtein == null
                         || (targetProtein != null
                         && j == interactionList.getInteractionCount() - 1)) {
-                    append("<TR><TD COLSPAN=3><BR></TD></TR>");
+                    append("<TR><TD COLSPAN=4><BR></TD></TR>");
                 }
             }
         }
@@ -366,9 +364,9 @@ public class InteractionTable extends HtmlTable {
                 getProteinParticipantCount();
         if (targetProtein == null) {
 
-            append("<td width='300' rowspan='" + count + "' class='cpath2'>");
+            append("<td rowspan='" + count + "' class='cpath2'>");
         } else {
-            append("<td width='300' rowspan=1 class='cpath2'>");
+            append("<td rowspan=1 class='cpath2'>");
         }
         append("<table>");
         for (int i = 0; i < expList.getExperimentListItemCount(); i++) {
@@ -423,7 +421,7 @@ public class InteractionTable extends HtmlTable {
         if (cvType != null) {
             NamesType names = cvType.getNames();
             if (names != null) {
-                append("<TD width=150>" + names.getShortLabel() + "</TD>");
+                append("<TD>" + names.getShortLabel() + "</TD>");
             }
         }
     }
@@ -434,7 +432,7 @@ public class InteractionTable extends HtmlTable {
      * are outputted correctly.
      */
     private void outputBibRef(BibrefType bibRef) {
-        append("<TD width=150>");
+        append("<TD>");
         if (bibRef != null) {
             XrefType xref = bibRef.getXref();
             DbReferenceType primaryRef = xref.getPrimaryRef();
@@ -520,7 +518,7 @@ public class InteractionTable extends HtmlTable {
      */
     private void outputTargetOrganism(Organism organism) {
         startRow();
-        this.append("<td width=30% class='cpath1'>Organism:</th>");
+        this.append("<td class='cpath1'>Organism:</th>");
         NamesType names = organism.getNames();
         if (names != null) {
             String shortName = names.getShortLabel();

@@ -2,6 +2,9 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.PagedResult;
 
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
+
 /**
  * Utility Class for creating next/previous pages.
  *
@@ -113,10 +116,11 @@ public class Pager {
      * @return HTML Text.
      */
     public String getHeaderHtml() {
+        NumberFormat formatter = new DecimalFormat("#,###,###");
         String bar = "&nbsp;|&nbsp;";
         StringBuffer text = new StringBuffer();
         text.append((startIndex + 1) + " - " + endIndex);
-        text.append(" of " + totalNumHits);
+        text.append(" of " + formatter.format(totalNumHits));
         text.append("&nbsp;");
         String firstUrl = this.getFirstUrl();
         String previousUrl = this.getPreviousUrl();

@@ -28,25 +28,15 @@
     <FORM name="searchbox" ACTION="webservice.do" METHOD="GET">
     <div class="label">
         <strong>Search</strong>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <span style="text-align:right">
-            <% if (searchOptionsFlag != null
-                    && searchOptionsFlag.booleanValue() == true) { %>
-                <A HREF="toggleSearchOptions.do">[Less Options...]</A>
-            <% } else { %>
-            <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
-                value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
-            <A HREF="toggleSearchOptions.do">[More Options...]</A>
-            <% } %>
-        </span>
     </div>
     <div class="body">
         <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
+        <NOBR>
         <INPUT TYPE="TEXT" name="<%= ProtocolRequest.ARG_QUERY %>"
-            SIZE="20" VALUE='<%= searchTerm %>'/>
+            SIZE="15" VALUE='<%= searchTerm %>'/>
 
         <INPUT TYPE="SUBMIT" value="Go"/>
-
+        </NOBR>
         <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_FORMAT %>"
             value="html"/>
 
@@ -63,8 +53,8 @@
             Organism organism = (Organism) organisms.get(i);
             String currentTaxId = Integer.toString(organism.getTaxonomyId());
             String species = organism.getSpeciesName();
-            if (species.length() > 25) {
-                species = new String (species.substring(0,25) + "...");
+            if (species.length() > 20) {
+                species = new String (species.substring(0,20) + "...");
             }
         %>
             <% if (currentTaxId.equals(taxId)) { %>
@@ -125,6 +115,18 @@
         </SELECT>
         <% } %>
         <P>
+
+        <span style="text-align:right">
+            <% if (searchOptionsFlag != null
+                    && searchOptionsFlag.booleanValue() == true) { %>
+                <A HREF="toggleSearchOptions.do">[Less Options...]</A>
+            <% } else { %>
+            <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
+                value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
+            <A HREF="toggleSearchOptions.do">[More Options...]</A>
+            <% } %>
+        </span>
+
         </FORM>
     </div>
 </div>
