@@ -115,6 +115,16 @@ cPath Functionality Issues:
     I'm not saying that we should implement this scheme eventually, we should
     just note the example.
 
+17. Front end features (May31.2004):
+-Save search options in a cookie
+-Database stats page - expand and for the current contents, link to the DBODBs for the database + the database itself.
+
+18. We need to be able to present Non-redundant interactions - all interactions should be non-redundant. (May31.2004)
+
+19. Create a post-process for non-redundant interactors - once larger lists of xrefs are in cPath,
+process can optimize the interactors to find ones that overlap in xref space and put them together. (May31.2004)
+
+
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
 1.  Set up auto-emails upon fatal cPath errors (how does a user deal with errors?).
