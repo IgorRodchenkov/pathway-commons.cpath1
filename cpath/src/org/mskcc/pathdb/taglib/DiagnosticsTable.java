@@ -3,6 +3,7 @@ package org.mskcc.pathdb.taglib;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,9 +104,18 @@ public class DiagnosticsTable extends HtmlTable {
         testList.add(test);
 
         test = new Test("Testing access to Table:  xml_cache");
-        DaoXmlCache cache = new DaoXmlCache();
+        DaoXmlCache cache = new DaoXmlCache(new XDebug());
         try {
-            cache.getXmlByKey("12345");
+            cache.getXmlAssemblyByKey("12345");
+        } catch (DaoException e) {
+            test.setException(e);
+        }
+        testList.add(test);
+
+        test = new Test("Testing access to Table:  organism");
+        DaoOrganism organism = new DaoOrganism();
+        try {
+            organism.getAllOrganisms();
         } catch (DaoException e) {
             test.setException(e);
         }
