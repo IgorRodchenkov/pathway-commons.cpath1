@@ -40,6 +40,15 @@
                 <P><B>Open Issue:</B>  Do we have a list of experiment
                 types?  Are we using the PSI-MI controlled vocabulary
                 for experiment types?</P>
+                <P>
+                <UL>
+                    <LI>Resolution:  We stick to the PSI-MI controlled
+                    vocabulary.  The latest cv terms are available
+                    at:  <A HREF="http://psidev.sourceforge.net/mi/controlledVocab/">
+                    http://psidev.sourceforge.net/mi/controlledVocab/</A>.</LI>
+                </UL>
+                </P>
+
                 <P><B>Open Issue:</B>  We currently only store interaction
                 type in the XML fragment.  Searching would therefore be very
                 slow.  Do we want to add a new field in the CPATH table
@@ -82,6 +91,16 @@
             <P><B>Open Issue:</B>  Is it OK if we currently assume Affymetrix IDs
             in the expression data file?  Or should we allow the user to pick
             from a list of ID options?</P>
+            <P>
+                <UL>
+                <LI>Resolution:  It's ok to assume Affy IDs for first pass -
+                    asking the user to specify the ID type is a definite must
+                    for a general implementation, but is not imperative.
+                    Affy IDs are likely the only ones we'll see for
+                    MSKCC gene expression data.
+                </LI>
+                </UL>
+            </P>
             <HR/>
             </subsection>
         </section>
@@ -100,6 +119,13 @@
             <HR/>
             <P><B>Open Issue:</B>  Should we include the SOFT Reader in the
             cPath PlugIn?  Or Keep it out for now?</P>
+            <P>
+            <UL>
+                <LI>Resoution:  Let's keep the SOFT and PSI-MI plugin
+                    separate from the cPath plugin for now.</LI>
+            </UL>
+            </P>
+
             <P><B>Open Issue:</B>  What is the specific use case of someone using
             this PlugIn?  Will they 1)  query cPath;  2)  read in expression data?
             and then 3)  run Activity Center Algorithm?  Will this require that the
@@ -123,8 +149,18 @@
 
         <section name="5.  Load External Data Sets">
             <P>
-            We plan to import a complete sample data set.  This will probably
-                include HPRD, MINT, and a sample set of Affymetrix Identifiers.
+            We plan to import a complete sample data set.  This will  include:
+                <UL>
+                    <LI>IntAct</LI>
+                    <LI>DIP</LI>
+                    <LI>MINT</LI>
+                    <LI>HPRD</LI>
+                    <LI>BIND:  If we can fit in a BIND to PSI-MI XSLT, we
+                    might want to do it, otherwise we should wait for BIND
+                    to convert their data to PSI-MI (probably this summer).
+                    </LI>
+                    <LI>Affymetrix Identifiers</LI>
+                </UL>
             </P>
             <HR/>
             <P><B>Todo:</B>  Determine complete data set.</P>
