@@ -52,7 +52,7 @@ import java.util.StringTokenizer;
  * <PRE>
  * Affymetrix       UniGene        LocusLink       SwissProt       RefSeq
  * 1552275_3p_s_at  Hs.77646                       AAH08943 Q727A4 NP_060241
- * 1552281_sp_at                   283375          Q8N6Y3          NP_775867
+ * 1552275_3p_s_at                                                 NP_06024
  * </PRE>
  * <P>A few items to note:
  * <UL>
@@ -71,15 +71,9 @@ import java.util.StringTokenizer;
  * between IDs and stores these links within the database.  This is best
  * illustrated with sample data.  For example, the first line of data above
  * generates the following set of internal links:
- * <PRE>
- * +--- SwissProt ------  RefSeq
- * |    AAH08943          NP_060241
- * Affymetrix      -------  UniGene    +
- * 1552275_3p_s_at          Hs.77646   |
- * +--- SwissProt
- * Q727A4
- * </PRE>
- *
+ * <P>
+ * <IMG SRC="doc-files/link_graph.png"/>
+ * <P>
  * @author Ethan Cerami.
  */
 public class ParseIdMappingsTask extends Task {
