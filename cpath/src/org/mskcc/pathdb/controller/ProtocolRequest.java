@@ -230,7 +230,7 @@ public class ProtocolRequest implements PagedResult {
      * Max hits (String value).
      * @return Max Hits (String value.)
      */
-    public String getMaxHits () {
+    public String getMaxHits() {
         return this.maxHits;
     }
 

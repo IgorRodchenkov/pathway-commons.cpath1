@@ -222,7 +222,11 @@ public class ImportPsiToCPath {
                 summary.incrementNumInteractorsProcessed();
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
+
+                // Normalize, then extract External Refs
+                psiUtil.normalizeXrefs(protein.getXref());
                 ExternalReference[] refs = extractExternalReferences(protein);
+
                 ArrayList records = externalLinker.lookUpByExternalRefs(refs);
                 //  Step 3.1.2 - 3.1.3
                 if (records.size() > 0) {

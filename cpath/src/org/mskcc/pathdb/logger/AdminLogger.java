@@ -1,9 +1,11 @@
 package org.mskcc.pathdb.logger;
 
-import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -38,7 +40,7 @@ public class AdminLogger {
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement ("TRUNCATE TABLE log");
+            pstmt = con.prepareStatement("TRUNCATE TABLE log");
             pstmt.executeUpdate();
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);

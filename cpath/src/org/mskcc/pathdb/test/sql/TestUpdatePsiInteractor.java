@@ -33,11 +33,12 @@ public class TestUpdatePsiInteractor extends TestCase {
      */
     public void testUpdate() throws Exception {
         ProteinInteractorType proteinA = createProtein(NAME, DESCRIPTION,
-                "SWISS-PROT", "ABC123", "PIR", "XYZ123");
+                "SWP", "ABC123", "PIR", "XYZ123");
         ProteinInteractorType proteinB = createProtein(NAME, DESCRIPTION,
-                "SWISS-PROT", "ABC123", "LocusLink", "LOCUS123");
+                "SWP", "ABC123", "LocusLink", "LOCUS123");
         DaoCPath cpath = new DaoCPath();
         PsiUtil util = new PsiUtil();
+        util.normalizeXrefs(proteinA.getXref());
         ExternalReference refsA[] = util.extractRefs(proteinA);
         StringWriter writer = new StringWriter();
         proteinA.marshal(writer);
@@ -58,9 +59,15 @@ public class TestUpdatePsiInteractor extends TestCase {
         DaoCPath cpath = new DaoCPath();
         CPathRecord record = cpath.getRecordById(id);
         String xml = record.getXmlContent();
+        //  Note that SWP has been normalized to SWISS-PROT
+        int index0 = xml.indexOf
+                ("<primaryRef db=\"SWISS-PROT\" id=\"ABC123\"/>");
+        //  Note that original link is still there
         int index1 = xml.indexOf("<secondaryRef db=\"PIR\" id=\"XYZ123\"/>");
+        //  Note that new link is now there
         int index2 = xml.indexOf("<secondaryRef db=\"LocusLink\" "
                 + "id=\"LOCUS123\"/>");
+        assertTrue(index0 > 0);
         assertTrue(index1 > 0);
         assertTrue(index2 > 0);
         DaoExternalLink linker = new DaoExternalLink();

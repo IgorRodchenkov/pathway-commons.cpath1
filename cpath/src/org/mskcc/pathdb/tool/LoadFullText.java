@@ -3,10 +3,10 @@ package org.mskcc.pathdb.tool;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.BufferedReader;
@@ -77,7 +77,7 @@ public class LoadFullText {
             con = JdbcUtil.getCPathConnection();
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                ("select * from CPATH WHERE TYPE=? order by CPATH_ID");
+                    ("select * from CPATH WHERE TYPE=? order by CPATH_ID");
             pstmt.setString(1, CPathRecordType.PHYSICAL_ENTITY.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -86,7 +86,7 @@ public class LoadFullText {
                     System.out.print(".");
                 }
                 lucene.addRecord(record.getName(), record.getDescription(),
-                            record.getXmlContent(), record.getId());
+                        record.getXmlContent(), record.getId());
             }
         } catch (ClassNotFoundException e) {
             throw new DaoException("ClassNotFoundException:  "

@@ -38,8 +38,8 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
-import org.mskcc.pathdb.taglib.InteractionTable;
 import org.mskcc.pathdb.controller.ProtocolRequest;
+import org.mskcc.pathdb.taglib.InteractionTable;
 
 import java.util.ArrayList;
 

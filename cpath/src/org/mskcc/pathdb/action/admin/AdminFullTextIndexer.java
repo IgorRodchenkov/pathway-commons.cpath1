@@ -3,9 +3,8 @@ package org.mskcc.pathdb.action.admin;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.logger.AdminLogger;
-import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.tool.LoadFullText;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

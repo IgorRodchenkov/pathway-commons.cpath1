@@ -4,6 +4,8 @@ import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -137,6 +139,29 @@ public class PsiUtil {
             return refs;
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Normalizes all XRefs to FIXED_CV_TERMS.
+     * @param xref XrefType Object.
+     * @throws DaoException Data Access Exception.
+     */
+    public void normalizeXrefs(XrefType xref) throws DaoException {
+        DaoExternalDbCv dao = new DaoExternalDbCv();
+        if (xref != null) {
+            DbReferenceType primaryRef = xref.getPrimaryRef();
+            if (primaryRef != null) {
+                String db = primaryRef.getDb();
+                String newDb = dao.getFixedCvTerm(db);
+                primaryRef.setDb(newDb);
+            }
+            for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
+                DbReferenceType secondaryRef = xref.getSecondaryRef(i);
+                String db = secondaryRef.getDb();
+                String newDb = dao.getFixedCvTerm(db);
+                secondaryRef.setDb(newDb);
+            }
         }
     }
 

@@ -3,17 +3,14 @@ package org.mskcc.pathdb.sql.transfer;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.dataservices.schemas.psi.DbReferenceType;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
-import org.mskcc.dataservices.schemas.psi.XrefType;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
@@ -38,21 +35,13 @@ public class UpdatePsiInteractor extends UpdateInteractor {
     public UpdatePsiInteractor(ProteinInteractorType newProtein)
             throws DaoException, ValidationException, MarshalException {
         PsiUtil psiUtil = new PsiUtil();
-
         //  Find a Match to Existing Interactor.
         ExternalReference newRefs[] = psiUtil.extractRefs(newProtein);
         DaoExternalLink linker = new DaoExternalLink();
         ArrayList records = linker.lookUpByExternalRefs(newRefs);
         if (records.size() > 0) {
             CPathRecord record = (CPathRecord) records.get(0);
-            String xml = record.getXmlContent();
-            StringReader reader = new StringReader(xml);
-            existingProtein = ProteinInteractorType.
-                    unmarshalProteinInteractorType(reader);
-            ExternalReference existingRefs[] = psiUtil.extractRefs
-                    (existingProtein);
-            this.setExistingExternalRefs(existingRefs);
-            this.setcPathId(record.getId());
+            extractRefs(record);
         } else {
             throw new IllegalArgumentException("No matching interactor "
                     + "found for protein:  " + newProtein.getId());
@@ -61,24 +50,68 @@ public class UpdatePsiInteractor extends UpdateInteractor {
     }
 
     /**
-     * Updates the XML Stored in the existing Interactor to include all new
-     * external references.
-     * This method is specific to PSI.
-     * @param newList ArrayList of External Reference Objects.
+     * Constructor.
+     * @param ref1 External Reference 1.
+     * @param ref2 External Reference 2.
+     * @param refsAreNormalized References have already been normalized.
+     * @throws DaoException Error Adding new data to database.
      */
-    protected void updateInteractorXml(ArrayList newList)
-            throws ValidationException, MarshalException, DaoException {
-        XrefType xref = existingProtein.getXref();
-        for (int i = 0; i < newList.size(); i++) {
-            DbReferenceType secondaryRef = new DbReferenceType();
-            ExternalReference ref = (ExternalReference) newList.get(i);
-            secondaryRef.setDb(ref.getDatabase());
-            secondaryRef.setId(ref.getId());
-            xref.addSecondaryRef(secondaryRef);
+    public UpdatePsiInteractor(ExternalReference ref1, ExternalReference ref2,
+            boolean refsAreNormalized)
+            throws DaoException {
+        ExternalReference newRefs[] = new ExternalReference[2];
+        if (!refsAreNormalized) {
+            normalizeExternalRef(ref1);
+            normalizeExternalRef(ref2);
         }
-        StringWriter writer = new StringWriter();
-        existingProtein.marshal(writer);
-        DaoCPath cpath = new DaoCPath();
-        cpath.updateXml(this.getcPathId(), writer.toString());
+        newRefs[0] = ref1;
+        newRefs[1] = ref2;
+
+        //  Find  Match to Existing Interactor
+        DaoExternalLink linker = new DaoExternalLink();
+        ArrayList records1 = linker.lookUpByExternalRef(ref1);
+        try {
+            if (records1.size() > 0) {
+                CPathRecord record = (CPathRecord) records1.get(0);
+                extractRefs(record);
+            } else {
+                ArrayList records2 = linker.lookUpByExternalRef(ref2);
+                if (records2.size() > 0) {
+                    CPathRecord record = (CPathRecord) records2.get(0);
+                    extractRefs(record);
+                }
+            }
+            setNewExternalRefs(newRefs);
+        } catch (MarshalException e) {
+            throw new DaoException(e.getMessage());
+        } catch (ValidationException e) {
+            throw new DaoException(e.getMessage());
+        }
+    }
+
+    private void normalizeExternalRef(ExternalReference ref)
+            throws DaoException {
+        DaoExternalDbCv dao = new DaoExternalDbCv();
+        String newDb = dao.getFixedCvTerm(ref.getDatabase());
+        ref.setDatabase(newDb);
+    }
+
+    /**
+     * Based on Matching CPath Record, define set of existing external refs.
+     * @param record CPath Record.
+     * @throws ValidationException Invalid XML.
+     * @throws MarshalException Error Marshaling to XML.
+     */
+    private void extractRefs(CPathRecord record)
+            throws MarshalException, ValidationException {
+        PsiUtil psiUtil = new PsiUtil();
+        String xml = record.getXmlContent();
+        StringReader reader = new StringReader(xml);
+        existingProtein = ProteinInteractorType.
+                unmarshalProteinInteractorType(reader);
+        ExternalReference existingRefs[] = psiUtil.extractRefs
+                (existingProtein);
+        this.setExistingExternalRefs(existingRefs);
+        this.setcPathId(record.getId());
     }
 }

@@ -35,7 +35,7 @@ public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
      */
     protected void executeSub() throws Exception {
         xdebug.logMsg(this, "Getting Interactions for all Interactors with "
-            + "search term(s):  " + searchTerms);
+                + "search term(s):  " + searchTerms);
 
         DaoCPath cpath = new DaoCPath();
         LuceneIndexer indexer = new LuceneIndexer();
@@ -43,9 +43,10 @@ public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
             ArrayList records = new ArrayList();
             Hits hits = indexer.executeQuery(searchTerms);
             xdebug.logMsg(this, "Total Number of Matching Interactors "
-                + "Found:  " + hits.length());;
+                    + "Found:  " + hits.length());
+            ;
             int max = Math.min(maxHits, hits.length());
-            xdebug.logMsg (this, "Showing first " + max + "hits.");
+            xdebug.logMsg(this, "Showing first " + max + "hits.");
             for (int i = 0; i < max; i++) {
                 Document doc = hits.doc(i);
                 Field field = doc.getField(LuceneIndexer.FIELD_CPATH_ID);

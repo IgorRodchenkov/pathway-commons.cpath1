@@ -255,10 +255,13 @@ public class DaoExternalDb {
         record.setDescription(rs.getString("DESC"));
         record.setCreateTime(rs.getTimestamp("CREATE_TIME"));
         record.setUpdateTime(rs.getTime("UPDATE_TIME"));
+        int cvId = rs.getInt("FIXED_CV_TERM");
 
         DaoExternalDbCv dao = new DaoExternalDbCv();
         ArrayList terms = dao.getTermsByDbId(record.getId());
         record.setCvTerms(terms);
+        String term = dao.getTermByDbCvId(cvId);
+        record.setFixedCvTerm(term);
         return record;
     }
 }

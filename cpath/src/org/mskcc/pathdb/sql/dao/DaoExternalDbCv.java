@@ -46,6 +46,23 @@ public class DaoExternalDbCv {
         }
     }
 
+
+    /**
+     * Normalizes External Reference to FIXED CV_TERM.
+     * @param dbTerm External Database CV Term
+     * @return Fixed CV Term.
+     * @throws DaoException Data Access Exception.
+     */
+    public String getFixedCvTerm(String dbTerm)
+            throws DaoException {
+        ExternalDatabaseRecord exDb = getExternalDbByTerm(dbTerm);
+        if (exDb == null) {
+            throw new DaoException
+                    ("No matching database found for: " + dbTerm);
+        }
+        return exDb.getFixedCvTerm();
+    }
+
     /**
      * Gets Database by Term.
      * @param term Term to search.
@@ -66,7 +83,8 @@ public class DaoExternalDbCv {
             if (rs.next()) {
                 int id = rs.getInt("EXTERNAL_DB_ID");
                 DaoExternalDb daoDb = new DaoExternalDb();
-                return daoDb.getRecordById(id);
+                ExternalDatabaseRecord dbRecord = daoDb.getRecordById(id);
+                return dbRecord;
             }
             return null;
         } catch (ClassNotFoundException e) {
@@ -102,6 +120,36 @@ public class DaoExternalDbCv {
                 terms.add(term);
             }
             return terms;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets Term Associated with the specified Db Cv Id.
+     * @param cvId External Database CV ID.
+     * @return String term.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public String getTermByDbCvId(int cvId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT * FROM EXTERNAL_DB_CV WHERE CV_ID = ?");
+            pstmt.setInt(1, cvId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                return rs.getString("CV_TERM");
+            }
+            return null;
         } catch (ClassNotFoundException e) {
             throw new DaoException("ClassNotFoundException:  "
                     + e.getMessage());

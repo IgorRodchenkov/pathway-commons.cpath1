@@ -115,7 +115,7 @@ public class DaoCPath {
         long cpathId = this.addRecord(name, description, ncbiTaxonomyId,
                 type, xml);
         DaoExternalLink linker = new DaoExternalLink();
-        linker.addMulipleRecords(cpathId, refs);
+        linker.addMulipleRecords(cpathId, refs, false);
         return cpathId;
     }
 

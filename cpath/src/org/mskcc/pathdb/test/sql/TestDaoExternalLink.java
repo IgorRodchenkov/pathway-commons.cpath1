@@ -73,7 +73,7 @@ public class TestDaoExternalLink extends TestCase {
         assertTrue(!exists);
 
         //  Second, add record.
-        boolean success = db.addRecord(link);
+        boolean success = db.addRecord(link, false);
         assertTrue(success);
 
         //  Third, verify that record now exists.

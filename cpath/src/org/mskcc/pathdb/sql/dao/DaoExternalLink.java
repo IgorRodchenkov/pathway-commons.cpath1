@@ -1,16 +1,48 @@
 package org.mskcc.pathdb.sql.dao;
 
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.dataservices.schemas.psi.DbReferenceType;
+import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
+import org.mskcc.dataservices.schemas.psi.XrefType;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.sql.*;
 import java.util.ArrayList;
 
 /**
  * Data Access Object to the External Link Table.
+ * <P>
+ * <B>Data Synchronization:</B>  As currently constructed, CPath maintains
+ * external references for PHYSICAL_ENTITY records in two places:
+ * the EXTERNAL_LINK table, and the embedded XML document in the CPATH table.
+ * This XML is currently encoded in PSI-MI XML format, but in the future,
+ * it will be encoded in BioPax XML format.  CPath records other than
+ * PHYSICAL_ENTITY records do *not* have this data integrity requirement.
+ * <P>
+ * The DaoExternalLink class is currently responsible for enforcing the data
+ * integrity requirement specified above.  However, there are two scenarios
+ * for data synchronization:
+ * <UL>
+ * <LI>Scenario 1:  New interactor data is imported.  In this case, external
+ * references already exist in the XML, and we only need to add external
+ * references to the EXTERNAL_LINK table.  No synchronization is needed.
+ * To follow this procedure, set the synchronizeXml parameter to false when
+ * calling addRecord() or addMulipleRecords().
+ * <LI>Scenario 2:  Updated interactor data is imported.  In this case, new
+ * external references are added to both the EXTERNAL_LINK table and the
+ * embedded XML.  This class assumes that all newly imported external links
+ * are in fact new, and that checking for pre-existing or duplicate references
+ * is done elsewhere.   To follow this procedure, set the synchronizeXml
+ * parameter to false when calling addRecord() or addMulipleRecords().
+ * </UL>
  *
  * @author Ethan Cerami
  */
@@ -18,11 +50,14 @@ public class DaoExternalLink {
 
     /**
      * Adds New External Link Record.
+     * See class comments for details regarding data/xml synchronization.
      * @param link ExternalLinkRecord Object.
+     * @param synchronizeXml Synchronize XML in CPath Record (true or false).
      * @return true if saved successfully.
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean addRecord(ExternalLinkRecord link) throws DaoException {
+    public boolean addRecord(ExternalLinkRecord link, boolean synchronizeXml)
+            throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -40,6 +75,9 @@ public class DaoExternalLink {
                 Timestamp timeStamp = new Timestamp(date.getTime());
                 pstmt.setTimestamp(4, timeStamp);
                 int rows = pstmt.executeUpdate();
+                if (synchronizeXml) {
+                    synchronizeXml(link);
+                }
                 return (rows > 0) ? true : false;
             } else {
                 return false;
@@ -56,11 +94,14 @@ public class DaoExternalLink {
 
     /**
      * Adds All External References to Database.
+     * See class comments for details regarding data/xml synchronization.
      * @param cpathId cPath ID.
      * @param refs Array of External Reference Objects.
+     * @param synchronizeXml Synchronize XML in CPath Record (true or false).
      * @throws DaoException Error Retrieving Data.
      */
-    public void addMulipleRecords(long cpathId, ExternalReference refs[])
+    public void addMulipleRecords(long cpathId, ExternalReference refs[],
+            boolean synchronizeXml)
             throws DaoException {
         if (refs != null) {
             for (int i = 0; i < refs.length; i++) {
@@ -73,7 +114,7 @@ public class DaoExternalLink {
                     link.setExternalDatabase(dbRecord);
                     link.setCpathId(cpathId);
                     link.setLinkedToId(id);
-                    addRecord(link);
+                    addRecord(link, synchronizeXml);
                 }
             }
         }
@@ -106,7 +147,7 @@ public class DaoExternalLink {
     }
 
     /**
-     * Looks Up the cPath Record that matches the specified External Reference.
+     * Looks Up the cPath Records that matches the specified External Reference.
      * @param ref An External Reference.
      * @return ArrayList of Matching CPath Records.
      * @throws DaoException Error Retrieving Data.
@@ -337,5 +378,45 @@ public class DaoExternalLink {
         ExternalDatabaseRecord db = table.getRecordById(link.getExternalDbId());
         link.setExternalDatabase(db);
         return link;
+    }
+
+    /**
+     * Synchonizes New External Link with Embedded XML.
+     * @param externalLink ExternalLink Object.
+     * @throws DaoException Data Access Exception.
+     */
+    private void synchronizeXml(ExternalLinkRecord externalLink)
+            throws DaoException {
+        //  Get CPath Record with Current XML
+        DaoCPath cpath = new DaoCPath();
+        CPathRecord record = cpath.getRecordById(externalLink.getCpathId());
+
+        CPathRecordType recordType = record.getType();
+        if (recordType.equals(CPathRecordType.PHYSICAL_ENTITY)) {
+            //  Transform XML to Castor Objects
+            String xml = record.getXmlContent();
+            StringReader reader = new StringReader(xml);
+            try {
+                ProteinInteractorType protein = ProteinInteractorType.
+                        unmarshalProteinInteractorType(reader);
+                //  Add new Ref to XML document
+                XrefType xref = protein.getXref();
+                DbReferenceType secondaryRef = new DbReferenceType();
+                String cvTerm = externalLink.getExternalDatabase()
+                        .getFixedCvTerm();
+                secondaryRef.setDb(cvTerm);
+                secondaryRef.setId(externalLink.getLinkedToId());
+                xref.addSecondaryRef(secondaryRef);
+
+                //  Then, update XML
+                StringWriter writer = new StringWriter();
+                protein.marshal(writer);
+                cpath.updateXml(externalLink.getCpathId(), writer.toString());
+            } catch (MarshalException e) {
+                throw new DaoException(e.getMessage());
+            } catch (ValidationException e) {
+                throw new DaoException(e.getMessage());
+            }
+        }
     }
 }

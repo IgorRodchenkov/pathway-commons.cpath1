@@ -20,6 +20,7 @@ public class ExternalDatabaseRecord {
     private String name;
     private String description;
     private ArrayList cvTerms;
+    private String fixedCvTerm;
     private String url;
     private Date createTime;
     private Date updateTime;
@@ -134,5 +135,21 @@ public class ExternalDatabaseRecord {
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    /**
+     * Gets the fixed (or normalized) CV Term.
+     * @return CV Term.
+     */
+    public String getFixedCvTerm() {
+        return fixedCvTerm;
+    }
+
+    /**
+     * Sets the fixed (or normalized) CV Term.
+     * @param fixedCvTerm CV Term String.
+     */
+    public void setFixedCvTerm(String fixedCvTerm) {
+        this.fixedCvTerm = fixedCvTerm;
     }
 }
