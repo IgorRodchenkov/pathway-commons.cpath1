@@ -14,37 +14,8 @@ foreach my $jar (@jar_files) {
 }
 
 my $numArgs = scalar (@ARGV);
-if ($numArgs < 1) {
-	displayHelp();
-}
+
 # Output cPath Home
-print ("Using cPath Home:  $cpathHome\n");
+# print ("Using cPath Home:  $cpathHome\n");
 
-my $command = shift (@ARGV);
-
-if ($command eq "psi") {
-	system ("java -Xmx512M -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.LoadPsi @ARGV");
-} elsif ($command eq "import") {
-	system ("java -Xmx512M -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.ImportRecords @ARGV");
-} elsif ($command eq "index") {
-	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.RunIndexer  @ARGV");
-} elsif ($command eq "refs") {
-	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.LoadExternalReferences  @ARGV");
-} elsif ($command eq "precompute") {
-	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.LoadPreComputedQueries @ARGV");
-} elsif ($command eq "ft_query") {
-	system ("java -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.QueryFullText @ARGV");
-}
-
-sub displayHelp {
-	print "-------------------------------------------------------\n";
-	print "cPath Admin\n";
-	print "-------------------------------------------------------\n";
-	print "psi:         Loads PSI-MI data\n";
-	print "import:      Imports all new import records to cPath\n";
-	print "index:       Indexes all cPath records\n";
-	print "refs:        Loads a list of external references\n";
-	print "precompute:  Runs Pre-computed queries\n";
-	print "ft_query:    Tests the Full Text Query Engine\n";
-	exit;
-}
+system ("java -Xmx512M -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.Admin @ARGV");
