@@ -7,6 +7,7 @@ import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractionList;
 import org.mskcc.dataservices.schemas.psi.InteractorList;
 import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.model.InternalLinkRecord;
@@ -14,9 +15,11 @@ import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.query.InteractionQuery;
-import org.mskcc.pathdb.sql.query.GetInteractionsByInteractorName;
+import org.mskcc.pathdb.sql.query.*;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
+import org.mskcc.pathdb.tool.LoadFullText;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -48,12 +51,17 @@ public class TestImportPsiToCPath extends TestCase {
         DaoExternalLink linker = new DaoExternalLink();
         ExternalReference refs[] = new ExternalReference[1];
         refs[0] = new ExternalReference("PIR", "BWBYD5");
-        CPathRecord record = linker.lookUpByExternalRefs(refs);
+        ArrayList records = linker.lookUpByExternalRefs(refs);
+        CPathRecord record = (CPathRecord) records.get(0);
         assertEquals(4932, record.getNcbiTaxonomyId());
         assertEquals("GTP/GDP exchange factor for Rsr1 protein",
                 record.getDescription());
 
-        validateData();
+        //  Run Full Text Indexer
+        LoadFullText batch = new LoadFullText(false);
+        batch.indexAllPhysicalEntities();
+
+        validateQueries();
 
         //  Try Saving Again
         //  Validate that no new interactors are saved.
@@ -67,12 +75,121 @@ public class TestImportPsiToCPath extends TestCase {
     }
 
     /**
-     * Validates Data with InteractionQuery.
+     * Validates Data with Multiple Queries.
      * @throws Exception All Exceptions.
      */
-    private void validateData() throws Exception {
-        InteractionQuery query = new GetInteractionsByInteractorName("YCR038C");
+    private void validateQueries() throws Exception {
+        validateGetByName();
+        validateGetById();
+        validateInteractionSource();
+        validateGetByTaxonomyId();
+        validateGetByPmid();
+        validateGetByDbSource();
+        validateGetByKeyword();
+    }
+
+    /**
+     * Verifies that GetInteractionsByInteractorName Works.
+     */
+    private void validateGetByName() throws QueryException,
+            EmptySetException, MarshalException, ValidationException {
+        PsiInteractionQuery query =
+                new GetInteractionsByInteractorName("YCR038C");
+        query.execute();
         EntrySet entrySet = query.getEntrySet();
+        validateInteractionSet(entrySet);
+    }
+
+    /**
+     * Verifies that GetInteractionsByInteractorID Works.
+     */
+    private void validateGetById() throws QueryException,
+            EmptySetException, MarshalException, ValidationException,
+            DaoException {
+        DaoCPath cpath = new DaoCPath();
+        CPathRecord record = cpath.getRecordByName("YCR038C");
+        PsiInteractionQuery query =
+                new GetInteractionsByInteractorId (record.getId());
+        query.execute();
+        EntrySet entrySet = query.getEntrySet();
+        validateInteractionSet(entrySet);
+    }
+
+    /**
+     * Verifies that GetInteractionsByInteractorTaxonomyId Works.
+     */
+    private void validateGetByTaxonomyId() throws QueryException,
+            EmptySetException {
+        int taxId = 4932;
+        PsiInteractionQuery query =
+                new GetInteractionsByInteractorTaxonomyId (taxId);
+        query.execute();
+        EntrySet entrySet = query.getEntrySet();
+        assertEquals (5, entrySet.getEntry(0).getInteractorList().
+                getProteinInteractorCount());
+        assertEquals (4, entrySet.getEntry(0).getInteractionList()
+                .getInteractionCount());
+        String xml = query.getXml();
+        int index = xml.indexOf(Integer.toString(taxId));
+        assertTrue (index > 0);
+    }
+
+    /**
+     * Verifies that GetInteractionsByInteractionPmid Works.
+     */
+    private void validateGetByPmid() throws  QueryException,
+            EmptySetException {
+        String pmid = "12345678";
+        PsiInteractionQuery query = new GetInteractionsByInteractionPmid (pmid);
+        query.execute();
+        EntrySet entrySet = query.getEntrySet();
+        assertEquals (2, entrySet.getEntry(0).getInteractorList().
+                getProteinInteractorCount());
+        assertEquals (1, entrySet.getEntry(0).getInteractionList()
+                .getInteractionCount());
+        String xml = query.getXml();
+        int index = xml.indexOf(pmid);
+        assertTrue (index > 0);
+    }
+
+    /**
+     * Verifies that GetInteractionsByIntractionDbSource Works.
+     */
+    private void validateGetByDbSource() throws  QueryException,
+            EmptySetException {
+        String db = "DIP";
+        PsiInteractionQuery query =
+                new GetInteractionsByInteractionDbSource (db);
+        query.execute();
+        String xml = query.getXml();
+        EntrySet entrySet = query.getEntrySet();
+        assertEquals (2, entrySet.getEntry(0).getInteractorList().
+                getProteinInteractorCount());
+        assertEquals (1, entrySet.getEntry(0).getInteractionList()
+                .getInteractionCount());
+    }
+
+    /**
+     * Verifies that GetInteractionsByKeyword Works.
+     */
+    private void validateGetByKeyword() throws  QueryException,
+            EmptySetException {
+        String term = "Xenopus";
+        PsiInteractionQuery query =
+                new GetInteractionsByInteractorKeyword (term);
+        query.execute();
+        String xml = query.getXml();
+        EntrySet entrySet = query.getEntrySet();
+        int index = xml.indexOf(term);
+        assertTrue (index > 0);
+        assertEquals (2, entrySet.getEntry(0).getInteractorList().
+                getProteinInteractorCount());
+        assertEquals (1, entrySet.getEntry(0).getInteractionList()
+                .getInteractionCount());
+    }
+
+    private void validateInteractionSet(EntrySet entrySet)
+            throws MarshalException, ValidationException {
         StringWriter writer = new StringWriter();
         entrySet.marshal(writer);
         Entry entry = entrySet.getEntry(0);
@@ -81,28 +198,6 @@ public class TestImportPsiToCPath extends TestCase {
         InteractionList interactionList = entry.getInteractionList();
         assertEquals(4, interactionList.getInteractionCount());
         assertTrue(entrySet.isValid());
-        validateInteractionSource();
-        validatePMID();
-    }
-
-    private void validatePMID() throws DaoException {
-        //  Try Looking up by PMID.
-        DaoExternalLink linker = new DaoExternalLink();
-        ExternalReference ref = new ExternalReference("PMID", "12345678");
-        CPathRecord record = linker.lookUpByExternalRef(ref);
-
-        //  Find the IDs for Known Interactors
-        DaoCPath cpath = new DaoCPath();
-        CPathRecord interactor1 = cpath.getRecordByName("YCR038C");
-        CPathRecord interactor2 = cpath.getRecordByName("YDL065C");
-
-        //  Verify that interaction record references known interactors.
-        DaoInternalLink internalLinker = new DaoInternalLink();
-        ArrayList links = internalLinker.getInternalLinks(record.getId());
-        InternalLinkRecord link1 = (InternalLinkRecord) links.get(0);
-        InternalLinkRecord link2 = (InternalLinkRecord) links.get(1);
-        assertEquals (interactor1.getId(), link1.getCpathIdB());
-        assertEquals (interactor2.getId(), link2.getCpathIdB());
     }
 
     /**
@@ -113,7 +208,8 @@ public class TestImportPsiToCPath extends TestCase {
         //  Do a look up based on External Reference
         DaoExternalLink linker = new DaoExternalLink();
         ExternalReference ref = new ExternalReference ("DIP", "58E");
-        CPathRecord record = linker.lookUpByExternalRef(ref);
+        ArrayList records = linker.lookUpByExternalRef(ref);
+        CPathRecord record = (CPathRecord) records.get(0);
 
         //  Find the IDs for Known Interactors
         DaoCPath cpath = new DaoCPath();

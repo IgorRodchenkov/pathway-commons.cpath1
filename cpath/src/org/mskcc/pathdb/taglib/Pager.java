@@ -42,7 +42,7 @@ public class Pager {
 
     /**
      * Gets the Start Index Value.
-     * @return start index value.
+     * @return start indexAllPhysicalEntities value.
      */
     public int getStartIndex() {
         return startIndex;
@@ -50,7 +50,7 @@ public class Pager {
 
     /**
      * Gets the End Index Value.
-     * @return end index value.
+     * @return end indexAllPhysicalEntities value.
      */
     public int getEndIndex() {
         return endIndex;

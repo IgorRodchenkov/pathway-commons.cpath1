@@ -151,7 +151,41 @@ public class DaoCPath {
         return records;
     }
 
-    //  TODO Next Phase:  Get all Records by Species NCBI Taxonomy ID
+    /**
+     * Gets Physical Entity Record by Taxonomy ID.
+     * @param recordType CPathRecordType.
+     * @param taxonomyId NCBI Taxonomy ID.
+     * @return CPathRecord CPath Record Object.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public CPathRecord getRecordByTaxonomyID(CPathRecordType recordType,
+            int taxonomyId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT * FROM CPATH WHERE TYPE = ? AND "
+                    + "NCBI_TAX_ID = ?");
+            pstmt.setString(1, recordType.toString());
+            pstmt.setInt(2, taxonomyId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return this.extractRecord(rs);
+            } else {
+                return null;
+            }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
     //  TODO Next Phase:  Get all Records by External DB Source
 
     /**

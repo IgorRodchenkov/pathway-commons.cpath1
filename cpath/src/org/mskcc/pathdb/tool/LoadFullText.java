@@ -19,6 +19,15 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class LoadFullText {
+    private static boolean verbose;
+
+    /**
+     * Constructor.
+     * @param verbose Verbose Flag.
+     */
+    public LoadFullText(boolean verbose) {
+        this.verbose = verbose;
+    }
 
     /**
      * Main Method.
@@ -28,14 +37,14 @@ public class LoadFullText {
         try {
             XDebug xdebug = new XDebug();
             xdebug.startTimer();
-            LoadFullText indexer = new LoadFullText();
+            LoadFullText indexer = new LoadFullText(true);
             if (args.length > 0) {
                 indexer.indexText(args[0]);
             } else {
-                indexer.index();
+                indexer.indexAllPhysicalEntities();
             }
             xdebug.stopTimer();
-            System.out.println("\nTotal Time for Indexing:  "
+            outputMsg("\nTotal Time for Indexing:  "
                     + xdebug.getTimeElapsed() + " ms");
         } catch (Exception e) {
             System.out.println("\n!!!!  Indexing aborted due to error!");
@@ -44,27 +53,28 @@ public class LoadFullText {
     }
 
     /**
-     * Run Full Text Indexing.
+     * Run Full Text Indexing on all Physical Entities.
      * @throws DaoException Data Accession Exception.
      * @throws IOException Input Output Exception.
      * @throws ImportException Import Exception.
      */
-    public void index() throws DaoException, IOException, ImportException {
-        System.out.println("Loading Full Text Indexer");
-        System.out.print("Processing all cPath records:  ");
+    public void indexAllPhysicalEntities() throws DaoException, IOException,
+            ImportException {
+        outputMsg("Loading Full Text Indexer");
+        outputMsg("Processing all cPath records:  ");
         DaoCPath dao = new DaoCPath();
         LuceneIndexer lucene = new LuceneIndexer();
         lucene.initIndex();
         ArrayList records = dao.getAllRecords();
         for (int i = 0; i < records.size(); i++) {
-            System.out.print(".");
+            outputMsg(".");
             CPathRecord record = (CPathRecord) records.get(i);
             if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
                 lucene.addRecord(record.getName(), record.getDescription(),
                         record.getXmlContent(), record.getId());
             }
         }
-        System.out.println("\nIndexing complete");
+        outputMsg("\nIndexing complete");
     }
 
     /**
@@ -75,7 +85,7 @@ public class LoadFullText {
      */
     public void indexText(String fileName) throws IOException,
             ImportException {
-        System.out.println("Indexing File:  " + fileName);
+        outputMsg("Indexing File:  " + fileName);
         long numRecords = 0;
         LuceneIndexer lucene = new LuceneIndexer();
         lucene.initIndex();
@@ -94,20 +104,30 @@ public class LoadFullText {
                 }
                 numRecords++;
                 if (numRecords % 100 == 0) {
-                    System.out.println("\nNumber Indexed so far:  "
-                            + numRecords);
+                    outputMsg ("\nNumber Indexed so far:  "
+                                + numRecords);
                 }
                 indexRecord(lucene, record.toString());
             }
         }
         lucene.closeIndexWriter();
-        System.out.println("Total Number of Records Indexed:  "
-                + numRecords);
+        outputMsg ("Total Number of Records Indexed:  "
+                    + numRecords);
     }
 
     private void indexRecord(LuceneIndexer lucene, String record)
             throws ImportException {
-        System.out.print(".");
+        outputMsg(".");
         lucene.addRecord(record);
+    }
+
+    /**
+     * Conditionally Output Message to System.out.
+     * @param msg User Message.
+     */
+    public static void outputMsg(String msg) {
+        if (verbose) {
+            System.out.println(msg);
+        }
     }
 }

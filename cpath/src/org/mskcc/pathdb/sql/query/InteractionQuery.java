@@ -1,30 +1,22 @@
 package org.mskcc.pathdb.sql.query;
 
 import org.apache.log4j.Logger;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
-import org.mskcc.dataservices.mapper.MapPsiToInteractions;
-import org.mskcc.dataservices.mapper.MapperException;
-import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.util.PsiBuilder;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Performs an Interaction Query.
- * Description of Query:  Retrieve all interactions for "YER006W".
+ * Abstract Base Class for all queries which return interactions.
  *
  * @author Ethan Cerami
  */
 public abstract class InteractionQuery {
-    protected EntrySet entrySet;
-    protected ArrayList interactions;
-    protected String xml;
+    private ArrayList interactions;
+    private String xml;
 
     /**
      * Logger.
@@ -32,15 +24,26 @@ public abstract class InteractionQuery {
     protected Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
-     * Gets the EntrySet Object or Results.
-     * @return PSI-MI Entry Set Castor Object.
+     * Executes Query.
+     * @throws QueryException Error Executing Query.
+     * @throws EmptySetException No Results Found.
      */
-    public EntrySet getEntrySet() {
-        return entrySet;
+    public void execute() throws QueryException, EmptySetException {
+        try {
+            executeSub();
+        } catch (Exception e) {
+            throw new QueryException(e.getMessage(), e);
+        }
     }
 
     /**
-     * Gets the ArrayList of Interaction Results.
+     * Must be subclassed.
+     * @throws Exception All Exceptions.
+     */
+    protected abstract void executeSub() throws Exception;
+
+    /**
+     * Gets the ArrayList of Interaction Objects.
      * @return ArrayList of Interaction Objects.
      */
     public ArrayList getInteractions() {
@@ -56,64 +59,74 @@ public abstract class InteractionQuery {
     }
 
     /**
-     * Generates XML from Entry Set Object.
+     * Sets the XML Response String.
+     * @param xml XML String.
      */
-    protected String generateXml() throws ValidationException,
-            MarshalException {
-        StringWriter writer = new StringWriter();
-        entrySet.marshal(writer);
-        String xml = writer.toString();
-        return xml;
+    public void setXml(String xml) {
+        this.xml = xml;
     }
 
     /**
-     * Maps PSI to Data Service Interaction objects.
+     * Sets the ArrayList of Interaction Objects.
+     * @param interactions
      */
-    protected void mapToInteractions() throws MarshalException,
-            ValidationException, MapperException {
-        StringWriter writer = new StringWriter();
-        entrySet.marshal(writer);
-        String xml = writer.toString();
-        interactions = new ArrayList();
-        MapPsiToInteractions mapper = new MapPsiToInteractions(xml,
-                interactions);
-        mapper.doMapping();
+    protected void setInteractions(ArrayList interactions) {
+        this.interactions = interactions;
     }
 
     /**
-     * Generates PSI XML.
+     * Given a List of Interactor Records, retrieve all
+     * associated interactions.
+     * @param cpathRecords ArrayList of CPath Record Objects
+     * containing Interactors.
+     * @return ArrayList of CPathRecord Objects containing Interactions.
+     * @throws DaoException Error Retrieving Data from Database.
      */
-    protected EntrySet aggregateXml(CPathRecord record)
-            throws DaoException, MarshalException, ValidationException {
-        logger.info("Aggregating XML Documents");
+    protected ArrayList extractInteractions(ArrayList cpathRecords)
+            throws DaoException {
+        ArrayList interactions = new ArrayList();
+        DaoInternalLink linker = new DaoInternalLink();
+        for (int i = 0; i < cpathRecords.size(); i++) {
+            CPathRecord record = (CPathRecord) cpathRecords.get(i);
+            ArrayList list = linker.getInternalLinksWithLookup(record.getId());
+            interactions.addAll(list);
+        }
+        return interactions;
+    }
+
+    /**
+     * Given an Interactor Record, retrieve all associated interactions.
+     * @param record CPathRecord Object
+     * @return ArrayList of CPathRecord Objects containing Interactions.
+     * @throws DaoException Error Retrieving Data from Database.
+     */
+    protected ArrayList extractInteractions(CPathRecord record)
+            throws DaoException {
+        ArrayList interactors = new ArrayList();
+        interactors.add(record);
+        return this.extractInteractions(interactors);
+    }
+
+    /**
+     * Given a List of Interaction Records, retrieve all associated
+     * interactors.
+     * @param interactions ArrayList of CPathRecord Objects containing
+     * Interactions.
+     * @return HashMap of All Interactors, indexed by cpath ID.
+     * @throws DaoException Error Retrieving Data from Database.
+     */
+    protected HashMap extractInteractors(ArrayList interactions)
+            throws DaoException {
         HashMap interactorMap = new HashMap();
         DaoInternalLink linker = new DaoInternalLink();
-        PsiBuilder psiBuilder = new PsiBuilder();
-        long id = record.getId();
-        ArrayList interactions = linker.getInternalLinksWithLookup(id);
-        logger.info("Number of Interactions Found:  " + interactions.size());
         for (int i = 0; i < interactions.size(); i++) {
-            CPathRecord intxRecord = (CPathRecord) interactions.get(i);
-            long intxId = intxRecord.getId();
-            ArrayList interactors =
-                    linker.getInternalLinksWithLookup(intxId);
-            addInteractorsToMap(interactorMap, interactors);
+            CPathRecord record = (CPathRecord) interactions.get(i);
+            ArrayList list = linker.getInternalLinksWithLookup(record.getId());
+            for (int j = 0; j < list.size(); j++) {
+                CPathRecord temp = (CPathRecord) list.get(j);
+                interactorMap.put(new Long(temp.getId()), temp);
+            }
         }
-        logger.info("Creating Final PSI-MI XML Document");
-        EntrySet entrySet = psiBuilder.generatePsi(interactorMap.values(),
-                interactions);
-        return entrySet;
-    }
-
-    /**
-     * Adds List of Interactors to Non-redundant Interactor Map.
-     */
-    private void addInteractorsToMap(HashMap interactorMap, ArrayList
-            interactors) {
-        for (int i = 0; i < interactors.size(); i++) {
-            CPathRecord record = (CPathRecord) interactors.get(i);
-            long id = record.getId();
-            interactorMap.put(Long.toString(id), record);
-        }
+        return interactorMap;
     }
 }

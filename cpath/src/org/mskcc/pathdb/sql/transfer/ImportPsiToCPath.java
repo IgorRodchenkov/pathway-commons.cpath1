@@ -14,6 +14,7 @@ import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -222,10 +223,10 @@ public class ImportPsiToCPath {
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
                 ExternalReference[] refs = extractExternalReferences(protein);
-                CPathRecord record =
-                        externalLinker.lookUpByExternalRefs(refs);
+                ArrayList records = externalLinker.lookUpByExternalRefs(refs);
                 //  Step 3.1.2 - 3.1.3
-                if (record != null) {
+                if (records.size() > 0) {
+                    CPathRecord record = (CPathRecord) records.get(0);
                     //  Conditionally Update the Interactor Record with
                     //  new external references.
                     UpdatePsiInteractor updater = new UpdatePsiInteractor
@@ -375,8 +376,9 @@ public class ImportPsiToCPath {
             throws DaoException {
         DaoExternalLink linker = new DaoExternalLink();
         DaoCPath cpath = new DaoCPath();
-        CPathRecord record = linker.lookUpByExternalRefs(refs);
-        if (record != null) {
+        ArrayList records = linker.lookUpByExternalRefs(refs);
+        if (records.size() > 0) {
+            CPathRecord record = (CPathRecord) records.get(0);
             //  Delete the Interaction Record and all
             //  associated internal/external links.
             cpath.deleteRecordById(record.getId());

@@ -108,10 +108,10 @@ public class DaoExternalLink {
     /**
      * Looks Up the cPath Record that matches the specified External Reference.
      * @param ref An External Reference.
-     * @return Matching cPath Record or Null.
+     * @return ArrayList of Matching CPath Records.
      * @throws DaoException Error Retrieving Data.
      */
-    public CPathRecord lookUpByExternalRef(ExternalReference ref)
+    public ArrayList lookUpByExternalRef(ExternalReference ref)
             throws DaoException {
         ExternalReference refs[] = new ExternalReference[1];
         refs[0] = ref;
@@ -123,11 +123,12 @@ public class DaoExternalLink {
      * References.
      * @param refs An Array of External References.  All these references
      * refer to the same interactor, as defined in different databases.
-     * @return Matching cPath Record or Null.
+     * @return ArrayList of Matching CPath Records.
      * @throws DaoException Error Retrieving Data.
      */
-    public CPathRecord lookUpByExternalRefs(ExternalReference refs[])
+    public ArrayList lookUpByExternalRefs(ExternalReference refs[])
             throws DaoException {
+        ArrayList records = new ArrayList();
         //  Iterate through all External References.
         if (refs != null) {
             for (int i = 0; i < refs.length; i++) {
@@ -138,20 +139,23 @@ public class DaoExternalLink {
                 DaoExternalDb dao = new DaoExternalDb();
                 ExternalDatabaseRecord externalDb = dao.getRecordByTerm(dbName);
                 if (externalDb != null) {
-                    //  Find Record that already uses this DbId and linkedToId.
-                    ExternalLinkRecord link = this.getRecordByDbAndLinkedToId
+                    //  Find Record(s) that already uses this DbId
+                    //  and linkedToId.
+                    ArrayList links = this.getRecordByDbAndLinkedToId
                             (externalDb.getId(), linkedToId);
-                    //  Retrieve the CPath Record for this match.
-                    if (link != null) {
-                        long cpathId = link.getCpathId();
+                    //  Retrieve the Associated CPath Records.
+                    for (int j = 0; j < links.size(); j++) {
+                        ExternalLinkRecord externalLink = (ExternalLinkRecord)
+                                links.get(j);
+                        long cpathId = externalLink.getCpathId();
                         DaoCPath cpathDao = new DaoCPath();
                         CPathRecord record = cpathDao.getRecordById(cpathId);
-                        return record;
+                        records.add(record);
                     }
                 }
             }
         }
-        return null;
+        return records;
     }
 
     /**
@@ -190,27 +194,34 @@ public class DaoExternalLink {
      * Gets Record that matches specified ExternalDbId and LinkedToId.
      * @param externalDbId External Database ID.
      * @param linkedToId Linked To ID String.
-     * @return External Link Object.
+     * @return Array List of External Link Objects.
      * @throws DaoException Error Retrieving Data.
      */
-    private ExternalLinkRecord getRecordByDbAndLinkedToId(long externalDbId,
+    private ArrayList getRecordByDbAndLinkedToId(long externalDbId,
             String linkedToId) throws DaoException {
+        ArrayList externalLinks = new ArrayList();
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_DB_ID = ? "
-                    + "AND LINKED_TO_ID =?");
-            pstmt.setLong(1, externalDbId);
-            pstmt.setString(2, linkedToId);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return createBean(rs);
+            if (linkedToId != null) {
+                pstmt = con.prepareStatement
+                        ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_DB_ID = ? "
+                        + "AND LINKED_TO_ID =?");
+                pstmt.setString(2, linkedToId);
             } else {
-                return null;
+                pstmt = con.prepareStatement
+                        ("SELECT * FROM EXTERNAL_LINK WHERE"
+                        + " EXTERNAL_DB_ID = ?");
             }
+            pstmt.setLong(1, externalDbId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ExternalLinkRecord externalLink = this.createBean(rs);
+                externalLinks.add(externalLink);
+            }
+            return externalLinks;
         } catch (ClassNotFoundException e) {
             throw new DaoException("ClassNotFoundException:  "
                     + e.getMessage());

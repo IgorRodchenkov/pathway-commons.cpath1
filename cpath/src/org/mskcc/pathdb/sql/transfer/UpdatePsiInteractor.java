@@ -42,8 +42,9 @@ public class UpdatePsiInteractor extends UpdateInteractor {
         //  Find a Match to Existing Interactor.
         ExternalReference newRefs[] = psiUtil.extractRefs(newProtein);
         DaoExternalLink linker = new DaoExternalLink();
-        CPathRecord record = linker.lookUpByExternalRefs(newRefs);
-        if (record != null) {
+        ArrayList records = linker.lookUpByExternalRefs(newRefs);
+        if (records.size() > 0) {
+            CPathRecord record = (CPathRecord) records.get(0);
             String xml = record.getXmlContent();
             StringReader reader = new StringReader(xml);
             existingProtein = ProteinInteractorType.
