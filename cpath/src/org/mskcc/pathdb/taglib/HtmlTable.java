@@ -33,11 +33,6 @@ public abstract class HtmlTable extends TagSupport {
                 out.println(html.toString());
             }
         } catch (Exception e) {
-            try {
-                e.printStackTrace();
-            } catch (Exception exc) {
-                e.printStackTrace();
-            }
             //  Must specify initCause explicitly
             //  If you pass exception to the Constructor, the
             //  JspException will only save the error message,
