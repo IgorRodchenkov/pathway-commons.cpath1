@@ -16,7 +16,7 @@ public class ProtocolRequest implements PagedResult {
     /**
      * Default Max Number of Hits.
      */
-    public static final int DEFAULT_MAX_HITS = 25;
+    public static final int DEFAULT_MAX_HITS = 10;
 
     /**
      * Command Argument.
@@ -49,6 +49,11 @@ public class ProtocolRequest implements PagedResult {
     public static final String ARG_MAX_HITS = "maxHits";
 
     /**
+     * Organism Argument.
+     */
+    public static final String ARG_ORGANISM = "organism";
+
+    /**
      * Command.
      */
     private String command;
@@ -79,6 +84,11 @@ public class ProtocolRequest implements PagedResult {
     private String maxHits;
 
     /**
+     * Organism Parameter.
+     */
+    private String organism;
+
+    /**
      * EmptyParameterSet.
      */
     private boolean emptyParameterSet;
@@ -92,6 +102,7 @@ public class ProtocolRequest implements PagedResult {
     public ProtocolRequest() {
         this.version = "1.0";
         this.startIndex = 0;
+        this.organism = "";
         this.maxHits = Integer.toString(DEFAULT_MAX_HITS);
     }
 
@@ -106,6 +117,8 @@ public class ProtocolRequest implements PagedResult {
         this.format = (String) parameterMap.get(ProtocolRequest.ARG_FORMAT);
         this.version = (String) parameterMap.get(ProtocolRequest.ARG_VERSION);
         this.maxHits = (String) parameterMap.get(ProtocolRequest.ARG_MAX_HITS);
+        this.organism = (String) parameterMap.get
+                (ProtocolRequest.ARG_ORGANISM);
         if (maxHits == null) {
             maxHits = Integer.toString(DEFAULT_MAX_HITS);
         }
@@ -245,6 +258,14 @@ public class ProtocolRequest implements PagedResult {
         this.maxHits = str;
     }
 
+    public String getOrganism () {
+        return this.organism;
+    }
+
+    public void setOrganism (String organism) {
+        this.organism = organism;
+    }
+
     /**
      * Is this an empty request?
      * @return true or false.
@@ -261,14 +282,15 @@ public class ProtocolRequest implements PagedResult {
         String uri = null;
         String url = "webservice.do";
         GetMethod method = new GetMethod(url);
-        NameValuePair nvps[] = new NameValuePair[6];
+        NameValuePair nvps[] = new NameValuePair[7];
         nvps[0] = new NameValuePair(ARG_VERSION, version);
         nvps[1] = new NameValuePair(ARG_COMMAND, command);
         nvps[2] = new NameValuePair(ARG_QUERY, query);
         nvps[3] = new NameValuePair(ARG_FORMAT, format);
         nvps[4] = new NameValuePair(ARG_START_INDEX,
                 Long.toString(startIndex));
-        nvps[5] = new NameValuePair(ARG_MAX_HITS, maxHits);
+        nvps[5] = new NameValuePair(ARG_ORGANISM, organism);
+        nvps[6] = new NameValuePair(ARG_MAX_HITS, maxHits);
         method.setQueryString(nvps);
         try {
             uri = method.getURI().getEscapedURI();
