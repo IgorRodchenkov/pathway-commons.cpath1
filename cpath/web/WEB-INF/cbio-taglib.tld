@@ -18,10 +18,17 @@
        <required>true</required>
        <rtexprvalue>true</rtexprvalue>
     </attribute>
-      <attribute>
+    <attribute>
          <name>uid</name>
          <required>true</required>
          <rtexprvalue>true</rtexprvalue>
       </attribute>
+  </tag>
+
+  <tag>
+    <name>importTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.ImportTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Import Table</description>
   </tag>
 </taglib>
