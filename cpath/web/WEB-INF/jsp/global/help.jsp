@@ -40,7 +40,7 @@ URL parameters.  Parameters are as follows:
             <%= ProtocolRequest.DEFAULT_MAX_HITS %>.  If you want all matching
             interactions, set maxHits=unbounded.
 		    <LI>format:  Indicates the format of returned results.
-            Current valid formats are:  "psi", and "html".
+            Current valid formats are:  "xml", and "html".
 			<LI>version:  Indicates the version of the dataservice protocol.
                 Must be specified.  The only supported version is "1.0".
 		    </LI>
@@ -91,7 +91,7 @@ the error.  Error documents have the following format:
     ProtocolRequest pRequest = new ProtocolRequest();
     pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF);
     pRequest.setQuery("P04273");
-    pRequest.setFormat(ProtocolConstants.FORMAT_PSI);
+    pRequest.setFormat(ProtocolConstants.FORMAT_XML);
 %>
 <div class="h3">
     <h3>Examples of Usage</h3>
@@ -113,7 +113,7 @@ the error.  Error documents have the following format:
 
         <%
             pRequest.setVersion("0.9");
-            pRequest.setFormat(ProtocolConstants.FORMAT_PSI);
+            pRequest.setFormat(ProtocolConstants.FORMAT_XML);
         %>
         The following query is invalid.
         The web service will return an XML document with a specific error code

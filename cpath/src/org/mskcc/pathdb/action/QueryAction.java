@@ -69,7 +69,7 @@ public class QueryAction extends BaseAction {
             HttpServletRequest request, HttpServletResponse response,
             XDebug xdebug) throws ProtocolException, NeedsHelpException {
         if (protocolRequest.getFormat() != null && protocolRequest.getFormat().
-                equals(ProtocolConstants.FORMAT_PSI)) {
+                equals(ProtocolConstants.FORMAT_XML)) {
             return processXmlRequest(mapping, protocolRequest,
                     response, xdebug);
         } else {

@@ -181,7 +181,7 @@ public class InteractionTable extends HtmlTable {
      * Outputs Number of Matching Interactions and PSI-MI Link.
      */
     private void outputNumInteractions() {
-        protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
+        protocolRequest.setFormat(ProtocolConstants.FORMAT_XML);
         String psiUrl = protocolRequest.getUri();
 
         pager = new Pager(protocolRequest, xmlAssembly.getNumHits());

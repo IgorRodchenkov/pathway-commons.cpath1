@@ -21,7 +21,7 @@ public class ProtocolConstants {
     /**
      * PSI Format.
      */
-    public static final String FORMAT_PSI = "psi";
+    public static final String FORMAT_XML = "xml";
 
     /**
      * PSI Format.
@@ -74,6 +74,12 @@ public class ProtocolConstants {
             "get_by_experiment_type";
 
     /**
+     * Get Organism List.
+     */
+    public static final String COMMAND_GET_ORGANISM_LIST =
+            "get_organism_list";
+
+    /**
      * Help Command.
      */
     public static final String COMMAND_HELP = "help";
@@ -121,7 +127,7 @@ public class ProtocolConstants {
     public HashMap getValidFormats() {
         if (validFormats == null) {
             validFormats = new HashMap();
-            validFormats.put(FORMAT_PSI, null);
+            validFormats.put(FORMAT_XML, null);
             validFormats.put(FORMAT_HTML, null);
         }
         return validFormats;

@@ -44,7 +44,7 @@ public class InteractorTable extends HtmlTable {
      *          Database Access Error.
      */
     protected void subDoStartTag() throws Exception {
-        protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
+        protocolRequest.setFormat(ProtocolConstants.FORMAT_XML);
         String query = protocolRequest.getQuery();
         if (query != null
             && (query.indexOf(LuceneConfig.FIELD_INTERACTOR_ID) == -1)

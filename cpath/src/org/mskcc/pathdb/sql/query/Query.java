@@ -95,7 +95,7 @@ public class Query {
         //  Set Format to PSI (no matter what).
         //  This enables us to reuse the same XML Content for requests
         //  for HTML and PSI.
-        request.setFormat(ProtocolConstants.FORMAT_PSI);
+        request.setFormat(ProtocolConstants.FORMAT_XML);
         String hashKey = Md5Util.createMd5Hash(request.getUrlParameterString());
 
         //  Set Back to Original Format.

@@ -27,7 +27,7 @@ public class TestProtocol extends TestCase {
         nvps[0] = new NameValuePair(ProtocolRequest.ARG_COMMAND,
                 "get_invalid");
         nvps[1] = new NameValuePair(ProtocolRequest.ARG_FORMAT,
-                ProtocolConstants.FORMAT_PSI);
+                ProtocolConstants.FORMAT_XML);
         method.setQueryString(nvps);
         int statusCode = client.executeMethod(method);
         String response = method.getResponseBodyAsString();
