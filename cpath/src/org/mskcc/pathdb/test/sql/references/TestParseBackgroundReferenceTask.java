@@ -68,9 +68,9 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         //  Validate the first five background references
         validateBackgroundReferenceRecord(0, list, "UNIPROT",
                 "UNIPROT_1234", "PIR", "PIR_1234");
-        validateBackgroundReferenceRecord(1, list, "UNIPROT",
-                "UNIPROT_1234", "PIR", "PIR_4321");
-        validateBackgroundReferenceRecord(2, list, "PIR", "PIR_1234",
+        validateBackgroundReferenceRecord(1, list, "PIR",
+                "PIR_1234", "PIR", "PIR_4321");
+        validateBackgroundReferenceRecord(2, list, "PIR", "PIR_4321",
                 "HUGE", "HUGE_1234");
         validateBackgroundReferenceRecord(3, list, "UNIPROT", "UNIPROT_XYZ",
                 "PIR", "PIR_XYZ");
