@@ -51,9 +51,14 @@ public class TestBackgroundReferenceService extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testIdMappingService() throws Exception {
+        //  Delete all records, so that we start with a clean slate.
+        DaoBackgroundReferences dao = new DaoBackgroundReferences();
+        dao.deleteAllRecords();
+
         //  First, store some ID Mappings to the Database
         File file = new File("testData/id_map.txt");
-        ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask(file, false);
+        ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
+                (file, false);
         task.parseAndStoreToDb();
 
         //  Now, query the ID Mapping Service for Equivalent Refs.
@@ -99,9 +104,7 @@ public class TestBackgroundReferenceService extends TestCase {
         assertTrue(got2);
         assertTrue(got3);
 
-
         //  Delete all records, so that we can rerun this unit test again
-        DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
     }
 }

@@ -76,6 +76,10 @@ public class TestBackgroundReferenceParser extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testParserWithSave() throws Exception {
+        // Start with a clean slate
+        DaoBackgroundReferences dao = new DaoBackgroundReferences();
+        dao.deleteAllRecords();
+        
         File file = new File("testData/id_map.txt");
         ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
                 (file, false);
@@ -89,7 +93,6 @@ public class TestBackgroundReferenceParser extends TestCase {
         assertEquals(0, numRecordsSaved);
 
         //  Now try getting all equivalent Identifiers;  there should be 4
-        DaoBackgroundReferences dao = new DaoBackgroundReferences();
         CPathXRef xref = new CPathXRef(1, "AAH08943");
         ArrayList equivalenceList = dao.getEquivalenceList(xref);
         boolean got[] = new boolean[4];
