@@ -46,9 +46,9 @@ public class TestAffymetrixParser extends TestCase {
     /**
      * Tests the Affymetrix Parser.
      *
-     * @throws IOException Error Reading / Writing Files.
+     * @throws Exception Error Reading / Writing Files.
      */
-    public void testParser() throws IOException {
+    public void testParser() throws Exception {
         String outFileName = "testData/AffyId_SampleOutput.txt";
         String lineSeparator = System.getProperty("line.separator");
         File inFile = new File("testData/HG-U133_Sample.csv");
