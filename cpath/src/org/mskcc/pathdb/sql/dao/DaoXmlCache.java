@@ -1,7 +1,11 @@
 package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.util.ZipUtil;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,32 +18,42 @@ import java.sql.*;
  * @author Ethan Cerami.
  */
 public class DaoXmlCache {
+    private XDebug xdebug;
+
+    /**
+     * Constructor.
+     * @param xdebug XDebug Object.
+     */
+    public DaoXmlCache (XDebug xdebug) {
+        this.xdebug = xdebug;
+    }
 
     /**
      * Adds Specified Record to the xml_cache Table.
      * @param hashKey Unique HashKey.
-     * @param xml XML Document.
+     * @param xmlAssembly XML Assembly Object.
      * @return true indicates success; false indicates failure.
      * @throws DaoException Error Retrieving Data.
      */
-    public synchronized boolean addRecord(String hashKey, String xml)
-            throws DaoException {
+    public synchronized boolean addRecord(String hashKey,
+            XmlAssembly xmlAssembly) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO xml_cache (`DOC_MD5`,`DOC_BLOB`,"
-                    + " `CREATE_TIME`) VALUES (?,?,?)");
+                    ("INSERT INTO xml_cache (`DOC_MD5`,`NUM_HITS`, `DOC_BLOB`,"
+                    + " `CREATE_TIME`) VALUES (?,?,?,?)");
 
-            byte zippedData[] = ZipUtil.zip(xml);
+            byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
             Timestamp timeStamp = new Timestamp(now.getTime());
 
             pstmt.setString(1, hashKey);
-            pstmt.setBytes(2, zippedData);
-            pstmt.setTimestamp(3, timeStamp);
+            pstmt.setInt(2, xmlAssembly.getNumHits());
+            pstmt.setBytes(3, zippedData);
+            pstmt.setTimestamp(4, timeStamp);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
@@ -60,7 +74,8 @@ public class DaoXmlCache {
      * @return XML Document
      * @throws DaoException Error Retrieving Data.
      */
-    public synchronized String getXmlByKey(String hashKey) throws DaoException {
+    public synchronized XmlAssembly getXmlAssemblyByKey(String hashKey)
+            throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -71,9 +86,14 @@ public class DaoXmlCache {
             pstmt.setString(1, hashKey);
             rs = pstmt.executeQuery();
             if (rs.next()) {
+                int numHits = rs.getInt("NUM_HITS");
                 Blob blob = rs.getBlob("DOC_BLOB");
                 byte blobData[] = extractBlobData(blob);
-                return ZipUtil.unzip(blobData);
+                String xml = ZipUtil.unzip(blobData);
+                XmlAssembly xmlAssembly =
+                        XmlAssemblyFactory.createXmlAssembly
+                        (xml, numHits, xdebug);
+                return xmlAssembly;
             } else {
                 return null;
             }
@@ -81,10 +101,11 @@ public class DaoXmlCache {
             throw new DaoException("ClassNotFoundException:  "
                     + e.getMessage());
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } catch (IOException e) {
-            throw new DaoException("IOException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
+        } catch (AssemblyException e) {
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -143,13 +164,14 @@ public class DaoXmlCache {
     }
 
     /**
-     * Updates XML Content for Cached Record.
+     * Updates XML Assembly Content for Cached Record.
      * @param hashKey Unique Hash Key.
-     * @param newXml New XML Content.
+     * @param xmlAssembly New XML Assembly Content.
      * @return true indicates success.
      * @throws DaoException Error Updating Data.
      */
-    public synchronized boolean updateXmlByKey(String hashKey, String newXml)
+    public synchronized boolean updateXmlAssemblyByKey(String hashKey,
+            XmlAssembly xmlAssembly)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -158,15 +180,16 @@ public class DaoXmlCache {
             con = JdbcUtil.getCPathConnection();
 
             pstmt = con.prepareStatement
-                    ("UPDATE xml_cache SET `DOC_BLOB` = ?, `CREATE_TIME` = ? "
-                    + "WHERE `DOC_MD5` = ?");
-            byte zippedData[] = ZipUtil.zip(newXml);
+                    ("UPDATE xml_cache SET `DOC_BLOB` = ?, `CREATE_TIME` = ?, "
+                    + "`NUM_HITS` = ? WHERE `DOC_MD5` = ?");
+            byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
             Timestamp timeStamp = new Timestamp(now.getTime());
 
             pstmt.setBytes(1, zippedData);
             pstmt.setTimestamp(2, timeStamp);
-            pstmt.setString(3, hashKey);
+            pstmt.setInt(3, xmlAssembly.getNumHits());
+            pstmt.setString(4, hashKey);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
