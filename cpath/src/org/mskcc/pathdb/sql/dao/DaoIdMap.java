@@ -31,12 +31,18 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.IdMapRecord;
+import org.mskcc.pathdb.model.XRef;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.LinkedList;
+
+import sun.misc.Queue;
 
 /**
  * Data Access Object to the Id Map Table.
@@ -207,6 +213,102 @@ public class DaoIdMap {
                     ("TRUNCATE table id_map;");
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Given a XRef DB:ID pair, finds all equivalent XRef DB:ID pairs.
+     *
+     * Uses a bread-first search algorithm to determine complete set of
+     * equivalent IDs.
+     * <P>
+     * Implementation note:  JUnit Test for this method is in
+     * TestIdMappingsParser.java, not TestDaoIdMap.java.
+     *
+     *
+     * @param xref  XRef Object
+     * @return      ArrayList of XRef Objects.
+     * @throws DaoException Error Connecting to Database.
+     */
+    public ArrayList getEquivalenceList (XRef xref)
+        throws DaoException {
+        //  Represents List of Nodes to Visit
+        LinkedList openQueue = new LinkedList();
+
+        //  Represents List of Nodes Already Visited (prevents loops).
+        ArrayList closedList = new ArrayList();
+
+        //  Enqueue the First Xref
+        openQueue.add(xref);
+
+        //  While there are still nodes to visit
+        while (openQueue.size() > 0) {
+
+            //  Get the Next Item in the Queue
+            XRef current = (XRef) openQueue.removeFirst();
+
+            //  Get all Immediate Neighbors
+            ArrayList neighbors = getImmediateNeighbors(current);
+
+            //  Iterate through all neighbors;  only enqueue new nodes
+            for (int i=0; i<neighbors.size(); i++) {
+                XRef neighbor = (XRef) neighbors.get(i);
+                if (! closedList.contains(neighbor)
+                    && ! openQueue.contains(neighbor)) {
+                    openQueue.add(neighbor);
+                }
+            }
+
+            //  Add this node to the visited/closed list
+            closedList.add(current);
+        }
+        //  Remove the Original XRef
+        closedList.remove(xref);
+
+        return closedList;
+    }
+
+    /**
+     * Gets All Immediate Neighbors of the Specified DB:ID pair.
+     *
+     * @param xref  XRef Object.
+     * @return      ArrayList of XRef Objects.
+     * @throws DaoException Error Connecting to Database.
+     */
+    private ArrayList getImmediateNeighbors (XRef xref)
+            throws DaoException {
+        ArrayList neighborList = new ArrayList();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT * FROM id_map WHERE (DB_1 = ? AND ID_1 = ?) "
+                    + "OR (DB_2 = ? AND ID_2 = ?)");
+            pstmt.setInt(1, xref.getDbId());
+            pstmt.setString(2, xref.getLinkedToId());
+            pstmt.setInt(3, xref.getDbId());
+            pstmt.setString(4, xref.getLinkedToId());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                IdMapRecord idRecord = createBean(rs);
+                XRef neighbor = null;
+                if (idRecord.getDb1() == xref.getDbId()
+                        && idRecord.getId1().equals(xref.getLinkedToId())) {
+                    neighbor = new XRef (idRecord.getDb2(), idRecord.getId2());
+                } else {
+                    neighbor = new XRef(idRecord.getDb1(), idRecord.getId1());
+                }
+                neighborList.add(neighbor);
+            }
+            return neighborList;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
