@@ -1,0 +1,2869 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrySet xmlns="net:sf:psidev:mi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/mi/xml/src/MIF.xsd" level="1" version="1">
+    <entry>
+        <source>
+            <names>
+                <shortLabel>HPRD</shortLabel>
+                <fullName>Human Protein Reference Database</fullName>
+            </names>
+        </source>
+        <availabilityList>
+            <availability id="copyright">
+                This data is copyrighted by Johns Hopkins University
+                and the Institute of Bioinformatics.  Commercial
+                entities may not use this without prior licensing
+                authorization. Other databases must agree to enforce
+                the same licensing guidelines before making this data
+                public on their website.
+            </availability>
+        </availabilityList>
+        <experimentList>
+            <experimentDescription id="experimental">
+                <interactionDetection>
+                    <names>
+                        <shortLabel>experimental</shortLabel>
+                    </names>
+                    <xref>
+                        <primaryRef db="PSI-MI" id="MI:0045"/>
+                    </xref>
+                </interactionDetection>
+            </experimentDescription>
+        </experimentList>
+        <interactorList>
+            <proteinInteractor id="601603">
+                <names>
+                    <shortLabel>SLP 76</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8661136" db="PubMed"/>
+                    <secondaryRef id="NP_005556" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>malrnvpfrs evlgwdpdsl adyfkklnyk
+dcekavkkyh idgarflnlt endiqkfpkl
+rvpilsklsq einkneerrs iftrkpqvpr
+fpeeteshee dnggwssfee ddyespnddq
+dgeddgdyes pneeeeapve ddadyeppps
+ndeealqnsi lpakpfpnsn smyidrppsg
+ktpqqppvpp qrpmaalppp pagrnhsplp
+ppqtnheeps rsrnhktakl papsidrstk
+ppldrslapf drepftlgkk ppfsdkpsip
+agrslgehlp kiqkpplppt terhersspl
+pgkkppvpkh gwgpdrrend eddvhqrplp
+qpallpmssn tfpsrstkps pmnplpsshm
+pgafsesnss fpqsaslppy fsqgpsnrpp
+iraegrnfpl plpnkprpps paeeenslne
+ewyvsyitrp eaeaalrkin qdgtflvrds
+skktttnpyv lmvlykdkvy niqiryqkes
+qvyllgtglr gkedflsvsd iidyfrkmpl
+llidgknrgs ryqctlthaa gyp
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="604491">
+                <names>
+                    <shortLabel>Cbl-B</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="" db="PubMed"/>
+                    <secondaryRef id="AAB09291" db=""/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mansmngrnp ggrggnprkg rilgiidaiq
+davgppkqaa adrrtvektw klmdkvvrlc
+qnpklqlkns ppyildilpd tyqhlrlils
+kyddnqklaq lseneyfkiy idslmkkskr
+airlfkegke rmyeeqsqdr rnltklslif
+shmlaeikai fpngqfqgdn fritkadaae
+fwrkffgdkt ivpwkvfrqc lhevhqisss
+leamalksti dltcndyisv fefdiftrlf
+qpwgsilrnw nflavthpgy mafltydevk
+arlqkystkp gsyifrlsct rlgqwaigyv
+tgdgnilqti phnkplfqal idgsregfyl
+ypdgrsynpd ltglceptph dhikvtqeqy
+elycemgstf qlckicaend kdvkiepcgh
+lmctscltaw qesdgqgcpf crceikgtep
+iivdpfdprd egsrccsiid pfgmpmldld
+ddddreeslm mnrlanvrkc tdrqnspvts
+pgssplaqrr kpqpdplqip hlslppvppr
+ldliqkgivr spcgsptgsp ksspcmvrkq
+dkplpapppp lrdppppppe rpppippdnr
+lsrhihhves vpsrdppmpl eawcprdvfg
+tnqlvgcrll gegspkpgit assnvngrhs
+rvgsdpvlmr khrrhdlple gakvfsnghl
+gseeydvppr lsppppvttl lpsikctgpl
+anslsektrd pveedddeyk ipsshpvsln
+sqpshchnvk ppvrscdngh cmlngthgps
+sekksnipdl siylkgdvfd sasdpvplpp
+arpptrdnpk hgsslnrtps dydllipplg
+edafdalpps lpppppparh sliehskppg
+sssrpssgqd lfllpsdpfv dlasgqvplp
+parrlpgenv ktnrtsqdyd qlpscsdgsq
+aparppkprp rrtapeihhr kphgpeaale
+nvdakiaklm gegyafeevk raleiaqnnv
+evarsilref afpppvsprl nl
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="601212">
+                <names>
+                    <shortLabel>Focal adhesion kinase 2</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8838818" db="PubMed"/>
+                    <secondaryRef id="NP_004094" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>msgvseplsr vklgtlrrpe gpaepmvvvp
+vdvekedvri lkvcfysnsf npgknfklvk
+ctvqteirei itsillsgri gpnirlaecy
+glrlkhmksd eihwlhpqmt vgevqdkyec
+lhveaewryd lqirylpedf meslkedrtt
+llyfyqqlrn dymqryaskv segmalqlgc
+lelrrffkdm phnaldkksn fellekevgl
+dlffpkqmqe nlkpkqfrkm iqqtfqqyas
+lreeecvmkf fntlagfani dqetyrceli
+qgwnitvdlv igpkgirqlt sqdakptcla
+efkqirsirc lpleegqavl qlgiegapqa
+lsiktsslae aenmadlidg ycrlqgehqg
+sliihprkdg ekrnslpqip mlnlearrsh
+lsescsiesd iyaeipdetl rrpggpqygi
+aredvvlnri lgegffgevy egvytnhkge
+kinvavktck kdctldnkek fmseavimkn
+ldhphivkli giieeeptwi imelypygel
+ghylernkns lkvltlvlys lqickamayl
+esincvhrdi avrnilvasp ecvklgdfgl
+sryiededyy kasvtrlpik wmspesinfr
+rfttasdvwm favcmweils fgkqpffwle
+nkdvigvlek gdrlpkpdlc ppvlytlmtr
+cwdydpsdrp rftelvcsls dvyqmekdia
+meqernaryr tpkileptaf qepppkpsrp
+kyrpppqtnl lapklqfqvp eglcassptl
+tspmeypspv nslhtpplhr hnvfkrhsmr
+eedfiqpssr eeaqqlweae kvkmrqildk
+qqkqmvedyq wlrqeeksld pmvymndksp
+ltpekevgyl eftgppqkpp rlgaqsiqpt
+anldrtddlv ylnvmelvra vlelknelcq
+lppegyvvvv knvgltlrkl igsvddllps
+lpsssrteie gtqkllnkdl aelinkmrla
+qqnavtslse eckrqmltas htlavdaknl
+ldavdqakvl anlahppae
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="603597">
+                <names>
+                    <shortLabel>SOCS1</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="10512686" db="PubMed"/>
+                    <secondaryRef id="NP_003736" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mvahnqvaad navstaaepr rrpepsssss
+sspaaparpr pcpavpapap gdthfrtfrs
+hadyrritra salldacgfy wgplsvhgah
+erlraepvgt flvrdsrqrn cffalsvkma
+sgptsirvhf qagrfhldgs resfdclfel
+lehyvaaprr mlgaplrqrr vrplqelcrq
+rivatvgren lariplnpvl rdylssfpfq
+i
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="pp70">
+                <names>
+                    <shortLabel>pp70</shortLabel>
+                </names>
+                
+                
+                
+            </proteinInteractor>
+            <proteinInteractor id="600712">
+                <names>
+                    <shortLabel>Heterogeneous nuclear ribonucleoprotein K</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8833161" db="PubMed"/>
+                    <secondaryRef id="NP_002131" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>meteqpeetf pntetngefg krpaedmeee
+qafkrsrntd emvelrillq sknagavigk
+ggknikalrt dynasvsvpd ssgperilsi
+sadietigei lkkiiptlee glqlpsptat
+sqlplesdav eclnyqhykg sdfdcelrll
+ihqslaggii gvkgakikel rentqttikl
+fqeccphstd rvvliggkpd rvvecikiil
+dlisespikg raqpydpnfy detydyggft
+mmfddrrgrp vgfpmrgrgg fdrmppgrgg
+rpmppsrrdy ddmsprrgpp ppppgrggrg
+gsrarnlplp ppppprggdl maydrrgrpg
+drydgmvgfs adetwdsaid twspsewqma
+yepqggsgyd ysyaggrgsy gdlggpiitt
+qvtipkdlag siigkggqri kqirhesgas
+ikideplegs edriititgt qdqiqnaqyl
+lqnsvkqyad vegf
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="108355">
+                <names>
+                    <shortLabel>Grb2</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="7806213" db="PubMed"/>
+                    <secondaryRef id="NP_002077" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>meaiakydfk ataddelsfk rgdilkvlne
+ecdqnwykae lngkdgfipk nyiemkphpw
+ffgkipraka eemlskqrhd gaflireses
+apgdfslsvk fgndvqhfkv lrdgagkyfl
+wvvkfnslne lvdyhrstsv srnqqiflrd
+ieqvpqqpty vqalfdfdpq edgelgfrrg
+dfihvmdnsd pnwwkgachg qtgmfprnyv
+tpvnrnv
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="602354">
+                <names>
+                    <shortLabel>Linker for activation of T cells</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="12438705" db="PubMed"/>
+                    <secondaryRef id="NP_055202" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>meeailvpcv lgllllpila mlmalcvhch
+rlpgsydsts sdslyprgiq fkrphtvapw
+ppayppvtsy pplsqpdllp iprspqplgg
+shrtpssrrd sdgansvasy enegasgirg
+aqagwgvwgp swtrltpvsl ppepacedad
+ededdyhnpg ylvvlpdstp atstaapsap
+alstpgirds afsmesiddy vnvpesgesa
+easldgsrey vnvsqelhpg aaktepaals
+sqeaeeveee gapdyenlqe ln
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="176947">
+                <names>
+                    <shortLabel>ZAP70</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8082894 " db="PubMed"/>
+                    <secondaryRef id="P43403" db="Swiss-Prot"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mpdpaahlpf fygsisraea eehlklagma
+dglfllrqcl rslggyvlsl vhdvrfhhfp
+ierqlngtya iaggkahcgp aelcefysrd
+pdglpcnlrk pcnrpsglep qpgvfdclrd
+amvrdyvrqt wklegealeq aiisqapqve
+kliattaher mpwyhssltr eeaerklysg
+aqtdgkfllr prkeqgtyal sliygktvyh
+ylisqdkagk ycipegtkfd tlwqlveylk
+lkadgliycl keacpnssas nasgaaaptl
+pahpstlthp qrridtlnsd gytpeparit
+spdkprpmpm dtsvyespys dpeelkdkkl
+flkrdnllia dielgcgnfg svrqgvyrmr
+kkqidvaikv lkqgtekadt eemmreaqim
+hqldnpyivr ligvcqaeal mlvmemaggg
+plhkflvgkr eeipvsnvae llhqvsmgmk
+yleeknfvhr dlaarnvllv nrhyakisdf
+glskalgadd syytarsagk wplkwyapec
+infrkfssrs dvwsygvtmw ealsygqkpy
+kkmkgpevma fieqgkrmec ppecppelya
+lmsdcwiykw edrpdfltve qrmracyysl
+askvegppgs tqkaeaaca
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="F-actin">
+                <names>
+                    <shortLabel>F-actin</shortLabel>
+                </names>
+                
+                
+                
+            </proteinInteractor>
+            <proteinInteractor id="Rac">
+                <names>
+                    <shortLabel>Rac</shortLabel>
+                </names>
+                
+                
+                
+            </proteinInteractor>
+            <proteinInteractor id="603735">
+                <names>
+                    <shortLabel>Amine oxidase, copper-containing, 3</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8972912" db="PubMed"/>
+                    <secondaryRef id="NP_003725" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mnqktilvll ilavitifal vcvllvgrgg
+dggepsqlph cpsvspsaqp wthpgqsqlf
+adlsreelta vmrfltqrlg pglvdaaqar
+psdncvfsve lqlppkaaal ahldrgsppp
+arealaivff grqpqpnvse lvvgplphps
+ymrdvtverh ggplpyhrrp vlfqeyldid
+qmifnrelpq asgllhhccf ykhrgrnlvt
+mttaprglqs gdratwfgly ynisgagffl
+hhvglellvn hkaldparwt iqkvfyqgry
+ydslaqleaq feaglvnvvl ipdngtggsw
+slkspvppgp applqfypqg prfsvqgsrv
+asslwtfsfg lgafsgprif dvrfqgerlv
+yeislqeala iyggnspaam ttryvdggfg
+mgkyttpltr gvdcpylaty vdwhfllesq
+apktirdafc vfeqnqglpl rrhhsdlysh
+yfgglaetvl vvrsmstlln ydyvwdtvfh
+psgaieirfy atgyissafl fgatgkygnq
+vsehtlgtvh thsahfkvdl dvaglenwvw
+aedmvfvpma vpwspehqlq rlqvtrklle
+meeqaaflvg satprylyla snhsnkwghp
+rgyriqmlsf ageplpqnss margfswery
+qlavtqrkee epssssvfnq ndpwaptvdf
+sdfinnetia gkdlvawvta gflhiphaed
+ipntvtvgng vgfflrpynf fdedpsfysa
+dsiyfrgdqd agacevnpla clpqaaacap
+dlpafshggf shn
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="151410">
+                <names>
+                    <shortLabel>BCR</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="6584200 " db="PubMed"/>
+                    <secondaryRef id="NP_004318" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mvdpvgfaea wkaqfpdsep prmelrsvgd
+ieqelercka sirrleqevn qerfrmiylq
+tllakekksy drqrwgfrra aqapdgasep
+rasasrpqpa padgadpppa eepearpdge
+gspgkarpgt arrpgaaasg erddrgppas
+vaalrsnfer irkghgqpga daekpfyvnv
+efhherglvk vndkevsdri sslgsqamqm
+erkksqhgag ssvgdasrpp yrgrssessc
+gvdgdyedae lnprflkdnl idanggsrpp
+wppleyqpyq siyvggmmeg egkgpllrsq
+stseqekrlt wprrsysprs fedcgggytp
+dcssnenlts seedfssgqs srvspsptty
+rmfrdksrsp sqnsqqsfds sspptpqchk
+rhrhcpvvvs eativgvrkt gqiwpndgeg
+afhgdadgsf gtppgygcaa draeeqrrhq
+dglpyiddsp sssphlsskg rgsrdalvsg
+alestkasel dlekglemrk wvlsgilase
+etylshleal llpmkplkaa attsqpvlts
+qqietiffkv pelyeihkef ydglfprvqq
+wshqqrvgdl fqklasqlgv yrafvdnygv
+amemaekccq anaqfaeise nlrarsnkda
+kdpttknsle tllykpvdrv trstlvlhdl
+lkhtpashpd hpllqdalri sqnflssine
+eitprrqsmt vkkgehrqll kdsfmvelve
+garklrhvfl ftelllctkl kkqsggktqq
+ydckwyiplt dlsfqmvdel eavpniplvp
+deeldalkik isqiksdiqr ekrankgska
+terlkkklse qesllllmsp smafrvhsrn
+gksytfliss dyeraewren ireqqkkcfr
+sfsltsvelq mltnscvklq tvhsipltin
+keddespgly gflnvivhsa tgfkqssnly
+ctlevdsfgy fvnkaktrvy rdtaepnwne
+efeielegsq tlrilcyekc ynktkipked
+gestdrlmgk gqvqldpqal qdrdwqrtvi
+amngievkls vkfnsrefsl krmpsrkqtg
+vfgvkiavvt krerskvpyi vrqcveeier
+rgmeevgiyr vsgvatdiqa lkaafdvnnk
+dvsvmmsemd vnaiagtlkl yfrelpeplf
+tdefypnfae gialsdpvak escmlnllls
+lpeanlltfl flldhlkrva ekeavnkmsl
+hnlatvfgpt llrpsekesk lpanpsqpit
+mtdswslevm sqvqvllyfl qleaipapds
+krqsilfste v
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="172420">
+                <names>
+                    <shortLabel>Phospholipase C, gamma1</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="3254788" db="PubMed"/>
+                    <secondaryRef id="NP_002651" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>magaaspcan gcgpgapsda evlhlcrsle
+vgtvmtlfys kksqrperkt fqvkletrqi
+twsrgadkie gaidireike irpgktsrdf
+dryqedpafr pdqshcfvil ygmefrlktl
+slqatsedev nmwikgltwl medtlqaptp
+lqierwlrkq fysvdrnred risakdlknm
+lsqvnyrvpn mrflrerltd leqrsgdity
+gqfaqlyrsl mysaqktmdl pfleastlra
+gerpelcrvs lpefqqflld yqgelwavdr
+lqvqefmlsf lrdplreiee pyffldefvt
+flfskensvw nsqldavcpd tmnnplshyw
+issshntylt gdqfssessl eayarclrmg
+crcieldcwd gpdgmpviyh ghtlttkikf
+sdvlhtikeh afvaseypvi lsiedhcsia
+qqrnmaqyfk kvlgdtlltk pveisadglp
+spnqlkrkil ikhkklaegs ayeevptsmm
+ysendisnsi kngilyledp vnhewyphyf
+vltsskiyys eetssdqgne deeepkevss
+stelhsnekw fhgklgagrd grhiaerllt
+eycietgapd gsflvreset fvgdytlsfw
+rngkvqhcri hsrqdagtpk ffltdnlvfd
+slydlithyq qvplrcnefe mrlsepvpqt
+naheskewyh asltraqaeh mlmrvprdga
+flvrkrnepn syaisfraeg kikhcrvqqe
+gqtvmlgnse fdslvdlisy yekhplyrkm
+klrypineea lekigtaepd ygalyegrnp
+gfyveanpmp tfkcavkalf dykaqredel
+tfiksaiiqn vekqeggwwr gdyggkkqlw
+fpsnyveemv npvalepere hldensplgd
+llrgvldvpa cqiairpegk nnrlfvfsis
+masvahwsld vaadsqeelq dwvkkireva
+qtadarlteg kimerrkkia lelselvvyc
+rpvpfdeeki gteracyrdm ssfpetkaek
+yvnkakgkkf lqynrlqlsr iypkgqrlds
+snydplpmwi cgsqlvalnf qtpdkpmqmn
+qalfmtgrhc gyvlqpstmr deafdpfdks
+slrglepcai sievlgarhl pkngrgivcp
+fveievagae ydstkqktef vvdnglnpvw
+pakpfhfqis npefaflrfv vyeedmfsdq
+nflaqatfpv kglktgyrav plknnysedl
+elasllikid ifpakengdl spfsgtslre
+rgsdasgqlf hgraregsfe sryqqpfedf
+risqehladh fdsrerrapr rtrvngdnrl
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="133171">
+                <names>
+                    <shortLabel>Erythropoietin receptor</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="2163695" db="PubMed"/>
+                    <secondaryRef id="NP_000112" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mdhlgaslwp qvgslcllla gaawapppnl
+pdpkfeskaa llaargpeel lcfterledl
+vcfweeaasa gvgpgnysfs yqledepwkl
+crlhqaptar gavrfwcslp tadtssfvpl
+elrvtaasga pryhrvihin evvlldapvg
+lvarladesg hvvlrwlppp etpmtshiry
+evdvsagnga gsvqrveile grtecvlsnl
+rgrtrytfav rarmaepsfg gfwsawsepv
+slltpsdldp liltlslilv vilvlltvla
+llshrralkq kiwpgipspe sefeglftth
+kgnfqlwlyq ndgclwwspc tpftedppas
+levlsercwg tmqavepgtd degpllepvg
+sehaqdtylv ldkwllprnp psedlpgpgg
+svdivamdeg seasscssal askpspegas
+aasfeytild pssqllrpwt lcpelpptpp
+hlkylylvvs dsgistdyss gdsqgaqggl
+sdgpysnpye nslipaaepl ppsyvacs
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="107265">
+                <names>
+                    <shortLabel>CD19</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="7513297" db="PubMed"/>
+                    <secondaryRef id="NP_001761" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mppprllffl lfltpmevrp eeplvvkvee
+gdnavlqclk gtsdgptqql twsresplkp
+flklslglpg lgihmrplai wlfifnvsqq
+mggfylcqpg ppsekawqpg wtvnvegsge
+lfrwnvsdlg glgcglknrs segpsspsgk
+lmspklyvwa kdrpeiwege ppcvpprdsl
+nqslsqdltm apgstlwlsc gvppdsvsrg
+plswthvhpk gpksllslel kddrpardmw
+vmetglllpr ataqdagkyy chrgnltmsf
+hleitarpvl whwllrtggw kvsavtlayl
+ifclcslvgi lhlqralvlr rkrkrmtdpt
+rrffkvtppp gsgpqnqygn vlslptptsg
+lgraqrwaag lggtapsygn pssdvqadga
+lgsrsppgvg peeeegegye epdseedsef
+yendsnlgqd qlsqdgsgye npedeplgpe
+dedsfsnaes yenedeeltq pvartmdfls
+phgsawdpsr eatslgsqsy edmrgilyaa
+pqlrsirgqp gpnheedads yenmdnpdgp
+dpawggggrm gtwstr
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="164875">
+                <names>
+                    <shortLabel>VAV1</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8432525 " db="PubMed"/>
+                    <secondaryRef id="NP_005419" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>melwrqcthw liqcrvlpps hrvtwdgaqv
+celaqalrdg vllcqllnnl lphainlrev
+nlrpqmsqfl clknirtfls tccekfglkr
+selfeafdlf dvqdfgkviy tlsalswtpi
+aqnrgimpfp teeesvgded iysglsdqid
+dtveededly dcveneeaeg deiyedlmrs
+epvsmppkmt eydkrccclr eiqqteekyt
+dtlgsiqqhf lkplqrflkp qdieiifini
+edllrvhthf lkemkealgt pgaanlyqvf
+ikykerflvy grycsqvesa skhldrvaaa
+redvqmklee csqranngrf tlrdllmvpm
+qrvlkyhlll qelvkhtqea mekenlrlal
+damrdlaqcv nevkrdnetl rqitnfqlsi
+enldqslahy grpkidgelk itsverrskm
+dryaflldka llickrrgds ydlkdfvnlh
+sfqvrddssg drdnkkwshm flliedqgaq
+gyelffktre lkkkwmeqfe maisniypen
+atanghdfqm fsfeettsck acqmllrgtf
+yqgyrchrcr asahkeclgr vppcgrhgqd
+fpgtmkkdkl hrraqdkkrn elglpkmevf
+qeyyglpppp gaigpflrln pgdiveltka
+eaeqnwwegr ntstneigwf pcnrvkpyvh
+gppqdlsvhl wyagpmerag aesilanrsd
+gtflvrqrvk daaefaisik ynvevkhiki
+mtaeglyrit ekkafrglte lvefyqqnsl
+kdcfksldtt lqfpfkepek rtisrpavgs
+tkyfgtakar ydfcardrse lslkegdiik
+ilnkkgqqgw wrgeiygrvg wfpanyveed
+yseyc
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="602213">
+                <names>
+                    <shortLabel>Similar to seven in absentia, Drosophila homolog 2</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="9403064" db="PubMed"/>
+                    <secondaryRef id="NP_005058" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>msrpsstgps ankpcskqpp pqpqhtpspa
+appaaatisa agpgssavpa aaavisgpgg
+gggagpvspq hheltslfec pvcfdyvlpp
+ilqcqaghlv cnqcrqklsc cptcrgaltp
+sirnlamekv asavlfpcky attgcsltlh
+htekpehedi ceyrpyscpc pgasckwqgs
+leavmshlmh ahksittlqe edivflatdi
+nlpgavdwvm mqscfghhfm lvlekqekye
+ghqqffaivl ligtrkqaen fayrlelngn
+rrrltweatp rsihdgvaaa imnsdclvfd
+taiahlfadn gnlginvtis tccp
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="600583">
+                <names>
+                    <shortLabel>Tec tyrosine kinase</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="7934162" db="PubMed"/>
+                    <secondaryRef id="NP_003206" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mnfntileei likrsqqkkk tsplnykerl
+fvltksmlty yegraekkyr kgfidvskik
+cveivknddg vipcqnkypf qvvhdantly
+ifapspqsrd lwvkklkeei knnnnimiky
+hpkfwtdgsy qccrqtekla pgcekynlfe
+ssirkalppa petkkrrppp pipleeedns
+eeivvamydf qaaeghdlrl ergqeylile
+kndvhwwrar dkygnegyip snyvtgkksn
+nldqyewycr nmnrskaeql lrsedkeggf
+mvrdssqpgl ytvslytkfg gegssgfrhy
+hiketttspk kyylaekhaf gsipeiieyh
+khnaaglvtr lrypvsvkgk napttagfsy
+ekweinpsel tfmrelgsgl fgvvrlgkwr
+aqykvaikai regamceedf ieeakvmmkl
+thpklvqlyg vctqqkpiyi vtefmergcl
+lnflrqrqgh fsrdvllsmc qdvcegmeyl
+ernsfihrdl aarnclvsea gvvkvsdfgm
+aryflddqyt sssgakfpvk wcppevfnys
+rfssksdvws fgvlmwevft egrmpfekyt
+nyevvtmvtr ghrlyqpkla snyvyevmlr
+cwqekpegrp sfedllrtid elveceetfg
+r
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="171833">
+                <names>
+                    <shortLabel>Phosphatidylinositol 3 kinase, regulatory subunit, alpha</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="1648445" db="PubMed"/>
+                    <secondaryRef id="P27986" db="Swiss-Prot"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>msaegyqyra lydykkeree didlhlgdil
+tvnkgslval gfsdgqearp eeigwlngyn
+ettgergdfp gtyveyigrk kispptpkpr
+pprplpvapg sskteadveq qaltlpdlae
+qfappdiapp lliklveaie kkglecstly
+rtqsssnlae lrqlldcdtp svdlemidvh
+vladafkryl ldlpnpvipa avysemisla
+pevqsseeyi qllkklirsp siphqywltl
+qyllkhffkl sqtssknlln arvlseifsp
+mlfrfsaass dntenlikvi eilistewne
+rqpapalppk ppkpttvann gmnnnmslqn
+aewywgdisr eevneklrdt adgtflvrda
+stkmhgdytl tlrkggnnkl ikifhrdgky
+gfsdpltfss vvelinhyrn eslaqynpkl
+dvkllypvsk yqqdqvvked nieavgkklh
+eyntqfqeks reydrlyeey trtsqeiqmk
+rtaieafnet ikifeeqcqt qeryskeyie
+kfkregneke iqrimhnydk lksriseiid
+srrrleedlk kqaaeyreid krmnsikpdl
+iqlrktrdqy lmwltqkgvr qkklnewlgn
+entedqyslv eddedlphhd ektwnvgssn
+rnkaenllrg krdgtflvre sskqgcyacs
+vvvdgevkhc vinktatgyg faepynlyss
+lkelvlhyqh tslvqhndsl nvtlaypvya
+qqrr
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="147796">
+                <names>
+                    <shortLabel>Janus kinase 2</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id=" 1581631" db="PubMed"/>
+                    <secondaryRef id="NP_004963" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mgmacltmte megtstssiy qngdisgnan
+smkqidpvlq vylyhslgks eadyltfpsg
+eyvaeeicia askacgitpv yhnmfalmse
+teriwyppnh vfhidestrh nvlyrirfyf
+prwycsgsnr ayrhgisrga eapllddfvm
+sylfaqwrhd fvhgwikvpv thetqeeclg
+mavldmmria kendqtplai ynsisyktfl
+pkcirakiqd yhiltrkrir yrfrrfiqqf
+sqckatarnl klkylinlet lqsafytekf
+evkepgsgps geeifatiii tgnggiqwsr
+gkhkesetlt eqdlqlycdf pniidvsikq
+anqegsnesr vvtihkqdgk nleielsslr
+ealsfvslid gyyrltadah hylckevapp
+avleniqsnc hgpismdfai sklkkagnqt
+glyvlrcspk dfnkyfltfa verenvieyk
+hclitknene eynlsgtkkn fsslkdllnc
+yqmetvrsdn iifqftkccp pkpkdksnll
+vfrtngvsdv ptsptlqrpt hmnqmvfhki
+rnedlifnes lgqgtftkif kgvrrevgdy
+gqlhetevll kvldkahrny sesffeaasm
+msklshkhlv lnygvcvcgd enilvqefvk
+fgsldtylkk nkncinilwk levakqlawa
+mhfleentli hgnvcaknil lireedrktg
+nppfiklsdp gisitvlpkd ilqeripwvp
+pecienpknl nlatdkwsfg ttlweicsgg
+dkplsaldsq rklqfyedrh qlpapkwael
+anlinncmdy epdfrpsfra iirdlnslft
+pdyelltend mlpnmrigal gfsgafedrd
+ptqfeerhlk flqqlgkgnf gsvemcrydp
+lqdntgevva vkklqhstee hlrdfereie
+ilkslqhdni vkykgvcysa grrnlklime
+ylpygslrdy lqkhkeridh ikllqytsqi
+ckgmeylgtk ryihrdlatr nilvenenrv
+kigdfgltkv lpqdkeyykv kepgespifw
+yapesltesk fsvasdvwsf gvvlyelfty
+ieksksppae fmrmigndkq gqmivfhlie
+llknngrlpr pdgcpdeiym imtecwnnnv
+nqrpsfrdla lrvdqirdnm ag
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="176948">
+                <names>
+                    <shortLabel>ERK2</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8290275" db="PubMed"/>
+                    <secondaryRef id="NP_620407" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>maaaaaagag pemvrgqvfd vgprytnlsy
+igegaygmvc saydnvnkvr vaikkispfe
+hqtycqrtlr eikillrfrh eniigindii
+raptieqmkd vyivqdlmet dlykllktqh
+lsndhicyfl yqilrglkyi hsanvlhrdl
+kpsnlllntt cdlkicdfgl arvadpdhdh
+tgflteyvat rwyrapeiml nskgytksid
+iwsvgcilae mlsnrpifpg khyldqlnhi
+lgilgspsqe dlnciinlka rnyllslphk
+nkvpwnrlfp nadskaldll dkmltfnphk
+rieveqalah pyleqyydps depiaeapfk
+fdmelddlpk eklkelifee tarfqpgyrs
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="602843">
+                <names>
+                    <shortLabel>RHO GDP dissociation inhibitor ,beta</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="7896279 " db="PubMed"/>
+                    <secondaryRef id="NP_001166" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mtekapephv eeddddelds klnykpppqk
+slkelqemdk ddeslikykk tllgdgpvvt
+dpkapnvvvt rltlvcesap gpitmdltgd
+lealkketiv lkegseyrvk ihfkvnrdiv
+sglkyvqhty rtgvkvdkat fmvgsygprp
+eeyefltpve eapkgmlarg tyhnksfftd
+ddkqdhlswe wnlsikkewt e
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="136351">
+                <names>
+                    <shortLabel>FMS-related tyrosine kinase 3</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="2004790 " db="PubMed"/>
+                    <secondaryRef id="NP_004110" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mpalardagt vpllvvfsam ifgtitnqdl
+pvikcvlinh knndssvgks ssypmvsesp
+edlgcalrpq ssgtvyeaaa vevdvsasit
+lqvlvdapgn isclwvfkhs slncqphfdl
+qnrgvvsmvi lkmtetqage yllfiqseat
+nytilftvsi rntllytlrr pyfrkmenqd
+alvcisesvp epivewvlcd sqgesckees
+pavvkkeekv lhelfgtdir ccarnelgre
+ctrlftidln qtpqttlpql flkvgeplwi
+rckavhvnhg fgltwelenk aleegnyfem
+stystnrtmi rilfafvssv arndtgyytc
+ssskhpsqsa lvtivgkgfi natnssedye
+idqyeefcfs vrfkaypqir ctwtfsrksf
+pceqkgldng ysiskfcnhk hqpgeyifha
+enddaqftkm ftlnirrkpq vlaeasasqa
+scfsdgyplp swtwkkcsdk spncteeite
+gvwnrkanrk vfgqwvssst lnmseaikgf
+lvkccaynsl gtscetilln spgpfpfiqd
+nisfyatigv cllfivvltl lichkykkqf
+ryesqlqmvq vtgssdneyf yvdfreyeyd
+lkwefprenl efgkvlgsga fgkvmnatay
+gisktgvsiq vavkmlkeka dsserealms
+elkmmtqlgs henivnllga ctlsgpiyli
+feyccygdll nylrskrekf hrtwteifke
+hnfsfyptfq shpnssmpgs revqihpdsd
+qisglhgnsf hsedeieyen qkrleeeedl
+nvltfedllc fayqvakgme flefkscvhr
+dlaarnvlvt hgkvvkicdf glardimsds
+nyvvrgnarl pvkwmapesl fegiytiksd
+vwsygillwe ifslgvnpyp gipvdanfyk
+liqngfkmdq pfyateeiyi imqscwafds
+rkrpsfpnlt sflgcqlada eeamyqnvdg
+rvsecphtyq nrrpfsremd lgllspqaqv
+eds
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="176941">
+                <names>
+                    <shortLabel>TYK2</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8432525" db="PubMed"/>
+                    <secondaryRef id="NP_003322" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mplrhwgmar gskpvgdgaq pmaamgglkv
+llhwagpggg epwvtfsess ltaeevcihi
+ahkvgitppc fnlfalfdaq aqvwlppnhi
+leiprdaslm lyfrirfyfr nwhgmnprep
+avyrcgppgt eassdqtaqg mqlldpasfe
+ylfeqgkhef vndvaslwel steeeihhfk
+neslgmaflh lchlalrhgi pleevakkts
+fkdciprsfr rhirqhsalt rlrlrnvfrr
+flrdfqpgrl sqqmvmvkyl atlerlaprf
+gtervpvchl rllaqaegep cyirdsgvap
+tdpgpesaag ppthevlvtg tggiqwwpve
+eevnkeegss gssgrnpqas lfgkkakahk
+afgqpadrpr eplwayfcdf rdithvvlke
+hcvsihrqdn kclelslpsr aaalsfvslv
+dgyfrltads shylchevap prlvmsirdg
+ihgpllepfv qaklrpedgl ylihwstshp
+yrliltvaqr sqapdgmqsl rlrkfpieqq
+dgafvlegwg rsfpsvrelg aalqgcllra
+gddcfslrrc clpqpgetsn liimrgaras
+prtlnlsqls fhrvdqkeit qlshlgqgtr
+tnvyegrlrv egsgdpeegk mddedplvpg
+rdrgqelrvv lkvldpshhd ialafyetas
+lmsqvshthl afvhgvcvrg pensmvteyv
+ehgpldvwlr rerghvpmaw kmvvaqqlas
+alsylenknl vhgnvcgrni llarlglaeg
+tspfiklsdp gvglgalsre erveripwla
+peclpggans lstamdkwgf gatlleicfd
+geaplqsrsp sekehfyqrq hrlpepscpq
+latltsqclt yeptqrpsfr tilrdltrvq
+phnladvltv nrdspavgpt tfhkrylkki
+rdlgeghfgk vslycydptn dgtgemvavk
+alkadcgpqh rsgwkqeidi lrtlyhehii
+kykgccedqg ekslqlvmey vplgslrdyl
+prhsiglaql llfaqqiceg maylhahdyi
+hrdlaarnvl ldndrlvkig dfglakavpe
+gheyyrvred gdspvfwyap eclkeykfyy
+asdvwsfgvt lyellthcds sqspptkfle
+ligiaqgqmt vlrlteller gerlprpdkc
+pcevyhlmkn cweteasfrp tfenlipilk
+tvhekyqgqa psvfsvc
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="147670">
+                <names>
+                    <shortLabel>Insulin receptor</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="3873110 " db="PubMed"/>
+                    <secondaryRef id="NP_000199" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mgtggrrgaa aapllvavaa lllgaaghly
+pgevcpgmdi rnnltrlhel encsvieghl
+qillmfktrp edfrdlsfpk limitdylll
+frvygleslk dlfpnltvir gsrlffnyal
+vifemvhlke lglynlmnit rgsvrieknn
+elcylatidw srildsvedn hivlnkddne
+ecgdicpgta kgktncpatv ingqfvercw
+thshcqkvcp tickshgcta eglcchsecl
+gncsqpddpt kcvacrnfyl dgrcvetcpp
+pyyhfqdwrc vnfsfcqdlh hkcknsrrqg
+chqyvihnnk cipecpsgyt mnssnllctp
+clgpcpkvch llegektids vtsaqelrgc
+tvingsliin irggnnlaae leanlgliee
+isgylkirrs yalvslsffr klrlirgetl
+eignysfyal dnqnlrqlwd wskhnltttq
+gklffhynpk lclseihkme evsgtkgrqe
+rndialktng dkascenell kfsyirtsfd
+killrwepyw ppdfrdllgf mlfykeapyq
+nvtefdgqda cgsnswtvvd idpplrsndp
+ksqnhpgwlm rglkpwtqya ifvktlvtfs
+derrtygaks diiyvqtdat npsvpldpis
+vsnsssqiil kwkppsdpng nithylvfwe
+rqaedselfe ldyclkglkl psrtwsppfe
+sedsqkhnqs eyedsagecc scpktdsqil
+keleessfrk tfedylhnvv fvprktssgt
+gaedprpsrk rrslgdvgnv tvavptvaaf
+pntsstsvpt speehrpfek vvnkeslvis
+glrhftgyri elqacnqdtp eercsvaayv
+sartmpeaka ddivgpvthe ifennvvhlm
+wqepkepngl ivlyevsyrr ygdeelhlcv
+srkhfalerg crlrglspgn ysvriratsl
+agngswtept yfyvtdyldv psniakiiig
+plifvflfsv vigsiylflr krqpdgplgp
+lyassnpeyl sasdvfpcsv yvpdewevsr
+ekitllrelg qgsfgmvyeg nardiikgea
+etrvavktvn esaslrerie flneasvmkg
+ftchhvvrll gvvskgqptl vvmelmahgd
+lksylrslrp eaennpgrpp ptlqemiqma
+aeiadgmayl nakkfvhrdl aarncmvahd
+ftvkigdfgm trdiyetdyy rkggkgllpv
+rwmapeslkd gvfttssdmw sfgvvlweit
+slaeqpyqgl sneqvlkfvm dggyldqpdn
+cpervtdlmr mcwqfnpkmr ptfleivnll
+kddlhpsfpe vsffhseenk apeseeleme
+fedmenvpld rsshcqreea ggrdggsslg
+fkrsyeehip ythmnggkkn griltlprsn
+ps
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="190020">
+                <names>
+                    <shortLabel>H-Ras</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="6312329" db="PubMed"/>
+                    <secondaryRef id="NP_005334" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mteyklvvvg aggvgksalt iqliqnhfvd
+eydptiedsy rkqvvidget clldildtag
+qeeysamrdq ymrtgegflc vfainntksf
+edihqyreqi krvkdsddvp mvlvgnkcdl
+aartvesrqa qdlarsygip yietsaktrq
+gvedafytlv reirqhklrk lnppdesgpg
+cmsckcvls
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="602104">
+                <names>
+                    <shortLabel>3BP2</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="" db="PubMed"/>
+                    <secondaryRef id="NP_003014" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>maaeemhwpv pmkaigaqnl ltmpggvaka
+gylhkkggtq lqllkwplrf viihkrcvyy
+fksstsaspq gafslsgynr vmraaeetts
+nnvfpfkiih iskkhrtwff sasseeerks
+wmallrreig hfhekkdlpl dtsdsssdtd
+sfygaverpv dislspyptd nedyehdded
+dsylepdspe pgrledalmh ppayppppvp
+tprkpafsdm prahsftskg pgpllppppp
+khglpdvgla aedskrdplc prraepcprv
+patprrmsdp plstmptapg lrkppcfres
+aspspepwtp ghgacstssa aimatatsrn
+cdklksfhls prgpptsepp pvpankpkfl
+kiaeedppre aampglfvpp vaprppalkl
+pvpeamarpa vlprpekpql phlqrspldg
+qsfrsfsfek prqpsqadtg gddsdedyek
+vplpnsvfvn ttesceverl fkatsprgep
+qdglycirns stksgkvlvv wdetsnkvrn
+yrifekdskf ylegevlfvs vgsmvehyht
+hvlpshqsll lrhpygytgp r
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="PP68">
+                <names>
+                    <shortLabel>PP68</shortLabel>
+                </names>
+                
+                
+                
+            </proteinInteractor>
+            <proteinInteractor id="601099">
+                <names>
+                    <shortLabel>Src-like adapter protein</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8825655" db="PubMed"/>
+                    <secondaryRef id="NP_006739" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mgnsmkstpa paerplpnpe gldsdflavl
+sdypspdisp pifrrgeklr visdeggwwk
+aislstgres yipgicvarv yhgwlfeglg
+rdkaeellql pdtkvgsfmi resetkkgfy
+slsvrhrqvk hyrifrlpnn wyyisprltf
+qcledlvnhy sevadglccv lttpcltqst
+aapavrasss pvtlrqktvd wrrvsrlqed
+pegtenplgv deslfsyglr esiasylslt
+sedntsfdrk kksislmygg skrkssffss
+ppyfed
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="176883">
+                <names>
+                    <shortLabel>SHP1</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="1639416" db="PubMed"/>
+                    <secondaryRef id=" NP_002822" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mvrwfhrdls gldaetllkg rgvhgsflar
+psrknqgdfs lsvrvgdqvt hiriqnsgdf
+ydlyggekfa tltelveyyt qqqgvlqdrd
+gtiihlkypl ncsdptserw yhghmsggqa
+etllqakgep wtflvresls qpgdfvlsvl
+sdqpkagpgs plrvthikvm ceggrytvgg
+letfdsltdl vehfkktgie easgafvylr
+qpyyatrvna adienrvlel nkkqesedta
+kagfweefes lqkqevknlh qrlegqrpen
+kgknryknil pfdhsrvilq grdsnipgsd
+yinanyiknq llgpdenakt yiasqgclea
+tvndfwqmaw qensrvivmt trevekgrnk
+cvpywpevgm qraygpysvt ncgehdttey
+klrtlqvspl dngdlireiw hyqylswpdh
+gvpsepggvl sfldqinqrq eslphagpii
+vhcsagigrt gtiividmlm enistkgldc
+didiqktiqm vraqrsgmvq teaqykfiyv
+aiaqfiettk kklevlqsqk gqeseygnit
+yppamknaha kasrtsskhk edvyenlhtk
+nkreekvkkq rsadkekskg slkrk
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="164760">
+                <names>
+                    <shortLabel>RAF1</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="1612588 " db="PubMed"/>
+                    <secondaryRef id="NP_002871" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mehiqgawkt isngfgfkda vfdgsscisp
+tivqqfgyqr rasddgkltd psktsntirv
+flpnkqrtvv nvrngmslhd clmkalkvrg
+lqpeccavfr llhehkgkka rldwntdaas
+ligeelqvdf ldhvpltthn farktflkla
+fcdicqkfll ngfrcqtcgy kfhehcstkv
+ptmcvdwsni rqlllfpnst igdsgvpalp
+sltmrrmres vsrmpvssqh rystphaftf
+ntsspssegs lsqrqrstst pnvhmvsttl
+pvdsrmieda irshsesasp salssspnnl
+sptgwsqpkt pvpaqrerap vsgtqeknki
+rprgqrdssy yweieasevm lstrigsgsf
+gtvykgkwhg dvavkilkvv dptpeqfqaf
+rnevavlrkt rhvnillfmg ymtkdnlaiv
+tqwcegssly khlhvqetkf qmfqlidiar
+qtaqgmdylh akniihrdmk snniflhegl
+tvkigdfgla tvksrwsgsq qveqptgsvl
+wmapevirmq dnnpfsfqsd vysygivlye
+lmtgelpysh innrdqiifm vgrgyaspdl
+sklykncpka mkrlvadcvk kvkeerplfp
+qilssiellq hslpkinrsa sepslhraah
+tedinactlt tsprlpvf
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="602002">
+                <names>
+                    <shortLabel>Zyxin</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="9730620" db="PubMed"/>
+                    <secondaryRef id="NP_003452" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>maaprpspai svsvsapafy apqkkfgpvv
+apkpkvnpfr pgdsepppap gaqraqmgrv
+geippppped fplpppplag dgddaegalg
+gafppppppi eesfppaple eeifpspppp
+peeeggpeap ippppqprek vssidleids
+lssllddmtk ndpfkarvss gyvpppvatp
+fssksstkpa aggtaplppw kspsssqplp
+qvpapaqsqt qfhvqpqpqp kpqvqlhvqs
+qtqpvslant qprgppassp apapkfspvt
+pkftpvaskf spgapggsgs qpnqklghpe
+alsagtgspq ppsftyaqqr ekprvqekqh
+pvpppaqnqn qvrspgapgp ltlkeveele
+qltqqlmqdm ehpqrqnvav nelcgrchqp
+laraqpavra lgqlfhiacf tchqcaqqlq
+gqqfyslega pycegcytdt lekcntcgep
+itdrmlratg kayhphcftc vvcarplegt
+sfivdqanrp hcvpdyhkqy aprcsvcsep
+impepgrdet vrvvaldknf hmkcykcedc
+gkplsieadd ngcfpldghv lcrkchtara
+qt
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="165360">
+                <names>
+                    <shortLabel>CBL</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="2013228" db="PubMed"/>
+                    <secondaryRef id="NP_005179" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>magnvkkssg agggtgsggs gsggliglmk
+dafqphhhhh hhlsphppgt vdkkmvekcw
+klmdkvvrlc qnpklalkns ppyildllpd
+tyqhlrtils ryegkmetlg eneyfrvfme
+nlmkktkqti slfkegkerm yeensqprrn
+ltklslifsh mlaelkgifp sglfqgdtfr
+itkadaaefw rkafgektiv pwksfrqalh
+evhpissgle amalkstidl tcndyisvfe
+fdiftrlfqp wssllrnwns lavthpgyma
+fltydevkar lqkfihkpgs yifrlsctrl
+gqwaigyvta dgnilqtiph nkplfqalid
+gfregfylfp dgrnqnpdlt glceptpqdh
+ikvtqeqyel ycemgstfql ckicaendkd
+vkiepcghlm ctscltswqe segqgcpfcr
+ceikgtepiv vdpfdprgsg sllrqgaega
+pspnyddddd eraddtlfmm kelagakver
+ppspfsmapq aslppvpprl dllpqrvcvp
+ssasalgtas kaasgslhkd kplpvpptlr
+dlppppppdr pysvgaesrp qrrplpctpg
+dcpsrdklpp vpssrlgdsw lprpipkvpv
+sapsssdpwt greltnrhsl pfslpsqmep
+rpdvprlgst fsldtsmsmn ssplvgpecd
+hpkikpsssa naiyslaarp lpvpklppge
+qcegeedtey mtpssrplrp ldtsqssrac
+dcdqqidsct yeamyniqsq apsitesstf
+gegnlaaaha ntgpeesene ddgydvpkpp
+vpavlarrtl sdisnasssf gwlsldgdpt
+tnvtegsqvp erppkpfprr inserkagsc
+qqgsgpaasa ataspqlsse ienlmsqgys
+yqdiqkalvi aqnniemakn ilrefvsiss
+pahvat
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="137025">
+                <names>
+                    <shortLabel>Fyn</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="3330788 " db="PubMed"/>
+                    <secondaryRef id="AAC08285" db=""/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mgcvqckdke atklteerdg slnqssgyry
+gtdptpqhyp sfgvtsipny nnfhaaggqg
+ltvfggvnss shtgtlrtrg gtgvtlfval
+ydyeartedd lsfhkgekfq ilnssegdww
+earslttget gyipsnyvap vdsiqaeewy
+fgklgrkdae rqllsfgnpr gtflireset
+tkgayslsir dwddmkgdhv khykirkldn
+ggyyittraq fetlqqlvqh yseraaglcc
+rlvvpchkgm prltdlsvkt kdvweipres
+lqlikrlgng qfgevwmgtw ngntkvaikt
+lkpgtmspes fleeaqimkk lkhdklvqly
+avvseepiyi vteymnkgsl ldflkdgegr
+alklpnlvdm aaqvaagmay iermnyihrd
+lrsanilvgn glickiadfg larliedney
+tarqgakfpi kwtapeaaly grftiksdvw
+sfgilltelv tkgrvpypgm nnrevleqve
+rgyrmpcpqd cpislhelmi hcwkkdpeer
+ptfeylqsfl edyftatepq yqpgenl
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="601573">
+                <names>
+                    <shortLabel>EZH2</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="10780782 " db="PubMed"/>
+                    <secondaryRef id="NP_004447" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mgqtgkksek gpvcwrkrvk seymrlrqlk
+rfrradevks mfssnrqkil erteilnqew
+kqrriqpvhi ltsvsslrgt recsvtsdld
+fptqviplkt lnavasvpim yswsplqqnf
+mvedetvlhn ipymgdevld qdgtfieeli
+knydgkvhgd recgfindei fvelvnalgq
+yndddddddg ddpeereekq kdledhrddk
+esrpprkfps dkifeaissm fpdkgtaeel
+kekykelteq qlpgalppec tpnidgpnak
+svqreqslhs fhtlfcrrcf kydcflhrkc
+nysfhatpnt ykrkntetal dnkpcgpqcy
+qhlegakefa aaltaerikt ppkrpggrrr
+grlpnnssrp stptinvles kdtdsdreag
+tetggenndk eeeekkdets ssseansrcq
+tpikmkpnie ppenvewsga easmfrvlig
+tyydnfcaia rligtktcrq vyefrvkess
+iiapapaedv dtpprkkkrk hrlwaahcrk
+iqlkkdgssn hvynyqpcdh prqpcdsscp
+cviaqnfcek fcqcssecqn rfpgcrckaq
+cntkqcpcyl avrecdpdlc ltcgaadhwd
+sknvsckncs iqrgskkhll lapsdvagwg
+ifikdpvqkn efiseycgei isqdeadrrg
+kvydkymcsf lfnlnndfvv datrkgnkir
+fanhsvnpnc yakvmmvngd hrigifakra
+iqtgeelffd yrysqadalk yvgieremei
+p
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="600085">
+                <names>
+                    <shortLabel>SYK</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="8082894 " db="PubMed"/>
+                    <secondaryRef id="NP_003168" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>massgmadsa nhlpfffgni treeaedylv
+qggmsdglyl lrqsrnylgg falsvahgrk
+ahhytierel ngtyaiaggr thaspadlch
+yhsqesdglv cllkkpfnrp qgvqpktgpf
+edlkenlire yvkqtwnlqg qaleqaiisq
+kpqlekliat tahekmpwfh gkisreeseq
+ivligsktng kflirardnn gsyalcllhe
+gkvlhyridk dktgklsipe gkkfdtlwql
+vehysykadg llrvltvpcq kigtqgnvnf
+ggrpqlpgsh patwsaggii sriksysfpk
+pghrksspaq gnrqestvsf npyepelapw
+aadkgpqrea lpmdtevyes pyadpeeirp
+kevyldrkll tledkelgsg nfgtvkkgyy
+qmkkvvktva vkilkneand palkdellae
+anvmqqldnp yivrmigice aeswmlvmem
+aelgplnkyl qqnrhvkdkn iielvhqvsm
+gmkyleesnf vhrdlaarnv llvtqhyaki
+sdfglskalr adenyykaqt hgkwpvkwya
+pecinyykfs sksdvwsfgv lmweafsygq
+kpyrgmkgse vtamlekger mgcpagcpre
+mydlmnlcwt ydvenrpgfa avelrlrnyy
+ydvvn
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="152690">
+                <names>
+                    <shortLabel>Ku70  </shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="2917966" db="PubMed"/>
+                    <secondaryRef id="NP_001460" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>msgwesyykt egdeeaeeeq eenleasgdy
+kysgrdslif lvdaskamfe sqsedeltpf
+dmsiqciqsv yiskiissdr dllavvfygt
+ekdknsvnfk niyvlqeldn pgakrileld
+qfkgqqgqkr fqdmmghgsd yslsevlwvc
+anlfsdvqfk mshkrimlft nednphgnds
+akasrartka gdlrdtgifl dlmhlkkpgg
+fdislfyrdi isiaededlr vhfeesskle
+dllrkvrake trkralsrlk lklnkdivis
+vgiynlvqka lkpppiklyr etnepvktkt
+rtfntstggl llpsdtkrsq iygsrqiile
+keeteelkrf ddpglmlmgf kplvllkkhh
+ylrpslfvyp eeslvigsst lfsallikcl
+ekevaalcry tprrnippyf valvpqeeel
+ddqkiqvtpp gfqlvflpfa ddkrkmpfte
+kimatpeqvg kmkaiveklr ftyrsdsfen
+pvlqqhfrnl ealaldlmep eqavdltlpk
+veamnkrlgs lvdefkelvy ppdynpegkv
+tkrkhdnegs gskrpkveys eeelkthisk
+gtlgkftvpm lkeacraygl ksglkkqell
+ealtkhfqd
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="300300">
+                <names>
+                    <shortLabel>Bruton's tyrosine kinase</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="2881637" db="PubMed"/>
+                    <secondaryRef id="NP_000052" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>maavilesif lkrsqqkkkt splnfkkrlf
+lltvhklsyy eydfergrrg skkgsidvek
+itcvetvvpe knppperqip rrgeesseme
+qisiierfpy pfqvvydegp lyvfspteel
+rkrwihqlkn virynsdlvq kyhpcfwidg
+qylccsqtak namgcqilen rngslkpgss
+hrktkkplpp tpeedqilkk plppepaaap
+vstselkkvv alydympmna ndlqlrkgde
+yfileesnlp wwrardkngq egyipsnyvt
+eaedsiemye wyskhmtrsq aeqllkqegk
+eggfivrdss kagkytvsvf akstgdpqgv
+irhyvvcstp qsqyylaekh lfstipelin
+yhqhnsagli srlkypvsqq nknapstagl
+gygsweidpk dltflkelgt gqfgvvkygk
+wrgqydvaik mikegsmsed efieeakvmm
+nlsheklvql ygvctkqrpi fiiteymang
+cllnylremr hrfqtqqlle mckdvceame
+yleskqflhr dlaarnclvn dqgvvkvsdf
+glsryvldde ytssvgskfp vrwsppevlm
+yskfssksdi wafgvlmwei yslgkmpyer
+ftnsetaehi aqglrlyrph lasekvytim
+yscwhekade rptfkillsn ildvmdees
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="176761">
+                <names>
+                    <shortLabel>Prolactin receptor</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="2369845" db="PubMed"/>
+                    <secondaryRef id="NP_000940" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mkenvasatv ftlllflntc llngqlppgk
+peifkcrspn ketftcwwrp gtdgglptny
+sltyhreget lmhecpdyit ggpnschfgk
+qytsmwrtyi mmvnatnqmg ssfsdelyvd
+vtyivqpdpp lelavevkqp edrkpylwik
+wspptlidlk tgwftllyei rlkpekaaew
+eihfagqqte fkilslhpgq kylvqvrckp
+dhgywsawsp atfiqipsdf tmndttvwis
+vavlsavicl iivwavalkg ysmvtcifpp
+vpgpkikgfd ahllekgkse ellsalgcqd
+fpptsdyedl lveylevdds edqhlmsvhs
+kehpsqgmkp tyldpdtdsg rgscdspsll
+sekceepqan pstfydpevi ekpenpetth
+twdpqcisme gkipyfhagg skcstwplpq
+psqhnprssy hnitdvcela vgpagapatl
+lneagkdalk ssqtiksree gkatqqreve
+sfhsetdqdt pwllpqektp fgsakpldyv
+eihkvnkdga lsllpkqren sgkpkkpgtp
+ennkeyakvs gvmdnnilvl vpdphaknva
+cfeesakeap psleqnqaek alanftatss
+kcrlqlggld yldpacfths fh
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="116952">
+                <names>
+                    <shortLabel>CDC 42</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="7665558" db="PubMed"/>
+                    <secondaryRef id="NP_001782" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mqtikcvvvg dgavgktcll isyttnkfps
+eyvptvfdny avtvmiggep ytlglfdtag
+qedydrlrpl sypqtdvflv cfsvvspssf
+envkekwvpe ithhcpktpf llvgtqidlr
+ddpstiekla knkqkpitpe taeklardlk
+avkyvecsal tqkglknvfd eailaalepp
+epkksrrcvl l
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="600694">
+                <names>
+                    <shortLabel>Interleukin 6 receptor, beta</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="7736792" db="PubMed"/>
+                    <secondaryRef id="NP_002175" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mltlqtwvvq alfiflttes tgelldpcgy
+ispespvvql hsnftavcvl kekcmdyfhv
+nanyivwktn hftipkeqyt iinrtassvt
+ftdiaslniq ltcniltfgq leqnvygiti
+isglppekpk nlscivnegk kmrcewdggr
+ethletnftl ksewathkfa dckakrdtpt
+sctvdystvy fvnievwvea enalgkvtsd
+hinfdpvykv kpnpphnlsv inseelssil
+kltwtnpsik sviilkyniq yrtkdastws
+qippedtast rssftvqdlk pfteyvfrir
+cmkedgkgyw sdwseeasgi tyedrpskap
+sfwykidpsh tqgyrtvqlv wktlppfean
+gkildyevtl trwkshlqny tvnatkltvn
+ltndrylatl tvrnlvgksd aavltipacd
+fqathpvmdl kafpkdnmlw vewttpresv
+kkyilewcvl sdkapcitdw qqedgtvhrt
+ylrgnlaesk cylitvtpvy adgpgspesi
+kaylkqapps kgptvrtkkv gkneavlewd
+qlpvdvqngf irnytifyrt iignetavnv
+dsshteytls sltsdtlymv rmaaytdegg
+kdgpeftftt pkfaqgeiea ivvpvclafl
+lttllgvlfc fnkrdlikkh iwpnvpdpsk
+shiaqwspht pprhnfnskd qmysdgnftd
+vsvveieand kkpfpedlks ldlfkkekin
+teghssgigg sscmsssrps isssdeness
+qntsstvqys tvvhsgyrhq vpsvqvfsrs
+estqplldse erpedlqlvd hvdggdgilp
+rqqyfkqncs qhesspdish ferskqvssv
+needfvrlkq qisdhisqsc gsgqmkmfqe
+vsaadafgpg tegqverfet vgmeaatdeg
+mpksylpqtv rqggympq
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="604515">
+                <names>
+                    <shortLabel>B-cell linker protein</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="10583958" db="PubMed"/>
+                    <secondaryRef id="NP_037446" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mdklnkitvp asqklrqlqk mvhdiknneg
+gimnkikklk vkappsvprr dyasespade
+eeqwsddfds dyenpdehsd semyvmpaee
+naddsyeppp veqetrpvhp alpfargeyi
+dnrssqrhsp pfsktlpskp swpsekarlt
+stlpaltalq kpqvppkpkg lledeadyvv
+pvedndenyi hptesssppp ekapmvnrst
+kpnsstpasp pgtasgrnsg awetkspppa
+apsplpragk kpttplkttp vasqqnassv
+ceekpipaer hrgsshrqea vqspvfppaq
+kqihqkpipl prfteggnpt vdgplpsfss
+nstiseqeag vlckpwyaga cdrksaeeal
+hrsnkdgsfl irkssghdsk qpytlvvffn
+krvynipvrf ieatkqyalg rkkngeeyfg
+svaeiirnhq hsplvlidsq nntkdstrlk
+yavkvs
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="600448">
+                <names>
+                    <shortLabel>Protein kinase C, theta</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="7790001" db="PubMed"/>
+                    <secondaryRef id="NP_006248" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mspflrigls nfdcgscqsc qgeavnpyca
+vlvkeyvese ngqmyiqkkp tmyppwdstf
+dahinkgrvm qiivkgknvd lisettvely
+slaercrknn gkteiwlelk pqgrmlmnar
+yflemsdtkd mnefetegff alhqrrgaik
+qakvhhvkch eftatffpqp tfcsvchefv
+wglnkqgyqc rqcnaaihkk cidkviakct
+gsainsretm fhkerfkidm phrfkvynyk
+sptfcehcgt llwglarqgl kcdacgmnvh
+hrcqtkvanl cginqklmae alamiestqq
+arclrdteqi fregpveigl pcsiknearp
+pclptpgkre pqgiswespl devdkmchlp
+epelnkerps lqiklkiedf ilhkmlgkgs
+fgkvflaefk ktnqffaika lkkdvvlmdd
+dvectmvekr vlslawehpf lthmfctfqt
+kenlffvmey lnggdlmyhi qschkfdlsr
+atfyaaeiil glqflhskgi vyrdlkldni
+lldkdghiki adfgmckenm lgdaktntfc
+gtpdyiapei llgqkynhsv dwwsfgvlly
+emligqspfh gqdeeelfhs irmdnpfypr
+wlekeakdll vklfvrepek rlgvrgdirq
+hplfreinwe elerkeidpp frpkvkspfd
+csnfdkefln ekprlsfadr alinsmdqnm
+frnfsfmnpg merlis
+</sequence>
+            </proteinInteractor>
+            <proteinInteractor id="Nef">
+                <names>
+                    <shortLabel>Nef</shortLabel>
+                </names>
+                
+                
+                
+            </proteinInteractor>
+            <proteinInteractor id="600314">
+                <names>
+                    <shortLabel>SHB</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="HPRD" id="P164875"/>
+                    <secondaryRef id="7713524" db="PubMed"/>
+                    <secondaryRef id="NP_003019" db="Ref-Seq"/>
+                </xref>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>mrrahegrei pslggarrre vlqagrsqra
+agrrrrrqel elgvgsgrpg gpppgpgrrg
+tcaaalppew prrrtglprr gprpplamak
+wlnkyfslgn sktksppqpp rpdyreqrrr
+gerpsqppqa vpqassaasa scgpatascf
+sassgslpdd sgstsdlira yraqkerhfq
+dpyngpgssl rklramcrld ycggsgepgg
+vqrafsassa sgaagcccas sgagaaasss
+sssgsphlyr ssserrpatp aevryispkh
+rlikvesaag ggagdplgga caggrtwspt
+acggkkllnk caasaaeesg agkkdkvtia
+ddysdpfdak ndlkskagkg esagymepye
+aqrimtefqr qesvrsqhkg iqlydtpyep
+egqsvdsdse stvsprlres klpqdddrpa
+deydqpwewn rvtspalaaq fngnekrqss
+pspsrdrrrq lrapgggfkp ikhgspefcg
+ilgervdpav plekqiwyhg aisrgdaenl
+lrlckecsyl vrnsqtskhd yplslrsnqg
+fmhmklaktk ekyvlgqnsp pfdsvpevih
+yyttrklpik gaehlsllyp vavrtl
+</sequence>
+            </proteinInteractor>
+        </interactorList>
+        <interactionList>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="171833"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10452128656079"/>
+                    <secondaryRef id="7528218;9891995" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="600712"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244481439"/>
+                    <secondaryRef id="8051112" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="600314"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="174"/>
+                                    <end position="174"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244496371"/>
+                    <secondaryRef id="12084069" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="Rac"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244500161"/>
+                    <secondaryRef id="10748082" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="113"/>
+                                    <end position="128"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="602843"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244502162"/>
+                    <secondaryRef id="10664460" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="172420"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244502774"/>
+                    <secondaryRef id="9891995" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="603597"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244502825"/>
+                    <secondaryRef id="10022833" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="137025"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244503760"/>
+                    <secondaryRef id="9822663" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="560"/>
+                                    <end position="845"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="151410"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244506943"/>
+                    <secondaryRef id="11790798" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="604491"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244507506"/>
+                    <secondaryRef id="11857085" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="602213"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="160"/>
+                                    <end position="286"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244509956"/>
+                    <secondaryRef id="10207103" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="600694"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244510757"/>
+                    <secondaryRef id="9013873" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="PP68"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244511346"/>
+                    <secondaryRef id="9341187" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="66"/>
+                                    <end position="115"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="601573"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="67"/>
+                                    <end position="319"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244515024"/>
+                    <secondaryRef id="8649418" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="300300"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244515229"/>
+                    <secondaryRef id="9201297" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="670"/>
+                                    <end position="765"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="176883"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244515803"/>
+                    <secondaryRef id="8632004" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="600085"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244516448"/>
+                    <secondaryRef id="8986718" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="602002"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244517106"/>
+                    <secondaryRef id="8622875" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="152690"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244518719"/>
+                    <secondaryRef id="8524317" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="165360"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="699"/>
+                                    <end position="699"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244518727"/>
+                    <secondaryRef id="9200440" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="107265"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244520177"/>
+                    <secondaryRef id="7528218" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="600583"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244520374"/>
+                    <secondaryRef id="7651724" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="176761"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244522701"/>
+                    <secondaryRef id="7768923" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="176947"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244524058"/>
+                    <secondaryRef id="7798261" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="108355"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244524382"/>
+                    <secondaryRef id="7809090" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="171833"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244525014"/>
+                    <secondaryRef id="7528218;9891995" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="F-actin"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244525223"/>
+                    <secondaryRef id="11839310" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="147670"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244525482"/>
+                    <secondaryRef id="7535775" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="190020"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244525549"/>
+                    <secondaryRef id="8554611" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="147796"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244527422"/>
+                    <secondaryRef id="7530656" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="136351"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244530938"/>
+                    <secondaryRef id="7692230" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="601603"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244531201"/>
+                    <secondaryRef id="11331248 " db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="603735"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244533613"/>
+                    <secondaryRef id="1375396" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="176941"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244534236"/>
+                    <secondaryRef id="10673353" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="Nef"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244535632"/>
+                    <secondaryRef id="10394361" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="601099"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244539811"/>
+                    <secondaryRef id="10662792" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="pp70"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435244513096"/>
+                    <secondaryRef id="9341187" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="116952"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435204991073"/>
+                    <secondaryRef id="11287617" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="602354"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="191"/>
+                                    <end position="191"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435331414041"/>
+                    <secondaryRef id="11368773" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="603597"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435354500704"/>
+                    <secondaryRef id="10022833" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164760"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10438392073428"/>
+                    <secondaryRef id="8900182" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="137025"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10444245369399"/>
+                    <secondaryRef id="9822663" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="602354"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="226"/>
+                                    <end position="226"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10450451973512"/>
+                    <secondaryRef id="" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="604515"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10474417673632"/>
+                    <secondaryRef id="9697839" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="176948"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10487520560441"/>
+                    <secondaryRef id="9013873" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="165360"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435246427975"/>
+                    <secondaryRef id="11133830" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="600314"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435291711691"/>
+                    <secondaryRef id="12084069" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="600448"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435293644972"/>
+                    <secondaryRef id="10725744" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="786"/>
+                                    <end position="844"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="601212"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435309644588"/>
+                    <secondaryRef id="10867021" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="605"/>
+                                    <end position="662"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="601212"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435309644629"/>
+                    <secondaryRef id="10867021" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="601573"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435316900263"/>
+                    <secondaryRef id="10780782 " db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="601603"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="128"/>
+                                    <end position="131"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435317728689"/>
+                    <secondaryRef id="9047237" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="602104"/>
+                        <featureList>
+                            <feature>
+                                <location>
+                                    <begin position="183"/>
+                                    <end position="183"/>
+                                </location>
+                            </feature>
+                        </featureList>
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435327036417"/>
+                    <secondaryRef id="11390470" db="PubMed"/>
+                </xref>
+            </interaction>
+            <interaction>
+                <availabilityRef ref="copyright"/>
+                <experimentList>
+                    <experimentRef ref="experimental"/>
+                </experimentList>
+                <participantList>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="164875"/>
+                        
+                    </proteinParticipant>
+                    <proteinParticipant>
+                        <proteinInteractorRef ref="133171"/>
+                        
+                    </proteinParticipant>
+                </participantList>
+                <xref>
+                    <primaryRef db="HPRD" id="I10435216571058"/>
+                    <secondaryRef id="9162069" db="PubMed"/>
+                </xref>
+            </interaction>
+        </interactionList>
+    </entry>
+</entrySet>
