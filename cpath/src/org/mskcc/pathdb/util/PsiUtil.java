@@ -42,6 +42,7 @@ import org.mskcc.pathdb.task.ProgressMonitor;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Normalizes a PSI-MI XML Document in preparation for submission to cPath.
@@ -509,23 +510,37 @@ public class PsiUtil {
 
     /**
      * Adds New External References to the PSI-MI XRef Object.
+     * Ensures that a single External Reference is not added twice.
      *
      * @param xref PSI-MI XRef Object.
-     * @param list ArrayList of External Reference Objects.
+     * @param extraRefs Array of External Reference Objects.
+     * @throws MissingDataException Indicates Missing Data.
      */
-    public void addExternalReferences(XrefType xref, ArrayList list) {
-        for (int i = 0; i < list.size(); i++) {
-            ExternalReference ref = (ExternalReference) list.get(i);
-            if (xref.getPrimaryRef() == null) {
-                DbReferenceType primaryRef = new DbReferenceType();
-                primaryRef.setDb(ref.getDatabase());
-                primaryRef.setId(ref.getId());
-                xref.setPrimaryRef(primaryRef);
-            } else {
-                DbReferenceType secondaryRef = new DbReferenceType();
-                secondaryRef.setDb(ref.getDatabase());
-                secondaryRef.setId(ref.getId());
-                xref.addSecondaryRef(secondaryRef);
+    public void addExternalReferences(XrefType xref, ExternalReference
+            extraRefs[])
+            throws MissingDataException {
+
+        //  Track existing set of references.
+        ExternalReference existingRefs[] = extractXrefs(xref);
+        HashSet set = new HashSet();
+        for (int i=0; i< existingRefs.length; i++) {
+            set.add(existingRefs[i]);
+        }
+
+        for (int i = 0; i < extraRefs.length; i++) {
+            ExternalReference ref = extraRefs[i];
+            if (!set.contains(ref)) {
+                if (xref.getPrimaryRef() == null) {
+                    DbReferenceType primaryRef = new DbReferenceType();
+                    primaryRef.setDb(ref.getDatabase());
+                    primaryRef.setId(ref.getId());
+                    xref.setPrimaryRef(primaryRef);
+                } else {
+                    DbReferenceType secondaryRef = new DbReferenceType();
+                    secondaryRef.setDb(ref.getDatabase());
+                    secondaryRef.setId(ref.getId());
+                    xref.addSecondaryRef(secondaryRef);
+                }
             }
         }
     }
