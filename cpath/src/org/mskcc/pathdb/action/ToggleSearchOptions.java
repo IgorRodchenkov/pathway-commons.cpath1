@@ -33,10 +33,13 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.util.XssFilter;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 /**
  * Toggles the Search Options on/off.
@@ -70,6 +73,15 @@ public class ToggleSearchOptions extends BaseAction {
         if (searchOptionsFlag == null) {
             searchOptionsFlag = new Boolean(false);
         }
+
+        HashMap parameterMap = XssFilter.filterAllParameters
+                    (request.getParameterMap());
+        if (parameterMap.keySet().size() > 0) {
+            ProtocolRequest protocolRequest =
+                    new ProtocolRequest(parameterMap);
+            request.setAttribute(ATTRIBUTE_PROTOCOL_REQUEST, protocolRequest);
+        }
+
         xdebug.logMsg(this, "Search Options Flag was:  " + searchOptionsFlag);
         searchOptionsFlag = new Boolean(!searchOptionsFlag.booleanValue());
         session.setAttribute(SESSION_SEARCH_OPTIONS_FLAG, searchOptionsFlag);
