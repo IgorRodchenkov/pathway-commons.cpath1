@@ -129,7 +129,7 @@ to prioritize the purging of the cache.  This will help keep often viewed pages
 in the cache. Possible prioritization: purge oldest and least viewed documents
 	---> Current priority: low.
 
-22  Set up auto-emails upon fatal cPath errors
+22.  Set up auto-emails upon fatal cPath errors
     (how does a user deal with errors?).
 
 23.  Revisit the Advanced Search Functionality. (June.18.2004)
@@ -157,7 +157,14 @@ Boris suggested that we add links to PDB in the protein view.
 Mike suggested we create some kind of tool for automatically updating
 cPath with data from DIP, MINT, etc.  This would probably be fairly involved.
 
+27.  Deal with Redundant cPath Data (July16.2004)
+One instance of this issue:
 
+The protein view can sometimes show the same protein in multiple rows.
+This view should avoid duplicated information in the rows at the bottom of the
+screen for the precedence order 'interactor' then 'experimental evidence'.
+
+For example, try searching cpath on cbio for:  interactor_id:55
 
 Data Service Specific Items:
 -----------------------------
