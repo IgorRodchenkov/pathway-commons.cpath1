@@ -1,4 +1,4 @@
-<%@ taglib uri="/WEB-INF/cbio-taglib.tld" prefix="cbio" %>
+<%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page import="java.util.ArrayList,
                  org.mskcc.pathdb.controller.ProtocolRequest,
                  org.mskcc.pathdb.controller.ProtocolException"%>

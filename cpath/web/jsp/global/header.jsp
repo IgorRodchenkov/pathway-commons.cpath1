@@ -1,5 +1,5 @@
 <%@ page import="java.util.ArrayList"%>
-
+<% String userMessage = (String) request.getAttribute("userMsg"); %>
 <!--  Title Bar -->
 <!--  Includes:
       1.  HTML Header
@@ -12,8 +12,6 @@
     ArrayList navURLList = new ArrayList();
     navTextList.add("Help");
     navURLList.add("/ds/dataservice");
-    navTextList.add("Admin");
-    navURLList.add("/ds/jsp/pages/Admin.jsp");
     navTextList.add("News");
     navURLList.add("");
     navTextList.add("About");
@@ -34,9 +32,9 @@
 
 <div id="TitleBar">
     <br><br>
-    <table cellpadding="2" cellspacing="2" border="0" width="90%">
+    <table cellpadding="2" cellspacing="0" border="0" width="90%">
         <tr>
-            <td valign="Top" align="Right" bgcolor="#9999cc" NOWRAP>
+            <td colspan=3 valign="Top" align="Right" bgcolor="#9999cc" NOWRAP>
             <big><big>
             <b>
             <font color="#ffffff">cPath:</font>
@@ -47,6 +45,12 @@
         </td>
     </tr>
     <tr bgcolor="#333366">
+        <td width="150"></td>
+        <td>
+            <% if (userMessage != null) { %>
+            <B>Message:  <%= userMessage %></B>
+            <% } %>
+        </td>
         <td valign="Top" align="Right" >
         <table>
         <tr>

@@ -10,6 +10,9 @@
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
 %>
+<P>&nbsp;
+<P>&nbsp;
+<P>&nbsp;
 <TABLE width="100%">
 	<TR BGCOLOR="#9999cc">
 		<TD>
