@@ -44,6 +44,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 /**
  * Parses and Imports Background Reference Files.
@@ -252,12 +254,14 @@ public class ParseBackgroundReferencesTask extends Task {
      * @throws IOException Error Reading File.
      */
     private void initProgressMonitor() throws IOException {
+        NumberFormat formatter = new DecimalFormat("#,###,###");
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Parsing Background Reference File:  "
                 + file);
         int numLines = FileUtil.getNumLines(file);
         pMonitor.setCurrentMessage
-                ("Number of Lines of Data in File:  " + numLines);
+                ("Number of Lines of Data in File:  "
+                + formatter.format(numLines));
         pMonitor.setMaxValue(numLines);
         pMonitor.setCurValue(1);
     }
