@@ -1,4 +1,4 @@
-<!--
+<!--	
 	CPath Ant Script.
 	Author:  Ethan Cerami
 -->
@@ -152,6 +152,7 @@
 <!-- ==================== Compilation Classpath =========================== -->
 
   <path id="compile.classpath">
+	<pathelement path="${build.home}/WEB-INF/classes"/>
 	<fileset dir="${lib.dir}">
         	<include name="**/*.jar"/>
 	</fileset>
@@ -424,30 +425,19 @@
                 <checkstyle config="${config.dir}/sun_checks.xml">
                         <fileset dir="${src.home}">
                                 <include name="**/*.java"/>
-				<exclude name="org/mskcc/pathdb/xml/**/*.java"/>
-				<exclude name="org/jdom/**/*.java"/>
                         </fileset>
                 </checkstyle>
-        </target>
-
-        <!-- Target to run Castor Source Generator -->
-        <!-- Target to run Castor Source Generator -->
-        <target name="castor_psi" description="Generate Castor Files">
-                <echo message="Start Castor Source Generator"/>
-                <delete dir="${src.home}/org/mskcc/pathdb/xml"/>
-                <java classname="org.exolab.castor.builder.SourceGenerator"
-                        classpathref="compile.classpath" fork="true" dir="xml">
-                        <arg line="-i MIF.xsd -package org.mskcc.pathdb.xml.psi -verbose -dest ${src.home} -binding-file castor_psi.xml"/>
-                </java>
-                <replace file="${src.home}/org/mskcc/pathdb/xml/psi/AvailabilityList.java">
-                        <replaceToken>private java.util.Vector _availabilityList = new org.mskcc.pathdb.xml.psi.AvailabilityType("free");</replaceToken>
-                        <replaceValue>private java.util.Vector _availabilityList = new Vector();</replaceValue>
-                </replace>
-                <echo message="End Castor Source Generator"/>
         </target>
 
 	<!-- Target to Load Bootstrap data into MySQL -->
 	<target name="boot" description="Loads Bootstrap data into MySQL">
 		<exec dir="." executable="scripts/boot.pl"/>
+	</target>
+
+	<target name="transfer1" description="Transfer Target #1" depends="compile">
+		<java classname="org.mskcc.pathdb.sql.TransferImportToGrid">
+         	<arg value="localhost"/> 
+        	<classpath refid="compile.classpath"/>
+       		</java>
 	</target>
 </project>
