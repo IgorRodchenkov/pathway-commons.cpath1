@@ -18,7 +18,8 @@
     tabNames.add("Home");
     String homeUrl = "home.do";
     tabUrls.add(homeUrl);
-    if (url.equals(homeUrl) || url.equals("toggleSearchOptions.do")) {
+    if (url.equals(homeUrl) || url.equals("toggleSearchOptions.do")
+        || url.equals("disclaimer.do")) {
         tabActive.add (Boolean.TRUE);
     } else {
         tabActive.add (Boolean.FALSE);

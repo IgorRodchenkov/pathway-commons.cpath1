@@ -15,6 +15,7 @@
             <div/>
             <div id="footer">
                 <div>
+                  <a href="disclaimer.do">Legal Disclaimer / Privacy Notice</a> |
                   <a href="http://cbio.mskcc.org">Computational Biology Center</a> |
                   <a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
                 </div>

@@ -21,6 +21,12 @@
             <forward name="success" path="/WEB-INF/jsp/pages/Home.jsp"/>
         </action>
 
+        <!--  Disclaimer Page -->
+        <action path="/disclaimer"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/Disclaimer.jsp"/>
+        </action>
+
         <!--  Browse By Organism Page -->
         <action path="/browse"
             type="org.mskcc.pathdb.action.HomeAction">
