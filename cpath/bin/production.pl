@@ -27,8 +27,13 @@ system "cp dist/cpath.war $tom";
 chdir "$tom" or die;
 print "Unpacking WAR File\n";
 system "jar -xvf cpath.war";
-system "chmod o+w textIndex";
 system "rm cpath.war";
+
+#  Create Text Index Directory
+print "Creating Text Index Directory\n";
+chdir "WEB-INF" or die;
+system "mkdir textIndex";
+system "chmod o+w textIndex";
 
 print "Restarting Tomcat\n";
 system "sudo /etc/init.d/tomcat4 restart";
