@@ -42,10 +42,6 @@ import java.util.Map;
  * @author Ethan Cerami
  */
 public class ProtocolRequest implements PagedResult {
-    /**
-     * Default Max Number of Hits.
-     */
-    public static final int DEFAULT_MAX_HITS = 10;
 
     /**
      * Command Argument.
@@ -132,7 +128,7 @@ public class ProtocolRequest implements PagedResult {
         this.version = "1.0";
         this.startIndex = 0;
         this.organism = "";
-        this.maxHits = Integer.toString(DEFAULT_MAX_HITS);
+        this.maxHits = Integer.toString(ProtocolConstants.DEFAULT_MAX_HITS);
     }
 
     /**
@@ -150,7 +146,7 @@ public class ProtocolRequest implements PagedResult {
         this.organism = (String) parameterMap.get
                 (ProtocolRequest.ARG_ORGANISM);
         if (maxHits == null) {
-            maxHits = Integer.toString(DEFAULT_MAX_HITS);
+            maxHits = Integer.toString(ProtocolConstants.DEFAULT_MAX_HITS);
         }
         String startStr =
                 (String) parameterMap.get(ProtocolRequest.ARG_START_INDEX);

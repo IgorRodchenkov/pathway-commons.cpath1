@@ -48,14 +48,19 @@ public class ProtocolConstants {
     private static HashMap validFormats;
 
     /**
-     * PSI Format.
+     * PSI-MI XML Format.
      */
     public static final String FORMAT_XML = "xml";
 
     /**
-     * PSI Format.
+     * HTML Format.
      */
     public static final String FORMAT_HTML = "html";
+
+    /**
+     * Count Only Format.
+     */
+    public static final String FORMAT_COUNT_ONLY = "count_only";
 
     /**
      * Currently Supported Version.
@@ -114,19 +119,14 @@ public class ProtocolConstants {
     public static final String COMMAND_HELP = "help";
 
     /**
-     * Data Service Header Name.
+     * Default Max Number of Hits.
      */
-    public static final String DS_HEADER_NAME = "Ds-status";
+    public static final int DEFAULT_MAX_HITS = 10;
 
     /**
-     * Data Service Header Value:  OK.
+     * Maximum Number of Hits you can Request at Once.
      */
-    public static final String DS_OK_STATUS = "ok";
-
-    /**
-     * Data Service Header Value:  ERROR.
-     */
-    public static final String DS_ERROR_STATUS = "error";
+    public static final int MAX_NUM_HITS = 100;
 
     /**
      * Gets HashMap of Valid Commands.
@@ -158,6 +158,7 @@ public class ProtocolConstants {
             validFormats = new HashMap();
             validFormats.put(FORMAT_XML, null);
             validFormats.put(FORMAT_HTML, null);
+            validFormats.put(FORMAT_COUNT_ONLY, null);
         }
         return validFormats;
     }

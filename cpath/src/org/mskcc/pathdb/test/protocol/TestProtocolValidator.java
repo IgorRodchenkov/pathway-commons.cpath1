@@ -77,4 +77,26 @@ public class TestProtocolValidator extends TestCase {
             request.getCommand();  // Do Nothing.
         }
     }
+
+    /**
+     * Tests the Max Hits Parameter
+     * @throws Exception
+     */
+    public void testMaxHits() throws NeedsHelpException {
+        HashMap map = new HashMap();
+        map.put(ProtocolRequest.ARG_COMMAND,
+                ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+        ProtocolRequest request = new ProtocolRequest(map);
+        request.setFormat(ProtocolConstants.FORMAT_XML);
+        int maxHits = ProtocolConstants.MAX_NUM_HITS + 1;
+        request.setMaxHits(Integer.toString(maxHits));
+        ProtocolValidator validator = new ProtocolValidator(request);
+        try {
+            validator.validate();
+            fail("ProtocolException should have been thrown");
+        } catch (ProtocolException e) {
+            ProtocolStatusCode code = e.getStatusCode();
+            assertEquals (ProtocolStatusCode.INVALID_ARGUMENT, code);
+        }
+    }
 }

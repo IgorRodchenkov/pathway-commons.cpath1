@@ -98,8 +98,11 @@ public class QueryAction extends BaseAction {
             (ActionMapping mapping, ProtocolRequest protocolRequest,
             HttpServletRequest request, HttpServletResponse response,
             XDebug xdebug) throws ProtocolException, NeedsHelpException {
-        if (protocolRequest.getFormat() != null && protocolRequest.getFormat().
-                equals(ProtocolConstants.FORMAT_XML)) {
+        if (protocolRequest.getFormat() != null
+                && (protocolRequest.getFormat().
+                equals(ProtocolConstants.FORMAT_XML)
+                || (protocolRequest.getFormat().
+                equals(ProtocolConstants.FORMAT_COUNT_ONLY)))) {
             return processXmlRequest(mapping, protocolRequest,
                     response, xdebug);
         } else {
@@ -113,11 +116,12 @@ public class QueryAction extends BaseAction {
             XDebug xdebug)
             throws NeedsHelpException {
         String xml = null;
+        XmlAssembly xmlAssembly = null;
         try {
             ProtocolValidator validator =
                     new ProtocolValidator(protocolRequest);
             validator.validate();
-            XmlAssembly xmlAssembly = executeQuery(xdebug, protocolRequest);
+            xmlAssembly = executeQuery(xdebug, protocolRequest);
             if (xmlAssembly.isEmpty()) {
                 throw new ProtocolException
                         (ProtocolStatusCode.NO_RESULTS_FOUND,
@@ -125,12 +129,20 @@ public class QueryAction extends BaseAction {
                         + protocolRequest.getQuery());
             }
             xml = xmlAssembly.getXmlStringWithCPathIdPrefix();
+
+            //  Return Number of Hits Only or Complete XML.
+            if (protocolRequest.getFormat().
+                    equals(ProtocolConstants.FORMAT_COUNT_ONLY)) {
+                returnCountOnly(response, xmlAssembly);
+            } else {
+                returnXml(response, xml);
+            }
         } catch (ProtocolException e) {
             xml = e.toXml();
+            returnXml (response, xml);
         } catch (AssemblyException e) {
             xml = e.getMessage();
-        } finally {
-            returnXml(response, xml);
+            returnXml (response, xml);
         }
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
@@ -193,15 +205,28 @@ public class QueryAction extends BaseAction {
 
     /**
      * Returns XML Response to Client.
-     * Automatically sets the Ds-status header = "ok".
-     *
-     * @param xmlResponse XML Response Document.
      */
     private void returnXml(HttpServletResponse response, String xmlResponse) {
         try {
             response.setContentType("text/xml");
             ServletOutputStream stream = response.getOutputStream();
             stream.println(xmlResponse);
+            stream.flush();
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns Total Number of Hits, as a single integer value.
+     */
+    private void returnCountOnly (HttpServletResponse response,
+            XmlAssembly xmlAssembly) {
+        try {
+            response.setContentType("text/html");
+            ServletOutputStream stream = response.getOutputStream();
+            stream.println(xmlAssembly.getNumHits());
             stream.flush();
             stream.close();
         } catch (IOException e) {
