@@ -295,7 +295,7 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Outputs Protein Name.
-     */ 
+     */
     private void outputProteinName(String proteinId, String fullName,
             boolean isSelfInteracting) {
         String link = getInteractionLink(LuceneIndexer.FIELD_INTERACTOR_ID
@@ -420,11 +420,6 @@ public class InteractionTable extends HtmlTable {
         }
         this.append("<td class='cpath1'>Full Name:</th>");
         outputDataField(fullName);
-        endRow();
-
-        startRow();
-        this.append("<td class='cpath1'>cPath ID:</th>");
-        outputDataField(proteinId);
         endRow();
     }
 
