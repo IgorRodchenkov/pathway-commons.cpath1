@@ -75,7 +75,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
         fields.add(Field.Text(LuceneIndexer.FIELD_ALL, terms));
 
         //  Index cPath ID
-        fields.add(Field.Text(LuceneIndexer.FIELD_CPATH_ID,
+        fields.add(Field.Text(LuceneIndexer.FIELD_INTERACTION_ID,
                 Long.toString(cpathId)));
     }
 
@@ -102,19 +102,21 @@ public class PsiInteractionToIndex implements ItemToIndex {
      * @param interactorList List of Interactors.
      */
     private void indexInteractorData (InteractorList interactorList) {
+        StringBuffer interactorIdTokens = new StringBuffer();
         StringBuffer interactorTokens = new StringBuffer();
         StringBuffer organismTokens = new StringBuffer();
         for (int i=0; i<interactorList.getProteinInteractorCount(); i++) {
             ProteinInteractorType protein =
                     interactorList.getProteinInteractor(i);
             appendNameTokens(protein.getNames(), interactorTokens);
+            appendToken(interactorIdTokens, protein.getId());
             appendXrefTokens(protein.getXref(), interactorTokens);
             appendOrganismTokens(protein, organismTokens);
         }
-        fields.add(Field.Text(FIELD_INTERACTOR, 
-                interactorTokens.toString()));
-        fields.add(Field.Text(FIELD_ORGANISM, 
-                organismTokens.toString()));
+        fields.add(Field.Text(FIELD_INTERACTOR, interactorTokens.toString()));
+        fields.add(Field.Text(LuceneIndexer.FIELD_INTERACTOR_ID,
+                interactorIdTokens.toString()));
+        fields.add(Field.Text(FIELD_ORGANISM, organismTokens.toString()));
     }
 
     /**
