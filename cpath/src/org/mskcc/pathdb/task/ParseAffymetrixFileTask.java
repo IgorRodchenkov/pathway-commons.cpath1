@@ -124,7 +124,7 @@ public class ParseAffymetrixFileTask extends Task {
         fileWriter.write("Swiss-Prot\tAffymetrix" + lineSeparator);
         String line = buf.readLine();
         while (line != null) {
-            ConsoleUtil.showProgress(verbose, pMonitor);
+            ConsoleUtil.showProgress(pMonitor);
             String fields[] = line.split("\",");
             String affyId = stripQuotes(fields[0]);
             String swpIdStr = stripQuotes(fields[swpColumn]);

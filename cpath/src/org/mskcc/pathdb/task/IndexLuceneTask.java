@@ -70,6 +70,7 @@ public class IndexLuceneTask extends Task {
         super("Run Full Text Indexer");
         this.setVerbose(verbose);
         pMonitor = new ProgressMonitor();
+        pMonitor.setConsoleMode(true);
         pMonitor.setCurrentMessage("Running");
     }
 
@@ -170,7 +171,7 @@ public class IndexLuceneTask extends Task {
             AssemblyException {
         pMonitor.incrementCurValue();
         CPathRecord record = cpath.extractRecord(rs);
-        ConsoleUtil.showProgress(verbose, pMonitor);
+        ConsoleUtil.showProgress(pMonitor);
 
         //  Create XML Assembly Object of Specified Interaction Record
         XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly

@@ -94,11 +94,12 @@ public class ImportRecords {
             boolean validateExternalReferences) throws ImportException,
             DaoException {
         ProgressMonitor pMonitor = new ProgressMonitor();
+        pMonitor.setConsoleMode(true);
         ImportRecord record = dbImport.getRecordById(importId);
         String xml = record.getData();
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml,
-                validateExternalReferences, true, pMonitor);
+                validateExternalReferences, pMonitor);
         this.outputSummary(summary);
         dbImport.markRecordAsTransferred(record.getImportId());
     }

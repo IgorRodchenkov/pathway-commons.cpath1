@@ -49,13 +49,13 @@ public class ImportRecordTask extends Task {
      * Constructor.
      *
      * @param importId Import ID.
-     * @param verbose  Verbose Flag.
+     * @param consoleMode Console Mode.
      */
-    public ImportRecordTask(long importId, boolean verbose) {
+    public ImportRecordTask(long importId, boolean consoleMode) {
         super("Import PSI-MI Record");
-        this.setVerbose(verbose);
         this.importId = importId;
         this.pMonitor = new ProgressMonitor();
+        pMonitor.setConsoleMode (consoleMode);
         pMonitor.setCurrentMessage("Import PSI-MI Record");
     }
 
@@ -89,7 +89,7 @@ public class ImportRecordTask extends Task {
         ImportRecord record = dbImport.getRecordById(importId);
         String xml = record.getData();
         ImportPsiToCPath importer = new ImportPsiToCPath();
-        summary = importer.addRecord(xml, true, true, pMonitor);
+        summary = importer.addRecord(xml, true, pMonitor);
         pMonitor.setCurrentMessage("Importing Complete<BR>-->  Total Number "
                 + "of Interactions Processed:  "
                 + summary.getNumInteractionsSaved());

@@ -40,21 +40,33 @@ import java.text.NumberFormat;
  * @author Ethan Cerami
  */
 public class ConsoleUtil {
+    private static String msg = "";
 
     /**
      * Outputs Progress Messages to Console.
+     * Uses ASNI Terminal Codes
+     * For future reference, ANSI Codes are here:
+     * http://www.dee.ufcg.edu.br/~rrbrandt/tools/ansi.html
      *
-     * @param verbose  Verbose Flag
      * @param pMonitor ProgressMonitor Object.
      */
-    public static void showProgress(boolean verbose, ProgressMonitor pMonitor) {
-        if (verbose) {
+    public static void showProgress(ProgressMonitor pMonitor) {
+        if (pMonitor.isConsoleMode()) {
             int currentValue = pMonitor.getCurValue();
             System.out.print(".");
             if (currentValue % 100 == 0) {
+                //  Move cursor back to left Edge.
+//                if (msg.length() > 0) {
+//                    System.out.print((char)27 + "[" + msg.length() + "D");
+//                }
+//
+//                //  Black Current Line
+//                System.out.print((char)27 + "[K");
+
                 NumberFormat format = DecimalFormat.getPercentInstance();
-                System.out.println("\nPercentage Complete:  "
+                msg = new String ("Percentage Complete:  "
                         + format.format(pMonitor.getPercentComplete()));
+                System.out.println("\n" + msg);
             }
         }
     }

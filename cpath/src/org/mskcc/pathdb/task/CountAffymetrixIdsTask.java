@@ -120,7 +120,7 @@ public class CountAffymetrixIdsTask extends Task {
 
         //  Examine Each Physical Entity
         for (int i = 0; i < records.size(); i++) {
-            ConsoleUtil.showProgress(verbose, pMonitor);
+            ConsoleUtil.showProgress(pMonitor);
             CPathRecord record = (CPathRecord) records.get(i);
             ArrayList links =
                     externalLinker.getRecordsByCPathId(record.getId());

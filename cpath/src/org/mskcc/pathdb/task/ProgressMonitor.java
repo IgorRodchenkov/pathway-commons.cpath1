@@ -38,6 +38,24 @@ public class ProgressMonitor {
     private int maxValue;
     private int curValue;
     private String currentMessage;
+    private boolean consoleMode;
+
+    /**
+     * Sets Console Flag.
+     * When set to true Progress Monitor Messages are displayed to System.out.
+     * @param consoleFlag
+     */
+    public void setConsoleMode (boolean consoleFlag) {
+        this.consoleMode = consoleFlag;
+    }
+
+    /**
+     * Gets Console Mode Flag.
+     * @return Boolean Flag.
+     */
+    public boolean isConsoleMode() {
+        return this.consoleMode;
+    }
 
     /**
      * Gets Percentage Complete.
@@ -112,5 +130,8 @@ public class ProgressMonitor {
      */
     public void setCurrentMessage(String currentMessage) {
         this.currentMessage = currentMessage;
+        if (consoleMode) {
+            System.out.println("\n"+currentMessage);
+        }
     }
 }

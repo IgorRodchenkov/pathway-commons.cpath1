@@ -59,7 +59,7 @@ public class TestImportPsiToCPath extends TestCase {
         String file = new String("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
         ImportPsiToCPath importer = new ImportPsiToCPath();
-        ImportSummary summary = importer.addRecord(xml, true, false,
+        ImportSummary summary = importer.addRecord(xml, true, 
                 pMonitor);
         assertEquals(7, summary.getNumInteractorsProcessed());
         assertEquals(0, summary.getNumInteractorsFound());
@@ -81,7 +81,7 @@ public class TestImportPsiToCPath extends TestCase {
         //  Validate that new interactions clobbered old interactions.
         //  Only one interaction in psi_sample_mixed.xml has an external ref.
         //  Hence, only one interaction gets clobbered.
-        summary = importer.addRecord(xml, true, false, pMonitor);
+        summary = importer.addRecord(xml, true, pMonitor);
         assertEquals(0, summary.getNumInteractorsSaved());
         assertEquals(6, summary.getNumInteractionsSaved());
         assertEquals(1, summary.getNumInteractionsClobbered());

@@ -169,7 +169,7 @@ public class ImportReferencesTask extends Task {
             ExternalReference newRef)
             throws DaoException {
         pMonitor.incrementCurValue();
-        ConsoleUtil.showProgress(verbose, pMonitor);
+        ConsoleUtil.showProgress(pMonitor);
         int index1 = existingRef.getId().indexOf(EMPTY_FLAG);
         int index2 = newRef.getId().indexOf(EMPTY_FLAG);
         if (index1 == -1 && index2 == -1) {

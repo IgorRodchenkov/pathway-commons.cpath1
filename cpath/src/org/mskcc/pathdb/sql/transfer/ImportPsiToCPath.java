@@ -142,41 +142,35 @@ public class ImportPsiToCPath {
      *
      * @param xml                  PSI-MI XML Record.
      * @param validateExternalRefs Validates External References.
-     * @param verbose              verbosity flag.
      * @param pMonitor             Progress Monitor Object.
      * @return Import Summary Object.
      * @throws ImportException Indicates Error in Import.
      */
     public ImportSummary addRecord(String xml, boolean validateExternalRefs,
-            boolean verbose, ProgressMonitor pMonitor) throws ImportException {
+            ProgressMonitor pMonitor) throws ImportException {
         summary = new ImportSummary();
         idMap = new HashMap();
         this.pMonitor = pMonitor;
         try {
             // Steps 1-2:  Normalize PSI Document, chop into parts.
-            if (verbose) {
-                System.out.println("Normalizing PSI Document...");
-            }
-            pMonitor.setCurrentMessage("Step 1 of 4:  "
+             pMonitor.setCurrentMessage("Step 1 of 4:  "
                     + "Normalizing PSI Document");
             psiUtil = new PsiUtil();
             EntrySet entrySet = null;
             entrySet = psiUtil.getNormalizedDocument(xml);
-            if (verbose) {
-                System.out.println
-                        ("Normalization Complete:  Document is valid");
-            }
+            pMonitor.setCurrentMessage
+                ("Normalization Complete:  Document is valid");
 
             //  Validate Interactors / External References.
             if (validateExternalRefs) {
-                validateExternalRefs(entrySet, verbose);
+                validateExternalRefs(entrySet);
             }
 
             //  Step 3:  Process all Interactors.
-            processInteractors(entrySet, verbose);
+            processInteractors(entrySet);
 
             //  Step 4:  Process all Interactions.
-            processInteractions(entrySet, verbose);
+            processInteractions(entrySet);
             return summary;
         } catch (IOException e) {
             throw new ImportException(e);
@@ -194,11 +188,8 @@ public class ImportPsiToCPath {
     /**
      * Validates all Interactors and External References.
      */
-    private void validateExternalRefs(EntrySet entrySet, boolean verbose)
+    private void validateExternalRefs(EntrySet entrySet)
             throws DaoException, ExternalDatabaseNotFoundException {
-        if (verbose) {
-            System.out.println("Validating all External References:  ");
-        }
         pMonitor.setCurrentMessage("Step 2 of 4:  Validating All External "
                 + "References");
         DaoExternalLink linker = new DaoExternalLink();
@@ -214,7 +205,7 @@ public class ImportPsiToCPath {
                     + interactions.getInteractionCount());
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
                 pMonitor.incrementCurValue();
-                ConsoleUtil.showProgress(verbose, pMonitor);
+                ConsoleUtil.showProgress(pMonitor);
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
                 ExternalReference[] refs = extractExternalReferences(protein);
@@ -224,7 +215,7 @@ public class ImportPsiToCPath {
             //  Validate All Interactions
             for (int j = 0; j < interactions.getInteractionCount(); j++) {
                 pMonitor.incrementCurValue();
-                ConsoleUtil.showProgress(verbose, pMonitor);
+                ConsoleUtil.showProgress(pMonitor);
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
                 ExternalReference refs[] =
@@ -232,29 +223,22 @@ public class ImportPsiToCPath {
                 linker.validateExternalReferences(refs);
             }
         }
-        if (verbose) {
-            System.out.println();
-        }
     }
 
     /**
      * Processes all Interactors
      */
-    private void processInteractors(EntrySet entrySet, boolean verbose)
+    private void processInteractors(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
             IOException {
         DaoExternalLink externalLinker = new DaoExternalLink();
-
-        if (verbose) {
-            System.out.println("Processing all Interactors:  ");
-        }
         pMonitor.setCurrentMessage("Step 3 of 4:  Process all Interactors");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractorList interactors = entry.getInteractorList();
             pMonitor.setMaxValue(interactors.getProteinInteractorCount());
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
-                ConsoleUtil.showProgress(verbose, pMonitor);
+                ConsoleUtil.showProgress(pMonitor);
                 pMonitor.incrementCurValue();
                 summary.incrementNumInteractorsProcessed();
                 ProteinInteractorType protein =
@@ -274,7 +258,6 @@ public class ImportPsiToCPath {
                         (filteredRefs);
                 //  Step 3.1.2 - 3.1.3
                 if (records.size() > 0) {
-                    System.out.print("#");
                     CPathRecord record = (CPathRecord) records.get(0);
                     //  Conditionally Update the Interactor Record with
                     //  new external references.
@@ -288,9 +271,6 @@ public class ImportPsiToCPath {
                     summary.incrementNumInteractorsSaved();
                 }
             }
-        }
-        if (verbose) {
-            System.out.println();
         }
     }
 
@@ -307,12 +287,9 @@ public class ImportPsiToCPath {
     /**
      * Processes all Interactors
      */
-    private void processInteractions(EntrySet entrySet, boolean verbose)
+    private void processInteractions(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
             IOException {
-        if (verbose) {
-            System.out.println("Processing all Interactions:  ");
-        }
         pMonitor.setCurrentMessage("Step 4 of 4:  Process all Interactions");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
@@ -324,14 +301,11 @@ public class ImportPsiToCPath {
             pMonitor.setMaxValue(interactions.getInteractionCount());
             for (int j = 0; j < interactions.getInteractionCount(); j++) {
                 pMonitor.incrementCurValue();
-                ConsoleUtil.showProgress(verbose, pMonitor);
+                ConsoleUtil.showProgress(pMonitor);
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
                 saveInteraction(interaction);
             }
-        }
-        if (verbose) {
-            System.out.println();
         }
     }
 
