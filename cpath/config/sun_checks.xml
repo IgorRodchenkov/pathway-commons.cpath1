@@ -56,11 +56,15 @@
 
 
     <!--                       JavaDoc guidelines -->
-    <module name="JavadocMethod"/>
+    <module name="JavadocMethod">
+    	<property name="scope" value="public"/>
+    </module>
     <module name="JavadocType">
 	<property name="authorFormat" value="\S"/>
     </module>
-    <module name="JavadocVariable"/>
+    <module name="JavadocVariable">
+    	<property name="scope" value="public"/>
+    </module>
 
 
 
@@ -68,6 +72,7 @@
     <module name="RedundantModifier"/>
     <module name="ModifierOrder"/>
     <module name="UpperEll"/>
+
 
 
 
@@ -96,7 +101,9 @@
     <module name="IllegalImport"/>
 
     <!-- don't allow public members -->
-    <module name="VisibilityModifier"/>
+    <module name="VisibilityModifier">
+	    <property name="protectedAllowed" value="true"/>
+    </module>
 
     <!-- simplify your code -->
     <module name="RedundantImport"/>
