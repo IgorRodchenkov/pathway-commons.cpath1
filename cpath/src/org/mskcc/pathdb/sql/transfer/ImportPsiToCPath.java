@@ -2,6 +2,7 @@ package org.mskcc.pathdb.sql.transfer;
 
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
+import org.exolab.castor.xml.Marshaller;
 import org.jdom.Text;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.mapper.MapperException;
@@ -13,8 +14,10 @@ import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ConsoleUtil;
 import org.mskcc.pathdb.util.PsiUtil;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.StringWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -147,6 +150,8 @@ public class ImportPsiToCPath {
             //  Step 4:  Process all Interactions.
             processInteractions(entrySet, verbose);
             return summary;
+        } catch (IOException e) {
+            throw new ImportException(e);
         } catch (ValidationException e) {
             throw new ImportException(e);
         } catch (MarshalException e) {
@@ -154,8 +159,6 @@ public class ImportPsiToCPath {
         } catch (DaoException e) {
             throw new ImportException(e);
         } catch (ExternalDatabaseNotFoundException e) {
-            throw new ImportException(e);
-        } catch (MapperException e) {
             throw new ImportException(e);
         }
     }
@@ -166,7 +169,7 @@ public class ImportPsiToCPath {
     private void validateExternalRefs(EntrySet entrySet, boolean verbose)
             throws DaoException, ExternalDatabaseNotFoundException {
         if (verbose) {
-            System.out.print("Validating all External References:  ");
+            System.out.println("Validating all External References:  ");
         }
         pMonitor.setCurrentMessage("Step 2:  Validating All External "
                 + "References");
@@ -197,7 +200,7 @@ public class ImportPsiToCPath {
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
                 ExternalReference refs[] =
-                        psiUtil.extractExternalRefs(interaction);
+                        psiUtil.extractXrefs(interaction.getXref());
                 linker.validateExternalReferences(refs);
             }
         }
@@ -211,11 +214,11 @@ public class ImportPsiToCPath {
      */
     private void processInteractors(EntrySet entrySet, boolean verbose)
             throws DaoException, MarshalException, ValidationException,
-            MapperException {
+            IOException {
         DaoExternalLink externalLinker = new DaoExternalLink();
 
         if (verbose) {
-            System.out.print("Processing all Interactors:  ");
+            System.out.println("Processing all Interactors:  ");
         }
         pMonitor.setCurrentMessage("Step 3:  Process all Interactors");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
@@ -236,11 +239,12 @@ public class ImportPsiToCPath {
                 ArrayList records = externalLinker.lookUpByExternalRefs(refs);
                 //  Step 3.1.2 - 3.1.3
                 if (records.size() > 0) {
+                    System.out.print("#");
                     CPathRecord record = (CPathRecord) records.get(0);
                     //  Conditionally Update the Interactor Record with
                     //  new external references.
                     UpdatePsiInteractor updater = new UpdatePsiInteractor
-                            (protein);
+                          (protein);
                     updater.doUpdate();
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumInteractorsFound();
@@ -268,9 +272,10 @@ public class ImportPsiToCPath {
      * Processes all Interactors
      */
     private void processInteractions(EntrySet entrySet, boolean verbose)
-            throws DaoException, MarshalException, ValidationException {
+            throws DaoException, MarshalException, ValidationException,
+            IOException {
         if (verbose) {
-            System.out.print("Processing all Interactions:  ");
+            System.out.println("Processing all Interactions:  ");
         }
         pMonitor.setCurrentMessage("Step 4:  Process all Interactions");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
@@ -300,7 +305,7 @@ public class ImportPsiToCPath {
      */
     private void saveInteractor(ProteinInteractorType protein,
             ExternalReference[] refs) throws MarshalException,
-            ValidationException, MapperException, DaoException {
+            ValidationException, DaoException, IOException {
         DaoCPath cpath = new DaoCPath();
 
         //  Extract Important Data:  name, description, taxonomy Id.
@@ -353,26 +358,22 @@ public class ImportPsiToCPath {
      * Saves New Interaction to Database.
      */
     private void saveInteraction(InteractionElementType interaction)
-            throws MarshalException, ValidationException, DaoException {
+            throws MarshalException, ValidationException, DaoException,
+            IOException {
         DaoCPath cpath = new DaoCPath();
         summary.incrementNumInteractionsSaved();
 
-        //  Extract Primary Reference, if it exists.
+        //  Extract References, if they exist.
         XrefType xref = interaction.getXref();
         ExternalReference refs[] = psiUtil.extractXrefs(xref);
 
         //  Conditionally delete existing interaction (if it exists)
-        //  New Interaction clobber old interaction.
+        //  New Interaction clobbers old interaction.
         if (refs != null) {
             conditionallyDeleteInteraction(refs);
         }
 
-        //  Extract all external references (if they exist).
-        //  This includes references to database source, and
-        //  references to publications.
-        refs = psiUtil.extractExternalRefs(interaction);
-
-        //  Extract Important Data:  name, description, taxonomy Id.
+        //  Set Name, Description; and Marshal XML.
         String xml = this.marshalInteraction(interaction);
         String name = "Interaction";
         String desc = "Interaction";
@@ -410,21 +411,29 @@ public class ImportPsiToCPath {
      * Marshal Protein XML.
      */
     private String marshalProtein(ProteinInteractorType protein)
-            throws MarshalException, ValidationException {
+            throws MarshalException, ValidationException, IOException {
+        // Instantiate Marshaller Directly, so that we can turn validation off
+        // Validation takes extra time / memory, and we have already validated
+        // the original XML document.
         StringWriter writer = new StringWriter();
-        protein.marshal(writer);
-        String xml = writer.toString();
-        return xml;
+        Marshaller marshaller = new Marshaller(writer);
+        marshaller.setValidation(false);
+        marshaller.marshal(protein);
+        return writer.toString();
     }
 
     /**
      * Marshal Interaction XML.
      */
     private String marshalInteraction(InteractionElementType interaction)
-            throws MarshalException, ValidationException {
+            throws MarshalException, ValidationException, IOException {
+        // Instantiate Marshaller Directly, so that we can turn validation off
+        // Validation takes extra time / memory, and we have already validated
+        // the original XML document.
         StringWriter writer = new StringWriter();
-        interaction.marshal(writer);
-        String xml = writer.toString();
-        return xml;
+        Marshaller marshaller = new Marshaller(writer);
+        marshaller.setValidation(false);
+        marshaller.marshal(interaction);
+        return writer.toString();
     }
 }
