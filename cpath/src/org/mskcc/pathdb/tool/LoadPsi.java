@@ -15,16 +15,16 @@ public class LoadPsi {
     /**
      * Imports PSI-MI Data File.
      *
-     * @param fileName File Name.
+     * @param file File.
      * @throws IOException  File Input Error.
      * @throws DaoException Data Access Error.
      */
-    public static void importDataFile(String fileName) throws IOException,
+    public static void importDataFile(File file) throws IOException,
             DaoException {
-        String description = getDescription();
-        System.out.println("Loading data file:  " + fileName);
+        String description = file.getName();
+        System.out.println("Loading data file:  " + file.getName());
         System.out.println("Description:  " + description);
-        String data = retrieveContentFromFile(new File(fileName));
+        String data = retrieveContentFromFile(file);
         DaoImport dbImport = new DaoImport();
         dbImport.addRecord(description, data);
         System.out.println("XML Document Loaded.  Ready for Import.");
