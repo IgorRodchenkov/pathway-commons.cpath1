@@ -68,6 +68,10 @@
     <delete dir="${dist.home}"/>
     <delete dir="${lucene.dir}"/>
     <delete dir="${junit.dir}"/>
+    <delete dir="target"/>
+    <delete>
+        <fileset dir="." includes="*.log*"/>
+    </delete>
   </target>
 
 <!-- ==================== Compile Target ================================== -->
