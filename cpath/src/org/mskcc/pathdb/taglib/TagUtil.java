@@ -21,6 +21,7 @@ public class TagUtil {
 
     /**
      * Gets Label for Name Object.
+     *
      * @param names NamesType Object.
      * @return Label for Display in UI.
      */
@@ -54,20 +55,21 @@ public class TagUtil {
 
     /**
      * Truncates the Specified label to MAX_LENGTH Chars.
+     *
      * @param label Text label.
      * @return Text label (possibly truncated).
      */
-    public static String truncateLabel (String label) {
+    public static String truncateLabel(String label) {
         String newLabel = label;
         if (label.length() > MAX_LENGTH) {
-            newLabel = label.substring(0, MAX_LENGTH)+"...";
+            newLabel = label.substring(0, MAX_LENGTH) + "...";
         }
         return newLabel;
     }
 
     public static String createLink(String toolTip, String href, String label) {
         StringBuffer html = new StringBuffer();
-        html.append("<A TITLE='"+ toolTip + "' HREF='"
+        html.append("<A TITLE='" + toolTip + "' HREF='"
                 + href + "'>" + label + "</A>");
         return html.toString();
     }

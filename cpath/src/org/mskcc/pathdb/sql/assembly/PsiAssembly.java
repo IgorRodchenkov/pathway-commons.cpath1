@@ -1,8 +1,8 @@
 package org.mskcc.pathdb.sql.assembly;
 
 import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 import org.exolab.castor.xml.Marshaller;
+import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.Entry;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractionList;
@@ -12,12 +12,12 @@ import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.xdebug.XDebug;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -218,7 +218,7 @@ public class PsiAssembly implements XmlAssembly {
                 (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
         StringWriter writer = new StringWriter();
         Marshaller marshaller = new Marshaller(writer);
-        marshaller.setSchemaLocation("net:sf:psidev:mi "+ psiSchemaUrl);
+        marshaller.setSchemaLocation("net:sf:psidev:mi " + psiSchemaUrl);
         marshaller.marshal(set);
         return writer.toString();
     }

@@ -34,7 +34,7 @@ public class XmlValidator extends DefaultHandler {
     protected static final String DYNAMIC_VALIDATION_FEATURE_ID
             = "http://apache.org/xml/features/validation/dynamic";
 
-        protected static final String EXTERNAL_SCHEMA_LOCATION
+    protected static final String EXTERNAL_SCHEMA_LOCATION
             = "http://apache.org/xml/properties/schema/external-schemaLocation";
 
     private ArrayList errorList;

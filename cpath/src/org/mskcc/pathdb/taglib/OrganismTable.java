@@ -8,10 +8,10 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.QueryException;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.text.NumberFormat;
-import java.text.DecimalFormat;
 
 /**
  * Custom JSP Tag for Displaying Organism Data Plus Links.
@@ -63,7 +63,7 @@ public class OrganismTable extends HtmlTable {
                 getParameter(SORT_ORDER_PARAMETER);
 
         //  By default, sort by Num Interactions, Descending Order
-        if (sortBy == null  && sortOrder == null) {
+        if (sortBy == null && sortOrder == null) {
             sortBy = SORT_BY_NUM_INTERACTIONS;
             sortOrder = SORT_ASC;
         } else if (sortOrder == null) {
@@ -84,27 +84,27 @@ public class OrganismTable extends HtmlTable {
             String userSortBy, String userSortOrder) {
         StringBuffer url = new StringBuffer
                 ("browse.do?" + SORT_BY_PARAMETER + "="
-                + targetSortBy + "&" +SORT_ORDER_PARAMETER + "=");
+                + targetSortBy + "&" + SORT_ORDER_PARAMETER + "=");
         if (userSortBy.equals(targetSortBy)) {
             String iconUrl, iconGif;
             append("<td bgcolor=#aaaaaa>");
             if (userSortOrder.equals(SORT_ASC)) {
-                iconUrl = new String (url.toString() + SORT_DESC);
+                iconUrl = new String(url.toString() + SORT_DESC);
                 iconGif = "icon_sortup.gif";
             } else {
-                iconUrl = new String (url.toString() + SORT_ASC);
+                iconUrl = new String(url.toString() + SORT_ASC);
                 iconGif = "icon_sortdown.gif";
             }
-            append("<A HREF='"+iconUrl+"'><B>"+columnHeading+"</B></A>");
+            append("<A HREF='" + iconUrl + "'><B>" + columnHeading + "</B></A>");
             append("&nbsp;&nbsp;&nbsp;");
-            append ("<a href='"+iconUrl+"'>"
-                    + "<IMG SRC='jsp/images/"+iconGif+"' border=0></A>");
+            append("<a href='" + iconUrl + "'>"
+                    + "<IMG SRC='jsp/images/" + iconGif + "' border=0></A>");
         } else {
-            String colUrl = new String (url.toString() + SORT_DESC);
+            String colUrl = new String(url.toString() + SORT_DESC);
             append("<td bgcolor=#cccccc>");
-            append("<A HREF='"+colUrl+"'><B>"+columnHeading+"</B></A>");
+            append("<A HREF='" + colUrl + "'><B>" + columnHeading + "</B></A>");
         }
-        append ("</td>");
+        append("</td>");
     }
 
     /**

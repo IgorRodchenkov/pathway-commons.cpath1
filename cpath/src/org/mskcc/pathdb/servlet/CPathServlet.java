@@ -56,7 +56,7 @@ public final class CPathServlet extends ActionServlet {
                 + adminPassword + " [OK]");
         System.err.println("web.xml param:  psi_schema_location --> "
                 + psiSchemaUrl + " [OK]");
-        
+
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
                 dbPassword);

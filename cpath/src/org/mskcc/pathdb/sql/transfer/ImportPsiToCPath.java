@@ -129,7 +129,7 @@ public class ImportPsiToCPath {
                 System.out.println("Normalizing PSI Document...");
             }
             pMonitor.setCurrentMessage("Step 1 of 4:  "
-                + "Normalizing PSI Document");
+                    + "Normalizing PSI Document");
             psiUtil = new PsiUtil();
             EntrySet entrySet = null;
             entrySet = psiUtil.getNormalizedDocument(xml);

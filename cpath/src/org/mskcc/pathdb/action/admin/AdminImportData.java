@@ -4,6 +4,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.form.FileUploadForm;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -11,14 +14,9 @@ import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.task.ImportRecordTask;
 import org.mskcc.pathdb.task.ImportReferencesTask;
 import org.mskcc.pathdb.util.XmlValidator;
-import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.dataservices.util.PropertyManager;
-import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.MarshalException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -86,7 +84,7 @@ public class AdminImportData extends AdminBaseAction {
         xdebug.logMsg(this, "Validating XML File");
         //  Try to unmarshal document via Castor
         try {
-            StringReader strReader = new StringReader (data);
+            StringReader strReader = new StringReader(data);
             EntrySet entrySet = EntrySet.unmarshalEntrySet(strReader);
         } catch (MarshalException e) {
             //  If marshalling fails, validate and get more user-friendly

@@ -1,11 +1,11 @@
 package org.mskcc.pathdb.test.sql.assembly;
 
 import junit.framework.TestCase;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
-import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.util.CPathConstants;
-import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 /**
  * Tests the XML Assembly Functionality.
@@ -50,7 +50,7 @@ public class TestAssembly extends TestCase {
         //  Verify Schema Location.
         int index = xmlAssembly.indexOf
                 ("http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
-        assertTrue (index > 0);
+        assertTrue(index > 0);
 
         System.out.println(xmlAssembly);
     }

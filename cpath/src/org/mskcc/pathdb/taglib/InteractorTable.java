@@ -47,9 +47,9 @@ public class InteractorTable extends HtmlTable {
         protocolRequest.setFormat(ProtocolConstants.FORMAT_XML);
         String query = protocolRequest.getQuery();
         if (query != null
-            && (query.indexOf(LuceneConfig.FIELD_INTERACTOR_ID) == -1)
-            && interactorList != null
-            && interactorList.size() > 0) {
+                && (query.indexOf(LuceneConfig.FIELD_INTERACTOR_ID) == -1)
+                && interactorList != null
+                && interactorList.size() > 0) {
             append("<div id=\"highlight\" class=\"toolgroup\">\n"
                     + "<div class=\"label\">\n"
                     + "<strong>Matching Proteins</strong>\n"
@@ -77,7 +77,7 @@ public class InteractorTable extends HtmlTable {
             String toolTip = TagUtil.getLabel(names);
             String label = TagUtil.truncateLabel(toolTip);
             String link = TagUtil.createLink(toolTip, href, label);
-            append (link);
+            append(link);
             append("</div>");
         }
     }

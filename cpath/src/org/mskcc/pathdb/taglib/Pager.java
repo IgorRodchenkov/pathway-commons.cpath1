@@ -2,8 +2,8 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.PagedResult;
 
-import java.text.NumberFormat;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Utility Class for creating next/previous pages.

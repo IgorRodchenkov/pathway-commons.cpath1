@@ -140,7 +140,7 @@ public class InteractionTable extends HtmlTable {
      */
     private void determineView() {
         if (protocolRequest.getQuery() != null
-            && protocolRequest.getQuery().indexOf
+                && protocolRequest.getQuery().indexOf
                 (LuceneConfig.FIELD_INTERACTOR_ID) >= 0) {
             ProteinWithWeight proteinWithWeight = (ProteinWithWeight)
                     interactorList.get(0);
@@ -289,7 +289,7 @@ public class InteractionTable extends HtmlTable {
         append("<td>Interactor</td>");
         append("<td>Organism</td>");
         append("<td>Experimental Evidence</td>");
-        append("<td>Record Source</td>");
+        append("<td>Database Source</td>");
         endRow();
     }
 

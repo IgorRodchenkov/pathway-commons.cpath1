@@ -153,11 +153,11 @@ public abstract class BaseAction extends Action {
             request.setAttribute(ATTRIBUTE_XDEBUG, xdebug);
             request.setAttribute(ATTRIBUTE_SERVLET_NAME,
                     request.getServletPath());
-            if (request.getRequestURL()!= null
-                && request.getQueryString() != null) {
+            if (request.getRequestURL() != null
+                    && request.getQueryString() != null) {
                 request.setAttribute(ATTRIBUTE_URL_BEFORE_FORWARDING,
-                    request.getRequestURL().toString() + "?"
-                    + request.getQueryString());
+                        request.getRequestURL().toString() + "?"
+                        + request.getQueryString());
             }
             xdebug.logMsg(this, "Running cPath Base Action");
             boolean authorized = isUserAuthorized

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 
 /**
  * Custom JSP Tag for Displaying the Cache Contents.
@@ -64,10 +63,10 @@ public class CacheTable extends HtmlTable {
             HashMap params2 = XssFilter.filterAllParameters(params1);
             ProtocolRequest request = new ProtocolRequest(params2);
             outputDataField("<A HREF='" + request.getUri() + "'>URL Link</A>");
-            outputDataField (request.getCommand());
-            outputDataField (request.getQuery());
-            outputDataField (request.getFormat());
-            outputDataField (request.getOrganism());
+            outputDataField(request.getCommand());
+            outputDataField(request.getQuery());
+            outputDataField(request.getFormat());
+            outputDataField(request.getOrganism());
         } catch (Exception e) {
             append("<TD>" + record.getUrl() + "</TD>");
             append("<TD>N/A</TD>");

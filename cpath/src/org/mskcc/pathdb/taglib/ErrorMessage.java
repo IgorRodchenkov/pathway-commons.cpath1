@@ -2,12 +2,12 @@ package org.mskcc.pathdb.taglib;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.struts.util.PropertyMessageResources;
+import org.exolab.castor.xml.MarshalException;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.action.admin.AdminWebLogging;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.util.LogUtil;
 import org.xml.sax.SAXParseException;
-import org.exolab.castor.xml.MarshalException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;

@@ -370,6 +370,7 @@ public class PsiUtil {
     /**
      * Filters out GO references.  We don't want to use GO
      * References to determine protein identity.
+     *
      * @param refs Array of External References.
      * @return Filtered Array of External References.
      */
