@@ -54,10 +54,11 @@ public class TestAffymetrixParser extends TestCase {
         File inFile = new File("testData/HG-U133_Sample.csv");
         File outFile = new File(outFileName);
         ParseAffymetrixFileTask task =
-                new ParseAffymetrixFileTask(inFile, outFile, false);
+                new ParseAffymetrixFileTask(inFile, outFile, "SwissProt",
+                        false);
         task.parse();
 
-        int swpColumn = task.getSwissProtColumn();
+        int swpColumn = task.getIdColumn();
         assertEquals(19, swpColumn);
 
         //  Verify the Output File
@@ -66,7 +67,7 @@ public class TestAffymetrixParser extends TestCase {
         String lines[] = content.split(lineSeparator);
 
         //  Verify First four identifiers.
-        assertEquals("Swiss-Prot\tAffymetrix", lines[0]);
+        assertEquals("SwissProt\tAffymetrix", lines[0]);
         assertEquals("BAC85426\t1007_s_at", lines[1]);
         assertEquals("Q08345\t1007_s_at", lines[2]);
         assertEquals("Q96T61\t1007_s_at", lines[3]);

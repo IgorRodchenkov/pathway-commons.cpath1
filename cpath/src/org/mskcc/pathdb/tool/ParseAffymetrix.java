@@ -46,15 +46,18 @@ public class ParseAffymetrix {
      * @param args Command Line Arguments.
      */
     public static void main(String args[]) {
-        if (args.length != 2) {
-            System.out.println("Usage:  affy.pl input_file output_file");
+        if (args.length != 3) {
+            System.out.println("Usage:  affy.pl input_file output_file "
+                + "column_prefix");
             System.exit(1);
         }
         try {
             File inFile = new File(args[0]);
             File outFile = new File(args[1]);
+            String columnPrefix = args[2];
             ParseAffymetrixFileTask task =
-                    new ParseAffymetrixFileTask(inFile, outFile, true);
+                    new ParseAffymetrixFileTask(inFile, outFile, columnPrefix,
+                            true);
             task.parse();
         } catch (Exception e) {
             System.out.println("**** Error:  " + e.getMessage());

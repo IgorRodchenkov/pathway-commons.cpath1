@@ -34,14 +34,14 @@ import org.mskcc.pathdb.util.ConsoleUtil;
 import java.io.*;
 
 /**
- * Parses Affymetrix Annotation files, in an attempt to map SWISS-PROT IDs to
+ * Parses Affymetrix Annotation files, in an attempt to map Any ID to
  * Affymetrix IDs.
  *
  * @author Ethan Cerami
  */
 public class ParseAffymetrixFileTask extends Task {
-    private static final String SWISS_PROT = "SwissProt";
-    private int swissProtColumn;
+    private String columnPrefix;
+    private int columnIndex;
     private File inFile;
     private File outFile;
     private FileWriter fileWriter;
@@ -53,10 +53,11 @@ public class ParseAffymetrixFileTask extends Task {
      * @param outFile OutputFile.
      */
     public ParseAffymetrixFileTask(File inFile, File outFile,
-            boolean consoleMode) {
+            String columnPrefix, boolean consoleMode) {
         super("Parse Affymetrix File", consoleMode);
         this.inFile = inFile;
         this.outFile = outFile;
+        this.columnPrefix = columnPrefix;
     }
 
     /**
@@ -78,8 +79,8 @@ public class ParseAffymetrixFileTask extends Task {
             FileReader fReader = new FileReader(inFile);
             BufferedReader buf = new BufferedReader(fReader);
             String firstLine = buf.readLine();
-            swissProtColumn = determineSwissProtColumn(firstLine);
-            extractIds(buf, swissProtColumn);
+            columnIndex = determineIdColumn(firstLine);
+            extractIds(buf, columnIndex);
             pMonitor.setCurrentMessage("Mapping File is now complete:  "
                     + outFile);
         } finally {
@@ -90,12 +91,12 @@ public class ParseAffymetrixFileTask extends Task {
     }
 
     /**
-     * Gets Column Number where SWISS-PROT IDs are Specified.
+     * Gets Column Number where IDs are Specified.
      *
      * @return Column Number, or -1 if not found.
      */
-    public int getSwissProtColumn() {
-        return this.swissProtColumn;
+    public int getIdColumn() {
+        return this.columnIndex;
     }
 
     /**
@@ -104,11 +105,11 @@ public class ParseAffymetrixFileTask extends Task {
      * @param line Line of comma separated identifiers.
      * @return column number of -1, if not found.
      */
-    private int determineSwissProtColumn(String line) {
+    private int determineIdColumn(String line) {
         String fields[] = line.split("\",");
         for (int i = 0; i < fields.length; i++) {
             String token = stripQuotes(fields[i]);
-            if (token.equals(SWISS_PROT)) {
+            if (token.startsWith(columnPrefix)) {
                 return i;
             }
         }
@@ -116,7 +117,7 @@ public class ParseAffymetrixFileTask extends Task {
     }
 
     /**
-     * Extracts AffyIds and All SWISS-PROT IDs.
+     * Extracts AffyIds and All Matching IDs.
      *
      * @param buf       BufferedReader.
      * @param swpColumn Location of SWISS-PROT IDs.
@@ -125,7 +126,7 @@ public class ParseAffymetrixFileTask extends Task {
     private void extractIds(BufferedReader buf, int swpColumn)
             throws IOException {
         String lineSeparator = System.getProperty("line.separator");
-        fileWriter.write("Swiss-Prot\tAffymetrix" + lineSeparator);
+        fileWriter.write(columnPrefix +"\tAffymetrix" + lineSeparator);
         String line = buf.readLine();
         while (line != null) {
             ProgressMonitor pMonitor = this.getProgressMonitor();
