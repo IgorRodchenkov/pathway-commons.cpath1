@@ -12,7 +12,7 @@
 %>
 
 <!-- Start Left Column -->
-<td id="leftcol" width="20%">
+<td id="leftcol" width="200">
     <div id="navcolumn">
 
         <jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
@@ -31,9 +31,8 @@
         <% if (protocolRequest1 == null) { %>
         <jsp:include page="../global/dbStats.jsp" flush="true" />
         <jsp:include page="../global/docs.jsp" flush="true" />
-        <jsp:include page="../global/howto.jsp" flush="true" />
         <% } %>
-
+        <jsp:include page="../global/howto.jsp" flush="true" />
     </div>
 </td>
 <!-- End NavColumn -->
