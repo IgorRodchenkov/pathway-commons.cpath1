@@ -20,7 +20,7 @@ public class TestProtocolValidator extends TestCase {
     public void testProtocolValidator() throws Exception {
         HashMap map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME);
+                ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF);
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
