@@ -64,25 +64,18 @@ public class DaoExternalLink {
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            if (!recordExists(link)) {
-                pstmt = con.prepareStatement
-                        ("INSERT INTO external_link (`CPATH_ID`, "
-                        + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`, `CREATE_TIME`)"
-                        + " VALUES (?,?,?,?)");
-                pstmt.setLong(1, link.getCpathId());
-                pstmt.setInt(2, link.getExternalDbId());
-                pstmt.setString(3, link.getLinkedToId());
-                java.util.Date date = new java.util.Date();
-                Timestamp timeStamp = new Timestamp(date.getTime());
-                pstmt.setTimestamp(4, timeStamp);
-                int rows = pstmt.executeUpdate();
-                if (synchronizeXml) {
-                    synchronizeXml(link);
-                }
-                return (rows > 0) ? true : false;
-            } else {
-                return false;
+            pstmt = con.prepareStatement
+                    ("INSERT INTO external_link (`CPATH_ID`, "
+                    + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`)"
+                    + " VALUES (?,?,?)");
+            pstmt.setLong(1, link.getCpathId());
+            pstmt.setInt(2, link.getExternalDbId());
+            pstmt.setString(3, link.getLinkedToId());
+            int rows = pstmt.executeUpdate();
+            if (synchronizeXml) {
+                synchronizeXml(link);
             }
+            return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
@@ -108,8 +101,10 @@ public class DaoExternalLink {
             for (int i = 0; i < refs.length; i++) {
                 String dbName = refs[i].getDatabase();
                 String id = refs[i].getId();
+
                 DaoExternalDb dao = new DaoExternalDb();
                 ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(dbName);
+
                 if (dbRecord != null) {
                     ExternalLinkRecord link = new ExternalLinkRecord();
                     link.setExternalDatabase(dbRecord);
@@ -255,15 +250,16 @@ public class DaoExternalLink {
             con = JdbcUtil.getCPathConnection();
             if (linkedToId != null) {
                 pstmt = con.prepareStatement
-                        ("SELECT * FROM external_link WHERE EXTERNAL_DB_ID = ? "
-                        + "AND LINKED_TO_ID =?");
+                        ("SELECT * FROM external_link WHERE "
+                        + "EXTERNAL_DB_ID = ? AND LINKED_TO_ID =?");
+                pstmt.setLong(1, externalDbId);
                 pstmt.setString(2, linkedToId);
             } else {
                 pstmt = con.prepareStatement
                         ("SELECT * FROM external_link WHERE"
                         + " EXTERNAL_DB_ID = ?");
+                pstmt.setLong(1, externalDbId);
             }
-            pstmt.setLong(1, externalDbId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 ExternalLinkRecord externalLink = this.createBean(rs);
@@ -353,8 +349,8 @@ public class DaoExternalLink {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM external_link WHERE CPATH_ID = ? "
-                    + " AND EXTERNAL_DB_ID = ? AND LINKED_TO_ID = ?");
+                    ("SELECT EXTERNAL_LINK_ID FROM external_link WHERE " +
+                    "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND LINKED_TO_ID = ?");
             pstmt.setLong(1, link.getCpathId());
             pstmt.setInt(2, link.getExternalDbId());
             pstmt.setString(3, link.getLinkedToId());
@@ -376,8 +372,6 @@ public class DaoExternalLink {
         link.setCpathId(rs.getInt("CPATH_ID"));
         link.setExternalDbId(rs.getInt("EXTERNAL_DB_ID"));
         link.setLinkedToId(rs.getString("LINKED_TO_ID"));
-        link.setCreateTime(rs.getTimestamp("CREATE_TIME"));
-        link.setUpdateTime(rs.getTimestamp("UPDATE_TIME"));
 
         //  Get Associated External Database Record
         DaoExternalDb table = new DaoExternalDb();
