@@ -128,7 +128,8 @@ public class ImportPsiToCPath {
             if (verbose) {
                 System.out.println("Normalizing PSI Document...");
             }
-            pMonitor.setCurrentMessage("Step 1:  Normalizing PSI Document");
+            pMonitor.setCurrentMessage("Step 1 of 4:  "
+                + "Normalizing PSI Document");
             psiUtil = new PsiUtil();
             EntrySet entrySet = null;
             entrySet = psiUtil.getNormalizedDocument(xml);
@@ -169,7 +170,7 @@ public class ImportPsiToCPath {
         if (verbose) {
             System.out.println("Validating all External References:  ");
         }
-        pMonitor.setCurrentMessage("Step 2:  Validating All External "
+        pMonitor.setCurrentMessage("Step 2 of 4:  Validating All External "
                 + "References");
         DaoExternalLink linker = new DaoExternalLink();
 
@@ -218,7 +219,7 @@ public class ImportPsiToCPath {
         if (verbose) {
             System.out.println("Processing all Interactors:  ");
         }
-        pMonitor.setCurrentMessage("Step 3:  Process all Interactors");
+        pMonitor.setCurrentMessage("Step 3 of 4:  Process all Interactors");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractorList interactors = entry.getInteractorList();
@@ -283,7 +284,7 @@ public class ImportPsiToCPath {
         if (verbose) {
             System.out.println("Processing all Interactions:  ");
         }
-        pMonitor.setCurrentMessage("Step 4:  Process all Interactions");
+        pMonitor.setCurrentMessage("Step 4 of 4:  Process all Interactions");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractionList interactions = entry.getInteractionList();

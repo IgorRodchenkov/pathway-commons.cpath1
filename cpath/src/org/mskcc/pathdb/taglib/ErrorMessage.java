@@ -7,6 +7,7 @@ import org.mskcc.pathdb.action.admin.AdminWebLogging;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.util.LogUtil;
 import org.xml.sax.SAXParseException;
+import org.exolab.castor.xml.MarshalException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -121,6 +122,11 @@ public class ErrorMessage extends HtmlTable {
                     + "following error:<P>" + rootCause.getMessage()
                     + "<P>Error occurred at line number:   "
                     + sexc.getLineNumber()
+                    + "<P>Please correct the error and try again.";
+        } else if (rootCause instanceof MarshalException) {
+            MarshalException mexc = (MarshalException) rootCause;
+            userMsg = "Your XML document contains the "
+                    + "following error:<P>" + rootCause.getMessage()
                     + "<P>Please correct the error and try again.";
         }
         this.append(userMsg);

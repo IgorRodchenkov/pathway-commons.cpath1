@@ -11,9 +11,14 @@ import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.task.ImportRecordTask;
 import org.mskcc.pathdb.task.ImportReferencesTask;
 import org.mskcc.pathdb.util.XmlValidator;
+import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.exolab.castor.xml.ValidationException;
+import org.exolab.castor.xml.MarshalException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +60,7 @@ public class AdminImportData extends AdminBaseAction {
 
     private void importFile(XDebug xdebug, FormFile file,
             HttpServletRequest request) throws IOException, DaoException,
-            SAXException {
+            SAXException, MarshalException, ValidationException {
         xdebug.logMsg(this, "Found File Name:  " + file.getFileName());
         xdebug.logMsg(this, "Found File Size:  " + file.getFileSize());
 
@@ -76,24 +81,32 @@ public class AdminImportData extends AdminBaseAction {
 
     private void importPsi(String data, XDebug xdebug,
             HttpServletRequest request) throws SAXException, IOException,
-            DaoException {
+            DaoException, ValidationException, MarshalException {
         xdebug.logMsg(this, "Importing PSI-MI Data");
         xdebug.logMsg(this, "Validating XML File");
-        ArrayList errors = null;
-        XmlValidator validator = new XmlValidator();
-        errors = validator.validate(data);
-        if (errors != null && errors.size() > 0) {
-            SAXParseException exc = (SAXParseException) errors.get(0);
-            throw exc;
-        } else {
-            DaoImport dbImport = new DaoImport();
-            xdebug.logMsg(this, "Importing File to CPATH IMPORT table");
-            long importId = dbImport.addRecord("Web Upload", data);
-            xdebug.logMsg(this, "Import ID:  " + importId);
-            ImportRecordTask task = new ImportRecordTask(importId, false);
-            task.start();
-            this.setUserMessage(request, "Import PSI-MI Task is now running.");
+        //  Try to unmarshal document via Castor
+        try {
+            StringReader strReader = new StringReader (data);
+            EntrySet entrySet = EntrySet.unmarshalEntrySet(strReader);
+        } catch (MarshalException e) {
+            //  If marshalling fails, validate and get more user-friendly
+            //  error message with error location.
+            XmlValidator validator = new XmlValidator();
+            ArrayList errors = validator.validate(data);
+            if (errors != null && errors.size() > 0) {
+                SAXParseException exc = (SAXParseException) errors.get(0);
+                throw exc;
+            } else {
+                throw e;
+            }
         }
+        DaoImport dbImport = new DaoImport();
+        xdebug.logMsg(this, "Importing File to CPATH IMPORT table");
+        long importId = dbImport.addRecord("Web Upload", data);
+        xdebug.logMsg(this, "Import ID:  " + importId);
+        ImportRecordTask task = new ImportRecordTask(importId, false);
+        task.start();
+        this.setUserMessage(request, "Import PSI-MI Task is now running.");
     }
 
     private void importRefs(String data, XDebug xdebug,
