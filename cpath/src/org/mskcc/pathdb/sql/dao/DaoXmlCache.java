@@ -6,11 +6,13 @@ import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.util.ZipUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.XmlCacheRecord;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Data Access Object to the xml_cache Table.
@@ -18,6 +20,12 @@ import java.sql.*;
  * @author Ethan Cerami.
  */
 public class DaoXmlCache {
+
+    /**
+     * Maximum Number of Records Allowed in Cache.
+     */
+    public static final int MAX_CACHE_RECORDS = 500;
+
     private XDebug xdebug;
 
     /**
@@ -33,30 +41,33 @@ public class DaoXmlCache {
      * Adds Specified Record to the xml_cache Table.
      *
      * @param hashKey     Unique HashKey.
+     * @param url         URL String.
      * @param xmlAssembly XML Assembly Object.
      * @return true indicates success; false indicates failure.
      * @throws DaoException Error Retrieving Data.
      */
     public synchronized boolean addRecord(String hashKey,
-            XmlAssembly xmlAssembly) throws DaoException {
+            String url, XmlAssembly xmlAssembly) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO xml_cache (`DOC_MD5`,`NUM_HITS`, `DOC_BLOB`,"
-                    + " `CREATE_TIME`) VALUES (?,?,?,?)");
+                    ("INSERT INTO xml_cache (`URL`, `DOC_MD5`,`NUM_HITS`, "
+                    + "`DOC_BLOB`, `LAST_USED`) VALUES (?,?,?,?,?)");
 
             byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
             Timestamp timeStamp = new Timestamp(now.getTime());
 
-            pstmt.setString(1, hashKey);
-            pstmt.setInt(2, xmlAssembly.getNumHits());
-            pstmt.setBytes(3, zippedData);
-            pstmt.setTimestamp(4, timeStamp);
+            pstmt.setString(1, url);
+            pstmt.setString(2, hashKey);
+            pstmt.setInt(3, xmlAssembly.getNumHits());
+            pstmt.setBytes(4, zippedData);
+            pstmt.setTimestamp(5, timeStamp);
             int rows = pstmt.executeUpdate();
+            conditionallyDeleteEldest ();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
             throw new DaoException("ClassNotFoundException:  "
@@ -96,6 +107,7 @@ public class DaoXmlCache {
                 XmlAssembly xmlAssembly =
                         XmlAssemblyFactory.createXmlAssembly
                         (xml, numHits, xdebug);
+                updateLastUsedField (hashKey);
                 return xmlAssembly;
             } else {
                 return null;
@@ -186,7 +198,7 @@ public class DaoXmlCache {
             con = JdbcUtil.getCPathConnection();
 
             pstmt = con.prepareStatement
-                    ("UPDATE xml_cache SET `DOC_BLOB` = ?, `CREATE_TIME` = ?, "
+                    ("UPDATE xml_cache SET `DOC_BLOB` = ?, `LAST_USED` = ?, "
                     + "`NUM_HITS` = ? WHERE `DOC_MD5` = ?");
             byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
@@ -205,6 +217,133 @@ public class DaoXmlCache {
             throw new DaoException("SQLException:  " + e.getMessage());
         } catch (IOException e) {
             throw new DaoException("IOException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Updates the LastUsed Field for specified Record.
+     *
+     * @param hashKey     Unique Hash Key.
+     * @return true indicates success.
+     * @throws DaoException Error Updating Data.
+     */
+    public synchronized boolean updateLastUsedField(String hashKey)
+            throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+
+            pstmt = con.prepareStatement
+                    ("UPDATE xml_cache SET `LAST_USED` = ? "
+                    + "WHERE `DOC_MD5` = ?");
+            java.util.Date now = new java.util.Date();
+            Timestamp timeStamp = new Timestamp(now.getTime());
+
+            pstmt.setTimestamp(1, timeStamp);
+            pstmt.setString(2, hashKey);
+            int rows = pstmt.executeUpdate();
+            return (rows > 0) ? true : false;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets all Records in Cache (most recently used appear first).
+     * @return ArrayList of XmlCacheRecord Objects.
+     * @throws DaoException Error Connecting to Database.
+     */
+    public ArrayList getAllRecords() throws DaoException {
+        ArrayList records = new ArrayList();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement ("SELECT * FROM xml_cache "
+                    + "ORDER BY LAST_USED DESC");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                XmlCacheRecord record = new XmlCacheRecord();
+                record.setCacheId(rs.getInt("CACHE_ID"));
+                record.setUrl(rs.getString("URL"));
+                record.setMd5(rs.getString("DOC_MD5"));
+                record.setNumHits(rs.getInt("NUM_HITS"));
+                record.setLastUsed(rs.getTimestamp("LAST_USED"));
+                records.add(record);
+            }
+            return records;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Uses a Last Recently Used (LRU) Algorithm to Delete LRU Record
+     * stored in database.  LRU algorithm kicks in only when number of
+     * records exceeds MAX_CACHE_RECORDS.
+     *
+     * @throws DaoException Error Accessing Database.
+     */
+    public void conditionallyDeleteEldest() throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement ("SELECT COUNT(*) FROM xml_cache");
+            rs = pstmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            if (count > MAX_CACHE_RECORDS) {
+                deleteEldest();
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Finds and Deletes the LRU Record.
+     * @throws DaoException Error Accessing Database.
+     */
+    private void deleteEldest() throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT DOC_MD5 FROM `xml_cache` ORDER BY "
+                    + "LAST_USED ASC LIMIT 0 , 1");
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String hashKey = rs.getString("DOC_MD5");
+                deleteRecordByKey(hashKey);
+            }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
