@@ -59,10 +59,9 @@ public class DaoExternalLink {
      * @param cpathId cPath ID.
      * @param refs Array of External Reference Objects.
      * @throws DaoException Error Retrieving Data.
-     * @throws ExternalDatabaseNotFoundException Database Not Found.
      */
     public void addMulipleRecords(long cpathId, ExternalReference refs[])
-            throws DaoException, ExternalDatabaseNotFoundException {
+            throws DaoException {
         if (refs != null) {
             for (int i = 0; i < refs.length; i++) {
                 String dbName = refs[i].getDatabase();
@@ -75,10 +74,6 @@ public class DaoExternalLink {
                     link.setCpathId(cpathId);
                     link.setLinkedToId(id);
                     addRecord(link);
-                } else {
-                    throw new ExternalDatabaseNotFoundException
-                            ("No matching database "
-                            + "found for:  " + dbName + "[" + id + "]");
                 }
             }
         }

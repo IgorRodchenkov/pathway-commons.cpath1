@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Properties;
 
 /**
  * Action for Snooping on the Current HTTP Request.
@@ -68,6 +69,13 @@ public class SnoopHttp {
                 "Server Port", request.getServerPort());
         xdebug.addParameter(XDebugParameter.ENVIRONMENT_TYPE,
                 "Request Is Secure", request.isSecure());
+        Properties properties = System.getProperties();
+        Enumeration enum = properties.keys();
+        while (enum.hasMoreElements()) {
+            String key = (String) enum.nextElement();
+            String value = properties.getProperty(key);
+            xdebug.addParameter(XDebugParameter.ENVIRONMENT_TYPE, key, value);
+        }
     }
 
     /**

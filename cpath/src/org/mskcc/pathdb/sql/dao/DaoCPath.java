@@ -76,12 +76,10 @@ public class DaoCPath {
      * @param refs Array of External References
      * @return cPath Id for newly saved record
      * @throws DaoException Error Retrieving Data.
-     * @throws ExternalDatabaseNotFoundException ExternalDatabase Not Found.
      */
     public synchronized long addRecord(String name, String description,
             int ncbiTaxonomyId, CPathRecordType type, String xml,
-            ExternalReference refs[]) throws DaoException,
-            ExternalDatabaseNotFoundException {
+            ExternalReference refs[]) throws DaoException {
         long cpathId = this.addRecord(name, description, ncbiTaxonomyId,
                 type, xml);
         DaoExternalLink linker = new DaoExternalLink();

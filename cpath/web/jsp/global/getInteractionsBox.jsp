@@ -4,22 +4,26 @@
 <INPUT TYPE="hidden" name="db" value="grid">
 
 <% String uid = request.getParameter("uid");
-    if (uid == null) uid = new String("YER006W");
+    if (uid == null) uid = new String("P09097");
 %>
 
 <TABLE WIDTH="100%" CELLPADDING=5 CELLSPACING=5 BGCOLOR="#9999cc">
     <TR>
-        <TD class="table_data">UID:</TD>
-        <TD><INPUT TYPE=TEXT name="uid" value="<%= uid.toUpperCase() %>"></TD>
-        <TD class="table_data">Format:</TD>
-        <TD>
-            <SELECT NAME="format">
-                <OPTION VALUE="html">HTML Format</OPTION>
-                <OPTION VALUE="psi">PSI-MI XML Format</OPTION>
-            </SELECT>
+        <TD class="table_data">
+            Search:&nbsp;&nbsp;
+            <INPUT TYPE=TEXT name="uid" value="<%= uid.toUpperCase() %>">
+            <INPUT TYPE=HIDDEN name="format" value="html">
+            <!--
+            <TD class="table_data">Format:</TD>
+            <TD>
+                <SELECT NAME="format">
+                    <OPTION VALUE="html">HTML Format</OPTION>
+                    <OPTION VALUE="psi">PSI-MI XML Format</OPTION>
+                </SELECT>
+            </TD>
+            -->
+            &nbsp;&nbsp;<INPUT TYPE="SUBMIT" value="Search">
         </TD>
-        <TD>&nbsp;</TD>
-        <TD><INPUT TYPE="SUBMIT" value="Retrieve Data"></TD>
     </TR>
 </TABLE>
 </FORM>

@@ -1,22 +1,9 @@
 package org.mskcc.pathdb.controller;
 
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
-import org.mskcc.dataservices.bio.Interaction;
-import org.mskcc.dataservices.bio.Interactor;
-import org.mskcc.dataservices.bio.vocab.InteractionVocab;
-import org.mskcc.dataservices.bio.vocab.InteractorVocab;
-import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.core.EmptySetException;
-import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.mapper.MapperException;
-import org.mskcc.dataservices.schemas.psi.EntrySet;
-import org.mskcc.dataservices.services.ReadInteractions;
-import org.mskcc.dataservices.services.ReadInteractors;
-import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.RequestDispatcher;
@@ -26,7 +13,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
@@ -54,7 +40,7 @@ public class DataServiceController {
         this.response = response;
         this.servletContext = servletContext;
         this.xdebug = xdebug;
-        xdebug.logMsg(this, "Entering Grid Controller");
+        xdebug.logMsg(this, "Entering Data Service Controller");
     }
 
     /**
@@ -68,10 +54,6 @@ public class DataServiceController {
             if (protocolRequest.getCommand().equals
                     (ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS)) {
                 processGetInteractions(protocolRequest);
-            } else if (protocolRequest.getCommand().equals
-                    (ProtocolConstants.COMMAND_RETRIEVE_GO)) {
-                String xml = getGo(protocolRequest.getUid());
-                returnXml(xml);
             }
         } catch (EmptySetException e) {
             throw new ProtocolException(ProtocolStatusCode.BAD_UID,
@@ -81,22 +63,26 @@ public class DataServiceController {
     }
 
     private void processGetInteractions(ProtocolRequest protocolRequest)
-            throws QueryException, MarshalException, ValidationException,
-            IOException, ServletException {
-        InteractionQuery query = new InteractionQuery
-                (protocolRequest.getUid());
-        EntrySet entrySet = query.getEntrySet();
-        StringWriter writer = new StringWriter();
-        entrySet.marshal(writer);
-        String xml = writer.toString();
-        ArrayList interactions = query.getInteractions();
-        xdebug.logMsg(this, "Number of Interactions Found:  "
-                + interactions.size());
+            throws QueryException, IOException, ServletException,
+            EmptySetException {
+        String uid = protocolRequest.getUid();
         if (protocolRequest.getFormat().equals
                 (ProtocolConstants.FORMAT_PSI)) {
+            InteractionQuery query = new InteractionQuery(uid);
+            String xml = query.getXml();
             this.returnXml(xml);
         } else {
-            request.setAttribute("interactions", interactions);
+            try {
+                InteractionQuery query = new InteractionQuery(uid);
+                ArrayList interactions = query.getInteractions();
+                request.setAttribute("interactions", interactions);
+            } catch (EmptySetException e) {
+                xdebug.logMsg(this, "No Exact Matches Found.  "
+                        + "Trying full text search");
+                LuceneIndexer lucene = new LuceneIndexer();
+                ArrayList results = lucene.executeQueryWithLookUp(uid);
+                request.setAttribute("textSearchResults", results);
+            }
             request.setAttribute("protocol_request", protocolRequest);
             forwardToJsp();
         }
@@ -124,67 +110,6 @@ public class DataServiceController {
         stream.println(xmlResponse);
         stream.flush();
         stream.close();
-    }
-
-    /**
-     * Gets Interactions.
-     */
-    private ArrayList getInteractions(String uid) throws DataServiceException,
-            EmptySetException {
-        xdebug.logMsg(this, "Retrieving Interactions from GRID for UID:  "
-                + uid);
-        DataServiceFactory factory = DataServiceFactory.getInstance();
-        ReadInteractions service =
-                (ReadInteractions) factory.getService
-                (CPathConstants.READ_INTERACTIONS_FROM_GRID);
-        ArrayList interactions = service.getInteractions(uid);
-        interactions = this.filterInteractionList(interactions);
-        return interactions;
-    }
-
-    /**
-     * Filter our specific types of interactions.
-     * From Gary: "PSI has only been designed for protein-protein interactions
-     * and GRID has both protein-protein interactions and genetic interactions,
-     * so PSI does not cover GRID completely.  So, we shouldn't really include
-     * genetic interactions in PSI output from GRID."
-     * @param interactions ArrayList of Interaction objects.
-     */
-    private ArrayList filterInteractionList(ArrayList interactions) {
-        ArrayList filteredList = new ArrayList();
-        for (int i = 0; i < interactions.size(); i++) {
-            boolean filterOut = false;
-            Interaction interaction = (Interaction) interactions.get(i);
-            String expSystem = (String) interaction.getAttribute
-                    (InteractionVocab.EXPERIMENTAL_SYSTEM_NAME);
-            if (expSystem.equals("Synthetic Lethality")
-                    || expSystem.equals("Synthetic Rescue")
-                    || expSystem.equals("Dosage Lethality")) {
-                filterOut = true;
-            }
-            if (!filterOut) {
-                filteredList.add(interaction);
-            }
-        }
-        return filteredList;
-    }
-
-    /**
-     * Get Go Terms.
-     */
-    private String getGo(String uid) throws DataServiceException,
-            EmptySetException {
-        xdebug.logMsg(this, "Retrieving Interactor Data from GRID for UID:  "
-                + uid);
-        DataServiceFactory factory = DataServiceFactory.getInstance();
-        ReadInteractors service =
-                (ReadInteractors) factory.getService
-                (CPathConstants.READ_INTERACTORS_FROM_GRID);
-        Interactor interactor = service.getInteractor(uid);
-
-        String xml = (String) interactor.getAttribute
-                (InteractorVocab.XML_RESULT_SET);
-        return xml;
     }
 
     /**

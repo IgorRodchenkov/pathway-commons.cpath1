@@ -1,3 +1,4 @@
+<%@ page errorPage = "Error.jsp" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page import="java.util.ArrayList,
                  org.mskcc.pathdb.controller.ProtocolRequest,
@@ -8,6 +9,8 @@
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute("protocol_request");
     ArrayList interactions = (ArrayList) request.getAttribute("interactions");
+    ArrayList searchResults = (ArrayList) request.getAttribute
+            ("textSearchResults");
     ProtocolException exception = (ProtocolException)
             request.getAttribute("exception");
 %>
@@ -18,6 +21,9 @@
     <jsp:include page="../global/error.jsp" flush="true" />
 <% } else if (interactions != null) { %>
     <cbio:interactionTable interactions="<%= interactions %>"
+        uid="<%= protocolRequest.getUid() %>"/>
+<% } else if (searchResults != null) { %>
+    <cbio:searchResultsTable searchResults="<%= searchResults %>"
         uid="<%= protocolRequest.getUid() %>"/>
 <% } else { %>
     <jsp:include page="../global/help.jsp" flush="true" />

@@ -26,6 +26,23 @@
   </tag>
 
   <tag>
+    <name>searchResultsTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.SearchResultsTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Search Results Table</description>
+    <attribute>
+       <name>searchResults</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+         <name>uid</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+  </tag>
+
+  <tag>
     <name>importTable</name>
     <tag-class>org.mskcc.pathdb.taglib.ImportTable</tag-class>
     <body-content>empty</body-content>

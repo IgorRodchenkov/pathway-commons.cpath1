@@ -6,8 +6,5 @@
         <action path="/adminDisplay" scope="request" type="org.mskcc.pathdb.action.AdminDisplay">
             <forward name="display" path="/jsp/pages/Admin.jsp"/>
         </action>
-        <action path="/adminTransfer" scope="request" type="org.mskcc.pathdb.action.AdminTransfer">
-            <forward name="display" path="/jsp/pages/Admin.jsp"/>
-        </action>
     </action-mappings>
 </struts-config>

@@ -2,6 +2,7 @@ package org.mskcc.pathdb.sql.transfer;
 
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
+import org.jdom.Text;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.mapper.MapPsiToInteractions;
 import org.mskcc.dataservices.mapper.MapperException;
@@ -9,7 +10,6 @@ import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.util.PsiUtil;
 
@@ -105,10 +105,12 @@ public class ImportPsiToCPath {
     /**
      * Adds Specified PSI-MI Record.
      * @param xml PSI-MI XML Record.
+     * @param validateExternalRefs Validates External References.
      * @return Import Summary Object.
      * @throws ImportException Indicates Error in Import.
      */
-    public ImportSummary addRecord(String xml) throws ImportException {
+    public ImportSummary addRecord(String xml, boolean validateExternalRefs)
+            throws ImportException {
         summary = new ImportSummary();
         idMap = new HashMap();
         try {
@@ -120,7 +122,9 @@ public class ImportPsiToCPath {
             System.out.println("Normalization Complete:  Document is valid");
 
             //  Validate Interactors / External References.
-            validateInteractors(entrySet);
+            if (validateExternalRefs) {
+                validateInteractors(entrySet);
+            }
 
             //  Step 3:  Process all Interactors.
             processInteractors(entrySet);
@@ -172,7 +176,7 @@ public class ImportPsiToCPath {
      */
     private void processInteractors(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
-            MapperException, ExternalDatabaseNotFoundException {
+            MapperException {
         DaoExternalLink externalLinker = new DaoExternalLink();
 
         System.out.print("Processing all Interactors:  ");
@@ -239,18 +243,26 @@ public class ImportPsiToCPath {
      */
     private void saveInteractor(ProteinInteractorType protein,
             ExternalReference[] refs) throws MarshalException,
-            ValidationException, MapperException, DaoException,
-            ExternalDatabaseNotFoundException {
+            ValidationException, MapperException, DaoException {
         DaoCPath cpath = new DaoCPath();
 
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = marshalProtein(protein);
         String name = protein.getNames().getShortLabel();
+
         if (name == null || name.length() == 0) {
             MapPsiToInteractions mapper = new MapPsiToInteractions(null, null);
             name = mapper.extractNameSubstitute(protein.getId(), refs);
         }
+
         String desc = protein.getNames().getFullName();
+
+        //  Remove all surrounding and internal white space.
+        Text jdomText = new Text(name);
+        name = jdomText.getTextNormalize();
+        jdomText = new Text(desc);
+        desc = jdomText.getTextNormalize();
+
         Organism organism = protein.getOrganism();
         int taxId = CPathRecord.TAXONOMY_NOT_SPECIFIED;
         if (organism != null) {

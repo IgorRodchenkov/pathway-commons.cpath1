@@ -35,7 +35,7 @@ public class TestImportPsiToCPath extends TestCase {
         String xml = reader.retrieveContentFromFile(file);
         XDebug xdebug = new XDebug();
         ImportPsiToCPath importer = new ImportPsiToCPath();
-        ImportSummary summary = importer.addRecord(xml);
+        ImportSummary summary = importer.addRecord(xml, true);
         assertEquals(7, summary.getNumInteractorsProcessed());
         assertEquals(0, summary.getNumInteractorsFound());
         assertEquals(7, summary.getNumInteractorsSaved());
@@ -52,7 +52,7 @@ public class TestImportPsiToCPath extends TestCase {
         validateData();
 
         // Try Saving Again
-        summary = importer.addRecord(xml);
+        summary = importer.addRecord(xml, true);
         assertEquals(0, summary.getNumInteractorsSaved());
     }
 

@@ -2,6 +2,7 @@ package org.mskcc.pathdb.sql.query;
 
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.core.EmptySetException;
 import org.mskcc.dataservices.mapper.MapPsiToInteractions;
 import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
@@ -24,32 +25,36 @@ import java.util.HashMap;
 public class InteractionQuery {
     private EntrySet entrySet;
     private ArrayList interactions;
+    private String xml;
 
     /**
      * Constructor.
      * @param interactorName Unique Interactor Name.
      * @throws QueryException Error Performing Query.
+     * @throws EmptySetException No Results Found.
      */
-    public InteractionQuery(String interactorName) throws QueryException {
+    public InteractionQuery(String interactorName) throws QueryException,
+            EmptySetException {
         interactions = new ArrayList();
         try {
-            HashMap interactorMap = new HashMap();
             DaoCPath cpath = new DaoCPath();
-            DaoInternalLink linker = new DaoInternalLink();
             CPathRecord record = cpath.getRecordByName(interactorName);
             if (record != null) {
-                entrySet = generateXml(record, linker, interactorMap);
+                entrySet = aggregateXml(record);
                 mapToInteractions();
+                xml = this.generateXml();
+            } else {
+                throw new EmptySetException();
             }
         } catch (DaoException e) {
-            throw new QueryException ("DaoException:  " + e.getMessage());
+            throw new QueryException("DaoException:  " + e.getMessage());
         } catch (ValidationException e) {
-            throw new QueryException ("ValidationException:  "
+            throw new QueryException("ValidationException:  "
                     + e.getMessage());
         } catch (MarshalException e) {
-            throw new QueryException ("MarshalException:  " + e.getMessage());
+            throw new QueryException("MarshalException:  " + e.getMessage());
         } catch (MapperException e) {
-            throw new QueryException ("MapperException:  " + e.getMessage());
+            throw new QueryException("MapperException:  " + e.getMessage());
         }
     }
 
@@ -69,6 +74,27 @@ public class InteractionQuery {
         return interactions;
     }
 
+    /**
+     * Gets XML Response String.
+     * @return XML Response String.
+     */
+    public String getXml() {
+        return this.xml;
+    }
+
+    /**
+     * Generates XML from Entry Set Object.
+     */
+    private String generateXml() throws ValidationException, MarshalException {
+        StringWriter writer = new StringWriter();
+        entrySet.marshal(writer);
+        String xml = writer.toString();
+        return xml;
+    }
+
+    /**
+     * Maps PSI to Data Service Interaction objects.
+     */
     private void mapToInteractions() throws MarshalException,
             ValidationException, MapperException {
         StringWriter writer = new StringWriter();
@@ -80,13 +106,13 @@ public class InteractionQuery {
         mapper.doMapping();
     }
 
-
     /**
      * Generates PSI XML.
      */
-    private EntrySet generateXml(CPathRecord record, DaoInternalLink linker,
-            HashMap interactorMap) throws DaoException, MarshalException,
-            ValidationException {
+    private EntrySet aggregateXml(CPathRecord record)
+            throws DaoException, MarshalException, ValidationException {
+        HashMap interactorMap = new HashMap();
+        DaoInternalLink linker = new DaoInternalLink();
         PsiBuilder psiBuilder = new PsiBuilder();
         long id = record.getId();
         ArrayList interactions = linker.getInternalLinksWithLookup(id);

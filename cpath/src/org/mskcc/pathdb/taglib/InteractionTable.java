@@ -42,7 +42,6 @@ import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -72,21 +71,17 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Start Tag Processing.
-     * @throws IOException Input Output Exceptions.
+     * @throws DaoException Database Access Error.
      */
-    protected void subDoStartTag() throws IOException {
-        try {
-            startTable("Interactions for:  " + uid);
-            String headers[] = {
-                "Interactor", "External References",
-                "Experimental System", "PubMed Reference"};
+    protected void subDoStartTag() throws DaoException {
+        startTable("Interactions for:  " + uid);
+        String headers[] = {
+            "Interactor", "External References",
+            "Experimental System", "PubMed Reference"};
 
-            createTableHeaders(headers);
-            outputInteractions();
-            endTable();
-        } catch (Exception e) {
-            this.append("Error:  " + e);
-        }
+        createTableHeaders(headers);
+        outputInteractions();
+        endTable();
     }
 
     /**

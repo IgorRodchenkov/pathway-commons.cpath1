@@ -20,8 +20,6 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestDaoImport.class);
         suite.addTestSuite(TestDaoInteractor.class);
         suite.addTestSuite(TestDaoInteraction.class);
-        suite.addTestSuite(TestTransferImportToCPath.class);
-        suite.addTestSuite(TestTransfersWithDipData.class);
         suite.addTestSuite(TestDaoExternalDb.class);
         suite.addTestSuite(TestDaoExternalDbCv.class);
         suite.addTestSuite(TestDaoExternalLink.class);
