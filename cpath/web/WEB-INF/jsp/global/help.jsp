@@ -1,6 +1,7 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolStatusCode,
                  java.util.ArrayList,
-                 org.mskcc.pathdb.protocol.ProtocolConstants"%>
+                 org.mskcc.pathdb.protocol.ProtocolConstants,
+                 org.mskcc.pathdb.protocol.ProtocolRequest"%>
 
 <div id="apphead">
     <h2>Web Service API Help</h2>
@@ -23,7 +24,7 @@ URL parameters.  Parameters are as follows:
             Current valid commands are:
                 <UL>
                 <LI><%= ProtocolConstants.COMMAND_HELP %>
-                <LI><%= ProtocolConstants.COMMAND_GET_BY_ID %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID %>
                 <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME %>
                 <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID %>
                 <LI><%= ProtocolConstants.COMMAND_GET_BY_KEYWORD  %>
@@ -33,6 +34,10 @@ URL parameters.  Parameters are as follows:
 		    <LI>q:  Indicates the query parameter.  Depending on the command,
             this is used to indicate a unique ID or a search term.
             For example, "P09097".
+            <li>maxHits:  Maximum number of interactions returned in response.
+            If maxHits is not specified, it will default to:
+            <%= ProtocolRequest.DEFAULT_MAX_HITS %>.  If you want all matching
+            interactions, set maxHits=unbounded.
 		    <LI>format:  Indicates the format of returned results.
             Current valid formats are:  "psi", and "html".
 			<LI>version:  Indicates the version of the dataservice protocol.
