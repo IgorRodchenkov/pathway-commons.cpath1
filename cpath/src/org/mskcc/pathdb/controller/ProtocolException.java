@@ -142,7 +142,7 @@ public class ProtocolException extends Exception {
     public String toXml() {
         Document document = createXmlDocument();
         XMLOutputter outputter = new XMLOutputter();
-        outputter.setIndent(true);
+        outputter.setIndent("    ");
         outputter.setNewlines(true);
         StringWriter writer = new StringWriter();
         try {

@@ -125,7 +125,7 @@ public class ReadInteractorsFromGrid extends DataServiceBase
 
         //  Store Complete XML Document as an Attribute.
         XMLOutputter outputter = new XMLOutputter();
-        outputter.setIndent(true);
+        outputter.setIndent("    ");
         StringWriter writer = new StringWriter();
         outputter.output(doc, writer);
         interactor.addAttribute(InteractorVocab.XML_RESULT_SET,
