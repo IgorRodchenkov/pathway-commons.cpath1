@@ -6,6 +6,7 @@ import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.task.ProgressMonitor;
 
@@ -55,5 +56,15 @@ public class TestImportPsiToCPath extends TestCase {
         assertEquals(0, summary.getNumInteractorsSaved());
         assertEquals(6, summary.getNumInteractionsSaved());
         assertEquals(1, summary.getNumInteractionsClobbered());
+
+        //  Retrieve Interaction, DIP:  58E, and verify that all three
+        //  interactors were saved.
+        ExternalReference ref = new ExternalReference("DIP", "58E");
+        records = linker.lookUpByExternalRef(ref);
+        record = (CPathRecord) records.get(0);
+        long interactionId = record.getId();
+        DaoInternalLink internalLinker = new DaoInternalLink();
+        records = internalLinker.getInternalLinksWithLookup(interactionId);
+        assertEquals (3, records.size());
     }
 }
