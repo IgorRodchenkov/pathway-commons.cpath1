@@ -12,7 +12,7 @@
 	<organization>
 		<name>Memorial Sloan-Kettering Cancer Center</name>
 		<url>http://cbio.mskcc.org/dev_site/cpath</url>
-        <logo>/images/logo.jpg</logo>
+		<logo>/images/logo2.gif</logo>
 	</organization>
 	<inceptionYear>2003</inceptionYear>
     <package>org.mskcc.pathdb</package>
