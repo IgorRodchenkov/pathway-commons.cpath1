@@ -2,7 +2,8 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.lucene.PsiInteractionToIndex,
-                 org.mskcc.pathdb.lucene.LuceneIndexer"%>
+                 org.mskcc.pathdb.lucene.LuceneIndexer,
+                 org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page errorPage = "JspError.jsp" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 
@@ -65,19 +66,6 @@ request.setAttribute("advancedSearch", "true");
     the Web Services API?</a>
 </div>
 
-<!--
-<P>Installing cPath, Getting Involved:
-
-<div>
-    <a href="#install">Can I install a local copy of cPath at my lab?</a>
-</div>
-
-<div>
-    <a href="#developers">How can I get involved in further developing cPath?
-    Are you looking for collaborators?</a>
-</div>
--->
-
 <div class="h3">
     <h3>General Questions</h3>
 </div>
@@ -99,7 +87,7 @@ transduction pathways in the near future.  The long term goal of cPath is
 to provide a public repository of cancer specific pathways, and make it
 freely available to the scientific community.
 <P/>
-cPath is currently being developed by the
+cPath is currently being developed by the Sander group at the
 <A HREF="http://cbio.mskcc.org">Computational Biology Center</A>
 of <A HREF="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</A>.
 <P/>
@@ -109,9 +97,13 @@ of <A HREF="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</A>.
 </div>
 
 <P>
-cPath currently aggregates protein-protein interaction records
-from a number of public repositories.  For a complete list of the imported
-data sets, view the <A HREF="dbStats.do">Database Stats</A> page.
+cPath aggregates protein-protein interaction records
+from a number of public repositories, e.g.
+<A HREF="http://www.blueprint.org/bind/bind.php">BIND</A>,
+<A HREF="http://mint.bio.uniroma2.it/mint/index.php">MINT</A>
+and <A HREF="http://www.ebi.ac.uk/intact/index.html">Intact</A>.
+For a complete list of the imported data sets, view the
+<A HREF="dbStats.do">Database Stats</A> page.
 
 <div class="h4" id="plans">
     <h4>What are the near term / long term goals for cPath?</h4>
@@ -195,8 +187,8 @@ of cancer specific pathways.
     Boolean operators to form a more complex query (see below).
 
     <p><strong>Boolean operators</strong>
-    <p>Boolean operators allow terms to be combined through logic operators:
-    AND, "+", OR, NOT and "-". Boolean operators must be ALL CAPS. If two
+    <p>Boolean operators allow terms to be combined logically:
+    AND, OR, and NOT. Boolean operators must be ALL CAPS. If two
     terms are entered with no Boolean operator, the OR operator is used by
     default.
     <UL>
@@ -231,7 +223,7 @@ of cancer specific pathways.
     <p>Grouping is supported using parentheses to group clauses to form sub
     queries. This can be very useful if you want to control the boolean logic
     for a query. To search for either "dna" or "rna" and "repair" use
-    the query: (dna OR RNA) AND repair. This eliminates any confusion
+    the query: (dna OR rna) AND repair. This eliminates any confusion
     and makes sure you that repair must exist and either term dna or
     rna may exist.
 
@@ -252,7 +244,8 @@ of cancer specific pathways.
     <p>Note: You cannot use a * or ? symbol as the first character of a search.
 
     <p><strong>Field Specific Options</strong>
-    <p>It is possible to restrict your search to the following fields:
+    <p>It is possible to restrict your search terms within a query to the
+    following fields:
     <UL>
     <LI><%= PsiInteractionToIndex.FIELD_INTERACTOR %>:
     interactor name or external reference.
@@ -272,21 +265,42 @@ of cancer specific pathways.
     name followed by a colon ":" and then the term you are looking for.
 
     <p>For example:
+
+<%
+    String searchTerm = "organism:\"Homo Sapiens\"";
+    ProtocolRequest pRequest = new ProtocolRequest();
+    pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+    pRequest.setQuery(searchTerm);
+    pRequest.setFormat(ProtocolConstants.FORMAT_HTML);
+%>
     <UL>
-    <LI><A HREF="webservice.do?version=1.0&q=organism%3A%22Homo+Sapiens%22&format=html&cmd=get_by_keyword&organism=">
-    organism:"Homo sapiens"</A> will retrieve the all interaction records
+    <LI><A HREF="<%= pRequest.getUri() %>">
+    <%= searchTerm %></A> will retrieve all interaction records
     for Homo sapiens.
-    <LI><A HREF="webservice.do?version=1.0&q=interaction_type%3A%22Two+hybrid%22&format=html&cmd=get_by_keyword&organism=">
-    interaction_type:"Two hybrid"</A> will retreive all interaction records
+    <%
+        searchTerm = "interaction_type:\"Two hybrid\"";
+        pRequest.setQuery(searchTerm);
+    %>
+
+    <LI><A HREF="<%= pRequest.getUri() %>">
+    <%= searchTerm %></A> will retreive all interaction records
     discovered via "Two hybrid".
     </UL>
+    <%
+        searchTerm = "organism:Homo sapiens";
+        pRequest.setQuery(searchTerm);
+    %>
     <p>Note: The field is only valid for the term that it directly precedes,
-    so the query:  organism:Homo sapiens will only find "Homo" in the organism
-    field;  it will find "sapiens" in the default field.   To search the
-    organism field for Homo Sapiens enter: organism:"Homo sapiens".
-
-    <p>The advanced search instructions given above are based on the
-    Lucene documentation at:
+    so the query: <A HREF="<%= pRequest.getUri() %>"><%= searchTerm %></A>
+    will only find "Homo" in the organism field;  it will find "sapiens" in
+    the default field.   To search the organism field for Homo Sapiens enter:
+    <%
+        searchTerm = "organism:\"Homo sapiens\"";
+        pRequest.setQuery(searchTerm);
+    %>
+    <A HREF="<%= pRequest.getUri() %>"><%= searchTerm %></A>
+    <p><B>Attribution</B>:  The advanced search instructions given above are
+    based on the Lucene documentation at:
     <a href="http://jakarta.apache.org/lucene/docs/queryparsersyntax.html">
     http://jakarta.apache.org/lucene/docs/queryparsersyntax.html</a>
 
