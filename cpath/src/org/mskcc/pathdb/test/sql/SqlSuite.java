@@ -34,7 +34,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.pathdb.test.sql.assembly.AssemblySuite;
 import org.mskcc.pathdb.test.sql.references.ReferencesSuite;
-import org.mskcc.pathdb.test.sql.references.TestBackgroundReferenceService;
 
 /**
  * Suite of all SQL Unit Tests.
