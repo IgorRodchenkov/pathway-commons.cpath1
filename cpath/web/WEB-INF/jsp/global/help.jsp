@@ -23,10 +23,10 @@ URL parameters.  Parameters are as follows:
             Current valid commands are:
                 <UL>
                 <LI><%= ProtocolConstants.COMMAND_HELP %>
-                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_ID %>
                 <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME %>
                 <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID %>
-                <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_KEYWORD  %>
+                <LI><%= ProtocolConstants.COMMAND_GET_BY_KEYWORD  %>
                 <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB %>
                 <LI><%= ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID %>
             </UL>
