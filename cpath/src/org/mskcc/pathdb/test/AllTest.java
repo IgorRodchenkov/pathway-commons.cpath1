@@ -42,6 +42,7 @@ import org.mskcc.pathdb.test.task.TaskSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
+import org.mskcc.pathdb.test.model.ModelSuite;
 
 /**
  * Runs all Unit Tests.
@@ -58,6 +59,7 @@ public class AllTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(ProtocolSuite.suite());
+        suite.addTest(ModelSuite.suite());
         suite.addTest(UtilSuite.suite());
         suite.addTest(IndexerSuite.suite());
         suite.addTest(SqlSuite.suite());
