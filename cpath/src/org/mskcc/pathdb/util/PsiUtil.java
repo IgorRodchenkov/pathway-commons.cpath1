@@ -522,6 +522,7 @@ public class PsiUtil {
             if (dbName.equalsIgnoreCase("GO")
                     || dbName.equalsIgnoreCase("InterPro")
                     || dbName.equalsIgnoreCase("PubMed")
+                    || dbName.equalsIgnoreCase("PDB")
                     || dbName.equalsIgnoreCase("Unigene")) {
                 //  No-op
             } else {
