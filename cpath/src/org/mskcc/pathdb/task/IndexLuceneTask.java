@@ -59,6 +59,7 @@ import java.sql.SQLException;
  * @author Ethan Cerami.
  */
 public class IndexLuceneTask extends Task {
+    private static final int BLOCK_SIZE = 100;
     private XDebug xdebug;
 
     /**
@@ -125,21 +126,27 @@ public class IndexLuceneTask extends Task {
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage ("Indexing all cPath Interactions");
         DaoCPath cpath = new DaoCPath();
-        pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.INTERACTION));
+        int numInteractions = cpath.getNumEntities(CPathRecordType.INTERACTION);
+        pMonitor.setMaxValue(numInteractions);
 
         LuceneWriter indexWriter = new LuceneWriter(true);
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("select * from cpath WHERE TYPE = ?  order by CPATH_ID ");
-            pstmt.setString(1, CPathRecordType.INTERACTION.toString());
-            rs = pstmt.executeQuery();
+            for (int i=0; i <= numInteractions; i+= BLOCK_SIZE) {
+                con = JdbcUtil.getCPathConnection();
+                pstmt = con.prepareStatement
+                        ("select * from cpath WHERE TYPE = ?  order by "
+                        + "CPATH_ID LIMIT " + i + ", " + (i + BLOCK_SIZE));
+                pstmt.setString(1, CPathRecordType.INTERACTION.toString());
+                rs = pstmt.executeQuery();
 
-            while (rs.next()) {
-                indexRecord(cpath, rs, indexWriter);
+                while (rs.next()) {
+                    indexRecord(cpath, rs, indexWriter);
+                }
+                JdbcUtil.closeAll(con, pstmt, rs);
+                System.out.println("<next batch>");
             }
             pMonitor.setCurrentMessage("\nOptimizing Indexes");
             indexWriter.optimize();
