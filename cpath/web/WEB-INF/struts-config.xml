@@ -26,12 +26,6 @@
             type="org.mskcc.pathdb.action.QueryAction">
             <forward name="success" path="/WEB-INF/jsp/pages/Interactions.jsp"/>
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
-            <forward name="fullTextSearch" path="/WEB-INF/jsp/pages/FullTextSearch.jsp"/>
-        </action>
-
-        <action path="/interactor"
-            type="org.mskcc.pathdb.action.HomeAction">
-            <forward name="success" path="/WEB-INF/jsp/pages/Interactor.jsp"/>
         </action>
 
         <!--  Advanced Search -->
