@@ -95,12 +95,11 @@ public class DaoXmlCache {
             conditionallyDeleteEldest ();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } catch (IOException e) {
-            throw new DaoException("IOException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -138,8 +137,7 @@ public class DaoXmlCache {
                 return null;
             }
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (IOException e) {
@@ -171,10 +169,9 @@ public class DaoXmlCache {
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -196,10 +193,9 @@ public class DaoXmlCache {
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -236,12 +232,11 @@ public class DaoXmlCache {
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } catch (IOException e) {
-            throw new DaoException("IOException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -273,10 +268,9 @@ public class DaoXmlCache {
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -308,8 +302,7 @@ public class DaoXmlCache {
             }
             return records;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -368,10 +361,9 @@ public class DaoXmlCache {
                 deleteRecordByKey(hashKey);
             }
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }

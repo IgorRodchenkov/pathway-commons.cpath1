@@ -46,10 +46,9 @@ public class DaoOrganism {
             pstmt.setString(3, commonName);
             pstmt.executeUpdate();
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -81,10 +80,9 @@ public class DaoOrganism {
             }
             return organisms;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -110,10 +108,9 @@ public class DaoOrganism {
             rs = pstmt.executeQuery();
             return rs.next();
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -139,13 +136,11 @@ public class DaoOrganism {
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
-
     }
 }

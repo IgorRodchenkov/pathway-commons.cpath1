@@ -39,10 +39,9 @@ public class DaoInternalLink {
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -95,10 +94,9 @@ public class DaoInternalLink {
             }
             return records;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -135,10 +133,9 @@ public class DaoInternalLink {
             }
             return records;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -169,10 +166,9 @@ public class DaoInternalLink {
             }
             return counter;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }

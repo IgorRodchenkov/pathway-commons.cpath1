@@ -38,10 +38,9 @@ public class DaoExternalDbCv {
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -59,8 +58,8 @@ public class DaoExternalDbCv {
             throws DaoException {
         ExternalDatabaseRecord exDb = getExternalDbByTerm(dbTerm);
         if (exDb == null) {
-            throw new DaoException
-                    ("No matching database found for: " + dbTerm);
+            throw new DaoException (new NullPointerException
+                ("No matching database found for: " + dbTerm));
         }
         return exDb.getFixedCvTerm();
     }
@@ -91,10 +90,9 @@ public class DaoExternalDbCv {
             }
             return null;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -125,10 +123,9 @@ public class DaoExternalDbCv {
             }
             return terms;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -156,10 +153,9 @@ public class DaoExternalDbCv {
             }
             return null;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -184,10 +180,9 @@ public class DaoExternalDbCv {
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
-            throw new DaoException("ClassNotFoundException:  "
-                    + e.getMessage());
+            throw new DaoException(e);
         } catch (SQLException e) {
-            throw new DaoException("SQLException:  " + e.getMessage());
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }

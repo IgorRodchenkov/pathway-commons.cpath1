@@ -9,15 +9,6 @@ public class DaoException extends Exception {
 
     /**
      * Constructor.
-     *
-     * @param msg Error Message.
-     */
-    public DaoException(String msg) {
-        super(msg);
-    }
-
-    /**
-     * Constructor.
      * @param throwable Throwable Object containing root cause.
      */
     public DaoException(Throwable throwable) {
