@@ -101,7 +101,7 @@ public class ParseIdMappingsTask extends Task {
      * @param consoleMode Console Mode.
      */
     public ParseIdMappingsTask(File file, boolean consoleMode) {
-        super("Parse Affymetrix File", consoleMode);
+        super("Parse ID Mapping File", consoleMode);
         this.file = file;
     }
 
@@ -147,7 +147,7 @@ public class ParseIdMappingsTask extends Task {
                         && tokens[i].length() > 0) {
 
                     //  Process Multiple IDs in Each Column
-                    String ids[] = tokens[i].split(" ");
+                    String ids[] = tokens[i].split("\\s+");
                     for (int j = 0; j < ids.length; j++) {
                         IdMapRecord idRecord = new IdMapRecord
                                 (dbRecord1.getId(), id1, dbRecord2.getId(),
@@ -163,7 +163,7 @@ public class ParseIdMappingsTask extends Task {
                 //  Update Current DB/ID Pair
                 if (tokens[i].length() > 0) {
                     dbRecord1 = dbRecord2;
-                    String ids[] = tokens[i].split(" ");
+                    String ids[] = tokens[i].split("\\s+");
                     id1 = ids[0];
                 }
             }
@@ -197,7 +197,7 @@ public class ParseIdMappingsTask extends Task {
         //  The Database Access Object ensures that the record does not
         //  already exist in the db
         DaoIdMap dao = new DaoIdMap();
-        boolean success = dao.addRecord(idRecord);
+        boolean success = dao.addRecord(idRecord, false);
         return success ? 1 : 0;
     }
 
@@ -209,11 +209,9 @@ public class ParseIdMappingsTask extends Task {
     private void initProgressMonitor() throws IOException {
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Parsing ID Mappings File:  " + file);
-        pMonitor.setCurrentMessage("Analyzing Input File...");
         int numLines = FileUtil.getNumLines(file);
         pMonitor.setCurrentMessage
-                ("Total Number of Lines of Data  in Input File:  "
-                + numLines);
+                ("Number of Lines of Data in File:  " + numLines);
         pMonitor.setMaxValue(numLines);
         pMonitor.setCurValue(1);
     }
