@@ -17,7 +17,7 @@ cPath Functionality Issues:
 
 I just noticed that the IntAct database is maintaining a small file
 of external databases 
-<a href="http://cvs.sourceforge.net/viewcvs.py/intact/intactCore/data/controlledVocab/CvDatabase.def?rev=1.7&view=auto">here</a>
+http://cvs.sourceforge.net/viewcvs.py/intact/intactCore/data/controlledVocab/CvDatabase.def?rev=1.7&amp;view=auto
 
 We might be able to eventually collaborate with them on this list.
 Something to just keep in mind.
