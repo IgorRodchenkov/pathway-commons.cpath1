@@ -71,7 +71,7 @@ public class TaskTable extends HtmlTable {
             if (!isAlive) {
                 outputDataField("<small>"
                         + "<IMG SRC='jsp/images/icon_waste_sml.gif'/>"
-                        + "&nbsp;<A HREF='adminHome.do?action=remove&index="
+                        + "&nbsp;<A HREF='adminRemoveTask.do?index="
                         + i + "'>Clear Task</A>"
                         + "</small>");
             } else {
