@@ -19,3 +19,8 @@ system "ant prepare_dev_site";
 
 # Run Maven
 system "maven site:deploy";
+
+# Create source distribition
+system "tar -cvf cpath.tar *";
+system "gzip cpath.tar";
+system "cp cpath.tar.gz /var/www/dev_site/cpath";
