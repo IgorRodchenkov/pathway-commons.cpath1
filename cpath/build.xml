@@ -434,10 +434,28 @@
 		<exec dir="." executable="scripts/boot.pl"/>
 	</target>
 
+	<!-- Target to Transfer Import Records -->
 	<target name="transfer1" description="Transfer Target #1" depends="compile">
 		<java classname="org.mskcc.pathdb.sql.TransferImportToGrid">
-         	<arg value="localhost"/> 
-        	<classpath refid="compile.classpath"/>
+	         	<arg value="localhost"/> 
+       		 	<classpath refid="compile.classpath"/>
        		</java>
 	</target>
+
+	<!-- Target to Transfer External Links -->
+	<target name="transfer2" description="Transfer Target #2" depends="compile">
+		<java classname="org.mskcc.pathdb.sql.TransferExternalLinks">
+	         	<arg value="localhost"/> 
+       		 	<classpath refid="compile.classpath"/>
+       		</java>
+	</target>
+
+	<!-- Target to Import DIP Database -->
+	<target name="load_dip" description="Load DIP Data into cPath" depends="compile">
+		<java classname="org.mskcc.pathdb.sql.TransferImportToGrid">
+			<arg line="localhost testData/dip_psi.xml"/>
+			<classpath refid="compile.classpath"/>
+		</java>
+	</target>
+
 </project>
