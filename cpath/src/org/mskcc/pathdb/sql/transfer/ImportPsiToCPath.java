@@ -47,7 +47,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * Imports a single PSI-MI record into cPath.
@@ -337,7 +336,7 @@ public class ImportPsiToCPath {
                             + refListText);
                 } else {
                     //  Query Id Mapping SubSystem for other identifiers
-                    refs = queryIdMappingService (protein, refs);
+                    refs = queryIdMappingService(protein, refs);
 
                     //  Save the interactor to the database
                     try {
@@ -347,7 +346,7 @@ public class ImportPsiToCPath {
                                 + "processing interator:  "
                                 + protein.getId());
                         pMonitor.setCurrentMessage("Containing XRefs:");
-                        for (int k=0; k<refs.length; k++) {
+                        for (int k = 0; k < refs.length; k++) {
                             pMonitor.setCurrentMessage(refs[k].toString());
                         }
                         throw e;
@@ -559,6 +558,7 @@ public class ImportPsiToCPath {
 
     /**
      * Queries the ID Mapping Subsystem for Equivalent Ids.
+     *
      * @param protein Protein Interactor Type Object.
      * @param refs    Array of External Reference Objects.
      * @return Array of External Reference Objects.
@@ -573,11 +573,11 @@ public class ImportPsiToCPath {
 
             //  If we find no equivalent IDs, do nothing, and return original
             //  list of External References.
-            if (extraRefs == null || extraRefs.size() ==0) {
+            if (extraRefs == null || extraRefs.size() == 0) {
                 return refs;
             } else {
                 //  Create Union of Existing Refs plus newly discovered refs
-                ArrayList union = idService.createUnifiedList (extraRefs, refs);
+                ArrayList union = idService.createUnifiedList(extraRefs, refs);
 
                 //  Add Extra Refs to the PSI-MI Data Model
                 XrefType xref = protein.getXref();

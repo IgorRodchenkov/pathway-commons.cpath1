@@ -192,11 +192,11 @@ public class IdMapRecord {
     public int hashCode() {
         StringBuffer code = new StringBuffer();
         if (db1 < db2) {
-            code.append (db1+":"+id1 +"#");
-            code.append (db2+":"+id2);
+            code.append(db1 + ":" + id1 + "#");
+            code.append(db2 + ":" + id2);
         } else {
-            code.append (db2+":"+id2 +"#");
-            code.append (db1+":"+id1);
+            code.append(db2 + ":" + id2 + "#");
+            code.append(db1 + ":" + id1);
         }
         return code.toString().hashCode();
     }

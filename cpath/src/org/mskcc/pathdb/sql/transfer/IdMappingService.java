@@ -3,8 +3,8 @@ package org.mskcc.pathdb.sql.transfer;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoIdMap;
 
 import java.util.ArrayList;
@@ -40,53 +40,53 @@ public class IdMappingService {
      * Queries the ID Mapping Subsystem for a list of equivalent external
      * references.
      *
-     * @param refs      Array of External Reference Objects.
-     * @return          ArrayList of All Equivalent External Reference Objects.
-     *                  External Reference objects are normalized to the
-     *                  cPath Database fixed controlled vocabularly term.
+     * @param refs Array of External Reference Objects.
+     * @return ArrayList of All Equivalent External Reference Objects.
+     *         External Reference objects are normalized to the
+     *         cPath Database fixed controlled vocabularly term.
      * @throws DaoException Error Accessing Database.
      */
-    public ArrayList getEquivalenceList (ExternalReference[] refs)
+    public ArrayList getEquivalenceList(ExternalReference[] refs)
             throws DaoException {
         //  Create Normalized Set of Initial XRefs.
         //  We want to return a list of external references which is
         //  distinct from the parameter list.  The only way to ensure this
         //  is to normalize the incoming list to use fixed controlled
         //  vocabularly terms.
-        HashSet initialSet = createNormalizedXRefSet (refs);
+        HashSet initialSet = createNormalizedXRefSet(refs);
 
         //  Create a Non-Redundant Set of External References
-        HashSet hitList = new HashSet ();
+        HashSet hitList = new HashSet();
 
         //  Iterate through all existing External References
-        for (int i=0; i<refs.length; i++) {
+        for (int i = 0; i < refs.length; i++) {
 
             //  Finds a Complete List of Equivalent External References
-            ArrayList list = getEquivalenceList (refs[i]);
+            ArrayList list = getEquivalenceList(refs[i]);
 
             //  Add Each Equivalent Reference to the Non-Redundant Set
-            for (int j=0; j < list.size(); j++) {
+            for (int j = 0; j < list.size(); j++) {
                 ExternalReference ref = (ExternalReference) list.get(j);
                 if (!initialSet.contains(ref)) {
                     hitList.add(ref);
                 }
             }
         }
-        return new ArrayList (hitList);
+        return new ArrayList(hitList);
     }
 
     /**
      * Queries the ID Mapping Subsystem for a list of equivalent external
      * references.
      *
-     * @param xref      External Reference Object.
-     * @return          ArrayList of All Equivalent External Reference Objects.
+     * @param xref External Reference Object.
+     * @return ArrayList of All Equivalent External Reference Objects.
      * @throws DaoException Error Accessing Database.
      */
-    public ArrayList getEquivalenceList (ExternalReference xref)
+    public ArrayList getEquivalenceList(ExternalReference xref)
             throws DaoException {
         //  Create a Non-Redundant Set of External References
-        HashSet hitList = new HashSet ();
+        HashSet hitList = new HashSet();
 
         //  Look up Primary ID of Database, as stored in cPath.
         DaoExternalDb dao = new DaoExternalDb();
@@ -107,7 +107,7 @@ public class IdMappingService {
         ArrayList list = daoId.getEquivalenceList(cpathXRef);
 
         //  Transform all Matches into External Reference Objects.
-        for (int i=0; i<list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             CPathXRef cPathMatch = (CPathXRef) list.get(i);
 
             //  Look up Database Name
@@ -117,26 +117,27 @@ public class IdMappingService {
             ExternalReference match = new ExternalReference
                     (dbRecord.getFixedCvTerm(), cPathMatch.getLinkedToId());
             if (!match.equals(xref)) {
-                hitList.add (match);
+                hitList.add(match);
             }
         }
-        return new ArrayList (hitList);
+        return new ArrayList(hitList);
     }
 
     /**
      * Utility method for creating a union of two lists of External References.
-     * @param refList   ArrayList of External Reference Object.
-     * @param refs      Array of External Objects.
+     *
+     * @param refList ArrayList of External Reference Object.
+     * @param refs    Array of External Objects.
      * @return ArrayList of ExternalReference Objects.
      */
-    public ArrayList createUnifiedList (ArrayList refList, 
+    public ArrayList createUnifiedList(ArrayList refList,
             ExternalReference[] refs) {
         HashSet union = new HashSet();
         union.addAll(refList);
-        for (int i=0; i<refs.length; i++) {
+        for (int i = 0; i < refs.length; i++) {
             union.add(refs[i]);
         }
-        ArrayList list = new ArrayList (union);
+        ArrayList list = new ArrayList(union);
         return list;
     }
 
@@ -145,10 +146,10 @@ public class IdMappingService {
      * Normalization sets the Database Name to the Fixed Controlled Vocabulary
      * Term, as defined by cPath.
      */
-    private HashSet createNormalizedXRefSet (ExternalReference[] xrefs)
+    private HashSet createNormalizedXRefSet(ExternalReference[] xrefs)
             throws DaoException {
         HashSet set = new HashSet();
-        for (int i=0; i<xrefs.length; i++) {
+        for (int i = 0; i < xrefs.length; i++) {
             DaoExternalDb dao = new DaoExternalDb();
             ExternalDatabaseRecord dbRecord = dao.getRecordByTerm
                     (xrefs[i].getDatabase());

@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.model;
 
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 /**
  * Stores a Single External Reference.
@@ -18,16 +18,18 @@ public class CPathXRef {
 
     /**
      * Constructor.
-     * @param dbId          Primary ID of External Database.
-     * @param linkedToId    Identifier, as stored in the External Database.
+     *
+     * @param dbId       Primary ID of External Database.
+     * @param linkedToId Identifier, as stored in the External Database.
      */
-    public CPathXRef (int dbId, String linkedToId) {
+    public CPathXRef(int dbId, String linkedToId) {
         this.dbId = dbId;
         this.linkedToId = linkedToId;
     }
 
     /**
      * Get the Primary ID of the External Database.
+     *
      * @return integer id.
      */
     public int getDbId() {
@@ -36,6 +38,7 @@ public class CPathXRef {
 
     /**
      * Sets the Primary ID of the External Database.
+     *
      * @param dbId integer id.
      */
     public void setDbId(int dbId) {
@@ -44,6 +47,7 @@ public class CPathXRef {
 
     /**
      * Gets the Identifier, as stored in the External Database.
+     *
      * @return String id.
      */
     public String getLinkedToId() {
@@ -52,6 +56,7 @@ public class CPathXRef {
 
     /**
      * Sets te Identifier, as stored in the External Database.
+     *
      * @param linkedToId String id.
      */
     public void setLinkedToId(String linkedToId) {
@@ -77,6 +82,7 @@ public class CPathXRef {
 
     /**
      * Overrides Equals Method.
+     *
      * @param obj Object of Interest.
      * @return true or false.
      */

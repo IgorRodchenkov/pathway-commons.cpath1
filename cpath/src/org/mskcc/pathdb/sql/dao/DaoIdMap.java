@@ -29,9 +29,9 @@
  **/
 package org.mskcc.pathdb.sql.dao;
 
+import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.IdMapRecord;
-import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
@@ -39,10 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.LinkedList;
-
-import sun.misc.Queue;
 
 /**
  * Data Access Object to the Id Map Table.
@@ -59,12 +56,14 @@ public class DaoIdMap {
      * successfully.  A true value indicates success.  A false value indicates
      * that the record already exists and was not saved, or an error occurred.
      *
-     * @param record IdMapRecord Object.
+     * @param record         IdMapRecord Object.
      * @param validateRecord Validates DB1 and DB2 to ensure that these
-     *        actually exist in the database.  When set to true, full validation
-     *        check is run.  When set to false, no validation check is run.
-     *        If code has already validaed DB1 and DB2 prior to this call,
-     *        setting this parameter to false results in much faster execution.
+     *                       actually exist in the database.  When set to true,
+     *                       full validation check is run.  When set to false,
+     *                       no validation check is run.  If code has already
+     *                       validated DB1 and DB2 prior to this call, setting
+     *                       this parameter to false results in much faster
+     *                       execution.
      * @return true if saved successfully.
      * @throws DaoException Error Saving Data.
      */
@@ -95,11 +94,11 @@ public class DaoIdMap {
         //  Validate the Incoming Ids
         String id1 = record.getId1();
         String id2 = record.getId2();
-        if (id1 == null || id1.trim().length() ==  0) {
-            throw new IllegalArgumentException ("ID1 is null or empty");
+        if (id1 == null || id1.trim().length() == 0) {
+            throw new IllegalArgumentException("ID1 is null or empty");
         }
         if (id2 == null || id2.trim().length() == 0) {
-            throw new IllegalArgumentException ("ID2 is null or empty");
+            throw new IllegalArgumentException("ID2 is null or empty");
         }
 
         //  Validate that the record does not already exist in the database
@@ -237,20 +236,19 @@ public class DaoIdMap {
 
     /**
      * Given a XRef DB:ID pair, finds all equivalent XRef DB:ID pairs.
-     *
+     * <p/>
      * Uses a bread-first search algorithm to determine complete set of
      * equivalent IDs.
      * <P>
      * Implementation note:  JUnit Test for this method is in
      * TestIdMappingsParser.java, not TestDaoIdMap.java.
      *
-     *
-     * @param xref  XRef Object
-     * @return      ArrayList of XRef Objects.
+     * @param xref XRef Object
+     * @return ArrayList of XRef Objects.
      * @throws DaoException Error Connecting to Database.
      */
-    public ArrayList getEquivalenceList (CPathXRef xref)
-        throws DaoException {
+    public ArrayList getEquivalenceList(CPathXRef xref)
+            throws DaoException {
         //  Represents List of Nodes to Visit
         LinkedList openQueue = new LinkedList();
 
@@ -270,10 +268,10 @@ public class DaoIdMap {
             ArrayList neighbors = getImmediateNeighbors(current);
 
             //  Iterate through all neighbors;  only enqueue new nodes
-            for (int i=0; i<neighbors.size(); i++) {
+            for (int i = 0; i < neighbors.size(); i++) {
                 CPathXRef neighbor = (CPathXRef) neighbors.get(i);
-                if (! closedList.contains(neighbor)
-                    && ! openQueue.contains(neighbor)) {
+                if (!closedList.contains(neighbor)
+                        && !openQueue.contains(neighbor)) {
                     openQueue.add(neighbor);
                 }
             }
@@ -290,11 +288,11 @@ public class DaoIdMap {
     /**
      * Gets All Immediate Neighbors of the Specified DB:ID pair.
      *
-     * @param xref  XRef Object.
-     * @return      ArrayList of XRef Objects.
+     * @param xref XRef Object.
+     * @return ArrayList of XRef Objects.
      * @throws DaoException Error Connecting to Database.
      */
-    private ArrayList getImmediateNeighbors (CPathXRef xref)
+    private ArrayList getImmediateNeighbors(CPathXRef xref)
             throws DaoException {
         ArrayList neighborList = new ArrayList();
         Connection con = null;
@@ -317,7 +315,7 @@ public class DaoIdMap {
                 CPathXRef neighbor = null;
                 if (idRecord.getDb1() == xref.getDbId()
                         && idRecord.getId1().equals(xref.getLinkedToId())) {
-                    neighbor = new CPathXRef (idRecord.getDb2(),
+                    neighbor = new CPathXRef(idRecord.getDb2(),
                             idRecord.getId2());
                 } else {
                     neighbor = new CPathXRef(idRecord.getDb1(),
