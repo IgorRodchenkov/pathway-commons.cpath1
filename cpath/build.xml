@@ -16,7 +16,7 @@
         <property name="prod.dir" value="/var/lib/tomcat4/webapps"/>
 
 	<!-- Lucene Directory -->
-        <property name="lucene.dir" value="textIndex"/>
+	<property name="lucene.dir" value="build/textIndex"/>
 
 	<!-- Junit Directory -->
 	<property name="junit.dir" value="junit"/>
