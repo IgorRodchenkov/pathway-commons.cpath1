@@ -1,11 +1,11 @@
 package org.mskcc.pathdb.servlet;
 
 import org.mskcc.pathdb.controller.DataServiceController;
-import org.mskcc.pathdb.util.PropertyManager;
 import org.mskcc.pathdb.util.ConfigLogger;
+import org.mskcc.pathdb.util.PropertyManager;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,9 +38,9 @@ public final class DataService extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
 
-        logger.info("Data Servlet Invokved.  Getting live data");
-        response.setHeader ("Cache-control", "no-cache");
-        response.setHeader ("Pragma", "no-cache");
+        logger.info("Data Servlet Invoked.  Getting live data");
+        response.setHeader("Cache-control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
         DataServiceController controller = new DataServiceController
                 (request, response, this.getServletContext());
         controller.execute();
@@ -62,9 +62,13 @@ public final class DataService extends HttpServlet {
     public void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        doGet (request, response);
+        doGet(request, response);
     }
 
+    /**
+     * Initializes Servlet with parameters in web.xml file.
+     * @throws ServletException Servlet Initialization Error.
+     */
     public void init() throws ServletException {
         super.init();
         PropertyManager manager = PropertyManager.getInstance();

@@ -10,11 +10,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Data Service Controller.
+ * All Client Application/Browser requests travel throught the Data
+ * Service Controller.  The Controller forwards requests on to more
+ * specific classes, such as the GridController.  It also centralizes
+ * all exception handling in one place.
  *
  * @author Ethan Cerami
  */
@@ -86,6 +90,7 @@ public class DataServiceController {
 
     /**
      * Returns Error to Client.
+     * Automatically sets the Ds-status header = "error".
      * @param exception ProtocolException object.
      */
     private void returnError(ProtocolException exception) {
@@ -105,6 +110,7 @@ public class DataServiceController {
 
     /**
      * Returns XML Response to Client.
+     * Automatically sets the Ds-status header = "ok".
      * @param xmlResponse XML Response Document.
      * @throws IOException Error writing to client.
      */
@@ -136,8 +142,10 @@ public class DataServiceController {
 
     /**
      * Shows Help Page.
+     * Forwards to the /jsp/protocol.html HTML Page.
      */
     private void showHelp() {
+        logger.info("Forwarding to protocol.jsp page");
         try {
             setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
             RequestDispatcher dispatcher =
@@ -145,11 +153,11 @@ public class DataServiceController {
             dispatcher.forward(request, response);
         } catch (IOException e) {
             logger.log(Level.WARNING,
-                "IOException thrown while writing out Help page:  "
+                    "IOException thrown while writing out Help page:  "
                     + e.getMessage());
         } catch (ServletException e) {
             logger.log(Level.WARNING,
-                "ServletException thrown while writing out Help page:  "
+                    "ServletException thrown while writing out Help page:  "
                     + e.getMessage());
         }
     }

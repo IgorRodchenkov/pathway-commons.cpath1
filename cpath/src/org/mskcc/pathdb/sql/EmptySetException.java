@@ -11,7 +11,7 @@ public class EmptySetException extends Exception {
      * Constructor.
      * @param msg Error Message.
      */
-    public EmptySetException (String msg) {
+    public EmptySetException(String msg) {
         super(msg);
     }
 }

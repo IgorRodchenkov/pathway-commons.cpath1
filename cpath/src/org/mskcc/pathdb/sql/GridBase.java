@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 /**
  * GRID Base Class.
+ * Initiates opening of database connection to GRID database.
  *
  * @author Ethan Cerami
  */

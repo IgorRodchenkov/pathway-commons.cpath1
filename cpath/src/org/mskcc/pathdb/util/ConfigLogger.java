@@ -1,21 +1,18 @@
 package org.mskcc.pathdb.util;
 
-import org.mskcc.pathdb.util.PropertyManager;
-
+import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-import java.io.IOException;
 
 /**
- * Configures the Apache Commons Logging.
+ * Configures the JDK 1.4 Logging Feature.
  *
  * @author Ethan Cerami
  */
 public class ConfigLogger {
 
     /**
-     * Configures the Apache Commons Logger Logger.
+     * Configures the JDK 1.4 Logger.
      */
     public static void configureLogger() {
         try {

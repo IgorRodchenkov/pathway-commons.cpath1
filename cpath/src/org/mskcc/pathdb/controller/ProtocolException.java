@@ -8,8 +8,8 @@ import org.jdom.output.XMLOutputter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Encapsulates a Violation of the Data Service Protocol.

@@ -1,20 +1,20 @@
 package org.mskcc.pathdb.sql;
 
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.contrib.input.ResultSetBuilder;
+import org.jdom.output.XMLOutputter;
 import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
 import org.mskcc.pathdb.model.Protein;
-import org.jdom.contrib.input.ResultSetBuilder;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.output.XMLOutputter;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.io.StringWriter;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -82,10 +82,10 @@ public class GridProteinService extends GridBase {
      * @throws JDOMException Error converting to XML.
      * @throws IOException Error outputting XML.
      */
-    public String getProteinXmlByOrf (String orfName) throws EmptySetException,
+    public String getProteinXmlByOrf(String orfName) throws EmptySetException,
             ClassNotFoundException, SQLException, JDOMException, IOException {
         ResultSet rs = this.connect(orfName, GridBase.KEY_ORF);
-        ResultSetBuilder rsBuilder = new ResultSetBuilder (rs);
+        ResultSetBuilder rsBuilder = new ResultSetBuilder(rs);
         Document document = rsBuilder.build();
         StringWriter writer = new StringWriter();
         XMLOutputter outputter = new XMLOutputter();
@@ -159,7 +159,7 @@ public class GridProteinService extends GridBase {
         rs.next();
         int rowCount = rs.getInt(1);
         if (rowCount == 0) {
-            throw new EmptySetException ("No results found for id");
+            throw new EmptySetException("No results found for id");
         }
     }
 
@@ -192,7 +192,7 @@ public class GridProteinService extends GridBase {
             EmptySetException {
         boolean hasNext = rs.next();
         if (!hasNext) {
-            throw new EmptySetException ("No results found for id");
+            throw new EmptySetException("No results found for id");
         }
     }
 

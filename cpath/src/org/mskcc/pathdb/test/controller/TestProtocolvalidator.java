@@ -1,12 +1,12 @@
 package org.mskcc.pathdb.test.controller;
 
 import junit.framework.TestCase;
+import org.mskcc.pathdb.controller.NeedsHelpException;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolException;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.controller.ProtocolStatusCode;
 import org.mskcc.pathdb.controller.ProtocolValidator;
-import org.mskcc.pathdb.controller.NeedsHelpException;
 
 import java.util.HashMap;
 

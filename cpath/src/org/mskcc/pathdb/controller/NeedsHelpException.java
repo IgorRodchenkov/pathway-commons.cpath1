@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.controller;
 
 /**
- * Package Comments
+ * Indicates that user needs/requests Help Page.
  *
- * @author cerami
+ * @author Ethan Cerami.
  */
 public class NeedsHelpException extends Exception {
 }

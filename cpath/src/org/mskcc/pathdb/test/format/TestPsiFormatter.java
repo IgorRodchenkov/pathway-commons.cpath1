@@ -6,12 +6,11 @@ import org.mskcc.pathdb.sql.GridInteractionService;
 import org.mskcc.pathdb.test.TestConstants;
 import org.mskcc.pathdb.xml.psi.Entry;
 import org.mskcc.pathdb.xml.psi.InteractorList;
-import org.mskcc.pathdb.xml.psi.ProteinInteractor;
-import org.mskcc.pathdb.xml.psi.Xref;
 import org.mskcc.pathdb.xml.psi.PrimaryRef;
+import org.mskcc.pathdb.xml.psi.ProteinInteractor;
 import org.mskcc.pathdb.xml.psi.SecondaryRef;
+import org.mskcc.pathdb.xml.psi.Xref;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -38,7 +37,7 @@ public class TestPsiFormatter extends TestCase {
         validateProteinInteractor(entry);
 
         boolean isValid = entry.isValid();
-        assertTrue ("PSI XML is Valid", isValid);
+        assertTrue("PSI XML is Valid", isValid);
     }
 
     /**
@@ -54,9 +53,9 @@ public class TestPsiFormatter extends TestCase {
         String db = primaryRef.getDb();
         String id = primaryRef.getId();
         String key = this.generateXRefKey(db, id);
-        set.add (key);
-        assertEquals ("Entrez GI", db);
-        assertEquals ("349751", id);
+        set.add(key);
+        assertEquals("Entrez GI", db);
+        assertEquals("349751", id);
         validateNonRedundantXRefs(xref, set);
     }
 
@@ -67,13 +66,13 @@ public class TestPsiFormatter extends TestCase {
      */
     private void validateNonRedundantXRefs(Xref xref, HashSet set) {
         int count = xref.getSecondaryRefCount();
-        for (int i=0; i<count; i++) {
+        for (int i = 0; i < count; i++) {
             SecondaryRef secondaryRef = xref.getSecondaryRef(i);
             String db = secondaryRef.getDb();
             String id = secondaryRef.getId();
             String key = this.generateXRefKey(db, id);
             if (set.contains(key)) {
-                fail ("Redundant External References found");
+                fail("Redundant External References found");
             } else {
                 set.add(key);
             }
@@ -83,7 +82,8 @@ public class TestPsiFormatter extends TestCase {
     /**
      * Generates XRef Key.
      * @param db Database String.
-     * @return id ID String.
+     * @param id Database ID.
+     * @return Key.
      */
     private String generateXRefKey(String db, String id) {
         String key = db + "." + id;

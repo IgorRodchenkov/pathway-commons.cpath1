@@ -5,8 +5,8 @@ import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
 import org.mskcc.pathdb.model.Protein;
-import org.mskcc.pathdb.sql.GridProteinService;
 import org.mskcc.pathdb.sql.EmptySetException;
+import org.mskcc.pathdb.sql.GridProteinService;
 import org.mskcc.pathdb.test.TestConstants;
 
 /**
@@ -161,7 +161,7 @@ public class TestGridProteinService extends TestCase {
 
         String xml = service.getProteinXmlByOrf(TestConstants.SAMPLE_ORF_1);
         int index = xml.indexOf("<orf_name>YLR002C</orf_name>");
-        assertTrue ("Testing XML Contents", index > 5);
+        assertTrue("Testing XML Contents", index > 5);
     }
 
     /**
@@ -172,12 +172,12 @@ public class TestGridProteinService extends TestCase {
         GridProteinService service = new GridProteinService
                 (TestConstants.DB_HOST, TestConstants.USER,
                         TestConstants.PASSWORD);
-         try {
+        try {
             Protein protein = service.getProteinByOrf("ecerami");
-            fail ("EmptySetException should have been thrown.");
-         } catch (EmptySetException e) {
-             assertTrue (e instanceof EmptySetException);
-         }
+            fail("EmptySetException should have been thrown.");
+        } catch (EmptySetException e) {
+            assertTrue(e instanceof EmptySetException);
+        }
     }
 
 

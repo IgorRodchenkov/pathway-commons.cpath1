@@ -4,22 +4,22 @@ import org.mskcc.pathdb.format.PsiFormatter;
 import org.mskcc.pathdb.sql.EmptySetException;
 import org.mskcc.pathdb.sql.GridInteractionService;
 import org.mskcc.pathdb.sql.GridProteinService;
-import org.mskcc.pathdb.test.TestConstants;
-import org.mskcc.pathdb.xml.psi.Entry;
 import org.mskcc.pathdb.util.PropertyManager;
+import org.mskcc.pathdb.xml.psi.Entry;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
  * GRID Controller.
+ * Processes all client requests for GRID specific data.
  *
  * @author Ethan Cerami
  */
 public class GridController {
 
     /**
-     * Retrieves Interactions.
+     * Retrieves GRID Data.
      * @param request ProtocolRequest object.
      * @return XML Response String.
      * @throws Exception All Exceptions.

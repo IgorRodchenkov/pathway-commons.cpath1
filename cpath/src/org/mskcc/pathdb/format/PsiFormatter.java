@@ -23,8 +23,8 @@ import org.mskcc.pathdb.xml.psi.Xref;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Converts Internal Object Model to PSI-MI Format.

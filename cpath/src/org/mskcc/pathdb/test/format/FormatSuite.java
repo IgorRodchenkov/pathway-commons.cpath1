@@ -3,8 +3,6 @@ package org.mskcc.pathdb.test.format;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.test.controller.TestProtocolException;
-import org.mskcc.pathdb.test.controller.TestProtocolValidator;
 
 /**
  * Suite of all Formatter Unit Tests.

@@ -1,8 +1,8 @@
 package org.mskcc.pathdb.util;
 
+import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
-import java.util.Date;
 
 /**
  * HtmlFormatter for Outputting LogRecords to HTML Table.
@@ -22,7 +22,7 @@ public class HtmlFormatter extends Formatter {
     public String format(LogRecord logRecord) {
         StringBuffer out = new StringBuffer();
         out.append("<TR>");
-        Date date = new Date (logRecord.getMillis());
+        Date date = new Date(logRecord.getMillis());
         outputField(out, date.toString());
         outputField(out, logRecord.getLevel().getName());
         outputField(out, logRecord.getSourceClassName());
