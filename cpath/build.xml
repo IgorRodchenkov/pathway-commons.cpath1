@@ -287,5 +287,9 @@
  		<replacetoken>scm:cvs:ext:cerami@cbio.mskcc.org:/var/lib/cvs:cpath</replacetoken>
   		<replacevalue>scm:cvs:local:ignored:/var/lib/cvs:cpath</replacevalue>
 		</replace>
+		<replace file="${basedir}/project.properties">
+		<replacetoken>maven.site.deploy.method = ssh</replacetoken>
+		<replacevalue>maven.site.deploy.method = fs</replacevalue>
+		</replace>
 	</target>
 </project>
