@@ -401,7 +401,7 @@ public class ImportPsiToCPath {
     }
 
     /**
-     * Processes all Interactors
+     * Processes all Interactions
      */
     private void processInteractions(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
@@ -518,12 +518,14 @@ public class ImportPsiToCPath {
      */
     private void conditionallyDeleteInteraction(ExternalReference refs[])
             throws DaoException, ImportException {
-        // Filter out References which are not used for unique
-        // identification.  For example, filter out all GO, PubMed and
-        // InterPro references.
+        // Filter out References which are not used for unique interaction
+        // identification.
+        if (refs == null) {
+            return;
+        }
         ExternalReference[] filteredRefs =
                 ExternalReferenceUtil.filterByReferenceType
-                (refs, ReferenceType.PROTEIN_UNIFICATION);
+                (refs, ReferenceType.INTERACTION_UNIFICATION);
         DaoExternalLink linker = new DaoExternalLink();
         DaoCPath cpath = new DaoCPath();
         ArrayList records = linker.lookUpByExternalRefs(filteredRefs);
