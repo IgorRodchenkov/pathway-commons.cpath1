@@ -542,4 +542,27 @@ public class PsiUtil {
         }
         return filteredRefs;
     }
+
+    /**
+     * Adds New External References to the PSI-MI XRef Object.
+     *
+     * @param xref PSI-MI XRef Object.
+     * @param list ArrayList of External Reference Objects.
+     */
+    public void addExternalReferences (XrefType xref, ArrayList list) {
+        for (int i=0; i < list.size(); i++) {
+            ExternalReference ref =  (ExternalReference) list.get(i);
+            if (xref.getPrimaryRef() == null) {
+                DbReferenceType primaryRef = new DbReferenceType();
+                primaryRef.setDb(ref.getDatabase());
+                primaryRef.setId(ref.getId());
+                xref.setPrimaryRef(primaryRef);
+            } else {
+                DbReferenceType secondaryRef = new DbReferenceType();
+                secondaryRef.setDb(ref.getDatabase());
+                secondaryRef.setId(ref.getId());
+                xref.addSecondaryRef(secondaryRef);
+            }
+        }
+    }
 }
