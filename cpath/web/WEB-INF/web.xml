@@ -40,9 +40,19 @@
 	<load-on-startup />
     </servlet>
 
+    <servlet>
+        <servlet-name>XmlRpcServlet</servlet-name>
+        <servlet-class>org.mskcc.pathdb.servlet.XmlRpcServlet</servlet-class>
+	<load-on-startup />
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>DataServiceServlet</servlet-name>
         <url-pattern>/dataservice</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>XmlRpcServlet</servlet-name>
+        <url-pattern>/xmlrpc</url-pattern>
+    </servlet-mapping>
 </web-app>
