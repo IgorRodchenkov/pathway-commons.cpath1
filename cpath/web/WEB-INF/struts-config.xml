@@ -33,6 +33,12 @@
             <forward name="success" path="/WEB-INF/jsp/pages/Browse.jsp"/>
         </action>
 
+        <!--  Cytoscape PlugIn Page -->
+        <action path="/cytoscape"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/Cytoscape.jsp"/>
+        </action>
+
         <!--  Database Stats / Information -->
         <action path="/dbStats"
             type="org.mskcc.pathdb.action.HomeAction">

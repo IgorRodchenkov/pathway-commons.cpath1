@@ -19,13 +19,13 @@
     <h3>About cPath</h3>
 </div>
 
-cPath is a freely available cancer pathway database.  We
-are building this as a resource to the community.  Currently,
-basic protein-protein interaction functionality is available.
-We expect to make a preliminary version of cPath available to
-the public in early 2004.  In the near future, we also plan
-to make cPath <A HREF="http://www.biopax.org">BioPax</A>
-compatibile.
+cPath aims to be a freely available cancer pathway database. Currently, only
+information about protein-protein interactions collected from major
+interaction databases that support the PSI-MI format is available. cPath is
+open-source and is easy to locally install for private management of
+protein-protein interactions. Future directions include support for the <a
+href="http://biopax.org">BioPAX format</a> so that entire pathways can be
+stored, queried and presented.
 <P/>
 cPath is currently being developed by the
 <A HREF="http://cbio.mskcc.org">Computational Biology Center</A>

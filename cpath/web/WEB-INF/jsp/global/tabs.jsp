@@ -61,6 +61,15 @@
         tabActive.add (Boolean.FALSE);
     }
 
+    tabNames.add("Cytoscape PlugIn");
+    String cytoscapeUrl = "cytoscape.do";
+    tabUrls.add(cytoscapeUrl);
+    if (url.equals(cytoscapeUrl)) {
+        tabActive.add (Boolean.TRUE);
+    } else {
+        tabActive.add (Boolean.FALSE);
+    }
+
     String isAdmin = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
     String host = request.getRemoteHost();
     if (isAdmin != null

@@ -316,10 +316,10 @@ of cancer specific pathways.
     cytoscape.org</A> web site.  Cytoscape is written in Java, and therefore
     runs on Windows, Mac OS X, and Linux.
     <P>
-    Cytoscape provides a convenient PlugIn architecture for adding new
-    functionality.  We are currrently finalizing a Cytoscape PlugIn for querying
-    cPath directly.  Details will be available soon.
-
+    Cytoscape includes a built-in PlugIn framework for adding new features and
+    functionality.  The <A HREF="cytoscape.do">cPath PlugIn</A>
+    enables Cytoscape users to directly query, retrieve and visualize
+    interactions retrieved from the cPath database.
 <div class="h4" id="webservices">
     <h4>How can I programmatically access cPath?  How do I use
     the Web Services API?</h4>
