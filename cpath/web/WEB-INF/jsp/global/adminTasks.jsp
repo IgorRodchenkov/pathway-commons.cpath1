@@ -44,7 +44,7 @@
             <A HREF="adminPurgeLogRecords.do">Purge Error Log</A>
         </div>
         <div>
-            <A HREF="adminHome.do?testError">Test Error Page</A>
+            <A HREF="adminHome.do?testError=1">Test Error Page</A>
         </div>
     </div>
 </div>
