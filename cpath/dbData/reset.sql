@@ -32,7 +32,7 @@ INSERT INTO `external_db` VALUES (5, 'OMIM', 'http://www.ncbi.nlm.nih.gov/entrez
 INSERT INTO `external_db` VALUES (6, 'PIR', 'http://pir.georgetown.edu/cgi-bin/nbrfget?uid=%ID%', 'The Protein Information Resource (PIR)', 50, 'PROTEIN_UNIFICATION', NULL, NULL, 20031002103329, 20031002103329);
 INSERT INTO `external_db` VALUES (7, 'InterPro', 'http://www.ebi.ac.uk/interpro/IEntry?ac=%ID%', ' InterPro database of protein families, domains and functional sites.', 52, 'LINK_OUT', NULL, NULL, 20031002162303, 20031002162303);
 INSERT INTO `external_db` VALUES (8, 'PROSITE', 'http://us.expasy.org/cgi-bin/nicedoc.pl?%ID%', 'PROSITE database of protein families and domains.', 52, 'LINK_OUT', NULL, NULL, 20031002162542, 20031002162542);
-INSERT INTO `external_db` VALUES (9, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=DIP:%ID%&Search2=Query+DIP&GE=&DS=&PIR=&GB=&TX=&SF=&FN=&LO=&KW=','Database of Interacting Proteins (DIP)', 53, 'LINK_OUT', NULL, NULL, 20031002162656, 20031002162656);
+INSERT INTO `external_db` VALUES (9, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=DIP:%ID%&Search2=Query+DIP&GE=&DS=&PIR=&GB=&TX=&SF=&FN=&LO=&KW=','Database of Interacting Proteins (DIP)', 53, 'INTERACTION_UNIFICATION', NULL, NULL, 20031002162656, 20031002162656);
 INSERT INTO `external_db` VALUES (10, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%', 'Pfam protein families database of alignments and hidden Markov models.', 54, 'LINK_OUT', NULL, NULL, 20031002162804, 20031002162804);
 INSERT INTO `external_db` VALUES (11, 'GO', 'http://www.godatabase.org/cgi-bin/amigo/go.cgi?open_1=%ID%', 'Gene Ontology (GO)', 55, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (12, 'Affymetrix', '', 'Affymetrix ID', 56, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
@@ -40,7 +40,7 @@ INSERT INTO `external_db` VALUES (13, 'IntAct', 'http://www.ebi.ac.uk/intact/sea
 INSERT INTO `external_db` VALUES (14, 'FlyBase', 'http://flybase.bio.indiana.edu/.bin/fbidq.html?%ID%', 'FlyBase is a comprehensive database for information on the genetics and molecular biology of Drosophila.', 58, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (15, 'PDB', 'http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=%ID%', 'Protein Data Bank (PDB)', 59, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (16, 'SGD', '', 'Saccharomyces Genome Database (SGD)', 60, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (17, 'HPRD', 'http://hprd.ibioinformatics.org/hprdId?hprdId=%ID%', 'Human Protein Reference Database (HPRD)', 61, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (17, 'HPRD', 'http://hprd.ibioinformatics.org/hprdId?hprdId=%ID%', 'Human Protein Reference Database (HPRD)', 61, 'INTERACTION_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (18, 'MINT', 'http://mint.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%', 'Molecular INTeraction database (MINT)', 62, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (19, 'Reactome', 'http://www.reactome.org/cgi-bin/search?SUBMIT=1&QUERY_CLASS=DatabaseIdentifier&QUERY=SWALL:%ID%', 'Reactome: a knowledgebase of biological processes', 64, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (20, 'HUGE', 'http://www.kazusa.or.jp/huge/gfpage/%ID%/', 'HUGE Protein Database', 64, 'PROTEIN_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
@@ -73,7 +73,7 @@ INSERT INTO `external_db_cv` VALUES (66, 2, 'LOCUS-LINK');
 #  Terms Associated with RefSeq
 INSERT INTO `external_db_cv` VALUES (24, 24, 'REFSEQ');
 INSERT INTO `external_db_cv` VALUES (25, 24, 'REF_SEQ');
-INSERT INTO `external_db_cv` VALUES (48, 25, 'REF_SEQ PROTEIn');
+INSERT INTO `external_db_cv` VALUES (48, 25, 'REF_SEQ PROTEIN');
 INSERT INTO `external_db_cv` VALUES (49, 24, 'REF-SEQ');
 
 #  Terms Associated with GenBank and GI
