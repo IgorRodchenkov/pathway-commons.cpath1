@@ -91,7 +91,7 @@
 
   <tag>
     <name>interactorTable</name>
-    <tag-class>org.mskcc.pathdb.taglib.InteractorTable</tag-class>
+    <tag-class>org.mskcc.pathdb.taglib.CPathDetailsTable</tag-class>
     <body-content>empty</body-content>
     <description>Displays Interactor Information</description>
   </tag>
