@@ -1,6 +1,6 @@
-<%@ page import="org.mskcc.pathdb.controller.ProtocolStatusCode,
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolStatusCode,
                  java.util.ArrayList,
-                 org.mskcc.pathdb.controller.ProtocolConstants"%>
+                 org.mskcc.pathdb.protocol.ProtocolConstants"%>
 
 <div id="apphead">
     <h2>Web Service API Help</h2>

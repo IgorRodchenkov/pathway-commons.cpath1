@@ -1,5 +1,5 @@
-<%@ page import="org.mskcc.pathdb.controller.ProtocolException,
-                 org.mskcc.pathdb.controller.ProtocolRequest,
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolException,
+                 org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.action.BaseAction"%>
 <%@ page errorPage = "JspError.jsp" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>

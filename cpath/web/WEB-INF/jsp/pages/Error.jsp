@@ -1,4 +1,4 @@
-<%@ page import="org.mskcc.pathdb.controller.ProtocolException"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolException"%>
 <%@ page isErrorPage = "true" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <jsp:include page="../global/header.jsp" flush="true" />

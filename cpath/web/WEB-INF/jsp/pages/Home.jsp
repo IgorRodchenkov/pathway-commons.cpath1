@@ -1,4 +1,4 @@
-<%@ page import="org.mskcc.pathdb.controller.ProtocolException,
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolException,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  org.mskcc.pathdb.action.HomeAction"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>

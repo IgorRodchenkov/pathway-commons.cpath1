@@ -1,6 +1,6 @@
 <%@ page import="java.net.URLEncoder,
-                 org.mskcc.pathdb.controller.ProtocolRequest,
-                 org.mskcc.pathdb.controller.ProtocolConstants,
+                 org.mskcc.pathdb.protocol.ProtocolRequest,
+                 org.mskcc.pathdb.protocol.ProtocolConstants,
                  org.mskcc.pathdb.sql.dao.DaoOrganism,
                  java.util.ArrayList,
                  org.mskcc.pathdb.model.Organism,

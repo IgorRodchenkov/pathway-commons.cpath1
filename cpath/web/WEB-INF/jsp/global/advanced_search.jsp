@@ -1,5 +1,5 @@
-<%@ page import="org.mskcc.pathdb.controller.ProtocolRequest,
-                 org.mskcc.pathdb.controller.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest,
+                 org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <div id="apphead">
     <h2>Advanced Search</h2>
 </div>

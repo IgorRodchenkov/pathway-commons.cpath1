@@ -1,6 +1,6 @@
-<%@ page import="org.mskcc.pathdb.controller.ProtocolRequest,
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest,
                  java.util.ArrayList,
-                 org.mskcc.pathdb.controller.ProtocolConstants,
+                 org.mskcc.pathdb.protocol.ProtocolConstants,
                  org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.sql.assembly.XmlAssembly"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
