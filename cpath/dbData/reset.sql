@@ -43,6 +43,7 @@ INSERT INTO `external_db` VALUES (17, 'SGD', '', 'SGD', 23, NULL, NULL, 20031002
 INSERT INTO `external_db` VALUES (18, 'HPRD', 'http://www.hprd.org/protein/%ID%', 'Human Protein Reference Database', 26, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (19, 'OMIM', 'http://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%ID%', 'Online Mendelian Inheritance in Man', 28, NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (20, 'GenBank', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=Protein&doptcmdl=GenPept&term=%ID%', 'GenBank', 29, NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (21, 'MINT', 'http://newton.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%', 'MINT (Molecular INTeraction database)', 31, NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
@@ -79,3 +80,5 @@ INSERT INTO `external_db_cv` VALUES (27, 3, 'Ref-Seq');
 INSERT INTO `external_db_cv` VALUES (28, 19, 'OMIM');
 INSERT INTO `external_db_cv` VALUES (29, 20, 'GenBank');
 INSERT INTO `external_db_cv` VALUES (30, 3, 'Ref_Seq');
+INSERT INTO `external_db_cv` VALUES (31, 21, 'MINT');
+
