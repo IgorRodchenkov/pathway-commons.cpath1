@@ -21,6 +21,11 @@ truncate table cpath;
 truncate table internal_link;
 
 #
+# Insert Data into table 'cpath'
+#
+INSERT INTO `cpath` VALUES (1, 'JUNIT_ENTITY', 'JUnit Entity Description', 'PHYSICAL_ENTITY', '', 101, 'XML goes here', 20031020125251, 20031020125251);
+
+#
 #  Insert data into table 'external_db'
 #
 
@@ -37,21 +42,18 @@ INSERT INTO `external_db` VALUES (8, 'Entrez GI', 'http://www.ncbi.nlm.nih.gov/e
 #  Insert data into table 'external_db_cv'
 #
 
-INSERT INTO `external_db_cv` VALUES (6, 1, 'SWISS-PROT');
-INSERT INTO `external_db_cv` VALUES (5, 1, 'SWP');
-INSERT INTO `external_db_cv` VALUES (12, 1, 'SWISS-PROT');
-INSERT INTO `external_db_cv` VALUES (11, 1, 'SWP');
-INSERT INTO `external_db_cv` VALUES (13, 2, 'PIR');
-INSERT INTO `external_db_cv` VALUES (14, 1, 'SWP');
-INSERT INTO `external_db_cv` VALUES (15, 1, 'SWISS-PROT');
-INSERT INTO `external_db_cv` VALUES (16, 3, 'RefSeq');
-INSERT INTO `external_db_cv` VALUES (17, 4, 'InterPro');
-INSERT INTO `external_db_cv` VALUES (18, 5, 'PROSITE');
-INSERT INTO `external_db_cv` VALUES (19, 6, 'DIP');
-INSERT INTO `external_db_cv` VALUES (20, 7, 'Pfram');
-INSERT INTO `external_db_cv` VALUES (21, 8, 'Entrez GI');
-INSERT INTO `external_db_cv` VALUES (22, 8, 'GI');
-INSERT INTO `external_db_cv` VALUES (23, 1, 'Swiss-Prot');
+INSERT INTO `external_db_cv` VALUES (1, 1, 'SWISS-PROT');
+INSERT INTO `external_db_cv` VALUES (2, 1, 'Swiss-Prot');
+INSERT INTO `external_db_cv` VALUES (3, 1, 'SwissProt');
+INSERT INTO `external_db_cv` VALUES (4, 1, 'SWP');
+INSERT INTO `external_db_cv` VALUES (5, 2, 'PIR');
+INSERT INTO `external_db_cv` VALUES (6, 3, 'RefSeq');
+INSERT INTO `external_db_cv` VALUES (7, 4, 'InterPro');
+INSERT INTO `external_db_cv` VALUES (8, 5, 'PROSITE');
+INSERT INTO `external_db_cv` VALUES (9, 6, 'DIP');
+INSERT INTO `external_db_cv` VALUES (10, 7, 'Pfram');
+INSERT INTO `external_db_cv` VALUES (11, 8, 'Entrez GI');
+INSERT INTO `external_db_cv` VALUES (12, 8, 'GI');
 
 use grid;
 truncate table orf_info;
