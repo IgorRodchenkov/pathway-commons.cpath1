@@ -4,7 +4,7 @@
 
 <web-app>
 
-	<display-name>CBio Data Services Application</display-name>
+    <display-name>CBio Data Services Application</display-name>
     
     <filter>
         <filter-name>Cache</filter-name>
@@ -25,11 +25,11 @@
 	</init-param>
 	<init-param>
 		<param-name>db_user</param-name>
-		<param-value>user</param-value>
+		<param-value>cbio</param-value>
 	</init-param>
 	<init-param>
 		<param-name>db_password</param-name>
-		<param-value>cbio1</param-value>
+		<param-value></param-value>
 	</init-param>
 	<init-param>
 		<param-name>log_config_file</param-name>
