@@ -33,11 +33,11 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 /**
- * Java Bean for Storing ID Map Records.
+ * Java Bean for Storing Background Identity Records.
  *
  * @author Ethan Cerami.
  */
-public class IdMapRecord {
+public class IdentityRecord {
     private int db1, db2;
     private String id1, id2;
     private int primaryId;
@@ -45,7 +45,7 @@ public class IdMapRecord {
     /**
      * No-arg Constructor.
      */
-    public IdMapRecord() {
+    public IdentityRecord() {
     }
 
     /**
@@ -56,7 +56,7 @@ public class IdMapRecord {
      * @param db2 Primary ID of Database 2.
      * @param id2 ID used in Database 2.
      */
-    public IdMapRecord(int db1, String id1, int db2, String id2) {
+    public IdentityRecord(int db1, String id1, int db2, String id2) {
         this.db1 = db1;
         this.db2 = db2;
         this.id1 = id1;
