@@ -8,7 +8,7 @@
 	<pomVersion>1</pomVersion>
 	<name>cPath</name>
 	<id>cpath</id>
-	<currentVersion>.02_Beta</currentVersion>
+	<currentVersion>.03_Beta</currentVersion>
 	<organization>
 		<name>Memorial Sloan-Kettering Cancer Center</name>
 		<url>http://cbio.mskcc.org/dev_site/cpath</url>
