@@ -8,6 +8,7 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
+import org.mskcc.pathdb.util.CPathConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -43,6 +44,8 @@ public final class CPathServlet extends ActionServlet {
         String dbPassword = config.getInitParameter("db_password");
         String adminUser = config.getInitParameter("admin_user");
         String adminPassword = config.getInitParameter("admin_password");
+        String psiSchemaUrl = config.getInitParameter
+                (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
         System.err.println("web.xml param:  db_host --> " + dbHost + " [OK]");
         System.err.println("web.xml param:  db_user --> " + dbUser + " [OK]");
         System.err.println("web.xml param:  db_password --> " + dbPassword
@@ -51,12 +54,16 @@ public final class CPathServlet extends ActionServlet {
                 + " [OK]");
         System.err.println("web.xml param:  admin_password --> "
                 + adminPassword + " [OK]");
-
+        System.err.println("web.xml param:  psi_schema_location --> "
+                + psiSchemaUrl + " [OK]");
+        
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
                 dbPassword);
         manager.setProperty(BaseAction.PROPERTY_ADMIN_USER, adminUser);
         manager.setProperty(BaseAction.PROPERTY_ADMIN_PASSWORD, adminPassword);
+        manager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
+                psiSchemaUrl);
         verifyDbConnection();
 
         //  Set Location of TextIndexer based on servlet real path.

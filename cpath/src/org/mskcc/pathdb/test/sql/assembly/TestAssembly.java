@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.dataservices.util.PropertyManager;
 
 /**
  * Tests the XML Assembly Functionality.
@@ -22,6 +24,9 @@ public class TestAssembly extends TestCase {
      * @throws Exception All Exceptions
      */
     public void testAssembly() throws Exception {
+        PropertyManager pManager = PropertyManager.getInstance();
+        pManager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
+                "http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
 
         //  Assemble Interaction with specified cPath ID (hard-coded value)
         XDebug xdebug = new XDebug();
@@ -41,5 +46,12 @@ public class TestAssembly extends TestCase {
         assertTrue(interactor2 >= 1);
         assertTrue(interactorRef1 >= 1);
         assertTrue(interactorRef2 >= 1);
+
+        //  Verify Schema Location.
+        int index = xmlAssembly.indexOf
+                ("http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
+        assertTrue (index > 0);
+
+        System.out.println(xmlAssembly);
     }
 }

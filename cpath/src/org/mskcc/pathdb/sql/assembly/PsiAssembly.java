@@ -2,18 +2,22 @@ package org.mskcc.pathdb.sql.assembly;
 
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
+import org.exolab.castor.xml.Marshaller;
 import org.mskcc.dataservices.schemas.psi.Entry;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractionList;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.util.CPathConstants;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -48,6 +52,8 @@ public class PsiAssembly implements XmlAssembly {
         try {
             HashMap interactors = extractInteractors(interactions);
             buildPsi(interactors.values(), interactions);
+        } catch (IOException e) {
+            throw new AssemblyException(e);
         } catch (DaoException e) {
             throw new AssemblyException(e);
         } catch (MarshalException e) {
@@ -195,7 +201,7 @@ public class PsiAssembly implements XmlAssembly {
      * @throws MarshalException    Could not Marshal Document to XML.
      */
     private void buildPsi(Collection interactors, Collection interactions)
-            throws ValidationException, MarshalException {
+            throws ValidationException, MarshalException, IOException {
         xdebug.logMsg(this, "Creating Final PSI-MI XML Document");
         PsiAssembler psiBuilder = new PsiAssembler();
         entrySet = psiBuilder.generatePsi(interactors, interactions);
@@ -206,10 +212,14 @@ public class PsiAssembly implements XmlAssembly {
      * Generates XML from Entry Set Object.
      */
     private String generateXml(EntrySet set) throws ValidationException,
-            MarshalException {
+            MarshalException, IOException {
+        PropertyManager pManager = PropertyManager.getInstance();
+        String psiSchemaUrl = (String) pManager.get
+                (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
         StringWriter writer = new StringWriter();
-        set.marshal(writer);
-        String xml = writer.toString();
-        return xml;
+        Marshaller marshaller = new Marshaller(writer);
+        marshaller.setSchemaLocation("net:sf:psidev:mi "+ psiSchemaUrl);
+        marshaller.marshal(set);
+        return writer.toString();
     }
 }
