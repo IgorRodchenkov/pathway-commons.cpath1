@@ -13,11 +13,6 @@ This document contains cPath Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
-0.  Add support for incremental indexing.
-     I think this would require a timestamp for each cPath record,
-     so that we could easily determine the date/time the record was last
-     indexed in Lucene.
- 
 0.  We still don't have any way of adding new external databases,
     and the controlled vocabulary terms and URLs associated with each database.
     As a first step, we should definitely add a command line script to
@@ -92,9 +87,9 @@ cPath Functionality Issues:
 	---> Current priority: low.
 
 13. Add support to cPath and data services layer for importing PSI-MI files
-    that contain interactions with more than two proteins (e.g. 5 protein complex).  This would allow us to
-    import data from the PIN database in the Tempst lab at MSKCC
-    (http://pin.mskcc.org).
+    that contain interactions with more than two proteins (e.g. 5 protein complex).
+    This would allow us to import data from the PIN database in the Tempst lab
+    at MSKCC  (http://pin.mskcc.org).
 	---> Current priority: medium.
 
 15.  Create an advanced query system for xml records that supports xquery or
@@ -122,17 +117,35 @@ cPath Functionality Issues:
 
 17. Front end features (May31.2004):
 -Save search options in a cookie
--Database stats page - expand and for the current contents, link to the DBODBs for the database + the database itself.
+-Database stats page - expand and for the current contents, link to the DBODBs
+ for the database + the database itself.
 
-18. We need to be able to present Non-redundant interactions - all interactions should be non-redundant. (May31.2004)
+18. We need to be able to present Non-redundant interactions - all interactions
+should be non-redundant. (May31.2004)
 
-19. Create a post-process for non-redundant interactors - once larger lists of xrefs are in cPath,
-process can optimize the interactors to find ones that overlap in xref space and put them together. (May31.2004)
+19. Create a post-process for non-redundant interactors - once larger lists of
+ xrefs are in cPath, process can optimize the interactors to find ones that
+ overlap in xref space and put them together. (May31.2004)
 
+20.  Add support for incremental indexing.
+I think this would require a timestamp for each cPath record,
+so that we could easily determine the date/time the record was last
+indexed in Lucene.  (June3.2004)
+
+21.  Address Interactor/External Reference Identity Issue.
+Right now, we use external references to uniquely identify proteins.
+However, while loading all of IntAct, I noticed that most interactors
+include references which are not unique to the protein.  For example, IntAct
+includes GO/InterPro references, which are not unique to the protein.
+
+As a temporary work-around, I currently filter out GO/InterPro
+references when looking for a match, but I think we should brainstorm
+about some better, more generic options going forward.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
-1.  Set up auto-emails upon fatal cPath errors (how does a user deal with errors?).
+1.  Set up auto-emails upon fatal cPath errors
+(how does a user deal with errors?).
 
 Data Service Specific Items:
 -----------------------------
