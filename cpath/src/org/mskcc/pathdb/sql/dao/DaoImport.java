@@ -157,8 +157,8 @@ public class DaoImport {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
+            data = implementJdkWorkAround(data);
             con = JdbcUtil.getCPathConnection();
-
             String hash = Md5Util.createMd5Hash(data);
             byte zippedData[] = ZipUtil.zip(data);
             pstmt = con.prepareStatement
@@ -191,6 +191,30 @@ public class DaoImport {
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
+    }
+
+    /**
+     * Implements a Workaround to an existing Java 1.4 Bug.
+     * First, some background:  when trying to import a very large file from
+     * HPRD, DaoImport was throwing a BufferOverflowException during the
+     * creation of the MD5 and the creation of the Zip File.
+     *
+     * Turns out that this is a documented bug in JDK 1.4:
+     * http://bugs.sun.com/bugdatabase/view_bug.do;:YfiG?bug_id=4949631
+     * As of this writing (October 21, 2004), the bug remains open.
+     *
+     * The code below is a word-around suggested by the bug reporter.
+     * The work-around is a bit of a hack, but it does work.
+     *
+     * @param data Original Data.
+     * @return Massaged Data so that it gets around the JDK 1.4 bug.
+     */
+    private String implementJdkWorkAround(String data) {
+        StringBuffer dataBuffer = new StringBuffer(data);
+        if (data.length() > 16777217 && data.length() % 4 == 1) {
+            dataBuffer.append("\n");
+        }
+        return dataBuffer.toString();
     }
 
     /**
