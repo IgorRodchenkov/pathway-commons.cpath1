@@ -7,7 +7,8 @@
 <%
 request.setAttribute("advancedSearch", "true");
 %>
-<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath Advanced Search"); %>
+<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE,
+        "cPath Advanced Search"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 <jsp:include page="../global/advanced_search.jsp" flush="true" />
