@@ -59,7 +59,7 @@ import java.sql.SQLException;
  * @author Ethan Cerami.
  */
 public class IndexLuceneTask extends Task {
-    private static final int BLOCK_SIZE = 1000;
+    private static final int BLOCK_SIZE = 100;
     private XDebug xdebug;
 
     /**
@@ -127,6 +127,8 @@ public class IndexLuceneTask extends Task {
         pMonitor.setCurrentMessage ("Indexing all cPath Interactions");
         DaoCPath cpath = new DaoCPath();
         int numInteractions = cpath.getNumEntities(CPathRecordType.INTERACTION);
+        pMonitor.setCurrentMessage ("Total Number of Interactions:  "
+                + numInteractions);
         pMonitor.setMaxValue(numInteractions);
 
         LuceneWriter indexWriter = new LuceneWriter(true);
@@ -137,10 +139,11 @@ public class IndexLuceneTask extends Task {
             for (int i=0; i <= numInteractions; i+= BLOCK_SIZE) {
                 con = JdbcUtil.getCPathConnection();
                 int end = i + BLOCK_SIZE;
-                System.out.println("<getting batch:  " + i + ", " + end + ">");
+                System.out.println("<getting batch of interactions:  "
+                        + i + " - " + end + ">");
                 pstmt = con.prepareStatement
                         ("select * from cpath WHERE TYPE = ?  order by "
-                        + "CPATH_ID LIMIT " + i + ", " + end);
+                        + "CPATH_ID LIMIT " + i + ", " + BLOCK_SIZE);
                 pstmt.setString(1, CPathRecordType.INTERACTION.toString());
                 rs = pstmt.executeQuery();
 
