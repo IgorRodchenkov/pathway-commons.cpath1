@@ -9,6 +9,7 @@ public class Organism {
     private int taxonomyId;
     private String speciesName;
     private String commonName;
+    private int numInteractions;
 
     /**
      * Constructor.
@@ -22,6 +23,7 @@ public class Organism {
         this.taxonomyId = taxonomyId;
         this.speciesName = speciesName;
         this.commonName = commonName;
+        this.numInteractions = 0;
     }
 
     /**
@@ -76,5 +78,21 @@ public class Organism {
      */
     public void setCommonName(String commonName) {
         this.commonName = commonName;
+    }
+
+    /**
+     * Gets Number of Interactions.
+     * @return Number of Interactions.
+     */
+    public int getNumInteractions() {
+        return numInteractions;
+    }
+
+    /**
+     * Sets Number of Interactions.
+     * @param numInteractions Number of Interactions.
+     */
+    public void setNumInteractions(int numInteractions) {
+        this.numInteractions = numInteractions;
     }
 }
