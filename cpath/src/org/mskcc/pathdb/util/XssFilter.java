@@ -40,7 +40,7 @@ public class XssFilter {
      * @return same string with safe characters only.
      */
     public static String filter(String data) {
-        String filtered = data.replaceAll("([^A-Za-z0-9*@.' _-]+)", "_");
+        String filtered = data.replaceAll("([^A-Za-z0-9*@.' _-]+:)", "_");
         return filtered;
     }
 
