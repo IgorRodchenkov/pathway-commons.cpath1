@@ -196,15 +196,15 @@ public class TestImportPsiToCPath extends TestCase {
         //  not all of them
         xml = record.getXmlContent();
         assertTrue(xml.indexOf("<primaryRef db=\"UNIPROT\" "
-            + "id=\"Q16848\"/>") > 0);
+                + "id=\"Q16848\"/>") > 0);
         assertTrue(xml.indexOf("<secondaryRef db=\"UNIPROT\" "
-            + "id=\"Q9NP68\"/>") > 0);
+                + "id=\"Q9NP68\"/>") > 0);
         assertTrue(xml.indexOf("<secondaryRef db=\"UNIPROT\" "
-            + "id=\"Q9NPJ2\"/>") > 0);
+                + "id=\"Q9NPJ2\"/>") > 0);
         assertTrue(xml.indexOf("<secondaryRef db=\"PIR\" "
-            + "id=\"DNHU53\"/>") > 0);
+                + "id=\"DNHU53\"/>") > 0);
         assertTrue(xml.indexOf("<secondaryRef db=\"UNIPROT\" "
-            + "id=\"Q99659\"/>") > 0);
+                + "id=\"Q99659\"/>") > 0);
 
         //  Verify that XML has been modified to include linkouts
         //  derived from the background reference subsystem.

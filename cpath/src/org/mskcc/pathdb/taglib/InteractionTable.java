@@ -43,9 +43,9 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Collections;
 
 /**
  * Custom JSP Tag for Displaying Interactions.
@@ -579,7 +579,7 @@ public class InteractionTable extends HtmlTable {
             ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
             ExternalDatabaseRecord db = link.getExternalDatabase();
             if (db.getFixedCvTerm().equalsIgnoreCase("Affymetrix")) {
-                affyList.add (link);
+                affyList.add(link);
             } else {
                 append("- " + db.getName() + ": ");
                 if (link.getWebLink() != null) {
@@ -599,25 +599,25 @@ public class InteractionTable extends HtmlTable {
 
         if (affyList.size() > 0) {
             startRow();
-            append ("<td class='cpath1'>Affymetrix IDs:</th>");
-            append ("<td>");
-            append ("<DIV id='showAffy' class='show'>"
+            append("<td class='cpath1'>Affymetrix IDs:</th>");
+            append("<td>");
+            append("<DIV id='showAffy' class='show'>"
                     + "[<A href='#' onClick=\"changeStyle('affy', 'show'); "
                     + "changeStyle('showAffy', 'hide'); "
                     + "changeStyle('hideAffy', 'show'); "
                     + "return false;\">"
                     + "Show Affymetrix IDs</A>]</DIV>");
-            append ("<DIV id='hideAffy' class='hide'>"
+            append("<DIV id='hideAffy' class='hide'>"
                     + "[<A href='#' onClick=\"changeStyle('affy', 'hide'); "
                     + "changeStyle('showAffy', 'show'); "
                     + "changeStyle('hideAffy', 'hide'); "
                     + "return false;\">Hide Affymetrix IDs</A>]</DIV>");
-            append ("<DIV id='affy' class='hide'>");
-            for (int i=0; i<affyList.size(); i++) {
+            append("<DIV id='affy' class='hide'>");
+            for (int i = 0; i < affyList.size(); i++) {
                 ExternalLinkRecord link = (ExternalLinkRecord) affyList.get(i);
-                append ("- " + link.getLinkedToId() +"<BR>");
+                append("- " + link.getLinkedToId() + "<BR>");
             }
-            append ("</DIV>");
+            append("</DIV>");
             append("</TD>");
             endRow();
         }
