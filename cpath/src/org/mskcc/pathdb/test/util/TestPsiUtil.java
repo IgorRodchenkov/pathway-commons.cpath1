@@ -133,6 +133,20 @@ public class TestPsiUtil extends TestCase {
         assertEquals ("11367533", secondaryRef.getId());
     }
 
+    public void testRemovalOfVersionInformation () throws Exception {
+        XrefType xref = new XrefType();
+        DbReferenceType primaryRef = new DbReferenceType();
+        primaryRef.setDb("Ref-Seq");
+        primaryRef.setId("NP_000680.2");
+        xref.setPrimaryRef(primaryRef);
+        ProgressMonitor pMonitor = new ProgressMonitor();
+        PsiUtil util = new PsiUtil(pMonitor);
+        util.normalizeXrefs(xref);
+
+        primaryRef = xref.getPrimaryRef();
+        assertEquals ("NP_000680", primaryRef.getId());
+    }
+
     private void validateInteractionUpdate(Entry entry) throws Exception {
         PsiUtil util = new PsiUtil(new ProgressMonitor());
         HashMap idMap = new HashMap();

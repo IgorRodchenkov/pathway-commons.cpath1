@@ -192,6 +192,10 @@ public class PsiUtil {
 
     /**
      * Normalizes all XRefs to FIXED_CV_TERMS.
+     * As a temporary measure, we now remove version information from
+     * linked ids.  For example, the following ID:  NP_000680.2 is transformed
+     * to:  NP_000680.  This enables us to import HPRD data and map RefSeq
+     * IDs to Affymetrix IDs.
      *
      * @param xref XrefType Object.
      * @throws DaoException Data Access Exception.
@@ -205,6 +209,7 @@ public class PsiUtil {
                 ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(db);
                 String newDb = dbRecord.getFixedCvTerm();
                 primaryRef.setDb(newDb);
+                primaryRef.setId(stripVersionInfo(primaryRef.getId()));
             }
             for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
                 DbReferenceType secondaryRef = xref.getSecondaryRef(i);
@@ -212,8 +217,23 @@ public class PsiUtil {
                 ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(db);
                 String newDb = dbRecord.getFixedCvTerm();
                 secondaryRef.setDb(newDb);
+                secondaryRef.setId(stripVersionInfo(secondaryRef.getId()));
             }
         }
+    }
+
+    /**
+     * Remove Version Information from LinkedToID.
+     * @param id LinkedToID.
+     */
+    private String stripVersionInfo (String id) {
+        if (id != null) {
+            int index = id.indexOf(".");
+            if (index > -1) {
+                id = id.substring(0, index);
+            }
+        }
+        return id;
     }
 
     /**
