@@ -209,6 +209,12 @@ public class PsiUtil {
      */
     private void createExternalReference(String db, String id,
             ArrayList refList) {
+        if (db == null || db.length() == 0) {
+            throw new NullPointerException ("Xref db is null or empty");
+        }
+        if (id == null || id.length() == 0) {
+            throw new NullPointerException ("Xref id is null or empty");
+        }
         ExternalReference ref = new ExternalReference(db, id);
         refList.add(ref);
     }
