@@ -85,7 +85,6 @@ public class OrganismStats {
                 organismListSortedByName.clone();
         Collections.sort(organismListSortedByNumInteractions,
                 new SortByInteractionCount());
-        Collections.reverse(organismListSortedByNumInteractions);
     }
 }
 
