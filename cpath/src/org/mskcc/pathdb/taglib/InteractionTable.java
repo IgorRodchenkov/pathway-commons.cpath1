@@ -40,6 +40,7 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,7 +163,7 @@ public class InteractionTable extends HtmlTable {
     /**
      * Outputs Interaction Data.
      */
-    private void outputInteractions() {
+    private void outputInteractions() throws DaoException {
         startTable();
         if (xmlAssembly.isEmpty()) {
             noMatchesFound();
@@ -198,7 +199,7 @@ public class InteractionTable extends HtmlTable {
     /**
      * Outputs Complete List of Interactions.
      */
-    private void outputInteractionList() {
+    private void outputInteractionList() throws DaoException {
         currentIndex = pager.getStartIndex() + 1;
         //  Iterate through all Entries
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
@@ -232,7 +233,7 @@ public class InteractionTable extends HtmlTable {
      * @param interaction Interaction Object.
      */
     private void outputInteractorList(ParticipantList pList,
-            InteractionElementType interaction) {
+            InteractionElementType interaction) throws DaoException {
         int matches = 0;
         boolean isSelfInteracting = false;
         for (int i = 0; i < pList.getProteinParticipantCount(); i++) {
@@ -296,7 +297,8 @@ public class InteractionTable extends HtmlTable {
      * @param protein Protein Object.
      */
     private void outputProtein(ProteinInteractorType protein,
-            InteractionElementType interaction, boolean isSelfInteracting) {
+            InteractionElementType interaction, boolean isSelfInteracting)
+            throws DaoException {
         String proteinId = protein.getId();
         Organism organism = protein.getOrganism();
         startRow();
@@ -355,7 +357,8 @@ public class InteractionTable extends HtmlTable {
      *
      * @param interaction Interaction Object.
      */
-    private void outputInteractionDetails(InteractionElementType interaction) {
+    private void outputInteractionDetails(InteractionElementType interaction)
+            throws DaoException {
         ExperimentList expList = interaction.getExperimentList();
         int count = interaction.getParticipantList().
                 getProteinParticipantCount();
@@ -381,7 +384,8 @@ public class InteractionTable extends HtmlTable {
         outputPrimaryRef(interaction);
     }
 
-    private void outputPrimaryRef(InteractionElementType interaction) {
+    private void outputPrimaryRef(InteractionElementType interaction)
+            throws DaoException {
         int count = interaction.getParticipantList().
                 getProteinParticipantCount();
         if (targetProtein == null) {
@@ -396,7 +400,7 @@ public class InteractionTable extends HtmlTable {
                 String db = primaryRef.getDb();
                 String id = primaryRef.getId();
 
-                //  NOTE:  This code is here because DIP has annoying URL
+                //  NOTE:  The DIP code is here because DIP has annoying URL
                 //  links for viewing interaction records.  It requires that
                 //  you remove the last letter in the interaction ID.
                 if (db.equals("DIP")) {
@@ -407,7 +411,19 @@ public class InteractionTable extends HtmlTable {
                     append("<A TITLE='External Link to: DIP' "
                             + "HREF='" + url + "'>" + id + "</A>");
                 } else {
-                    append(db + ":  " + id);
+                    DaoExternalDb daoExternalDb = new DaoExternalDb();
+                    ExternalDatabaseRecord dbRecord =
+                                daoExternalDb.getRecordByTerm(db);
+                    if (dbRecord != null) {
+                        String url = dbRecord.getUrlWithId(id);
+                        if (url != null) {
+                            append(db + ":  ");
+                            append("<A TITLE='External Link to: ' " + db
+                                + "' HREF='" + url + "'>" + id + "</A>");
+                        }
+                    } else {
+                        append(db + ":  " + id);
+                    }
                 }
             }
         }
