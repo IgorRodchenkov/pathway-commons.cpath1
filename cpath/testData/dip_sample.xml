@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entrySet level="1" version="1" xmlns="net:sf:psidev:mi" xmlns:psi="net:sf:psidev:mi"
     xmlns:xin="http://dip.doe-mbi.ucla.edu/xml/XIN"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="net:sf:psidev:mi ../xml/MIF.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="net:sf:psidev:mi http://www.cbio.mskcc.org/cpath/xml/MIF.xsd">
     <entry>
         <interactorList>
             <proteinInteractor id="G_1">
