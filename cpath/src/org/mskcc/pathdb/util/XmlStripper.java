@@ -45,7 +45,7 @@ public class XmlStripper {
     private static void processElement(Element element,
             StringBuffer textBuffer) {
         //  Extract Text
-        String text = element.getTextTrim();
+        String text = element.getTextNormalize();
         if (text.length() > 0) {
             appendText(textBuffer, text);
         }
