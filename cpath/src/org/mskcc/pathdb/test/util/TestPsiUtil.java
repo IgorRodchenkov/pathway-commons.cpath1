@@ -131,7 +131,7 @@ public class TestPsiUtil extends TestCase {
     }
 
     /**
-     * Tests Removal of Version Information.
+     * Tests Removal of Version Information and Handling of RefSeq IDs.
      *
      * @throws Exception All Exceptions.
      */
@@ -147,6 +147,7 @@ public class TestPsiUtil extends TestCase {
 
         primaryRef = xref.getPrimaryRef();
         assertEquals("NP_000680", primaryRef.getId());
+        assertEquals("REF_SEQ PROTEIN", primaryRef.getDb());
     }
 
     /**
