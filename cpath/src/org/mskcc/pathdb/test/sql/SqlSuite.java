@@ -61,6 +61,7 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestDaoLog.class);
         suite.addTestSuite(TestDaoIdMap.class);
         suite.addTestSuite(TestQueryFileReader.class);
+        suite.addTestSuite(TestIdMappingService.class);
         suite.addTest(AssemblySuite.suite());
         suite.setName("SQL Database Tests");
         return suite;
