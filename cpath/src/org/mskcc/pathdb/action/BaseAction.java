@@ -161,8 +161,6 @@ public abstract class BaseAction extends Action {
                     (mapping, request, response, xdebug);
             if (authorized) {
                 forward = subExecute(mapping, form, request, response, xdebug);
-                xdebug.stopTimer();
-
             } else {
                 forward = mapping.findForward(FORWARD_UNAUTHORIZED);
             }
