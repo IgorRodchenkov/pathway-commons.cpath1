@@ -5,6 +5,9 @@ import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.XmlCacheRecord;
+
+import java.util.ArrayList;
 
 /**
  * Tests the DaoXmlCache Class.
@@ -13,6 +16,7 @@ import org.mskcc.pathdb.xdebug.XDebug;
  */
 public class TestDaoXmlCache extends TestCase {
     private static final String HASH_KEY = "sander#bader#123";
+    private static final String URL = "webservice.do?example";
 
     /**
      * Tests DaoXmlCache.
@@ -23,13 +27,16 @@ public class TestDaoXmlCache extends TestCase {
         XDebug xdebug = new XDebug();
         DaoXmlCache dao = new DaoXmlCache(xdebug);
 
+        //  Clear Cache (starts with clean slate)
+        dao.deleteAllRecords();
+
         //  Add a new record, and verify success.
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
                 (4, 1, xdebug);
         String originalXml = assembly.getXmlString();
         assembly.setNumHits(100);
 
-        boolean success = dao.addRecord(HASH_KEY, assembly);
+        boolean success = dao.addRecord(HASH_KEY, URL, assembly);
         assertTrue(success);
 
         //  Get the record, and match xml content.
@@ -50,6 +57,14 @@ public class TestDaoXmlCache extends TestCase {
         assertTrue(assembly.getXmlString().length() > 50);
         assertEquals(originalXml, assembly.getXmlString());
         assertEquals(200, assembly.getNumHits());
+
+        //  Get all Records (there should only be 1)
+        ArrayList records = dao.getAllRecords();
+        assertEquals (1, records.size());
+        XmlCacheRecord record = (XmlCacheRecord) records.get(0);
+        assertEquals (URL, record.getUrl());
+        assertEquals (HASH_KEY, record.getMd5());
+        assertEquals (200, record.getNumHits());
 
         //  Delete record, and verify success.
         success = dao.deleteRecordByKey(HASH_KEY);
