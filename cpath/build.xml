@@ -256,9 +256,12 @@
   <target name="war" depends="compile"
    description="Create binary WAR distribution">
     <mkdir  dir="${dist.home}"/>
-    <!-- Create application JAR file -->
+    <!-- Create application WAR file -->
     <jar jarfile="${dist.home}/${app.name}.war"
          basedir="${build.home}"/>
+  </target>
+
+  <target name="deploy_war" depends="war" description="Deploy WAR to cBIO Production">
     <apply executable="scp">
    	<srcfile/>
         <fileset dir="${dist.home}">
