@@ -174,7 +174,6 @@ public class ImportPsiToCPath {
             processInteractors(entrySet);
 
             //  Step 4:  Process all Interactions.
-            //  Temporarily disabled saving of interactions.
             processInteractions(entrySet);
             return summary;
         } catch (IOException e) {
@@ -319,7 +318,8 @@ public class ImportPsiToCPath {
                 // identification.  For example, filter out all GO and
                 // InterPro references.
                 ExternalReference[] filteredRefs =
-                        ExternalReferenceUtil.filterOutNonIdReferences(refs);
+                        ExternalReferenceUtil.extractProteinUnificationRefs
+                        (refs);
 
                 ArrayList records = externalLinker.lookUpByExternalRefs
                         (filteredRefs);
@@ -338,9 +338,9 @@ public class ImportPsiToCPath {
                             + " in cPath,  " + "based on xrefs:  "
                             + refListText);
                 } else {
-                    //  Query Id Mapping SubSystem for other identifiers
-                    //  ID Mapping Service is temporarily disabled.
-                    //  refs = queryIdMappingService(protein, refs);
+                    //  Query Bacgkround Reference SubSystem for other
+                    //  unification identifiers.
+                    refs = queryUnificationService(protein, refs);
 
                     //  Save the interactor to the database
                     try {
@@ -492,7 +492,7 @@ public class ImportPsiToCPath {
         // identification.  For example, filter out all GO, PubMed and
         // InterPro references.
         ExternalReference[] filteredRefs =
-                ExternalReferenceUtil.filterOutNonIdReferences(refs);
+                ExternalReferenceUtil.extractProteinUnificationRefs(refs);
         DaoExternalLink linker = new DaoExternalLink();
         DaoCPath cpath = new DaoCPath();
         ArrayList records = linker.lookUpByExternalRefs(filteredRefs);
@@ -567,13 +567,14 @@ public class ImportPsiToCPath {
      * @param refs    Array of External Reference Objects.
      * @return Array of External Reference Objects.
      */
-    private ExternalReference[] queryIdMappingService
+    private ExternalReference[] queryUnificationService
             (ProteinInteractorType protein, ExternalReference[] refs)
             throws DaoException {
         //  Only check id mapping service if we have existing references.
         if (refs != null && refs.length > 0) {
-            BackgroundReferenceService idService = new BackgroundReferenceService();
-            ArrayList extraRefs = idService.getEquivalenceList(refs);
+            BackgroundReferenceService idService =
+                new BackgroundReferenceService();
+            ArrayList extraRefs = idService.getUnificationReferences(refs);
 
             //  If we find no equivalent IDs, do nothing, and return original
             //  list of External References.
@@ -581,7 +582,8 @@ public class ImportPsiToCPath {
                 return refs;
             } else {
                 //  Create Union of Existing Refs plus newly discovered refs
-                ArrayList union = idService.createUnifiedList(extraRefs, refs);
+                ArrayList union = ExternalReferenceUtil.createUnifiedList
+                        (extraRefs, refs);
 
                 //  Add Extra Refs to the PSI-MI Data Model
                 XrefType xref = protein.getXref();
