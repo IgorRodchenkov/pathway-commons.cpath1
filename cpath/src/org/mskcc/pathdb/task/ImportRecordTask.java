@@ -52,9 +52,9 @@ public class ImportRecordTask extends Task {
      * @param consoleMode Console Mode.
      */
     public ImportRecordTask(long importId, boolean consoleMode) {
-        super("Import PSI-MI Record");
+        super("Import PSI-MI Record", consoleMode);
         this.importId = importId;
-        this.pMonitor = new ProgressMonitor();
+        ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setConsoleMode (consoleMode);
         pMonitor.setCurrentMessage("Import PSI-MI Record");
     }
@@ -72,19 +72,11 @@ public class ImportRecordTask extends Task {
     }
 
     /**
-     * Gets the Progress Monitor.
-     *
-     * @return Progress Monitor.
-     */
-    public ProgressMonitor getProgressMonitor() {
-        return pMonitor;
-    }
-
-    /**
      * Transfers Single Import Record.
      */
     private void transferRecord(long importId) throws ImportException,
             DaoException {
+        ProgressMonitor pMonitor = this.getProgressMonitor();
         DaoImport dbImport = new DaoImport();
         ImportRecord record = dbImport.getRecordById(importId);
         String xml = record.getData();

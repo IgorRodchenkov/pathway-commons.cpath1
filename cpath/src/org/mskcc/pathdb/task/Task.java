@@ -36,30 +36,22 @@ package org.mskcc.pathdb.task;
  * @author Ethan Cerami
  */
 public abstract class Task extends Thread {
-    protected boolean verbose;
     private String taskName;
     private Exception exception;
-    protected ProgressMonitor pMonitor;
+    private ProgressMonitor pMonitor;
 
     /**
      * Constructor.
      *
      * @param taskName Task Name.
+     * @param consoleFlag Console Mode Flag.
      */
-    public Task(String taskName) {
+    public Task(String taskName, boolean consoleFlag) {
         GlobalTaskList taskList = GlobalTaskList.getInstance();
         taskList.addTask(this);
         this.taskName = taskName;
         this.pMonitor = new ProgressMonitor();
-    }
-
-    /**
-     * Sets Verbose Flag.
-     *
-     * @param verbose Verbose Flag.
-     */
-    public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
+        pMonitor.setConsoleMode(consoleFlag);
     }
 
     /**
@@ -69,17 +61,6 @@ public abstract class Task extends Thread {
      */
     public String getTaskName() {
         return taskName;
-    }
-
-    /**
-     * Conditionally Output Message to System.out.
-     *
-     * @param msg User Message.
-     */
-    public void outputMsg(String msg) {
-        if (verbose) {
-            System.out.println(msg);
-        }
     }
 
     /**

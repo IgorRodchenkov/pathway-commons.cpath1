@@ -54,8 +54,7 @@ public class TestAffymetrixParser extends TestCase {
         File inFile = new File("testData/HG-U133_Sample.csv");
         File outFile = new File(outFileName);
         ParseAffymetrixFileTask task =
-                new ParseAffymetrixFileTask(inFile, outFile);
-        task.setVerbose(false);
+                new ParseAffymetrixFileTask(inFile, outFile, false);
         task.parse();
 
         int swpColumn = task.getSwissProtColumn();

@@ -58,14 +58,13 @@ public class ImportReferencesTask extends Task {
     /**
      * Constructor.
      *
-     * @param verbose Verbose Flag.
+     * @param consoleMode Console Mode Flag.
      * @param reader  Reader object with file contents.
      */
-    public ImportReferencesTask(boolean verbose, Reader reader) {
-        super("Import External Refs");
-        this.setVerbose(verbose);
-        pMonitor = new ProgressMonitor();
-        pMonitor.setCurrentMessage("Running");
+    public ImportReferencesTask(boolean consoleMode, Reader reader) {
+        super("Import External Refs", consoleMode);
+        ProgressMonitor pMonitor = new ProgressMonitor();
+        pMonitor.setCurrentMessage("Importing External References");
         this.reader = reader;
         this.lines = new ArrayList();
     }
@@ -88,36 +87,30 @@ public class ImportReferencesTask extends Task {
      *
      * @throws IOException  Error Reading File.
      * @throws DaoException Error Accessing Database.
-     * @throws MissingDataException XML is missing data. 
+     * @throws MissingDataException XML is missing data.
      */
     public void importReferences() throws IOException, DaoException,
             MissingDataException {
         readFile(reader);
+        ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setMaxValue(lines.size());
-        outputMsg("Importing External References");
-        outputMsg("Total # of Lines in file:  " + pMonitor.getMaxValue());
+        pMonitor.setCurrentMessage("Importing External References");
+        pMonitor.setCurrentMessage("Total # of Lines in file:  "
+                + pMonitor.getMaxValue());
         processData();
         pMonitor.setCurrentMessage("Importing Complete -->  Number of "
                 + "Refs Saved:  " + numUpdates);
-        outputMsg("\nImporting Complete");
+        pMonitor.setCurrentMessage("\nImporting Complete");
         displayResults();
     }
 
-    /**
-     * Gets the Progress Monitor.
-     *
-     * @return Progress Monitor Object.
-     */
-    public ProgressMonitor getProgressMonitor() {
-        return pMonitor;
-    }
-
     private void displayResults() {
-        outputMsg("Total Number of References:  "
+        ProgressMonitor pMonitor = this.getProgressMonitor();
+        pMonitor.setCurrentMessage("Total Number of References:  "
                 + pMonitor.getCurValue());
-        outputMsg("Total Number of Matching Interactors:  "
+        pMonitor.setCurrentMessage("Total Number of Matching Interactors:  "
                 + numMatching);
-        outputMsg("Total Number of Refs Saved:  "
+        pMonitor.setCurrentMessage("Total Number of Refs Saved:  "
                 + numUpdates);
     }
 
@@ -171,6 +164,7 @@ public class ImportReferencesTask extends Task {
     private void updateRefs(ExternalReference existingRef,
             ExternalReference newRef)
             throws DaoException, MissingDataException {
+        ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(pMonitor);
         int index1 = existingRef.getId().indexOf(EMPTY_FLAG);

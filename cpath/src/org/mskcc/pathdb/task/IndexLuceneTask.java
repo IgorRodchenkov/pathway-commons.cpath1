@@ -36,6 +36,7 @@ import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
@@ -63,15 +64,13 @@ public class IndexLuceneTask extends Task {
     /**
      * Constructor.
      *
-     * @param verbose Verbose flag.
+     * @param consoleMode Running in Console Mode.
      * @param xdebug  XDebug Object.
      */
-    public IndexLuceneTask(boolean verbose, XDebug xdebug) {
-        super("Run Full Text Indexer");
-        this.setVerbose(verbose);
-        pMonitor = new ProgressMonitor();
-        pMonitor.setConsoleMode(true);
-        pMonitor.setCurrentMessage("Running");
+    public IndexLuceneTask(boolean consoleMode, XDebug xdebug) {
+        super("Run Full Text Indexer", consoleMode);
+        ProgressMonitor pMonitor = this.getProgressMonitor();
+        pMonitor.setCurrentMessage("Running Full Text Indexer");
     }
 
     /**
@@ -79,38 +78,38 @@ public class IndexLuceneTask extends Task {
      */
     public void run() {
         try {
-            outputMsg("Clearing XML Cache");
-            pMonitor.setCurrentMessage("Indexing Records");
-            DaoXmlCache dao = new DaoXmlCache(xdebug);
-            dao.deleteAllRecords();
-            XDebug xdebug = new XDebug();
-            xdebug.startTimer();
-            indexAllInteractions();
-
-            OrganismStats orgStats = new OrganismStats();
-            orgStats.resetStats();
-            xdebug.stopTimer();
-
-            pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
-                    + "Entities Indexed:  " + pMonitor.getCurValue());
-            if (verbose) {
-                System.out.println("Total Time Elapsed:  "
-                        + xdebug.getTimeElapsed());
-            }
+            executeTask();
         } catch (Exception e) {
-            setException(e);
-            System.err.println("**** ERROR:  " + e.getMessage());
-            e.printStackTrace();
+            setException (e);
         }
     }
 
     /**
-     * Gets the Progress Monitor.
-     *
-     * @return Progress Monitor object.
+     * Execute Index Task.
+     * @throws DaoException     Data Access Error.
+     * @throws ImportException  Import Error.
+     * @throws IOException      File IO Error.
+     * @throws AssemblyException    XML Assembly Error.
+     * @throws QueryException      Data Query Error.
      */
-    public ProgressMonitor getProgressMonitor() {
-        return pMonitor;
+    public void executeTask() throws DaoException, ImportException,
+            IOException, AssemblyException, QueryException {
+        ProgressMonitor pMonitor = this.getProgressMonitor();
+        pMonitor.setCurrentMessage("Clearing XML Cache");
+        DaoXmlCache dao = new DaoXmlCache(xdebug);
+        dao.deleteAllRecords();
+        XDebug xdebug = new XDebug();
+        xdebug.startTimer();
+        indexAllInteractions();
+
+        OrganismStats orgStats = new OrganismStats();
+        orgStats.resetStats();
+        xdebug.stopTimer();
+
+        pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
+                + "Entities Indexed:  " + pMonitor.getCurValue());
+        pMonitor.setCurrentMessage("Total Time Elapsed:  "
+                    + xdebug.getTimeElapsed());
     }
 
     /**
@@ -123,7 +122,8 @@ public class IndexLuceneTask extends Task {
      */
     public void indexAllInteractions() throws DaoException, IOException,
             ImportException, AssemblyException {
-        outputMsg("Indexing all cPath Interactions");
+        ProgressMonitor pMonitor = this.getProgressMonitor();
+        pMonitor.setCurrentMessage ("Indexing all cPath Interactions");
         DaoCPath cpath = new DaoCPath();
         pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.INTERACTION));
 
@@ -141,10 +141,9 @@ public class IndexLuceneTask extends Task {
             while (rs.next()) {
                 indexRecord(cpath, rs, indexWriter);
             }
-            outputMsg("\nOptimizing Indexes");
+            pMonitor.setCurrentMessage("\nOptimizing Indexes");
             indexWriter.optimize();
             indexWriter.closeWriter();
-            outputMsg("\nIndexing Complete");
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
@@ -169,6 +168,7 @@ public class IndexLuceneTask extends Task {
             LuceneWriter indexWriter)
             throws SQLException, IOException, ImportException,
             AssemblyException {
+        ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.incrementCurValue();
         CPathRecord record = cpath.extractRecord(rs);
         ConsoleUtil.showProgress(pMonitor);

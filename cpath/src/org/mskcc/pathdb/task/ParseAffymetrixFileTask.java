@@ -52,8 +52,9 @@ public class ParseAffymetrixFileTask extends Task {
      * @param inFile  InputFile.
      * @param outFile OutputFile.
      */
-    public ParseAffymetrixFileTask(File inFile, File outFile) {
-        super("Parse Affymetrix File");
+    public ParseAffymetrixFileTask(File inFile, File outFile,
+            boolean consoleMode) {
+        super("Parse Affymetrix File", consoleMode);
         this.inFile = inFile;
         this.outFile = outFile;
     }
@@ -65,10 +66,12 @@ public class ParseAffymetrixFileTask extends Task {
      */
     public void parse() throws IOException {
         try {
-            outputMsg("Parsing Affymetrix File:  " + inFile);
-            outputMsg("Analyzing Input File...");
+            ProgressMonitor pMonitor = this.getProgressMonitor();
+            pMonitor.setCurrentMessage("Parsing Affymetrix File:  " + inFile);
+            pMonitor.setCurrentMessage("Analyzing Input File...");
             int numLines = getNumLines();
-            outputMsg("Total Number of Lines in Input File:  " + numLines);
+            pMonitor.setCurrentMessage
+                    ("Total Number of Lines in Input File:  " + numLines);
             pMonitor.setMaxValue(numLines);
             pMonitor.setCurValue(1);
             fileWriter = new FileWriter(outFile);
@@ -77,7 +80,8 @@ public class ParseAffymetrixFileTask extends Task {
             String firstLine = buf.readLine();
             swissProtColumn = determineSwissProtColumn(firstLine);
             extractIds(buf, swissProtColumn);
-            outputMsg("\nMapping File is now complete:  " + outFile);
+            pMonitor.setCurrentMessage("Mapping File is now complete:  "
+                    + outFile);
         } finally {
             if (fileWriter != null) {
                 fileWriter.close();
@@ -124,6 +128,7 @@ public class ParseAffymetrixFileTask extends Task {
         fileWriter.write("Swiss-Prot\tAffymetrix" + lineSeparator);
         String line = buf.readLine();
         while (line != null) {
+            ProgressMonitor pMonitor = this.getProgressMonitor();
             ConsoleUtil.showProgress(pMonitor);
             String fields[] = line.split("\",");
             String affyId = stripQuotes(fields[0]);

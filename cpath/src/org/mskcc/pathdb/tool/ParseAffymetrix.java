@@ -54,8 +54,7 @@ public class ParseAffymetrix {
             File inFile = new File(args[0]);
             File outFile = new File(args[1]);
             ParseAffymetrixFileTask task =
-                    new ParseAffymetrixFileTask(inFile, outFile);
-            task.setVerbose(true);
+                    new ParseAffymetrixFileTask(inFile, outFile, true);
             task.parse();
         } catch (Exception e) {
             System.out.println("**** Error:  " + e.getMessage());

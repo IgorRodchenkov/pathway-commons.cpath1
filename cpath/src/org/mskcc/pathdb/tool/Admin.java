@@ -81,7 +81,7 @@ public class Admin {
 
             if (command.equals(COMMAND_INDEX)) {
                 IndexLuceneTask indexer = new IndexLuceneTask(true, xdebug);
-                indexer.start();
+                indexer.executeTask();
             } else if (command.equals(COMMAND_IMPORT)) {
                 importData();
             } else if (command.equals(COMMAND_PRE_COMPUTE)) {

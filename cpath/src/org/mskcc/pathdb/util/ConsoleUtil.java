@@ -55,14 +55,6 @@ public class ConsoleUtil {
             int currentValue = pMonitor.getCurValue();
             System.out.print(".");
             if (currentValue % 100 == 0) {
-                //  Move cursor back to left Edge.
-//                if (msg.length() > 0) {
-//                    System.out.print((char)27 + "[" + msg.length() + "D");
-//                }
-//
-//                //  Black Current Line
-//                System.out.print((char)27 + "[K");
-
                 NumberFormat format = DecimalFormat.getPercentInstance();
                 msg = new String ("Percentage Complete:  "
                         + format.format(pMonitor.getPercentComplete()));

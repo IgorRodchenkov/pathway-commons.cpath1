@@ -59,23 +59,25 @@ public class CountAffymetrixIdsTask extends Task {
      * Constructor.
      *
      * @param taxonomyId NCBI Taxonomy ID.
-     * @param verbose Verbose Flag.  Set to true for console tools.
+     * @param consoleMode Console Flag.  Set to true for console tools.
      * @throws DaoException Error Connecting to Database.
      */
-    public CountAffymetrixIdsTask(int taxonomyId, boolean verbose)
+    public CountAffymetrixIdsTask(int taxonomyId, boolean consoleMode)
             throws DaoException {
-        super("Counting Affymetrix IDs");
-        this.setVerbose(verbose);
-        this.outputMsg("Counting Affymetrix IDs for Organism:  " + taxonomyId);
+        super("Counting Affymetrix IDs", consoleMode);
+        ProgressMonitor pMonitor = this.getProgressMonitor();
+        pMonitor.setCurrentMessage("Counting Affymetrix IDs for Organism:  "
+                + taxonomyId);
         this.taxonomyId = taxonomyId;
         this.execute();
-        this.outputMsg("\nTotal Number of Records for Organism:  "
+        pMonitor.setCurrentMessage("\nTotal Number of Records for Organism:  "
                 + this.totalNumRecords);
         if (totalNumRecords > 0) {
             double percent = (affyCount / (double) totalNumRecords) * 100.0;
             DecimalFormat formatter = new DecimalFormat("###,###.##");
             String percentOut = formatter.format(percent);
-            this.outputMsg("Of these, " + affyCount + " (" + percentOut
+            pMonitor.setCurrentMessage("Of these, " + affyCount
+                    + " (" + percentOut
                     + "%) have Affymetrix IDs.");
         }
     }
@@ -105,6 +107,7 @@ public class CountAffymetrixIdsTask extends Task {
      * @throws DaoException Error Connecting to Database.
      */
     private void execute() throws DaoException {
+        ProgressMonitor pMonitor = this.getProgressMonitor();
         //  First, Look up Affymetrix Database Id.
         int affyDbId = lookUpAffyDBId();
 
