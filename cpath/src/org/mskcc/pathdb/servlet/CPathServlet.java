@@ -11,6 +11,7 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -73,6 +74,12 @@ public final class CPathServlet extends ActionServlet {
         System.err.println("Starting up Log4J Logging System");
         ConfigLogger.configureLogger();
         verifyDbConnection();
+
+        //  Set Location of TextIndexer based on servlet real path.
+        ServletContext context = getServletContext();
+        String dir = context.getRealPath(LuceneIndexer.INDEX_DIR_PREFIX);
+        manager.setProperty(LuceneIndexer.PROPERTY_LUCENE_DIR, dir);
+
         System.err.println("Registering CPath Data Services");
         try {
             RegisterCPathServices.registerServices();
