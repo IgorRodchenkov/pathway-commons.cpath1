@@ -32,31 +32,6 @@ public class JdbcUtil {
      */
     public static Connection getCPathConnection()
             throws SQLException, ClassNotFoundException {
-        return JdbcUtil.connect(DB_CPATH);
-    }
-
-    /**
-     * Gets Connection to the GRID Database.
-     *
-     * @return Live Connection to Database.
-     * @throws SQLException           Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating Correct Database Driver.
-     */
-    public static Connection getGridConnection()
-            throws SQLException, ClassNotFoundException {
-        return null;
-    }
-
-    /**
-     * Connects to Specified Database.
-     *
-     * @param db Database Name.
-     * @return Live Connection to Database.
-     * @throws SQLException           Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating Correct Database Driver.
-     */
-    private static Connection connect(String db)
-            throws ClassNotFoundException, SQLException {
         if (dataSource == null) {
             initDataSource();
         }
