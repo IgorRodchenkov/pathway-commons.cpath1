@@ -11,9 +11,6 @@
 	<!-- The lib directory -->
 	<property name="lib.dir" value="lib"/>
 	
-	<!-- The log directory -->
-	<property name="log.home" value="log"/>
-
 	<!-- Production Directory -->
         <property name="prod.dir" value="/var/lib/tomcat4/webapps"/>
 
@@ -187,7 +184,6 @@
    description="Delete old build and dist directories">
     <delete dir="${build.home}"/>
     <delete dir="${dist.home}"/>
-    <delete dir="${log.home}"/>
   </target>
 
 
@@ -363,8 +359,6 @@
     <mkdir  dir="${build.home}"/>
     <mkdir  dir="${build.home}/WEB-INF"/>
     <mkdir  dir="${build.home}/WEB-INF/classes"/>
-    <mkdir  dir="${log.home}"/>
-
 
     <!-- Copy static content of this web application -->
     <copy todir="${build.home}">
