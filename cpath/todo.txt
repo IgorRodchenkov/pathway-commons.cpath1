@@ -2,26 +2,29 @@ This document contains cPath/Cytoscape Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
-1.  Field Specific Searching, e.g. "name:RAS".
-2.  Indexing of interactions
+1.  Field Specific Searching, e.g. "name:RAS". 
+	---> current priority:  low.
+2.  Indexing of interactions.
+	Requires changes to web interface.  Needs more exploration.
+	---> current priority:  low.
 3.  Build a Front-end interface to the External Database Tables
 	(more details are included in phase 6 doc, before being deferred)
-4.  Create cPath Developer Docs
-5.  Add new query:  query by experimental method (e.g. all the data from two-hybrid)
-6.  Gary's latest idea:  re:  loading external references.
-7.  Provide query API functionality to get a list of valid query API commands.  E.g. for getInteractionsBySource,
-	we could have getValidSources
-8.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape to easily create external links.
-9.  For HTML front end of cPath query API: paginate results
-10. Issue of large result sets returned from query API.  One possible solution is to write a getQuerySize query, which
-    takes as input another query and returns the result size.  If there is a performance issue, queries can be precomputed.
+	---> current priority:  low.
+4.  Add new query:  query by experimental method (e.g. all the data from two-hybrid)
+	---> current priority:  ???.
+5.  Provide query API functionality to get a list of valid query API commands.  
+	E.g. for getInteractionsBySource, we could have getValidSources
+	---> current priority:  low.
+6.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape 
+	to easily create external links.
+	---> current priority:  medium.
+7.  For HTML front end of cPath query API: paginate results
+	---> current priority:  low.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
-1.  Add support for Tomcat JDBC Connection Pooling. [done]
-2.  Load Testing via JMeter.
-3.  Prevent against cross-scripting vulnerability.
-4.  Set up auto-emails upon fatal cPath errors.
+1.  Prevent against cross-scripting vulnerability.
+2.  Set up auto-emails upon fatal cPath errors.
 
 Data Service Specific Items:
 -----------------------------
@@ -30,5 +33,5 @@ Data Service Specific Items:
 3.  Create a service for reading in Cytoscape node/edge attributes.
 4.  Create an "About Data Services PlugIn", with version #, list of all registered
 	(more details are included in phase 6 doc, before being deferred)
+	---> current priority:  low.
 5.  Resurrect the GRID Plugin
-6.  Revise API from client perspective
