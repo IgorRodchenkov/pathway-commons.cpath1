@@ -21,6 +21,18 @@
             <forward name="success" path="/WEB-INF/jsp/pages/Home.jsp"/>
         </action>
 
+        <!--  Browse By Organism Page -->
+        <action path="/browse"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/Browse.jsp"/>
+        </action>
+
+        <!--  Database Stats / Information -->
+        <action path="/dbStats"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/DbStats.jsp"/>
+        </action>
+
         <!--  Toggle Search Options -->
         <action path="/toggleSearchOptions"
             type="org.mskcc.pathdb.action.ToggleSearchOptions">
@@ -42,49 +54,60 @@
 
         <!-- Admin Actions -->
         <action path="/adminHome"
-            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            type="org.mskcc.pathdb.action.admin.AdminHomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+        </action>
+
+        <action path="/adminRemoveTask"
+            type="org.mskcc.pathdb.action.admin.AdminRemoveTask">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
         <action path="/adminDiagnostics"
-            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            type="org.mskcc.pathdb.action.admin.AdminHomeAction">
             <forward name="success" path="/WEB-INF/jsp/pages/Diagnostics.jsp"/>
         </action>
 
         <action path="/adminViewXmlCache"
-            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            type="org.mskcc.pathdb.action.admin.AdminHomeAction">
             <forward name="success" path="/WEB-INF/jsp/pages/ViewCache.jsp"/>
         </action>
 
         <action path="/adminPurgeXmlCache"
             type="org.mskcc.pathdb.action.admin.AdminPurgeXmlCache">
-            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+            <forward name="success" path="/WEB-INF/jsp/pages/ViewCache.jsp"/>
         </action>
 
         <action path="/adminViewLogRecords"
-            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
-            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+            type="org.mskcc.pathdb.action.admin.AdminHomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/ViewLogs.jsp"/>
         </action>
+
         <action path="/adminPurgeLogRecords"
             type="org.mskcc.pathdb.action.admin.PurgeLogRecords">
-            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+            <forward name="success" path="/WEB-INF/jsp/pages/ViewLogs.jsp"/>
         </action>
+
         <action path="/adminViewImportRecords"
-            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            type="org.mskcc.pathdb.action.admin.AdminHomeAction">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
+
         <action path="/adminViewImportRecordXml"
             type="org.mskcc.pathdb.action.admin.DisplayImportXml">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
+
         <action path="/adminWebLogging"
             type="org.mskcc.pathdb.action.admin.AdminWebLogging">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
+
         <action path="/adminRunFullTextIndexer"
             type="org.mskcc.pathdb.action.admin.AdminFullTextIndexer">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
+
         <action path="/adminImportData"
             type="org.mskcc.pathdb.action.admin.AdminImportData"
             name="importDataForm"
