@@ -6,7 +6,6 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -15,11 +14,6 @@ import java.io.IOException;
  * @author Ethan Cerami
  */
 public class LuceneWriter {
-    /**
-     * Index Writer Object (for indexing new records in Lucene).
-     */
-    private IndexWriter writer;
-
     private String dir = LuceneConfig.getLuceneDirectory();
     private Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
 
@@ -29,9 +23,10 @@ public class LuceneWriter {
      * @param resetFlag If Set to True, Existing Index is deleted!
      */
     public LuceneWriter(boolean resetFlag) throws IOException {
-        writer = new IndexWriter(dir, analyzer, resetFlag);
-        writer.mergeFactor = 100;
-        //writer.close();
+        if (resetFlag) {
+            IndexWriter writer = new IndexWriter(dir, analyzer, resetFlag);
+            writer.close();
+        }
     }
 
     /**
@@ -42,8 +37,19 @@ public class LuceneWriter {
      */
     public void addRecord(ItemToIndex item)
             throws ImportException {
+        IndexWriter writer = null;
         try {
-            //writer = new IndexWriter(dir, analyzer, false);
+            //  Create Index Writer
+            writer = new IndexWriter(dir, analyzer, false);
+
+            //  Set CompoundFile to True
+            //  From Lucene Javadoc:  When on, multiple files for each segment
+            //  are merged into a single file once the segment creation is
+            //  finished.  Setting to true is one of the recommended solutions
+            //  for resolving the "too many open files" error which occurs
+            //  on Linux.
+            writer.setUseCompoundFile(true);
+
             //  Index all Fields in ItemToIndex
             Document document = new Document();
             int numFields = item.getNumFields();
@@ -53,28 +59,18 @@ public class LuceneWriter {
             }
             //  Add New Document to Lucene
             writer.addDocument(document);
-            //writer.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Got an Error:  " + e.toString());
-            optimize();
+            writer.close();
         } catch (IOException e) {
             throw new ImportException(e);
         }
     }
 
-    public void commit() throws IOException {
-        writer.close();
-    }
-
-    /**
-     * Optimizes Lucene Index Files.
-     */
-    public void optimize() {
-        try {
-            System.out.println("Optimizing Lucene Indexes...");
-            writer.optimize();
-        } catch (IOException e) {
-            System.out.println("Optimization Failed:  " + e.toString());
-        }
-    }
+//    /**
+//     * Optimizes Lucene Index Files.
+//     */
+//    public void optimize() throws IOException {
+//        IndexWriter writer = new IndexWriter(dir, analyzer, false);
+//        System.out.println("Optimizing Lucene Indexes...");
+//        writer.optimize();
+//    }
 }

@@ -33,7 +33,6 @@ public class TestIndexer extends TestCase {
         ItemToIndex item = IndexFactory.createItemToIndex(4, assembly);
         LuceneWriter indexWriter = new LuceneWriter(true);
         indexWriter.addRecord(item);
-        indexWriter.commit();
 
         queryInteraction("chaperonin");
         queryInteraction("interactor:chaperonin");
