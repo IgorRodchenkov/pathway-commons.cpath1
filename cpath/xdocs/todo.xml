@@ -13,43 +13,27 @@ This document contains cPath Items we want to implement someday:
 
 cPath Functionality Issues:
 ----------------------------
-0.  We still don't have any way of adding new external databases,
+1.  We still don't have any way of adding new external databases,
     and the controlled vocabulary terms and URLs associated with each database.
     As a first step, we should definitely add a command line script to
     do this.
     --->  current priority:  I think this is relatively high.
 
-1.  Add Field Specific Lucene Searching, e.g. "name:RAS".
-    ---> current priority:  low.
-    [NOW COMPLETE]
-
-2.  Add new query:  query by experimental method (e.g. all the data from
-    two-hybrid)
-	---> current priority:  hi.
-    [NOW COMPLETE]
-
-3.  Add Indexing of interactions.
-    Requires changes to web interface.  Needs more exploration.
-    ---> current priority:  low.
-    [NOW COMPLETE]
-
-4.  For HTML front end of cPath query API: pageinate results
-    (only text index results currently paginated)
-	---> current priority:  low.
-    [NOW COMPLETE]
-
-5.  Import Complete Data Set
+2.  Import Complete Data Set
 
     From Gary:  DIP, MINT and IntAct now all have downloadable full data
     sets.  We should think about creating an official inhouse release of cpath
     containing all of the data we can get (since the DIP data is proprietary, we
     can't give it to anyone else externally).
-    [Will be implemented in Phase 9]
 
-4.  Modify Cytoscape PlugIn to recognize n-ary interactions when n > 2.
+    [Status:  We now have DIP, MINT and Intact. We still need to import HPRD.]
+
+3.  Modify Cytoscape PlugIn to recognize n-ary interactions when n > 2.
 	-->  current priority:  high
 
-5.  Use IntAct External Database File
+    [Status:  This functionality is working, but it still needs more testing.]
+
+4.  Use IntAct External Database File
 
     From Gary:  "I just noticed that the IntAct database is maintaining a small
     file of external databases
@@ -86,18 +70,12 @@ cPath Functionality Issues:
     http://160.80.34.4/mint/statistics/statistics.php
 	---> Current priority: low.
 
-13. Add support to cPath and data services layer for importing PSI-MI files
-    that contain interactions with more than two proteins (e.g. 5 protein complex).
-    This would allow us to import data from the PIN database in the Tempst lab
-    at MSKCC  (http://pin.mskcc.org).
-	---> Current priority: medium.
-
-15.  Create an advanced query system for xml records that supports xquery or
+13.  Create an advanced query system for xml records that supports xquery or
      something similar. This could regularly index XML from cpath for advanced
      queries.  Only internal users would use this system and it would probably
      be slow.  Investigate databases that support xpath or libraries such as OJB.
 
-16.  Add generic support for an ontology data objects.
+14.  Add generic support for an ontology data objects.
 
     From Gary:  "As per our discussion today regarding PSI-MI controlled
     vocabularies, here is an implementation of a basic hierarchy from the
@@ -115,24 +93,24 @@ cPath Functionality Issues:
     I'm not saying that we should implement this scheme eventually, we should
     just note the example.
 
-17. Front end features (May31.2004):
+15. Front end features (May31.2004):
 -Save search options in a cookie
 -Database stats page - expand and for the current contents, link to the DBODBs
  for the database + the database itself.
 
-18. We need to be able to present Non-redundant interactions - all interactions
+16. We need to be able to present Non-redundant interactions - all interactions
 should be non-redundant. (May31.2004)
 
-19. Create a post-process for non-redundant interactors - once larger lists of
+17. Create a post-process for non-redundant interactors - once larger lists of
  xrefs are in cPath, process can optimize the interactors to find ones that
  overlap in xref space and put them together. (May31.2004)
 
-20.  Add support for incremental indexing.
+18.  Add support for incremental indexing.
 I think this would require a timestamp for each cPath record,
 so that we could easily determine the date/time the record was last
 indexed in Lucene.  (June3.2004)
 
-21.  Address Interactor/External Reference Identity Issue.
+19.  Address Interactor/External Reference Identity Issue.
 Right now, we use external references to uniquely identify proteins.
 However, while loading all of IntAct, I noticed that most interactors
 include references which are not unique to the protein.  For example, IntAct
@@ -142,19 +120,44 @@ As a temporary work-around, I currently filter out GO/InterPro
 references when looking for a match, but I think we should brainstorm
 about some better, more generic options going forward.
 
-22.  "My favorite gene list" - This would let you could select genes that
+20.  "My favorite gene list" - This would let you select genes that
 cPath knows about and create a nice table for you.  E.g. all the cancer genes.
 	---> Current priority: low.
 
-23. Cache: include count of numer of times a request has been made and use this
-to prioritize the purging of the cache.  This will help keep often viewed pages in the cache.
-Possible prioritization: purge oldest and least viewed documents
+21. Cache: include count of numer of times a request has been made and use this
+to prioritize the purging of the cache.  This will help keep often viewed pages
+in the cache. Possible prioritization: purge oldest and least viewed documents
 	---> Current priority: low.
 
-cPath Performance/Reliability/Security Issues
----------------------------------------------
-1.  Set up auto-emails upon fatal cPath errors
-(how does a user deal with errors?).
+22  Set up auto-emails upon fatal cPath errors
+    (how does a user deal with errors?).
+
+23.  Revisit the Advanced Search Functionality. (June.18.2004)
+Chris found the Advanced Search filters very confusing.  His main complaint
+is that the two pull-downs are logically inconsistent.  For example, when using
+the organism pull-down menu, you are selecting from a list of values.  When
+using the filter pull-down menu, you are selecting from a list of fields --
+you then need to add a value for that field in the search box.
+
+Chris also found the filter types confusing.  For example, when looking at
+the experiment type filter, he had no idea what a good search value would be
+here.  Same goes for database source.  Perhaps we could add pull-down menus
+with values for each of these filters.
+
+I am not sure the answer to any of these issues, but we should think about it
+more in the next phase.
+
+24.  Make cPath Data available via FTP (June18.2004)
+This was suggested by Alex at the cPath Information session.
+
+25.  Add Link to PDB (June18.2004)
+Boris suggested that we add links to PDB in the protein view.
+
+26.  Create Auto-updater (June18.2004)
+Mike suggested we create some kind of tool for automatically updating
+cPath with data from DIP, MINT, etc.  This would probably be fairly involved.
+
+
 
 Data Service Specific Items:
 -----------------------------
@@ -169,6 +172,35 @@ Data Service Specific Items:
 	---> current priority:  low.
 
 4.  Resurrect the GRID Plugin - retrieves data from GRID directly into Cytoscape
+
+Archive:  Items which are now complete:
+--------------------------------------------------
+1.  Add Field Specific Lucene Searching, e.g. "name:RAS".
+    ---> current priority:  low.
+    [Status:  NOW COMPLETE]
+
+2.  Add new query:  query by experimental method (e.g. all the data from
+    two-hybrid)
+	---> current priority:  hi.
+    [Status:  NOW COMPLETE]
+
+3.  Add Indexing of interactions.
+    Requires changes to web interface.  Needs more exploration.
+    ---> current priority:  low.
+    [Status:  NOW COMPLETE]
+
+4.  For HTML front end of cPath query API: pageinate results
+    (only text index results currently paginated)
+	---> current priority:  low.
+    [Status:  NOW COMPLETE]
+
+5. Add support to cPath and data services layer for importing PSI-MI files
+    that contain interactions with more than two proteins (e.g. 5 protein complex).
+    This would allow us to import data from the PIN database in the Tempst lab
+    at MSKCC  (http://pin.mskcc.org).
+
+    [Status:  NOW COMPLETE]
+
 </source>
         </p>
      </section>
