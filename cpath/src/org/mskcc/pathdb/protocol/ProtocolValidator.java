@@ -118,28 +118,6 @@ public class ProtocolValidator {
                     + "' is not specified." + HELP_MESSAGE,
                     "You did not specify a search term.  Please try again.");
         }
-        if (command.equals(ProtocolConstants.COMMAND_GET_BY_ID)) {
-            try {
-                Integer.parseInt(q);
-            } catch (NumberFormatException e) {
-                throw new ProtocolException(ProtocolStatusCode.
-                        INVALID_ARGUMENT, "Argument:  '" + ProtocolRequest.
-                        ARG_QUERY + "' must be specified as an integer value",
-                        "Interaction ID must be specified as an integer"
-                        + " value.  Please try again.");
-            }
-        }
-        if (command.equals(ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID)) {
-            try {
-                Integer.parseInt(q);
-            } catch (NumberFormatException e) {
-                throw new ProtocolException(ProtocolStatusCode.
-                        INVALID_ARGUMENT, "Argument:  '" + ProtocolRequest.
-                        ARG_QUERY + "' must be specified as an integer value.",
-                        "Pub Med ID must be specified as an integer"
-                        + " value.  Please try again.");
-            }
-        }
     }
 
     /**
