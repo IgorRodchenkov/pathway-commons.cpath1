@@ -16,13 +16,13 @@
         [<A HREF="architecture.pdf">Download PDF</A>]
         </p>
      </section>
-     <section name="Installation Guide">
+     <section name="Administrator Guide">
         <p>
         This PDF Document provides detailed instructions on installing
-        cPath locally.
+	and administering a local instance of cPath.
         </p>
         <p>
-        [<A HREF="installation.pdf">Download PDF</A>]
+        [<A HREF="cpath_admin_guide.pdf">Download PDF</A>]
         </p>
      </section>
   </body>

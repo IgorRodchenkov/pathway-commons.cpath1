@@ -30,7 +30,7 @@
     <menu name="Tech Docs">
           <item name="Tech Docs Index"      href="tech_docs.html"/>
 	      <item name="Architecture Guide"   href="/architecture.pdf"/>
-	      <item name="Installation Guide"   href="/installation.pdf"/>
+	      <item name="Administrator Guide"   href="/cpath_admin_guide.pdf"/>
     </menu>
     <menu name="Downloads">
           <item name="Source Downloads" href="source.html"/>
