@@ -37,31 +37,41 @@ import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
+import org.mskcc.dataservices.mapper.MapPsiToInteractions;
+import org.mskcc.dataservices.mapper.MapperException;
+import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Custom JSP Tag for Displaying Interaction Table.
+ * Custom JSP Tag for Displaying Interactions.
  *
  * @author Ethan Cerami
  */
 public class InteractionTable extends HtmlTable {
     private ProtocolRequest protocolRequest;
-    private ArrayList interactions;
+    private XmlAssembly xmlAssembly;
+    private EntrySet entrySet;
+    private HashMap interactorMap = new HashMap();
 
     /**
      * Sets Interaction Parameter.
-     * @param interactions ArrayList of Interaction objects.
+     * @param xmlAssembly XmlAssembly Object
      */
-    public void setInteractions(ArrayList interactions) {
-        this.interactions = interactions;
+    public void setXmlAssembly(XmlAssembly xmlAssembly) {
+        this.xmlAssembly = xmlAssembly;
+        if (!xmlAssembly.isEmpty()) {
+            entrySet = (EntrySet) xmlAssembly.getXmlObject();
+        }
     }
 
     /**
-     * Sets UID Parameter.
+     * Sets Protocol Request Parameter.
      * @param request Protocol Request
      */
     public void setProtocolRequest(ProtocolRequest request) {
@@ -72,38 +82,32 @@ public class InteractionTable extends HtmlTable {
      * Start Tag Processing.
      * @throws DaoException Database Access Error.
      */
-    protected void subDoStartTag() throws DaoException {
-
+    protected void subDoStartTag() throws DaoException, MapperException {
         protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
         String url = protocolRequest.getUri();
         String title = "Matching Interactions";
 
         createHeader(title);
-
         startTable();
         outputNumInteractions(url);
-        String headers[] = {
-            "Interactor", "Description", "Experimental System",
-            "PubMed Reference"};
-
-        createTableHeaders(headers);
         outputInteractions();
         endTable();
     }
 
     private void outputNumInteractions(String url) {
-        if (interactions.size() > 0) {
+        if (!xmlAssembly.isEmpty()) {
             this.startRow(1);
-            this.append("<td colspan=2>Total Number of Interactions:  "
-                    + interactions.size());
+            this.append("<td colspan='3'>Total Number of Matches:  "
+                    + xmlAssembly.getNumHits());
             this.append("</td>");
-            this.append("<td colspan=3>");
+            this.append("<td colspan=4>");
             this.append("<div class='right'>");
             this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
             outputLink("View PSI-MI XML Format", url);
             this.append("</div>");
             this.append("</td>");
             this.endRow();
+            append("<TR><TD COLSPAN=6><BR></TD></TR>");
         }
     }
 
@@ -111,58 +115,127 @@ public class InteractionTable extends HtmlTable {
      * Outputs Interaction Data.
      */
     private void outputInteractions() throws DaoException {
-        if (interactions.size() == 0) {
+        if (xmlAssembly.isEmpty()) {
             append("<tr class='a'>");
             append("<td colspan=4>No Matching Interactions Found.  "
                     + "Please try again.</td>");
             append("</tr>");
-        }
-        for (int i = 0; i < interactions.size(); i++) {
-            Interaction interaction = (Interaction) interactions.get(i);
-            ArrayList interactors = interaction.getInteractors();
-
-            startRow(i);
-            Interactor interactor = (Interactor) interactors.get(0);
-            outputInteractor(interactor);
-
-            interactor = (Interactor) interactors.get(1);
-            outputInteractor(interactor);
-
-            String expSystem = (String) interaction.getAttribute
-                    (InteractionVocab.EXPERIMENTAL_SYSTEM_NAME);
-            outputDataField(expSystem);
-            String pmid = (String) interaction.getAttribute
-                    (InteractionVocab.PUB_MED_ID);
-            String url = getPubMedLink(pmid);
-            outputDataField(pmid, url);
-            endRow();
+        } else {
+            for (int i=0; i<entrySet.getEntryCount(); i++) {
+                Entry entry = entrySet.getEntry(i);
+                InteractorList interactorList = entry.getInteractorList();
+                extractInteractors (interactorList);
+                InteractionList interactionList = entry.getInteractionList();
+                for (int j=0; j<interactionList.getInteractionCount(); j++) {
+                    outputInteractionHeaders();
+                    InteractionElementType interaction =
+                            interactionList.getInteraction(j);
+                    ParticipantList pList = interaction.getParticipantList();
+                    for (int k=0; k<pList.getProteinParticipantCount(); k++) {
+                        ProteinParticipantType pType =
+                                pList.getProteinParticipant(k);
+                        ProteinParticipantTypeChoice choice =
+                                pType.getProteinParticipantTypeChoice();
+                        RefType ref = choice.getProteinInteractorRef();
+                        String refId = ref.getRef();
+                        ProteinInteractorType protein = (ProteinInteractorType)
+                                interactorMap.get(refId);
+                        outputProtein(k, protein);
+                    }
+                    outputExpAndRefs (interaction);
+                    append("<TR class='functnbar3'><TD COLSPAN=6></TD></TR>");
+                    append("<TR><TD COLSPAN=4><BR></TD></TR>");
+                }
+            }
         }
     }
 
-    private void outputInteractor(Interactor interactor) {
-        if (interactor != null) {
-            String url = "interactor.do?id=" + interactor.getAttribute
-                    (InteractorVocab.LOCAL_ID);
-            String name = interactor.getName();
-            String desc = (String) interactor.getAttribute
-                    (InteractorVocab.FULL_NAME);
-            String org = (String) interactor.getAttribute
-                    (InteractorVocab.ORGANISM_SPECIES_NAME);
-            if (org == null) {
-                org = (String) interactor.getAttribute
-                        (InteractorVocab.ORGANISM_COMMON_NAME);
+    private void outputInteractionHeaders() {
+        append("<tr class='tabs'>");
+        append("<th colspan=6>Interaction</th>");
+        append("</tr>");
+        append("<TR class='b'>");
+        append("<td>Interactor</td>");
+        append("<td>Label</td>");
+        append("<td>Description</td>");
+        append("<td>Organism</td>");
+        append("</TR>");
+    }
+
+    /**
+     * Outputs Protein Information.
+     * @param index Index Number.
+     * @param protein Protein Object.
+     */
+    private void outputProtein(int index, ProteinInteractorType protein) {
+        String shortLabel = protein.getNames().getShortLabel();
+        String fullName = protein.getNames().getFullName();
+        Organism organism = protein.getOrganism();
+        char indexChar = (char) (index + 65);
+        append("<TR>");
+        append("<TD>"+indexChar+"</TD>");
+        append("<TD>"+shortLabel+"</TD>");
+        append("<TD>"+fullName+"</TD>");
+        if (organism != null) {
+            NamesType names = organism.getNames();
+            int taxonomy_id = organism.getNcbiTaxId();
+            fullName = names.getFullName();
+            String url = this.getInteractionLink("organism:"+taxonomy_id,
+                    ProtocolConstants.FORMAT_HTML);
+            append ("<TD><A TITLE='Get All Records for Organism:  " +
+                    fullName+"' HREF='"+url+"'>"+fullName+"</A></TD>");
+        }
+        append("</TR>");
+    }
+
+    /**
+     * Outputs Experiment Information.
+     * @param interaction Interaction Object.
+     */
+    private void outputExpAndRefs (InteractionElementType interaction) {
+        append("<tr class='b'>");
+        append("<td colspan=1>Experiment</td>");
+        append("<td colspan=2>Interaction Type</td>");
+        append("<td colspan=1>Reference</td>");
+        append("</tr>");
+        ExperimentList expList = interaction.getExperimentList();
+        for (int i=0; i<expList.getExperimentListItemCount(); i++) {
+            append("<tr>");
+             append ("<td>&nbsp;&nbsp;"+(i+1)+".</td>");
+            ExperimentListItem expItem = expList.getExperimentListItem(i);
+            ExperimentType expType = expItem.getExperimentDescription();
+            CvType interactionType = expType.getInteractionDetection();
+            if (interactionType != null) {
+                NamesType names = interactionType.getNames();
+                if (names != null) {
+                    append("<TD colspan=2>"+names.getShortLabel()+"</TD>");
+                }
             }
-            StringBuffer interactorHtml = new StringBuffer();
-            interactorHtml.append("<A HREF='" + url + "'>"
-                    + name + "</A><br/><ul>");
-            if (desc != null) {
-                interactorHtml.append("<li>" + desc + "</li>");
+            BibrefType bibRef = expType.getBibref();
+            if (bibRef != null) {
+                XrefType xref = bibRef.getXref();
+                DbReferenceType primaryRef = xref.getPrimaryRef();
+                if (primaryRef != null) {
+                    String pmid = primaryRef.getId();
+                    String url = this.getPubMedLink(pmid);
+                    append ("<TD><A TITLE='View Reference at PubMed'"
+                            + " HREF='"+url+"'>"+pmid+"</A></TD>");
+                }
             }
-            if (org != null) {
-                interactorHtml.append("<li>Organism:  " + org + "</li>");
-            }
-            interactorHtml.append("</ul>");
-            outputDataField(interactorHtml.toString());
+            append("</tr>");
+        }
+    }
+
+    /**
+     * Extracts All Interactors and Places in Global HashMap.
+     * @param interactorList List of Interactors
+     */
+    private void extractInteractors (InteractorList interactorList) {
+        for (int i=0; i<interactorList.getProteinInteractorCount(); i++) {
+            ProteinInteractorType protein =
+                    interactorList.getProteinInteractor(i);
+            String id = protein.getId();
+            interactorMap.put (id, protein);
         }
     }
 
