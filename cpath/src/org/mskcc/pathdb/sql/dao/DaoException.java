@@ -35,6 +35,7 @@ package org.mskcc.pathdb.sql.dao;
  * @author Ethan Cerami
  */
 public class DaoException extends Exception {
+    private String msg;
 
     /**
      * Constructor.
@@ -44,4 +45,22 @@ public class DaoException extends Exception {
     public DaoException(Throwable throwable) {
         super(throwable);
     }
+
+    /**
+     * Constructor.
+     *
+     * @param msg Error Message.
+     */
+    public DaoException(String msg) {
+        super();
+        this.msg = msg;
+    }
+
+    /**
+     * Gets Error Message.
+     * @return
+     */
+    public String getMessage() {
+        return msg;
+    }    
 }
