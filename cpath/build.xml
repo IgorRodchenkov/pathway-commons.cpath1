@@ -101,8 +101,6 @@
    <!-- Copy cpathResources.properties -->
    <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/cpathResources.properties"/>
 
-   <!-- Copy logger properties -->
-   <copy todir="${build.home}/WEB-INF/config" file="${config.dir}/config-JDBC.properties"/>
   </target>
 
 <!-- ==================== War Target ===================================== -->
