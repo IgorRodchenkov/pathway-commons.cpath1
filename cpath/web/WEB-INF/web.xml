@@ -5,9 +5,36 @@
 <web-app>
 
     <display-name>Data Service Application</display-name>
+    
+    <filter>
+        <filter-name>Cache</filter-name>
+        <filter-class>org.mskcc.pathdb.servlet.CacheFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <servlet-name>DataServiceServlet</servlet-name>
+    </filter-mapping>
+    
     <servlet>
         <servlet-name>DataServiceServlet</servlet-name>
         <servlet-class>org.mskcc.pathdb.servlet.DataService</servlet-class>
+	<init-param>
+		<param-name>grid_host</param-name>
+		<param-value>localhost</param-value>
+	</init-param>
+	<init-param>
+		<param-name>grid_user</param-name>
+		<param-value>reader</param-value>
+	</init-param>
+	<init-param>
+		<param-name>grid_password</param-name>
+		<param-value>cbio1</param-value>
+	</init-param>
+	<init-param>
+		<param-name>log_file</param-name>
+		<param-value>/Users/cerami/dev/sander/pathdb/build/jsp/log/ds_web.log</param-value>
+	</init-param>
     </servlet>
 
     <servlet-mapping>
