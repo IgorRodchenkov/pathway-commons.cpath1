@@ -7,6 +7,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Misc Utilities related to External References.
@@ -16,13 +17,13 @@ import java.util.ArrayList;
 public class ExternalReferenceUtil {
 
     /**
-     * Filters out non-identity references.  We don't want to use non-identity
-     * references, e.g. GO or PubMed to determine protein identity.
+     * Extracts only thoses references which can be used for Protein
+     * Unification.  Automatically filters out all LINK_OUT references.
      *
      * @param refs Array of External References.
      * @return Filtered Array of External References.
      */
-    public static ExternalReference[] filterOutNonIdReferences
+    public static ExternalReference[] extractProteinUnificationRefs
             (ExternalReference[] refs) throws DaoException {
         DaoExternalDb dao = new DaoExternalDb();
         ArrayList filteredRefList = new ArrayList();
@@ -33,12 +34,31 @@ public class ExternalReferenceUtil {
             ExternalReference ref = refs[i];
             String dbName = ref.getDatabase();
             ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(dbName);
-            if (dbRecord.getDbType().equals(ReferenceType.IDENTITY)) {
+            if (dbRecord.getDbType().equals
+                    (ReferenceType.PROTEIN_UNIFICATION)) {
                 filteredRefList.add(ref);
             }
         }
         ExternalReference filteredRefs[] =
                 new ExternalReference[filteredRefList.size()];
         return (ExternalReference[]) filteredRefList.toArray(filteredRefs);
+    }
+
+    /**
+     * Utility method for creating a union of two lists of External References.
+     *
+     * @param refList ArrayList of External Reference Object.
+     * @param refs    Array of External Objects.
+     * @return ArrayList of ExternalReference Objects.
+     */
+    public static ArrayList createUnifiedList(ArrayList refList,
+            ExternalReference[] refs) {
+        HashSet union = new HashSet();
+        union.addAll(refList);
+        for (int i = 0; i < refs.length; i++) {
+            union.add(refs[i]);
+        }
+        ArrayList list = new ArrayList(union);
+        return list;
     }
 }
