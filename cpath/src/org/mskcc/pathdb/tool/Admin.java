@@ -35,6 +35,7 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.IndexLuceneTask;
+import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -50,12 +51,15 @@ public class Admin {
     private static final String COMMAND_INDEX = "index";
     private static final String COMMAND_IMPORT = "import";
     private static final String COMMAND_PRE_COMPUTE = "precompute";
+    private static final String COMMAND_COUNT_AFFYMETRIX= "count_affy";
+    private static final int NOT_SET = -9999;
 
     //  User Parameters
     private static String userName = null;
     private static String pwd = null;
     private static String fileName = null;
     private static boolean validateExternalReferences = true;
+    private static int taxonomyId = NOT_SET;
     private static boolean xdebugFlag = false;
     private static String command = null;
 
@@ -83,6 +87,9 @@ public class Admin {
                 LoadPreComputedQueries preCompute =
                         new LoadPreComputedQueries();
                 preCompute.preCompute(fileName, xdebug);
+            } else if (command.equals(COMMAND_COUNT_AFFYMETRIX)) {
+                CountAffymetrixIdsTask task = new CountAffymetrixIdsTask
+                        (taxonomyId, true);
             } else {
                 throw new IllegalArgumentException("Command Not Recognized");
             }
@@ -144,12 +151,19 @@ public class Admin {
         if (argv.length == 0) {
             displayHelp();
         }
-        Getopt g = new Getopt("admin.pl", argv, "u:p:f:xd");
+        Getopt g = new Getopt("admin.pl", argv, "o:u:p:f:xd");
         int c;
         while ((c = g.getopt()) != -1) {
             switch (c) {
                 case 'u':
                     userName = g.getOptarg();
+                    break;
+                case 'o':
+                    try {
+                        taxonomyId = Integer.parseInt(g.getOptarg());
+                    } catch (NumberFormatException e) {
+                        taxonomyId = NOT_SET;
+                    }
                     break;
                 case 'p':
                     pwd = g.getOptarg();
@@ -212,6 +226,27 @@ public class Admin {
             System.out.print("Enter Path to Precompute Config File:  ");
             fileName = in.readLine();
         }
+        if (command.equals(COMMAND_COUNT_AFFYMETRIX) && taxonomyId == NOT_SET) {
+            getTaxonomyId();
+        }
+    }
+
+    /**
+     * Prompts for an NCBI Taxonomy ID.
+     */
+    private static void getTaxonomyId() throws IOException {
+        BufferedReader in = new BufferedReader
+            (new InputStreamReader(System.in));
+        System.out.print("Enter NCBI Taxonomy Identifier:  ");
+        while (taxonomyId == NOT_SET) {
+            String line = in.readLine();
+            try {
+                taxonomyId = Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                System.out.print("Please Try Again.  Enter NCBI Taxonomy " +
+                        "Identifier:  ");
+            }
+        }
     }
 
     /**
@@ -224,19 +259,22 @@ public class Admin {
                 + "Cancer Center.");
         System.out.println("\nAdministration Program for the cPath Database");
         System.out.println("Usage:  admin.pl [OPTIONS] command");
-        System.out.println("  -u, -u=name     Database User Name");
-        System.out.println("  -p, -p=name     Database Password");
         System.out.println("  -f, -f=filename Name of File / Directory");
         System.out.println("  -d,             Shows all Debug/Log Messages");
+        System.out.println("  -u, -u=name     Database User Name");
+        System.out.println("  -p, -p=name     Database Password");
         System.out.println("  -x              Skips Validation of External "
                 + "References");
+        System.out.println("  -o, -o=id       NCBI TaxonomyID");
         System.out.println("\nWhere command is a one of:  ");
         System.out.println("  import          Imports Specified File.");
         System.out.println("                  Used to Import PSI-MI Files "
                 + "or External Reference Files.");
         System.out.println("  index           Indexes All Items in cPath");
         System.out.println("  precompute      Precomputes all queries in "
-                + "specified config file");
+                + "specified config file.");
+        System.out.println("  count_affy      Counts Records with Affymetrix "
+                + "identifiers.");
         System.exit(1);
     }
 }

@@ -142,7 +142,7 @@ public class ExternalDatabaseRecord {
      * @return URL String.
      */
     public String getUrlWithId(String primaryId) {
-        if (url != null) {
+        if (url != null && url.trim().length() > 0) {
             return url.replaceAll("%ID%", primaryId);
         } else {
             return null;

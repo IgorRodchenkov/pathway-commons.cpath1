@@ -279,7 +279,7 @@ public class ImportPsiToCPath {
                     //  Conditionally Update the Interactor Record with
                     //  new external references.
                     UpdatePsiInteractor updater = new UpdatePsiInteractor
-                            (protein, record);
+                            (record, protein);
                     updater.doUpdate();
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumInteractorsFound();

@@ -86,13 +86,13 @@ public class UpdatePsiInteractor extends UpdateInteractor {
     /**
      * Constructor.
      *
-     * @param newProtein      new protein Record, scheduled for import.
      * @param existingProtein Existing Protein, in database.
+     * @param newProtein      new protein Record, scheduled for import.
      * @throws ValidationException Invalid XML
      * @throws MarshalException    Error Marshaling to XML.
      */
-    public UpdatePsiInteractor(ProteinInteractorType newProtein,
-            CPathRecord existingProtein) throws ValidationException,
+    public UpdatePsiInteractor(CPathRecord existingProtein,
+            ProteinInteractorType newProtein) throws ValidationException,
             MarshalException {
         PsiUtil psiUtil = new PsiUtil();
         ExternalReference newRefs[] = psiUtil.extractRefs(newProtein);
@@ -103,35 +103,29 @@ public class UpdatePsiInteractor extends UpdateInteractor {
     /**
      * Constructor.
      *
-     * @param ref1              External Reference 1.
-     * @param ref2              External Reference 2.
+     * @param newRef            New Reference to Add.
+     * @param existingRef       Existing Reference.
      * @param refsAreNormalized References have already been normalized.
      * @throws DaoException Error Adding new data to database.
      */
-    public UpdatePsiInteractor(ExternalReference ref1, ExternalReference ref2,
-            boolean refsAreNormalized)
+    public UpdatePsiInteractor(ExternalReference existingRef,
+            ExternalReference newRef, boolean refsAreNormalized)
             throws DaoException {
         ExternalReference newRefs[] = new ExternalReference[2];
         if (!refsAreNormalized) {
-            normalizeExternalRef(ref1);
-            normalizeExternalRef(ref2);
+            normalizeExternalRef(newRef);
+            normalizeExternalRef(existingRef);
         }
-        newRefs[0] = ref1;
-        newRefs[1] = ref2;
+        newRefs[0] = existingRef;
+        newRefs[1] = newRef;
 
-        //  Find  Match to Existing Interactor
+        //  Find  Match to Existing Interactor (if possible).
         DaoExternalLink linker = new DaoExternalLink();
-        ArrayList records1 = linker.lookUpByExternalRef(ref1);
+        ArrayList records1 = linker.lookUpByExternalRef(existingRef);
         try {
             if (records1.size() > 0) {
                 CPathRecord record = (CPathRecord) records1.get(0);
                 extractExistingRefs(record);
-            } else {
-                ArrayList records2 = linker.lookUpByExternalRef(ref2);
-                if (records2.size() > 0) {
-                    CPathRecord record = (CPathRecord) records2.get(0);
-                    extractExistingRefs(record);
-                }
             }
             setNewExternalRefs(newRefs);
         } catch (MarshalException e) {

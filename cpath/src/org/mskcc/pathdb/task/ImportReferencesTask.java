@@ -144,11 +144,11 @@ public class ImportReferencesTask extends Task {
                 setDbNames(token1, token2);
                 dbNamesSet = true;
             } else {
-                ExternalReference ref1 =
+                ExternalReference existingRef =
                         new ExternalReference(db1, token1.trim());
-                ExternalReference ref2 =
+                ExternalReference newRef =
                         new ExternalReference(db2, token2.trim());
-                updateRefs(ref1, ref2);
+                updateRefs(existingRef, newRef);
             }
         }
     }
@@ -165,15 +165,16 @@ public class ImportReferencesTask extends Task {
     /**
      * Conditionally Add External References.
      */
-    private void updateRefs(ExternalReference ref1, ExternalReference ref2)
+    private void updateRefs(ExternalReference existingRef,
+            ExternalReference newRef)
             throws DaoException {
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(verbose, pMonitor);
-        int index1 = ref1.getId().indexOf(EMPTY_FLAG);
-        int index2 = ref2.getId().indexOf(EMPTY_FLAG);
+        int index1 = existingRef.getId().indexOf(EMPTY_FLAG);
+        int index2 = newRef.getId().indexOf(EMPTY_FLAG);
         if (index1 == -1 && index2 == -1) {
             UpdatePsiInteractor updater = new UpdatePsiInteractor
-                    (ref1, ref2, true);
+                    (existingRef, newRef, true);
             boolean needsUpdating = updater.needsUpdating();
             long id = updater.getcPathId();
             if (id > -1) {
