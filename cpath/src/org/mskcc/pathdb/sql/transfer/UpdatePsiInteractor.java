@@ -46,11 +46,28 @@ public class UpdatePsiInteractor extends UpdateInteractor {
         ArrayList records = linker.lookUpByExternalRefs(newRefs);
         if (records.size() > 0) {
             CPathRecord record = (CPathRecord) records.get(0);
-            extractRefs(record);
+            extractExistingRefs(record);
         } else {
             throw new IllegalArgumentException("No matching interactor "
                     + "found for protein:  " + newProtein.getId());
         }
+        this.setNewExternalRefs(newRefs);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param newProtein      new protein Record, scheduled for import.
+     * @param existingProtein Existing Protein, in database.
+     * @throws ValidationException Invalid XML
+     * @throws MarshalException    Error Marshaling to XML.
+     */
+    public UpdatePsiInteractor(ProteinInteractorType newProtein,
+            CPathRecord existingProtein) throws ValidationException,
+            MarshalException {
+        PsiUtil psiUtil = new PsiUtil();
+        ExternalReference newRefs[] = psiUtil.extractRefs(newProtein);
+        extractExistingRefs(existingProtein);
         this.setNewExternalRefs(newRefs);
     }
 
@@ -79,12 +96,12 @@ public class UpdatePsiInteractor extends UpdateInteractor {
         try {
             if (records1.size() > 0) {
                 CPathRecord record = (CPathRecord) records1.get(0);
-                extractRefs(record);
+                extractExistingRefs(record);
             } else {
                 ArrayList records2 = linker.lookUpByExternalRef(ref2);
                 if (records2.size() > 0) {
                     CPathRecord record = (CPathRecord) records2.get(0);
-                    extractRefs(record);
+                    extractExistingRefs(record);
                 }
             }
             setNewExternalRefs(newRefs);
@@ -109,7 +126,7 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      * @throws ValidationException Invalid XML.
      * @throws MarshalException    Error Marshaling to XML.
      */
-    private void extractRefs(CPathRecord record)
+    private void extractExistingRefs(CPathRecord record)
             throws MarshalException, ValidationException {
         PsiUtil psiUtil = new PsiUtil();
         String xml = record.getXmlContent();
