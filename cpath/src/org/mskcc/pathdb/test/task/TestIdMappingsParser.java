@@ -59,14 +59,14 @@ public class TestIdMappingsParser extends TestCase {
         ArrayList list = task.parseAndGenerateList();
 
         //  Validate the first four id mappings.
-        validateIdMapRecord(0, list, "Affymetrix", "1552275_3p_s_at",
-                "Unigene", "Hs.77646");
-        validateIdMapRecord(1, list, "Unigene", "Hs.77646",
-                "Swiss-Prot", "AAH08943");
-        validateIdMapRecord(2, list, "Unigene", "Hs.77646",
-                "Swiss-Prot", "Q727A4");
-        validateIdMapRecord(3, list, "Swiss-Prot", "AAH08943",
-                "RefSeq", "NP_060241");
+        validateIdMapRecord(0, list, "AFFYMETRIX", "1552275_3p_s_at",
+                "UNIGENE", "Hs.77646");
+        validateIdMapRecord(1, list, "UNIGENE", "Hs.77646",
+                "UNIPROT", "AAH08943");
+        validateIdMapRecord(2, list, "UNIGENE", "Hs.77646",
+                "UNIPROT", "Q727A4");
+        validateIdMapRecord(3, list, "UNIPROT", "AAH08943",
+                "REF_SEQ", "NP_060241");
     }
 
     /**
@@ -90,14 +90,24 @@ public class TestIdMappingsParser extends TestCase {
         DaoIdMap dao = new DaoIdMap();
         CPathXRef xref = new CPathXRef(1, "AAH08943");
         ArrayList equivalenceList = dao.getEquivalenceList(xref);
-        CPathXRef match0 = (CPathXRef) equivalenceList.get(0);
-        CPathXRef match1 = (CPathXRef) equivalenceList.get(1);
-        CPathXRef match2 = (CPathXRef) equivalenceList.get(2);
-        CPathXRef match3 = (CPathXRef) equivalenceList.get(3);
-        assertEquals("Unigene: Hs.77646", match0.toString());
-        assertEquals("RefSeq: NP_060241", match1.toString());
-        assertEquals("Affymetrix: 1552275_3p_s_at", match2.toString());
-        assertEquals("Swiss-Prot: Q727A4", match3.toString());
+        boolean got[] = new boolean[4];
+
+        for (int i=0; i < equivalenceList.size(); i++) {
+            CPathXRef match = (CPathXRef) equivalenceList.get(i);
+            if (match.toString().equals("UNIGENE: Hs.77646")) {
+                got[0] = true;
+            } else if (match.toString().equals("REF_SEQ: NP_060241")) {
+                got[1] = true;
+            } else if (match.toString().equals("AFFYMETRIX: 1552275_3p_s_at")) {
+                got[2] = true;
+            } else if (match.toString().equals("UNIPROT: Q727A4")) {
+                got[3] = true;
+            }
+        }
+        assertTrue (got[0]);
+        assertTrue (got[1]);
+        assertTrue (got[2]);
+        assertTrue (got[3]);
 
         //  Delete all records, so that we can rerun this unit test again
         dao.deleteAllRecords();
@@ -112,9 +122,9 @@ public class TestIdMappingsParser extends TestCase {
         ExternalDatabaseRecord dbRecord1 = dao.getRecordById(db1);
         int db2 = id.getDb2();
         ExternalDatabaseRecord dbRecord2 = dao.getRecordById(db2);
-        assertEquals(expectedDb1, dbRecord1.getName());
+        assertEquals(expectedDb1, dbRecord1.getFixedCvTerm());
         assertEquals(expectedId1, id.getId1());
-        assertEquals(expectedDb2, dbRecord2.getName());
+        assertEquals(expectedDb2, dbRecord2.getFixedCvTerm());
         assertEquals(expectedId2, id.getId2());
     }
 }

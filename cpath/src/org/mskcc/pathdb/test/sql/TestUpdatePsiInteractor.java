@@ -91,13 +91,13 @@ public class TestUpdatePsiInteractor extends TestCase {
         DaoCPath cpath = new DaoCPath();
         CPathRecord record = cpath.getRecordById(id);
         String xml = record.getXmlContent();
-        //  Note that SWP has been normalized to SWISS-PROT
+        //  Note that SWP has been normalized to UNIPROT
         int index0 = xml.indexOf
-                ("<primaryRef db=\"SwissProt\" id=\"ABC123\"/>");
+                ("<primaryRef db=\"UNIPROT\" id=\"ABC123\"/>");
         //  Note that original link is still there
         int index1 = xml.indexOf("<secondaryRef db=\"PIR\" id=\"XYZ123\"/>");
         //  Note that new link is now there
-        int index2 = xml.indexOf("<secondaryRef db=\"LocusLink\" "
+        int index2 = xml.indexOf("<secondaryRef db=\"ENTREZ_GENE\" "
                 + "id=\"LOCUS123\"/>");
         assertTrue(index0 > 0);
         assertTrue(index1 > 0);

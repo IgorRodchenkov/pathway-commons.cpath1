@@ -31,7 +31,10 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.IdMapRecord;
+import org.mskcc.pathdb.model.CPathXRef;
 import org.mskcc.pathdb.sql.dao.DaoIdMap;
+
+import java.util.ArrayList;
 
 /**
  * Tests the DaoIdMap class.
@@ -100,5 +103,11 @@ public class TestDaoIdMap extends TestCase {
         //  Verify that record is indeed deleted.
         record2 = dao.getRecord(record);
         assertTrue(record2 == null);
+    }
+
+    public void testEntrezGene () throws Exception {
+        DaoIdMap dao = new DaoIdMap();
+        CPathXRef ref = new CPathXRef (3, "NP_005894");
+        ArrayList list = dao.getEquivalenceList(ref);
     }
 }

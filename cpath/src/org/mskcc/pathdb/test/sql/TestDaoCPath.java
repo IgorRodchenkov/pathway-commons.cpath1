@@ -129,7 +129,7 @@ public class TestDaoCPath extends TestCase {
         DaoExternalLink dao = new DaoExternalLink();
         ArrayList links = dao.getRecordsByCPathId(record.getId());
         ExternalLinkRecord link = (ExternalLinkRecord) links.get(0);
-        assertEquals(DB_NAME_0, link.getExternalDatabase().getName());
+        assertEquals("UniProt", link.getExternalDatabase().getName());
         assertEquals(DB_ID_0, link.getLinkedToId());
 
         link = (ExternalLinkRecord) links.get(1);

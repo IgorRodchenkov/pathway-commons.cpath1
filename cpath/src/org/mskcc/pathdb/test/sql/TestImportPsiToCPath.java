@@ -142,15 +142,15 @@ public class TestImportPsiToCPath extends TestCase {
         //  Verify that XML has been modified to include external
         //  references derived from the ID mapping subsystem.
         assertTrue(record.getXmlContent().indexOf
-                ("<primaryRef db=\"SwissProt\" id=\"Q727A4\"/>") > 0);
+                ("<primaryRef db=\"UNIPROT\" id=\"Q727A4\"/>") > 0);
         assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"Affymetrix\" "
+                ("<secondaryRef db=\"AFFYMETRIX\" "
                 + "id=\"1552275_3p_s_at\"/>") > 0);
         assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"SwissProt\" id=\"AAH08943\"/>") > 0);
+                ("<secondaryRef db=\"UNIPROT\" id=\"AAH08943\"/>") > 0);
         assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"RefSeq\" id=\"NP_060241\"/>") > 0);
+                ("<secondaryRef db=\"REF_SEQ\" id=\"NP_060241\"/>") > 0);
         assertTrue(record.getXmlContent().indexOf
-                ("<secondaryRef db=\"Unigene\" id=\"Hs.77646\"/>") > 0);
+                ("<secondaryRef db=\"UNIGENE\" id=\"Hs.77646\"/>") > 0);
     }
 }

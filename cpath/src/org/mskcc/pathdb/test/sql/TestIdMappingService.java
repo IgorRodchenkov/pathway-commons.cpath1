@@ -74,17 +74,31 @@ public class TestIdMappingService extends TestCase {
         assertEquals(3, hitList.size());
 
         //  Verify the Database List
-        //  This order is not actually guaranteed, but it is OK for the
-        //  unit test.
-        ExternalReference xref0 = (ExternalReference) hitList.get(0);
-        ExternalReference xref1 = (ExternalReference) hitList.get(1);
-        ExternalReference xref2 = (ExternalReference) hitList.get(2);
-        assertEquals("External Reference  -->  Database:  [Affymetrix], "
-                + "ID:  [1552275_3p_s_at]", xref0.toString());
-        assertEquals("External Reference  -->  Database:  [SwissProt], "
-                + "ID:  [Q727A4]", xref1.toString());
-        assertEquals("External Reference  -->  Database:  [Unigene], "
-                + "ID:  [Hs.77646]", xref2.toString());
+        boolean got1 = false;
+        boolean got2 = false;
+        boolean got3 = false;
+        for (int i=0; i<hitList.size(); i++) {
+            ExternalReference xref = (ExternalReference) hitList.get(i);
+            if (xref.toString().equals
+                    ("External Reference  -->  Database:  [UNIGENE], "
+                    + "ID:  [Hs.77646]")) {
+                    got1 = true;
+                }
+            if (xref.toString().equals
+                    ("External Reference  -->  Database:  [UNIPROT], "
+                    + "ID:  [Q727A4]")) {
+                    got2 = true;
+            }
+            if (xref.toString().equals
+                    ("External Reference  -->  Database:  [AFFYMETRIX], "
+                    + "ID:  [1552275_3p_s_at]")) {
+                    got3 = true;
+            }
+        }
+        assertTrue (got1);
+        assertTrue (got2);
+        assertTrue (got3);
+
 
         //  Delete all records, so that we can rerun this unit test again
         DaoIdMap dao = new DaoIdMap();
