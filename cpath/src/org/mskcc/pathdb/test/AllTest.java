@@ -14,6 +14,7 @@ import org.mskcc.pathdb.test.sql.SqlSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
+import org.mskcc.pathdb.test.indexer.IndexerSuite;
 
 /**
  * Runs all Unit Tests.
@@ -32,6 +33,7 @@ public class AllTest extends TestCase {
         suite.addTest(ControllerSuite.suite());
         suite.addTest(LoggerSuite.suite());
         suite.addTest(UtilSuite.suite());
+        suite.addTest(IndexerSuite.suite());
         suite.addTest(SqlSuite.suite());
         suite.addTest(WebSuite.suite());
         suite.addTest(ServiceSuite.suite());

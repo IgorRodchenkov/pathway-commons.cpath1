@@ -5,6 +5,7 @@ import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.apache.lucene.search.Hits;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -84,9 +85,7 @@ public class DataServiceController {
             } catch (EmptySetException e) {
                 xdebug.logMsg(this, "No Exact Matches Found.  "
                         + "Trying full text search");
-                LuceneIndexer lucene = new LuceneIndexer();
-                ArrayList results = lucene.executeQueryWithLookUp(uid);
-                request.setAttribute("textSearchResults", results);
+                request.setAttribute("doFullTextSearch", "true");
             }
             forwardToJsp();
         }

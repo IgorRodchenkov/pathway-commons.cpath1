@@ -14,6 +14,7 @@
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute("protocol_request");
     ArrayList interactions = (ArrayList) request.getAttribute("interactions");
+    String doFullTextSearch = (String) request.getAttribute("doFullTextSearch");
     ArrayList searchResults = (ArrayList) request.getAttribute
             ("textSearchResults");
     ProtocolException exception = (ProtocolException)
@@ -26,9 +27,8 @@
 } else if (interactions != null) { %>
     <cbio:interactionTable interactions="<%= interactions %>"
         uid="<%= protocolRequest.getUid() %>"/>
-<% } else if (searchResults != null) { %>
-    <cbio:searchResultsTable searchResults="<%= searchResults %>"
-        uid="<%= protocolRequest.getUid() %>"/>
+<% } else if (doFullTextSearch != null) { %>
+    <cbio:searchResultsTable uid="<%= protocolRequest.getUid() %>"/>
 <% } else if (showHelp != null) { %>
     <jsp:include page="../global/help.jsp" flush="true" />
 <% } else { %>

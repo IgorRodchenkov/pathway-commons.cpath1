@@ -60,7 +60,8 @@ public class LoadFullText {
             System.out.print(".");
             CPathRecord record = (CPathRecord) records.get(i);
             if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
-                lucene.addRecord(record.getXmlContent(), record.getId());
+                lucene.addRecord(record.getName(), record.getDescription(),
+                        record.getXmlContent(), record.getId());
             }
         }
         System.out.println("\nIndexing complete");

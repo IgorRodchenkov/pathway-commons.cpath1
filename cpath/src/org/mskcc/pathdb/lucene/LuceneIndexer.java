@@ -29,16 +29,27 @@ import java.util.ArrayList;
  */
 public class LuceneIndexer {
     /**
-     * XML Field Name.
+     * Lucene Field for Storing XML Content.
      */
-    public static final String FIELD_NAME_XML = "xml";
+    public static final String FIELD_XML = "xml";
 
     /**
-     * CPath Field Name.
+     *  Lucene Field for Storing Entity Name.
      */
-    public static final String FIELD_NAME_CPATH_ID = "cpath_id";
+    public static final String FIELD_NAME = "name";
+
+    /**
+     *  Lucene Field for Storing Entity Description.
+     */
+    public static final String FIELD_DESCRIPTION = "description";
+
+    /**
+     * Lucene Field for Storing CPath ID.
+     */
+    public static final String FIELD_CPATH_ID = "cpath_id";
 
     private static IndexWriter indexWriter = null;
+    private static IndexSearcher indexSearcher = null;
 
     /**
      * Initializes Index with Fresh Database.
@@ -53,12 +64,14 @@ public class LuceneIndexer {
 
     /**
      * Adds New Record to Full Text Indexer.
+     * @param name Entity Name.
+     * @param description Entity Description.
      * @param xml XML String.
      * @param cpathId CPath ID.
      * @throws ImportException Error Importing Record to Full Text Engine.
      */
-    public void addRecord(String xml, long cpathId)
-            throws ImportException {
+    public void addRecord(String name, String description, String xml,
+            long cpathId) throws ImportException {
         try {
             String dir = this.getDirectory();
             Analyzer analyzer = this.getAnalyzer();
@@ -66,9 +79,16 @@ public class LuceneIndexer {
             XmlStripper stripper = new XmlStripper();
             String terms = stripper.stripTags(xml);
             Document document = new Document();
-            document.add(Field.Text(FIELD_NAME_XML, terms));
-            document.add(Field.Keyword(FIELD_NAME_CPATH_ID,
+
+            //  XML Terms are indexed, but not stored.
+            document.add(Field.Text(FIELD_XML, terms));
+
+            //  Name, Description and ID are stored, but not indexed.
+            document.add(Field.UnIndexed(FIELD_NAME, name));
+            document.add(Field.UnIndexed(FIELD_DESCRIPTION, description));
+            document.add(Field.UnIndexed(FIELD_CPATH_ID,
                     Long.toString(cpathId)));
+
             writer.addDocument(document);
             writer.close();
         } catch (IOException e) {
@@ -93,7 +113,19 @@ public class LuceneIndexer {
      * @throws IOException Input Output Exception.
      */
     public void closeIndexWriter() throws IOException {
-        indexWriter.close();
+        if (indexWriter != null) {
+            indexWriter.close();
+        }
+    }
+
+    /**
+     * Closes the Index Searcher.
+     * @throws IOException Input Output Exception.
+     */
+    public void closeIndexSearcher() throws IOException {
+        if (indexSearcher != null) {
+            indexSearcher.close();
+        }
     }
 
     /**
@@ -104,7 +136,7 @@ public class LuceneIndexer {
     public void addRecord(String text) throws ImportException {
         try {
             Document document = new Document();
-            document.add(Field.Text(FIELD_NAME_XML, text));
+            document.add(Field.Text(FIELD_XML, text));
             indexWriter.addDocument(document);
         } catch (IOException e) {
             throw new ImportException("IOException:  " + e.getMessage());
@@ -118,93 +150,19 @@ public class LuceneIndexer {
      * @throws QueryException Error Processing Query. I
      */
     public Hits executeQuery(String term) throws QueryException {
-        IndexSearcher searcher = null;
+        indexSearcher = null;
         try {
             String dir = this.getDirectory();
-            searcher = new IndexSearcher(dir);
+            indexSearcher = new IndexSearcher(dir);
             Analyzer analyzer = this.getAnalyzer();
-            Query query = QueryParser.parse(term, FIELD_NAME_XML, analyzer);
-            Hits hits = searcher.search(query);
+            Query query = QueryParser.parse(term, FIELD_XML, analyzer);
+            Hits hits = indexSearcher.search(query);
             return hits;
         } catch (IOException e) {
+            e.printStackTrace();
             throw new QueryException("IOException:  " + e.getMessage(), e);
         } catch (ParseException e) {
             throw new QueryException("ParseException:  " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Executes Query
-     * @param term Search Term.
-     * @return Lucene Hits Object
-     * @throws QueryException Error Processing Query. I
-     */
-    private Hits executeQuery(IndexSearcher searcher, String term)
-            throws QueryException {
-        try {
-            Analyzer analyzer = this.getAnalyzer();
-            Query query = QueryParser.parse(term, FIELD_NAME_XML, analyzer);
-            Hits hits = searcher.search(query);
-            return hits;
-        } catch (IOException e) {
-            throw new QueryException("IOException:  " + e.getMessage(), e);
-        } catch (ParseException e) {
-            throw new QueryException("ParseException:  " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Executes Query with CPath LookUp.
-     * @param term Search Term.
-     * @return ArrayList of CPathResult Records.
-     * @throws QueryException Error Processing Query. I
-     */
-    public ArrayList executeQueryWithLookUp(String term)
-            throws QueryException {
-        IndexSearcher searcher = null;
-        ArrayList records = new ArrayList();
-        try {
-            String dir = this.getDirectory();
-            searcher = new IndexSearcher(dir);
-            Hits hits = this.executeQuery(searcher, term);
-            for (int i = 0; i < hits.length(); i++) {
-                Document doc = hits.doc(i);
-                float score = hits.score(i);
-                Field idField = doc.getField(LuceneIndexer.FIELD_NAME_CPATH_ID);
-                addCPathRecord(idField, score, records);
-            }
-        } catch (IOException e) {
-            throw new QueryException("IOException:  " + e.getMessage(), e);
-        } catch (DaoException e) {
-            throw new QueryException("DaoException:  " + e.getMessage(), e);
-        } finally {
-            try {
-                if (searcher != null) {
-                    searcher.close();
-                }
-            } catch (IOException e) {
-                throw new QueryException("IOException:  " + e.getMessage(), e);
-            }
-        }
-        return records;
-    }
-
-    /**
-     * Adds CPath Record to ArrayList.
-     */
-    private void addCPathRecord(Field idField, float score, ArrayList records)
-            throws DaoException {
-        DaoCPath dao = new DaoCPath();
-        if (idField != null) {
-            String idStr = idField.stringValue();
-            long cpathId = Integer.parseInt(idStr);
-            CPathRecord record = dao.getRecordById(cpathId);
-            if (record != null) {
-                CPathResult result = new CPathResult();
-                result.setRecord(record);
-                result.setScore(score);
-                records.add(result);
-            }
         }
     }
 

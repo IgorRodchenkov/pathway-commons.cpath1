@@ -31,11 +31,6 @@
     <body-content>empty</body-content>
     <description>Displays Search Results Table</description>
     <attribute>
-       <name>searchResults</name>
-       <required>true</required>
-       <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
          <name>uid</name>
          <required>true</required>
          <rtexprvalue>true</rtexprvalue>

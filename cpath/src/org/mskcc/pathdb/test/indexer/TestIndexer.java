@@ -2,15 +2,15 @@ package org.mskcc.pathdb.test.indexer;
 
 
 import junit.framework.TestCase;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.search.Hits;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.util.XmlStripper;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 /**
  * Tests the StoreXmlToIndexer and the QueryIndexer Classes.
@@ -19,6 +19,8 @@ import java.util.ArrayList;
  */
 public class TestIndexer extends TestCase {
     private static final String JUNIT_NAME = "JUNIT NAME";
+    private static final String JUNIT_DESCRIPTION = "JUNIT DESCRIPTION";
+    private static final long ID = 1234;
 
     /**
      * Tests the Full Text Indexer.
@@ -29,29 +31,34 @@ public class TestIndexer extends TestCase {
         String file = new String("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
 
-        DaoCPath dao = new DaoCPath();
-        long cpathId = dao.addRecord(JUNIT_NAME, "JUNIT_DESCRIPTION", 1234,
-                CPathRecordType.INTERACTION, xml);
-
         LuceneIndexer lucene = new LuceneIndexer();
-        lucene.addRecord(xml, cpathId);
+        lucene.initIndex();
+        lucene.addRecord(JUNIT_NAME, JUNIT_DESCRIPTION, xml, ID);
 
         //  Test with a bunch of terms.
-        query("exchange", cpathId);
-        query("factor", cpathId);
-        query("YAL036C", cpathId);
-        query("GTP GDP", cpathId);
-        query("Q07418", cpathId);
-        query("SwissProt", cpathId);
-        query("swissPROT", cpathId);
+        query("exchange");
+        query("factor");
+        query("YAL036C");
+        query("GTP GDP");
+        query("Q07418");
+        query("SwissProt");
+        query("swissPROT");
     }
 
-    private void query(String term, long cpathId) throws QueryException {
+    private void query(String term) throws QueryException,
+            IOException {
         LuceneIndexer lucene = new LuceneIndexer();
-        ArrayList records = lucene.executeQueryWithLookUp(term);
-        assertEquals(1, records.size());
-        CPathRecord record = (CPathRecord) records.get(0);
-        assertEquals(JUNIT_NAME, record.getName());
+        Hits hits = lucene.executeQuery(term);
+        assertEquals(1, hits.length());
+        Document doc = hits.doc(0);
+
+        //  Validate that we get back name, description and cpath id.
+        Field name = doc.getField(LuceneIndexer.FIELD_NAME);
+        Field description = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
+        Field id = doc.getField(LuceneIndexer.FIELD_CPATH_ID);
+        assertEquals(JUNIT_NAME, name.stringValue());
+        assertEquals(JUNIT_DESCRIPTION, description.stringValue());
+        assertEquals(Long.toString(ID), id.stringValue());
     }
 
     /**

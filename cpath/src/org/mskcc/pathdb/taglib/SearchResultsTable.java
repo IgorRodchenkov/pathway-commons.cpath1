@@ -33,12 +33,15 @@
  **/
 package org.mskcc.pathdb.taglib;
 
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.controller.ProtocolConstants;
-import org.mskcc.pathdb.lucene.CPathResult;
-import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.query.QueryException;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 /**
  * Custom JSP Tag for Displaying Search Results Table.
@@ -47,15 +50,6 @@ import java.util.ArrayList;
  */
 public class SearchResultsTable extends HtmlTable {
     private String uid;
-    private ArrayList searchResults;
-
-    /**
-     * Sets Interaction Parameter.
-     * @param searchResults ArrayList of CPathResult objects.
-     */
-    public void setSearchResults(ArrayList searchResults) {
-        this.searchResults = searchResults;
-    }
 
     /**
      * Sets UID Parameter.
@@ -69,33 +63,38 @@ public class SearchResultsTable extends HtmlTable {
      * Start Tag Processing.
      * @throws DaoException Database Access Error.
      */
-    protected void subDoStartTag() throws DaoException {
+    protected void subDoStartTag() throws DaoException, QueryException,
+            IOException {
+        LuceneIndexer lucene = new LuceneIndexer();
+        Hits hits = lucene.executeQuery(uid);
         startTable("Matching Results found for:  " + uid.toUpperCase());
         String headers[] = {"Rank", "Score", "Name", "Description",
                             "Interactions"};
         createTableHeaders(headers);
-        outputResults();
+        outputResults(hits);
         endTable();
+        lucene.closeIndexSearcher();
     }
 
     /**
      * Outputs Interaction Data.
      */
-    private void outputResults() throws DaoException {
-        if (searchResults.size() == 0) {
+    private void outputResults(Hits hits) throws IOException {
+        if (hits.length()== 0) {
             append("<TR>");
             append("<TD COLSPAN=4>No Matching Results found!");
             append("</TR>");
         }
-        for (int i = 0; i < searchResults.size(); i++) {
+        for (int i = 0; i < hits.length(); i++) {
             append("<TR>");
-            CPathResult result = (CPathResult) searchResults.get(i);
-            CPathRecord record = result.getRecord();
+            Document doc = hits.doc(i);
             outputDataField(Integer.toString(i));
-            outputDataField(Float.toString(result.getScore()));
-            outputDataField(record.getName());
-            outputDataField(record.getDescription());
-            outputInteractionLink(record.getName());
+            outputDataField(Float.toString(hits.score(i)));
+            Field name = doc.getField(LuceneIndexer.FIELD_NAME);
+            Field desc = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
+            outputDataField(name.stringValue());
+            outputDataField(desc.stringValue());
+            outputInteractionLink(name.stringValue());
             append("</TR>");
         }
     }

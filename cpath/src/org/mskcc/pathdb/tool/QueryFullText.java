@@ -66,11 +66,11 @@ public class QueryFullText {
         } else {
             System.out.println("Showing Top Hit Only:");
             Document doc = hits.doc(0);
-            Field cpathId = doc.getField(LuceneIndexer.FIELD_NAME_CPATH_ID);
+            Field cpathId = doc.getField(LuceneIndexer.FIELD_CPATH_ID);
             if (cpathId != null) {
                 System.out.println("cPath ID:  " + cpathId.stringValue());
             }
-            Field xml = doc.getField(LuceneIndexer.FIELD_NAME_XML);
+            Field xml = doc.getField(LuceneIndexer.FIELD_XML);
             if (xml != null) {
                 System.out.println("Data record:  \n" + xml.stringValue());
             }
