@@ -16,6 +16,15 @@
         </p>
      </section>
 
+    <section name="Latest Stable Release">
+        <p>
+            The latest stable release of cPath is version:  0.3.2.
+        </p>
+        <p>
+        <A HREF="stable/cpath_beta_03_2.tar.gz">Download Latest Stable Release</A> [tar.gz format]
+        </p>
+     </section>
+
     <section name="Automated Nightly Snapshots">
         <p>
         Automated Nightly Snapshots are created every 24 hours directly from
