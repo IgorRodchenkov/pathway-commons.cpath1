@@ -4,12 +4,6 @@
   <taskdef resource="META-INF/Anteater.tasks"/>
   <typedef resource="META-INF/Anteater.types"/>
 
-  <property name="base_url"
-        value="http://www.cbio.mskcc.org/cpath"/>
-
-  <property name="cpath_home"
-      value="${base_url}/index.jsp"/>
-
   <target name="prepare">
     <delete dir="logs"/>
     <delete dir="reports"/>
@@ -18,34 +12,33 @@
   </target>
 
   <target name="check-website">
-    <echo>Now downloading and testing: ${cpath_home}</echo>
-
-    <group id="cpath_pages">
+  
+    <!-- ############################## -->
+    <!-- Test Groups                                           -->
+    <!-- ############################## -->
+    <group id="cpath" inherits="default">
         <logger type="xml"/>
         <logger type="color"/>
+        <property name="host" value="www.cbio.mskcc.org"/>
+        <property name="port" value="80"/>
         <property name="haltonerror" value="false"/>
     </group>
+    
+    <group id="cpath_pages" inherits="cpath"/>
+    <group id="cpath_search" inherits="cpath"/>
+    <group id="cpath_web_service_api" inherits="cpath"/>
 
-    <group id="cpath_search">
-        <logger type="xml"/>
-        <logger type="color"/>
-        <property name="haltonerror" value="false"/>
-    </group>
-
-    <group id="cpath_web_service_api">
-        <logger type="xml"/>
-        <logger type="color"/>
-        <property name="haltonerror" value="false"/>
-    </group>
-
-    <httpRequest group="cpath_pages" href="${cpath_home}"
+    <!-- ############################## -->
+    <!-- Main cPath Pages                                    -->
+    <!-- ############################## -->
+    <httpRequest group="cpath_pages" path="/cpath/index.jsp"
         description="Validate Home Page">
            <match>
             <regexp>cancer pathway database</regexp>
           </match>
     </httpRequest>
 
-    <httpRequest group="cpath_pages" href="${base_url}/browse.do"
+    <httpRequest group="cpath_pages" path="/cpath/browse.do"
         description="Validate Browse By Organism">
         <match>
             <regexp>Homo sapiens</regexp>
@@ -53,7 +46,7 @@
         </match>
     </httpRequest>
 
-    <httpRequest group="cpath_pages" href="${base_url}/dbStats.do"
+    <httpRequest group="cpath_pages" path="/cpath/dbStats.do"
         description="Validate Database Stats">
       <match>
           <regexp>Number of Interactions</regexp>
@@ -61,15 +54,18 @@
       </match>
     </httpRequest>
 
-    <httpRequest group="cpath_pages" href="${base_url}/cytoscape.do"
+    <httpRequest group="cpath_pages" path="/cpath/cytoscape.do"
         description="Validate Cytoscape PlugIn Page">
       <match>
           <regexp>Cytoscape PlugIn</regexp>
       </match>
     </httpRequest>
 
+    <!-- ############################## -->
+    <!-- cPath Search                                          -->
+    <!-- ############################## -->
     <httpRequest group="cpath_search"
-        href="${base_url}/webservice.do?version=1.0&amp;q=dna+repair&amp;format=html&amp;organism=&amp;cmd=get_by_keyword"
+        path="/cpath/webservice.do?version=1.0&amp;q=dna+repair&amp;format=html&amp;organism=&amp;cmd=get_by_keyword"
         description="Validate Interaction View with Regular Text Search">
       <match>
           <regexp>DNA repair protein</regexp>
@@ -77,7 +73,7 @@
     </httpRequest>
 
     <httpRequest group="cpath_search"
-        href="${base_url}/webservice.do?version=1.0&amp;cmd=get_by_keyword&amp;format=html&amp;startIndex=0&amp;organism=9606&amp;maxHits=10"
+        path="/cpath/webservice.do?version=1.0&amp;cmd=get_by_keyword&amp;format=html&amp;startIndex=0&amp;organism=9606&amp;maxHits=10"
         description="Validate Interaction View, Browse By Organism">
       <match>
           <regexp>Homo sapiens</regexp>
@@ -86,7 +82,7 @@
     </httpRequest>
 
     <httpRequest group="cpath_search"
-          href="${base_url}/webservice.do?version=1.0&amp;cmd=get_by_keyword&amp;q=interactor_id%3A307&amp;format=html&amp;startIndex=0&amp;organism=&amp;maxHits=10"
+    path="/cpath/webservice.do?version=1.0&amp;cmd=get_by_keyword&amp;q=interactor_id%3A307&amp;format=html&amp;startIndex=0&amp;organism=&amp;maxHits=10"
           description="Validate Protein View">
         <match>
             <regexp>DNA repair protein RAD51 homolog 1</regexp>
@@ -96,8 +92,11 @@
         </match>
       </httpRequest>
 
+    <!-- ############################## -->
+    <!--  cPath Web Services API                         -->
+    <!-- ############################## -->
     <httpRequest group="cpath_web_service_api"
-        href="${base_url}/webservice.do?version=1.0&amp;cmd=get_by_keyword&amp;q=&amp;format=xml&amp;startIndex=0&amp;organism=9606&amp;maxHits=10"
+        path="/cpath/webservice.do?version=1.0&amp;cmd=get_by_keyword&amp;q=&amp;format=xml&amp;startIndex=0&amp;organism=9606&amp;maxHits=10"
         description="Validate XML Web Services API">
       <match>
           <regexp>Tyrosine-protein kinase LYN</regexp>
