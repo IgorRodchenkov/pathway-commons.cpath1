@@ -36,9 +36,14 @@ public class LuceneIndexer {
     public static final String FIELD_ALL = "all";
 
     /**
-     * Lucene Field for Storing CPath ID.
+     * Lucene Field for Storing Intractor CPath ID.
      */
-    public static final String FIELD_CPATH_ID = "cpath_id";
+    public static final String FIELD_INTERACTOR_ID = "interactor_id";
+
+    /**
+     * Lucene Field for Storing Interaction CPath ID.
+     */
+    public static final String FIELD_INTERACTION_ID = "interaction_id";
 
     /**
      * Text Index Directory.
