@@ -46,15 +46,36 @@ import java.util.HashSet;
 public class ExternalReferenceUtil {
 
     /**
-     * Extracts only thoses references which can be used for Protein
-     * Unification.  Automatically filters out all LINK_OUT references.
+     * Utility method for creating a union of two lists of External References.
      *
-     * @param refs Array of External References.
-     * @return Filtered Array of External References.
-     * @throws DaoException Error accessing database.
+     * @param refs1   Array of External Reference Objects.
+     * @param refs2   Array of External Reference Objects.
+     * @return union of refs1 and ref2.
      */
-    public static ExternalReference[] extractProteinUnificationRefs
-            (ExternalReference[] refs) throws DaoException {
+    public static ExternalReference[] createUnifiedList(ExternalReference[]
+            refs1, ExternalReference[] refs2) {
+        ExternalReference union[] = new ExternalReference[refs1.length
+               + refs2.length];
+        for (int i = 0; i < refs1.length; i++) {
+            union[i] = refs1[i];
+        }
+        for (int i = 0; i < refs2.length; i++) {
+            union[refs1.length+i] = refs2[i];
+        }
+        return union;
+    }
+
+    /**
+     * Filters External Reference List by Reference Type.
+     *
+     * @param refs Array of External Reference Objects.
+     * @param refType Reference Type to filter for.
+     * @return Array of External Reference Objects of type refType.
+     * @throws DaoException Error Accessing Database.
+     */
+    public static ExternalReference[] filterByReferenceType
+            (ExternalReference[] refs, ReferenceType refType)
+            throws DaoException {
         DaoExternalDb dao = new DaoExternalDb();
         ArrayList filteredRefList = new ArrayList();
         if (refs == null) {
@@ -64,8 +85,7 @@ public class ExternalReferenceUtil {
             ExternalReference ref = refs[i];
             String dbName = ref.getDatabase();
             ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(dbName);
-            if (dbRecord.getDbType().equals
-                    (ReferenceType.PROTEIN_UNIFICATION)) {
+            if (dbRecord.getDbType().equals (refType)) {
                 filteredRefList.add(ref);
             }
         }
@@ -75,20 +95,18 @@ public class ExternalReferenceUtil {
     }
 
     /**
-     * Utility method for creating a union of two lists of External References.
+     * Removes Duplicates from List.
      *
-     * @param refList ArrayList of External Reference Object.
-     * @param refs    Array of External Objects.
-     * @return ArrayList of ExternalReference Objects.
+     * @param refs Array of External Reference Objects.
+     * @return Array of External Reference Objects.
      */
-    public static ArrayList createUnifiedList(ArrayList refList,
-            ExternalReference[] refs) {
-        HashSet union = new HashSet();
-        union.addAll(refList);
-        for (int i = 0; i < refs.length; i++) {
-            union.add(refs[i]);
+    public static ExternalReference[] removeDuplicates (ExternalReference
+            refs[]) {
+        HashSet set = new HashSet();
+        for (int i=0; i<refs.length; i++) {
+            set.add (refs[i]);
         }
-        ArrayList list = new ArrayList(union);
-        return list;
+        return (ExternalReference[]) set.toArray
+                (new ExternalReference[set.size()]);
     }
 }
