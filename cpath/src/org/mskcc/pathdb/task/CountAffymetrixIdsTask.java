@@ -134,6 +134,7 @@ public class CountAffymetrixIdsTask extends Task {
                     hasOneOrMoreAffyIds = true;
                 }
             }
+            pMonitor.incrementCurValue();
             if (hasOneOrMoreAffyIds) {
                 affyCount++;
             }
