@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <body>
+        <section name="Phase 10:  About this Document">
+            <P>This document describes functionality that will be built in
+                Phase 10 of the Cytoscape / cPath project. The overall goals
+                of Phase 10 are to:  complete the Beta 2 version of the Cytoscape
+                cPath PlugIn,  import HPRD into cPath, fix misc. cPath bugs
+                currently logged in Mantis, and repackage the PSI-MI / SOFT
+                PlugIns for Cytoscape 2.0.  In addition, Phase 10 will include
+                javadocing of the current jar/class loader classes in Cytoscape,
+                and background reading for the cPath scientific use case(s).
+            </P>
+        </section>
+        <section name="1.  Complete Beta 2 Version of cPath PlugIn">
+            <P>
+            We released the Beta 1 version of the cPath PlugIn a few months ago.
+            However, this version of the PlugIn has two serious limitations:
+                <UL>
+                <LI>you can only load a maximum of 100 interactions at a time.</LI>
+                <LI>you cannot interactively select nodes / edges and view
+            details about them.
+                </LI>
+            </UL>
+            Both of these issues must be resolved in order for us to proceed
+            with our scientific use cases.
+            </P>
+
+            <subsection name="1.1  Enable Importing of Larger Data Sets">
+                <P>This is really a two part problem.  The first part
+                    requires changes to the cPath Web Services API and
+                    is already complete.  The new API enables client applications
+                    to select specific pages of results -- for example, if a 
+                    client applications wants 500 interactions, it can make 10
+                    different requests and receive 50 interactions back for each
+                    request.  Full details are available in the revised
+                    web services help page (now checked into cvs).
+                </P>
+                <P>The second part of the problem is to update the cPath PlugIn
+                    to make use of the new Web Services API.
+                </P>
+                <P>Specific details include:
+                <UL>
+                    <LI>Add support for new web services API (obviously).</LI>
+                    <LI>Add Progress bar for monitoring "Get All Interactions"
+                    w/ estimated time left.  We can get fairly accurate time
+                    estimates, and display these to the users (very important).</LI>
+                    <LI>Add a stop button, so that a user can cancel long
+                    requests (very important).</LI>
+                    <LI>Add a confirmation panel.  For example, if a user
+                    requests all human interactions, we pop open a panel that
+                    says:  "XXXX interactions match your query.  This will
+                    take approximate YYY minutes.  Do you want to proceed?"
+                    (very important).</LI>
+                    <LI>Add error handling for the event that cPath / network
+                    is interrupted.  For example, what happens if we have 500
+                    of 1000 interactions, and the network link is broken?</LI>
+                    <LI>Add error handling for low memory.  We should add
+                    some memory monitor so that we can inform users of low-
+                    memory problems before a generic Out of Memory error occurs.
+                    </LI>
+                    <LI>Add Warnings to the application mappers.  Warnings
+                    are not as severe as exceptions, and can be displayed to
+                    the end user.</LI>
+                </UL>
+                </P>
+            </subsection>
+            <subsection name="1.2  Enable Selection of Nodes / Edges">
+                <P>
+                In the Beta 1 version of the PlugIn, we provided a interactive tree UI
+                where users could select an interaction or an interactor
+                in the left panel, and immediately view details in the right
+                panel.  With potentially thousands of interactions,
+                the tree UI is no longer practical, and the Beta 2 version will
+                no longer contain it.  However, we will maintain the interaction
+                / interactor detail panels.  When a user selects a node or edge
+                in the main Cytoscape window, these panels will immediately 
+                display details.  This mainly requires that we update the
+                PlugIn UI, and listen for specific node / edge selection events.
+                </P>
+            </subsection>
+        </section>
+        <section name="2.  Import HPRD into cPath">
+            <P>
+            This is a long-standing item.  Some of the difficulty comes from
+            erroneous data from HPRD, and some of the difficultly comes from
+            existing cPath code that does not properly validate PSI-MI data
+            (e.g. garbage in, garbage out).  A few bugs in Mantis address
+            the issue (See <A HREF="http://www.cbio.mskcc.org/cytoscape/bugs/bug_view_page.php?bug_id=0000458">Bug #458</A>,
+            <A HREF="http://www.cbio.mskcc.org/cytoscape/bugs/bug_view_page.php?bug_id=0000497">Bug #497</A>.)
+            </P>
+        </section>
+        <section name="3.  Misc Bug Fixes">
+            <P>We have 15 existing bugs in Mantis.  Ethan and Gary need to prioritize
+            these and fix them.</P>
+        </section>
+        <section name="4.  Create PSI-MI Import / Export PlugIn for Cytoscape 2.0">
+            <P>Create a separate PSI-MI Import / Export PlugIn for Cytoscape 2.0,
+            and post to the cytoscape.org web site.  This should be very easy.</P>
+        </section>
+        <section name="5.  Create SOFT Import PlugIn for Cytoscape 2.0">
+            <P>Create a separate SOFT Import PlugIn for Cytoscape 2.0, and post to
+            the cytoscape.org web site.</P>
+        </section>
+        <section name="6.  Cytoscape Specific Items">
+            <P>Most of Phase 10 will be devoted to cPath and the cPath PlugIn.
+            However, there are a few useful items of Cytoscape work that are
+            included in this phase:
+            <UL>
+                <LI>Misc. changes to the cytoscape.org web site.</LI>
+                <LI>As first step towards refactoring the
+                Cytoscape jar/class loader, I will take a crack at commenting
+                /javadocing the existing code.  Before I make any changes,
+                I want to understand the current code more completely --
+                and will solicit documentation/history/comments for Andew,
+                Rowan, Paul, and anyone else who might have knowledge of
+                the existing code.</LI>
+                <LI>Evaluate <A HREF="http://jakarta.apache.org/commons/discovery/">
+                Jakarta Commons Discovery Library</A>, for possible inclusion
+                in Cytoscape core.
+                </LI>
+            </UL>
+            </P>
+        </section>
+        <section name="7.  Background Reading">
+            <P>
+            As part of background reading for our scientific use cases,
+            I'll be starting with four articles intially sent to me by Gary:
+            </P>
+            <P>
+            <UL>
+                <LI>Lockhart DJ, Winzeler EA, Genomics, gene expression and DNA arrays.
+                [<A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=pubmed&amp;dopt=Abstract&amp;list_uids=10866209">Pub Med Reference</A>]</LI>
+                <LI>Vijver MJ, et. al.,
+                A gene-expression signature as a predictor of survival in breast cancer.
+                [<A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=pubmed&amp;dopt=Abstract&amp;list_uids=12490681">Pub Med Reference</A>]</LI>
+                <LI>Huang ES, Black EP, Dressman H, West M, Nevins JR.,
+                Gene expression phenotypes of oncogenic signaling pathways.
+                [<A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=pubmed&amp;dopt=Abstract&amp;list_uids=12963829">Pub Med Reference</A>]</LI>
+                <LI>Evans WE, Relling MV.,
+                Moving towards individualized medicine with pharmacogenomics.
+                [<A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=pubmed&amp;dopt=Abstract&amp;list_uids=15164072">Pub Med Reference]</A></LI>
+            </UL>
+            </P>
+        </section>
+    </body>
+</document>
