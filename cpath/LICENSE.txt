@@ -3,6 +3,10 @@
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander
  **
+ ** Sander Lab - Computational Biology Center
+ ** Memorial Sloan-Kettering Cancer Center, New York
+ ** http://cbio.mskcc.org
+ **
  ** This library is free software; you can redistribute it and/or modify it
  ** under the terms of the GNU Lesser General Public License as published
  ** by the Free Software Foundation; either version 2.1 of the License, or
