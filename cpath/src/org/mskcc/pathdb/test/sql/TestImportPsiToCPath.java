@@ -2,7 +2,6 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.schemas.psi.Entry;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractionList;

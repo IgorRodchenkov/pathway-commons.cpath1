@@ -54,7 +54,8 @@ import java.util.HashMap;
  *                  interactor.  If a match is found, the cPath record
  *                  is returned.
  *                  </LI>
- *                  <LI>If the interactor exists, extract its cPath ID.</LI>
+ *                  <LI>If the interactor exists, extract its cPath ID
+ *                  and add any new external references.</LI>
  *                  <LI>Else
  *                      <OL>
  *                          <LI>Add the new interactor XML Blob and all
@@ -106,12 +107,12 @@ public class ImportPsiToCPath {
      * Adds Specified PSI-MI Record.
      * @param xml PSI-MI XML Record.
      * @param validateExternalRefs Validates External References.
+     * @param verbose verbosity flag.
      * @return Import Summary Object.
      * @throws ImportException Indicates Error in Import.
      */
     public ImportSummary addRecord(String xml, boolean validateExternalRefs,
-            boolean verbose)
-            throws ImportException {
+            boolean verbose) throws ImportException {
         summary = new ImportSummary();
         idMap = new HashMap();
         try {
@@ -183,7 +184,7 @@ public class ImportPsiToCPath {
 
             //  Validate All Interactions
             InteractionList interactions = entry.getInteractionList();
-            for (int j=0; j < interactions.getInteractionCount(); j++) {
+            for (int j = 0; j < interactions.getInteractionCount(); j++) {
                 if (verbose) {
                     System.out.print(".");
                 }
@@ -196,7 +197,7 @@ public class ImportPsiToCPath {
                         String db = primaryRef.getDb();
                         String id = primaryRef.getId();
                         ExternalReference refs[] = new ExternalReference[1];
-                        refs[0] = new ExternalReference (db, id);
+                        refs[0] = new ExternalReference(db, id);
                         linker.validateExternalReferences(refs);
                     }
                 }
@@ -233,6 +234,11 @@ public class ImportPsiToCPath {
                         externalLinker.lookUpByExternalRefs(refs);
                 //  Step 3.1.2 - 3.1.3
                 if (record != null) {
+                    //  Conditionally Update the Interactor Record with
+                    //  new external references.
+                    UpdatePsiInteractor updater = new UpdatePsiInteractor
+                            (protein);
+                    updater.doUpdate();
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumInteractorsFound();
                 } else {
@@ -353,7 +359,7 @@ public class ImportPsiToCPath {
                 String db = primaryRef.getDb();
                 String id = primaryRef.getId();
                 refs = new ExternalReference[1];
-                refs[0] = new ExternalReference (db, id);
+                refs[0] = new ExternalReference(db, id);
             }
         }
 

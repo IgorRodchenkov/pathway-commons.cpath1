@@ -116,7 +116,7 @@ public class DaoInternalLink {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT * FROM INTERNAL_LINK WHERE CPATH_ID_A = ?"
-                    + " OR CPATH_ID_B = ?");
+                    + " OR CPATH_ID_B = ? ORDER BY INTERNAL_LINK_ID");
             pstmt.setLong(1, cpathId);
             pstmt.setLong(2, cpathId);
             rs = pstmt.executeQuery();

@@ -111,9 +111,9 @@ public class DaoExternalLink {
      * @return Matching cPath Record or Null.
      * @throws DaoException Error Retrieving Data.
      */
-    public CPathRecord lookUpByExternalRef (ExternalReference ref)
+    public CPathRecord lookUpByExternalRef(ExternalReference ref)
             throws DaoException {
-        ExternalReference refs[] = new ExternalReference [1];
+        ExternalReference refs[] = new ExternalReference[1];
         refs[0] = ref;
         return lookUpByExternalRefs(refs);
     }
