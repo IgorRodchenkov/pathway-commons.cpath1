@@ -16,7 +16,7 @@ Mutually agreeable software development process guidelines should be documented 
 
 <section name="Version control">
 <p>
-	Version control tracks and coordinates revisions to a set of resources (typically program source files) and makes it easier for multiple authors to revise files and maintain document integrity.  The cPath project uses CVS (Concurrent Versions System - http://www.cvshome.org/).  There are more advanced version control systems available these days, but CVS is free, the de facto standard and sufficient for our needs.
+Version control tracks and coordinates revisions to a set of resources (typically program source files) and makes it easier for multiple authors to revise files and maintain document integrity.  The cPath project uses CVS (Concurrent Versions System - http://www.cvshome.org/).  There are more advanced version control systems available these days, but CVS is free, the de facto standard and sufficient for our needs.
 </p>
 </section>
 
@@ -37,16 +37,16 @@ cPath is using the open-source mantis bug-tracking system (http://mantisbt.sourc
 
 <section name="Regression testing">
 <p>
-	Regression testing is the developer centric process of running an automated test suite to find out if recent changes have broken the software.  cPath uses the freely available JUnit tool (http://www.junit.org), which requires unit tests to be written for each test.  An example test would read in a file and check to see that values read from the file are properly stored in memory after the read operation.
+Regression testing is the developer centric process of running an automated test suite to find out if recent changes have broken the software.  cPath uses the freely available JUnit tool (http://www.junit.org), which requires unit tests to be written for each test.  An example test would read in a file and check to see that values read from the file are properly stored in memory after the read operation.
 </p>
 <p>
-	It is recommended that developers write unit tests, that these tests are organized into suites, and that all tests be organized to run from the single ant 'test' target.  This makes regression testing easier.  Unit tests are currently organized so they can be run individually and locally if desired.  Full details are available in the cPath.unitTests.AllTests class.
+It is recommended that developers write unit tests, that these tests are organized into suites, and that all tests be organized to run from the single ant 'test' target.  This makes regression testing easier.  Unit tests are currently organized so they can be run individually and locally if desired.  Full details are available in the cPath.unitTests.AllTests class.
 </p>
 </section>
 
 <section name="Integration and release testing">
 <p>
-	This user-centric quality assurance process involves a typical user testing the application on a typical platform.  Currently cPath does not have dedicated QA staff, but a minimal integration test process is performed by the development team members before any major software release.
+This user-centric quality assurance process involves a typical user testing the application on a typical platform.  Currently cPath does not have dedicated QA staff, but a minimal integration test process is performed by the development team members before any major software release.
 </p>
 </section>
 
@@ -62,7 +62,7 @@ There are four types of documentation considered here.
 <LI>Others?</LI>
 </UL>
 <LI>User guides are typical user documentation.  cPath currently has some useful user documentation (e.g. an installation guide), although the newest features are not always described.</LI>
-<LI>Development (technical) documentation describes architecture, APIs, classes and methods.  cPath uses the freely available JavaDoc system to document the code and has been using the freely available Maven “project comprehension” system for storing these documents in XHTML format (used by the xdocs Maven plugin).  A number of XHTML editors are freely available including Amaya and Mozile (the Mozilla editor), although we’ve found it easier to just edit these documents with a simple text editor.</LI>
+<LI>Development (technical) documentation describes architecture, APIs, classes and methods.  cPath uses the freely available JavaDoc system to document the code and has been using the freely available Maven 'project comprehension' system for storing these documents in XHTML format (used by the xdocs Maven plugin).  A number of XHTML editors are freely available including Amaya and Mozile (the Mozilla editor), although we've found it easier to just edit these documents with a simple text editor.</LI>
 <LI>Project management documents include software status reports and implementation plans.  These should be posted on the Maven site.</LI>
 </UL>
 </p>
@@ -85,7 +85,7 @@ cPath is currently built using Ant scripts.  Ant also automates testing and othe
 
 <section name="User testing protocol (integration and release testing)">
 <p>
-A minimal set of user tests should be performed before a public cPath release.  This should include some basic tests, such as loading up a few data sets and testing the web site.  This should be done at least to ensure basic functionality before a release.  Ideally, more testing should be done before a release, but the project currently doesn’t have a dedicated QA person.  If one becomes available, then this protocol should be expanded.
+A minimal set of user tests should be performed before a public cPath release.  This should include some basic tests, such as loading up a few data sets and testing the web site.  This should be done at least to ensure basic functionality before a release.  Ideally, more testing should be done before a release, but the project currently doesn't have a dedicated QA person.  If one becomes available, then this protocol should be expanded.
 </p>
 </section>
 
