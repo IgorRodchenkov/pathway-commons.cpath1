@@ -171,7 +171,7 @@ public class ImportReferencesTask extends Task {
         int index2 = newRef.getId().indexOf(EMPTY_FLAG);
         if (index1 == -1 && index2 == -1) {
             UpdatePsiInteractor updater = new UpdatePsiInteractor
-                    (existingRef, newRef, true);
+                    (existingRef, newRef, true, pMonitor);
             boolean needsUpdating = updater.needsUpdating();
             long id = updater.getcPathId();
             if (id > -1) {
