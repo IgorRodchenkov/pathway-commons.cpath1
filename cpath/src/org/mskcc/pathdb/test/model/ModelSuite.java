@@ -47,7 +47,7 @@ public class ModelSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestIdMapRecord.class);
+        suite.addTestSuite(TestBackgroundReferencePair.class);
         suite.setName("Model Tests");
         return suite;
     }

@@ -30,25 +30,25 @@
 package org.mskcc.pathdb.test.model;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.model.BackgroundReferenceRecord;
+import org.mskcc.pathdb.model.BackgroundReferencePair;
 import org.mskcc.pathdb.model.ReferenceType;
 
 /**
- * Tests the IdMapRecord.
+ * Tests the Background Reference Pair Object.
  *
  * @author Ethan Cerami
  */
-public class TestIdMapRecord extends TestCase {
+public class TestBackgroundReferencePair extends TestCase {
 
     /**
-     * Tests the HashCode Generator for the IdMapRecord.
+     * Tests the HashCode Generator for the Background Reference Pair Object.
      */
     public void testHashCode() {
         //  These two records are functionally equivalent
-        BackgroundReferenceRecord record1 = new BackgroundReferenceRecord
-                (1, "ABC", 2, "XYZ", ReferenceType.IDENTITY);
-        BackgroundReferenceRecord record2 = new BackgroundReferenceRecord
-                (2, "XYZ", 1, "ABC", ReferenceType.IDENTITY);
+        BackgroundReferencePair record1 = new BackgroundReferencePair
+                (1, "ABC", 2, "XYZ", ReferenceType.PROTEIN_UNIFICATION);
+        BackgroundReferencePair record2 = new BackgroundReferencePair
+                (2, "XYZ", 1, "ABC", ReferenceType.PROTEIN_UNIFICATION);
 
         //  They should therefore result in identical hash codes
         assertTrue(record1.hashCode() == record2.hashCode());
