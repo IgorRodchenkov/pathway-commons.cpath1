@@ -28,7 +28,7 @@ public class RequestAdapter {
         String command = request.getCommand();
         if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID)) {
-            query = addField(LuceneIndexer.FIELD_INTERACTOR_ID, query);
+            query = addField(LuceneConfig.FIELD_INTERACTOR_ID, query);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF)) {
             query = addField(PsiInteractionToIndex.FIELD_INTERACTOR, query);

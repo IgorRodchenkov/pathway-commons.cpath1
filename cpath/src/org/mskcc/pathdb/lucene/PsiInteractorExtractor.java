@@ -57,19 +57,24 @@ public class PsiInteractorExtractor {
     public PsiInteractorExtractor(EntrySet entrySet, String queryStr,
             XDebug xdebug) throws IOException, ParseException,
             ValidationException, MarshalException {
-        this.xdebug = xdebug;
-        this.entrySet = entrySet;
-        interactors = new HashSet();
-        analyzer = new StandardAnalyzer();
-        LuceneIndexer indexer = new LuceneIndexer();
-        reader = IndexReader.open(indexer.getDirectory());
-        if (queryStr != null) {
-            query = QueryParser.parse(queryStr, LuceneIndexer.FIELD_ALL,
-                    analyzer);
-            query = query.rewrite(reader);
-            highLighter = new QueryHighlightExtractor(query, analyzer,
-                    START_SPAN_TAG + COLOR + END_TAG, END_SPAN_TAG);
-            checkAllEntries();
+        try {
+            this.xdebug = xdebug;
+            this.entrySet = entrySet;
+            interactors = new HashSet();
+            analyzer = new StandardAnalyzer();
+            reader = IndexReader.open(LuceneConfig.getLuceneDirectory());
+            if (queryStr != null) {
+                query = QueryParser.parse(queryStr, LuceneConfig.FIELD_ALL,
+                        analyzer);
+                query = query.rewrite(reader);
+                highLighter = new QueryHighlightExtractor(query, analyzer,
+                        START_SPAN_TAG + COLOR + END_TAG, END_SPAN_TAG);
+                checkAllEntries();
+            }
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
         }
     }
 

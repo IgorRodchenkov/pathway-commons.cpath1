@@ -82,10 +82,10 @@ public class PsiInteractionToIndex implements ItemToIndex {
         //  Index All Terms -->  Default Field.
         String xml = xmlAssembly.getXmlString();
         String terms = XmlStripper.stripTags(xml);
-        fields.add(Field.Text(LuceneIndexer.FIELD_ALL, terms));
+        fields.add(Field.Text(LuceneConfig.FIELD_ALL, terms));
 
         //  Index cPath ID
-        fields.add(Field.Text(LuceneIndexer.FIELD_INTERACTION_ID,
+        fields.add(Field.Text(LuceneConfig.FIELD_INTERACTION_ID,
                 Long.toString(cpathId)));
     }
 
@@ -128,7 +128,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
             appendOrganismTokens(protein, organismTokens);
         }
         fields.add(Field.Text(FIELD_INTERACTOR, interactorTokens.toString()));
-        fields.add(Field.Text(LuceneIndexer.FIELD_INTERACTOR_ID,
+        fields.add(Field.Text(LuceneConfig.FIELD_INTERACTOR_ID,
                 interactorIdTokens.toString()));
         fields.add(Field.Text(FIELD_ORGANISM, organismTokens.toString()));
     }

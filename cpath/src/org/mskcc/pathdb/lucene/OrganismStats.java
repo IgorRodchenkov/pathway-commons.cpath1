@@ -71,17 +71,13 @@ public class OrganismStats {
             IOException {
         DaoOrganism dao = new DaoOrganism();
         organismListSortedByName = dao.getAllOrganisms();
-        LuceneIndexer indexer = new LuceneIndexer();
-        try {
-            for (int i = 0; i < organismListSortedByName.size(); i++) {
-                Organism organism = (Organism) organismListSortedByName.get(i);
-                String query = new String(PsiInteractionToIndex.FIELD_ORGANISM
-                        + ":" + organism.getTaxonomyId());
-                Hits hits = indexer.executeQuery(query);
-                organism.setNumInteractions(hits.length());
-            }
-        } finally {
-            indexer.closeIndexSearcher();
+        LuceneReader indexer = new LuceneReader();
+        for (int i = 0; i < organismListSortedByName.size(); i++) {
+            Organism organism = (Organism) organismListSortedByName.get(i);
+            String query = new String(PsiInteractionToIndex.FIELD_ORGANISM
+                    + ":" + organism.getTaxonomyId());
+            Hits hits = indexer.executeQuery(query);
+            organism.setNumInteractions(hits.length());
         }
 
         //  Clone and Sort by Number of Interactions
