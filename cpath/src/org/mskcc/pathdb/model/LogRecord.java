@@ -75,7 +75,11 @@ public class LogRecord {
      * @return Log Priority.
      */
     public String getPriority() {
-        return priority;
+        if (priority == null) {
+            return NA_STRING;
+        } else {
+            return priority;
+        }
     }
 
     /**
@@ -93,7 +97,11 @@ public class LogRecord {
      * @return Log Message.
      */
     public String getMessage() {
-        return message;
+        if (message == null) {
+            return NA_STRING;
+        } else {
+            return message;
+        }
     }
 
     /**
@@ -111,7 +119,11 @@ public class LogRecord {
      * @return Stack Trace.
      */
     public String getStackTrace() {
-        return stackTrace;
+        if (stackTrace == null) {
+            return NA_STRING;
+        } else {
+            return stackTrace;
+        }
     }
 
     /**
@@ -129,7 +141,11 @@ public class LogRecord {
      * @return Web URL.
      */
     public String getWebUrl() {
-        return webUrl;
+        if (webUrl == null) {
+            return NA_STRING;
+        } else {
+            return webUrl;
+        }
     }
 
     /**
