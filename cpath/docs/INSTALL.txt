@@ -1,0 +1,72 @@
+This document describes the procedure for installing cPath.
+
+System Requirements:
+--------------------
+To install cPath, you must have the following installed locally:
+
+1.  mySQL:  Information available at:  http://www.mysql.com/.
+2.  Apache Tomcat Server, 4.1X or above:  
+	Information available at:  http://jakarta.apache.org/tomcat/
+	Note that cPath has not been tested on Apache Tomcat, 5.X or above.
+3.  Apache Ant:  Information available at:  http://ant.apache.org/
+
+Step-by-Step Instructions:
+--------------------------
+
+1.  If you have not already done so, install mySQL, Apache Tomcat, and Ant locally.
+Once you have verified that the installations are working correctly, proceed to step 2.
+
+2.  Create a mysql user for cPath.  For easiest installation, use the following:
+
+	user:  		tomcat
+	password:	kitty
+
+If you choose a different user/password combination, see Appendix A below.
+
+Instructions on adding new mySQL users is available online at: 
+http://www.mysql.com/doc/en/Adding_users.html
+
+3.  Load the cPath Tables.  To do so:
+
+cd [CPATH_ROOT]/dbData
+mysql -u tomcat -p < cpath.sql
+
+You will be prompted for a password.  Enter the value:  "kitty".
+
+4.  Load a Demo Set of Sample data
+
+cd [CPATH_ROOT]/dbData
+mysql -u tomcat -p < demo.sql
+
+You will again be prompted for a password.  Enter the value:  "kitty".
+
+5.  Create the Web Application Archive for cPath.
+
+cd [CPATH_ROOT]
+ant war
+
+In the [CPATH_ROOT]/dist directory, you will now find cpath.war
+
+6.  Copy cpath.war to [JAKARTA_TOMCAT_DIR]/webapps and restart Apache Tomcat.
+
+7.  Open a web browser, and go to:  http://localhost:8080/cpath
+
+Verify that you can see the cPath Home Page.
+
+8.  As a final step, you must run the full text indexer.
+
+a.  Go to:  http://localhost:8080/cpath/adminHome.do
+b.  Select the link:  "Run Full Text Indexer" -- full indexing of the demo set
+takes approximately 30 seconds.
+
+Appendix A:  Creating a CPath MySQL User
+----------------------------------------
+
+If you choose a mySQL user other than user=tomcat/password=kitty, you must
+update two configuration files:
+
+[CPATH_ROOT]/config/config-JDBC.properties;  and
+[CPATH_ROOT]/web/WEB-INF/web.xml
+
+Replace the words tomcat/kitty with your own username/password.
+

@@ -6,10 +6,7 @@
 # Generation Time: Sep 22, 2003 at 03:16 PM
 # Server version: 4.0.12
 # PHP Version: 4.1.2
-# Database : `grid`
 # --------------------------------------------------------
-#
-# Dumping data for table `orf_info`
 #
 
 use cpath;
