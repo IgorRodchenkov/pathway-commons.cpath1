@@ -58,11 +58,11 @@
                 <TD>Bad Data Format (data format not recognized)</TD>
             </TR>
             <TR>
-                <TD>452</TD>
+                <TD>460</TD>
                 <TD>Bad Request (missing arguments)</TD>
             </TR>
             <TR>
-                <TD>453</TD>
+                <TD>470</TD>
                 <TD>Version Not Supported</TD>
             </TR>
             <TR>
