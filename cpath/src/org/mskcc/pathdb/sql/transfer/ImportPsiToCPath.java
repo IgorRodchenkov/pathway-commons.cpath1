@@ -43,6 +43,7 @@ import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ConsoleUtil;
 import org.mskcc.pathdb.util.PsiUtil;
+import org.mskcc.pathdb.util.ExternalReferenceUtil;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -318,7 +319,7 @@ public class ImportPsiToCPath {
                 // identification.  For example, filter out all GO and
                 // InterPro references.
                 ExternalReference[] filteredRefs =
-                        psiUtil.filterOutNonIdReferences(refs);
+                        ExternalReferenceUtil.filterOutNonIdReferences(refs);
 
                 ArrayList records = externalLinker.lookUpByExternalRefs
                         (filteredRefs);
@@ -491,7 +492,7 @@ public class ImportPsiToCPath {
         // identification.  For example, filter out all GO, PubMed and
         // InterPro references.
         ExternalReference[] filteredRefs =
-                psiUtil.filterOutNonIdReferences(refs);
+                ExternalReferenceUtil.filterOutNonIdReferences(refs);
         DaoExternalLink linker = new DaoExternalLink();
         DaoCPath cpath = new DaoCPath();
         ArrayList records = linker.lookUpByExternalRefs(filteredRefs);
