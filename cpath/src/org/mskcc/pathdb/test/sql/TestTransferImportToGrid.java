@@ -26,7 +26,7 @@ public class TestTransferImportToGrid extends TestCase {
      * Tests Data Transfer.
      * @exception Exception All Exceptions.
      */
-    public void testTransfer () throws Exception {
+    public void testTransfer() throws Exception {
         RegisterCPathServices.registerServices();
         addSampleRecord();
         TransferImportToGrid transfer = new TransferImportToGrid(false);
@@ -36,7 +36,7 @@ public class TestTransferImportToGrid extends TestCase {
         ReadInteractions service = (ReadInteractions) factory.getService
                 (CPathConstants.READ_INTERACTIONS_FROM_GRID);
         ArrayList interactions = service.getInteractions("p53");
-        assertEquals (4, interactions.size());
+        assertEquals(4, interactions.size());
     }
 
     /**
@@ -46,7 +46,7 @@ public class TestTransferImportToGrid extends TestCase {
             NoSuchAlgorithmException, SQLException, ClassNotFoundException {
         ContentReader reader = new ContentReader();
         //File file = new File ("testData/psi_subway.xml");
-        File file = new File ("testData/dip_psi.xml");
+        File file = new File("testData/dip_psi.xml");
         String psi = reader.retrieveContentFromFile(file);
 
         DatabaseImport dbImport = new DatabaseImport();

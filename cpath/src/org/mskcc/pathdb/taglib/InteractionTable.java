@@ -121,7 +121,7 @@ public class InteractionTable extends HtmlTable {
             for (int i = 0; i < refs.length; i++) {
                 String db = refs[i].getDatabase();
                 String id = refs[i].getId();
-                if (id.length()> 0){
+                if (id.length() > 0) {
                     append("<LI>" + db);
                     append(":  ");
                     String url = links.getExternalLink(db, id);

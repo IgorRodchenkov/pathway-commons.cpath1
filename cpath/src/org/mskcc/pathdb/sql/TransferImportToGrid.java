@@ -27,7 +27,7 @@ public class TransferImportToGrid {
      * Constructor.
      * @param verbose Turn verbosity on or off.
      */
-    public TransferImportToGrid (boolean verbose) {
+    public TransferImportToGrid(boolean verbose) {
         this.verbose = verbose;
     }
 
@@ -39,28 +39,28 @@ public class TransferImportToGrid {
      * @throws MapperException Error Mapping to PSI.
      * @throws DataServiceException Error Connecting to Data Service.
      */
-    public void transferData ()
+    public void transferData()
             throws SQLException, ClassNotFoundException,
             IOException, MapperException, DataServiceException {
-        outputVerbose ("Transferring Import Records");
+        outputVerbose("Transferring Import Records");
         dbImport = new DatabaseImport();
         ArrayList records = dbImport.getAllImportRecords();
-        if (records.size()==0) {
-            outputVerbose ("No records to transfer");
+        if (records.size() == 0) {
+            outputVerbose("No records to transfer");
         }
-        for (int i=0; i<records.size(); i++) {
+        for (int i = 0; i < records.size(); i++) {
             ImportRecord record = (ImportRecord) records.get(i);
             String status = record.getStatus();
-            outputVerbose ("Checking record:  "+record.getImportId()+
-                        ", Status:  "+record.getStatus());
+            outputVerbose("Checking record:  " + record.getImportId()
+                    + ", Status:  " + record.getStatus());
             if (status.equals(DatabaseImport.STATUS_NEW)) {
-                outputVerbose ("   -->  Transferring record");
+                outputVerbose("   -->  Transferring record");
                 transferRecord(record);
             } else {
-                outputVerbose ("    -->  Already Transferred");
+                outputVerbose("    -->  Already Transferred");
             }
         }
-        outputVerbose ("Transfer Complete");
+        outputVerbose("Transfer Complete");
     }
 
     /**
@@ -75,7 +75,7 @@ public class TransferImportToGrid {
      * Conditionally output messages to the console.
      * @param message User message.
      */
-    private void outputVerbose (String message) {
+    private void outputVerbose(String message) {
         if (verbose) {
             System.out.println(message);
         }
@@ -84,7 +84,7 @@ public class TransferImportToGrid {
     /**
      * Transfers Single Import Record.
      */
-    private void transferRecord (ImportRecord record) throws MapperException,
+    private void transferRecord(ImportRecord record) throws MapperException,
             DataServiceException, ClassNotFoundException, SQLException {
         ArrayList interactions = new ArrayList();
         String data = record.getData();

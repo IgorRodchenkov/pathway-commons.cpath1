@@ -156,7 +156,7 @@ public class DatabaseImport {
      * @throws SQLException Error connecting to database.
      * @throws ClassNotFoundException Error locating correct SQL driver.
      */
-    public boolean markRecordAsTransferred (int importID) throws SQLException,
+    public boolean markRecordAsTransferred(int importID) throws SQLException,
             ClassNotFoundException {
         Connection con = getConnection();
         PreparedStatement pstmt = con.prepareStatement
@@ -164,7 +164,7 @@ public class DatabaseImport {
         pstmt.setString(1, STATUS_TRANSFERRED);
         pstmt.setInt(2, importID);
         int rows = pstmt.executeUpdate();
-        return (rows>0) ? true : false;
+        return (rows > 0) ? true : false;
     }
 
     /**
