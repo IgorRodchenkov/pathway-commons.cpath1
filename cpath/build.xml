@@ -10,6 +10,9 @@
 
 	<!-- The lib directory -->
 	<property name="lib.dir" value="lib"/>
+	
+	<!-- The log directory -->
+	<property name="log.home" value="log"/>
 
 <!-- ===================== Property Definitions =========================== -->
 
@@ -181,6 +184,7 @@
    description="Delete old build and dist directories">
     <delete dir="${build.home}"/>
     <delete dir="${dist.home}"/>
+    <delete dir="${log.home}"/>
   </target>
 
 
@@ -216,6 +220,10 @@
     <copy todir="${build.home}/WEB-INF/lib">
       <fileset dir="${lib.dir}" includes="**/*.jar"/>
     </copy>
+
+   <!-- Copy oscache.properties -->
+   <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/oscache.properties"/>
+
   </target>
 
 <!-- ==================== Dist Target ===================================== -->
@@ -351,6 +359,7 @@
     <mkdir  dir="${build.home}"/>
     <mkdir  dir="${build.home}/WEB-INF"/>
     <mkdir  dir="${build.home}/WEB-INF/classes"/>
+    <mkdir  dir="${log.home}"/>
 
 
     <!-- Copy static content of this web application -->
