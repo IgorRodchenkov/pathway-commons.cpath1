@@ -114,6 +114,7 @@ public class OrganismTable extends HtmlTable {
         StringBuffer url = new StringBuffer
                 ("browse.do?" + SORT_BY_PARAMETER + "="
                 + targetSortBy + "&" + SORT_ORDER_PARAMETER + "=");
+        String title = "Sort Organisms by " + columnHeading;
         if (userSortBy.equals(targetSortBy)) {
             String iconUrl, iconGif;
             append("<td bgcolor=#aaaaaa>");
@@ -124,14 +125,16 @@ public class OrganismTable extends HtmlTable {
                 iconUrl = new String(url.toString() + SORT_ASC);
                 iconGif = "icon_sortdown.gif";
             }
-            append("<A HREF='" + iconUrl + "'><B>" + columnHeading + "</B></A>");
+            append("<A TITLE = '"  + title + " 'HREF='" + iconUrl
+                    + "'><B>" + columnHeading + "</B></A>");
             append("&nbsp;&nbsp;&nbsp;");
-            append("<a href='" + iconUrl + "'>"
+            append("<a TITLE = '" + title + " 'HREF='" + iconUrl + "'>"
                     + "<IMG SRC='jsp/images/" + iconGif + "' border=0></A>");
         } else {
             String colUrl = new String(url.toString() + SORT_DESC);
             append("<td bgcolor=#cccccc>");
-            append("<A HREF='" + colUrl + "'><B>" + columnHeading + "</B></A>");
+            append("<A TITLE = '" + title + "' HREF='" + colUrl
+                    + "'><B>" + columnHeading + "</B></A>");
         }
         append("</td>");
     }
@@ -175,7 +178,9 @@ public class OrganismTable extends HtmlTable {
                 request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
                 request.setFormat(ProtocolConstants.FORMAT_HTML);
                 String url = request.getUri();
-                outputDataField("<A HREF='" + url + "'>"
+                outputDataField("<A HREF='" + url + "' TITLE='" +
+                        "View All Records for Organism:  "
+                        + organism.getSpeciesName() +"'>"
                         + organism.getSpeciesName() + "</A>");
                 outputDataField(formatter.format
                         (organism.getNumInteractions()));

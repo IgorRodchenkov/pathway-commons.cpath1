@@ -188,7 +188,8 @@ public class InteractionTable extends HtmlTable {
         this.append("<td colspan=2>" + pagerLinks + "</td>");
         this.append("<td colspan=2 align=right>");
         this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
-        outputLink("View PSI-MI XML Format", psiUrl);
+        outputLink("View PSI-MI XML Format", psiUrl,
+                "View Data in PSI-MI XML Format");
         this.append("</td>");
         this.endRow();
 
@@ -322,7 +323,7 @@ public class InteractionTable extends HtmlTable {
             }
             String url = this.getOrganismLink(taxonomyId);
             append("<TD class='cpath3'>"
-                    + "<A TITLE='Get All Records for Organism:  "
+                    + "<A TITLE='View All Records for Organism:  "
                     + fullName + "' HREF='" + url + "'>"
                     + fullName + "</A></TD>");
         }
@@ -341,7 +342,7 @@ public class InteractionTable extends HtmlTable {
             currentIndex++;
         }
         String label = TagUtil.getLabel(name);
-        append("<A TITLE='Link to Protein View' "
+        append("<A TITLE='View Protein Details' "
                 + "HREF='" + link + "'>" + label + "</A>");
         if (isSelfInteracting) {
             append("[Self Interacting]");
@@ -403,7 +404,8 @@ public class InteractionTable extends HtmlTable {
                     String url = "http://dip.doe-mbi.ucla.edu/dip/DIPview."
                             + "cgi?IK=" + trucatedId;
                     append(db + ":  ");
-                    append("<A HREF='" + url + "'>" + id + "</A>");
+                    append("<A TITLE='External Link to: DIP' "
+                            + "HREF='" + url + "'>" + id + "</A>");
                 } else {
                     append(db + ":  " + id);
                 }
@@ -449,7 +451,7 @@ public class InteractionTable extends HtmlTable {
     private void outputPmid(DbReferenceType primaryRef) {
         String pmid = primaryRef.getId();
         String url = this.getPubMedLink(pmid);
-        append("PMID:  <A TITLE='Link to PubMed Reference'"
+        append("PMID:  <A TITLE='External Link to PubMed Reference'"
                 + " HREF='" + url + "'>" + pmid + "</A>");
     }
 
@@ -551,7 +553,7 @@ public class InteractionTable extends HtmlTable {
             append("- " + db.getName() + ": ");
             if (link.getWebLink() != null) {
                 outputLink(link.getLinkedToId(), link.getWebLink(),
-                        "Link to:  " + db.getName());
+                        "External Link to:  " + db.getName());
             } else {
                 append(link.getLinkedToId());
             }

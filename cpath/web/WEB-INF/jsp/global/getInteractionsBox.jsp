@@ -124,11 +124,13 @@
         <span style="text-align:right">
             <% if (searchOptionsFlag != null
                     && searchOptionsFlag.booleanValue() == true) { %>
-                <A HREF="toggleSearchOptions.do">[Hide Options...]</A>
+                <A TITLE="Hide Search Options"
+                    HREF="toggleSearchOptions.do">[Hide Options...]</A>
             <% } else { %>
             <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
                 value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
-            <A HREF="toggleSearchOptions.do">[Show Options...]</A>
+            <A TITLE="Show Search Options"
+                HREF="toggleSearchOptions.do">[Show Options...]</A>
             <% } %>
         </span>
 

@@ -36,7 +36,9 @@
             String uri = pRequest.getUri();
         %>
         <div>
-            <A HREF='<%= uri %>'><%= organism.getSpeciesName()%></A>
+            <A
+                TITLE='View All Records for Organism: <%= organism.getSpeciesName().trim() %>'
+                HREF='<%= uri %>'><%= organism.getSpeciesName()%></A>
         </div>
         <% } %>
         <div>
