@@ -20,6 +20,8 @@ cPath Functionality Issues:
 	---> current priority:  medium.
 7.  For HTML front end of cPath query API: paginate results (only text index results currently paginated)
 	---> current priority:  low.
+8.  Support content-length calculation of PSI-MI queries, where possible, to support more accurate progress metering on the client side.  We might be able to easily do it for queries that are cached and for the precomputed queries.  For queries that aren't, we could at least provide updates of the parsing progress as it happens (Rob's idea)
+	---> Current priority: low.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
