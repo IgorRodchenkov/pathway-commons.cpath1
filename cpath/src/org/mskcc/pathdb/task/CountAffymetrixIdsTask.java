@@ -69,7 +69,7 @@ public class CountAffymetrixIdsTask extends Task {
         this.outputMsg("Counting Affymetrix IDs for Organism:  " + taxonomyId);
         this.taxonomyId = taxonomyId;
         this.execute();
-        this.outputMsg("Total Number of Records for Organism:  "
+        this.outputMsg("\nTotal Number of Records for Organism:  "
                 + this.totalNumRecords);
         if (totalNumRecords > 0) {
             double percent = (affyCount / (double) totalNumRecords) * 100.0;
