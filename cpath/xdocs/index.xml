@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>cPath Developer Site</title>
+  </properties>
+
+  <body>
+    <section name="About cPath">
+        <p>
+        cPath is a freely available cancer pathway database.
+        We are building this as a resource to the community.
+        Currently, basic protein-protein interaction functionality
+        is available. We expect to make a preliminary version of
+        cPath available to the public in early 2004. In the near
+        future, we also plan to make cPath BioPax compatibile.
+        </p>
+        <p>
+        cPath is currently being developed by the
+            <A HREF="http://cbio.mskcc.org">Computational Biology Center</A>
+            of <A HREF="http://www.mskcc.org">Memorial Sloan-Kettering
+            Cancer Center.</A>
+        </p>
+    </section>
+    <section name="About the Developer Site">
+    <p>
+    The goal of this site is to provide timely information for cPath developers.
+    The site is automatically updated every 24 hours, and provides a snapshot
+    of all development work, currently checked into CVS.  Here, you can browse
+    the latest JavaDocs, Source Code, and automatically generated reports.
+    You can also browse the latest release notes, installation instructions,
+    and technical architecture documents.
+    </p>
+    </section>
+  </body>
+</document>

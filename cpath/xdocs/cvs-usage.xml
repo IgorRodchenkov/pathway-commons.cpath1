@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>CVS Repository</title>
+  </properties>
+
+  <body>
+    <section name="Web Access to the Repository">
+      <p>
+      We are planning to offer Web Access to our CVS repository
+      via CVS Web.  Check back soon.
+      </p>
+     </section>
+    <section name="Download via Anonymous CVS">
+      <p>
+      We are planning to offer Anonymous CVS access soon.  Please
+      check back soon.
+      </p>
+     </section>
+  </body>
+</document>

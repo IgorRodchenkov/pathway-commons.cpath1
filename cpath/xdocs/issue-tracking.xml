@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>Bug/Issue Tracking</title>
+  </properties>
+
+  <body>
+    <section name="Bug/Issue Tracking">
+        <p>
+        We currently use the open-source Mantis Bug Tacking tool
+        to track all bugs and issues related to cPath.
+        </p>
+        <p>
+        Our bug tracker is located at:
+            <A HREF="http://www.cbio.mskcc.org/cytoscape/bugs/main_page.php">
+            http://www.cbio.mskcc.org/cytoscape/bugs/main_page.php
+            </A>
+        </p>
+     </section>
+  </body>
+</document>

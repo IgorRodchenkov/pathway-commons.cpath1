@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>Release Notes</title>
+  </properties>
+
+  <body>
+    <section name="Release 0.2 Beta">
+<P>
+<UL>
+<LI>
+Added cPath Administrator Functionality:  Administrator can now run the
+full text indexer, and upload files for import.  Administrator can also
+monitor long-term tasks, such as importing of large PSI-MI XML documents.
+Admin page is now also password-protected.
+</LI>
+<LI>Created cPath Diagnostics page to perform routine tests and verify
+correct installation.
+</LI>
+<LI>Added support for loading of external references.  Users can use the admin.pl
+command line utility or the Admin page to import references.
+</LI>
+<LI>Added generic framework for pre-computing specific cPath queries.  Queries
+can be run from the admin.pl script or set to run on a *nix cron job.
+</LI>
+<LI>Performed load-testing via Apache JMeter.  JMeter config scripts are now
+              available in config/cpath_load_testing_plan.jmx.
+</LI>
+<LI>Added new page for displaying Interactor specific information, including:
+name, organism, and all external references.
+</LI>
+<LI>Updated the Installation notes to include information re:  cPath
+diagnostics page, Tiny Monitor, and "where to look when things go wrong."
+</LI>
+<LI>Added common stylesheets from <A HREF="http://style.tigris.org">
+http://style.tigris.org</A>.
+</LI>
+<LI>Added HTML filtering for all incoming data to prevent Cross-Site
+Scripting attacks.  Implemented recommendations in
+<A HREF="http://www.cert.org/tech_tips/malicious_code_mitigation.html">
+CERT advisory.</A>
+</LI>
+</UL>
+</P>
+</section>
+  </body>
+</document>

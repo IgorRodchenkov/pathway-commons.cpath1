@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>Tech Docs</title>
+  </properties>
+
+  <body>
+    <section name="Architecture Guide">
+        <p>
+        This PDF Document provides an architectural overview
+        of cPath.  Information about database schema, data access
+        code, and web application configuration is provided.
+        </p>
+        <p>
+        [<A HREF="architecture.pdf">Download PDF</A>]
+        </p>
+     </section>
+     <section name="Installation Guide">
+        <p>
+        This PDF Document provides detailed instructions on installing
+        cPath locally.
+        </p>
+        <p>
+        [<A HREF="installation.pdf">Download PDF</A>]
+        </p>
+     </section>
+  </body>
+</document>

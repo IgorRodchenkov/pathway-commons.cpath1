@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Maven xdoc Plugin">
+
+  <title>Maven xdoc Plugin</title>
+
+  <body>
+    <links>
+      <item name="cBio"  href="http://cbio.mskcc.org/"/>
+    </links>
+    <menu name="Project Status">
+        <item name="Current To Do List"      href="/todo.html"/>
+        <item name="Release Notes"          href="/release.html"/>
+    </menu>
+    <menu name="Tech Docs">
+          <item name="Tech Docs Index"      href="tech_docs.html"/>
+	      <item name="Architecture Guide"   href="/architecture.pdf"/>
+	      <item name="Installation Guide"   href="/installation.pdf"/>
+    </menu>
+  </body>
+</project>
