@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Imports a single PSI-MI record into cPath.
@@ -294,7 +295,7 @@ public class ImportPsiToCPath {
      */
     private void processInteractors(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
-            IOException, MissingDataException {
+            MissingDataException, IOException {
         DaoExternalLink externalLinker = new DaoExternalLink();
         pMonitor.setCurrentMessage("Step 3 of 4:  Process all Interactors");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
@@ -335,7 +336,22 @@ public class ImportPsiToCPath {
                             + " in cPath,  " + "based on xrefs:  "
                             + refListText);
                 } else {
-                    saveInteractor(protein, refs);
+                    //  Query Id Mapping SubSystem for other identifiers
+                    refs = queryIdMappingService (protein, refs);
+
+                    //  Save the interactor to the database
+                    try {
+                        saveInteractor(protein, refs);
+                    } catch (IllegalArgumentException e) {
+                        pMonitor.setCurrentMessage("\nError occurred while "
+                                + "processing interator:  "
+                                + protein.getId());
+                        pMonitor.setCurrentMessage("Containing XRefs:");
+                        for (int k=0; k<refs.length; k++) {
+                            pMonitor.setCurrentMessage(refs[k].toString());
+                        }
+                        throw e;
+                    }
                     summary.incrementNumInteractorsSaved();
                 }
             }
@@ -385,7 +401,6 @@ public class ImportPsiToCPath {
             ExternalReference[] refs) throws MarshalException,
             ValidationException, DaoException, IOException {
         DaoCPath cpath = new DaoCPath();
-
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = marshalProtein(protein);
         String name = protein.getNames().getShortLabel();
@@ -540,5 +555,39 @@ public class ImportPsiToCPath {
         marshaller.setValidation(false);
         marshaller.marshal(interaction);
         return writer.toString();
+    }
+
+    /**
+     * Queries the ID Mapping Subsystem for Equivalent Ids.
+     * @param protein Protein Interactor Type Object.
+     * @param refs    Array of External Reference Objects.
+     * @return Array of External Reference Objects.
+     */
+    private ExternalReference[] queryIdMappingService
+            (ProteinInteractorType protein, ExternalReference[] refs)
+            throws DaoException {
+        //  Only check id mapping service if we have existing references.
+        if (refs != null && refs.length > 0) {
+            IdMappingService idService = new IdMappingService();
+            ArrayList extraRefs = idService.getEquivalenceList(refs);
+
+            //  If we find no equivalent IDs, do nothing, and return original
+            //  list of External References.
+            if (extraRefs == null || extraRefs.size() ==0) {
+                return refs;
+            } else {
+                //  Create Union of Existing Refs plus newly discovered refs
+                ArrayList union = idService.createUnifiedList (extraRefs, refs);
+
+                //  Add Extra Refs to the PSI-MI Data Model
+                XrefType xref = protein.getXref();
+                psiUtil.addExternalReferences(xref, extraRefs);
+
+                //  Return the union list
+                return (ExternalReference[]) union.toArray(refs);
+            }
+        } else {
+            return refs;
+        }
     }
 }
