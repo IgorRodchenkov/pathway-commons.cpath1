@@ -78,6 +78,7 @@ public interface XmlAssembly {
      * See org.mskcc.pathdb.sql.assembly.CPathIdFilter for more details.
      *
      * @return XML Document String.
+     * @throws AssemblyException Error Creating XML Assembly.
      */
     String getXmlStringWithCPathIdPrefix() throws AssemblyException;
 

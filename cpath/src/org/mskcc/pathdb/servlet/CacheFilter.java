@@ -32,12 +32,10 @@ package org.mskcc.pathdb.servlet;
 import com.opensymphony.module.oscache.base.Cache;
 import com.opensymphony.module.oscache.base.NeedsRefreshException;
 import com.opensymphony.module.oscache.web.ServletCacheAdministrator;
-import com.opensymphony.module.oscache.web.filter.CacheHttpServletResponseWrapper;
 import com.opensymphony.module.oscache.web.filter.ResponseContent;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import java.io.IOException;
 
@@ -121,13 +119,13 @@ public class CacheFilter implements Filter {
             respContent.writeTo(response);
         } catch (NeedsRefreshException nre) {
             log("New cache entry, or cache entry is stale");
-            CacheHttpServletResponseWrapper cacheResponse =
-                    new CacheHttpServletResponseWrapper
-                            ((HttpServletResponse) response);
-            chain.doFilter(request, cacheResponse);
-            // Store as the cache content the result of the response
-            ResponseContent content = cacheResponse.getContent();
-            cache.putInCache(key, content);
+//            CacheHttpServletResponseWrapper cacheResponse =
+//                    new CacheHttpServletResponseWrapper
+//                            ((HttpServletResponse) response);
+//            chain.doFilter(request, cacheResponse);
+//            // Store as the cache content the result of the response
+//            ResponseContent content = cacheResponse.getContent();
+//            cache.putInCache(key, content);
         }
     }
 

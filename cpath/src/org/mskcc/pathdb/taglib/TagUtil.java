@@ -111,10 +111,6 @@ public class TagUtil {
     }
 
     private static boolean checkForExistence(String label) {
-        if (label != null && label.length() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (label != null && label.length() > 0);
     }
 }
