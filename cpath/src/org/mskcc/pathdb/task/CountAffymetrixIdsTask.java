@@ -29,18 +29,17 @@
  **/
 package org.mskcc.pathdb.task;
 
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 
-import java.util.ArrayList;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  * Given a TaxonomyId, this class locates all physical entity records
@@ -57,12 +56,14 @@ public class CountAffymetrixIdsTask extends Task {
 
     /**
      * Constructor.
+     *
      * @param taxonomyId NCBI Taxonomy ID.
+     * @param verbose Verbose Flag.  Set to true for console tools.
      * @throws DaoException Error Connecting to Database.
      */
-    public CountAffymetrixIdsTask (int taxonomyId, boolean verbose)
+    public CountAffymetrixIdsTask(int taxonomyId, boolean verbose)
             throws DaoException {
-        super ("Counting Affymetrix IDs");
+        super("Counting Affymetrix IDs");
         this.setVerbose(verbose);
         this.outputMsg("Counting Affymetrix IDs for Organism:  " + taxonomyId);
         this.taxonomyId = taxonomyId;
@@ -80,15 +81,17 @@ public class CountAffymetrixIdsTask extends Task {
 
     /**
      * Gets Total Number of Physical Entities for Organism.
+     *
      * @return integer value.
      */
-    public int getTotalNumRecords () {
+    public int getTotalNumRecords() {
         return this.totalNumRecords;
     }
 
     /**
      * Gets Number of Physical Entities for Organism that contain an Affymetrix
      * identifier.
+     *
      * @return integer value.
      */
     public int getNumRecordsWithAffymetrixIds() {
@@ -97,6 +100,7 @@ public class CountAffymetrixIdsTask extends Task {
 
     /**
      * Performs LookUp.
+     *
      * @throws DaoException Error Connecting to Database.
      */
     private void execute() throws DaoException {
@@ -114,13 +118,13 @@ public class CountAffymetrixIdsTask extends Task {
         pMonitor.setCurValue(1);
 
         //  Examine Each Physical Entity
-        for (int i=0; i < records.size(); i++) {
+        for (int i = 0; i < records.size(); i++) {
             CPathRecord record = (CPathRecord) records.get(i);
             ArrayList links =
                     externalLinker.getRecordsByCPathId(record.getId());
 
             //  Look for Affymetrix Link
-            for (int j=0; j<links.size(); j++) {
+            for (int j = 0; j < links.size(); j++) {
                 ExternalLinkRecord link = (ExternalLinkRecord) links.get(j);
                 int dbId = link.getExternalDbId();
                 if (dbId == affyDbId) {
@@ -132,6 +136,7 @@ public class CountAffymetrixIdsTask extends Task {
 
     /**
      * Looks up Internal Identifier for Affymetrix External Database.
+     *
      * @return Internal Database ID.
      * @throws DaoException Error Connecting to Database.
      */

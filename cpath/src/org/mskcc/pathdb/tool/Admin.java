@@ -34,8 +34,8 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.task.IndexLuceneTask;
 import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
+import org.mskcc.pathdb.task.IndexLuceneTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -51,7 +51,7 @@ public class Admin {
     private static final String COMMAND_INDEX = "index";
     private static final String COMMAND_IMPORT = "import";
     private static final String COMMAND_PRE_COMPUTE = "precompute";
-    private static final String COMMAND_COUNT_AFFYMETRIX= "count_affy";
+    private static final String COMMAND_COUNT_AFFYMETRIX = "count_affy";
     private static final int NOT_SET = -9999;
 
     //  User Parameters
@@ -236,15 +236,15 @@ public class Admin {
      */
     private static void getTaxonomyId() throws IOException {
         BufferedReader in = new BufferedReader
-            (new InputStreamReader(System.in));
+                (new InputStreamReader(System.in));
         System.out.print("Enter NCBI Taxonomy Identifier:  ");
         while (taxonomyId == NOT_SET) {
             String line = in.readLine();
             try {
                 taxonomyId = Integer.parseInt(line);
             } catch (NumberFormatException e) {
-                System.out.print("Please Try Again.  Enter NCBI Taxonomy " +
-                        "Identifier:  ");
+                System.out.print("Please Try Again.  Enter NCBI Taxonomy "
+                        + "Identifier:  ");
             }
         }
     }

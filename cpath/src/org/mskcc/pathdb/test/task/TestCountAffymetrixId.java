@@ -34,8 +34,17 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
 
+/**
+ * Tests the CountAffymetrixIdTask.
+ *
+ * @author Ethan Cerami.
+ */
 public class TestCountAffymetrixId extends TestCase {
 
+    /**
+     * Test the Affymetrix Counter.
+     * @throws Exception All Exceptions.
+     */
     public void test() throws Exception {
         CountAffymetrixIdsTask task = new CountAffymetrixIdsTask(562, false);
         int numRecords = task.getTotalNumRecords();
