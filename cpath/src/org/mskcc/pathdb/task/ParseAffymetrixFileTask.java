@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.task;
 
 import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.util.FileUtil;
 
 import java.io.*;
 
@@ -70,7 +71,7 @@ public class ParseAffymetrixFileTask extends Task {
             ProgressMonitor pMonitor = this.getProgressMonitor();
             pMonitor.setCurrentMessage("Parsing Affymetrix File:  " + inFile);
             pMonitor.setCurrentMessage("Analyzing Input File...");
-            int numLines = getNumLines();
+            int numLines = FileUtil.getNumLines(inFile);
             pMonitor.setCurrentMessage
                     ("Total Number of Lines in Input File:  " + numLines);
             pMonitor.setMaxValue(numLines);
@@ -154,20 +155,5 @@ public class ParseAffymetrixFileTask extends Task {
      */
     private String stripQuotes(String token) {
         return token.replaceAll("\"", "");
-    }
-
-    /**
-     * Gets Number of Lines in Input File.
-     */
-    private int getNumLines() throws IOException {
-        int numLines = 0;
-        FileReader reader = new FileReader(inFile);
-        BufferedReader buffered = new BufferedReader(reader);
-        String line = buffered.readLine();
-        while (line != null) {
-            numLines++;
-            line = buffered.readLine();
-        }
-        return numLines;
     }
 }
