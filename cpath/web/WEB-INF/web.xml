@@ -45,6 +45,11 @@
             <param-name>admin_password</param-name>
             <param-value>cpath</param-value>
         </init-param>
+        <init-param>
+            <param-name>psi_schema_location</param-name>
+            <param-value>http://psidev.sourceforge.net/mi/xml/src/MIF.xsd
+            </param-value>
+        </init-param>
         <load-on-startup/>
     </servlet>
     
