@@ -49,7 +49,7 @@ public class ProtocolSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestProtocolException.class);
         suite.addTestSuite(TestProtocolValidator.class);
-        suite.setName("Controller Tests");
+        suite.setName("Protocol Tests");
         return suite;
     }
 }
