@@ -18,56 +18,17 @@
 	<key>GraphicsList</key>
 	<array>
 		<dict>
-			<key>Bounds</key>
-			<string>{{27, 54}, {639, 261}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>ID</key>
-			<integer>123</integer>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>fill</key>
-				<dict>
-					<key>Color</key>
-					<dict>
-						<key>a</key>
-						<string>1</string>
-						<key>w</key>
-						<string>0.666667</string>
-					</dict>
-					<key>Draws</key>
-					<string>NO</string>
-					<key>FillType</key>
-					<integer>3</integer>
-					<key>GradientColor</key>
-					<dict>
-						<key>a</key>
-						<string>1</string>
-						<key>w</key>
-						<string>1</string>
-					</dict>
-				</dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-		</dict>
-		<dict>
 			<key>Class</key>
 			<string>Group</string>
 			<key>Graphics</key>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{32.674, 103.714}, {124.826, 133.928}}</string>
+					<string>{{41.674, 103.714}, {124.826, 133.928}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>118</integer>
+					<integer>14</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -108,11 +69,11 @@ UPDATE_TIME}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{157.5, 103.714}, {124.826, 133.928}}</string>
+					<string>{{166.5, 103.714}, {124.826, 133.928}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>119</integer>
+					<integer>15</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -153,11 +114,11 @@ Timestamp Updated}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{32.6742, 68.3571}, {249.652, 35.3572}}</string>
+					<string>{{41.6742, 68.3571}, {249.652, 35.3572}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>120</integer>
+					<integer>16</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -192,18 +153,19 @@ Timestamp Updated}</string>
 
 \f0\b\fs24 \cf0 \kerning1\expnd0\expndtw3
 cpath\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
 
-\fs20 \kerning1\expnd0\expndtw3
+\fs20 \cf0 \kerning1\expnd0\expndtw3
 Contains core cPath Entities}</string>
 					</dict>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{32.6742, 103.714}, {249.652, 133.928}}</string>
+					<string>{{41.6742, 103.714}, {249.652, 133.928}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>121</integer>
+					<integer>17</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -227,11 +189,11 @@ Contains core cPath Entities}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{27, 63}, {261, 180}}</string>
+					<string>{{36, 63}, {261, 180}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>122</integer>
+					<integer>18</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -252,7 +214,7 @@ Contains core cPath Entities}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>117</integer>
+			<integer>13</integer>
 			<key>Layer</key>
 			<integer>1</integer>
 		</dict>
@@ -263,11 +225,11 @@ Contains core cPath Entities}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{295.826, 93.5362}, {172.174, 100.447}}</string>
+					<string>{{34.826, 273.536}, {172.174, 100.447}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>112</integer>
+					<integer>8</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -305,11 +267,11 @@ UPDATE_TIME}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{468, 93.5362}, {172.174, 100.447}}</string>
+					<string>{{207, 273.536}, {172.174, 100.447}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>113</integer>
+					<integer>9</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -347,11 +309,11 @@ Timestamp Updated}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{295.826, 67.2413}, {344.348, 26.5179}}</string>
+					<string>{{34.826, 247.241}, {344.348, 26.5179}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>114</integer>
+					<integer>10</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -390,11 +352,11 @@ external_link}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{295.826, 93.5362}, {344.348, 100.447}}</string>
+					<string>{{34.826, 273.536}, {344.348, 100.447}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>115</integer>
+					<integer>11</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -418,11 +380,11 @@ external_link}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{288, 63}, {360, 135}}</string>
+					<string>{{27, 243}, {360, 135}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>116</integer>
+					<integer>12</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -443,7 +405,7 @@ external_link}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>111</integer>
+			<integer>7</integer>
 			<key>Layer</key>
 			<integer>1</integer>
 		</dict>
@@ -454,11 +416,11 @@ external_link}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{295.826, 229.393}, {172.174, 73.6611}}</string>
+					<string>{{34.826, 400.393}, {172.174, 73.6611}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>106</integer>
+					<integer>2</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -493,11 +455,11 @@ CPATH_ID_B}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{468, 229.393}, {172.174, 73.6611}}</string>
+					<string>{{207, 400.393}, {172.174, 73.6611}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>107</integer>
+					<integer>3</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -532,11 +494,11 @@ Reference to Second Entity}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{295.826, 210.11}, {344.348, 19.4465}}</string>
+					<string>{{34.826, 381.11}, {344.348, 19.4465}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>108</integer>
+					<integer>4</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -575,11 +537,11 @@ internal_link}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{295.826, 229.393}, {344.348, 73.6611}}</string>
+					<string>{{34.826, 400.393}, {344.348, 73.6611}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>109</integer>
+					<integer>5</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -603,11 +565,11 @@ internal_link}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{288, 207}, {360, 99}}</string>
+					<string>{{27, 378}, {360, 99}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>110</integer>
+					<integer>6</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -628,7 +590,7 @@ internal_link}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>105</integer>
+			<integer>1</integer>
 			<key>Layer</key>
 			<integer>1</integer>
 		</dict>
@@ -775,7 +737,7 @@ internal_link}</string>
 	NzY4PC9yZWFsPgoJCQkJCTwvYXJyYXk+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQu
 	dGlja2V0LmNsaWVudDwva2V5PgoJCQkJCTxzdHJpbmc+Y29tLmFwcGxlLnByaW50aW5n
 	bWFuYWdlcjwvc3RyaW5nPgoJCQkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5t
-	b2REYXRlPC9rZXk+CgkJCQkJPGRhdGU+MjAwNC0wMi0xN1QxNjoyODowMVo8L2RhdGU+
+	b2REYXRlPC9rZXk+CgkJCQkJPGRhdGU+MjAwNC0wMy0wMVQxNjoyMTozM1o8L2RhdGU+
 	CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LnN0YXRlRmxhZzwva2V5PgoJ
 	CQkJCTxpbnRlZ2VyPjA8L2ludGVnZXI+CgkJCQk8L2RpY3Q+CgkJCTwvYXJyYXk+CgkJ
 	PC9kaWN0PgoJCTxrZXk+Y29tLmFwcGxlLnByaW50LlBhZ2VGb3JtYXQuUE1BZGp1c3Rl
@@ -790,7 +752,7 @@ internal_link}</string>
 	YWw+CgkJCQkJPC9hcnJheT4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQu
 	Y2xpZW50PC9rZXk+CgkJCQkJPHN0cmluZz5jb20uYXBwbGUucHJpbnRpbmdtYW5hZ2Vy
 	PC9zdHJpbmc+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0Lm1vZERhdGU8
-	L2tleT4KCQkJCQk8ZGF0ZT4yMDA0LTAyLTE3VDE2OjI4OjAxWjwvZGF0ZT4KCQkJCQk8
+	L2tleT4KCQkJCQk8ZGF0ZT4yMDA0LTAzLTAxVDE2OjIxOjMzWjwvZGF0ZT4KCQkJCQk8
 	a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuc3RhdGVGbGFnPC9rZXk+CgkJCQkJPGlu
 	dGVnZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGljdD4KCQkJPC9hcnJheT4KCQk8L2RpY3Q+
 	CgkJPGtleT5jb20uYXBwbGUucHJpbnQuUGFwZXJJbmZvLlBNQ29uc3RyYWluZWRQYXBl
@@ -882,7 +844,7 @@ internal_link}</string>
 	<key>WindowInfo</key>
 	<dict>
 		<key>Frame</key>
-		<string>{{42, 165}, {1062, 814}}</string>
+		<string>{{105, 96}, {1062, 814}}</string>
 		<key>VisibleRegion</key>
 		<string>{{-163, -98}, {1047, 737}}</string>
 		<key>Zoom</key>

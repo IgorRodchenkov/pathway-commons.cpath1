@@ -28,7 +28,7 @@
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>57</integer>
+					<integer>8</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -67,7 +67,7 @@ CV_TERM}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>58</integer>
+					<integer>9</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -106,7 +106,7 @@ Term}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>59</integer>
+					<integer>10</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -149,7 +149,7 @@ external_db_cv}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>60</integer>
+					<integer>11</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -177,7 +177,7 @@ external_db_cv}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>61</integer>
+					<integer>12</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -198,7 +198,7 @@ external_db_cv}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>56</integer>
+			<integer>7</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -211,7 +211,7 @@ external_db_cv}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>51</integer>
+					<integer>2</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -256,7 +256,7 @@ UPDATE_TIME}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>52</integer>
+					<integer>3</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -301,7 +301,7 @@ Timestamp Updated}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>53</integer>
+					<integer>4</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -344,7 +344,7 @@ external_db}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>54</integer>
+					<integer>5</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -372,7 +372,7 @@ external_db}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>55</integer>
+					<integer>6</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -393,46 +393,7 @@ external_db}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>50</integer>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{9, 180}, {396, 315}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>ID</key>
-			<integer>49</integer>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>fill</key>
-				<dict>
-					<key>Color</key>
-					<dict>
-						<key>a</key>
-						<string>1</string>
-						<key>w</key>
-						<string>0.666667</string>
-					</dict>
-					<key>Draws</key>
-					<string>NO</string>
-					<key>FillType</key>
-					<integer>3</integer>
-					<key>GradientColor</key>
-					<dict>
-						<key>a</key>
-						<string>1</string>
-						<key>w</key>
-						<string>1</string>
-					</dict>
-				</dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>GridInfo</key>
@@ -567,7 +528,7 @@ external_db}</string>
 	MTI1PC9yZWFsPgoJCQkJCTwvYXJyYXk+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQu
 	dGlja2V0LmNsaWVudDwva2V5PgoJCQkJCTxzdHJpbmc+Y29tLmFwcGxlLnByaW50aW5n
 	bWFuYWdlcjwvc3RyaW5nPgoJCQkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5t
-	b2REYXRlPC9rZXk+CgkJCQkJPGRhdGU+MjAwNC0wMi0xN1QxNzowNzoxMlo8L2RhdGU+
+	b2REYXRlPC9rZXk+CgkJCQkJPGRhdGU+MjAwNC0wMy0wMVQxNjoyMjoyNVo8L2RhdGU+
 	CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LnN0YXRlRmxhZzwva2V5PgoJ
 	CQkJCTxpbnRlZ2VyPjA8L2ludGVnZXI+CgkJCQk8L2RpY3Q+CgkJCTwvYXJyYXk+CgkJ
 	PC9kaWN0PgoJCTxrZXk+Y29tLmFwcGxlLnByaW50LlBhZ2VGb3JtYXQuUE1BZGp1c3Rl
@@ -582,7 +543,7 @@ external_db}</string>
 	ZWFsPgoJCQkJCTwvYXJyYXk+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0
 	LmNsaWVudDwva2V5PgoJCQkJCTxzdHJpbmc+Y29tLmFwcGxlLnByaW50aW5nbWFuYWdl
 	cjwvc3RyaW5nPgoJCQkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5tb2REYXRl
-	PC9rZXk+CgkJCQkJPGRhdGU+MjAwNC0wMi0xN1QxNzowNzoxMlo8L2RhdGU+CgkJCQkJ
+	PC9rZXk+CgkJCQkJPGRhdGU+MjAwNC0wMy0wMVQxNjoyMjoyNVo8L2RhdGU+CgkJCQkJ
 	PGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LnN0YXRlRmxhZzwva2V5PgoJCQkJCTxp
 	bnRlZ2VyPjA8L2ludGVnZXI+CgkJCQk8L2RpY3Q+CgkJCTwvYXJyYXk+CgkJPC9kaWN0
 	PgoJCTxrZXk+Y29tLmFwcGxlLnByaW50LlBhcGVySW5mby5QTUNvbnN0cmFpbmVkUGFw
@@ -674,7 +635,7 @@ external_db}</string>
 	<key>WindowInfo</key>
 	<dict>
 		<key>Frame</key>
-		<string>{{84, 142}, {777, 791}}</string>
+		<string>{{126, 96}, {777, 791}}</string>
 		<key>VisibleRegion</key>
 		<string>{{-111, 0}, {762, 714}}</string>
 		<key>Zoom</key>
