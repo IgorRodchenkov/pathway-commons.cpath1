@@ -266,13 +266,11 @@ public class InteractionTable extends HtmlTable {
     private void outputProtein(ProteinInteractorType protein,
             InteractionElementType interaction, boolean isSelfInteracting) {
         String proteinId = protein.getId();
+        String shortName = protein.getNames().getShortLabel();
         String fullName = protein.getNames().getFullName();
-        if (fullName == null) {
-            fullName = protein.getNames().getShortLabel();
-        }
         Organism organism = protein.getOrganism();
         startRow();
-        outputProteinName(proteinId, fullName, isSelfInteracting);
+        outputProteinName(proteinId, shortName, fullName, isSelfInteracting);
         outputOrganism(organism);
         if (!interactionDetailsShown) {
             outputInteractionDetails(interaction);
@@ -304,8 +302,8 @@ public class InteractionTable extends HtmlTable {
     /**
      * Outputs Protein Name.
      */
-    private void outputProteinName(String proteinId, String fullName,
-            boolean isSelfInteracting) {
+    private void outputProteinName(String proteinId, String shortName,
+            String fullName, boolean isSelfInteracting) {
         String link = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
                 + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
         append("<TD class='cpath3'>");
@@ -313,8 +311,13 @@ public class InteractionTable extends HtmlTable {
             append(currentIndex + ".  ");
             currentIndex++;
         }
+        if (shortName == null) {
+            shortName = "";
+        } else {
+            shortName = shortName + ": ";
+        }
         append("<A TITLE='Link to Protein View' "
-                + "HREF='" + link + "'>" + fullName + "</A>");
+                + "HREF='" + link + "'>" + shortName + fullName + "</A>");
         if (isSelfInteracting) {
             append("[Self Interacting]");
         }
@@ -328,8 +331,11 @@ public class InteractionTable extends HtmlTable {
      */
     private void outputInteractionDetails(InteractionElementType interaction) {
         ExperimentList expList = interaction.getExperimentList();
+        int count = interaction.getParticipantList().
+                getProteinParticipantCount();
         if (targetProtein == null) {
-            append("<td width='300' rowspan=2 class='cpath2'>");
+
+            append("<td width='300' rowspan='"+ count + "' class='cpath2'>");
         } else {
             append("<td width='300' rowspan=1 class='cpath2'>");
         }
@@ -348,8 +354,10 @@ public class InteractionTable extends HtmlTable {
     }
 
     private void outputPrimaryRef(InteractionElementType interaction) {
+        int count = interaction.getParticipantList().
+                getProteinParticipantCount();
         if (targetProtein == null) {
-            append("<td rowspan=2 class='cpath2'>");
+            append("<td rowspan='"+count+"' class='cpath2'>");
         } else {
             append("<td rowspan=1 class='cpath2'>");
         }
