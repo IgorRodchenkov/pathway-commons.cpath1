@@ -36,38 +36,42 @@ public class ProtocolConstants {
     /**
      * Get Interactions By Interactor Name.
      */
-    public static final String COMMAND_GET_BY_INTERACTOR_NAME =
-            "get_by_interactor_name";
+    public static final String COMMAND_GET_BY_INTERACTOR_NAME_XREF =
+            "get_by_interactor_name_xref";
 
     /**
      * Get Interactions By Interactor ID.
      */
-    public static final String COMMAND_GET_BY_ID =
-            "get_by_id";
+    public static final String COMMAND_GET_BY_INTERACTOR_ID =
+            "get_by_interactor_id";
 
     /**
      * Get Interactions By Interactor Taxonomy ID.
      */
-    public static final String COMMAND_GET_BY_INTERACTOR_TAX_ID =
-            "get_by_interactor_tax_id";
+    public static final String COMMAND_GET_BY_ORGANISM = "get_by_organism";
 
     /**
      * Get Interactions By Interactor Keyword.
      */
-    public static final String COMMAND_GET_BY_KEYWORD =
-            "get_by_keyword";
+    public static final String COMMAND_GET_BY_KEYWORD = "get_by_keyword";
 
     /**
      * Get Interactions By Interaction Database.
      */
-    public static final String COMMAND_GET_BY_INTERACTION_DB =
-            "get_by_interaction_db";
+    public static final String COMMAND_GET_BY_DATABASE =
+            "get_by_database";
 
     /**
      * Get Interactions By Interaction PubMedId.
      */
-    public static final String COMMAND_GET_BY_INTERACTION_PMID =
-            "get_by_interaction_pmid";
+    public static final String COMMAND_GET_BY_PMID =
+            "get_by_pmid";
+
+    /**
+     * Get Interactions By Interaction Type.
+     */
+    public static final String COMMAND_GET_BY_EXPERIMENT_TYPE =
+            "get_by_experiment_type";
 
     /**
      * Help Command.
@@ -97,12 +101,13 @@ public class ProtocolConstants {
     public HashMap getValidCommands() {
         if (validCommands == null) {
             validCommands = new HashMap();
-            validCommands.put(COMMAND_GET_BY_INTERACTOR_NAME, null);
-            validCommands.put(COMMAND_GET_BY_ID, null);
-            validCommands.put(COMMAND_GET_BY_INTERACTOR_TAX_ID, null);
+            validCommands.put(COMMAND_GET_BY_INTERACTOR_NAME_XREF, null);
+            validCommands.put(COMMAND_GET_BY_INTERACTOR_ID, null);
+            validCommands.put(COMMAND_GET_BY_ORGANISM, null);
             validCommands.put(COMMAND_GET_BY_KEYWORD, null);
-            validCommands.put(COMMAND_GET_BY_INTERACTION_DB, null);
-            validCommands.put(COMMAND_GET_BY_INTERACTION_PMID, null);
+            validCommands.put(COMMAND_GET_BY_DATABASE, null);
+            validCommands.put(COMMAND_GET_BY_PMID, null);
+            validCommands.put(COMMAND_GET_BY_EXPERIMENT_TYPE, null);
             validCommands.put(COMMAND_HELP, null);
         }
         return validCommands;
