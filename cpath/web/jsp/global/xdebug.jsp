@@ -113,9 +113,9 @@ if (xdebug != null) {
 	%>
 
 		<TR BGCOLOR="<%= bgcolor %>">
-			<TD><FONT SIZE=1 COLOR=BLACK><%= param.getTypeName() %></FONT></TD>
-			<TD><FONT SIZE=1 COLOR=BLACK><%= param.getName() %></FONT></TD>
-			<TD><FONT SIZE=1 COLOR=BLACK><%= wrapText(param.getValue()) %></FONT></TD>
+			<TD VALIGN=TOP><FONT SIZE=1 COLOR=BLACK><%= param.getTypeName() %></FONT></TD>
+			<TD VALIGN=TOP><FONT SIZE=1 COLOR=BLACK><%= param.getName() %></FONT></TD>
+			<TD VALIGN=TOP><FONT SIZE=1 COLOR=BLACK><%= wrapText(param.getValue()) %></FONT></TD>
 		</TR>
 		<% } %>
 </TABLE>
@@ -124,6 +124,9 @@ if (xdebug != null) {
 
 <%!
 private String wrapText (String text) {
+    if (text.length() > 200) {
+        text = text.substring(0, 200) + " [data string truncated]...";
+    }
     if (text.length() < 60) {
         return text;
     } else  {
