@@ -37,6 +37,7 @@ import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
+import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import java.util.HashMap;
  * @author Ethan Cerami
  */
 public class PsiUtil {
+    private ProgressMonitor pMonitor;
     private HashMap interactorMap;
     private HashMap availabilityMap;
     private HashMap experimentMap;
@@ -55,8 +57,10 @@ public class PsiUtil {
 
     /**
      * Constructor.
+     * @param pMonitor ProgressMonitor Object
      */
-    public PsiUtil() {
+    public PsiUtil(ProgressMonitor pMonitor) {
+        this.pMonitor = pMonitor;
     }
 
     /**
@@ -210,19 +214,80 @@ public class PsiUtil {
     }
 
     /**
+     * Removes Empty Secondary XRefs.
+     * This method is primarily available as a work-around to PSI-MI Data
+     * from HPRD, which contains empty secondary xrefs.
+     * JUnit Test is in TestPsiUtil.java.
+     *
+     * @param xref XrefType Object.
+     */
+    public void removeEmptySecondaryRefs(XrefType xref) {
+        ArrayList safeRefs = new ArrayList();
+        if (xref != null) {
+            //  First, get all Secondary Refs
+            DbReferenceType secondaryRefs[]= xref.getSecondaryRef();
+
+            //  Check for Null SecondaryRefs
+            if (secondaryRefs != null) {
+
+                //  Remove all SecondaryRefs
+                xref.removeAllSecondaryRef();
+
+                //  Then, add back only valid secondary refs
+                for (int i=0; i < secondaryRefs.length; i++) {
+                    DbReferenceType dbRef = secondaryRefs[i];
+                    String db = dbRef.getDb();
+                    String id = dbRef.getId();
+                    if (db == null || db.trim().length() == 0) {
+                        if (id == null) {
+                            id = "No id attribute available either";
+                        }
+                        pMonitor.setCurrentMessage
+                            ("Warning!  Removing Secondary Xref with empty db "
+                                + "attribute: [xref id = " + id.trim() + "]");
+                    } else if (id == null || id.trim().length()==0) {
+                        if (db ==  null){
+                            db = "No db attribute available either";
+                        }
+                        pMonitor.setCurrentMessage
+                            ("Warning!  Removing Secondary Xref with empty id "
+                                + "attribute:  [xref db = " + db.trim() + "]");
+                    } else {
+                        dbRef.setDb(db.trim());
+                        dbRef.setId(id.trim());
+                        safeRefs.add(dbRef);
+                    }
+                }
+
+                //  Reset XRef SecondaryRefs.
+                int size = safeRefs.size();
+                if (size > 0) {
+                    DbReferenceType[] safeArray = new DbReferenceType[size];
+                    for (int i = 0; i < size; i++) {
+                        safeArray[i] = (DbReferenceType) safeRefs.get(i);
+                    }
+                    xref.setSecondaryRef(safeArray);
+                }
+            }
+        }
+    }
+
+    /**
      * Creates ExternalReference.
      */
     private void createExternalReference(String db, String id,
             ArrayList refList) throws MissingDataException {
         //  Added Check for Null or Empty DB;  part of bug fix #508
-        if (db == null || db.length() == 0) {
-            throw new MissingDataException ("Xref db is null or empty.");
+        if (db == null || db.trim().length() == 0) {
+            throw new MissingDataException ("Xref db is null or empty "
+                + " [xref id:  " + id + "]");
         }
         //  Added Check for Null or Empty ID;  part of bug fix #508
-        if (id == null || id.length() == 0) {
-            throw new MissingDataException ("Xref id is null or empty.");
+        if (id == null || id.trim().length() == 0) {
+            throw new MissingDataException ("Xref id is null or empty. "
+                + " [xref db:  " + db + "]");
         }
-        ExternalReference ref = new ExternalReference(db, id);
+        ExternalReference ref = new ExternalReference(db.trim(), id.trim());
         refList.add(ref);
     }
 
@@ -244,6 +309,7 @@ public class PsiUtil {
             for (int j = 0; j < interactionList.getInteractionCount(); j++) {
                 InteractionElementType interaction =
                         interactionList.getInteraction(j);
+                removeEmptySecondaryRefs(interaction.getXref());
                 copyAvailablityEntity(interaction);
                 copyExperiments(interaction);
 
@@ -377,6 +443,7 @@ public class PsiUtil {
                  i++) {
                 ProteinInteractorType protein =
                         interactorList.getProteinInteractor(i);
+                removeEmptySecondaryRefs(protein.getXref());
                 String id = protein.getId();
                 interactorMap.put(id, protein);
             }
