@@ -57,13 +57,14 @@ public class ErrorMessage extends HtmlTable {
                 (STRUTS_MESSAGE_RESOURCE);
 
         String header = resource.getMessage(MSG_ERROR_HEADER);
-        startTable(header);
+        this.append("<div class=\"errormessage\">");
+        this.append("<p><strong>"+ header+"</strong></p>");
         Throwable rootCause = getRootCause(throwable);
         outputUserMessage(rootCause, resource);
         if (xdebugFlag) {
             outputDiagnostics(throwable, rootCause);
         }
-        endTable();
+        this.append("</div>");
     }
 
     /**
@@ -88,7 +89,6 @@ public class ErrorMessage extends HtmlTable {
      */
     private void outputUserMessage(Throwable rootCause,
             PropertyMessageResources resource) {
-        startRow();
         String userMsg = resource.getMessage(MSG_ERROR_INTERNAL);
         if (rootCause instanceof ParseException) {
             userMsg = resource.getMessage(MSG_ERROR_PARSING);
@@ -105,29 +105,22 @@ public class ErrorMessage extends HtmlTable {
                     + sexc.getLineNumber()
                     + "<P>Please correct the error and try again.";
         }
-        this.outputDataField(userMsg);
-        endRow();
+        this.append(userMsg);
     }
 
     /**
      * Outputs Full Diagnostics.
      */
     private void outputDiagnostics(Throwable throwable, Throwable rootCause) {
-        startRow();
-        outputDataField("Root Cause Message:  "
+        append("<P>Root Cause Message:  "
                 + rootCause.getMessage());
-        endRow();
-        startRow();
-        outputDataField("Root Cause Class:  "
+        append("<P>Root Cause Class:  "
                 + rootCause.getClass().getName());
-        endRow();
-        startRow();
         StringWriter writer = new StringWriter();
         PrintWriter pWriter = new PrintWriter(writer);
         throwable.printStackTrace(pWriter);
-        outputDataField("<FONT SIZE=-1><PRE>\n"
+        append("<FONT SIZE=-1><PRE>\n"
                 + writer.toString() + "\n</PRE></FONT>");
-        endRow();
     }
 
     /**

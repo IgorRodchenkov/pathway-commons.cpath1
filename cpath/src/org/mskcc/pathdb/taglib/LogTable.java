@@ -51,7 +51,8 @@ public class LogTable extends HtmlTable {
      * @throws DaoException Database Error.
      */
     protected void subDoStartTag() throws DaoException {
-        startTable("cPath Log Records");
+        createHeader("cPath Log Records");
+        this.startTable();
         String headers[] = {"Timestamp", "Remote IP", "Priority", "Logger",
                             "Message"};
         createTableHeaders(headers);

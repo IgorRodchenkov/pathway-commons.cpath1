@@ -83,20 +83,23 @@ public class SearchResultsTable extends HtmlTable {
 
     private void createHeader(Hits hits) {
         String title = "Matching Results found for:  " + uid.toUpperCase();
-        append("<table valign=top width=100% cellpadding=7 border=0 "
-                + "cellspacing=0>"
-                + "<tr><td colspan=3 bgcolor=#666699><u>"
-                + "<b><big>" + title + "</big>"
-                + "</b></u><br></td>");
-        append("<td align=right nowrap width=1%>"
-                + "<font face=arial size=-1>");
+        this.createHeader(title);
+
+
         if (hits.length() > 0) {
+            this.startTable();
+            this.startRow(1);
+            this.append("<td colspan='3'>Total Number of Matches:  " +
+                    hits.length());
+            this.append("</td>");
+            this.append("<td colspan='2'>");
+            this.append("<div class='right'>");
             append(pager.getHeaderHtml());
+            append ("</div></td>");
+            this.endRow();
+            this.endTable();
         }
-        append("</td></tr>");
-        append("</table>");
-        append("<table valign=top width=100% cellpadding=7 border=0 "
-                + "cellspacing=0>");
+        this.startTable();
     }
 
     /**
@@ -109,7 +112,7 @@ public class SearchResultsTable extends HtmlTable {
             append("</TR>");
         } else {
             for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
-                append("<TR>");
+                this.startRow(i);
                 Document doc = hits.doc(i);
                 Field name = doc.getField(LuceneIndexer.FIELD_NAME);
                 Field desc = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
@@ -123,7 +126,7 @@ public class SearchResultsTable extends HtmlTable {
                 append("</TD>");
                 outputDataField(desc.stringValue());
                 outputInteractionLink(cpathId.stringValue());
-                append("</TR>");
+                this.endRow();
             }
         }
     }

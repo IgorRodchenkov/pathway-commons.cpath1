@@ -85,6 +85,21 @@ public abstract class BaseAction extends Action {
     public static final String PROPERTY_ADMIN_PASSWORD = "admin_password";
 
     /**
+     * Admin page
+     */
+    public static final String PAGE_IS_ADMIN = "admin_page";
+
+    /**
+     * Page should be automatically updated.
+     */
+    public static final String PAGE_AUTO_UPDATE = "auto_update";
+
+
+    public static final String ATTRIBUTE_SERVLET_NAME = "servlet_name";
+    public static final String ATTRIBUTE_STYLE = "style";
+    public static final String ATTRIBUTE_STYLE_PRINT = "print";
+
+    /**
      * Executes Action.
      * @param mapping Struts ActionMapping Object.
      * @param form Struts ActionForm Object.
@@ -96,28 +111,34 @@ public abstract class BaseAction extends Action {
     public ActionForward execute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+        ActionForward forward = null;
+        XDebug xdebug = null;
         try {
-            XDebug xdebug = new XDebug();
+            xdebug = new XDebug();
             xdebug.startTimer();
             SnoopHttp snoop = new SnoopHttp(xdebug,
                     getServlet().getServletContext());
             snoop.process(request, response);
             request.setAttribute(ATTRIBUTE_XDEBUG, xdebug);
+            request.setAttribute(ATTRIBUTE_SERVLET_NAME,
+                    request.getServletPath());
             xdebug.logMsg(this, "Running cPath Base Action");
             boolean authorized = isUserAuthorized
                     (mapping, request, response, xdebug);
             if (authorized) {
-                ActionForward forward =
-                        subExecute(mapping, form, request, response, xdebug);
+                forward = subExecute(mapping, form, request, response, xdebug);
                 xdebug.stopTimer();
-                return forward;
+
             } else {
-                return mapping.findForward(FORWARD_UNAUTHORIZED);
+                forward = mapping.findForward(FORWARD_UNAUTHORIZED);
             }
         } catch (Exception e) {
             request.setAttribute(ATTRIBUTE_EXCEPTION, e);
-            return mapping.findForward(BaseAction.FORWARD_FAILURE);
+            forward = mapping.findForward(BaseAction.FORWARD_FAILURE);
         }
+        xdebug.logMsg (this, "Forwarding to Struts:  " + forward.getName());
+        xdebug.logMsg (this, "Forwarding to Path:  " + forward.getPath());
+        return forward;
     }
 
     /**

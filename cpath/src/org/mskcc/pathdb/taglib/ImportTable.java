@@ -30,7 +30,8 @@ public class ImportTable extends HtmlTable {
     public void subDoStartTag() throws Exception {
         DaoImport dbImport = new DaoImport();
         ArrayList records = dbImport.getAllRecords();
-        startTable("cPath contains the following imported records:");
+        createHeader("cPath contains the following imported records:");
+        this.startTable();
         if (adminView) {
             String headers[] = {
                 "Status", "Description", "Upload Time",

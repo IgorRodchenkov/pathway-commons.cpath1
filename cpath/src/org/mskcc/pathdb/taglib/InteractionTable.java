@@ -39,10 +39,7 @@ import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 
 import java.util.ArrayList;
 
@@ -76,22 +73,15 @@ public class InteractionTable extends HtmlTable {
      * @throws DaoException Database Access Error.
      */
     protected void subDoStartTag() throws DaoException {
-        String title = "Matching Interactions";
 
-        append("<table width=100% cellpadding=7 cellspacing=0>"
-                + "<tr><td colspan=2 bgcolor=#666699><u>"
-                + "<b><big>" + title + "</big>"
-                + "</b></u><br></td>");
-        append("<td colspan=2>");
         protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
         String url = protocolRequest.getUri();
-        if (interactions.size() > 0) {
-            append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
-            outputLink("View PSI-MI XML Format", url);
-        }
+        String title = "Matching Interactions";
 
-        append("</td>");
-        append("</tr>");
+        createHeader (title);
+
+        startTable();
+        outputNumInteractions(url);
         String headers[] = {
             "Interactor", "Interactor", "Experimental System",
             "PubMed Reference"};
@@ -101,20 +91,37 @@ public class InteractionTable extends HtmlTable {
         endTable();
     }
 
+    private void outputNumInteractions(String url) {
+        if (interactions.size() > 0) {
+            this.startRow(1);
+            this.append("<td colspan=2>Total Number of Interactions:  " +
+                    interactions.size());
+            this.append("</td>");
+            this.append("<td colspan=3>");
+            this.append("<div class='right'>");
+            this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
+            outputLink("View PSI-MI XML Format", url);
+            this.append("</div>");
+            this.append("</td>");
+            this.endRow();
+        }
+    }
+
     /**
      * Outputs Interaction Data.
      */
     private void outputInteractions() throws DaoException {
         if (interactions.size() == 0) {
-            append("<TR>");
-            append("<TD COLSPAN=4>No Matching Interactions Found.  "
-                    + "Please try again.</TD>");
-            append("</TR>");
+            append ("<tr class='a'>");
+            append("<td colspan=4>No Matching Interactions Found.  "
+                    + "Please try again.</td>");
+            append("</tr>");
         }
         for (int i = 0; i < interactions.size(); i++) {
             Interaction interaction = (Interaction) interactions.get(i);
             ArrayList interactors = interaction.getInteractors();
-            append("<TR>");
+
+            startRow(i);
             Interactor interactor = (Interactor) interactors.get(0);
             outputInteractor(interactor);
 
@@ -128,8 +135,7 @@ public class InteractionTable extends HtmlTable {
                     (InteractionVocab.PUB_MED_ID);
             String url = getPubMedLink(pmid);
             outputDataField(pmid, url);
-            append("</TR>");
-            append("<TR><TD COLSPAN=4><HR></TD></TR>");
+            endRow();
         }
     }
 
@@ -148,15 +154,15 @@ public class InteractionTable extends HtmlTable {
             }
             StringBuffer interactorHtml = new StringBuffer();
             interactorHtml.append("<A HREF='" + url + "'>"
-                    + name +"</A><BR><UL>");
+                    + name +"</A><br/><ul>");
             if (desc != null) {
-                interactorHtml.append("<LI>" + desc);
+                interactorHtml.append("<li>" + desc+"</li>");
             }
             if (org != null) {
-                interactorHtml.append("<LI>Organism:  " + org);
+                interactorHtml.append("<li>Organism:  " + org+"</li>");
             }
-            interactorHtml.append("</UL>");
-            this.outputDataField(interactorHtml.toString());
+            interactorHtml.append("</ul>");
+            outputDataField(interactorHtml.toString());
         }
     }
 
@@ -170,6 +176,4 @@ public class InteractionTable extends HtmlTable {
                 + "cmd=Retrieve&db=PubMed&list_uids=" + pmid + "&dopt=Abstract";
         return url;
     }
-
-
 }

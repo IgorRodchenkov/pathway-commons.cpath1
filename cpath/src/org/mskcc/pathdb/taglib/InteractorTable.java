@@ -37,36 +37,28 @@ public class InteractorTable extends HtmlTable {
             String title = "Interactor:  " + record.getName();
             ProteinInteractorType interactor =
                     ProteinInteractorType.unmarshalProteinInteractorType(reader);
-            outputHeader(id, title);
+            outputHeader(title);
             outputName(interactor.getNames());
             outputOrganism(interactor.getOrganism());
-            outputExternalReferences();
+            outputExternalReferences(id);
             endTable();
         }
     }
 
-    private void outputHeader(String id, String title) {
-        String url = this.getInteractionLink
-            (id, ProtocolConstants.FORMAT_HTML);
-        append("<table width=100% cellpadding=7 cellspacing=0>"
-            + "<tr><td colspan=2 bgcolor=#666699><u>"
-            + "<b><big>" + title + "</big>"
-            + "</b></u><br></td>");
-        append("<td colspan=2>");
-        outputLink("View Interactions", url);
-        append("</td>");
-        append("</tr>");
+    private void outputHeader(String title) {
+        this.createHeader(title);
+        this.startTable();
     }
 
     private void outputName(NamesType names) {
-        startRow();
+        startRow(0);
         String shortLabel = names.getShortLabel();
         if (shortLabel != null && shortLabel.length() > 0) {
             outputDataField("Short Name:  ");
             outputDataField(shortLabel);
         }
         endRow();
-        startRow();
+        startRow(0);
         String fullName = names.getFullName();
         if (fullName == null || fullName.length() == 0) {
             fullName = "Not Specified";
@@ -77,7 +69,7 @@ public class InteractorTable extends HtmlTable {
     }
 
     private void outputOrganism(Organism organism) {
-        startRow();
+        startRow(0);
         this.outputDataField("Organism:  ");
         NamesType names = organism.getNames();
         if (names != null) {
@@ -101,8 +93,8 @@ public class InteractorTable extends HtmlTable {
     /**
      * Outputs External References.
      */
-    private void outputExternalReferences() throws DaoException {
-        startRow();
+    private void outputExternalReferences(String id) throws DaoException {
+        startRow(1);
         outputDataField("External References:");
         DaoExternalLink dao = new DaoExternalLink();
         ArrayList links = dao.getRecordsByCPathId(cpathId);
@@ -122,6 +114,11 @@ public class InteractorTable extends HtmlTable {
             append("No External References Specified");
         }
         append("</UL></TD>");
+        startRow(1);
+        String url = this.getInteractionLink
+            (id, ProtocolConstants.FORMAT_HTML);
+        this.outputDataField("Interactions");
+        this.outputDataField("View All Interactions", url);
         endRow();
     }
 }

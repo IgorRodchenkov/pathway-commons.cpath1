@@ -21,7 +21,8 @@ public class CacheTable extends HtmlTable {
      */
     public void subDoStartTag() throws Exception {
         String headers[] = {"Key", "Expiration Time"};
-        startTable("Cache Contents");
+        createHeader("Cache Contents");
+        startTable();
         createTableHeaders(headers);
         outputRecords();
         endTable();

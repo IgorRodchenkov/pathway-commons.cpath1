@@ -22,8 +22,9 @@ public class DiagnosticsTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {
-        String headers[] = {"Test", "Results", "Error"};
-        startTable("Test Results");
+        String headers[] = {"Result", "Test", "Error"};
+        createHeader("cPath Diagnostics");
+        startTable();
         createTableHeaders(headers);
         testList = new ArrayList();
         runTests();
@@ -131,17 +132,21 @@ public class DiagnosticsTable extends HtmlTable {
      */
     private void outputTests() {
         for (int i=0; i<testList.size(); i++) {
-            append("<TR>");
+            this.startRow(i);
             Test test = (Test) testList.get(i);
-            outputDataField(test.getName());
             Exception e = test.getException();
             if (e == null) {
-                outputDataField("[OK]");
+                outputDataField("<IMG SRC='jsp/images/icon_success_sml.gif'>");
             } else {
-                outputDataField("[FAILED]");
-                outputDataField (e.getMessage());
+                outputDataField("<IMG SRC='jsp/images/icon_error_sml.gif'>");
             }
-            append("</TR>");
+            outputDataField(test.getName());
+            if (e!=null) {
+                outputDataField (e.getMessage());
+            } else {
+                outputDataField("");
+            }
+            this.endRow();
         }
     }
 }

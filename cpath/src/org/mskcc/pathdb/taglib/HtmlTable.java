@@ -48,15 +48,29 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected abstract void subDoStartTag() throws Exception;
 
+    protected void createHeader (String title) {
+        append ("<div id='axial' class='h3'>");
+        append ("<h3>" + title + "</h3>");
+        append ("</div>");
+    }
+
     /**
      * Starts HTML Table.
      */
-    protected void startTable(String title) {
-        append("<table valign=top width=100% cellpadding=7 border=0 "
-                + "cellspacing=0>"
-                + "<tr><td colspan=4 bgcolor=#666699><u>"
-                + "<b><big>" + title + "</big>"
-                + "</b></u><br></td></tr>");
+    protected void startTable() {
+//        append ("<div class='app'>");
+//        append ("<div class='colbar'>");
+        append ("<table border='1' cellspacing='2' cellpadding='3' " +
+            "width='100%'>");
+    }
+
+    /**
+     * Ends HTML Table.
+     */
+    protected void endTable() {
+        append("</table>");
+//        append("</div>");
+//        append("</div>");
     }
 
 
@@ -70,22 +84,19 @@ public abstract class HtmlTable extends TagSupport {
     /**
      * Start New Html Row.
      */
-    protected void startRow() {
-        html.append("<TR>\n");
+    protected void startRow(int row) {
+        if (row % 2 == 0) {
+            append ("<tr class='a'>");
+        } else {
+            append ("<tr class='b'>");
+        }
     }
 
     /**
      * Ends Html Row.
      */
     protected void endRow() {
-        html.append("</TR>\n");
-    }
-
-    /**
-     * Ends HTML Table.
-     */
-    protected void endTable() {
-        append("</table>");
+        html.append("</tr>");
     }
 
     /**
@@ -93,13 +104,13 @@ public abstract class HtmlTable extends TagSupport {
      * @param headers Array of String headers.
      */
     protected void createTableHeaders(String[] headers) {
-        append("<tr bgcolor=#9999cc>");
+        append("<tr>");
         for (int i = 0; i < headers.length; i++) {
-            append("<TD><font color=#333366>");
+            append("<th>");
             append(headers[i]);
-            append("</font></TD>");
+            append("</th>");
         }
-        append("</TR>");
+        append("</tr>");
     }
 
     /**
@@ -114,15 +125,15 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected void outputDataField(Object data, String url) {
         if (data != null) {
-            append("<TD VALIGN=TOP>");
+            append("<td valign='TOP'>");
             if (url == null) {
                 html.append(data);
             } else {
                 outputLink(data.toString(), url);
             }
-            append("</TD>");
+            append("</td>");
         } else {
-            append("<TD>----</TD>");
+            append("<td>----</td>");
         }
     }
 

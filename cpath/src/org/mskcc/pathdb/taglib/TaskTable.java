@@ -20,8 +20,8 @@ public class TaskTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {
-        append("<table height=100% width=100% cellpadding=2 border=0 "
-                + "cellspacing=1 BGCOLOR=#666699>");
+        createHeader ("Active Tasks");
+        startTable();
         outputRecords();
         endTable();
     }
@@ -33,11 +33,14 @@ public class TaskTable extends HtmlTable {
         GlobalTaskList globalTaskList = GlobalTaskList.getInstance();
         ArrayList taskList = globalTaskList.getTaskList();
         if (taskList.size() == 0) {
-            append("<TR><TD COLSPAN=2><span class='small'>"
-                    + "No Active Tasks" + "</span></TD></TR>");
+            startRow(0);
+            append("<TD COLSPAN=2><span class='small'>"
+                    + "No Active Tasks" + "</span></TD>");
+            endRow();
         }
         for (int i = 0; i < taskList.size(); i++) {
-            append("<TR>");
+            String img = null;
+            startRow(i);
             Task task = (Task) taskList.get(i);
             String name = task.getTaskName();
             ProgressMonitor pMonitor = task.getProgressMonitor();
@@ -54,18 +57,26 @@ public class TaskTable extends HtmlTable {
             } else {
                 if (task.errorOccurred()) {
                     status = task.getErrorMessage();
+                    img = "icon_error_sml.gif";
                 } else {
                     status = pMonitor.getCurrentMessage();
+                    img = "icon_success_sml.gif";
                 }
             }
-            outputDataField("<span class='small'>" + status + "</span>");
-            if (!isAlive) {
-                outputDataField("<span class='small'>"
-                        + "<A HREF='adminHome.do?action=remove&index=" + i
-                        + "'>Clear Task</A>"
-                        + "</span>");
+            if (img != null) {
+                status = "<img src='jsp/images/"+img+"'/>&nbsp;" + status;
             }
-            append("</TR>");
+            outputDataField("<small>" + status + "</small>");
+            if (!isAlive) {
+                outputDataField("<small>"
+                        + "<IMG SRC='jsp/images/icon_waste_sml.gif'/>"
+                        + "&nbsp;<A HREF='adminHome.do?action=remove&index="
+                        + i + "'>Clear Task</A>"
+                        + "</small>");
+            } else {
+                outputDataField ("");
+            }
+            endRow();
         }
     }
 }
