@@ -39,6 +39,7 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.sql.dao.*;
+import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ConsoleUtil;
 import org.mskcc.pathdb.util.PsiUtil;
@@ -173,7 +174,7 @@ public class ImportPsiToCPath {
 
             //  Step 4:  Process all Interactions.
             //  Temporarily disabled saving of interactions.
-            //  processInteractions(entrySet);
+            processInteractions(entrySet);
             return summary;
         } catch (IOException e) {
             throw new ImportException(e);
@@ -570,7 +571,7 @@ public class ImportPsiToCPath {
             throws DaoException {
         //  Only check id mapping service if we have existing references.
         if (refs != null && refs.length > 0) {
-            IdMappingService idService = new IdMappingService();
+            BackgroundReferenceService idService = new BackgroundReferenceService();
             ArrayList extraRefs = idService.getEquivalenceList(refs);
 
             //  If we find no equivalent IDs, do nothing, and return original
