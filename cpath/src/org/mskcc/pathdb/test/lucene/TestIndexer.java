@@ -5,9 +5,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
 import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.pathdb.lucene.IndexFactory;
-import org.mskcc.pathdb.lucene.ItemToIndex;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.query.QueryException;
@@ -33,9 +31,9 @@ public class TestIndexer extends TestCase {
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
                 (4, 1, xdebug);
         ItemToIndex item = IndexFactory.createItemToIndex(4, assembly);
-        LuceneIndexer lucene = new LuceneIndexer();
-        lucene.resetIndex();
-        lucene.addRecord(item);
+        LuceneWriter indexWriter = new LuceneWriter(true);
+        indexWriter.addRecord(item);
+        indexWriter.commit();
 
         queryInteraction("chaperonin");
         queryInteraction("interactor:chaperonin");
@@ -57,11 +55,11 @@ public class TestIndexer extends TestCase {
      */
     private void queryInteraction(String terms) throws QueryException,
             IOException {
-        LuceneIndexer lucene = new LuceneIndexer();
-        Hits hits = lucene.executeQuery(terms);
+        LuceneReader indexReader = new LuceneReader();
+        Hits hits = indexReader.executeQuery(terms);
         assertEquals(1, hits.length());
         Document doc = hits.doc(0);
-        Field id = doc.getField(LuceneIndexer.FIELD_INTERACTION_ID);
+        Field id = doc.getField(LuceneConfig.FIELD_INTERACTION_ID);
         assertEquals("4", id.stringValue());
     }
 

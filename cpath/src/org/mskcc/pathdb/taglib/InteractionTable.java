@@ -35,7 +35,7 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.dataservices.mapper.MapperException;
 import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.ProteinWithWeight;
@@ -300,7 +300,7 @@ public class InteractionTable extends HtmlTable {
      */
     private void outputProteinName(String proteinId, String fullName,
             boolean isSelfInteracting) {
-        String link = getInteractionLink(LuceneIndexer.FIELD_INTERACTOR_ID
+        String link = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
                 + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
         append("<TD class='cpath3'>");
         if (targetProtein != null) {

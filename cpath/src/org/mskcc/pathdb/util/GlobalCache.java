@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /**
  * Global Cache Object.
- * 
+ *
  * @author Ethan Cerami
  */
 public class GlobalCache {
@@ -13,6 +13,7 @@ public class GlobalCache {
 
     /**
      * Gets Instance of Singleton Global Cache.
+     *
      * @return Global Cache Object.
      */
     public static GlobalCache getInstance() {
@@ -38,6 +39,7 @@ public class GlobalCache {
 
     /**
      * Gets Object by Key.
+     *
      * @param key Key.
      * @return Cached Object.
      */
@@ -47,7 +49,8 @@ public class GlobalCache {
 
     /**
      * Puts New Object in Cache.
-     * @param key Key.
+     *
+     * @param key    Key.
      * @param object Object to be cached.
      */
     public void put(String key, Object object) {

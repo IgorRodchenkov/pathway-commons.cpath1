@@ -3,7 +3,7 @@ package org.mskcc.pathdb.servlet;
 import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -64,8 +64,8 @@ public final class CPathServlet extends ActionServlet {
         //  cannot view textIndex contents directly.
         ServletContext context = getServletContext();
         String dir = context.getRealPath("WEB-INF/"
-                + LuceneIndexer.INDEX_DIR_PREFIX);
-        manager.setProperty(LuceneIndexer.PROPERTY_LUCENE_DIR, dir);
+                + LuceneConfig.INDEX_DIR_PREFIX);
+        manager.setProperty(LuceneConfig.PROPERTY_LUCENE_DIR, dir);
     }
 
     /**

@@ -3,7 +3,8 @@ package org.mskcc.pathdb.sql.query;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.LuceneConfig;
+import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.lucene.RequestAdapter;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
@@ -40,17 +41,13 @@ class GetInteractionsViaLucene extends InteractionQuery {
             IOException, AssemblyException {
         xdebug.logMsg(this, "Getting Interactions via Lucene. "
                 + "Using search term(s):  " + searchTerms);
-        LuceneIndexer indexer = new LuceneIndexer();
+        LuceneReader indexer = new LuceneReader();
         XmlAssembly xmlAssembly;
-        try {
-            Hits hits = executeLuceneSearch(indexer);
-            Pager pager = new Pager(request, hits.length());
-            long[] cpathIds = extractHits(pager, hits);
-            xmlAssembly = createXmlAssembly(cpathIds, hits);
-            xmlAssembly.setNumHits(hits.length());
-        } finally {
-            indexer.closeIndexSearcher();
-        }
+        Hits hits = executeLuceneSearch(indexer);
+        Pager pager = new Pager(request, hits.length());
+        long[] cpathIds = extractHits(pager, hits);
+        xmlAssembly = createXmlAssembly(cpathIds, hits);
+        xmlAssembly.setNumHits(hits.length());
         return xmlAssembly;
     }
 
@@ -81,7 +78,7 @@ class GetInteractionsViaLucene extends InteractionQuery {
 
         for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
             Document doc = hits.doc(i);
-            Field field = doc.getField(LuceneIndexer.FIELD_INTERACTION_ID);
+            Field field = doc.getField(LuceneConfig.FIELD_INTERACTION_ID);
             cpathIds[index++] = Long.parseLong(field.stringValue());
         }
         return cpathIds;
@@ -90,7 +87,7 @@ class GetInteractionsViaLucene extends InteractionQuery {
     /**
      * Executes Lucene Search.
      */
-    private Hits executeLuceneSearch(LuceneIndexer indexer)
+    private Hits executeLuceneSearch(LuceneReader indexer)
             throws QueryException {
         Hits hits = indexer.executeQuery(searchTerms);
         xdebug.logMsg(this, "Total Number of Matching Interactions "

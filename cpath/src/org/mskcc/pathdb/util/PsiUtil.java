@@ -175,15 +175,6 @@ public class PsiUtil {
         }
     }
 
-    private void addToExternalRefList(ExternalReference[] refs,
-            ArrayList refList) {
-        if (refs != null) {
-            for (int i = 0; i < refs.length; i++) {
-                refList.add(refs[i]);
-            }
-        }
-    }
-
     /**
      * Creates ExternalReference.
      */

@@ -65,7 +65,7 @@ public class Admin {
             System.out.println("Total Time:  " + xdebug.getTimeElapsed()
                     + " ms");
         } catch (Exception e) {
-            System.out.println("**** ERROR:  " + e.getMessage());
+            System.out.println("**** Error:  " + e.getMessage());
             e.printStackTrace();
         }
     }

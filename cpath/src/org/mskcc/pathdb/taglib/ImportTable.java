@@ -24,8 +24,7 @@ public class ImportTable extends HtmlTable {
                 + "records:");
         this.startTable();
         String headers[] = {
-            "Status", "Description", "Upload Time",
-            "Update Time", "View"
+            "Status", "Description", "Date/Time Loaded",
         };
         createTableHeaders(headers);
         outputRecords(records);
@@ -42,12 +41,6 @@ public class ImportTable extends HtmlTable {
             outputDataField(record.getStatus());
             outputDataField(record.getDescription());
             outputDataField(record.getCreateTime());
-            outputDataField(record.getUpdateTime());
-            append("<TD>");
-            this.outputLink("View Contents",
-                    "adminViewImportRecordXml.do?import_id="
-                    + record.getImportId());
-            append("</TD>");
             append("</TR>");
         }
     }

@@ -1,7 +1,6 @@
 package org.mskcc.pathdb.model;
 
 
-
 /**
  * JavaBean to Encapsulate an External Link Record.
  *

@@ -1,6 +1,7 @@
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.LuceneConfig;
+import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -130,16 +131,14 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runThirdBatch() throws IOException {
-        LuceneIndexer indexer = new LuceneIndexer();
+        LuceneReader indexer = new LuceneReader();
         DiagnosticTestResults test = new DiagnosticTestResults
                 ("Testing access to Lucene Full Text Index<BR>"
-                + "Lucene Directory:  " + indexer.getDirectory());
+                + "Lucene Directory:  " + LuceneConfig.getLuceneDirectory());
         try {
             indexer.executeQuery("dna");
         } catch (QueryException e) {
             test.setException(e);
-        } finally {
-            indexer.closeIndexSearcher();
         }
         testList.add(test);
     }

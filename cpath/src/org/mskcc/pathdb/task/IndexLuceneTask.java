@@ -2,7 +2,7 @@ package org.mskcc.pathdb.task;
 
 import org.mskcc.pathdb.lucene.IndexFactory;
 import org.mskcc.pathdb.lucene.ItemToIndex;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.LuceneWriter;
 import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
@@ -70,6 +70,7 @@ public class IndexLuceneTask extends Task {
         } catch (Exception e) {
             setException(e);
             System.err.println("**** ERROR:  " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -96,8 +97,7 @@ public class IndexLuceneTask extends Task {
         DaoCPath cpath = new DaoCPath();
         pMonitor.setMaxValue(cpath.getNumEntities(CPathRecordType.INTERACTION));
 
-        LuceneIndexer lucene = new LuceneIndexer();
-        lucene.resetIndex();
+        LuceneWriter indexWriter = new LuceneWriter(true);
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -109,7 +109,7 @@ public class IndexLuceneTask extends Task {
             pstmt.setString(1, CPathRecordType.INTERACTION.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                indexRecord(cpath, rs, lucene);
+                indexRecord(cpath, rs, indexWriter);
             }
             outputMsg("\nIndexing Complete");
         } catch (ClassNotFoundException e) {
@@ -124,15 +124,16 @@ public class IndexLuceneTask extends Task {
     /**
      * Indexes One cPathRecord in Lucene.
      *
-     * @param cpath  cPathRecord.
-     * @param rs     ResultSet
-     * @param lucene LuceneIndexer
+     * @param cpath       cPathRecord.
+     * @param rs          ResultSet
+     * @param indexWriter Index Writer.
      * @throws SQLException      Database Error
      * @throws IOException       I/O Error
      * @throws ImportException   Import Error
      * @throws AssemblyException Assembly Error
      */
-    private void indexRecord(DaoCPath cpath, ResultSet rs, LuceneIndexer lucene)
+    private void indexRecord(DaoCPath cpath, ResultSet rs,
+            LuceneWriter indexWriter)
             throws SQLException, IOException, ImportException,
             AssemblyException {
         pMonitor.incrementCurValue();
@@ -148,6 +149,6 @@ public class IndexLuceneTask extends Task {
                 (record.getId(), xmlAssembly);
 
         //  Then, index all fields in Lucene
-        lucene.addRecord(item);
+        indexWriter.addRecord(item);
     }
 }

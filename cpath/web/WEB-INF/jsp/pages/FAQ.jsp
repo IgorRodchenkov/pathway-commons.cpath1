@@ -2,8 +2,9 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.lucene.PsiInteractionToIndex,
-                 org.mskcc.pathdb.lucene.LuceneIndexer,
-                 org.mskcc.pathdb.protocol.ProtocolConstants"%>
+                 org.mskcc.pathdb.lucene.LuceneReader,
+                 org.mskcc.pathdb.protocol.ProtocolConstants,
+                 org.mskcc.pathdb.lucene.LuceneConfig"%>
 <%@ page errorPage = "JspError.jsp" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 
@@ -256,8 +257,8 @@ of cancer specific pathways.
     <LI><%= PsiInteractionToIndex.FIELD_EXPERIMENT_TYPE %>:
     Experiment type, e.g. experiment_type:"Two hybrid"
     <LI><%= PsiInteractionToIndex.FIELD_DATABASE %>:  database source
-    <LI><%= LuceneIndexer.FIELD_INTERACTOR_ID%>:  interactor cPath ID.
-    <LI><%= LuceneIndexer.FIELD_INTERACTION_ID%>:  interaction cPath ID.
+    <LI><%= LuceneConfig.FIELD_INTERACTOR_ID%>:  interactor cPath ID.
+    <LI><%= LuceneConfig.FIELD_INTERACTION_ID%>:  interaction cPath ID.
     </UL>
 
     If no field is specified, the default is to search all information

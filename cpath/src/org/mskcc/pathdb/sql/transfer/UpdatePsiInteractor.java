@@ -35,9 +35,13 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      */
     public UpdatePsiInteractor(ProteinInteractorType newProtein)
             throws DaoException, ValidationException, MarshalException {
+        //  Normalize XRefs
         PsiUtil psiUtil = new PsiUtil();
+        psiUtil.normalizeXrefs(newProtein.getXref());
+
         //  Find a Match to Existing Interactor.
         ExternalReference newRefs[] = psiUtil.extractRefs(newProtein);
+
         DaoExternalLink linker = new DaoExternalLink();
         ArrayList records = linker.lookUpByExternalRefs(newRefs);
         if (records.size() > 0) {

@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.apache.lucene.document.Field;
 import org.mskcc.pathdb.lucene.IndexFactory;
 import org.mskcc.pathdb.lucene.ItemToIndex;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
+import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.lucene.PsiInteractionToIndex;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
@@ -34,13 +34,13 @@ public class TestItemToIndex extends TestCase {
 
         String fieldNames[] = {
             PsiInteractionToIndex.FIELD_INTERACTOR,
-            LuceneIndexer.FIELD_INTERACTOR_ID,
+            LuceneConfig.FIELD_INTERACTOR_ID,
             PsiInteractionToIndex.FIELD_ORGANISM,
             PsiInteractionToIndex.FIELD_PMID,
             PsiInteractionToIndex.FIELD_EXPERIMENT_TYPE,
             PsiInteractionToIndex.FIELD_DATABASE,
-            LuceneIndexer.FIELD_ALL,
-            LuceneIndexer.FIELD_INTERACTION_ID,
+            LuceneConfig.FIELD_ALL,
+            LuceneConfig.FIELD_INTERACTION_ID,
         };
         String fieldValues[] = {
             "60 kDa chaperonin (Protein Cpn60) (groEL protein) (AMS) DIP "
