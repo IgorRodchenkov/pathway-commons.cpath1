@@ -11,6 +11,17 @@
     <menu name="Project Status">
         <item name="Current To Do List"      href="/todo.html"/>
         <item name="Release Notes"          href="/release.html"/>
+
+      <item name="Phased Development" href="/phases/index.html" collapse="true">
+        <item name="Phase 1"      href="/phases/phase1.html"/>
+        <item name="Phase 2"      href="/phases/phase2.html"/>
+        <item name="Phase 3"      href="/phases/phase3.html"/>
+        <item name="Phase 4"      href="/phases/phase4.html"/>
+        <item name="Phase 5"      href="/phases/phase5.html"/>
+        <item name="Phase 6"      href="/phases/phase6.html"/>
+        <item name="Phase 7"      href="/phases/phase7.html"/>
+        <item name="Phase 8"      href="/phases/phase8.html"/>
+        </item>
     </menu>
     <menu name="Tech Docs">
           <item name="Tech Docs Index"      href="tech_docs.html"/>
