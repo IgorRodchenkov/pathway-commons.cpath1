@@ -138,7 +138,7 @@ public class ExecuteQuery {
         int maxHits = request.getMaxHitsInt();
         if (command.equals(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID)) {
             long cpathId = Long.parseLong(q);
-            query = new GetInteractionsByInteractorId(cpathId);
+            query = new GetInteractionsById(cpathId);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME)) {
             query = new GetInteractionsByInteractorName(q);
