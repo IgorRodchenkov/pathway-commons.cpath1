@@ -250,7 +250,6 @@
     <!-- Create application JAR file -->
     <jar jarfile="${dist.home}/${app.name}.war"
          basedir="${build.home}"/>
-    <!--
     <apply executable="scp">
    	<srcfile/>
         <fileset dir="${dist.home}">
@@ -258,7 +257,6 @@
         </fileset>
         <arg line="cerami@cbio:${prod.dir}"/>
      </apply>
-     -->
   </target>
 
 <!-- ==================== Install Target ================================== -->
