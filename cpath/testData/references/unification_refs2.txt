@@ -1,0 +1,1 @@
+#  Sample Unification References File	#  This data is actually real, based on UniProt Web SiteUniProt	PIRP04637 Q16811 Q16848 Q86UG1 Q8J016 Q99659 Q9BTM4 Q9HAQ8 Q9NP68 Q9NPJ2 Q9NZD0 Q9UBI2	DNHU53
