@@ -1,5 +1,7 @@
 package org.mskcc.pathdb.controller;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,8 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Data Service Controller.
@@ -41,7 +41,8 @@ public class DataServiceController {
     /**
      * Logger.
      */
-    private Logger logger = Logger.getLogger(this.getClass().getName());
+    private static Logger log =
+            Logger.getLogger(DataServiceController.class.getName());
 
     /**
      * Constructor.
@@ -102,8 +103,7 @@ public class DataServiceController {
             stream.flush();
             stream.close();
         } catch (IOException e) {
-            logger.log(Level.WARNING,
-                    "Exception thrown while writing out XML Error:  "
+            log.error("Exception thrown while writing out XML Error:  "
                     + e.getMessage());
         }
     }
@@ -145,19 +145,17 @@ public class DataServiceController {
      * Forwards to the /jsp/protocol.html HTML Page.
      */
     private void showHelp() {
-        logger.info("Forwarding to protocol.jsp page");
+        log.info("Forwarding to protocol.jsp page");
         try {
             setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
             RequestDispatcher dispatcher =
                     servletContext.getRequestDispatcher("/jsp/protocol.html");
             dispatcher.forward(request, response);
         } catch (IOException e) {
-            logger.log(Level.WARNING,
-                    "IOException thrown while writing out Help page:  "
+            log.error("IOException thrown while writing out Help page:  "
                     + e.getMessage());
         } catch (ServletException e) {
-            logger.log(Level.WARNING,
-                    "ServletException thrown while writing out Help page:  "
+            log.error("ServletException thrown while writing out Help page:  "
                     + e.getMessage());
         }
     }

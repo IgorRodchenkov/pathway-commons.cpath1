@@ -20,6 +20,7 @@ import org.mskcc.pathdb.xml.psi.ProteinParticipant;
 import org.mskcc.pathdb.xml.psi.ProteinParticipantTypeChoice;
 import org.mskcc.pathdb.xml.psi.SecondaryRef;
 import org.mskcc.pathdb.xml.psi.Xref;
+import org.mskcc.pathdb.xml.psi.EntrySet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +47,11 @@ public class PsiFormatter {
     private static final String PUB_MED_DB = "pubmed";
 
     /**
+     * PSI-MI Controlled Vocabulary Reference.
+     */
+    private static final String PSI_MI = "PSI-MI";
+
+    /**
      * Constructor.
      * @param interactions ArrayList of Interactions.
      */
@@ -57,7 +63,11 @@ public class PsiFormatter {
      * Gets PSI XML.
      * @return Root PSI Element.
      */
-    public Entry getPsiXml() {
+    public EntrySet getPsiXml() {
+        // Create Entry Set and Entry
+        EntrySet entrySet = new EntrySet ();
+        entrySet.setLevel(1);
+        entrySet.setVersion(1);
         Entry entry = new Entry();
 
         //  Get Interactor List
@@ -69,7 +79,8 @@ public class PsiFormatter {
         //  Add to Entry node
         entry.setInteractorList(interactorList);
         entry.setInteractionList(interactionList);
-        return entry;
+        entrySet.addEntry(entry);
+        return entrySet;
     }
 
     /**
@@ -191,18 +202,17 @@ public class PsiFormatter {
         String idStr = interaction.getExperimentalSystem();
         if (idStr.equals("Affinity Precipitation")) {
             Names names = createName("affinity chromatography technologies",
-                    "affinity chromatography technologies");
+                    null);
             interactionDetection.setNames(names);
-            Xref xref = createXRef("goid", "MI:0004");
+            Xref xref = createXRef(PSI_MI, "MI:0004");
             interactionDetection.setXref(xref);
         } else if (idStr.equals("Two Hybrid")) {
-            Names names = createName("classical two hybrid",
-                    "classical two hybrid");
+            Names names = createName("classical two hybrid", null);
             interactionDetection.setNames(names);
-            Xref xref = createXRef("goid", "MI:0018");
+            Xref xref = createXRef(PSI_MI, "MI:0018");
             interactionDetection.setXref(xref);
         } else {
-            Names names = createName(idStr, idStr);
+            Names names = createName(idStr, null);
             interactionDetection.setNames(names);
             Xref xref = createXRef("N/A", "N/A");
             interactionDetection.setXref(xref);
@@ -340,7 +350,9 @@ public class PsiFormatter {
     private Names createName(String shortLabel, String fullName) {
         Names names = new Names();
         names.setShortLabel(shortLabel);
-        names.setFullName(fullName);
+        if (fullName != null) {
+            names.setFullName(fullName);
+        }
         return names;
     }
 

@@ -1,8 +1,9 @@
 package org.mskcc.pathdb.servlet;
 
 import org.mskcc.pathdb.controller.DataServiceController;
-import org.mskcc.pathdb.util.ConfigLogger;
+import org.mskcc.pathdb.logger.ConfigLogger;
 import org.mskcc.pathdb.util.PropertyManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Logger;
+import java.io.File;
 
 /**
  * Data Service Servlet.
@@ -50,6 +51,14 @@ public final class DataService extends HttpServlet {
     }
 
     /**
+     * Shutdown the Servlet.
+     */
+    public void destroy() {
+        super.destroy();
+        logger.info("Data Servlet Servlet is shutting down");
+    }
+
+    /**
      * Responds to a POST request for the content produced by
      * this servlet.
      *
@@ -71,16 +80,22 @@ public final class DataService extends HttpServlet {
      */
     public void init() throws ServletException {
         super.init();
+        logger.info("Data Service Servlet Starting up");
         PropertyManager manager = PropertyManager.getInstance();
         ServletConfig config = this.getServletConfig();
-        String gridHost = config.getInitParameter("grid_host");
-        String gridUser = config.getInitParameter("grid_user");
-        String gridPassword = config.getInitParameter("grid_password");
-        String logFile = config.getInitParameter("log_file");
-        manager.setGridHost(gridHost);
-        manager.setGridUser(gridUser);
-        manager.setGridPassword(gridPassword);
-        manager.setLogFile(logFile);
+        String dbHost = config.getInitParameter("db_host");
+        String dbUser = config.getInitParameter("db_user");
+        String dbPassword = config.getInitParameter("db_password");
+        String logConfigFile = config.getInitParameter("log_config_file");
+        logger.info("Found dbHost:  " + dbHost);
+        logger.info("Found dbUser:  " + dbUser);
+        logger.info("Found Log Configuration File:  " + logConfigFile);
+        manager.setDbHost(dbHost);
+        manager.setDbUser(dbUser);
+        manager.setDbPassword(dbPassword);
+        manager.setLogConfigFile(logConfigFile);
+        File file = new File(logConfigFile);
+        logger.info("Absolute Path for Log File:  " + file.getAbsolutePath());
         ConfigLogger.configureLogger();
     }
 }

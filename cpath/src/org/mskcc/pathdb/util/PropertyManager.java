@@ -7,24 +7,24 @@ package org.mskcc.pathdb.util;
  */
 public class PropertyManager {
     /**
-     * Grid Host Name.
+     * DB Host Name.
      */
-    private String gridHost;
+    private String dbHost;
 
     /**
      * Grid User Name.
      */
-    private String gridUser;
+    private String dbUser;
 
     /**
      * Grid Password.
      */
-    private String gridPassword;
+    private String dbPassword;
 
     /**
-     * Default Location for Log File.
+     * Default Location for Log Config File.
      */
-    private String logFile = "log/ds_console.log";
+    private String logConfigFile = "config/config-JDBC.properties";
 
     /**
      * Single Instance of Property Manager.
@@ -52,63 +52,63 @@ public class PropertyManager {
      * Gets GRID Host Name.
      * @return GRID Host Name.
      */
-    public String getGridHost() {
-        return gridHost;
+    public String getDbHost() {
+        return dbHost;
     }
 
     /**
      * Sets GRID Host Name.
-     * @param gridHost GRID Host Name.
+     * @param dbHost GRID Host Name.
      */
-    public void setGridHost(String gridHost) {
-        this.gridHost = gridHost;
+    public void setDbHost(String dbHost) {
+        this.dbHost = dbHost;
     }
 
     /**
      * Gets GRID User Name.
      * @return GRID User Name.
      */
-    public String getGridUser() {
-        return gridUser;
+    public String getDbUser() {
+        return dbUser;
     }
 
     /**
      * Sets GRID User Name.
-     * @param gridUser GRID User Name.
+     * @param dbUser GRID User Name.
      */
-    public void setGridUser(String gridUser) {
-        this.gridUser = gridUser;
+    public void setDbUser(String dbUser) {
+        this.dbUser = dbUser;
     }
 
     /**
      * Gets GRID Password.
      * @return GRID Password.
      */
-    public String getGridPassword() {
-        return gridPassword;
+    public String getDbPassword() {
+        return dbPassword;
     }
 
     /**
      * Sets GRID Password.
-     * @param gridPassword GRID Password.
+     * @param dbPassword GRID Password.
      */
-    public void setGridPassword(String gridPassword) {
-        this.gridPassword = gridPassword;
+    public void setDbPassword(String dbPassword) {
+        this.dbPassword = dbPassword;
     }
 
     /**
      * Gets Log File Location.
      * @return Log File Location.
      */
-    public String getLogFile() {
-        return logFile;
+    public String getLogConfigFile() {
+        return logConfigFile;
     }
 
     /**
      * Sets Log File Location.
      * @param logFile Log File Location.
      */
-    public void setLogFile(String logFile) {
-        this.logFile = logFile;
+    public void setLogConfigFile(String logFile) {
+        this.logConfigFile = logFile;
     }
 }

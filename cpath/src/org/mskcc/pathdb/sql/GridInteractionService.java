@@ -2,13 +2,13 @@ package org.mskcc.pathdb.sql;
 
 import org.mskcc.pathdb.model.Interaction;
 import org.mskcc.pathdb.model.Protein;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * Live GRID Interaction Service.
@@ -51,6 +51,8 @@ public class GridInteractionService extends GridBase {
             throws SQLException, ClassNotFoundException, EmptySetException {
         logger.info("Getting Interactions for:  " + orfName);
         ArrayList interactions = getLiveInteractions(orfName);
+        logger.info("Total Number of Interactions found:  "
+                + interactions.size());
         return interactions;
     }
 
@@ -93,8 +95,6 @@ public class GridInteractionService extends GridBase {
                 + " and (deprecated='F')");
         pstmt.setString(1, localId);
         pstmt.setString(2, localId);
-
-        logger.info("Executing SQL Query:  " + pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
         return rs;
     }

@@ -7,7 +7,8 @@ import org.mskcc.pathdb.test.controller.ControllerSuite;
 import org.mskcc.pathdb.test.format.FormatSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
-import org.mskcc.pathdb.util.ConfigLogger;
+import org.mskcc.pathdb.test.logger.LoggerSuite;
+import org.mskcc.pathdb.logger.ConfigLogger;
 
 /**
  * Runs all Unit Tests.
@@ -27,6 +28,7 @@ public class AllTest extends TestCase {
         suite.addTest(FormatSuite.suite());
         suite.addTest(ControllerSuite.suite());
         suite.addTest(WebSuite.suite());
+        suite.addTest(LoggerSuite.suite());
         suite.setName("PathDB Tests");
         return suite;
     }

@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 /**
  * Cache Filter.
@@ -58,14 +59,13 @@ public class CacheFilter implements Filter {
      * @param filterConfig The filter configuration
      */
     public void init(FilterConfig filterConfig) {
-        //Get whatever settings we want...
         config = filterConfig;
         admin = ServletCacheAdministrator.getInstance
                 (config.getServletContext());
         try {
             time = Integer.parseInt(config.getInitParameter("time"));
         } catch (Exception e) {
-            logger.warning("Error Parsing Time:  " + e.toString());
+            logger.error("Error Parsing Time Parameter:  " + e.toString());
         }
     }
 
@@ -88,18 +88,19 @@ public class CacheFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         HttpServletRequest hRequest = (HttpServletRequest) request;
-        logger.info("Processing URL Request:  " + hRequest.getQueryString());
+        logger.info("Incoming request from:  " + request.getRemoteAddr());
+        logger.info("URL Requested:  " + hRequest.getQueryString());
         String key = admin.generateEntryKey(null, (HttpServletRequest)
                 request, cacheScope);
-        logger.info("cache:  Using Cache Key:  " + key);
+        logger.info("Using Cache Key:  " + key);
         Cache cache = admin.getCache((HttpServletRequest) request, cacheScope);
         try {
             ResponseContent respContent = (ResponseContent)
                     cache.getFromCache(key, time);
-            logger.info("cache: Using cached entry for " + key);
+            logger.info("Using cached entry for " + key);
             respContent.writeTo(response);
         } catch (NeedsRefreshException nre) {
-            logger.info("cache: New cache entry, cache stale or "
+            logger.info("New cache entry, cache stale or "
                     + "cache scope flushed for " + key);
             CacheHttpServletResponseWrapper cacheResponse =
                     new CacheHttpServletResponseWrapper

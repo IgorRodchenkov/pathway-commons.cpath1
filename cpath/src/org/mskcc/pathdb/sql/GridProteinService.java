@@ -8,6 +8,7 @@ import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
 import org.mskcc.pathdb.model.Protein;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -15,7 +16,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 /**
  * Live GRID Protein Service.
@@ -67,7 +67,7 @@ public class GridProteinService extends GridBase {
      */
     public Protein getProteinByLocalId(String localId)
             throws SQLException, ClassNotFoundException, EmptySetException {
-        logger.info("Retrieving Protein, using ORFName:  " + localId);
+        logger.info("Retrieving Protein, using UID:  " + localId);
         Protein protein = getLiveProtein(localId, GridBase.KEY_LOCAL_ID);
         return protein;
     }
@@ -84,6 +84,7 @@ public class GridProteinService extends GridBase {
      */
     public String getProteinXmlByOrf(String orfName) throws EmptySetException,
             ClassNotFoundException, SQLException, JDOMException, IOException {
+        logger.info("Retrieving Protein, using UID:  " + orfName);
         ResultSet rs = this.connect(orfName, GridBase.KEY_ORF);
         ResultSetBuilder rsBuilder = new ResultSetBuilder(rs);
         Document document = rsBuilder.build();
@@ -137,7 +138,6 @@ public class GridProteinService extends GridBase {
         PreparedStatement pstmt = con.prepareStatement
                 ("select * from orf_info where " + lookUpKey + "=?");
         pstmt.setString(1, uid);
-        logger.info("Executing SQL Query:  " + pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
         return rs;
     }

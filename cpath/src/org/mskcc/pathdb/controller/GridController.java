@@ -5,7 +5,8 @@ import org.mskcc.pathdb.sql.EmptySetException;
 import org.mskcc.pathdb.sql.GridInteractionService;
 import org.mskcc.pathdb.sql.GridProteinService;
 import org.mskcc.pathdb.util.PropertyManager;
-import org.mskcc.pathdb.xml.psi.Entry;
+import org.mskcc.pathdb.xml.psi.EntrySet;
+import org.apache.log4j.Logger;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -17,6 +18,11 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class GridController {
+    /**
+     * Logger.
+     */
+    private static Logger log =
+            Logger.getLogger(DataServiceController.class.getName());
 
     /**
      * Retrieves GRID Data.
@@ -61,16 +67,17 @@ public class GridController {
      * @throws Exception All Exceptions.
      */
     private String getInteractions(String uid) throws Exception {
+        log.info("Retrieving Interactions from GRID for UID:  " + uid);
         PropertyManager manager = PropertyManager.getInstance();
         GridInteractionService service = new GridInteractionService
-                (manager.getGridHost(), manager.getGridUser(),
-                        manager.getGridPassword());
+                (manager.getDbHost(), manager.getDbUser(),
+                        manager.getDbPassword());
         ArrayList interactions =
                 service.getInteractions(uid);
         PsiFormatter formatter = new PsiFormatter(interactions);
-        Entry entry = formatter.getPsiXml();
+        EntrySet entrySet = formatter.getPsiXml();
         StringWriter writer = new StringWriter();
-        entry.marshal(writer);
+        entrySet.marshal(writer);
         return writer.toString();
     }
 
@@ -81,10 +88,11 @@ public class GridController {
      * @throws Exception All Exceptions.
      */
     private String getGo(String uid) throws Exception {
+        log.info("Retrieving Interactor Data from GRID for UID:  " + uid);
         PropertyManager manager = PropertyManager.getInstance();
         GridProteinService service = new GridProteinService
-                (manager.getGridHost(), manager.getGridUser(),
-                        manager.getGridPassword());
+                (manager.getDbHost(), manager.getDbUser(),
+                        manager.getDbPassword());
         String xml = service.getProteinXmlByOrf(uid);
         return xml;
     }

@@ -10,6 +10,7 @@ import org.mskcc.pathdb.xml.psi.PrimaryRef;
 import org.mskcc.pathdb.xml.psi.ProteinInteractor;
 import org.mskcc.pathdb.xml.psi.SecondaryRef;
 import org.mskcc.pathdb.xml.psi.Xref;
+import org.mskcc.pathdb.xml.psi.EntrySet;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,8 +33,8 @@ public class TestPsiFormatter extends TestCase {
         ArrayList interactions =
                 service.getInteractions("YHR119W");
         PsiFormatter formatter = new PsiFormatter(interactions);
-        Entry entry = formatter.getPsiXml();
-
+        EntrySet entrySet = formatter.getPsiXml();
+        Entry entry = entrySet.getEntry(0);
         validateProteinInteractor(entry);
 
         boolean isValid = entry.isValid();
