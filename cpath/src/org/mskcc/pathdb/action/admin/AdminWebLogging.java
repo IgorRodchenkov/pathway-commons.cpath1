@@ -18,7 +18,7 @@ public class AdminWebLogging extends AdminBaseAction {
     /**
      * Session Parameter:  cPath Web Logging.
      */
-    public static final String WEB_LOGGING = "cpath.log";
+    public static final String WEB_LOGGING = "debug";
 
     /**
      * Executes Action.
