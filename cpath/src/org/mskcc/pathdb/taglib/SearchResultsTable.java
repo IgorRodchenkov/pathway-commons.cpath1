@@ -39,8 +39,6 @@ import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.query.QueryException;
 
 import java.io.IOException;
 
@@ -50,7 +48,6 @@ import java.io.IOException;
  * @author Ethan Cerami
  */
 public class SearchResultsTable extends HtmlTable {
-    private int HITS_PER_PAGE = 10;
     private ProtocolRequest pRequest;
     private String uid;
     private Pager pager;
@@ -66,19 +63,21 @@ public class SearchResultsTable extends HtmlTable {
 
     /**
      * Start Tag Processing.
-     * @throws DaoException Database Access Error.
+     * @throws Exception Database Access Error.
      */
-    protected void subDoStartTag() throws DaoException, QueryException,
-            IOException {
+    protected void subDoStartTag() throws Exception {
         LuceneIndexer lucene = new LuceneIndexer();
-        Hits hits = lucene.executeQuery(uid);
-        this.pager = new Pager (pRequest, hits.length());
-        createHeader(hits);
-        String headers[] = {"", "Name", "Description", "Interactions"};
-        createTableHeaders(headers);
-        outputResults(hits);
-        endTable();
-        lucene.closeIndexSearcher();
+        try {
+            Hits hits = lucene.executeQuery(uid);
+            this.pager = new Pager(pRequest, hits.length());
+            createHeader(hits);
+            String headers[] = {"", "Name", "Description", "Interactions"};
+            createTableHeaders(headers);
+            outputResults(hits);
+            endTable();
+        } finally {
+            lucene.closeIndexSearcher();
+        }
     }
 
     private void createHeader(Hits hits) {
@@ -89,12 +88,12 @@ public class SearchResultsTable extends HtmlTable {
                 + "<b><big>" + title + "</big>"
                 + "</b></u><br></td>");
         append("<td align=right nowrap width=1%>"
-            +"<font face=arial size=-1>");
+                + "<font face=arial size=-1>");
         if (hits.length() > 0) {
-            append (pager.getHeaderHtml());
+            append(pager.getHeaderHtml());
         }
-        append ("</td></tr>");
-        append ("</table>");
+        append("</td></tr>");
+        append("</table>");
         append("<table valign=top width=100% cellpadding=7 border=0 "
                 + "cellspacing=0>");
     }
@@ -103,7 +102,7 @@ public class SearchResultsTable extends HtmlTable {
      * Outputs Interaction Data.
      */
     private void outputResults(Hits hits) throws IOException {
-        if (hits.length()== 0) {
+        if (hits.length() == 0) {
             append("<TR>");
             append("<TD COLSPAN=4>No Matching Results found!");
             append("</TR>");
@@ -114,7 +113,7 @@ public class SearchResultsTable extends HtmlTable {
             Field name = doc.getField(LuceneIndexer.FIELD_NAME);
             Field desc = doc.getField(LuceneIndexer.FIELD_DESCRIPTION);
             append("<TD VALIGN=TOP WIDTH=20>");
-            append(Integer.toString(i+1)+".");
+            append(Integer.toString(i + 1) + ".");
             append("</TD>");
             append("<TD VALIGN=TOP WIDTH=60>");
             append(name.stringValue());

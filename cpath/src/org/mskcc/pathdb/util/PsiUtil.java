@@ -104,19 +104,29 @@ public class PsiUtil {
     }
 
     /**
-     * Extracts All Interactor External References.
+     * Extracts All External References for specified Protein Interactor.
      * @param cProtein Castor Protein Object.
      * @return Array of External Reference Objects.
      */
     public ExternalReference[] extractRefs(ProteinInteractorType cProtein) {
-        ArrayList refList = new ArrayList();
         XrefType xref = cProtein.getXref();
+        return this.extractXrefs(xref);
+    }
+
+    /**
+     * Extracts All External References for XrefType object.
+     * @param xref XrefType Object.
+     * @return Array of External Reference Objects.
+     */
+    public ExternalReference[] extractXrefs(XrefType xref) {
+        ArrayList refList = new ArrayList();
         if (xref != null) {
             DbReferenceType primaryRef = xref.getPrimaryRef();
-            createExternalReference(primaryRef.getDb(), primaryRef.getId(),
-                    refList);
-            int count = xref.getSecondaryRefCount();
-            for (int i = 0; i < count; i++) {
+            if (primaryRef != null) {
+                createExternalReference(primaryRef.getDb(), primaryRef.getId(),
+                        refList);
+            }
+            for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
                 DbReferenceType secondaryRef = xref.getSecondaryRef(i);
                 createExternalReference(secondaryRef.getDb(),
                         secondaryRef.getId(), refList);
@@ -127,6 +137,48 @@ public class PsiUtil {
             return refs;
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Extracts the External Reference for the specified Interaction object.
+     * @param interaction Castor Interaction object.
+     * @return Array of External Reference objects.
+     */
+    public ExternalReference[] extractExternalRefs
+            (InteractionElementType interaction) {
+        ArrayList refList = new ArrayList();
+
+        //  Extract the Xref, if it exists.
+        //  This identifies the database source of the interaction.
+        XrefType xref = interaction.getXref();
+        ExternalReference refs[] = extractXrefs(xref);
+        addToExternalRefList(refs, refList);
+
+        //  Extract any bibrefs, if they exist
+        ExperimentList expList = interaction.getExperimentList();
+        if (expList != null) {
+            for (int i = 0; i < expList.getExperimentListItemCount(); i++) {
+                ExperimentListItem item = expList.getExperimentListItem(i);
+                ExperimentType type = item.getExperimentDescription();
+                if (type != null) {
+                    BibrefType bibRef = type.getBibref();
+                    xref = bibRef.getXref();
+                    refs = extractXrefs(xref);
+                    addToExternalRefList(refs, refList);
+                }
+            }
+        }
+        refs = (ExternalReference[]) refList.toArray(refs);
+        return refs;
+    }
+
+    private void addToExternalRefList(ExternalReference[] refs,
+            ArrayList refList) {
+        if (refs != null) {
+            for (int i = 0; i < refs.length; i++) {
+                refList.add(refs[i]);
+            }
         }
     }
 

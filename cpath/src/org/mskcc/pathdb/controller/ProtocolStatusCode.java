@@ -52,13 +52,13 @@ public class ProtocolStatusCode {
      * Status Code:  460 Bad Request, Missing Arguments.
      */
     public static final ProtocolStatusCode MISSING_ARGUMENTS =
-            new ProtocolStatusCode(452);
+            new ProtocolStatusCode(460);
 
     /**
-     * Status Code:  461 Version Not Supported.
+     * Status Code:  470 Version Not Supported.
      */
     public static final ProtocolStatusCode VERSION_NOT_SUPPORTED =
-            new ProtocolStatusCode(453);
+            new ProtocolStatusCode(470);
 
     /**
      * Status Code:  500 Internal Server Error.

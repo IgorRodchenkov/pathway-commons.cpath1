@@ -2,6 +2,7 @@ package org.mskcc.pathdb.tool;
 
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
+import org.mskcc.pathdb.sql.query.GetInteractionsByInteractorName;
 
 import java.io.StringWriter;
 
@@ -31,7 +32,8 @@ public class QueryCPath {
      */
     private static void queryCPath(String[] args) {
         try {
-            InteractionQuery query = new InteractionQuery(args[0]);
+            InteractionQuery query = new
+                    GetInteractionsByInteractorName(args[0]);
             EntrySet entrySet = query.getEntrySet();
             StringWriter writer = new StringWriter();
             entrySet.marshal(writer);

@@ -1,11 +1,10 @@
 package org.mskcc.pathdb.controller;
 
 import org.mskcc.dataservices.core.EmptySetException;
-import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.sql.query.GetInteractionsByInteractorName;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.apache.lucene.search.Hits;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -69,7 +68,7 @@ public class DataServiceController {
         String uid = protocolRequest.getUid();
         if (protocolRequest.getFormat().equals
                 (ProtocolConstants.FORMAT_PSI)) {
-            InteractionQuery query = new InteractionQuery(uid);
+            InteractionQuery query = new GetInteractionsByInteractorName(uid);
             String xml = query.getXml();
             this.returnXml(xml);
         } else {
@@ -79,7 +78,8 @@ public class DataServiceController {
                 if (uid.indexOf("\"") > -1) {
                     throw new EmptySetException();
                 }
-                InteractionQuery query = new InteractionQuery(uid);
+                InteractionQuery query = new
+                        GetInteractionsByInteractorName(uid);
                 ArrayList interactions = query.getInteractions();
                 request.setAttribute("interactions", interactions);
             } catch (EmptySetException e) {

@@ -3,7 +3,6 @@ package org.mskcc.pathdb.test.indexer;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.test.logger.TestAdminLogger;
 
 /**
  * Suite of all Indexer Unit Tests.

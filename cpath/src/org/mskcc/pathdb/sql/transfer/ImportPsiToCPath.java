@@ -190,17 +190,9 @@ public class ImportPsiToCPath {
                 }
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
-                XrefType xref = interaction.getXref();
-                if (xref != null) {
-                    DbReferenceType primaryRef = xref.getPrimaryRef();
-                    if (primaryRef != null) {
-                        String db = primaryRef.getDb();
-                        String id = primaryRef.getId();
-                        ExternalReference refs[] = new ExternalReference[1];
-                        refs[0] = new ExternalReference(db, id);
-                        linker.validateExternalReferences(refs);
-                    }
-                }
+                ExternalReference refs[] =
+                        psiUtil.extractExternalRefs(interaction);
+                linker.validateExternalReferences(refs);
             }
         }
         if (verbose) {
@@ -344,12 +336,20 @@ public class ImportPsiToCPath {
         DaoCPath cpath = new DaoCPath();
         summary.incrementNumInteractionsSaved();
 
-        //  Extract primary reference (if it exists)
-        ExternalReference refs[] = extractExternalReference(interaction);
+        //  Extract Primary Reference, if it exists.
+        XrefType xref = interaction.getXref();
+        ExternalReference refs[] = psiUtil.extractXrefs(xref);
 
         //  Conditionally delete existing interaction (if it exists)
-        //  New Interactions clobber old interactions.
-        conditionallyDeleteInteraction(refs);
+        //  New Interaction clobber old interaction.
+        if (refs != null) {
+            conditionallyDeleteInteraction(refs);
+        }
+
+        //  Extract all external references (if they exist).
+        //  This includes references to database source, and
+        //  references to publications.
+        refs = psiUtil.extractExternalRefs(interaction);
 
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = this.marshalInteraction(interaction);
@@ -371,7 +371,7 @@ public class ImportPsiToCPath {
     /**
      * Conditional Deletes the Specified Interaction.
      */
-    private void conditionallyDeleteInteraction (ExternalReference refs[])
+    private void conditionallyDeleteInteraction(ExternalReference refs[])
             throws DaoException {
         DaoExternalLink linker = new DaoExternalLink();
         DaoCPath cpath = new DaoCPath();
@@ -382,27 +382,6 @@ public class ImportPsiToCPath {
             cpath.deleteRecordById(record.getId());
             summary.incrementNumInteractionsClobbered();
         }
-    }
-
-    /**
-     * Extracts the External Reference for the specified Interaction object.
-     * @param interaction Castor Interaction object.
-     * @return Array of External Reference objects.
-     */
-    private ExternalReference[] extractExternalReference
-            (InteractionElementType interaction) {
-        ExternalReference refs[] = null;
-        XrefType xref = interaction.getXref();
-        if (xref != null) {
-            DbReferenceType primaryRef = xref.getPrimaryRef();
-            if (primaryRef != null) {
-                String db = primaryRef.getDb();
-                String id = primaryRef.getId();
-                refs = new ExternalReference[1];
-                refs[0] = new ExternalReference(db, id);
-            }
-        }
-        return refs;
     }
 
     /**

@@ -15,6 +15,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.InteractionQuery;
+import org.mskcc.pathdb.sql.query.GetInteractionsByInteractorName;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 
 import java.io.StringWriter;
@@ -70,7 +71,7 @@ public class TestImportPsiToCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     private void validateData() throws Exception {
-        InteractionQuery query = new InteractionQuery("YCR038C");
+        InteractionQuery query = new GetInteractionsByInteractorName("YCR038C");
         EntrySet entrySet = query.getEntrySet();
         StringWriter writer = new StringWriter();
         entrySet.marshal(writer);
@@ -80,9 +81,28 @@ public class TestImportPsiToCPath extends TestCase {
         InteractionList interactionList = entry.getInteractionList();
         assertEquals(4, interactionList.getInteractionCount());
         assertTrue(entrySet.isValid());
-
         validateInteractionSource();
+        validatePMID();
+    }
 
+    private void validatePMID() throws DaoException {
+        //  Try Looking up by PMID.
+        DaoExternalLink linker = new DaoExternalLink();
+        ExternalReference ref = new ExternalReference("PMID", "12345678");
+        CPathRecord record = linker.lookUpByExternalRef(ref);
+
+        //  Find the IDs for Known Interactors
+        DaoCPath cpath = new DaoCPath();
+        CPathRecord interactor1 = cpath.getRecordByName("YCR038C");
+        CPathRecord interactor2 = cpath.getRecordByName("YDL065C");
+
+        //  Verify that interaction record references known interactors.
+        DaoInternalLink internalLinker = new DaoInternalLink();
+        ArrayList links = internalLinker.getInternalLinks(record.getId());
+        InternalLinkRecord link1 = (InternalLinkRecord) links.get(0);
+        InternalLinkRecord link2 = (InternalLinkRecord) links.get(1);
+        assertEquals (interactor1.getId(), link1.getCpathIdB());
+        assertEquals (interactor2.getId(), link2.getCpathIdB());
     }
 
     /**
