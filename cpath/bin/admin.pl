@@ -18,4 +18,4 @@ my $numArgs = scalar (@ARGV);
 # Output cPath Home
 # print ("Using cPath Home:  $cpathHome\n");
 
-system ("java -Xmx512M -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.Admin @ARGV");
+system ("java -Xmx1524M -cp $cp -DCPATH_HOME='$cpathHome' org.mskcc.pathdb.tool.Admin @ARGV");
