@@ -39,7 +39,7 @@ public class Pager {
         while (i < totalNumHits) {
             i += hitsPerPage;
         }
-        return i - hitsPerPage;
+        return Math.max(0, i - hitsPerPage);
     }
 
     /**
