@@ -207,7 +207,7 @@ public class JdbcUtil {
      * @param pstmt PreparedStatement Object.
      * @return toString value.
      */
-    public static String getSqlQuery (PreparedStatement pstmt) {
+    public static String getSqlQuery(PreparedStatement pstmt) {
         if (pstmt instanceof DelegatingPreparedStatement) {
             DelegatingPreparedStatement dp =
                     (DelegatingPreparedStatement) pstmt;

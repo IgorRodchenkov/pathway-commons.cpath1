@@ -104,7 +104,7 @@ public class CountAffymetrixIdsTask extends Task {
                 + "external database identifiers:  " + numProteinsWithoutXrefs);
         pMonitor.setCurrentMessage("\nThe following proteins have no "
                 + "external database identifiers:  ");
-        for (int i=0; i < proteinsWithOutRefs.size(); i++) {
+        for (int i = 0; i < proteinsWithOutRefs.size(); i++) {
             ProteinInteractorType protein =
                     (ProteinInteractorType) proteinsWithOutRefs.get(i);
             pMonitor.setCurrentMessage(protein.getNames().getShortLabel());
@@ -180,11 +180,11 @@ public class CountAffymetrixIdsTask extends Task {
                     }
                 }
                 if (primaryRef == null && xref.getSecondaryRefCount() == 0) {
-                    recordEmptyProtein (protein);
+                    recordEmptyProtein(protein);
                     numProteinsWithoutXrefs++;
                 }
             } else {
-                recordEmptyProtein (protein);
+                recordEmptyProtein(protein);
                 numProteinsWithoutXrefs++;
             }
         } catch (ValidationException e) {
@@ -196,7 +196,7 @@ public class CountAffymetrixIdsTask extends Task {
         }
     }
 
-    private void recordEmptyProtein (ProteinInteractorType protein) {
+    private void recordEmptyProtein(ProteinInteractorType protein) {
         proteinsWithOutRefs.add(protein);
     }
 
