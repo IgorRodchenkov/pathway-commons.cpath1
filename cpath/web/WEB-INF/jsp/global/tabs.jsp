@@ -24,8 +24,8 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    tabNames.add("Search FAQ");
-    String advancedSearchUrl = "advancedSearch.do";
+    tabNames.add("FAQ");
+    String advancedSearchUrl = "faq.do";
     tabUrls.add(advancedSearchUrl);
     if (url.equals(advancedSearchUrl)) {
         tabActive.add (Boolean.TRUE);
