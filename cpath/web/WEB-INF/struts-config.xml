@@ -21,6 +21,12 @@
             <forward name="success" path="/WEB-INF/jsp/pages/Home.jsp"/>
         </action>
 
+        <!--  Toggle Search Options -->
+        <action path="/toggleSearchOptions"
+            type="org.mskcc.pathdb.action.ToggleSearchOptions">
+            <forward name="success" path="/WEB-INF/jsp/pages/Home.jsp"/>
+        </action>
+
         <!--  Query / Web Service API -->
         <action path="/webservice"
             type="org.mskcc.pathdb.action.QueryAction">
@@ -43,6 +49,11 @@
         <action path="/adminDiagnostics"
             type="org.mskcc.pathdb.action.admin.AdminBaseAction">
             <forward name="success" path="/WEB-INF/jsp/pages/Diagnostics.jsp"/>
+        </action>
+
+        <action path="/adminCache"
+            type="org.mskcc.pathdb.action.admin.AdminBaseAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/ViewCache.jsp"/>
         </action>
 
         <action path="/adminViewLogRecords"
