@@ -18,18 +18,22 @@ cPath Functionality Issues:
 6.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape 
 	to easily create external links.
 	---> current priority:  medium.
-7.  For HTML front end of cPath query API: paginate results (only text index results currently paginated)
+7.  For HTML front end of cPath query API: paginate results (only text index results currently 
+    paginated)
 	---> current priority:  low.
-8.  Support content-length calculation of PSI-MI queries, where possible, to support more accurate progress metering on the client side.  We might be able to easily do it for queries that are cached and for the precomputed queries.  For queries that aren't, we could at least provide updates of the parsing progress as it happens (Rob's idea)
+8.  Support content-length calculation of PSI-MI queries, where possible, to support more accurate 
+    progress metering on the client side.  We might be able to easily do it for queries that are 
+    cached and for the precomputed queries.  For queries that aren't, we could at least provide 
+    updates of the parsing progress as it happens (Rob's idea)
 	---> Current priority: low.
 9.  Resolve cross-species interaction issue.
 10. Implement a full statistics page.  This could be precomputed regularly (e.g. weekly),
     not computed on the fly.  The best example of a stats page is currently the MINT page:
     http://160.80.34.4/mint/statistics/statistics.php
 	---> Current priority: low.
-11. Add support to cPath and data services layer for importing PSI-MI files that contain interactions
-    with more than two proteins (e.g. 5 protein complex).  This would allow us to import data
-    from the PIN database in the Tempst lab at MSKCC (http://pin.mskcc.org).
+11. Add support to cPath and data services layer for importing PSI-MI files that contain 
+    interactions with more than two proteins (e.g. 5 protein complex).  This would allow us to 
+    import data from the PIN database in the Tempst lab at MSKCC (http://pin.mskcc.org).
 	---> Current priority: medium.
 12.  From Gary:  DIP, MINT and IntAct now all have downloadable full data
 sets.  We should think about creating an official inhouse release of cpath
@@ -43,7 +47,8 @@ cPath Performance/Reliability/Security Issues
 
 Data Service Specific Items:
 -----------------------------
-1.  Add an Ontology object to the dataservices bio package to allow retrieval of Gene Ontology type information.
+1.  Add an Ontology object to the dataservices bio package to allow retrieval of Gene Ontology type 
+    information.
 2.  Add Gene Name/Synonym Look up to data services (requires a back-end, may be able to use Entrez Gene DB).
 3.  Create a service for reading in Cytoscape node/edge attributes to go with sif reader.
 4.  Create an "About Data Services PlugIn", with version #, list of all registered
