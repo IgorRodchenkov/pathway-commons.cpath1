@@ -88,7 +88,7 @@ public class DaoExternalDb {
 
 
     /**
-     * Retrieves the External Database Record with the specified ID.
+     * Retrieves the External Database Record with the specified Primary ID.
      *
      * @param id External Database ID.
      * @return External Database Record.

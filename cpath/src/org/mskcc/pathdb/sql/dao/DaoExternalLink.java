@@ -87,7 +87,7 @@ public class DaoExternalLink {
      * @param link           ExternalLinkRecord Object.
      * @param synchronizeXml Synchronize XML in CPath Record (true or false).
      * @return true if saved successfully.
-     * @throws DaoException Error Retrieving Data.
+     * @throws DaoException Error Saving Data.
      */
     public boolean addRecord(ExternalLinkRecord link, boolean synchronizeXml)
             throws DaoException {
@@ -361,7 +361,7 @@ public class DaoExternalLink {
     }
 
     /**
-     * Gets Record by specified External Link ID.
+     * Deletes Record specified by External Link ID.
      *
      * @param externalLinkId External Link ID.
      * @return true if deletion is successful.
