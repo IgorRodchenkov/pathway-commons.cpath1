@@ -33,9 +33,11 @@
  **/
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.pathdb.logger.LogRecord;
+import org.mskcc.pathdb.model.LogRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
+import org.mskcc.pathdb.model.LogRecord;
+import org.mskcc.pathdb.util.HtmlUtil;
 
 import java.util.ArrayList;
 
@@ -52,10 +54,9 @@ public class LogTable extends HtmlTable {
      * @throws DaoException Database Error.
      */
     protected void subDoStartTag() throws DaoException {
-        createHeader("cPath Log Records");
+        createHeader("cPath Error Log Records");
         this.startTable();
-        String headers[] = {"Timestamp", "Remote IP", "Priority", "Logger",
-                            "Message"};
+        String headers[] = {"Messages"};
         createTableHeaders(headers);
         outputResults();
         endTable();
@@ -69,18 +70,23 @@ public class LogTable extends HtmlTable {
         ArrayList logRecords = adminLogger.getLogRecords();
         if (logRecords.size() == 0) {
             append("<TR>");
-            append("<TD COLSPAN=4>No Log Records Available!");
+            append("<TD COLSPAN=4>No Log Records in Database.");
             append("</TR>");
         }
         for (int i = 0; i < logRecords.size(); i++) {
-            append("<TR>");
+            startRow(i-1);
             LogRecord record = (LogRecord) logRecords.get(i);
-            outputDataField(record.getDate());
-            outputDataField(record.getRemoteIp());
-            outputDataField(record.getPriority());
-            outputDataField(record.getLogger());
-            outputDataField(record.getMessage());
-            append("</TR>");
+            append ("<TD>");
+            append ("<B>Error Logged at:  " + record.getDate()
+                    + "</B>");
+            append ("<P>Web URL:  <A HREF='" + record.getWebUrl()
+                +"'>" + record.getWebUrl() + "</A>");
+            append ("<P>Remote Host:  " + record.getRemoteHost());
+            append ("<P>Remote IP:  " + record.getRemoteIp());
+            append ("<P>Error Message:  " + record.getMessage());
+            String html = HtmlUtil.convertToHtml(record.getStackTrace());
+            append ("<P>Stack Trace:  " + html);
+            endRow();
         }
     }
 }
