@@ -100,11 +100,12 @@
 <dependency><groupId>commons-pool-1.1</groupId><artifactId>commons-pool-1.1</artifactId></dependency>
 <dependency><groupId>commons-validator</groupId><artifactId>commons-validator</artifactId></dependency>
 <dependency><groupId>dataservices</groupId><artifactId>dataservices</artifactId></dependency>
+<dependency><groupId>getopt</groupId><artifactId>getopt</artifactId></dependency>
+<dependency><groupId>highlighter</groupId><artifactId>highlighter</artifactId></dependency>
 <dependency><groupId>jakarta-oro</groupId><artifactId>jakarta-oro</artifactId></dependency>
 <dependency><groupId>jdom</groupId><artifactId>jdom</artifactId></dependency>
 <dependency><groupId>jdom_result</groupId><artifactId>jdom_result</artifactId></dependency>
 <dependency><groupId>junit</groupId><artifactId>junit</artifactId></dependency>
-<dependency><groupId>log4j-1.2.8</groupId><artifactId>log4j-1.2.8</artifactId></dependency>
 <dependency><groupId>lucene-1.3-final</groupId><artifactId>lucene-1.3-final</artifactId></dependency>
 <dependency><groupId>mysql-connector-java-3.0.8-stable-bin</groupId><artifactId>mysql-connector-java-3.0.8-stable-bin</artifactId></dependency>
 <dependency><groupId>oscache</groupId><artifactId>oscache</artifactId></dependency>
