@@ -47,6 +47,7 @@ public class ReferencesSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
+        suite.addTestSuite(TestTabSpaceTokenizer.class);
         suite.addTestSuite(TestParseBackgroundReferenceTask.class);
         suite.addTestSuite(TestBackgroundReferenceService.class);
         suite.setName("Background Reference Tests");
