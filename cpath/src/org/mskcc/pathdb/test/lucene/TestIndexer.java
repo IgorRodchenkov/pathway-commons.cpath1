@@ -86,11 +86,16 @@ public class TestIndexer extends TestCase {
     private void queryInteraction(String terms) throws QueryException,
             IOException {
         LuceneReader indexReader = new LuceneReader();
-        Hits hits = indexReader.executeQuery(terms);
-        assertEquals(1, hits.length());
-        Document doc = hits.doc(0);
-        Field id = doc.getField(LuceneConfig.FIELD_INTERACTION_ID);
-        assertEquals("4", id.stringValue());
+        try {
+            Hits hits = indexReader.executeQuery(terms);
+            assertEquals(1, hits.length());
+            Document doc = hits.doc(0);
+            Field id = doc.getField(LuceneConfig.FIELD_INTERACTION_ID);
+            assertEquals("4", id.stringValue());
+        } finally {
+            //  Make sure to always close the IndexReader Object.
+            indexReader.close();
+        }
     }
 
     /**

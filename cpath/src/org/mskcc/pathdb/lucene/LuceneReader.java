@@ -51,23 +51,18 @@ public class LuceneReader {
     private IndexSearcher reader;
 
     /**
-     * Constructor.
-     *
-     * @throws IOException Error Reading Lucene Index Files.
-     */
-    public LuceneReader() throws IOException {
-        String dir = LuceneConfig.getLuceneDirectory();
-        reader = new IndexSearcher(dir);
-    }
-
-    /**
      * Closes the Index Searcher.
-     *
-     * @throws IOException Input Output Exception.
+     * The close() method must be called by all client code in a finally
+     * block.  This ensures that the LuceneSearcher is closed, and all files
+     * are released.
      */
-    protected void finalize() throws Throwable {
-        if (reader != null) {
-            reader.close();
+    public void close() {
+        try {
+            if (reader != null) {
+                reader.close();
+            }
+        } catch (IOException e) {
+            System.err.println(e);
         }
     }
 
@@ -80,6 +75,8 @@ public class LuceneReader {
      */
     public Hits executeQuery(String term) throws QueryException {
         try {
+            String dir = LuceneConfig.getLuceneDirectory();
+            reader = new IndexSearcher(dir);
             Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
             Query query = QueryParser.parse(term, LuceneConfig.FIELD_ALL,
                     analyzer);
@@ -91,5 +88,9 @@ public class LuceneReader {
         } catch (ParseException e) {
             throw new QueryException("ParseException:  " + e.getMessage(), e);
         }
+        //  Why not just call reader.close() here?
+        //  Because, to extract data out of the Hits object,
+        //  the reader must be open.
+        //  Client code is responsibe for calling close in a finally block.
     }
 }

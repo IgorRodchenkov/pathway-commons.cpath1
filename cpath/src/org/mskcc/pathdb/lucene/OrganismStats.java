@@ -96,24 +96,28 @@ public class OrganismStats {
         this.getOrganismsSortedByNumInteractions();
     }
 
-    private void lookUpOrganisms() throws DaoException, QueryException,
-            IOException {
-        DaoOrganism dao = new DaoOrganism();
-        organismListSortedByName = dao.getAllOrganisms();
+    private void lookUpOrganisms() throws DaoException, QueryException {
         LuceneReader indexer = new LuceneReader();
-        for (int i = 0; i < organismListSortedByName.size(); i++) {
-            Organism organism = (Organism) organismListSortedByName.get(i);
-            String query = new String(PsiInteractionToIndex.FIELD_ORGANISM
-                    + ":" + organism.getTaxonomyId());
-            Hits hits = indexer.executeQuery(query);
-            organism.setNumInteractions(hits.length());
-        }
+        try {
+            DaoOrganism dao = new DaoOrganism();
+            organismListSortedByName = dao.getAllOrganisms();
+            for (int i = 0; i < organismListSortedByName.size(); i++) {
+                Organism organism = (Organism) organismListSortedByName.get(i);
+                String query = new String(PsiInteractionToIndex.FIELD_ORGANISM
+                        + ":" + organism.getTaxonomyId());
+                Hits hits = indexer.executeQuery(query);
+                organism.setNumInteractions(hits.length());
+            }
 
-        //  Clone and Sort by Number of Interactions
-        organismListSortedByNumInteractions = (ArrayList)
-                organismListSortedByName.clone();
-        Collections.sort(organismListSortedByNumInteractions,
-                new SortByInteractionCount());
+            //  Clone and Sort by Number of Interactions
+            organismListSortedByNumInteractions = (ArrayList)
+                    organismListSortedByName.clone();
+            Collections.sort(organismListSortedByNumInteractions,
+                    new SortByInteractionCount());
+        } finally {
+            //  Make sure to always close the LuceneReader
+            indexer.close();
+        }
     }
 }
 

@@ -71,13 +71,17 @@ class GetInteractionsViaLucene extends InteractionQuery {
         xdebug.logMsg(this, "Getting Interactions via Lucene. "
                 + "Using search term(s):  " + searchTerms);
         LuceneReader indexer = new LuceneReader();
-        XmlAssembly xmlAssembly;
-        Hits hits = executeLuceneSearch(indexer);
-        Pager pager = new Pager(request, hits.length());
-        long[] cpathIds = extractHits(pager, hits);
-        xmlAssembly = createXmlAssembly(cpathIds, hits);
-        xmlAssembly.setNumHits(hits.length());
-        return xmlAssembly;
+        try {
+            XmlAssembly xmlAssembly;
+            Hits hits = executeLuceneSearch(indexer);
+            Pager pager = new Pager(request, hits.length());
+            long[] cpathIds = extractHits(pager, hits);
+            xmlAssembly = createXmlAssembly(cpathIds, hits);
+            xmlAssembly.setNumHits(hits.length());
+            return xmlAssembly;
+        } finally {
+            indexer.close();
+        }
     }
 
     /**

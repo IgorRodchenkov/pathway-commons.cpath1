@@ -161,15 +161,20 @@ public class DiagnosticsTable extends HtmlTable {
 
     private void runThirdBatch() throws IOException {
         LuceneReader indexer = new LuceneReader();
-        DiagnosticTestResults test = new DiagnosticTestResults
-                ("Testing access to Lucene Full Text Index<BR>"
-                + "Lucene Directory:  " + LuceneConfig.getLuceneDirectory());
         try {
-            indexer.executeQuery("dna");
-        } catch (QueryException e) {
-            test.setException(e);
+            DiagnosticTestResults test = new DiagnosticTestResults
+                    ("Testing access to Lucene Full Text Index<BR>"
+                    + "Lucene Directory:  " + LuceneConfig.getLuceneDirectory());
+            try {
+                indexer.executeQuery("dna");
+            } catch (QueryException e) {
+                test.setException(e);
+            }
+            testList.add(test);
+        } finally {
+            //  Make sure to always close the IndexReader.
+            indexer.close();
         }
-        testList.add(test);
     }
 
     /**
