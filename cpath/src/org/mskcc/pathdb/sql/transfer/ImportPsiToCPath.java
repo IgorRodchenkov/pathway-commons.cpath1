@@ -349,6 +349,16 @@ public class ImportPsiToCPath {
         protein.setId(Long.toString(cpathId));
         xml = marshalProtein(protein);
         cpath.updateXml(cpathId, xml);
+
+        //  Update Global Organism Table
+        DaoOrganism daoOrganism = new DaoOrganism();
+        if (!daoOrganism.recordExists(taxId)) {
+            NamesType namesType = organism.getNames();
+            if (namesType.getFullName() != null) {
+                daoOrganism.addRecord(taxId, namesType.getFullName(),
+                    namesType.getShortLabel());
+            }
+        }
     }
 
     /**
