@@ -374,6 +374,9 @@ public class PsiUtil {
     public ExternalReference[] filterOutNonIdReferences
             (ExternalReference[] refs) {
         ArrayList filteredRefList = new ArrayList();
+        if (refs == null) {
+            return null;
+        }
         for (int k=0; k<refs.length; k++) {
             ExternalReference ref = refs[k];
             String dbName = ref.getDatabase();
