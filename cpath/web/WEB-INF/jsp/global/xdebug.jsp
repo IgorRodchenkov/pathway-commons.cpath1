@@ -9,6 +9,7 @@
 <%
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
+    xdebug.stopTimer();
     Enumeration enum = request.getAttributeNames();
     while (enum.hasMoreElements()) {
         String name = (String) enum.nextElement();
