@@ -6,8 +6,12 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -23,10 +27,19 @@ public class LoadFullText {
      */
     public static void main(String[] args) {
         try {
+            XDebug xdebug = new XDebug();
+            xdebug.startTimer();
             LoadFullText indexer = new LoadFullText();
-            indexer.index();
+            if (args.length > 0) {
+                indexer.indexText(args[0]);
+            } else {
+                indexer.index();
+            }
+            xdebug.stopTimer();
+            System.out.println("\nTotal Time for Indexing:  " +
+                    xdebug.getTimeElapsed() + " ms");
         } catch (Exception e) {
-            System.out.println("\n!!!!  Transfer aborted due to error!");
+            System.out.println("\n!!!!  Indexing aborted due to error!");
             System.out.println("-->  " + e.getMessage());
         }
     }
@@ -52,5 +65,43 @@ public class LoadFullText {
             }
         }
         System.out.println("\nIndexing complete");
+    }
+
+    public void indexText (String fileName) throws IOException,
+            ImportException {
+        System.out.println("Indexing File:  " + fileName);
+        long numRecords = 0;
+        LuceneIndexer lucene = new LuceneIndexer();
+        lucene.initIndex();
+        lucene.initIndexWriter();
+        FileReader fileReader = new FileReader (fileName);
+        BufferedReader bufferedReader = new BufferedReader (fileReader);
+        String line = bufferedReader.readLine();
+        StringBuffer record = new StringBuffer();
+        while (line != null) {
+            if (line.startsWith("ID")) {
+                record = new StringBuffer (line+"\n");
+                line = bufferedReader.readLine();
+                while (line != null && ! line.startsWith("ID")) {
+                    record.append(line+"\n");
+                    line = bufferedReader.readLine();
+                }
+                numRecords++;
+                if (numRecords % 100 == 0) {
+                    System.out.println("\nNumber Indexed so far:  "
+                            + numRecords);
+                }
+                indexRecord (lucene, record.toString());
+            }
+        }
+        lucene.closeIndexWriter();
+        System.out.println("Total Number of Records Indexed:  "
+                + numRecords);
+    }
+
+    private void indexRecord (LuceneIndexer lucene, String record)
+            throws ImportException {
+        System.out.print(".");
+        lucene.addRecord(record);
     }
 }

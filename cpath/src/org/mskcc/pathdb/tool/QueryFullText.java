@@ -4,8 +4,13 @@ import org.mskcc.pathdb.lucene.CPathResult;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.xdebug.XDebug;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 
 import java.util.ArrayList;
+import java.io.IOException;
 
 /**
  * Command Line Tool for Querying Full Text Indexer.
@@ -20,12 +25,17 @@ public class QueryFullText {
      */
     public static void main(String[] args) {
         if (args.length > 0) {
+            XDebug xdebug = new XDebug();
+            xdebug.startTimer();
             StringBuffer terms = new StringBuffer();
             for (int i = 0; i < args.length; i++) {
                 terms.append(args[i] + " ");
             }
             System.out.println("Using search terms:  " + terms.toString());
             queryFullText(terms.toString());
+            xdebug.stopTimer();
+            System.out.println("Total Time for Query:  " +
+                    xdebug.getTimeElapsed() + " ms");
         } else {
             System.out.println("Command line usage:  queryText.sh"
                     + " search_terms");
@@ -39,9 +49,12 @@ public class QueryFullText {
     private static void queryFullText(String terms) {
         try {
             LuceneIndexer lucene = new LuceneIndexer();
-            ArrayList records = lucene.executeQueryWithLookUp(terms);
-            displayRecords(records);
+            Hits hits = lucene.executeQuery(terms);
+            displayHits(hits);
         } catch (QueryException e) {
+            System.out.println("\n!!!!  An Error Has Occurred!");
+            System.out.println("-->  " + e.getMessage());
+        } catch (IOException e) {
             System.out.println("\n!!!!  An Error Has Occurred!");
             System.out.println("-->  " + e.getMessage());
         }
@@ -49,18 +62,22 @@ public class QueryFullText {
 
     /**
      * Display all Results.
-     * @param records ArrayList of CPathRecord Objects.
      */
-    private static void displayRecords(ArrayList records) {
-        if (records.size() == 0) {
+    private static void displayHits(Hits hits) throws IOException {
+        if (hits.length() == 0) {
             System.out.println("No matching records found.");
         }
-        for (int i = 0; i < records.size(); i++) {
-            CPathResult result = (CPathResult) records.get(i);
-            CPathRecord record = result.getRecord();
-            System.out.print(i + ". [" + result.getScore() * 100.0 + "%] ");
-            System.out.println(record.getName());
-            System.out.println("... Description:  " + record.getDescription());
+        else {
+            System.out.println("Showing Top Hit Only:");
+            Document doc = hits.doc(0);
+            Field cpathId = doc.getField(LuceneIndexer.FIELD_NAME_CPATH_ID);
+            if (cpathId != null) {
+                System.out.println("cPath ID:  " + cpathId.stringValue());
+            }
+            Field xml = doc.getField(LuceneIndexer.FIELD_NAME_XML);
+            if (xml != null) {
+                System.out.println("Data record:  \n" + xml.stringValue());
+            }
         }
     }
 }

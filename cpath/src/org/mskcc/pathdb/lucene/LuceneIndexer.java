@@ -31,12 +31,14 @@ public class LuceneIndexer {
     /**
      * XML Field Name.
      */
-    private static final String FIELD_NAME_XML = "xml";
+    public static final String FIELD_NAME_XML = "xml";
 
     /**
      * CPath Field Name.
      */
-    private static final String FIELD_NAME_CPATH_ID = "xml";
+    public static final String FIELD_NAME_CPATH_ID = "cpath_id";
+
+    private static IndexWriter indexWriter = null;
 
     /**
      * Initializes Index with Fresh Database.
@@ -64,7 +66,7 @@ public class LuceneIndexer {
             XmlStripper stripper = new XmlStripper();
             String terms = stripper.stripTags(xml);
             Document document = new Document();
-            document.add(Field.UnStored(FIELD_NAME_XML, terms));
+            document.add(Field.Text(FIELD_NAME_XML, terms));
             document.add(Field.Keyword(FIELD_NAME_CPATH_ID,
                     Long.toString(cpathId)));
             writer.addDocument(document);
@@ -73,6 +75,53 @@ public class LuceneIndexer {
             throw new ImportException("IOException:  " + e.getMessage());
         } catch (JDOMException e) {
             throw new ImportException("JDOMException:  " + e.getMessage());
+        }
+    }
+
+    public void initIndexWriter () throws IOException {
+        String dir = this.getDirectory();
+        Analyzer analyzer = this.getAnalyzer();
+        indexWriter = new IndexWriter(dir, analyzer, false);
+    }
+
+    public void closeIndexWriter () throws IOException {
+        indexWriter.close();
+    }
+
+    /**
+     * Adds New Record to Full Text Indexer.
+     * @param text Text To Index
+     * @throws ImportException Error Importing Record to Full Text Engine.
+     */
+    public void addRecord(String text) throws ImportException {
+        try {
+            Document document = new Document();
+            document.add(Field.Text(FIELD_NAME_XML, text));
+            indexWriter.addDocument(document);
+        } catch (IOException e) {
+            throw new ImportException("IOException:  " + e.getMessage());
+        }
+    }
+
+    /**
+     * Executes Query
+     * @param term Search Term.
+     * @return Lucene Hits Object
+     * @throws QueryException Error Processing Query. I
+     */
+    public Hits executeQuery(String term) throws QueryException {
+        IndexSearcher searcher = null;
+        try {
+            String dir = this.getDirectory();
+            searcher = new IndexSearcher(dir);
+            Analyzer analyzer = this.getAnalyzer();
+            Query query = QueryParser.parse(term, FIELD_NAME_XML, analyzer);
+            Hits hits = searcher.search(query);
+            return hits;
+        } catch (IOException e) {
+            throw new QueryException("IOException:  " + e.getMessage(), e);
+        } catch (ParseException e) {
+            throw new QueryException("ParseException:  " + e.getMessage(), e);
         }
     }
 
