@@ -32,9 +32,9 @@ package org.mskcc.pathdb.action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.util.XssFilter;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.util.XssFilter;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -75,7 +75,7 @@ public class ToggleSearchOptions extends BaseAction {
         }
 
         HashMap parameterMap = XssFilter.filterAllParameters
-                    (request.getParameterMap());
+                (request.getParameterMap());
         if (parameterMap.keySet().size() > 0) {
             ProtocolRequest protocolRequest =
                     new ProtocolRequest(parameterMap);

@@ -39,8 +39,8 @@ import org.mskcc.pathdb.protocol.ProtocolConstants;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -413,13 +413,13 @@ public class InteractionTable extends HtmlTable {
                 } else {
                     DaoExternalDb daoExternalDb = new DaoExternalDb();
                     ExternalDatabaseRecord dbRecord =
-                                daoExternalDb.getRecordByTerm(db);
+                            daoExternalDb.getRecordByTerm(db);
                     if (dbRecord != null) {
                         String url = dbRecord.getUrlWithId(id);
                         if (url != null) {
                             append(db + ":  ");
                             append("<A TITLE='External Link to: ' " + db
-                                + "' HREF='" + url + "'>" + id + "</A>");
+                                    + "' HREF='" + url + "'>" + id + "</A>");
                         }
                     } else {
                         append(db + ":  " + id);

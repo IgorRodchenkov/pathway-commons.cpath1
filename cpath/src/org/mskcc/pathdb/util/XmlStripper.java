@@ -49,7 +49,7 @@ public class XmlStripper {
     /**
      * Strips all XML Markup from Document.
      *
-     * @param xml XML Document.
+     * @param xml      XML Document.
      * @param skipRoot Skips Processing of Root Node.
      * @return String of Tokens.
      * @throws IOException Error in JDOM.

@@ -38,8 +38,6 @@ import org.mskcc.pathdb.util.ConsoleUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -52,7 +50,6 @@ public class ImportReferencesTask extends Task {
     private Reader reader;
     private static final String EMPTY_FLAG = "---";
     private String db1, db2;
-    private int numNonEmptyReferences = 0;
     private int numMatching = 0;
     private int numUpdates = 0;
     private ArrayList lines;
@@ -136,7 +133,7 @@ public class ImportReferencesTask extends Task {
     /**
      * Read In File Data.
      */
-    private void processData() throws IOException, DaoException {
+    private void processData() throws DaoException {
         boolean dbNamesSet = false;
         for (int i = 0; i < lines.size(); i++) {
             String line = (String) lines.get(i);
@@ -175,7 +172,6 @@ public class ImportReferencesTask extends Task {
         int index1 = ref1.getId().indexOf(EMPTY_FLAG);
         int index2 = ref2.getId().indexOf(EMPTY_FLAG);
         if (index1 == -1 && index2 == -1) {
-            numNonEmptyReferences++;
             UpdatePsiInteractor updater = new UpdatePsiInteractor
                     (ref1, ref2, true);
             boolean needsUpdating = updater.needsUpdating();

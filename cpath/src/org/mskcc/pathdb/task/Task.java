@@ -39,7 +39,6 @@ public abstract class Task extends Thread {
     protected boolean verbose;
     private String taskName;
     private Exception exception;
-    private int verboseCounter = 0;
     protected ProgressMonitor pMonitor;
 
     /**
@@ -51,6 +50,7 @@ public abstract class Task extends Thread {
         GlobalTaskList taskList = GlobalTaskList.getInstance();
         taskList.addTask(this);
         this.taskName = taskName;
+        this.pMonitor = new ProgressMonitor();
     }
 
     /**
@@ -114,5 +114,7 @@ public abstract class Task extends Thread {
      *
      * @return Progress Monitor object.
      */
-    public abstract ProgressMonitor getProgressMonitor();
+    public ProgressMonitor getProgressMonitor() {
+        return pMonitor;
+    }
 }

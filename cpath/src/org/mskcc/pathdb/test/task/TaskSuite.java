@@ -27,35 +27,28 @@
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
-package org.mskcc.pathdb.util;
+package org.mskcc.pathdb.test.task;
 
-import org.mskcc.pathdb.task.ProgressMonitor;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
- * Misc Utility Methods for Console Applications.
+ * Suite of all Utility Unit Tests.
  *
  * @author Ethan Cerami
  */
-public class ConsoleUtil {
+public class TaskSuite extends TestCase {
 
     /**
-     * Outputs Progress Messages to Console.
+     * The suite method runs all the tests.
      *
-     * @param verbose  Verbose Flag
-     * @param pMonitor ProgressMonitor Object.
+     * @return Suite of JUnit tests.
      */
-    public static void showProgress(boolean verbose, ProgressMonitor pMonitor) {
-        if (verbose) {
-            int currentValue = pMonitor.getCurValue();
-            System.out.print(".");
-            if (currentValue % 100 == 0) {
-                NumberFormat format = DecimalFormat.getPercentInstance();
-                System.out.println("\nPercentage Complete:  "
-                        + format.format(pMonitor.getPercentComplete()));
-            }
-        }
+    public static Test suite() {
+        TestSuite suite = new TestSuite();
+        suite.addTestSuite(TestAffymetrixParser.class);
+        suite.setName("Task Tests");
+        return suite;
     }
 }

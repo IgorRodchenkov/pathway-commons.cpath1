@@ -141,7 +141,7 @@ public class PsiAssembly implements XmlAssembly {
      * Gets Comlete Xml Assembly (in String form).
      * All Internal IDs are converted from the form: 1234 to CPATH-1234.
      * See org.mskcc.pathdb.sql.assembly.CPathIdFilter for more details.
-     *
+     * <p/>
      * Note that calling this method has an intentional side effect of
      * modifying the embedded EntrySet object.  For example, if you call
      * getXmlStringWithCPathIdPrefix(), and then you call getXmlObject(),
