@@ -19,6 +19,7 @@ public class TagLibSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestPager.class);
+        suite.addTestSuite(TestTagUtil.class);
         suite.setName("TagLib Tests");
         return suite;
     }

@@ -302,11 +302,9 @@ public class InteractionTable extends HtmlTable {
     private void outputProtein(ProteinInteractorType protein,
             InteractionElementType interaction, boolean isSelfInteracting) {
         String proteinId = protein.getId();
-        String shortName = protein.getNames().getShortLabel();
-        String fullName = protein.getNames().getFullName();
         Organism organism = protein.getOrganism();
         startRow();
-        outputInteractorName(proteinId, shortName, fullName, isSelfInteracting);
+        outputInteractorName(proteinId, protein.getNames(), isSelfInteracting);
         outputOrganism(organism);
         if (!interactionDetailsShown) {
             outputInteractionDetails(interaction);
@@ -338,8 +336,8 @@ public class InteractionTable extends HtmlTable {
     /**
      * Outputs Interactor Name.
      */
-    private void outputInteractorName(String proteinId, String shortName,
-            String fullName, boolean isSelfInteracting) {
+    private void outputInteractorName(String proteinId, NamesType name,
+            boolean isSelfInteracting) {
         String link = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
                 + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
         append("<TD class='cpath3'>");
@@ -347,13 +345,9 @@ public class InteractionTable extends HtmlTable {
             append(currentIndex + ".  ");
             currentIndex++;
         }
-        if (shortName == null) {
-            shortName = "";
-        } else {
-            shortName = shortName + ": ";
-        }
+        String label = TagUtil.getLabel(name);
         append("<A TITLE='Link to Protein View' "
-                + "HREF='" + link + "'>" + shortName + fullName + "</A>");
+                + "HREF='" + link + "'>" + label + "</A>");
         if (isSelfInteracting) {
             append("[Self Interacting]");
         }

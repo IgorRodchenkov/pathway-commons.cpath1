@@ -72,18 +72,12 @@ public class InteractorTable extends HtmlTable {
             NamesType names = protein.getNames();
             String proteinId = protein.getId();
             append("<div>");
-            String link = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
+            String href = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
                     + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
-            StringBuffer name = new StringBuffer();
-            if (names.getShortLabel() != null) {
-                name.append(names.getShortLabel().trim()+": ");
-            }
-            name.append(names.getFullName().trim());
-            if (name.indexOf(" ") > 25) {
-                name = new StringBuffer (name.substring(0, 25));
-                name.append("...");
-            }
-            append("<A HREF='" + link + "'>" + name + "</A>");
+            String toolTip = TagUtil.getLabel(names);
+            String label = TagUtil.truncateLabel(toolTip);
+            String link = TagUtil.createLink(toolTip, href, label);
+            append (link);
             append("</div>");
         }
     }
