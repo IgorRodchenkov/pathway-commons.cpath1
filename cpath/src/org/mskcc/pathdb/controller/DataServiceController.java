@@ -39,6 +39,11 @@ public class DataServiceController {
     private ServletContext servletContext;
 
     /**
+     * Protocol Request.
+     */
+    private ProtocolRequest protocolRequest;
+
+    /**
      * Logger.
      */
     private static Logger log =
@@ -80,7 +85,7 @@ public class DataServiceController {
      */
     private void processRequest() throws Exception {
         HashMap parameterMap = getParameterMap(request);
-        ProtocolRequest protocolRequest = new ProtocolRequest(parameterMap);
+        protocolRequest = new ProtocolRequest(parameterMap);
         ProtocolValidator validator = new ProtocolValidator(protocolRequest);
         validator.validate();
         GridController gridController = new GridController();

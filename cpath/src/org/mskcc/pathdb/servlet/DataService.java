@@ -1,20 +1,19 @@
 package org.mskcc.pathdb.servlet;
 
-import org.mskcc.pathdb.controller.DataServiceController;
-import org.mskcc.pathdb.logger.ConfigLogger;
-import org.mskcc.pathdb.logger.AdminLogger;
-import org.mskcc.pathdb.util.PropertyManager;
 import org.apache.log4j.Logger;
+import org.mskcc.pathdb.controller.DataServiceController;
+import org.mskcc.pathdb.logger.AdminLogger;
+import org.mskcc.pathdb.logger.ConfigLogger;
+import org.mskcc.pathdb.util.PropertyManager;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.File;
 import java.sql.SQLException;
 
 /**
@@ -92,7 +91,8 @@ public final class DataService extends HttpServlet {
         String logConfigFile = config.getInitParameter("log_config_file");
         ServletContext ctx = this.getServletContext();
         String realLogPath = ctx.getRealPath(logConfigFile);
-        System.err.println("web.xml param:  log_config_file --> " + logConfigFile);
+        System.err.println("web.xml param:  log_config_file --> "
+                + logConfigFile);
         System.err.println("Real Path for log config file:  " + realLogPath);
         System.err.println("web.xml param:  db_host --> " + dbHost);
         System.err.println("web.xml param:  db_user --> " + dbUser);

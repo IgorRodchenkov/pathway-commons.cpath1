@@ -3,7 +3,6 @@ package org.mskcc.pathdb.test.logger;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.test.format.TestPsiFormatter;
 
 /**
  * Suite of all Formatter Unit Tests.

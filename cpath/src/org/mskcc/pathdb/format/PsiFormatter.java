@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import sun.rmi.rmic.Names;
-
 /**
  * Converts Internal Object Model to PSI-MI Format.
  *
@@ -38,6 +36,16 @@ import sun.rmi.rmic.Names;
  * @author Ethan Cerami
  */
 public class PsiFormatter {
+    private static final String EXP_AFFINITY_PRECIPITATION =
+            "Affinity Precipitation";
+
+    private static final String EXP_AFFINITY_CHROMOTOGRAPHY =
+            "Affinity Chromatography";
+
+    private static final String EXP_TWO_HYBRID = "Two Hybrid";
+
+    private static final String EXP_PURIFIED_COMPLEX = "Purified Complex";
+
     /**
      * ArrayList of Protein-Protein Interactions.
      */
@@ -59,6 +67,7 @@ public class PsiFormatter {
      */
     public PsiFormatter(ArrayList interactions) {
         this.interactions = interactions;
+        this.interactions = filterInteractionList(interactions);
     }
 
     /**
@@ -67,7 +76,7 @@ public class PsiFormatter {
      */
     public EntrySet getPsiXml() {
         // Create Entry Set and Entry
-        EntrySet entrySet = new EntrySet ();
+        EntrySet entrySet = new EntrySet();
         entrySet.setLevel(1);
         entrySet.setVersion(1);
         Entry entry = new Entry();
@@ -83,6 +92,32 @@ public class PsiFormatter {
         entry.setInteractionList(interactionList);
         entrySet.addEntry(entry);
         return entrySet;
+    }
+
+    /**
+     * Filter our specific types of interactions.
+     * From Gary: "PSI has only been designed for protein-protein interactions
+     * and GRID has both protein-protein interactions and genetic interactions,
+     * so PSI does not cover GRID completely.  So, we shouldn't really include
+     * genetic interactions in PSI output from GRID."
+     * @param interactions ArrayList of Interaction objects.
+     */
+    private ArrayList filterInteractionList(ArrayList interactions) {
+        ArrayList filteredList = new ArrayList();
+        for (int i = 0; i < interactions.size(); i++) {
+            boolean filterOut = false;
+            Interaction interaction = (Interaction) interactions.get(i);
+            String expSystem = interaction.getExperimentalSystem();
+            if (expSystem.equals("Synthetic Lethality")
+                    || expSystem.equals("Synthetic Rescue")
+                    || expSystem.equals("Dosage Lethality")) {
+                filterOut = true;
+            }
+            if (!filterOut) {
+                filteredList.add(interaction);
+            }
+        }
+        return filteredList;
     }
 
     /**
@@ -204,16 +239,22 @@ public class PsiFormatter {
             (Interaction interaction) {
         CvType interactionDetection = new CvType();
         String idStr = interaction.getExperimentalSystem();
-        if (idStr.equals("Affinity Precipitation")) {
+        if (idStr.equals(EXP_AFFINITY_PRECIPITATION)
+                || idStr.equals(EXP_AFFINITY_CHROMOTOGRAPHY)) {
             NamesType names = createName("affinity chromatography technologies",
                     null);
             interactionDetection.setNames(names);
             XrefType xref = createXRef(PSI_MI, "MI:0004");
             interactionDetection.setXref(xref);
-        } else if (idStr.equals("Two Hybrid")) {
+        } else if (idStr.equals(EXP_TWO_HYBRID)) {
             NamesType names = createName("classical two hybrid", null);
             interactionDetection.setNames(names);
             XrefType xref = createXRef(PSI_MI, "MI:0018");
+            interactionDetection.setXref(xref);
+        } else if (idStr.equals(EXP_PURIFIED_COMPLEX)) {
+            NamesType names = createName("copurification", null);
+            interactionDetection.setNames(names);
+            XrefType xref = createXRef(PSI_MI, "MI:0025");
             interactionDetection.setXref(xref);
         } else {
             NamesType names = createName(idStr, null);
@@ -232,7 +273,6 @@ public class PsiFormatter {
     private void setNameId(Protein protein, ProteinInteractorType interactor) {
         NamesType names = new NamesType();
         names.setShortLabel(protein.getOrfName());
-        names.setFullName(protein.getDescription());
         interactor.setNames(names);
         interactor.setId(protein.getOrfName());
     }
@@ -262,25 +302,21 @@ public class PsiFormatter {
             ProteinInteractorType interactor) {
         HashSet set = new HashSet();
         ExternalReference refs [] = protein.getExternalRefs();
-        if (refs.length > 0) {
-            XrefType xref = new XrefType();
-            //  First External Reference becomes the Primary Reference
-            String key = generateXRefKey(refs[0]);
-            createPrimaryKey(refs[0], xref);
-            set.add(key);
+        XrefType xref = new XrefType();
+        //  Add Primary Reference back to GRID
+        ExternalReference ref = new ExternalReference
+                ("GRID", protein.getOrfName());
+        createPrimaryKey(ref, xref);
 
-            //  All others become Secondary References
-            if (refs.length > 1) {
-                for (int i = 1; i < refs.length; i++) {
-                    key = this.generateXRefKey(refs[i]);
-                    if (!set.contains(key)) {
-                        createSecondaryKey(refs[i], xref);
-                        set.add(key);
-                    }
-                }
+        //  All others become Secondary References
+        for (int i = 0; i < refs.length; i++) {
+            String key = this.generateXRefKey(refs[i]);
+            if (!set.contains(key)) {
+                createSecondaryKey(refs[i], xref);
+                set.add(key);
             }
-            interactor.setXref(xref);
         }
+        interactor.setXref(xref);
     }
 
     /**

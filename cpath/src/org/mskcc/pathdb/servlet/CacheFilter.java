@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import java.io.IOException;
-import java.io.File;
 
 import org.apache.log4j.Logger;
 
@@ -47,7 +46,7 @@ public class CacheFilter implements Filter {
     /**
      * Time before cache should be refreshed - default one hour (in seconds)
      */
-    private int time = 60 * 60;
+    private int time;
 
     /**
      * Logger.
@@ -66,6 +65,7 @@ public class CacheFilter implements Filter {
         try {
             time = Integer.parseInt(config.getInitParameter("time"));
         } catch (Exception e) {
+            time = 60 * 60;
             logger.error("Error Parsing Time Parameter:  " + e.toString());
         }
     }
@@ -89,20 +89,23 @@ public class CacheFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         HttpServletRequest hRequest = (HttpServletRequest) request;
-        logger.info("Incoming request from:  " + request.getRemoteAddr());
-        logger.info("URL Requested:  " + hRequest.getQueryString());
+        log ("Incoming request from  IP:  " + request.getRemoteAddr());
+        log ("Incoming request from  Host:  " + request.getRemoteHost());
+        log ("URL Requested:  " + hRequest.getQueryString());
         String key = admin.generateEntryKey(null, (HttpServletRequest)
                 request, cacheScope);
-        logger.info("Using Cache Key:  " + key);
+        log ("Using Cache Key:  " + key);
         Cache cache = admin.getCache((HttpServletRequest) request, cacheScope);
         try {
             ResponseContent respContent = (ResponseContent)
                     cache.getFromCache(key, time);
-            logger.info("Using cached entry for " + key);
+            log ("Using cached entry");
+            if (respContent == null) {
+                throw new NeedsRefreshException (respContent);
+            }
             respContent.writeTo(response);
         } catch (NeedsRefreshException nre) {
-            logger.info("New cache entry, cache stale or "
-                    + "cache scope flushed for " + key);
+            log ("New cache entry, or cache entry is stale");
             CacheHttpServletResponseWrapper cacheResponse =
                     new CacheHttpServletResponseWrapper
                             ((HttpServletResponse) response);
@@ -111,5 +114,10 @@ public class CacheFilter implements Filter {
             ResponseContent content = cacheResponse.getContent();
             cache.putInCache(key, content);
         }
+    }
+
+    private void log (String msg) {
+        System.err.println(msg);
+        logger.info(msg);
     }
 }

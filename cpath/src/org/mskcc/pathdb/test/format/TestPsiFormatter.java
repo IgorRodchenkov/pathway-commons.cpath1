@@ -4,12 +4,18 @@ import junit.framework.TestCase;
 import org.mskcc.pathdb.format.PsiFormatter;
 import org.mskcc.pathdb.sql.GridInteractionService;
 import org.mskcc.pathdb.test.TestConstants;
+import org.mskcc.pathdb.xml.psi.CvType;
+import org.mskcc.pathdb.xml.psi.DbReferenceType;
 import org.mskcc.pathdb.xml.psi.Entry;
-import org.mskcc.pathdb.xml.psi.InteractorList;
 import org.mskcc.pathdb.xml.psi.EntrySet;
+import org.mskcc.pathdb.xml.psi.ExperimentList;
+import org.mskcc.pathdb.xml.psi.ExperimentListItem;
+import org.mskcc.pathdb.xml.psi.ExperimentType;
+import org.mskcc.pathdb.xml.psi.InteractionElementType;
+import org.mskcc.pathdb.xml.psi.InteractionList;
+import org.mskcc.pathdb.xml.psi.InteractorList;
 import org.mskcc.pathdb.xml.psi.ProteinInteractorType;
 import org.mskcc.pathdb.xml.psi.XrefType;
-import org.mskcc.pathdb.xml.psi.DbReferenceType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,6 +47,38 @@ public class TestPsiFormatter extends TestCase {
     }
 
     /**
+     * In GRID, the protein YGR162W is involved in a synthetic
+     * lethality interaction.  However, this should *not* appear
+     * in the PSI.
+     * @throws Exception All Exceptions.
+     */
+    public void testFiltering() throws Exception {
+        GridInteractionService service = new GridInteractionService
+                (TestConstants.DB_HOST, TestConstants.USER,
+                        TestConstants.PASSWORD);
+        ArrayList interactions =
+                service.getInteractions("YGR162W");
+        PsiFormatter formatter = new PsiFormatter(interactions);
+        EntrySet entrySet = formatter.getPsiXml();
+        Entry entry = entrySet.getEntry(0);
+        InteractionList list = entry.getInteractionList();
+        for (int i = 0; i < list.getInteractionCount(); i++) {
+            InteractionElementType interaction = list.getInteraction(i);
+            ExperimentList expList = interaction.getExperimentList();
+            int count = expList.getExperimentListItemCount();
+            if (count > 0) {
+                ExperimentListItem item = expList.getExperimentListItem(0);
+                ExperimentType type = item.getExperimentDescription();
+                CvType cvType = type.getInteractionDetection();
+                String shortLabel = cvType.getNames().getShortLabel();
+                if (shortLabel.equals("Synthetic Lethality")) {
+                    fail("Synthetic Lethality Interaction found.");
+                }
+            }
+        }
+    }
+
+    /**
      * Validate Protein Interactor.
      * @param entry Castor Entry object.
      */
@@ -54,8 +92,13 @@ public class TestPsiFormatter extends TestCase {
         String id = primaryRef.getId();
         String key = this.generateXRefKey(db, id);
         set.add(key);
-        assertEquals("Entrez GI", db);
-        assertEquals("349751", id);
+
+        assertEquals("GRID", db);
+        assertEquals("YAR003W", id);
+
+        DbReferenceType secondaryRef = xref.getSecondaryRef(0);
+        assertEquals("Entrez GI", secondaryRef.getDb());
+        assertEquals("349751", secondaryRef.getId());
         validateNonRedundantXRefs(xref, set);
     }
 
