@@ -209,6 +209,14 @@ We also need to reconsider whether we want to allow importing of data files
 from the Admin web front end, and if we do, how we report all errors/warnings
 to the end user.
 
+34.  Related slightly to 33: PSI-MI has a entry->source object that can be used, if
+present, to name the data source on the DB stats page that gives a summary of
+imported files (probably in addition to the current note of filename and web upload).
+Also, the filename can usually be accessed for a web upload as well, so we should
+find out if we can access that and display it as we do for imports via the admin
+script.
+	---> current priority:  low.
+
 Data Service Specific Items:
 -----------------------------
 1.  Add Gene Name/Synonym Look up to data services (requires a back-end, may
