@@ -1,0 +1,14 @@
+Short Term Items:
+----------------
+1.  Test Lucene with Large data set from Alex:
+ftp://ftp.ncbi.nih.gov/repository/UniGene/Hs.data.gz
+2.  Update Data Services Developer Docs.
+3.  Update GRID PlugIn to use cPath Only.
+
+Longer Term Items:
+------------------
+1.  Deal with duplicate records issue.
+2.  Add support for Tomcat JDBC Connection Pooling.
+3.  Create paged result sets, e.g. next/previous buttons for search results.
+4.  Load Testing
+
