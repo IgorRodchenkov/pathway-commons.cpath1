@@ -1,11 +1,12 @@
 <%@ page import="java.net.URLEncoder,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstants,
-                 org.mskcc.pathdb.sql.dao.DaoOrganism,
                  java.util.ArrayList,
                  org.mskcc.pathdb.model.Organism,
                  org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.action.ToggleSearchOptions"%>
+                 org.mskcc.pathdb.action.ToggleSearchOptions,
+                 org.mskcc.pathdb.xdebug.XDebug,
+                 org.mskcc.pathdb.lucene.OrganismStats"%>
 
 <%
     String searchTerm = new String("");
@@ -87,8 +88,8 @@
         <SELECT NAME="<%= ProtocolRequest.ARG_ORGANISM %>">
             <OPTION VALUE="">All Organisms</OPTION>
         <%
-            DaoOrganism dao = new DaoOrganism ();
-            ArrayList organisms = dao.getAllOrganisms();
+            OrganismStats orgStats = new OrganismStats();
+            ArrayList organisms = orgStats.getOrganismsSortedByName();
         %>
         <% for (int i=0; i<organisms.size(); i++) {
             Organism organism = (Organism) organisms.get(i);
