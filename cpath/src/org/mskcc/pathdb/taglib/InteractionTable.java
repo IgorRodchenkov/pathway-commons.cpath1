@@ -267,6 +267,9 @@ public class InteractionTable extends HtmlTable {
             InteractionElementType interaction, boolean isSelfInteracting) {
         String proteinId = protein.getId();
         String fullName = protein.getNames().getFullName();
+        if (fullName == null) {
+            fullName = protein.getNames().getShortLabel();
+        }
         Organism organism = protein.getOrganism();
         startRow();
         outputProteinName(proteinId, fullName, isSelfInteracting);
