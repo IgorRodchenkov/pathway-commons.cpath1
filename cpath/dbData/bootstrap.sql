@@ -39,7 +39,7 @@ INSERT INTO `EXTERNAL_DB` VALUES (7, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pf
 INSERT INTO `EXTERNAL_DB` VALUES (8, 'Entrez GI', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=protein&list_uids=%ID%&dopt=GenPept&term=%ID%&qty=1', 'NCBI Entrez System', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `EXTERNAL_DB` VALUES (9, 'Locus Link', 'http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l=%ID%', 'NCBI Locus Link', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `EXTERNAL_DB` VALUES (10, 'GO', 'http://godatabase.org/cgi-bin/go.cgi?view=query&query=%ID%', 'Gene Ontology', NULL, NULL, 20031002163709, 20031002163709);
-
+INSERT INTO `EXTERNAL_DB` VALUES (11, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%ID%&dopt=Abstract', 'NCBI PubMed', NULL, NULL, 20031002163709, 20031002163709);
 #
 #  Insert data into table 'EXTERNAL_DB_CV'
 #
@@ -58,6 +58,10 @@ INSERT INTO `EXTERNAL_DB_CV` VALUES (11, 8, 'Entrez GI');
 INSERT INTO `EXTERNAL_DB_CV` VALUES (12, 8, 'GI');
 INSERT INTO `EXTERNAL_DB_CV` VALUES (13, 9, 'LocusLink');
 INSERT INTO `EXTERNAL_DB_CV` VALUES (14, 10, 'GO');
+INSERT INTO `EXTERNAL_DB_CV` VALUES (15, 11, 'PubMed');
+INSERT INTO `EXTERNAL_DB_CV` VALUES (16, 11, 'pubmed');
+INSERT INTO `EXTERNAL_DB_CV` VALUES (17, 11, 'PMID');
+INSERT INTO `EXTERNAL_DB_CV` VALUES (18, 11, 'pmid');
 
 use grid;
 truncate table orf_info;
