@@ -111,6 +111,8 @@ public class XmlValidator extends DefaultHandler {
             StringReader reader = new StringReader(xmlData);
             InputSource source = new InputSource(reader);
             parser.parse(source);
+        } catch (SAXParseException e) {
+            errorList.add(e);
         } catch (SAXException e) {
             errorList.add(e);
         }

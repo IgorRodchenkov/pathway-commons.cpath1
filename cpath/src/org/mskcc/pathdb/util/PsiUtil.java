@@ -54,6 +54,7 @@ public class PsiUtil {
     private HashMap availabilityMap;
     private HashMap experimentMap;
     private EntrySet entrySet;
+    private boolean removeAllXRefs;
 
     /**
      * Constructor.
@@ -67,12 +68,14 @@ public class PsiUtil {
      * Gets the Normalized PSI Document.
      *
      * @param xml XML Document String.
+     * @param removeAllXrefs Automatically Removes all XRefs (not recommended).
      * @return PSI Entry Set Object.
      * @throws ValidationException Validation Error in Document.
      * @throws MarshalException    Error Marshalling Document.
      */
-    public EntrySet getNormalizedDocument(String xml)
+    public EntrySet getNormalizedDocument(String xml, boolean removeAllXrefs)
             throws ValidationException, MarshalException {
+        this.removeAllXRefs = removeAllXrefs;
         this.interactorMap = new HashMap();
         this.availabilityMap = new HashMap();
         this.experimentMap = new HashMap();
@@ -309,6 +312,11 @@ public class PsiUtil {
             for (int j = 0; j < interactionList.getInteractionCount(); j++) {
                 InteractionElementType interaction =
                         interactionList.getInteraction(j);
+
+                //  Conditionally Remove All XRefs
+                if (this.removeAllXRefs) {
+                    interaction.setXref(null);
+                }
                 removeEmptySecondaryRefs(interaction.getXref());
                 copyAvailablityEntity(interaction);
                 copyExperiments(interaction);
@@ -346,7 +354,6 @@ public class PsiUtil {
                     String id = ref.getRef();
                     ExperimentType exp = (ExperimentType) experimentMap.get(id);
                     if (exp != null) {
-
                         exp.setId("NO_ID");
                         expItem.setExperimentDescription(exp);
                         expItem.setExperimentRef(null);
@@ -443,6 +450,11 @@ public class PsiUtil {
                  i++) {
                 ProteinInteractorType protein =
                         interactorList.getProteinInteractor(i);
+
+                //  Conditionally Remove All Xrefs
+                if (this.removeAllXRefs) {
+                    protein.setXref(null);
+                }
                 removeEmptySecondaryRefs(protein.getXref());
                 String id = protein.getId();
                 interactorMap.put(id, protein);
@@ -477,8 +489,8 @@ public class PsiUtil {
     }
 
     /**
-     * Filters out GO references.  We don't want to use GO
-     * References to determine protein identity.
+     * Filters out non-identitiy references.  We don't want to use non-identity
+     * references, e.g. GO or PubMed to determine protein identity.
      *
      * @param refs Array of External References.
      * @return Filtered Array of External References.
@@ -493,7 +505,8 @@ public class PsiUtil {
             ExternalReference ref = refs[k];
             String dbName = ref.getDatabase();
             if (dbName.equalsIgnoreCase("GO")
-                    || dbName.equals("InterPro")) {
+                    || dbName.equalsIgnoreCase("InterPro")
+                    || dbName.equalsIgnoreCase("PubMed")) {
                 //  No-op
             } else {
                 filteredRefList.add(ref);
@@ -508,5 +521,4 @@ public class PsiUtil {
         }
         return filteredRefs;
     }
-
 }
