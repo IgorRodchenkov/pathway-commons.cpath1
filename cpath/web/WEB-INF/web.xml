@@ -24,11 +24,11 @@
         </init-param>
         <init-param>
             <param-name>db_user</param-name>
-            <param-value>cbio</param-value>
+            <param-value>tomcat</param-value>
         </init-param>
         <init-param>
             <param-name>db_password</param-name>
-            <param-value/>
+            <param-value>kitty</param-value>
         </init-param>
         <init-param>
             <param-name>log_config_file</param-name>
