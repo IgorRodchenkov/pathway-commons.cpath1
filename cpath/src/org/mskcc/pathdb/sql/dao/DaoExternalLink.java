@@ -85,6 +85,32 @@ public class DaoExternalLink {
     }
 
     /**
+     * Validates all External References.
+     * @param refs ArrayList of External Reference objects.
+     * @return true is all ref.getDatabase() items match.
+     * @throws DaoException Error Retrieving Data.
+     * @throws ExternalDatabaseNotFoundException Database Not Found.
+     */
+    public boolean validateExternalReferences(ExternalReference refs[])
+            throws DaoException, ExternalDatabaseNotFoundException {
+        if (refs != null) {
+            for (int i = 0; i < refs.length; i++) {
+                String dbName = refs[i].getDatabase();
+                String id = refs[i].getId();
+                DaoExternalDb dao = new DaoExternalDb();
+                ExternalDatabaseRecord exDb =
+                        dao.getRecordByTerm(refs[i].getDatabase());
+                if (exDb == null) {
+                    throw new ExternalDatabaseNotFoundException
+                            ("No matching database "
+                            + "found for:  " + dbName + "[" + id + "]");
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Looks Up the cPath Record that matches any of the specified External
      * References.
      * @param refs An Array of External References.  All these references

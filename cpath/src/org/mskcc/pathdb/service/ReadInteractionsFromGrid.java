@@ -124,13 +124,13 @@ public class ReadInteractionsFromGrid extends DataServiceBase
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
             // 1.  Get Local ID for ORF Name.
             interactorService =
                     new ReadInteractorsFromGrid();
             interactorService.setLocation(this.getLocation());
             Interactor interactor = interactorService.getInteractor(orfName);
 
+            con = JdbcUtil.getCPathConnection();
             if (interactor != null) {
 
                 // 2.  Get all interactions for local ID.
@@ -146,6 +146,7 @@ public class ReadInteractionsFromGrid extends DataServiceBase
             throw new DaoException("ClassNotFoundException:  "
                     + e.getMessage());
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DaoException("SQLException:  " + e.getMessage());
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
@@ -177,8 +178,6 @@ public class ReadInteractionsFromGrid extends DataServiceBase
                     + e.getMessage());
         } catch (SQLException e) {
             throw new DaoException("SQLException:  " + e.getMessage());
-        } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 

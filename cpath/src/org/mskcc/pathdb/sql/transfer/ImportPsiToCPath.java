@@ -9,6 +9,7 @@ import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.util.PsiUtil;
 
@@ -112,9 +113,14 @@ public class ImportPsiToCPath {
         idMap = new HashMap();
         try {
             // Steps 1-2:  Normalize PSI Document, chop into parts.
+            System.out.println("Normalizing PSI Document...");
             psiUtil = new PsiUtil();
             EntrySet entrySet = null;
             entrySet = psiUtil.getNormalizedDocument(xml);
+            System.out.println("Normalization Complete:  Document is valid");
+
+            //  Validate Interactors / External References.
+            validateInteractors(entrySet);
 
             //  Step 3:  Process all Interactors.
             processInteractors(entrySet);
@@ -141,18 +147,40 @@ public class ImportPsiToCPath {
     }
 
     /**
-     * Processes all Interactors
+     * Validates all Interactors and External References.
      */
-    private void processInteractors(EntrySet entrySet)
-            throws DaoException, MarshalException,
-            ValidationException, MapperException,
+    private void validateInteractors(EntrySet entrySet) throws DaoException,
             ExternalDatabaseNotFoundException {
-        DaoExternalLink externalLinker = new DaoExternalLink();
-
+        System.out.print("Validating all External References:  ");
+        DaoExternalLink linker = new DaoExternalLink();
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractorList interactors = entry.getInteractorList();
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
+                System.out.print(".");
+                ProteinInteractorType protein =
+                        interactors.getProteinInteractor(j);
+                ExternalReference[] refs = extractExternalReferences(protein);
+                linker.validateExternalReferences(refs);
+            }
+        }
+        System.out.println();
+    }
+
+    /**
+     * Processes all Interactors
+     */
+    private void processInteractors(EntrySet entrySet)
+            throws DaoException, MarshalException, ValidationException,
+            MapperException, ExternalDatabaseNotFoundException {
+        DaoExternalLink externalLinker = new DaoExternalLink();
+
+        System.out.print("Processing all Interactors:  ");
+        for (int i = 0; i < entrySet.getEntryCount(); i++) {
+            Entry entry = entrySet.getEntry(i);
+            InteractorList interactors = entry.getInteractorList();
+            for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
+                System.out.print(".");
                 summary.incrementNumInteractorsProcessed();
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
@@ -169,6 +197,7 @@ public class ImportPsiToCPath {
                 }
             }
         }
+        System.out.println();
     }
 
     /**
@@ -185,6 +214,7 @@ public class ImportPsiToCPath {
      */
     private void processInteractions(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException {
+        System.out.print("Processing all Interactions:  ");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
             InteractionList interactions = entry.getInteractionList();
@@ -193,12 +223,14 @@ public class ImportPsiToCPath {
             psiUtil.updateInteractions(interactions, idMap);
 
             for (int j = 0; j < interactions.getInteractionCount(); j++) {
+                System.out.print(".");
                 summary.incrementNumInteractionsSaved();
                 InteractionElementType interaction =
                         interactions.getInteraction(j);
                 saveInteraction(interaction);
             }
         }
+        System.out.println();
     }
 
     /**

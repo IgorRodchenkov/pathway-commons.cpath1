@@ -28,22 +28,28 @@ public class InteractionQuery {
     /**
      * Constructor.
      * @param interactorName Unique Interactor Name.
-     * @throws ValidationException XML String is invalid.
-     * @throws MarshalException Error Marshaling Object.
-     * @throws DaoException Error Retrieving Data.
-     * @throws MapperException Error Mapping to Data Service objects.
+     * @throws QueryException Error Performing Query.
      */
-    public InteractionQuery(String interactorName)
-            throws DaoException, MarshalException,
-            ValidationException, MapperException {
+    public InteractionQuery(String interactorName) throws QueryException {
         interactions = new ArrayList();
-        HashMap interactorMap = new HashMap();
-        DaoCPath cpath = new DaoCPath();
-        DaoInternalLink linker = new DaoInternalLink();
-        CPathRecord record = cpath.getRecordByName(interactorName);
-        if (record != null) {
-            entrySet = generateXml(record, linker, interactorMap);
-            mapToInteractions();
+        try {
+            HashMap interactorMap = new HashMap();
+            DaoCPath cpath = new DaoCPath();
+            DaoInternalLink linker = new DaoInternalLink();
+            CPathRecord record = cpath.getRecordByName(interactorName);
+            if (record != null) {
+                entrySet = generateXml(record, linker, interactorMap);
+                mapToInteractions();
+            }
+        } catch (DaoException e) {
+            throw new QueryException ("DaoException:  " + e.getMessage());
+        } catch (ValidationException e) {
+            throw new QueryException ("ValidationException:  "
+                    + e.getMessage());
+        } catch (MarshalException e) {
+            throw new QueryException ("MarshalException:  " + e.getMessage());
+        } catch (MapperException e) {
+            throw new QueryException ("MapperException:  " + e.getMessage());
         }
     }
 
