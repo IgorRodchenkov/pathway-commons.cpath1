@@ -174,3 +174,19 @@ CREATE TABLE `xml_cache` (
   PRIMARY KEY  (`CACHE_ID`),
   KEY `QUERY` (`DOC_MD5`)
 ) TYPE=MyISAM COMMENT='Contains Cached XML Documents' AUTO_INCREMENT=1 ;
+
+#
+# Table structure for table `id_map`
+#
+# Creation: Feb 03, 2005 at 03:41 PM
+# Last update: Feb 03, 2005 at 03:41 PM
+#
+
+CREATE TABLE `id_map` (
+  `ID_MAP_ID` int(11) NOT NULL auto_increment,
+  `DB_1` int(11) NOT NULL default '0',
+  `ID_1` varchar(255) NOT NULL default '',
+  `DB_2` int(11) NOT NULL default '0',
+  `ID_2` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`ID_MAP_ID`)
+) TYPE=MyISAM COMMENT='ID Mapping Service' AUTO_INCREMENT=1 ;
