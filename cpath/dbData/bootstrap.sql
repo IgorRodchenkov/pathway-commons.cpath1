@@ -17,6 +17,8 @@ truncate table import;
 truncate table external_db;
 truncate table external_db_cv;
 truncate table external_link;
+truncate table cpath;
+truncate table internal_link;
 
 #
 #  Insert data into table 'external_db'
