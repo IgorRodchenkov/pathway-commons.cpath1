@@ -20,6 +20,11 @@ public interface PagedResult {
     int getStartIndex();
 
     /**
+     * Gets Max Hits.
+     */
+    int getMaxHitsInt();
+
+    /**
      * Gets the URL for this request.
      * @return URL String.
      */
