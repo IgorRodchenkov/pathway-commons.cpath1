@@ -4,6 +4,11 @@
 ####
 
 # Server Name	URL			Regex
-cpath Home	http://cbio.mskcc.org/cpath/index.jsp	cancer
-cpath Help	http://www.cbio.mskcc.org/cpath/webservice?cmd=help help
-cPath Search	http://www.cbio.mskcc.org/cpath/webservice?version=1.0&cmd=get_by_interactor_name&q=dna&format=html dna
+cpath Home	http://cbio.mskcc.org/cpath/index.jsp	cancer pathway
+cpath Help	http://www.cbio.mskcc.org/cpath/webservice.do?cmd=help	quick reference
+cPath Search	http://www.cbio.mskcc.org/cpath/webservice.do?version=1.0&q=dna&format=html&organism=&cmd=get_by_keyword	Interaction View
+cPath Orgs	http://www.cbio.mskcc.org/cpath/browse.do	Homo sapiens
+cPath Stats	http://www.cbio.mskcc.org/cpath/dbStats.do	Database Stats 
+cPath PlugIn	http://www.cbio.mskcc.org/cpath/cytoscape.do	Cytoscape
+cPath Dev	http://www.cbio.mskcc.org/dev_site/cpath/	Release Notes
+cPath FAQ	http://www.cbio.mskcc.org/cpath/faq.do	What is cPath
