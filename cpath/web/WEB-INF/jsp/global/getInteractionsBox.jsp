@@ -53,16 +53,17 @@
             Organism organism = (Organism) organisms.get(i);
             String currentTaxId = Integer.toString(organism.getTaxonomyId());
             String species = organism.getSpeciesName();
+            String speciesShort = species;
             if (species.length() > 12) {
-                species = new String (species.substring(0,12) + "...");
+                speciesShort = new String (species.substring(0,12) + "...");
             }
         %>
             <% if (currentTaxId.equals(taxId)) { %>
-                <OPTION VALUE="<%= organism.getTaxonomyId()%>" SELECTED>
-                <%= species %></OPTION>
+                <OPTION TITLE='<%= species %>' VALUE="<%= organism.getTaxonomyId()%>" SELECTED>
+                <%= speciesShort %></OPTION>
             <% } else { %>
-                <OPTION VALUE="<%= organism.getTaxonomyId()%>">
-                <%= species %></OPTION>
+                <OPTION TITLE='<%= species %>' VALUE="<%= organism.getTaxonomyId()%>">
+                <%= speciesShort %></OPTION>
             <% } %>
         <% } %>
         </SELECT>
