@@ -29,5 +29,8 @@
 	      <item name="Architecture Guide"   href="/architecture.pdf"/>
 	      <item name="Installation Guide"   href="/installation.pdf"/>
     </menu>
+    <menu name="Downloads">
+          <item name="Download Source" href="src/cpath.tar.gz"/>
+    </menu>
   </body>
 </project>
