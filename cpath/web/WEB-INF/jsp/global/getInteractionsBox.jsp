@@ -24,6 +24,15 @@
     Boolean searchOptionsFlag = (Boolean)
         session.getAttribute(ToggleSearchOptions.SESSION_SEARCH_OPTIONS_FLAG);
 %>
+
+<SCRIPT language="JavaScript">
+function toggleSearchOptions()
+{
+  document.searchbox.action="toggleSearchOptions.do";
+  return document.searchbox.submit();
+}
+</SCRIPT>
+
 <div id="search" class="toolgroup">
     <FORM name="searchbox" ACTION="webservice.do" METHOD="GET">
     <div class="label">
@@ -59,7 +68,8 @@
             }
         %>
             <% if (currentTaxId.equals(taxId)) { %>
-                <OPTION TITLE='<%= species %>' VALUE="<%= organism.getTaxonomyId()%>" SELECTED>
+                <OPTION TITLE='<%= species %>'
+                    VALUE="<%= organism.getTaxonomyId()%>" SELECTED>
                 <%= speciesShort %></OPTION>
             <% } else { %>
                 <OPTION TITLE='<%= species %>' VALUE="<%= organism.getTaxonomyId()%>">
@@ -125,12 +135,12 @@
             <% if (searchOptionsFlag != null
                     && searchOptionsFlag.booleanValue() == true) { %>
                 <A TITLE="Hide Search Options"
-                    HREF="toggleSearchOptions.do">[Hide Options...]</A>
+                    HREF="javascript:toggleSearchOptions();">[Hide Options...]</A>
             <% } else { %>
             <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
                 value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
             <A TITLE="Show Search Options"
-                HREF="toggleSearchOptions.do">[Show Options...]</A>
+                    HREF="javascript:toggleSearchOptions();">[Show Options...]</A>
             <% } %>
         </span>
 
