@@ -12,10 +12,7 @@
         to track all bugs and issues related to cPath.
         </p>
         <p>
-        Our bug tracker is located at:
-            <A HREF="http://www.cbio.mskcc.org/cytoscape/bugs/main_page.php">
-            http://www.cbio.mskcc.org/cytoscape/bugs/main_page.php
-            </A>
+	<A HREF="http://www.cbio.mskcc.org/cytoscape/bugs/set_project.php?project_id=4">Report / View Bugs</A>
         </p>
      </section>
   </body>

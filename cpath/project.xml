@@ -36,7 +36,7 @@
    	<siteAddress>cbio.mskcc.org</siteAddress>
 	<siteDirectory>/var/www/cytoscape/cytodocs</siteDirectory>
 
-    <issueTrackingUrl>http://www.cbio.mskcc.org/cytoscape/bugs/main_page.php</issueTrackingUrl>
+	<issueTrackingUrl>http://www.cbio.mskcc.org/cytoscape/bugs/set_project.php?project_id=4</issueTrackingUrl>
     <siteAddress>cbio.mskcc.org</siteAddress>
     <siteDirectory>/var/www/dev_site/cpath</siteDirectory>
 
