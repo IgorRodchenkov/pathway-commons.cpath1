@@ -6,11 +6,17 @@ import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
 import org.mskcc.pathdb.model.Protein;
+import org.jdom.contrib.input.ResultSetBuilder;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.output.XMLOutputter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.io.StringWriter;
+import java.io.IOException;
 
 /**
  * Live GRID Protein Service.
@@ -68,6 +74,29 @@ public class GridProteinService extends GridBase {
     }
 
     /**
+     * Gets Protein XML by ORF.
+     * @param orfName ORF Name
+     * @return XML String.
+     * @throws EmptySetException Indicates Empty Set.
+     * @throws ClassNotFoundException Cannot found JDBC Driver.
+     * @throws SQLException Error connecting to database.
+     * @throws JDOMException Error converting to XML.
+     * @throws IOException Error outputting XML.
+     */
+    public String getProteinXmlByOrf (String orfName) throws EmptySetException,
+            ClassNotFoundException, SQLException, JDOMException, IOException {
+        ResultSet rs = this.connect(orfName, GridBase.KEY_ORF);
+        ResultSetBuilder rsBuilder = new ResultSetBuilder (rs);
+        Document document = rsBuilder.build();
+        StringWriter writer = new StringWriter();
+        XMLOutputter outputter = new XMLOutputter();
+        outputter.setIndent(true);
+        outputter.setNewlines(true);
+        outputter.output(document, writer);
+        return writer.toString();
+    }
+
+    /**
      * Gets Live Protein from GRID, and places in Local Cache.
      * @param uid Unique ID.
      * @param lookUpKey Database LookUp Key.
@@ -81,6 +110,7 @@ public class GridProteinService extends GridBase {
             EmptySetException {
         Protein protein = new Protein();
         ResultSet rs = this.connect(uid, lookUpKey);
+        scrollNext(rs);
         getBasicInformation(rs, protein);
         getGoTerms(rs, protein);
         getExternalRefs(rs, protein);
@@ -100,17 +130,38 @@ public class GridProteinService extends GridBase {
             throws SQLException, ClassNotFoundException,
             EmptySetException {
         Connection con = getConnection();
+
+        //  First, count number of rows to check for empty set.
+        checkEmptySet(con, lookUpKey, uid);
+
+        //  Then get data
         PreparedStatement pstmt = con.prepareStatement
                 ("select * from orf_info where " + lookUpKey + "=?");
         pstmt.setString(1, uid);
         log.info("Executing SQL Query:  " + pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
+        return rs;
+    }
+
+    /**
+     * Checks for Empty Set.
+     * @param con Connection object.
+     * @param lookUpKey Look up Key.
+     * @param uid UID.
+     * @throws SQLException Error Connecting to database.
+     * @throws EmptySetException Indicates Empty Set.
+     */
+    private void checkEmptySet(Connection con, String lookUpKey, String uid)
+            throws SQLException, EmptySetException {
+        PreparedStatement pstmt = con.prepareStatement
+                ("select COUNT(*) from orf_info where " + lookUpKey + "=?");
+        pstmt.setString(1, uid);
+        ResultSet rs = pstmt.executeQuery();
         rs.next();
-        int numRows = rs.getRow();
-        if (numRows == 0) {
+        int rowCount = rs.getInt(1);
+        if (rowCount == 0) {
             throw new EmptySetException ("No results found for id");
         }
-        return rs;
     }
 
     /**
@@ -130,6 +181,20 @@ public class GridProteinService extends GridBase {
         protein.setLocalId(localId);
         protein.setGeneNames(geneNames);
         protein.setDescription(description);
+    }
+
+    /**
+     * Scroll through results.
+     * @param rs Result Set
+     * @throws SQLException Database error.
+     * @throws EmptySetException Indicates No Results Found.
+     */
+    private void scrollNext(ResultSet rs) throws SQLException,
+            EmptySetException {
+        boolean hasNext = rs.next();
+        if (!hasNext) {
+            throw new EmptySetException ("No results found for id");
+        }
     }
 
     /**

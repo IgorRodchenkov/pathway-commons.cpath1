@@ -80,7 +80,7 @@ public class DataServiceController {
         validator.validate();
         GridController gridController = new GridController();
         String xmlResponse = gridController.retrieveInteractions
-                (protocolRequest.getUid());
+                (protocolRequest);
         returnXml(xmlResponse);
     }
 

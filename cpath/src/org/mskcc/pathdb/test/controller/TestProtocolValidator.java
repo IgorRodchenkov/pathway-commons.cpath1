@@ -6,6 +6,7 @@ import org.mskcc.pathdb.controller.ProtocolException;
 import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.controller.ProtocolStatusCode;
 import org.mskcc.pathdb.controller.ProtocolValidator;
+import org.mskcc.pathdb.controller.NeedsHelpException;
 
 import java.util.HashMap;
 
@@ -45,8 +46,9 @@ public class TestProtocolValidator extends TestCase {
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
             validator.validate();
-        } catch (ProtocolException e) {
-            fail("ProtocolException should not have been thrown");
+            fail("ProtocolException should have been thrown");
+        } catch (NeedsHelpException e) {
+            request.getCommand();  // Do Nothing.
         }
     }
 }

@@ -6,6 +6,7 @@ import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
 import org.mskcc.pathdb.model.Protein;
 import org.mskcc.pathdb.sql.GridProteinService;
+import org.mskcc.pathdb.sql.EmptySetException;
 import org.mskcc.pathdb.test.TestConstants;
 
 /**
@@ -148,6 +149,37 @@ public class TestGridProteinService extends TestCase {
         protein = service.getProteinByLocalId(SAMPLE_LOCAL_ID);
         validateNameIdDescription(protein);
     }
+
+    /**
+     * Tests the Grid XML Service.
+     * @throws Exception All Exceptions.
+     */
+    public void testGridXmlService() throws Exception {
+        GridProteinService service = new GridProteinService
+                (TestConstants.DB_HOST, TestConstants.USER,
+                        TestConstants.PASSWORD);
+
+        String xml = service.getProteinXmlByOrf(TestConstants.SAMPLE_ORF_1);
+        int index = xml.indexOf("<orf_name>YLR002C</orf_name>");
+        assertTrue ("Testing XML Contents", index > 5);
+    }
+
+    /**
+     * Tests for Invalid ID.
+     * @throws Exception All Exceptions.
+     */
+    public void testInvalidID() throws Exception {
+        GridProteinService service = new GridProteinService
+                (TestConstants.DB_HOST, TestConstants.USER,
+                        TestConstants.PASSWORD);
+         try {
+            Protein protein = service.getProteinByOrf("ecerami");
+            fail ("EmptySetException should have been thrown.");
+         } catch (EmptySetException e) {
+             assertTrue (e instanceof EmptySetException);
+         }
+    }
+
 
     /**
      * Validates Name, ID and Description.

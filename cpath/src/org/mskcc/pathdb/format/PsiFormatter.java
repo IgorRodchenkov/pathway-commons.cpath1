@@ -6,8 +6,8 @@ import org.mskcc.pathdb.model.Protein;
 import org.mskcc.pathdb.xml.psi.Bibref;
 import org.mskcc.pathdb.xml.psi.Entry;
 import org.mskcc.pathdb.xml.psi.ExperimentDescription;
+import org.mskcc.pathdb.xml.psi.ExperimentList;
 import org.mskcc.pathdb.xml.psi.InteractionDetection;
-import org.mskcc.pathdb.xml.psi.InteractionElementTypeChoice;
 import org.mskcc.pathdb.xml.psi.InteractionList;
 import org.mskcc.pathdb.xml.psi.InteractionType;
 import org.mskcc.pathdb.xml.psi.InteractorList;
@@ -111,6 +111,10 @@ public class PsiFormatter {
                     new org.mskcc.pathdb.xml.psi.Interaction();
             Interaction interaction = (Interaction) interactions.get(i);
 
+            //  Add Experiment List
+            ExperimentList expList = getExperimentDescription(interaction);
+            castorInteraction.setExperimentList(expList);
+
             //  Add Participants
             ParticipantList participantList = getParticipantList(interaction);
             castorInteraction.setParticipantList(participantList);
@@ -118,11 +122,6 @@ public class PsiFormatter {
             //  Add InteractionType
             InteractionType interactionType = getInteractionType(interaction);
             castorInteraction.addInteractionType(interactionType);
-
-            //  Add Experimental Description
-            InteractionElementTypeChoice choice =
-                    getExperimentDescription(interaction);
-            castorInteraction.setInteractionElementTypeChoice(choice);
 
             //  Add to Interaction List
             interactionList.addInteraction(castorInteraction);
@@ -160,16 +159,12 @@ public class PsiFormatter {
         InteractionType interactionType = new InteractionType();
 
         //  Create Interaction Name
-        //  TODO:  What goes here?
         Names interactionNames = createName
-                (interaction.getExperimentalSystem(),
-                        interaction.getExperimentalSystem());
+                ("aggregation", "aggregation");
         interactionType.setNames(interactionNames);
 
-        //  Create External Reference
-        //  TODO:  What goes here?
-        String pmids[] = interaction.getPubMedIds();
-        Xref xref = createXRef(PUB_MED_DB, pmids[0]);
+        //  Reference Controlled Vocabulary.
+        Xref xref = createXRef("goid", "MI:0191");
         interactionType.setXref(xref);
 
         return interactionType;
@@ -180,48 +175,58 @@ public class PsiFormatter {
      * @param interaction Interaction object.
      * @return Castor InteractionElementTypeChoice object.
      */
-    private InteractionElementTypeChoice getExperimentDescription
+    private ExperimentList getExperimentDescription
             (Interaction interaction) {
+        //  Create New Experiment List
+        ExperimentList expList = new ExperimentList();
+
         //  Create New Experiment Description
         ExperimentDescription expDescription = new ExperimentDescription();
 
         //  Set Experimental ID
-        //  TODO:  What goes here?
-        expDescription.setId("temp");
+        expDescription.setId("no_id");
 
         //  Set Bibliographic Reference
-        //  TODO:  What goes here?
-        String pmids[] = interaction.getPubMedIds();
-        Bibref bibRef = createBibRef(PUB_MED_DB, pmids[0]);
+        Bibref bibRef = createBibRef("N/A", "N/A");
         expDescription.setBibref(bibRef);
 
         //  Set Interaction Detection
-        //  TODO:  What goes here?
         InteractionDetection interactionDetection =
-                getInteractionDetection(interaction, pmids[0]);
+                getInteractionDetection(interaction);
+        expDescription.setInteractionDetection(interactionDetection);
 
         //  Set Choice Element
-        expDescription.setInteractionDetection(interactionDetection);
-        InteractionElementTypeChoice choice =
-                new InteractionElementTypeChoice();
-        choice.setExperimentDescription(expDescription);
-        return choice;
+        expList.addExperimentDescription(expDescription);
+        return expList;
     }
 
     /**
      * Gets Interaction Detection element.
      * @param interaction Interaction.
-     * @param pmid PubMed ID.
      * @return InteractionDetection Object.
      */
     private InteractionDetection getInteractionDetection
-            (Interaction interaction, String pmid) {
+            (Interaction interaction) {
         InteractionDetection interactionDetection = new InteractionDetection();
-        Names names = createName(interaction.getExperimentalSystem(),
-                interaction.getExperimentalSystem());
-        interactionDetection.setNames(names);
-        Xref xref = createXRef(PUB_MED_DB, pmid);
-        interactionDetection.setXref(xref);
+        String idStr = interaction.getExperimentalSystem();
+        if (idStr.equals("Affinity Precipitation")) {
+            Names names = createName("affinity chromatography technologies",
+                    "affinity chromatography technologies");
+            interactionDetection.setNames(names);
+            Xref xref = createXRef("goid", "MI:0004");
+            interactionDetection.setXref(xref);
+        } else if (idStr.equals("Two Hybrid")) {
+            Names names = createName("classical two hybrid",
+                    "classical two hybrid");
+            interactionDetection.setNames(names);
+            Xref xref = createXRef("goid", "MI:0018");
+            interactionDetection.setXref(xref);
+        } else {
+            Names names = createName(idStr, idStr);
+            interactionDetection.setNames(names);
+            Xref xref = createXRef("N/A", "N/A");
+            interactionDetection.setXref(xref);
+        }
         return interactionDetection;
     }
 
@@ -240,6 +245,7 @@ public class PsiFormatter {
 
     /**
      * Sets Protein Organism.
+     * Currently Hard-coded to Yeast.
      * @param interactor Castor Protein Interactor Object.
      */
     private void setOrganism(ProteinInteractor interactor) {
