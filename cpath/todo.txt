@@ -9,6 +9,9 @@ cPath Functionality Issues:
 4.  Create cPath Developer Docs
 5.  Add new query:  query by experimental method (e.g. all the data from two-hybrid)
 6.  Gary's latest idea:  re:  loading external references.
+7.  Provide query API functionality to get a list of valid query API commands.  E.g. for getInteractionsBySource,
+	we could have getValidSources
+8.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape to easily create external links.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
