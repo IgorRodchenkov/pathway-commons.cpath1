@@ -42,7 +42,7 @@ public class RequestAdapter {
             query = addField(PsiInteractionToIndex.FIELD_PMID, query);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE)) {
-            query = addField(PsiInteractionToIndex.FIELD_INTERACTION_TYPE,
+            query = addField(PsiInteractionToIndex.FIELD_EXPERIMENT_TYPE,
                     query);
         }
         query = reviseByOrganism(request, query);

@@ -37,7 +37,7 @@ public class TestItemToIndex extends TestCase {
             LuceneIndexer.FIELD_INTERACTOR_ID,
             PsiInteractionToIndex.FIELD_ORGANISM,
             PsiInteractionToIndex.FIELD_PMID,
-            PsiInteractionToIndex.FIELD_INTERACTION_TYPE,
+            PsiInteractionToIndex.FIELD_EXPERIMENT_TYPE,
             PsiInteractionToIndex.FIELD_DATABASE,
             LuceneIndexer.FIELD_ALL,
             LuceneIndexer.FIELD_INTERACTION_ID,

@@ -45,8 +45,8 @@ public class PsiInteractionToIndex implements ItemToIndex {
     /**
      * Lucene Field for Storing Interaction Type Information.
      */
-    public static final String FIELD_INTERACTION_TYPE =
-            "interaction_type";
+    public static final String FIELD_EXPERIMENT_TYPE =
+            "experiment_type";
 
     /**
      * Lucene Field for Storing Database Name.
@@ -154,7 +154,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
             appendXrefTokens(interaction.getXref(), dbTokens);
         }
         fields.add(Field.Text(FIELD_PMID, pmidTokens.toString()));
-        fields.add(Field.Text(FIELD_INTERACTION_TYPE,
+        fields.add(Field.Text(FIELD_EXPERIMENT_TYPE,
                 interactionTypeTokens.toString()));
         fields.add(Field.Text(FIELD_DATABASE, dbTokens.toString()));
     }

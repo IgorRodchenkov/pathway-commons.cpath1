@@ -253,7 +253,7 @@ public class InteractionTable extends HtmlTable {
         append("<TR class='b'>");
         append("<td>Interactor</td>");
         append("<td>Organism</td>");
-        append("<td>Interaction Type</td>");
+        append("<td>Experiment Type</td>");
         endRow();
     }
 
