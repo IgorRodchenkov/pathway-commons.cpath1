@@ -5,14 +5,14 @@ import junit.framework.TestCase;
 import org.mskcc.pathdb.util.XssFilter;
 
 /**
- * Tests the XXXX Class.
+ * Tests the XssFilter Class.
  *
  * @author Ethan Cerami
  */
 public class TestFilter extends TestCase {
 
     /**
-     * Tests XXX.
+     * Tests XssFilter.
      *
      * @throws Exception All Exceptions.
      */
