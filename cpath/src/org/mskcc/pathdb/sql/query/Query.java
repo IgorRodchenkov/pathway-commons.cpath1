@@ -41,13 +41,12 @@ public class Query {
      */
     public XmlAssembly executeQuery(ProtocolRequest request,
             boolean checkCache) throws QueryException {
-
-        // TODO:  REMOVE THIS LINE
-        checkCache = false;
-
         DaoXmlCache dao = new DaoXmlCache(xdebug);
         XmlAssembly xmlAssembly = null;
         XmlAssembly cachedXml = null;
+
+        //TODO:  REMOVE
+        checkCache = false;
         try {
             String hashKey = getHashKey(request);
             xdebug.logMsg(this, "Checking cache for pre-computed XML");
@@ -67,7 +66,8 @@ public class Query {
                 if (!xmlAssembly.isEmpty()) {
                     if (cachedXml == null) {
                         xdebug.logMsg(this, "Storing XML to Database Cache");
-                        dao.addRecord(hashKey, xmlAssembly);
+                        dao.addRecord(hashKey, request.getUrlParameterString(),
+                                xmlAssembly);
                     } else {
                         xdebug.logMsg(this, "Updating XML in Database Cache");
                         dao.updateXmlAssemblyByKey(hashKey, xmlAssembly);
@@ -99,7 +99,7 @@ public class Query {
         //  This enables us to reuse the same XML Content for requests
         //  for HTML and PSI.
         request.setFormat(ProtocolConstants.FORMAT_PSI);
-        String hashKey = Md5Util.createMd5Hash(request.getUri());
+        String hashKey = Md5Util.createMd5Hash(request.getUrlParameterString());
 
         //  Set Back to Original Format.
         request.setFormat(originalFormat);
