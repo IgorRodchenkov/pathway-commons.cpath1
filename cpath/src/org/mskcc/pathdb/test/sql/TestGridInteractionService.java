@@ -1,12 +1,11 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
+import org.mskcc.pathdb.model.Interaction;
+import org.mskcc.pathdb.sql.GridInteractionService;
+import org.mskcc.pathdb.test.TestConstants;
 
 import java.util.ArrayList;
-
-import org.mskcc.pathdb.sql.GridInteractionService;
-import org.mskcc.pathdb.model.Interaction;
-import org.mskcc.pathdb.test.TestConstants;
 
 /**
  * Tests the GRID Interaction Service.
@@ -20,18 +19,18 @@ public class TestGridInteractionService extends TestCase {
      * @throws Exception Indicates Error.
      */
     public void testGridService() throws Exception {
-            GridInteractionService service = new GridInteractionService
+        GridInteractionService service = new GridInteractionService
                 (TestConstants.DB_HOST, TestConstants.USER,
-                TestConstants.PASSWORD);
+                        TestConstants.PASSWORD);
 
-            ArrayList interactions =
-                    service.getInteractions(TestConstants.SAMPLE_ORF_1);
-            //  Uncomment the line below to view all interaction data.
-            //  printAllInteractions(interactions);
-            validateData (interactions, 0, "YER006W", "YLR002C",
-                    "Affinity Precipitation", "AB", "11583615");
-            validateData (interactions, 6, "YIL035C", "YLR002C",
-                    "Affinity Precipitation", "AB", "11805837");
+        ArrayList interactions =
+                service.getInteractions(TestConstants.SAMPLE_ORF_1);
+        //  Uncomment the line below to view all interaction data.
+        //  printAllInteractions(interactions);
+        validateData(interactions, 0, "YER006W", "YLR002C",
+                "Affinity Precipitation", "AB", "11583615");
+        validateData(interactions, 6, "YIL035C", "YLR002C",
+                "Affinity Precipitation", "AB", "11805837");
     }
 
     /**
@@ -63,14 +62,14 @@ public class TestGridInteractionService extends TestCase {
      * @param direction Direction of Interaction.
      * @param pid PubMed Id.
      */
-    private void validateData (ArrayList interactions, int index, String geneA,
+    private void validateData(ArrayList interactions, int index, String geneA,
             String geneB, String expSystem, String direction, String pid) {
         Interaction interaction = (Interaction) interactions.get(index);
-        assertEquals (geneA, interaction.getNodeA().getOrfName());
-        assertEquals (geneB, interaction.getNodeB().getOrfName());
-        assertEquals (expSystem, interaction.getExperimentalSystem());
-        assertEquals (direction, interaction.getDirection());
+        assertEquals(geneA, interaction.getNodeA().getOrfName());
+        assertEquals(geneB, interaction.getNodeB().getOrfName());
+        assertEquals(expSystem, interaction.getExperimentalSystem());
+        assertEquals(direction, interaction.getDirection());
         String[] pids = interaction.getPubMedIds();
-        assertEquals (pid, pids[0]);
+        assertEquals(pid, pids[0]);
     }
 }

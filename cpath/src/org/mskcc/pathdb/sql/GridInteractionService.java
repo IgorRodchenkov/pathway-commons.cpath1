@@ -1,12 +1,12 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.pathdb.model.Protein;
 import org.mskcc.pathdb.model.Interaction;
+import org.mskcc.pathdb.model.Protein;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -26,16 +26,21 @@ public class GridInteractionService extends GridBase {
 
     /**
      * Constructor.
+     * @param host Database Host Name.
+     * @param user Database User.
+     * @param password Password.
      */
     public GridInteractionService(String host, String user, String password) {
-        super (host, user, password);
+        super(host, user, password);
     }
 
     /**
      * Gets Interaction data for specified GI Number.
      * @param orfName ORF Name.
      * @return ArrayList of Interaction objects.
-     */
+     * @throws SQLException Error connecting to data base.
+     * @throws ClassNotFoundException Could not located JDBC Driver.
+    */
     public ArrayList getInteractions(String orfName)
             throws SQLException, ClassNotFoundException {
         ArrayList interactions = getLiveInteractions(orfName);
@@ -93,6 +98,7 @@ public class GridInteractionService extends GridBase {
      * @param rs Database Result Set.
      * @return ArrayList of Interaction objects.
      * @throws SQLException Error connecting database.
+     * @throws ClassNotFoundException Could not located JDBC Driver.
      */
     private ArrayList processResults(ResultSet rs)
             throws SQLException, ClassNotFoundException {

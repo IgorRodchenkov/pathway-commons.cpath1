@@ -21,7 +21,7 @@ public class GoTerm {
      * @param id GO ID.
      * @param name GO Name.
      */
-    public GoTerm (String id, String name) {
+    public GoTerm(String id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -21,7 +21,7 @@ public class ExternalReference {
      * @param db Database name.
      * @param id Database id.
      */
-    public ExternalReference (String db, String id) {
+    public ExternalReference(String db, String id) {
         this.database = db;
         this.id = id;
     }

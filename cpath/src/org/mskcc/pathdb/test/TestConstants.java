@@ -1,11 +1,25 @@
 package org.mskcc.pathdb.test;
 
+/**
+ * Test Constants.
+ *
+ * @author Ethan Cerami
+ */
 public class TestConstants {
 
+    /**
+     * Database Host Name.
+     */
     public static final String DB_HOST = "localhost";
 
+    /**
+     * Database User Name.
+     */
     public static final String USER = "reader";
 
+    /**
+     * Database Password.
+     */
     public static final String PASSWORD = "cbio1";
 
     /**

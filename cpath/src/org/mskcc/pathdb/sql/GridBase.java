@@ -50,7 +50,13 @@ public abstract class GridBase {
      */
     static final String KEY_ORF = "orf_name";
 
-    public GridBase (String host, String user, String password) {
+    /**
+     * Constructor.
+     * @param host Database Host Name.
+     * @param user Database User Name.
+     * @param password Password.
+     */
+    public GridBase(String host, String user, String password) {
         this.host = host;
         this.user = user;
         this.password = password;
@@ -66,8 +72,8 @@ public abstract class GridBase {
             throws SQLException, ClassNotFoundException {
         String url =
                 new String("jdbc:mysql://" + host + "/"
-                + GridBase.DATABASE + "?user=" + user +
-                "&password=" + password);
+                + GridBase.DATABASE + "?user=" + user
+                + "&password=" + password);
         Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection(url);
         return con;

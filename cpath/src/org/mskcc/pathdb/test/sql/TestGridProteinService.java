@@ -1,11 +1,11 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.sql.GridProteinService;
-import org.mskcc.pathdb.model.Protein;
+import org.mskcc.pathdb.model.ExternalReference;
 import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
-import org.mskcc.pathdb.model.ExternalReference;
+import org.mskcc.pathdb.model.Protein;
+import org.mskcc.pathdb.sql.GridProteinService;
 import org.mskcc.pathdb.test.TestConstants;
 
 /**
@@ -50,13 +50,13 @@ public class TestGridProteinService extends TestCase {
      * Expected Value (may need to be updated to reflect changes in GRID.)
      */
     private static final String EXPECTED_PROCESS_NAME_0 =
-        "DNA replication initiation";
+            "DNA replication initiation";
 
     /**
      * Expected Value (may need to be updated to reflect changes in GRID.)
      */
     private static final String EXPECTED_PROCESS_NAME_1 =
-        "rRNA processing";
+            "rRNA processing";
 
     /**
      * Expected Value (may need to be updated to reflect changes in GRID.)
@@ -135,18 +135,18 @@ public class TestGridProteinService extends TestCase {
      * @throws Exception Indicates Error.
      */
     public void testGridService() throws Exception {
-            GridProteinService service = new GridProteinService
+        GridProteinService service = new GridProteinService
                 (TestConstants.DB_HOST, TestConstants.USER,
-                TestConstants.PASSWORD);
+                        TestConstants.PASSWORD);
 
-            org.mskcc.pathdb.model.Protein protein =
-                    service.getProteinByOrf(TestConstants.SAMPLE_ORF_1);
-            validateNameIdDescription(protein);
-            validateGoTerms(protein);
-            validateExternalReferences(protein);
+        org.mskcc.pathdb.model.Protein protein =
+                service.getProteinByOrf(TestConstants.SAMPLE_ORF_1);
+        validateNameIdDescription(protein);
+        validateGoTerms(protein);
+        validateExternalReferences(protein);
 
-            protein = service.getProteinByLocalId(SAMPLE_LOCAL_ID);
-            validateNameIdDescription(protein);
+        protein = service.getProteinByLocalId(SAMPLE_LOCAL_ID);
+        validateNameIdDescription(protein);
     }
 
     /**
@@ -177,29 +177,29 @@ public class TestGridProteinService extends TestCase {
 
         //  Validate GO Process Terms.
         GoTerm processes[] = bundle.getGoProcesses();
-        assertEquals (EXPECTED_PROCESS_ID_0, processes[0].getID());
-        assertEquals (EXPECTED_PROCESS_NAME_0, processes[0].getName());
-        assertEquals (EXPECTED_PROCESS_ID_1, processes[1].getID());
-        assertEquals (EXPECTED_PROCESS_NAME_1, processes[1].getName());
+        assertEquals(EXPECTED_PROCESS_ID_0, processes[0].getID());
+        assertEquals(EXPECTED_PROCESS_NAME_0, processes[0].getName());
+        assertEquals(EXPECTED_PROCESS_ID_1, processes[1].getID());
+        assertEquals(EXPECTED_PROCESS_NAME_1, processes[1].getName());
 
         //  Validate GO Component Terms.
         GoTerm components[] = bundle.getGoComponents();
-        assertEquals (EXPECTED_COMPONENT_ID_0, components[0].getID());
-        assertEquals (EXPECTED_COMPONENT_NAME_0, components[0].getName());
-        assertEquals (EXPECTED_COMPONENT_ID_1, components[1].getID());
-        assertEquals (EXPECTED_COMPONENT_NAME_1, components[1].getName());
+        assertEquals(EXPECTED_COMPONENT_ID_0, components[0].getID());
+        assertEquals(EXPECTED_COMPONENT_NAME_0, components[0].getName());
+        assertEquals(EXPECTED_COMPONENT_ID_1, components[1].getID());
+        assertEquals(EXPECTED_COMPONENT_NAME_1, components[1].getName());
 
         //  Validate GO Function Terms.
         GoTerm functions[] = bundle.getGoFunctions();
-        assertEquals (EXPECTED_FUNCTION_ID_0, functions[0].getID());
-        assertEquals (EXPECTED_FUNCTION_NAME_0, functions[0].getName());
+        assertEquals(EXPECTED_FUNCTION_ID_0, functions[0].getID());
+        assertEquals(EXPECTED_FUNCTION_NAME_0, functions[0].getName());
 
         //  Validate GO Service Terms.
         GoTerm special[] = bundle.getGoSpecial();
-        assertEquals (EXPECTED_SPECIAL_ID_0, special[0].getID());
-        assertEquals (EXPECTED_SPECIAL_NAME_0, special[0].getName());
-        assertEquals (EXPECTED_SPECIAL_ID_8, special[8].getID());
-        assertEquals (EXPECTED_SPECIAL_NAME_8, special[8].getName());
+        assertEquals(EXPECTED_SPECIAL_ID_0, special[0].getID());
+        assertEquals(EXPECTED_SPECIAL_NAME_0, special[0].getName());
+        assertEquals(EXPECTED_SPECIAL_ID_8, special[8].getID());
+        assertEquals(EXPECTED_SPECIAL_NAME_8, special[8].getName());
     }
 
     /**
@@ -208,9 +208,9 @@ public class TestGridProteinService extends TestCase {
      */
     private void validateExternalReferences(Protein protein) {
         ExternalReference refs[] = protein.getExternalRefs();
-        assertEquals (EXPECTED_EXTERNAL_REF_ID_0, refs[0].getId());
-        assertEquals (EXPECTED_EXTERNAL_REF_NAME_0, refs[0].getDatabase());
-        assertEquals (EXPECTED_EXTERNAL_REF_ID_9, refs[9].getId());
-        assertEquals (EXPECTED_EXTERNAL_REF_NAME_9, refs[9].getDatabase());
+        assertEquals(EXPECTED_EXTERNAL_REF_ID_0, refs[0].getId());
+        assertEquals(EXPECTED_EXTERNAL_REF_NAME_0, refs[0].getDatabase());
+        assertEquals(EXPECTED_EXTERNAL_REF_ID_9, refs[9].getId());
+        assertEquals(EXPECTED_EXTERNAL_REF_NAME_9, refs[9].getDatabase());
     }
 }

@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.sql;
 
-import org.mskcc.pathdb.model.Protein;
-import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.ExternalReference;
+import org.mskcc.pathdb.model.GoBundle;
 import org.mskcc.pathdb.model.GoTerm;
+import org.mskcc.pathdb.model.Protein;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,17 +19,23 @@ import java.sql.SQLException;
  * @author Ethan Cerami
  */
 public class GridProteinService extends GridBase {
+
     /**
      * Constructor.
+     * @param host Database Host Name.
+     * @param user Database User Name.
+     * @param password Database Password.
      */
     public GridProteinService(String host, String user, String password) {
-        super (host, user, password);
+        super(host, user, password);
     }
 
     /**
      * Gets Protein object for specified ORF.
      * @param orfName ORF Name.
      * @return Protein object.
+     * @throws SQLException Database error.
+     * @throws ClassNotFoundException Could not find JDBC Driver.
      */
     public Protein getProteinByOrf(String orfName)
             throws SQLException, ClassNotFoundException {
@@ -41,6 +47,8 @@ public class GridProteinService extends GridBase {
      * Gets Protein object for specified Local ID.
      * @param localId Unique Local ID.
      * @return Protein object.
+     * @throws SQLException Database error.
+     * @throws ClassNotFoundException Could not find JDBC Driver.
      */
     public Protein getProteinByLocalId(String localId)
             throws SQLException, ClassNotFoundException {
