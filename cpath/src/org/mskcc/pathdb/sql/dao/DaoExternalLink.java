@@ -189,7 +189,7 @@ public class DaoExternalLink {
                 if (exDb == null) {
                     throw new ExternalDatabaseNotFoundException
                             ("No matching database "
-                            + "found for:  " + dbName + "[" + id + "]");
+                            + "found for:  " + dbName + " [" + id + "]");
                 }
             }
         }
