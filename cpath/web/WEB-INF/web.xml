@@ -20,20 +20,20 @@
         <servlet-name>DataServiceServlet</servlet-name>
         <servlet-class>org.mskcc.pathdb.servlet.DataService</servlet-class>
 	<init-param>
-		<param-name>grid_host</param-name>
+		<param-name>db_host</param-name>
 		<param-value>localhost</param-value>
 	</init-param>
 	<init-param>
-		<param-name>grid_user</param-name>
-		<param-value>reader</param-value>
+		<param-name>db_user</param-name>
+		<param-value>user</param-value>
 	</init-param>
 	<init-param>
-		<param-name>grid_password</param-name>
+		<param-name>db_password</param-name>
 		<param-value>cbio1</param-value>
 	</init-param>
 	<init-param>
-		<param-name>log_file</param-name>
-		<param-value>/Users/cerami/dev/sander/pathdb/build/jsp/log/ds_web.log</param-value>
+		<param-name>log_config_file</param-name>
+		<param-value>/Users/cerami/dev/sander/pathdb/build/WEB-INF/classes/config-JDBC.properties</param-value>
 	</init-param>
     </servlet>
 
