@@ -26,6 +26,10 @@ If you choose a different user/password combination, see Appendix A below.
 Instructions on adding new mySQL users is available online at: 
 http://www.mysql.com/doc/en/Adding_users.html
 
+make sure this user has permission to update the database
+
+Make sure this user has permission to update the database.
+
 3.  Load the cPath Tables.  To do so:
 
 cd [CPATH_ROOT]/dbData
@@ -48,6 +52,10 @@ ant war
 In the [CPATH_ROOT]/dist directory, you will now find cpath.war
 
 6.  Copy cpath.war to [JAKARTA_TOMCAT_DIR]/webapps and restart Apache Tomcat.
+
+Note:  On certain platforms, you may not even need to restart Tomcat.  For example,
+if you are running Tomcat 5 on Windows, Tomcat will immediately detect the new
+WAR file, and load it automatically.
 
 7.  Open a web browser, and go to:  http://localhost:8080/cpath
 
