@@ -59,6 +59,9 @@ Something to just keep in mind.
 sets.  We should think about creating an official inhouse release of cpath
 containing all of the data we can get (since the DIP data is proprietary, we
 can't give it to anyone else externally).
+13.  Create an advanced query system for xml records that supports xquery or something similar.
+     This could regularly index XML from cpath for advanced queries.  Only internal users would use this
+     system and it would probably be slow.  Investigate databases that support xpath or libraries such as OJB.
 
 cPath Performance/Reliability/Security Issues
 ---------------------------------------------
