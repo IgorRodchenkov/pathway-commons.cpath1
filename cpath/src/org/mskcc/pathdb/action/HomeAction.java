@@ -14,16 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Ethan Cerami
  */
 public class HomeAction extends BaseAction {
-    /**
-     * Request Attribute:  NUM_INTERACTIONS.
-     */
-    public static final String NUM_INTERACTIONS = "num_interactions";
-
-    /**
-     * Request Attribute:  NUM_PHYSICAL_ENTITIES.
-     */
-    public static final String NUM_PHYSICAL_ENTITIES =
-            "num_physical_entities";
 
     /**
      * Executes Home Page.

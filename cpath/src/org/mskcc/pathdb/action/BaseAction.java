@@ -100,9 +100,14 @@ public abstract class BaseAction extends Action {
     public static final String PAGE_AUTO_UPDATE = "auto_update";
 
     /**
-     * Page Attribute:  Servlet Name (before passage to struts).
+     * Page Attribute:  Servlet Name (before forwarding within struts).
      */
     public static final String ATTRIBUTE_SERVLET_NAME = "servlet_name";
+
+    /**
+     * Page Attribute:  Request URL (before forwarding within struts);
+     */
+    public static final String ATTRIBUTE_URL_BEFORE_FORWARDING = "request_url";
 
     /**
      * Page Attribute:  Page Style.
@@ -113,6 +118,16 @@ public abstract class BaseAction extends Action {
      * Page Attribute:  Page Print Style.
      */
     public static final String ATTRIBUTE_STYLE_PRINT = "print";
+
+    /**
+     * URL Request.  Test the Error Page
+     */
+    public static final String PARAMETER_TEST_ERROR_PAGE = "testError";
+
+    /**
+     * Yes Value
+     */
+    public static final String YES = "YES";
 
     /**
      * Executes Action.
@@ -138,6 +153,9 @@ public abstract class BaseAction extends Action {
             request.setAttribute(ATTRIBUTE_XDEBUG, xdebug);
             request.setAttribute(ATTRIBUTE_SERVLET_NAME,
                     request.getServletPath());
+            request.setAttribute(ATTRIBUTE_URL_BEFORE_FORWARDING,
+                    request.getRequestURL().toString() + "?"
+                    + request.getQueryString());
             xdebug.logMsg(this, "Running cPath Base Action");
             boolean authorized = isUserAuthorized
                     (mapping, request, response, xdebug);
