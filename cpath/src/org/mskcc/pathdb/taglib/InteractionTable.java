@@ -241,7 +241,7 @@ public class InteractionTable extends HtmlTable {
      * Outputs Interaction Headers.
      */
     private void outputInteractionHeaders(int index) {
-        append("<tr class='functnbar'>");
+        startRow();
         if (targetProtein == null) {
             append("<th colspan=3>" + currentIndex + ". Interaction</th>");
             currentIndex++;
@@ -322,9 +322,9 @@ public class InteractionTable extends HtmlTable {
     private void outputInteractionDetails(InteractionElementType interaction) {
         ExperimentList expList = interaction.getExperimentList();
         if (targetProtein == null) {
-            append("<td width='300' rowspan=2 class='cpath2'");
+            append("<td width='300' rowspan=2 class='cpath2'>");
         } else {
-            append("<td width='300' rowspan=1 class='cpath2'");
+            append("<td width='300' rowspan=1 class='cpath2'>");
         }
         append("<table>");
         for (int i = 0; i < expList.getExperimentListItemCount(); i++) {
