@@ -20,6 +20,7 @@ import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.query.*;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.tool.LoadFullText;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class TestImportPsiToCPath extends TestCase {
+    XDebug xdebug = new XDebug();
 
     /**
      * Tests Import.
@@ -95,7 +97,7 @@ public class TestImportPsiToCPath extends TestCase {
             EmptySetException, MarshalException, ValidationException {
         PsiInteractionQuery query =
                 new GetInteractionsByInteractorName("YCR038C");
-        query.execute();
+        query.execute(xdebug);
         EntrySet entrySet = query.getEntrySet();
         validateInteractionSet(entrySet);
     }
@@ -110,7 +112,7 @@ public class TestImportPsiToCPath extends TestCase {
         CPathRecord record = cpath.getRecordByName("YCR038C");
         PsiInteractionQuery query =
                 new GetInteractionsByInteractorId(record.getId());
-        query.execute();
+        query.execute(xdebug);
         EntrySet entrySet = query.getEntrySet();
         validateInteractionSet(entrySet);
     }
@@ -118,12 +120,11 @@ public class TestImportPsiToCPath extends TestCase {
     /**
      * Verifies that GetInteractionsByInteractorTaxonomyId Works.
      */
-    private void validateGetByTaxonomyId() throws QueryException,
-            EmptySetException {
+    private void validateGetByTaxonomyId() throws QueryException {
         int taxId = 4932;
         PsiInteractionQuery query =
-                new GetInteractionsByInteractorTaxonomyId(taxId);
-        query.execute();
+                new GetInteractionsByInteractorTaxonomyId(taxId, 25);
+        query.execute(xdebug);
         EntrySet entrySet = query.getEntrySet();
         assertEquals(5, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
@@ -140,8 +141,9 @@ public class TestImportPsiToCPath extends TestCase {
     private void validateGetByPmid() throws QueryException,
             EmptySetException {
         String pmid = "12345678";
-        PsiInteractionQuery query = new GetInteractionsByInteractionPmid(pmid);
-        query.execute();
+        PsiInteractionQuery query = new GetInteractionsByInteractionPmid
+                (pmid, 25);
+        query.execute(xdebug);
         EntrySet entrySet = query.getEntrySet();
         assertEquals(2, entrySet.getEntry(0).getInteractorList().
                 getProteinInteractorCount());
@@ -159,8 +161,8 @@ public class TestImportPsiToCPath extends TestCase {
             EmptySetException {
         String db = "DIP";
         PsiInteractionQuery query =
-                new GetInteractionsByInteractionDbSource(db);
-        query.execute();
+                new GetInteractionsByInteractionDbSource(db, 25);
+        query.execute(xdebug);
         String xml = query.getXml();
         EntrySet entrySet = query.getEntrySet();
         assertEquals(2, entrySet.getEntry(0).getInteractorList().
@@ -176,8 +178,8 @@ public class TestImportPsiToCPath extends TestCase {
             EmptySetException {
         String term = "Xenopus";
         PsiInteractionQuery query =
-                new GetInteractionsByInteractorKeyword(term);
-        query.execute();
+                new GetInteractionsByInteractorKeyword(term, 25);
+        query.execute(xdebug);
         String xml = query.getXml();
         EntrySet entrySet = query.getEntrySet();
         int index = xml.indexOf(term);

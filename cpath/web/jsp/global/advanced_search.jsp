@@ -65,17 +65,33 @@
 	</SPAN>
 
 	<SPAN CLASS="show" ID="searchTextBox">
-		<input NAME="q" SIZE=25 TYPE="TEXT">
+		<input NAME="<%= ProtocolRequest.ARG_QUERY %>" SIZE=25 TYPE="TEXT">
 	</SPAN>
 	</td>
     </tr>
 
 	<tr>
     <td>
-	<FONT SIZE=+1>Step 1:  Specify Results Format</FONT>
+	<FONT SIZE=+1>Step 3:  Limit Number of Results</FONT>
     </td>
     <td>
-	<select name="format">
+	<select name="maxHits">
+            <option VALUE="10">10
+			<option VALUE="25">25
+			<option VALUE="50">50
+            <option VALUE="100">100
+            <option VALUE="500">500
+            <option VALUE="unbounded">unbounded
+    </select>
+	</td>
+    </tr>
+
+	<tr>
+    <td>
+	<FONT SIZE=+1>Step 4:  Specify Results Format</FONT>
+    </td>
+    <td>
+	<select name="<%= ProtocolRequest.ARG_FORMAT %>">
 
 			<option VALUE="html">HTML
 			<option VALUE="psi">PSI-MI XML Format

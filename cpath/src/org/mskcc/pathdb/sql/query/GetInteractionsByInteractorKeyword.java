@@ -17,13 +17,15 @@ import java.util.HashMap;
  */
 public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
     private String searchTerms;
+    private int maxHits;
 
     /**
      * Constructor.
      * @param searchTerms Search term(s) or search phrase.
      */
-    public GetInteractionsByInteractorKeyword(String searchTerms) {
+    public GetInteractionsByInteractorKeyword(String searchTerms, int maxHits) {
         this.searchTerms = searchTerms;
+        this.maxHits = maxHits;
     }
 
     /**
@@ -31,12 +33,19 @@ public class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
      * @throws Exception All Exceptions.
      */
     protected void executeSub() throws Exception {
+        xdebug.logMsg(this, "Getting Interactions for all Interactors with "
+            +"search term(s):  " + searchTerms);
+
         DaoCPath cpath = new DaoCPath();
         LuceneIndexer indexer = new LuceneIndexer();
         try {
             ArrayList records = new ArrayList();
             Hits hits = indexer.executeQuery(searchTerms);
-            for (int i = 0; i < hits.length(); i++) {
+            xdebug.logMsg(this, "Total Number of Matching Interactors "
+                + "Found:  " + hits.length());;
+            int max = Math.min(maxHits, hits.length());
+            xdebug.logMsg (this, "Showing first " + max + "hits.");
+            for (int i = 0; i < max; i++) {
                 Document doc = hits.doc(i);
                 Field field = doc.getField(LuceneIndexer.FIELD_CPATH_ID);
                 long cpathId = Long.parseLong(field.stringValue());

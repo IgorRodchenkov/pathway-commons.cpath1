@@ -39,6 +39,7 @@ import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.pathdb.taglib.InteractionTable;
+import org.mskcc.pathdb.controller.ProtocolRequest;
 
 import java.util.ArrayList;
 
@@ -75,7 +76,9 @@ public class TestInteractionTable extends TestCase {
         interactions.add(interaction);
 
         InteractionTable table = new InteractionTable();
-        table.setUid("protein1");
+        ProtocolRequest request = new ProtocolRequest();
+        request.setQuery("protein1");
+        table.setProtocolRequest(request);
         table.setInteractions(interactions);
         table.doStartTag();
         String html = table.getHtml();

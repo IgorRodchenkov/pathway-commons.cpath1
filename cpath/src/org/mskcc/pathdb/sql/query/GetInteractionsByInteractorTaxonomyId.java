@@ -1,6 +1,5 @@
 package org.mskcc.pathdb.sql.query;
 
-import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 
@@ -15,13 +14,15 @@ import java.util.HashMap;
  */
 public class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
     private int taxonomyId;
+    private int maxHits;
 
     /**
      * Constructor.
      * @param taxonomyId NCBI Taxonomy ID.
      */
-    public GetInteractionsByInteractorTaxonomyId(int taxonomyId) {
+    public GetInteractionsByInteractorTaxonomyId(int taxonomyId, int maxHits) {
         this.taxonomyId = taxonomyId;
+        this.maxHits = maxHits;
     }
 
     /**
@@ -29,13 +30,18 @@ public class GetInteractionsByInteractorTaxonomyId extends PsiInteractionQuery {
      * @throws Exception All Exceptions.
      */
     protected void executeSub() throws Exception {
+        xdebug.logMsg(this, "Getting Interactions for all interactors with "
+            +" NCBI Taxonomy ID:  " + taxonomyId);
         DaoCPath cpath = new DaoCPath();
-        CPathRecord record = cpath.getRecordByTaxonomyID
+        ArrayList records = cpath.getRecordByTaxonomyID
                 (CPathRecordType.PHYSICAL_ENTITY, taxonomyId);
-        if (record != null) {
-            ArrayList interactions = this.extractInteractions(record);
-            HashMap interactors = this.extractInteractors(interactions);
-            createPsi(interactors.values(), interactions);
+        xdebug.logMsg(this, "Total Number of Interactors Found:  "
+                + records.size());
+        records = truncateResultSet(records, maxHits);
+        if (records.size() > 0) {
+            ArrayList interactions = this.extractInteractions(records);
+            HashMap interactorMap = this.extractInteractors(interactions);
+            createPsi(interactorMap.values(), interactions);
         }
     }
 }

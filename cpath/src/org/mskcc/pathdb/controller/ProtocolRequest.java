@@ -14,6 +14,11 @@ import java.util.Map;
  */
 public class ProtocolRequest implements PagedResult {
     /**
+     * Default Max Number of Hits.
+     */
+    public static final int DEFAULT_MAX_HITS = 25;
+
+    /**
      * Command Argument.
      */
     public static final String ARG_COMMAND = "cmd";
@@ -37,6 +42,11 @@ public class ProtocolRequest implements PagedResult {
      * Start Index Argument.
      */
     public static final String ARG_START_INDEX = "startIndex";
+
+    /**
+     * Max Hits Argument.
+     */
+    public static final String ARG_MAX_HITS = "maxHits";
 
     /**
      * Command.
@@ -64,6 +74,11 @@ public class ProtocolRequest implements PagedResult {
     private int startIndex;
 
     /**
+     * Max Hits.
+     */
+    private String maxHits;
+
+    /**
      * EmptyParameterSet.
      */
     private boolean emptyParameterSet;
@@ -77,6 +92,7 @@ public class ProtocolRequest implements PagedResult {
     public ProtocolRequest() {
         this.version = "1.0";
         this.startIndex = 0;
+        this.maxHits = Integer.toString(DEFAULT_MAX_HITS);
     }
 
     /**
@@ -89,6 +105,10 @@ public class ProtocolRequest implements PagedResult {
         this.query = massageQuery(query);
         this.format = (String) parameterMap.get(ProtocolRequest.ARG_FORMAT);
         this.version = (String) parameterMap.get(ProtocolRequest.ARG_VERSION);
+        this.maxHits = (String) parameterMap.get(ProtocolRequest.ARG_MAX_HITS);
+        if (maxHits == null) {
+            maxHits = Integer.toString(DEFAULT_MAX_HITS);
+        }
         String startStr =
                 (String) parameterMap.get(ProtocolRequest.ARG_START_INDEX);
         if (startStr != null) {
@@ -199,6 +219,34 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
+     * Gets Max Number of Hits.
+     * @return Max Number Hits
+     */
+    public int getMaxHitsInt() {
+        return Integer.parseInt(maxHits);
+    }
+
+    /**
+     * Max hits (String value).
+     * @return Max Hits (String value.)
+     */
+    public String getMaxHits () {
+        return this.maxHits;
+    }
+
+    /**
+     * Sets Max Number of hits.
+     * @param str Max Number of Hits
+     */
+    public void setMaxHits(String str) {
+        if (str.equals("unbounded")) {
+            maxHits = Integer.toString(Integer.MAX_VALUE);
+        } else {
+            maxHits = str;
+        }
+    }
+
+    /**
      * Is this an empty request?
      * @return true or false.
      */
@@ -214,13 +262,14 @@ public class ProtocolRequest implements PagedResult {
         String uri = null;
         String url = "webservice";
         GetMethod method = new GetMethod(url);
-        NameValuePair nvps[] = new NameValuePair[5];
+        NameValuePair nvps[] = new NameValuePair[6];
         nvps[0] = new NameValuePair(ARG_VERSION, version);
         nvps[1] = new NameValuePair(ARG_COMMAND, command);
         nvps[2] = new NameValuePair(ARG_QUERY, query);
         nvps[3] = new NameValuePair(ARG_FORMAT, format);
         nvps[4] = new NameValuePair(ARG_START_INDEX,
                 Long.toString(startIndex));
+        nvps[5] = new NameValuePair(ARG_MAX_HITS, maxHits);
         method.setQueryString(nvps);
         try {
             uri = method.getURI().getEscapedURI();

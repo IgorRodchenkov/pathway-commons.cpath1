@@ -45,6 +45,7 @@ public abstract class PsiInteractionQuery extends InteractionQuery {
     protected void createPsi(Collection interactors,
             Collection interactions) throws ValidationException,
             MarshalException, MapperException {
+        xdebug.logMsg(this, "Creating Final PSI Document");
         PsiBuilder psiBuilder = new PsiBuilder();
         this.entrySet = psiBuilder.generatePsi(interactors, interactions);
         String xml = generateXml(entrySet);

@@ -6,12 +6,17 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Command Line Tool to Fully Initialize/Load the Lucene Text Indexer.
@@ -62,21 +67,36 @@ public class LoadFullText {
             ImportException {
         outputMsg("Loading Full Text Indexer");
         outputMsg("Processing all cPath records:  ");
-        DaoCPath dao = new DaoCPath();
+        DaoCPath cpath = new DaoCPath();
         LuceneIndexer lucene = new LuceneIndexer();
         lucene.initIndex();
-        ArrayList records = dao.getAllRecords();
-        for (int i = 0; i < records.size(); i++) {
-            if (verbose) {
-                System.out.print(".");
-            }
-            CPathRecord record = (CPathRecord) records.get(i);
-            if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                ("select * from CPATH WHERE TYPE=? order by CPATH_ID");
+            pstmt.setString(1, CPathRecordType.PHYSICAL_ENTITY.toString());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                CPathRecord record = cpath.extractRecord(rs);
+                if (verbose) {
+                    System.out.print(".");
+                }
                 lucene.addRecord(record.getName(), record.getDescription(),
-                        record.getXmlContent(), record.getId());
+                            record.getXmlContent(), record.getId());
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("ClassNotFoundException:  "
+                    + e.getMessage());
+        } catch (SQLException e) {
+            throw new DaoException("SQLException:  " + e.getMessage());
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
-        outputMsg("\nIndexing complete");
     }
 
     /**

@@ -152,14 +152,15 @@ public class DaoCPath {
     }
 
     /**
-     * Gets Physical Entity Record by Taxonomy ID.
+     * Gets Records by Taxonomy ID.
      * @param recordType CPathRecordType.
      * @param taxonomyId NCBI Taxonomy ID.
-     * @return CPathRecord CPath Record Object.
+     * @return ArrayList of CPath Record Objects.
      * @throws DaoException Error Retrieving Data.
      */
-    public CPathRecord getRecordByTaxonomyID(CPathRecordType recordType,
+    public ArrayList getRecordByTaxonomyID(CPathRecordType recordType,
             int taxonomyId) throws DaoException {
+        ArrayList records = new ArrayList();
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -171,10 +172,8 @@ public class DaoCPath {
             pstmt.setString(1, recordType.toString());
             pstmt.setInt(2, taxonomyId);
             rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return this.extractRecord(rs);
-            } else {
-                return null;
+            while (rs.next()) {
+                records.add(extractRecord(rs));
             }
         } catch (ClassNotFoundException e) {
             throw new DaoException("ClassNotFoundException:  "
@@ -184,6 +183,7 @@ public class DaoCPath {
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
+        return records;
     }
 
     /**
@@ -359,7 +359,7 @@ public class DaoCPath {
      * @param rs ResultSet Object.
      * @return cPath Record Object.
      */
-    private CPathRecord extractRecord(ResultSet rs) throws SQLException {
+    public CPathRecord extractRecord(ResultSet rs) throws SQLException {
         CPathRecord record = new CPathRecord();
         record.setId(rs.getLong("CPATH_ID"));
         record.setName(rs.getString("NAME"));

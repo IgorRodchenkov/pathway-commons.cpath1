@@ -83,6 +83,7 @@ public class DataServiceController {
         String command = request.getCommand();
         String q = request.getQuery();
         InteractionQuery query = null;
+        int maxHits = request.getMaxHitsInt();
         if (command.equals(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID)) {
             long cpathId = Long.parseLong(q);
             query = new GetInteractionsByInteractorId(cpathId);
@@ -92,18 +93,19 @@ public class DataServiceController {
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID)) {
             int taxId = Integer.parseInt(q);
-            query = new GetInteractionsByInteractorTaxonomyId(taxId);
+            query = new GetInteractionsByInteractorTaxonomyId(taxId,
+                    request.getMaxHitsInt());
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_KEYWORD)) {
-            query = new GetInteractionsByInteractorKeyword(q);
+            query = new GetInteractionsByInteractorKeyword(q, maxHits);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB)) {
-            query = new GetInteractionsByInteractionDbSource(q);
+            query = new GetInteractionsByInteractionDbSource(q, maxHits);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID)) {
-            query = new GetInteractionsByInteractionPmid(q);
+            query = new GetInteractionsByInteractionPmid(q, maxHits);
         }
-        query.execute();
+        query.execute(xdebug);
         return query;
     }
 

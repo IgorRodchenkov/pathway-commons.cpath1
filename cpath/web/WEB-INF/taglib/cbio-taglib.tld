@@ -19,7 +19,7 @@
        <rtexprvalue>true</rtexprvalue>
     </attribute>
     <attribute>
-         <name>uid</name>
+         <name>protocolRequest</name>
          <required>true</required>
          <rtexprvalue>true</rtexprvalue>
       </attribute>

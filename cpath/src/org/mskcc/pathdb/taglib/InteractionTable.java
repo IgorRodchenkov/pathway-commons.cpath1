@@ -38,6 +38,7 @@ import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.pathdb.controller.ProtocolConstants;
+import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -51,7 +52,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class InteractionTable extends HtmlTable {
-    private String uid;
+    private ProtocolRequest protocolRequest;
     private ArrayList interactions;
 
     /**
@@ -64,10 +65,10 @@ public class InteractionTable extends HtmlTable {
 
     /**
      * Sets UID Parameter.
-     * @param uid UID String.
+     * @param request Protocol Request
      */
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setProtocolRequest(ProtocolRequest request) {
+        this.protocolRequest = request;
     }
 
     /**
@@ -82,8 +83,8 @@ public class InteractionTable extends HtmlTable {
                 + "<b><big>" + title + "</big>"
                 + "</b></u><br></td>");
         append("<td colspan=2>");
-        String url = getInteractionLink(uid,
-                ProtocolConstants.FORMAT_PSI);
+        protocolRequest.setFormat(ProtocolConstants.FORMAT_PSI);
+        String url = protocolRequest.getUri();
         if (interactions.size() > 0) {
             append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
             outputLink("View PSI-MI XML Format", url);
@@ -141,10 +142,14 @@ public class InteractionTable extends HtmlTable {
                     (InteractorVocab.FULL_NAME);
             String org = (String) interactor.getAttribute
                     (InteractorVocab.ORGANISM_SPECIES_NAME);
+            if (org == null) {
+                org = (String) interactor.getAttribute
+                        (InteractorVocab.ORGANISM_COMMON_NAME);
+            }
             StringBuffer interactorHtml = new StringBuffer();
-            interactorHtml.append(name + "<BR><UL><LI>");
+            interactorHtml.append(name + "<BR><UL>");
             if (desc != null) {
-                interactorHtml.append(desc);
+                interactorHtml.append("<LI>"+desc);
             }
             if (org != null) {
                 interactorHtml.append("<LI>Organism:  " + org);
@@ -189,20 +194,20 @@ public class InteractionTable extends HtmlTable {
     /**
      * Picks correct interactor to display to User.
      */
-    private Interactor pickInteractorToDisplay(ArrayList interactors) {
-        Interactor interactor0 = (Interactor) interactors.get(0);
-        Interactor interactor1 = (Interactor) interactors.get(1);
-        String name0 = interactor0.getName();
-        String name1 = interactor1.getName();
-
-        // If both interactors are the same, this is a self-interacting
-        // interaction.
-        if (name0.equals(uid) && name1.equals(uid)) {
-            return interactor0;
-        } else if (name0.equals(uid)) {
-            return interactor1;
-        } else {
-            return interactor0;
-        }
-    }
+//    private Interactor pickInteractorToDisplay(ArrayList interactors) {
+//        Interactor interactor0 = (Interactor) interactors.get(0);
+//        Interactor interactor1 = (Interactor) interactors.get(1);
+//        String name0 = interactor0.getName();
+//        String name1 = interactor1.getName();
+//
+//        // If both interactors are the same, this is a self-interacting
+//        // interaction.
+//        if (name0.equals(uid) && name1.equals(uid)) {
+//            return interactor0;
+//        } else if (name0.equals(uid)) {
+//            return interactor1;
+//        } else {
+//            return interactor0;
+//        }
+//    }
 }

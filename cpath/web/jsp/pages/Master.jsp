@@ -21,17 +21,16 @@
 <P>
 <% if (exception != null) { %>
     <cbio:errorMessage throwable="<%= exception %>"/>
-<%
-} else if (interactions != null) { %>
-    <cbio:interactionTable interactions="<%= interactions %>"
-        uid="<%= protocolRequest.getQuery() %>"/>
+<% } else if (protocolRequest != null  &&
+        protocolRequest.getCommand().equals(ProtocolConstants.COMMAND_HELP)) { %>
+    <jsp:include page="../global/help.jsp" flush="true" />
 <% } else if (doFullTextSearch != null) { %>
     <cbio:searchResultsTable protocolRequest="<%= protocolRequest %>"/>
-<% } else if (protocolRequest != null  &&
-        protocolRequest.equals(ProtocolConstants.COMMAND_HELP)) { %>
-    <jsp:include page="../global/help.jsp" flush="true" />
 <% } else if (pageCommand != null && pageCommand.equals(CPathController.SHOW_ADVANCED_SEARCH)) { %>
     <jsp:include page="../global/advanced_search.jsp" flush="true" />
+<% } else if (interactions != null) { %>
+    <cbio:interactionTable interactions="<%= interactions %>"
+        protocolRequest="<%= protocolRequest %>"/>
 <% } else { %>
     <jsp:include page="../global/home.jsp" flush="true" />
 <% } %>

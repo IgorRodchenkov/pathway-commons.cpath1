@@ -6,9 +6,11 @@ import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Abstract Base Class for all queries which return interactions.
@@ -18,6 +20,7 @@ import java.util.HashMap;
 public abstract class InteractionQuery {
     private ArrayList interactions = new ArrayList();
     private String xml;
+    protected XDebug xdebug;
 
     /**
      * Logger.
@@ -26,9 +29,11 @@ public abstract class InteractionQuery {
 
     /**
      * Executes Query.
+     * @param xdebug XDebug Object.
      * @throws QueryException Error Executing Query.
      */
-    public void execute() throws QueryException {
+    public void execute(XDebug xdebug) throws QueryException {
+        this.xdebug = xdebug;
         try {
             executeSub();
         } catch (Exception e) {
@@ -133,6 +138,25 @@ public abstract class InteractionQuery {
                 }
             }
         }
+        xdebug.logMsg(this, "Total number of Interactors found:  " +
+                interactorMap.size());
         return interactorMap;
+    }
+
+    /**
+     * Truncate Results to Max Hits.
+     * @param records ArrayList of CPath Records
+     * @param max Max Number of Hits Requested.
+     */
+    protected ArrayList truncateResultSet(ArrayList records, int max) {
+        ArrayList newList = null;
+        if (records.size() > max) {
+            List subSet = records.subList(0, max);
+            newList = new ArrayList(subSet);
+            xdebug.logMsg(this, "Extracting first " + max + " results");
+            return newList;
+        } else {
+            return records;
+        }
     }
 }

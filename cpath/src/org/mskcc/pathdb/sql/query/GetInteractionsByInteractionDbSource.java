@@ -14,13 +14,15 @@ import java.util.HashMap;
  */
 public class GetInteractionsByInteractionDbSource extends PsiInteractionQuery {
     private String db;
+    private int maxHits;
 
     /**
      * Constructor.
      * @param db Database Source.
      */
-    public GetInteractionsByInteractionDbSource(String db) {
+    public GetInteractionsByInteractionDbSource(String db, int maxHits) {
         this.db = db;
+        this.maxHits = maxHits;
     }
 
     /**
@@ -28,11 +30,19 @@ public class GetInteractionsByInteractionDbSource extends PsiInteractionQuery {
      * @throws Exception All Exceptions.
      */
     protected void executeSub() throws Exception {
+        xdebug.logMsg(this, "Getting Interactions with database source:  "
+                + db);
         DaoExternalLink linker = new DaoExternalLink();
         ExternalReference ref = new ExternalReference(db, null);
         ArrayList records = linker.lookUpByExternalRef(ref);
+
         //  Filter for Interactions Only.
         ArrayList interactions = filterForInteractionsOnly(records);
+
+        xdebug.logMsg(this, "Total Number of Interactions Found:  "
+                + interactions.size());
+
+        interactions = truncateResultSet(interactions, maxHits);
 
         if (interactions.size() > 0) {
             HashMap interactors = this.extractInteractors(interactions);
