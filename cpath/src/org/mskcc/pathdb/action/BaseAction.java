@@ -162,7 +162,7 @@ public abstract class BaseAction extends Action {
     }
 
     /**
-     * Is the User Authorized to access this Action Class?
+     * Determine if User is Authorized to access this action.
      * May be overriden by sub-classes.
      * @param mapping Struts ActionMapping Object.
      * @param request Http Servlet Request.
