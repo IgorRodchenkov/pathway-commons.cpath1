@@ -8,8 +8,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 /**
  * Reads in a Text File of Relative URLs and returns a List of
@@ -41,7 +41,7 @@ public class QueryFileReader {
         BufferedReader buf = new BufferedReader(reader);
         String line = buf.readLine();
         while (line != null) {
-            if (!line.startsWith("#")  && line.length() > 0)  {
+            if (!line.startsWith("#") && line.length() > 0) {
                 Hashtable params1 = HttpUtils.parseQueryString(line);
                 HashMap params2 = UriUtil.normalizeParameterMap(params1);
                 ProtocolRequest request = new ProtocolRequest(params2);

@@ -10,17 +10,19 @@ import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractionList;
 import org.mskcc.dataservices.schemas.psi.InteractorList;
 import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.pathdb.controller.ProtocolConstants;
+import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.*;
-import org.mskcc.pathdb.sql.query.*;
+import org.mskcc.pathdb.sql.query.ExecuteQuery;
+import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.sql.query.QueryResult;
 import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.tool.LoadFullText;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.controller.ProtocolRequest;
-import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.util.Md5Util;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -97,7 +99,7 @@ public class TestImportPsiToCPath extends TestCase {
      */
     private void validateGetByName() throws QueryException, MarshalException,
             ValidationException {
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery("YCR038C");
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME);
         ExecuteQuery query = new ExecuteQuery(xdebug);
@@ -118,7 +120,7 @@ public class TestImportPsiToCPath extends TestCase {
         DaoCPath cpath = new DaoCPath();
         CPathRecord record = cpath.getRecordByName("YCR038C");
 
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery(Long.toString(record.getId()));
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID);
         ExecuteQuery query = new ExecuteQuery(xdebug);
@@ -132,7 +134,7 @@ public class TestImportPsiToCPath extends TestCase {
      */
     private void validateGetByTaxonomyId() throws QueryException {
         int taxId = 4932;
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery(Long.toString(taxId));
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_TAX_ID);
         ExecuteQuery query = new ExecuteQuery(xdebug);
@@ -152,7 +154,7 @@ public class TestImportPsiToCPath extends TestCase {
      */
     private void validateGetByPmid() throws QueryException {
         String pmid = "12345678";
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery(pmid);
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTION_PMID);
         ExecuteQuery query = new ExecuteQuery(xdebug);
@@ -173,7 +175,7 @@ public class TestImportPsiToCPath extends TestCase {
     private void validateGetByDbSource() throws QueryException,
             EmptySetException {
         String db = "DIP";
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery(db);
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB);
         ExecuteQuery query = new ExecuteQuery(xdebug);
@@ -192,7 +194,7 @@ public class TestImportPsiToCPath extends TestCase {
             EmptySetException {
         String term = "Xenopus";
 
-        ProtocolRequest request = new ProtocolRequest ();
+        ProtocolRequest request = new ProtocolRequest();
         request.setQuery(term);
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_KEYWORD);
         ExecuteQuery query = new ExecuteQuery(xdebug);

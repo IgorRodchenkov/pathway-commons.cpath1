@@ -33,7 +33,7 @@ class GetInteractionsByInteractorId extends PsiInteractionQuery {
         if (record != null) {
             ArrayList interactions = this.extractInteractions(record);
             HashMap interactors = this.extractInteractors(interactions);
-            result  = generateQueryResult(interactors.values(), interactions);
+            result = generateQueryResult(interactors.values(), interactions);
         }
         return result;
     }

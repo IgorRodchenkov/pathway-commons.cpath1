@@ -40,7 +40,7 @@ public class DaoXmlCache {
             pstmt.setString(1, hashKey);
             pstmt.setBytes(2, zippedData);
             pstmt.setTimestamp(3, timeStamp);
-            int rows =  pstmt.executeUpdate();
+            int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
             throw new DaoException("ClassNotFoundException:  "
@@ -129,7 +129,7 @@ public class DaoXmlCache {
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement ("DELETE FROM xml_cache");
+            pstmt = con.prepareStatement("DELETE FROM xml_cache");
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {

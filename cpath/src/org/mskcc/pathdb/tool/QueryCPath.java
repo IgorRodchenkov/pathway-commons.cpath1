@@ -1,13 +1,10 @@
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.mskcc.pathdb.controller.ProtocolConstants;
+import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.sql.query.ExecuteQuery;
 import org.mskcc.pathdb.sql.query.QueryResult;
-import org.mskcc.pathdb.controller.ProtocolRequest;
-import org.mskcc.pathdb.controller.ProtocolConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
-
-import java.io.StringWriter;
 
 /**
  * Command Line Tool for Querying CPath.
@@ -36,7 +33,7 @@ public class QueryCPath {
     private static void queryCPath(String[] args) {
         try {
             XDebug xdebug = new XDebug();
-            ProtocolRequest request = new ProtocolRequest ();
+            ProtocolRequest request = new ProtocolRequest();
             request.setQuery(args[0]);
             request.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTION_DB);
             ExecuteQuery query = new ExecuteQuery(xdebug);

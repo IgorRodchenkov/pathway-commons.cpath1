@@ -58,7 +58,8 @@ class GetInteractionsByInteractorKeyword extends PsiInteractionQuery {
             if (records.size() > 0) {
                 ArrayList interactions = this.extractInteractions(records);
                 HashMap interactors = this.extractInteractors(interactions);
-                result = generateQueryResult(interactors.values(), interactions);
+                result = generateQueryResult(interactors.values(),
+                        interactions);
             }
         } finally {
             indexer.closeIndexSearcher();

@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.controller;
 
 import org.apache.log4j.Logger;
+import org.mskcc.pathdb.test.util.UriUtil;
 import org.mskcc.pathdb.xdebug.SnoopHttp;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.test.util.UriUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -12,9 +12,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Data Service Controller.

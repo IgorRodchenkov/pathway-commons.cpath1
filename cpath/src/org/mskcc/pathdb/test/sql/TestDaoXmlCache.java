@@ -21,28 +21,28 @@ public class TestDaoXmlCache extends TestCase {
         DaoXmlCache dao = new DaoXmlCache();
 
         //  Add a new record, and verify success.
-        boolean success = dao.addRecord (HASH_KEY, XML_MSG_1);
-        assertTrue (success);
+        boolean success = dao.addRecord(HASH_KEY, XML_MSG_1);
+        assertTrue(success);
 
         //  Get the record, and match xml content.
         String xml = dao.getXmlByKey(HASH_KEY).trim();
-        assertEquals (XML_MSG_1, xml);
+        assertEquals(XML_MSG_1, xml);
 
         //  Update the record, and verify success.
         success = dao.updateXmlByKey(HASH_KEY, XML_MSG_2);
-        assertTrue (success);
+        assertTrue(success);
 
         //  Get the record again, and match against new xml content.
         xml = dao.getXmlByKey(HASH_KEY).trim();
-        assertEquals (XML_MSG_2, xml);
+        assertEquals(XML_MSG_2, xml);
 
         //  Delete record, and verify success.
         success = dao.deleteRecordByKey(HASH_KEY);
-        assertTrue (success);
+        assertTrue(success);
 
         //  Verify that record is no longer here, and that no exceptions
         //  occur.
         xml = dao.getXmlByKey(HASH_KEY);
-        assertEquals (null, xml);
+        assertEquals(null, xml);
     }
 }
