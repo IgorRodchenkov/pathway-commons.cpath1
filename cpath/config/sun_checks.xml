@@ -81,7 +81,9 @@
     <!--                                    Api Doc -->
 
     <!-- override hashCode whenever you override equals() -->
+    <!--
     <module name="EqualsHashCode"/>
+    -->
 
     <!-- don't create new instances of Boolean,
          use Boolean.TRUE/FALSE or Boolean.valueOf() instead -->
