@@ -9,6 +9,10 @@ import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
 import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 /**
  * Command Line Tool for Importing Data from the CPath Import Table to
