@@ -232,7 +232,7 @@ public class ParseBackgroundReferencesTask extends Task {
      * list of BackgroundReference Records.  No data is saved to the database.
      * This method is primarily used by the JUnit test.
      *
-     * @return ArrayList of IdMapRecord Objects.
+     * @return ArrayList of BackgroundReference Objects.
      * @throws IOException  Error Reading Data File.
      * @throws DaoException Error Connecting to Database.
      */

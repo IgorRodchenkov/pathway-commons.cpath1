@@ -245,7 +245,8 @@ public class DaoBackgroundReferences {
      * simultaneously in the database.
      *
      * @param pair BackgroundReferenceRecord Object.
-     * @return IdMapRecord, if the record exists;  otherwise, null.
+     * @return BackgroundReference Object, if the record exists;
+     *          otherwise, null.
      * @throws DaoException Error Retrieving Data.
      */
     public BackgroundReferencePair getRecord(BackgroundReferencePair

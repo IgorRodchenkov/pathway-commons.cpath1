@@ -166,9 +166,9 @@ public class BackgroundReferencePair extends BackgroundReference {
 
     /**
      * Generates an integer hash code for quick lookups.
-     * Consider that we have two IdMapRecord Objects:
+     * Consider that we have two Background Reference Objects:
      * <P>
-     * 1:ABC -- 2:XYZ; and 2:XYZ -- 1:ABC
+     * 1:ABC <--> 2:XYZ; and 2:XYZ <--> 1:ABC
      * <BR>
      * These two records are functionaly equivalent, and therefore
      * result in identical hash codes.
