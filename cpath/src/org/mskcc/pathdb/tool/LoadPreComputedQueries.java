@@ -6,7 +6,7 @@ import org.mskcc.pathdb.controller.ProtocolRequest;
 import org.mskcc.pathdb.controller.ProtocolValidator;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
-import org.mskcc.pathdb.sql.query.ExecuteQuery;
+import org.mskcc.pathdb.sql.query.Query;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryFileReader;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -32,7 +32,7 @@ public class LoadPreComputedQueries {
         try {
             System.out.println("START:  " + new Date());
             System.out.println("Clearing Database Cache");
-            DaoXmlCache dao = new DaoXmlCache();
+            DaoXmlCache dao = new DaoXmlCache(xdebug);
             dao.deleteAllRecords();
             ArrayList list = reader.getProtocolRequests(file);
             for (int i = 0; i < list.size(); i++) {
@@ -40,8 +40,8 @@ public class LoadPreComputedQueries {
                 ProtocolValidator validator = new ProtocolValidator(request);
                 validator.validate();
                 System.out.print("Running Query:  " + request.getUri());
-                ExecuteQuery executeQuery = new ExecuteQuery(xdebug);
-                executeQuery.executeAndStoreQuery(request);
+                Query executeQuery = new Query(xdebug);
+                executeQuery.executeQuery(request, false);
                 System.out.println(" -->  OK");
             }
             System.out.println("DONE:  " + new Date());
