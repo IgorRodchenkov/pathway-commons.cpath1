@@ -8,6 +8,7 @@
   <jsp-version>1.2</jsp-version>
   <short-name>cBio-tags</short-name>
   <description>CBio Tags.</description>
+    
   <tag>
     <name>interactionTable</name>
     <tag-class>org.mskcc.pathdb.taglib.InteractionTable</tag-class>
@@ -15,6 +16,28 @@
     <description>Displays Interaction Table</description>
     <attribute>
        <name>xmlAssembly</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>interactorList</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+    <attribute>
+         <name>protocolRequest</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+  </tag>
+
+  <tag>
+    <name>interactorTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.InteractorTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Interactor Table</description>
+    <attribute>
+       <name>interactorList</name>
        <required>true</required>
        <rtexprvalue>true</rtexprvalue>
     </attribute>
