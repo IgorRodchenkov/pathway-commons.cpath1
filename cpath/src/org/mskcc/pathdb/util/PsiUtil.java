@@ -366,4 +366,32 @@ public class PsiUtil {
             }
         }
     }
+
+    /**
+     *  Filters out GO references.  We don't want to use GO
+     *  References to determine protein identity.
+     */
+    public ExternalReference[] filterOutNonIdReferences
+            (ExternalReference[] refs) {
+        ArrayList filteredRefList = new ArrayList();
+        for (int k=0; k<refs.length; k++) {
+            ExternalReference ref = refs[k];
+            String dbName = ref.getDatabase();
+            if (dbName.equalsIgnoreCase("GO")
+                || dbName.equals("InterPro")) {
+                //  Filter out...
+            } else {
+                filteredRefList.add(ref);
+            }
+        }
+        ExternalReference filteredRefs[] =
+                new ExternalReference[filteredRefList.size()];
+        for (int i=0; i < filteredRefList.size(); i++) {
+            ExternalReference ref = (ExternalReference)
+                    filteredRefList.get(i);
+            filteredRefs[i] = ref;
+        }
+        return filteredRefs;
+    }
+
 }
