@@ -24,6 +24,24 @@
         tabActive.add (Boolean.FALSE);
     }
 
+    tabNames.add("Browse By Organism");
+    String browseUrl = "browse.do";
+    tabUrls.add(browseUrl);
+    if (url.equals(browseUrl)) {
+        tabActive.add (Boolean.TRUE);
+    } else {
+        tabActive.add (Boolean.FALSE);
+    }
+
+    tabNames.add("Database Stats");
+    String dbStatsUrl = "dbStats.do";
+    tabUrls.add(dbStatsUrl);
+    if (url.equals(dbStatsUrl)) {
+        tabActive.add (Boolean.TRUE);
+    } else {
+        tabActive.add (Boolean.FALSE);
+    }
+
     tabNames.add("FAQ");
     String advancedSearchUrl = "faq.do";
     tabUrls.add(advancedSearchUrl);
@@ -33,7 +51,7 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    tabNames.add("Web Services API");
+    tabNames.add("Web Service API");
     String webServiceUrl = "webservice.do?cmd=help";
     tabUrls.add(webServiceUrl);
     if (url.equals("webservice.do") && xmlAssemblyTemp == null) {
@@ -42,13 +60,17 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    tabNames.add("Administration");
-    String adminUrl = "adminHome.do";
-    tabUrls.add(adminUrl);
-    if (url.equals(adminUrl)) {
-        tabActive.add (Boolean.TRUE);
-    } else {
-        tabActive.add (Boolean.FALSE);
+    String isAdmin = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
+    String host = request.getRemoteHost();
+    if (isAdmin != null || (host != null && host.indexOf("mskcc.org") > -1)) {
+        tabNames.add("Administration");
+        String adminUrl = "adminHome.do";
+        tabUrls.add(adminUrl);
+        if (url.equals(adminUrl) || isAdmin != null) {
+            tabActive.add (Boolean.TRUE);
+        } else {
+            tabActive.add (Boolean.FALSE);
+        }
     }
 
     if (xmlAssemblyTemp != null) {
