@@ -3,91 +3,86 @@
                  org.mskcc.pathdb.action.BaseAction"%>
 <%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
 <%
-    String pageCommand = (String) request.getAttribute("advancedSearch");
-    String autoUpdate = (String) request.getAttribute("autoUpdate");
     String title = (String) request.getAttribute(BaseAction.ATTRIBUTE_TITLE);
     if (title == null) {
         title = "cPath";
     }
+    String isAdminPage = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
+    String style = request.getParameter(BaseAction.ATTRIBUTE_STYLE);
 %>
 <html>
-    <head>
-        <title><%= title %></title>
-        <link rel="stylesheet" href="jsp/css/style.css" type="text/css">
+<head>
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="jsp/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="jsp/css/tigris.css" type="text/css"/>
+    <link rel="stylesheet" href="jsp/css/inst.css" type="text/css"/>
+    <% if (style != null && style.equals(BaseAction.ATTRIBUTE_STYLE_PRINT)) { %>
+        <link rel="stylesheet" href="jsp/css/print.css" type="text/css"/>
+    <% } %>
 
-        <STYLE TYPE="TEXT/CSS">
-        .hide {
-	        display:none;
-        }
-        </STYLE>
-
-        <% if (autoUpdate != null) { %>
+    <%--  Set Auto-Update for Admin Page --%>
+    <%
+        String autoUpdate = (String) request.getAttribute
+            (BaseAction.PAGE_AUTO_UPDATE);
+        if (autoUpdate != null) { %>
         <meta http-equiv="refresh" content="10;url=adminHome.do">
         <% } %>
 
-        <script src="jsp/javascript/cpath.js" LANGUAGE="JAVASCRIPT"
+    <%-- Include cPath JavaScript module --%>
+    <script src="jsp/javascript/cpath.js" LANGUAGE="JAVASCRIPT"
         TYPE="TEXT/JAVASCRIPT">
-        </script>
-    </head>
-    <% if (pageCommand != null) { %>
-        <body bgcolor="#ccccff" marginwidth="0" marginheight="0"
-            leftmargin="0" topmargin="0" text="#ffffff" onLoad="updateAdvancedSearchBox()">
-    <% } else { %>
-        <body bgcolor="#ccccff" marginwidth="0" marginheight="0"
-            leftmargin="0" topmargin="0" text="#ffffff">
-    <% } %>
-    <div id="TitleBar">
-    <br><br>
-    <table cellpadding="2" cellspacing="0" border="0" width="90%">
-        <tr>
-            <td colspan=3 valign="Top" align="Right" bgcolor="#9999cc" NOWRAP>
-            <big><big>
-            <b>
-            <font color="#ffffff"><bean:message key="cpath.name"/>:</font>
-            <font color="#333366"><bean:message key="cpath.tagline"/></font>
-            </b>
-            </big></big>
-            <br>
-        </td>
-    </tr>
-    <tr bgcolor="#333366">
-        <td width="140"></td>
-        <td>
-            <jsp:include page="userMessage.jsp" flush="true" />
-        </td>
-        <td valign="Top" align="Right" >
-            <jsp:include page="navBar.jsp" flush="true" />
-        </td>
-    </tr>
-    </table>
-</div>
+    </script>
+</head>
 
-<div id="ContentTop">
-        <table width="85%" cellpadding="0" cellspacing="2">
+<body marginwidth="0" marginheight="0" class="composite">
+
+<div id="banner">
+    <table border="0" cellspacing="0" cellpadding="8" width="100%">
         <tr>
-        <td bgcolor="#ffcc00" width="1%">
-        <table width="1%" cellpadding="10" cellspacing="0"><tr><td width="1%">
-        <br></td><tr>
-        </table>
-        </td>
-        <td bgcolor="#666699">
-        <table width="100%" cellpadding="10" cellspacing="0">
-        <tr><td bgcolor="#666699">&nbsp;<br><br><br><br><br><br><br></td></tr>
-        </table>
-        </td>
+            <td>
+                <h1>cPath</h1>
+                <small>Memorial Sloan-Kettering
+                Cancer Center</small>
+            </td>
+            <td>
+                <div align="right" id="login">
+                Version 0.1 (Beta)
+
+                <jsp:include page="../global/printFriendlyLink.jsp" flush="true" />
+                </div>
+            </td>
         </tr>
-        </table>
+    </table>
 </div>
 
-<div id="ContentPane">
+<jsp:include page="../global/tabs.jsp" flush="true" />
 
-    <table width="85%" cellpadding="0" cellspacing="2">
-    <tr>
-    <td bgcolor="#ffcc00" width="1%">
+<!-- Start Main Table -->
+<table border="0" cellspacing="0" cellpadding="4" width="100%" id="main">
+    <tr valign="top">
+        <!-- Start Left Column -->
+        <td id="leftcol" width="20%">
+            <div id="navcolumn">
 
-    <table width="1%" cellpadding="10" cellspacing="0">
-    <tr><td width="1%">
-    <br></td></tr>
-    </table>
-    </td>
-    <td bgcolor="#666699">
+                <jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
+
+                <% if (isAdminPage != null) { %>
+                <jsp:include page="../global/adminTasks.jsp" flush="true" />
+                <% } %>
+
+                <jsp:include page="../global/dbStats.jsp" flush="true" />
+                <jsp:include page="../global/docs.jsp" flush="true" />
+                <jsp:include page="../global/howto.jsp" flush="true" />
+
+            </div>
+        </td>
+        <!-- End NavColumn -->
+
+        <!-- Start Body Column -->
+        <td>
+            <!-- Start Div:  bodycol/projecthome -->
+            <div id="bodycol">
+                <!-- Start Div:  app -->
+                <div id="projecthome" class="app">
+                    <jsp:include page="../global/userMessage.jsp" flush="true" />

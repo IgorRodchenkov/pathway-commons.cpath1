@@ -8,16 +8,17 @@
 
 %>
 
-<TABLE WIDTH=100% CELLSPACING=4 CELLPADDING=4 BGCOLOR="#666699">
-    <TR BGCOLOR=#9999cc>
-        <TD COLSPAN=2><font color=#333366>DB Stats</font></TD>
-    </TR>
-    <TR VALIGN=TOP>
-        <TD>Number of Interactions:</TD>
-        <TD VALIGN=BOTTOM ALIGN=RIGHT><%= numInteractions %></TD>
-    </TR>
-    <TR VALIGN=TOP>
-        <TD>Number of Physical Entities:</TD>
-        <TD VALIGN=BOTTOM ALIGN=RIGHT><%= numPhysicalEntities %></TD>
-    </TR>
-</TABLE>
+<div id="dbstats" class="toolgroup">
+    <div class="label">
+        <strong>Database Stats</strong>
+    </div>
+
+    <div class="body">
+        <div>
+            # of Interactions:  <%= numInteractions %>
+        </div>
+        <div>
+            # of Interactors: <%= numPhysicalEntities %>
+        </div>
+    </div>
+</div>

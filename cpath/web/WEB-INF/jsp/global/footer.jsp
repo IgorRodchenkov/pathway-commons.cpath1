@@ -1,29 +1,33 @@
-<%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%><table cellpadding="0" cellspacing="0" border="0" width="100%">
-    <tr bgcolor="#333366" valign="Top">
-        <td>
-        <div align="Right">
-        <small><small>
-        2003 (c) Computational Biology Center,
-        Memorial Sloan Kettering Cancer Center.</a>&nbsp;
-        </small></small>
-        </div>
+                </div>
+                <!-- End Div:  app -->
+            </div>
+            <!-- End Div:  bodycol -->
         </td>
     </tr>
+    <!-- End Body Column -->
+
+    <!-- Start Footer -->
+    <tr>
+        <td></td>
+        <td>
+            <div/>
+            <div/>
+            <div/>
+            <div id="footer">
+                <div>
+                  <a href="http://cbio.mskcc.org">Computational Biology Center</a> |
+                  <a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
+                </div>
+                <div>
+                  Copyright &#169; 2004 Memorial Sloan-Kettering Cancer Center.
+                </div>
+            </div>
+        </td>
+    </tr>
+    <!-- End Footer -->
 </table>
-</td>
-</tr>
-<tr bgcolor="#ffcc33"><td>&nbsp;</td>
-    <td>
-        <div align="right">
-        <font color="#333366">
-        <small><small>&nbsp;</small></small>
-        </font></div>
-    </td>
-</tr>
-<tr>
-    <td></td>
-    <td><div align="center"><br><br></td>
-</tr>
-</table>
-</div>
+<!--  End Main Table -->
+
+<jsp:include page="../global/xdebug.jsp" flush="true" />
+</body>
 </html>

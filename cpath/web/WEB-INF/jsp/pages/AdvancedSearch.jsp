@@ -10,7 +10,5 @@ request.setAttribute("advancedSearch", "true");
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath Advanced Search"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
-<jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
 <jsp:include page="../global/advanced_search.jsp" flush="true" />
-<jsp:include page="../global/xdebug.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />

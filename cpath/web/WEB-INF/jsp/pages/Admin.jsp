@@ -9,124 +9,57 @@
                  org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
-    request.setAttribute("autoUpdate", "true");
+    request.setAttribute(BaseAction.PAGE_IS_ADMIN, "true");
+    request.setAttribute(BaseAction.PAGE_AUTO_UPDATE, "true");
 %>
 <%@ page errorPage = "JspError.jsp" %>
 
 
 <jsp:include page="../global/header.jsp" flush="true" />
-<jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
-<TABLE WIDTH=100% CELLSPACING=2 CELLPADDING=2 BORDER=0>
-    <TR>
-        <TD>
-            <H1>cPath Administrator</H1>
-        </TD>
-        <TD ALIGN=RIGHT>
-            <SPAN CLASS="small">This page will auto-update every 10 seconds
-        &nbsp;[<A HREF="adminHome.do">Update Now</A>]</SPAN>
-        </TD>
-    </TR>
-</TABLE>
 
-<TABLE WIDTH=100% CELLSPACING=2 CELLPADDING=2 BORDER=0>
-    <TR BGCOLOR=#9999cc>
-        <TD WIDTH="30%"><font color=#333366>Admin Tasks</font></TD>
-        <TD WIDTH="70%"><font color=#333366>Active Task List</font></TD>
-    </TR>
-    <TR>
-        <TD VALIGN=TOP BGCOLOR="#666699">
-                  <UL>
-                    <LI><A HREF="adminRunFullTextIndexer.do">Run Full Text Indexer</A>
-                    <LI><A HREF="adminDiagnostics.do">Run cPath Diagnostics</A>
-                    </UL>
-        </TD>
-        <TD VALIGN=TOP>
-            <TABLE WIDTH=100% BGCOLOR=#FFFFCC>
-                 <TR><TD>
-                 <cbio:taskTable/>
-                 </TD></TR>
-            </TABLE>
-        </TD>
-    </TR>
+<div id="apphead">
+    <h2>cPath Administration</h2>
+</div>
 
+<cbio:taskTable/>
+
+    <div class="h3">
+        <h3>Import Data</h3>
+    </div>
     <FORM ACTION="adminImportData.do" METHOD="POST"
         ENCTYPE="multipart/form-data">
-
-    <TR>
-        <TD COLSPAN=2><P>&nbsp;</TD>
-    </TR>
-    <TR>
-        <TD COLSPAN=2><P>&nbsp;</TD>
-    </TR>
-
-    <TR BGCOLOR=#9999cc>
-        <TD WIDTH="30%"><font color=#333366>DB Status</font></TD>
-        <TD WIDTH="70%"><font color=#333366>Import Data</font></TD>
-    </TR>
-
-    <TR>
-        <TD>
-
-        <%
-            DaoCPath dao = new DaoCPath();
-            int numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
-            int numPhysicalEntities = dao.getNumEntities
-                    (CPathRecordType.PHYSICAL_ENTITY);
-
-        %>
-
-        <TABLE WIDTH=100% CELLSPACING=4 CELLPADDING=4 BGCOLOR="#666699">
-            <TR VALIGN=TOP>
-                <TD><SPAN CLASS="SMALL">Interactions:</SPAN></TD>
-                <TD VALIGN=BOTTOM ALIGN=RIGHT><SPAN CLASS="SMALL"><%= numInteractions %>
-                </SPAN></TD>
-            </TR>
-            <TR VALIGN=TOP>
-                <TD><SPAN CLASS="SMALL">Physical Entities:</SPAN></TD>
-                <TD VALIGN=BOTTOM ALIGN=RIGHT><SPAN CLASS="SMALL"><%= numPhysicalEntities %></SPAN></TD>
-            </TR>
-        </TABLE>
-
-
-        </TD>
-        <TD VALIGN=TOP>
-                <INPUT TYPE="FILE" SIZE=10 NAME="file">
-                &nbsp;<INPUT TYPE="SUBMIT" VALUE="Go">
-                <P><SPAN CLASS="small">Currently, you can import interaction
+                <P>Currently, you can import interaction
                 records formatted in the PSI-MI XML Format (see
                 <A HREF="jsp/sampleData/dipSample.xml">example</A>).
                 You can also import text files containing
                 external references (see
                 <A HREF="jsp/sampleData/affySample.txt">example</A>).
-                </SPAN>
-                </TD>
-    </TR>
+                <P>
+                <INPUT TYPE="FILE" SIZE=10 NAME="file">
+                &nbsp;<INPUT TYPE="SUBMIT" VALUE="Go">
 
-    <TR BGCOLOR=#9999cc>
-        <TD COLSPAN=2><font color=#333366>Web Diagnostics</font></TD>
-    </TR>
+    </FORM>
 
-    <TR>
-        <TD COLSPAN=2>
-        <SPAN CLASS="small">Web diagnostics are currently set to:
+    <div class="h3">
+        <h3>Web Diagnostics</h3>
+    </div>
+
+    Web diagnostics are currently set to:
         <%
             String xdebugFlag = (String)
                     session.getAttribute(AdminWebLogging.WEB_LOGGING);
             if (xdebugFlag == null) {
                 out.println("off.");
-                out.println("&nbsp;&nbsp;[<A HREF='adminWebLogging.do'>Activate</A>]");
+                out.println("&nbsp;&nbsp;[<A HREF='adminWebLogging.do'>Turn on</A>]");
             } else {
                 out.println("on.");
-                out.println("&nbsp;&nbsp;[<A HREF='adminWebLogging.do'>Deactivate</A>]");
+                out.println("&nbsp;&nbsp;[<A HREF='adminWebLogging.do'>Turn off</A>]");
             }
         %>
-        </SPAN>
-        </TD>
-    </TR>
+        <P>&nbsp;
+        <P>
+<small>This page will auto-update every 10 seconds
+&nbsp;[<A HREF="adminHome.do">Update Now</A>]</small>
 
-</TABLE>
 
-<P>
-
-<jsp:include page="../global/xdebug.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />

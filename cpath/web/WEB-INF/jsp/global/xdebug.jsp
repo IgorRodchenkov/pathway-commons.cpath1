@@ -5,9 +5,6 @@
                  java.util.Vector,
                  java.util.Enumeration,
                  org.mskcc.pathdb.action.admin.AdminWebLogging" %>
-<P>&nbsp;
-<P>&nbsp;
-<P>&nbsp;
 <%
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
@@ -25,35 +22,37 @@ if (xdebug != null) {
     String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
     if (xdebugSession != null || xdebugParameter != null) {
 %>
+
+<div id="bodycol">
+<div id="projecthome" class="app">
+<div class="h3">
+    <h3>cPath Web Diagnostics</h3>
+</div>
+
 <TABLE width="100%">
-	<TR BGCOLOR="#9999cc">
-		<TD>
-            <FONT COLOR="#333366"><BIG><B>CPath Diagnostics</B></BIG></FONT>
-		</TD>
+	<TR>
+		<TH>
+            Total Time to Generate Page
+        </TH>
 		<TD COLSPAN=2>
-            <FONT COLOR="#333366"><%= new Date() %></FONT>
+            <%= xdebug.getTimeElapsed() %> ms
+        </TD>
+    </TR>
+    <TR>
+		<TH>
+            Current Time
+        </TH>
+		<TD COLSPAN=2>
+            <%= new Date() %> ms
         </TD>
 	</TR>
-	<TR BGCOLOR="#9999cc">
-		<TD COLSPAN=3>
-            <FONT COLOR="#333366">Performance Stats</FONT>
-        </TD>
-	</TR>
-	<TR BGCOLOR="#ccccff">
-		<TD>
-            <FONT SIZE=1 COLOR=BLACK>Total Time to Generate Page</FONT>
-        </TD>
-		<TD COLSPAN=2>
-            <FONT SIZE=1 COLOR=BLACK><%= xdebug.getTimeElapsed() %> ms</FONT>
-        </TD>
-	</TR>
-	<TR BGCOLOR="#9999cc">
-		<TD>
-            <FONT COLOR="#333366">Class Name</FONT>
-        </TD>
-		<TD COLSPAN=2>
-            <FONT COLOR="#333366">Message</FONT>
-        </TD>
+	<TR>
+		<TH>
+            Class Name
+        </TH>
+		<TH COLSPAN=2>
+            Message
+        </TH>
 	</TR>
 
 	<%--
@@ -68,10 +67,10 @@ if (xdebug != null) {
 	%>
 		<TR BGCOLOR="#ccccff" VALIGN=TOP>
 			<TD WIDTH=30%>
-                <FONT SIZE=1 COLOR=BLACK><%= msg.getClassName() %></FONT>
+                <%= msg.getClassName() %>
             </TD>
 			<TD COLSPAN=2 WIDTH=70%>
-				<FONT SIZE=1 COLOR="<%= msg.getColor() %>">
+				<FONT COLOR="<%= msg.getColor() %>">
 				<%= msg.getMessage() %>
 				</FONT>
             </TD>
@@ -82,10 +81,10 @@ if (xdebug != null) {
 				Output Parameter Values
 				***********************************
 	--%>
-	<TR BGCOLOR="#9999cc">
-		<TD><FONT COLOR="#333366">Parameter Type</FONT></TD>
-		<TD><FONT COLOR="#333366">Name</FONT></TD>
-		<TD><FONT COLOR="#333366">Value</FONT></TD>
+	<TR>
+		<TH>Parameter Type</FONT></TH>
+		<TH>Name</FONT></TH>
+		<TH>Value</FONT></TH>
 	</TR>
 	<%
 		Vector parameters = xdebug.getParameters();
@@ -113,9 +112,9 @@ if (xdebug != null) {
 	%>
 
 		<TR BGCOLOR="<%= bgcolor %>">
-			<TD VALIGN=TOP><FONT SIZE=1 COLOR=BLACK><%= param.getTypeName() %></FONT></TD>
-			<TD VALIGN=TOP><FONT SIZE=1 COLOR=BLACK><%= param.getName() %></FONT></TD>
-			<TD VALIGN=TOP><FONT SIZE=1 COLOR=BLACK><%= wrapText(param.getValue()) %></FONT></TD>
+			<TD VALIGN=TOP><SMALL><%= param.getTypeName() %></SMALL></TD>
+			<TD VALIGN=TOP><SMALL><%= param.getName() %></SMALL></TD>
+			<TD VALIGN=TOP><SMALL><%= wrapText(param.getValue()) %></SMALL></TD>
 		</TR>
 		<% } %>
 </TABLE>
@@ -138,3 +137,7 @@ private String wrapText (String text) {
     }
 }
 %>
+<P>&nbsp;
+<P>&nbsp;
+</div>
+</div>

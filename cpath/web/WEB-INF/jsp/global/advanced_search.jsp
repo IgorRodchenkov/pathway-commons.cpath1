@@ -1,25 +1,17 @@
 <%@ page import="org.mskcc.pathdb.controller.ProtocolRequest,
                  org.mskcc.pathdb.controller.ProtocolConstants"%>
-<%
-    String format = request.getParameter(ProtocolRequest.ARG_FORMAT);
-%>
+<div id="apphead">
+    <h2>Advanced Search</h2>
+</div>
+
+<div class="h3">
+    <h3>Search Criteria</h3>
+</div>
 <FORM NAME="search" ACTION="webservice.do" METHOD="GET">
-<TABLE WIDTH="100%" CELLPADDING=5 CELLSPACING=5 BORDER=0>
+<TABLE>
     <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0">
-    <tr>
-    <td colspan=2>
-    <h1>Advanced Search</H1>
-    <P>The Advanced Search page enables you to retrieve cPath
-    interactions by multiple criteria.
-    </td>
-    </tr>
-
-    <tr>
-
 	<tr>
-    <td>
-	<SPAN CLASS="medium">Step 1:  Specify Search Criteria</SPAN>
-    </td>
+    <th>Step 1:  Specify Search Criteria</th>
     <td>
 	<select ID="searchCriteria" name="<%= ProtocolRequest.ARG_COMMAND %>"
         onChange="updateAdvancedSearchBox()">
@@ -33,48 +25,49 @@
 	</td>
     </tr>
     <tr>
-	<td ALIGN=LEFT>
+	<th>
 
-    <SPAN CLASS="show" ID="option1Text">
-	    <FONT SIZE=+1>Step 2:  Enter Interactor ID</FONT>
-    </SPAN>
-    <SPAN CLASS="hide" ID="option2Text">
-        <FONT SIZE=+1>Step 2:   Enter Interactor Name</FONT>
-    </SPAN>
-    <SPAN CLASS="hide" ID="option3Text">
-        <FONT SIZE=+1>Step 2:  Select Organism</FONT>
-    </SPAN>
-    <SPAN CLASS="hide" ID="option4Text">
-        <FONT SIZE=+1>Step 2:  Enter Keyword</FONT>
-    </SPAN>
-    <SPAN CLASS="hide" ID="option5Text">
-        <FONT SIZE=+1>Step 2:  Enter Database Name</FONT>
-    </SPAN>
-    <SPAN CLASS="hide" ID="option6Text">
-        <FONT SIZE=+1>Step 2:  Enter PubMedID</FONT>
-    </SPAN>
-    </td>
+    <div CLASS="show" ID="option1Text">
+	    Step 2:  Enter Interactor ID
+    </div>
+    <div CLASS="hide" ID="option2Text">
+        Step 2:   Enter Interactor Name
+    </div>
+    <div CLASS="hide" ID="option3Text">
+        Step 2:  Select Organism
+    </div>
+    <div CLASS="hide" ID="option4Text">
+        Step 2:  Enter Keyword
+    </div>
+    <div CLASS="hide" ID="option5Text">
+        Step 2:  Enter Database Name
+    </div>
+
+    <div CLASS="hide" ID="option6Text">
+        Step 2:  Enter PubMedID
+    </div>
+    </th>
     <td>
 
-    <SPAN CLASS="hide" SIZE=25 ID="searchOrganismBox">
+    <div CLASS="hide" SIZE=25 ID="searchOrganismBox">
 		<select ID="selectOrganism" name="q">
 			<option VALUE="9606">Homo Sapiens
 			<option VALUE="562">Escherichia coli
             <option value="10090">Mus musculus
 			<option VALUE="4932">Saccharomyces cerevisiae
 		</select>
-	</SPAN>
+	</div>
 
-	<SPAN CLASS="show" ID="searchTextBox">
+	<div CLASS="show" ID="searchTextBox">
 		<input NAME="<%= ProtocolRequest.ARG_QUERY %>" SIZE=25 TYPE="TEXT">
-	</SPAN>
+	</div>
 	</td>
     </tr>
 
 	<tr>
-    <td>
-	<FONT SIZE=+1>Step 3:  Limit Number of Results</FONT>
-    </td>
+    <th>
+	Step 3:  Limit Number of Results
+    </th>
     <td>
 	<select name="maxHits">
             <option VALUE="10">10
@@ -88,9 +81,9 @@
     </tr>
 
 	<tr>
-    <td>
-	<FONT SIZE=+1>Step 4:  Specify Results Format</FONT>
-    </td>
+    <th>
+	Step 4:  Specify Results Format
+    </th>
     <td>
 	<select name="<%= ProtocolRequest.ARG_FORMAT %>">
 

@@ -1,18 +1,23 @@
 <%@ page import="org.mskcc.pathdb.controller.ProtocolStatusCode,
                  java.util.ArrayList,
-                 org.mskcc.pathdb.controller.ProtocolConstants"%><TABLE WIDTH="100%" CELLPADDING=5 CELLSPACING=5>
-	<TR>
-		<TD>
-		<h1>Web Service API</h1>
-        <BLOCKQUOTE>
-		This page provides a quick reference help guide to using
-		the cPath Web Service API.
+                 org.mskcc.pathdb.controller.ProtocolConstants"%>
 
-        <P>
-		<B><U>URL Parameters:</U></B>
-        <P>
-		Requests to the cPath Web Service are formed by specifying
-        URL parameters.  Parameters are as follows:
+<div id="apphead">
+    <h2>Web Service API Help</h2>
+</div>
+
+<div class="h3">
+    <h3>Introduction</h3>
+</div>
+This page provides a quick reference help guide to using
+the cPath Web Service API.
+
+<div class="h3">
+    <h3>URL Parameters</h3>
+</div>
+
+Requests to the cPath Web Service are formed by specifying
+URL parameters.  Parameters are as follows:
         <UL>
 		    <LI>cmd:  Indicates the command to execute.
             Current valid commands are:
@@ -34,12 +39,13 @@
                 Must be specified.  The only supported version is "1.0".
 		    </LI>
 	    </UL>
-        <P>
-        <B><U>Error Codes:</U></B>
-        <P>
-        If an error occurs while processing your request, you will
-        receive an XML document with detailed information about the cause of
-        the error.  Error documents have the following format:
+
+<div class="h3">
+    <h3>Error Codes</h3>
+</div>
+If an error occurs while processing your request, you will
+receive an XML document with detailed information about the cause of
+the error.  Error documents have the following format:
 
 <PRE>
 &lt;error&gt;
@@ -52,10 +58,10 @@
         The Table below provides a list of error codes, with their
         descriptions.
         <P>
-        <TABLE CELLPADDING=3 CELLSPACING=3>
-            <tr bgcolor=#9999cc>
-                <TD><font color=#333366>Error Code</font></TD>
-                <TD><font color=#333366>Error Description</font></TD>
+        <TABLE>
+            <tr>
+                <th>Error Code</font></th>
+                <th>Error Description</font></th>
             </TR>
             <%
                 ArrayList statusCodes = ProtocolStatusCode.getAllStatusCodes();
@@ -73,9 +79,10 @@
                 </TR>
             <% } %>
         </TABLE>
-        <P>
-		<B><U>Examples of Usage:</U></B>
-        <P>
+
+<div class="h3">
+    <h3>Examples of Usage</h3>
+</div>
 		The following query requests all cPath interactions for protein "P04273".
         Data will be formatted in the PSI XML format.
         <UL>
@@ -97,6 +104,3 @@
             </SMALL>
         </UL>
         </BLOCKQUOTE>
-			</TD>
-		</TR>
-</TABLE>

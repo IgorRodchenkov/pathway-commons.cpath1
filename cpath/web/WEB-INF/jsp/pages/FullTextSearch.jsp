@@ -11,9 +11,7 @@
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath Search Results"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
-<jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
 
 <cbio:searchResultsTable protocolRequest="<%= protocolRequest %>"/>
 
-<jsp:include page="../global/xdebug.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />

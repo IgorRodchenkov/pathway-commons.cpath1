@@ -8,5 +8,4 @@
 %>
     <cbio:errorMessage throwable="<%= throwable %>"/>
 <% }%>
-<jsp:include page="../global/xdebug.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />
