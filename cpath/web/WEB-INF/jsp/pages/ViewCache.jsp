@@ -2,13 +2,11 @@
                  org.mskcc.pathdb.sql.dao.DaoXmlCache"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
-<%
-    request.setAttribute(BaseAction.PAGE_IS_ADMIN, "true");
-%>
-
+<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE,
+        "cPath::Admin::View XML Cache"); %>
 <jsp:include page="../global/header.jsp" flush="true" />
 
-cPath provides a cache of the <%= DaoXmlCache.MAX_CACHE_RECORDS %> most
+cPath provides a cache of the <%= DaoXmlCache.DEFAULT_MAX_CACHE_RECORDS %> most
 recent web requests.  Contents of the XML Cache are displayed below (most
 recently requested queries appear first.)
 

@@ -2,8 +2,8 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
-    request.setAttribute(BaseAction.PAGE_IS_ADMIN, "true");
-%>
+    String title = "cPath::Diagnostics";
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
