@@ -31,7 +31,7 @@ public class DaoInternalLink {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO INTERNAL_LINK (`CPATH_ID_A`,`CPATH_ID_B`)"
+                    ("INSERT INTO internal_link (`CPATH_ID_A`,`CPATH_ID_B`)"
                     + " VALUES (?,?)");
             pstmt.setLong(1, cpathIdA);
             pstmt.setLong(2, cpathIdB);
@@ -115,7 +115,7 @@ public class DaoInternalLink {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM INTERNAL_LINK WHERE CPATH_ID_A = ?"
+                    ("SELECT * FROM internal_link WHERE CPATH_ID_A = ?"
                     + " OR CPATH_ID_B = ? ORDER BY INTERNAL_LINK_ID");
             pstmt.setLong(1, cpathId);
             pstmt.setLong(2, cpathId);
@@ -157,7 +157,7 @@ public class DaoInternalLink {
             for (int i = 0; i < links.size(); i++) {
                 InternalLinkRecord link = (InternalLinkRecord) links.get(i);
                 pstmt = con.prepareStatement
-                        ("DELETE FROM INTERNAL_LINK WHERE "
+                        ("DELETE FROM internal_link WHERE "
                         + "INTERNAL_LINK_ID = ?");
                 pstmt.setLong(1, link.getId());
                 counter += pstmt.executeUpdate();

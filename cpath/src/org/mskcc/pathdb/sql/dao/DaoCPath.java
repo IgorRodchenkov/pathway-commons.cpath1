@@ -32,7 +32,7 @@ public class DaoCPath {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select count(CPATH_ID) from CPATH where type = ?");
+                    ("select count(CPATH_ID) from cpath where type = ?");
             pstmt.setString(1, recordType.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -69,7 +69,7 @@ public class DaoCPath {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO CPATH (`NAME`,`DESC`,"
+                    ("INSERT INTO cpath (`NAME`,`DESC`,"
                     + "`TYPE`,`NCBI_TAX_ID`, `XML_CONTENT` ,"
                     + " `CREATE_TIME`) VALUES (?,?,?,?,?,?)");
             pstmt.setString(1, name);
@@ -83,7 +83,7 @@ public class DaoCPath {
             pstmt.executeUpdate();
 
             //  Get New CPath ID
-            pstmt = con.prepareStatement("SELECT MAX(CPATH_ID) from CPATH");
+            pstmt = con.prepareStatement("SELECT MAX(CPATH_ID) from cpath");
             rs = pstmt.executeQuery();
             rs.next();
             long cpathId = rs.getLong(1);
@@ -134,7 +134,7 @@ public class DaoCPath {
             con = JdbcUtil.getCPathConnection();
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select * from CPATH order by CPATH_ID");
+                    ("select * from cpath order by CPATH_ID");
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 CPathRecord record = extractRecord(rs);
@@ -167,7 +167,7 @@ public class DaoCPath {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM CPATH WHERE TYPE = ? AND "
+                    ("SELECT * FROM cpath WHERE TYPE = ? AND "
                     + "NCBI_TAX_ID = ?");
             pstmt.setString(1, recordType.toString());
             pstmt.setInt(2, taxonomyId);
@@ -200,7 +200,7 @@ public class DaoCPath {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT DISTINCT NCBI_TAX_ID FROM CPATH");
+                    ("SELECT DISTINCT NCBI_TAX_ID FROM cpath");
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 int taxId = rs.getInt("NCBI_TAX_ID");
@@ -230,7 +230,7 @@ public class DaoCPath {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM CPATH WHERE CPATH_ID = ?");
+                    ("SELECT * FROM cpath WHERE CPATH_ID = ?");
             pstmt.setLong(1, cpathId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -261,7 +261,7 @@ public class DaoCPath {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM CPATH WHERE NAME = ?");
+                    ("SELECT * FROM cpath WHERE NAME = ?");
             pstmt.setString(1, name);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -294,7 +294,7 @@ public class DaoCPath {
             //  Step 1:  Delete the Primary Record
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("DELETE FROM CPATH WHERE CPATH_ID = ?");
+                    ("DELETE FROM cpath WHERE CPATH_ID = ?");
             pstmt.setLong(1, cpathId);
             int rows = pstmt.executeUpdate();
 
@@ -335,7 +335,7 @@ public class DaoCPath {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("UPDATE CPATH SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
+                    ("UPDATE cpath SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
                     + "WHERE `CPATH_ID` = ?");
             pstmt.setString(1, newXml);
             java.util.Date now = new java.util.Date();

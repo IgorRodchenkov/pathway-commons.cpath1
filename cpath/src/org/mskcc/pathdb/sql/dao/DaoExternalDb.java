@@ -26,7 +26,7 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO EXTERNAL_DB (`NAME`,`URL`,"
+                    ("INSERT INTO external_db (`NAME`,`URL`,"
                     + "`DESC`,`CREATE_TIME`) VALUES (?,?,?,?)");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getUrl());
@@ -70,7 +70,7 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_DB WHERE EXTERNAL_DB_ID = ?");
+                    ("SELECT * FROM external_db WHERE EXTERNAL_DB_ID = ?");
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             return extractRecord(rs);
@@ -98,7 +98,7 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_DB WHERE NAME = ?");
+                    ("SELECT * FROM external_db WHERE NAME = ?");
             pstmt.setString(1, name);
             rs = pstmt.executeQuery();
             return extractRecord(rs);
@@ -136,7 +136,7 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_DB");
+                    ("SELECT * FROM external_db");
             rs = pstmt.executeQuery();
             ArrayList records = new ArrayList();
             while (rs.next()) {
@@ -167,7 +167,7 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("DELETE FROM EXTERNAL_DB WHERE EXTERNAL_DB_ID = ?");
+                    ("DELETE FROM external_db WHERE EXTERNAL_DB_ID = ?");
             pstmt.setInt(1, id);
             int rows = pstmt.executeUpdate();
 
@@ -198,7 +198,7 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("UPDATE EXTERNAL_DB SET `NAME` = ?, "
+                    ("UPDATE external_db SET `NAME` = ?, "
                     + "`DESC` = ?, `URL` = ?, `UPDATE_TIME` = ? "
                     + "WHERE `EXTERNAL_DB_ID` = ?");
             pstmt.setString(1, db.getName());

@@ -65,7 +65,7 @@ public class DaoExternalLink {
             con = JdbcUtil.getCPathConnection();
             if (!recordExists(link)) {
                 pstmt = con.prepareStatement
-                        ("INSERT INTO EXTERNAL_LINK (`CPATH_ID`, "
+                        ("INSERT INTO external_link (`CPATH_ID`, "
                         + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`, `CREATE_TIME`)"
                         + " VALUES (?,?,?,?)");
                 pstmt.setLong(1, link.getCpathId());
@@ -213,7 +213,7 @@ public class DaoExternalLink {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_LINK_ID = ?");
+                    ("SELECT * FROM external_link WHERE EXTERNAL_LINK_ID = ?");
             pstmt.setLong(1, externalLinkId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -248,12 +248,12 @@ public class DaoExternalLink {
             con = JdbcUtil.getCPathConnection();
             if (linkedToId != null) {
                 pstmt = con.prepareStatement
-                        ("SELECT * FROM EXTERNAL_LINK WHERE EXTERNAL_DB_ID = ? "
+                        ("SELECT * FROM external_link WHERE EXTERNAL_DB_ID = ? "
                         + "AND LINKED_TO_ID =?");
                 pstmt.setString(2, linkedToId);
             } else {
                 pstmt = con.prepareStatement
-                        ("SELECT * FROM EXTERNAL_LINK WHERE"
+                        ("SELECT * FROM external_link WHERE"
                         + " EXTERNAL_DB_ID = ?");
             }
             pstmt.setLong(1, externalDbId);
@@ -287,7 +287,7 @@ public class DaoExternalLink {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_LINK WHERE CPATH_ID = ? "
+                    ("SELECT * FROM external_link WHERE CPATH_ID = ? "
                     + "ORDER BY EXTERNAL_LINK_ID");
             pstmt.setLong(1, cpathId);
             rs = pstmt.executeQuery();
@@ -319,7 +319,7 @@ public class DaoExternalLink {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("DELETE FROM EXTERNAL_LINK WHERE EXTERNAL_LINK_ID = ?");
+                    ("DELETE FROM external_link WHERE EXTERNAL_LINK_ID = ?");
             pstmt.setLong(1, externalLinkId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
@@ -346,7 +346,7 @@ public class DaoExternalLink {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_LINK WHERE CPATH_ID = ? "
+                    ("SELECT * FROM external_link WHERE CPATH_ID = ? "
                     + " AND EXTERNAL_DB_ID = ? AND LINKED_TO_ID = ?");
             pstmt.setLong(1, link.getCpathId());
             pstmt.setInt(2, link.getExternalDbId());

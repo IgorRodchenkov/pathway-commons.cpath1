@@ -30,7 +30,7 @@ public class DaoExternalDbCv {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO EXTERNAL_DB_CV (`EXTERNAL_DB_ID`,`CV_TERM`)"
+                    ("INSERT INTO external_db_cv (`EXTERNAL_DB_ID`,`CV_TERM`)"
                     + " VALUES (?,?)");
             pstmt.setInt(1, dbId);
             pstmt.setString(2, term);
@@ -77,7 +77,7 @@ public class DaoExternalDbCv {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_DB_CV WHERE CV_TERM = ?");
+                    ("SELECT * FROM external_db_cv WHERE CV_TERM = ?");
             pstmt.setString(1, term);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -110,7 +110,7 @@ public class DaoExternalDbCv {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_DB_CV WHERE EXTERNAL_DB_ID = ? "
+                    ("SELECT * FROM external_db_cv WHERE EXTERNAL_DB_ID = ? "
                     + "ORDER BY CV_TERM");
             pstmt.setInt(1, dbId);
             rs = pstmt.executeQuery();
@@ -143,7 +143,7 @@ public class DaoExternalDbCv {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM EXTERNAL_DB_CV WHERE CV_ID = ?");
+                    ("SELECT * FROM external_db_cv WHERE CV_ID = ?");
             pstmt.setInt(1, cvId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -173,7 +173,7 @@ public class DaoExternalDbCv {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("DELETE FROM EXTERNAL_DB_CV WHERE EXTERNAL_DB_ID = ?");
+                    ("DELETE FROM external_db_cv WHERE EXTERNAL_DB_ID = ?");
             pstmt.setInt(1, dbId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
