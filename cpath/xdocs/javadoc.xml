@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>JavaDoc Report</title>
+  </properties>
+
+  <body>
+    <section name="Bug/Issue Tracking">
+        <p>
+        As mush as possible, cPath follows the recommended
+            <A HREF="http://java.sun.com/j2se/javadoc/writingdoccomments/">
+            JavaDoc Style Guide</A>, available from Sun Microsystems.
+        </p>
+     </section>
+  </body>
+</document>
