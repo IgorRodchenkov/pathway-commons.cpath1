@@ -9,7 +9,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 
@@ -88,10 +87,9 @@ public class DataServiceController {
         protocolRequest = new ProtocolRequest(parameterMap);
         ProtocolValidator validator = new ProtocolValidator(protocolRequest);
         validator.validate();
-        GridController gridController = new GridController();
-        String xmlResponse = gridController.retrieveData
-                (protocolRequest);
-        returnXml(xmlResponse);
+        GridController gridController = new GridController(request,
+                response, servletContext);
+        gridController.processRequest(protocolRequest);
     }
 
     /**
@@ -100,33 +98,39 @@ public class DataServiceController {
      * @param exception ProtocolException object.
      */
     private void returnError(ProtocolException exception) {
-        response.setContentType("text/xml");
         setHeaderStatus(ProtocolConstants.DS_ERROR_STATUS);
         try {
-            ServletOutputStream stream = response.getOutputStream();
-            stream.println(exception.toXml());
-            stream.flush();
-            stream.close();
+            if (protocolRequest.getFormat() != null
+                    && protocolRequest.getFormat().equals
+                    (ProtocolConstants.FORMAT_HTML)) {
+                showHtmlError(exception);
+            } else {
+                response.setContentType("text/xml");
+                ServletOutputStream stream = response.getOutputStream();
+                stream.println(exception.toXml());
+                stream.flush();
+                stream.close();
+            }
         } catch (IOException e) {
-            log.error("Exception thrown while writing out XML Error:  "
+            log.error("Exception thrown while writing out Error:  "
                     + e.getMessage());
         }
     }
 
-    /**
-     * Returns XML Response to Client.
-     * Automatically sets the Ds-status header = "ok".
-     * @param xmlResponse XML Response Document.
-     * @throws IOException Error writing to client.
-     */
-    private void returnXml(String xmlResponse) throws IOException {
-        PrintWriter out = response.getWriter();
-        setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
-        response.setContentType("text/xml");
-        ServletOutputStream stream = response.getOutputStream();
-        stream.println(xmlResponse);
-        stream.flush();
-        stream.close();
+    private void showHtmlError(ProtocolException exception) {
+        RequestDispatcher dispatcher =
+                servletContext.getRequestDispatcher
+                ("/jsp/pages/Master.jsp");
+        request.setAttribute("exception", exception);
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            log.error("Exception thrown while writing out Error:  "
+                    + e.getMessage());
+        } catch (IOException e) {
+            log.error("Exception thrown while writing out Error:  "
+                    + e.getMessage());
+        }
     }
 
     /**
@@ -150,11 +154,12 @@ public class DataServiceController {
      * Forwards to the /jsp/protocol.html HTML Page.
      */
     private void showHelp() {
-        log.info("Forwarding to protocol.jsp page");
+        log.info("Forwarding to Master.jsp page");
         try {
             setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
             RequestDispatcher dispatcher =
-                    servletContext.getRequestDispatcher("/jsp/protocol.html");
+                    servletContext.getRequestDispatcher
+                    ("/jsp/pages/Master.jsp");
             dispatcher.forward(request, response);
         } catch (IOException e) {
             log.error("IOException thrown while writing out Help page:  "

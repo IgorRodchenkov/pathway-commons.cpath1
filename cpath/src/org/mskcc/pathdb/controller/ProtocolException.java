@@ -93,6 +93,14 @@ public class ProtocolException extends Exception {
     }
 
     /**
+     * Gets Error Details.
+     * @return Error Details String.
+     */
+    public String getDetails () {
+        return this.details;
+    }
+
+    /**
      * Gets XML Representation of Error.
      * @return XML String containing Error Message.
      */

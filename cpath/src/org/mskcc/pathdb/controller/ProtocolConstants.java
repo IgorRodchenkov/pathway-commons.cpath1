@@ -34,6 +34,11 @@ public class ProtocolConstants {
     public static final String FORMAT_PSI = "psi";
 
     /**
+     * PSI Format.
+     */
+    public static final String FORMAT_HTML = "html";
+
+    /**
      * Default Result Set Format.
      */
     public static final String FORMAT_RS = "rs";
@@ -97,6 +102,7 @@ public class ProtocolConstants {
             validFormats = new HashMap();
             validFormats.put(FORMAT_PSI, null);
             validFormats.put(FORMAT_RS, null);
+            validFormats.put(FORMAT_HTML, null);
         }
         return validFormats;
     }

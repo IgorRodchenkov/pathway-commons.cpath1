@@ -12,12 +12,18 @@ import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.core.EmptySetException;
-import org.mskcc.dataservices.util.PropertyManager;
 import org.apache.log4j.Logger;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.StringWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +33,10 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class GridController {
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    private ServletContext servletContext;
+
     /**
      * Logger.
      */
@@ -34,57 +44,104 @@ public class GridController {
             Logger.getLogger(DataServiceController.class.getName());
 
     /**
-     * Retrieves GRID Data.
-     * @param request ProtocolRequest object.
-     * @return XML Response String.
+     * Constructor.
+     * @param request HttpServletRequest.
+     * @param response HttpServletResponse.
+     * @param servletContext ServletContext Object.
      */
-    public String retrieveData(ProtocolRequest request)
-            throws MarshalException, ValidationException, DataServiceException, ProtocolException {
-        try {
-            String xml = getXmlData(request);
-            return xml;
-        } catch (EmptySetException e) {
-            throw new ProtocolException(ProtocolStatusCode.BAD_UID,
-                    "UID:  " + request.getUid() + " not found in database");
-        }
+    public GridController (HttpServletRequest request, HttpServletResponse
+            response, ServletContext servletContext) {
+        this.request = request;
+        this.response = response;
+        this.servletContext = servletContext;
     }
 
     /**
-     * Gets XML Data.
-     * @param request ProtocolRequest object.
+     * Processes User Request.
+     * @param protocolRequest Protocol Request object.
+     * @throws MarshalException Problem using Castor.
+     * @throws ValidationException XML Document is not valid.
+     * @throws DataServiceException Problem accessing data.
+     * @throws ProtocolException Problem with service.
+     * @throws IOException Problem writing out data.
+     * @throws ServletException Problem writing to servlet.
      */
-    private String getXmlData(ProtocolRequest request) throws MarshalException,
-            ValidationException, DataServiceException, EmptySetException {
-        String xml = null;
-        if (request.getCommand().equals
-                (ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS)) {
-            xml = getInteractions(request.getUid());
-        } else if (request.getCommand().equals
+    public void processRequest (ProtocolRequest protocolRequest)
+            throws MarshalException, ValidationException, DataServiceException,
+            ProtocolException, IOException, ServletException {
+        try {
+            if (protocolRequest.getCommand().equals
+                    (ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS)) {
+                processGetInteractions(protocolRequest);
+            } else if (protocolRequest.getCommand().equals
                 (ProtocolConstants.COMMAND_RETRIEVE_GO)) {
-            xml = getGo(request.getUid());
+                String xml = getGo(protocolRequest.getUid());
+                returnXml(xml);
+            }
+        } catch (EmptySetException e) {
+            throw new ProtocolException(ProtocolStatusCode.BAD_UID,
+                    "UID:  " + protocolRequest.getUid()
+                    + " not found in database");
         }
-        return xml;
+    }
+
+    private void processGetInteractions(ProtocolRequest protocolRequest)
+            throws DataServiceException, MarshalException, ValidationException,
+            ServletException, IOException {
+        ArrayList interactions =
+                getInteractions(protocolRequest.getUid());
+        if (protocolRequest.getFormat().equals
+                (ProtocolConstants.FORMAT_PSI)) {
+            MapInteractionsToPsi mapper =
+                    new MapInteractionsToPsi (interactions);
+            mapper.doMapping();
+            EntrySet entrySet = mapper.getPsiXml();
+            StringWriter writer = new StringWriter();
+            entrySet.marshal(writer);
+            String xml = writer.toString();
+            this.returnXml(xml);
+        } else {
+            request.setAttribute("interactions", interactions);
+            request.setAttribute("protocol_request", protocolRequest);
+            forwardToJsp();
+        }
+    }
+
+    private void forwardToJsp() throws ServletException, IOException {
+        RequestDispatcher dispatcher =
+            servletContext.getRequestDispatcher
+                ("/jsp/pages/Master.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    /**
+     * Returns XML Response to Client.
+     * Automatically sets the Ds-status header = "ok".
+     * @param xmlResponse XML Response Document.
+     * @throws IOException Error writing to client.
+     */
+    private void returnXml(String xmlResponse) throws IOException {
+        setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
+        response.setContentType("text/xml");
+        ServletOutputStream stream = response.getOutputStream();
+        stream.println(xmlResponse);
+        stream.flush();
+        stream.close();
     }
 
     /**
      * Gets Interactions.
      */
-    private String getInteractions(String uid) throws DataServiceException,
-            MarshalException, ValidationException, EmptySetException {
+    private ArrayList getInteractions(String uid) throws DataServiceException,
+            EmptySetException {
         log.info("Retrieving Interactions from GRID for UID:  " + uid);
         DataServiceFactory factory = DataServiceFactory.getInstance();
         InteractionService service =
                 (InteractionService) factory.getService
                 (LiveConstants.GRID_INTERACTION_SERVICE);
         ArrayList interactions = service.getInteractions(uid);
-
         interactions = this.filterInteractionList(interactions);
-        MapInteractionsToPsi mapper = new MapInteractionsToPsi (interactions);
-        mapper.doMapping();
-        EntrySet entrySet = mapper.getPsiXml();
-        StringWriter writer = new StringWriter();
-        entrySet.marshal(writer);
-        return writer.toString();
+        return interactions;
     }
 
     /**
@@ -121,7 +178,6 @@ public class GridController {
     private String getGo(String uid) throws DataServiceException,
             EmptySetException {
         log.info("Retrieving Interactor Data from GRID for UID:  " + uid);
-        PropertyManager manager = PropertyManager.getInstance();
         DataServiceFactory factory = DataServiceFactory.getInstance();
         InteractorService service =
                 (InteractorService) factory.getService
@@ -131,5 +187,14 @@ public class GridController {
         String xml = (String) interactor.getAttribute
                 (InteractorVocab.XML_RESULT_SET);
         return xml;
+    }
+
+    /**
+     * Sets the correct Ds-status HTTP Header.
+     * @param status Status Value.
+     */
+    private void setHeaderStatus(String status) {
+        response.setHeader(ProtocolConstants.DS_HEADER_NAME,
+                status);
     }
 }
