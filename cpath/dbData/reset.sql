@@ -17,6 +17,7 @@ truncate table external_link;
 truncate table cpath;
 truncate table internal_link;
 truncate table xml_cache;
+truncate table organism;
 
 #
 #  Insert data into table 'external_db'
