@@ -169,7 +169,7 @@ public abstract class HtmlTable extends TagSupport {
 
     /**
      * Gets HTML String.
-     * Primarily used by the JUnit Test Case Class.
+     * Primarily used by the JUnit DiagnosticTestResults Case Class.
      *
      * @return HTML String.
      */

@@ -2,13 +2,11 @@ package org.mskcc.pathdb.servlet;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
-import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.logger.ConfigLogger;
 import org.mskcc.pathdb.lucene.LuceneIndexer;
 import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.service.RegisterCPathServices;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
@@ -83,14 +81,6 @@ public final class CPathServlet extends ActionServlet {
         String dir = context.getRealPath("WEB-INF/"
                 + LuceneIndexer.INDEX_DIR_PREFIX);
         manager.setProperty(LuceneIndexer.PROPERTY_LUCENE_DIR, dir);
-
-        System.err.println("Registering CPath Data Services");
-        try {
-            RegisterCPathServices.registerServices();
-        } catch (DataServiceException e) {
-            throw new ServletException(e.toString());
-        }
-        System.err.println("Data Service Initialization Complete --> OK");
     }
 
     /**

@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.test.indexer;
+package org.mskcc.pathdb.test.lucene;
 
 import junit.framework.TestCase;
 import org.apache.lucene.document.Field;

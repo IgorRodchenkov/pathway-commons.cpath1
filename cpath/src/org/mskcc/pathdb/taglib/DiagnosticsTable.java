@@ -22,7 +22,7 @@ public class DiagnosticsTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {
-        String headers[] = {"Result", "Test", "Error"};
+        String headers[] = {"Result", "DiagnosticTestResults", "Error"};
         createHeader("cPath Diagnostics");
         startTable();
         createTableHeaders(headers);
@@ -39,7 +39,7 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runFirstBatch() {
-        Test test = new Test("Testing access to Table:  cpath");
+        DiagnosticTestResults test = new DiagnosticTestResults("Testing access to Table:  cpath");
         DaoCPath cpath = new DaoCPath();
         try {
             cpath.getRecordById(12345);
@@ -48,7 +48,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  external_db");
+        test = new DiagnosticTestResults("Testing access to Table:  external_db");
         DaoExternalDb externalDb = new DaoExternalDb();
         try {
             externalDb.getRecordById(12345);
@@ -57,7 +57,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  external_db_cv");
+        test = new DiagnosticTestResults("Testing access to Table:  external_db_cv");
         DaoExternalDbCv externalDbCv = new DaoExternalDbCv();
         try {
             externalDbCv.getTermByDbCvId(12345);
@@ -66,7 +66,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  external_link");
+        test = new DiagnosticTestResults("Testing access to Table:  external_link");
         DaoExternalLink externalLink = new DaoExternalLink();
         try {
             externalLink.getRecordById(12345);
@@ -77,7 +77,7 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runSecondBatch() {
-        Test test = new Test("Testing access to Table:  import");
+        DiagnosticTestResults test = new DiagnosticTestResults("Testing access to Table:  import");
         DaoImport daoImport = new DaoImport();
         try {
             daoImport.getRecordById(12345);
@@ -86,7 +86,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  internal_link");
+        test = new DiagnosticTestResults("Testing access to Table:  internal_link");
         DaoInternalLink internalLink = new DaoInternalLink();
         try {
             internalLink.getInternalLinks(12345);
@@ -95,7 +95,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  log");
+        test = new DiagnosticTestResults("Testing access to Table:  log");
         DaoLog logger = new DaoLog();
         try {
             logger.getLogRecords();
@@ -104,7 +104,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  xml_cache");
+        test = new DiagnosticTestResults("Testing access to Table:  xml_cache");
         DaoXmlCache cache = new DaoXmlCache(new XDebug());
         try {
             cache.getXmlAssemblyByKey("12345");
@@ -113,7 +113,7 @@ public class DiagnosticsTable extends HtmlTable {
         }
         testList.add(test);
 
-        test = new Test("Testing access to Table:  organism");
+        test = new DiagnosticTestResults("Testing access to Table:  organism");
         DaoOrganism organism = new DaoOrganism();
         try {
             organism.getAllOrganisms();
@@ -124,7 +124,7 @@ public class DiagnosticsTable extends HtmlTable {
     }
 
     private void runThirdBatch() throws IOException {
-        Test test = new Test("Testing access to Lucene Full Text Index");
+        DiagnosticTestResults test = new DiagnosticTestResults("Testing access to Lucene Full Text Index");
         LuceneIndexer indexer = new LuceneIndexer();
         try {
             indexer.executeQuery("dna");
@@ -142,7 +142,7 @@ public class DiagnosticsTable extends HtmlTable {
     private void outputTests() {
         for (int i = 0; i < testList.size(); i++) {
             this.startRow(i);
-            Test test = (Test) testList.get(i);
+            DiagnosticTestResults test = (DiagnosticTestResults) testList.get(i);
             Exception e = test.getException();
             if (e == null) {
                 outputDataField("<IMG SRC='jsp/images/icon_success_sml.gif'>");
@@ -161,15 +161,15 @@ public class DiagnosticsTable extends HtmlTable {
 }
 
 /**
- * Encapsulates Test Results.
+ * Encapsulates DiagnosticTestResults Results.
  *
  * @author Ethan Cerami.
  */
-class Test {
+class DiagnosticTestResults {
     private String name;
     private Exception e;
 
-    public Test(String name) {
+    public DiagnosticTestResults(String name) {
         this.name = name;
     }
 

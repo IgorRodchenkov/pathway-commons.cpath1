@@ -1,15 +1,15 @@
-package org.mskcc.pathdb.test.indexer;
+package org.mskcc.pathdb.test.protocol;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Suite of all Indexer Unit Tests.
+ * Suite of all Controller Unit Tests.
  *
  * @author Ethan Cerami
  */
-public class IndexerSuite extends TestCase {
+public class ProtocolSuite extends TestCase {
 
     /**
      * The suite method runs all the tests.
@@ -18,10 +18,9 @@ public class IndexerSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestIndexer.class);
-        suite.addTestSuite(TestItemToIndex.class);
-        suite.addTestSuite(TestPsiInteractorExtractor.class);
-        suite.setName("Indexer Tests");
+        suite.addTestSuite(TestProtocolException.class);
+        suite.addTestSuite(TestProtocolValidator.class);
+        suite.setName("Controller Tests");
         return suite;
     }
 }

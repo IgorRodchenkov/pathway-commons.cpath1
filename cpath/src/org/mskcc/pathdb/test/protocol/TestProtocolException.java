@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.test.controller;
+package org.mskcc.pathdb.test.protocol;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.protocol.ProtocolException;
