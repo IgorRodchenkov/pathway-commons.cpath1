@@ -48,9 +48,9 @@ public class LoadExternalReferences {
      * Loads External References from Specified File.
      *
      * @param file File.
-     * @throws IOException  File Input Error.
-     * @throws DaoException Data Access Error.
-     * @throws MissingDataException XML is missing data. 
+     * @throws IOException          File Input Error.
+     * @throws DaoException         Data Access Error.
+     * @throws MissingDataException XML is missing data.
      */
     public void load(File file) throws DaoException, IOException,
             MissingDataException {

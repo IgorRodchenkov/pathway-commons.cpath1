@@ -58,9 +58,10 @@ public class DaoException extends Exception {
 
     /**
      * Gets Error Message.
-     * @return
+     *
+     * @return Error Message String.I
      */
     public String getMessage() {
         return msg;
-    }    
+    }
 }

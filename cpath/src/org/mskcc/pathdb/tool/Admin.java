@@ -114,7 +114,7 @@ public class Admin {
             System.out.println("\n\n-----------------------------------------");
             System.out.println("XML Validation Error:  " + e.getMessage());
             System.out.println("Error Located at line:  " + e.getLineNumber()
-                + ", column:  " + e.getColumnNumber());
+                    + ", column:  " + e.getColumnNumber());
             System.out.println("-----------------------------------------");
         } catch (SAXException e) {
             System.out.println("\n\n-----------------------------------------");
@@ -125,7 +125,7 @@ public class Admin {
             System.out.println("Fatal Error:  " + e.getMessage());
             if (xdebugFlag) {
                 System.out.println("\nFull Details are available in the "
-                    + "stack trace below.");
+                        + "stack trace below.");
                 e.printStackTrace();
             }
             System.out.println("-----------------------------------------");
@@ -160,7 +160,7 @@ public class Admin {
                 || fileName.endsWith("mif")) {
             System.out.println("Based on the file extension, I am concluding "
                     + "that this is a PSI-MI File.");
-            ValidateXmlTask validator = new ValidateXmlTask (file);
+            ValidateXmlTask validator = new ValidateXmlTask(file);
             boolean isValid = validator.validate(false);
             if (isValid) {
                 LoadPsi.importDataFile(file);
@@ -168,8 +168,9 @@ public class Admin {
                 System.out.println("\n-------------------------------------");
                 System.out.println("Import aborted due to invalid XML.");
                 System.out.println("Use the validate command to view "
-                    + "a list of XML validation errors.\nFor example:  admin.pl"
-                    + " -f human_small.xml validate");
+                        + "a list of XML validation errors.\n"
+                        + "For example:  admin.pl"
+                        + " -f human_small.xml validate");
                 System.out.println("-------------------------------------");
                 System.exit(-1);
             }
@@ -251,12 +252,12 @@ public class Admin {
         BufferedReader in = new BufferedReader
                 (new InputStreamReader(System.in));
         PropertyManager propertyManager = PropertyManager.getInstance();
-        if (userName == null && ! command.equals(COMMAND_VALIDATE)) {
+        if (userName == null && !command.equals(COMMAND_VALIDATE)) {
             System.out.print("Enter Database User Name: ");
             userName = in.readLine();
             propertyManager.setProperty(PropertyManager.DB_USER, userName);
         }
-        if (pwd == null && ! command.equals(COMMAND_VALIDATE)) {
+        if (pwd == null && !command.equals(COMMAND_VALIDATE)) {
             System.out.print("Enter Database Password: ");
             pwd = in.readLine();
             propertyManager.setProperty(PropertyManager.DB_PASSWORD, pwd);
@@ -303,7 +304,8 @@ public class Admin {
         System.out.println("\nAdministration Program for the cPath Database");
         System.out.println("Usage:  admin.pl [OPTIONS] command");
         System.out.println("  -f, -f=filename Name of File / Directory");
-        System.out.println("  -d,             Shows all Debug/Log Messages/Stack Traces");
+        System.out.println("  -d,             Shows all Debug/Log "
+            + "Messages/Stack Traces");
         System.out.println("  -u, -u=name     Database User Name");
         System.out.println("  -p, -p=name     Database Password");
         System.out.println("  -x              Skips Validation of External "
@@ -318,14 +320,14 @@ public class Admin {
                 + "specified config file.");
         System.out.println("  count_affy      Counts Records with Affymetrix "
                 + "identifiers.");
-        System.out.println("  validate        Valdates the specified XML " +
-                "file.");
+        System.out.println("  validate        Valdates the specified XML "
+                + "file.");
         System.out.println("\n\nExtra Options (not guaranteed to be available "
-            + "in future versions of cPath)");
+                + "in future versions of cPath)");
         System.out.println("  -r              Removes all Interaction PSI-MI "
-            + "xrefs  (not recommended)");
+                + "xrefs  (not recommended)");
         System.out.println("                  Used to temporarily import "
-            + "buggy HRPD PSI-MI Files.");
+                + "buggy HRPD PSI-MI Files.");
         System.exit(1);
     }
 }

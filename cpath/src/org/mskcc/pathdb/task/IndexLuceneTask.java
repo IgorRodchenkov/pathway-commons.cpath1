@@ -36,13 +36,13 @@ import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
-import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
+import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.util.ConsoleUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -66,7 +66,7 @@ public class IndexLuceneTask extends Task {
      * Constructor.
      *
      * @param consoleMode Running in Console Mode.
-     * @param xdebug  XDebug Object.
+     * @param xdebug      XDebug Object.
      */
     public IndexLuceneTask(boolean consoleMode, XDebug xdebug) {
         super("Run Full Text Indexer", consoleMode);
@@ -81,17 +81,18 @@ public class IndexLuceneTask extends Task {
         try {
             executeTask();
         } catch (Exception e) {
-            setException (e);
+            setException(e);
         }
     }
 
     /**
      * Execute Index Task.
-     * @throws DaoException     Data Access Error.
-     * @throws ImportException  Import Error.
-     * @throws IOException      File IO Error.
-     * @throws AssemblyException    XML Assembly Error.
-     * @throws QueryException      Data Query Error.
+     *
+     * @throws DaoException      Data Access Error.
+     * @throws ImportException   Import Error.
+     * @throws IOException       File IO Error.
+     * @throws AssemblyException XML Assembly Error.
+     * @throws QueryException    Data Query Error.
      */
     public void executeTask() throws DaoException, ImportException,
             IOException, AssemblyException, QueryException {
@@ -110,7 +111,7 @@ public class IndexLuceneTask extends Task {
         pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
                 + "Entities Indexed:  " + pMonitor.getCurValue());
         pMonitor.setCurrentMessage("Total Time Elapsed:  "
-                    + xdebug.getTimeElapsed());
+                + xdebug.getTimeElapsed());
     }
 
     /**
@@ -124,10 +125,10 @@ public class IndexLuceneTask extends Task {
     public void indexAllInteractions() throws DaoException, IOException,
             ImportException, AssemblyException {
         ProgressMonitor pMonitor = this.getProgressMonitor();
-        pMonitor.setCurrentMessage ("Indexing all cPath Interactions");
+        pMonitor.setCurrentMessage("Indexing all cPath Interactions");
         DaoCPath cpath = new DaoCPath();
         int numInteractions = cpath.getNumEntities(CPathRecordType.INTERACTION);
-        pMonitor.setCurrentMessage ("Total Number of Interactions:  "
+        pMonitor.setCurrentMessage("Total Number of Interactions:  "
                 + numInteractions);
         pMonitor.setMaxValue(numInteractions);
 
@@ -136,7 +137,7 @@ public class IndexLuceneTask extends Task {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            for (int i=0; i <= numInteractions; i+= BLOCK_SIZE) {
+            for (int i = 0; i <= numInteractions; i += BLOCK_SIZE) {
                 con = JdbcUtil.getCPathConnection();
                 int end = i + BLOCK_SIZE;
                 System.out.println("<getting batch of interactions:  "

@@ -48,14 +48,14 @@ public class ImportRecordTask extends Task {
     /**
      * Constructor.
      *
-     * @param importId Import ID.
+     * @param importId    Import ID.
      * @param consoleMode Console Mode.
      */
     public ImportRecordTask(long importId, boolean consoleMode) {
         super("Import PSI-MI Record", consoleMode);
         this.importId = importId;
         ProgressMonitor pMonitor = this.getProgressMonitor();
-        pMonitor.setConsoleMode (consoleMode);
+        pMonitor.setConsoleMode(consoleMode);
         pMonitor.setCurrentMessage("Import PSI-MI Record");
     }
 

@@ -139,10 +139,10 @@ public class QueryAction extends BaseAction {
             }
         } catch (ProtocolException e) {
             xml = e.toXml();
-            returnXml (response, xml);
+            returnXml(response, xml);
         } catch (AssemblyException e) {
             xml = e.getMessage();
-            returnXml (response, xml);
+            returnXml(response, xml);
         }
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
@@ -221,7 +221,7 @@ public class QueryAction extends BaseAction {
     /**
      * Returns Total Number of Hits, as a single integer value.
      */
-    private void returnCountOnly (HttpServletResponse response,
+    private void returnCountOnly(HttpServletResponse response,
             XmlAssembly xmlAssembly) {
         try {
             response.setContentType("text/html");

@@ -33,9 +33,9 @@ import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.pathdb.util.PsiUtil;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -73,9 +73,10 @@ public class TestPsiUtil extends TestCase {
 
     /**
      * Tests PsiUtil.removeEmptySecondaryRefs()
+     *
      * @throws Exception All Exceptions.
      */
-    public void testRemovalOfSecondaryRefs () throws Exception {
+    public void testRemovalOfSecondaryRefs() throws Exception {
         // An actual excerpt from HPRD:
         // <xref>
         //   <primaryRef db="HPRD" id="HPRD_00400"/>
@@ -115,25 +116,29 @@ public class TestPsiUtil extends TestCase {
         xref.setSecondaryRef(secondaryRefs);
 
         //  Now remove empty secondary refs
-        PsiUtil psiUtil = new PsiUtil (new ProgressMonitor());
+        PsiUtil psiUtil = new PsiUtil(new ProgressMonitor());
         psiUtil.removeEmptySecondaryRefs(xref);
 
         //  Validate that empty refs are now removed.
         //  Should only be 3 refs remaining.
-        assertEquals (3, xref.getSecondaryRefCount());
+        assertEquals(3, xref.getSecondaryRefCount());
 
         //  Validate 0th Element
         secondaryRef = xref.getSecondaryRef(0);
-        assertEquals ("PubMed", secondaryRef.getDb());
-        assertEquals ("10610782", secondaryRef.getId());
+        assertEquals("PubMed", secondaryRef.getDb());
+        assertEquals("10610782", secondaryRef.getId());
 
         //  Validate Last Element
         secondaryRef = xref.getSecondaryRef(2);
-        assertEquals ("PubMed", secondaryRef.getDb());
-        assertEquals ("11367533", secondaryRef.getId());
+        assertEquals("PubMed", secondaryRef.getDb());
+        assertEquals("11367533", secondaryRef.getId());
     }
 
-    public void testRemovalOfVersionInformation () throws Exception {
+    /**
+     * Tests Removal of Version Information.
+     * @throws Exception All Exceptions.
+     */
+    public void testRemovalOfVersionInformation() throws Exception {
         XrefType xref = new XrefType();
         DbReferenceType primaryRef = new DbReferenceType();
         primaryRef.setDb("Ref-Seq");
@@ -144,7 +149,7 @@ public class TestPsiUtil extends TestCase {
         util.normalizeXrefs(xref);
 
         primaryRef = xref.getPrimaryRef();
-        assertEquals ("NP_000680", primaryRef.getId());
+        assertEquals("NP_000680", primaryRef.getId());
     }
 
     private void validateInteractionUpdate(Entry entry) throws Exception {

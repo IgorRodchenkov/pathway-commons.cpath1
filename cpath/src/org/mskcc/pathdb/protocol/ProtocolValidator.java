@@ -107,12 +107,13 @@ public class ProtocolValidator {
 
     /**
      * Validates the MaxHits Parameter.
+     *
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateMaxHits() throws ProtocolException {
         int maxHits = request.getMaxHitsInt();
         if (maxHits > ProtocolConstants.MAX_NUM_HITS) {
-            throw new ProtocolException (ProtocolStatusCode.INVALID_ARGUMENT,
+            throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                     "To prevent overloading of the system, clients are "
                     + "restricted to a maximum of "
                     + ProtocolConstants.MAX_NUM_HITS + " hits at a time.");

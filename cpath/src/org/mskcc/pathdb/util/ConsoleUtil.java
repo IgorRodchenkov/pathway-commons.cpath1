@@ -57,7 +57,7 @@ public class ConsoleUtil {
             if (currentValue % 100 == 0) {
                 NumberFormat format = DecimalFormat.getPercentInstance();
                 double percent = pMonitor.getPercentComplete();
-                msg = new String ("Percentage Complete:  "
+                msg = new String("Percentage Complete:  "
                         + format.format(percent));
                 System.out.println("\n" + msg);
             }

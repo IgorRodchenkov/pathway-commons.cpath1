@@ -43,14 +43,16 @@ public class ProgressMonitor {
     /**
      * Sets Console Flag.
      * When set to true Progress Monitor Messages are displayed to System.out.
-     * @param consoleFlag
+     *
+     * @param consoleFlag Console Mode Flag.
      */
-    public void setConsoleMode (boolean consoleFlag) {
+    public void setConsoleMode(boolean consoleFlag) {
         this.consoleMode = consoleFlag;
     }
 
     /**
      * Gets Console Mode Flag.
+     *
      * @return Boolean Flag.
      */
     public boolean isConsoleMode() {

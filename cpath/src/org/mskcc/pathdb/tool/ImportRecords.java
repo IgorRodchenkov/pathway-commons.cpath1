@@ -52,7 +52,8 @@ public class ImportRecords {
      * Transfers Data.
      *
      * @param validateExternalReferences Flag to Validate External References.
-     * @param removeAllXrefs Removes All PSI-MI XRefs (Not recommended!)
+     * @param removeAllXrefs             Removes All PSI-MI XRefs
+     *                                   (Not recommended!)
      * @throws DaoException    Data Access Error.
      * @throws ImportException Data Import Error.
      */
@@ -100,8 +101,8 @@ public class ImportRecords {
         String xml = record.getData();
         ImportPsiToCPath importer = new ImportPsiToCPath();
         if (removeAllXrefs) {
-            pMonitor.setCurrentMessage("Warning!  Data Import will " +
-                    "automatically remove all PSI-MI xrefs.");
+            pMonitor.setCurrentMessage("Warning!  Data Import will "
+                    + "automatically remove all PSI-MI xrefs.");
         }
         ImportSummary summary = importer.addRecord(xml,
                 validateExternalReferences, removeAllXrefs, pMonitor);

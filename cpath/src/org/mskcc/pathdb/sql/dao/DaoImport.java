@@ -37,10 +37,10 @@ import org.mskcc.pathdb.util.ZipUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.BufferOverflowException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.nio.BufferOverflowException;
 
 /**
  * Data Access Object to the Import Table.
@@ -190,7 +190,7 @@ public class DaoImport {
                     + "copy of the data file while failed.  Alternatively, "
                     + "refer to DaoImport.implementJdkWorkAround() for "
                     + "complete details.");
-            throw new DaoException (ie);
+            throw new DaoException(ie);
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
@@ -209,11 +209,11 @@ public class DaoImport {
      * First, some background:  when trying to import a very large file from
      * HPRD, DaoImport was throwing a BufferOverflowException during the
      * creation of the MD5 and the creation of the Zip File.
-     *
+     * <p/>
      * Turns out that this is a documented bug in JDK 1.4:
      * http://bugs.sun.com/bugdatabase/view_bug.do;:YfiG?bug_id=4949631
      * As of this writing (October 21, 2004), the bug remains open.
-     *
+     * <p/>
      * The code below is a word-around suggested by the bug reporter.
      * The work-around is a bit of a hack, but it does work.
      *

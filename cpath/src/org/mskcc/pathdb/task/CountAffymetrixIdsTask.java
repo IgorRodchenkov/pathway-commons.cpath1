@@ -29,26 +29,22 @@
  **/
 package org.mskcc.pathdb.task;
 
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.util.ConsoleUtil;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.schemas.psi.DbReferenceType;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.dataservices.schemas.psi.XrefType;
-import org.mskcc.dataservices.schemas.psi.DbReferenceType;
-import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.MarshalException;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.util.ConsoleUtil;
 
+import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.io.StringReader;
 
 /**
  * Given a TaxonomyId, this class locates all physical entity records
@@ -68,7 +64,7 @@ public class CountAffymetrixIdsTask extends Task {
     /**
      * Constructor.
      *
-     * @param taxonomyId NCBI Taxonomy ID.
+     * @param taxonomyId  NCBI Taxonomy ID.
      * @param consoleMode Console Flag.  Set to true for console tools.
      * @throws DaoException Error Connecting to Database.
      */
@@ -93,16 +89,16 @@ public class CountAffymetrixIdsTask extends Task {
                     + "%) have Affymetrix IDs.");
         }
 
-        pMonitor.setCurrentMessage("\nOf those proteins without Affymetrix " +
-                "IDs, the following databases were found:  ");
+        pMonitor.setCurrentMessage("\nOf those proteins without Affymetrix "
+                + "IDs, the following databases were found:  ");
         Iterator keys = dbMap.keySet().iterator();
         while (keys.hasNext()) {
             String dbName = (String) keys.next();
             Integer counter = (Integer) dbMap.get(dbName);
             System.out.println(dbName + ":  " + counter);
-         }
+        }
         pMonitor.setCurrentMessage("\nTotal Number of Proteins that have no "
-            + "external database identifiers:  " + numProteinsWithoutXrefs);
+                + "external database identifiers:  " + numProteinsWithoutXrefs);
     }
 
     /**
@@ -158,7 +154,7 @@ public class CountAffymetrixIdsTask extends Task {
 
     private void trackOtherIds(String xmlContent, HashMap dbMap)
             throws DaoException {
-        StringReader reader = new StringReader (xmlContent);
+        StringReader reader = new StringReader(xmlContent);
         try {
             ProteinInteractorType protein =
                     ProteinInteractorType.unmarshalProteinInteractorType
@@ -167,36 +163,36 @@ public class CountAffymetrixIdsTask extends Task {
             if (xref != null) {
                 DbReferenceType primaryRef = xref.getPrimaryRef();
                 if (primaryRef != null) {
-                    incrementMapCounter (primaryRef, dbMap);
-                    for (int i=0; i < xref.getSecondaryRefCount(); i++) {
+                    incrementMapCounter(primaryRef, dbMap);
+                    for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
                         DbReferenceType secondaryRef = xref.getSecondaryRef(i);
-                        incrementMapCounter (secondaryRef, dbMap);
+                        incrementMapCounter(secondaryRef, dbMap);
                     }
                 }
-                if (primaryRef == null && xref.getSecondaryRefCount() ==0) {
+                if (primaryRef == null && xref.getSecondaryRefCount() == 0) {
                     numProteinsWithoutXrefs++;
                 }
             }
         } catch (ValidationException e) {
             System.err.println("Failed while processing XML:  " + xmlContent);
-            throw new DaoException (e);
+            throw new DaoException(e);
         } catch (MarshalException e) {
             System.err.println("Failed while processing XML:  " + xmlContent);
-            throw new DaoException (e);
+            throw new DaoException(e);
         }
     }
 
-    private void incrementMapCounter (DbReferenceType dbRef, HashMap dbMap) {
-        String db  = dbRef.getDb();
+    private void incrementMapCounter(DbReferenceType dbRef, HashMap dbMap) {
+        String db = dbRef.getDb();
         if (db.equals("uniprot")) {
             System.out.println("uniprot: " + dbRef.getId());
         }
         if (dbMap.containsKey(db)) {
             Integer counter = (Integer) dbMap.get(db);
-            counter = new Integer (counter.intValue() + 1);
+            counter = new Integer(counter.intValue() + 1);
             dbMap.put(db, counter);
         } else {
-            dbMap.put(db, new Integer (1));
+            dbMap.put(db, new Integer(1));
         }
     }
 }

@@ -37,8 +37,8 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.util.PsiUtil;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      * Constructor.
      *
      * @param newProtein new protein Record, scheduled for import.
-     * @param pMonitor ProgressMonitor Object.
+     * @param pMonitor   ProgressMonitor Object.
      * @throws DaoException         Error Adding new data to database.
      * @throws ValidationException  Invalid XML
      * @throws MarshalException     Error Marshaling to XML.
@@ -96,13 +96,13 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      *
      * @param existingProtein Existing Protein, in database.
      * @param newProtein      new protein Record, scheduled for import.
-     * @param pMonitor ProgressMonitor Object. 
+     * @param pMonitor        ProgressMonitor Object.
      * @throws ValidationException  Invalid XML
      * @throws MarshalException     Error Marshaling to XML.
      * @throws MissingDataException XML is missing data.*
      */
     public UpdatePsiInteractor(CPathRecord existingProtein,
-            ProteinInteractorType newProtein, ProgressMonitor pMonitor) 
+            ProteinInteractorType newProtein, ProgressMonitor pMonitor)
             throws ValidationException,
             MarshalException, MissingDataException {
         this.pMonitor = pMonitor;
@@ -118,7 +118,7 @@ public class UpdatePsiInteractor extends UpdateInteractor {
      * @param newRef            New Reference to Add.
      * @param existingRef       Existing Reference.
      * @param refsAreNormalized References have already been normalized.
-     * @param pMonitor ProgressMonitor Object. 
+     * @param pMonitor          ProgressMonitor Object.
      * @throws DaoException         Error Adding new data to database.
      * @throws MissingDataException XML is missing data.
      */

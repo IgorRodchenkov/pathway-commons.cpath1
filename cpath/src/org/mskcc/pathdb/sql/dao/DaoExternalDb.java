@@ -128,9 +128,9 @@ public class DaoExternalDb {
         ResultSet rs = null;
 
         //  Verify name is not null or empty;  part of bug #0000508
-        if (name == null || name.length() == 0){
-            throw new IllegalArgumentException ("Database name is null "
-                + "or empty.");
+        if (name == null || name.length() == 0) {
+            throw new IllegalArgumentException("Database name is null "
+                    + "or empty.");
         }
 
         try {
@@ -160,9 +160,9 @@ public class DaoExternalDb {
             throws DaoException {
 
         //  Verify term is not null or empty;  part of bug #0000508
-        if (term == null || term.length() == 0){
-            throw new IllegalArgumentException ("Database name is null "
-                + "or empty.");
+        if (term == null || term.length() == 0) {
+            throw new IllegalArgumentException("Database name is null "
+                    + "or empty.");
         }
 
         // First Check Global Cache

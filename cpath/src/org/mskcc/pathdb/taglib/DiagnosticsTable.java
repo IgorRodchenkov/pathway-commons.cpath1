@@ -164,7 +164,8 @@ public class DiagnosticsTable extends HtmlTable {
         try {
             DiagnosticTestResults test = new DiagnosticTestResults
                     ("Testing access to Lucene Full Text Index<BR>"
-                    + "Lucene Directory:  " + LuceneConfig.getLuceneDirectory());
+                    + "Lucene Directory:  "
+                    + LuceneConfig.getLuceneDirectory());
             try {
                 indexer.executeQuery("dna");
             } catch (QueryException e) {

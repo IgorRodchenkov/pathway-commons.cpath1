@@ -1,3 +1,32 @@
+/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+ **
+ ** Code written by: Ethan Cerami
+ ** Authors: Ethan Cerami, Gary Bader, Chris Sander
+ **
+ ** This library is free software; you can redistribute it and/or modify it
+ ** under the terms of the GNU Lesser General Public License as published
+ ** by the Free Software Foundation; either version 2.1 of the License, or
+ ** any later version.
+ **
+ ** This library is distributed in the hope that it will be useful, but
+ ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
+ ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
+ ** documentation provided hereunder is on an "as is" basis, and
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has no obligations to provide maintenance, support,
+ ** updates, enhancements or modifications.  In no event shall
+ ** Memorial Sloan-Kettering Cancer Center
+ ** be liable to any party for direct, indirect, special,
+ ** incidental or consequential damages, including lost profits, arising
+ ** out of the use of this software and its documentation, even if
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has been advised of the possibility of such damage.  See
+ ** the GNU Lesser General Public License for more details.
+ **
+ ** You should have received a copy of the GNU Lesser General Public License
+ ** along with this library; if not, write to the Free Software Foundation,
+ ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+ **/
 package org.mskcc.pathdb.task;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
@@ -5,8 +34,8 @@ import org.mskcc.pathdb.model.IdMapRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoIdMap;
-import org.mskcc.pathdb.util.FileUtil;
 import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.util.FileUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,10 +50,10 @@ import java.util.StringTokenizer;
  * <P>
  * Here is an example ID mappings file (see:  testData/id_map.txt):
  * <PRE>
-Affymetrix       UniGene        LocusLink       SwissProt	    RefSeq
-1552275_3p_s_at  Hs.77646                       AAH08943 Q727A4 NP_060241
-1552281_sp_at                   283375          Q8N6Y3          NP_775867
-</PRE>
+ * Affymetrix       UniGene        LocusLink       SwissProt       RefSeq
+ * 1552275_3p_s_at  Hs.77646                       AAH08943 Q727A4 NP_060241
+ * 1552281_sp_at                   283375          Q8N6Y3          NP_775867
+ * </PRE>
  * <P>A few items to note:
  * <UL>
  * <LI>The file is tab-delimited.
@@ -43,13 +72,15 @@ Affymetrix       UniGene        LocusLink       SwissProt	    RefSeq
  * illustrated with sample data.  For example, the first line of data above
  * generates the following set of internal links:
  * <PRE>
-                                      +--- SwissProt ------  RefSeq
-                                      |    AAH08943          NP_060241
-  Affymetrix      -------  UniGene    +
-  1552275_3p_s_at          Hs.77646   |
-                                      +--- SwissProt
-                                           Q727A4
- </PRE>
+ * +--- SwissProt ------  RefSeq
+ * |    AAH08943          NP_060241
+ * Affymetrix      -------  UniGene    +
+ * 1552275_3p_s_at          Hs.77646   |
+ * +--- SwissProt
+ * Q727A4
+ * </PRE>
+ *
+ * @author Ethan Cerami.
  */
 public class ParseIdMappingsTask extends Task {
     /**
@@ -58,9 +89,9 @@ public class ParseIdMappingsTask extends Task {
     private File file;
 
     /**
-     *  Flag to save all IdMapRecord objects to the database.
-     *  If this is set to false, all IdMapRecords will be stored in an
-     *  ArrayList, instead of the Database.
+     * Flag to save all IdMapRecord objects to the database.
+     * If this is set to false, all IdMapRecords will be stored in an
+     * ArrayList, instead of the Database.
      */
     private boolean saveToDatabase = true;
 
@@ -72,7 +103,7 @@ public class ParseIdMappingsTask extends Task {
     /**
      * Constructor.
      *
-     * @param file File Containing ID Mappings.
+     * @param file        File Containing ID Mappings.
      * @param consoleMode Console Mode.
      */
     public ParseIdMappingsTask(File file, boolean consoleMode) {
@@ -83,9 +114,10 @@ public class ParseIdMappingsTask extends Task {
     /**
      * Parses the ID Mappings File, and automatically stores all new
      * ID mappings to the database.
+     *
      * @return number of new id mapping records saved to database.
-     * @throws IOException      Error Reading Data File.
-     * @throws DaoException     Error Connecting to Database.
+     * @throws IOException  Error Reading Data File.
+     * @throws DaoException Error Connecting to Database.
      */
     public int parseAndStoreToDb() throws IOException, DaoException {
         //  Initialize Number of Records Saved To Database
@@ -104,7 +136,7 @@ public class ParseIdMappingsTask extends Task {
         ArrayList dbList = extractDatabaseList(tokenizer);
 
         //  For each line of data
-        while ((line = getNextLine (buf)) != null) {
+        while ((line = getNextLine(buf)) != null) {
             ProgressMonitor pMonitor = this.getProgressMonitor();
             ConsoleUtil.showProgress(pMonitor);
             ExternalDatabaseRecord dbRecord1 = null;
@@ -114,7 +146,7 @@ public class ParseIdMappingsTask extends Task {
             String tokens[] = line.split("\t");
 
             //  Process all IDs
-            for (int i=0; i<tokens.length; i++) {
+            for (int i = 0; i < tokens.length; i++) {
                 ExternalDatabaseRecord dbRecord2 =
                         (ExternalDatabaseRecord) dbList.get(i);
                 if (dbRecord1 != null && id1 != null
@@ -122,11 +154,12 @@ public class ParseIdMappingsTask extends Task {
 
                     //  Process Multiple IDs in Each Column
                     String ids[] = tokens[i].split(" ");
-                    for (int j=0; j<ids.length; j++) {
+                    for (int j = 0; j < ids.length; j++) {
                         IdMapRecord idRecord = new IdMapRecord
-                          (dbRecord1.getId(),id1, dbRecord2.getId(), ids[j]);
+                                (dbRecord1.getId(), id1, dbRecord2.getId(),
+                                        ids[j]);
                         if (saveToDatabase) {
-                            numRecordsSaved += storeToDatabase (idRecord);
+                            numRecordsSaved += storeToDatabase(idRecord);
                         } else {
                             idList.add(idRecord);
                         }
@@ -151,8 +184,8 @@ public class ParseIdMappingsTask extends Task {
      * This method is primarily used by the JUnit test.
      *
      * @return ArrayList of IdMapRecord Objects.
-     * @throws IOException      Error Reading Data File.
-     * @throws DaoException     Error Connecting to Database.
+     * @throws IOException  Error Reading Data File.
+     * @throws DaoException Error Connecting to Database.
      */
     public ArrayList parseAndGenerateList() throws IOException, DaoException {
         saveToDatabase = false;
@@ -162,10 +195,11 @@ public class ParseIdMappingsTask extends Task {
 
     /**
      * Conditionally Saves Record to Database.
+     *
      * @param idRecord IdMapRecord.
      * @return 1 indicates record was saved;  0 indicates record was not saved.
      */
-    private int storeToDatabase (IdMapRecord idRecord) throws DaoException {
+    private int storeToDatabase(IdMapRecord idRecord) throws DaoException {
         //  The Database Access Object ensures that the record does not
         //  already exist in the db
         DaoIdMap dao = new DaoIdMap();
@@ -175,6 +209,7 @@ public class ParseIdMappingsTask extends Task {
 
     /**
      * Initializes the Progress Monitor.
+     *
      * @throws IOException Error Reading File.
      */
     private void initProgressMonitor() throws IOException {

@@ -44,6 +44,7 @@ public class TestCountAffymetrixId extends TestCase {
 
     /**
      * Test the Affymetrix Counter.
+     *
      * @throws Exception All Exceptions.
      */
     public void test() throws Exception {

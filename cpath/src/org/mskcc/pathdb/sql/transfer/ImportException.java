@@ -59,7 +59,8 @@ public class ImportException extends Exception {
 
     /**
      * Gets Error Message.
-     * @return
+     *
+     * @return Error Message String.
      */
     public String getMessage() {
         return msg;

@@ -92,6 +92,7 @@ public class TestDaoExternalLink extends TestCase {
 
     /**
      * Tests Empty ID Issue, related to bug #0000508.
+     *
      * @throws Exception All Exceptions.
      */
     public void testEmptyIds() throws Exception {
@@ -106,18 +107,18 @@ public class TestDaoExternalLink extends TestCase {
         boolean success = false;
         try {
             success = db.addRecord(link, false);
-            fail ("IllegalArgumentException should have been thrown.");
+            fail("IllegalArgumentException should have been thrown.");
         } catch (IllegalArgumentException e) {
-            assertEquals (false, success);
+            assertEquals(false, success);
         }
 
         ExternalReference refs[] = new ExternalReference[1];
-        refs[0] = new ExternalReference ("", "");
+        refs[0] = new ExternalReference("", "");
         try {
             db.validateExternalReferences(refs);
-            fail ("ExternalDatabaseNotFoundException should have been thrown.");
+            fail("ExternalDatabaseNotFoundException should have been thrown.");
         } catch (ExternalDatabaseNotFoundException e) {
-            assertEquals (false, success);
+            assertEquals(false, success);
         }
     }
 

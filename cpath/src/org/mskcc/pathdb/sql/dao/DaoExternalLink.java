@@ -98,9 +98,9 @@ public class DaoExternalLink {
         //  Validate Incoming Links are not Null or Empty, part of bug #0000508.
         //  JUnit Test occurs in TestDaoExternalLinks.testEmptyIds();
         String linkedToId = link.getLinkedToId();
-        if (linkedToId == null || linkedToId.length() ==0) {
-            throw new IllegalArgumentException ("External Reference "
-            + "ID is null or empty.");
+        if (linkedToId == null || linkedToId.length() == 0) {
+            throw new IllegalArgumentException("External Reference "
+                    + "ID is null or empty.");
         }
         try {
             con = JdbcUtil.getCPathConnection();

@@ -1,7 +1,36 @@
+/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+ **
+ ** Code written by: Ethan Cerami
+ ** Authors: Ethan Cerami, Gary Bader, Chris Sander
+ **
+ ** This library is free software; you can redistribute it and/or modify it
+ ** under the terms of the GNU Lesser General Public License as published
+ ** by the Free Software Foundation; either version 2.1 of the License, or
+ ** any later version.
+ **
+ ** This library is distributed in the hope that it will be useful, but
+ ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
+ ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
+ ** documentation provided hereunder is on an "as is" basis, and
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has no obligations to provide maintenance, support,
+ ** updates, enhancements or modifications.  In no event shall
+ ** Memorial Sloan-Kettering Cancer Center
+ ** be liable to any party for direct, indirect, special,
+ ** incidental or consequential damages, including lost profits, arising
+ ** out of the use of this software and its documentation, even if
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has been advised of the possibility of such damage.  See
+ ** the GNU Lesser General Public License for more details.
+ **
+ ** You should have received a copy of the GNU Lesser General Public License
+ ** along with this library; if not, write to the Free Software Foundation,
+ ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+ **/
 package org.mskcc.pathdb.sql.dao;
 
-import org.mskcc.pathdb.model.IdMapRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.IdMapRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
@@ -37,12 +66,12 @@ public class DaoIdMap {
         DaoExternalDb dao = new DaoExternalDb();
         ExternalDatabaseRecord dbRecord1 = dao.getRecordById(record.getDb1());
         if (dbRecord1 == null) {
-            throw new IllegalArgumentException ("External Database, DB1:  "
+            throw new IllegalArgumentException("External Database, DB1:  "
                     + record.getDb1() + " does not exist in database.");
         }
         ExternalDatabaseRecord dbRecord2 = dao.getRecordById(record.getDb1());
         if (dbRecord2 == null) {
-            throw new IllegalArgumentException ("External Database, DB2:  "
+            throw new IllegalArgumentException("External Database, DB2:  "
                     + record.getDb2() + " does not exist in database.");
         }
 
@@ -148,10 +177,10 @@ public class DaoIdMap {
      * @return IdMapRecord, if the record exists;  otherwise, null.
      * @throws DaoException Error Retrieving Data.
      */
-    public IdMapRecord getRecord (IdMapRecord idRecord) throws DaoException {
-        IdMapRecord option1 = getRecord (idRecord.getDb1(), idRecord.getId1(),
+    public IdMapRecord getRecord(IdMapRecord idRecord) throws DaoException {
+        IdMapRecord option1 = getRecord(idRecord.getDb1(), idRecord.getId1(),
                 idRecord.getDb2(), idRecord.getId2());
-        IdMapRecord option2 = getRecord (idRecord.getDb2(),
+        IdMapRecord option2 = getRecord(idRecord.getDb2(),
                 idRecord.getId2(), idRecord.getDb1(), idRecord.getId1());
         if (option1 != null) {
             return option1;
@@ -197,7 +226,7 @@ public class DaoIdMap {
      * @return IdMapRecord, if the record exists;  otherwise, null.
      * @throws DaoException Error Retrieving Data.
      */
-    private IdMapRecord getRecord (int db1, String id1, int db2,
+    private IdMapRecord getRecord(int db1, String id1, int db2,
             String id2) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -206,7 +235,7 @@ public class DaoIdMap {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT * FROM id_map WHERE DB_1 = ? AND ID_1 = ? "
-                        + "AND DB_2 = ? AND ID_2 = ?");
+                    + "AND DB_2 = ? AND ID_2 = ?");
             pstmt.setInt(1, db1);
             pstmt.setString(2, id1);
             pstmt.setInt(3, db2);

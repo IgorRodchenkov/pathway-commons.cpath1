@@ -161,7 +161,7 @@ public class ImportPsiToCPath {
             EntrySet entrySet = null;
             entrySet = psiUtil.getNormalizedDocument(xml, removeAllXrefs);
             pMonitor.setCurrentMessage
-                ("Normalization Complete:  Document is valid.");
+                    ("Normalization Complete:  Document is valid.");
 
             //  Validate Interactors / External References.
             if (validateExternalRefs) {
@@ -251,15 +251,17 @@ public class ImportPsiToCPath {
         try {
             protein.marshal(writer);
         } catch (MarshalException e1) {
+            e.printStackTrace(System.err);
         } catch (ValidationException e1) {
+            e.printStackTrace(System.err);
         }
-        throw new MissingDataException ("PSI-MI Protein ["
+        throw new MissingDataException("PSI-MI Protein ["
                 + protein.getNames().getShortLabel() + ":"
                 + protein.getNames().getFullName() + ":"
-                + protein.getId() + "] is missing data:  " +
-                e.getMessage() + " Protein is located at " +
-                "index position " + (j+1) + " of " +
-                interactors.getProteinInteractorCount() +"."
+                + protein.getId() + "] is missing data:  "
+                + e.getMessage() + " Protein is located at "
+                + "index position " + (j + 1) + " of "
+                + interactors.getProteinInteractorCount() + "."
                 + "\n\nData Dump of Offending Protein XML follows:  \n\n"
                 + writer.toString());
     }
@@ -274,15 +276,17 @@ public class ImportPsiToCPath {
         try {
             interaction.marshal(writer);
         } catch (MarshalException e1) {
+            e.printStackTrace(System.err);
         } catch (ValidationException e1) {
+            e.printStackTrace(System.err);
         }
-        throw new MissingDataException ("PSI-MI Interaction "
-            + "is missing data:  " + e.getMessage()
-            + " Interaction is located at index position "
-            + (j+1) + " of " + interactions.getInteractionCount()
-            + "." + "  \n\nData Dump of Offending Interaction XML "
-            + "follows:  \n\n"
-            + writer.toString());
+        throw new MissingDataException("PSI-MI Interaction "
+                + "is missing data:  " + e.getMessage()
+                + " Interaction is located at index position "
+                + (j + 1) + " of " + interactions.getInteractionCount()
+                + "." + "  \n\nData Dump of Offending Interaction XML "
+                + "follows:  \n\n"
+                + writer.toString());
     }
 
     /**
@@ -328,7 +332,8 @@ public class ImportPsiToCPath {
                     summary.incrementNumInteractorsFound();
                     String refListText = this.getReferencesAsText(filteredRefs);
                     pMonitor.setCurrentMessage("\nExisting interactor found "
-                        + " in cPath,  " + "based on xrefs:  " + refListText);
+                            + " in cPath,  " + "based on xrefs:  "
+                            + refListText);
                 } else {
                     saveInteractor(protein, refs);
                     summary.incrementNumInteractorsSaved();
@@ -483,22 +488,23 @@ public class ImportPsiToCPath {
                 cpath.deleteRecordById(record.getId());
                 summary.incrementNumInteractionsClobbered();
                 String refList = getReferencesAsText(filteredRefs);
-                pMonitor.setCurrentMessage("\nWarning!  Clobbering existing " +
-                        "interaction, based on xrefs:  " + refList.toString());
+                pMonitor.setCurrentMessage("\nWarning!  Clobbering existing "
+                        + "interaction, based on xrefs:  "
+                        + refList.toString());
             } else {
                 String refStr = getReferencesAsText(refs);
-                throw new ImportException ("Interaction contains the "
-                    + "following xrefs:  " + refStr + ".  However, one of "
-                    + "these xrefs is already used by an interactor. "
-                    + "The interaction xrefs therefore cannot be trusted.  "
-                    + "Please double check them.  Aborting import.");
+                throw new ImportException("Interaction contains the "
+                        + "following xrefs:  " + refStr + ".  However, one of "
+                        + "these xrefs is already used by an interactor. "
+                        + "The interaction xrefs therefore cannot be trusted.  "
+                        + "Please double check them.  Aborting import.");
             }
         }
     }
 
     private String getReferencesAsText(ExternalReference[] refs) {
         StringBuffer refList = new StringBuffer();
-        for (int i=0; i<refs.length; i++) {
+        for (int i = 0; i < refs.length; i++) {
             String db = refs[i].getDatabase();
             String id = refs[i].getId();
             refList.append(" [db=" + db + ", id=" + id + "]");

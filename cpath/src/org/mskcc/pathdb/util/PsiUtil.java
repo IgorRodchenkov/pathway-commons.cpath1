@@ -58,6 +58,7 @@ public class PsiUtil {
 
     /**
      * Constructor.
+     *
      * @param pMonitor ProgressMonitor Object
      */
     public PsiUtil(ProgressMonitor pMonitor) {
@@ -67,7 +68,7 @@ public class PsiUtil {
     /**
      * Gets the Normalized PSI Document.
      *
-     * @param xml XML Document String.
+     * @param xml            XML Document String.
      * @param removeAllXrefs Automatically Removes all XRefs (not recommended).
      * @return PSI Entry Set Object.
      * @throws ValidationException Validation Error in Document.
@@ -224,9 +225,10 @@ public class PsiUtil {
 
     /**
      * Remove Version Information from LinkedToID.
+     *
      * @param id LinkedToID.
      */
-    private String stripVersionInfo (String id) {
+    private String stripVersionInfo(String id) {
         if (id != null) {
             int index = id.indexOf(".");
             if (index > -1) {
@@ -248,7 +250,7 @@ public class PsiUtil {
         ArrayList safeRefs = new ArrayList();
         if (xref != null) {
             //  First, get all Secondary Refs
-            DbReferenceType secondaryRefs[]= xref.getSecondaryRef();
+            DbReferenceType secondaryRefs[] = xref.getSecondaryRef();
 
             //  Check for Null SecondaryRefs
             if (secondaryRefs != null) {
@@ -257,7 +259,7 @@ public class PsiUtil {
                 xref.removeAllSecondaryRef();
 
                 //  Then, add back only valid secondary refs
-                for (int i=0; i < secondaryRefs.length; i++) {
+                for (int i = 0; i < secondaryRefs.length; i++) {
                     DbReferenceType dbRef = secondaryRefs[i];
                     String db = dbRef.getDb();
                     String id = dbRef.getId();
@@ -266,15 +268,17 @@ public class PsiUtil {
                             id = "No id attribute available either";
                         }
                         pMonitor.setCurrentMessage
-                            ("Warning!  Removing Secondary Xref with empty db "
-                                + "attribute: [xref id = " + id.trim() + "]");
-                    } else if (id == null || id.trim().length()==0) {
-                        if (db ==  null){
+                                ("Warning!  Removing Secondary Xref with "
+                                + "empty db attribute: [xref id = "
+                                + id.trim() + "]");
+                    } else if (id == null || id.trim().length() == 0) {
+                        if (db == null) {
                             db = "No db attribute available either";
                         }
                         pMonitor.setCurrentMessage
-                            ("Warning!  Removing Secondary Xref with empty id "
-                                + "attribute:  [xref db = " + db.trim() + "]");
+                                ("Warning!  Removing Secondary Xref with "
+                                + "empty id attribute:  [xref db = "
+                                + db.trim() + "]");
                     } else {
                         dbRef.setDb(db.trim());
                         dbRef.setId(id.trim());
@@ -302,13 +306,13 @@ public class PsiUtil {
             ArrayList refList) throws MissingDataException {
         //  Added Check for Null or Empty DB;  part of bug fix #508
         if (db == null || db.trim().length() == 0) {
-            throw new MissingDataException ("Xref db is null or empty "
-                + " [xref id:  " + id + "]");
+            throw new MissingDataException("Xref db is null or empty "
+                    + " [xref id:  " + id + "]");
         }
         //  Added Check for Null or Empty ID;  part of bug fix #508
         if (id == null || id.trim().length() == 0) {
-            throw new MissingDataException ("Xref id is null or empty. "
-                + " [xref db:  " + db + "]");
+            throw new MissingDataException("Xref id is null or empty. "
+                    + " [xref db:  " + db + "]");
         }
         ExternalReference ref = new ExternalReference(db.trim(), id.trim());
         refList.add(ref);

@@ -31,11 +31,9 @@ package org.mskcc.pathdb.tool;
 
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
-import org.mskcc.pathdb.util.XmlValidator;
 import org.xml.sax.SAXException;
 
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * Command Line Tool for Loading PSI Data into cPath.

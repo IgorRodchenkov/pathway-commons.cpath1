@@ -32,8 +32,8 @@ package org.mskcc.pathdb.task;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
-import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
+import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.util.ConsoleUtil;
 
 import java.io.BufferedReader;
@@ -59,7 +59,7 @@ public class ImportReferencesTask extends Task {
      * Constructor.
      *
      * @param consoleMode Console Mode Flag.
-     * @param reader  Reader object with file contents.
+     * @param reader      Reader object with file contents.
      */
     public ImportReferencesTask(boolean consoleMode, Reader reader) {
         super("Import External Refs", consoleMode);
@@ -85,8 +85,8 @@ public class ImportReferencesTask extends Task {
      * Imports External References.
      * This public is public, if you want to run within the existing thread.
      *
-     * @throws IOException  Error Reading File.
-     * @throws DaoException Error Accessing Database.
+     * @throws IOException          Error Reading File.
+     * @throws DaoException         Error Accessing Database.
      * @throws MissingDataException XML is missing data.
      */
     public void importReferences() throws IOException, DaoException,

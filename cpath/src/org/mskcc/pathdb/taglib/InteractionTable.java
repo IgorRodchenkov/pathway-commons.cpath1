@@ -329,7 +329,7 @@ public class InteractionTable extends HtmlTable {
                     + fullName + "' HREF='" + url + "'>"
                     + fullName + "</A></TD>");
         } else {
-            append("<TD class='cpath3'>Not Specified</TD>");            
+            append("<TD class='cpath3'>Not Specified</TD>");
         }
     }
 
@@ -431,7 +431,7 @@ public class InteractionTable extends HtmlTable {
                 }
             }
         } else {
-            append ("Source Information Not Available");
+            append("Source Information Not Available");
         }
         append("</td>");
     }

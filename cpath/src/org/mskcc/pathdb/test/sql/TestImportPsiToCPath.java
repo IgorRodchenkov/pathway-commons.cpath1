@@ -59,7 +59,7 @@ public class TestImportPsiToCPath extends TestCase {
         String file = new String("testData/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
         ImportPsiToCPath importer = new ImportPsiToCPath();
-        ImportSummary summary = importer.addRecord(xml, true, 
+        ImportSummary summary = importer.addRecord(xml, true,
                 false, pMonitor);
         assertEquals(7, summary.getNumInteractorsProcessed());
         assertEquals(0, summary.getNumInteractorsFound());

@@ -48,7 +48,7 @@ public class ParseAffymetrix {
     public static void main(String args[]) {
         if (args.length != 3) {
             System.out.println("Usage:  affy.pl input_file output_file "
-                + "column_prefix");
+                    + "column_prefix");
             System.exit(1);
         }
         try {

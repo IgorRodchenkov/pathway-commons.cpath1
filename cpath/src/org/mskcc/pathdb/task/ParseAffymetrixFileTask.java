@@ -52,6 +52,8 @@ public class ParseAffymetrixFileTask extends Task {
      *
      * @param inFile  InputFile.
      * @param outFile OutputFile.
+     * @param columnPrefix Column Prefix.
+     * @param consoleMode Console Mode Flag.
      */
     public ParseAffymetrixFileTask(File inFile, File outFile,
             String columnPrefix, boolean consoleMode) {
@@ -127,7 +129,7 @@ public class ParseAffymetrixFileTask extends Task {
     private void extractIds(BufferedReader buf, int swpColumn)
             throws IOException {
         String lineSeparator = System.getProperty("line.separator");
-        fileWriter.write(columnPrefix +"\tAffymetrix" + lineSeparator);
+        fileWriter.write(columnPrefix + "\tAffymetrix" + lineSeparator);
         String line = buf.readLine();
         while (line != null) {
             ProgressMonitor pMonitor = this.getProgressMonitor();

@@ -80,9 +80,10 @@ public class TestProtocolValidator extends TestCase {
 
     /**
      * Tests the Max Hits Parameter
-     * @throws Exception
+     *
+     * @throws Exception All Exceptions.
      */
-    public void testMaxHits() throws NeedsHelpException {
+    public void testMaxHits() throws Exception {
         HashMap map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
                 ProtocolConstants.COMMAND_GET_BY_KEYWORD);
@@ -96,7 +97,7 @@ public class TestProtocolValidator extends TestCase {
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             ProtocolStatusCode code = e.getStatusCode();
-            assertEquals (ProtocolStatusCode.INVALID_ARGUMENT, code);
+            assertEquals(ProtocolStatusCode.INVALID_ARGUMENT, code);
         }
     }
 }
