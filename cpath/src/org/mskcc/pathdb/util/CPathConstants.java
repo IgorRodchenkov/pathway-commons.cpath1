@@ -39,7 +39,7 @@ public class CPathConstants {
     /**
      * Current cPath Version Number.
      */
-    public static final String VERSION = "0.3 (Beta) [September 3, 2004]";
+    public static final String VERSION = "0.3.1 (Beta)";
 
     /**
      * Property Name for PSI_SCHEMA_LOCATION
