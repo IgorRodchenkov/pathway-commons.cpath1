@@ -3,12 +3,20 @@ package org.mskcc.pathdb.action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.lucene.queryParser.ParseException;
 import org.mskcc.pathdb.controller.*;
 import org.mskcc.pathdb.sql.query.Query;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.util.XssFilter;
+import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
+import org.mskcc.dataservices.schemas.psi.Entry;
+import org.mskcc.dataservices.schemas.psi.InteractorList;
+import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
+import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Action for cPath Queries.
@@ -107,7 +117,38 @@ public class QueryAction extends BaseAction {
         validator.validate();
         XmlAssembly xmlAssembly = executeQuery(xdebug, protocolRequest);
         request.setAttribute(ATTRIBUTE_XML_ASSEMBLY, xmlAssembly);
+        try {
+            ArrayList interactorList = extractInteractors (xmlAssembly,
+                    protocolRequest, xdebug);
+            xdebug.logMsg(this, "Total Number of Interactors for "
+                + "Left Column:  " + interactorList.size());
+            if (interactorList != null) {
+                request.setAttribute(ATTRIBUTE_INTERACTOR_SET, interactorList);
+            }
+        } catch (MarshalException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (ValidationException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (IOException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (ParseException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+        }
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+    }
+
+    private ArrayList extractInteractors (XmlAssembly xmlAssembly,
+            ProtocolRequest request, XDebug xdebug) throws MarshalException,
+            ValidationException, IOException, ParseException {
+        EntrySet entrySet = (EntrySet) xmlAssembly.getXmlObject();
+        if (entrySet != null) {
+            PsiInteractorExtractor interactorExtractor =
+                    new PsiInteractorExtractor(entrySet,
+                    request.getQuery(), xdebug);
+            return interactorExtractor.getSortedInteractors();
+        } else {
+            return new ArrayList();
+        }
     }
 
     private XmlAssembly executeQuery(XDebug xdebug,
