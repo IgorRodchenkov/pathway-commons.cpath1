@@ -133,7 +133,7 @@ public class PsiInteractorExtractor {
         StringWriter writer = new StringWriter();
         protein.marshal(writer);
         String interactorText = XmlStripper.stripTags(writer.toString(),
-                true);
+                false);
         xdebug.logMsg(this, "Checking interactor:  " + interactorText);
 
         if (interactorText != null) {
