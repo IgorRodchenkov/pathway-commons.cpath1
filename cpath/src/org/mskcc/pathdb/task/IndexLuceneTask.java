@@ -47,6 +47,7 @@ public class IndexLuceneTask extends Task {
     public void run() {
         try {
             pMonitor.setCurrentMessage("Clearing XML Cache");
+            pMonitor.setCurrentMessage("Indexing Records");
             DaoXmlCache dao = new DaoXmlCache(new XDebug());
             dao.deleteAllRecords();
             indexAllInteractions();
