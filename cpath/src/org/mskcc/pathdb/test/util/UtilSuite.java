@@ -55,6 +55,7 @@ public class UtilSuite extends TestCase {
         suite.addTestSuite(TestFilter.class);
         suite.addTestSuite(TestLogUtil.class);
         suite.addTestSuite(TestAffymetrixParser.class);
+        suite.addTestSuite(TestExternalReferenceUtil.class);
         suite.setName("Utility Tests");
         return suite;
     }
