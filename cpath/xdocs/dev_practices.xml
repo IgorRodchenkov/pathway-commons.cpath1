@@ -9,7 +9,7 @@
 <section name="Motivation">
 <p>
 Mutually agreeable software development process guidelines should be documented and put in place whenever possible to increase the efficiency of cPath development in the context of a potentially geographically spread out developer team.  This process should serve to reduce bugs, increase the stability and regularity of cPath releases and generally help us to develop high-quality software in less time.  Additionally, documenting this process should provide clarity for new and existing members of the development team and make it easier for new people to join.
-</P>
+</p>
 </section>
 
 <section name="Development process guidelines">
@@ -30,7 +30,6 @@ Issue tracking has the following advantages:
 <LI>Bugs and features can be searched for similar past issues</LI>
 <LI>Allows us to report back to end users</LI>
 </UL>
-</P>
 
 cPath is using the open-source mantis bug-tracking system (http://mantisbt.sourceforge.net/).
 </p>
