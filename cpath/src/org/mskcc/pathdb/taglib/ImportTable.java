@@ -11,18 +11,6 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class ImportTable extends HtmlTable {
-    private boolean adminView = false;
-
-    /**
-     * Sets the Admin View.
-     *
-     * @param adminView Admin View.
-     */
-    public void setAdminView(String adminView) {
-        if (adminView.equalsIgnoreCase("yes")) {
-            this.adminView = true;
-        }
-    }
 
     /**
      * Executes JSP Custom Tag
@@ -32,18 +20,13 @@ public class ImportTable extends HtmlTable {
     public void subDoStartTag() throws Exception {
         DaoImport dbImport = new DaoImport();
         ArrayList records = dbImport.getAllRecords();
-        createHeader("cPath contains the following imported records:");
+        createHeader("cPath currently contains the following imported records:");
         this.startTable();
-        if (adminView) {
             String headers[] = {
                 "Status", "Description", "Upload Time",
-                "Update Time", "File Size (kb)", "View"
+                "Update Time", "View"
             };
             createTableHeaders(headers);
-        } else {
-            String headers[] = {"Description", "Upload Time"};
-            createTableHeaders(headers);
-        }
         outputRecords(records);
         endTable();
     }
@@ -54,25 +37,16 @@ public class ImportTable extends HtmlTable {
     private void outputRecords(ArrayList records) {
         for (int i = 0; i < records.size(); i++) {
             ImportRecord record = (ImportRecord) records.get(i);
-            String status = record.getStatus();
-            if (!status.equals(ImportRecord.STATUS_TRANSFERRED)
-                    && !adminView) {
-                continue;
-            }
             append("<TR>");
-            if (adminView) {
-                outputDataField(record.getStatus());
-            }
+            outputDataField(record.getStatus());
             outputDataField(record.getDescription());
             outputDataField(record.getCreateTime());
-            if (adminView) {
-                outputDataField(record.getUpdateTime());
-                append("<TD>");
-                this.outputLink("View Contents",
-                        "adminViewImportRecordXml.do?import_id="
-                        + record.getImportId());
-                append("</TD>");
-            }
+            outputDataField(record.getUpdateTime());
+            append("<TD>");
+            this.outputLink("View Contents",
+                    "adminViewImportRecordXml.do?import_id="
+                    + record.getImportId());
+            append("</TD>");
             append("</TR>");
         }
     }
