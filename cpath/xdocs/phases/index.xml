@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>Phase Development</title>
+  </properties>
+
+  <body>
+    <section name="Phased Development">
+      <p>
+          cPath currently uses an iterative development cycle for developing
+          new features.  At the beginning of each phase, we document
+          a list of new features, and flesh out the functional
+          requirements for each new feature.  We also provide technical
+          details on how to intend to implement each new feature.
+      </p>
+      <p>
+          The documents below contain information for each
+          phase of cPath development so far.
+      </p>
+      <table>
+          <tr>
+            <th>Phase</th>
+            <th>Summary</th>
+            <th>Approximate Date of Completion</th>
+          </tr>
+          <tr>
+                <td><A HREF="phase1.html">Phase 1</A></td>
+                <td>Implemented the first version of the the Data Services
+                Module.  The Data Services Module is a standalone library used
+                by both cPath and Cytoscape to retrieve biological
+                data from a diverse set of data sources.</td>
+                <td>April, 2003</td>
+          </tr>
+          <tr>
+                <td><A HREF="phase2.html">Phase 2</A></td>
+                <td>Implemented the first version of the cBio web service API.
+                The web service API was originally created to access a mirror
+                of the GRID database, and has since been integrated into
+                the core cPath code.
+                </td>
+                <td>June, 2003</td>
+          </tr>
+          <tr>
+                <td><A HREF="phase3.html">Phase 3</A></td>
+                <td>Continued expanding the Data Services Module, and
+                    created Cytoscape specific PlugIns for accessing remote
+                    data sets.
+                </td>
+                <td>July, 2003</td>
+          </tr>
+          <tr>
+                <td><A HREF="phase4.html">Phase 4</A></td>
+                <td>Continuted the Data Services Module, added support
+                    for network state information, and built the first
+                    prototype of the cPath web site.
+                </td>
+                <td>September, 2003</td>
+          </tr>
+          <tr>
+                <td><A HREF="phase5.html">Phase 5</A></td>
+                <td>Implemented the main cPath database tables for
+                    importing and linking external data sets.
+                </td>
+                <td>November, 2003</td>
+          </tr>
+          <tr>
+                <td><A HREF="phase6.html">Phase 6</A></td>
+                <td>Implemented the core set of cPath tables, XML import/
+                    export functionality, and full-text search functionality.                              </td>
+                <td>December, 2003</td>
+          </tr>
+          <tr>
+                <td><A HREF="phase7.html">Phase 7</A></td>
+                <td>Implemented the Cytoscape Activity Center Plugin,
+                and expanded the cPath Web Services API.  Released cPath
+                beta 1 to the cBio web site.</td>
+                <td>February, 2004</td>
+          </tr>
+          <tr>
+                <td><A HREF="phase8.html">Phase 8</A></td>
+                <td>Added cPath Admin functionality, created
+                generic framework for pre-computed queries, completed
+                load testing, created the developer site, and modified
+                the look and feel of cPath with new stylesheets.
+                Release beta 2 to the cBio web site</td>
+                <td>March, 2004</td>
+          </tr>
+      </table>
+     </section>
+  </body>
+</document>

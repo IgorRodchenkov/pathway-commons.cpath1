@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <body>
+        <section name="Phase 7:  About this Document">
+            <P> This document describes functionality that will be built in
+                Phase 7 of the Cytoscape / CPath project. </P>
+        </section>
+	<section name="Item 1:  Build a Network capable SIF Reader 
+		(Tech Lead:  Robert, Rolled over from Phase 6)">
+            <P>Right now, Cytoscape is capable of reading in SIF (Simple
+                Interaction Format) files from a local file system. However,
+                this feature is not integrated into the overall data services
+                framework, nor is it capable of reading in files from over a
+                network. </P>
+            <P> For Phase 6, we will create a new SIF Interaction Service. This
+                will be integrated into the overall data services framework and
+                will be capable of reading in data via HTTP and FTP. Currently,
+                we use the Jakarta Http Client for HTTP connections, and we need
+                to evaluate a library for FTP connections. An overview of
+                available FTP libraries for Java is available at <A
+                    HREF="http://www.javaworld.com/javaworld/jw-04-2003/jw-0404-ftp.html">Java
+                World</A>. </P>
+            <P>Once this reader is complete, we will add this new reader to our
+                public data services plugin. </P>
+        </section>
+
+	<section name="Item 2:  Activity Center PlugIn
+	       (Tech Lead:  Ethan, Rolled over from Phase 6)">
+            <P> Our plan is to build a first pass of the Activity Center PlugIn. </P>
+            <subsection name="Use Case:  Run the Activity Center Plugin">
+                <P> From the end-user perspective, here is how the plugin works: <UL>
+                        <LI>User loads up a network.</LI>
+                        <LI>User loads up a Transcription Profile (TP) data set.</LI>
+                        <LI>User selects &quot;PlugIns --&gt; Find
+                            Activity Centers&quot;</LI>
+                        <LI>Activity score for each node will be stored as an attribute.</LI>
+                        <LI>User modifies the VizMap properties to visualize activity score.</LI>
+                    </UL>
+                </P>
+            </subsection>
+            <subsection name="Simplifying Assumptions">
+                <P>For this go around, there are a few simplifying assumptions: <UL>
+                        <LI>We assume that the transcription profile data has
+                            been preprocessed. The first column will indicate
+                            the gene identifier, the second column will indicate
+                            the expression level during condition 1, and the
+                            third column will indicate the expression level
+                            during condition 2. All other columns will have been
+                            stripped out. </LI>
+                        <LI>We assume that IDs used in the network will always
+                            match IDs used in the transcription profile data. </LI>
+                        <LI>We will only visually indicate the activity score,
+                            but will not yet indicate activiation v. inhibition
+                            (we can add this in a later phase.) </LI>
+                    </UL>
+                </P>
+            </subsection>
+            <subsection name="Activity Center Algorithm">
+                <P>
+                    <OL>
+                        <LI>Map all nodes in the network to rows in the
+                            transcription profile set. Prune all data that does
+                            not exist within both data sets. </LI>
+                        <LI>For each row of TP data, caculate r and |log(r)|. r
+                            is defined as condition2/condition1. </LI>
+                        <LI>For all edges, calculate alpha: <P/>
+                            <IMG SRC="images/alpha.jpg"/>
+                            <P>The &quot;neighborhood H(i) of gene i is
+                                defined as the set of gene i and all the genes
+                                it is adjacent to in the network.&quot;
+                                Card(H) stands for the number of genes in the
+                                set H. Alhpa therefore &quot;quantifies how
+                                much two genes share their neighborhoods&quot;.</P>
+                        </LI>
+                        <LI>For each node, calculate the activity score: <P/>
+                            <IMG SRC="images/score.jpg"/>
+                        </LI>
+			<LI>Map activity score and the neihborhood score to node attribute. </LI>
+                    </OL>
+                </P>
+            </subsection>
+            <subsection name="Test Data">
+                <P>Unfortunately, we cannot reuse the same data set from the
+                    Pradines et. al. paper (most of the network data is
+                    proprietary to Millenium.) Hence, Gary has suggested that
+                    we use the yeast gal sample data that ships with Cytoscape.</P>
+            </subsection>
+	    <subsection name="Supporting multiple versions of Cytoscape">
+		    <P>
+		    We will need to build two versions of the plugin.  One that works with
+		    Cytoscape 1.1 and one that works with Cytoscape 2.0. 
+	    	    </P>
+	    </subsection>
+    	</section>
+
+	<section name="Item 3:  Test Lucene with Large Data Set">
+		<P>
+			Alex is interested in testing Lucene on large data sets.  To
+			really test things out, we will try to index all of PubMed on unagi,
+			and gather some performance metrics.
+		</P>
+	</section>
+	<section name="Item 4:  Record source of all interaction record">
+		<P>
+			We need to record the source (database and ID) of each interaction record.
+			This information is usually available within interaction/xref/primaryRef.
+			This information will be stored within the cpath.external_link table.
+		</P>
+		<P><B>4.1 Open Issue:</B>  What do we do if interaction/xref/primaryRef is
+			not specified?
+		</P>
+		<P><B>4.1 Resolution:</B>  This value is optional.  If it's not there,
+			no action is taken.</P>
+	</section>
+	<section name="Item 5:  Deal with Duplicate Interactors/Interactions">
+		<P>
+		Here's how things work right now:  Let's assume that cPath currently contains
+		a sample set of data from DIP.  We now want to import data from HPRD.
+		For each interactor, we test to see if the interactor already exists in
+		cPath.  This test is determined by checking external references.  For
+		example, assume protein A exists in cPath, and that it has a link to 
+		SWISS-PROT with the ID:  ABCD1234.  Upon loading HPRD, we see that protein X
+		also has a link to SWISSPROT with ID:  ABCD1234.  cPath will therefore
+		consider protein A and X to be identical, and will not reload protein X
+		into cPath.  Furthermore, cPath currently does *no* checks on duplicate
+		interactions.  For example, if you load the same DIP file twice, you end
+		up with duplicate interaction records.
+		</P>
+		<P>Dealing with Duplicate Interactors:  Going forward, interactor
+			data will now be aggregated.  For example, assume Protein A 
+			exists in CPath, and that it contains the following two
+			external links:
+			<UL>
+				<LI>SWISSPROT:  ABCD1234</LI>
+				<LI>GENBANK:  XXXYY</LI>
+			</UL>
+			We now import Protein X, which contains the following two
+			external links:
+			<UL>
+				<LI>SWISSPROT:  ABCD1234</LI>
+				<LI>PIR: WWZZ</LI>
+			</UL>
+			In this case, cPath will determine that the two proteins
+			are the same, and will add the new PIR external link to the
+			record.  If the two proteins are identical and contain the
+			exact same external references, no action is taken.
+			<P><B>5.1 Open Issue</B>:  Do we also compare/clobber sequence data?
+				Or, perhaps, we should strip out sequence data?
+			</P>
+			<P><B>5.1 Resolution</B>:  Do whatever option is easiest.  Doesn't
+		       really matter at this stage.</P>
+		</P>
+		<P>Dealing with Duplicate Interactions:  As detailed above,
+			we will now be storing the source for all interaction 
+			records.  Identity is therefore based on matching DB/ID combinations.  
+			If a new interaction matches an existing interaction, we assume that 
+			the new interaction is more up-to-date.  The new interaction
+			will therefore clobber the old interaction, and the old interaction
+			(along with all links to that record), will be deleted.
+		</P>	
+		<P><B>5.2 Open Issue:</B>  Should the new interaction retain the same cPathID
+			as the old clobbered record?  Probably not, but worth double-checking.</P>
+		<P><B>5.2 Resolution:</B>  No need to retain the old cPath ID</P>
+	</section>
+
+	<section name="Item 6:  Improve Efficiency of Lucene Search Results">
+		<P>
+			Here's how the full text search functionality currently works:  
+			<UL>
+				<LI>use the Lucene API to search for matching terms.</LI>
+				<LI>for each matching hit, extract the cPathID embedded 
+					in the Document, and then create a SQL query to extract
+					the name and description.  Hence, for each hit, we issue
+					a SQL query.  
+				</LI>
+			</UL>
+			This can be made much more efficient if we simply store the name and description in Lucene.
+			The new system will therefore work as follows:  upon indexing, we store name, description, 
+			and cPathID as three separate fields.  When searching, we extract name and description directly
+			from Lucene.  Hence, no need to create any SQL queries.
+		</P>
+	</section>
+
+	<section name="Item 7:  Create Paged Results for Full Text Search">
+		<P>
+			Right now, we return ALL hits for a full text search query.  We need to update
+			this to now inclue Next/Previous pages for displaying 20 Hits per page.
+		</P>
+		<P><B>Note:</B>  Gary suggested that we look into a library that does this for you.
+			Ethan recalled a JSP Custom Tag for this:  <A HREF="http://jsptags.com/tags/navigation/pager/index.jsp">
+				http://jsptags.com/tags/navigation/pager/index.jsp</A>.	
+		</P>
+	</section>
+
+	<section name="Item 8:  Expand cPath Web Service API and set of cPath Queries">
+		<P>
+			In this phase, we will add a new set of cPath queries.  
+			Queries will now be as follows:
+
+			<OL>
+				<LI>getInteractionsByInteractorName</LI>
+				<LI>getInteractionsByInteractorId</LI>
+				<LI>getInteractionsByTaxonomyId</LI>
+				<LI>getInteractionsByDatabaseSource</LI>
+				<LI>getInteractionsByPubMedId</LI>
+				<LI>getInteractionsByKeyword</LI>
+			</OL>
+			Each of these commands take a single "term" parameter, e.g. a name, cpath
+			id, seach phrase, etc.	Each query will also return PSI-MI XML documents.
+		</P>
+	</section>
+	<section name="Item 9:  Revise HTML Front end to include new cPath Queries defined above">
+		<P>
+			We will build an advanced search page that will allow direct access
+			to all queries defined above.  The default user search will remain the same.
+			However, we will add a new page for Advanced Search.  This page will
+			include a drop-down box with human readable descriptions of the queries defined
+			above.  Depending on which option you pick, the user will be presented with
+			either a blank text box, or another set of second options.  For example,
+			if the user selects getInteractionsByOrganism, the user will then
+			be presented with a list of organism, e.g. Homo Sapiens, c. elegans, etc.
+			The user interface will be built with Javascript/Dynamic HTML.
+		</P>
+	</section>
+	<section name="Item 10:  Expand Cytoscape Plug In to work with New Set of cPath Queries">
+		<P>
+			We want to take the same interface in Item 9, and make this available in 
+			Cytoscape.  For simplicity, the search interface will be pureley static, e.g. 
+			we won't (yet) copy the Javascript/Dynamic HTML portion of Item 9.
+		</P>
+	</section>
+	<section name="Item 11:  Add an Xerces XML Validator to DataServices Framework">
+		<P>
+			The two bugs reported to us regarding the Cytoscape PSI reader were both related
+			to invalid XML documents.  In each case, the plugin failed and did not display
+			a meaningful error message to the user.  To address this issue, the plugin will now
+			prevalidate the XML document, and report any errors directly to the user.
+		</P>
+		<P>Subtasks include:
+			<UL>
+				<LI>Create a XML Validator Utility class.</LI>
+				<LI>Add validator to the Cytoscape PSI PlugIn</LI>
+				<LI>Add validator to the cPath Import utility.  This 
+					will ensure that only valid XML documents are added to the
+					cpath import table.</LI>
+			</UL>
+		</P>
+	</section>
+	<section name="Item 12:  Preload cPath with large(ish) set of sample data">
+		<P>
+			At the end of this phase, we want to redeploy cPath to cBio, and preload
+			cPath with a large(ish) set of sample data.
+			MINT is available today.  If other databases, such as HPRD or DIP are 
+			available by the end of the phase, we will import those too.
+		</P>
+	</section>
+	<section name="Item 13:  Can Gary deploy cPath on Windows">
+		<P>
+			As a first step to distributing our entire database system, we are going
+			to try an experiment:  Can Gary deploy all of cPath on Windows?  And,
+			how long does it take?  Once MySQL and Tomcat are installed, Ethan claims it 
+			should only take two steps -- but, the verdict is still out on that!
+		</P>
+	</section>
+	<section name="Future items (todo.txt)">
+		<P>
+		Here is a copy of the current todo.txt file checked into sander/cpath.  This contains
+		all items we want to get to someday:
+		<PRE>
+cPath Functionality Issues:
+---------------------------
+1.  Field Specific Searching, e.g. "name:RAS".
+2.  Indexing of interactions
+3.  Build a Front-end interface to the External Database Tables
+    (more details are included in phase 6 doc, before being deferred)
+4.  Create cPath Developer Docs
+
+cPath Performance/Reliability/Security Issues
+---------------------------------------------
+1.  Add support for Tomcat JDBC Connection Pooling.
+2.  Load Testing via JMeter.
+3.  Prevent against cross-scripting vulnerability.
+4.  Set up auto-emails upon fatal cPath errors.
+
+Data Service Specific Items:
+-----------------------------
+1.  Add an Ontology object to the dataservices bio package.
+2.  Add Gene Name/Synonym Look up to data services.
+3.  Create a service for reading in Cytoscape node/edge attributes.
+4.  Create an "About Data Services PlugIn", with version #, list of all registered
+    (more details are included in phase 6 doc, before being deferred)
+</PRE>
+</P>
+	</section>
+    </body>
+</document>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<document>
+  <body>
+  <section name="Phase 5:  About this Document">
+    <P>
+	    This document describes functionality that will be built in Phase 5 of the 
+	    Cytoscape Data Services / CPath project.  Our overall goal is to create 
+	    the first links in a complete end-to-end CPath database system.  A complete
+	    test of this system is defined as follows:  a Cytoscape user loads up the 
+	    Cancer "subway" map, exports this data to CPath, opens a web browser,
+	    connects to the CPath database, and views the newly submitted data.  If this
+	    works, the Phase will be considered complete.
+    </P> 
+   </section>
+   <section name="Development Tasks">
+   	<p>
+   	   The following represents a list of development tasks (items are
+   	   listed in approximate order of development): 
+	<UL>
+		<LI>Build the CPath Import Table, and Java class(es) for reading/writing
+			to this table.  The Import table will contain newly
+			imported data for eventual inclusion in the main CPath database.</LI>
+		<LI>Build CPath server functionality for submitting PSI data
+			from a web form to the database.  This is a file upload feature 
+			for submitting data via HTTP Post.</LI>
+		<LI>Build the CPath LinkOut Table and Java class(es) for reading/writing
+		        to this table.  The LinkOut table will contain references to
+			external data bases.</LI>
+		<LI>Build a batch tool for transferring data from the CPath Import Table
+			to the current GRID tables.</LI>
+		<LI>Build batch tool for transferring data from the current GRID 
+			tables to the CPath Link Out table.</LI>
+		<LI>Modify the current web CPath front-end to use the CPath Link Out
+			tables.</LI>
+		<LI>Create a data export plugin for exporting data in PSI-MI
+			format, and submitting this data to CPath.</LI>
+		<LI>Test the system end-to-end with the Cancer "Subway" data.  This
+			will take the Subway data in Cytoscape, and export it to CPath.
+			We then verify that this data shows up in the CPath web site.</LI>
+		<LI>Create a SIF Service for reading SIF files via the local file
+			system, HTTP or FTP.  Add this to public data services plugin.</LI>
+		<LI>Deploy all new CPath Functionality to CBio.</LI>
+		<LI>Release newly updated data services plugin to cytoscape.org.</LI>
+	</UL>
+    </p>
+  </section>
+  <section name="Overview of CPath System">
+	  <P/>
+  	<img src="images/cpath.jpg"/>
+  </section>
+</body>
+</document>

@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<document>
+  <body>
+
+  <section name="Phase 3:  About this Document">
+    <p>
+	    This document describes functionality that will be built in Phase 3 of the 
+	    Cytoscape Data Services project.  The focus of Phase 3 is to: 
+	<UL>
+		<LI>formalize a data services plug-in architecture, so that new developers can start 
+			creating their own data services.</LI>
+		<LI>finalize all documentation and javadocs for the data services layer.</LI>
+		<LI>refactor the overall cytoscape build process.</LI>
+		<LI>add the proposed licence info. to all source files.</LI>
+		<LI>Add data services to the cytoscape core.</LI>
+		<LI>Create a template ant build file for data service plugins and
+			documentation on how to use it.</LI>
+		<LI>Create a cytoscape mapper to map PSI properties to cytoscape
+			nodes and edges, and create a sample visual style to go with it.</LI>
+		<LI>create a PSI-Reader plug-in and distribute it via a JAR file.</LI>
+	</UL>
+    </p>
+  </section>
+  <section name="Feature #1:  Creating Data Service PlugIns">
+   <P>
+	   Supposing a new developer wants to create a new data service for XXXX, here are 
+	   the proposed steps:
+	  	<OL>
+			<LI>Pick the type of service you want to create.  Currently, you can 
+			pick from either "interactor" or "interaction".</LI>
+			<LI>Create your service class.  This class must implement either the
+			InteractorService or the InteractionService interface.</LI>
+			<LI>Create a manifest file for your plug-in.  This is an XML file that
+			is based loosely on the Eclipse plugin.xml file.  The file describes: 
+			<UL>
+				<LI>Unique Service ID</LI>
+				<LI>Service Description</LI>
+				<LI>Version Number</LI>
+				<LI>Provider Name</LI>
+				<LI>Class name which implements the service</LI>
+				<LI>Default Location (usually a URL)</LI>
+			</UL>
+			Below is a sample manifest file:
+<source>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;data_service&gt;
+    &lt;id&gt;ncbi_interactor_service&lt;/id&gt;
+    &lt;description&gt;Retrieves sequence data from NCBI.&lt;/description&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;provider&gt;Memorial Sloan Kettering&lt;/provider&gt;
+    &lt;class_name&gt;org.mskcc.dataservices.live.interactor.ReadInteractorsFromNcbi&lt;/class_name&gt;
+    &lt;default_location&gt;http://www.ncbi.nlm.nih.gov:80/entrez/query.fcgi&lt;/default_location&gt;
+&lt;/data_service&gt;
+</source>
+		</LI>
+			<LI>Move your manifest file to the root "dataservices" directory.</LI>
+		</OL>
+	</P>
+	<P>Upon startup, the data services framework locates all manifest files, and registers 
+		them with the central data services factory.  To retrieve a data service, 
+		you must know its unique service ID.  If you don't know the corrrect service 
+		ID, use the DataServiceFactory listServiceDescriptions() method to retrieve all 
+		services and extract the ID, as needed.
+	</P>
+	<P>Below is sample code for accessing sequence data from the NCBI Data Service:
+<source>
+DataServiceFactory factory = DataServiceFactory.getInstance();
+InteractorService service = (InteractorService)
+factory.getService("ncbi_interactor_service");
+Interactor interactor = service.getInteractor("6320569");
+</source>
+
+   </P>
+   </section>
+   <section name="Feature #2:  Refactoring the Build Process">
+	   <P>This has been described in detail on the cytostaff mailing list.  For details,
+		   refer to the mailing list.
+	   </P>
+   </section>
+   <section name="Feature #3:  Application Mappers">
+	   <P>So far, our technical architecture has described data service mappers.
+		   These mappers take in data in one specific format, and map this data to
+		   our intermediate biological objects (e.g. interactors and/or interations).
+		   However, a second type of mapper also exists.  For lack of a better word,
+		   these will henceforth be referred to as <I>application mappers</I>.  An application
+		   mapper takes in intermediate biological objects and maps these to 
+		   application specific data structures.  For example, the Cytoscape application
+		   mapper will take in interactor and interaction objects, and map these to
+		   Cytoscape nodes and edges.
+	   </P>
+	   <P>
+		   To make these concepts clear, the diagram below shows an updated version of the 
+		   data services architecture.  Data service mappers are denoted in blue on the
+		   right side of the diagram.  Application mappers are denoted in organge on the 
+		   left side of the diagram.
+	   </P>
+	   <P>
+		   <image src="images/ds_overview.jpg"/>
+	   </P>
+	   <P>
+		   As part of Phase 3 we will create a base cytoscape mapper that maps
+		   basic interation and interactor data.  We will also create a PSI specific mapper
+		   that extends the base mapper to map PSI specific data.  In the future, others
+		   can extend the base mapper to provide additional levels of detail as needed.
+	   </P>
+   </section>
+</body>
+</document>

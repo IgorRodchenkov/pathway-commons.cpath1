@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <body>
+        <section name="Phase 6:  About this Document">
+            <P> This document describes functionality that will be built in
+                Phase 6 of the Cytoscape / CPath project. </P>
+        </section>
+        <section name="Project 1:  Build a Network capable SIF Reader (Tech Lead:  Robert, Priority:  High)">
+            <P>Right now, Cytoscape is capable of reading in SIF (Simple
+                Interaction Format) files from a local file system. However,
+                this feature is not integrated into the overall data services
+                framework, nor is it capable of reading in files from over a
+                network. </P>
+            <P> For Phase 6, we will create a new SIF Interaction Service. This
+                will be integrated into the overall data services framework and
+                will be capable of reading in data via HTTP and FTP. Currently,
+                we use the Jakarta Http Client for HTTP connections, and we need
+                to evaluate a library for FTP connections. An overview of
+                available FTP libraries for Java is available at <A
+                    HREF="http://www.javaworld.com/javaworld/jw-04-2003/jw-0404-ftp.html">Java
+                World</A>. </P>
+            <P>Once this reader is complete, we will add this new reader to our
+                public data services plugin. </P>
+        </section>
+        <section name="Project 2:  Build an 'About the DataServices PlugIn' Window (Tech Lead:  Robert, Priority:  Low)">
+            <P> The 'About the DataServices PlugIn' will display four types of
+                information: <UL>
+                    <LI>Version Number</LI>
+                    <LI>A list of all data service properties. For example,
+                        location of databases, location of cpath, etc. </LI>
+                    <LI>A list of all registered data services. </LI>
+                    <LI>Contact information about cBio.</LI>
+                </UL>Eventually, we should also include help information, but
+                this should go in a separate help menu sub-system.</P>
+        </section>
+        <section name="Project 3:  cPath Development">
+            <P> We want to achieve two cPath goals in this phase:<UL>
+                    <LI>Build a front end interface for adding, editing, and
+                        deleting data from the EXTERNAL_DB and the
+                        EXTERNAL_DB_CV tables.</LI>
+                    <LI>Build a prototype system for storing, indexing, and
+                        querying XML documents inside of our mySQL relational database.</LI>
+                </UL>
+            </P>
+            <subsection name="A.  Build a Front End Interface to the External Database Tables (Tech Lead:  Rob, Priority:  Low)">
+                <P> For Phase 5, we used phpMyAdmin to enter data into the
+                    External Database Tables. This is obviously not ideal for
+                    real administrative purposes, and we need to build a web
+                    based front-end that will enable users to add, edit, and
+                    delete data from the two external database tables:
+                    EXTERNAL_DB and EXTERNAL_DB_CV. We can use the Jakarta
+                    Struts architecture for the front-end web forms and action
+                    classes. </P>
+                <P>We have not yet implemented any security access control.
+                    Hence, the admin interface built in this phase will be
+                    available to anyone, and should be available via the main
+                    admin page: adminDisplay.do. In future phases, we can work
+                    on adding access control to all administrative
+                    functionality. </P>
+            </subsection>
+            <subsection name="B.  Store/Index/Retrieve XML in cPath (Tech Lead:  Ethan, Priority:  High)">
+                <P> There are a number of options for storing data in cPath.
+                    Here is a quick overview of the main options: <UL>
+                        <LI>Use a relational database and create a set of
+                            relational tables. This is arguably the most common
+                            option, and would require that we create a set of
+                            relational tables capable of representing all the
+                            complexity of BioPax. In this scenario, we would
+                            import XML files by mapping each element/attribute
+                            to a specific field/table. To get data back out, we
+                            would perform the reverse process, and map each
+                            field to a specific element/attribute. A number of
+                            databases have taken this approach, including <A
+                                HREF="http://cognia.com/products_cogniamolecular.htm">
+                                Cognia Molecular</A> and <A
+                            HREF="http://www.ebi.ac.uk/intact/index.html">Intact</A>.
+                            Note that Cognia currently uses <A
+                            HREF="http://www.hibernate.org/">Hibernate</A> to
+                            map relational tables to Java objects, and Intact
+                            currently uses <A
+                            HREF="http://db.apache.org/ojb/">OJB</A> (Object
+                            Relational Bridge).</LI>
+                        <LI>Use an object-oriented database and create an object
+                            model. This would require that we create an object
+                            model capable of representing all the complexity of
+                            BioPax. In this scenario, we would import XML files
+                            by mapping each element/attribute to a specific
+                            class/field within the object model. To get data
+                            back out, we would perform the reverse process. A
+                            number of databases have also taken this approach,
+                            including <A HREF="http://www.sigpath.org">SigPath</A>.</LI>
+                        <LI>Use a relational database to store fragments of XML
+                            and use a text indexing engine for indexing and
+                            querying. Essentially, this means that we use BioPax
+                            (once it is finalized) as our core data model for
+                            both data exchange and for internal storage. In this
+                            scenario, we would import XML files by
+                            &quot;chopping&quot; large XML records into
+                            smaller record-line structures and storing the XML
+                            fragments directly. To get data back we out, we
+                            would aggregrate mutliple XML fragments into one XML
+                            document. A number of database have also taken this
+                            approach, including <A
+                            HREF="http://www.ncbi.nlm.nih.gov/">NCBI</A> (note,
+                            however that NCBI stores records in ASN.1, not XML),
+                            and <A HREF="http://www.bind.ca/">BIND.</A>
+                        </LI>
+                    </UL>
+                </P>
+                <P> Below is a list of pros and cons for each approach: <P/>
+                    <TABLE BORDER="2" CELLPADDING="5" CELLSPACING="3">
+                        <TR BGCOLOR="#DDDDDD">
+                            <TD>Option</TD>
+                            <TD>Pros</TD>
+                            <TD>Cons</TD>
+                        </TR>
+                        <TR>
+                            <TD>Option 1: Relational database with regular
+                                relational tables.</TD>
+                            <TD>The most stable &quot;regular&quot;
+                                approach. There is a vast amount of industry
+                                experience creating complex relational tables,
+                                SQL is stable, JDBC is stable, mySQL is great,
+                                and it is straighforward to transform relational
+                                tables to XML. </TD>
+                            <TD>We would need to create a very complex set of
+                                relational tables capable of representing all of
+                                BioPax. To retrieve data, we would also probably
+                                need to create complicated SQL join queries.
+                                Some of this may be alleviated with tools, such
+                                as Hibernate or OJB, but performace is likely to
+                                be slow because of necessary large joins. </TD>
+                        </TR>
+                        <TR>
+                            <TD>Option 2: Object oriented database with an
+                                object model.</TD>
+                            <TD>We use the same object model in our application
+                                code and our data storage. There is no need to
+                                map between the two, and this theortically makes
+                                for faster development. Ethan has experience
+                                working with this option, and understands the
+                                main pitfalls.</TD>
+                            <TD>We would need to create a complex object model
+                                capable of representing all of BioPax. There are
+                                no good open source object oriented databases.
+                                We would need to provide time to train new
+                                developers in OQL, JDO, etc. There are also
+                                potentially serious performance problems. </TD>
+                        </TR>
+                        <TR>
+                            <TD>Option 3: Relational database with XML fragments
+                                and a text indexer.</TD>
+                            <TD>We can use the BioPax XML schema (once its
+                                complete) as is. There is no need to translate
+                                this to relational tables or an object model.
+                                It's relatively easy to get XML in and out of
+                                the database. Gary has experience with this
+                                option, and has contacts within the BIND
+                                development group, in case we need additional
+                                expertise. </TD>
+                            <TD>To store XML data in a relational table, we
+                                cannot just take the entire record and stick it
+                                in a single field. We will need to do some
+                                pre-processing of the record, and some
+                                &quot;chopping&quot; of the record into
+                                individual pieces. Querability of the data set
+                                may be limited. In options #1 and #2, we have
+                                the strengh of both SQL and OQL, both of which
+                                provide enormous querying capability. For XML,
+                                there is some movement towards using <A
+                                HREF="http://www.w3.org/XML/Query">XQuery</A>,
+                                but it is not yet widely implemented, and it may
+                                have severe performance problems. Even if XQuery
+                                were to take off, it is not clear if we could
+                                actually use it with this set up anyway, and we
+                                would probably need to evaluate one of the many
+                                native XML databases.</TD>
+                        </TR>
+                    </TABLE>
+                </P>
+                <P>After much discussion, we have decided to pursue Option #3,
+                    The reason we chose #3 is that it fits our use case of a
+                    small number of common queries issued often by many
+                    different users over the web. This option should allow us to
+                    display web pages quickly, since it is only a few reads of
+                    XML from a table rather than many joins from a relational
+                    DB. Also, text indexing with field specific searching will
+                    allow us to query the database using fairly useful query
+                    language (e.g. Boolean field specific searches). A separate
+                    DB system will be set up later to address complex queries by
+                    converting the XML to a relational format, which can handle
+                    SQL queries, but each query will take longer.</P>
+                <P> Since BioPax has yet to be finalized, we have also decided
+                    to evaluate the architecture using the PSI-MI XML format. In
+                    other words, instead of storing BioPax records within cPath,
+                    we will store PSI records. When BioPax is finalized, we will
+                    switch from PSI to BioPax. </P>
+            </subsection>
+            <subsection name="B1.  Architectual Overview">
+                <P> A bird's eye view of the current plan for storing, indexing
+                    and querying XML in cPath is presented in Figure 1.</P>
+                <P>
+                    <IMG BORDER="1" HSPACE="10" SRC="images/xml_storage.jpg" VSPACE="10"/>
+                    <BR/>
+                    <B>Figure 1:</B>Bird's Eye View of storing, indexing and
+                    querying XML in cPath. </P>
+            </subsection>
+            <subsection name="B2.  Import API">
+                <P>The Import API will be responsible for taking complete PSI-MI
+                    XML documents and importing them into cPath. From the
+                    development perspective, this will require multiple changes
+                    to the Transfer Tool #1 from Phase 5. Below is pseudo-code
+                    for how the import functionality will work: <OL>
+                        <LI>Normalize the XML Document <OL>
+                                <LI>Given a PSI-MI document, transform the
+                                    document into a mixed canonical/noncanonical
+                                    version. Specifically, move all interactors
+                                    to the top of the document, and remove
+                                    redundancy among interactors. Move all other
+                                    top elements, e.g. experiment descriptions
+                                    into the redundant, non-canonical form.
+                                    (Gary notes that we may be able to modify
+                                    the current PSI XSLT stylesheets to do this
+                                    transformation.) </LI>
+                            </OL>
+                        </LI>
+                        <LI>Chop XML into Fragments <OL>
+                                <LI>Chop the XML document into multiple
+                                    record-like XML documents. Each interactor
+                                    becomes one XML document fragment, and each
+                                    interaction becomes one XML document
+                                    fragment. These will be well-formed, but
+                                    invalid XML document fragments. </LI>
+                            </OL>
+                        </LI>
+                        <LI>Process all Interactors <OL>
+                                <LI>For each interacor: <OL>
+                                        <LI>Determine if this interactor already
+                                        exists within the database (OPEN
+                                        ISSUE: How exactly do we do this?
+                                        Note from Gary: determine if the
+                                        interactor exists already by using
+                                        the external reference DB – this is
+                                        the easiest valid way of doing this.
+                                        Using the short label or full name
+                                        of the interactor is not good enough
+                                        because the names are not
+                                        normalized. Some interactors in PSI
+                                        format may include protein sequence,
+                                        which could be used to search for
+                                        existing interactors, but that would
+                                        require a more complex process to
+                                        determine if the sequence is
+                                        identical to existing protein
+                                        interactor sequences.) </LI>
+                                        <LI>If the interactor exists, extract
+                                        its cPath ID.</LI>
+                                        <LI>Else <OL>
+                                        <LI>Add the new interactor XML
+                                        Blob to cPath.</LI>
+                                        <LI>Add all External Links to cPath</LI>
+                                        </OL>
+                                        </LI>
+                                    </OL>
+                                </LI>
+                                <LI>Modify interaction fragments by replacing
+                                    all interactor Refs with the matching cPath
+                                    Ids. For example, in the original document,
+                                    we may have (A interacts with B). After
+                                    processing is complete, we have something
+                                    like (cpathID:22214 interacts with
+                                    cpathID:58225). </LI>
+                            </OL>
+                        </LI>
+                        <LI>Process all Interactions <OL>
+                                <LI>Store each interaction XML fragment as a
+                                    blob to main cPath table. </LI>
+                            </OL>
+                        </LI>
+                        <LI>Update all Internal Links <OL>
+                                <LI>For each interaction, add internal links
+                                    that point to interactors. These can be used
+                                    as bidirectional links. For example, given
+                                    an interactor, you can determine all the
+                                    interactions it is involved in; given an
+                                    interaction, you can determine all the
+                                    interactors involved. </LI>
+                            </OL>
+                        </LI>
+                    </OL>
+                </P>
+            </subsection>
+            <subsection name="B3.  Batch Transfers">
+                <P> After data is imported into the main cPath tables, we need
+                    to periodically rebuild the Text Indexer. This will be
+                    performed by the following batch process: <UL>
+                        <LI>Batch Update the Text Engine: Periodically, rebuild
+                            text index from scratch. Go through all records in
+                            the cPath table and index each one. For each record,
+                            we store the cPath Id, and the all
+                            elements/attributes in the XML blob. </LI>
+                    </UL>
+                </P>
+            </subsection>
+            <subsection name="B4.  Query/Retrieval API">
+                <P>The Query/Retrieval API will be responsible for querying
+                    cPath and retrieving complete PSI-MI XML documents. Here is
+                    an initial list of sample queries that we want to handle: <UL>
+                        <LI>Retrieve all interactions for &quot;YER006W&quot;.</LI>
+                        <LI>Retrieve all interactions for <I>e. coli</I>.</LI>
+                        <LI>Retrieve all interactions from DIP.</LI>
+                        <LI>Retrieve all interactions that use the protein
+                            defined by the external reference ID, DIP: XXXXX.</LI>
+                    </UL>
+                </P>
+                <P>To simplify things, this phase will focus only on
+                    implementing the first query. To further simplify things, we
+                    will only focus on returning XML documents. In other words,
+                    this version of cPath will maintain the XML Web Service API,
+                    but will not maintain the HTML front end. Upgrading the HTML
+                    front end will occur in Phase 7. </P>
+                <P>Algorithm for Querying cPath: Retrieve all interactions for
+                    &quot;YER006W&quot;. <OL>
+                        <LI>SQL Query: Find the interactor with the matching
+                            NAME; extract its XML Blob and its cPathID. </LI>
+                        <LI>SQL Query: Find all internal links from the
+                            interactor cPathID. Extract these cPath IDs. </LI>
+                        <LI>SQL Query: Find all interactions with cPathIds
+                            identified in step 2. Extract the blob for each one. </LI>
+                        <LI>Go through all interactions from Step 4. For each
+                            one, determine which interactors are involved. If
+                            this is a new interactor, perform SQL query to
+                            extract interactor XML Blob. </LI>
+                        <LI>Integrate all Interactor XML fragments with all
+                            Interaction XML fragments, and create one single XML
+                            file. </LI>
+                    </OL>
+                </P>
+            </subsection>
+            <subsection name="B5.  End-to-End Testing">
+                <P> To verify that everything works, we will use the following
+                    end-to-end test: <UL>
+                        <LI>Load the sample DIP PSI file into Cytoscape.</LI>
+                        <LI>Submit data to cPath.</LI>
+                        <LI>Run the import tool: this will copy all the XML
+                            fragments to the main cPath tables. (Transfer tool
+                            will be available via the Web Amin Page.) </LI>
+                        <LI>Go to main cPath Web Page, type in an ID, and select &quot;PSI-MI&quot;.</LI>
+                        <LI>Take the Web URL from the step above, and try
+                            loading it into Cytoscape.</LI>
+                    </UL>
+                </P>
+            </subsection>
+        </section>
+        <section name="Activity Center PlugIn (Tech Lead:  Rob, Priority:  High)">
+            <P> Our plan is to build a first pass of the Activity Center PlugIn. </P>
+            <subsection name="Use Case:  Run the Activity Center Plugin">
+                <P> From the end-user perspective, here is how the plugin works: <UL>
+                        <LI>User loads up a network.</LI>
+                        <LI>User loads up a Transcription Profile (TP) data set.</LI>
+                        <LI>User selects &quot;PlugIns --&gt; Find
+                            Activity Centers&quot;</LI>
+                        <LI>Activity score for each node will be stored as an attribute.</LI>
+                        <LI>User modifies the VizMap properties to visualize activity score.</LI>
+                    </UL>
+                </P>
+            </subsection>
+            <subsection name="Simplifying Assumptions">
+                <P>For this go around, there are a few simplifying assumptions: <UL>
+                        <LI>We assume that the transcription profile data has
+                            been preprocessed. The first column will indicate
+                            the gene identifier, the second column will indicate
+                            the expression level during condition 1, and the
+                            third column will indicate the expression level
+                            during condition 2. All other columns will have been
+                            stripped out. </LI>
+                        <LI>We assume that IDs used in the network will always
+                            match IDs used in the transcription profile data. </LI>
+                        <LI>We will only visually indicate the activity score,
+                            but will not yet indicate activiation v. inhibition
+                            (we can add this in a later phase.) </LI>
+                    </UL>
+                </P>
+            </subsection>
+            <subsection name="Activity Center Algorithm">
+                <P>
+                    <OL>
+                        <LI>Map all nodes in the network to rows in the
+                            transcription profile set. Prune all data that does
+                            not exist within both data sets. </LI>
+                        <LI>For each row of TP data, caculate r and |log(r)|. r
+                            is defined as condition2/condition1. </LI>
+                        <LI>For all edges, calculate alpha: <P/>
+                            <IMG SRC="images/alpha.jpg"/>
+                            <P>The &quot;neighborhood H(i) of gene i is
+                                defined as the set of gene i and all the genes
+                                it is adjacent to in the network.&quot;
+                                Card(H) stands for the number of genes in the
+                                set H. Alhpa therefore &quot;quantifies how
+                                much two genes share their neighborhoods&quot;.</P>
+                        </LI>
+                        <LI>For each node, calculate the activity score: <P/>
+                            <IMG SRC="images/score.jpg"/>
+                        </LI>
+                        <LI>Map activity score to node attribute. </LI>
+                    </OL>
+                </P>
+            </subsection>
+            <subsection name="Test Data">
+                <P>Unfortunately, we cannot reuse the same data set from the
+                    Pradines et. al. paper (most of the network data is
+                    proprietary to Millenium.) Hence, has suggested that
+                    we use the yeast gal sample data that ships with Cytoscape.</P>
+            </subsection>
+        </section>
+    </body>
+</document>

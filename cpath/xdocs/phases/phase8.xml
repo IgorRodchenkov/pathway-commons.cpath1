@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <body>
+        <section name="Phase 8:  About this Document">
+            <P> This document describes functionality that will be built in
+                Phase 8 of the Cytoscape / CPath project. </P>
+        </section>
+        <section name="Item 1:   Load External References into cPath">
+            <P> The cPath external link database (composed of EXTERNAL_DB,
+                EXTERNAL_DB_CV and EXTERNAL_LINK tables) contains information
+                required to create HTML links to external data sources that
+                relate to cPath data items. E.g. a protein in cPath may contain
+                a number of external links to protein databases, such as Swiss-Prot.</P>
+            <P> Currently, the external link database is populated directly from
+                the external links present in PSI-MI protein interaction files
+                that are loaded into cPath. In order to be able to add new
+                external links into cPath that are not present in the input
+                PSI-MI files, it is necessary to be able to load lists of
+                external links directly from another source, such as a
+                tab-delimited file of links on disk. This will be useful for
+                data integration, specifically for matching cPath data objects
+                with other data objects from other sources we may be interested
+                in studying. E.g. proteins in cPath integrated with gene
+                expression values from Affymetrix GeneChips.</P>
+            <P> Possible implementation: The external links database
+                EXTERNAL_LINK table contains (cPath ID, external link primary
+                key) tuples, among other information. Additional external links
+                must be loaded based on existing external links in cPath. So a
+                tab-delimited file that contains two columns, one for each ID
+                type could be loaded in the following manner:</P>
+            <P> File containing ID mapping (e.g. Swiss-Prot to GI mapping): <source><![CDATA[
+SWP NCBI_GI
+P0005 832938
+                    ]]></source>
+            </P>
+            <P>Note that the column headings must match database CV_TERMS
+                already stored in cPath. </P>
+            <P> Both P0005 and 832938 IDs represent the same protein. Both IDs
+                are looked up in EXTERNAL_LINK and if only one is present, add
+                the other one as a new external link for the cPath ID. If none
+                or both are present, skip this ID.</P>
+	    <P><B>Note:</B>  Gary will provide a sample document for testing purposes.</P>
+            <P>
+                <B>Open issue 1:</B> Because EXTERNAL_LINK will be iteratively
+                populated, the order of external IDs loaded will matter, if
+                there is more than 2 types of external ID to load. This could be
+                solved by including all of the IDs in a single file - more than
+                2 columns of IDs, or by running the import iteratively until all
+                IDs that can be loaded are loaded.</P>
+		<P><B>Resolution:</B>:  We will assume that end-users understand
+		the correct order for importing data files.  Nothing more complex
+		will be implemented in this phase.  We may modify this in the future.
+		</P>
+            <P>
+                <B>Open issue 2:</B> Do we update XML interactor records with
+                all new external links? Or just store these links within the
+                EXTERNAL_LINK table.</P>
+		<P><B>Resolution:</B>  Yes, we update all XML interactors records
+			with all external links.  As a global requirement, XML 
+			interactor records must be in sync with external links.
+			Gary suggests that the Java API enforce the synchronization.</P>
+        </section>
+        <section name="Item 2: Hierarchical Layout Algorithm (Tech Lead:  Rob)">
+	    <P>
+		    Implement an algorithm for placing graph nodes on a plane. The 
+		    algorithm is described in "Graph Drawing: Algorithms for the 
+		    Visualization of Graphs.  " by Di Battista, et al. (1999).
+	    </P>
+	    <P>Pieces of this implementation will include:
+		    <UL>
+			<LI>Cycle elimination module (via temporary inversion of edge
+			    direction) this will be implemented to handle undirected graphs also
+			    if possible.
+			</LI>
+		    <LI>Layer assignment module</LI>
+			<LI>Edge Crossing Reduction module</LI>
+			<LI>Horizontal (within layer) coordinate assignment module</LI>
+			</UL>
+			Initially, Cycle elimination and Layer assignment will be fully 
+			implemented. Testing and integration can then proceed while the 
+			latter two modules are worked on.
+		</P>
+		<P>Notes from Gary:
+			    <UL>
+				<LI>The generic algorithms (i.e. cycle identification, etc.) 
+					should be identified and checked for existing reference 
+					implementations that we can use or copy/port. 
+					A good source for these is here: 
+					http://www.cs.sunysb.edu/~algorith/
+				</LI>
+				<LI>These algorithms should also be implemented in the Giny 
+					library giny.util package by coordinating with Rowan at ISB.
+				</LI>
+				<LI>Also, we might want to do a planarity check on the graph for 
+					those cases where we can do a planar drawing, which can 
+					be done in linear time: http://www.cs.sunysb.edu/~algorith/ 
+				</LI>
+				</UL>
+            	</P>
+            <P>
+                <B>Open issue 1:</B> Is this layout algorithm a required element
+                of Cytoscape 2.0? If so, are there additional requirements we
+                should consider for a) integrating into the Cytoscape core
+                menus/UI; and b) coordinating with ISB re: the 2.0 release.</P>
+	    <P><B>Resolution:</B>  Yes, hierarhical layout is a required element
+		    of Cytoscape 2.0.  Rob is coordinating with Rowen re:  the 2.0 release.
+	    </P>
+            <P>
+                <B>Open issue 2:</B> Somewhat releated to issue 2, how will
+                end-users actually run the layout algorithm? Is this just an
+                additional item in the layout menu, or are there user parameters
+                specific to the algorithm?</P>
+		<P><B>Resolution:</B> Users will run the algorithm from main Layout menu option.
+		Users will *not* be presented with parameters, and the algorithm
+		will currently be hard-coded with default values.
+	    </P>
+            <P>
+                <B>Open issue 3:</B> Is this something that is doable in a 3-4
+                week time frame (assuming that Rob is also working on a few
+                other items in Phase 8)? If not, can we break it into smaller,
+                digestible chunks?</P>
+		<P><B>Resolution:</B> It is difficult to estimate the amount of work involved
+		in this.  Rob will keep us posted on his progress.
+		</P>
+        </section>
+        <section name="Item 3:  Perform Load Testing">
+            <P>Perform Load Testing on cPath with <A
+                    HREF="http://jakarta.apache.org/jmeter/">Apache JMeter</A>. </P>
+            <P>From the JMeter web site: "Apache JMeter may be used to test
+                performance both on static and dynamic resources (files,
+                Servlets, Perl scripts, Java Objects, Data Bases and Queries,
+                FTP Servers and more). It can be used to simulate a heavy load
+                on a server, network or object to test its strength or to
+                analyze overall performance under different load types. You can
+                use it to make a graphical analysis of performance or to test
+                your server/script/object behavior under heavy concurrent load." </P>
+        </section>
+        <section name="Item 4:  Create Generic Framework for precomputing specific cPath Queries">
+            <P> Some search queries (e.g. "give me all DIP interactions") are
+                computationally intensive, resulting in slow response times. We
+                want to build a generic facility for: <UL>
+                    <LI>specifying any number of precomputed queries.</LI>
+                    <LI>computing queries on a regular schedule.</LI>
+                    <LI>returning precomputed results to web clients.</LI>
+                </UL>
+            </P>
+            <P>
+                <B>4.1 Open Issue:</B> How do we specify precomputed queries?
+                Web interface? Simple configuration file? </P>
+		<P><B>Resolution:</B> We will use a simple configuration file.
+		in this.  Rob will keep us posted on his progress.
+		</P>
+            <P>
+                <B>4.2 Open Issue:</B> Where do we store precomputed XML
+                documents? Database? File system? Are there pros/cons to either
+                approach? </P>
+		<P><B>Resolution:</B>  We will store precomputed XML in the mySQL
+			database. Gary also recommended we look into data compression
+			options, particularly XML compression options.
+		</P>
+            <P>
+                <B>4.3 Open Issue:</B> Do we want to use a UNIX cron job to
+                schedule computations? What about Windows installations? Perhaps
+                there is a way to create a new thread in cPath that controls
+                scheduling? Perhaps we don't want to do this on a schedule at
+                all, and simple wait for the first request, then cache? </P>
+		<P><B>Resolution:</B>  We will provide a simple script (for both Windows
+		and UNIX), and provide instructions on submitting a cron job.  
+		Windows users will be responsible for setting up some kind
+		of their own cron job.  Furthermore, if a user makes a request, and
+		the system determines that this request is pre-computed, but the
+		pre-computed file is not available, live processing will take place.
+		Only the batch scrips will be responsible for generating pre-computed documents.
+		</P>
+        </section>
+        <section name="Item 5:  Create a Visual cPath Admin Tool">
+            <P> Right now, you can run the cPath data import pipeline from a
+                series of command line tools. In this phase, we want to build
+                a web-based admin tool for performing all admin tasks.
+            </P>
+            <P>A visual diagram of the admin page is provided below:
+            </P>
+            <P>
+            <IMG SRC="images/admin_page.jpg"/>
+            </P>
+        </section>
+        <section name="Item 6:  Simplify Local Installation">
+            <P> Based on feedback from Gary and Rob, simplify local installation
+                of cPath. <UL>
+                    <LI>Create a "Happy cPath" page with built-in tests for
+                        verifying correct installation and configuration.</LI>
+                    <LI>Include documentation re: TinyMonitor</LI>
+                    <LI>Include documentation on "where to look when things go wrong."</LI>
+                </UL>
+            </P>
+        </section>
+        <section name="Item 7:  Minor Tweaks to Web UI">
+		<P>Add mini pop-up links to external references. For
+			an example of proposed functionality, see:
+			<A HREF="http://www.ncbi.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=search&amp;term=BRCA2+AND+txid9606[Organism]">Sample NCBI Link
+			    </A>, and click on one of the "Links" in the right-most column.</P>
+        </section>
+        <section name="Item 8:  Create Developer Site">
+            <P> As part of our public beta release, we want to create a web site
+                for cPath developers. Web site to include: <UL>
+                    <LI>instructions on getting source from cvs.</LI>
+                    <LI>cvsweb</LI>
+                    <LI>Maven project documentation</LI>
+                    <LI>mailing lists</LI>
+                    <LI>bug tracker</LI>
+                </UL>
+            </P>
+	    <P><B>Note:</B>  Gary will talk to Joanne re:  test/production machines
+		    for hosting cPath.
+	    </P>
+        </section>
+        <section name="Item 9:  Create cPath Developer Documentation">
+            <P> Create first draft of cPath Architecture document. Aimed at
+                getting new developers involved. </P>
+        </section>
+        <section name="Item 10:  Ready cPath Beta Site">
+            <P> Prepare cPath for public Beta 1 site. Make complete installation
+                available for download / local installation. </P>
+        </section>
+        <section name="Item 11:  Refactor Data Services API">
+            <P> Refactor Data Services API, based on feedback from Rob. To be
+                discussed. </P>
+        </section>
+        <section name="Future items (todo.txt)">
+            <P> Here is a copy of the current todo.txt file checked into
+                sander/cpath. This contains all items we want to get to someday:
+                <source><![CDATA[
+This document contains cPath/Cytoscape Items we want to implement someday:
+
+cPath Functionality Issues:
+----------------------------
+1.  Field Specific Lucene Searching, e.g. "name:RAS".
+        ---> current priority:  low.
+2.  Indexing of interactions.
+        Requires changes to web interface.  Needs more exploration.
+        ---> current priority:  low.
+3.  Build a Front-end administrative interface to the External Database Tables
+        (more details are included in phase 6 doc, before being deferred)
+        ---> current priority:  low.
+4.  Add new query:  query by experimental method (e.g. all the data from two-hybrid)
+        ---> current priority:  ???.
+5.  Provide query API functionality to get a list of valid query API commands.
+        E.g. for getInteractionsBySource, we could have getValidSources
+        ---> current priority:  low.
+6.  Add getExternalReferences to query API.  This would allow e.g. Cytoscape
+        to easily create external links.
+        ---> current priority:  medium.
+7.  For HTML front end of cPath query API: paginate results (only text index results 
+	currently paginated)
+        ---> current priority:  low.
+
+cPath Performance/Reliability/Security Issues
+---------------------------------------------
+1.  Prevent against cross-scripting vulnerability (validate user input before use).
+2.  Set up auto-emails upon fatal cPath errors (how does a user deal with errors?).
+
+Data Service Specific Items:
+-----------------------------
+1.  Add an Ontology object to the dataservices bio package to allow retrieval of Gene 
+Ontology type information.
+2.  Add Gene Name/Synonym Look up to data services (requires a back-end, may be able to use
+Entrez Gene DB).
+3.  Create a service for reading in Cytoscape node/edge attributes to go with sif reader.
+4.  Create an "About Data Services PlugIn", with version #, list of all registered
+        (more details are included in phase 6 doc, before being deferred)
+        ---> current priority:  low.
+5.  Resurrect the GRID Plugin - retrieves data from GRID directly into Cytoscape                        
+                        
+                        ]]></source>
+            </P>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<document>
+  <body>
+  <section name="Phase 4:  About this Document">
+    <p>
+	    This document describes functionality that will be built in Phase 4 of the 
+	    Cytoscape Data Services project.  The focus of Phase 4 is to: 
+	<UL>
+		<LI>Create a PSI-MI Export PlugIn.</LI>
+		<LI>Extend the Data Services Framework to include State information.</LI>
+		<LI>Refactor the CBio Server application to use the complete
+			Data Services Framework API.</LI>
+		<LI>Create a server prototype for outputing basic web pages
+			with interaction/interactor data.</LI>
+	</UL>
+    </p>
+  </section>
+  <section name="Feature #1:  Create a PSI-MI Export PlugIn">
+   <P>
+	   We currently enable users to import PSI-MI formatted XML files.
+	   In this phase, we will enable users to export an existing Cytoscape
+	   graph to PSI-MI XML format.  From the end user perspective, a user
+	   will select PlugIns --> Export to PSI-MI, and then specify the name
+	   and location of the new file.  In the future, the export feature may 
+	   be extended to support HTTP Posting or FTP submissions of data.
+   </P>
+   <P>
+	   <B>Note:</B>  It is not a requirement that the PSI Import/Export feature
+	   support exact round-tripping of data.  For example, if a user imports a 
+	   PSI-MI file, and then exports it, the newly exported XML file may not be 
+	   identical to the original XML file.  That's because we do not currently
+	   map all PSI attributes to our intermediate biological objects.  In the future,
+	   we may decide to make round-tripping an explicit requirement.
+   </P>
+   </section>
+   <section name="Feature #2:  Extend the Data Services Framework to Include State Information">
+   <P>
+	   We plan to extend the Data Services Framework to include molecular state (or
+	   molecular profiling) information.  Molecular state information is a
+	   generalization that can be discrete or continuous values for the amount or
+	   activity of any of the molecules of the cell.  Typically, this data is
+	   stored in a 2 dimensional table in tabular format.  An example is gene
+	   expression data, which is often stored in tab delimited tables of genes vs.
+	   expression values for multiple experiments.
+   </P>
+   <P>
+	   To support state information, we will need to add two new items to the
+	   core data services framework:
+	<UL>
+		<LI>a StateInformation class:  this will be placed in the bio
+		package, alongside interactors and interactions.  The class needs to be 
+		generic enough to support different types of state data.</LI>
+		<LI>a StateService interface:  this will be placed in the server
+		package, alongside the InteractorService and InteractionService interfaces.
+		</LI>
+	</UL>
+	To validate the framework, we will build a service implementation for reading in 
+	SOFT formatted text files.  Information about SOFT is available at:
+	<A HREF="http://www.ncbi.nlm.nih.gov/geo/info/soft2.html">GEO FAQ</A>.  
+	To read in SOFT data, our plan is to reuse some of Paul Shannon's existing code in 
+	<A HREF="http://www.cytoscape.org/javadoc/cytoscape/data/ExpressionData.html">
+	cytoscape.data.ExpressionData.java</A>.  JUnit tests will use test data from 
+	<A HREF="http://www.ncbi.nlm.nih.gov/geo/">NCBI GEO</A>.  
+   </P>
+   </section>
+   <section name="Feature #3:  Refactor the CBio Server Application to use the
+	   Data Services API">
+   <P>
+	   When we first built the CBio Server Application, we conciously decided to
+	   make it a separate code base from the existing Data Services Framework. 
+	   Now that the framework has matured, it now makes sense to refactor the
+	   server application to make use of the API.  To do so, we will create a Data Services
+	   JAR file, and check this into the server code base.  We will then redo
+	   the server application code to use the Data Services API, where necessary.
+   </P>
+   </section>
+   <section name="Feature #4:  Create server prototype for outputing basic web pages
+	with interaction/interactor data.">
+   <P>
+	   Right now, the CBio Server application currently only outputs XML documents.
+	   This is great for Cytoscape, but not great for end-users who actually want
+	   to browse data.  As a step towards creating a CBio Pathways Database site,
+	   we want to experiment with some options for outputting HTML from our
+	   current URL API.  For example, if you append format=html to a web request,
+	   the server application will transform the requested document to HTML.
+	   In this phase, we intend to only create a prototype for this,
+	   and not a full-blown pathway web site.
+   </P>
+   </section>
+</body>
+</document>
