@@ -336,7 +336,8 @@ public class ImportPsiToCPath {
                             + refListText);
                 } else {
                     //  Query Id Mapping SubSystem for other identifiers
-                    refs = queryIdMappingService(protein, refs);
+                    //  ID Mapping Service is temporarily disabled.
+                    //  refs = queryIdMappingService(protein, refs);
 
                     //  Save the interactor to the database
                     try {
@@ -400,6 +401,8 @@ public class ImportPsiToCPath {
             ExternalReference[] refs) throws MarshalException,
             ValidationException, DaoException, IOException {
         DaoCPath cpath = new DaoCPath();
+        System.out.println("Saving new interactor:  " + protein.getNames()
+            + ", " + protein.getId());
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = marshalProtein(protein);
         String name = protein.getNames().getShortLabel();
