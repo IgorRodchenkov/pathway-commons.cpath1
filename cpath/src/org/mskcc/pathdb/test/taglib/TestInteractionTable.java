@@ -79,7 +79,7 @@ public class TestInteractionTable extends TestCase {
         ProtocolRequest request = new ProtocolRequest();
         request.setQuery("protein1");
         table.setProtocolRequest(request);
-        table.setInteractions(interactions);
+        //table.setInteractions(interactions);
         table.doStartTag();
         String html = table.getHtml();
 
