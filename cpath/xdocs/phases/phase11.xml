@@ -4,33 +4,37 @@
         <section name="Phase 11:  About this Document">
             <P>This document describes functionality that will be built in
                 Phase 11 of the Cytoscape / cPath / Pathway Analysis project.
-                The overall goal of Phase 11 is to Update the Activity Center
-                plugin in order to fully execute the Neuroblastoma Use Case.
+                The overall goal of Phase 11 is to fully execute the
+                Neuroblastoma Use Case.
             </P>
         </section>
         <section name="1.  Modify Activity Center PlugIn">
             <P>
             <UL>
                 <LI>
-                Refactor existing plugin code and add unit tests as needed:
+                <B>Refactor existing plugin code and add unit tests as needed</B>:
                 Refactor the existing plugin code as needed and ensure that
                 all major components have comprehensive unit tests.
                 </LI>
-                <LI>Modify core activity center algorithm code:  the current
+                <P></P>
+                <LI>
+                <B>Modify core activity center algorithm code</B>:  the current
                 code includes neighbors which lack expression ratios in the
                 weighted average calculation.  We need to modify the core
                 algorithm code to ignore such nodes.
                 </LI>
+                <P></P>
                 <LI>
-                Modify plugin to use common task framework:  By using the
+                <B>Modify plugin to use common task framework:</B>  By using the
                 common task framework used by other cBio plugins, we
                 can provide more detailed progress feedback to end-users.
                 For example, we can show progress of each individual step
                 in the algorithm, e.g. calculating expression ratios,
                 calculating neighborhood scores, calculating p-values, etc.
                 </LI>
+                <P></P>
                 <LI>
-                Modify plugin to extract top scoring nodes in a network:
+                <B>Modify plugin to extract top scoring nodes in a network:</B>
                 As it is currently coded, the plugin attempts to color code
                 all nodes in a network, regardless of network size.
                 However, the Neuroblastoma use case requires access to
@@ -39,34 +43,39 @@
                 to modify the plugin to extract a subgraph of high-scoring
                 nodes.
                 </LI>
+                <P></P>
                 <LI>
-                Save results to tab-delimited file:  after activity scores
+                <B>Save results to tab-delimited file:</B>  after activity scores
                 are computed, the plugin will save a complete set of results
                 to a tab-delimited file.  This will enable further analysis
                 in other tools, such as Microsoft Excel.
                 </LI>
+                <P></P>
                 <LI>
-                Add p-value calculation:  modify the plugin to calculate
+                <B>Add p-value calculation:</B>  modify the plugin to calculate
                 p-values, as described in the original Activity Centers Paper.
                 The number of Monte Carlo simulations should also be easily
                 settable by the end-user.
                 </LI>
+                <P></P>
                 <LI>
-                Support basic browsing functionality via score list:  After
-                activity scores are calculated, display an interactive list
+                <B>Support basic browsing functionality via score list:</B>
+                After activity scores are calculated, display an interactive list
                 of top-scoring nodes along with activity scores and p-values.
                 When user clicks on a node in this list, zoom into the node
                 and its immediate neighborhood.
                 </LI>
+                <P></P>
                 <LI>
-                Integrate with cPath PlugIn:  The Activity Center and cPath
+                <B>Integrate with cPath PlugIn:</B> The Activity Center and cPath
                 PlugIns are entirely independent.  However, if the Activity
                 Center plugin extracts a subgraph of high scoring nodes, the
                 user should be able to select nodes in the subgraph and view
                 node details in the cPath node details panel.
                 </LI>
+                <P></P>
                 <LI>
-                Modify cPath PlugIn Node Details Panel: to provide a better
+                <B>Modify cPath PlugIn Node Details Panel:</B> to provide a better
                 browsing experience, modify the cPath node details panel
                 to include:  a)  expression data (even if this data is spread
                 out across multiple Affymetrix probes);  and b)  any additional
@@ -105,7 +114,7 @@
             <P>
             Steps in the full Neuroblastoma Use Case are defined below:
             </P>
-            <UL>
+            <OL>
                 <LI>Start Cytoscape.</LI>
                 <LI>Download all human protein interactions from cPath:
                 This is currently defined as all HPRD interactions.</LI>
@@ -116,12 +125,12 @@
                 <LI>Browse high-scoring nodes in Cytoscape.</LI>
                 <LI>Save results to tab-delimited file format for further
                 analysis in Microsoft Excel.</LI>
-            </UL>
+            </OL>
         </section>
         <section name="4.  Background Reading">
             <UL>
                 <LI><A HREF="http://www.cancer.org/docroot/cri/cri_2_3x.asp?dt=31">
-                Detailed Guide to Neuroblastoma</A>
+                Detailed Guide to Neuroblastoma</A> (American Cancer Society).
                 </LI>
                 <LI>Brodeur GM, "Neuroblastoma: biological insights into a
                 clinical enigma.", Nature Rev Cancer. 2003 Mar;3(3):203-16.
