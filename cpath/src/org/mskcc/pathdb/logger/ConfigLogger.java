@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.logger;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.mskcc.dataservices.util.PropertyManager;
 
 /**

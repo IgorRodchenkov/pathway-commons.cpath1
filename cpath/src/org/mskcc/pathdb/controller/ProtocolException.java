@@ -1,10 +1,10 @@
 package org.mskcc.pathdb.controller;
 
+import org.apache.log4j.Logger;
 import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -96,7 +96,7 @@ public class ProtocolException extends Exception {
      * Gets Error Details.
      * @return Error Details String.
      */
-    public String getDetails () {
+    public String getDetails() {
         return this.details;
     }
 

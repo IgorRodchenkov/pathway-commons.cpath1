@@ -20,7 +20,7 @@ public class LogRecord {
      * @param logger Logger.
      * @param message Message.
      */
-    public LogRecord (Date date, String priority, String logger,
+    public LogRecord(Date date, String priority, String logger,
             String message) {
         this.date = date;
         this.priority = priority;

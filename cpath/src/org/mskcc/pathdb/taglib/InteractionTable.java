@@ -33,13 +33,13 @@
  **/
 package org.mskcc.pathdb.taglib;
 
+import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
-import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 
-import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -150,7 +150,7 @@ public class InteractionTable extends TagSupport {
             append("<TR>");
             for (int j = 0; j < interactors.size(); j++) {
                 Interactor interactor = (Interactor) interactors.get(j);
-                if (!interactor.getName().equals(uid)) {
+                if (!interactor.getName().equalsIgnoreCase(uid)) {
                     String url = links.getInteractionLink(interactor.getName());
                     outputDataField(interactor.getName(), url);
                     outputExternalReferences(interactor);

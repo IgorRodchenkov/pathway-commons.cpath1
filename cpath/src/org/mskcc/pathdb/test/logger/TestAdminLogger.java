@@ -1,9 +1,9 @@
 package org.mskcc.pathdb.test.logger;
 
 import junit.framework.TestCase;
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
-import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class TestAdminLogger extends TestCase {
     public void testAdminLogger() throws Exception {
 
         //  First, delete all exiting log messages.
-        AdminLogger admin = new AdminLogger ();
+        AdminLogger admin = new AdminLogger();
         admin.deleteAllLogRecords();
 
         //  Add a sample log Message.
@@ -31,11 +31,11 @@ public class TestAdminLogger extends TestCase {
 
         // Verify it goes in.
         ArrayList records = admin.getLogRecords();
-        assertEquals (1, records.size());
+        assertEquals(1, records.size());
 
         //  Delete all, and verify they are all gone.
         admin.deleteAllLogRecords();
         records = admin.getLogRecords();
-        assertEquals (0, records.size());
+        assertEquals(0, records.size());
     }
 }

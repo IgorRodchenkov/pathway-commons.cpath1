@@ -1,6 +1,8 @@
 package org.mskcc.pathdb.controller;
 
 import org.apache.log4j.Logger;
+import org.mskcc.pathdb.xdebug.SnoopHttp;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -49,6 +51,11 @@ public class DataServiceController {
             Logger.getLogger(DataServiceController.class.getName());
 
     /**
+     * Debug Object.
+     */
+    private XDebug xdebug;
+
+    /**
      * Constructor.
      * @param request Servlet Request.
      * @param response Servlet Response.
@@ -83,13 +90,26 @@ public class DataServiceController {
      * @throws Exception All Exceptions.
      */
     private void processRequest() throws Exception {
+        initXDebug();
+        xdebug.logMsg(this, "Entering Data Service Controller");
         HashMap parameterMap = getParameterMap(request);
         protocolRequest = new ProtocolRequest(parameterMap);
         ProtocolValidator validator = new ProtocolValidator(protocolRequest);
         validator.validate();
         GridController gridController = new GridController(request,
-                response, servletContext);
+                response, servletContext, xdebug);
         gridController.processRequest(protocolRequest);
+    }
+
+    /**
+     * Initializes XDebug.
+     */
+    private void initXDebug() throws IOException, ServletException {
+        xdebug = new XDebug();
+        xdebug.startTimer();
+        SnoopHttp snoop = new SnoopHttp(xdebug);
+        snoop.process(request, response);
+        request.setAttribute("xdebug", xdebug);
     }
 
     /**
@@ -154,7 +174,8 @@ public class DataServiceController {
      * Forwards to the /jsp/protocol.html HTML Page.
      */
     private void showHelp() {
-        log.info("Forwarding to Master.jsp page");
+        xdebug.stopTimer();
+        xdebug.logMsg(this, "Showing Help Page");
         try {
             setHeaderStatus(ProtocolConstants.DS_OK_STATUS);
             RequestDispatcher dispatcher =

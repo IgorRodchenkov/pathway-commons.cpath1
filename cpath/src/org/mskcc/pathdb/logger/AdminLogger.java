@@ -2,13 +2,9 @@ package org.mskcc.pathdb.logger;
 
 import org.mskcc.dataservices.util.PropertyManager;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  * Admin/View the Log Messages.
@@ -40,7 +36,7 @@ public class AdminLogger {
      */
     public void deleteAllLogRecords() throws SQLException,
             ClassNotFoundException {
-            Connection con = this.getConnection();
+        Connection con = this.getConnection();
         PreparedStatement pstmt = con.prepareStatement
                 ("TRUNCATE TABLE record");
         pstmt.executeUpdate();
@@ -71,7 +67,7 @@ public class AdminLogger {
         Connection con = null;
         //  Get Database Properties from PropertyManager.
         PropertyManager manager = PropertyManager.getInstance();
-        String host = new String ("localhost");
+        String host = new String("localhost");
         String user = manager.getProperty
                 (PropertyManager.PROPERTY_GRID_DB_USER);
         String password = manager.getProperty

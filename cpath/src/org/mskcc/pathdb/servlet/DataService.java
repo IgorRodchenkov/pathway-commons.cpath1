@@ -1,10 +1,10 @@
 package org.mskcc.pathdb.servlet;
 
 import org.apache.log4j.Logger;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.controller.DataServiceController;
 import org.mskcc.pathdb.logger.AdminLogger;
 import org.mskcc.pathdb.logger.ConfigLogger;
-import org.mskcc.dataservices.util.PropertyManager;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;

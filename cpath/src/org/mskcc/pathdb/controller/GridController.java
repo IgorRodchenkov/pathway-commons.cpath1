@@ -1,20 +1,20 @@
 package org.mskcc.pathdb.controller;
 
-import org.mskcc.dataservices.live.DataServiceFactory;
-import org.mskcc.dataservices.live.LiveConstants;
-import org.mskcc.dataservices.services.InteractionService;
-import org.mskcc.dataservices.services.InteractorService;
-import org.mskcc.dataservices.mapper.MapInteractionsToPsi;
-import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
 import org.mskcc.dataservices.bio.vocab.InteractorVocab;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.core.EmptySetException;
-import org.apache.log4j.Logger;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
+import org.mskcc.dataservices.live.DataServiceFactory;
+import org.mskcc.dataservices.live.LiveConstants;
+import org.mskcc.dataservices.mapper.MapInteractionsToPsi;
+import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.mskcc.dataservices.services.InteractionService;
+import org.mskcc.dataservices.services.InteractorService;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -22,8 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.StringWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
@@ -36,24 +36,22 @@ public class GridController {
     private HttpServletRequest request;
     private HttpServletResponse response;
     private ServletContext servletContext;
-
-    /**
-     * Logger.
-     */
-    private static Logger log =
-            Logger.getLogger(DataServiceController.class.getName());
+    private XDebug xdebug;
 
     /**
      * Constructor.
      * @param request HttpServletRequest.
      * @param response HttpServletResponse.
      * @param servletContext ServletContext Object.
+     * @param xdebug XDebug Object.
      */
-    public GridController (HttpServletRequest request, HttpServletResponse
-            response, ServletContext servletContext) {
+    public GridController(HttpServletRequest request, HttpServletResponse
+            response, ServletContext servletContext, XDebug xdebug) {
         this.request = request;
         this.response = response;
         this.servletContext = servletContext;
+        this.xdebug = xdebug;
+        xdebug.logMsg(this, "Entering Grid Controller");
     }
 
     /**
@@ -66,7 +64,7 @@ public class GridController {
      * @throws IOException Problem writing out data.
      * @throws ServletException Problem writing to servlet.
      */
-    public void processRequest (ProtocolRequest protocolRequest)
+    public void processRequest(ProtocolRequest protocolRequest)
             throws MarshalException, ValidationException, DataServiceException,
             ProtocolException, IOException, ServletException {
         try {
@@ -74,7 +72,7 @@ public class GridController {
                     (ProtocolConstants.COMMAND_RETRIEVE_INTERACTIONS)) {
                 processGetInteractions(protocolRequest);
             } else if (protocolRequest.getCommand().equals
-                (ProtocolConstants.COMMAND_RETRIEVE_GO)) {
+                    (ProtocolConstants.COMMAND_RETRIEVE_GO)) {
                 String xml = getGo(protocolRequest.getUid());
                 returnXml(xml);
             }
@@ -90,10 +88,12 @@ public class GridController {
             ServletException, IOException {
         ArrayList interactions =
                 getInteractions(protocolRequest.getUid());
+        xdebug.logMsg(this, "Number of Interactions Found:  "
+                + interactions.size());
         if (protocolRequest.getFormat().equals
                 (ProtocolConstants.FORMAT_PSI)) {
             MapInteractionsToPsi mapper =
-                    new MapInteractionsToPsi (interactions);
+                    new MapInteractionsToPsi(interactions);
             mapper.doMapping();
             EntrySet entrySet = mapper.getPsiXml();
             StringWriter writer = new StringWriter();
@@ -108,9 +108,11 @@ public class GridController {
     }
 
     private void forwardToJsp() throws ServletException, IOException {
+        String page = "/jsp/pages/Master.jsp";
+        xdebug.logMsg(this, "Forwarding to JSP Page:  " + page);
+        xdebug.stopTimer();
         RequestDispatcher dispatcher =
-            servletContext.getRequestDispatcher
-                ("/jsp/pages/Master.jsp");
+                servletContext.getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
 
@@ -134,7 +136,8 @@ public class GridController {
      */
     private ArrayList getInteractions(String uid) throws DataServiceException,
             EmptySetException {
-        log.info("Retrieving Interactions from GRID for UID:  " + uid);
+        xdebug.logMsg(this, "Retrieving Interactions from GRID for UID:  "
+                + uid);
         DataServiceFactory factory = DataServiceFactory.getInstance();
         InteractionService service =
                 (InteractionService) factory.getService
@@ -171,13 +174,13 @@ public class GridController {
         return filteredList;
     }
 
-
     /**
      * Get Go Terms.
      */
     private String getGo(String uid) throws DataServiceException,
             EmptySetException {
-        log.info("Retrieving Interactor Data from GRID for UID:  " + uid);
+        xdebug.logMsg(this, "Retrieving Interactor Data from GRID for UID:  "
+                + uid);
         DataServiceFactory factory = DataServiceFactory.getInstance();
         InteractorService service =
                 (InteractorService) factory.getService

@@ -6,19 +6,13 @@ import com.opensymphony.module.oscache.web.ServletCacheAdministrator;
 import com.opensymphony.module.oscache.web.filter.
         CacheHttpServletResponseWrapper;
 import com.opensymphony.module.oscache.web.filter.ResponseContent;
+import org.apache.log4j.Logger;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import java.io.IOException;
-
-import org.apache.log4j.Logger;
 
 /**
  * Cache Filter.
@@ -89,23 +83,23 @@ public class CacheFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         HttpServletRequest hRequest = (HttpServletRequest) request;
-        log ("Incoming request from  IP:  " + request.getRemoteAddr());
-        log ("Incoming request from  Host:  " + request.getRemoteHost());
-        log ("URL Requested:  " + hRequest.getQueryString());
+        log("Incoming request from  IP:  " + request.getRemoteAddr());
+        log("Incoming request from  Host:  " + request.getRemoteHost());
+        log("URL Requested:  " + hRequest.getQueryString());
         String key = admin.generateEntryKey(null, (HttpServletRequest)
                 request, cacheScope);
-        log ("Using Cache Key:  " + key);
+        log("Using Cache Key:  " + key);
         Cache cache = admin.getCache((HttpServletRequest) request, cacheScope);
         try {
             ResponseContent respContent = (ResponseContent)
                     cache.getFromCache(key, time);
-            log ("Using cached entry");
+            log("Using cached entry");
             if (respContent == null) {
-                throw new NeedsRefreshException (respContent);
+                throw new NeedsRefreshException(respContent);
             }
             respContent.writeTo(response);
         } catch (NeedsRefreshException nre) {
-            log ("New cache entry, or cache entry is stale");
+            log("New cache entry, or cache entry is stale");
             CacheHttpServletResponseWrapper cacheResponse =
                     new CacheHttpServletResponseWrapper
                             ((HttpServletResponse) response);
@@ -116,7 +110,7 @@ public class CacheFilter implements Filter {
         }
     }
 
-    private void log (String msg) {
+    private void log(String msg) {
         System.err.println(msg);
         logger.info(msg);
     }

@@ -34,11 +34,11 @@
 package org.mskcc.pathdb.test.taglib;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.taglib.InteractionTable;
+import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.Interaction;
 import org.mskcc.dataservices.bio.Interactor;
-import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.bio.vocab.InteractionVocab;
+import org.mskcc.pathdb.taglib.InteractionTable;
 
 import java.util.ArrayList;
 
