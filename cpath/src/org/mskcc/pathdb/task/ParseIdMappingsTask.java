@@ -142,13 +142,25 @@ public class ParseIdMappingsTask extends Task {
 
             //  Process all IDs
             for (int i = 0; i < tokens.length; i++) {
-                ExternalDatabaseRecord dbRecord2 =
+                ExternalDatabaseRecord dbRecord2;
+                try {
+                    dbRecord2 =
                         (ExternalDatabaseRecord) dbList.get(i);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Error Occurred in line:  " + line);
+                    throw e;
+                }
                 if (dbRecord1 != null && id1 != null
                         && tokens[i].length() > 0) {
 
                     //  Process Multiple IDs in Each Column
                     String ids[] = tokens[i].split("\\s+");
+                    if (ids.length > 50) {
+                        pMonitor.setCurrentMessage("\nWarning!  "
+                                + " Data line beginning with:  "
+                                + tokens[0] + " contains " + ids.length
+                                + " identifiers");
+                    }
                     for (int j = 0; j < ids.length; j++) {
                         IdMapRecord idRecord = new IdMapRecord
                                 (dbRecord1.getId(), id1, dbRecord2.getId(),
