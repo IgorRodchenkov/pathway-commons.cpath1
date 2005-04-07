@@ -82,7 +82,7 @@ public class DaoCPath {
      * Adds Specified Record to the cPath Table.
      *
      * @param name           Enity Name
-     * @param description    Enty Description
+     * @param description    Entity Description
      * @param ncbiTaxonomyId NCBI Taxonomy ID.  If TaxonomyID is not available,
      *                       use the constant
      *                       CPathRecord.TAXONOMY_NOT_SPECIFIED.
