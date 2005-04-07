@@ -33,6 +33,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.pathdb.test.task.TestAffymetrixParser;
+import org.mskcc.pathdb.test.util.rdf.RdfUtilSuite;
 
 /**
  * Suite of all Utility Unit Tests.
@@ -56,6 +57,7 @@ public class UtilSuite extends TestCase {
         suite.addTestSuite(TestLogUtil.class);
         suite.addTestSuite(TestAffymetrixParser.class);
         suite.addTestSuite(TestExternalReferenceUtil.class);
+        suite.addTest(RdfUtilSuite.suite());
         suite.setName("Utility Tests");
         return suite;
     }
