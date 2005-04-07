@@ -1,97 +1,131 @@
+/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+ **
+ ** Code written by: Ethan Cerami
+ ** Authors: Ethan Cerami, Gary Bader, Chris Sander
+ **
+ ** This library is free software; you can redistribute it and/or modify it
+ ** under the terms of the GNU Lesser General Public License as published
+ ** by the Free Software Foundation; either version 2.1 of the License, or
+ ** any later version.
+ **
+ ** This library is distributed in the hope that it will be useful, but
+ ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
+ ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
+ ** documentation provided hereunder is on an "as is" basis, and
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has no obligations to provide maintenance, support,
+ ** updates, enhancements or modifications.  In no event shall
+ ** Memorial Sloan-Kettering Cancer Center
+ ** be liable to any party for direct, indirect, special,
+ ** incidental or consequential damages, including lost profits, arising
+ ** out of the use of this software and its documentation, even if
+ ** Memorial Sloan-Kettering Cancer Center
+ ** has been advised of the possibility of such damage.  See
+ ** the GNU Lesser General Public License for more details.
+ **
+ ** You should have received a copy of the GNU Lesser General Public License
+ ** along with this library; if not, write to the Free Software Foundation,
+ ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+ **/
 package org.mskcc.pathdb.biopax;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * BioPAX Constants.
+ *
+ * @author Ethan Cerami.
+ */
 public class BioPaxConstants {
 
     /**
      * BioPAX Class:  physicalEntity.
      */
-    public final static String PHYSICAL_ENTITY = "physicalEntity";
+    public static final String PHYSICAL_ENTITY = "physicalEntity";
 
     /**
      * BioPAX Class:  complex.
      */
-    public final static String COMPLEX = "complex";
+    public static final String COMPLEX = "complex";
 
     /**
      * BioPAX Class:  dna
      */
-    public final static String DNA = "dna";
+    public static final String DNA = "dna";
 
     /**
      * BioPAX Class:  protein
      */
-    public final static String PROTEIN = "protein";
+    public static final String PROTEIN = "protein";
 
     /**
      * BioPAX Class:  rna
      */
-    public final static String RNA = "rna";
+    public static final String RNA = "rna";
 
     /**
      * BioPAX Class:  smallMolecule.
      */
-    public final static String SMALL_MOLECULE = "smallMolecule";
+    public static final String SMALL_MOLECULE = "smallMolecule";
 
     /**
      * BioPAX Class:  interaction.
      */
-    public final static String INTERACTION = "interaction";
+    public static final String INTERACTION = "interaction";
 
     /**
      * BioPAX Class:  physicalInteraction.
      */
-    public final static String PHYSICAL_INTERACTION =
+    public static final String PHYSICAL_INTERACTION =
             "physicalInteraction";
 
     /**
      * BioPAX Class: control
      */
-    public final static String CONTROL = "control";
+    public static final String CONTROL = "control";
 
     /**
      * BioPAX Class:  catalysis
      */
-    public final static String CATAYLSIS = "catalysis";
+    public static final String CATAYLSIS = "catalysis";
 
     /**
      * BioPAX Class:  modulation
      */
-    public final static String MODULATION = "modulation";
+    public static final String MODULATION = "modulation";
 
     /**
      * BioPAX Class: conversion
      */
-    public final static String CONVERSION = "conversion";
+    public static final String CONVERSION = "conversion";
 
     /**
      * BioPAX Class:  biochemicalReaction
      */
-    public final static String BIOCHEMICAL_REACTION
+    public static final String BIOCHEMICAL_REACTION
             = "biochemicalReaction";
 
     /**
      * BioPAX Class:  transportWithBiochemicalReaction
      */
-    public final static String TRANSPORT_WITH_BIOCHEMICAL_REACTION
+    public static final String TRANSPORT_WITH_BIOCHEMICAL_REACTION
             = "transportWithBiochemicalReaction";
 
     /**
      * BioPAX Class:  complexAssembly
      */
-    public final static String COMPLEX_ASSEMBLY = "complexAssembly";
+    public static final String COMPLEX_ASSEMBLY = "complexAssembly";
 
     /**
      * BioPAX Class: transport
      */
-    public final static String TRANSPORT = "transport";
+    public static final String TRANSPORT = "transport";
 
     /**
      * BioPAX Class:  pathway
      */
-    public final static String PATHWAY = "pathway";
+    public static final String PATHWAY = "pathway";
 
     /**
      * Set of All Physical Entity Types.
@@ -111,7 +145,7 @@ public class BioPaxConstants {
     /**
      * Constructor.
      */
-    public BioPaxConstants () {
+    public BioPaxConstants() {
 
         //  Initialize Physical Entity Set
         physicalEntitySet.add(COMPLEX);
@@ -138,28 +172,31 @@ public class BioPaxConstants {
 
     /**
      * Determines if the Specified Element is of type:  physical entity.
+     *
      * @param elementName Element Name.
      * @return boolean value.
      */
-    public boolean isPhysicalEntity (String elementName) {
+    public boolean isPhysicalEntity(String elementName) {
         return physicalEntitySet.contains(elementName);
     }
 
     /**
      * Determines if the Specified Element is of type:  interaction.
+     *
      * @param elementName Element Name.
      * @return boolean value.
      */
-    public boolean isInteraction (String elementName) {
+    public boolean isInteraction(String elementName) {
         return interactionSet.contains(elementName.trim());
     }
 
     /**
      * Determines if the Specified Element is of type:  pathway.
+     *
      * @param elementName Element Name.
      * @return boolean value.
      */
-    public boolean isPathway (String elementName) {
+    public boolean isPathway(String elementName) {
         return pathwaySet.contains(elementName.trim());
     }
 }

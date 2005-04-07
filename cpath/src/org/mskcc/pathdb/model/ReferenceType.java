@@ -70,9 +70,8 @@ public class ReferenceType {
         } else if (typeName.equals(LINK_OUT.toString())) {
             return LINK_OUT;
         } else if (typeName.equals(INTERACTION_UNIFICATION.toString())) {
-            return INTERACTION_UNIFICATION;            
-        }
-        else {
+            return INTERACTION_UNIFICATION;
+        } else {
             return null;
         }
     }
@@ -81,7 +80,7 @@ public class ReferenceType {
      * External Record Type:  INTERACION_UNIFICATION.
      */
     public static final ReferenceType INTERACTION_UNIFICATION
-            = new ReferenceType ("INTERACTION_UNIFICATION");
+            = new ReferenceType("INTERACTION_UNIFICATION");
 
     /**
      * External Record Type:  PROTEIN_UNIFICATION.

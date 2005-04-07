@@ -32,9 +32,6 @@ package org.mskcc.pathdb.test.biopax;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.test.task.TestAffymetrixParser;
-import org.mskcc.pathdb.test.util.rdf.RdfUtilSuite;
-import org.mskcc.pathdb.test.util.*;
 
 /**
  * Suite of all BioPax Unit Tests.
