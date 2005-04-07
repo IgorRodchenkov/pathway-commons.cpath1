@@ -49,6 +49,8 @@ INSERT INTO `external_db` VALUES (22, 'NCBI GenBank', 'http://www.ncbi.nlm.nih.g
 INSERT INTO `external_db` VALUES (23, 'NCBI GI', 'http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&val=%ID%', 'NCBI GI', 27, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (24, 'RefSeq', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=search&term=%ID%', 'NCBI RefSeq', 25, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (25, 'RefSeq Protein', 'http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&val=%ID%', 'NCBI RefSeq Protein', 48, 'PROTEIN_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (26, 'aMAZE', '', 'aMAZE Database', 48, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (27, 'KEGG', '', 'Kyoto Encyclopedia of Genes and Genomes (KEGG)', 67, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
@@ -62,13 +64,14 @@ INSERT INTO `external_db_cv` VALUES (3, 1, 'SWISSPROT');
 INSERT INTO `external_db_cv` VALUES (4, 1, 'SWISSTREMBL');
 INSERT INTO `external_db_cv` VALUES (5, 1, 'SWP');
 INSERT INTO `external_db_cv` VALUES (6, 1, 'UNIPROT');
+INSERT INTO `external_db_cv` VALUES (7, 1, 'SWISS-PROT/TREMBL');
 
 #  Terms Associated with NCBI Databases (20-49)
 #  Entrez Gene will soon replace LocusLink
 INSERT INTO `external_db_cv` VALUES (21, 2, 'ENTREZ_GENE');
 INSERT INTO `external_db_cv` VALUES (22, 2, 'LOCUS_LINK');
 INSERT INTO `external_db_cv` VALUES (23, 2, 'LOCUSLINK');
-INSERT INTO `external_db_cv` VALUES (66, 2, 'LOCUS-LINK');
+INSERT INTO `external_db_cv` VALUES (47, 2, 'LOCUS-LINK');
 
 #  Terms Associated with RefSeq
 INSERT INTO `external_db_cv` VALUES (24, 24, 'REFSEQ');
@@ -89,7 +92,7 @@ INSERT INTO `external_db_cv` VALUES (30, 3, 'PMID');
 INSERT INTO `external_db_cv` VALUES (31, 4, 'UNIGENE');
 INSERT INTO `external_db_cv` VALUES (32, 5, 'OMIM');
 
-# All Other Databases (50 - 99)
+# All Other Databases (50 - 999)
 INSERT INTO `external_db_cv` VALUES (50, 6, 'PIR');
 INSERT INTO `external_db_cv` VALUES (51, 7, 'INTERPRO');
 INSERT INTO `external_db_cv` VALUES (52, 8, 'PROSITE');
@@ -106,3 +109,6 @@ INSERT INTO `external_db_cv` VALUES (62, 18, 'MINT');
 INSERT INTO `external_db_cv` VALUES (63, 19, 'REACTOME');
 INSERT INTO `external_db_cv` VALUES (64, 20, 'HUGE');
 INSERT INTO `external_db_cv` VALUES (65, 21, 'ENSEMBL');
+INSERT INTO `external_db_cv` VALUES (66, 26, 'AMAZE');
+INSERT INTO `external_db_cv` VALUES (67, 27, 'KEGG');
+INSERT INTO `external_db_cv` VALUES (68, 11, 'GENE ONTOLOGY');
