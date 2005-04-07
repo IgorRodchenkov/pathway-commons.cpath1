@@ -118,7 +118,9 @@
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
     <module name="SimplifyBooleanExpression"/>
+    <!--
     <module name="SimplifyBooleanReturn"/>
+    -->
 
     <!-- flag reminder comments -->
     <!--
