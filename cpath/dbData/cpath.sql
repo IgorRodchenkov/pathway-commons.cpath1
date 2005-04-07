@@ -20,19 +20,27 @@ DROP DATABASE IF EXISTS cpath;
 CREATE DATABASE cpath;
 USE cpath;
 
+#
+# Table structure for table `cpath`
+#
+# Creation: Apr 07, 2005 at 02:41 PM
+# Last update: Apr 07, 2005 at 02:41 PM
+#
+
 CREATE TABLE `cpath` (
   `CPATH_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(255) NOT NULL default '',
   `DESC` varchar(255) default NULL,
   `TYPE` varchar(255) NOT NULL default '',
-  `SPEC_TYPE` varchar(255) default NULL,
+  `SPECIFIC_TYPE` varchar(255) default NULL,
   `NCBI_TAX_ID` int(11) NOT NULL default '-9999',
+  `XML_TYPE` varchar(50) NOT NULL default '',
   `XML_CONTENT` longtext NOT NULL,
   `CREATE_TIME` timestamp(14) NOT NULL,
   `UPDATE_TIME` timestamp(14) NOT NULL,
   PRIMARY KEY  (`CPATH_ID`)
-) TYPE=MyISAM COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1 ;
-# --------------------------------------------------------
+) TYPE=MyISAM COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1;
+
 
 #
 # Table structure for table `external_db`
