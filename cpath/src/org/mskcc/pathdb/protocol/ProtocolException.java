@@ -33,6 +33,7 @@ import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
+import org.jdom.output.Format;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -174,8 +175,7 @@ public class ProtocolException extends Exception {
     public String toXml() {
         Document document = createXmlDocument();
         XMLOutputter outputter = new XMLOutputter();
-        outputter.setIndent("    ");
-        outputter.setNewlines(true);
+        outputter.setFormat(Format.getPrettyFormat());
         StringWriter writer = new StringWriter();
         try {
             outputter.output(document, writer);
