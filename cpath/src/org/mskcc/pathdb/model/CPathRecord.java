@@ -47,6 +47,7 @@ public class CPathRecord {
     private String name;
     private String description;
     private CPathRecordType type;
+    private XmlRecordType xmlType;
     private String specType;
     private int ncbiTaxonomyId;
     private String xmlContent;
@@ -169,6 +170,22 @@ public class CPathRecord {
      */
     public void setNcbiTaxonomyId(int ncbiTaxonomyId) {
         this.ncbiTaxonomyId = ncbiTaxonomyId;
+    }
+
+    /**
+     * Gets XML Content Type.
+     * @return XmlRecordType Object.
+     */
+    public XmlRecordType getXmlType() {
+        return xmlType;
+    }
+
+    /**
+     * Sets XML Content Type.
+     * @param xmlType XmlRecordType Object.
+     */
+    public void setXmlType(XmlRecordType xmlType) {
+        this.xmlType = xmlType;
     }
 
     /**

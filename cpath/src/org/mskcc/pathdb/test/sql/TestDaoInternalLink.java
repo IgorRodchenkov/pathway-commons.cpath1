@@ -33,8 +33,10 @@ import junit.framework.TestCase;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.util.ArrayList;
 
@@ -106,10 +108,13 @@ public class TestDaoInternalLink extends TestCase {
     private void createSampleCPathRecords() throws Exception {
         DaoCPath dao = new DaoCPath();
         cPathIdA = dao.addRecord(PROTEIN_A, "Protein A Blah", 101,
-                CPathRecordType.PHYSICAL_ENTITY, "protein a xml here");
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, "protein a xml here");
         cPathIdB = dao.addRecord(PROTEIN_B, "Protein B Blah", 101,
-                CPathRecordType.PHYSICAL_ENTITY, "protein B xml here");
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, "protein B xml here");
         cPathIdC = dao.addRecord(PROTEIN_C, "Protein C Blah", 101,
-                CPathRecordType.PHYSICAL_ENTITY, "protein C xml here");
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, "protein C xml here");
     }
 }

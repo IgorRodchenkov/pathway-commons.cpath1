@@ -35,11 +35,10 @@ import org.exolab.castor.xml.ValidationException;
 import org.jdom.Text;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.ImportSummary;
-import org.mskcc.pathdb.model.ReferenceType;
+import org.mskcc.dataservices.schemas.psi.Organism;
+import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.schemas.psi.PsiUtil;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
 import org.mskcc.pathdb.task.ProgressMonitor;
@@ -458,7 +457,8 @@ public class ImportPsiToCPath {
 
         //  Add New Record to cPath
         long cpathId = cpath.addRecord(name, desc, taxId,
-                CPathRecordType.PHYSICAL_ENTITY, xml, refs);
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, xml, refs);
 
         //  Add to Id Hash Map
         idMap.put(protein.getId(), new Long(cpathId));
@@ -504,7 +504,9 @@ public class ImportPsiToCPath {
 
         //  Add New Record to cPath
         long cpathId = cpath.addRecord(name, desc, taxId,
-                CPathRecordType.INTERACTION, xml, allRefs);
+                CPathRecordType.INTERACTION,
+                BioPaxConstants.PHYSICAL_INTERACTION, XmlRecordType.PSI_MI,
+                xml, allRefs);
 
         //  Creates Internal Links Between Interaction Record
         //  and all Interactor Records.

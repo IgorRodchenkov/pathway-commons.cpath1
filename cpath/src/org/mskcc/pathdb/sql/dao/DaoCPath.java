@@ -33,6 +33,7 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.IOException;
@@ -87,12 +88,16 @@ public class DaoCPath {
      *                       use the constant
      *                       CPathRecord.TAXONOMY_NOT_SPECIFIED.
      * @param type           CPathRecordType Object.
+     * @param specificType   Specific Type of Record.  The value of this
+     *                       field should be chosen from BioPaxConstants.java.
+     * @param xmlType        XmlRecordType Object.
      * @param xml            XML Content
      * @return cPath Id for newly saved record
      * @throws DaoException Error Retrieving Data.
      */
     public synchronized long addRecord(String name, String description,
-            int ncbiTaxonomyId, CPathRecordType type, String xml)
+            int ncbiTaxonomyId, CPathRecordType type, String specificType,
+            XmlRecordType xmlType, String xml)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -101,16 +106,19 @@ public class DaoCPath {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO cpath (`NAME`,`DESC`,"
-                    + "`TYPE`,`NCBI_TAX_ID`, `XML_CONTENT` ,"
-                    + " `CREATE_TIME`) VALUES (?,?,?,?,?,?)");
+                    + "`TYPE`, `SPECIFIC_TYPE`, `NCBI_TAX_ID`, `XML_TYPE`, "
+                    + "`XML_CONTENT` ,"
+                    + " `CREATE_TIME`) VALUES (?, ?,?,?,?,?,?,?)");
             pstmt.setString(1, name);
             pstmt.setString(2, description);
             pstmt.setString(3, type.toString());
-            pstmt.setInt(4, ncbiTaxonomyId);
-            pstmt.setString(5, xml);
+            pstmt.setString(4, specificType);
+            pstmt.setInt(5, ncbiTaxonomyId);
+            pstmt.setString(6, xmlType.toString());
+            pstmt.setString(7, xml);
             java.util.Date now = new java.util.Date();
             Timestamp timeStamp = new Timestamp(now.getTime());
-            pstmt.setTimestamp(6, timeStamp);
+            pstmt.setTimestamp(8, timeStamp);
             pstmt.executeUpdate();
 
             //  Get New CPath ID
@@ -135,16 +143,19 @@ public class DaoCPath {
      * @param description    Enty Description
      * @param ncbiTaxonomyId NCBI Taxonomy ID.
      * @param type           CPathRecordType Object.
+     * @param specificType   Specific Type of Record.  The value of this
+     *                       field should be chosen from BioPaxConstants.java.
      * @param xml            XML Content
      * @param refs           Array of External References
      * @return cPath Id for newly saved record
      * @throws DaoException Error Retrieving Data.
      */
     public synchronized long addRecord(String name, String description,
-            int ncbiTaxonomyId, CPathRecordType type, String xml,
-            ExternalReference refs[]) throws DaoException {
+            int ncbiTaxonomyId, CPathRecordType type, String specificType,
+            XmlRecordType xmlType, String xml, ExternalReference refs[])
+            throws DaoException {
         long cpathId = this.addRecord(name, description, ncbiTaxonomyId,
-                type, xml);
+                type, specificType, xmlType, xml);
         DaoExternalLink linker = new DaoExternalLink();
         linker.addMulipleRecords(cpathId, refs, false);
         return cpathId;
@@ -397,10 +408,10 @@ public class DaoCPath {
         record.setId(rs.getLong("CPATH_ID"));
         record.setName(rs.getString("NAME"));
         record.setDescription(rs.getString("DESC"));
-        CPathRecordType type = CPathRecordType.getType(rs.getString("TYPE"));
-        record.setType(type);
+        record.setType(CPathRecordType.getType(rs.getString("TYPE")));
         record.setSpecType(rs.getString("SPECIFIC_TYPE"));
         record.setNcbiTaxonomyId(rs.getInt("NCBI_TAX_ID"));
+        record.setXmlType(XmlRecordType.getType(rs.getString("XML_TYPE")));
         record.setXmlContent(rs.getString("XML_CONTENT"));
         record.setCreateTime(rs.getTimestamp("CREATE_TIME"));
         record.setUpdateTime(rs.getTimestamp("UPDATE_TIME"));

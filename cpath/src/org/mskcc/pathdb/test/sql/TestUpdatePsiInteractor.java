@@ -38,7 +38,9 @@ import org.mskcc.dataservices.schemas.psi.XrefType;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.psi.PsiUtil;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
@@ -74,7 +76,8 @@ public class TestUpdatePsiInteractor extends TestCase {
         StringWriter writer = new StringWriter();
         proteinA.marshal(writer);
         long cpathId = cpath.addRecord(NAME, DESCRIPTION, 25,
-                CPathRecordType.PHYSICAL_ENTITY, writer.toString(), refsA);
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, writer.toString(), refsA);
         UpdatePsiInteractor updater = new UpdatePsiInteractor(proteinB,
                 new ProgressMonitor());
         boolean needsUpdating = updater.needsUpdating();

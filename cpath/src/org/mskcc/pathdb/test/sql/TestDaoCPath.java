@@ -34,9 +34,11 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.util.ArrayList;
 
@@ -79,7 +81,8 @@ public class TestDaoCPath extends TestCase {
 
         //  Test addRecord()
         long cpathId = dao.addRecord(NAME, DESCRIPTION, YEAST_NCBI_ID,
-                CPathRecordType.PHYSICAL_ENTITY, XML, refs);
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, XML, refs);
         assertTrue(cpathId > 0);
 
         int numInteractionsAfter = dao.getNumEntities
@@ -121,10 +124,13 @@ public class TestDaoCPath extends TestCase {
     private void validateRecord(CPathRecord record) throws DaoException {
         assertEquals(NAME, record.getName());
         assertEquals(DESCRIPTION, record.getDescription());
+        assertEquals(XmlRecordType.PSI_MI.toString(),
+                record.getXmlType().toString());
         assertEquals(XML, record.getXmlContent());
         assertEquals(YEAST_NCBI_ID, record.getNcbiTaxonomyId());
         assertEquals(CPathRecordType.PHYSICAL_ENTITY.toString(),
                 record.getType().toString());
+        assertEquals(BioPaxConstants.PROTEIN, record.getSpecType());
 
         DaoExternalLink dao = new DaoExternalLink();
         ArrayList links = dao.getRecordsByCPathId(record.getId());
