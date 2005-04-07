@@ -97,9 +97,6 @@
       <fileset dir="${lib.dir}" includes="**/*.jar"/>
     </copy>
 
-   <!-- Copy oscache.properties -->
-   <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/oscache.properties"/>
-
    <!-- Copy cpathResources.properties -->
    <copy todir="${build.home}/WEB-INF/classes" file="${config.dir}/cpathResources.properties"/>
 
