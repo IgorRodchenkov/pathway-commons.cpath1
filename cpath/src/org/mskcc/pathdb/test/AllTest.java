@@ -43,6 +43,7 @@ import org.mskcc.pathdb.test.task.TaskSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
+import org.mskcc.pathdb.test.biopax.BioPaxSuite;
 
 /**
  * Runs all Unit Tests.
@@ -68,7 +69,8 @@ public class AllTest extends TestCase {
         suite.addTest(TagLibSuite.suite());
         suite.addTest(WebSuite.suite());
         suite.addTest(XmlRpcSuite.suite());
-        suite.setName("PathDB Tests");
+        suite.addTest(BioPaxSuite.suite());
+        suite.setName("cPath Tests");
         return suite;
     }
 
@@ -89,5 +91,4 @@ public class AllTest extends TestCase {
             junit.textui.TestRunner.run(suite());
         }
     }
-
 }
