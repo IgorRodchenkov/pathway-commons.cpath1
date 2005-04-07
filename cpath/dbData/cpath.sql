@@ -195,3 +195,14 @@ CREATE TABLE `background_reference` (
   KEY `DB ID Pair1` (`DB_1`,`ID_1`),
   KEY `DB ID Pair2` (`DB_2`,`ID_2`)
 ) TYPE=MyISAM COMMENT='Background References' AUTO_INCREMENT=1 ;
+
+#
+# Table structure for table `id_generator`
+#
+# Creation: Apr 07, 2005 at 11:18 AM
+# Last update: Apr 07, 2005 at 11:20 AM
+#
+
+CREATE TABLE `id_generator` (
+  `NEXT_ID` int(11) NOT NULL default '0'
+) TYPE=MyISAM COMMENT='ID Generator';
