@@ -31,7 +31,7 @@ package org.mskcc.pathdb.task;
 
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.pathdb.util.XmlValidator;
+import org.mskcc.pathdb.util.xml.XmlValidator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 

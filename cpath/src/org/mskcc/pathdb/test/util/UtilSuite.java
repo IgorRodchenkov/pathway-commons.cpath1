@@ -51,8 +51,6 @@ public class UtilSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestZipUtil.class);
         suite.addTestSuite(TestMd5Util.class);
-        suite.addTestSuite(TestPsiUtil.class);
-        suite.addTestSuite(TestXmlValidator.class);
         suite.addTestSuite(TestFilter.class);
         suite.addTestSuite(TestLogUtil.class);
         suite.addTestSuite(TestAffymetrixParser.class);

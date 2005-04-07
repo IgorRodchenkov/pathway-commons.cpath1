@@ -31,7 +31,7 @@ package org.mskcc.pathdb.test.util;
 
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.util.XssFilter;
+import org.mskcc.pathdb.util.security.XssFilter;
 
 /**
  * Tests the XssFilter Class.

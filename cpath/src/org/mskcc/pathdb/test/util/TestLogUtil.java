@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 import org.mskcc.pathdb.model.LogRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
-import org.mskcc.pathdb.util.LogUtil;
+import org.mskcc.pathdb.util.log.LogUtil;
 
 import java.util.ArrayList;
 

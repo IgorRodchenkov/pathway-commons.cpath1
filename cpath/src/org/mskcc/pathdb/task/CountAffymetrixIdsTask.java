@@ -38,7 +38,7 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.util.tool.ConsoleUtil;
 
 import java.io.StringReader;
 import java.text.DecimalFormat;

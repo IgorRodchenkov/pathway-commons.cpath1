@@ -35,7 +35,7 @@ import org.exolab.castor.xml.MarshalException;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.action.admin.AdminWebLogging;
 import org.mskcc.pathdb.protocol.ProtocolException;
-import org.mskcc.pathdb.util.LogUtil;
+import org.mskcc.pathdb.util.log.LogUtil;
 import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;

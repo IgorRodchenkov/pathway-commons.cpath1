@@ -33,7 +33,7 @@ import org.mskcc.pathdb.model.XmlCacheRecord;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
-import org.mskcc.pathdb.util.XssFilter;
+import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpUtils;

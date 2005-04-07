@@ -41,7 +41,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.util.tool.ConsoleUtil;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

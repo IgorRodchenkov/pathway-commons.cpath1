@@ -29,8 +29,8 @@
  **/
 package org.mskcc.pathdb.task;
 
-import org.mskcc.pathdb.util.ConsoleUtil;
-import org.mskcc.pathdb.util.FileUtil;
+import org.mskcc.pathdb.util.file.FileUtil;
+import org.mskcc.pathdb.util.tool.ConsoleUtil;
 
 import java.io.*;
 

@@ -42,7 +42,7 @@ import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.query.Query;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.util.XssFilter;
+import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.ServletOutputStream;

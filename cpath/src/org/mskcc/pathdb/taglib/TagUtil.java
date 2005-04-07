@@ -30,7 +30,7 @@
 package org.mskcc.pathdb.taglib;
 
 import org.mskcc.dataservices.schemas.psi.NamesType;
-import org.mskcc.pathdb.util.XmlUtil;
+import org.mskcc.pathdb.util.xml.XmlUtil;
 
 /**
  * Misc Utililty Method Useful for Multiple Tag Library Classes.

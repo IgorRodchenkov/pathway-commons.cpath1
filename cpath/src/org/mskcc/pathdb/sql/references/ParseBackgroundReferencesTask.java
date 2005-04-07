@@ -36,7 +36,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.task.Task;
-import org.mskcc.pathdb.util.FileUtil;
+import org.mskcc.pathdb.util.file.FileUtil;
 
 import java.io.BufferedReader;
 import java.io.File;

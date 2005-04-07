@@ -34,11 +34,11 @@ import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.schemas.psi.PsiUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringReader;
 import java.util.ArrayList;

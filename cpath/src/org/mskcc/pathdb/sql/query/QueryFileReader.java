@@ -30,7 +30,7 @@
 package org.mskcc.pathdb.sql.query;
 
 import org.mskcc.pathdb.protocol.ProtocolRequest;
-import org.mskcc.pathdb.util.XssFilter;
+import org.mskcc.pathdb.util.security.XssFilter;
 
 import javax.servlet.http.HttpUtils;
 import java.io.BufferedReader;

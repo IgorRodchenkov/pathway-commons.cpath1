@@ -42,7 +42,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.task.ImportRecordTask;
 import org.mskcc.pathdb.task.ImportReferencesTask;
-import org.mskcc.pathdb.util.XmlValidator;
+import org.mskcc.pathdb.util.xml.XmlValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;

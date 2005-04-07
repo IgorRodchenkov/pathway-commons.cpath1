@@ -34,7 +34,7 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
-import org.mskcc.pathdb.util.Md5Util;
+import org.mskcc.pathdb.util.security.Md5Util;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.security.NoSuchAlgorithmException;

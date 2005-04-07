@@ -32,8 +32,8 @@ package org.mskcc.pathdb.lucene;
 import org.apache.lucene.document.Field;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.util.XmlStripper;
-import org.mskcc.pathdb.util.XmlUtil;
+import org.mskcc.pathdb.util.xml.XmlStripper;
+import org.mskcc.pathdb.util.xml.XmlUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

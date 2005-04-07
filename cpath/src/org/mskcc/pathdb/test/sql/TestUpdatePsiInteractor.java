@@ -38,12 +38,12 @@ import org.mskcc.dataservices.schemas.psi.XrefType;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.schemas.psi.PsiUtil;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.util.PsiUtil;
 
 import java.io.StringWriter;
 import java.util.ArrayList;

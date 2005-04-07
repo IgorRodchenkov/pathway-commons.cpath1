@@ -1,5 +1,5 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.util.XssFilter"%>
+                 org.mskcc.pathdb.util.security.XssFilter"%>
  <%
     String base = (String) request.getAttribute
             (BaseAction.ATTRIBUTE_SERVLET_NAME);

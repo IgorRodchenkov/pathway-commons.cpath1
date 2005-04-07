@@ -34,7 +34,7 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
-import org.mskcc.pathdb.util.ZipUtil;
+import org.mskcc.pathdb.util.file.ZipUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.ByteArrayOutputStream;

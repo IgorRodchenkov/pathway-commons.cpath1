@@ -32,7 +32,7 @@ package org.mskcc.pathdb.sql.dao;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.JdbcUtil;
-import org.mskcc.pathdb.util.GlobalCache;
+import org.mskcc.pathdb.util.cache.GlobalCache;
 
 import java.sql.*;
 import java.util.ArrayList;

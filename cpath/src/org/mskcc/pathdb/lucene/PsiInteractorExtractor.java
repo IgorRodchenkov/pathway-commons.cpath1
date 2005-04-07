@@ -42,7 +42,7 @@ import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.InteractorList;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.pathdb.model.ProteinWithWeight;
-import org.mskcc.pathdb.util.XmlStripper;
+import org.mskcc.pathdb.util.xml.XmlStripper;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;

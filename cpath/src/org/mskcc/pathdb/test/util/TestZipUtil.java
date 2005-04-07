@@ -30,7 +30,7 @@
 package org.mskcc.pathdb.test.util;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.util.ZipUtil;
+import org.mskcc.pathdb.util.file.ZipUtil;
 
 /**
  * Tests the ZipUtil Class.

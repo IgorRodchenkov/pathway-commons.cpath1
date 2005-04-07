@@ -33,10 +33,10 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.dataservices.util.PropertyManager;
-import org.mskcc.pathdb.test.biopax.BioPaxSuite;
 import org.mskcc.pathdb.test.lucene.IndexerSuite;
 import org.mskcc.pathdb.test.model.ModelSuite;
 import org.mskcc.pathdb.test.protocol.ProtocolSuite;
+import org.mskcc.pathdb.test.schemas.SchemaSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
 import org.mskcc.pathdb.test.sql.assembly.AssemblySuite;
 import org.mskcc.pathdb.test.taglib.TagLibSuite;
@@ -69,7 +69,7 @@ public class AllTest extends TestCase {
         suite.addTest(TagLibSuite.suite());
         suite.addTest(WebSuite.suite());
         suite.addTest(XmlRpcSuite.suite());
-        suite.addTest(BioPaxSuite.suite());
+        suite.addTest(SchemaSuite.suite());
         suite.setName("cPath Tests");
         return suite;
     }

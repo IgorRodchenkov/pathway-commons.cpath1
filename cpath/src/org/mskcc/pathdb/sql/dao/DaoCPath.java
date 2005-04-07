@@ -399,7 +399,7 @@ public class DaoCPath {
         record.setDescription(rs.getString("DESC"));
         CPathRecordType type = CPathRecordType.getType(rs.getString("TYPE"));
         record.setType(type);
-        record.setSpecType(rs.getString("SPEC_TYPE"));
+        record.setSpecType(rs.getString("SPECIFIC_TYPE"));
         record.setNcbiTaxonomyId(rs.getInt("NCBI_TAX_ID"));
         record.setXmlContent(rs.getString("XML_CONTENT"));
         record.setCreateTime(rs.getTimestamp("CREATE_TIME"));

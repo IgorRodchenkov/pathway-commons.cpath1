@@ -1,6 +1,6 @@
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.model.CPathRecordType,
-                 org.mskcc.pathdb.util.XssFilter,
+                 org.mskcc.pathdb.util.security.XssFilter,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstants,
                  java.util.ArrayList,

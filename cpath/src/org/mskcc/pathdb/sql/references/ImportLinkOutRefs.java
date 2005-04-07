@@ -36,8 +36,8 @@ import org.mskcc.pathdb.sql.dao.DaoBackgroundReferences;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.util.ConsoleUtil;
-import org.mskcc.pathdb.util.FileUtil;
+import org.mskcc.pathdb.util.file.FileUtil;
+import org.mskcc.pathdb.util.tool.ConsoleUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;

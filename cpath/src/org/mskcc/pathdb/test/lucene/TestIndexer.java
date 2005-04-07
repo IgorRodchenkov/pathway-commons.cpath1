@@ -38,7 +38,7 @@ import org.mskcc.pathdb.lucene.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.util.XmlStripper;
+import org.mskcc.pathdb.util.xml.XmlStripper;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;

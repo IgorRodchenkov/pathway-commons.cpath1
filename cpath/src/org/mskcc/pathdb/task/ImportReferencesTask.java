@@ -34,7 +34,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
-import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.util.tool.ConsoleUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;

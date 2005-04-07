@@ -32,7 +32,7 @@ package org.mskcc.pathdb.test.util;
 
 import junit.framework.TestCase;
 import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.pathdb.util.XmlValidator;
+import org.mskcc.pathdb.util.xml.XmlValidator;
 
 import java.util.ArrayList;
 

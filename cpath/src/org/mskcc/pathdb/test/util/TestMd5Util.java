@@ -30,7 +30,7 @@
 package org.mskcc.pathdb.test.util;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.util.Md5Util;
+import org.mskcc.pathdb.util.security.Md5Util;
 
 /**
  * Tests the MD5 Utility Class.

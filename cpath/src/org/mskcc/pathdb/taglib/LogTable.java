@@ -32,7 +32,7 @@ package org.mskcc.pathdb.taglib;
 import org.mskcc.pathdb.model.LogRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
-import org.mskcc.pathdb.util.HtmlUtil;
+import org.mskcc.pathdb.util.html.HtmlUtil;
 
 import java.util.ArrayList;
 

@@ -44,7 +44,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.util.ConsoleUtil;
+import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
