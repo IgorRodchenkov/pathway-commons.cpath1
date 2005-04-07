@@ -61,6 +61,7 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestDaoOrganism.class);
         suite.addTestSuite(TestDaoLog.class);
         suite.addTestSuite(TestDaoBackgroundReference.class);
+        suite.addTestSuite(TestDaoIdGenerator.class);
         suite.addTestSuite(TestQueryFileReader.class);
         suite.addTest(AssemblySuite.suite());
         suite.addTest(ReferencesSuite.suite());
