@@ -99,13 +99,14 @@ CREATE TABLE `external_link` (
 #
 # Table structure for table `import`
 #
-# Creation: May 25, 2004 at 03:36 PM
-# Last update: May 25, 2004 at 04:56 PM
+# Creation: Apr 12, 2005 at 10:57 AM
+# Last update: Apr 12, 2005 at 11:31 AM
 #
 
 CREATE TABLE `import` (
   `IMPORT_ID` int(11) NOT NULL auto_increment,
   `DESC` varchar(255) NOT NULL default '',
+  `XML_TYPE` varchar(25) NOT NULL default '',
   `DOC_BLOB` longblob NOT NULL,
   `DOC_MD5` varchar(255) NOT NULL default '',
   `STATUS` varchar(20) NOT NULL default '',
