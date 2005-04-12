@@ -19,6 +19,7 @@ truncate table internal_link;
 truncate table xml_cache;
 truncate table organism;
 truncate table background_reference;
+truncate table id_generator;
 
 #
 #  Insert data into table 'external_db'
