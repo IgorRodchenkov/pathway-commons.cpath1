@@ -56,7 +56,6 @@ public class Md5Util {
         mac.reset();
         mac.update(bytes);
         byte hash[] = mac.digest();
-        return Base64.encode(hash).trim();
+        return new String(Base64.encode(hash)).trim();
     }
-
 }
