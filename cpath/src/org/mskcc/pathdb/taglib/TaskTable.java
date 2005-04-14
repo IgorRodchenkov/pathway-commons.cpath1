@@ -32,10 +32,13 @@ package org.mskcc.pathdb.taglib;
 import org.mskcc.pathdb.task.GlobalTaskList;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.task.Task;
+import org.mskcc.pathdb.util.html.HtmlUtil;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 /**
  * Custom JSP Tag for Displaying All Active Tasks.
@@ -81,20 +84,42 @@ public class TaskTable extends HtmlTable {
 
             boolean isAlive = task.isAlive();
             String status = null;
+            String log = null;
+            String stackTrace = "";
             if (isAlive) {
                 String perc = format.format(percentComplete);
                 status = currentMessage + " [" + perc + "]";
             } else {
                 if (task.errorOccurred()) {
                     status = task.getErrorMessage();
+                    if (status == null || status.equals("null")) {
+                        status = "An Error has occurred.";
+                    }
                     img = "icon_error_sml.gif";
+                    Throwable t = task.getThrowable();
+                    StringWriter writer = new StringWriter();
+                    PrintWriter pWriter = new PrintWriter(writer);
+                    t.printStackTrace(pWriter);
+                    stackTrace = "<P>Stack:Trace:<P> "
+                        + "<PRE>"
+                        + HtmlUtil.convertToHtml(writer.toString())
+                        + "</PRE>";
                 } else {
                     status = pMonitor.getCurrentMessage();
                     img = "icon_success_sml.gif";
                 }
+                log = pMonitor.getLog();
+                if (log != null && log.length() > 0) {
+                    log = new String ("<P>Log Messages:<PRE>"
+                        + HtmlUtil.convertToHtml(log)
+                        + "</PRE>");
+                } else {
+                    log = "";
+                }
             }
             if (img != null) {
-                status = "<img src='jsp/images/" + img + "'/>&nbsp;" + status;
+                status = "<img src='jsp/images/" + img + "'/>&nbsp;" + status
+                        + log + stackTrace;
             }
             outputDataField("<small>" + status + "</small>");
             if (!isAlive) {
