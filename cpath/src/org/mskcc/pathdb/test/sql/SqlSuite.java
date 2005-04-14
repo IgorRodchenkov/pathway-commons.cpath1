@@ -55,7 +55,6 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestDaoExternalLink.class);
         suite.addTestSuite(TestDaoCPath.class);
         suite.addTestSuite(TestDaoInternalLink.class);
-        suite.addTestSuite(TestImportPsiToCPath.class);
         suite.addTestSuite(TestUpdatePsiInteractor.class);
         suite.addTestSuite(TestDaoXmlCache.class);
         suite.addTestSuite(TestDaoOrganism.class);
