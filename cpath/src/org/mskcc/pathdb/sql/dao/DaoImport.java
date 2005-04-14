@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ImportRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.file.ZipUtil;
 import org.mskcc.pathdb.util.security.Md5Util;
@@ -48,9 +49,9 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class DaoImport {
-
     private static final String IMPORT_ID = "IMPORT_ID";
     private static final String DESCRIPTION = "DESC";
+    private static final String XML_TYPE = "XML_TYPE";
     private static final String STATUS = "STATUS";
     private static final String CREATE_TIME = "CREATE_TIME";
     private static final String UPDATE_TIME = "UPDATE_TIME";
@@ -72,8 +73,8 @@ public class DaoImport {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select `IMPORT_ID`, `DESC`, `DOC_MD5`, `STATUS`, "
-                    + "`CREATE_TIME`, `UPDATE_TIME`"
+                    ("select `IMPORT_ID`, `DESC`, `XML_TYPE`, `DOC_MD5`, "
+                    + "`STATUS`, `CREATE_TIME`, `UPDATE_TIME`"
                     + " from import order by IMPORT_ID");
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -148,12 +149,13 @@ public class DaoImport {
      * Adds New Database Import Record.
      *
      * @param description Import Record Description.
+     * @param xmlType     XmlRecordType Object.
      * @param data        String data.
      * @return indicate success (true) or failure (false).
      * @throws DaoException Error Retrieving Data.
      */
-    public synchronized long addRecord(String description, String data)
-            throws DaoException {
+    public synchronized long addRecord(String description, XmlRecordType
+            xmlType, String data) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -163,16 +165,17 @@ public class DaoImport {
             String hash = Md5Util.createMd5Hash(data);
             byte zippedData[] = ZipUtil.zip(data);
             pstmt = con.prepareStatement
-                    ("INSERT INTO import (`DESC`, `DOC_BLOB`,`DOC_MD5`,"
-                    + " `STATUS`, `CREATE_TIME`)"
-                    + " VALUES (?,?,?,?,?)");
+                    ("INSERT INTO import (`DESC`, `XML_TYPE`, `DOC_BLOB`, "
+                    + "`DOC_MD5`, `STATUS`, `CREATE_TIME`)"
+                    + " VALUES (?,?,?,?,?,?)");
             pstmt.setString(1, description);
-            pstmt.setBytes(2, zippedData);
-            pstmt.setString(3, hash);
-            pstmt.setString(4, ImportRecord.STATUS_NEW);
+            pstmt.setString(2, xmlType.toString());
+            pstmt.setBytes(3, zippedData);
+            pstmt.setString(4, hash);
+            pstmt.setString(5, ImportRecord.STATUS_NEW);
             java.util.Date date = new java.util.Date();
             Timestamp timeStamp = new Timestamp(date.getTime());
-            pstmt.setTimestamp(5, timeStamp);
+            pstmt.setTimestamp(6, timeStamp);
             int rows = pstmt.executeUpdate();
 
             //  Get New ID
@@ -263,10 +266,13 @@ public class DaoImport {
      * Updates Record Status.
      *
      * @param importID Import ID.
+     * @param status  Set to ImportRecord.STATUS_TRANSFERRED, or
+     *                ImportRecord.STATUS_INVALID.
      * @return Number of Rows Affected.
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean markRecordAsTransferred(int importID) throws DaoException {
+    public boolean updateRecordStatus(long importID, String status)
+            throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -274,8 +280,8 @@ public class DaoImport {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("UPDATE import set STATUS=? WHERE IMPORT_ID=?");
-            pstmt.setString(1, ImportRecord.STATUS_TRANSFERRED);
-            pstmt.setInt(2, importID);
+            pstmt.setString(1, status);
+            pstmt.setLong(2, importID);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
@@ -295,6 +301,7 @@ public class DaoImport {
         ImportRecord record = new ImportRecord();
         record.setImportId(rs.getInt(IMPORT_ID));
         record.setDescription(rs.getString(DESCRIPTION));
+        record.setXmlType(XmlRecordType.getType(rs.getString(XML_TYPE)));
         record.setStatus(rs.getString(STATUS));
         record.setCreateTime(rs.getTimestamp(CREATE_TIME));
         record.setUpdateTime(rs.getTimestamp(UPDATE_TIME));
