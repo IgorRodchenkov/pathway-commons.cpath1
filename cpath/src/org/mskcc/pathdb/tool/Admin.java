@@ -37,12 +37,10 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.transfer.MissingDataException;
-import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
-import org.mskcc.pathdb.task.ExportInteractionsToText;
-import org.mskcc.pathdb.task.IndexLuceneTask;
-import org.mskcc.pathdb.task.ValidateXmlTask;
+import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -72,7 +70,7 @@ public class Admin {
     private static boolean validateExternalReferences = true;
     private static int taxonomyId = NOT_SET;
     private static boolean xdebugFlag = false;
-    private static boolean removeAllXrefs = false;
+    private static boolean removeAllInteractionXrefs = false;
     private static String command = null;
 
     /**
@@ -118,20 +116,21 @@ public class Admin {
                 System.out.println(xdebug.getCompleteLog());
             }
             xdebug.stopTimer();
+
             System.out.println("Total Time:  " + xdebug.getTimeElapsed()
                     + " ms");
         } catch (SAXParseException e) {
-            System.out.println("\n\n-----------------------------------------");
+            System.out.println("\n-----------------------------------------");
             System.out.println("XML Validation Error:  " + e.getMessage());
             System.out.println("Error Located at line:  " + e.getLineNumber()
                     + ", column:  " + e.getColumnNumber());
             System.out.println("-----------------------------------------");
         } catch (SAXException e) {
-            System.out.println("\n\n-----------------------------------------");
+            System.out.println("\n-----------------------------------------");
             System.out.println("XML Validation Error:  " + e.getMessage());
             System.out.println("-----------------------------------------");
         } catch (Exception e) {
-            System.out.println("\n\n-----------------------------------------");
+            System.out.println("\n-----------------------------------------");
             System.out.println("Fatal Error:  " + e.getMessage());
             if (xdebugFlag) {
                 System.out.println("\nFull Details are available in the "
@@ -143,10 +142,10 @@ public class Admin {
     }
 
     /**
-     * Imports a PSI-MI File or an External Reference File.
+     * Imports a BioPAX, PSI-MI or an External Reference File.
      */
     private static void importData() throws IOException, DaoException,
-            ImportException, MissingDataException, SAXException,
+            ImportException, SAXException,
             DataServiceException {
         if (fileName != null) {
             File file = new File(fileName);
@@ -160,31 +159,19 @@ public class Admin {
                 importDataFromSingleFile(file);
             }
         }
-        ImportRecords importer = new ImportRecords();
-        importer.transferData(validateExternalReferences, removeAllXrefs);
     }
 
     private static void importDataFromSingleFile(File file) throws IOException,
             DaoException, SAXException, DataServiceException,
             ImportException {
         String fileName = file.getName();
+        long importId = NOT_SET;
+        System.out.println("Importing File:  " + file.getAbsoluteFile());
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
                 || fileName.endsWith("mif")) {
-            System.out.println("Importing PSI-MI File.");
-            ValidateXmlTask validator = new ValidateXmlTask(file);
-            boolean isValid = validator.validate(false);
-            if (isValid) {
-                LoadPsi.importDataFile(file);
-            } else {
-                System.out.println("\n-------------------------------------");
-                System.out.println("Import aborted due to invalid XML.");
-                System.out.println("Use the validate command to view "
-                        + "a list of XML validation errors.\n"
-                        + "For example:  admin.pl"
-                        + " -f human_small.xml validate");
-                System.out.println("-------------------------------------");
-                System.exit(-1);
-            }
+            importId = importPsiMiFile(file);
+        } else if (fileName.endsWith("owl")) {
+            importId = LoadBioPaxPsi.importDataFile(file, XmlRecordType.BIO_PAX);
         } else {
             ParseBackgroundReferencesTask task =
                     new ParseBackgroundReferencesTask(file, true);
@@ -192,11 +179,41 @@ public class Admin {
             NumberFormat formatter = new DecimalFormat("#,###,###");
             System.out.println("\nTotal Number of Background References "
                     + "Stored:  " + formatter.format(numRecordsSaved));
-//            FileReader reader = new FileReader(file);
-//            ImportReferencesTask task = new ImportReferencesTask(true,
-//              reader);
-//            task.importReferences();
+            //  Keep the following code here for future reference:
+            //  FileReader reader = new FileReader(file);
+            //  ImportReferencesTask task =
+            //    new ImportReferencesTask(true, reader);
+            //  task.importReferences();
         }
+        if (importId != NOT_SET) {
+            ImportRecordTask importTask = new ImportRecordTask (importId,
+                    validateExternalReferences, removeAllInteractionXrefs,
+                    true);
+            importTask.transferRecord();
+        }
+    }
+
+    /**
+     * Imports PSI-MI File into Import Table.
+     */
+    private static long importPsiMiFile(File file) throws IOException,
+            SAXException, DataServiceException, DaoException {
+        ValidateXmlTask validator = new ValidateXmlTask(file);
+        boolean isValid = validator.validate(false);
+        long importId = NOT_SET;
+        if (isValid) {
+            importId = LoadBioPaxPsi.importDataFile(file, XmlRecordType.PSI_MI);
+        } else {
+            System.out.println("\n-------------------------------------");
+            System.out.println("Import aborted due to invalid XML.");
+            System.out.println("Use the validate command to view "
+                    + "a list of XML validation errors.\n"
+                    + "For example:  admin.pl"
+                    + " -f human_small.xml validate");
+            System.out.println("-------------------------------------");
+            System.exit(-1);
+        }
+        return importId;
     }
 
     /**
@@ -237,7 +254,7 @@ public class Admin {
                     validateExternalReferences = false;
                     break;
                 case 'r':
-                    removeAllXrefs = true;
+                    removeAllInteractionXrefs = true;
                     break;
             }
         }
@@ -330,8 +347,8 @@ public class Admin {
         System.out.println("  -o, -o=id       NCBI TaxonomyID");
         System.out.println("\nWhere command is a one of:  ");
         System.out.println("  import          Imports Specified File.");
-        System.out.println("                  Used to Import PSI-MI Files "
-                + "or ID Mapping Files.");
+        System.out.println("                  Used to Import BioPAX Files, "
+                + "PSI-MI Files or ID Mapping Files.");
         System.out.println("  index           Indexes All Items in cPath");
         System.out.println("  precompute      Precomputes all queries in "
                 + "specified config file.");
