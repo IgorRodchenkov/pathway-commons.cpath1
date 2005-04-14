@@ -105,12 +105,13 @@ public class RdfValidator {
 
         for (int i = 0; i < allList.size(); i++) {
             SAXParseException exception = (SAXParseException) allList.get(i);
-            msg.append("Error:  " + exception.getMessage());
+            msg.append(i+".  ");
+            msg.append("RDF Error:  " + exception.getMessage());
             msg.append(" [Line=  " + exception.getLineNumber());
             msg.append(", Column=  " + exception.getColumnNumber());
             msg.append("]\n");
         }
-        return msg.toString();
+        return msg.toString().trim();
     }
 }
 
