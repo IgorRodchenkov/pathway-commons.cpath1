@@ -33,6 +33,7 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcHandler;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.model.XmlRecordType;
 
 import java.util.Vector;
 
@@ -59,7 +60,8 @@ public class SubmitData implements XmlRpcHandler {
         try {
             //  Import to Database.
             DaoImport dbImport = new DaoImport();
-            dbImport.addRecord("Cytoscape Submission", data);
+            dbImport.addRecord("Cytoscape Submission", XmlRecordType.PSI_MI,
+                    data);
         } catch (DaoException e) {
             throw new XmlRpcException(1, e.toString());
         }
