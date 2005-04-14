@@ -194,6 +194,41 @@ public class DaoCPath {
     }
 
     /**
+     * Gets all cPath Records of Specified Type.
+     *
+     * @param recordType CPathRecordType Object
+     * @return ArrayList of CPath Records.
+     * @throws DaoException        Error Retrieving Data.
+     * @throws java.io.IOException Error Performing I/O.
+     */
+    public ArrayList getAllRecords(CPathRecordType recordType)
+            throws DaoException, IOException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        ArrayList records = new ArrayList();
+        try {
+            con = JdbcUtil.getCPathConnection();
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("select * from cpath WHERE TYPE = ? order by CPATH_ID");
+            pstmt.setString(1, recordType.toString());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                CPathRecord record = extractRecord(rs);
+                records.add(record);
+            }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+        return records;
+    }
+
+    /**
      * Gets Records by Taxonomy ID.
      *
      * @param recordType CPathRecordType.
