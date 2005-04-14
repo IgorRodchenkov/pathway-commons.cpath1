@@ -1,12 +1,19 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction,
                  java.util.ArrayList,
-                 org.mskcc.pathdb.sql.assembly.XmlAssembly"%>
+                 org.mskcc.pathdb.sql.assembly.XmlAssembly,
+                 java.io.PrintWriter,
+                 java.io.StringWriter"%>
 <%
-    StringBuffer uri = new StringBuffer (
+    String url = "";
+    String baseAction = (String) request.getAttribute
+            (BaseAction.ATTRIBUTE_SERVLET_NAME);
+    if (baseAction != null) {
+        StringBuffer uri = new StringBuffer (
             (String) request.getAttribute
             (BaseAction.ATTRIBUTE_SERVLET_NAME));
-    uri = new StringBuffer(uri.substring(1));
-    String url = uri.toString();
+        uri = new StringBuffer(uri.substring(1));
+        url = uri.toString();
+    }
 
     XmlAssembly xmlAssemblyTemp = (XmlAssembly)
             request.getAttribute(BaseAction.ATTRIBUTE_XML_ASSEMBLY);
