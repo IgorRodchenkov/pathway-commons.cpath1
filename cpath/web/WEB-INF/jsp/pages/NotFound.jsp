@@ -1,4 +1,9 @@
-<%@ page import="java.util.Enumeration"%>
+<%@ page import="java.util.Enumeration,
+                 org.mskcc.pathdb.action.BaseAction"%>
+<%
+    String title = "cPath::404 Not Found";
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
+
 <jsp:include page="../global/header.jsp" flush="true" />
 
 <%
@@ -7,7 +12,7 @@
 %>
 
 <div class="errormessage">
-<p><strong>Not Found</strong></p>
+<p><strong>404:  Not Found</strong></p>
 The requested URL:  <B><%= request_uri %></B> was
     not found on this server.
 </div>
