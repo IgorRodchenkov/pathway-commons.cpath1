@@ -53,7 +53,7 @@ public class ImportTable extends HtmlTable {
                 + "records:");
         this.startTable();
         String headers[] = {
-            "Status", "Description", "Date/Time Loaded",
+            "Status", "File Name", "XML Type", "Date/Time Loaded",
         };
         createTableHeaders(headers);
         outputRecords(records);
@@ -69,6 +69,7 @@ public class ImportTable extends HtmlTable {
             append("<TR>");
             outputDataField(record.getStatus());
             outputDataField(record.getDescription());
+            outputDataField(record.getXmlType().toString());
             outputDataField(record.getCreateTime());
             append("</TR>");
         }
