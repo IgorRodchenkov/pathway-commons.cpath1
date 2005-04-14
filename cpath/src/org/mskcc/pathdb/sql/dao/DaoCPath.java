@@ -145,6 +145,7 @@ public class DaoCPath {
      * @param type           CPathRecordType Object.
      * @param specificType   Specific Type of Record.  The value of this
      *                       field should be chosen from BioPaxConstants.java.
+     * @param xmlType        XMLRecordType Object.
      * @param xml            XML Content
      * @param refs           Array of External References
      * @return cPath Id for newly saved record

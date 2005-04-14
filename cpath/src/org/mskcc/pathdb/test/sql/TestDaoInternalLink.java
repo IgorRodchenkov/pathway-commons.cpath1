@@ -34,9 +34,9 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.util.ArrayList;
 

@@ -30,26 +30,19 @@
 package org.mskcc.pathdb.schemas.biopax;
 
 import org.jdom.*;
-import org.jdom.output.XMLOutputter;
-import org.jdom.output.Format;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
-import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.dataservices.bio.ExternalReference;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +68,8 @@ public class BioPaxUtil {
     /**
      * Constructor.
      *
-     * @param reader Reader Object.
+     * @param reader   Reader Object.
+     * @param pMonitor ProgressMonitor Object.
      * @throws IOException   Input/Output Error.
      * @throws JDOMException XML Error.
      * @throws DaoException  Database Access Error.
@@ -91,17 +85,17 @@ public class BioPaxUtil {
         Element root = bioPaxDoc.getRootElement();
 
         //  First Step:  Inspect Tree to categorize all RDF Resources
-        pMonitor.setCurrentMessage ("Categorizing BioPAX Resources");
+        pMonitor.setCurrentMessage("Categorizing BioPAX Resources");
         categorizeResources(root);
 
         //  Second Step:  Validate that all RDF links point to actual
         //  RDF Resources, defined in the document.
-        pMonitor.setCurrentMessage ("Validating RDF Links");
+        pMonitor.setCurrentMessage("Validating RDF Links");
         validateResourceLinks(root);
 
         //  Third Step:  Make Hierarchical
         if (errorList.size() == 0) {
-            pMonitor.setCurrentMessage ("Preparing Pathway Elements:  ");
+            pMonitor.setCurrentMessage("Preparing Pathway Elements:  ");
             pMonitor.setMaxValue(pathwayList.size());
             for (int i = 0; i < pathwayList.size(); i++) {
                 Element pathway = (Element) pathwayList.get(i);
@@ -109,7 +103,7 @@ public class BioPaxUtil {
                 pMonitor.incrementCurValue();
                 ConsoleUtil.showProgress(pMonitor);
             }
-            pMonitor.setCurrentMessage ("Preparing Interaction Elements:  ");
+            pMonitor.setCurrentMessage("Preparing Interaction Elements:  ");
             pMonitor.setMaxValue(interactionList.size());
             for (int i = 0; i < interactionList.size(); i++) {
                 Element interaction = (Element) interactionList.get(i);
@@ -207,11 +201,12 @@ public class BioPaxUtil {
 
     /**
      * Extracts All XREF Data within the specified Element.
+     *
      * @param e JDOM Element.
      * @return Array of External Reference Objects.
      * @throws JDOMException JDOM Error.
      */
-    public ExternalReference[] extractExternalReferences (Element e)
+    public ExternalReference[] extractExternalReferences(Element e)
             throws JDOMException {
         XPath xpath = XPath.newInstance("biopax:XREF/*");
         xpath.addNamespace("biopax", e.getNamespaceURI());
@@ -222,7 +217,7 @@ public class BioPaxUtil {
             String dbName = xref.getChildText("DB", e.getNamespace());
             String dbId = xref.getChildText("ID", e.getNamespace());
             if (dbName != null && dbId != null) {
-                refs.add(new ExternalReference (dbName, dbId));
+                refs.add(new ExternalReference(dbName, dbId));
             }
         }
         return (ExternalReference[])

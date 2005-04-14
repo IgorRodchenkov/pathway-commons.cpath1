@@ -32,13 +32,11 @@ package org.mskcc.pathdb.task;
 import org.mskcc.pathdb.model.ImportRecord;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
+import org.mskcc.pathdb.schemas.psi.ImportPsiToCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.schemas.psi.ImportPsiToCPath;
-import org.mskcc.pathdb.schemas.psi.ImportPsiToCPath;
-import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
-import org.mskcc.pathdb.util.html.HtmlUtil;
 
 /**
  * Task to Import a Single New Data Record into cPath.
@@ -56,6 +54,9 @@ public class ImportRecordTask extends Task {
      * Constructor.
      *
      * @param importId    Import ID.
+     * @param validateExternalReferences Flag to Validate All External
+     *          References.
+     * @param removeAllInteractionXRefs Flag to Remove all Interaction XRefs.
      * @param consoleMode Console Mode.
      */
     public ImportRecordTask(long importId, boolean validateExternalReferences,
@@ -82,6 +83,9 @@ public class ImportRecordTask extends Task {
 
     /**
      * Transfers Single Import Record.
+     *
+     * @throws DaoException Database Access Error.
+     * @throws ImportException Import Error.
      */
     public void transferRecord() throws DaoException, ImportException {
         DaoImport daoImport = new DaoImport();
@@ -117,20 +121,20 @@ public class ImportRecordTask extends Task {
      */
     private void outputSummary(ImportSummary summary) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append ("Import Summary:  \n");
-        buffer.append ("-----------------------------------------------\n");
-        buffer.append ("# of Pathways saved to database:              "
+        buffer.append("Import Summary:  \n");
+        buffer.append("-----------------------------------------------\n");
+        buffer.append("# of Pathways saved to database:              "
                 + summary.getNumPathwaysSaved() + "\n");
-        buffer.append ("# of Interactions saved to database:          "
+        buffer.append("# of Interactions saved to database:          "
                 + summary.getNumInteractionsSaved() + "\n");
-        buffer.append ("# of Interactions clobbered:                  "
+        buffer.append("# of Interactions clobbered:                  "
                 + summary.getNumInteractionsClobbered() + "\n");
-        buffer.append ("# of Physical Entities found in database:     "
-                + summary.getNumPhysicalEntitiesFound() +"\n");
-        buffer.append ("# of Physical Entities saved to database:     "
-                + summary.getNumPhysicalEntitiesSaved() +"\n");
-        buffer.append ("-----------------------------------------------\n");
-        buffer.append ("\n");
+        buffer.append("# of Physical Entities found in database:     "
+                + summary.getNumPhysicalEntitiesFound() + "\n");
+        buffer.append("# of Physical Entities saved to database:     "
+                + summary.getNumPhysicalEntitiesSaved() + "\n");
+        buffer.append("-----------------------------------------------\n");
+        buffer.append("\n");
         String msg = buffer.toString();
         pMonitor.setCurrentMessage(msg);
         pMonitor.setCurrentMessage("Import Complete");

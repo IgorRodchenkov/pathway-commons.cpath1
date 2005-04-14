@@ -37,7 +37,6 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.*;
 import org.mskcc.dataservices.schemas.psi.Organism;
 import org.mskcc.pathdb.model.*;
-import org.mskcc.pathdb.schemas.psi.PsiUtil;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
@@ -150,7 +149,8 @@ public class ImportPsiToCPath {
      * @param removeAllXrefs       Automatically Removes all Xrefs (not recmd).
      * @param pMonitor             Progress Monitor Object.
      * @return Import Summary Object.
-     * @throws org.mskcc.pathdb.sql.transfer.ImportException Indicates Error in Import.
+     * @throws org.mskcc.pathdb.sql.transfer.ImportException
+     *          Indicates Error in Import.
      */
     public ImportSummary addRecord(String xml, boolean validateExternalRefs,
             boolean removeAllXrefs, ProgressMonitor pMonitor)
@@ -163,7 +163,7 @@ public class ImportPsiToCPath {
             pMonitor.setCurrentMessage("Warning!  Data Import will "
                     + "automatically remove all PSI-MI "
                     + "interaction xrefs.");
-        }        
+        }
 
         try {
             // Steps 1-2:  Normalize PSI Document, chop into parts.

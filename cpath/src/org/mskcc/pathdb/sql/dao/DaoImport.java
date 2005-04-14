@@ -266,8 +266,8 @@ public class DaoImport {
      * Updates Record Status.
      *
      * @param importID Import ID.
-     * @param status  Set to ImportRecord.STATUS_TRANSFERRED, or
-     *                ImportRecord.STATUS_INVALID.
+     * @param status   Set to ImportRecord.STATUS_TRANSFERRED, or
+     *                 ImportRecord.STATUS_INVALID.
      * @return Number of Rows Affected.
      * @throws DaoException Error Retrieving Data.
      */

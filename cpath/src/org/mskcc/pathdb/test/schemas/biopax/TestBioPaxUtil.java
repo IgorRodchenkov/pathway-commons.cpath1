@@ -32,16 +32,15 @@ package org.mskcc.pathdb.test.schemas.biopax;
 import junit.framework.TestCase;
 import org.jdom.Attribute;
 import org.jdom.Element;
-import org.jdom.Document;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
-import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.dataservices.bio.ExternalReference;
+import org.mskcc.pathdb.util.rdf.RdfValidator;
 
 import java.io.FileReader;
 import java.io.StringReader;
@@ -90,7 +89,7 @@ public class TestBioPaxUtil extends TestCase {
         XPath xpath = XPath.newInstance("//@rdf:resource");
         xpath.addNamespace("rdf", RdfConstants.RDF_NAMESPACE_URI);
         List links = xpath.selectNodes(pathway);
-        assertEquals (6, links.size());
+        assertEquals(6, links.size());
 
         //  Before the hierarchical transformation, we had something like this:
         //  <bp:STEP-INTERACTIONS>

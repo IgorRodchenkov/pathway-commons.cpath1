@@ -128,9 +128,10 @@ public class ProgressMonitor {
 
     /**
      * Gets Log of All Messages.
+     *
      * @return String Object.
      */
-    public String getLog () {
+    public String getLog() {
         return log.toString();
     }
 

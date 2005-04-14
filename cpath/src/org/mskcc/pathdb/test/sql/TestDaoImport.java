@@ -78,7 +78,7 @@ public class TestDaoImport extends TestCase {
             assertEquals("NEW", record.getStatus());
 
             // Verify XML Type
-            assertEquals (XmlRecordType.PSI_MI, record.getXmlType());
+            assertEquals(XmlRecordType.PSI_MI, record.getXmlType());
 
             // Verify MD5 Hash
             assertEquals("Z80/GqKi48wil7K3j88IGQ==", record.getMd5Hash());
@@ -86,7 +86,7 @@ public class TestDaoImport extends TestCase {
             getIndividualRecord(record.getImportId(), record.getMd5Hash());
 
             record = dbImport.getRecordById(record.getImportId());
-            
+
             // Verify Start of XML Document.
             String data = record.getData();
             assertTrue(data.startsWith("<?xml version="));

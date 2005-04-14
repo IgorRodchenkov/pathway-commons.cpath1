@@ -45,7 +45,7 @@ public class ImportRecord {
     private Date createTime;
     private Date updateTime;
     private String md5Hash;
-    
+
     /**
      * New Record Status.
      */
@@ -189,6 +189,7 @@ public class ImportRecord {
 
     /**
      * Gets XML Record Type.
+     *
      * @return XmlRecordType Object.
      */
     public XmlRecordType getXmlType() {
@@ -197,6 +198,7 @@ public class ImportRecord {
 
     /**
      * Sets XML Record Type.
+     *
      * @param xmlType XmlRecordType Object.
      */
     public void setXmlType(XmlRecordType xmlType) {

@@ -29,10 +29,10 @@
  **/
 package org.mskcc.pathdb.util.xml;
 
-import org.jdom.Text;
 import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
+import org.jdom.Text;
 import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -58,8 +58,10 @@ public class XmlUtil {
 
     /**
      * Serializes JDOM Element to XML.
+     *
      * @param e JDOM Element
      * @return XML String
+     * @throws IOException Error Serializing XML.
      */
     public static String serializeToXml(Element e) throws IOException {
         StringWriter writer = new StringWriter();

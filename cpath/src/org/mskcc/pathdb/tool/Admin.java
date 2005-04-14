@@ -32,15 +32,14 @@ package org.mskcc.pathdb.tool;
 import gnu.getopt.Getopt;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.sql.transfer.MissingDataException;
 import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.model.XmlRecordType;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -171,7 +170,8 @@ public class Admin {
                 || fileName.endsWith("mif")) {
             importId = importPsiMiFile(file);
         } else if (fileName.endsWith("owl")) {
-            importId = LoadBioPaxPsi.importDataFile(file, XmlRecordType.BIO_PAX);
+            importId = LoadBioPaxPsi.importDataFile(file,
+                    XmlRecordType.BIO_PAX);
         } else {
             ParseBackgroundReferencesTask task =
                     new ParseBackgroundReferencesTask(file, true);
@@ -186,7 +186,7 @@ public class Admin {
             //  task.importReferences();
         }
         if (importId != NOT_SET) {
-            ImportRecordTask importTask = new ImportRecordTask (importId,
+            ImportRecordTask importTask = new ImportRecordTask(importId,
                     validateExternalReferences, removeAllInteractionXrefs,
                     true);
             importTask.transferRecord();

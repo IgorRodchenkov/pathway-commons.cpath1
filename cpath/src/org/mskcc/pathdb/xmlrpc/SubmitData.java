@@ -31,9 +31,9 @@ package org.mskcc.pathdb.xmlrpc;
 
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcHandler;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
-import org.mskcc.pathdb.model.XmlRecordType;
 
 import java.util.Vector;
 

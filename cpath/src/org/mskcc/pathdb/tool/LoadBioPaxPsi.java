@@ -29,14 +29,13 @@
  **/
 package org.mskcc.pathdb.tool;
 
+import org.mskcc.dataservices.core.DataServiceException;
+import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
-import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.dataservices.util.ContentReader;
-import org.mskcc.dataservices.core.DataServiceException;
-import org.xml.sax.SAXException;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * Command Line Tool for Loading BioPAX and PSI-MI Data into the cPath import
@@ -50,8 +49,10 @@ public class LoadBioPaxPsi {
      * Imports BioPAX and PSI-MI Data File into the cPath Import Table.
      *
      * @param file File.
-     * @throws DataServiceException  File Input Error.
-     * @throws DaoException Data Access Error.
+     * @param xmlType XmlRecordType Object.
+     * @return Import Record Primary ID.
+     * @throws DataServiceException File Input Error.
+     * @throws DaoException         Data Access Error.
      */
     public static long importDataFile(File file, XmlRecordType xmlType)
             throws DataServiceException, DaoException {

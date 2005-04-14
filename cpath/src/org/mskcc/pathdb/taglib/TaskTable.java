@@ -34,11 +34,11 @@ import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.task.Task;
 import org.mskcc.pathdb.util.html.HtmlUtil;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 
 /**
  * Custom JSP Tag for Displaying All Active Tasks.
@@ -101,18 +101,18 @@ public class TaskTable extends HtmlTable {
                     PrintWriter pWriter = new PrintWriter(writer);
                     t.printStackTrace(pWriter);
                     stackTrace = "<P>Stack:Trace:<P> "
-                        + "<PRE>"
-                        + HtmlUtil.convertToHtml(writer.toString())
-                        + "</PRE>";
+                            + "<PRE>"
+                            + HtmlUtil.convertToHtml(writer.toString())
+                            + "</PRE>";
                 } else {
                     status = pMonitor.getCurrentMessage();
                     img = "icon_success_sml.gif";
                 }
                 log = pMonitor.getLog();
                 if (log != null && log.length() > 0) {
-                    log = new String ("<P>Log Messages:<PRE>"
-                        + HtmlUtil.convertToHtml(log)
-                        + "</PRE>");
+                    log = new String("<P>Log Messages:<PRE>"
+                            + HtmlUtil.convertToHtml(log)
+                            + "</PRE>");
                 } else {
                     log = "";
                 }

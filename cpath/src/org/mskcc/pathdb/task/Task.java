@@ -83,9 +83,10 @@ public abstract class Task extends Thread {
 
     /**
      * Gets the Throwable Object.
+     *
      * @return throwable Object.
      */
-    public Throwable getThrowable () {
+    public Throwable getThrowable() {
         return this.throwable;
     }
 

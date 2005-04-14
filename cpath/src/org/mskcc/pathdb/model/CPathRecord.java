@@ -179,6 +179,7 @@ public class CPathRecord {
 
     /**
      * Gets XML Content Type.
+     *
      * @return XmlRecordType Object.
      */
     public XmlRecordType getXmlType() {
@@ -187,6 +188,7 @@ public class CPathRecord {
 
     /**
      * Sets XML Content Type.
+     *
      * @param xmlType XmlRecordType Object.
      */
     public void setXmlType(XmlRecordType xmlType) {

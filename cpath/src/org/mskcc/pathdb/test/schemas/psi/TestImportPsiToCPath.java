@@ -34,13 +34,12 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.schemas.psi.ImportPsiToCPath;
 import org.mskcc.pathdb.sql.dao.DaoBackgroundReferences;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
-import org.mskcc.pathdb.schemas.psi.ImportPsiToCPath;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.schemas.psi.ImportPsiToCPath;
 
 import java.io.File;
 import java.util.ArrayList;
