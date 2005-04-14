@@ -9,6 +9,7 @@
 <%
 try {
     DaoCPath dao = new DaoCPath();
+    int numPathways = dao.getNumEntities(CPathRecordType.PATHWAY);
     int numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
     int numPhysicalEntities = dao.getNumEntities
             (CPathRecordType.PHYSICAL_ENTITY);
@@ -20,12 +21,16 @@ try {
     <h3>Database Stats</h3>
 </div>
 <TABLE>
+
+    <TR>
+        <TD>Number of Pathways:</TD>
+        <TD><%= formatter.format(numPathways) %></TD>
     <TR>
         <TD>Number of Interactions:</TD>
         <TD><%= formatter.format(numInteractions) %></TD>
     </TR>
     <TR>
-        <TD>Number of Interactors:</TD>
+        <TD>Number of Physical Entities:</TD>
         <TD><%= formatter.format(numPhysicalEntities) %></TD>
     </TR>
     <TR>
