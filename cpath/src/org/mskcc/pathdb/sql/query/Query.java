@@ -43,7 +43,7 @@ import java.security.NoSuchAlgorithmException;
  * Executes Interaction Queries.
  * <p/>
  * <P>Note:  JUnit testing for this class is performed in:
- * org.mskcc.pathdb.test.sql.TestImportPsiToCPath.
+ * org.mskcc.pathdb.test.schemas.psi.TestImportPsiToCPath.
  *
  * @author Ethan Cerami.
  */
