@@ -130,7 +130,7 @@ public class TestDaoCPath extends TestCase {
         assertEquals(YEAST_NCBI_ID, record.getNcbiTaxonomyId());
         assertEquals(CPathRecordType.PHYSICAL_ENTITY.toString(),
                 record.getType().toString());
-        assertEquals(BioPaxConstants.PROTEIN, record.getSpecType());
+        assertEquals(BioPaxConstants.PROTEIN, record.getSpecificType());
 
         DaoExternalLink dao = new DaoExternalLink();
         ArrayList links = dao.getRecordsByCPathId(record.getId());
