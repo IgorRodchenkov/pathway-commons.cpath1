@@ -48,6 +48,7 @@ public class PsiSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestPsiUtil.class);
+        suite.addTestSuite(TestImportPsiToCPath.class);
         suite.setName("PSI-MI Tests");
         return suite;
     }
