@@ -31,6 +31,7 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ImportRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
 
@@ -76,12 +77,16 @@ public class TestDaoImport extends TestCase {
             // Verify Status
             assertEquals("NEW", record.getStatus());
 
+            // Verify XML Type
+            assertEquals (XmlRecordType.PSI_MI, record.getXmlType());
+
             // Verify MD5 Hash
             assertEquals("Z80/GqKi48wil7K3j88IGQ==", record.getMd5Hash());
 
             getIndividualRecord(record.getImportId(), record.getMd5Hash());
 
             record = dbImport.getRecordById(record.getImportId());
+            
             // Verify Start of XML Document.
             String data = record.getData();
             assertTrue(data.startsWith("<?xml version="));
@@ -109,7 +114,7 @@ public class TestDaoImport extends TestCase {
     public void addTestRecords() throws Exception {
         DaoImport dbImport = new DaoImport();
         String sampleData = getTextFromSampleFile();
-        dbImport.addRecord(DESCRIPTION, sampleData);
+        dbImport.addRecord(DESCRIPTION, XmlRecordType.PSI_MI, sampleData);
     }
 
     /**
