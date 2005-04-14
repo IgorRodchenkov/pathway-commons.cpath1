@@ -157,9 +157,19 @@ public class DiagnosticsTable extends HtmlTable {
             test.setException(e);
         }
         testList.add(test);
+
+        test = new DiagnosticTestResults("Testing access to Table:  "
+                + "id_generator");
+        DaoIdGenerator idGenerator = new DaoIdGenerator();
+        try {
+            idGenerator.getNextId();
+        } catch (DaoException e) {
+            test.setException(e);
+        }
+        testList.add(test);
     }
 
-    private void runThirdBatch() throws IOException {
+    private void runThirdBatch() {
         LuceneReader indexer = new LuceneReader();
         try {
             DiagnosticTestResults test = new DiagnosticTestResults
