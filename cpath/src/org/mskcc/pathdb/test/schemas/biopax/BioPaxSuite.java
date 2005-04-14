@@ -48,6 +48,9 @@ public class BioPaxSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestBioPaxUtil.class);
+        suite.addTestSuite(TestBioPaxTransformToCPathRecords.class);
+        suite.addTestSuite(TestUpdateRdfLinks.class);
+        suite.addTestSuite(TestImportBioPaxToCPath.class);
         suite.setName("BioPax Tests");
         return suite;
     }

@@ -32,6 +32,7 @@ package org.mskcc.pathdb.test.schemas.biopax;
 import junit.framework.TestCase;
 import org.jdom.Attribute;
 import org.jdom.Element;
+import org.jdom.Document;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
@@ -39,6 +40,8 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
+import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.dataservices.bio.ExternalReference;
 
 import java.io.FileReader;
 import java.io.StringReader;
@@ -55,6 +58,7 @@ import java.util.Set;
  */
 public class TestBioPaxUtil extends TestCase {
     private Set rdfIdSet = new HashSet();
+    private ProgressMonitor pMonitor = new ProgressMonitor();
 
     /**
      * Tests a BioPAX Level 1 File that we know is "legal".
@@ -64,7 +68,7 @@ public class TestBioPaxUtil extends TestCase {
     public void testLegalLevel1File() throws Exception {
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample1.owl");
-        BioPaxUtil util = new BioPaxUtil(file);
+        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
 
         ArrayList pathwayList = util.getPathwayList();
         ArrayList interactionList = util.getInteractionList();
@@ -81,6 +85,12 @@ public class TestBioPaxUtil extends TestCase {
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
         out.output(pathway, writer);
+
+        //  Validate that XPath queries work on individual resource elements
+        XPath xpath = XPath.newInstance("//@rdf:resource");
+        xpath.addNamespace("rdf", RdfConstants.RDF_NAMESPACE_URI);
+        List links = xpath.selectNodes(pathway);
+        assertEquals (6, links.size());
 
         //  Before the hierarchical transformation, we had something like this:
         //  <bp:STEP-INTERACTIONS>
@@ -128,7 +138,14 @@ public class TestBioPaxUtil extends TestCase {
         assertTrue("Newly generated XML document contains invalid RDF",
                 !rdfValidator.hasErrorsOrWarnings());
 
-        //  System.out.println(writer.toString());
+        //  Test the extractExternalReferences Method
+        ExternalReference refs[] = util.extractExternalReferences(pathway);
+        ExternalReference ref0 = refs[0];
+        ExternalReference ref1 = refs[1];
+        assertEquals("aMAZE", ref0.getDatabase());
+        assertEquals("aMAZEProcess0000000027", ref0.getId());
+        assertEquals("PubMed", ref1.getDatabase());
+        assertEquals("2549346", ref1.getId());
     }
 
     /**
@@ -141,7 +158,7 @@ public class TestBioPaxUtil extends TestCase {
     public void testInvalidRdfLinks() throws Exception {
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample2.owl");
-        BioPaxUtil util = new BioPaxUtil(file);
+        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
 
         ArrayList pathwayList = util.getPathwayList();
         ArrayList interactionList = util.getInteractionList();
@@ -167,7 +184,7 @@ public class TestBioPaxUtil extends TestCase {
      */
     public void testRedundantRdfIds() throws Exception {
         FileReader file = new FileReader("testData/biopax/biopax1_sample3.owl");
-        BioPaxUtil util = new BioPaxUtil(file);
+        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
 
         ArrayList pathwayList = util.getPathwayList();
         ArrayList interactionList = util.getInteractionList();
@@ -195,7 +212,7 @@ public class TestBioPaxUtil extends TestCase {
     public void testInvalidDatabaseXrefs() throws Exception {
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample4.owl");
-        BioPaxUtil util = new BioPaxUtil(file);
+        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
         ArrayList errorList = util.getErrorList();
 
         assertTrue(errorList.size() > 0);
