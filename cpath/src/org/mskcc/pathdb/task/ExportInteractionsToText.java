@@ -82,7 +82,7 @@ public class ExportInteractionsToText extends Task {
         try {
             executeTask();
         } catch (Exception e) {
-            setException(e);
+            setThrowable(e);
         }
     }
 

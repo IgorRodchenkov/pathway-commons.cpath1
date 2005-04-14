@@ -76,7 +76,7 @@ public class ImportReferencesTask extends Task {
         try {
             importReferences();
         } catch (Exception e) {
-            setException(e);
+            setThrowable(e);
             e.printStackTrace();
         }
     }

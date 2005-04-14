@@ -37,7 +37,7 @@ package org.mskcc.pathdb.task;
  */
 public abstract class Task extends Thread {
     private String taskName;
-    private Exception exception;
+    private Throwable throwable;
     private ProgressMonitor pMonitor;
 
     /**
@@ -69,7 +69,7 @@ public abstract class Task extends Thread {
      * @return true or false.
      */
     public boolean errorOccurred() {
-        return (exception != null) ? true : false;
+        return (throwable != null) ? true : false;
     }
 
     /**
@@ -78,16 +78,24 @@ public abstract class Task extends Thread {
      * @return Error Message.
      */
     public String getErrorMessage() {
-        return exception.getMessage();
+        return throwable.getMessage();
     }
 
     /**
-     * Sets the Exception Object.
+     * Gets the Throwable Object.
+     * @return throwable Object.
+     */
+    public Throwable getThrowable () {
+        return this.throwable;
+    }
+
+    /**
+     * Sets the Throwable Object.
      *
      * @param e Exception Object.
      */
-    public void setException(Exception e) {
-        this.exception = e;
+    public void setThrowable(Throwable e) {
+        this.throwable = e;
     }
 
     /**
