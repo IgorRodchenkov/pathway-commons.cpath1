@@ -31,19 +31,26 @@ package org.mskcc.pathdb.task;
 
 import org.mskcc.pathdb.model.ImportRecord;
 import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.sql.transfer.ImportPsiToCPath;
+import org.mskcc.pathdb.schemas.psi.ImportPsiToCPath;
+import org.mskcc.pathdb.schemas.psi.ImportPsiToCPath;
+import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
+import org.mskcc.pathdb.util.html.HtmlUtil;
 
 /**
- * Task to Import New Data Records into cPath.
+ * Task to Import a Single New Data Record into cPath.
  *
  * @author Ethan Cerami.
  */
 public class ImportRecordTask extends Task {
     private long importId;
     private ImportSummary summary;
+    private boolean validateExternalReferences;
+    private boolean removeAllInteractionXRefs;
+    private ProgressMonitor pMonitor;
 
     /**
      * Constructor.
@@ -51,12 +58,15 @@ public class ImportRecordTask extends Task {
      * @param importId    Import ID.
      * @param consoleMode Console Mode.
      */
-    public ImportRecordTask(long importId, boolean consoleMode) {
-        super("Import PSI-MI Record", consoleMode);
+    public ImportRecordTask(long importId, boolean validateExternalReferences,
+            boolean removeAllInteractionXRefs, boolean consoleMode) {
+        super("Import PSI-MI/BioPAX Record", consoleMode);
         this.importId = importId;
-        ProgressMonitor pMonitor = this.getProgressMonitor();
+        this.validateExternalReferences = validateExternalReferences;
+        this.removeAllInteractionXRefs = removeAllInteractionXRefs;
+        pMonitor = this.getProgressMonitor();
         pMonitor.setConsoleMode(consoleMode);
-        pMonitor.setCurrentMessage("Import PSI-MI Record");
+        pMonitor.setCurrentMessage("Importing PSI-MI/BioPAX Record");
     }
 
     /**
@@ -64,27 +74,65 @@ public class ImportRecordTask extends Task {
      */
     public void run() {
         try {
-            transferRecord(importId);
-        } catch (Exception e) {
-            setException(e);
-            e.printStackTrace();
+            transferRecord();
+        } catch (Throwable e) {
+            setThrowable(e);
         }
     }
 
     /**
      * Transfers Single Import Record.
      */
-    private void transferRecord(long importId) throws ImportException,
-            DaoException {
-        ProgressMonitor pMonitor = this.getProgressMonitor();
-        DaoImport dbImport = new DaoImport();
-        ImportRecord record = dbImport.getRecordById(importId);
+    public void transferRecord() throws DaoException, ImportException {
+        DaoImport daoImport = new DaoImport();
+        ImportRecord record = daoImport.getRecordById(importId);
+        pMonitor.setCurrentMessage("Importing File:  "
+                + record.getDescription());
         String xml = record.getData();
-        ImportPsiToCPath importer = new ImportPsiToCPath();
-        summary = importer.addRecord(xml, true, false, pMonitor);
-        pMonitor.setCurrentMessage("Importing Complete<BR>-->  Total Number "
-                + "of Interactions Processed:  "
-                + summary.getNumInteractionsSaved());
-        dbImport.markRecordAsTransferred(record.getImportId());
+        try {
+            if (record.getXmlType().equals(XmlRecordType.PSI_MI)) {
+                ImportPsiToCPath importer = new ImportPsiToCPath();
+                summary = importer.addRecord(xml, validateExternalReferences,
+                        removeAllInteractionXRefs, pMonitor);
+            } else {
+                ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
+                summary = importer.addRecord(xml, pMonitor);
+            }
+            outputSummary(summary);
+            daoImport.updateRecordStatus(record.getImportId(),
+                    ImportRecord.STATUS_TRANSFERRED);
+
+        } catch (ImportException e) {
+            //  If an Import Error occurs, mark the record as invalid
+            //  so that we don't keep trying to import it.
+            daoImport.updateRecordStatus(importId, ImportRecord.STATUS_INVALID);
+            throw e;
+        }
+    }
+
+    /**
+     * Displays Summary of Import.
+     *
+     * @param summary ImportSummary object.
+     */
+    private void outputSummary(ImportSummary summary) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append ("Import Summary:  \n");
+        buffer.append ("-----------------------------------------------\n");
+        buffer.append ("# of Pathways saved to database:              "
+                + summary.getNumPathwaysSaved() + "\n");
+        buffer.append ("# of Interactions saved to database:          "
+                + summary.getNumInteractionsSaved() + "\n");
+        buffer.append ("# of Interactions clobbered:                  "
+                + summary.getNumInteractionsClobbered() + "\n");
+        buffer.append ("# of Physical Entities found in database:     "
+                + summary.getNumPhysicalEntitiesFound() +"\n");
+        buffer.append ("# of Physical Entities saved to database:     "
+                + summary.getNumPhysicalEntitiesSaved() +"\n");
+        buffer.append ("-----------------------------------------------\n");
+        buffer.append ("\n");
+        String msg = buffer.toString();
+        pMonitor.setCurrentMessage(msg);
+        pMonitor.setCurrentMessage("Import Complete");
     }
 }
