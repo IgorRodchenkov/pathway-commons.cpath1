@@ -44,6 +44,7 @@ import org.mskcc.pathdb.task.ImportRecordTask;
 import org.mskcc.pathdb.task.ImportReferencesTask;
 import org.mskcc.pathdb.util.xml.XmlValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -77,7 +78,7 @@ public class AdminImportData extends AdminBaseAction {
         xdebug.logMsg(this, "Importing Data to cPath");
         FileUploadForm importForm = (FileUploadForm) form;
         FormFile file = importForm.getFile();
-        if (file != null) {
+        if (file != null && file.getFileSize() > 0) {
             importFile(xdebug, file, request);
         } else {
             this.setUserMessage(request, "You must select a file for import.");
@@ -92,10 +93,13 @@ public class AdminImportData extends AdminBaseAction {
         xdebug.logMsg(this, "Found File Size:  " + file.getFileSize());
 
         String data = new String(file.getFileData());
-        int index = data.indexOf("<?xml");
-        if (index > -1 && index < 100) {
+        String fileName = file.getFileName();
+        if (fileName.trim().endsWith("xml") || fileName.endsWith("psi")) {
             //  Assume this is PSI
-            importPsi(data, xdebug, request);
+            importPsi(fileName, data, xdebug, request);
+        } else if(fileName.trim().endsWith("owl")) {
+            importDataFile(fileName, data, XmlRecordType.BIO_PAX, xdebug,
+                    request);
         } else {
             //  Assume this is a list of external refs.
             importRefs(data, xdebug, request);
@@ -106,15 +110,14 @@ public class AdminImportData extends AdminBaseAction {
                 BaseAction.YES);
     }
 
-    private void importPsi(String data, XDebug xdebug,
+    private void importPsi(String fileName, String data, XDebug xdebug,
             HttpServletRequest request) throws SAXException, IOException,
             DaoException, ValidationException, MarshalException {
-        xdebug.logMsg(this, "Importing PSI-MI Data");
         xdebug.logMsg(this, "Validating XML File");
         //  Try to unmarshal document via Castor
         try {
             StringReader strReader = new StringReader(data);
-            EntrySet entrySet = EntrySet.unmarshalEntrySet(strReader);
+            EntrySet.unmarshalEntrySet(strReader);
         } catch (MarshalException e) {
             //  If marshalling fails, validate and get more user-friendly
             //  error message with error location.
@@ -127,13 +130,21 @@ public class AdminImportData extends AdminBaseAction {
                 throw e;
             }
         }
+        importDataFile(fileName, data, XmlRecordType.PSI_MI, xdebug, request);
+    }
+
+    private void importDataFile(String fileName, String data,
+            XmlRecordType xmlType, XDebug xdebug, HttpServletRequest request)
+            throws DaoException {
         DaoImport dbImport = new DaoImport();
-        xdebug.logMsg(this, "Importing File to CPATH IMPORT table");
-        long importId = dbImport.addRecord("Web Upload", data);
+        xdebug.logMsg(this, "Importing File Type:  " + xmlType
+                + " to cPath IMPORT table");
+        long importId = dbImport.addRecord(fileName, xmlType, data);
         xdebug.logMsg(this, "Import ID:  " + importId);
-        ImportRecordTask task = new ImportRecordTask(importId, false);
+        ImportRecordTask task = new ImportRecordTask(importId, true, false,
+                false);
         task.start();
-        this.setUserMessage(request, "Import PSI-MI Task is now running.");
+        this.setUserMessage(request, "Import Task is now running.");
     }
 
     private void importRefs(String data, XDebug xdebug,
