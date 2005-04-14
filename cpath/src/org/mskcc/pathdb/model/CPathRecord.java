@@ -43,6 +43,11 @@ public class CPathRecord {
      */
     public static final int TAXONOMY_NOT_SPECIFIED = -9999;
 
+    /**
+     * "Not Available" String.
+     */
+    public static final String NA_STRING = "N/A";
+
     private long id;
     private String name;
     private String description;
@@ -140,7 +145,7 @@ public class CPathRecord {
      *
      * @return Specific Class Type String.
      */
-    public String getSpecType() {
+    public String getSpecificType() {
         return specType;
     }
 

@@ -39,19 +39,27 @@ import java.util.Date;
 public class ImportRecord {
     private String data;
     private String description;
+    private XmlRecordType xmlType;
     private int importId;
     private String status;
     private Date createTime;
     private Date updateTime;
     private String md5Hash;
+    
     /**
      * New Record Status.
      */
     public static final String STATUS_NEW = "NEW";
+
     /**
      * Transferred Record Status.
      */
     public static final String STATUS_TRANSFERRED = "TRANSFERRED";
+
+    /**
+     * Invalid Record Status.
+     */
+    public static final String STATUS_INVALID = "INVALID";
 
     /**
      * Gets Import Record Data.
@@ -177,5 +185,21 @@ public class ImportRecord {
      */
     public void setMd5Hash(String md5Hash) {
         this.md5Hash = md5Hash;
+    }
+
+    /**
+     * Gets XML Record Type.
+     * @return XmlRecordType Object.
+     */
+    public XmlRecordType getXmlType() {
+        return xmlType;
+    }
+
+    /**
+     * Sets XML Record Type.
+     * @param xmlType XmlRecordType Object.
+     */
+    public void setXmlType(XmlRecordType xmlType) {
+        this.xmlType = xmlType;
     }
 }
