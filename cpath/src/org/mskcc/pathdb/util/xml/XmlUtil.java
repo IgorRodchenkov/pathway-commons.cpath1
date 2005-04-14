@@ -30,6 +30,12 @@
 package org.mskcc.pathdb.util.xml;
 
 import org.jdom.Text;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
+import org.jdom.output.Format;
+
+import java.io.IOException;
+import java.io.StringWriter;
 
 /**
  * Various XML Utility Methods.
@@ -50,4 +56,16 @@ public class XmlUtil {
         return text.getTextNormalize();
     }
 
+    /**
+     * Serializes JDOM Element to XML.
+     * @param e JDOM Element
+     * @return XML String
+     */
+    public static String serializeToXml(Element e) throws IOException {
+        StringWriter writer = new StringWriter();
+        XMLOutputter out = new XMLOutputter();
+        out.setFormat(Format.getPrettyFormat());
+        out.output(e, writer);
+        return writer.toString();
+    }
 }
