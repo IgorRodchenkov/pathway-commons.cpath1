@@ -38,6 +38,7 @@ public class ProgressMonitor {
     private int maxValue;
     private int curValue;
     private String currentMessage;
+    private StringBuffer log = new StringBuffer();
     private boolean consoleMode;
 
     /**
@@ -126,12 +127,21 @@ public class ProgressMonitor {
     }
 
     /**
+     * Gets Log of All Messages.
+     * @return String Object.
+     */
+    public String getLog () {
+        return log.toString();
+    }
+
+    /**
      * Logs a Message.
      *
      * @param currentMessage Current Task Message.
      */
     public void setCurrentMessage(String currentMessage) {
         this.currentMessage = currentMessage;
+        this.log.append(currentMessage + "\n");
         if (consoleMode) {
             System.out.println(currentMessage);
         }
