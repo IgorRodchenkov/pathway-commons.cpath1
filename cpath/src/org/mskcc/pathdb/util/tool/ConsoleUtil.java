@@ -62,7 +62,7 @@ public class ConsoleUtil {
                 System.out.println("\n" + msg);
             }
             if (currentValue == pMonitor.getMaxValue()) {
-                System.out.println("\n");
+                System.out.println();
             }
         }
     }
