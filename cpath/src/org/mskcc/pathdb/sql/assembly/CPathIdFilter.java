@@ -62,7 +62,7 @@ public class CPathIdFilter {
     /**
      * The CPATH ID Prefix.
      */
-    private static final String CPATH_PREFIX = "CPATH-";
+    public static final String CPATH_PREFIX = "CPATH-";
 
     /**
      * Adds cPathID Prefixes to all IDs and ID References.
