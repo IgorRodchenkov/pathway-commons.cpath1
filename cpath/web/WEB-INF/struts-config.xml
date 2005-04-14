@@ -58,6 +58,12 @@
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
         </action>
 
+        <!--  Bare Bones Web -->
+        <action path="/bb_web"
+            type="org.mskcc.pathdb.action.BareBonesWeb">
+            <forward name="success" path="/WEB-INF/jsp/pages/BareBones.jsp"/>
+        </action>
+
         <!--  FAQ Page -->
         <action path="/faq"
             type="org.mskcc.pathdb.action.HomeAction">
