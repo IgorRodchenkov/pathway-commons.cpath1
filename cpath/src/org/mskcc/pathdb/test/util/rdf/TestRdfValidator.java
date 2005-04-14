@@ -71,7 +71,7 @@ public class TestRdfValidator extends TestCase {
 
         //  Validate the Readble Error List
         String userMsg = rdfValidator.getReadableErrorList();
-        assertEquals("Error:  {W105} Redefinition of ID: smallMolecule23 "
-                + "[Line=  390, Column=  48]\n", userMsg);
+        assertTrue(userMsg.indexOf("W105} Redefinition of ID: smallMolecule23 "
+                + "[Line=  390, Column=  48]") > 0);
     }
 }

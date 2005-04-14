@@ -62,7 +62,7 @@ public class TestDaoOrganism extends TestCase {
         assertTrue(dao.recordExists(taxId));
         ArrayList organisms = dao.getAllOrganisms();
         assertTrue(organisms.size() > 0);
-        Organism organism = (Organism) organisms.get(1);
+        Organism organism = (Organism) organisms.get(0);
         assertEquals(taxId, organism.getTaxonomyId());
         assertEquals(speciesName, organism.getSpeciesName());
         assertEquals(commonName, organism.getCommonName());
