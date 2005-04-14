@@ -52,6 +52,12 @@ INSERT INTO `external_db` VALUES (24, 'RefSeq', 'http://www.ncbi.nlm.nih.gov/ent
 INSERT INTO `external_db` VALUES (25, 'RefSeq Protein', 'http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&val=%ID%', 'NCBI RefSeq Protein', 48, 'PROTEIN_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (26, 'aMAZE', '', 'aMAZE Database', 48, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (27, 'KEGG', '', 'Kyoto Encyclopedia of Genes and Genomes (KEGG)', 67, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (28, 'CAS', '', 'CAS Database', 69, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (29, 'KEGG Ligand Database', '', 'KEGG Ligand Database', 70, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (30, 'EcoCyc', '', 'EcoCyc Encyclopedia of Escherichia coli K12 Genes and Metabolism', 71, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (31, 'UM-BBD', '', 'University of Minnesota Biocatalysis/Biodegradation Database', 72, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (32, 'SWISS-MODEL', '', 'SWISS-MODEL Automated Comparative Protein Modelling Server', 73, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (33, 'OTHER PLACEHOLDER', '', 'OTHER PLACEHOLDER', 74, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
@@ -113,3 +119,10 @@ INSERT INTO `external_db_cv` VALUES (65, 21, 'ENSEMBL');
 INSERT INTO `external_db_cv` VALUES (66, 26, 'AMAZE');
 INSERT INTO `external_db_cv` VALUES (67, 27, 'KEGG');
 INSERT INTO `external_db_cv` VALUES (68, 11, 'GENE ONTOLOGY');
+INSERT INTO `external_db_cv` VALUES (69, 28, 'CAS');
+INSERT INTO `external_db_cv` VALUES (70, 29, 'LIGAND');
+INSERT INTO `external_db_cv` VALUES (71, 30, 'EcoO157Cyc');
+INSERT INTO `external_db_cv` VALUES (72, 31, 'UMBBD');
+INSERT INTO `external_db_cv` VALUES (73, 32, 'SWISS-MODEL');
+INSERT INTO `external_db_cv` VALUES (74, 33, 'PSIMI');
+INSERT INTO `external_db_cv` VALUES (75, 33, 'IOB');
