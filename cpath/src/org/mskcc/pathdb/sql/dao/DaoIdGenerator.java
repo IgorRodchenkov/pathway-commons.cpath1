@@ -45,7 +45,7 @@ public class DaoIdGenerator {
     /**
      * cPath Local ID Prefix.
      */
-    public static final String CPATH_LOCAL_ID_PREFIX = "cpath_local_";
+    public static final String CPATH_LOCAL_ID_PREFIX = "CPATH-LOCAL-";
 
     /**
      * Gets Next Avalable ID.
