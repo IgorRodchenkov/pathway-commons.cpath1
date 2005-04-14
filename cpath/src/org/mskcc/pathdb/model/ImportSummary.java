@@ -35,10 +35,11 @@ package org.mskcc.pathdb.model;
  * @author Ethan Cerami
  */
 public class ImportSummary {
-    private int numInteractorsProcessed;
-    private int numInteractorsSaved;
-    private int numInteractorsFound;
+    private int numPhysicalEntitiesProcessed;
+    private int numPhysicalEntitiesSaved;
+    private int numPhysicalEntitiesFound;
     private int numInteractionsSaved;
+    private int numPathwaysSaved;
     private int numInteractionsClobbered;
 
     /**
@@ -46,15 +47,15 @@ public class ImportSummary {
      *
      * @return integer.
      */
-    public int getNumInteractorsProcessed() {
-        return numInteractorsProcessed;
+    public int getNumPhysicalEntitiesProcessed() {
+        return numPhysicalEntitiesProcessed;
     }
 
     /**
      * Increments Number of Interactors Processed.
      */
-    public void incrementNumInteractorsProcessed() {
-        this.numInteractorsProcessed++;
+    public void incrementNumPhysicalEntitiesProcessed() {
+        this.numPhysicalEntitiesProcessed++;
     }
 
     /**
@@ -62,16 +63,16 @@ public class ImportSummary {
      *
      * @return integer.
      */
-    public int getNumInteractorsSaved() {
-        return numInteractorsSaved;
+    public int getNumPhysicalEntitiesSaved() {
+        return numPhysicalEntitiesSaved;
     }
 
 
     /**
      * Increments Number of Interactors Saved to the cPath database.
      */
-    public void incrementNumInteractorsSaved() {
-        this.numInteractorsSaved++;
+    public void incrementNumPhysicalEntitiesSaved() {
+        this.numPhysicalEntitiesSaved++;
     }
 
     /**
@@ -81,15 +82,15 @@ public class ImportSummary {
      *
      * @return integer.
      */
-    public int getNumInteractorsFound() {
-        return numInteractorsFound;
+    public int getNumPhysicalEntitiesFound() {
+        return numPhysicalEntitiesFound;
     }
 
     /**
-     * Incremenets the Number of Interactors Found in the Database.
+     * Increments the Number of Interactors Found in the Database.
      */
-    public void incrementNumInteractorsFound() {
-        this.numInteractorsFound++;
+    public void incrementNumPhysicalEntitiesFound() {
+        this.numPhysicalEntitiesFound++;
     }
 
     /**
@@ -102,10 +103,26 @@ public class ImportSummary {
     }
 
     /**
-     * Increments Number of Interactions Saved to the Database.
+     * Increments Number of Interactions Saved to the cPath Database.
      */
     public void incrementNumInteractionsSaved() {
         this.numInteractionsSaved++;
+    }
+
+    /**
+     * Gets Number of Pathways Saved to the cPath Database.
+     *
+     * @return integer.
+     */
+    public int getNumPathwaysSaved() {
+        return this.numPathwaysSaved;
+    }
+
+    /**
+     * Increments Number of Pathways Saved to the cPath Databse.
+     */
+    public void incrementNumPathwaysSaved() {
+        this.numPathwaysSaved++;
     }
 
     /**
@@ -123,6 +140,4 @@ public class ImportSummary {
     public void incrementNumInteractionsClobbered() {
         this.numInteractionsClobbered++;
     }
-
-
 }
