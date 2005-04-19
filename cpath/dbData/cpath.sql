@@ -169,20 +169,21 @@ CREATE TABLE `organism` (
 #
 # Table structure for table `xml_cache`
 #
-# Creation: May 25, 2004 at 03:36 PM
-# Last update: May 27, 2004 at 09:39 AM
+# Creation: Apr 19, 2005 at 01:13 PM
+# Last update: Apr 19, 2005 at 01:16 PM
 #
 
 CREATE TABLE `xml_cache` (
   `CACHE_ID` int(11) NOT NULL auto_increment,
   `URL` text NOT NULL,
+  `XML_TYPE` varchar(25) NOT NULL default '',
   `DOC_MD5` varchar(100) NOT NULL default '',
   `NUM_HITS` int(11) NOT NULL default '0',
   `DOC_BLOB` longblob NOT NULL,
   `LAST_USED` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`CACHE_ID`),
   KEY `QUERY` (`DOC_MD5`)
-) TYPE=MyISAM COMMENT='Contains Cached XML Documents' AUTO_INCREMENT=1 ;
+) TYPE=MyISAM COMMENT='Contains Cached XML Documents' AUTO_INCREMENT=1;
 
 #
 # Table structure for table `background_reference`
