@@ -35,9 +35,9 @@ import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.ServletOutputStream;
@@ -95,8 +95,8 @@ public class BareBonesWeb extends BaseAction {
             response.setContentType("text/xml");
             ServletOutputStream stream = response.getOutputStream();
             XmlAssembly assembly =
-                XmlAssemblyFactory.createXmlAssembly(Long.parseLong(id),
-                    XmlRecordType.BIO_PAX, 1, xdebug);
+                    XmlAssemblyFactory.createXmlAssembly(Long.parseLong(id),
+                            XmlRecordType.BIO_PAX, 1, xdebug);
             stream.println(assembly.getXmlString());
             stream.flush();
             stream.close();

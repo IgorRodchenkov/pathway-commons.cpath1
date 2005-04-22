@@ -48,7 +48,7 @@ public class LoadBioPaxPsi {
     /**
      * Imports BioPAX and PSI-MI Data File into the cPath Import Table.
      *
-     * @param file File.
+     * @param file    File.
      * @param xmlType XmlRecordType Object.
      * @return Import Record Primary ID.
      * @throws DataServiceException File Input Error.

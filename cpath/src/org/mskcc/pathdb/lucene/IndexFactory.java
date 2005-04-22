@@ -29,9 +29,9 @@
  **/
 package org.mskcc.pathdb.lucene;
 
-import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.sql.assembly.PsiAssembly;
 import org.jdom.JDOMException;
+import org.mskcc.pathdb.sql.assembly.PsiAssembly;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 
 import java.io.IOException;
 
@@ -49,13 +49,14 @@ public class IndexFactory {
      * @param xmlAssembly XML Document Assembly.
      * @return ItemToIndex Object.
      * @throws IOException Input Output Exception.
+     * @throws JDOMException JDOM XML Error.
      */
     public static ItemToIndex createItemToIndex(long cpathId,
             XmlAssembly xmlAssembly) throws IOException, JDOMException {
         if (xmlAssembly instanceof PsiAssembly) {
             return new PsiInteractionToIndex(cpathId, xmlAssembly);
         } else {
-            return new BioPaxToIndex (cpathId, xmlAssembly);
+            return new BioPaxToIndex(cpathId, xmlAssembly);
         }
     }
 }

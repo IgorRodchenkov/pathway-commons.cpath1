@@ -229,7 +229,7 @@ public class ImportBioPaxToCPath {
      */
     private void conditionallySaveOrganism(CPathRecord record, Element resource)
             throws DaoException, JDOMException {
-        if (record.getNcbiTaxonomyId()!=CPathRecord.TAXONOMY_NOT_SPECIFIED){
+        if (record.getNcbiTaxonomyId() != CPathRecord.TAXONOMY_NOT_SPECIFIED) {
             DaoOrganism daoOrganism = new DaoOrganism();
             if (!daoOrganism.recordExists(record.getNcbiTaxonomyId())) {
                 XPath xpath = XPath.newInstance
@@ -239,7 +239,7 @@ public class ImportBioPaxToCPath {
                         xpath.selectSingleNode(resource);
                 if (speciesName != null) {
                     daoOrganism.addRecord(record.getNcbiTaxonomyId(),
-                        speciesName.getTextNormalize(), null);
+                            speciesName.getTextNormalize(), null);
                 }
             }
         }

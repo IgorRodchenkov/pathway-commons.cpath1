@@ -299,7 +299,7 @@ public class Admin {
             userName = in.readLine();
             propertyManager.setProperty(PropertyManager.DB_USER, userName);
         }
-        if (pwd == null && ! (command.equals(COMMAND_VALIDATE)
+        if (pwd == null && !(command.equals(COMMAND_VALIDATE)
                 || command.equals(COMMAND_QUERY))) {
             System.out.print("Enter Database Password: ");
             pwd = in.readLine();

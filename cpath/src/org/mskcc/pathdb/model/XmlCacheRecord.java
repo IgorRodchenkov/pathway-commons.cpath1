@@ -136,6 +136,7 @@ public class XmlCacheRecord {
 
     /**
      * Gets XML Record Type.
+     *
      * @return XmlRecordType Object.
      */
     public XmlRecordType getXmlType() {
@@ -144,6 +145,7 @@ public class XmlCacheRecord {
 
     /**
      * Sets XML Record Type.
+     *
      * @param xmlType XmlRecordType Object.
      */
     public void setXmlType(XmlRecordType xmlType) {

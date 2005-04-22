@@ -35,15 +35,15 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
+import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.util.xml.XmlUtil;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.xml.XmlUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
@@ -134,6 +134,7 @@ public class BioPaxAssembly implements XmlAssembly {
 
     /**
      * Gets XML Record Type.
+     *
      * @return XmlRecordType.BIO_PAX
      */
     public XmlRecordType getXmlType() {
@@ -226,9 +227,9 @@ public class BioPaxAssembly implements XmlAssembly {
         }
 
         xdebug.logMsg(this, "Traversing Record:  " + record.getName()
-            + ", Type:  " + record.getType()
-            + ", XmlType:  " + record.getXmlType()
-            + ", cPath ID:  " + record.getId());
+                + ", Type:  " + record.getType()
+                + ", XmlType:  " + record.getXmlType()
+                + ", cPath ID:  " + record.getId());
 
         //  Only traverse BioPAX Records
         if (!record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
@@ -241,7 +242,7 @@ public class BioPaxAssembly implements XmlAssembly {
         //  If this is an Interaction or a Pathway,
         //  get All Internal Links, e.g. children.
         if (record.getType().equals(CPathRecordType.PATHWAY)
-            || record.getType().equals(CPathRecordType.INTERACTION)) {
+                || record.getType().equals(CPathRecordType.INTERACTION)) {
             DaoInternalLink internalLinker = new DaoInternalLink();
             ArrayList internalLinks =
                     internalLinker.getInternalLinksWithLookup(record.getId());
@@ -280,20 +281,20 @@ public class BioPaxAssembly implements XmlAssembly {
 
         //  Add XML Base Declaration (Annoying Requirement of Protege)
         globalRoot.setAttribute("base", CPathConstants.CPATH_HOME_URI,
-            Namespace.XML_NAMESPACE);
+                Namespace.XML_NAMESPACE);
 
         //  Add Default Namespace Declaration (Annoying Requirement of Protege)
         globalRoot.addNamespaceDeclaration(Namespace.getNamespace("",
-                CPathConstants.CPATH_HOME_URI +"#"));
+                CPathConstants.CPATH_HOME_URI + "#"));
 
         //  Add OWL Import Element, so that we can Import BioPAX Ontology
         Element owlImports = new Element(OwlConstants.OWL_IMPORTS_ELEMENT,
                 OwlConstants.OWL_NAMESPACE);
-        String BioPaxLevel2NamespaceUri =
+        String bioPaxLevel2NamespaceUri =
                 BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI.replaceAll
                 ("#", "");
         owlImports.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE,
-                BioPaxLevel2NamespaceUri, RdfConstants.RDF_NAMESPACE);
+                bioPaxLevel2NamespaceUri, RdfConstants.RDF_NAMESPACE);
         Element owlOntology = new Element(OwlConstants.OWL_ONTOLOGY_ELEMENT,
                 OwlConstants.OWL_NAMESPACE);
         owlOntology.setAttribute(RdfConstants.ABOUT_ATTRIBUTE, "",
@@ -313,7 +314,7 @@ public class BioPaxAssembly implements XmlAssembly {
             Document localDoc = builder.build(new StringReader(xml));
             Element localRoot = localDoc.getRootElement();
             localRoot.detach();
-            updateNamespace (localRoot);
+            updateNamespace(localRoot);
             globalRoot.addContent(localRoot);
         }
 
@@ -324,12 +325,12 @@ public class BioPaxAssembly implements XmlAssembly {
     /**
      * Update Namespace of All Elements to BioPAX Level 2.
      */
-    private void updateNamespace (Element e) {
+    private void updateNamespace(Element e) {
         e.setNamespace(BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE);
         List children = e.getChildren();
         for (int i = 0; i < children.size(); i++) {
-            Element child =  (Element) children.get(i);
-            updateNamespace (child);
+            Element child = (Element) children.get(i);
+            updateNamespace(child);
         }
     }
 }

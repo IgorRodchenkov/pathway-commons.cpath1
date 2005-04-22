@@ -54,6 +54,7 @@ public class TestUpdateRdfLinks extends TestCase {
 
     /**
      * Tests the UpdateRdfLinks Class.
+     *
      * @throws Exception All Errors.
      */
     public void testUpdateRdfLinks() throws Exception {

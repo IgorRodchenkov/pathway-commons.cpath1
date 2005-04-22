@@ -53,11 +53,11 @@ public class ImportRecordTask extends Task {
     /**
      * Constructor.
      *
-     * @param importId    Import ID.
+     * @param importId                   Import ID.
      * @param validateExternalReferences Flag to Validate All External
-     *          References.
-     * @param removeAllInteractionXRefs Flag to Remove all Interaction XRefs.
-     * @param consoleMode Console Mode.
+     *                                   References.
+     * @param removeAllInteractionXRefs  Flag to Remove all Interaction XRefs.
+     * @param consoleMode                Console Mode.
      */
     public ImportRecordTask(long importId, boolean validateExternalReferences,
             boolean removeAllInteractionXRefs, boolean consoleMode) {
@@ -84,7 +84,7 @@ public class ImportRecordTask extends Task {
     /**
      * Transfers Single Import Record.
      *
-     * @throws DaoException Database Access Error.
+     * @throws DaoException    Database Access Error.
      * @throws ImportException Import Error.
      */
     public void transferRecord() throws DaoException, ImportException {

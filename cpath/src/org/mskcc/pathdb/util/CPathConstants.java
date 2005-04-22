@@ -52,5 +52,5 @@ public class CPathConstants {
      */
     public static final String CPATH_HOME_URI =
             "http://cbio.mskcc.org/cpath";
-    
+
 }

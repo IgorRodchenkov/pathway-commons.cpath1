@@ -29,19 +29,16 @@
  **/
 package org.mskcc.pathdb.sql.query;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
-import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.lucene.RequestAdapter;
-import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.taglib.Pager;
-import org.mskcc.pathdb.model.XmlRecordType;
 
 import java.io.IOException;
 
@@ -95,10 +92,10 @@ class GetInteractionsViaLucene extends PathwayInteractionQuery {
         if (cpathIds != null && cpathIds.length > 0) {
             if (request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
-                    XmlRecordType.BIO_PAX, hits.length(), xdebug);
+                        XmlRecordType.BIO_PAX, hits.length(), xdebug);
             } else {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
-                    XmlRecordType.PSI_MI, hits.length(), xdebug);
+                        XmlRecordType.PSI_MI, hits.length(), xdebug);
             }
         } else {
             xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);

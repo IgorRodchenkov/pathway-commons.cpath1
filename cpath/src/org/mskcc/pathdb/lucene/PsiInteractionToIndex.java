@@ -44,46 +44,46 @@ import java.util.ArrayList;
  * Currently indexes the following content:
  * <TABLE WIDTH=100%>
  * <TR>
- *  <TH ALIGN=LEFT><B>Content</B></TH>
- *  <TH ALIGN=LEFT><B>Field</B></TH>
- *  <TH ALIGN=LEFT><B>Notes</B></TH>
+ * <TH ALIGN=LEFT><B>Content</B></TH>
+ * <TH ALIGN=LEFT><B>Field</B></TH>
+ * <TH ALIGN=LEFT><B>Notes</B></TH>
  * </TR>
  * <TR>
- *  <TD>All terms after XML Stripping</TD>
- *  <TD>FIELD_ALL</TD>
+ * <TD>All terms after XML Stripping</TD>
+ * <TD>FIELD_ALL</TD>
  * </TR>
  * <TR>
- *  <TD>All interactor information, including name(s), organism, and external
+ * <TD>All interactor information, including name(s), organism, and external
  * references
- *  </TD>
- *  <TD>FIELD_INTERACTOR</TD>
+ * </TD>
+ * <TD>FIELD_INTERACTOR</TD>
  * </TR>
  * <TR>
- *  <TD>All interactor cPath IDs</TD>
- *  <TD>FIELD_INTERACTOR_ID</TD>
+ * <TD>All interactor cPath IDs</TD>
+ * <TD>FIELD_INTERACTOR_ID</TD>
  * </TR>
  * <TR>
- *  <TD>Interaction cPath ID</TD>
- *  <TD>FIELD_CPATH_ID</TD>
+ * <TD>Interaction cPath ID</TD>
+ * <TD>FIELD_CPATH_ID</TD>
  * </TR>
  * <TR>
- *  <TD>Interaction:  Experiment Type</TD>
- *  <TD>FIELD_EXPERIMENT_TYPE</TD>
+ * <TD>Interaction:  Experiment Type</TD>
+ * <TD>FIELD_EXPERIMENT_TYPE</TD>
  * </TR>
  * <TR>
- *  <TD>Interaction: Pub Med IDs</TD>
- *  <TD>FIELD_PMID</TD>
+ * <TD>Interaction: Pub Med IDs</TD>
+ * <TD>FIELD_PMID</TD>
  * </TR>
  * <TR>
- *  <TD>Interaction: Database Source</TD>
- *  <TD>FIELD_DATABASE</TD>
+ * <TD>Interaction: Database Source</TD>
+ * <TD>FIELD_DATABASE</TD>
  * </TR>
  * <TR>
- *  <TD VALIGN=TOP>Organism Data</TD>
- *  <TD VALIGN=TOP>FIELD_ORGANISM</TD>
- *  <TD VALIGN=TOP>The "Browse by Organism" web page and the "Quick Browse"
- *  web component work by automatically running queries on the FIELD_ORGANISM.
- *  </TD>
+ * <TD VALIGN=TOP>Organism Data</TD>
+ * <TD VALIGN=TOP>FIELD_ORGANISM</TD>
+ * <TD VALIGN=TOP>The "Browse by Organism" web page and the "Quick Browse"
+ * web component work by automatically running queries on the FIELD_ORGANISM.
+ * </TD>
  * </TR>
  * </TABLE>
  *

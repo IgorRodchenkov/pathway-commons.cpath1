@@ -113,6 +113,7 @@ public class TestItemToIndex extends TestCase {
 
     /**
      * Tests the ItemToIndex Factory and the a BioPAX Record.
+     *
      * @throws Exception All Errors.
      */
     public void testBioPaxRecord() throws Exception {
@@ -128,17 +129,17 @@ public class TestItemToIndex extends TestCase {
 
         //  Validate Number of Fields
         int numFields = item.getNumFields();
-        assertEquals (3, numFields);
+        assertEquals(3, numFields);
 
         Field allField = item.getField(0);
         Field idField = item.getField(1);
         Field organismField = item.getField(2);
 
         //  Validate Individual Fields
-        assertTrue (allField.stringValue().startsWith
+        assertTrue(allField.stringValue().startsWith
                 ("CPATH-5 CPATH-LOCAL-0 #CPATH-9"));
-        assertTrue (idField.stringValue().equals("5"));
-        assertTrue (organismField.stringValue().startsWith(
-                "Escherichia coli 562"));
+        assertTrue(idField.stringValue().equals("5"));
+        assertTrue(organismField.stringValue().startsWith
+                ("Escherichia coli 562"));
     }
 }

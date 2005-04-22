@@ -39,7 +39,7 @@ public class RdfUtil {
     /**
      * Strips out leading hash mark #, if necessary.
      *
-     * @param referenceId String with leading hash mark. 
+     * @param referenceId String with leading hash mark.
      * @return String without hashmark.
      */
     public static String removeHashMark(String referenceId) {

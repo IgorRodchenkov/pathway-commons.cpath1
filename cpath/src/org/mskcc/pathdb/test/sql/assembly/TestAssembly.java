@@ -30,20 +30,20 @@
 package org.mskcc.pathdb.test.sql.assembly;
 
 import junit.framework.TestCase;
+import org.jdom.Attribute;
+import org.jdom.Element;
+import org.jdom.Namespace;
 import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
-import org.mskcc.pathdb.schemas.biopax.OwlConstants;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.Attribute;
 
-import java.util.List;
 import java.io.StringReader;
+import java.util.List;
 
 /**
  * Tests the XML Assembly Functionality.
@@ -104,9 +104,10 @@ public class TestAssembly extends TestCase {
 
     /**
      * Test BioPAX Assembly.
+     *
      * @throws Exception All Errors.
      */
-    public void testBioPaxAssembly () throws Exception {
+    public void testBioPaxAssembly() throws Exception {
         //  Assemble Interaction with specified cPath ID (hard-coded value)
         XDebug xdebug = new XDebug();
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
@@ -118,29 +119,29 @@ public class TestAssembly extends TestCase {
         //  We should have one Catalsis element, one Protein element,
         //  and four Small Molecule elements.
         Element child = (Element) children.get(0);
-        assertEquals (OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
+        assertEquals(OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
         child = (Element) children.get(1);
-        assertEquals (BioPaxConstants.CATAYLSIS, child.getName());
+        assertEquals(BioPaxConstants.CATAYLSIS, child.getName());
         child = (Element) children.get(2);
-        assertEquals (BioPaxConstants.PROTEIN, child.getName());
+        assertEquals(BioPaxConstants.PROTEIN, child.getName());
         child = (Element) children.get(3);
-        assertEquals (BioPaxConstants.SMALL_MOLECULE, child.getName());
+        assertEquals(BioPaxConstants.SMALL_MOLECULE, child.getName());
         child = (Element) children.get(4);
-        assertEquals (BioPaxConstants.SMALL_MOLECULE, child.getName());
+        assertEquals(BioPaxConstants.SMALL_MOLECULE, child.getName());
         child = (Element) children.get(5);
-        assertEquals (BioPaxConstants.SMALL_MOLECULE, child.getName());
+        assertEquals(BioPaxConstants.SMALL_MOLECULE, child.getName());
         child = (Element) children.get(6);
-        assertEquals (BioPaxConstants.SMALL_MOLECULE, child.getName());
+        assertEquals(BioPaxConstants.SMALL_MOLECULE, child.getName());
 
         //  Check that this is valid RDF
-        StringReader reader = new StringReader (xmlAssembly);
+        StringReader reader = new StringReader(xmlAssembly);
         RdfValidator rdfValidator = new RdfValidator(reader);
-        assertTrue (!rdfValidator.hasErrorsOrWarnings());
+        assertTrue(!rdfValidator.hasErrorsOrWarnings());
 
         //  Validate that Root RDF Element has an xml:base attribute
         Attribute baseAttribute =
                 rootElement.getAttribute("base", Namespace.XML_NAMESPACE);
-        assertEquals (CPathConstants.CPATH_HOME_URI, baseAttribute.getValue());
+        assertEquals(CPathConstants.CPATH_HOME_URI, baseAttribute.getValue());
         //        System.out.print(xmlAssembly);
     }
 }

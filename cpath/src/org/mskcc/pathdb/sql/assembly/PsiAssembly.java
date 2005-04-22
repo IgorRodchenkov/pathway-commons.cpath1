@@ -80,7 +80,7 @@ public class PsiAssembly implements XmlAssembly {
         this.interactions = interactions;
         this.xdebug = xdebug;
         try {
-            if (interactions == null || interactions.size() ==0) {
+            if (interactions == null || interactions.size() == 0) {
                 entrySet = null;
             } else {
                 HashMap interactors = extractInteractors(interactions);
@@ -144,6 +144,7 @@ public class PsiAssembly implements XmlAssembly {
 
     /**
      * Gets XML Record Type.
+     *
      * @return XmlRecordType.PSI_MI
      */
     public XmlRecordType getXmlType() {

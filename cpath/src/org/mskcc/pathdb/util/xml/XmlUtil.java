@@ -29,9 +29,9 @@
  **/
 package org.mskcc.pathdb.util.xml;
 
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Text;
-import org.jdom.Document;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 

@@ -128,10 +128,10 @@ public class BioPaxConstants {
      * BioPAX Class:  pathway
      */
     public static final String PATHWAY = "pathway";
-    
+
     /**
      * BioPAX Namespace Prefix.
-     */ 
+     */
     public static final String BIOPAX_NAMESPACE_PREFIX = "bp";
 
     /**
@@ -148,9 +148,9 @@ public class BioPaxConstants {
 
     /**
      * BioPAX Level 1 Namespace.
-     */ 
-    public static final Namespace BIOPAX_LEVEL_1_NAMESPACE = 
-            Namespace.getNamespace(BIOPAX_NAMESPACE_PREFIX, 
+     */
+    public static final Namespace BIOPAX_LEVEL_1_NAMESPACE =
+            Namespace.getNamespace(BIOPAX_NAMESPACE_PREFIX,
                     BIOPAX_LEVEL_1_NAMESPACE_URI);
 
     /**

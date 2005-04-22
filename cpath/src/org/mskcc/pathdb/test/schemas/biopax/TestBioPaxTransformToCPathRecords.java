@@ -50,6 +50,7 @@ public class TestBioPaxTransformToCPathRecords extends TestCase {
 
     /**
      * Tests BioPAX Transformation.
+     *
      * @throws Exception All Errors.
      */
     public void testTransformation() throws Exception {

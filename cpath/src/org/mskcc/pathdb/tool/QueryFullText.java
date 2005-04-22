@@ -29,19 +29,18 @@
  **/
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.pathdb.lucene.LuceneReader;
-import org.mskcc.pathdb.lucene.LuceneConfig;
-import org.mskcc.pathdb.sql.query.QueryException;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.highlight.QueryHighlightExtractor;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.mskcc.pathdb.lucene.LuceneConfig;
+import org.mskcc.pathdb.lucene.LuceneReader;
+import org.mskcc.pathdb.sql.query.QueryException;
 
-import java.util.ArrayList;
 import java.io.IOException;
 
 /**
@@ -51,12 +50,19 @@ import java.io.IOException;
  */
 public class QueryFullText {
 
+    /**
+     * Executes Full Text Query.
+     * @param term              Search Term
+     * @throws QueryException   Lucene Query Error
+     * @throws IOException      I/O Error
+     * @throws ParseException   Lucene Parsing Error
+     */
     public static void queryFullText(String term) throws QueryException,
             IOException, ParseException {
         System.out.println("Using search term:  " + term);
         LuceneReader luceneReader = new LuceneReader();
         Hits hits = luceneReader.executeQuery(term);
-        int num = Math.min (10, hits.length());
+        int num = Math.min(10, hits.length());
         System.out.println("Total Number of Hits:  " + hits.length());
         if (hits.length() > 0) {
 
@@ -66,8 +72,8 @@ public class QueryFullText {
             QueryHighlightExtractor highLighter =
                     new QueryHighlightExtractor(query, analyzer, "[", "]");
 
-            System.out.println("Showing hits:  0-" + (num-1));
-            for (int i=0; i<num; i++) {
+            System.out.println("Showing hits:  0-" + (num - 1));
+            for (int i = 0; i < num; i++) {
                 Document doc = hits.doc(i);
                 Field field = doc.getField(LuceneConfig.FIELD_ALL);
                 String value = field.stringValue();

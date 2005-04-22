@@ -33,8 +33,8 @@ import junit.framework.TestCase;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
-import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
+import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.util.ArrayList;
 
@@ -69,6 +69,6 @@ public class TestImportBioPaxToCPath extends TestCase {
 
         //  After import, we have 1 organism
         organismList = daoOrganism.getAllOrganisms();
-        assertEquals (numOrganisms+1, organismList.size());
+        assertEquals(numOrganisms + 1, organismList.size());
     }
 }

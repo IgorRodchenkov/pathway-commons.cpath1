@@ -29,7 +29,6 @@
  **/
 package org.mskcc.pathdb.protocol;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -107,7 +106,7 @@ public class ProtocolValidator {
 
         //  For BioPAX format, the only valid command is get_by_keyword
         String format = request.getFormat();
-        if  (format != null && format.equals
+        if (format != null && format.equals
                 (ProtocolConstants.FORMAT_BIO_PAX)) {
             String command = request.getCommand();
             if (!command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD)) {

@@ -30,14 +30,12 @@
 package org.mskcc.pathdb.lucene;
 
 import org.apache.lucene.document.Field;
-import org.mskcc.dataservices.schemas.psi.*;
-import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.util.xml.XmlStripper;
-import org.mskcc.pathdb.util.xml.XmlUtil;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.util.xml.XmlStripper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,24 +47,24 @@ import java.util.List;
  * Currently indexes the following content:
  * <TABLE WIDTH=100%>
  * <TR>
- *  <TH ALIGN=LEFT><B>Content</B></TH>
- *  <TH ALIGN=LEFT><B>Field</B></TH>
- *  <TH ALIGN=LEFT><B>Notes</B></TH>
+ * <TH ALIGN=LEFT><B>Content</B></TH>
+ * <TH ALIGN=LEFT><B>Field</B></TH>
+ * <TH ALIGN=LEFT><B>Notes</B></TH>
  * </TR>
  * <TR>
- *  <TD>All terms after XML Stripping</TD>
- *  <TD>FIELD_ALL</TD>
+ * <TD>All terms after XML Stripping</TD>
+ * <TD>FIELD_ALL</TD>
  * </TR>
  * <TR>
- *  <TD>Interaction/Pathway CPath ID</TD>
- *  <TD>FIELD_CPATH_ID</TD>
+ * <TD>Interaction/Pathway CPath ID</TD>
+ * <TD>FIELD_CPATH_ID</TD>
  * </TR>
  * <TR>
- *  <TD VALIGN=TOP>Organism Data</TD>
- *  <TD VALIGN=TOP>FIELD_ORGANISM</TD>
- *  <TD VALIGN=TOP>The "Browse by Organism" web page and the "Quick Browse"
- *  web component work by automatically running queries on the FIELD_ORGANISM.
- *  </TD>
+ * <TD VALIGN=TOP>Organism Data</TD>
+ * <TD VALIGN=TOP>FIELD_ORGANISM</TD>
+ * <TD VALIGN=TOP>The "Browse by Organism" web page and the "Quick Browse"
+ * web component work by automatically running queries on the FIELD_ORGANISM.
+ * </TD>
  * </TR>
  * </TABLE>
  *
@@ -113,13 +111,13 @@ public class BioPaxToIndex implements ItemToIndex {
         Element rdfRoot = (Element) xmlAssembly.getXmlObject();
 
         //  Find All Organism Elements via XPath
-        XPath xpath1 = XPath.newInstance ("//bp:ORGANISM");
+        XPath xpath1 = XPath.newInstance("//bp:ORGANISM");
         xpath1.addNamespace("bp", BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
         List organismList = xpath1.selectNodes(rdfRoot);
         StringBuffer organismTokens = new StringBuffer();
 
         //  Iterate through all Organism Elements
-        for (int i=0; i<organismList.size(); i++) {
+        for (int i = 0; i < organismList.size(); i++) {
             Element organismElement = (Element) organismList.get(i);
 
             //  Extract Organism Name
@@ -138,16 +136,16 @@ public class BioPaxToIndex implements ItemToIndex {
 
             if (nameElement != null) {
                 organismTokens.append(nameElement.getTextNormalize()
-                    + LuceneConfig.SPACE);
+                        + LuceneConfig.SPACE);
             }
             if (taxonomyElement != null) {
                 organismTokens.append(taxonomyElement.getTextNormalize()
-                    + LuceneConfig.SPACE);
+                        + LuceneConfig.SPACE);
             }
         }
-        if(organismTokens.length() > 0) {
+        if (organismTokens.length() > 0) {
             fields.add(Field.Text(LuceneConfig.FIELD_ORGANISM,
-                organismTokens.toString()));
+                    organismTokens.toString()));
         }
     }
 

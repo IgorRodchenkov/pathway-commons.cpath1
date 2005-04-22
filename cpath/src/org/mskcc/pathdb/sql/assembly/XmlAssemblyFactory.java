@@ -30,7 +30,6 @@
 package org.mskcc.pathdb.sql.assembly;
 
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -81,7 +80,7 @@ public class XmlAssemblyFactory {
         try {
             DaoCPath dao = new DaoCPath();
             CPathRecord record = dao.getRecordById(cpathId);
-            return createAssemblyInstance(record, record.getXmlType(), 
+            return createAssemblyInstance(record, record.getXmlType(),
                     numHits, xdebug);
         } catch (DaoException e) {
             throw new AssemblyException(e);
@@ -92,7 +91,7 @@ public class XmlAssemblyFactory {
      * Creates an XmlAssembly based on specified list of cPathIds.
      *
      * @param cpathIds Each cPathID must refer to an Interaction record.
-     * @param xmlType XmlRecordType Object.
+     * @param xmlType  XmlRecordType Object.
      * @param numHits  Total Number of Hits.
      * @param xdebug   XDebug Object.
      * @return XmlAssembly object.
@@ -116,10 +115,10 @@ public class XmlAssemblyFactory {
     /**
      * Creates an XmlAssembly based on specified cPathRecord.
      *
-     * @param record      CPathRecord Object.
-     * @param xmlType     XmlRecordType Object.
-     * @param numHits     Total Number of Hits.
-     * @param xdebug      XDebug Object.
+     * @param record  CPathRecord Object.
+     * @param xmlType XmlRecordType Object.
+     * @param numHits Total Number of Hits.
+     * @param xdebug  XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
@@ -132,10 +131,10 @@ public class XmlAssemblyFactory {
     /**
      * Creates an XmlAssembly based on specified list of cPathRecords.
      *
-     * @param recordList   An ArrayList of CPathRecord Objects.
-     * @param xmlType      XmlRecordType Object.
-     * @param numHits      Total Number of Hits.
-     * @param xdebug       XDebug Object.
+     * @param recordList An ArrayList of CPathRecord Objects.
+     * @param xmlType    XmlRecordType Object.
+     * @param numHits    Total Number of Hits.
+     * @param xdebug     XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
@@ -172,7 +171,7 @@ public class XmlAssemblyFactory {
         if (xmlType.equals(XmlRecordType.PSI_MI)) {
             xmlAssembly = new PsiAssembly(xmlDocumentComplete, xdebug);
         } else {
-            xmlAssembly = new BioPaxAssembly (xmlDocumentComplete, xdebug);
+            xmlAssembly = new BioPaxAssembly(xmlDocumentComplete, xdebug);
         }
         xmlAssembly.setNumHits(numHits);
         return xmlAssembly;
@@ -192,7 +191,7 @@ public class XmlAssemblyFactory {
     /**
      * Creates an Instance of the XmlAssembly interface.
      *
-     * @param record CPathRecord Object.
+     * @param record  CPathRecord Object.
      * @param xmlType XmlRecordType Object.
      * @return XmlAssembly Object.
      * @throws AssemblyException Error in Assembly.
@@ -209,7 +208,7 @@ public class XmlAssemblyFactory {
      * Creates an Instance of the XmlAssembly interface.
      *
      * @param recordList ArrayList of CPathRecord Objects.
-     * @param xmlType XmlRecordType Object.
+     * @param xmlType    XmlRecordType Object.
      * @return XmlAssembly Object.
      * @throws AssemblyException Error in Assembly.
      */
@@ -221,14 +220,14 @@ public class XmlAssemblyFactory {
 
         //  Filter for all records of same type
         //  Just in case we have a grab-bag of BioPAX and PSI-MI Records.
-        recordList = filterRecords (xmlType, recordList);
+        recordList = filterRecords(xmlType, recordList);
 
         //  Instantiate Correct XML Assembly based on XML Type
         XmlAssembly xmlAssembly = null;
         if (xmlType.equals(XmlRecordType.PSI_MI)) {
             xmlAssembly = new PsiAssembly(recordList, xdebug);
         } else {
-            xmlAssembly = new BioPaxAssembly (recordList, xdebug);
+            xmlAssembly = new BioPaxAssembly(recordList, xdebug);
         }
         xmlAssembly.setNumHits(numHits);
         return xmlAssembly;
@@ -238,11 +237,11 @@ public class XmlAssemblyFactory {
      * Iterate through all cPath Records and retain only those that match
      * the specified XmlRecordType.
      */
-    private static ArrayList filterRecords (XmlRecordType type,
+    private static ArrayList filterRecords(XmlRecordType type,
             ArrayList recordList) {
         ArrayList filteredList = new ArrayList();
         for (int i = 0; i < recordList.size(); i++) {
-            CPathRecord record =  (CPathRecord) recordList.get(i);
+            CPathRecord record = (CPathRecord) recordList.get(i);
             if (record.getXmlType().equals(type)) {
                 filteredList.add(record);
             }

@@ -29,6 +29,7 @@
  **/
 package org.mskcc.pathdb.task;
 
+import org.jdom.JDOMException;
 import org.mskcc.pathdb.lucene.IndexFactory;
 import org.mskcc.pathdb.lucene.ItemToIndex;
 import org.mskcc.pathdb.lucene.LuceneWriter;
@@ -46,7 +47,6 @@ import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.jdom.JDOMException;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -168,7 +168,7 @@ public class IndexLuceneTask extends Task {
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (JDOMException e) {
-            throw new DaoException (e);
+            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }

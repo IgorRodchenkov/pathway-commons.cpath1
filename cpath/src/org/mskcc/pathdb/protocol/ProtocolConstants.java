@@ -29,7 +29,6 @@
  **/
 package org.mskcc.pathdb.protocol;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**

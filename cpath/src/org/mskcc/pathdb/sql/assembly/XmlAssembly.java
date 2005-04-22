@@ -69,6 +69,7 @@ public interface XmlAssembly {
 
     /**
      * Gets the XML Record Type.
+     *
      * @return XmlRecordType Object.
      */
     XmlRecordType getXmlType();

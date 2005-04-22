@@ -63,11 +63,11 @@ public class HtmlUtil {
      * and maxLength set to 10, the returned string will look like this:
      * "here is a sequence:  AAAAAAAAAA [Cont.]"
      *
-     * @param str           String.
-     * @param maxLength     MaxLength of Each Individual Word
-     * @return              Revised String with truncated words.
+     * @param str       String.
+     * @param maxLength MaxLength of Each Individual Word
+     * @return Revised String with truncated words.
      */
-    public static String truncateLongWords (String str, int maxLength) {
+    public static String truncateLongWords(String str, int maxLength) {
         StringBuffer revisedStr = new StringBuffer(" ");
         StringTokenizer tokenizer = new StringTokenizer(str);
         while (tokenizer.hasMoreElements()) {
