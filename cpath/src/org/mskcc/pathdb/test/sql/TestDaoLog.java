@@ -97,4 +97,12 @@ public class TestDaoLog extends TestCase {
         records = dao.getLogRecords();
         assertTrue(records.size() <= DaoLog.MAX_NUM_RECORDS);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL Log Data Access Object (DAO)";
+    }
 }

@@ -133,4 +133,12 @@ public class TestDaoBackgroundReference extends TestCase {
         record2 = dao.getRecord(pair);
         assertTrue(record2 == null);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL BackgroundReference Data Access Object (DAO)";
+    }
 }

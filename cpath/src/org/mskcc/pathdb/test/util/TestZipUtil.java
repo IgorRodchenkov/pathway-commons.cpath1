@@ -50,4 +50,12 @@ public class TestZipUtil extends TestCase {
         String unzippedData = ZipUtil.unzip(zippedData);
         assertEquals(testString + "\n", unzippedData);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Zip Utility Class";
+    }
 }

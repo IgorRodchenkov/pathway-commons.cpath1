@@ -117,4 +117,12 @@ public class TestDaoInternalLink extends TestCase {
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
                 XmlRecordType.PSI_MI, "protein C xml here");
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL InternalLink Data Access Object (DAO)";
+    }
 }

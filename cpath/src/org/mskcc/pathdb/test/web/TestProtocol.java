@@ -63,4 +63,12 @@ public class TestProtocol extends TestCase {
         int index = response.indexOf("<error_code>450</error_code>");
         assertTrue(index > 0);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Web Services API Protocol";
+    }
 }

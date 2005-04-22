@@ -52,4 +52,12 @@ public class TestLuceneUtil extends TestCase {
         query = LuceneUtil.cleanQuery("experiment_type:\"dna repair\"");
         assertEquals("experiment_type:\"dna repair\"", query);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Lucene Utility Class";
+    }
 }

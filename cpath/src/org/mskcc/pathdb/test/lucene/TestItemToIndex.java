@@ -136,10 +136,19 @@ public class TestItemToIndex extends TestCase {
         Field organismField = item.getField(2);
 
         //  Validate Individual Fields
+        System.out.println(allField.stringValue());
         assertTrue(allField.stringValue().startsWith
-                ("CPATH-5 CPATH-LOCAL-0 #CPATH-9"));
+                ("This example is meant to provide an illustration of how"));
         assertTrue(idField.stringValue().equals("5"));
         assertTrue(organismField.stringValue().startsWith
                 ("Escherichia coli 562"));
+    }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can index BioPAX/PSI-MI Records in Lucene";
     }
 }

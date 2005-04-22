@@ -53,4 +53,13 @@ public class TestBackgroundReferencePair extends TestCase {
         //  They should therefore result in identical hash codes
         assertTrue(record1.hashCode() == record2.hashCode());
     }
+
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Background Reference Pair Data Model Object";
+    }
 }

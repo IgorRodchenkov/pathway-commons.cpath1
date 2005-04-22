@@ -79,4 +79,12 @@ public class TestBioPaxTransformToCPathRecords extends TestCase {
         String id = (String) idList.get(0);
         assertEquals("pathway50", id);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can transform BioPAX records into cPath records";
+    }
 }

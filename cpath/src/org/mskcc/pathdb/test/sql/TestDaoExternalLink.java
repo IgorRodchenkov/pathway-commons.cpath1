@@ -143,4 +143,12 @@ public class TestDaoExternalLink extends TestCase {
         exists = db.recordExists(link);
         assertTrue(exists);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL ExternalLink Data Access Object (DAO)";
+    }
 }

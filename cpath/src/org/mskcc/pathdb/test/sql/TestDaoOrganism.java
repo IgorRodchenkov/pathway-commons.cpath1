@@ -71,4 +71,12 @@ public class TestDaoOrganism extends TestCase {
         assertTrue(dao.deleteRecord(taxId));
         assertTrue(!dao.recordExists(taxId));
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL Organism Data Access Object (DAO)";
+    }
 }

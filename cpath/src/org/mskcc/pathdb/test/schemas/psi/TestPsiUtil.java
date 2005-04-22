@@ -292,4 +292,12 @@ public class TestPsiUtil extends TestCase {
         }
         assertEquals(1, counter);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the PSI-MI Utility Class";
+    }
 }

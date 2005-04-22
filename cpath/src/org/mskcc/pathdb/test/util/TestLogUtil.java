@@ -76,4 +76,12 @@ public class TestLogUtil extends TestCase {
         assertEquals(REMOTE_HOST, record.getRemoteHost());
         assertEquals(REMOTE_IP, record.getRemoteIp());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the System Log Utility Class";
+    }
 }

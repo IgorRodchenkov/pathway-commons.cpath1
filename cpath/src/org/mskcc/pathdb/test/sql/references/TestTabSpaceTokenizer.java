@@ -104,4 +104,13 @@ public class TestTabSpaceTokenizer extends TestCase {
             index++;
         }
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the TabSpace Tokenizer, used to parse background "
+            + "reference/id files";
+    }
 }

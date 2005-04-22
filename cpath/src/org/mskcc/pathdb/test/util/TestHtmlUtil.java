@@ -48,4 +48,12 @@ public class TestHtmlUtil extends TestCase {
         assertEquals("here is a sequence: AAAAAAAAAA [Cont.] more stuff",
                 truncated);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the HTML Utility Class";
+    }
 }

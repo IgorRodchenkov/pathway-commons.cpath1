@@ -96,4 +96,12 @@ public class TestExternalReferenceUtil extends TestCase {
         refs = ExternalReferenceUtil.removeDuplicates(refs);
         assertEquals(3, refs.length);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the External Reference Utility Class";
+    }
 }

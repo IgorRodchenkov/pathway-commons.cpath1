@@ -144,4 +144,13 @@ public class TestUpdatePsiInteractor extends TestCase {
         protein.setXref(xref);
         return protein;
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can properly update a PSI-MI record with "
+            + " new interactor data";
+    }
 }

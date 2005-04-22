@@ -278,4 +278,12 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         assertEquals(expectedDb2, dbRecord2.getFixedCvTerm());
         assertEquals(expectedId2, id.getLinkedToId2());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can properly parse background reference/id files";
+    }
 }

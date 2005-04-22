@@ -170,6 +170,13 @@ public class TestImportPsiToCPath extends TestCase {
         //  derived from the background reference subsystem.
         assertTrue(xml.indexOf("<secondaryRef db=\"AFFYMETRIX\" "
                 + "id=\"1939_at\"/>") > 0);
+    }
 
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can import PSI-MI records into cPath";
     }
 }

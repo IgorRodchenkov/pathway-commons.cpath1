@@ -79,4 +79,12 @@ public class TestDataSubmission extends TestCase {
         }
         return data.toString();
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test data submission via the XML-RPC Service";
+    }
 }

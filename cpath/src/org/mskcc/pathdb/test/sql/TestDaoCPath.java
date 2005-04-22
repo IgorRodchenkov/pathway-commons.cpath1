@@ -154,4 +154,12 @@ public class TestDaoCPath extends TestCase {
         Integer taxId = (Integer) taxonomyList.get(0);
         assertEquals(9606, taxId.intValue());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL CPath Data Access Object (DAO)";
+    }
 }

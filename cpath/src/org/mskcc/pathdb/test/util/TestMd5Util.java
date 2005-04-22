@@ -50,4 +50,12 @@ public class TestMd5Util extends TestCase {
         assertEquals("JDK+1OynKkArmOBLktXFdw==", hash1);
         assertEquals("tKLat99Yvf/irKr1be2f2g==", hash2);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MD5 Hashcode Utility Class";
+    }
 }

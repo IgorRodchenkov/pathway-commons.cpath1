@@ -70,4 +70,13 @@ public class TestPsiInteractorExtractor extends TestCase {
         ProteinInteractorType protein = proteinWithWeight.getProtein();
         assertEquals("2", protein.getId());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can extract interactor data from PSI-MI " +
+                "interaction records";
+    }
 }

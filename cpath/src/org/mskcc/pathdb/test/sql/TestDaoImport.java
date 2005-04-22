@@ -135,4 +135,12 @@ public class TestDaoImport extends TestCase {
         }
         return data.toString();
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL Import Data Access Object (DAO)";
+    }
 }

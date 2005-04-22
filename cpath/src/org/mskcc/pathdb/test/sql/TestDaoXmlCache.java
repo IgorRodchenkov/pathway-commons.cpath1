@@ -138,4 +138,12 @@ public class TestDaoXmlCache extends TestCase {
         ArrayList records = dao.getAllRecords();
         assertEquals(50, records.size());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL XML Cache Data Access Object (DAO)";
+    }
 }

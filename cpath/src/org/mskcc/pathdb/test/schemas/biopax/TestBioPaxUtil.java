@@ -276,4 +276,12 @@ public class TestBioPaxUtil extends TestCase {
             checkForDuplicateRdfIds(child);
         }
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the BioPAX Utility Class";
+    }
 }

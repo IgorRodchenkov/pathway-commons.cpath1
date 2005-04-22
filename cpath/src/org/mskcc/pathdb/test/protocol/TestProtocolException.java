@@ -57,4 +57,12 @@ public class TestProtocolException extends TestCase {
         int index = xml.indexOf(EXPECTED_ERROR_MSG);
         assertTrue("Verifying XML Error Document Contents", index > 0);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Protocol Exception Object";
+    }
 }

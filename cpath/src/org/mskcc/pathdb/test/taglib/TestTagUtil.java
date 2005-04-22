@@ -103,4 +103,12 @@ public class TestTagUtil extends TestCase {
         assertEquals("<A TITLE='Tip' HREF='http://www.yahoo.com'>"
                 + "Click for yahoo</A>", link);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Html Tag Utility, used by custom JSP Tags";
+    }
 }

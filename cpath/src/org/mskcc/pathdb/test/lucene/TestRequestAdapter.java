@@ -116,4 +116,12 @@ public class TestRequestAdapter extends TestCase {
         terms = RequestAdapter.getSearchTerms(request);
         assertEquals("pmid:1122334455", terms);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the RequestAdapter for formulating Lucene queries";
+    }
 }

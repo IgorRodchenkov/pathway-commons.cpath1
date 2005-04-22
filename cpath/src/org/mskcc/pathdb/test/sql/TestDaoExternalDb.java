@@ -142,4 +142,12 @@ public class TestDaoExternalDb extends TestCase {
         DaoExternalDb cpath = new DaoExternalDb();
         cpath.addRecord(db);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL ExternalDb Data Access Object (DAO)";
+    }
 }

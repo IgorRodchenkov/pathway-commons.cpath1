@@ -68,4 +68,12 @@ public class TestXmlValidator extends TestCase {
                 + "xml/src/MIF.xsd");
         assertEquals(0, errors.size());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the XML Validator Utility Class";
+    }
 }

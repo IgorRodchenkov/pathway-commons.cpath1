@@ -67,4 +67,12 @@ public class TestDaoIdGenerator extends TestCase {
                 (idStr.substring
                 (DaoIdGenerator.CPATH_LOCAL_ID_PREFIX.length()));
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL IdGenerator Data Access Object (DAO)";
+    }
 }

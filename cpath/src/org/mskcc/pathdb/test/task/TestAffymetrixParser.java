@@ -75,4 +75,12 @@ public class TestAffymetrixParser extends TestCase {
         //  Delete the Sample File
         outFile.delete();
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can properly parse Affymetrix data files";
+    }
 }

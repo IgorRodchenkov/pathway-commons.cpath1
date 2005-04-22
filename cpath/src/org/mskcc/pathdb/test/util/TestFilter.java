@@ -61,4 +61,12 @@ public class TestFilter extends TestCase {
         text = XssFilter.filter("d?a");
         assertEquals("d?a", text);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Cross Site Scripting (XSS) Utility Class";
+    }
 }

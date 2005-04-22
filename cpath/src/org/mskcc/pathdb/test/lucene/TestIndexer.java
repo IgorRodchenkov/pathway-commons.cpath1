@@ -113,4 +113,12 @@ public class TestIndexer extends TestCase {
         int index = text.indexOf("classical two hybrid");
         assertTrue(index > 0);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Lucene Index/Query functionality";
+    }
 }

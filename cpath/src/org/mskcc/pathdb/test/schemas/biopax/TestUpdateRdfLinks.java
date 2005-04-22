@@ -133,4 +133,12 @@ public class TestUpdateRdfLinks extends TestCase {
         Attribute link = (Attribute) links.get(index);
         assertEquals(expectedValue, link.getValue());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can update RDF links/resources";
+    }
 }

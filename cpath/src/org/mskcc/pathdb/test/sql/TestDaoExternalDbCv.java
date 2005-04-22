@@ -98,4 +98,12 @@ public class TestDaoExternalDbCv extends TestCase {
         int dbId = db.getId();
         return dbId;
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the MySQL ExternalDbCv Data Access Object (DAO)";
+    }
 }

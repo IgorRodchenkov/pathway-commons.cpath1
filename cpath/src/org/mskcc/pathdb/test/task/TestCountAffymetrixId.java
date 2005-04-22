@@ -72,4 +72,13 @@ public class TestCountAffymetrixId extends TestCase {
         assertEquals(3, numRecords);
         assertEquals(1, withAffyIds);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can properly count Affymetrix IDs associated "
+            + "with cPath Records";
+    }
 }

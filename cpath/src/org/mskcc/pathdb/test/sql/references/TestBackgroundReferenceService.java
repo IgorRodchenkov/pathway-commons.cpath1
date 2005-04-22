@@ -161,4 +161,12 @@ public class TestBackgroundReferenceService extends TestCase {
         assertEquals("External Reference  -->  Database:  [AFFYMETRIX], "
                 + "ID:  [1000_at]", xref1.toString());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Background Reference / ID Service";
+    }
 }

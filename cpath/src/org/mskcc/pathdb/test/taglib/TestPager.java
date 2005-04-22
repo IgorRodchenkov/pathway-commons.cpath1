@@ -147,4 +147,12 @@ public class TestPager extends TestCase {
         assertEquals(255, pager.getEndIndex());
     }
 
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Pager Object, used to generate Next/Previous web links";
+    }
 }

@@ -71,4 +71,12 @@ public class TestImportBioPaxToCPath extends TestCase {
         organismList = daoOrganism.getAllOrganisms();
         assertEquals(numOrganisms + 1, organismList.size());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can import BioPAX records into cPath";
+    }
 }

@@ -144,4 +144,12 @@ public class TestAssembly extends TestCase {
         assertEquals(CPathConstants.CPATH_HOME_URI, baseAttribute.getValue());
         //        System.out.print(xmlAssembly);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can generate BioPAX/PSI-MI XML Assemblies";
+    }
 }

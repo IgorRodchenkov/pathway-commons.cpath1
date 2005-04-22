@@ -61,4 +61,13 @@ public class TestQueryFileReader extends TestCase {
                 + "format=psi&startIndex=0&organism=562&maxHits=10",
                 request.getUri());
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Query File Reader, used to run pre-computed "
+            + "cPath queries";
+    }
 }

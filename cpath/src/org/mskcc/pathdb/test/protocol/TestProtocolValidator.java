@@ -100,4 +100,13 @@ public class TestProtocolValidator extends TestCase {
             assertEquals(ProtocolStatusCode.INVALID_ARGUMENT, code);
         }
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Protocol Validator, " 
+                + "used for all HTML/XML Web Requests";
+    }
 }

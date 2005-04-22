@@ -74,4 +74,12 @@ public class TestRdfValidator extends TestCase {
         assertTrue(userMsg.indexOf("W105} Redefinition of ID: smallMolecule23 "
                 + "[Line=  390, Column=  48]") > 0);
     }
+
+    /**
+     * Gets Name of Test.
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Tests the RDF Validator Utility Class";
+    }
 }
