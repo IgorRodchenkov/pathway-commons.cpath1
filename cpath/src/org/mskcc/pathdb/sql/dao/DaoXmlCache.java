@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.XmlCacheRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
@@ -110,18 +111,20 @@ public class DaoXmlCache {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO xml_cache (`URL`, `DOC_MD5`,`NUM_HITS`, "
-                    + "`DOC_BLOB`, `LAST_USED`) VALUES (?,?,?,?,?)");
+                    ("INSERT INTO xml_cache (`URL`, `XML_TYPE`, `DOC_MD5`,"
+                    + "`NUM_HITS`, "
+                    + "`DOC_BLOB`, `LAST_USED`) VALUES (?,?,?,?,?,?)");
 
             byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
             Timestamp timeStamp = new Timestamp(now.getTime());
 
             pstmt.setString(1, url);
-            pstmt.setString(2, hashKey);
-            pstmt.setInt(3, xmlAssembly.getNumHits());
-            pstmt.setBytes(4, zippedData);
-            pstmt.setTimestamp(5, timeStamp);
+            pstmt.setString(2, xmlAssembly.getXmlType().toString());
+            pstmt.setString(3, hashKey);
+            pstmt.setInt(4, xmlAssembly.getNumHits());
+            pstmt.setBytes(5, zippedData);
+            pstmt.setTimestamp(6, timeStamp);
             int rows = pstmt.executeUpdate();
             conditionallyDeleteEldest();
             return (rows > 0) ? true : false;
@@ -156,12 +159,14 @@ public class DaoXmlCache {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 int numHits = rs.getInt("NUM_HITS");
+                XmlRecordType xmlType = XmlRecordType.getType
+                        (rs.getString("XML_TYPE"));
                 Blob blob = rs.getBlob("DOC_BLOB");
                 byte blobData[] = extractBlobData(blob);
                 String xml = ZipUtil.unzip(blobData);
                 XmlAssembly xmlAssembly =
                         XmlAssemblyFactory.createXmlAssembly
-                        (xml, numHits, xdebug);
+                        (xml, xmlType, numHits, xdebug);
                 updateLastUsedField(hashKey);
                 return xmlAssembly;
             } else {
@@ -327,6 +332,8 @@ public class DaoXmlCache {
                 XmlCacheRecord record = new XmlCacheRecord();
                 record.setCacheId(rs.getInt("CACHE_ID"));
                 record.setUrl(rs.getString("URL"));
+                record.setXmlType(XmlRecordType.getType
+                        (rs.getString("XML_TYPE")));
                 record.setMd5(rs.getString("DOC_MD5"));
                 record.setNumHits(rs.getInt("NUM_HITS"));
                 record.setLastUsed(rs.getTimestamp("LAST_USED"));
