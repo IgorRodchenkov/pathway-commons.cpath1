@@ -36,6 +36,7 @@ import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.dataservices.schemas.psi.XrefType;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
@@ -156,15 +157,19 @@ public class CountAffymetrixIdsTask extends Task {
             if (xmlContent.toLowerCase().indexOf("affymetrix") > -1) {
                 affyCount++;
             } else {
-                trackOtherIds(xmlContent, dbMap);
+                trackOtherIds(record, dbMap);
             }
             pMonitor.incrementCurValue();
         }
     }
 
-    private void trackOtherIds(String xmlContent, HashMap dbMap)
+    private void trackOtherIds(CPathRecord record, HashMap dbMap)
             throws DaoException {
-        StringReader reader = new StringReader(xmlContent);
+        //  Ignore BioPAX Records for Now.
+        if (record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
+            return;
+        }
+        StringReader reader = new StringReader(record.getXmlContent());
         try {
             ProteinInteractorType protein =
                     ProteinInteractorType.unmarshalProteinInteractorType
@@ -188,10 +193,12 @@ public class CountAffymetrixIdsTask extends Task {
                 numProteinsWithoutXrefs++;
             }
         } catch (ValidationException e) {
-            System.err.println("Failed while processing XML:  " + xmlContent);
+            System.err.println("Failed while processing XML:  "
+                    + record.getXmlContent());
             throw new DaoException(e);
         } catch (MarshalException e) {
-            System.err.println("Failed while processing XML:  " + xmlContent);
+            System.err.println("Failed while processing XML:  "
+                    + record.getXmlContent());
             throw new DaoException(e);
         }
     }
