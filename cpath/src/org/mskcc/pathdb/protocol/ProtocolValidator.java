@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.protocol;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Validates Client/Browser Request.
@@ -94,14 +95,29 @@ public class ProtocolValidator {
                     "Argument:  '" + ProtocolRequest.ARG_COMMAND
                     + "' is not specified." + HELP_MESSAGE);
         }
-        HashMap map = constants.getValidCommands();
-        if (!map.containsKey(request.getCommand())) {
+        HashSet set = constants.getValidCommands();
+        if (!set.contains(request.getCommand())) {
             throw new ProtocolException(ProtocolStatusCode.BAD_COMMAND,
                     "Command:  '" + request.getCommand()
                     + "' is not recognized." + HELP_MESSAGE);
         }
         if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
             throw new NeedsHelpException();
+        }
+
+        //  For BioPAX format, the only valid command is get_by_keyword
+        String format = request.getFormat();
+        if  (format != null && format.equals
+                (ProtocolConstants.FORMAT_BIO_PAX)) {
+            String command = request.getCommand();
+            if (!command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD)) {
+                throw new ProtocolException
+                        (ProtocolStatusCode.INVALID_ARGUMENT, "For format: "
+                        + ProtocolConstants.FORMAT_BIO_PAX
+                        + ", the only currently supported command is:  "
+                        + ProtocolConstants.COMMAND_GET_BY_KEYWORD
+                        + ".  Please try again.");
+            }
         }
     }
 
@@ -131,8 +147,8 @@ public class ProtocolValidator {
                     "Argument:  '" + ProtocolRequest.ARG_FORMAT
                     + "' is not specified." + HELP_MESSAGE);
         }
-        HashMap map = constants.getValidFormats();
-        if (!map.containsKey(request.getFormat())) {
+        HashSet set = constants.getValidFormats();
+        if (!set.contains(request.getFormat())) {
             throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
                     "Format:  '" + request.getFormat() + "' is not recognized."
                     + HELP_MESSAGE);
