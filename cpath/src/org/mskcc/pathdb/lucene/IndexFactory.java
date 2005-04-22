@@ -30,6 +30,8 @@
 package org.mskcc.pathdb.lucene;
 
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.assembly.PsiAssembly;
+import org.jdom.JDOMException;
 
 import java.io.IOException;
 
@@ -49,11 +51,11 @@ public class IndexFactory {
      * @throws IOException Input Output Exception.
      */
     public static ItemToIndex createItemToIndex(long cpathId,
-            XmlAssembly xmlAssembly) throws IOException {
-        //  Right now, we always return PSI Interactions.
-        //  In the future, we will probably add support to other formats,
-        //  such as BioPax.
-        ItemToIndex item = new PsiInteractionToIndex(cpathId, xmlAssembly);
-        return item;
+            XmlAssembly xmlAssembly) throws IOException, JDOMException {
+        if (xmlAssembly instanceof PsiAssembly) {
+            return new PsiInteractionToIndex(cpathId, xmlAssembly);
+        } else {
+            return new BioPaxToIndex (cpathId, xmlAssembly);
+        }
     }
 }
