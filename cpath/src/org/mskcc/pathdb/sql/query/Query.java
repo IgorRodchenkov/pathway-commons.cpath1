@@ -40,7 +40,7 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Executes Interaction Queries.
+ * Executes Pathway/Interaction Queries.
  * <p/>
  * <P>Note:  JUnit testing for this class is performed in:
  * org.mskcc.pathdb.test.schemas.psi.TestImportPsiToCPath.
@@ -87,7 +87,7 @@ public class Query {
                 xdebug.logMsg(this, "Using Cached XML Document");
                 xmlAssembly = cachedXml;
             } else {
-                xdebug.logMsg(this, "Executing New Interaction Query");
+                xdebug.logMsg(this, "Executing New Interaction/Pathway Query");
                 xmlAssembly = executeQuery(request);
                 if (!xmlAssembly.isEmpty()) {
                     if (cachedXml == null) {
@@ -119,30 +119,23 @@ public class Query {
      */
     private String getHashKey(ProtocolRequest request)
             throws NoSuchAlgorithmException {
-        String originalFormat = request.getFormat();
-
-        //  Set Format to PSI (no matter what).
-        //  This enables us to reuse the same XML Content for requests
-        //  for HTML and PSI.
-        request.setFormat(ProtocolConstants.FORMAT_XML);
         String hashKey = Md5Util.createMd5Hash(request.getUrlParameterString());
-
-        //  Set Back to Original Format.
-        request.setFormat(originalFormat);
         return hashKey;
     }
 
     private XmlAssembly executeQuery(ProtocolRequest request)
             throws QueryException {
-        InteractionQuery query = determineQueryType(request);
-        return query.execute(xdebug);
+        PathwayInteractionQuery queryPathway = determineQueryType(request);
+        return queryPathway.execute(xdebug);
     }
 
     /**
      * Instantiates Correct Query based on Protocol Request.
      */
-    private InteractionQuery determineQueryType(ProtocolRequest request) {
-        InteractionQuery query = new GetInteractionsViaLucene(request);
-        return query;
+    private PathwayInteractionQuery determineQueryType
+            (ProtocolRequest request) {
+        PathwayInteractionQuery queryPathway =
+                new GetInteractionsViaLucene(request);
+        return queryPathway;
     }
 }

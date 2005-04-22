@@ -33,11 +33,11 @@ import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 /**
- * Abstract Base Class for all queries which return interactions.
+ * Abstract Base Class for all queries which return pathways/interactions.
  *
  * @author Ethan Cerami
  */
-abstract class InteractionQuery {
+abstract class PathwayInteractionQuery {
     protected XDebug xdebug;
 
     /**
@@ -49,7 +49,7 @@ abstract class InteractionQuery {
      */
     public XmlAssembly execute(XDebug xdebug) throws QueryException {
         this.xdebug = xdebug;
-        xdebug.logMsg(this, "Executing Interaction Type:  "
+        xdebug.logMsg(this, "Executing Query Type:  "
                 + getClass().getName());
         try {
             return executeSub();

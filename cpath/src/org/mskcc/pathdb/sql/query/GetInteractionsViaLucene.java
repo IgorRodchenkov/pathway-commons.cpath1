@@ -36,19 +36,21 @@ import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.lucene.RequestAdapter;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.taglib.Pager;
+import org.mskcc.pathdb.model.XmlRecordType;
 
 import java.io.IOException;
 
 /**
- * Gets All Interactions for the specified Interactor CPath ID.
+ * Searches for PSI-MI Interactions via Lucene.
  *
  * @author Ethan Cerami
  */
-class GetInteractionsViaLucene extends InteractionQuery {
+class GetInteractionsViaLucene extends PathwayInteractionQuery {
     private String searchTerms;
     private ProtocolRequest request;
 
@@ -75,7 +77,7 @@ class GetInteractionsViaLucene extends InteractionQuery {
             XmlAssembly xmlAssembly;
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
-            long[] cpathIds = extractHits(pager, hits);
+            long[] cpathIds = QueryUtil.extractHits(xdebug, pager, hits);
             xmlAssembly = createXmlAssembly(cpathIds, hits);
             xmlAssembly.setNumHits(hits.length());
             return xmlAssembly;
@@ -91,31 +93,19 @@ class GetInteractionsViaLucene extends InteractionQuery {
             throws AssemblyException {
         XmlAssembly xmlAssembly;
         if (cpathIds != null && cpathIds.length > 0) {
-            xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
-                    hits.length(), xdebug);
+            if (request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
+                xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
+                    XmlRecordType.BIO_PAX, hits.length(), xdebug);
+            } else {
+                xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
+                    XmlRecordType.PSI_MI, hits.length(), xdebug);
+            }
         } else {
             xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
         }
         return xmlAssembly;
     }
 
-    /**
-     * Extracts Lucene Hits in Specified Range.
-     */
-    private long[] extractHits(Pager pager, Hits hits) throws IOException {
-        int size = pager.getEndIndex() - pager.getStartIndex();
-        long cpathIds[] = new long[size];
-        int index = 0;
-        xdebug.logMsg(this, "Extracting hits:  " + pager.getStartIndex()
-                + " - " + pager.getEndIndex());
-
-        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
-            Document doc = hits.doc(i);
-            Field field = doc.getField(LuceneConfig.FIELD_INTERACTION_ID);
-            cpathIds[index++] = Long.parseLong(field.stringValue());
-        }
-        return cpathIds;
-    }
 
     /**
      * Executes Lucene Search.
