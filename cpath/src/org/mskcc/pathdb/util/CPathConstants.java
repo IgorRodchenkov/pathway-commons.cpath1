@@ -46,4 +46,11 @@ public class CPathConstants {
      */
     public static final String PROPERTY_PSI_SCHEMA_LOCATION =
             "psi_schema_location";
+
+    /**
+     * CPath Home URI
+     */
+    public static final String CPATH_HOME_URI =
+            "http://cbio.mskcc.org/cpath";
+    
 }
