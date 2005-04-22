@@ -46,6 +46,7 @@ import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.jdom.JDOMException;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -70,6 +71,7 @@ public class IndexLuceneTask extends Task {
      */
     public IndexLuceneTask(boolean consoleMode, XDebug xdebug) {
         super("Run Full Text Indexer", consoleMode);
+        this.xdebug = xdebug;
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Running Full Text Indexer");
     }
@@ -125,12 +127,15 @@ public class IndexLuceneTask extends Task {
     public void indexAllInteractions() throws DaoException, IOException,
             ImportException, AssemblyException {
         ProgressMonitor pMonitor = this.getProgressMonitor();
-        pMonitor.setCurrentMessage("Indexing all cPath Interactions");
+        pMonitor.setCurrentMessage("Indexing all cPath Pathways/Interactions");
         DaoCPath cpath = new DaoCPath();
+        int numPathways = cpath.getNumEntities(CPathRecordType.PATHWAY);
         int numInteractions = cpath.getNumEntities(CPathRecordType.INTERACTION);
+        pMonitor.setCurrentMessage("Total Number of Pathways:  "
+                + numPathways);
         pMonitor.setCurrentMessage("Total Number of Interactions:  "
                 + numInteractions);
-        pMonitor.setMaxValue(numInteractions);
+        pMonitor.setMaxValue(numPathways + numInteractions);
 
         LuceneWriter indexWriter = new LuceneWriter(true);
         Connection con = null;
@@ -140,12 +145,14 @@ public class IndexLuceneTask extends Task {
             for (int i = 0; i <= numInteractions; i += BLOCK_SIZE) {
                 con = JdbcUtil.getCPathConnection();
                 int end = i + BLOCK_SIZE;
-                System.out.println("<getting batch of interactions:  "
+                System.out.println("<getting batch of entities:  "
                         + i + " - " + end + ">");
                 pstmt = con.prepareStatement
-                        ("select * from cpath WHERE TYPE = ?  order by "
+                        ("select * from cpath WHERE TYPE = ? "
+                        + "OR TYPE = ? order by "
                         + "CPATH_ID LIMIT " + i + ", " + BLOCK_SIZE);
                 pstmt.setString(1, CPathRecordType.INTERACTION.toString());
+                pstmt.setString(2, CPathRecordType.PATHWAY.toString());
                 rs = pstmt.executeQuery();
 
                 while (rs.next()) {
@@ -160,6 +167,8 @@ public class IndexLuceneTask extends Task {
             throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
+        } catch (JDOMException e) {
+            throw new DaoException (e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -179,15 +188,15 @@ public class IndexLuceneTask extends Task {
     private void indexRecord(DaoCPath cpath, ResultSet rs,
             LuceneWriter indexWriter)
             throws SQLException, IOException, ImportException,
-            AssemblyException {
+            AssemblyException, JDOMException {
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.incrementCurValue();
         CPathRecord record = cpath.extractRecord(rs);
         ConsoleUtil.showProgress(pMonitor);
 
-        //  Create XML Assembly Object of Specified Interaction Record
+        //  Create XML Assembly Object of Specified Record
         XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly
-                (record, 1, new XDebug());
+                (record.getId(), 1, new XDebug());
 
         //  Determine which fields to index
         ItemToIndex item = IndexFactory.createItemToIndex
