@@ -55,6 +55,7 @@ public class UtilSuite extends TestCase {
         suite.addTestSuite(TestLogUtil.class);
         suite.addTestSuite(TestAffymetrixParser.class);
         suite.addTestSuite(TestExternalReferenceUtil.class);
+        suite.addTestSuite(TestHtmlUtil.class);
         suite.addTest(RdfUtilSuite.suite());
         suite.setName("Utility Tests");
         return suite;
