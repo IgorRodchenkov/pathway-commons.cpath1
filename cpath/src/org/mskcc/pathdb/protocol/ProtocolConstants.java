@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.protocol;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Protocol Constants.
@@ -38,19 +39,29 @@ import java.util.HashMap;
  */
 public class ProtocolConstants {
     /**
-     * HashMap of Valid Commands.
+     * HashSet of Valid Commands.
      */
-    private static HashMap validCommands;
+    private static HashSet validCommands;
 
     /**
      * HashMap of Valid Formats.
      */
-    private static HashMap validFormats;
+    private static HashSet validFormats;
+
+    /**
+     * XML Format.
+     */
+    public static final String FORMAT_XML = "xml";
 
     /**
      * PSI-MI XML Format.
      */
-    public static final String FORMAT_XML = "xml";
+    public static final String FORMAT_PSI_MI = "psi_mi";
+
+    /**
+     * BioPAX Format.
+     */
+    public static final String FORMAT_BIO_PAX = "biopax";
 
     /**
      * HTML Format.
@@ -129,21 +140,21 @@ public class ProtocolConstants {
     public static final int MAX_NUM_HITS = 100;
 
     /**
-     * Gets HashMap of Valid Commands.
+     * Gets HashSet of Valid Commands.
      *
      * @return HashMap of Valid Commands.
      */
-    public HashMap getValidCommands() {
+    public HashSet getValidCommands() {
         if (validCommands == null) {
-            validCommands = new HashMap();
-            validCommands.put(COMMAND_GET_BY_INTERACTOR_NAME_XREF, null);
-            validCommands.put(COMMAND_GET_BY_INTERACTOR_ID, null);
-            validCommands.put(COMMAND_GET_BY_ORGANISM, null);
-            validCommands.put(COMMAND_GET_BY_KEYWORD, null);
-            validCommands.put(COMMAND_GET_BY_DATABASE, null);
-            validCommands.put(COMMAND_GET_BY_PMID, null);
-            validCommands.put(COMMAND_GET_BY_EXPERIMENT_TYPE, null);
-            validCommands.put(COMMAND_HELP, null);
+            validCommands = new HashSet();
+            validCommands.add(COMMAND_GET_BY_INTERACTOR_NAME_XREF);
+            validCommands.add(COMMAND_GET_BY_INTERACTOR_ID);
+            validCommands.add(COMMAND_GET_BY_ORGANISM);
+            validCommands.add(COMMAND_GET_BY_KEYWORD);
+            validCommands.add(COMMAND_GET_BY_DATABASE);
+            validCommands.add(COMMAND_GET_BY_PMID);
+            validCommands.add(COMMAND_GET_BY_EXPERIMENT_TYPE);
+            validCommands.add(COMMAND_HELP);
         }
         return validCommands;
     }
@@ -153,12 +164,14 @@ public class ProtocolConstants {
      *
      * @return HashMap of Valid Formats.
      */
-    public HashMap getValidFormats() {
+    public HashSet getValidFormats() {
         if (validFormats == null) {
-            validFormats = new HashMap();
-            validFormats.put(FORMAT_XML, null);
-            validFormats.put(FORMAT_HTML, null);
-            validFormats.put(FORMAT_COUNT_ONLY, null);
+            validFormats = new HashSet();
+            validFormats.add(FORMAT_XML);
+            validFormats.add(FORMAT_PSI_MI);
+            validFormats.add(FORMAT_BIO_PAX);
+            validFormats.add(FORMAT_HTML);
+            validFormats.add(FORMAT_COUNT_ONLY);
         }
         return validFormats;
     }
