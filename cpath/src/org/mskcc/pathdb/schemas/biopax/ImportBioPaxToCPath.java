@@ -31,16 +31,14 @@ package org.mskcc.pathdb.schemas.biopax;
 
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
@@ -181,6 +179,7 @@ public class ImportBioPaxToCPath {
      * 2)  Stores the newly modified XML to MySQL.
      * 3)  Store Internal Links to cPath.
      * 4)  Store External Links to cPath.
+     * 5)  Store New Organisms.
      */
     private void storeLinks() throws JDOMException, IOException,
             DaoException {
@@ -218,6 +217,31 @@ public class ImportBioPaxToCPath {
             externalLinker.addMulipleRecords(record.getId(), refs, false);
             pMonitor.incrementCurValue();
             ConsoleUtil.showProgress(pMonitor);
+
+            //  Conditionally Store New Organism
+            conditionallySaveOrganism(record, resource);
+
+        }
+    }
+
+    /**
+     * Saves Organism Data, if it is new.
+     */
+    private void conditionallySaveOrganism(CPathRecord record, Element resource)
+            throws DaoException, JDOMException {
+        if (record.getNcbiTaxonomyId()!=CPathRecord.TAXONOMY_NOT_SPECIFIED){
+            DaoOrganism daoOrganism = new DaoOrganism();
+            if (!daoOrganism.recordExists(record.getNcbiTaxonomyId())) {
+                XPath xpath = XPath.newInstance
+                        ("bp:ORGANISM/bp:bioSource/bp:NAME");
+                xpath.addNamespace("bp", resource.getNamespaceURI());
+                Element speciesName = (Element)
+                        xpath.selectSingleNode(resource);
+                if (speciesName != null) {
+                    daoOrganism.addRecord(record.getNcbiTaxonomyId(),
+                        speciesName.getTextNormalize(), null);
+                }
+            }
         }
     }
 }
