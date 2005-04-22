@@ -197,6 +197,7 @@
     <mkdir  dir="${lucene.dir}"/>
     <mkdir  dir="${build.home}/WEB-INF/classes"/>
     <mkdir  dir="${junit.dir}"/>
+    <mkdir  dir="${junit.dir}/reports"/>
 
     <!-- Copy static content of this web application -->
     <copy todir="${build.home}">
@@ -271,14 +272,32 @@
 		<exec dir="." executable="scripts/boot.pl"/>
 	</target>
 
-	<target name="test" depends="compile" description="Runs JUnit Test Suite.">
-		<junit printsummary="yes" fork="yes" haltonfailure="no">
+	<target name="test" depends="compile, boot" description="Runs all JUnit Tests">
+        <delete dir="${junit.dir}"/>
+        <mkdir  dir="${junit.dir}"/>
+        <mkdir  dir="${junit.dir}/reports"/>
+		<junit printsummary="yes" fork="no" haltonfailure="no">
 			<formatter type="xml"/>
-			<test name="org.mskcc.pathdb.test.AllTest"
-				todir="${junit.dir}"/>
+            <sysproperty key="CPATH_HOME" value="/Users/cerami/dev/sander/cpath"/>
+            <test name="org.mskcc.pathdb.test.AllTest"
+                haltonfailure="no" todir="${junit.dir}">
+                <formatter type="xml"/>
+            </test>
 			<classpath refid="compile.classpath"/>
 		</junit>
 	 </target>
+
+    <target name="test_report"
+        description="Generates HTML Reports for All Unit Tests">
+        <junitreport todir="${junit.dir}/reports">
+            <fileset dir="${junit.dir}">
+                <include name="*.xml"/>
+            </fileset>
+            <report format="noframes" todir="${junit.dir}/reports"
+                styledir="${config.dir}"/>
+        </junitreport>
+        <echo>JUnit Reports written to:  ${junit.dir}/reports</echo>
+    </target>
 
 	<target name="prepare_dev_site" depends="prepare"
 		description="Prepares Dev Site">
