@@ -306,7 +306,7 @@ of cancer specific pathways.
     <UL>
     <LI><%= PsiInteractionToIndex.FIELD_INTERACTOR %>:
     interactor name or external reference.
-    <LI><%= PsiInteractionToIndex.FIELD_ORGANISM %>:
+    <LI><%= LuceneConfig.FIELD_ORGANISM %>:
     organism name or NCBI taxonomy identifier.
     <LI><%= PsiInteractionToIndex.FIELD_PMID %>:
     Pub Med Identifier
@@ -314,7 +314,7 @@ of cancer specific pathways.
     Experiment type, e.g. experiment_type:"Two hybrid"
     <LI><%= PsiInteractionToIndex.FIELD_DATABASE %>:  database source
     <LI><%= LuceneConfig.FIELD_INTERACTOR_ID%>:  interactor cPath ID.
-    <LI><%= LuceneConfig.FIELD_INTERACTION_ID%>:  interaction cPath ID.
+    <LI><%= LuceneConfig.FIELD_CPATH_ID%>:  interaction cPath ID.
     </UL>
 
     If no field is specified, the default is to search all information
