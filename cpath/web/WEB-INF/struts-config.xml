@@ -54,7 +54,8 @@
         <!--  Query / Web Service API -->
         <action path="/webservice"
             type="org.mskcc.pathdb.action.QueryAction">
-            <forward name="success" path="/WEB-INF/jsp/pages/Interactions.jsp"/>
+            <forward name="psi_mi_only" path="/WEB-INF/jsp/pages/Interactions.jsp"/>
+            <forward name="mixed" path="/WEB-INF/jsp/pages/HitList.jsp"/>
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
         </action>
 
