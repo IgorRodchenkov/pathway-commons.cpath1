@@ -63,7 +63,7 @@ public class RequestAdapter {
             query = addField(PsiInteractionToIndex.FIELD_INTERACTOR, query);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_ORGANISM)) {
-            query = addField(PsiInteractionToIndex.FIELD_ORGANISM, query);
+            query = addField(LuceneConfig.FIELD_ORGANISM, query);
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_BY_DATABASE)) {
             query = addField(PsiInteractionToIndex.FIELD_DATABASE, query);
@@ -98,7 +98,7 @@ public class RequestAdapter {
                         + query + END_PAREN + SPACE);
             }
             revisedQuery.append(AND_OPERATOR
-                    + PsiInteractionToIndex.FIELD_ORGANISM
+                    + LuceneConfig.FIELD_ORGANISM
                     + COLON + organism);
         } else {
             revisedQuery.append(query);

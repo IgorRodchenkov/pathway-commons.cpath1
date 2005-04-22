@@ -103,7 +103,7 @@ public class OrganismStats {
             organismListSortedByName = dao.getAllOrganisms();
             for (int i = 0; i < organismListSortedByName.size(); i++) {
                 Organism organism = (Organism) organismListSortedByName.get(i);
-                String query = new String(PsiInteractionToIndex.FIELD_ORGANISM
+                String query = new String(LuceneConfig.FIELD_ORGANISM
                         + ":" + organism.getTaxonomyId());
                 Hits hits = indexer.executeQuery(query);
                 organism.setNumInteractions(hits.length());
