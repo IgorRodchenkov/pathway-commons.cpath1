@@ -94,9 +94,24 @@ public abstract class BaseAction extends Action {
     public static final String ATTRIBUTE_PROTOCOL_REQUEST = "protocol_request";
 
     /**
-     * Page Attribute:  INTERACTIONS ArrayList.
+     * Page Attribute:  XML Assembly.
      */
     public static final String ATTRIBUTE_XML_ASSEMBLY = "xml_assembly";
+
+    /**
+     * Page Attribute:  CPath IDs.
+     */
+    public static final String ATTRIBUTE_CPATH_IDS = "cpath_ids";
+
+    /**
+     * Page Attribute:  Total Number of Search Hits.
+     */
+    public static final String ATTRIBUTE_TOTAL_NUM_HITS = "total_num_hits";
+
+    /**
+     * Page Attribute:  Text Fragments.
+     */
+    public static final String ATTRIBUTE_TEXT_FRAGMENTS = "text_fragments";
 
     /**
      * Page Attribute:  INTERACTOR Set.
@@ -117,6 +132,21 @@ public abstract class BaseAction extends Action {
      * Global Property:  Admin Password.
      */
     public static final String PROPERTY_ADMIN_PASSWORD = "admin_password";
+
+    /**
+     * Global Property:  Web Mode.
+     */
+    public static final String PROPERTY_WEB_MODE = "web_mode";
+
+    /**
+     * Web Mode:  cPath contains only PSI_MI data.
+     */
+    public static final String WEB_MODE_PSI_MI_ONLY = "psi_mi_only";
+
+    /**
+     * Web Mode:  cPath contains a mix of BioPAX/PSI-MI Data
+     */
+    public static final String WEB_MODE_MIXED = "mixed";
 
     /**
      * Admin page
