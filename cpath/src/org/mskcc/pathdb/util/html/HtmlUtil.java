@@ -29,6 +29,8 @@
  **/
 package org.mskcc.pathdb.util.html;
 
+import java.util.StringTokenizer;
+
 /**
  * Various HTML Utilities.
  *
@@ -41,12 +43,40 @@ public class HtmlUtil {
      * and preserving contents by inserting BR tags, etc.
      *
      * @param str Regular Text.
-     * @return HTML TExt
+     * @return HTML Text
      */
     public static String convertToHtml(String str) {
         String html = str.replaceAll("[\\n\\r]", "<BR>");
         html = html.replaceAll(" ", "&nbsp;");
         html = html.replaceAll("\\t", "&nbsp;.....");
+        html = html.replaceAll("<", "&lt;");
+        html = html.replaceAll(">", "&gt;");
         return html;
+    }
+
+    /**
+     * Given a string, this method will truncate any very long words to
+     * the maxLength value.  This is useful for truncating long DNA or Protein
+     * sequences, so that the beginning of the sequence can be safely displayed.
+     * <P>
+     * For example, given the string: "here is a sequence: AAAAAAAAAAAAAAAAAA",
+     * and maxLength set to 10, the returned string will look like this:
+     * "here is a sequence:  AAAAAAAAAA [Cont.]"
+     *
+     * @param str           String.
+     * @param maxLength     MaxLength of Each Individual Word
+     * @return              Revised String with truncated words.
+     */
+    public static String truncateLongWords (String str, int maxLength) {
+        StringBuffer revisedStr = new StringBuffer(" ");
+        StringTokenizer tokenizer = new StringTokenizer(str);
+        while (tokenizer.hasMoreElements()) {
+            String token = tokenizer.nextToken();
+            if (token.length() > maxLength) {
+                token = token.substring(0, maxLength) + " [Cont.]";
+            }
+            revisedStr.append(token + " ");
+        }
+        return revisedStr.toString().trim();
     }
 }
