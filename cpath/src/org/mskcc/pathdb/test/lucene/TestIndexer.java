@@ -90,7 +90,7 @@ public class TestIndexer extends TestCase {
             Hits hits = indexReader.executeQuery(terms);
             assertEquals(1, hits.length());
             Document doc = hits.doc(0);
-            Field id = doc.getField(LuceneConfig.FIELD_INTERACTION_ID);
+            Field id = doc.getField(LuceneConfig.FIELD_CPATH_ID);
             assertEquals("4", id.stringValue());
         } finally {
             //  Make sure to always close the IndexReader Object.
