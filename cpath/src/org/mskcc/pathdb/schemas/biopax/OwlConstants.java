@@ -54,4 +54,15 @@ public class OwlConstants {
      */
     public static final Namespace OWL_NAMESPACE = Namespace.getNamespace
             (OWL_NAMESPACE_PREFIX, OWL_NAMESPACE_URI);
+
+    /**
+     * OWL Imports Element Name
+     */
+    public static final String OWL_IMPORTS_ELEMENT = "imports";
+
+    /**
+     * OWL Ontology Element
+     */
+    public static final String OWL_ONTOLOGY_ELEMENT = "Ontology";
+
 }
