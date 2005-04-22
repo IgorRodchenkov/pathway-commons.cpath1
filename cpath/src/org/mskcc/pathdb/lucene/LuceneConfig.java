@@ -53,9 +53,14 @@ public class LuceneConfig {
     public static final String FIELD_INTERACTOR_ID = "interactor_id";
 
     /**
-     * Lucene Field for Storing Interaction CPath ID.
+     * Lucene Field for Storing CPath ID.
      */
-    public static final String FIELD_INTERACTION_ID = "interaction_id";
+    public static final String FIELD_CPATH_ID = "cpath_id";
+
+    /**
+     * Lucene Field for Organism Information.
+     */
+    public static final String FIELD_ORGANISM = "organism";
 
     /**
      * Text Index Directory.
@@ -66,6 +71,11 @@ public class LuceneConfig {
      * Lucene Directory System Property
      */
     public static final String PROPERTY_LUCENE_DIR = "lucene.dir";
+
+    /**
+     * Space Character
+     */
+    public static final String SPACE = " ";
 
     /**
      * Gets Directory for Full Text Indexer.
