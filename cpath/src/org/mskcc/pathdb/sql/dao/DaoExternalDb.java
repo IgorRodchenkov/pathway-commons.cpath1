@@ -337,7 +337,7 @@ public class DaoExternalDb {
         record.setUrl(rs.getString("URL"));
         record.setDescription(rs.getString("DESC"));
         record.setCreateTime(rs.getTimestamp("CREATE_TIME"));
-        record.setUpdateTime(rs.getTime("UPDATE_TIME"));
+        record.setUpdateTime(rs.getTimestamp("UPDATE_TIME"));
         ReferenceType type = ReferenceType.getType
                 (rs.getString("DB_TYPE"));
         record.setDbType(type);
