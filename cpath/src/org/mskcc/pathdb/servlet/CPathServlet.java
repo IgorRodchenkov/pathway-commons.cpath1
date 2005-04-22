@@ -74,6 +74,7 @@ public final class CPathServlet extends ActionServlet {
         String dbPassword = config.getInitParameter("db_password");
         String adminUser = config.getInitParameter("admin_user");
         String adminPassword = config.getInitParameter("admin_password");
+        String webMode = config.getInitParameter(BaseAction.PROPERTY_WEB_MODE);
         String psiSchemaUrl = config.getInitParameter
                 (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
         System.err.println("web.xml param:  db_host --> " + dbHost + " [OK]");
@@ -86,6 +87,9 @@ public final class CPathServlet extends ActionServlet {
                 + adminPassword + " [OK]");
         System.err.println("web.xml param:  psi_schema_location --> "
                 + psiSchemaUrl + " [OK]");
+        System.err.println("web.xml param:  "
+                + BaseAction.PROPERTY_WEB_MODE + "--> "
+                + webMode + " [OK]");
 
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
@@ -94,6 +98,7 @@ public final class CPathServlet extends ActionServlet {
         manager.setProperty(BaseAction.PROPERTY_ADMIN_PASSWORD, adminPassword);
         manager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 psiSchemaUrl);
+        manager.setProperty(BaseAction.PROPERTY_WEB_MODE, webMode);
         verifyDbConnection();
 
         //  Set Location of TextIndexer based on servlet real path.
@@ -116,7 +121,7 @@ public final class CPathServlet extends ActionServlet {
             System.err.println("Attempting to retrieve Log Records...");
             adminLogger.getLogRecords();
             DaoCPath dao = new DaoCPath();
-            System.err.println("Attempting to retrieve Entitiy Records...");
+            System.err.println("Attempting to retrieve Entity Records...");
             int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
             System.err.println("Database Connection -->  [OK]");
         } catch (DaoException e) {
