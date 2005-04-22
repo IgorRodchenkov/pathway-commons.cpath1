@@ -31,6 +31,7 @@ package org.mskcc.pathdb.util.xml;
 
 import org.jdom.Element;
 import org.jdom.Text;
+import org.jdom.Document;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
@@ -65,9 +66,28 @@ public class XmlUtil {
      */
     public static String serializeToXml(Element e) throws IOException {
         StringWriter writer = new StringWriter();
-        XMLOutputter out = new XMLOutputter();
-        out.setFormat(Format.getPrettyFormat());
+        XMLOutputter out = getXmlOutputter();
         out.output(e, writer);
         return writer.toString();
+    }
+
+    /**
+     * Serializes JDOM Document to XML.
+     *
+     * @param doc JDOM Document
+     * @return XML String
+     * @throws IOException Error Serializing XML.
+     */
+    public static String serializeToXml(Document doc) throws IOException {
+        StringWriter writer = new StringWriter();
+        XMLOutputter out = getXmlOutputter();
+        out.output(doc, writer);
+        return writer.toString();
+    }
+
+    private static XMLOutputter getXmlOutputter() {
+        XMLOutputter out = new XMLOutputter();
+        out.setFormat(Format.getPrettyFormat());
+        return out;
     }
 }
