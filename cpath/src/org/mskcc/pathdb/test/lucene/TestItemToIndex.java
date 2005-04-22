@@ -31,10 +31,7 @@ package org.mskcc.pathdb.test.lucene;
 
 import junit.framework.TestCase;
 import org.apache.lucene.document.Field;
-import org.mskcc.pathdb.lucene.IndexFactory;
-import org.mskcc.pathdb.lucene.ItemToIndex;
-import org.mskcc.pathdb.lucene.LuceneConfig;
-import org.mskcc.pathdb.lucene.PsiInteractionToIndex;
+import org.mskcc.pathdb.lucene.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -47,11 +44,11 @@ import org.mskcc.pathdb.xdebug.XDebug;
 public class TestItemToIndex extends TestCase {
 
     /**
-     * Tests the ItemToIndex Factory and an Interactor Item.
+     * Tests the ItemToIndex Factory and a PSI-MI Record.
      *
      * @throws Exception All Exceptions.
      */
-    public void testInteraction() throws Exception {
+    public void testPsiRecord() throws Exception {
         XDebug xdebug = new XDebug();
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
                 (4, 1, xdebug);
@@ -65,12 +62,12 @@ public class TestItemToIndex extends TestCase {
         String fieldNames[] = {
             PsiInteractionToIndex.FIELD_INTERACTOR,
             LuceneConfig.FIELD_INTERACTOR_ID,
-            PsiInteractionToIndex.FIELD_ORGANISM,
+            LuceneConfig.FIELD_ORGANISM,
             PsiInteractionToIndex.FIELD_PMID,
             PsiInteractionToIndex.FIELD_EXPERIMENT_TYPE,
             PsiInteractionToIndex.FIELD_DATABASE,
             LuceneConfig.FIELD_ALL,
-            LuceneConfig.FIELD_INTERACTION_ID,
+            LuceneConfig.FIELD_CPATH_ID,
         };
         String fieldValues[] = {
             "60 kDa chaperonin (Protein Cpn60) (groEL protein) (AMS) DIP "
@@ -109,11 +106,39 @@ public class TestItemToIndex extends TestCase {
             Field field = item.getField(i);
             String name = field.name();
             String value = field.stringValue();
-//          System.out.println("Field:  " + name);
-//          System.out.println("Actual:  " + value);
-//          System.out.println("Expected:  " + fieldValues[i]);
             assertEquals(name, fieldNames[i]);
             assertTrue(value.startsWith(fieldValues[i]));
         }
+    }
+
+    /**
+     * Tests the ItemToIndex Factory and the a BioPAX Record.
+     * @throws Exception All Errors.
+     */
+    public void testBioPaxRecord() throws Exception {
+        XDebug xdebug = new XDebug();
+
+        //  Get the Glycolysis Pathway
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
+                (5, 1, xdebug);
+        ItemToIndex item = IndexFactory.createItemToIndex(5, assembly);
+
+        //  Validate that this is actually a BioPAX Record
+        assertTrue(item instanceof BioPaxToIndex);
+
+        //  Validate Number of Fields
+        int numFields = item.getNumFields();
+        assertEquals (3, numFields);
+
+        Field allField = item.getField(0);
+        Field idField = item.getField(1);
+        Field organismField = item.getField(2);
+
+        //  Validate Individual Fields
+        assertTrue (allField.stringValue().startsWith
+                ("CPATH-5 CPATH-LOCAL-0 #CPATH-9"));
+        assertTrue (idField.stringValue().equals("5"));
+        assertTrue (organismField.stringValue().startsWith(
+                "Escherichia coli 562"));
     }
 }
