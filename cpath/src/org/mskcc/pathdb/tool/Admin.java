@@ -60,6 +60,7 @@ public class Admin {
     private static final String COMMAND_COUNT_AFFYMETRIX = "count_affy";
     private static final String COMMAND_VALIDATE = "validate";
     private static final String COMMAND_EXPORT = "export";
+    private static final String COMMAND_QUERY = "query";
     private static final int NOT_SET = -9999;
 
     //  User Parameters
@@ -68,6 +69,7 @@ public class Admin {
     private static String fileName = null;
     private static boolean validateExternalReferences = true;
     private static int taxonomyId = NOT_SET;
+    private static String ftQuery = null;
     private static boolean xdebugFlag = false;
     private static boolean removeAllInteractionXrefs = false;
     private static String command = null;
@@ -107,6 +109,8 @@ public class Admin {
                 ExportInteractionsToText export =
                         new ExportInteractionsToText(true);
                 export.executeTask();
+            } else if (command.equals(COMMAND_QUERY)) {
+                QueryFullText.queryFullText(ftQuery);
             } else {
                 throw new IllegalArgumentException("Command Not Recognized");
             }
@@ -226,7 +230,7 @@ public class Admin {
         if (argv.length == 0) {
             displayHelp();
         }
-        Getopt g = new Getopt("admin.pl", argv, "o:u:p:f:xdr");
+        Getopt g = new Getopt("admin.pl", argv, "q:o:u:p:f:xdr");
         int c;
         while ((c = g.getopt()) != -1) {
             switch (c) {
@@ -255,6 +259,9 @@ public class Admin {
                     break;
                 case 'r':
                     removeAllInteractionXrefs = true;
+                    break;
+                case 'q':
+                    ftQuery = g.getOptarg();
                     break;
             }
         }
@@ -286,12 +293,14 @@ public class Admin {
         BufferedReader in = new BufferedReader
                 (new InputStreamReader(System.in));
         PropertyManager propertyManager = PropertyManager.getInstance();
-        if (userName == null && !command.equals(COMMAND_VALIDATE)) {
+        if (userName == null && !(command.equals(COMMAND_VALIDATE)
+                || command.equals(COMMAND_QUERY))) {
             System.out.print("Enter Database User Name: ");
             userName = in.readLine();
             propertyManager.setProperty(PropertyManager.DB_USER, userName);
         }
-        if (pwd == null && !command.equals(COMMAND_VALIDATE)) {
+        if (pwd == null && ! (command.equals(COMMAND_VALIDATE)
+                || command.equals(COMMAND_QUERY))) {
             System.out.print("Enter Database Password: ");
             pwd = in.readLine();
             propertyManager.setProperty(PropertyManager.DB_PASSWORD, pwd);
@@ -306,6 +315,10 @@ public class Admin {
         if (command.equals(COMMAND_VALIDATE) && fileName == null) {
             System.out.print("Enter Path to XML File:  ");
             fileName = in.readLine();
+        }
+        if (command.equals(COMMAND_QUERY) && ftQuery == null) {
+            System.out.print("Enter Full Text Query Term:  ");
+            ftQuery = in.readLine();
         }
     }
 
@@ -345,6 +358,7 @@ public class Admin {
         System.out.println("  -x              Skips Validation of External "
                 + "References");
         System.out.println("  -o, -o=id       NCBI TaxonomyID");
+        System.out.println("  -q, -q=term     Full Text Query Term");
         System.out.println("\nWhere command is a one of:  ");
         System.out.println("  import          Imports Specified File.");
         System.out.println("                  Used to Import BioPAX Files, "
@@ -356,6 +370,7 @@ public class Admin {
                 + "identifiers.");
         System.out.println("  validate        Valdates the specified XML "
                 + "file.");
+        System.out.println("  query           Executes Full Text Query");
         System.out.println("\n\nExtra Options (not guaranteed to be available "
                 + "in future versions of cPath)");
         System.out.println("  -r              Removes all Interaction PSI-MI "

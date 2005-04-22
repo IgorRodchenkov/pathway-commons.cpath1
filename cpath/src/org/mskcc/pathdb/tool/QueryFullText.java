@@ -29,82 +29,52 @@
  **/
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.pathdb.protocol.ProtocolConstants;
-import org.mskcc.pathdb.protocol.ProtocolRequest;
-import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.sql.query.Query;
+import org.mskcc.pathdb.lucene.LuceneReader;
+import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.xdebug.XDebugMessage;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.highlight.QueryHighlightExtractor;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
 import java.util.ArrayList;
+import java.io.IOException;
 
 /**
  * Command Line Tool for Querying Full Text Indexer.
- * <p/>
- * This is a legacy tool, which is not used much anymore.
- * I am keeping it here until I decide what to do with it.
  *
  * @author Ethan Cerami
  */
 public class QueryFullText {
 
-    /**
-     * Main Method.
-     *
-     * @param args Command Line Arguments.
-     */
-    public static void main(String[] args) {
-        if (args.length > 0) {
-            XDebug xdebug = new XDebug();
-            xdebug.startTimer();
-            StringBuffer terms = new StringBuffer();
-            for (int i = 0; i < args.length; i++) {
-                terms.append(args[i] + " ");
-            }
-            System.out.println("Using search terms:  " + terms.toString());
-            queryFullText(terms.toString(), xdebug);
-            System.out.println("XDebug Log:");
-            System.out.println("----------------");
-            ArrayList list = xdebug.getDebugMessages();
-            for (int i = 0; i < list.size(); i++) {
-                XDebugMessage msg = (XDebugMessage) list.get(i);
-                System.out.println(msg.getMessage());
-            }
+    public static void queryFullText(String term) throws QueryException,
+            IOException, ParseException {
+        System.out.println("Using search term:  " + term);
+        LuceneReader luceneReader = new LuceneReader();
+        Hits hits = luceneReader.executeQuery(term);
+        int num = Math.min (10, hits.length());
+        System.out.println("Total Number of Hits:  " + hits.length());
+        if (hits.length() > 0) {
 
-            System.out.println("Total Time for Query:  "
-                    + xdebug.getTimeElapsed() + " ms");
-        } else {
-            System.out.println("Command line usage:  admin.pl ft_query"
-                    + " search_terms");
-        }
-    }
+            StandardAnalyzer analyzer = new StandardAnalyzer();
+            Query query = QueryParser.parse(term, LuceneConfig.FIELD_ALL,
+                    analyzer);
+            QueryHighlightExtractor highLighter =
+                    new QueryHighlightExtractor(query, analyzer, "[", "]");
 
-    /**
-     * Perform Query.
-     *
-     * @param terms Search Terms.
-     */
-    private static void queryFullText(String terms, XDebug xdebug) {
-        try {
-            ProtocolRequest request = new ProtocolRequest();
-            request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-            request.setQuery(terms);
-            request.setMaxHits("1");
-            Query query = new Query(xdebug);
-            XmlAssembly xmlAssembly = query.executeQuery(request, true);
-            xdebug.stopTimer();
-            if (xmlAssembly.isEmpty()) {
-                System.out.println("No Macthing Hits");
-            } else {
-                String xmlString = xmlAssembly.getXmlString();
-                System.out.println("Showing Top Hit Only:");
-                System.out.println(xmlString);
+            System.out.println("Showing hits:  0-" + (num-1));
+            for (int i=0; i<num; i++) {
+                Document doc = hits.doc(i);
+                Field field = doc.getField(LuceneConfig.FIELD_ALL);
+                String value = field.stringValue();
+
+                String fragment = highLighter.getBestFragment(value, 70);
+                System.out.println(i + ".  " + fragment.trim());
             }
-        } catch (QueryException e) {
-            System.out.println("\n!!!!  An Error Has Occurred!");
-            System.out.println("-->  " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
