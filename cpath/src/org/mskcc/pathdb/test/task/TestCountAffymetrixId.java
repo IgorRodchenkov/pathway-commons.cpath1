@@ -52,8 +52,8 @@ public class TestCountAffymetrixId extends TestCase {
         int numRecords = task.getTotalNumRecords();
         int withAffyIds = task.getNumRecordsWithAffymetrixIds();
 
-        //  Should be 1 Record, with 0 Affy Ids.
-        assertEquals(1, numRecords);
+        //  Should be 3 Records, with 0 Affy Ids.
+        assertEquals(3, numRecords);
         assertEquals(0, withAffyIds);
 
         //  Now add an Fake AffyId to existing interactor
@@ -65,11 +65,11 @@ public class TestCountAffymetrixId extends TestCase {
                 (existingRef, newRef, false, new ProgressMonitor());
         updater.doUpdate();
 
-        //  Shoulw now be 1 Record, with 1 Affy Id.
+        //  Should now be 3 Records, with 1 Affy Id.
         task = new CountAffymetrixIdsTask(562, false);
         numRecords = task.getTotalNumRecords();
         withAffyIds = task.getNumRecordsWithAffymetrixIds();
-        assertEquals(1, numRecords);
+        assertEquals(3, numRecords);
         assertEquals(1, withAffyIds);
     }
 }
