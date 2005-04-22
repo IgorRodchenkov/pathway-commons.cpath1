@@ -42,6 +42,7 @@ public class XmlCacheRecord {
     private String md5;
     private int numHits;
     private Date lastUsed;
+    private XmlRecordType xmlType;
 
     /**
      * Gets Cache ID.
@@ -131,5 +132,21 @@ public class XmlCacheRecord {
      */
     public void setLastUsed(Date lastUsed) {
         this.lastUsed = lastUsed;
+    }
+
+    /**
+     * Gets XML Record Type.
+     * @return XmlRecordType Object.
+     */
+    public XmlRecordType getXmlType() {
+        return xmlType;
+    }
+
+    /**
+     * Sets XML Record Type.
+     * @param xmlType XmlRecordType Object.
+     */
+    public void setXmlType(XmlRecordType xmlType) {
+        this.xmlType = xmlType;
     }
 }
