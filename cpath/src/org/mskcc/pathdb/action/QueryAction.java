@@ -36,10 +36,12 @@ import org.apache.struts.action.ActionMapping;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.query.GetPathwaysInteractionsViaLucene;
 import org.mskcc.pathdb.sql.query.Query;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.util.security.XssFilter;
@@ -87,27 +89,25 @@ public class QueryAction extends BaseAction {
             HashMap parameterMap = XssFilter.filterAllParameters
                     (request.getParameterMap());
             protocolRequest = new ProtocolRequest(parameterMap);
-            return processGetInteractions(mapping, protocolRequest, request,
+            return processQuery(mapping, protocolRequest, request,
                     response, xdebug);
         } catch (NeedsHelpException e) {
             return mapping.findForward(BaseAction.FORWARD_HELP);
         }
     }
 
-    private ActionForward processGetInteractions
+    private ActionForward processQuery
             (ActionMapping mapping, ProtocolRequest protocolRequest,
             HttpServletRequest request, HttpServletResponse response,
             XDebug xdebug) throws ProtocolException, NeedsHelpException {
-        if (protocolRequest.getFormat() != null
-                && (protocolRequest.getFormat().
-                equals(ProtocolConstants.FORMAT_XML)
-                || (protocolRequest.getFormat().
-                equals(ProtocolConstants.FORMAT_COUNT_ONLY)))) {
-            return processXmlRequest(mapping, protocolRequest,
-                    response, xdebug);
-        } else {
+        if (protocolRequest.getFormat() == null
+                || protocolRequest.getFormat()
+                .equals(ProtocolConstants.FORMAT_HTML)) {
             return processHtmlRequest(mapping, protocolRequest,
                     request, xdebug);
+        } else {
+            return processXmlRequest(mapping, protocolRequest,
+                    response, xdebug);
         }
     }
 
@@ -123,10 +123,13 @@ public class QueryAction extends BaseAction {
             validator.validate();
             xmlAssembly = executeQuery(xdebug, protocolRequest);
             if (xmlAssembly.isEmpty()) {
+                String q = protocolRequest.getQuery();
+                if (q == null && protocolRequest.getOrganism() != null) {
+                    q = protocolRequest.getOrganism();
+                }
                 throw new ProtocolException
                         (ProtocolStatusCode.NO_RESULTS_FOUND,
-                                "No Results Found for:  "
-                        + protocolRequest.getQuery());
+                                "No Results Found for:  " + q);
             }
             xml = xmlAssembly.getXmlStringWithCPathIdPrefix();
 
@@ -155,15 +158,18 @@ public class QueryAction extends BaseAction {
         ProtocolValidator validator =
                 new ProtocolValidator(protocolRequest);
         validator.validate();
-        XmlAssembly xmlAssembly = executeQuery(xdebug, protocolRequest);
-        request.setAttribute(ATTRIBUTE_XML_ASSEMBLY, xmlAssembly);
+
+        PropertyManager pManager = PropertyManager.getInstance();
+        String webMode = pManager.getProperty(BaseAction.PROPERTY_WEB_MODE);
+        xdebug.logMsg(this, "Branching based on web mode:  " + webMode);
+
         try {
-            ArrayList interactorList = extractInteractors(xmlAssembly,
-                    protocolRequest, xdebug);
-            xdebug.logMsg(this, "Total Number of Interactors for "
-                    + "Left Column:  " + interactorList.size());
-            if (interactorList != null) {
-                request.setAttribute(ATTRIBUTE_INTERACTOR_SET, interactorList);
+            if (webMode.equals(BaseAction.WEB_MODE_PSI_MI_ONLY)) {
+                return processHtmlRequestPsiMode(xdebug, protocolRequest,
+                        request, mapping);
+            } else {
+                return processHtmlRequestMixedMode(xdebug, protocolRequest,
+                        request, mapping);
             }
         } catch (MarshalException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
@@ -173,8 +179,48 @@ public class QueryAction extends BaseAction {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (ParseException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (QueryException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (AssemblyException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
-        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+    }
+
+    private ActionForward processHtmlRequestMixedMode
+            (XDebug xdebug, ProtocolRequest protocolRequest,
+            HttpServletRequest request, ActionMapping mapping)
+            throws QueryException, IOException,
+            AssemblyException, ParseException {
+        GetPathwaysInteractionsViaLucene search =
+                new GetPathwaysInteractionsViaLucene(protocolRequest,
+                        xdebug);
+        long cpathIds[] = search.executeSearch();
+        request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
+        request.setAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS,
+                new Integer(search.getTotalNumHits()));
+        request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
+                search.getTextFragments());
+        return mapping.findForward(BaseAction.WEB_MODE_MIXED);
+    }
+
+    /**
+     * If cPath contains only PSI-MI data and the web_mode is set to:
+     * psi_mi_only, proceed as follows.
+     */
+    private ActionForward processHtmlRequestPsiMode(XDebug xdebug,
+            ProtocolRequest protocolRequest, HttpServletRequest request,
+            ActionMapping mapping) throws ProtocolException,
+            ValidationException, MarshalException, IOException, ParseException {
+        XmlAssembly xmlAssembly = executeQuery(xdebug, protocolRequest);
+        request.setAttribute(ATTRIBUTE_XML_ASSEMBLY, xmlAssembly);
+        ArrayList interactorList = extractInteractors(xmlAssembly,
+                protocolRequest, xdebug);
+        xdebug.logMsg(this, "Total Number of Interactors for "
+                + "Left Column:  " + interactorList.size());
+        if (interactorList != null) {
+            request.setAttribute(ATTRIBUTE_INTERACTOR_SET, interactorList);
+        }
+        return mapping.findForward(BaseAction.WEB_MODE_PSI_MI_ONLY);
     }
 
     private ArrayList extractInteractors(XmlAssembly xmlAssembly,
