@@ -34,7 +34,16 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.schemas.biopax.OwlConstants;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.Attribute;
+
+import java.util.List;
+import java.io.StringReader;
 
 /**
  * Tests the XML Assembly Functionality.
@@ -48,11 +57,11 @@ import org.mskcc.pathdb.xdebug.XDebug;
 public class TestAssembly extends TestCase {
 
     /**
-     * Tests the XML Assembly Functionality.
+     * Tests the PSI-MI Assembly Functionality.
      *
      * @throws Exception All Exceptions
      */
-    public void testAssembly() throws Exception {
+    public void testPsiAssembly() throws Exception {
         PropertyManager pManager = PropertyManager.getInstance();
         pManager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 "http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
@@ -76,7 +85,7 @@ public class TestAssembly extends TestCase {
         assertTrue(interactorRef1 >= 1);
         assertTrue(interactorRef2 >= 1);
 
-        //  Verify Schema Location.
+        //  Verify Schema Location
         int index = xmlAssembly.indexOf
                 ("http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
         assertTrue(index > 0);
@@ -91,5 +100,47 @@ public class TestAssembly extends TestCase {
         assertTrue(interactor1 >= 1);
         assertTrue(interactorRef1 >= 1);
         assertTrue(interactorRef2 >= 1);
+    }
+
+    /**
+     * Test BioPAX Assembly.
+     * @throws Exception All Errors.
+     */
+    public void testBioPaxAssembly () throws Exception {
+        //  Assemble Interaction with specified cPath ID (hard-coded value)
+        XDebug xdebug = new XDebug();
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
+                (7, 1, xdebug);
+        String xmlAssembly = assembly.getXmlString();
+        Element rootElement = (Element) assembly.getXmlObject();
+        List children = rootElement.getChildren();
+
+        //  We should have one Catalsis element, one Protein element,
+        //  and four Small Molecule elements.
+        Element child = (Element) children.get(0);
+        assertEquals (OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
+        child = (Element) children.get(1);
+        assertEquals (BioPaxConstants.CATAYLSIS, child.getName());
+        child = (Element) children.get(2);
+        assertEquals (BioPaxConstants.PROTEIN, child.getName());
+        child = (Element) children.get(3);
+        assertEquals (BioPaxConstants.SMALL_MOLECULE, child.getName());
+        child = (Element) children.get(4);
+        assertEquals (BioPaxConstants.SMALL_MOLECULE, child.getName());
+        child = (Element) children.get(5);
+        assertEquals (BioPaxConstants.SMALL_MOLECULE, child.getName());
+        child = (Element) children.get(6);
+        assertEquals (BioPaxConstants.SMALL_MOLECULE, child.getName());
+
+        //  Check that this is valid RDF
+        StringReader reader = new StringReader (xmlAssembly);
+        RdfValidator rdfValidator = new RdfValidator(reader);
+        assertTrue (!rdfValidator.hasErrorsOrWarnings());
+
+        //  Validate that Root RDF Element has an xml:base attribute
+        Attribute baseAttribute =
+                rootElement.getAttribute("base", Namespace.XML_NAMESPACE);
+        assertEquals (CPathConstants.CPATH_HOME_URI, baseAttribute.getValue());
+        //        System.out.print(xmlAssembly);
     }
 }
