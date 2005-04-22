@@ -34,6 +34,9 @@ import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.sql.dao.DaoOrganism;
+
+import java.util.ArrayList;
 
 /**
  * Tests the ImportBioPaxToCPath Class.
@@ -48,6 +51,12 @@ public class TestImportBioPaxToCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testImport() throws Exception {
+        DaoOrganism daoOrganism = new DaoOrganism();
+        ArrayList organismList = daoOrganism.getAllOrganisms();
+
+        //  Before import, we have 0 organisms
+        int numOrganisms = organismList.size();
+
         ContentReader reader = new ContentReader();
         String xml = reader.retrieveContent
                 ("testData/biopax/biopax1_sample1.owl");
@@ -57,5 +66,9 @@ public class TestImportBioPaxToCPath extends TestCase {
         assertEquals(1, summary.getNumPathwaysSaved());
         assertEquals(4, summary.getNumInteractionsSaved());
         assertEquals(7, summary.getNumPhysicalEntitiesSaved());
+
+        //  After import, we have 1 organism
+        organismList = daoOrganism.getAllOrganisms();
+        assertEquals (numOrganisms+1, organismList.size());
     }
 }
