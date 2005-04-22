@@ -41,16 +41,51 @@ import java.util.ArrayList;
 /**
  * Encapsulates a PSI-MI Interaction Record scheduled for indexing in Lucene.
  * <P>
- * Indexes the following fields:
- * <UL>
- * <LI>All terms in the defaul All Field.
- * <LI>All interactor information, including name(s), organism, and external
- * references.
- * <LI>All interactor cPath IDs.
- * <LI>All interaction information, including pmids, database source,
- * and interaction type.
- * <LI>Interaction cPath ID.
- * </UL>
+ * Currently indexes the following content:
+ * <TABLE WIDTH=100%>
+ * <TR>
+ *  <TH ALIGN=LEFT><B>Content</B></TH>
+ *  <TH ALIGN=LEFT><B>Field</B></TH>
+ *  <TH ALIGN=LEFT><B>Notes</B></TH>
+ * </TR>
+ * <TR>
+ *  <TD>All terms after XML Stripping</TD>
+ *  <TD>FIELD_ALL</TD>
+ * </TR>
+ * <TR>
+ *  <TD>All interactor information, including name(s), organism, and external
+ * references
+ *  </TD>
+ *  <TD>FIELD_INTERACTOR</TD>
+ * </TR>
+ * <TR>
+ *  <TD>All interactor cPath IDs</TD>
+ *  <TD>FIELD_INTERACTOR_ID</TD>
+ * </TR>
+ * <TR>
+ *  <TD>Interaction cPath ID</TD>
+ *  <TD>FIELD_CPATH_ID</TD>
+ * </TR>
+ * <TR>
+ *  <TD>Interaction:  Experiment Type</TD>
+ *  <TD>FIELD_EXPERIMENT_TYPE</TD>
+ * </TR>
+ * <TR>
+ *  <TD>Interaction: Pub Med IDs</TD>
+ *  <TD>FIELD_PMID</TD>
+ * </TR>
+ * <TR>
+ *  <TD>Interaction: Database Source</TD>
+ *  <TD>FIELD_DATABASE</TD>
+ * </TR>
+ * <TR>
+ *  <TD VALIGN=TOP>Organism Data</TD>
+ *  <TD VALIGN=TOP>FIELD_ORGANISM</TD>
+ *  <TD VALIGN=TOP>The "Browse by Organism" web page and the "Quick Browse"
+ *  web component work by automatically running queries on the FIELD_ORGANISM.
+ *  </TD>
+ * </TR>
+ * </TABLE>
  *
  * @author Ethan Cerami
  */
@@ -60,11 +95,6 @@ public class PsiInteractionToIndex implements ItemToIndex {
      * Lucene Field for Interactor Information.
      */
     public static final String FIELD_INTERACTOR = "interactor";
-
-    /**
-     * Lucene Field for Organism Information.
-     */
-    public static final String FIELD_ORGANISM = "organism";
 
     /**
      * Lucene Field for Storing Pub Med ID.
@@ -114,7 +144,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
         fields.add(Field.Text(LuceneConfig.FIELD_ALL, terms));
 
         //  Index cPath ID
-        fields.add(Field.Text(LuceneConfig.FIELD_INTERACTION_ID,
+        fields.add(Field.Text(LuceneConfig.FIELD_CPATH_ID,
                 Long.toString(cpathId)));
     }
 
@@ -159,7 +189,8 @@ public class PsiInteractionToIndex implements ItemToIndex {
         fields.add(Field.Text(FIELD_INTERACTOR, interactorTokens.toString()));
         fields.add(Field.Text(LuceneConfig.FIELD_INTERACTOR_ID,
                 interactorIdTokens.toString()));
-        fields.add(Field.Text(FIELD_ORGANISM, organismTokens.toString()));
+        fields.add(Field.Text(LuceneConfig.FIELD_ORGANISM,
+                organismTokens.toString()));
     }
 
     /**
