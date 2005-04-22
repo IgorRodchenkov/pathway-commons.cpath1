@@ -2,19 +2,16 @@
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  org.mskcc.pathdb.action.HomeAction,
                  org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.model.CPathRecord,
                  org.mskcc.pathdb.sql.dao.DaoInternalLink,
                  java.util.ArrayList,
                  org.mskcc.pathdb.sql.dao.DaoExternalLink,
-                 org.mskcc.pathdb.model.ExternalLinkRecord,
-                 org.mskcc.pathdb.model.ExternalDatabaseRecord,
-                 org.mskcc.pathdb.model.XmlRecordType,
                  org.jdom.input.SAXBuilder,
                  org.jdom.Element,
                  org.jdom.Document,
                  java.io.StringReader,
                  org.jdom.xpath.XPath,
-                 java.util.List"%>
+                 java.util.List,
+                 org.mskcc.pathdb.model.*"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -27,8 +24,8 @@
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
-<div id="apphead">
-    <h2>cPath:  Bare Bones Web Site</h2>
+<div id='axial' class='h3'>
+<h3>cPath Record Details</h3>
 </div>
 
 <TABLE WIDTH=100%>
