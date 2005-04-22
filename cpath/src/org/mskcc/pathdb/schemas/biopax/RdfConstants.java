@@ -39,6 +39,11 @@ import org.jdom.Namespace;
 public class RdfConstants {
 
     /**
+     * RDF Root Name.
+     */
+    public static final String RDF_ROOT_NAME = "RDF";
+
+    /**
      * RDF ID Attribute
      */
     public static final String ID_ATTRIBUTE = "ID";
@@ -47,6 +52,16 @@ public class RdfConstants {
      * RDF Resource Attribute
      */
     public static final String RESOURCE_ATTRIBUTE = "resource";
+
+    /**
+     * RDF About Attribute
+     */
+    public static final String ABOUT_ATTRIBUTE = "about";
+
+    /**
+     * RDF Datatype Attribute
+     */
+    public static final String DATATYPE_ATTRIBUTE = "datatype";
 
     /**
      * RDF Namespace URI
