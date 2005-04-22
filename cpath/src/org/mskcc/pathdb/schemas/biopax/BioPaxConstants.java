@@ -29,6 +29,8 @@
  **/
 package org.mskcc.pathdb.schemas.biopax;
 
+import org.jdom.Namespace;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -126,6 +128,37 @@ public class BioPaxConstants {
      * BioPAX Class:  pathway
      */
     public static final String PATHWAY = "pathway";
+    
+    /**
+     * BioPAX Namespace Prefix.
+     */ 
+    public static final String BIOPAX_NAMESPACE_PREFIX = "bp";
+
+    /**
+     * BioPAX Level 1 Namespace URI.
+     */
+    public static final String BIOPAX_LEVEL_1_NAMESPACE_URI =
+            "http://www.biopax.org/release/biopax-level1.owl#";
+
+    /**
+     * BioPAX Level 2 Namespace URI.
+     */
+    public static final String BIOPAX_LEVEL_2_NAMESPACE_URI =
+            "http://www.biopax.org/release/biopax-level2.owl#";
+
+    /**
+     * BioPAX Level 1 Namespace.
+     */ 
+    public static final Namespace BIOPAX_LEVEL_1_NAMESPACE = 
+            Namespace.getNamespace(BIOPAX_NAMESPACE_PREFIX, 
+                    BIOPAX_LEVEL_1_NAMESPACE_URI);
+
+    /**
+     * BioPAX Level 2 Namespace.
+     */
+    public static final Namespace BIOPAX_LEVEL_2_NAMESPACE =
+            Namespace.getNamespace(BIOPAX_NAMESPACE_PREFIX,
+                    BIOPAX_LEVEL_2_NAMESPACE_URI);
 
     /**
      * Set of All Physical Entity Types.
