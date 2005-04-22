@@ -32,12 +32,15 @@ URL parameters.  Parameters are as follows:
  		    <LI><B><%= ProtocolRequest.ARG_FORMAT %></B>:  Indicates the format of returned results.
             Current valid formats are as follows:
                 <UL>
-                <LI><%= ProtocolConstants.FORMAT_XML %>:  Interactions will be
+                <LI><%= ProtocolConstants.FORMAT_PSI_MI %>:  Data will be
                 formatted in the
                 <A HREF="http://psidev.sourceforge.net/">Proteomics
                 Standards Intitiative Molecular Interaction (PSI-MI)</A>
                 XML format.
-                <LI><%= ProtocolConstants.FORMAT_HTML %>:  Interactions will be
+                <LI><%= ProtocolConstants.FORMAT_BIO_PAX %>:  Data will be
+                formatted in the <A HREF="http://www.biopax.org">BioPAX</A>
+                XML format.
+                <LI><%= ProtocolConstants.FORMAT_HTML %>:  Data will be
                 formatted in HTML, using the regular cPath Look and Feel.
                 This is useful for creating link outs to cPath data.
                 <LI><%= ProtocolConstants.FORMAT_COUNT_ONLY %>:  Returns a
@@ -78,6 +81,7 @@ URL parameters.  Parameters are as follows:
             <tr>
                 <th>Command</font></th>
                 <th>Description</font></th>
+                <th>XML Formats Supported</th>
             </tr>
             <tr>
                 <td><%= ProtocolConstants.COMMAND_HELP %></td>
@@ -85,13 +89,16 @@ URL parameters.  Parameters are as follows:
             </tr>
             <tr>
                 <td><%= ProtocolConstants.COMMAND_GET_BY_KEYWORD  %></td>
-                <td>Finds all interactions in cPath that contain the specified
-                keyword(s) and / or boolean search phrases.  This is the most
-                powerful search command, and can be used to perform advanced
-                queries across multiple fields in cPath.  For full details
-                regarding keyword searches, refer to the
+                <td>Finds all pathways and interactions in cPath that contain
+                the specified keyword(s) and / or boolean search phrases.
+                This is the most powerful search command, and can be used to
+                perform advanced queries across multiple fields in cPath.
+                For full details regarding keyword searches, refer to the
                 <A HREF="faq.do#construct">advanced search section of the
                 cPath FAQ</A>.</td>
+                <td><%= ProtocolConstants.FORMAT_BIO_PAX %>,
+                    <%= ProtocolConstants.FORMAT_PSI_MI %>
+                </td>
             </tr>
             <tr>
                 <td><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF %></td>
@@ -100,6 +107,9 @@ URL parameters.  Parameters are as follows:
                 or external database reference.  For example, if you want to
                 narrow your search to all intereractions associated with a
                 specific SWISS-PROT ID, use this command.
+                </td>
+                <td>
+                    <%= ProtocolConstants.FORMAT_PSI_MI %> only.
                 </td>
             </tr>
             <tr>
@@ -111,6 +121,9 @@ URL parameters.  Parameters are as follows:
                 an organism filter to any search command by using the
                 optional organism parameter (see URL parameters above).
                 </td>
+                <td>
+                    <%= ProtocolConstants.FORMAT_PSI_MI %> only.
+                </td>
             </tr>
             <tr>
                 <td><%= ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE %></td>
@@ -120,23 +133,35 @@ URL parameters.  Parameters are as follows:
                 narrow your search to all interactions discovered via
                 "Classical Two Hybrid", use this command.
                 </td>
+                <td>
+                    <%= ProtocolConstants.FORMAT_PSI_MI %> only.
+                </td>
             </tr>
             <tr>
                 <td><%= ProtocolConstants.COMMAND_GET_BY_PMID %></td>
                 <td>Finds all interactions in cPath that are associated with
                 the specified PubMed ID.</td>
+                <td>
+                    <%= ProtocolConstants.FORMAT_PSI_MI %> only.
+                </td>
             </tr>
             <tr>
                 <td><%= ProtocolConstants.COMMAND_GET_BY_DATABASE %></td>
                 <td>Finds all interactions in cPath that come from the specified
                 database.  For example, to find all interactions from "DIP"
                 (Database of Interacting Proteins), use this command.</td>
+                <td>
+                    <%= ProtocolConstants.FORMAT_PSI_MI %> only.
+                </td>
             </tr>
             <tr>
                 <td><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID %></td>
                 <td>Finds all interactions in cPath that are associated with
                 the specified interactor.  To use this option, you must know the
                 internal cPath ID for the interactor.</td>
+                <td>
+                    <%= ProtocolConstants.FORMAT_PSI_MI %> only.
+                </td>
             </tr>
             </TABLE>
 
@@ -183,21 +208,21 @@ the error.  Error documents have the following format:
 
 <%
     ProtocolRequest pRequest = new ProtocolRequest();
-    pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF);
-    pRequest.setQuery("P04273");
-    pRequest.setFormat(ProtocolConstants.FORMAT_XML);
+    pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+    pRequest.setQuery("DNA");
+    pRequest.setFormat(ProtocolConstants.FORMAT_PSI_MI);
 %>
 <div class="h3">
     <h3>Examples of Usage</h3>
 </div>
-		The following query requests all cPath interactions for protein "P04273".
-        Data will be formatted in the PSI XML format.
+		The following query searches cPath for the keyword "DNA".
+        Data will be formatted in the PSI-MI XML format.
         <UL>
             <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
             </SMALL>
         </UL>
 
-		The following query requests all cPath interactions for protein "P04273".
+		The following query searches cPath for the keyword "DNA".
         Data will be formatted in HTML.
         <% pRequest.setFormat(ProtocolConstants.FORMAT_HTML); %>
         <UL>
@@ -207,7 +232,7 @@ the error.  Error documents have the following format:
 
         <%
             pRequest.setVersion("0.9");
-            pRequest.setFormat(ProtocolConstants.FORMAT_XML);
+            pRequest.setFormat(ProtocolConstants.FORMAT_PSI_MI);
         %>
         The following query is invalid.
         The web service will return an XML document with a specific error code
