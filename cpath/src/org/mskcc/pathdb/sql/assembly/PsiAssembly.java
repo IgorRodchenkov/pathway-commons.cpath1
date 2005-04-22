@@ -38,6 +38,7 @@ import org.mskcc.dataservices.schemas.psi.InteractionList;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
@@ -79,8 +80,12 @@ public class PsiAssembly implements XmlAssembly {
         this.interactions = interactions;
         this.xdebug = xdebug;
         try {
-            HashMap interactors = extractInteractors(interactions);
-            buildPsi(interactors.values(), interactions);
+            if (interactions == null || interactions.size() ==0) {
+                entrySet = null;
+            } else {
+                HashMap interactors = extractInteractors(interactions);
+                buildPsi(interactors.values(), interactions);
+            }
         } catch (IOException e) {
             throw new AssemblyException(e);
         } catch (DaoException e) {
@@ -103,6 +108,7 @@ public class PsiAssembly implements XmlAssembly {
     PsiAssembly(String xmlDocumentComplete, XDebug xdebug)
             throws AssemblyException {
         this.xml = xmlDocumentComplete;
+        this.xdebug = xdebug;
         if (xml != null) {
             StringReader xmlReader = new StringReader(xml);
             try {
@@ -120,9 +126,8 @@ public class PsiAssembly implements XmlAssembly {
      * XmlAssembly Factory.
      *
      * @param xdebug XDebug Object.
-     * @throws AssemblyException Error In Assembly.
      */
-    PsiAssembly(XDebug xdebug) throws AssemblyException {
+    PsiAssembly(XDebug xdebug) {
         this.xdebug = xdebug;
         this.xml = null;
         this.entrySet = null;
@@ -135,6 +140,14 @@ public class PsiAssembly implements XmlAssembly {
      */
     public String getXmlString() {
         return xml;
+    }
+
+    /**
+     * Gets XML Record Type.
+     * @return XmlRecordType.PSI_MI
+     */
+    public XmlRecordType getXmlType() {
+        return XmlRecordType.PSI_MI;
     }
 
     /**
@@ -176,7 +189,7 @@ public class PsiAssembly implements XmlAssembly {
     }
 
     /**
-     * Indicates is Assembly is Empty (contains no data).
+     * Indicates if Assembly is Empty (contains no data).
      *
      * @return true or false.
      */
