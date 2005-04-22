@@ -50,6 +50,10 @@
             <param-value>http://psidev.sourceforge.net/mi/xml/src/MIF.xsd
             </param-value>
         </init-param>
+        <init-param>
+            <param-name>web_mode</param-name>
+            <param-value>mixed</param-value>
+        </init-param>
         <load-on-startup/>
     </servlet>
     
