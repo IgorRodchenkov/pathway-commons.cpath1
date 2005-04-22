@@ -49,8 +49,6 @@ public class HtmlUtil {
         String html = str.replaceAll("[\\n\\r]", "<BR>");
         html = html.replaceAll(" ", "&nbsp;");
         html = html.replaceAll("\\t", "&nbsp;.....");
-        html = html.replaceAll("<", "&lt;");
-        html = html.replaceAll(">", "&gt;");
         return html;
     }
 
