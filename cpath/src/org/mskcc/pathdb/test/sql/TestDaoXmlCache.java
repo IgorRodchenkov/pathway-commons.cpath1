@@ -31,6 +31,7 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.XmlCacheRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
@@ -73,6 +74,7 @@ public class TestDaoXmlCache extends TestCase {
         assertTrue(assembly.getXmlString().length() > 50);
         assertEquals(originalXml, assembly.getXmlString());
         assertEquals(100, assembly.getNumHits());
+        assertEquals(XmlRecordType.PSI_MI, assembly.getXmlType());
 
         //  Update the record, and verify success.
         assembly = XmlAssemblyFactory.createXmlAssembly(4, 1, xdebug);
