@@ -31,6 +31,7 @@ package org.mskcc.pathdb.sql.assembly;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -38,13 +39,33 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import java.util.ArrayList;
 
 /**
- * Factory for instantiaing XmlAssembly objects.
- * This class always returns PsiAssembly objects.  However, in the future,
- * it may support other types of assemblies, such as a BioPax Assembly.
+ * Factory for instantiating XmlAssembly objects.
  *
  * @author Ethan Cerami.
  */
 public class XmlAssemblyFactory {
+
+    /**
+     * Creates an XmlAssembly based on specified cPathId.
+     *
+     * @param cpathId cPathID must refer to an Interaction record.
+     * @param xmlType XmlRecordType Object.
+     * @param numHits Total Number of Hits.
+     * @param xdebug  XDebug Object
+     * @return XmlAssembly object.
+     * @throws AssemblyException Error in Assembly.
+     */
+    public static XmlAssembly createXmlAssembly(long cpathId, XmlRecordType
+            xmlType, int numHits,
+            XDebug xdebug) throws AssemblyException {
+        try {
+            DaoCPath dao = new DaoCPath();
+            CPathRecord record = dao.getRecordById(cpathId);
+            return createAssemblyInstance(record, xmlType, numHits, xdebug);
+        } catch (DaoException e) {
+            throw new AssemblyException(e);
+        }
+    }
 
     /**
      * Creates an XmlAssembly based on specified cPathId.
@@ -60,8 +81,8 @@ public class XmlAssemblyFactory {
         try {
             DaoCPath dao = new DaoCPath();
             CPathRecord record = dao.getRecordById(cpathId);
-            checkRecordType(record);
-            return createAssemblyInstance(record, numHits, xdebug);
+            return createAssemblyInstance(record, record.getXmlType(), 
+                    numHits, xdebug);
         } catch (DaoException e) {
             throw new AssemblyException(e);
         }
@@ -71,22 +92,22 @@ public class XmlAssemblyFactory {
      * Creates an XmlAssembly based on specified list of cPathIds.
      *
      * @param cpathIds Each cPathID must refer to an Interaction record.
+     * @param xmlType XmlRecordType Object.
      * @param numHits  Total Number of Hits.
      * @param xdebug   XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
-    public static XmlAssembly createXmlAssembly(long cpathIds[], int numHits,
-            XDebug xdebug) throws AssemblyException {
+    public static XmlAssembly createXmlAssembly(long cpathIds[], XmlRecordType
+            xmlType, int numHits, XDebug xdebug) throws AssemblyException {
         try {
             ArrayList records = new ArrayList();
             DaoCPath dao = new DaoCPath();
             for (int i = 0; i < cpathIds.length; i++) {
                 CPathRecord record = dao.getRecordById(cpathIds[i]);
-                checkRecordType(record);
                 records.add(record);
             }
-            return createAssemblyInstance(records, numHits, xdebug);
+            return createAssemblyInstance(records, xmlType, numHits, xdebug);
         } catch (DaoException e) {
             throw new AssemblyException(e);
         }
@@ -95,56 +116,64 @@ public class XmlAssemblyFactory {
     /**
      * Creates an XmlAssembly based on specified cPathRecord.
      *
-     * @param interaction CPathRecord must contain an Interaction.
+     * @param record      CPathRecord Object.
+     * @param xmlType     XmlRecordType Object.
      * @param numHits     Total Number of Hits.
      * @param xdebug      XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
-    public static XmlAssembly createXmlAssembly(CPathRecord interaction,
-            int numHits, XDebug xdebug) throws AssemblyException {
-        checkRecordType(interaction);
-        return createAssemblyInstance(interaction, numHits, xdebug);
+    public static XmlAssembly createXmlAssembly(CPathRecord record,
+            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            throws AssemblyException {
+        return createAssemblyInstance(record, xmlType, numHits, xdebug);
     }
 
     /**
      * Creates an XmlAssembly based on specified list of cPathRecords.
      *
-     * @param interactions An ArrayList of CPathRecord Objects.
-     *                     Each CPathRecord object must contain an Interaction.
+     * @param recordList   An ArrayList of CPathRecord Objects.
+     * @param xmlType      XmlRecordType Object.
      * @param numHits      Total Number of Hits.
      * @param xdebug       XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
-    public static XmlAssembly createXmlAssembly(ArrayList interactions,
-            int numHits, XDebug xdebug) throws AssemblyException {
-        for (int i = 0; i < interactions.size(); i++) {
-            Object object = interactions.get(i);
+    public static XmlAssembly createXmlAssembly(ArrayList recordList,
+            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            throws AssemblyException {
+        for (int i = 0; i < recordList.size(); i++) {
+            Object object = recordList.get(i);
             if (!(object instanceof CPathRecord)) {
                 throw new IllegalArgumentException("ArrayList must "
                         + "contain objects of type:  "
                         + CPathRecord.class.getName());
             } else {
                 CPathRecord record = (CPathRecord) object;
-                checkRecordType(record);
             }
         }
-        return createAssemblyInstance(interactions, numHits, xdebug);
+        return createAssemblyInstance(recordList, xmlType, numHits, xdebug);
     }
 
     /**
      * Creates an XMLAssembly Object from the specified XML Document.
      *
      * @param xmlDocumentComplete Complete XML Document.
+     * @param xmlType             XML Record Type.
      * @param numHits             Total Number of Hits.
      * @param xdebug              XDebug Object.
      * @return XmlAssemblyObject.
      * @throws AssemblyException Error in Assembly.
      */
     public static XmlAssembly createXmlAssembly(String xmlDocumentComplete,
-            int numHits, XDebug xdebug) throws AssemblyException {
-        XmlAssembly xmlAssembly = new PsiAssembly(xmlDocumentComplete, xdebug);
+            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            throws AssemblyException {
+        XmlAssembly xmlAssembly = null;
+        if (xmlType.equals(XmlRecordType.PSI_MI)) {
+            xmlAssembly = new PsiAssembly(xmlDocumentComplete, xdebug);
+        } else {
+            xmlAssembly = new BioPaxAssembly (xmlDocumentComplete, xdebug);
+        }
         xmlAssembly.setNumHits(numHits);
         return xmlAssembly;
     }
@@ -154,10 +183,8 @@ public class XmlAssemblyFactory {
      *
      * @param xdebug XDebug Object.
      * @return XmlAssemblyObject.
-     * @throws AssemblyException Error in Assembly.
      */
-    public static XmlAssembly createEmptyXmlAssembly(XDebug xdebug)
-            throws AssemblyException {
+    public static XmlAssembly createEmptyXmlAssembly(XDebug xdebug) {
         XmlAssembly xmlAssembly = new PsiAssembly(xdebug);
         return xmlAssembly;
     }
@@ -165,55 +192,61 @@ public class XmlAssemblyFactory {
     /**
      * Creates an Instance of the XmlAssembly interface.
      *
-     * @param interaction CPathRecord Interaction Object.
+     * @param record CPathRecord Object.
+     * @param xmlType XmlRecordType Object.
      * @return XmlAssembly Object.
      * @throws AssemblyException Error in Assembly.
      */
-    private static XmlAssembly createAssemblyInstance(CPathRecord interaction,
-            int numHits, XDebug xdebug) throws AssemblyException {
+    private static XmlAssembly createAssemblyInstance(CPathRecord record,
+            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            throws AssemblyException {
         ArrayList records = new ArrayList();
-        records.add(interaction);
-        return createAssemblyInstance(records, numHits, xdebug);
+        records.add(record);
+        return createAssemblyInstance(records, xmlType, numHits, xdebug);
     }
 
     /**
      * Creates an Instance of the XmlAssembly interface.
      *
-     * @param interactions ArrayList of CPathRecord Objects.
+     * @param recordList ArrayList of CPathRecord Objects.
+     * @param xmlType XmlRecordType Object.
      * @return XmlAssembly Object.
      * @throws AssemblyException Error in Assembly.
      */
-    private static XmlAssembly createAssemblyInstance(ArrayList interactions,
-            int numHits, XDebug xdebug) throws AssemblyException {
-        XmlAssembly xmlAssembly = new PsiAssembly(interactions, xdebug);
+    private static XmlAssembly createAssemblyInstance(ArrayList recordList,
+            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            throws AssemblyException {
+        xdebug.logMsg(XmlAssemblyFactory.class,
+                "Creating XML Assembly of Type:  " + xmlType);
+
+        //  Filter for all records of same type
+        //  Just in case we have a grab-bag of BioPAX and PSI-MI Records.
+        recordList = filterRecords (xmlType, recordList);
+
+        //  Instantiate Correct XML Assembly based on XML Type
+        XmlAssembly xmlAssembly = null;
+        if (xmlType.equals(XmlRecordType.PSI_MI)) {
+            xmlAssembly = new PsiAssembly(recordList, xdebug);
+        } else {
+            xmlAssembly = new BioPaxAssembly (recordList, xdebug);
+        }
         xmlAssembly.setNumHits(numHits);
         return xmlAssembly;
     }
 
     /**
-     * Confirms that this is an Interaction Record.
-     * If this is not an interaction record, an IllegalArgumentException
-     * is thrown.
-     *
-     * @param record CPathRecord.
+     * Iterate through all cPath Records and retain only those that match
+     * the specified XmlRecordType.
      */
-    private static void checkRecordType(CPathRecord record) {
-        if (!record.getType().equals(CPathRecordType.INTERACTION)) {
-            throwIllegalArgument(record);
+    private static ArrayList filterRecords (XmlRecordType type,
+            ArrayList recordList) {
+        ArrayList filteredList = new ArrayList();
+        for (int i = 0; i < recordList.size(); i++) {
+            CPathRecord record =  (CPathRecord) recordList.get(i);
+            if (record.getXmlType().equals(type)) {
+                filteredList.add(record);
+            }
         }
-    }
-
-    /**
-     * Throws an IllegalArgumentException with detailed error message.
-     *
-     * @param record CPathRecord.
-     */
-    private static void throwIllegalArgument(CPathRecord record) {
-        throw new IllegalArgumentException("The specified cpathId:  "
-                + record.getId() + " points to a record of type:  "
-                + record.getType()
-                + ".  It must point to a record of type:  "
-                + CPathRecordType.INTERACTION.toString()
-                + ".");
+        return filteredList;
     }
 }
