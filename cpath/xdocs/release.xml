@@ -7,6 +7,24 @@
 
   <body>
 
+<section name="Release 0.4 Beta">
+<P>
+<UL>
+    <LI>First iteration of support for BioPAX data.
+        <UL>
+            <LI>cPath is now capable of importing BioPAX Level 1,2 data.</LI>
+            <LI>cPath is now capable of indexing BioPAX Level 1, 2 data.</LI>
+            <LI>Web Service API now includes a new "biopax" format.</LI>
+            <LI>Bare Bones web view of BioPAX/PSI-MI data is now available.</LI>
+        </UL>
+    </LI>
+    <LI>cPath now includes a background reference service, providing
+        services for protein unification and protein link outs.
+    </LI>
+</UL>
+</P>
+</section>
+
 <section name="Release 0.3 Beta">
 <P>
 <UL>
