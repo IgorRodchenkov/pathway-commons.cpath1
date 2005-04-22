@@ -29,6 +29,8 @@
  **/
 package org.mskcc.pathdb.sql.assembly;
 
+import org.mskcc.pathdb.model.XmlRecordType;
+
 /**
  * Encapsulates a complete XML Document Assembly.
  * <P>
@@ -64,6 +66,12 @@ public interface XmlAssembly {
      * @return true or false.
      */
     boolean isEmpty();
+
+    /**
+     * Gets the XML Record Type.
+     * @return XmlRecordType Object.
+     */
+    XmlRecordType getXmlType();
 
     /**
      * Gets Comlete Xml Assembly (in String form).
