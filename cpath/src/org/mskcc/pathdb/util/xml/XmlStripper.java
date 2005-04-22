@@ -33,6 +33,10 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.schemas.biopax.OwlConstants;
+import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
+import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -85,8 +89,18 @@ public class XmlStripper {
      */
     private static void processElement(Element element,
             StringBuffer textBuffer) {
+
+        //  Skip Over all OWL Elements
+        if (element.getNamespace().equals(OwlConstants.OWL_NAMESPACE)) {
+            return;
+        }
+
         //  Extract Text
-        String text = element.getTextNormalize();
+        String text = element.getTextNormalize().trim();
+
+        //  Remove markup, in case the element contains markup, e.g. CML.
+        text = text.replaceAll("<", "");
+        text = text.replaceAll(">", "");
         if (text.length() > 0) {
             appendText(textBuffer, text);
         }
@@ -95,8 +109,19 @@ public class XmlStripper {
         List attributes = element.getAttributes();
         for (int i = 0; i < attributes.size(); i++) {
             Attribute attribute = (Attribute) attributes.get(i);
-            String value = attribute.getValue();
-            appendText(textBuffer, value);
+
+            if (attribute.getNamespace().equals(RdfConstants.RDF_NAMESPACE)){
+                //  Skip over RDF Attributes
+            } else if (attribute.getValue().startsWith
+                    (CPathIdFilter.CPATH_PREFIX)){
+                //  Skip over CPATH_PREFIX
+            } else if (attribute.getValue().startsWith
+                    (DaoIdGenerator.CPATH_LOCAL_ID_PREFIX)) {
+                //  Skip over CPATH_LOCAL_PREFIX
+            } else {
+                String value = attribute.getValue().trim();
+                appendText(textBuffer, value);
+            }
         }
 
         //  Recursively process all children.
