@@ -202,6 +202,13 @@ find out if we can access that and display it as we do for imports via the admin
 script.
 	---> current priority:  low.
 
+35.  I think we're going to have to automate testing of external PSI-MI 
+datasets.  Dataset compatibility is a frequently asked question.  If we 
+automate this, we can know immediately when something has gone wrong 
+with external files.  I think we can ask Martine to set this up for us 
+as part of the database mirroring project she is working on.  We just 
+need to provide her with an easy to run validator.
+
 Data Service Specific Items:
 -----------------------------
 1.  Add Gene Name/Synonym Look up to data services (requires a back-end, may
