@@ -51,7 +51,8 @@
             </param-value>
         </init-param>
         <init-param>
-            <param-name>web_mode</param-name>
+            <!-- set to "mixed" or "psi_mi_only" -->
+	    <param-name>web_mode</param-name>
             <param-value>mixed</param-value>
         </init-param>
         <load-on-startup/>
