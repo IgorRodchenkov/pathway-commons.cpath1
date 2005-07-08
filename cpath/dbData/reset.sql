@@ -58,6 +58,7 @@ INSERT INTO `external_db` VALUES (30, 'EcoCyc', '', 'EcoCyc Encyclopedia of Esch
 INSERT INTO `external_db` VALUES (31, 'UM-BBD', '', 'University of Minnesota Biocatalysis/Biodegradation Database', 72, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (32, 'SWISS-MODEL', '', 'SWISS-MODEL Automated Comparative Protein Modelling Server', 73, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (33, 'OTHER PLACEHOLDER', '', 'OTHER PLACEHOLDER', 74, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (34, 'ChEBI', '', 'Chemical Entities of Biological Interest (ChEBI)', 75, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
@@ -126,3 +127,4 @@ INSERT INTO `external_db_cv` VALUES (72, 31, 'UMBBD');
 INSERT INTO `external_db_cv` VALUES (73, 32, 'SWISS-MODEL');
 INSERT INTO `external_db_cv` VALUES (74, 33, 'PSIMI');
 INSERT INTO `external_db_cv` VALUES (75, 33, 'IOB');
+INSERT INTO `external_db_cv` VALUES (76, 34, 'ChEBI');
