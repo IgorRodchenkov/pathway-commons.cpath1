@@ -95,7 +95,8 @@ public class BioPaxUtil {
 
         //  Third Step:  Make Hierarchical
         if (errorList.size() == 0) {
-            pMonitor.setCurrentMessage("Preparing Pathway Elements:  ");
+            pMonitor.setCurrentMessage("Preparing Pathway Elements:  "
+                + "[" + pathwayList.size() + " Pathways]");
             pMonitor.setMaxValue(pathwayList.size());
             for (int i = 0; i < pathwayList.size(); i++) {
                 Element pathway = (Element) pathwayList.get(i);
@@ -103,7 +104,8 @@ public class BioPaxUtil {
                 pMonitor.incrementCurValue();
                 ConsoleUtil.showProgress(pMonitor);
             }
-            pMonitor.setCurrentMessage("Preparing Interaction Elements:  ");
+            pMonitor.setCurrentMessage("Preparing Interaction Elements:  "
+                + "[" + interactionList.size() + " Interactions]");
             pMonitor.setMaxValue(interactionList.size());
             for (int i = 0; i < interactionList.size(); i++) {
                 Element interaction = (Element) interactionList.get(i);
@@ -113,7 +115,9 @@ public class BioPaxUtil {
             }
 
             pMonitor.setCurrentMessage
-                    ("Preparing Physical Entity Elements:  ");
+                    ("Preparing Physical Entity Elements:  "
+                        + " [" + physicalEntityList.size()
+                        + " Physical Entities]");
             pMonitor.setMaxValue(physicalEntityList.size());
             for (int i = 0; i < physicalEntityList.size(); i++) {
                 Element physicalEntity = (Element) physicalEntityList.get(i);
@@ -400,6 +404,8 @@ public class BioPaxUtil {
     private void makeHierachical(Element e, String type,
             boolean isTopLevelResource) throws DaoException {
         boolean keepTraversingTree = true;
+//        System.out.println("Make Hierarchical --> Element: "
+//            + e.getName() + ", type:  " + type);
 
         //  If this is a top-level resource, just keep on walking.
         if (!isTopLevelResource) {
@@ -459,10 +465,12 @@ public class BioPaxUtil {
     private boolean isHinge(String type, Element e) {
         if (type.equals(BioPaxConstants.PATHWAY)
                 && (bioPaxConstants.isInteraction(e.getName())
-                || bioPaxConstants.isPhysicalEntity(e.getName()))) {
+                || bioPaxConstants.isPhysicalEntity(e.getName())
+                || bioPaxConstants.isPathway(e.getName()))) {
             return true;
         } else if (type.equals(BioPaxConstants.INTERACTION)
-                && bioPaxConstants.isPhysicalEntity(e.getName())) {
+                && (bioPaxConstants.isPhysicalEntity(e.getName())
+                || bioPaxConstants.isInteraction(e.getName()))) {
             return true;
         } else {
             return false;
