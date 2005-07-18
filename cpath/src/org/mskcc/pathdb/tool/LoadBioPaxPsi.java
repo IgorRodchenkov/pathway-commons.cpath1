@@ -62,7 +62,6 @@ public class LoadBioPaxPsi {
         String data = contentReader.retrieveContent(file.getAbsolutePath());
         DaoImport dbImport = new DaoImport();
         long importId = dbImport.addRecord(description, xmlType, data);
-        System.out.println("Document Loaded.  Ready for Transfer.");
         return importId;
     }
 }

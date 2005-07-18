@@ -67,7 +67,6 @@ public class ImportRecordTask extends Task {
         this.removeAllInteractionXRefs = removeAllInteractionXRefs;
         pMonitor = this.getProgressMonitor();
         pMonitor.setConsoleMode(consoleMode);
-        pMonitor.setCurrentMessage("Importing PSI-MI/BioPAX Record");
     }
 
     /**
@@ -90,8 +89,6 @@ public class ImportRecordTask extends Task {
     public void transferRecord() throws DaoException, ImportException {
         DaoImport daoImport = new DaoImport();
         ImportRecord record = daoImport.getRecordById(importId);
-        pMonitor.setCurrentMessage("Importing File:  "
-                + record.getDescription());
         String xml = record.getData();
         try {
             if (record.getXmlType().equals(XmlRecordType.PSI_MI)) {

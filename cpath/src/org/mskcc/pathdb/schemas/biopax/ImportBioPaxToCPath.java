@@ -102,7 +102,8 @@ public class ImportBioPaxToCPath {
             ImportException {
         RdfValidator rdfValidator = new RdfValidator(reader);
         boolean hasErrors = rdfValidator.hasErrorsOrWarnings();
-        pMonitor.setCurrentMessage("Validating BioPAX with RDF Validator");
+        pMonitor.setCurrentMessage
+                ("Validating BioPAX File with RDF Validator...");
         if (hasErrors) {
             pMonitor.setCurrentMessage(rdfValidator.getReadableErrorList());
             throw new ImportException("RDF Validation Errors");
