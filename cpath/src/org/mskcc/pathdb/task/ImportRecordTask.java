@@ -133,10 +133,9 @@ public class ImportRecordTask extends Task {
                 + summary.getNumPhysicalEntitiesFound() + "\n");
         buffer.append("# of Physical Entities saved to database:     "
                 + summary.getNumPhysicalEntitiesSaved() + "\n");
-        buffer.append("-----------------------------------------------\n");
-        buffer.append("\n");
+        buffer.append("-----------------------------------------------");
         String msg = buffer.toString();
         pMonitor.setCurrentMessage(msg);
-        pMonitor.setCurrentMessage("Import Complete");
+        pMonitor.setCurrentMessage("File Import Complete\n");
     }
 }
