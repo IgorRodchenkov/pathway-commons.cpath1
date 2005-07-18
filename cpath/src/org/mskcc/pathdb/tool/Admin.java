@@ -153,10 +153,17 @@ public class Admin {
         if (fileName != null) {
             File file = new File(fileName);
             if (file.isDirectory()) {
+                System.out.println("Loading all files in directory:  "
+                        + file.getAbsolutePath());
                 File files[] = file.listFiles();
                 for (int i = 0; i < files.length; i++) {
-                    System.out.println("Loading File:  " + files[i].getName());
-                    importDataFromSingleFile(files[i]);
+                    //  Avoid loading up hidden files, such as .DS_Store
+                    //  files on Mac OS X.
+                    if (!files[i].getName().startsWith(".")) {
+                        System.out.println(">  Loading File:  "
+                                + files[i].getAbsolutePath());
+                        importDataFromSingleFile(files[i]);
+                    }
                 }
             } else {
                 importDataFromSingleFile(file);
@@ -169,14 +176,13 @@ public class Admin {
             ImportException {
         String fileName = file.getName();
         long importId = NOT_SET;
-        System.out.println("Importing File:  " + file.getAbsoluteFile());
         if (fileName.endsWith("xml") || fileName.endsWith("psi")
                 || fileName.endsWith("mif")) {
             importId = importPsiMiFile(file);
         } else if (fileName.endsWith("owl")) {
             importId = LoadBioPaxPsi.importDataFile(file,
                     XmlRecordType.BIO_PAX);
-        } else {
+        } else if (fileName.endsWith("txt")) {
             ParseBackgroundReferencesTask task =
                     new ParseBackgroundReferencesTask(file, true);
             int numRecordsSaved = task.parseAndStoreToDb();
@@ -188,6 +194,8 @@ public class Admin {
             //  ImportReferencesTask task =
             //    new ImportReferencesTask(true, reader);
             //  task.importReferences();
+        } else {
+            System.out.println ("Cannot determine file type.  Skipping...");
         }
         if (importId != NOT_SET) {
             ImportRecordTask importTask = new ImportRecordTask(importId,
