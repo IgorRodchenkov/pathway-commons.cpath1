@@ -36,8 +36,8 @@ CREATE TABLE `cpath` (
   `NCBI_TAX_ID` int(11) NOT NULL default '-9999',
   `XML_TYPE` varchar(50) NOT NULL default '',
   `XML_CONTENT` longtext NOT NULL,
-  `CREATE_TIME` timestamp(14) NOT NULL,
-  `UPDATE_TIME` timestamp(14) NOT NULL,
+  `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
+  `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`CPATH_ID`)
 ) TYPE=MyISAM COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1;
 
@@ -58,8 +58,8 @@ CREATE TABLE `external_db` (
   `DB_TYPE` varchar(25) NOT NULL default '',
   `DBDB_ID` int(11) default NULL,
   `DBDB_URL` varchar(255) default NULL,
-  `CREATE_TIME` timestamp(14) NOT NULL,
-  `UPDATE_TIME` timestamp(14) NOT NULL,
+  `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
+  `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`EXTERNAL_DB_ID`)
 ) TYPE=MyISAM COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
 
