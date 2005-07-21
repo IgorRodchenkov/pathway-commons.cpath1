@@ -34,10 +34,7 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 import org.mskcc.dataservices.util.PropertyManager;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Connection Utility for JDBC.
@@ -56,8 +53,8 @@ public class JdbcUtil {
      *
      * @param flag true or false.
      */
-    public static void isCommandLineApplication(boolean flag) {
-        isCommandLineApplication = true;
+    public static void setCommandLineApplication(boolean flag) {
+        isCommandLineApplication = flag;
     }
 
     /**
@@ -211,7 +208,7 @@ public class JdbcUtil {
         if (pstmt instanceof DelegatingPreparedStatement) {
             DelegatingPreparedStatement dp =
                     (DelegatingPreparedStatement) pstmt;
-            PreparedStatement delegate = dp.getDelegate();
+            Statement delegate = dp.getDelegate();
             return delegate.toString();
         } else {
             return pstmt.toString();
