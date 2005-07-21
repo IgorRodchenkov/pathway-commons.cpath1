@@ -119,7 +119,7 @@
 <dependency><groupId>castor-0.9.4.3</groupId><artifactId>castor-0.9.4.3</artifactId></dependency>
 <dependency><groupId>commons-beanutils</groupId><artifactId>commons-beanutils</artifactId></dependency>
 <dependency><groupId>commons-collections</groupId><artifactId>commons-collections</artifactId></dependency>
-<dependency><groupId>commons-dbcp-1.1</groupId><artifactId>commons-dbcp-1.1</artifactId></dependency>
+<dependency><groupId>commons-dbcp-1.2.1</groupId><artifactId>commons-dbcp-1.2.1</artifactId></dependency>
 <dependency><groupId>commons-digester</groupId><artifactId>commons-digester</artifactId></dependency>
 <dependency><groupId>commons-fileupload</groupId><artifactId>commons-fileupload</artifactId></dependency>
 <dependency><groupId>commons-httpclient</groupId><artifactId>commons-httpclient</artifactId></dependency>
@@ -139,7 +139,7 @@
 <dependency><groupId>jdom_result</groupId><artifactId>jdom_result</artifactId></dependency>
 <dependency><groupId>junit</groupId><artifactId>junit</artifactId></dependency>
 <dependency><groupId>lucene-1.3-final</groupId><artifactId>lucene-1.3-final</artifactId></dependency>
-<dependency><groupId>mysql-connector-java-3.0.8-stable-bin</groupId><artifactId>mysql-connector-java-3.0.8-stable-bin</artifactId></dependency>
+<dependency><groupId>mysql-connector-java-3.1.10-bin</groupId><artifactId>mysql-connector-java-3.1.10-bin</artifactId></dependency>
 <dependency><groupId>natural-order-comparator</groupId><artifactId>natural-order-comparator</artifactId></dependency>
 <dependency><groupId>rdf-api-2001-01-19</groupId><artifactId>rdf-api-2001-01-19</artifactId></dependency>
 <dependency><groupId>saxpath</groupId><artifactId>saxpath</artifactId></dependency>
