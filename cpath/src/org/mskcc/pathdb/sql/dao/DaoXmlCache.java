@@ -117,14 +117,14 @@ public class DaoXmlCache {
 
             byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
-            Timestamp timeStamp = new Timestamp(now.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 
             pstmt.setString(1, url);
             pstmt.setString(2, xmlAssembly.getXmlType().toString());
             pstmt.setString(3, hashKey);
             pstmt.setInt(4, xmlAssembly.getNumHits());
             pstmt.setBytes(5, zippedData);
-            pstmt.setTimestamp(6, timeStamp);
+            pstmt.setDate(6, sqlDate);
             int rows = pstmt.executeUpdate();
             conditionallyDeleteEldest();
             return (rows > 0) ? true : false;
@@ -259,10 +259,10 @@ public class DaoXmlCache {
                     + "`NUM_HITS` = ? WHERE `DOC_MD5` = ?");
             byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
-            Timestamp timeStamp = new Timestamp(now.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 
             pstmt.setBytes(1, zippedData);
-            pstmt.setTimestamp(2, timeStamp);
+            pstmt.setDate(2, sqlDate);
             pstmt.setInt(3, xmlAssembly.getNumHits());
             pstmt.setString(4, hashKey);
             int rows = pstmt.executeUpdate();
@@ -297,9 +297,9 @@ public class DaoXmlCache {
                     ("UPDATE xml_cache SET `LAST_USED` = ? "
                     + "WHERE `DOC_MD5` = ?");
             java.util.Date now = new java.util.Date();
-            Timestamp timeStamp = new Timestamp(now.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 
-            pstmt.setTimestamp(1, timeStamp);
+            pstmt.setDate(1, sqlDate);
             pstmt.setString(2, hashKey);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
@@ -336,7 +336,7 @@ public class DaoXmlCache {
                         (rs.getString("XML_TYPE")));
                 record.setMd5(rs.getString("DOC_MD5"));
                 record.setNumHits(rs.getInt("NUM_HITS"));
-                record.setLastUsed(rs.getTimestamp("LAST_USED"));
+                record.setLastUsed(rs.getDate("LAST_USED"));
                 records.add(record);
             }
             return records;

@@ -98,8 +98,7 @@ public class DaoLog {
                     ("INSERT INTO log (`TIMESTAMP`, `PRIORITY`, `MESSAGE`, "
                     + "`STACK_TRACE`, `WEB_URL`, `REMOTE_HOST`, `REMOTE_IP`)"
                     + " VALUES (?,?,?,?,?,?,?)");
-            Timestamp timeStamp = new Timestamp(logRecord.getDate().getTime());
-            pstmt.setTimestamp(1, timeStamp);
+            pstmt.setDate(1, new java.sql.Date(logRecord.getDate().getTime()));
             pstmt.setString(2, logRecord.getPriority());
             pstmt.setString(3, logRecord.getMessage());
             pstmt.setString(4, logRecord.getStackTrace());
@@ -160,7 +159,7 @@ public class DaoLog {
                     ("SELECT * FROM log order by TIMESTAMP desc");
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                Date date = rs.getTimestamp("TIMESTAMP");
+                Date date = rs.getDate("TIMESTAMP");
                 String priority = rs.getString("PRIORITY");
                 String message = rs.getString("MESSAGE");
                 String stackTrace = rs.getString("STACK_TRACE");

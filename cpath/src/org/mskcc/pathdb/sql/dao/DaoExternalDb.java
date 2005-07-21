@@ -64,8 +64,8 @@ public class DaoExternalDb {
             pstmt.setString(2, db.getUrl());
             pstmt.setString(3, db.getDescription());
             java.util.Date now = new java.util.Date();
-            Timestamp timeStamp = new Timestamp(now.getTime());
-            pstmt.setTimestamp(4, timeStamp);
+            java.sql.Date sqlDate = new java.sql.Date (now.getTime());
+            pstmt.setDate(4, sqlDate);
             pstmt.setString(5, db.getDbType().toString());
             int rows = pstmt.executeUpdate();
 
@@ -289,8 +289,8 @@ public class DaoExternalDb {
             pstmt.setString(2, db.getDescription());
             pstmt.setString(3, db.getUrl());
             java.util.Date now = new java.util.Date();
-            Timestamp timeStamp = new Timestamp(now.getTime());
-            pstmt.setTimestamp(4, timeStamp);
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
+            pstmt.setDate(4, sqlDate);
             pstmt.setInt(5, db.getId());
             int rows = pstmt.executeUpdate();
 
@@ -336,8 +336,8 @@ public class DaoExternalDb {
         record.setName(rs.getString("NAME"));
         record.setUrl(rs.getString("URL"));
         record.setDescription(rs.getString("DESC"));
-        record.setCreateTime(rs.getTimestamp("CREATE_TIME"));
-        record.setUpdateTime(rs.getTimestamp("UPDATE_TIME"));
+        record.setCreateTime(rs.getDate("CREATE_TIME"));
+        record.setUpdateTime(rs.getDate("UPDATE_TIME"));
         ReferenceType type = ReferenceType.getType
                 (rs.getString("DB_TYPE"));
         record.setDbType(type);

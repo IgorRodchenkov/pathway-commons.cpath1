@@ -117,8 +117,8 @@ public class DaoCPath {
             pstmt.setString(6, xmlType.toString());
             pstmt.setString(7, xml);
             java.util.Date now = new java.util.Date();
-            Timestamp timeStamp = new Timestamp(now.getTime());
-            pstmt.setTimestamp(8, timeStamp);
+            java.sql.Date sqlDate = new java.sql.Date (now.getTime());
+            pstmt.setDate (8, sqlDate);
             pstmt.executeUpdate();
 
             //  Get New CPath ID
@@ -418,8 +418,8 @@ public class DaoCPath {
                     + "WHERE `CPATH_ID` = ?");
             pstmt.setString(1, newXml);
             java.util.Date now = new java.util.Date();
-            Timestamp timeStamp = new Timestamp(now.getTime());
-            pstmt.setTimestamp(2, timeStamp);
+            java.sql.Date sqlDate = new java.sql.Date (now.getTime());
+            pstmt.setDate(2, sqlDate);
             pstmt.setLong(3, cpathId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
@@ -449,8 +449,8 @@ public class DaoCPath {
         record.setNcbiTaxonomyId(rs.getInt("NCBI_TAX_ID"));
         record.setXmlType(XmlRecordType.getType(rs.getString("XML_TYPE")));
         record.setXmlContent(rs.getString("XML_CONTENT"));
-        record.setCreateTime(rs.getTimestamp("CREATE_TIME"));
-        record.setUpdateTime(rs.getTimestamp("UPDATE_TIME"));
+        record.setCreateTime(rs.getDate("CREATE_TIME"));
+        record.setUpdateTime(rs.getDate("UPDATE_TIME"));
         return record;
     }
 }
