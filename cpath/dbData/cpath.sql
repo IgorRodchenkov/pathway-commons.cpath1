@@ -114,7 +114,7 @@ CREATE TABLE `import` (
   `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
   `EX_DB_ID` varchar(30) default NULL,
   `LO_ID` int(11) default NULL,
-  PRIMARY KEY  (`IMPORT_ID`,`IMPORT_ID`)
+  PRIMARY KEY  (`IMPORT_ID`)
 ) TYPE=MyISAM COMMENT='Contains import records from external sources.' AUTO_INCREMENT=1 ;
 # --------------------------------------------------------
 
