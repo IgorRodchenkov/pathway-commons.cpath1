@@ -31,8 +31,9 @@ INSERT INTO `external_db` VALUES (3, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entr
 INSERT INTO `external_db` VALUES (4, 'UniGene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene&cmd=search&term=%ID%', 'NCBI UniGene Database', 31, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (5, 'OMIM', 'http://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%ID%', 'Online Mendelian Inheritance in Man (OMIM)', 32, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (6, 'PIR', 'http://pir.georgetown.edu/cgi-bin/nbrfget?uid=%ID%', 'The Protein Information Resource (PIR)', 50, 'PROTEIN_UNIFICATION', NULL, NULL, 20031002103329, 20031002103329);
-INSERT INTO `external_db` VALUES (7, 'InterPro', 'http://www.ebi.ac.uk/interpro/IEntry?ac=%ID%', ' InterPro database of protein families, domains and functional sites.', 52, 'LINK_OUT', NULL, NULL, 20031002162303, 20031002162303);
+INSERT INTO `external_db` VALUES (7, 'InterPro', 'http://www.ebi.ac.uk/interpro/IEntry?ac=%ID%', 'InterPro database of protein families, domains and functional sites.', 52, 'LINK_OUT', NULL, NULL, 20031002162303, 20031002162303);
 INSERT INTO `external_db` VALUES (8, 'PROSITE', 'http://us.expasy.org/cgi-bin/nicedoc.pl?%ID%', 'PROSITE database of protein families and domains.', 52, 'LINK_OUT', NULL, NULL, 20031002162542, 20031002162542);
+
 INSERT INTO `external_db` VALUES (9, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=DIP:%ID%&Search2=Query+DIP&GE=&DS=&PIR=&GB=&TX=&SF=&FN=&LO=&KW=','Database of Interacting Proteins (DIP)', 53, 'INTERACTION_UNIFICATION', NULL, NULL, 20031002162656, 20031002162656);
 INSERT INTO `external_db` VALUES (10, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%', 'Pfam protein families database of alignments and hidden Markov models.', 54, 'LINK_OUT', NULL, NULL, 20031002162804, 20031002162804);
 INSERT INTO `external_db` VALUES (11, 'GO', 'http://www.godatabase.org/cgi-bin/amigo/go.cgi?open_1=%ID%', 'Gene Ontology (GO)', 55, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
@@ -58,7 +59,10 @@ INSERT INTO `external_db` VALUES (30, 'EcoCyc', '', 'EcoCyc Encyclopedia of Esch
 INSERT INTO `external_db` VALUES (31, 'UM-BBD', '', 'University of Minnesota Biocatalysis/Biodegradation Database', 72, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (32, 'SWISS-MODEL', '', 'SWISS-MODEL Automated Comparative Protein Modelling Server', 73, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (33, 'OTHER PLACEHOLDER', '', 'OTHER PLACEHOLDER', 74, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (34, 'ChEBI', '', 'Chemical Entities of Biological Interest (ChEBI)', 75, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (34, 'ChEBI', 'http://www.ebi.ac.uk/chebi/searchId.do?chebiId=%ID%', 'Chemical Entities of Biological Interest (ChEBI)', 76, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (35, 'EMBL', 'http://www.ebi.ac.uk/cgi-bin/emblfetch?style=html&id=%ID%&Submit=Go', 'EMBL Nucleotide Sequence Database', 77, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (36, 'COMPOUND', 'http://www.genome.ad.jp/dbget-bin/www_bget?cpd:%ID', 'KEGG COMPOUND', 78, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (37, 'GLYCAN', 'http://www.genome.ad.jp/dbget-bin/www_bget?cpd:%ID', 'KEGG GLYCAN', 79, 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
@@ -128,3 +132,6 @@ INSERT INTO `external_db_cv` VALUES (73, 32, 'SWISS-MODEL');
 INSERT INTO `external_db_cv` VALUES (74, 33, 'PSIMI');
 INSERT INTO `external_db_cv` VALUES (75, 33, 'IOB');
 INSERT INTO `external_db_cv` VALUES (76, 34, 'ChEBI');
+INSERT INTO `external_db_cv` VALUES (77, 35, 'EMBL');
+INSERT INTO `external_db_cv` VALUES (78, 36, 'COMPOUND');
+INSERT INTO `external_db_cv` VALUES (79, 37, 'GLYCAN');
