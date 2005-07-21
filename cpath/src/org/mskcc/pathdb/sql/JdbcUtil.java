@@ -92,9 +92,30 @@ public class JdbcUtil {
         String host = manager.getProperty(PropertyManager.DB_LOCATION);
         String userName = manager.getProperty(PropertyManager.DB_USER);
         String password = manager.getProperty(PropertyManager.DB_PASSWORD);
+
+        //  Note that the zeroDateTimeBehavor value is set to "convertToNull"
+        //  Here is an excerpted exlanation from the MySQL JDBC driver
+        //  documentation:
+
+        //  Datetimes with all-zero components ('0000-00-00 ...') -
+        //  These values can not be represented reliably in Java.
+        //  Connector/J 3.0.x always converted them to NULL when being read
+        //  from a ResultSet.
+
+        //  Connector/J 3.1 throws an exception by default when these values
+        //  are encountered as this is the most correct behavior according to
+        //  the JDBC and SQL standards. This behavior can be modified using
+        //  the 'zeroDateTimeBehavior' configuration property. The allowable
+        //  values are: 'exception' (the default), which throws a SQLException
+        //  with a SQLState of 'S1009', 'convertToNull', which returns NULL
+        //  instead of the date, and 'round', which rounds the date to the
+        // nearest closest value which is '0001-01-01'.
+
         String url =
                 new String("jdbc:mysql://" + host + "/" + DB_CPATH
-                + "?user=" + userName + "&password=" + password);
+                + "?user=" + userName + "&password=" + password
+                + "&zeroDateTimeBehavior=convertToNull");
+
         Class.forName("com.mysql.jdbc.Driver");
         dataSource = setupDataSource(url);
     }
