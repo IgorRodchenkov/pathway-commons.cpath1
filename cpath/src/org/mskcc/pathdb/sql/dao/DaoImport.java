@@ -166,16 +166,17 @@ public class DaoImport {
             byte zippedData[] = ZipUtil.zip(data);
             pstmt = con.prepareStatement
                     ("INSERT INTO import (`DESC`, `XML_TYPE`, `DOC_BLOB`, "
-                    + "`DOC_MD5`, `STATUS`, `CREATE_TIME`)"
-                    + " VALUES (?,?,?,?,?,?)");
+                    + "`DOC_MD5`, `STATUS`, `CREATE_TIME`, `UPDATE_TIME`)"
+                    + " VALUES (?,?,?,?,?,?,?)");
             pstmt.setString(1, description);
             pstmt.setString(2, xmlType.toString());
             pstmt.setBytes(3, zippedData);
             pstmt.setString(4, hash);
             pstmt.setString(5, ImportRecord.STATUS_NEW);
             java.util.Date date = new java.util.Date();
-            Timestamp timeStamp = new Timestamp(date.getTime());
-            pstmt.setTimestamp(6, timeStamp);
+            java.sql.Date sqlDate = new java.sql.Date (date.getTime());
+            pstmt.setDate(6, sqlDate);
+            pstmt.setDate(7, sqlDate);
             int rows = pstmt.executeUpdate();
 
             //  Get New ID
@@ -303,8 +304,8 @@ public class DaoImport {
         record.setDescription(rs.getString(DESCRIPTION));
         record.setXmlType(XmlRecordType.getType(rs.getString(XML_TYPE)));
         record.setStatus(rs.getString(STATUS));
-        record.setCreateTime(rs.getTimestamp(CREATE_TIME));
-        record.setUpdateTime(rs.getTimestamp(UPDATE_TIME));
+        record.setCreateTime(rs.getDate(CREATE_TIME));
+        record.setUpdateTime(rs.getDate(UPDATE_TIME));
         record.setMd5Hash(rs.getString(DOC_MD5));
 
         //  Unzip Blob
