@@ -453,7 +453,8 @@ public class BioPaxUtil {
 
                     //  Replace with locally generated ID
                     String newId = (String) localIdMap.get(uri);
-                    e.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE, newId);
+                    e.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE, newId,
+                            RdfConstants.RDF_NAMESPACE);
                     keepTraversingTree = false;
                 } else if (isHinge(type, referencedResource)) {
                     //  Case 2A:  We are pointing at a Hinge Element
