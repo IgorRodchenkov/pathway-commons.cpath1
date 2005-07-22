@@ -136,7 +136,6 @@ public class TestItemToIndex extends TestCase {
         Field organismField = item.getField(2);
 
         //  Validate Individual Fields
-        System.out.println(allField.stringValue());
         assertTrue(allField.stringValue().startsWith
                 ("This example is meant to provide an illustration of how"));
         assertTrue(idField.stringValue().equals("5"));
