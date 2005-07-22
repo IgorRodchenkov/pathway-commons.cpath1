@@ -48,6 +48,7 @@ public class RdfUtilSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestRdfValidator.class);
+        suite.addTestSuite(TestRdfExtractor.class);
         suite.setName("RDF Utility Tests");
         return suite;
     }
