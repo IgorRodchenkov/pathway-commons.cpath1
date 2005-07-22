@@ -51,6 +51,7 @@ public class ExternalDatabaseRecord {
     private ArrayList cvTerms;
     private String fixedCvTerm;
     private String url;
+    private String sampleId;
     private ReferenceType dbType;
     private Date createTime;
     private Date updateTime;
@@ -163,6 +164,22 @@ public class ExternalDatabaseRecord {
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * Gets a Sample ID, used to generate sample live links.
+     * @return SampleId String.
+     */
+    public String getSampleId() {
+        return sampleId;
+    }
+
+    /**
+     * Sets a Sample ID, used to generate sample live links.
+     * @param sampleId Sample ID String.
+     */
+    public void setSampleId(String sampleId) {
+        this.sampleId = sampleId;
     }
 
     /**

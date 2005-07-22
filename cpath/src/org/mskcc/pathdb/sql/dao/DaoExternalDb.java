@@ -58,15 +58,16 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO external_db (`NAME`,`URL`,"
-                    + "`DESC`,`CREATE_TIME`, `DB_TYPE`) VALUES (?,?,?,?,?)");
+                    ("INSERT INTO external_db (`NAME`,`URL`, `SAMPLE_ID`, "
+                    + "`DESC`,`CREATE_TIME`, `DB_TYPE`) VALUES (?,?,?,?,?,?)");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getUrl());
-            pstmt.setString(3, db.getDescription());
+            pstmt.setString(3, db.getSampleId());
+            pstmt.setString(4, db.getDescription());
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date (now.getTime());
-            pstmt.setDate(4, sqlDate);
-            pstmt.setString(5, db.getDbType().toString());
+            pstmt.setDate(5, sqlDate);
+            pstmt.setString(6, db.getDbType().toString());
             int rows = pstmt.executeUpdate();
 
             // Save CV Terms.
@@ -283,15 +284,17 @@ public class DaoExternalDb {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("UPDATE external_db SET `NAME` = ?, "
-                    + "`DESC` = ?, `URL` = ?, `UPDATE_TIME` = ? "
+                    + "`DESC` = ?, `URL` = ?, `SAMPLE_ID` = ?, "
+                    + "`UPDATE_TIME` = ? "
                     + "WHERE `EXTERNAL_DB_ID` = ?");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getDescription());
             pstmt.setString(3, db.getUrl());
+            pstmt.setString(4, db.getSampleId());
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
-            pstmt.setDate(4, sqlDate);
-            pstmt.setInt(5, db.getId());
+            pstmt.setDate(5, sqlDate);
+            pstmt.setInt(6, db.getId());
             int rows = pstmt.executeUpdate();
 
             //  Delete all associated terms.
@@ -335,6 +338,7 @@ public class DaoExternalDb {
         record.setId(rs.getInt("EXTERNAL_DB_ID"));
         record.setName(rs.getString("NAME"));
         record.setUrl(rs.getString("URL"));
+        record.setSampleId(rs.getString("SAMPLE_ID"));
         record.setDescription(rs.getString("DESC"));
         record.setCreateTime(rs.getDate("CREATE_TIME"));
         record.setUpdateTime(rs.getDate("UPDATE_TIME"));
