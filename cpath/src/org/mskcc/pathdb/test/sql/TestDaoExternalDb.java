@@ -45,11 +45,12 @@ import java.util.ArrayList;
 public class TestDaoExternalDb extends TestCase {
     private static final String NAME = "ACME Database";
     private static final String DESC = "ACME Database holds protein"
-            + "interactions.";
+            + " interactions.";
     private static final String TERM1 = "ACE";
     private static final String TERM2 = "ACME";
     private static final String URL = "http://us.expasy.org/cgi-bin/"
             + "niceprot.pl?%ID%";
+    private static final String SAMPLE_ID = "123XYZ";
     private static final String NEW_NAME = "ACME Improved Database";
 
     /**
@@ -126,6 +127,7 @@ public class TestDaoExternalDb extends TestCase {
         assertEquals(TERM1, term1);
         assertEquals(TERM2, term2);
         assertEquals(URL, record.getUrl());
+        assertEquals(SAMPLE_ID, record.getSampleId());
         assertEquals(ReferenceType.PROTEIN_UNIFICATION, record.getDbType());
     }
 
@@ -138,6 +140,7 @@ public class TestDaoExternalDb extends TestCase {
         terms.add(TERM2);
         db.setCvTerms(terms);
         db.setUrl(URL);
+        db.setSampleId(SAMPLE_ID);
         db.setDbType(ReferenceType.PROTEIN_UNIFICATION);
         DaoExternalDb cpath = new DaoExternalDb();
         cpath.addRecord(db);
