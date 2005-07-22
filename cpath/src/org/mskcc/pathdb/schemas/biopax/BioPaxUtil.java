@@ -63,6 +63,7 @@ public class BioPaxUtil {
     private Document bioPaxDoc;
     private Element reorganizedRoot;
     private Namespace bioPaxNamespace;
+    private HashMap localIdMap;
     private ProgressMonitor pMonitor;
 
     /**
@@ -316,17 +317,13 @@ public class BioPaxUtil {
         //  Categorize into separate bins
         String name = e.getName();
         if (bioPaxConstants.isPathway(name)) {
-
-            //  Determine what namespace this element uses.
-            //  This enables us to determine which level of BioPAX we are using.
-            //  It's also useful for performing XPath Queries later on.
-            if (bioPaxNamespace == null) {
-                bioPaxNamespace = e.getNamespace();
-            }
+            extractBioPaxNamespace(e);
             pathwayList.add(e);
         } else if (bioPaxConstants.isInteraction((name))) {
+            extractBioPaxNamespace(e);
             interactionList.add(e);
         } else if (bioPaxConstants.isPhysicalEntity(name)) {
+            extractBioPaxNamespace(e);
             physicalEntityList.add(e);
         }
 
@@ -335,6 +332,15 @@ public class BioPaxUtil {
         for (int i = 0; i < children.size(); i++) {
             Element child = (Element) children.get(i);
             categorizeResources(child);
+        }
+    }
+
+    private void extractBioPaxNamespace(Element e) {
+        //  Determine what namespace this element uses.
+        //  This enables us to determine which level of BioPAX we are using.
+        //  It's also useful for performing XPath Queries later on.
+        if (bioPaxNamespace == null) {
+            bioPaxNamespace = e.getNamespace();
         }
     }
 
@@ -404,11 +410,11 @@ public class BioPaxUtil {
     private void makeHierachical(Element e, String type,
             boolean isTopLevelResource) throws DaoException {
         boolean keepTraversingTree = true;
-//        System.out.println("Make Hierarchical --> Element: "
-//            + e.getName() + ", type:  " + type);
 
         //  If this is a top-level resource, just keep on walking.
-        if (!isTopLevelResource) {
+        if (isTopLevelResource) {
+            localIdMap = new HashMap();
+        } else {
 
             //  Get a pointer to an RDF resource, if there is one.
             Attribute pointerAttribute = e.getAttribute
@@ -435,9 +441,21 @@ public class BioPaxUtil {
                 //  Figure out what we are pointing to
                 String uri = RdfUtil.removeHashMark
                         (pointerAttribute.getValue());
-                Element referencedResource = (Element) rdfResources.get(uri);
 
-                if (isHinge(type, referencedResource)) {
+                Element referencedResource = (Element) rdfResources.get(uri);
+                if (localIdMap.containsKey(uri)) {
+                    //  If we have already been here, stop traversing.
+                    //  Prevents Circular References.
+
+                    //  Remove the Existing RDF Pointer
+                    e.removeAttribute(RdfConstants.RESOURCE_ATTRIBUTE,
+                            RdfConstants.RDF_NAMESPACE);
+
+                    //  Replace with locally generated ID
+                    String newId = (String) localIdMap.get(uri);
+                    e.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE, newId);
+                    keepTraversingTree = false;
+                } else if (isHinge(type, referencedResource)) {
                     //  Case 2A:  We are pointing at a Hinge Element
                     keepTraversingTree = false;
                 } else {
@@ -496,7 +514,8 @@ public class BioPaxUtil {
                 RdfConstants.RDF_NAMESPACE);
 
         //  Add New RDF ID, based on locally generated algorithm
-        clonedChild.setAttribute(RdfConstants.ID_ATTRIBUTE, getNextId(),
+        String newId = getNextId();
+        clonedChild.setAttribute(RdfConstants.ID_ATTRIBUTE, newId,
                 RdfConstants.RDF_NAMESPACE);
 
         //  Add cloned resource to parent element
@@ -504,6 +523,9 @@ public class BioPaxUtil {
 
         //  Remove resourceLink fom parent
         e.removeAttribute(pointerAttribute);
+
+        //  Store the ID Mapping between old ID and New Id, for later reference
+        localIdMap.put(uri, newId);
 
         // Return the Cloned Child, so we can walk down it.
         return clonedChild;
