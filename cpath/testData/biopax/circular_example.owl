@@ -1,0 +1,51 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.biopax.org/release/biopax-level2.owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xml:base="http://www.biopax.org/release/biopax-level2.owl#">
+  <pathway rdf:ID="Cell_Cycle__Mitotic">
+    <PATHWAY-COMPONENTS rdf:resource="#M_G1_TransitionStep" />
+    <ORGANISM rdf:resource="#Homo_sapiens" />
+    <NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Cycle, Mitotic</NAME>
+    <SHORT-NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Cycle, Mitotic</SHORT-NAME>
+    <XREF rdf:resource="#Reactome69278" />
+    <COMMENT rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The replication of the genome and the subsequent segregation of chromosomes into daughter cells are controlled by a series of events collectively known as the cell cycle. DNA replication is carried out during a discrete temporal period known as the S (synthesis)-phase, and chromosome segregation occurs during a massive reorganization to cellular architecture at mitosis. Two gap-phases separate these major cell cycle events: G1 between mitosis and S-phase, and G2 between S-phase and mitosis. In the development of the human body, cells can exit the cell cycle for a period and enter a quiescent state known as G0, or terminally differentiate into cells that will not divide again, but undergo morphological development to carry out the wide variety of specialized functions of individual tissues.&lt;br&gt;A family of protein serine/threonine kinases known as the cyclin-dependent kinases (CDKs) controls progression through the cell cycle. As the name suggests, the activity of the catalytic subunit is dependent on binding to a cyclin partner. The human genome encodes several cyclins and several CDKs, with their names largely derived from the order in which they were identified. The oscillation of cyclin abundance is one important mechanism by which these enzymes phosphorylate key substrates to promote events at the relevant time and place. Additional regulatory proteins and post-translational modifications ensure that CDK activity is precisely regulated, frequently confined to a narrow window of activity.</COMMENT>
+    <EVIDENCE rdf:resource="#Summation_69280" />
+    <XREF rdf:resource="#mitotic_cell_cycle" />
+  </pathway>
+  <relationshipXref rdf:ID="mitotic_cell_cycle">
+    <DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GO</DB>
+    <ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0000278</ID>
+  </relationshipXref>
+  <evidence rdf:ID="Summation_69280" />
+  <unificationXref rdf:ID="Reactome69278">
+    <DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reactome</DB>
+    <ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">69278</ID>
+    <COMMENT rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://www.reactome.org</COMMENT>
+  </unificationXref>
+  <bioSource rdf:ID="Homo_sapiens">
+    <NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Homo sapiens</NAME>
+    <TAXON-XREF rdf:resource="#NCBI_taxonomy_9606" />
+  </bioSource>
+  <xref rdf:ID="NCBI_taxonomy_9606">
+    <DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCBI_taxonomy</DB>
+    <ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9606</ID>
+  </xref>
+  <pathwayStep rdf:ID="M_G1_TransitionStep">
+    <NEXT-STEP rdf:resource="#G1_PhaseStep" />
+  </pathwayStep>
+  <pathwayStep rdf:ID="G1_PhaseStep">
+    <NEXT-STEP rdf:resource="#G1_S_TransitionStep" />
+  </pathwayStep>
+  <pathwayStep rdf:ID="G1_S_TransitionStep">
+    <NEXT-STEP rdf:resource="#S_PhaseStep" />
+  </pathwayStep>
+  <pathwayStep rdf:ID="S_PhaseStep">
+    <NEXT-STEP rdf:resource="#G2_PhaseStep" />
+  </pathwayStep>
+  <pathwayStep rdf:ID="G2_PhaseStep">
+    <NEXT-STEP rdf:resource="#G2_M_TransitionStep" />
+  </pathwayStep>
+  <pathwayStep rdf:ID="G2_M_TransitionStep">
+    <NEXT-STEP rdf:resource="#M_PhaseStep" />
+  </pathwayStep>
+  <pathwayStep rdf:ID="M_PhaseStep">
+    <NEXT-STEP rdf:resource="#M_G1_TransitionStep" />
+  </pathwayStep>
+</rdf:RDF>
