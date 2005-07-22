@@ -39,8 +39,10 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
+import org.mskcc.pathdb.util.xml.XmlUtil;
 
 import java.io.FileReader;
 import java.io.StringReader;
@@ -218,6 +220,29 @@ public class TestBioPaxUtil extends TestCase {
         String error = (String) errorList.get(0);
         assertTrue(error.startsWith("XREF Element references a database "
                 + "which does not exist in cPath:  GLUE."));
+    }
+
+    /**
+     * Tests a Sample Circular Pathway.
+     * Previously, this test resulted in an infinite loop.
+     * @throws Exception All Exceptions.
+     */
+    public void testCircularPathway() throws Exception {
+        FileReader file = new FileReader
+                ("testData/biopax/circular_example.owl");
+        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
+        Element root = util.getReorganizedXml();
+
+        //  Verify that the embedded rdf:resource points back to
+        //  a local resource defined earlier in the file.
+        XPath xpath = XPath.newInstance("//@rdf:ID");
+        List resourceList = xpath.selectNodes(root);
+        Attribute targetAttribute = (Attribute) resourceList.get(1);
+
+        xpath = XPath.newInstance("//@rdf:resource");
+        resourceList = xpath.selectNodes(root);
+        Attribute attr = (Attribute) resourceList.get(0);
+        assertEquals (targetAttribute.getValue(), attr.getValue());
     }
 
     /**
