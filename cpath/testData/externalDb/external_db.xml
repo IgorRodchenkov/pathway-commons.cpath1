@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE external_database_list SYSTEM "external_db.dtd">
+<external_database_list>
+    <!-- 
+    ###################################################################
+    List of PROTEIN_UNIFICATION Databases 
+    ###################################################################    
+    -->
+    
+    <!--  
+        SWISS-PROT / UNI-PROT
+    -->
+    <external_database type="PROTEIN_UNIFICATION">
+        <name>UniProt</name>
+        <description>Universal Protein Resource (UniProt)</description>
+        <url>
+            <url_pattern>http://www.ebi.uniprot.org/entry/%ID%</url_pattern>
+            <sample_id>P31947</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>UNIPROT</master_term>
+            <synonym>SWISS-PROT</synonym>
+            <synonym>SWISSPROT</synonym>
+            <synonym>SWISSTREMBL</synonym>
+            <synonym>SWP</synonym>
+            <synonym>SWISS-PROT/TREMBL</synonym>
+        </controlled_terms>
+    </external_database>
+
+    <!--
+        PIR
+    -->
+    <external_database type="PROTEIN_UNIFICATION">
+        <name>PIR</name>
+        <description>The Protein Information Resource (PIR)</description>
+        <url>
+            <url_pattern>http://pir.georgetown.edu/cgi-bin/nbrfget?uid=%ID%</url_pattern>
+            <sample_id>NF01438533</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>PIR</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        InterPro
+    -->
+    <external_database type="PROTEIN_UNIFICATION">
+        <name>InterPro</name>
+        <description>InterPro database of protein families, domains and functional sites</description>
+        <url>
+            <url_pattern>http://www.ebi.ac.uk/interpro/DisplayIproEntry?ac=%ID%</url_pattern>
+            <sample_id>IPR000427</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>INTERPRO</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        HUGE
+    -->
+    <external_database type="PROTEIN_UNIFICATION">
+        <name>HUGE</name>
+        <description>HUGE Protein Database</description>
+        <url>
+            <url_pattern>http://www.kazusa.or.jp/huge/gfpage/%ID%/</url_pattern>
+            <sample_id>KIAA0054</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term></master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+    ###################################################################    
+    List of LINK_OUT Databases 
+    ###################################################################
+    -->
+    
+    <!-- 
+        PROSITE
+    -->
+    <external_database type="LINK_OUT">
+        <name>PROSITE</name>
+        <description>PROSITE database of protein families and domains</description>
+        <url>
+            <url_pattern>http://us.expasy.org/cgi-bin/nicedoc.pl?%ID%</url_pattern>
+            <sample_id>PDOC50088</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>PROSITE</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        NCBI Entrez Gene
+    -->
+    <external_database type="LINK_OUT">
+        <name>Entrez Gene</name>
+        <description>NCBI Entrez Gene</description>
+        <url>
+            <url_pattern>http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&amp;cmd=search&amp;term=%ID%</url_pattern>
+            <sample_id>p53</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>ENTREZ_GENE</master_term>
+            <synonym>LOCUSLINK</synonym>
+            <synonym>LOCUS_LINK</synonym>
+            <synonym>LOCUS-LINK</synonym>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        NCBI Pub Med
+    -->
+    <external_database type="LINK_OUT">
+        <name>PubMed</name>
+        <description>NCBI PubMed</description>
+        <url>
+            <url_pattern>http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=PubMed&amp;list_uids=%ID%&amp;dopt=Abstract</url_pattern>
+            <sample_id>14597658 </sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>PUBMED</master_term>
+            <synonym>PMID</synonym>
+        </controlled_terms>
+    </external_database>
+    
+    <!--  
+        NCBI UniGene
+    -->
+    <external_database type="LINK_OUT">
+        <name>UniGene</name>
+        <description>NCBI UniGene Database</description>
+        <url>
+            <url_pattern>http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene&amp;cmd=search&amp;term=%ID%</url_pattern>
+            <sample_id>p53</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>UNIGENE</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!--
+        NCBI OMIM
+    -->
+    <external_database type="LINK_OUT">
+        <name>OMIM</name>
+        <description>Online Mendelian Inheritance in Man (OMIM)</description>
+        <url>
+            <url_pattern>http://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%ID%</url_pattern>
+            <sample_id>222100</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>OMIM</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!--
+        PROSITE
+    -->
+    <external_database type="LINK_OUT">
+        <name>PROSITE</name>
+        <description>PROSITE database of protein families and domains</description>
+        <url>
+            <url_pattern>http://us.expasy.org/cgi-bin/nicedoc.pl?%ID%</url_pattern>
+            <sample_id>PDOC50138</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>PROSITE</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        Database of Interacting Proteins (DIP)
+    -->
+    <external_database type="LINK_OUT">
+        <name>DIP</name>
+        <description>Database of Interacting Proteins (DIP)&apos;</description>
+        <url>
+            <url_pattern>http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&amp;AC=DIP:%ID&amp;Search2=Query+DIP</url_pattern>
+            <sample_id>24197</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>DIP</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        Pfam 
+    -->
+    <external_database type="LINK_OUT">
+        <name>Pfam</name>
+        <description>Pfam protein families database of alignments and hidden Markov models</description>
+        <url>
+            <url_pattern>http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%</url_pattern>
+            <sample_id>PF00870</sample_id>
+        </url>    
+        <controlled_terms>
+            <master_term>PFAM</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        Gene Ontology
+    -->
+    <external_database type="LINK_OUT">
+        <name>GO</name>
+        <description>Gene Ontology (GO)</description>
+        <url>
+            <url_pattern>http://www.godatabase.org/cgi-bin/amigo/go.cgi?open_1=%ID%</url_pattern>
+            <sample_id>0006915</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>GO</master_term>
+            <synonym>GENE ONTOLOGY</synonym>
+        </controlled_terms>
+    </external_database>
+    
+    <!--  
+        Affymetrix.
+        Unfortunately, there is currently no public URL for viewing Affymetrix IDs.
+    -->
+    <external_database type="LINK_OUT">
+        <name>Affymetrix</name>
+        <description>Affymetrix</description>
+        <controlled_terms>
+            <master_term>AFFYMETRIX</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        IntAct
+    -->
+    <external_database type="LINK_OUT">
+        <name>IntAct</name>
+        <description>IntAct database of protein interaction data</description>
+        <url>
+            <url_pattern>http://www.ebi.ac.uk/intact/search/do/search?searchClass=Protein&amp;view=partner&amp;filter=ac&amp;searchString=%ID%</url_pattern>
+            <sample_id>EBI-366083</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>INTACT</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        FlyBase
+    -->
+    <external_database type="LINK_OUT">
+        <name>FlyBase</name>
+        <description>FlyBase is a comprehensive database for information on the genetics and molecular biology of Drosophila</description>
+        <url>
+            <url_pattern>http://flybase.bio.indiana.edu/.bin/fbidq.html?%ID%</url_pattern>
+            <sample_id>FBgn0000015</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>FLYBASE</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        PDB
+    -->
+    <external_database type="LINK_OUT">
+        <name>PDB</name>
+        <description>Protein Data Bank (PDB)</description>
+        <url>
+            <url_pattern>http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=%ID%</url_pattern>
+            <sample_id>12CA</sample_id>
+        </url>            
+        <controlled_terms>
+            <master_term>PDB</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        SGD
+    -->
+    <external_database type="LINK_OUT">
+        <name>SGD</name>
+        <description>Saccharomyces Genome Database (SGD)</description>
+        <url>
+            <url_pattern>http://db.yeastgenome.org/cgi-bin/locus.pl?locus=%ID%></url_pattern>
+            <sample_id>YDR217C</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>SGD</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        HPRD
+    -->
+    <external_database type="LINK_OUT">
+        <name>HPRD</name>
+        <description>Human Protein Reference Database (HPRD)</description>
+        <url>
+            <url_pattern>http://hprd.ibioinformatics.org/hprdId?hprdId=%ID%</url_pattern>
+            <sample_id>01284</sample_id>
+        </url>            
+        <controlled_terms>
+            <master_term>HPRD</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        MINT
+    -->
+    <external_database type="LINK_OUT">
+        <name>MINT</name>
+        <description>Molecular INTeraction database (MINT)</description>
+        <url>
+            <url_pattern>http://mint.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%</url_pattern>
+            <sample_id>mint_14046</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>MINT</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        Reactome
+    -->
+    <external_database type="LINK_OUT">
+        <name>Reactome</name>
+        <description>Reactome: a knowledgebase of biological processes</description>
+        <url>
+            <url_pattern>http://reactome.org/cgi-bin/eventbrowser?DB=gk_current&amp;ID=%ID%</url_pattern>
+            <sample_id>109607</sample_id>
+        </url>            
+        <controlled_terms>
+            <master_term>REACTOME</master_term>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        Ensembl
+    -->
+    <external_database type="LINK_OUT">
+        <name>Ensembl</name>
+        <description>Ensembl Database</description>
+        <url>
+            <url_pattern>http://www.ensembl.org/Homo_sapiens/textview?species=All&amp;idx=All&amp;q=%ID%</url_pattern>
+            <sample_id>ENSG00000067369</sample_id>
+        </url>
+        <controlled_terms>
+            <master_term>ENSEMBL</master_term>
+        </controlled_terms>
+    </external_database>
+
+    <!-- 
+        NCBI GenBank
+    -->
+    <external_database type="LINK_OUT">
+        <name>GenBank</name>
+        <description>NCBI GenBank</description>
+        <url>
+            <url_pattern>http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&amp;val=%ID%</url_pattern>
+            <sample_id>70995422</sample_id>
+        </url>            
+        <controlled_terms>
+            <master_term>GENBANK</master_term>
+            <synonym>ENTREZ GI</synonym>
+        </controlled_terms>
+    </external_database>
+    
+    <!-- 
+        NCBI RefSeq
+    -->
+    <external_database type="LINK_OUT">
+        <name>RefSeq</name>
+        <description>NCBI RefSeq</description>
+        <controlled_terms>
+            <master_term></master_term>
+        </controlled_terms>
+    </external_database>
+    
+    
+</external_database_list>

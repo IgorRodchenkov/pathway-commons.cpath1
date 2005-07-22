@@ -1,0 +1,70 @@
+<!-- 
+     DTD for Storing/Exchanging External Databases used by cPath. 
+    The DTD is primarily used to import / export a list of external databases used by cPath,
+    but may be useful to other third-party applications as well.
+    
+     DTD created by Ethan Cerami:  cerami AT cbio.mskcc.org
+-->
+
+<!--
+    A database list consists of one or more external databases
+-->
+<!ELEMENT external_database_list (external_database)+>
+
+<!-- 
+    Each database must have a name, description, a url pattern, and a 
+    list of controlled vocabulary terms.
+-->
+<!ELEMENT external_database (name, description, 
+    url?, controlled_terms)>
+    
+<!-- 
+     We currectly support two type of databases:  PROTEIN_UNIFICATION and
+    LINK_OUT.  PROTEIN_UNIFICATION databases are used to determine equivalence
+    or identity or proteins, whereas LINK_OUT database are used to provide links out to
+    other types of data.  For example, SWISS PROT is a PROTEIN_UNIFICATION
+    database, wheras PubMed is a LINK_OUT database.
+-->    
+<!ATTLIST external_database type 
+    (PROTEIN_UNIFICATION | LINK_OUT) #REQUIRED>
+
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+
+
+<!-- 
+    The URL Pattern is a String pattern that enables direct linking to the database.
+    cPath explicitly replaces the %ID% pattern with an actual ID to generate live links.
+
+    For example, given the URL pattern: http://www.pir.uniprot.org/cgi-bin/upEntry?id=%ID%
+    and a saple ID of P08913, cPath generates the live URL as:
+    http://www.pir.uniprot.org/cgi-bin/upEntry?id=P08913 
+    
+    If you have a url_pattern, you must also specify a sample_id.  The url pattern plus
+    the sample_id can be used to automatically verify that the links actually work.
+    This is important, as database providers may modify their linking rules at any time,
+    and not inform us of the change.
+-->
+<!ELEMENT url (url_pattern, sample_id) >
+<!ELEMENT url_pattern (#PCDATA)>
+<!ELEMENT sample_id (#PCDATA)>
+
+<!-- 
+    The controlled_term elements are used to map multiple names to a single database. 
+    For example, some sources use "SWP" to refer to SWISS-PROT;  other sources use
+    "SWISS-PROT;  and still others use "UNIPROT".  By maintaining a list of terms, we can
+    accurately map multiple names to a single database.
+    
+    master_term refers to the database name that we output from cPath.
+    synonym refers to an equivalent database name that we accept as input to cPath.
+
+    For example, if an external file specifies SWP (a synonym)  we normalize it to 
+     UNI-PROT (master term).  When we output this data via the cPath web site, or via the
+     cPath web service, the term will appear as UNI_PROT.
+     
+    Note that controlled_term items are treated as case insensitive.  Therefore, a synonym
+    of SWP would be accepted by cPath as swp, SWp, etc.  
+-->
+<!ELEMENT controlled_terms (master_term, synonym*)>
+<!ELEMENT master_term (#PCDATA)>
+<!ELEMENT synonym (#PCDATA) >
