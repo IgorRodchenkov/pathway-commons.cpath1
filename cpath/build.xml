@@ -26,9 +26,7 @@
 
 	<property name="app.name"      value="cpath"/>
   	<property name="app.path"      value="/${app.name}"/>
-  	<property name="app.version"   value="0.1-dev"/>
   	<property name="build.home"    value="${basedir}/build"/>
-  	<property name="catalina.home" value="../../../.."/> <!-- UPDATE THIS! -->
   	<property name="dist.home"     value="${basedir}/dist"/>
   	<property name="manager.url"   value="http://localhost:8080/manager"/>
   	<property name="src.home"      value="${basedir}/src"/>
@@ -127,7 +125,7 @@
 
 <!--
 
-  The "install" target tells the specified Tomcat 4 installation to dynamically
+  The "install" target tells the specified Tomcat installation to dynamically
   install this web application and make it available for execution.  It does
   *not* cause the existence of this web application to be remembered across
   Tomcat restarts; if you restart the server, you will need to re-install all
