@@ -25,3 +25,14 @@ biopax1_sample4.owl         An "illegal" Level 1 Document.  This file is
                             does not exist in cPath.  This error should be
                             caught by BioPAxUtil, and there is a JUnit test
                             to verify it.
+
+Cell_Cycle_Excerpt.owl      A modified excerpt of the Cell_Cycle_Mitotic.owl
+                            from Reactome.
+
+circular_example.owl        An excerpt of Cell_Cycle_Excerpt.owl, which is
+                            actually an excerpt of Cell_Cycle_Mitotic.owl
+                            from Reactome.  This represents a distilled example
+                            of a circular pathway in BioPAX.  Since the original
+                            cPath import code choked on circular pathways, we
+                            needed a sample test file to verify that the code
+                            fixes actually work.                                                      
