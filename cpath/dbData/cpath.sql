@@ -53,6 +53,7 @@ CREATE TABLE `external_db` (
   `EXTERNAL_DB_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(100) NOT NULL default '',
   `URL` varchar(255) default NULL,
+  `SAMPLE_ID` varchar(255) default NULL,
   `DESC` varchar(255) default NULL,
   `FIXED_CV_TERM` int(11) NOT NULL default '0',
   `DB_TYPE` varchar(25) NOT NULL default '',
