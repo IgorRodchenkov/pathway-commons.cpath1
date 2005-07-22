@@ -34,6 +34,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.pathdb.test.schemas.biopax.BioPaxSuite;
 import org.mskcc.pathdb.test.schemas.psi.PsiSuite;
+import org.mskcc.pathdb.test.schemas.externalDb.ExternalDbSuite;
 
 /**
  * Suite of all Schema Unit Tests.
@@ -51,6 +52,7 @@ public class SchemaSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTest(PsiSuite.suite());
         suite.addTest(BioPaxSuite.suite());
+        suite.addTest(ExternalDbSuite.suite());
         suite.setName("Schema Tests");
         return suite;
     }
