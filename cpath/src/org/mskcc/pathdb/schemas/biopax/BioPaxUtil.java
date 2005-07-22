@@ -452,7 +452,7 @@ public class BioPaxUtil {
                             RdfConstants.RDF_NAMESPACE);
 
                     //  Replace with locally generated ID
-                    String newId = (String) localIdMap.get(uri);
+                    String newId = "#" + (String) localIdMap.get(uri);
                     e.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE, newId,
                             RdfConstants.RDF_NAMESPACE);
                     keepTraversingTree = false;

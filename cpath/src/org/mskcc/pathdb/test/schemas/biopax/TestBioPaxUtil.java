@@ -42,6 +42,7 @@ import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
+import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
 
 import java.io.FileReader;
@@ -242,7 +243,8 @@ public class TestBioPaxUtil extends TestCase {
         xpath = XPath.newInstance("//@rdf:resource");
         resourceList = xpath.selectNodes(root);
         Attribute attr = (Attribute) resourceList.get(0);
-        assertEquals (targetAttribute.getValue(), attr.getValue());
+        assertEquals (targetAttribute.getValue(),
+                RdfUtil.removeHashMark(attr.getValue()));
     }
 
     /**
