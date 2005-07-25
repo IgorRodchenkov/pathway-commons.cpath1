@@ -19,7 +19,7 @@
     <group id="cpath" inherits="default">
         <logger type="xml"/>
         <logger type="color"/>
-        <property name="host" value="www.cbio.mskcc.org"/>
+        <property name="host" value="cbio.mskcc.org"/>
         <property name="port" value="80"/>
         <property name="haltonerror" value="false"/>
     </group>
@@ -50,7 +50,7 @@
         description="Validate Database Stats">
       <match>
           <regexp>Number of Interactions</regexp>
-          <regexp>Number of Interactors</regexp>
+          <regexp>Number of Physical Entities</regexp>
       </match>
     </httpRequest>
 
@@ -68,7 +68,7 @@
         path="/cpath/webservice.do?version=1.0&amp;q=dna+repair&amp;format=html&amp;organism=&amp;cmd=get_by_keyword"
         description="Validate Interaction View with Regular Text Search">
       <match>
-          <regexp>DNA excision repair protein</regexp>
+          <regexp>DNA repair protein RAD16</regexp>
       </match>
     </httpRequest>
 
