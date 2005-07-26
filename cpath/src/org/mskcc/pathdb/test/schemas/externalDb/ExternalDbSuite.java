@@ -52,6 +52,7 @@ public class ExternalDbSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestExternalDbXmlUtil.class);
+        suite.addTestSuite(TestExternalDbLinkTester.class);
         suite.setName("External Database XMLTests");
         return suite;
     }
