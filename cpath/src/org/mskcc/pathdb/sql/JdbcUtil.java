@@ -45,7 +45,7 @@ public class JdbcUtil {
     private static DataSource dataSource;
     private static GenericObjectPool connectionPool;
     private static final String DB_CPATH = "cpath";
-    private static boolean isCommandLineApplication = false;
+    private static boolean commandLineFlag = false;
     private static Connection commandLineConnection;
 
     /**
@@ -53,8 +53,16 @@ public class JdbcUtil {
      *
      * @param flag true or false.
      */
-    public static void setCommandLineApplication(boolean flag) {
-        isCommandLineApplication = flag;
+    public static void setCommandLineFlag(boolean flag) {
+        commandLineFlag = flag;
+    }
+
+    /**
+     * Gets the Command Line Flag.
+     * @return Command Line Flag.
+     */
+    public static boolean getCommandLineFlag () {
+        return commandLineFlag;
     }
 
     /**
@@ -72,7 +80,7 @@ public class JdbcUtil {
         if (dataSource == null) {
             initDataSource();
         }
-        if (isCommandLineApplication) {
+        if (commandLineFlag) {
             if (commandLineConnection == null
                     || commandLineConnection.isClosed()) {
                 commandLineConnection = dataSource.getConnection();
@@ -128,7 +136,7 @@ public class JdbcUtil {
      * @param con Connection Object.
      */
     private static void closeConnection(Connection con) {
-        if (!isCommandLineApplication) {
+        if (!commandLineFlag) {
             if (con != null) {
                 try {
                     con.close();
