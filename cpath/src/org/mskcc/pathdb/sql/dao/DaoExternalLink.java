@@ -78,7 +78,76 @@ import java.util.ArrayList;
  *
  * @author Ethan Cerami
  */
-public class DaoExternalLink {
+public class DaoExternalLink extends ManagedDAO {
+    private static DaoExternalLink daoExternalLink;
+
+    private static final String INSERT_KEY = "INSERT_KEY";
+    private static final String INSERT =
+        "INSERT INTO external_link (`CPATH_ID`, "
+        + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`)"
+        + " VALUES (?,?,?)";
+
+    private static final String GET_BY_LINK_ID_KEY = "GET_BY_LINK_ID_KEY";
+    private static final String GET_BY_LINK_ID =
+        "SELECT * FROM external_link WHERE EXTERNAL_LINK_ID = ?";
+    
+    private static final String GET_BY_DB_ID_KEY = "GET_BY_DB_ID_KEY";
+    private static final String GET_BY_DB_ID =
+            "SELECT * FROM external_link WHERE "
+            + "EXTERNAL_DB_ID = ? AND LINKED_TO_ID =?";
+
+    private static final String GET_BY_DB_KEY = "GET_BY_DB_KEY";
+    private static final String GET_BY_DB =
+            "SELECT * FROM external_link WHERE"
+            + " EXTERNAL_DB_ID = ?";
+    
+    private static final String GET_BY_CPATH_ID_KEY = "GET_BY_CPATH_ID_KEY";
+    private static final String GET_BY_CPATH_ID =
+        "SELECT * FROM external_link WHERE CPATH_ID = ? "
+                    + "ORDER BY EXTERNAL_LINK_ID";
+    
+    private static final String DELETE_BY_ID_KEY = "DELETE_BY_ID_KEY";
+    private static final String DELETE_BY_ID = 
+        "DELETE FROM external_link WHERE EXTERNAL_LINK_ID = ?";
+    
+    private static final String RECORD_EXISTS_KEY = "RECORD_EXISTS_KEY";
+    private static final String RECORD_EXISTS = 
+        "SELECT EXTERNAL_LINK_ID FROM external_link WHERE "
+                    + "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND "
+                    + "LINKED_TO_ID = ?";
+
+    /**
+     * Private Constructor (Singleton pattern).
+     */
+    private DaoExternalLink () {}
+
+    /**
+     * Gets Instance of Dao Object. (Singleton pattern).
+     * @return  DaoCPath Object.
+     * @throws DaoException Dao Initialization Error.
+     */
+    public static DaoExternalLink getInstance()  throws DaoException{
+        if(daoExternalLink == null){
+        	daoExternalLink = new DaoExternalLink();
+            daoExternalLink.init();
+        }
+        return daoExternalLink;
+    }
+
+    /**
+     * Initialize DAO Prepared Statement Objects.
+     * @throws DaoException Dao Initialization Error.
+     */
+    protected void init() throws DaoException {
+    	super.init();
+        addPreparedStatement(INSERT_KEY, INSERT);
+        addPreparedStatement(GET_BY_LINK_ID_KEY , GET_BY_LINK_ID);
+        addPreparedStatement(GET_BY_DB_ID_KEY, GET_BY_DB_ID);
+        addPreparedStatement(GET_BY_DB_KEY, GET_BY_DB);
+        addPreparedStatement(GET_BY_CPATH_ID_KEY, GET_BY_CPATH_ID);
+        addPreparedStatement(DELETE_BY_ID_KEY, DELETE_BY_ID);
+        addPreparedStatement(RECORD_EXISTS_KEY, RECORD_EXISTS);
+    }
 
     /**
      * Adds New External Link Record.
@@ -103,11 +172,8 @@ public class DaoExternalLink {
                     + "ID is null or empty.");
         }
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("INSERT INTO external_link (`CPATH_ID`, "
-                    + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`)"
-                    + " VALUES (?,?,?)");
+            con = getConnection();
+            pstmt = getStatement(con, INSERT_KEY);
             pstmt.setLong(1, link.getCpathId());
             pstmt.setInt(2, link.getExternalDbId());
             pstmt.setString(3, link.getLinkedToId());
@@ -121,7 +187,7 @@ public class DaoExternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -242,7 +308,7 @@ public class DaoExternalLink {
                         ExternalLinkRecord externalLink = (ExternalLinkRecord)
                                 links.get(j);
                         long cpathId = externalLink.getCpathId();
-                        DaoCPath cpathDao = new DaoCPath();
+                        DaoCPath cpathDao = DaoCPath.getInstance();
                         CPathRecord record = cpathDao.getRecordById(cpathId);
                         records.add(record);
                     }
@@ -265,9 +331,8 @@ public class DaoExternalLink {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT * FROM external_link WHERE EXTERNAL_LINK_ID = ?");
+            con = getConnection();
+            pstmt = getStatement(con, GET_BY_LINK_ID_KEY);
             pstmt.setLong(1, externalLinkId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -280,7 +345,7 @@ public class DaoExternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -299,17 +364,13 @@ public class DaoExternalLink {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
+            con = getConnection();
             if (linkedToId != null) {
-                pstmt = con.prepareStatement
-                        ("SELECT * FROM external_link WHERE "
-                        + "EXTERNAL_DB_ID = ? AND LINKED_TO_ID =?");
+                pstmt = getStatement(con, GET_BY_DB_ID_KEY);
                 pstmt.setLong(1, externalDbId);
                 pstmt.setString(2, linkedToId);
             } else {
-                pstmt = con.prepareStatement
-                        ("SELECT * FROM external_link WHERE"
-                        + " EXTERNAL_DB_ID = ?");
+                pstmt = getStatement(con, GET_BY_DB_KEY);
                 pstmt.setLong(1, externalDbId);
             }
             rs = pstmt.executeQuery();
@@ -323,7 +384,7 @@ public class DaoExternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -340,10 +401,8 @@ public class DaoExternalLink {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT * FROM external_link WHERE CPATH_ID = ? "
-                    + "ORDER BY EXTERNAL_LINK_ID");
+            con = getConnection();
+            pstmt = getStatement(con, GET_BY_CPATH_ID_KEY);
             pstmt.setLong(1, cpathId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -356,7 +415,7 @@ public class DaoExternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -372,9 +431,8 @@ public class DaoExternalLink {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("DELETE FROM external_link WHERE EXTERNAL_LINK_ID = ?");
+            con = getConnection();
+            pstmt = getStatement(con, DELETE_BY_ID_KEY);
             pstmt.setLong(1, externalLinkId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
@@ -383,7 +441,7 @@ public class DaoExternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -399,11 +457,8 @@ public class DaoExternalLink {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT EXTERNAL_LINK_ID FROM external_link WHERE "
-                    + "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND "
-                    + "LINKED_TO_ID = ?");
+            con = getConnection();
+            pstmt = getStatement(con, RECORD_EXISTS_KEY);
             pstmt.setLong(1, link.getCpathId());
             pstmt.setInt(2, link.getExternalDbId());
             pstmt.setString(3, link.getLinkedToId());
@@ -414,7 +469,7 @@ public class DaoExternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -442,7 +497,7 @@ public class DaoExternalLink {
     private void synchronizeXml(ExternalLinkRecord externalLink)
             throws DaoException {
         //  Get CPath Record with Current XML
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         CPathRecord record = cpath.getRecordById(externalLink.getCpathId());
 
         CPathRecordType recordType = record.getType();
@@ -457,7 +512,7 @@ public class DaoExternalLink {
                 XrefType xref = protein.getXref();
                 DbReferenceType secondaryRef = new DbReferenceType();
                 String cvTerm = externalLink.getExternalDatabase()
-                        .getFixedCvTerm();
+                        .getMasterTerm();
                 secondaryRef.setDb(cvTerm);
                 secondaryRef.setId(externalLink.getLinkedToId());
                 xref.addSecondaryRef(secondaryRef);

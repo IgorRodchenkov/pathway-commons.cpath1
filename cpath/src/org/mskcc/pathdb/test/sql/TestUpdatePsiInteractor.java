@@ -69,7 +69,7 @@ public class TestUpdatePsiInteractor extends TestCase {
                 "SWP", "ABC123", "PIR", "XYZ123");
         ProteinInteractorType proteinB = createProtein(NAME, DESCRIPTION,
                 "SWP", "ABC123", "LocusLink", "LOCUS123");
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         PsiUtil util = new PsiUtil(new ProgressMonitor());
         util.normalizeXrefs(proteinA.getXref());
         ExternalReference refsA[] = util.extractRefs(proteinA);
@@ -91,7 +91,7 @@ public class TestUpdatePsiInteractor extends TestCase {
      * references defined by the union of proteinA and proteinB.
      */
     private void validateUpdate(long id) throws DaoException {
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         CPathRecord record = cpath.getRecordById(id);
         String xml = record.getXmlContent();
         //  Note that SWP has been normalized to UNIPROT
@@ -105,7 +105,7 @@ public class TestUpdatePsiInteractor extends TestCase {
         assertTrue(index0 > 0);
         assertTrue(index1 > 0);
         assertTrue(index2 > 0);
-        DaoExternalLink linker = new DaoExternalLink();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
         ArrayList list = linker.getRecordsByCPathId(id);
         assertEquals(3, list.size());
         ExternalLinkRecord record0 = (ExternalLinkRecord) list.get(0);

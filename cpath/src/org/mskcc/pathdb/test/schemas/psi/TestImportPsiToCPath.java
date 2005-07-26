@@ -70,7 +70,7 @@ public class TestImportPsiToCPath extends TestCase {
         assertEquals(6, summary.getNumInteractionsSaved());
         assertEquals(0, summary.getNumInteractionsClobbered());
 
-        DaoExternalLink linker = new DaoExternalLink();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
         ExternalReference refs[] = new ExternalReference[1];
         refs[0] = new ExternalReference("PIR", "BWBYD5");
         ArrayList records = linker.lookUpByExternalRefs(refs);
@@ -134,7 +134,7 @@ public class TestImportPsiToCPath extends TestCase {
                 false, pMonitor);
 
         //  Now, try to locate P53 by an equivalent UNIPROT ID.
-        DaoExternalLink linker = new DaoExternalLink();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
         ExternalReference ref = new ExternalReference("UNIPROT", "P04637");
         ArrayList records = linker.lookUpByExternalRef(ref);
 
@@ -142,7 +142,7 @@ public class TestImportPsiToCPath extends TestCase {
         assertEquals(1, records.size());
 
         //  Now, try to locate P53 by its PIR ID.
-        linker = new DaoExternalLink();
+        linker = DaoExternalLink.getInstance();
         ref = new ExternalReference("PIR", "DNHU53");
         records = linker.lookUpByExternalRef(ref);
 

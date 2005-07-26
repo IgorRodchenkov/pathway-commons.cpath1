@@ -95,7 +95,7 @@ public class TestDaoInternalLink extends TestCase {
         assertEquals(2, links.size());
 
         //  Delete A, and verify that links are automatically purged.
-        DaoCPath dao = new DaoCPath();
+        DaoCPath dao = DaoCPath.getInstance();
         flag = dao.deleteRecordById(cPathIdA);
         assertTrue(flag);
         links = linker.getInternalLinks(cPathIdA);
@@ -106,7 +106,7 @@ public class TestDaoInternalLink extends TestCase {
     }
 
     private void createSampleCPathRecords() throws Exception {
-        DaoCPath dao = new DaoCPath();
+        DaoCPath dao = DaoCPath.getInstance();
         cPathIdA = dao.addRecord(PROTEIN_A, "Protein A Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
                 XmlRecordType.PSI_MI, "protein a xml here");

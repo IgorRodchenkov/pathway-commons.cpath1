@@ -113,7 +113,7 @@ public class DaoInternalLink {
 
             ArrayList links = getInternalLinks(cpathId);
             for (int i = 0; i < links.size(); i++) {
-                DaoCPath dao = new DaoCPath();
+                DaoCPath dao = DaoCPath.getInstance();
                 InternalLinkRecord link = (InternalLinkRecord) links.get(i);
                 long cpathIdA = link.getCpathIdA();
                 long cpathIdB = link.getCpathIdB();

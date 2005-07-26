@@ -101,7 +101,7 @@ public class ExportInteractionsToText extends Task {
                 (new FileWriter("interactions.txt"));
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Exporting all cPath Interactions");
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         int numInteractions = cpath.getNumEntities(CPathRecordType.INTERACTION);
         pMonitor.setCurrentMessage("Total Number of Interactions:  "
                 + numInteractions);
@@ -159,7 +159,7 @@ public class ExportInteractionsToText extends Task {
                 (primaryId);
         for (int i = 0; i < interactors.size(); i++) {
             CPathRecord interactor = (CPathRecord) interactors.get(i);
-            DaoExternalLink externalLinker = new DaoExternalLink();
+            DaoExternalLink externalLinker = DaoExternalLink.getInstance();
             ArrayList refs = externalLinker.getRecordsByCPathId
                     (interactor.getId());
             String interactorId = null;
@@ -167,7 +167,7 @@ public class ExportInteractionsToText extends Task {
                 ExternalLinkRecord externalLink = (ExternalLinkRecord)
                         refs.get(j);
                 ExternalDatabaseRecord db = externalLink.getExternalDatabase();
-                if (db.getFixedCvTerm().equals("UNIPROT")) {
+                if (db.getMasterTerm().equals("UNIPROT")) {
                     interactorId = externalLink.getLinkedToId();
                 }
             }

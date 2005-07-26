@@ -69,7 +69,7 @@ public class TestDaoCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
-        DaoCPath dao = new DaoCPath();
+        DaoCPath dao = DaoCPath.getInstance();
 
         ExternalReference refs[] = new ExternalReference[2];
         refs[0] = new ExternalReference(DB_NAME_0, DB_ID_0);
@@ -116,7 +116,7 @@ public class TestDaoCPath extends TestCase {
         assertTrue(record == null);
 
         //  Verify that all external links have been deleted
-        DaoExternalLink linker = new DaoExternalLink();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
         ArrayList links = linker.getRecordsByCPathId(cpathId);
         assertTrue(links.size() == 0);
     }
@@ -132,7 +132,7 @@ public class TestDaoCPath extends TestCase {
                 record.getType().toString());
         assertEquals(BioPaxConstants.PROTEIN, record.getSpecificType());
 
-        DaoExternalLink dao = new DaoExternalLink();
+        DaoExternalLink dao = DaoExternalLink.getInstance();
         ArrayList links = dao.getRecordsByCPathId(record.getId());
         ExternalLinkRecord link = (ExternalLinkRecord) links.get(0);
         assertEquals("UniProt", link.getExternalDatabase().getName());
@@ -149,7 +149,7 @@ public class TestDaoCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testGetAllTaxonomyIds() throws Exception {
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         ArrayList taxonomyList = cpath.getAllTaxonomyIds();
         Integer taxId = (Integer) taxonomyList.get(0);
         assertEquals(9606, taxId.intValue());

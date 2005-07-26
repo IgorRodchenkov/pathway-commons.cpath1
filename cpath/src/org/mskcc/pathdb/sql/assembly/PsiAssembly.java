@@ -245,7 +245,7 @@ public class PsiAssembly implements XmlAssembly {
             throws DaoException {
         HashMap interactorMap = new HashMap();
         DaoInternalLink linker = new DaoInternalLink();
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         for (int i = 0; i < interactions.size(); i++) {
             CPathRecord record = (CPathRecord) interactions.get(i);
             ArrayList list = linker.getInternalLinks(record.getId());

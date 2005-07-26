@@ -143,7 +143,7 @@ public class ImportBioPaxToCPath {
      * Stores RDF Resource Placeholders (without XML) to MySQL.
      */
     private void storeRecords() throws DaoException {
-        DaoCPath dao = new DaoCPath();
+        DaoCPath dao = DaoCPath.getInstance();
         pMonitor.setCurrentMessage("Storing records to MySQL:");
         pMonitor.setMaxValue(cPathRecordList.size());
         for (int i = 0; i < cPathRecordList.size(); i++) {
@@ -193,9 +193,9 @@ public class ImportBioPaxToCPath {
         //  1)  Store the newly modified XML to MySQL
         //  2)  Store the Internal Links to MySQL
         //  3)  Store the External Links to MySQL
-        DaoCPath daoCPath = new DaoCPath();
+        DaoCPath daoCPath = DaoCPath.getInstance();
         DaoInternalLink internalLinker = new DaoInternalLink();
-        DaoExternalLink externalLinker = new DaoExternalLink();
+        DaoExternalLink externalLinker = DaoExternalLink.getInstance();
 
         pMonitor.setCurrentMessage("Storing Internal / External "
                 + "Links to MySQL:");

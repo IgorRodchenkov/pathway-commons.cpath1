@@ -56,7 +56,7 @@ public class TestDaoExternalLink extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
-        DaoExternalLink db = new DaoExternalLink();
+        DaoExternalLink db = DaoExternalLink.getInstance();
         addSampleRecord();
 
         // Test getRecordsByCPathId() Method.
@@ -98,7 +98,7 @@ public class TestDaoExternalLink extends TestCase {
     public void testEmptyIds() throws Exception {
         DaoExternalDb dbTable = new DaoExternalDb();
         ExternalDatabaseRecord externalDb = dbTable.getRecordByTerm(DB_NAME);
-        DaoExternalLink db = new DaoExternalLink();
+        DaoExternalLink db = DaoExternalLink.getInstance();
         ExternalLinkRecord link = new ExternalLinkRecord();
         link.setCpathId(1);
         link.setExternalDatabase(externalDb);
@@ -125,7 +125,7 @@ public class TestDaoExternalLink extends TestCase {
     private void addSampleRecord() throws DaoException {
         DaoExternalDb dbTable = new DaoExternalDb();
         ExternalDatabaseRecord externalDb = dbTable.getRecordByTerm(DB_NAME);
-        DaoExternalLink db = new DaoExternalLink();
+        DaoExternalLink db = DaoExternalLink.getInstance();
         ExternalLinkRecord link = new ExternalLinkRecord();
         link.setCpathId(1);
         link.setExternalDatabase(externalDb);

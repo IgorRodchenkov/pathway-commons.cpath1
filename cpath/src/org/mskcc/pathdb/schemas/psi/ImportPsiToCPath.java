@@ -209,7 +209,7 @@ public class ImportPsiToCPath {
             MissingDataException {
         pMonitor.setCurrentMessage("Step 2 of 4:  Validating All External "
                 + "References");
-        DaoExternalLink linker = new DaoExternalLink();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
 
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
@@ -307,7 +307,7 @@ public class ImportPsiToCPath {
     private void processInteractors(EntrySet entrySet)
             throws DaoException, MarshalException, ValidationException,
             MissingDataException, IOException {
-        DaoExternalLink externalLinker = new DaoExternalLink();
+        DaoExternalLink externalLinker = DaoExternalLink.getInstance();
         pMonitor.setCurrentMessage("Step 3 of 4:  Process all Interactors");
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
@@ -441,7 +441,7 @@ public class ImportPsiToCPath {
     private void saveInteractor(ProteinInteractorType protein,
             ExternalReference[] refs) throws MarshalException,
             ValidationException, DaoException, IOException {
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         //  Extract Important Data:  name, description, taxonomy Id.
         String xml = marshalProtein(protein);
 
@@ -498,7 +498,7 @@ public class ImportPsiToCPath {
     private void saveInteraction(InteractionElementType interaction)
             throws MarshalException, ValidationException, DaoException,
             IOException, MissingDataException, ImportException {
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         summary.incrementNumInteractionsSaved();
 
         //  Extract References, if they exist.
@@ -538,8 +538,8 @@ public class ImportPsiToCPath {
         ExternalReference[] filteredRefs =
                 ExternalReferenceUtil.filterByReferenceType
                 (refs, ReferenceType.INTERACTION_UNIFICATION);
-        DaoExternalLink linker = new DaoExternalLink();
-        DaoCPath cpath = new DaoCPath();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
+        DaoCPath cpath = DaoCPath.getInstance();
         ArrayList records = linker.lookUpByExternalRefs(filteredRefs);
         if (records.size() > 0) {
             CPathRecord record = (CPathRecord) records.get(0);

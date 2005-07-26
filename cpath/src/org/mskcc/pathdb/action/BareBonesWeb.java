@@ -66,7 +66,7 @@ public class BareBonesWeb extends BaseAction {
     public ActionForward subExecute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response,
             XDebug xdebug) throws Exception {
-        DaoCPath dao = new DaoCPath();
+        DaoCPath dao = DaoCPath.getInstance();
         String id = request.getParameter("id");
         CPathRecord record = null;
         if (id != null) {

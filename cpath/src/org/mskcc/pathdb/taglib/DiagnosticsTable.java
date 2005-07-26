@@ -71,8 +71,8 @@ public class DiagnosticsTable extends HtmlTable {
     private void runFirstBatch() {
         DiagnosticTestResults test = new DiagnosticTestResults
                 ("Testing access to Table:  cpath");
-        DaoCPath cpath = new DaoCPath();
         try {
+            DaoCPath cpath = DaoCPath.getInstance();
             cpath.getRecordById(12345);
         } catch (DaoException e) {
             test.setException(e);
@@ -101,8 +101,8 @@ public class DiagnosticsTable extends HtmlTable {
 
         test = new DiagnosticTestResults
                 ("Testing access to Table:  external_link");
-        DaoExternalLink externalLink = new DaoExternalLink();
         try {
+            DaoExternalLink externalLink = DaoExternalLink.getInstance();
             externalLink.getRecordById(12345);
         } catch (DaoException e) {
             test.setException(e);

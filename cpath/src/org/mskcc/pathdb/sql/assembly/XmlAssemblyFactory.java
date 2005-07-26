@@ -58,7 +58,7 @@ public class XmlAssemblyFactory {
             xmlType, int numHits,
             XDebug xdebug) throws AssemblyException {
         try {
-            DaoCPath dao = new DaoCPath();
+            DaoCPath dao = DaoCPath.getInstance();
             CPathRecord record = dao.getRecordById(cpathId);
             return createAssemblyInstance(record, xmlType, numHits, xdebug);
         } catch (DaoException e) {
@@ -78,7 +78,7 @@ public class XmlAssemblyFactory {
     public static XmlAssembly createXmlAssembly(long cpathId, int numHits,
             XDebug xdebug) throws AssemblyException {
         try {
-            DaoCPath dao = new DaoCPath();
+            DaoCPath dao = DaoCPath.getInstance();
             CPathRecord record = dao.getRecordById(cpathId);
             return createAssemblyInstance(record, record.getXmlType(),
                     numHits, xdebug);
@@ -101,7 +101,7 @@ public class XmlAssemblyFactory {
             xmlType, int numHits, XDebug xdebug) throws AssemblyException {
         try {
             ArrayList records = new ArrayList();
-            DaoCPath dao = new DaoCPath();
+            DaoCPath dao = DaoCPath.getInstance();
             for (int i = 0; i < cpathIds.length; i++) {
                 CPathRecord record = dao.getRecordById(cpathIds[i]);
                 records.add(record);

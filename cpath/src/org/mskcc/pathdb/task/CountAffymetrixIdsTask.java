@@ -141,7 +141,7 @@ public class CountAffymetrixIdsTask extends Task {
         ProgressMonitor pMonitor = this.getProgressMonitor();
 
         //  Retrieve all Physical Entities for Specified Organism
-        DaoCPath dao = new DaoCPath();
+        DaoCPath dao = DaoCPath.getInstance();
         ArrayList records = dao.getRecordByTaxonomyID
                 (CPathRecordType.PHYSICAL_ENTITY, taxonomyId);
 

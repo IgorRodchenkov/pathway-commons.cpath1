@@ -128,7 +128,7 @@ public class IndexLuceneTask extends Task {
             ImportException, AssemblyException {
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Indexing all cPath Pathways/Interactions");
-        DaoCPath cpath = new DaoCPath();
+        DaoCPath cpath = DaoCPath.getInstance();
         int numPathways = cpath.getNumEntities(CPathRecordType.PATHWAY);
         int numInteractions = cpath.getNumEntities(CPathRecordType.INTERACTION);
         pMonitor.setCurrentMessage("Total Number of Pathways:  "

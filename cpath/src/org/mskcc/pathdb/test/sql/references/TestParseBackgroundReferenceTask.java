@@ -273,9 +273,9 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         ExternalDatabaseRecord dbRecord1 = dao.getRecordById(db1);
         int db2 = id.getDbId2();
         ExternalDatabaseRecord dbRecord2 = dao.getRecordById(db2);
-        assertEquals(expectedDb1, dbRecord1.getFixedCvTerm());
+        assertEquals(expectedDb1, dbRecord1.getMasterTerm());
         assertEquals(expectedId1, id.getLinkedToId1());
-        assertEquals(expectedDb2, dbRecord2.getFixedCvTerm());
+        assertEquals(expectedDb2, dbRecord2.getMasterTerm());
         assertEquals(expectedId2, id.getLinkedToId2());
     }
 

@@ -146,7 +146,7 @@ public abstract class UpdateInteractor {
             ExternalReference newRefs [] =
                     new ExternalReference[newList.size()];
             newRefs = (ExternalReference[]) newList.toArray(newRefs);
-            DaoExternalLink linker = new DaoExternalLink();
+            DaoExternalLink linker = DaoExternalLink.getInstance();
             linker.addMulipleRecords(cpathId, newRefs, true);
         }
     }

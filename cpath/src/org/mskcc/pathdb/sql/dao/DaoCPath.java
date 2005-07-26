@@ -34,10 +34,12 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -45,7 +47,104 @@ import java.util.ArrayList;
  *
  * @author Ethan Cerami.
  */
-public class DaoCPath {
+public class DaoCPath extends ManagedDAO {
+
+    private static DaoCPath daoCPath = null;
+
+    //  Get Num Entities SQL
+    private static final String GET_NUM_ENTITIES_KEY = "GET_NUM_ENTITIES_KEY";
+    private static final String GET_NUM_ENTITIES =
+        "select count(CPATH_ID) from cpath where type = ?";
+    
+    //  Insert SQL
+    private static final String INSERT_KEY = "INSERT_KEY";
+    private static final String INSERT =
+            "INSERT INTO cpath (`NAME`,`DESC`,"
+            + "`TYPE`, `SPECIFIC_TYPE`, `NCBI_TAX_ID`, `XML_TYPE`, "
+            + "`XML_CONTENT` ,"
+            + " `CREATE_TIME`) VALUES (?, ?,?,?,?,?,?,?)";
+    
+    private static final String GET_MAX_ID_KEY = "GET_MAX_ID_KEY";
+    private static final String GET_MAX_ID =
+            "SELECT MAX(CPATH_ID) from cpath";
+
+    //  Get All SQL
+    private static final String GET_ALL_KEY= "GET_ALL_KEY";
+    private static final String GET_ALL =
+            "select * from cpath order by CPATH_ID";
+
+    //  Get All by Record Type SQL
+    private static final String GET_ALL_BY_TYPE_KEY = "GET_ALL_BY_TYPE_KEY";
+    private static final String GET_ALL_BY_TYPE =
+            "select * from cpath WHERE TYPE = ? order by CPATH_ID";
+
+    //  Get All by Taxonomy ID SQL
+    private static final String GET_ALL_BY_TAX_ID_KEY = "GET_ALL_BY_TAX_ID_KEY";
+    private static final String GET_ALL_BY_TAX_ID =
+        "SELECT * FROM cpath WHERE TYPE = ? AND " + "NCBI_TAX_ID = ?";
+    
+    //  Get Taxonomy IDs SQL
+    private static final String GET_TAX_IDS_KEY = "GET_TAX_IDS";
+    private static final String GET_TAX_IDS =
+        "SELECT DISTINCT NCBI_TAX_ID FROM cpath";
+
+    //  Get By ID SQL
+    private static final String GET_BY_ID_KEY = "GET_BY_ID_KEY";
+    private static final String GET_BY_ID =
+        "SELECT * FROM cpath WHERE CPATH_ID = ?";
+
+    //  Get By Name SQL
+    private static final String GET_BY_NAME_KEY = "GET_BY_NAME";
+    private static final String GET_BY_NAME =
+        "SELECT * FROM cpath WHERE NAME = ?";
+
+    //  Delete by ID SQL
+    private static final String DELETE_BY_ID_KEY = "DELETE_BY_ID_KEY";
+    private static final String DELETE_BY_ID =
+        "DELETE FROM cpath WHERE CPATH_ID = ?";
+    
+    //  Update XML SQL
+    private static final String UPDATE_XML_KEY = "UPDATE_XML_KEY";
+    private static final String UPDATE_XML =
+        "UPDATE cpath SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
+        + "WHERE `CPATH_ID` = ?";
+
+    /**
+     * Private Constructor (Singleton pattern).
+     */
+    private DaoCPath() {}
+
+    /**
+     * Gets Instance of Dao Object. (Singleton pattern).
+     * @return  DaoCPath Object.
+     * @throws DaoException Dao Initialization Error.
+     */
+    public static DaoCPath getInstance()  throws DaoException{
+        if(daoCPath == null){
+        	daoCPath = new DaoCPath();
+            daoCPath.init();
+        }
+        return daoCPath;
+    }
+
+    /**
+     * Initialize DAO Prepared Statement Objects.
+     * @throws DaoException Dao Initialization Error.
+     */
+    protected void init() throws DaoException{
+    	super.init();
+        addPreparedStatement(GET_NUM_ENTITIES_KEY, GET_NUM_ENTITIES);
+        addPreparedStatement(INSERT_KEY, INSERT);
+        addPreparedStatement(GET_MAX_ID_KEY, GET_MAX_ID);
+        addPreparedStatement(GET_ALL_KEY, GET_ALL);
+        addPreparedStatement(GET_ALL_BY_TYPE_KEY, GET_ALL_BY_TYPE);
+        addPreparedStatement(GET_ALL_BY_TAX_ID_KEY, GET_ALL_BY_TAX_ID);
+        addPreparedStatement(GET_TAX_IDS_KEY, GET_TAX_IDS);
+        addPreparedStatement(GET_BY_ID_KEY, GET_BY_ID);
+        addPreparedStatement(GET_BY_NAME_KEY, GET_BY_NAME);
+        addPreparedStatement(DELETE_BY_ID_KEY, DELETE_BY_ID);
+        addPreparedStatement(UPDATE_XML_KEY, UPDATE_XML);
+    }
 
     /**
      * Gets Total Number of Entities which match the specified Record Type.
@@ -61,9 +160,8 @@ public class DaoCPath {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("select count(CPATH_ID) from cpath where type = ?");
+            con = getConnection();
+            pstmt = getStatement(con, GET_NUM_ENTITIES_KEY);
             pstmt.setString(1, recordType.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -75,7 +173,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -103,12 +201,8 @@ public class DaoCPath {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("INSERT INTO cpath (`NAME`,`DESC`,"
-                    + "`TYPE`, `SPECIFIC_TYPE`, `NCBI_TAX_ID`, `XML_TYPE`, "
-                    + "`XML_CONTENT` ,"
-                    + " `CREATE_TIME`) VALUES (?, ?,?,?,?,?,?,?)");
+            con = getConnection();
+            pstmt = this.getStatement(con, INSERT_KEY);
             pstmt.setString(1, name);
             pstmt.setString(2, description);
             pstmt.setString(3, type.toString());
@@ -117,12 +211,12 @@ public class DaoCPath {
             pstmt.setString(6, xmlType.toString());
             pstmt.setString(7, xml);
             java.util.Date now = new java.util.Date();
-            java.sql.Date sqlDate = new java.sql.Date (now.getTime());
-            pstmt.setDate (8, sqlDate);
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
+            pstmt.setDate(8, sqlDate);
             pstmt.executeUpdate();
 
             //  Get New CPath ID
-            pstmt = con.prepareStatement("SELECT MAX(CPATH_ID) from cpath");
+            pstmt = getStatement(con, GET_MAX_ID_KEY);
             rs = pstmt.executeQuery();
             rs.next();
             long cpathId = rs.getLong(1);
@@ -132,7 +226,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            this.localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -157,7 +251,7 @@ public class DaoCPath {
             throws DaoException {
         long cpathId = this.addRecord(name, description, ncbiTaxonomyId,
                 type, specificType, xmlType, xml);
-        DaoExternalLink linker = new DaoExternalLink();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
         linker.addMulipleRecords(cpathId, refs, false);
         return cpathId;
     }
@@ -175,10 +269,8 @@ public class DaoCPath {
         ResultSet rs = null;
         ArrayList records = new ArrayList();
         try {
-            con = JdbcUtil.getCPathConnection();
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("select * from cpath order by CPATH_ID");
+            con = getConnection();
+            pstmt = this.getStatement(con, GET_ALL_KEY);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 CPathRecord record = extractRecord(rs);
@@ -189,7 +281,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
         return records;
     }
@@ -209,10 +301,8 @@ public class DaoCPath {
         ResultSet rs = null;
         ArrayList records = new ArrayList();
         try {
-            con = JdbcUtil.getCPathConnection();
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("select * from cpath WHERE TYPE = ? order by CPATH_ID");
+            con = getConnection();
+            pstmt = getStatement(con, GET_ALL_BY_TYPE_KEY);
             pstmt.setString(1, recordType.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -224,7 +314,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
         return records;
     }
@@ -244,10 +334,8 @@ public class DaoCPath {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT * FROM cpath WHERE TYPE = ? AND "
-                    + "NCBI_TAX_ID = ?");
+            con = this.getConnection();
+            pstmt = getStatement(con, GET_ALL_BY_TAX_ID_KEY);
             pstmt.setString(1, recordType.toString());
             pstmt.setInt(2, taxonomyId);
             rs = pstmt.executeQuery();
@@ -259,7 +347,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
         return records;
     }
@@ -277,9 +365,8 @@ public class DaoCPath {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT DISTINCT NCBI_TAX_ID FROM cpath");
+            con = getConnection();
+            pstmt = getStatement(con, GET_TAX_IDS_KEY);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 int taxId = rs.getInt("NCBI_TAX_ID");
@@ -290,7 +377,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
         return taxonomyList;
     }
@@ -307,9 +394,8 @@ public class DaoCPath {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT * FROM cpath WHERE CPATH_ID = ?");
+            con = getConnection();
+            pstmt = getStatement(con, GET_BY_ID_KEY);
             pstmt.setLong(1, cpathId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -322,7 +408,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -338,9 +424,8 @@ public class DaoCPath {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT * FROM cpath WHERE NAME = ?");
+            con = getConnection();
+            pstmt = getStatement(con, GET_BY_NAME_KEY);
             pstmt.setString(1, name);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -353,7 +438,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            this.localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -371,14 +456,13 @@ public class DaoCPath {
         ResultSet rs = null;
         try {
             //  Step 1:  Delete the Primary Record
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("DELETE FROM cpath WHERE CPATH_ID = ?");
+            con = getConnection();
+            pstmt = getStatement(con, DELETE_BY_ID_KEY);
             pstmt.setLong(1, cpathId);
             int rows = pstmt.executeUpdate();
 
             //  Step 2:  Delete all Associted External Links
-            DaoExternalLink linker = new DaoExternalLink();
+            DaoExternalLink linker = DaoExternalLink.getInstance();
             ArrayList links = linker.getRecordsByCPathId(cpathId);
             for (int i = 0; i < links.size(); i++) {
                 ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
@@ -395,7 +479,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            this.localCloseAll(con, pstmt, rs);
         }
     }
 
@@ -412,13 +496,11 @@ public class DaoCPath {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("UPDATE cpath SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
-                    + "WHERE `CPATH_ID` = ?");
+            con = getConnection();
+            pstmt = getStatement(con, UPDATE_XML_KEY);
             pstmt.setString(1, newXml);
             java.util.Date now = new java.util.Date();
-            java.sql.Date sqlDate = new java.sql.Date (now.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
             pstmt.setDate(2, sqlDate);
             pstmt.setLong(3, cpathId);
             int rows = pstmt.executeUpdate();
@@ -428,7 +510,7 @@ public class DaoCPath {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            localCloseAll(con, pstmt, rs);
         }
     }
 

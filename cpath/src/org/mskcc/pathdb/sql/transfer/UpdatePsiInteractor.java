@@ -79,7 +79,7 @@ public class UpdatePsiInteractor extends UpdateInteractor {
         //  Find a Match to Existing Interactor.
         ExternalReference newRefs[] = psiUtil.extractRefs(newProtein);
 
-        DaoExternalLink linker = new DaoExternalLink();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
         ArrayList records = linker.lookUpByExternalRefs(newRefs);
         if (records.size() > 0) {
             CPathRecord record = (CPathRecord) records.get(0);
@@ -136,7 +136,7 @@ public class UpdatePsiInteractor extends UpdateInteractor {
         newRefs[1] = newRef;
 
         //  Find  Match to Existing Interactor (if possible).
-        DaoExternalLink linker = new DaoExternalLink();
+        DaoExternalLink linker = DaoExternalLink.getInstance();
         ArrayList records1 = linker.lookUpByExternalRef(existingRef);
         try {
             if (records1.size() > 0) {

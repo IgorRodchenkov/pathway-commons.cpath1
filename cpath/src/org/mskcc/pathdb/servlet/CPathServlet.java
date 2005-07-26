@@ -120,7 +120,7 @@ public final class CPathServlet extends ActionServlet {
         try {
             System.err.println("Attempting to retrieve Log Records...");
             adminLogger.getLogRecords();
-            DaoCPath dao = new DaoCPath();
+            DaoCPath dao = DaoCPath.getInstance();
             System.err.println("Attempting to retrieve Entity Records...");
             int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
             System.err.println("Database Connection -->  [OK]");

@@ -77,7 +77,7 @@ public class PerfTest {
 
     private static void testExternalLinks() throws DaoException {
         for (int i = 0; i < 20; i++) {
-            DaoExternalLink dao = new DaoExternalLink();
+            DaoExternalLink dao = DaoExternalLink.getInstance();
             ExternalReference externalRef = new ExternalReference("SWP",
                     "id" + i);
             ArrayList list = dao.lookUpByExternalRef(externalRef);
