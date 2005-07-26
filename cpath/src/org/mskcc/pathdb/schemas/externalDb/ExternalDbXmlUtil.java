@@ -66,8 +66,8 @@ public class ExternalDbXmlUtil {
             dbRecord.setDescription(description);
             dbRecord.setUrl(urlPattern);
             dbRecord.setSampleId(sampleId);
-            dbRecord.setFixedCvTerm(masterTerm);
-            dbRecord.setCvTerms(synonymList);
+            dbRecord.setMasterTerm(masterTerm);
+            dbRecord.setSynonymTerms(synonymList);
             dbList.add(dbRecord);
         }
     }

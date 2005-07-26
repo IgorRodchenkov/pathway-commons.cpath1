@@ -104,7 +104,7 @@ public class BackgroundReference {
         String dbName = null;
         try {
             ExternalDatabaseRecord dbRecord1 = dao.getRecordById(dbId1);
-            dbName = dbRecord1.getFixedCvTerm();
+            dbName = dbRecord1.getMasterTerm();
         } catch (DaoException e) {
             dbName = "Unknown";
         }
