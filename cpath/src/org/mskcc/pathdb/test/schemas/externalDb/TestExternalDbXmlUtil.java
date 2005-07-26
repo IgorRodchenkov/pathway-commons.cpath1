@@ -32,9 +32,9 @@ public class TestExternalDbXmlUtil extends TestCase {
         assertEquals ("http://www.ebi.uniprot.org/entry/%ID%",
                 dbRecord.getUrl());
         assertEquals ("P31947", dbRecord.getSampleId());
-        assertEquals ("UNIPROT", dbRecord.getFixedCvTerm());
+        assertEquals ("UNIPROT", dbRecord.getMasterTerm());
 
-        ArrayList synList = dbRecord.getCvTerms();
+        ArrayList synList = dbRecord.getSynonymTerms();
         assertEquals (5, synList.size());
         String syn0 = (String) synList.get(0);
         assertEquals ("SWISS-PROT", syn0);
