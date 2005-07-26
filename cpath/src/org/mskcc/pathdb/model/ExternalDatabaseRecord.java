@@ -40,7 +40,7 @@ import java.util.Date;
  * and another file might include a reference to "SWISS-PROT".  To accommodote
  * a varying list of terms, each database record can be associated with multiple
  * controlled vocabulary terms.  The full list of terms is available via
- * the getCvTerms() method.
+ * the getSynonymTerms() method.
  *
  * @author Ethan Cerami
  */
@@ -48,8 +48,8 @@ public class ExternalDatabaseRecord {
     private int id;
     private String name;
     private String description;
-    private ArrayList cvTerms;
-    private String fixedCvTerm;
+    private ArrayList synTerms;
+    private String masterTerm;
     private String url;
     private String sampleId;
     private ReferenceType dbType;
@@ -115,8 +115,8 @@ public class ExternalDatabaseRecord {
      *
      * @return ArrayList of String terms.
      */
-    public ArrayList getCvTerms() {
-        return this.cvTerms;
+    public ArrayList getSynonymTerms() {
+        return this.synTerms;
     }
 
     /**
@@ -124,8 +124,8 @@ public class ExternalDatabaseRecord {
      *
      * @param terms ArrayList of String terms.
      */
-    public void setCvTerms(ArrayList terms) {
-        this.cvTerms = terms;
+    public void setSynonymTerms(ArrayList terms) {
+        this.synTerms = terms;
     }
 
     /**
@@ -219,12 +219,12 @@ public class ExternalDatabaseRecord {
     }
 
     /**
-     * Gets the fixed (or normalized) CV Term.
+     * Gets the master (or normalized) CV Term.
      *
      * @return CV Term.
      */
-    public String getFixedCvTerm() {
-        return fixedCvTerm;
+    public String getMasterTerm() {
+        return masterTerm;
     }
 
     /**
@@ -232,8 +232,8 @@ public class ExternalDatabaseRecord {
      *
      * @param fixedCvTerm CV Term String.
      */
-    public void setFixedCvTerm(String fixedCvTerm) {
-        this.fixedCvTerm = fixedCvTerm;
+    public void setMasterTerm(String fixedCvTerm) {
+        this.masterTerm = fixedCvTerm;
     }
 
     /**
