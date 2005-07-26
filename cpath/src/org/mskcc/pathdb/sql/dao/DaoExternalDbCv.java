@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
@@ -53,17 +54,19 @@ public class DaoExternalDbCv {
      * @return true indicates success.
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean addRecord(int dbId, String term) throws DaoException {
+    public boolean addRecord(int dbId, String term, boolean masterFlag)
+            throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO external_db_cv (`EXTERNAL_DB_ID`,`CV_TERM`)"
-                    + " VALUES (?,?)");
+                    ("INSERT INTO external_db_cv (`EXTERNAL_DB_ID`,`CV_TERM`,"
+                    + "`MASTER_FLAG`) VALUES (?,?,?)");
             pstmt.setInt(1, dbId);
             pstmt.setString(2, term);
+            pstmt.setInt(3, masterFlag == true ? 1 :0);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
@@ -90,7 +93,7 @@ public class DaoExternalDbCv {
             throw new DaoException(new NullPointerException
                     ("No matching database found for: " + dbTerm));
         }
-        return exDb.getFixedCvTerm();
+        return exDb.getMasterTerm();
     }
 
     /**
@@ -133,26 +136,33 @@ public class DaoExternalDbCv {
      * Gets all Terms Associated with the specified Database.
      *
      * @param dbId External Database Id
-     * @return ArrayList of Terms.
+     * @return CvTermRecord Controlled Vocabulary Record
      * @throws DaoException Error Retrieving Data.
      */
-    public ArrayList getTermsByDbId(int dbId) throws DaoException {
+    public CvRecord getTermsByDbId(int dbId) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        CvRecord cvRecord = new CvRecord();
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT * FROM external_db_cv WHERE EXTERNAL_DB_ID = ? "
-                    + "ORDER BY CV_TERM");
+                    + "ORDER BY CV_TERM DESC");
             pstmt.setInt(1, dbId);
             rs = pstmt.executeQuery();
-            ArrayList terms = new ArrayList();
+            ArrayList synTerms = new ArrayList();
             while (rs.next()) {
                 String term = rs.getString("CV_TERM");
-                terms.add(term);
+                int masterFlag = rs.getInt("MASTER_FLAG");
+                if (masterFlag == 0) {
+                    synTerms.add(0, term);
+                } else {
+                    cvRecord.setMasterTerm(term);
+                }
             }
-            return terms;
+            cvRecord.setSynonymTerms(synTerms);
+            return cvRecord;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {

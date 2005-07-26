@@ -31,6 +31,7 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
+import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.cache.GlobalCache;
 
@@ -55,6 +56,13 @@ public class DaoExternalDb {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        String masterTerm = db.getMasterTerm();
+
+        if (db.getMasterTerm() == null) {
+            throw new IllegalArgumentException ("ExternalDatabaseRecord "
+                + " masterTerm attribute is null.");
+        }
+
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
@@ -70,15 +78,19 @@ public class DaoExternalDb {
             pstmt.setString(6, db.getDbType().toString());
             int rows = pstmt.executeUpdate();
 
-            // Save CV Terms.
-            ArrayList terms = db.getCvTerms();
+            // Save the Controlled Vocabulary Terms.
+            ArrayList terms = db.getSynonymTerms();
             DaoExternalDbCv dao = new DaoExternalDbCv();
             db = getRecordByName(db.getName());
             if (terms != null) {
                 for (int i = 0; i < terms.size(); i++) {
-                    dao.addRecord(db.getId(), (String) terms.get(i));
+                    dao.addRecord(db.getId(), (String) terms.get(i), false);
                 }
             }
+
+            //  Save the Master Term
+            dao.addRecord(db.getId(), masterTerm, true);
+
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
@@ -302,10 +314,10 @@ public class DaoExternalDb {
             dao.deleteTermsByDbId(db.getId());
 
             // Save CV Terms.
-            ArrayList terms = db.getCvTerms();
+            ArrayList terms = db.getSynonymTerms();
             db = getRecordByName(db.getName());
             for (int i = 0; i < terms.size(); i++) {
-                dao.addRecord(db.getId(), (String) terms.get(i));
+                dao.addRecord(db.getId(), (String) terms.get(i), false);
             }
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
@@ -345,13 +357,11 @@ public class DaoExternalDb {
         ReferenceType type = ReferenceType.getType
                 (rs.getString("DB_TYPE"));
         record.setDbType(type);
-        int cvId = rs.getInt("FIXED_CV_TERM");
 
         DaoExternalDbCv dao = new DaoExternalDbCv();
-        ArrayList terms = dao.getTermsByDbId(record.getId());
-        record.setCvTerms(terms);
-        String term = dao.getTermByDbCvId(cvId);
-        record.setFixedCvTerm(term);
+        CvRecord cvRecord = dao.getTermsByDbId(record.getId());
+        record.setMasterTerm(cvRecord.getMasterTerm());
+        record.setSynonymTerms(cvRecord.getSynonymTerms());
         return record;
     }
 }
