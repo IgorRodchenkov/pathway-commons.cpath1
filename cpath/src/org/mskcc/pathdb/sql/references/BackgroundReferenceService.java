@@ -134,7 +134,7 @@ public class BackgroundReferenceService {
 
         //  Normalize database name;  this must be done to ensure that
         //  equals() method works below
-        xref.setDatabase(dbRecord.getFixedCvTerm());
+        xref.setDatabase(dbRecord.getMasterTerm());
 
         //  Look up Equivalence List
         BackgroundReference cpathXRef = new BackgroundReference
@@ -207,7 +207,7 @@ public class BackgroundReferenceService {
 
             //  Create New External Reference Object.
             ExternalReference match = new ExternalReference
-                    (dbRecord.getFixedCvTerm(), cPathMatch.getLinkedToId1());
+                    (dbRecord.getMasterTerm(), cPathMatch.getLinkedToId1());
             unionSet.add(match);
         }
     }
@@ -234,7 +234,7 @@ public class BackgroundReferenceService {
             }
 
             //  Normalize database name to fixed CV Term.
-            xrefs[i].setDatabase(dbRecord.getFixedCvTerm());
+            xrefs[i].setDatabase(dbRecord.getMasterTerm());
             set.add(xrefs[i]);
         }
         return set;
