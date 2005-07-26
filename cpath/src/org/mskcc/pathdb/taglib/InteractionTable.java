@@ -571,14 +571,14 @@ public class InteractionTable extends HtmlTable {
         ArrayList affyList = new ArrayList();
         startRow();
         this.append("<td class='cpath1'>External References:</th>");
-        DaoExternalLink dao = new DaoExternalLink();
+        DaoExternalLink dao = DaoExternalLink.getInstance();
         ArrayList links = dao.getRecordsByCPathId(Long.parseLong(id));
         Collections.sort(links);
         append("<TD VALIGN=TOP>");
         for (int i = 0; i < links.size(); i++) {
             ExternalLinkRecord link = (ExternalLinkRecord) links.get(i);
             ExternalDatabaseRecord db = link.getExternalDatabase();
-            if (db.getFixedCvTerm().equalsIgnoreCase("Affymetrix")) {
+            if (db.getMasterTerm().equalsIgnoreCase("Affymetrix")) {
                 affyList.add(link);
             } else {
                 append("- " + db.getName() + ": ");

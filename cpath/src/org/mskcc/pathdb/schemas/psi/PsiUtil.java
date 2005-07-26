@@ -240,11 +240,11 @@ public class PsiUtil {
         ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(db);
 
         //  If this is a REF_SEQ ID, determine if it's a PROTEIN.
-        if (dbRecord.getFixedCvTerm().equalsIgnoreCase("REF_SEQ")
+        if (dbRecord.getMasterTerm().equalsIgnoreCase("REF_SEQ")
                 && id != null && id.charAt(1) == 'P') {
             dbRecord = dao.getRecordByTerm("REF_SEQ PROTEIN");
         }
-        String newDb = dbRecord.getFixedCvTerm();
+        String newDb = dbRecord.getMasterTerm();
         return newDb;
     }
 
