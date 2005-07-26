@@ -32,6 +32,7 @@ package org.mskcc.pathdb.test.sql;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
+import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
@@ -44,8 +45,9 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class TestDaoExternalDbCv extends TestCase {
+    private static final String TERM0 = "ACME_TEST_0";
     private static final String TERM1 = "ACME_TEST_1";
-    private static final String TERM2 = "ACME_TEST_2";
+    private static final String MASTER_TERM = "ACME_CORP";
     private static final String DB_NAME = "ACME_TEST";
 
     /**
@@ -59,31 +61,44 @@ public class TestDaoExternalDbCv extends TestCase {
         DaoExternalDbCv dao = new DaoExternalDbCv();
 
         //  Add Two Terms
-        boolean success = dao.addRecord(dbId, TERM1);
+        boolean success = dao.addRecord(dbId, TERM0, false);
         assertTrue(success);
-        success = dao.addRecord(dbId, TERM2);
+        success = dao.addRecord(dbId, TERM1, false);
         assertTrue(success);
 
         //  Get Matching Database
-        ExternalDatabaseRecord db = dao.getExternalDbByTerm(TERM1);
+        ExternalDatabaseRecord db = dao.getExternalDbByTerm(TERM0);
         assertEquals(DB_NAME, db.getName());
-        db = dao.getExternalDbByTerm(TERM2);
+        db = dao.getExternalDbByTerm(TERM1);
+        assertEquals(DB_NAME, db.getName());
+        db = dao.getExternalDbByTerm(MASTER_TERM);
         assertEquals(DB_NAME, db.getName());
 
-        //  Get all terms for Database
-        ArrayList terms = dao.getTermsByDbId(dbId);
-        assertEquals(2, terms.size());
-        String term1 = (String) terms.get(0);
-        String term2 = (String) terms.get(1);
+        //  Validate the Master / Synonym Terms
+        assertEquals (MASTER_TERM, db.getMasterTerm());
+        ArrayList synTerms = db.getSynonymTerms();
+        assertEquals (2, synTerms.size());
+        String term0 = (String) synTerms.get(0);
+        String term1 = (String) synTerms.get(1);
+        assertEquals(TERM0, term0);
         assertEquals(TERM1, term1);
-        assertEquals(TERM2, term2);
+
+        //  Get all terms for Database directly
+        CvRecord cvRecord = dao.getTermsByDbId(dbId);
+        synTerms = cvRecord.getSynonymTerms();
+        assertEquals(2, synTerms.size());
+        term0 = (String) synTerms.get(0);
+        term1 = (String) synTerms.get(1);
+        assertEquals(TERM0, term0);
+        assertEquals(TERM1, term1);
+        assertEquals(MASTER_TERM, cvRecord.getMasterTerm());
 
         //  Delete Terms
         success = dao.deleteTermsByDbId(dbId);
         assertTrue(success);
-        db = dao.getExternalDbByTerm(TERM1);
+        db = dao.getExternalDbByTerm(TERM0);
         assertTrue(db == null);
-        db = dao.getExternalDbByTerm(TERM2);
+        db = dao.getExternalDbByTerm(MASTER_TERM);
         assertTrue(db == null);
     }
 
@@ -93,6 +108,7 @@ public class TestDaoExternalDbCv extends TestCase {
         db.setName(DB_NAME);
         db.setDescription("Test");
         db.setDbType(ReferenceType.PROTEIN_UNIFICATION);
+        db.setMasterTerm(MASTER_TERM);
         dao.addRecord(db);
         db = dao.getRecordByName(DB_NAME);
         int dbId = db.getId();
