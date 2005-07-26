@@ -52,11 +52,10 @@ CREATE TABLE `cpath` (
 CREATE TABLE `external_db` (
   `EXTERNAL_DB_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(100) NOT NULL default '',
+  `DESC` varchar(255) default NULL,
+  `DB_TYPE` varchar(25) NOT NULL default '',
   `URL` varchar(255) default NULL,
   `SAMPLE_ID` varchar(255) default NULL,
-  `DESC` varchar(255) default NULL,
-  `FIXED_CV_TERM` int(11) NOT NULL default '0',
-  `DB_TYPE` varchar(25) NOT NULL default '',
   `DBDB_ID` int(11) default NULL,
   `DBDB_URL` varchar(255) default NULL,
   `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -75,6 +74,7 @@ CREATE TABLE `external_db_cv` (
   `CV_ID` int(11) NOT NULL auto_increment,
   `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
   `CV_TERM` char(25) NOT NULL default '',
+  `MASTER_FLAG` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`CV_ID`),
   KEY `QUERY` (`CV_TERM`)
 ) TYPE=MyISAM COMMENT='Contains controlled vocabulary terms for external databases.' AUTO_INCREMENT=1 ;
