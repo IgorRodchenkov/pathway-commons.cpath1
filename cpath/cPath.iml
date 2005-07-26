@@ -255,15 +255,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-httpclient.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/jakarta-oro.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -310,6 +301,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/commons-dbcp-1.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/commons-httpclient-2.0.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
