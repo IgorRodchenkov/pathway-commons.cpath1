@@ -87,7 +87,7 @@ public class Admin {
             getFromConsole();
 
             //  Turn on Command Line JDBC Connection
-            JdbcUtil.setCommandLineApplication(true);
+            JdbcUtil.setCommandLineFlag(true);
 
             if (command.equals(COMMAND_INDEX)) {
                 IndexLuceneTask indexer = new IndexLuceneTask(true, xdebug);
