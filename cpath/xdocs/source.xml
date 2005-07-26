@@ -16,12 +16,13 @@
         </p>
      </section>
 
-    <section name="Latest Stable Release">
+    <section name="Stable Releases">
         <p>
             The latest stable release of cPath is version:  0.4.
         </p>
         <p>
-        <A HREF="stable/cpath_beta_04.tar.gz">Download Latest Stable Release</A> [tar.gz format]
+        <A HREF="stable/cpath_beta_04.tar.gz">Download Version 0.4</A> [tar.gz format] [~35 MB]
+        <A HREF="stable/cpath_beta_03_2.tar.gz">Download Version 0.3.2</A> [tar.gz format] [~25 MB]
         </p>
      </section>
 
