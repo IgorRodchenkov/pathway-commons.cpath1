@@ -23,22 +23,20 @@ public class TestExternalDbXmlUtil extends TestCase {
         File file = new File ("testData/externalDb/external_db.xml");
         ExternalDbXmlUtil util = new ExternalDbXmlUtil(file);
         ArrayList dbList = util.getExternalDbList();
-        assertEquals (24, dbList.size());
+        assertEquals (2, dbList.size());
         ExternalDatabaseRecord dbRecord =
                 (ExternalDatabaseRecord) dbList.get(0);
-        assertEquals ("UniProt", dbRecord.getName());
-        assertEquals ("Universal Protein Resource (UniProt)",
+        assertEquals ("Yahoo", dbRecord.getName());
+        assertEquals ("Yahoo Search",
                 dbRecord.getDescription());
-        assertEquals ("http://www.ebi.uniprot.org/entry/%ID%",
+        assertEquals ("http://search.yahoo.com/search?p=%ID%",
                 dbRecord.getUrl());
-        assertEquals ("P31947", dbRecord.getSampleId());
-        assertEquals ("UNIPROT", dbRecord.getMasterTerm());
+        assertEquals ("test", dbRecord.getSampleId());
+        assertEquals ("YAHOO", dbRecord.getMasterTerm());
 
         ArrayList synList = dbRecord.getSynonymTerms();
-        assertEquals (5, synList.size());
+        assertEquals (1, synList.size());
         String syn0 = (String) synList.get(0);
-        assertEquals ("SWISS-PROT", syn0);
-        String syn4 = (String) synList.get(4);
-        assertEquals ("SWISS-PROT/TREMBL", syn4);
+        assertEquals ("YHO", syn0);
     }
 }
