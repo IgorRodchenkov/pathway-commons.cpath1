@@ -162,7 +162,7 @@
     <TD>External Links:</TD>
     <TD>
     <%
-    DaoExternalLink externalLinker = new DaoExternalLink();
+    DaoExternalLink externalLinker = DaoExternalLink.getInstance();
     ArrayList externalLinks =
             externalLinker.getRecordsByCPathId(record.getId());
     if (externalLinks.size() > 0) {

@@ -58,7 +58,7 @@
     <TD></TD>
     </TR>
 <%
-    DaoCPath dao = new DaoCPath();
+    DaoCPath dao = DaoCPath.getInstance();
     for (int i=0; i<cpathIds.length; i++) {
         CPathRecord record = dao.getRecordById(cpathIds[i]);
         int index = startIndex + i + 1;

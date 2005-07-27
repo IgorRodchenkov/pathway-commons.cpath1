@@ -8,7 +8,7 @@
 
 <%
 try {
-    DaoCPath dao = new DaoCPath();
+    DaoCPath dao = DaoCPath.getInstance();
     int numPathways = dao.getNumEntities(CPathRecordType.PATHWAY);
     int numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
     int numPhysicalEntities = dao.getNumEntities

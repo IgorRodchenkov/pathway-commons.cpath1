@@ -1,5 +1,4 @@
-<%@ page import="org.mskcc.pathdb.sql.dao.DaoCPath,
-                 org.mskcc.pathdb.model.CPathRecordType,
+<%@ page import="org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.util.security.XssFilter,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstants,
