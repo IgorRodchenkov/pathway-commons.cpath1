@@ -79,6 +79,19 @@ public class TestDaoExternalDb extends TestCase {
         record = dao.getRecordByTerm(TERM2);
         validateRecord(record);
 
+        //  Try adding the same record again.  This should fail
+        //  as MySQL maintains that database names are unique.
+        try {
+            addSampleRecord();
+            fail ("DaoException should have been thrown");
+        } catch (DaoException e) {
+            String msg = e.getMessage();
+            assertEquals ("Duplicate entry 'ACME Database' for key 2",
+                    e.getMessage());
+        }
+
+        addDuplicateTermRecord();
+
         //  Update Record;  test updateRecord() Method.
         record.setName(NEW_NAME);
         boolean flag = dao.updateRecord(record);
@@ -147,6 +160,26 @@ public class TestDaoExternalDb extends TestCase {
         db.setDbType(ReferenceType.PROTEIN_UNIFICATION);
         DaoExternalDb cpath = new DaoExternalDb();
         cpath.addRecord(db);
+    }
+
+    private void addDuplicateTermRecord() throws DaoException {
+        //  This database has a new name, but a duplicate term.
+        //  Adding it to MySQL should fail.
+        ExternalDatabaseRecord db = new ExternalDatabaseRecord();
+        db.setName("TEST");
+        db.setDescription(DESC);
+        db.setMasterTerm(MASTER_TERM);
+        db.setUrl(URL);
+        db.setSampleId(SAMPLE_ID);
+        db.setDbType(ReferenceType.PROTEIN_UNIFICATION);
+        DaoExternalDb dao = new DaoExternalDb();
+        try {
+            dao.addRecord(db);
+            fail ("DaoException should have been thrown");
+        } catch (DaoException e) {
+            String msg = e.getMessage();
+            assertEquals ("Duplicate entry 'ACME CORP' for key 2", msg);
+        }
     }
 
     /**
