@@ -48,7 +48,6 @@ CREATE TABLE `cpath` (
 # Creation: Mar 14, 2005 at 03:55 PM
 # Last update: Mar 14, 2005 at 03:55 PM
 #
-
 CREATE TABLE `external_db` (
   `EXTERNAL_DB_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(100) NOT NULL default '',
@@ -60,8 +59,10 @@ CREATE TABLE `external_db` (
   `DBDB_URL` varchar(255) default NULL,
   `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
   `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`EXTERNAL_DB_ID`)
-) TYPE=MyISAM COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
+  PRIMARY KEY  (`EXTERNAL_DB_ID`),
+  UNIQUE KEY `NAME` (`NAME`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
+
 
 #
 # Table structure for table `external_db_cv`
@@ -69,15 +70,15 @@ CREATE TABLE `external_db` (
 # Creation: May 25, 2004 at 03:36 PM
 # Last update: May 25, 2004 at 03:37 PM
 #
-
 CREATE TABLE `external_db_cv` (
   `CV_ID` int(11) NOT NULL auto_increment,
   `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
   `CV_TERM` char(25) NOT NULL default '',
   `MASTER_FLAG` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`CV_ID`),
-  KEY `QUERY` (`CV_TERM`)
-) TYPE=MyISAM COMMENT='Contains controlled vocabulary terms for external databases.' AUTO_INCREMENT=1 ;
+  UNIQUE KEY `CV_TERM` (`CV_TERM`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains controlled vocabulary terms for external databases.' AUTO_INCREMENT=1;
+
 # --------------------------------------------------------
 
 #
