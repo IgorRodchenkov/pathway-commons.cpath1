@@ -49,6 +49,7 @@ public class TaskSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestAffymetrixParser.class);
         suite.addTestSuite(TestCountAffymetrixId.class);
+        suite.addTestSuite(TestImportExternalDbTask.class);
         suite.setName("Task Tests");
         return suite;
     }
