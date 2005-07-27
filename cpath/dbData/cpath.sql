@@ -52,10 +52,10 @@ CREATE TABLE `cpath` (
 CREATE TABLE `external_db` (
   `EXTERNAL_DB_ID` int(11) NOT NULL auto_increment,
   `NAME` varchar(100) NOT NULL default '',
-  `DB_TYPE` varchar(25) NOT NULL default '',
   `URL` varchar(255) default NULL,
   `SAMPLE_ID` varchar(255) default NULL,
   `DESC` varchar(255) default NULL,
+  `DB_TYPE` varchar(25) NOT NULL default '',
   `DBDB_ID` int(11) default NULL,
   `DBDB_URL` varchar(255) default NULL,
   `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
