@@ -44,6 +44,7 @@ public class DaoException extends Exception {
      */
     public DaoException(Throwable throwable) {
         super(throwable);
+        this.msg = throwable.getMessage();
     }
 
     /**
