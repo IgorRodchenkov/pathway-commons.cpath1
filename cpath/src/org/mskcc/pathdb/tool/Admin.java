@@ -370,7 +370,7 @@ public class Admin {
         System.out.println("\nWhere command is a one of:  ");
         System.out.println("  import          Imports Specified File.");
         System.out.println("                  Used to Import BioPAX Files, "
-                + "PSI-MI Files or ID Mapping Files.");
+                + "PSI-MI Files, ID Mapping Files, or External Database files");
         System.out.println("  index           Indexes All Items in cPath");
         System.out.println("  precompute      Precomputes all queries in "
                 + "specified config file.");
