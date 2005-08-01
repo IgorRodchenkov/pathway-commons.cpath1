@@ -36,8 +36,8 @@ package org.mskcc.pathdb.model;
  */
 public class InternalLinkRecord {
     private long id;
-    private long cpathIdA;
-    private long cpathIdB;
+    private long sourceId;
+    private long targetId;
 
     /**
      * No-arg Constructor.
@@ -48,12 +48,12 @@ public class InternalLinkRecord {
     /**
      * Constructor.
      *
-     * @param cpathIdA CPath ID of Entity A.
-     * @param cpathIdB CPath ID of Entity B.
+     * @param sourceId CPath ID of Source.
+     * @param targetId CPath ID of Target.
      */
-    public InternalLinkRecord(long cpathIdA, long cpathIdB) {
-        this.cpathIdA = cpathIdA;
-        this.cpathIdB = cpathIdB;
+    public InternalLinkRecord(long sourceId, long targetId) {
+        this.sourceId = sourceId;
+        this.targetId = targetId;
     }
 
     /**
@@ -75,38 +75,38 @@ public class InternalLinkRecord {
     }
 
     /**
-     * Gets CPath ID of Entity A.
+     * Gets CPath ID of Source.
      *
      * @return cpath ID.
      */
-    public long getCpathIdA() {
-        return cpathIdA;
+    public long getSourceId() {
+        return sourceId;
     }
 
     /**
-     * Sets CPath ID of Entity A.
+     * Sets CPath ID of Source.
      *
-     * @param cpathIdA cpathID of Entity A.
+     * @param sourceId cpathID of Entity A.
      */
-    public void setCpathIdA(long cpathIdA) {
-        this.cpathIdA = cpathIdA;
+    public void setSourceId(long sourceId) {
+        this.sourceId = sourceId;
     }
 
     /**
-     * Gets CPath ID of Entity B.
+     * Gets CPath ID of Target.
      *
      * @return cpath ID.
      */
-    public long getCpathIdB() {
-        return cpathIdB;
+    public long getTargetId() {
+        return targetId;
     }
 
     /**
-     * Sets CPath ID of Entity B.
+     * Sets CPath ID of Target.
      *
-     * @param cpathIdB cpathID of Entity B.
+     * @param targetId cpathID of Target.
      */
-    public void setCpathIdB(long cpathIdB) {
-        this.cpathIdB = cpathIdB;
+    public void setTargetId(long targetId) {
+        this.targetId = targetId;
     }
 }
