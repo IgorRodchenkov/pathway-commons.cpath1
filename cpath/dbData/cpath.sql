@@ -54,7 +54,7 @@ CREATE TABLE `external_db` (
   `URL` varchar(255) default NULL,
   `SAMPLE_ID` varchar(255) default NULL,
   `DESC` varchar(255) default NULL,
-  `DB_TYPE` varchar(25) NOT NULL default '',
+  `DB_TYPE` varchar(100) NOT NULL default '',
   `DBDB_ID` int(11) default NULL,
   `DBDB_URL` varchar(255) default NULL,
   `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -129,11 +129,10 @@ CREATE TABLE `import` (
 
 CREATE TABLE `internal_link` (
   `INTERNAL_LINK_ID` int(11) NOT NULL auto_increment,
-  `CPATH_ID_A` int(11) NOT NULL default '0',
-  `CPATH_ID_B` int(11) NOT NULL default '0',
+  `SOURCE_ID` int(11) NOT NULL default '0',
+  `TARGET_ID` int(11) NOT NULL default '0',
   PRIMARY KEY  (`INTERNAL_LINK_ID`)
-) TYPE=MyISAM COMMENT='Contains all Internal cPath Links' AUTO_INCREMENT=1 ;
-# --------------------------------------------------------
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains all Internal cPath Links' AUTO_INCREMENT=1 ;
 
 #
 # Table structure for table `log`
