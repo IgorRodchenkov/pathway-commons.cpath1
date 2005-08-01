@@ -232,4 +232,23 @@ public class BioPaxConstants {
     public boolean isPathway(String elementName) {
         return pathwaySet.contains(elementName.trim());
     }
+
+    /**
+     * Determines if the Specified Element is of type:  BioPAX entity.
+     * If the class is derived from entity, this method returns true.
+     * For example, if the class is of type:  physicalEntity, interaction,
+     * pathway, or any subclasses of these, this method will return true.
+     *
+     * @param elementName
+     * @return boolean value.
+     */
+    public boolean isBioPaxEntity (String elementName) {
+        if (physicalEntitySet.contains(elementName)
+            || interactionSet.contains(elementName)
+            || pathwaySet.contains(elementName)) {
+                return true;
+        } else {
+            return false;
+        }
+    }
 }
