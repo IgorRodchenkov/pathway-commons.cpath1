@@ -125,7 +125,7 @@ public class DiagnosticsTable extends HtmlTable {
                 ("Testing access to Table:  internal_link");
         DaoInternalLink internalLink = new DaoInternalLink();
         try {
-            internalLink.getInternalLinks(12345);
+            internalLink.getTargets(12345);
         } catch (DaoException e) {
             test.setException(e);
         }

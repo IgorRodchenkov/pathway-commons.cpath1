@@ -96,7 +96,7 @@ public class TestImportPsiToCPath extends TestCase {
         record = (CPathRecord) records.get(0);
         long interactionId = record.getId();
         DaoInternalLink internalLinker = new DaoInternalLink();
-        records = internalLinker.getInternalLinksWithLookup(interactionId);
+        records = internalLinker.getTargetsWithLookUp(interactionId);
         assertEquals(3, records.size());
     }
 

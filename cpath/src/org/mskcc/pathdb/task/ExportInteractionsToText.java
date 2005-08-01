@@ -155,7 +155,7 @@ public class ExportInteractionsToText extends Task {
 
         long primaryId = interaction.getId();
         DaoInternalLink internalLinker = new DaoInternalLink();
-        ArrayList interactors = internalLinker.getInternalLinksWithLookup
+        ArrayList interactors = internalLinker.getTargetsWithLookUp
                 (primaryId);
         for (int i = 0; i < interactors.size(); i++) {
             CPathRecord interactor = (CPathRecord) interactors.get(i);

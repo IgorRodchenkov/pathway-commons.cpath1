@@ -245,7 +245,7 @@ public class BioPaxAssembly implements XmlAssembly {
                 || record.getType().equals(CPathRecordType.INTERACTION)) {
             DaoInternalLink internalLinker = new DaoInternalLink();
             ArrayList internalLinks =
-                    internalLinker.getInternalLinksWithLookup(record.getId());
+                    internalLinker.getTargetsWithLookUp(record.getId());
 
             //  Iterate through all Links, e.g. children
             for (int i = 0; i < internalLinks.size(); i++) {

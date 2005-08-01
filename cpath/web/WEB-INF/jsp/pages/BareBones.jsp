@@ -139,7 +139,7 @@
     <TD>
     <%
     DaoInternalLink internalLinker = new DaoInternalLink();
-    ArrayList recordList = internalLinker.getInternalLinksWithLookup(record.getId());
+    ArrayList recordList = internalLinker.getTargetsWithLookUp(record.getId());
     if (recordList.size() > 0) {
         out.println("<UL>");
         for (int i=0; i<recordList.size(); i++) {

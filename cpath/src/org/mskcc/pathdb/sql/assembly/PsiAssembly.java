@@ -248,13 +248,13 @@ public class PsiAssembly implements XmlAssembly {
         DaoCPath cpath = DaoCPath.getInstance();
         for (int i = 0; i < interactions.size(); i++) {
             CPathRecord record = (CPathRecord) interactions.get(i);
-            ArrayList list = linker.getInternalLinks(record.getId());
+            ArrayList list = linker.getTargets(record.getId());
             for (int j = 0; j < list.size(); j++) {
                 InternalLinkRecord link = (InternalLinkRecord) list.get(j);
-                Long key = new Long(link.getCpathIdB());
+                Long key = new Long(link.getTargetId());
                 if (!interactorMap.containsKey(key)) {
                     CPathRecord interactor = cpath.getRecordById
-                            (link.getCpathIdB());
+                            (link.getTargetId());
                     interactorMap.put(key, interactor);
                 }
             }
