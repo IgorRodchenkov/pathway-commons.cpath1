@@ -56,11 +56,10 @@ public class TransformBioPaxToCPathRecords {
      * Constructor.
      *
      * @param resourceList ArrayList of JDOM Element Objects.
-     * @throws IOException   Input/Output Error.
      * @throws JDOMException JDOM/XML Error.
      */
     public TransformBioPaxToCPathRecords(ArrayList resourceList)
-            throws IOException, JDOMException {
+            throws JDOMException {
         this.resourceList = resourceList;
         this.bioPaxConstants = new BioPaxConstants();
         this.cPathRecordList = new ArrayList();
@@ -163,8 +162,7 @@ public class TransformBioPaxToCPathRecords {
             String bioPaxNamespaceUri)
             throws JDOMException {
         XPath xpath = XPath.newInstance
-                ("bp:ORGANISM/bp:bioSource/bp:TAXON-XREF/"
-                + "bp:unificationXref/bp:ID");
+                ("bp:ORGANISM/bp:bioSource/bp:TAXON-XREF/*/bp:ID");
         xpath.addNamespace("bp", bioPaxNamespaceUri);
         Element e = (Element) xpath.selectSingleNode(resource);
         if (e != null) {
