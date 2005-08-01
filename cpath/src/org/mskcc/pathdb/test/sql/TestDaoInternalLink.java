@@ -67,14 +67,22 @@ public class TestDaoInternalLink extends TestCase {
         assertTrue(flag);
 
         // Test Get Internal Links
-        ArrayList links = linker.getInternalLinks(cPathIdA);
+        // Get all things that cPath A points to.
+        ArrayList links = linker.getTargets(cPathIdA);
         assertEquals(1, links.size());
         InternalLinkRecord link = (InternalLinkRecord) links.get(0);
-        assertEquals(cPathIdA, link.getCpathIdA());
-        assertEquals(cPathIdB, link.getCpathIdB());
+        assertEquals(cPathIdA, link.getSourceId());
+        assertEquals(cPathIdB, link.getTargetId());
+
+        // Get all things that point to cPath B.
+        links = linker.getSources(cPathIdB);
+        assertEquals(1, links.size());
+        link = (InternalLinkRecord) links.get(0);
+        assertEquals(cPathIdA, link.getSourceId());
+        assertEquals(cPathIdB, link.getTargetId());
 
         // Test Get Internal Links with Lookup
-        ArrayList records = linker.getInternalLinksWithLookup(cPathIdA);
+        ArrayList records = linker.getTargetsWithLookUp(cPathIdA);
         assertEquals(1, records.size());
         CPathRecord record = (CPathRecord) records.get(0);
         assertEquals(PROTEIN_B, record.getName());
@@ -82,7 +90,7 @@ public class TestDaoInternalLink extends TestCase {
         // Test Delete
         int count = linker.deleteRecordsByCPathId(cPathIdA);
         assertEquals(1, count);
-        links = linker.getInternalLinks(cPathIdA);
+        links = linker.getTargets(cPathIdA);
         assertEquals(0, links.size());
 
         //  Add Multiple Links, Test, then Delete.
@@ -91,14 +99,14 @@ public class TestDaoInternalLink extends TestCase {
         ids[1] = cPathIdC;
         count = linker.addRecords(cPathIdA, ids);
         assertEquals(2, count);
-        links = linker.getInternalLinks(cPathIdA);
+        links = linker.getTargets(cPathIdA);
         assertEquals(2, links.size());
 
         //  Delete A, and verify that links are automatically purged.
         DaoCPath dao = DaoCPath.getInstance();
         flag = dao.deleteRecordById(cPathIdA);
         assertTrue(flag);
-        links = linker.getInternalLinks(cPathIdA);
+        links = linker.getTargets(cPathIdA);
         assertEquals(0, links.size());
 
         dao.deleteRecordById(cPathIdB);
