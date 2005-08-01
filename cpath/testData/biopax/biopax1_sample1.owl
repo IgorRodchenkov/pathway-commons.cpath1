@@ -720,6 +720,12 @@
         <bp:SHORT-NAME>glycolysis</bp:SHORT-NAME>
         <bp:AVAILABILITY
             rdf:datatype="http://www.w3.org/2001/XMLSchema#string">see http://www.amaze.ulb.ac.be/</bp:AVAILABILITY>
+        <bp:XREF rdf:resource="#Reactome69091" />
     </bp:pathway>
+    <bp:unificationXref rdf:ID="Reactome69091">
+        <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reactome</bp:DB>
+        <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">69091</bp:ID>
+        <bp:COMMENT rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://www.reactome.org</bp:COMMENT>
+    </bp:unificationXref>
 </rdf:RDF>
 <!-- Created with Protege (with OWL Plugin 1.1, Build 135)  http://protege.stanford.edu -->
