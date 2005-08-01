@@ -537,7 +537,7 @@ public class ImportPsiToCPath {
         }
         ExternalReference[] filteredRefs =
                 ExternalReferenceUtil.filterByReferenceType
-                (refs, ReferenceType.INTERACTION_UNIFICATION);
+                (refs, ReferenceType.INTERACTION_PATHWAY_UNIFICATION);
         DaoExternalLink linker = DaoExternalLink.getInstance();
         DaoCPath cpath = DaoCPath.getInstance();
         ArrayList records = linker.lookUpByExternalRefs(filteredRefs);
