@@ -33,10 +33,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.ImportSummary;
-import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.transfer.ImportException;
@@ -44,6 +41,7 @@ import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
+import org.mskcc.pathdb.util.ExternalReferenceUtil;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -142,14 +140,25 @@ public class ImportBioPaxToCPath {
     /**
      * Stores RDF Resource Placeholders (without XML) to MySQL.
      */
-    private void storeRecords() throws DaoException {
+    private void storeRecords() throws DaoException, JDOMException {
         DaoCPath dao = DaoCPath.getInstance();
+        DaoExternalLink externalLinker = DaoExternalLink.getInstance();
         pMonitor.setCurrentMessage("Storing records to MySQL:");
         pMonitor.setMaxValue(cPathRecordList.size());
         for (int i = 0; i < cPathRecordList.size(); i++) {
             CPathRecord record = (CPathRecord) cPathRecordList.get(i);
             String oldId = (String) oldIdList.get(i);
-            long cPathId = dao.addRecord(record.getName(),
+
+            //  Before we save a new record, check to see if the record
+            //  already exists in the database.
+            Element resource = (Element) resourceList.get(i);
+            ExternalReference refs[] =
+                        bpUtil.extractExternalReferences(resource);
+            long cPathId = lookUpRecord (record, refs);
+
+            //  If record does not exist, save it.
+            if (cPathId == -1) {
+                cPathId = dao.addRecord(record.getName(),
                     record.getDescription(),
                     record.getNcbiTaxonomyId(),
                     record.getType(),
@@ -157,30 +166,64 @@ public class ImportBioPaxToCPath {
                     XmlRecordType.BIO_PAX,
                     "[PLACE_HOLDER]");
 
+                //  Store External Links
+                externalLinker.addMulipleRecords(cPathId, refs, false);
+
+                if (record.getType().equals(CPathRecordType.PATHWAY)) {
+                    importSummary.incrementNumPathwaysSaved();
+                } else if (record.getType().equals
+                        (CPathRecordType.INTERACTION)) {
+                    importSummary.incrementNumInteractionsSaved();
+                } else {
+                    importSummary.incrementNumPhysicalEntitiesSaved();
+                }
+            }
+
             //  Store a mapping between the old ID and the new ID
             idMap.put(oldId, new Long(cPathId));
 
             //  Store cPath ID directly, for later reference
             record.setId(cPathId);
 
-            if (record.getType().equals(CPathRecordType.PATHWAY)) {
-                importSummary.incrementNumPathwaysSaved();
-            } else if (record.getType().equals(CPathRecordType.INTERACTION)) {
-                importSummary.incrementNumInteractionsSaved();
-            } else {
-                importSummary.incrementNumPhysicalEntitiesSaved();
-            }
             pMonitor.incrementCurValue();
             ConsoleUtil.showProgress(pMonitor);
         }
     }
 
     /**
+     * Based on External References, determine if this record already exists.
+     * If the record exists, its cPath ID will be returned.  Otherwise,
+     * this method returns the value -1.
+     */
+    private long lookUpRecord (CPathRecord record, ExternalReference refs[])
+        throws DaoException {
+        DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
+
+        if (record.getType().equals(CPathRecordType.INTERACTION)
+            || record.getType().equals(CPathRecordType.PATHWAY)) {
+
+            //  Filter to INTERACTION_PATHWAY_UNIFICATION XREFs Only.
+            ExternalReference[] filteredRefs =
+                    ExternalReferenceUtil.filterByReferenceType
+                    (refs, ReferenceType.INTERACTION_PATHWAY_UNIFICATION);
+            if (filteredRefs.length > 0) {
+                ArrayList records = daoExternalLinker.lookUpByExternalRefs
+                        (filteredRefs);
+                if (records.size() > 0) {
+                    CPathRecord existingRecord = (CPathRecord) records.get(0);
+                    System.out.println ("Hit:  " + existingRecord.getName());
+                    return existingRecord.getId();
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
      * 1)  Update all Internal Links to point to correct cPath IDs.
      * 2)  Stores the newly modified XML to MySQL.
      * 3)  Store Internal Links to cPath.
-     * 4)  Store External Links to cPath.
-     * 5)  Store New Organisms.
+     * 4)  Store New Organisms.
      */
     private void storeLinks() throws JDOMException, IOException,
             DaoException {
@@ -197,8 +240,7 @@ public class ImportBioPaxToCPath {
         DaoInternalLink internalLinker = new DaoInternalLink();
         DaoExternalLink externalLinker = DaoExternalLink.getInstance();
 
-        pMonitor.setCurrentMessage("Storing Internal / External "
-                + "Links to MySQL:");
+        pMonitor.setCurrentMessage("Storing Internal Links to MySQL:");
         pMonitor.setMaxValue(cPathRecordList.size());
         for (int i = 0; i < cPathRecordList.size(); i++) {
             CPathRecord record = (CPathRecord) cPathRecordList.get(i);
@@ -212,10 +254,6 @@ public class ImportBioPaxToCPath {
                 internalLinker.addRecords(record.getId(), internalLinks);
             }
 
-            //  Store External Links
-            ExternalReference refs[] =
-                    bpUtil.extractExternalReferences(resource);
-            externalLinker.addMulipleRecords(record.getId(), refs, false);
             pMonitor.incrementCurValue();
             ConsoleUtil.showProgress(pMonitor);
 
