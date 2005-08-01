@@ -31,7 +31,6 @@ package org.mskcc.pathdb.model;
 
 /**
  * Enumeration of ExternalDatabase Types.
- * This list is currently constrained to:  PROTEIN_UNIFICATION.
  *
  * @author Ethan Cerami
  */
@@ -69,18 +68,18 @@ public class ReferenceType {
             return PROTEIN_UNIFICATION;
         } else if (typeName.equals(LINK_OUT.toString())) {
             return LINK_OUT;
-        } else if (typeName.equals(INTERACTION_UNIFICATION.toString())) {
-            return INTERACTION_UNIFICATION;
+        } else if (typeName.equals(INTERACTION_PATHWAY_UNIFICATION.toString())) {
+            return INTERACTION_PATHWAY_UNIFICATION;
         } else {
             return null;
         }
     }
 
     /**
-     * External Record Type:  INTERACION_UNIFICATION.
+     * External Record Type:  INTERACTION_PATHWAY_UNIFICATION.
      */
-    public static final ReferenceType INTERACTION_UNIFICATION
-            = new ReferenceType("INTERACTION_UNIFICATION");
+    public static final ReferenceType INTERACTION_PATHWAY_UNIFICATION
+            = new ReferenceType("INTERACTION_PATHWAY_UNIFICATION");
 
     /**
      * External Record Type:  PROTEIN_UNIFICATION.
