@@ -34,7 +34,7 @@ INSERT INTO `external_db` VALUES (6, 'PIR', 'http://pir.georgetown.edu/cgi-bin/n
 INSERT INTO `external_db` VALUES (7, 'InterPro', 'http://www.ebi.ac.uk/interpro/IEntry?ac=%ID%', NULL, 'InterPro database of protein families, domains and functional sites.', 'LINK_OUT', NULL, NULL, 20031002162303, 20031002162303);
 INSERT INTO `external_db` VALUES (8, 'PROSITE', 'http://us.expasy.org/cgi-bin/nicedoc.pl?%ID%', NULL, 'PROSITE database of protein families and domains.', 'LINK_OUT', NULL, NULL, 20031002162542, 20031002162542);
 
-INSERT INTO `external_db` VALUES (9, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=DIP:%ID%&Search2=Query+DIP&GE=&DS=&PIR=&GB=&TX=&SF=&FN=&LO=&KW=',NULL, 'Database of Interacting Proteins (DIP)', 'INTERACTION_UNIFICATION', NULL, NULL, 20031002162656, 20031002162656);
+INSERT INTO `external_db` VALUES (9, 'DIP', 'http://dip.doe-mbi.ucla.edu/dip/Search.cgi?SM=3&AC=DIP:%ID%&Search2=Query+DIP&GE=&DS=&PIR=&GB=&TX=&SF=&FN=&LO=&KW=',NULL, 'Database of Interacting Proteins (DIP)', 'INTERACTION_PATHWAY_UNIFICATION', NULL, NULL, 20031002162656, 20031002162656);
 INSERT INTO `external_db` VALUES (10, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%', NULL, 'Pfam protein families database of alignments and hidden Markov models.', 'LINK_OUT', NULL, NULL, 20031002162804, 20031002162804);
 INSERT INTO `external_db` VALUES (11, 'GO', 'http://www.godatabase.org/cgi-bin/amigo/go.cgi?open_1=%ID%', NULL, 'Gene Ontology (GO)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (12, 'Affymetrix', '', NULL, 'Affymetrix ID', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
@@ -42,15 +42,14 @@ INSERT INTO `external_db` VALUES (13, 'IntAct', 'http://www.ebi.ac.uk/intact/sea
 INSERT INTO `external_db` VALUES (14, 'FlyBase', 'http://flybase.bio.indiana.edu/.bin/fbidq.html?%ID%', NULL, 'FlyBase is a comprehensive database for information on the genetics and molecular biology of Drosophila.', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (15, 'PDB', 'http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=%ID%', NULL, 'Protein Data Bank (PDB)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (16, 'SGD', '', NULL, 'Saccharomyces Genome Database (SGD)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (17, 'HPRD', 'http://hprd.ibioinformatics.org/hprdId?hprdId=%ID%', NULL, 'Human Protein Reference Database (HPRD)', 'INTERACTION_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (18, 'MINT', 'http://mint.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%', NULL, 'Molecular INTeraction database (MINT)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (19, 'Reactome', 'http://www.reactome.org/cgi-bin/search?SUBMIT=1&QUERY_CLASS=DatabaseIdentifier&QUERY=SWALL:%ID%', NULL, 'Reactome: a knowledgebase of biological processes', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (17, 'HPRD', 'http://hprd.ibioinformatics.org/hprdId?hprdId=%ID%', NULL, 'Human Protein Reference Database (HPRD)', 'INTERACTION_PATHWAY_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (18, 'MINT', 'http://mint.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%', NULL, 'Molecular INTeraction database (MINT)', 'INTERACTION_PATHWAY_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` VALUES (19, 'Reactome', 'http://reactome.org/cgi-bin/eventbrowser?DB=gk_current&ID=%ID%', NULL, 'Reactome: a knowledgebase of biological processes', 'INTERACTION_PATHWAY_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (20, 'HUGE', 'http://www.kazusa.or.jp/huge/gfpage/%ID%/', NULL, 'HUGE Protein Database', 'PROTEIN_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (21, 'Ensembl', 'http://www.ensembl.org/Homo_sapiens/textview?species=All&idx=All&q=%ID%&x=20&y=11', NULL,  'Ensembl Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (22, 'NCBI GenBank', 'http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&val=%ID%', NULL, 'NCBI GenBank', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (23, 'NCBI GI', 'http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&val=%ID%', NULL, 'NCBI GI', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (24, 'RefSeq', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=search&term=%ID%', NULL, 'NCBI RefSeq', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` VALUES (25, 'RefSeq Protein', 'http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&val=%ID%', NULL, 'NCBI RefSeq Protein', 'PROTEIN_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (26, 'aMAZE', '', NULL, 'aMAZE Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (27, 'KEGG', '', NULL, 'Kyoto Encyclopedia of Genes and Genomes (KEGG)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` VALUES (28, 'CAS', '', NULL, 'CAS Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
