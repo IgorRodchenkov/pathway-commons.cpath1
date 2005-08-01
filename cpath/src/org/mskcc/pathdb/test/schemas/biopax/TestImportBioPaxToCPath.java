@@ -70,6 +70,16 @@ public class TestImportBioPaxToCPath extends TestCase {
         //  After import, we have 1 organism
         organismList = daoOrganism.getAllOrganisms();
         assertEquals(numOrganisms + 1, organismList.size());
+
+        //  Try Saving Again
+        importer = new ImportBioPaxToCPath();
+        summary = importer.addRecord(xml, pMonitor);
+
+        //  Because the pathway has a unification xref, it should not
+        //  be saved again.
+        assertEquals(0, summary.getNumPathwaysSaved());
+        assertEquals(4, summary.getNumInteractionsSaved());
+        assertEquals(7, summary.getNumPhysicalEntitiesSaved());
     }
 
     /**
