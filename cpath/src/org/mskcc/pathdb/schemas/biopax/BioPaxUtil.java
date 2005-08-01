@@ -40,6 +40,7 @@ import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
+import org.mskcc.pathdb.util.xml.XmlUtil;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -65,6 +66,7 @@ public class BioPaxUtil {
     private Namespace bioPaxNamespace;
     private HashMap localIdMap;
     private ProgressMonitor pMonitor;
+    private boolean debugFlag = false;
 
     /**
      * Constructor.
@@ -385,12 +387,12 @@ public class BioPaxUtil {
      * Case 1:  The element has an RDF ID attribute.  This means that the
      * element is itself an RDF resource.
      * <p/>
-     * Subcase 1A:  The element is a "hinge" resource.  In this case, we
-     * excise (cut) the element from the tree, and modify it's immediate
+     * Subcase 1A:  The element is a BioPAX entity.  In this case, we
+     * excise (cut) the element from the parent, and modify it's immediate
      * parent to point to it via an RDF resource link attribute.  Then,
      * stop walking the tree.  We are done.
      * <p/>
-     * Subcase 1B:  The element is not a "hinge" resource.  In this case,
+     * Subcase 1B:  The element is not a BioPAX entity.  In this case,
      * we clone the element, replace the original element with the newly
      * cloned element, and and give the clone a new internally
      * generated local ID.  We then continue walking down the new tree.
@@ -398,10 +400,10 @@ public class BioPaxUtil {
      * Case 2:  The element has an RDF reource attribute.  This means that the
      * element points to an RDF resource.
      * <p/>
-     * Subcase 2A:  Follow the pointer.  If we point to a "hinge"
-     * resource, do nothing.  Stop walking the tree.
+     * Subcase 2A:  Follow the pointer.  If we point to a BioPAX entity,
+     * do nothing.  Stop walking the tree.
      * <p/>
-     * Subcase 2B:  Follow the pointer.  If we do not point to a "hinge"
+     * Subcase 2B:  Follow the pointer.  If we do not point to an entity
      * resource, we clone the resource, make it a child of the current
      * element, give the clone a new internally generated local ID, and
      * replace the RDF resource attribute with an RDF ID attribute.  We
@@ -410,6 +412,16 @@ public class BioPaxUtil {
     private void makeHierachical(Element e, String type,
             boolean isTopLevelResource) throws DaoException {
         boolean keepTraversingTree = true;
+
+        if (debugFlag) {
+            if (isTopLevelResource) {
+                logMsg ("Start:  Making Hierarchical");
+            }
+            try {
+                logMsg ("We are here:\n" + XmlUtil.serializeToXml(e));
+            } catch (IOException exc) {
+            }
+        }
 
         //  If this is a top-level resource, just keep on walking.
         if (isTopLevelResource) {
@@ -428,12 +440,14 @@ public class BioPaxUtil {
 
             if (idAttribute != null) {
                 //  Case 1:  The element has an RDF ID attribute.
-                if (isHinge(type, e)) {
-                    //  Subcase 1A:  This is a Hinge Element
+                if (bioPaxConstants.isBioPaxEntity(e.getName())) {
+                    logMsg ("Branching:  Subcase 1A");
+                    //  Subcase 1A:  This is a BioPAX Entity
                     exciseResource(e);
                     keepTraversingTree = false;
                 } else {
-                    //  Subcase 1B:  This is not a Hinge Element
+                    //  Subcase 1B:  This is not a BioPAX Entity
+                    logMsg ("Branching:  Subcase 1B");
                     e = replaceResourceWithClone(e);
                 }
             } else if (pointerAttribute != null) {
@@ -446,6 +460,7 @@ public class BioPaxUtil {
                 if (localIdMap.containsKey(uri)) {
                     //  If we have already been here, stop traversing.
                     //  Prevents Circular References.
+                    logMsg ("Preventing Circular Reference:  " + uri);
 
                     //  Remove the Existing RDF Pointer
                     e.removeAttribute(RdfConstants.RESOURCE_ATTRIBUTE,
@@ -456,13 +471,16 @@ public class BioPaxUtil {
                     e.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE, newId,
                             RdfConstants.RDF_NAMESPACE);
                     keepTraversingTree = false;
-                } else if (isHinge(type, referencedResource)) {
+                } else if (bioPaxConstants.isBioPaxEntity
+                        (referencedResource.getName())) {
                     //  Case 2A:  We are pointing at a Hinge Element
+                    logMsg ("Branching:  Subcase 2A");
                     keepTraversingTree = false;
                 } else {
                     //  Case 2B:  We are not pointing at a Hinge Element
                     //  Clone the resource, and keep walking down the
                     //  new subtree.
+                    logMsg ("Branching:  Subcase 2B");
                     e = replaceReferenceWithResource(pointerAttribute, e);
                 }
             }
@@ -479,20 +497,12 @@ public class BioPaxUtil {
     }
 
     /**
-     * Determines if this is a "hinge" resource.
+     * Debug Messages, used for Development Purposes.
+     * @param msg String msg.
      */
-    private boolean isHinge(String type, Element e) {
-        if (type.equals(BioPaxConstants.PATHWAY)
-                && (bioPaxConstants.isInteraction(e.getName())
-                || bioPaxConstants.isPhysicalEntity(e.getName())
-                || bioPaxConstants.isPathway(e.getName()))) {
-            return true;
-        } else if (type.equals(BioPaxConstants.INTERACTION)
-                && (bioPaxConstants.isPhysicalEntity(e.getName())
-                || bioPaxConstants.isInteraction(e.getName()))) {
-            return true;
-        } else {
-            return false;
+    private void logMsg (String msg) {
+        if (debugFlag) {
+            System.out.println(msg);
         }
     }
 
@@ -528,7 +538,6 @@ public class BioPaxUtil {
         //  Store the ID Mapping between old ID and New Id, for later reference
         localIdMap.put(uri, newId);
 
-        // Return the Cloned Child, so we can walk down it.
         return clonedChild;
     }
 
