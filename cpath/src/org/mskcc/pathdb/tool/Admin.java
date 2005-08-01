@@ -134,7 +134,11 @@ public class Admin {
             System.out.println("-----------------------------------------");
         } catch (Exception e) {
             System.out.println("\n-----------------------------------------");
-            System.out.println("Fatal Error:  " + e.getMessage());
+            if (e instanceof NullPointerException) {
+                System.out.println("Fatal Error:  Null Pointer Exception");
+            } else {
+                System.out.println("Fatal Error:  " + e.getMessage());
+            }
             if (xdebugFlag) {
                 System.out.println("\nFull Details are available in the "
                         + "stack trace below.");
