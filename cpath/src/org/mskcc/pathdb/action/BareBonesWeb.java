@@ -38,12 +38,15 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.io.IOException;
 
 /**
  * Bare Bones cPath Web Site:  Prototype.
@@ -75,11 +78,7 @@ public class BareBonesWeb extends BaseAction {
             xdebug.logMsg(this, "Got cPath Record:  " + record.getName());
             request.setAttribute("RECORD", record);
         } else {
-            xdebug.logMsg(this, "Getting all pathways");
-            ArrayList pathwayList = dao.getAllRecords(CPathRecordType.PATHWAY);
-            xdebug.logMsg(this, "Number of Pathways Found:  "
-                    + pathwayList.size());
-            request.setAttribute("RECORDS", pathwayList);
+            getTopLevelPathways(xdebug, dao, request);
         }
 
         String format = request.getParameter("format");
@@ -102,5 +101,27 @@ public class BareBonesWeb extends BaseAction {
             stream.close();
         }
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+    }
+
+    /**
+     * Gets a List of Top-Level Pathways.
+     */
+    private void getTopLevelPathways(XDebug xdebug, DaoCPath dao,
+            HttpServletRequest request) throws DaoException, IOException {
+        ArrayList pathwayList = new ArrayList();
+        xdebug.logMsg(this, "Getting all pathways");
+        ArrayList candidateList = dao.getAllRecords(CPathRecordType.PATHWAY);
+        xdebug.logMsg(this, "Total Number of Candidate Pathways Found:  "
+                + candidateList.size());
+        DaoInternalLink daoInternalLink = new DaoInternalLink();
+        for (int i=0; i<candidateList.size(); i++) {
+            CPathRecord pathway = (CPathRecord) candidateList.get(i);
+            ArrayList sourceLinks = daoInternalLink.getSources(pathway.getId());
+            //  If nothing points to this pathway, it is a top level pathway.
+            if (sourceLinks.size() == 0) {
+                pathwayList.add(pathway);
+            }
+        }
+        request.setAttribute("RECORDS", pathwayList);
     }
 }
