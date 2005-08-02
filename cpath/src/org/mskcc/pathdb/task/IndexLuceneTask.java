@@ -54,6 +54,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import net.sf.ehcache.CacheException;
+
 /**
  * Runs the Lucene Text Indexer on all Records in CPath.
  *
@@ -97,7 +99,7 @@ public class IndexLuceneTask extends Task {
      * @throws QueryException    Data Query Error.
      */
     public void executeTask() throws DaoException, ImportException,
-            IOException, AssemblyException, QueryException {
+            IOException, AssemblyException, QueryException, CacheException {
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Clearing XML Cache");
         DaoXmlCache dao = new DaoXmlCache(xdebug);
