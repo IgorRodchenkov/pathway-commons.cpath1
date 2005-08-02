@@ -37,6 +37,7 @@ import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.transfer.ImportException;
+import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
@@ -59,6 +60,7 @@ public class ImportBioPaxToCPath {
     private HashMap idMap = new HashMap();
     private ArrayList resourceList;
     private ArrayList cPathRecordList;
+    private ArrayList newRecordFlags;
     private ArrayList oldIdList;
     private BioPaxUtil bpUtil;
     private ProgressMonitor pMonitor;
@@ -76,6 +78,7 @@ public class ImportBioPaxToCPath {
             throws ImportException {
         this.pMonitor = pMonitor;
         this.importSummary = new ImportSummary();
+        this.newRecordFlags = new ArrayList();
         try {
             validateRdf(new StringReader(xml));
             massageBioPaxData(new StringReader(xml));
@@ -150,14 +153,16 @@ public class ImportBioPaxToCPath {
             String oldId = (String) oldIdList.get(i);
 
             //  Before we save a new record, check to see if the record
-            //  already exists in the database.
+            //  already exists in the database.  Existing Records can
+            //  be determined via Unification Xrefs.
             Element resource = (Element) resourceList.get(i);
-            ExternalReference refs[] =
-                        bpUtil.extractExternalReferences(resource);
-            long cPathId = lookUpRecord (record, refs);
+            ExternalReference unificationXrefs[] =
+                        bpUtil.extractUnificationXrefs(resource);
+            long cPathId = lookUpRecord (unificationXrefs);
 
             //  If record does not exist, save it.
             if (cPathId == -1) {
+                newRecordFlags.add(Boolean.TRUE);
                 cPathId = dao.addRecord(record.getName(),
                     record.getDescription(),
                     record.getNcbiTaxonomyId(),
@@ -166,8 +171,17 @@ public class ImportBioPaxToCPath {
                     XmlRecordType.BIO_PAX,
                     "[PLACE_HOLDER]");
 
+                //  Find any LinkOut References, such as Affymetrix IDs
+                ExternalReference xrefs[] = bpUtil.extractXrefs(resource);
+                ExternalReference linkOutRefs[] = queryLinkOutService
+                        (unificationXrefs);
+                appendNewXRefs (linkOutRefs, resource);
+                ExternalReference unifiedRefs[] =
+                        ExternalReferenceUtil.createUnifiedList(xrefs,
+                                linkOutRefs);
+
                 //  Store External Links
-                externalLinker.addMulipleRecords(cPathId, refs, false);
+                externalLinker.addMulipleRecords(cPathId, unifiedRefs, false);
 
                 if (record.getType().equals(CPathRecordType.PATHWAY)) {
                     importSummary.incrementNumPathwaysSaved();
@@ -176,6 +190,16 @@ public class ImportBioPaxToCPath {
                     importSummary.incrementNumInteractionsSaved();
                 } else {
                     importSummary.incrementNumPhysicalEntitiesSaved();
+                }
+            } else {
+                newRecordFlags.add(Boolean.FALSE);
+                if (record.getType().equals(CPathRecordType.PATHWAY)) {
+                    importSummary.incrementNumPathwaysFound();
+                } else if (record.getType().equals
+                        (CPathRecordType.INTERACTION)) {
+                    importSummary.incrementNumInteractionsFound();
+                } else {
+                    importSummary.incrementNumPhysicalEntitiesFound();
                 }
             }
 
@@ -191,30 +215,34 @@ public class ImportBioPaxToCPath {
     }
 
     /**
-     * Based on External References, determine if this record already exists.
+     * Appends New XRefs to the Existing XML Resource.
+     */
+    private void appendNewXRefs(ExternalReference linkOutRefs[], Element e)
+        throws DaoException {
+        if (linkOutRefs != null && linkOutRefs.length > 0) {
+            for (int i=0; i<linkOutRefs.length; i++) {
+                BioPaxGenerator.appendRelationshipXref
+                        (linkOutRefs[i], e);
+            }
+        }
+    }
+
+    /**
+     * Based on Unification XRefs, determine if this record already exists.
      * If the record exists, its cPath ID will be returned.  Otherwise,
      * this method returns the value -1.
      */
-    private long lookUpRecord (CPathRecord record, ExternalReference refs[])
-        throws DaoException {
+    private long lookUpRecord (ExternalReference unificationXrefs[])
+            throws DaoException {
         DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
 
-        if (record.getType().equals(CPathRecordType.INTERACTION)
-            || record.getType().equals(CPathRecordType.PATHWAY)) {
-
-            //  Filter to INTERACTION_PATHWAY_UNIFICATION XREFs Only.
-            ExternalReference[] filteredRefs =
-                    ExternalReferenceUtil.filterByReferenceType
-                    (refs, ReferenceType.INTERACTION_PATHWAY_UNIFICATION);
-            if (filteredRefs.length > 0) {
+        if (unificationXrefs != null && unificationXrefs.length > 0) {
                 ArrayList records = daoExternalLinker.lookUpByExternalRefs
-                        (filteredRefs);
+                        (unificationXrefs);
                 if (records.size() > 0) {
                     CPathRecord existingRecord = (CPathRecord) records.get(0);
-                    System.out.println ("Hit:  " + existingRecord.getName());
                     return existingRecord.getId();
                 }
-            }
         }
         return -1;
     }
@@ -233,33 +261,35 @@ public class ImportBioPaxToCPath {
         linker.updateInternalLinks
                 (resourceList, idMap, CPathIdFilter.CPATH_PREFIX);
 
-        //  1)  Store the newly modified XML to MySQL
-        //  2)  Store the Internal Links to MySQL
-        //  3)  Store the External Links to MySQL
         DaoCPath daoCPath = DaoCPath.getInstance();
         DaoInternalLink internalLinker = new DaoInternalLink();
-        DaoExternalLink externalLinker = DaoExternalLink.getInstance();
 
         pMonitor.setCurrentMessage("Storing Internal Links to MySQL:");
         pMonitor.setMaxValue(cPathRecordList.size());
         for (int i = 0; i < cPathRecordList.size(); i++) {
-            CPathRecord record = (CPathRecord) cPathRecordList.get(i);
-            Element resource = (Element) resourceList.get(i);
-            String xml = XmlUtil.serializeToXml(resource);
-            daoCPath.updateXml(record.getId(), xml);
 
-            //  Store Internal Links
-            long internalLinks[] = linker.getInternalLinks(record.getId());
-            if (internalLinks != null && internalLinks.length > 0) {
-                internalLinker.addRecords(record.getId(), internalLinks);
+            Boolean newRecord = (Boolean) newRecordFlags.get(i);
+
+            //  Only do this for new records;  existing records stay as is.
+            if (newRecord.booleanValue()) {
+
+                //  Store the Actual XML
+                CPathRecord record = (CPathRecord) cPathRecordList.get(i);
+                Element resource = (Element) resourceList.get(i);
+                String xml = XmlUtil.serializeToXml(resource);
+                daoCPath.updateXml(record.getId(), xml);
+
+                //  Store Internal Links
+                long internalLinks[] = linker.getInternalLinks(record.getId());
+                if (internalLinks != null && internalLinks.length > 0) {
+                    internalLinker.addRecords(record.getId(), internalLinks);
+                }
+
+                //  Conditionally Store New Organism
+                conditionallySaveOrganism(record, resource);
             }
-
             pMonitor.incrementCurValue();
             ConsoleUtil.showProgress(pMonitor);
-
-            //  Conditionally Store New Organism
-            conditionallySaveOrganism(record, resource);
-
         }
     }
 
@@ -281,6 +311,31 @@ public class ImportBioPaxToCPath {
                             speciesName.getTextNormalize(), null);
                 }
             }
+        }
+    }
+
+    /**
+     * Queries the Background Reference Service for a list of LINK_OUT
+     * References.
+     *
+     * @param unificationRefs Array of External Reference Objects.
+     * @return Array of External Reference Objects.
+     */
+    private ExternalReference[] queryLinkOutService(ExternalReference[]
+            unificationRefs) throws DaoException {
+
+        //  Only execute query if we have existing references.
+        if (unificationRefs != null && unificationRefs.length > 0) {
+            BackgroundReferenceService refService =
+                    new BackgroundReferenceService();
+            ArrayList linkOutRefs =
+                    refService.getLinkOutReferences(unificationRefs);
+
+            //  Return the complete unification list.
+            return (ExternalReference[]) linkOutRefs.toArray
+                    (new ExternalReference[linkOutRefs.size()]);
+        } else {
+            return null;
         }
     }
 }
