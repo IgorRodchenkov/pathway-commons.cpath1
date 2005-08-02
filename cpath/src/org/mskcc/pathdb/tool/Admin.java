@@ -39,6 +39,7 @@ import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -81,6 +82,9 @@ public class Admin {
      */
     public static void main(String[] argv) {
         try {
+            //  Init Cache
+            EhCache.initCache();
+
             XDebug xdebug = new XDebug();
             xdebug.startTimer();
             processCommandLineArgs(argv);
