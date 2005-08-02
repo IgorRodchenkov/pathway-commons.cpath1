@@ -316,7 +316,6 @@ public class ImportPsiToCPath {
             for (int j = 0; j < interactors.getProteinInteractorCount(); j++) {
                 pMonitor.incrementCurValue();
                 ConsoleUtil.showProgress(pMonitor);
-                summary.incrementNumPhysicalEntitiesProcessed();
                 ProteinInteractorType protein =
                         interactors.getProteinInteractor(j);
 
@@ -549,7 +548,7 @@ public class ImportPsiToCPath {
                 //  Delete the Interaction Record and all
                 //  associated internal/external links.
                 cpath.deleteRecordById(record.getId());
-                summary.incrementNumInteractionsClobbered();
+                summary.incrementNumInteractionsFound();
                 String refList = getReferencesAsText(filteredRefs);
                 pMonitor.setCurrentMessage("\nWarning!  Clobbering existing "
                         + "interaction, based on xrefs:  "
