@@ -35,28 +35,12 @@ package org.mskcc.pathdb.model;
  * @author Ethan Cerami
  */
 public class ImportSummary {
-    private int numPhysicalEntitiesProcessed;
     private int numPhysicalEntitiesSaved;
     private int numPhysicalEntitiesFound;
     private int numInteractionsSaved;
+    private int numInteractionsFound;
     private int numPathwaysSaved;
-    private int numInteractionsClobbered;
-
-    /**
-     * Gets Total Number of Interactors Processed.
-     *
-     * @return integer.
-     */
-    public int getNumPhysicalEntitiesProcessed() {
-        return numPhysicalEntitiesProcessed;
-    }
-
-    /**
-     * Increments Number of Interactors Processed.
-     */
-    public void incrementNumPhysicalEntitiesProcessed() {
-        this.numPhysicalEntitiesProcessed++;
-    }
+    private int numPathwaysFounds;
 
     /**
      * Gets Number of Interactors Saved to the cPath database.
@@ -110,6 +94,22 @@ public class ImportSummary {
     }
 
     /**
+     * Gets Number of Interactions Saved to the cPath Database.
+     *
+     * @return integer.
+     */
+    public int getNumInteractionsFound() {
+        return this.numInteractionsFound;
+    }
+
+    /**
+     * Increments Number of New Interactions which clobbered old interactions.
+     */
+    public void incrementNumInteractionsFound() {
+        this.numInteractionsFound++;
+    }
+
+    /**
      * Gets Number of Pathways Saved to the cPath Database.
      *
      * @return integer.
@@ -126,18 +126,18 @@ public class ImportSummary {
     }
 
     /**
-     * Gets Number of Interactions Saved to the cPath Database.
+     * Gets Number of Pathays Found in the cPath Database.
      *
      * @return integer.
      */
-    public int getNumInteractionsClobbered() {
-        return this.numInteractionsClobbered;
+    public int getNumPathwaysFound() {
+        return this.numPathwaysFounds;
     }
 
     /**
-     * Increments Number of New Interactions which clobbered old interactions.
+     * Increments Number of Pathways Found in the cPath Database.
      */
-    public void incrementNumInteractionsClobbered() {
-        this.numInteractionsClobbered++;
+    public void incrementNumPathwaysFound() {
+        this.numPathwaysFounds++;
     }
 }
