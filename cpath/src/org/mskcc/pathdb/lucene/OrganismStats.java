@@ -34,11 +34,17 @@ import org.mskcc.pathdb.model.Organism;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
+import net.sf.ehcache.CacheException;
 
 /**
  * Encapsulates Stats on All Organisms in cPath.
@@ -46,8 +52,6 @@ import java.util.Comparator;
  * @author Ethan Cerami
  */
 public class OrganismStats {
-    private static ArrayList organismListSortedByName;
-    private static ArrayList organismListSortedByNumInteractions;
 
     /**
      * Gets All Organisms Sorted by Name.
@@ -58,11 +62,18 @@ public class OrganismStats {
      * @throws IOException    Input / Output Error.
      */
     public ArrayList getOrganismsSortedByName() throws DaoException,
-            QueryException, IOException {
-        if (organismListSortedByName == null) {
-            lookUpOrganisms();
+            QueryException, IOException, CacheException {
+        CacheManager manager = CacheManager.create();
+        Cache cache = manager.getCache(EhCache.GLOBAL_CACHE_NAME);
+        Element element = cache.get
+                (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME);
+        if (element != null) {
+            return (ArrayList) element.getValue();
+        } else {
+            ArrayList list = lookUpOrganisms(cache, 0);
+            return list;
+
         }
-        return organismListSortedByName;
     }
 
     /**
@@ -74,35 +85,43 @@ public class OrganismStats {
      * @throws IOException    Input / Output Error.
      */
     public ArrayList getOrganismsSortedByNumInteractions() throws DaoException,
-            QueryException, IOException {
-        if (organismListSortedByNumInteractions == null) {
-            lookUpOrganisms();
+            QueryException, IOException, CacheException {
+        CacheManager manager = CacheManager.create();
+        Cache cache = manager.getCache(EhCache.GLOBAL_CACHE_NAME);
+        Element element = cache.get
+                (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES);
+        if (element != null) {
+            return (ArrayList) element.getValue();
+        } else {
+            ArrayList list = lookUpOrganisms(cache, 1);
+            return list;
+
         }
-        return organismListSortedByNumInteractions;
+
     }
 
     /**
-     * Restets Organism Stats.
+     * Resets Organism Stats.
      *
      * @throws DaoException   Data Access Error.
      * @throws QueryException Query Error.
      * @throws IOException    Input / Output Error.
      */
     public void resetStats() throws DaoException, IOException,
-            QueryException {
-        organismListSortedByNumInteractions = null;
-        organismListSortedByName = null;
-        this.getOrganismsSortedByName();
-        this.getOrganismsSortedByNumInteractions();
+            QueryException, CacheException {
+        CacheManager manager = CacheManager.create();
+        Cache cache = manager.getCache(EhCache.GLOBAL_CACHE_NAME);
+        this.lookUpOrganisms(cache, 0);
     }
 
-    private void lookUpOrganisms() throws DaoException, QueryException {
+    private ArrayList lookUpOrganisms(Cache cache, int type)
+            throws DaoException, QueryException {
         LuceneReader indexer = new LuceneReader();
         try {
             DaoOrganism dao = new DaoOrganism();
-            organismListSortedByName = dao.getAllOrganisms();
-            for (int i = 0; i < organismListSortedByName.size(); i++) {
-                Organism organism = (Organism) organismListSortedByName.get(i);
+            ArrayList listSortedByName = dao.getAllOrganisms();
+            for (int i = 0; i < listSortedByName.size(); i++) {
+                Organism organism = (Organism) listSortedByName.get(i);
                 String query = new String(LuceneConfig.FIELD_ORGANISM
                         + ":" + organism.getTaxonomyId());
                 Hits hits = indexer.executeQuery(query);
@@ -110,10 +129,24 @@ public class OrganismStats {
             }
 
             //  Clone and Sort by Number of Interactions
-            organismListSortedByNumInteractions = (ArrayList)
-                    organismListSortedByName.clone();
-            Collections.sort(organismListSortedByNumInteractions,
+            ArrayList listSortedByNumEntities = (ArrayList)
+                    listSortedByName.clone();
+            Collections.sort(listSortedByNumEntities,
                     new SortByInteractionCount());
+
+            Element e0 = new Element
+                    (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME,
+                    listSortedByName);
+            Element e1 = new Element
+                    (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES,
+                    listSortedByNumEntities);
+            cache.put(e0);
+            cache.put(e1);
+            if (type ==0) {
+                return listSortedByName;
+            } else {
+                return listSortedByNumEntities;
+            }
         } finally {
             //  Make sure to always close the LuceneReader
             indexer.close();
