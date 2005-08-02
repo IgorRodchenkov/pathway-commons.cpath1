@@ -213,9 +213,34 @@ public class BioPaxUtil {
      * @return Array of External Reference Objects.
      * @throws JDOMException JDOM Error.
      */
-    public ExternalReference[] extractExternalReferences(Element e)
+    public ExternalReference[] extractXrefs(Element e)
             throws JDOMException {
         XPath xpath = XPath.newInstance("biopax:XREF/*");
+        xpath.addNamespace("biopax", e.getNamespaceURI());
+        List xrefs = xpath.selectNodes(e);
+        ArrayList refs = new ArrayList();
+        for (int i = 0; i < xrefs.size(); i++) {
+            Element xref = (Element) xrefs.get(i);
+            String dbName = xref.getChildText("DB", e.getNamespace());
+            String dbId = xref.getChildText("ID", e.getNamespace());
+            if (dbName != null && dbId != null) {
+                refs.add(new ExternalReference(dbName, dbId));
+            }
+        }
+        return (ExternalReference[])
+                refs.toArray(new ExternalReference[refs.size()]);
+    }
+
+    /**
+     * Extracts All Unification XREF Data within the specified Element.
+     *
+     * @param e JDOM Element.
+     * @return Array of External Reference Objects.
+     * @throws JDOMException JDOM Error.
+     */
+    public ExternalReference[] extractUnificationXrefs(Element e)
+            throws JDOMException {
+        XPath xpath = XPath.newInstance("biopax:XREF/biopax:unificationXref");
         xpath.addNamespace("biopax", e.getNamespaceURI());
         List xrefs = xpath.selectNodes(e);
         ArrayList refs = new ArrayList();
