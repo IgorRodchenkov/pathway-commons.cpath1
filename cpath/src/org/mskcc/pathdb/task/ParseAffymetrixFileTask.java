@@ -129,7 +129,7 @@ public class ParseAffymetrixFileTask extends Task {
     private void extractIds(BufferedReader buf, int swpColumn)
             throws IOException {
         String lineSeparator = System.getProperty("line.separator");
-        fileWriter.write(columnPrefix + "\tAffymetrix" + lineSeparator);
+        fileWriter.write("Affymetrix\t" + columnPrefix + lineSeparator);
         String line = buf.readLine();
         while (line != null) {
             ProgressMonitor pMonitor = this.getProgressMonitor();
@@ -141,7 +141,7 @@ public class ParseAffymetrixFileTask extends Task {
             for (int i = 0; i < swpIds.length; i++) {
                 String swpId = swpIds[i].trim();
                 String mappingLine = new String
-                        (swpId + "\t" + affyId + lineSeparator);
+                        (affyId + "\t" + swpId + lineSeparator);
                 fileWriter.write(mappingLine);
             }
             line = buf.readLine();
