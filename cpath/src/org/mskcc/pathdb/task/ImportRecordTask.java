@@ -119,18 +119,21 @@ public class ImportRecordTask extends Task {
     private void outputSummary(ImportSummary summary) {
         StringBuffer buffer = new StringBuffer();
         buffer.append("Import Summary:  \n");
-        buffer.append("-----------------------------------------------\n");
-        buffer.append("# of Pathways saved to database:              "
+        buffer.append("-----------------------------------------------------"
+            + "\n");
+        buffer.append("# of Pathways saved to database:                  "
                 + summary.getNumPathwaysSaved() + "\n");
-        buffer.append("# of Interactions saved to database:          "
+        buffer.append("-> # of Existing Pathways found in db:            "
+                + summary.getNumPathwaysFound() + "\n");
+        buffer.append("# of Interactions saved to database:              "
                 + summary.getNumInteractionsSaved() + "\n");
-        buffer.append("# of Interactions clobbered:                  "
-                + summary.getNumInteractionsClobbered() + "\n");
-        buffer.append("# of Physical Entities found in database:     "
-                + summary.getNumPhysicalEntitiesFound() + "\n");
-        buffer.append("# of Physical Entities saved to database:     "
+        buffer.append("-> # of Existing Interactions found in db:        "
+                + summary.getNumInteractionsFound() + "\n");
+        buffer.append("# of Physical Entities saved to database:         "
                 + summary.getNumPhysicalEntitiesSaved() + "\n");
-        buffer.append("-----------------------------------------------");
+        buffer.append("-> # of Existing Physical Entities found in db:   "
+                + summary.getNumPhysicalEntitiesFound() + "\n");
+        buffer.append("-----------------------------------------------------");
         String msg = buffer.toString();
         pMonitor.setCurrentMessage(msg);
         pMonitor.setCurrentMessage("File Import Complete\n");
