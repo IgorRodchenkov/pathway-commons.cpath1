@@ -49,6 +49,25 @@ public class ParseAffymetrix {
         if (args.length != 3) {
             System.out.println("Usage:  affy.pl input_file output_file "
                     + "column_prefix");
+            System.out.println("\nThis command line utility "
+                    + "parses Affymetrix annotation files, and extracts "
+                    + "two columns of data:  Probe Set Affymetrix ID "
+                    + "(always assumed to be the zeroth column), and "
+                    + "a second column of the user's choosing.");
+            System.out.println("\nFor example, this command:");
+            System.out.println("affy.pl HG-U133_Plus_2_annot.csv temp.txt "
+                + "SwissProt");
+            System.out.println("\nwill create a mapping file between Probe"
+                + "Set Affymetrix ID and SwissProt IDs that will look "
+                + "like this:  ");
+            System.out.println("Affymetrix      SwissProt\n"
+                    + "1007_s_at       BAC85426\n"
+                    + "1007_s_at       Q08345\n"
+                    + "1007_s_at       Q96T61\n"
+                    + "1007_s_at       Q96T62\n"
+                    + "...");
+            System.out.println("\nThe resulting output file can then "
+                + "be imported into cPath.");
             System.exit(1);
         }
         try {
