@@ -30,6 +30,7 @@
 package org.mskcc.pathdb.schemas.biopax;
 
 import org.jdom.Namespace;
+import org.jdom.Attribute;
 
 /**
  * RDF (Resource Description Framework) Constants.
@@ -79,4 +80,13 @@ public class RdfConstants {
      */
     public static final Namespace RDF_NAMESPACE = Namespace.getNamespace
             (RdfConstants.RDF_NAMESPACE_PREFIX, RdfConstants.RDF_NAMESPACE_URI);
+
+    /**
+     * Gets a String Data Type Attribute.
+     * @return JDOM Attribute Object.
+     */
+    public static final Attribute getStringDataTypeAttribute() {
+            return new Attribute (RdfConstants.DATATYPE_ATTRIBUTE,
+            "http://www.w3.org/2001/XMLSchema#string", RDF_NAMESPACE);
+    }
 }
