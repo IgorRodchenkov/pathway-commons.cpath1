@@ -38,10 +38,15 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
 
 /**
  * CPath Servlet.
@@ -108,6 +113,11 @@ public final class CPathServlet extends ActionServlet {
         String dir = context.getRealPath("WEB-INF/"
                 + LuceneConfig.INDEX_DIR_PREFIX);
         manager.setProperty(LuceneConfig.PROPERTY_LUCENE_DIR, dir);
+        try {
+            EhCache.initCache();
+        } catch (CacheException e) {
+            System.err.println("Error Initializing Cache:  " + e.getMessage());
+        }
     }
 
     /**
@@ -130,4 +140,5 @@ public final class CPathServlet extends ActionServlet {
             System.err.println("DaoException:  " + e.toString());
         }
     }
+
 }
