@@ -42,6 +42,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import net.sf.ehcache.CacheException;
+
 /**
  * Custom JSP Tag for Displaying Organism Data Plus Links.
  *
@@ -143,8 +145,7 @@ public class OrganismTable extends HtmlTable {
      * Output Organism Records.
      */
     private void outputRecords(String sortBy, String sortOrder)
-            throws DaoException, IOException,
-            QueryException {
+            throws DaoException, IOException, QueryException, CacheException {
         OrganismStats orgStats = new OrganismStats();
         ArrayList records = null;
 
