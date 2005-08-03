@@ -29,20 +29,18 @@
  **/
 package org.mskcc.pathdb.action.admin;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.lucene.OrganismStats;
-import org.mskcc.pathdb.util.cache.GlobalCache;
 import org.mskcc.pathdb.util.cache.EhCache;
+import org.mskcc.pathdb.util.cache.GlobalCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Cache;
 
 /**
  * Administrative Action for Reseting the Global Cache.

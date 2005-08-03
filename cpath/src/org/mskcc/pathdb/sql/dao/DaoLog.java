@@ -32,7 +32,10 @@ package org.mskcc.pathdb.sql.dao;
 import org.mskcc.pathdb.model.LogRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 

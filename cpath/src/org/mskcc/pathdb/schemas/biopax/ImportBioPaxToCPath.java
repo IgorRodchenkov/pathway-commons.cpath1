@@ -33,16 +33,19 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.model.*;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.sql.dao.*;
-import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
+import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.util.ExternalReferenceUtil;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
-import org.mskcc.pathdb.util.ExternalReferenceUtil;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -157,25 +160,25 @@ public class ImportBioPaxToCPath {
             //  be determined via Unification Xrefs.
             Element resource = (Element) resourceList.get(i);
             ExternalReference unificationXrefs[] =
-                        bpUtil.extractUnificationXrefs(resource);
-            long cPathId = lookUpRecord (unificationXrefs);
+                    bpUtil.extractUnificationXrefs(resource);
+            long cPathId = lookUpRecord(unificationXrefs);
 
             //  If record does not exist, save it.
             if (cPathId == -1) {
                 newRecordFlags.add(Boolean.TRUE);
                 cPathId = dao.addRecord(record.getName(),
-                    record.getDescription(),
-                    record.getNcbiTaxonomyId(),
-                    record.getType(),
-                    record.getSpecificType(),
-                    XmlRecordType.BIO_PAX,
-                    "[PLACE_HOLDER]");
+                        record.getDescription(),
+                        record.getNcbiTaxonomyId(),
+                        record.getType(),
+                        record.getSpecificType(),
+                        XmlRecordType.BIO_PAX,
+                        "[PLACE_HOLDER]");
 
                 //  Find any LinkOut References, such as Affymetrix IDs
                 ExternalReference xrefs[] = bpUtil.extractXrefs(resource);
                 ExternalReference linkOutRefs[] = queryLinkOutService
                         (unificationXrefs);
-                appendNewXRefs (linkOutRefs, resource);
+                appendNewXRefs(linkOutRefs, resource);
                 ExternalReference unifiedRefs[] =
                         ExternalReferenceUtil.createUnifiedList(xrefs,
                                 linkOutRefs);
@@ -218,9 +221,9 @@ public class ImportBioPaxToCPath {
      * Appends New XRefs to the Existing XML Resource.
      */
     private void appendNewXRefs(ExternalReference linkOutRefs[], Element e)
-        throws DaoException {
+            throws DaoException {
         if (linkOutRefs != null && linkOutRefs.length > 0) {
-            for (int i=0; i<linkOutRefs.length; i++) {
+            for (int i = 0; i < linkOutRefs.length; i++) {
                 BioPaxGenerator.appendRelationshipXref
                         (linkOutRefs[i], e);
             }
@@ -232,17 +235,17 @@ public class ImportBioPaxToCPath {
      * If the record exists, its cPath ID will be returned.  Otherwise,
      * this method returns the value -1.
      */
-    private long lookUpRecord (ExternalReference unificationXrefs[])
+    private long lookUpRecord(ExternalReference unificationXrefs[])
             throws DaoException {
         DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
 
         if (unificationXrefs != null && unificationXrefs.length > 0) {
-                ArrayList records = daoExternalLinker.lookUpByExternalRefs
-                        (unificationXrefs);
-                if (records.size() > 0) {
-                    CPathRecord existingRecord = (CPathRecord) records.get(0);
-                    return existingRecord.getId();
-                }
+            ArrayList records = daoExternalLinker.lookUpByExternalRefs
+                    (unificationXrefs);
+            if (records.size() > 0) {
+                CPathRecord existingRecord = (CPathRecord) records.get(0);
+                return existingRecord.getId();
+            }
         }
         return -1;
     }

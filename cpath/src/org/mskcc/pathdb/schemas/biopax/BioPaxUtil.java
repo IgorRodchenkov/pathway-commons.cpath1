@@ -99,7 +99,7 @@ public class BioPaxUtil {
         //  Third Step:  Make Hierarchical
         if (errorList.size() == 0) {
             pMonitor.setCurrentMessage("Preparing Pathway Elements:  "
-                + "[" + pathwayList.size() + " Pathways]");
+                    + "[" + pathwayList.size() + " Pathways]");
             pMonitor.setMaxValue(pathwayList.size());
             for (int i = 0; i < pathwayList.size(); i++) {
                 Element pathway = (Element) pathwayList.get(i);
@@ -108,7 +108,7 @@ public class BioPaxUtil {
                 ConsoleUtil.showProgress(pMonitor);
             }
             pMonitor.setCurrentMessage("Preparing Interaction Elements:  "
-                + "[" + interactionList.size() + " Interactions]");
+                    + "[" + interactionList.size() + " Interactions]");
             pMonitor.setMaxValue(interactionList.size());
             for (int i = 0; i < interactionList.size(); i++) {
                 Element interaction = (Element) interactionList.get(i);
@@ -119,8 +119,8 @@ public class BioPaxUtil {
 
             pMonitor.setCurrentMessage
                     ("Preparing Physical Entity Elements:  "
-                        + " [" + physicalEntityList.size()
-                        + " Physical Entities]");
+                    + " [" + physicalEntityList.size()
+                    + " Physical Entities]");
             pMonitor.setMaxValue(physicalEntityList.size());
             for (int i = 0; i < physicalEntityList.size(); i++) {
                 Element physicalEntity = (Element) physicalEntityList.get(i);
@@ -440,10 +440,10 @@ public class BioPaxUtil {
 
         if (debugFlag) {
             if (isTopLevelResource) {
-                logMsg ("Start:  Making Hierarchical");
+                logMsg("Start:  Making Hierarchical");
             }
             try {
-                logMsg ("We are here:\n" + XmlUtil.serializeToXml(e));
+                logMsg("We are here:\n" + XmlUtil.serializeToXml(e));
             } catch (IOException exc) {
             }
         }
@@ -466,13 +466,13 @@ public class BioPaxUtil {
             if (idAttribute != null) {
                 //  Case 1:  The element has an RDF ID attribute.
                 if (bioPaxConstants.isBioPaxEntity(e.getName())) {
-                    logMsg ("Branching:  Subcase 1A");
+                    logMsg("Branching:  Subcase 1A");
                     //  Subcase 1A:  This is a BioPAX Entity
                     exciseResource(e);
                     keepTraversingTree = false;
                 } else {
                     //  Subcase 1B:  This is not a BioPAX Entity
-                    logMsg ("Branching:  Subcase 1B");
+                    logMsg("Branching:  Subcase 1B");
                     e = replaceResourceWithClone(e);
                 }
             } else if (pointerAttribute != null) {
@@ -485,7 +485,7 @@ public class BioPaxUtil {
                 if (localIdMap.containsKey(uri)) {
                     //  If we have already been here, stop traversing.
                     //  Prevents Circular References.
-                    logMsg ("Preventing Circular Reference:  " + uri);
+                    logMsg("Preventing Circular Reference:  " + uri);
 
                     //  Remove the Existing RDF Pointer
                     e.removeAttribute(RdfConstants.RESOURCE_ATTRIBUTE,
@@ -499,13 +499,13 @@ public class BioPaxUtil {
                 } else if (bioPaxConstants.isBioPaxEntity
                         (referencedResource.getName())) {
                     //  Case 2A:  We are pointing at a Hinge Element
-                    logMsg ("Branching:  Subcase 2A");
+                    logMsg("Branching:  Subcase 2A");
                     keepTraversingTree = false;
                 } else {
                     //  Case 2B:  We are not pointing at a Hinge Element
                     //  Clone the resource, and keep walking down the
                     //  new subtree.
-                    logMsg ("Branching:  Subcase 2B");
+                    logMsg("Branching:  Subcase 2B");
                     e = replaceReferenceWithResource(pointerAttribute, e);
                 }
             }
@@ -523,9 +523,10 @@ public class BioPaxUtil {
 
     /**
      * Debug Messages, used for Development Purposes.
+     *
      * @param msg String msg.
      */
-    private void logMsg (String msg) {
+    private void logMsg(String msg) {
         if (debugFlag) {
             System.out.println(msg);
         }

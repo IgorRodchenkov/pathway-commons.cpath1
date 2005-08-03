@@ -120,7 +120,7 @@ public class ImportRecordTask extends Task {
         StringBuffer buffer = new StringBuffer();
         buffer.append("Import Summary:  \n");
         buffer.append("-----------------------------------------------------"
-            + "\n");
+                + "\n");
         buffer.append("# of Pathways saved to database:                  "
                 + summary.getNumPathwaysSaved() + "\n");
         buffer.append("-> # of Existing Pathways found in db:            "

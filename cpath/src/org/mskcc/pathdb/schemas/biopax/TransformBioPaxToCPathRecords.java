@@ -37,7 +37,6 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.XmlRecordType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

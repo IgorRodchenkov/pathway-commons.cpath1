@@ -203,7 +203,7 @@ public class Admin {
             //    new ImportReferencesTask(true, reader);
             //  task.importReferences();
         } else {
-            System.out.println ("Cannot determine file type.  Skipping...");
+            System.out.println("Cannot determine file type.  Skipping...");
         }
         if (importId != NOT_SET) {
             ImportRecordTask importTask = new ImportRecordTask(importId,

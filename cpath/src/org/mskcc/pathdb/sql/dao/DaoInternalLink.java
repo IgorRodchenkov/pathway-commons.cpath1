@@ -167,6 +167,7 @@ public class DaoInternalLink {
 
     /**
      * Gets All Source Links that point to the specified cPath ID.
+     *
      * @param targetId CPath ID.
      * @return ArrayList of InternalLinkRecords.
      * @throws DaoException Error Retrieving Data.

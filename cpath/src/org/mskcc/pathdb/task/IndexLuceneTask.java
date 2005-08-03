@@ -29,6 +29,7 @@
  **/
 package org.mskcc.pathdb.task;
 
+import net.sf.ehcache.CacheException;
 import org.jdom.JDOMException;
 import org.mskcc.pathdb.lucene.IndexFactory;
 import org.mskcc.pathdb.lucene.ItemToIndex;
@@ -53,8 +54,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import net.sf.ehcache.CacheException;
 
 /**
  * Runs the Lucene Text Indexer on all Records in CPath.
@@ -97,6 +96,7 @@ public class IndexLuceneTask extends Task {
      * @throws IOException       File IO Error.
      * @throws AssemblyException XML Assembly Error.
      * @throws QueryException    Data Query Error.
+     * @throws CacheException    Cache Error.
      */
     public void executeTask() throws DaoException, ImportException,
             IOException, AssemblyException, QueryException, CacheException {

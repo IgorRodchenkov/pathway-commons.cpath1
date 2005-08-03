@@ -59,9 +59,10 @@ public class JdbcUtil {
 
     /**
      * Gets the Command Line Flag.
+     *
      * @return Command Line Flag.
      */
-    public static boolean getCommandLineFlag () {
+    public static boolean getCommandLineFlag() {
         return commandLineFlag;
     }
 

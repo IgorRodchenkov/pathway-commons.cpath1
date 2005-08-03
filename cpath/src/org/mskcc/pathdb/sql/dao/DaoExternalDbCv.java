@@ -29,8 +29,8 @@
  **/
 package org.mskcc.pathdb.sql.dao;
 
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.CvRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.sql.Connection;
@@ -51,6 +51,7 @@ public class DaoExternalDbCv {
      *
      * @param dbId External Database ID.
      * @param term Term.
+     * @param masterFlag Indicates that this term is a "master" term.
      * @return true indicates success.
      * @throws DaoException Error Retrieving Data.
      */
@@ -66,7 +67,7 @@ public class DaoExternalDbCv {
                     + "`MASTER_FLAG`) VALUES (?,?,?)");
             pstmt.setInt(1, dbId);
             pstmt.setString(2, term.toUpperCase());
-            pstmt.setInt(3, masterFlag == true ? 1 :0);
+            pstmt.setInt(3, masterFlag ? 1 : 0);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {

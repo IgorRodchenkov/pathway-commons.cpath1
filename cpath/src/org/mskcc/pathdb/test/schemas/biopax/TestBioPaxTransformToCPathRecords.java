@@ -82,6 +82,7 @@ public class TestBioPaxTransformToCPathRecords extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {

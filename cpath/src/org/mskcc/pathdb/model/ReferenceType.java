@@ -63,15 +63,16 @@ public class ReferenceType {
      */
     public static ReferenceType getType(String typeName) {
         if (typeName == null) {
-            throw new IllegalArgumentException ("typeName is null");
+            throw new IllegalArgumentException("typeName is null");
         } else if (typeName.equals(PROTEIN_UNIFICATION.toString())) {
             return PROTEIN_UNIFICATION;
         } else if (typeName.equals(LINK_OUT.toString())) {
             return LINK_OUT;
-        } else if (typeName.equals(INTERACTION_PATHWAY_UNIFICATION.toString())) {
+        } else if (typeName.equals
+                (INTERACTION_PATHWAY_UNIFICATION.toString())) {
             return INTERACTION_PATHWAY_UNIFICATION;
         } else {
-            throw new NullPointerException ("Cannot find:  " + typeName);
+            throw new NullPointerException("Cannot find:  " + typeName);
         }
     }
 

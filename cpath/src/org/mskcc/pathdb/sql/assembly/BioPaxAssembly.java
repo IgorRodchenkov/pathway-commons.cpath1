@@ -35,7 +35,6 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;

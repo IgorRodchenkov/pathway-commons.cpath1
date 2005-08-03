@@ -29,6 +29,10 @@
  **/
 package org.mskcc.pathdb.action;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -40,21 +44,15 @@ import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.util.cache.GlobalCache;
 import org.mskcc.pathdb.util.cache.EhCache;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.io.IOException;
-
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.CacheException;
-import net.sf.ehcache.Element;
 
 /**
  * Bare Bones cPath Web Site:  Prototype.
@@ -114,7 +112,7 @@ public class BareBonesWeb extends BaseAction {
             XmlAssembly assembly =
                     XmlAssemblyFactory.createXmlAssembly(Long.parseLong(id),
                             XmlRecordType.BIO_PAX, 1, xdebug);
-            return mapping.findForward ("record");
+            return mapping.findForward("record");
         }
         if (id == null) {
             return mapping.findForward("pathways");
@@ -139,25 +137,28 @@ public class BareBonesWeb extends BaseAction {
         if (element != null) {
             xdebug.logMsg(this, "Successfully Retrieved from Cache");
             xdebug.logMsg(this, "Cached Element created at:  "
-                    + new Date (element.getCreationTime()));
+                    + new Date(element.getCreationTime()));
             xdebug.logMsg(this, "Time to Live:  "
                     + cache.getTimeToLiveSeconds() / 60.0 + " minutes");
             pathwayList = (ArrayList) element.getValue();
         } else {
             xdebug.logMsg(this, "Not hit in cache.  Getting all pathways.");
-            ArrayList candidateList = dao.getAllRecords(CPathRecordType.PATHWAY);
+            ArrayList candidateList = dao.getAllRecords
+                    (CPathRecordType.PATHWAY);
             xdebug.logMsg(this, "Total Number of Candidate Pathways Found:  "
                     + candidateList.size());
             DaoInternalLink daoInternalLink = new DaoInternalLink();
-            for (int i=0; i<candidateList.size(); i++) {
+            for (int i = 0; i < candidateList.size(); i++) {
                 CPathRecord pathway = (CPathRecord) candidateList.get(i);
-                ArrayList sourceLinks = daoInternalLink.getSources(pathway.getId());
-                //  If nothing points to this pathway, it is a top level pathway.
+                ArrayList sourceLinks = daoInternalLink.getSources
+                        (pathway.getId());
+                //  If nothing points to this pathway, it is a top
+                //  level pathway.
                 if (sourceLinks.size() == 0) {
                     pathwayList.add(pathway);
                 }
             }
-            Element newElement = new Element (EhCache.KEY_PATHWAY_LIST,
+            Element newElement = new Element(EhCache.KEY_PATHWAY_LIST,
                     pathwayList);
             cache.put(newElement);
         }

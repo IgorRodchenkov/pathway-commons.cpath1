@@ -29,13 +29,16 @@
  **/
 package org.mskcc.pathdb.sql.dao;
 
+import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
-import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.cache.GlobalCache;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -59,8 +62,8 @@ public class DaoExternalDb {
         String masterTerm = db.getMasterTerm();
 
         if (db.getMasterTerm() == null) {
-            throw new IllegalArgumentException ("ExternalDatabaseRecord "
-                + " masterTerm attribute is null.");
+            throw new IllegalArgumentException("ExternalDatabaseRecord "
+                    + " masterTerm attribute is null.");
         }
 
         try {
@@ -73,7 +76,7 @@ public class DaoExternalDb {
             pstmt.setString(3, db.getSampleId());
             pstmt.setString(4, db.getDescription());
             java.util.Date now = new java.util.Date();
-            java.sql.Date sqlDate = new java.sql.Date (now.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
             pstmt.setDate(5, sqlDate);
             pstmt.setString(6, db.getDbType().toString());
             int rows = pstmt.executeUpdate();

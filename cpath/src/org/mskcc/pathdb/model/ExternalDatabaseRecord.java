@@ -168,6 +168,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Gets a Sample ID, used to generate sample live links.
+     *
      * @return SampleId String.
      */
     public String getSampleId() {
@@ -176,6 +177,7 @@ public class ExternalDatabaseRecord {
 
     /**
      * Sets a Sample ID, used to generate sample live links.
+     *
      * @param sampleId Sample ID String.
      */
     public void setSampleId(String sampleId) {

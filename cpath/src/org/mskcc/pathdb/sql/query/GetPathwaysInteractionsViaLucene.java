@@ -68,11 +68,11 @@ public class GetPathwaysInteractionsViaLucene {
     /**
      * Executes Query, and returns an Array of cPath Long IDs.
      *
-     * @return array of long cPath IDs. 
-     * @throws QueryException       Query Error.
-     * @throws IOException          I/O Error.
-     * @throws AssemblyException    XML Assembly Error.
-     * @throws ParseException       Lucene Parsing Error.
+     * @return array of long cPath IDs.
+     * @throws QueryException    Query Error.
+     * @throws IOException       I/O Error.
+     * @throws AssemblyException XML Assembly Error.
+     * @throws ParseException    Lucene Parsing Error.
      */
     public long[] executeSearch() throws QueryException,
             IOException, AssemblyException, ParseException {

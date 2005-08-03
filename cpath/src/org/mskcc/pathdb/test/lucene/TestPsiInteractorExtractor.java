@@ -73,10 +73,11 @@ public class TestPsiInteractorExtractor extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {
-        return "Test that we can extract interactor data from PSI-MI " +
-                "interaction records";
+        return "Test that we can extract interactor data from PSI-MI "
+                + "interaction records";
     }
 }

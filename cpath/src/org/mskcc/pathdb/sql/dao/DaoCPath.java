@@ -54,8 +54,8 @@ public class DaoCPath extends ManagedDAO {
     //  Get Num Entities SQL
     private static final String GET_NUM_ENTITIES_KEY = "GET_NUM_ENTITIES_KEY";
     private static final String GET_NUM_ENTITIES =
-        "select count(CPATH_ID) from cpath where type = ?";
-    
+            "select count(CPATH_ID) from cpath where type = ?";
+
     //  Insert SQL
     private static final String INSERT_KEY = "INSERT_KEY";
     private static final String INSERT =
@@ -63,13 +63,13 @@ public class DaoCPath extends ManagedDAO {
             + "`TYPE`, `SPECIFIC_TYPE`, `NCBI_TAX_ID`, `XML_TYPE`, "
             + "`XML_CONTENT` ,"
             + " `CREATE_TIME`) VALUES (?, ?,?,?,?,?,?,?)";
-    
+
     private static final String GET_MAX_ID_KEY = "GET_MAX_ID_KEY";
     private static final String GET_MAX_ID =
             "SELECT MAX(CPATH_ID) from cpath";
 
     //  Get All SQL
-    private static final String GET_ALL_KEY= "GET_ALL_KEY";
+    private static final String GET_ALL_KEY = "GET_ALL_KEY";
     private static final String GET_ALL =
             "select * from cpath order by CPATH_ID";
 
@@ -81,47 +81,49 @@ public class DaoCPath extends ManagedDAO {
     //  Get All by Taxonomy ID SQL
     private static final String GET_ALL_BY_TAX_ID_KEY = "GET_ALL_BY_TAX_ID_KEY";
     private static final String GET_ALL_BY_TAX_ID =
-        "SELECT * FROM cpath WHERE TYPE = ? AND " + "NCBI_TAX_ID = ?";
-    
+            "SELECT * FROM cpath WHERE TYPE = ? AND " + "NCBI_TAX_ID = ?";
+
     //  Get Taxonomy IDs SQL
     private static final String GET_TAX_IDS_KEY = "GET_TAX_IDS";
     private static final String GET_TAX_IDS =
-        "SELECT DISTINCT NCBI_TAX_ID FROM cpath";
+            "SELECT DISTINCT NCBI_TAX_ID FROM cpath";
 
     //  Get By ID SQL
     private static final String GET_BY_ID_KEY = "GET_BY_ID_KEY";
     private static final String GET_BY_ID =
-        "SELECT * FROM cpath WHERE CPATH_ID = ?";
+            "SELECT * FROM cpath WHERE CPATH_ID = ?";
 
     //  Get By Name SQL
     private static final String GET_BY_NAME_KEY = "GET_BY_NAME";
     private static final String GET_BY_NAME =
-        "SELECT * FROM cpath WHERE NAME = ?";
+            "SELECT * FROM cpath WHERE NAME = ?";
 
     //  Delete by ID SQL
     private static final String DELETE_BY_ID_KEY = "DELETE_BY_ID_KEY";
     private static final String DELETE_BY_ID =
-        "DELETE FROM cpath WHERE CPATH_ID = ?";
-    
+            "DELETE FROM cpath WHERE CPATH_ID = ?";
+
     //  Update XML SQL
     private static final String UPDATE_XML_KEY = "UPDATE_XML_KEY";
     private static final String UPDATE_XML =
-        "UPDATE cpath SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
-        + "WHERE `CPATH_ID` = ?";
+            "UPDATE cpath SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
+            + "WHERE `CPATH_ID` = ?";
 
     /**
      * Private Constructor (Singleton pattern).
      */
-    private DaoCPath() {}
+    private DaoCPath() {
+    }
 
     /**
      * Gets Instance of Dao Object. (Singleton pattern).
-     * @return  DaoCPath Object.
+     *
+     * @return DaoCPath Object.
      * @throws DaoException Dao Initialization Error.
      */
-    public static DaoCPath getInstance()  throws DaoException{
-        if(daoCPath == null){
-        	daoCPath = new DaoCPath();
+    public static DaoCPath getInstance() throws DaoException {
+        if (daoCPath == null) {
+            daoCPath = new DaoCPath();
             daoCPath.init();
         }
         return daoCPath;
@@ -129,10 +131,11 @@ public class DaoCPath extends ManagedDAO {
 
     /**
      * Initialize DAO Prepared Statement Objects.
+     *
      * @throws DaoException Dao Initialization Error.
      */
-    protected void init() throws DaoException{
-    	super.init();
+    protected void init() throws DaoException {
+        super.init();
         addPreparedStatement(GET_NUM_ENTITIES_KEY, GET_NUM_ENTITIES);
         addPreparedStatement(INSERT_KEY, INSERT);
         addPreparedStatement(GET_MAX_ID_KEY, GET_MAX_ID);

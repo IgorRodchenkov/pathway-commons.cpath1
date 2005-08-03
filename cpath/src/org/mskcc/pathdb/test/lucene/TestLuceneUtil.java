@@ -55,6 +55,7 @@ public class TestLuceneUtil extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {

@@ -75,10 +75,11 @@ public class TestCountAffymetrixId extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {
         return "Test that we can properly count Affymetrix IDs associated "
-            + "with cPath Records";
+                + "with cPath Records";
     }
 }

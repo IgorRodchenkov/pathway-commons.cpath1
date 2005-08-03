@@ -33,8 +33,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.pathdb.test.schemas.biopax.BioPaxSuite;
-import org.mskcc.pathdb.test.schemas.psi.PsiSuite;
 import org.mskcc.pathdb.test.schemas.externalDb.ExternalDbSuite;
+import org.mskcc.pathdb.test.schemas.psi.PsiSuite;
 
 /**
  * Suite of all Schema Unit Tests.

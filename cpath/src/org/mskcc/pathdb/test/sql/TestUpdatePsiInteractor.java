@@ -147,10 +147,11 @@ public class TestUpdatePsiInteractor extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {
         return "Test that we can properly update a PSI-MI record with "
-            + " new interactor data";
+                + " new interactor data";
     }
 }

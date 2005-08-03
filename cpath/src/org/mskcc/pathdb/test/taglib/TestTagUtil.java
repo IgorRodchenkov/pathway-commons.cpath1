@@ -106,6 +106,7 @@ public class TestTagUtil extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {

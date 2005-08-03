@@ -150,9 +150,11 @@ public class TestPager extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the Pager Object, used to generate Next/Previous web links";
+        return "Test the Pager Object, used to generate Next/Previous "
+            + "web links";
     }
 }

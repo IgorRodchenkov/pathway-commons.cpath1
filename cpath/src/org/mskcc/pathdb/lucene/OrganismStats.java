@@ -29,6 +29,10 @@
  **/
 package org.mskcc.pathdb.lucene;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.model.Organism;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -40,11 +44,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
-import net.sf.ehcache.CacheException;
 
 /**
  * Encapsulates Stats on All Organisms in cPath.
@@ -60,6 +59,7 @@ public class OrganismStats {
      * @throws DaoException   Data Access Error.
      * @throws QueryException Query Error.
      * @throws IOException    Input / Output Error.
+     * @throws CacheException Cache Error.
      */
     public ArrayList getOrganismsSortedByName() throws DaoException,
             QueryException, IOException, CacheException {
@@ -83,6 +83,7 @@ public class OrganismStats {
      * @throws DaoException   Data Access Error.
      * @throws QueryException Query Error.
      * @throws IOException    Input / Output Error.
+     * @throws CacheException Cache Error.
      */
     public ArrayList getOrganismsSortedByNumInteractions() throws DaoException,
             QueryException, IOException, CacheException {
@@ -97,7 +98,6 @@ public class OrganismStats {
             return list;
 
         }
-
     }
 
     /**
@@ -106,6 +106,7 @@ public class OrganismStats {
      * @throws DaoException   Data Access Error.
      * @throws QueryException Query Error.
      * @throws IOException    Input / Output Error.
+     * @throws CacheException Cache Error.
      */
     public void resetStats() throws DaoException, IOException,
             QueryException, CacheException {
@@ -136,13 +137,13 @@ public class OrganismStats {
 
             Element e0 = new Element
                     (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME,
-                    listSortedByName);
+                            listSortedByName);
             Element e1 = new Element
                     (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES,
-                    listSortedByNumEntities);
+                            listSortedByNumEntities);
             cache.put(e0);
             cache.put(e1);
-            if (type ==0) {
+            if (type == 0) {
                 return listSortedByName;
             } else {
                 return listSortedByNumEntities;

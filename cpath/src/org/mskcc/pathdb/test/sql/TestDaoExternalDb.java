@@ -83,10 +83,10 @@ public class TestDaoExternalDb extends TestCase {
         //  as MySQL maintains that database names are unique.
         try {
             addSampleRecord();
-            fail ("DaoException should have been thrown");
+            fail("DaoException should have been thrown");
         } catch (DaoException e) {
             String msg = e.getMessage();
-            assertEquals ("Duplicate entry 'ACME Database' for key 2",
+            assertEquals("Duplicate entry 'ACME Database' for key 2",
                     e.getMessage());
         }
 
@@ -175,15 +175,16 @@ public class TestDaoExternalDb extends TestCase {
         DaoExternalDb dao = new DaoExternalDb();
         try {
             dao.addRecord(db);
-            fail ("DaoException should have been thrown");
+            fail("DaoException should have been thrown");
         } catch (DaoException e) {
             String msg = e.getMessage();
-            assertEquals ("Duplicate entry 'ACME CORP' for key 2", msg);
+            assertEquals("Duplicate entry 'ACME CORP' for key 2", msg);
         }
     }
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {

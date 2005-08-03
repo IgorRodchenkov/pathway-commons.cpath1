@@ -38,7 +38,6 @@ import org.mskcc.pathdb.test.model.ModelSuite;
 import org.mskcc.pathdb.test.protocol.ProtocolSuite;
 import org.mskcc.pathdb.test.schemas.SchemaSuite;
 import org.mskcc.pathdb.test.sql.SqlSuite;
-import org.mskcc.pathdb.test.sql.assembly.AssemblySuite;
 import org.mskcc.pathdb.test.taglib.TagLibSuite;
 import org.mskcc.pathdb.test.task.TaskSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;

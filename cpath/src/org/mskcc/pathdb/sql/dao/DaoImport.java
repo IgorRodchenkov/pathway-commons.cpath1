@@ -174,7 +174,7 @@ public class DaoImport {
             pstmt.setString(4, hash);
             pstmt.setString(5, ImportRecord.STATUS_NEW);
             java.util.Date date = new java.util.Date();
-            java.sql.Date sqlDate = new java.sql.Date (date.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
             pstmt.setDate(6, sqlDate);
             pstmt.setDate(7, sqlDate);
             int rows = pstmt.executeUpdate();

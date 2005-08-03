@@ -64,10 +64,11 @@ public class TestQueryFileReader extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {
         return "Test the Query File Reader, used to run pre-computed "
-            + "cPath queries";
+                + "cPath queries";
     }
 }

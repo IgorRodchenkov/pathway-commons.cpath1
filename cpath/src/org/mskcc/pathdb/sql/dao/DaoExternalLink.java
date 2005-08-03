@@ -39,7 +39,6 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -83,14 +82,14 @@ public class DaoExternalLink extends ManagedDAO {
 
     private static final String INSERT_KEY = "INSERT_KEY";
     private static final String INSERT =
-        "INSERT INTO external_link (`CPATH_ID`, "
-        + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`)"
-        + " VALUES (?,?,?)";
+            "INSERT INTO external_link (`CPATH_ID`, "
+            + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`)"
+            + " VALUES (?,?,?)";
 
     private static final String GET_BY_LINK_ID_KEY = "GET_BY_LINK_ID_KEY";
     private static final String GET_BY_LINK_ID =
-        "SELECT * FROM external_link WHERE EXTERNAL_LINK_ID = ?";
-    
+            "SELECT * FROM external_link WHERE EXTERNAL_LINK_ID = ?";
+
     private static final String GET_BY_DB_ID_KEY = "GET_BY_DB_ID_KEY";
     private static final String GET_BY_DB_ID =
             "SELECT * FROM external_link WHERE "
@@ -100,35 +99,37 @@ public class DaoExternalLink extends ManagedDAO {
     private static final String GET_BY_DB =
             "SELECT * FROM external_link WHERE"
             + " EXTERNAL_DB_ID = ?";
-    
+
     private static final String GET_BY_CPATH_ID_KEY = "GET_BY_CPATH_ID_KEY";
     private static final String GET_BY_CPATH_ID =
-        "SELECT * FROM external_link WHERE CPATH_ID = ? "
-                    + "ORDER BY EXTERNAL_LINK_ID";
-    
+            "SELECT * FROM external_link WHERE CPATH_ID = ? "
+            + "ORDER BY EXTERNAL_LINK_ID";
+
     private static final String DELETE_BY_ID_KEY = "DELETE_BY_ID_KEY";
-    private static final String DELETE_BY_ID = 
-        "DELETE FROM external_link WHERE EXTERNAL_LINK_ID = ?";
-    
+    private static final String DELETE_BY_ID =
+            "DELETE FROM external_link WHERE EXTERNAL_LINK_ID = ?";
+
     private static final String RECORD_EXISTS_KEY = "RECORD_EXISTS_KEY";
-    private static final String RECORD_EXISTS = 
-        "SELECT EXTERNAL_LINK_ID FROM external_link WHERE "
-                    + "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND "
-                    + "LINKED_TO_ID = ?";
+    private static final String RECORD_EXISTS =
+            "SELECT EXTERNAL_LINK_ID FROM external_link WHERE "
+            + "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND "
+            + "LINKED_TO_ID = ?";
 
     /**
      * Private Constructor (Singleton pattern).
      */
-    private DaoExternalLink () {}
+    private DaoExternalLink() {
+    }
 
     /**
      * Gets Instance of Dao Object. (Singleton pattern).
-     * @return  DaoCPath Object.
+     *
+     * @return DaoCPath Object.
      * @throws DaoException Dao Initialization Error.
      */
-    public static DaoExternalLink getInstance()  throws DaoException{
-        if(daoExternalLink == null){
-        	daoExternalLink = new DaoExternalLink();
+    public static DaoExternalLink getInstance() throws DaoException {
+        if (daoExternalLink == null) {
+            daoExternalLink = new DaoExternalLink();
             daoExternalLink.init();
         }
         return daoExternalLink;
@@ -136,12 +137,13 @@ public class DaoExternalLink extends ManagedDAO {
 
     /**
      * Initialize DAO Prepared Statement Objects.
+     *
      * @throws DaoException Dao Initialization Error.
      */
     protected void init() throws DaoException {
-    	super.init();
+        super.init();
         addPreparedStatement(INSERT_KEY, INSERT);
-        addPreparedStatement(GET_BY_LINK_ID_KEY , GET_BY_LINK_ID);
+        addPreparedStatement(GET_BY_LINK_ID_KEY, GET_BY_LINK_ID);
         addPreparedStatement(GET_BY_DB_ID_KEY, GET_BY_DB_ID);
         addPreparedStatement(GET_BY_DB_KEY, GET_BY_DB);
         addPreparedStatement(GET_BY_CPATH_ID_KEY, GET_BY_CPATH_ID);

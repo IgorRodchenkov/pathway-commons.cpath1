@@ -32,10 +32,6 @@ package org.mskcc.pathdb.test.schemas.externalDb;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.test.schemas.biopax.TestBioPaxUtil;
-import org.mskcc.pathdb.test.schemas.biopax.TestBioPaxTransformToCPathRecords;
-import org.mskcc.pathdb.test.schemas.biopax.TestUpdateRdfLinks;
-import org.mskcc.pathdb.test.schemas.biopax.TestImportBioPaxToCPath;
 
 /**
  * Suite of all BioPax Unit Tests.

@@ -30,18 +30,18 @@
 package org.mskcc.pathdb.test.schemas.biopax;
 
 import junit.framework.TestCase;
-import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
-import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.task.ProgressMonitor;
 
-import java.util.ArrayList;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Tests the ImportBioPaxToCPath Class.
@@ -75,7 +75,7 @@ public class TestImportBioPaxToCPath extends TestCase {
         ProgressMonitor pMonitor = new ProgressMonitor();
         ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
         ImportSummary summary = importer.addRecord(xml, pMonitor);
-            assertEquals(1, summary.getNumPathwaysSaved());
+        assertEquals(1, summary.getNumPathwaysSaved());
         assertEquals(0, summary.getNumPathwaysFound());
         assertEquals(4, summary.getNumInteractionsSaved());
         assertEquals(0, summary.getNumInteractionsFound());
@@ -92,14 +92,14 @@ public class TestImportBioPaxToCPath extends TestCase {
         //  service is working.
         DaoExternalLink externalLinker = DaoExternalLink.getInstance();
         ArrayList recordList = externalLinker.lookUpByExternalRef
-                (new ExternalReference ("Affymetrix", "1919_at"));
-        assertEquals (1, recordList.size());
+                (new ExternalReference("Affymetrix", "1919_at"));
+        assertEquals(1, recordList.size());
         CPathRecord record = (CPathRecord) recordList.get(0);
-        assertEquals ("GLK", record.getName());
+        assertEquals("GLK", record.getName());
 
         //  Verify that the BioPAX XML now contains an XREF for Affymetrix
         int index = record.getXmlContent().indexOf("AFFYMETRIX");
-        assertTrue (index > 0);
+        assertTrue(index > 0);
 
         //  Try Saving Again
         importer = new ImportBioPaxToCPath();
@@ -123,6 +123,7 @@ public class TestImportBioPaxToCPath extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {

@@ -30,9 +30,9 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
+import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
-import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbCv;
@@ -75,9 +75,9 @@ public class TestDaoExternalDbCv extends TestCase {
         assertEquals(DB_NAME, db.getName());
 
         //  Validate the Master / Synonym Terms
-        assertEquals (MASTER_TERM, db.getMasterTerm());
+        assertEquals(MASTER_TERM, db.getMasterTerm());
         ArrayList synTerms = db.getSynonymTerms();
-        assertEquals (2, synTerms.size());
+        assertEquals(2, synTerms.size());
         String term0 = (String) synTerms.get(0);
         String term1 = (String) synTerms.get(1);
         assertEquals(TERM0, term0);
@@ -117,6 +117,7 @@ public class TestDaoExternalDbCv extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {

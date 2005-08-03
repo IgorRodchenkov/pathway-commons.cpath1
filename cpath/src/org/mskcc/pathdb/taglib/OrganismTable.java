@@ -29,6 +29,7 @@
  **/
 package org.mskcc.pathdb.taglib;
 
+import net.sf.ehcache.CacheException;
 import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.Organism;
 import org.mskcc.pathdb.protocol.ProtocolConstants;
@@ -41,8 +42,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import net.sf.ehcache.CacheException;
 
 /**
  * Custom JSP Tag for Displaying Organism Data Plus Links.

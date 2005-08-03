@@ -48,7 +48,7 @@ public class IndexFactory {
      * @param cpathId     cPath ID.
      * @param xmlAssembly XML Document Assembly.
      * @return ItemToIndex Object.
-     * @throws IOException Input Output Exception.
+     * @throws IOException   Input Output Exception.
      * @throws JDOMException JDOM XML Error.
      */
     public static ItemToIndex createItemToIndex(long cpathId,

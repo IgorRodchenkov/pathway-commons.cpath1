@@ -52,10 +52,11 @@ public class QueryFullText {
 
     /**
      * Executes Full Text Query.
-     * @param term              Search Term
-     * @throws QueryException   Lucene Query Error
-     * @throws IOException      I/O Error
-     * @throws ParseException   Lucene Parsing Error
+     *
+     * @param term Search Term
+     * @throws QueryException Lucene Query Error
+     * @throws IOException    I/O Error
+     * @throws ParseException Lucene Parsing Error
      */
     public static void queryFullText(String term) throws QueryException,
             IOException, ParseException {

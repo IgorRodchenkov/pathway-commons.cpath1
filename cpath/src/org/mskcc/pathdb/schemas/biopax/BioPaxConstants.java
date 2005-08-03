@@ -239,14 +239,14 @@ public class BioPaxConstants {
      * For example, if the class is of type:  physicalEntity, interaction,
      * pathway, or any subclasses of these, this method will return true.
      *
-     * @param elementName
-     * @return boolean value.
+     * @param elementName       Element Name.
+     * @return boolean value
      */
-    public boolean isBioPaxEntity (String elementName) {
+    public boolean isBioPaxEntity(String elementName) {
         if (physicalEntitySet.contains(elementName)
-            || interactionSet.contains(elementName)
-            || pathwaySet.contains(elementName)) {
-                return true;
+                || interactionSet.contains(elementName)
+                || pathwaySet.contains(elementName)) {
+            return true;
         } else {
             return false;
         }

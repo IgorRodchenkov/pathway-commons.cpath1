@@ -29,6 +29,7 @@
  **/
 package org.mskcc.pathdb.servlet;
 
+import net.sf.ehcache.CacheException;
 import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
@@ -43,10 +44,6 @@ import org.mskcc.pathdb.util.cache.EhCache;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
 
 /**
  * CPath Servlet.

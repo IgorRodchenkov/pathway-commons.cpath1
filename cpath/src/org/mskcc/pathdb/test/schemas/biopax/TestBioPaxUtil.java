@@ -39,11 +39,9 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
-import org.mskcc.pathdb.util.xml.XmlUtil;
+import org.mskcc.pathdb.util.rdf.RdfValidator;
 
 import java.io.FileReader;
 import java.io.StringReader;
@@ -143,7 +141,7 @@ public class TestBioPaxUtil extends TestCase {
         //  Test the extractXrefs Method
         //  We should find a total of 3 XRefs.
         ExternalReference refs[] = util.extractXrefs(pathway);
-        assertEquals (3, refs.length);
+        assertEquals(3, refs.length);
         ExternalReference ref0 = refs[0];
         ExternalReference ref1 = refs[1];
         ExternalReference ref2 = refs[2];
@@ -158,7 +156,7 @@ public class TestBioPaxUtil extends TestCase {
         //  We should find a total of 2 Xrefs.
         ExternalReference unificationRefs[] =
                 util.extractUnificationXrefs(pathway);
-        assertEquals (2, unificationRefs.length);
+        assertEquals(2, unificationRefs.length);
         ref0 = unificationRefs[0];
         ref1 = unificationRefs[1];
         assertEquals("aMAZE", ref0.getDatabase());
@@ -244,6 +242,7 @@ public class TestBioPaxUtil extends TestCase {
     /**
      * Tests a Sample Circular Pathway.
      * Previously, this test resulted in an infinite loop.
+     *
      * @throws Exception All Exceptions.
      */
     public void testCircularPathway() throws Exception {
@@ -261,7 +260,7 @@ public class TestBioPaxUtil extends TestCase {
         xpath = XPath.newInstance("//@rdf:resource");
         resourceList = xpath.selectNodes(root);
         Attribute attr = (Attribute) resourceList.get(0);
-        assertEquals (targetAttribute.getValue(),
+        assertEquals(targetAttribute.getValue(),
                 RdfUtil.removeHashMark(attr.getValue()));
     }
 
@@ -324,6 +323,7 @@ public class TestBioPaxUtil extends TestCase {
 
     /**
      * Gets Name of Test.
+     *
      * @return Name of Test.
      */
     public String getName() {
