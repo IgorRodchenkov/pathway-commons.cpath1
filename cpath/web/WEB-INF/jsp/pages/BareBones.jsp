@@ -31,22 +31,14 @@
 <TABLE WIDTH=100%>
 <% if (record != null) { %>
 <TR>
-    <TD>cPath ID:</TD>
-    <TD><%= record.getId() %></TD>
-</TR>
-<TR>
     <TD>Name:</TD>
     <TD><%= record.getName() %></TD>
-</TR>
-<TR>
-    <TD>Description:</TD>
-    <TD><%= record.getDescription() %></TD>
-</TR>
-<TR>
     <TD>Type:</TD>
     <TD><%= record.getType() %></TD>
 </TR>
 <TR>
+    <TD>Description:</TD>
+    <TD><%= record.getDescription() %></TD>
     <TD>Specific Type:</TD>
     <TD><%= record.getSpecificType() %></TD>
 </TR>
@@ -61,22 +53,23 @@
             out.println(taxId);
         }
         %>
-</TD>
-</TR>
-<TR>
+    </TD>
     <TD>XML Type:</TD>
     <TD><%= record.getXmlType() %></TD>
 </TR>
 <TR>
-    <TD>Create Time:</TD>
-    <TD><%= record.getCreateTime() %></TD>
 </TR>
 <TR>
     <TD>XML Content:</TD>
     <TD>
     <%
-        String xmlUrl = "bb_web.do?debug=1&format=xml&id="+record.getId();
-        out.println("<A HREF=\""+ xmlUrl + "\">View XML Content</A>");
+        String xmlAbbrevUrl = "bb_web.do?format=xml_abbrev&id="
+                +record.getId();
+        String xmlFullUrl = "bb_web.do?format=xml_full&id="
+                +record.getId();
+        out.println("<A HREF=\""+ xmlAbbrevUrl + "\">XML Abbrev</A>");
+        out.println("&nbsp;&nbsp;");
+    out.println("<A HREF=\""+ xmlFullUrl + "\">XML Full</A>");
     %>
     </TD>
 </TR>
@@ -93,8 +86,8 @@
         Element e = (Element) xpath.selectSingleNode(root);
         if (e != null) {
             out.println("<TR>");
-            out.println("<TD>BioPAX Availability:</TD>");
-            out.println("<TD>" + e.getTextNormalize() + "</TD>");
+            out.println("<TD>Availability:</TD>");
+            out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
             out.println("</TR>");
         }
 
@@ -103,8 +96,10 @@
         e = (Element) xpath.selectSingleNode(root);
         if (e != null) {
             out.println("<TR>");
-            out.println("<TD>BioPAX Comment:</TD>");
-            out.println("<TD>" + e.getTextNormalize() + "</TD>");
+            out.println("<TD>Comment:</TD>");
+            String text = e.getTextNormalize();
+            text = text.replaceAll("<BR>", "<P>");
+            out.println("<TD COLSPAN=3>" + text + "</TD>");
             out.println("</TR>");
         }
 
@@ -113,8 +108,8 @@
         e = (Element) xpath.selectSingleNode(root);
         if (e != null) {
             out.println("<TR>");
-            out.println("<TD>BioPAX Data Source:</TD>");
-            out.println("<TD>" + e.getTextNormalize() + "</TD>");
+            out.println("<TD>Data Source:</TD>");
+            out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
             out.println("</TR>");
         }
 
@@ -123,8 +118,8 @@
         List list = xpath.selectNodes(root);
         if (list != null && list.size() > 0) {
             out.println("<TR>");
-            out.println("<TD>BioPAX Synonyms:</TD>");
-            out.println("<TD><UL>");
+            out.println("<TD>Synonyms:</TD>");
+            out.println("<TD COLSPAN=3><UL>");
             for (int i=0; i<list.size(); i++) {
                 e = (Element) list.get(i);
                 out.println("<LI>" + e.getTextNormalize());
@@ -144,12 +139,16 @@
         out.println("<UL>");
         for (int i=0; i<recordList.size(); i++) {
             CPathRecord link = (CPathRecord) recordList.get(i);
-            String url = "bb_web.do?debug=1&id="+link.getId();
-            out.println("<LI><A HREF=\""+url+ "\">"
+            String url = "bb_web.do?id="+link.getId();
+            if (link.getName().equals("N/A")) {
+                out.println("<LI><A HREF=\""+url+ "\">"
                     + link.getType()
                     + ":: " + link.getSpecificType()
-                    + " --&gt;  " + link.getName() + " [cPath ID:  "
-                    + link.getId() +"]</A>");
+                    + "</A>");
+            } else {
+                out.println("<LI><A HREF=\""+url+ "\">"
+                    + link.getName() + "</A>");
+            }
         }
         out.println("</UL>");
     } else {
@@ -184,16 +183,7 @@
         out.println("None");
     }
     %>
-<% } else {
-    for (int i=0; i<records.size(); i++) {
-        CPathRecord rec = (CPathRecord) records.get(i);
-        out.println("<TR>");
-        String uri = "bb_web.do?debug&id=" + rec.getId();
-        out.println("<TD>Pathway:  <A HREF=\"" + uri + "\">"
-                + rec.getName() + "</A>");
-        out.println("</TD></TR>");
-    }
-} %>
+<% }%>
 </TABLE>
 
 <jsp:include page="../global/footer.jsp" flush="true" />
