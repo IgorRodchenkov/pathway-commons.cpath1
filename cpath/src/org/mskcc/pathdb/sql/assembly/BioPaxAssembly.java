@@ -239,27 +239,16 @@ public class BioPaxAssembly implements XmlAssembly {
         //  Add to List of Nodes Visited
         nodesVisited.put(new Long(record.getId()), record);
 
-        //  If this is an Interaction or a Pathway,
-        //  get All Internal Links, e.g. children.
-        if (record.getType().equals(CPathRecordType.PATHWAY)
-                || record.getType().equals(CPathRecordType.INTERACTION)) {
-            DaoInternalLink internalLinker = new DaoInternalLink();
-            ArrayList internalLinks =
-                    internalLinker.getTargetsWithLookUp(record.getId());
+        //  Get All Links
+        DaoInternalLink internalLinker = new DaoInternalLink();
+        ArrayList internalLinks =
+                internalLinker.getTargetsWithLookUp(record.getId());
 
-            //  Iterate through all Links, e.g. children
-            for (int i = 0; i < internalLinks.size(); i++) {
-                CPathRecord child = (CPathRecord) internalLinks.get(i);
-
-                //  If the child is a pathway, skip it;
-                //  e.g. we only want to traverse downward, not upward
-                if (!child.getType().equals(CPathRecordType.PATHWAY)) {
-
-                    //  If we haven't already visited this child node, go now
-                    if (!nodesVisited.containsKey(new Long(child.getId()))) {
-                        traverseNode(child);
-                    }
-                }
+        //  Iterate through all Links, e.g. children
+        for (int i = 0; i < internalLinks.size(); i++) {
+            CPathRecord child = (CPathRecord) internalLinks.get(i);
+            if (!nodesVisited.containsKey(new Long(child.getId()))) {
+                traverseNode(child);
             }
         }
     }
