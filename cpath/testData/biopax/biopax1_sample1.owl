@@ -722,6 +722,7 @@
             rdf:datatype="http://www.w3.org/2001/XMLSchema#string">see http://www.amaze.ulb.ac.be/</bp:AVAILABILITY>
         <bp:XREF rdf:resource="#Reactome69091" />
     </bp:pathway>
+    <!--  This is a dummy Reactome ID, used for testing purposes -->
     <bp:unificationXref rdf:ID="Reactome69091">
         <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reactome</bp:DB>
         <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">69091</bp:ID>
