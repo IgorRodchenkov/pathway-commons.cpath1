@@ -97,7 +97,9 @@ public class TestImportBioPaxToCPath extends TestCase {
         CPathRecord record = (CPathRecord) recordList.get(0);
         assertEquals ("GLK", record.getName());
 
-        // TODO:  Add Test for BioPAX REF Element
+        //  Verify that the BioPAX XML now contains an XREF for Affymetrix
+        int index = record.getXmlContent().indexOf("AFFYMETRIX");
+        assertTrue (index > 0);
 
         //  Try Saving Again
         importer = new ImportBioPaxToCPath();
