@@ -62,7 +62,8 @@
         <!--  Bare Bones Web -->
         <action path="/bb_web"
             type="org.mskcc.pathdb.action.BareBonesWeb">
-            <forward name="success" path="/WEB-INF/jsp/pages/BareBones.jsp"/>
+            <forward name="record" path="/WEB-INF/jsp/pages/BareBones.jsp"/>
+            <forward name="pathways" path="/WEB-INF/jsp/pages/PathwayList.jsp"/>
         </action>
 
         <!--  FAQ Page -->
@@ -127,8 +128,8 @@
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
-        <action path="/adminResetOrganismStats"
-            type="org.mskcc.pathdb.action.admin.AdminResetOrganismStats">
+        <action path="/adminResetCache"
+            type="org.mskcc.pathdb.action.admin.AdminResetGlobalCache">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
