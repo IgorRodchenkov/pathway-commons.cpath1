@@ -65,7 +65,6 @@ public class AllTest extends TestCase {
         suite.addTest(IndexerSuite.suite());
         suite.addTest(SqlSuite.suite());
         suite.addTest(TaskSuite.suite());
-        suite.addTest(AssemblySuite.suite());
         suite.addTest(TagLibSuite.suite());
         suite.addTest(WebSuite.suite());
         suite.addTest(XmlRpcSuite.suite());
