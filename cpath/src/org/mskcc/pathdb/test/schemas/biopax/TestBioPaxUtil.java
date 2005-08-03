@@ -140,14 +140,32 @@ public class TestBioPaxUtil extends TestCase {
         assertTrue("Newly generated XML document contains invalid RDF",
                 !rdfValidator.hasErrorsOrWarnings());
 
-        //  Test the extractExternalReferences Method
-        ExternalReference refs[] = util.extractExternalReferences(pathway);
+        //  Test the extractXrefs Method
+        //  We should find a total of 3 XRefs.
+        ExternalReference refs[] = util.extractXrefs(pathway);
+        assertEquals (3, refs.length);
         ExternalReference ref0 = refs[0];
         ExternalReference ref1 = refs[1];
+        ExternalReference ref2 = refs[2];
         assertEquals("aMAZE", ref0.getDatabase());
         assertEquals("aMAZEProcess0000000027", ref0.getId());
         assertEquals("PubMed", ref1.getDatabase());
         assertEquals("2549346", ref1.getId());
+        assertEquals("Reactome", ref2.getDatabase());
+        assertEquals("69091", ref2.getId());
+
+        //  Test the extractUnificationXrefs Method
+        //  We should find a total of 2 Xrefs.
+        ExternalReference unificationRefs[] =
+                util.extractUnificationXrefs(pathway);
+        assertEquals (2, unificationRefs.length);
+        ref0 = unificationRefs[0];
+        ref1 = unificationRefs[1];
+        assertEquals("aMAZE", ref0.getDatabase());
+        assertEquals("aMAZEProcess0000000027", ref0.getId());
+        assertEquals("Reactome", ref1.getDatabase());
+        assertEquals("69091", ref1.getId());
+
     }
 
     /**
