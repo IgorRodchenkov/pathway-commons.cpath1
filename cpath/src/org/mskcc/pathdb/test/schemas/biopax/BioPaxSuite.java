@@ -51,6 +51,7 @@ public class BioPaxSuite extends TestCase {
         suite.addTestSuite(TestBioPaxTransformToCPathRecords.class);
         suite.addTestSuite(TestUpdateRdfLinks.class);
         suite.addTestSuite(TestImportBioPaxToCPath.class);
+        suite.addTestSuite(TestBioPaxGenerator.class);
         suite.setName("BioPax Tests");
         return suite;
     }
