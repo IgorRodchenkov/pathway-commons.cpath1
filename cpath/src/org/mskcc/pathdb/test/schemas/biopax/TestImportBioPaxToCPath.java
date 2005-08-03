@@ -31,12 +31,17 @@ package org.mskcc.pathdb.test.schemas.biopax;
 
 import junit.framework.TestCase;
 import org.mskcc.dataservices.util.ContentReader;
+import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.util.ArrayList;
+import java.io.File;
 
 /**
  * Tests the ImportBioPaxToCPath Class.
@@ -51,6 +56,13 @@ public class TestImportBioPaxToCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testImport() throws Exception {
+
+        //  Store some dummy Affymetrix IDs to the Database
+        File file = new File("testData/references/link_out_refs3.txt");
+        ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
+                (file, false);
+        task.parseAndStoreToDb();
+
         DaoOrganism daoOrganism = new DaoOrganism();
         ArrayList organismList = daoOrganism.getAllOrganisms();
 
@@ -63,13 +75,29 @@ public class TestImportBioPaxToCPath extends TestCase {
         ProgressMonitor pMonitor = new ProgressMonitor();
         ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
         ImportSummary summary = importer.addRecord(xml, pMonitor);
-        assertEquals(1, summary.getNumPathwaysSaved());
+            assertEquals(1, summary.getNumPathwaysSaved());
+        assertEquals(0, summary.getNumPathwaysFound());
         assertEquals(4, summary.getNumInteractionsSaved());
+        assertEquals(0, summary.getNumInteractionsFound());
         assertEquals(7, summary.getNumPhysicalEntitiesSaved());
+        assertEquals(0, summary.getNumPhysicalEntitiesFound());
 
         //  After import, we have 1 organism
         organismList = daoOrganism.getAllOrganisms();
         assertEquals(numOrganisms + 1, organismList.size());
+
+        //  After import, protein GLK (SWP:  P46880) should have an external
+        //  link to Affymetrix ID:  1919_at.
+        //  This verifies that the connection with the background reference
+        //  service is working.
+        DaoExternalLink externalLinker = DaoExternalLink.getInstance();
+        ArrayList recordList = externalLinker.lookUpByExternalRef
+                (new ExternalReference ("Affymetrix", "1919_at"));
+        assertEquals (1, recordList.size());
+        CPathRecord record = (CPathRecord) recordList.get(0);
+        assertEquals ("GLK", record.getName());
+
+        // TODO:  Add Test for BioPAX REF Element
 
         //  Try Saving Again
         importer = new ImportBioPaxToCPath();
@@ -78,8 +106,17 @@ public class TestImportBioPaxToCPath extends TestCase {
         //  Because the pathway has a unification xref, it should not
         //  be saved again.
         assertEquals(0, summary.getNumPathwaysSaved());
-        assertEquals(4, summary.getNumInteractionsSaved());
-        assertEquals(7, summary.getNumPhysicalEntitiesSaved());
+        assertEquals(1, summary.getNumPathwaysFound());
+
+        //  Two of the interactions have unification XRefs.
+        //  Therefore, two are found, and two are resaved.
+        assertEquals(2, summary.getNumInteractionsSaved());
+        assertEquals(2, summary.getNumInteractionsFound());
+
+        //  Because all physical entities have Unification XRefs, they
+        //  should not be saved again.
+        assertEquals(0, summary.getNumPhysicalEntitiesSaved());
+        assertEquals(7, summary.getNumPhysicalEntitiesFound());
     }
 
     /**
