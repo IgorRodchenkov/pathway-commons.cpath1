@@ -14,7 +14,7 @@
             <A HREF="adminWebLogging.do">Toggle Web Diagnostics</A>
         </div>                
         <div>
-            <A HREF="adminResetOrganismStats.do">Reset Organism Stats</A>
+            <A HREF="adminResetCache.do">Reset In-Memory Cache</A>
         </div>
         <div>
             <A HREF="adminDiagnostics.do">Run cPath Diagnostics</A>
