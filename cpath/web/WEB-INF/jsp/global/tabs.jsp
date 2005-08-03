@@ -2,7 +2,8 @@
                  java.util.ArrayList,
                  org.mskcc.pathdb.sql.assembly.XmlAssembly,
                  java.io.PrintWriter,
-                 java.io.StringWriter"%>
+                 java.io.StringWriter,
+                 org.mskcc.dataservices.util.PropertyManager"%>
 <%
     String url = "";
     String baseAction = (String) request.getAttribute
@@ -30,6 +31,19 @@
         tabActive.add (Boolean.TRUE);
     } else {
         tabActive.add (Boolean.FALSE);
+    }
+
+    PropertyManager pManager = PropertyManager.getInstance();
+    String webMode = pManager.getProperty(BaseAction.PROPERTY_WEB_MODE);
+    if (webMode.equals(BaseAction.WEB_MODE_MIXED)) {
+        tabNames.add("Browse by Pathway");
+        String browsePathwayUrl = "bb_web.do";
+        tabUrls.add(browsePathwayUrl);
+        if (url.startsWith(browsePathwayUrl)) {
+            tabActive.add (Boolean.TRUE);
+        } else {
+            tabActive.add (Boolean.FALSE);
+        }
     }
 
     tabNames.add("Browse By Organism");
@@ -81,7 +95,8 @@
     String host = request.getRemoteHost();
     if (isAdmin != null
             || (host != null && host.indexOf("mskcc.org") > -1)
-            || (host != null && host.indexOf("localhost") > -1)) {
+            || (host != null && host.indexOf("localhost") > -1)
+            || (host != null && host.indexOf("127.0.0.1") >-1)) {
         tabNames.add("Administration");
         String adminUrl = "adminHome.do";
         tabUrls.add(adminUrl);
