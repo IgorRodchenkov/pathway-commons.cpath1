@@ -64,11 +64,10 @@ public class TestImportPsiToCPath extends TestCase {
         ImportPsiToCPath importer = new ImportPsiToCPath();
         ImportSummary summary = importer.addRecord(xml, true,
                 false, pMonitor);
-        assertEquals(7, summary.getNumPhysicalEntitiesProcessed());
         assertEquals(0, summary.getNumPhysicalEntitiesFound());
         assertEquals(7, summary.getNumPhysicalEntitiesSaved());
         assertEquals(6, summary.getNumInteractionsSaved());
-        assertEquals(0, summary.getNumInteractionsClobbered());
+        assertEquals(0, summary.getNumInteractionsFound());
 
         DaoExternalLink linker = DaoExternalLink.getInstance();
         ExternalReference refs[] = new ExternalReference[1];
@@ -87,7 +86,7 @@ public class TestImportPsiToCPath extends TestCase {
         summary = importer.addRecord(xml, true, false, pMonitor);
         assertEquals(0, summary.getNumPhysicalEntitiesSaved());
         assertEquals(6, summary.getNumInteractionsSaved());
-        assertEquals(1, summary.getNumInteractionsClobbered());
+        assertEquals(1, summary.getNumInteractionsFound());
 
         //  Retrieve Interaction, DIP:  58E, and verify that all three
         //  interactors were saved.
