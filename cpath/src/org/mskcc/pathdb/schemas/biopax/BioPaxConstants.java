@@ -181,6 +181,7 @@ public class BioPaxConstants {
     public BioPaxConstants() {
 
         //  Initialize Physical Entity Set
+        physicalEntitySet.add(PHYSICAL_ENTITY);
         physicalEntitySet.add(COMPLEX);
         physicalEntitySet.add(DNA);
         physicalEntitySet.add(PROTEIN);
