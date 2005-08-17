@@ -66,11 +66,11 @@ public class TestAffymetrixParser extends TestCase {
         String lines[] = content.split(lineSeparator);
 
         //  Verify First four identifiers.
-        assertEquals("SwissProt\tAffymetrix", lines[0]);
-        assertEquals("BAC85426\t1007_s_at", lines[1]);
-        assertEquals("Q08345\t1007_s_at", lines[2]);
-        assertEquals("Q96T61\t1007_s_at", lines[3]);
-        assertEquals("Q96T62\t1007_s_at", lines[4]);
+        assertEquals("Affymetrix\tSwissProt", lines[0]);
+        assertEquals("1007_s_at\tBAC85426", lines[1]);
+        assertEquals("1007_s_at\tQ08345", lines[2]);
+        assertEquals("1007_s_at\tQ96T61", lines[3]);
+        assertEquals("1007_s_at\tQ96T62", lines[4]);
 
         //  Delete the Sample File
         outFile.delete();

@@ -58,4 +58,13 @@ public class TestExternalDbLinkTester extends TestCase {
         int statusCode = ExternalDbLinkTester.checkSampleLink(dbRecord);
         assertEquals(200, statusCode);
     }
+
+    /**
+     * Gets Test Description.
+     * @return Description.
+     */
+    public String getName() {
+        return "Test live HTTP connection to a sample external database";
+    }
+
 }

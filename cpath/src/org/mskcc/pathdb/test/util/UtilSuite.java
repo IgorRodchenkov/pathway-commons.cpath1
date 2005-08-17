@@ -32,7 +32,6 @@ package org.mskcc.pathdb.test.util;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mskcc.pathdb.test.task.TestAffymetrixParser;
 import org.mskcc.pathdb.test.util.rdf.RdfUtilSuite;
 
 /**
@@ -53,7 +52,6 @@ public class UtilSuite extends TestCase {
         suite.addTestSuite(TestMd5Util.class);
         suite.addTestSuite(TestFilter.class);
         suite.addTestSuite(TestLogUtil.class);
-        suite.addTestSuite(TestAffymetrixParser.class);
         suite.addTestSuite(TestExternalReferenceUtil.class);
         suite.addTestSuite(TestHtmlUtil.class);
         suite.addTest(RdfUtilSuite.suite());

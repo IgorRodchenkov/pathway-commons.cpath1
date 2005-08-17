@@ -70,4 +70,14 @@ public class TestImportExternalDbTask extends TestCase {
             System.out.println(msg);
         }
     }
+
+    /**
+     * Gets Test Description.
+     * @return Description.
+     */
+    public String getName() {
+        return "Test that we can successfully import a list of "
+              + "external database records into MySQL";
+    }
+
 }

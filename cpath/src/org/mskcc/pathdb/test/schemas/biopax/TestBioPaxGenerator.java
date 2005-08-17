@@ -75,4 +75,12 @@ public class TestBioPaxGenerator extends TestCase {
         Element idElement = (Element) xpath.selectSingleNode(doc);
         assertEquals("1919_at", idElement.getTextNormalize());
     }
+
+    /**
+     * Gets Test Description.
+     * @return Description.
+     */
+    public String getName() {
+        return "Test that we can generate new BioPAX Elements, such as XRefs";
+    }
 }

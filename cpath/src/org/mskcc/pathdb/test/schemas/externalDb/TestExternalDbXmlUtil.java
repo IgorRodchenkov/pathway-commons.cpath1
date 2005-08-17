@@ -68,4 +68,14 @@ public class TestExternalDbXmlUtil extends TestCase {
         String syn0 = (String) synList.get(0);
         assertEquals("YHO", syn0);
     }
+
+    /**
+     * Gets Test Description.
+     * @return Description.
+     */
+    public String getName() {
+        return "Test that we can parse an XML file containing external "
+              + "database information";
+    }
+
 }
