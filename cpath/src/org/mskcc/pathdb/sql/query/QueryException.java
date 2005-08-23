@@ -45,4 +45,13 @@ public class QueryException extends Exception {
     public QueryException(String msg, Throwable cause) {
         super(msg, cause);
     }
+
+    /**
+     * Constructor.
+     *
+     * @param msg   Error Message.
+     */
+    public QueryException(String msg) {
+        super(msg);
+    }
 }
