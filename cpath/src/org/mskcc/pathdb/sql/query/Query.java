@@ -29,112 +29,40 @@
  **/
 package org.mskcc.pathdb.sql.query;
 
-import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoXmlCache;
-import org.mskcc.pathdb.util.security.Md5Util;
 import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.security.NoSuchAlgorithmException;
-
 /**
- * Executes Pathway/Interaction Queries.
- * <p/>
- * <P>Note:  JUnit testing for this class is performed in:
- * org.mskcc.pathdb.test.schemas.psi.TestImportPsiToCPath.
+ * Abstract Base Class for all queries.
  *
- * @author Ethan Cerami.
+ * @author Ethan Cerami
  */
-public class Query {
-    private XDebug xdebug;
+abstract class Query {
+    protected XDebug xdebug;
 
     /**
-     * Constructor.
+     * Executes Query.
      *
      * @param xdebug XDebug Object.
+     * @return XmlAssembly XML Assembly Object.
+     * @throws QueryException Error Executing Query.
      */
-    public Query(XDebug xdebug) {
+    public XmlAssembly execute(XDebug xdebug) throws QueryException {
         this.xdebug = xdebug;
-    }
-
-    /**
-     * Execute Query.
-     *
-     * @param request    ProtocolRequest object.
-     * @param checkCache If set to true, method will check the XML cache for
-     *                   pre-computed results.
-     * @return XmlAssembly object.
-     * @throws QueryException Indicates Query Error.
-     */
-    public XmlAssembly executeQuery(ProtocolRequest request,
-            boolean checkCache) throws QueryException {
-        DaoXmlCache dao = new DaoXmlCache(xdebug);
-        XmlAssembly xmlAssembly = null;
-        XmlAssembly cachedXml = null;
+        xdebug.logMsg(this, "Executing Query Type:  "
+                + getClass().getName());
         try {
-            String hashKey = getHashKey(request);
-            xdebug.logMsg(this, "Checking cache for pre-computed XML");
-            xdebug.logMsg(this, "Using HashKey:  " + hashKey);
-            cachedXml = dao.getXmlAssemblyByKey(hashKey);
-            if (cachedXml == null) {
-                xdebug.logMsg(this, "No Match Found");
-            } else {
-                xdebug.logMsg(this, "Match Found");
-            }
-            if (checkCache && cachedXml != null) {
-                xdebug.logMsg(this, "Using Cached XML Document");
-                xmlAssembly = cachedXml;
-            } else {
-                xdebug.logMsg(this, "Executing New Interaction/Pathway Query");
-                xmlAssembly = executeQuery(request);
-                if (!xmlAssembly.isEmpty()) {
-                    if (cachedXml == null) {
-                        xdebug.logMsg(this, "Storing XML to Database Cache");
-                        dao.addRecord(hashKey, request.getUrlParameterString(),
-                                xmlAssembly);
-                    } else {
-                        xdebug.logMsg(this, "Updating XML in Database Cache");
-                        dao.updateXmlAssemblyByKey(hashKey, xmlAssembly);
-                    }
-                }
-            }
-        } catch (NoSuchAlgorithmException e) {
-            throw new QueryException(e.getMessage(), e);
-        } catch (DaoException e) {
-            throw new QueryException(e.getMessage(), e);
-        } catch (QueryException e) {
+            return executeSub();
+        } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         }
-        return xmlAssembly;
     }
 
     /**
-     * Gets the HashKey for Specified Protocol Request.
+     * Must be subclassed.
      *
-     * @param request ProtocolRequest Object.
-     * @return Hash Key.
-     * @throws NoSuchAlgorithmException No Such Algorithm Exception
+     * @return XmlAssembly XML Assembly Object.
+     * @throws Exception All Exceptions.
      */
-    private String getHashKey(ProtocolRequest request)
-            throws NoSuchAlgorithmException {
-        String hashKey = Md5Util.createMd5Hash(request.getUrlParameterString());
-        return hashKey;
-    }
-
-    private XmlAssembly executeQuery(ProtocolRequest request)
-            throws QueryException {
-        PathwayInteractionQuery queryPathway = determineQueryType(request);
-        return queryPathway.execute(xdebug);
-    }
-
-    /**
-     * Instantiates Correct Query based on Protocol Request.
-     */
-    private PathwayInteractionQuery determineQueryType
-            (ProtocolRequest request) {
-        PathwayInteractionQuery queryPathway =
-                new GetInteractionsViaLucene(request);
-        return queryPathway;
-    }
+    protected abstract XmlAssembly executeSub() throws Exception;
 }

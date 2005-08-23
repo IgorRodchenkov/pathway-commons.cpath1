@@ -43,11 +43,11 @@ import org.mskcc.pathdb.taglib.Pager;
 import java.io.IOException;
 
 /**
- * Searches for PSI-MI Interactions via Lucene.
+ * Searches cPath by keyword or organism.
  *
  * @author Ethan Cerami
  */
-class GetInteractionsViaLucene extends PathwayInteractionQuery {
+class SearchCommand extends Query {
     private String searchTerms;
     private ProtocolRequest request;
 
@@ -57,7 +57,7 @@ class GetInteractionsViaLucene extends PathwayInteractionQuery {
      *
      * @param request ProtocolRequest Object.
      */
-    GetInteractionsViaLucene(ProtocolRequest request) {
+    SearchCommand(ProtocolRequest request) {
         this.request = request;
         this.searchTerms = RequestAdapter.getSearchTerms(request);
     }
@@ -67,7 +67,7 @@ class GetInteractionsViaLucene extends PathwayInteractionQuery {
      */
     protected XmlAssembly executeSub() throws QueryException,
             IOException, AssemblyException {
-        xdebug.logMsg(this, "Getting Interactions via Lucene. "
+        xdebug.logMsg(this, "Searching Lucene full text index. "
                 + "Using search term(s):  " + searchTerms);
         LuceneReader indexer = new LuceneReader();
         try {
@@ -110,7 +110,7 @@ class GetInteractionsViaLucene extends PathwayInteractionQuery {
     private Hits executeLuceneSearch(LuceneReader indexer)
             throws QueryException {
         Hits hits = indexer.executeQuery(searchTerms);
-        xdebug.logMsg(this, "Total Number of Matching Interactions "
+        xdebug.logMsg(this, "Total Number of Matching Hits "
                 + "Found:  " + hits.length());
         return hits;
     }
