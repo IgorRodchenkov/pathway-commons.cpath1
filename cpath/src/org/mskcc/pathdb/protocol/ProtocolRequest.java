@@ -125,7 +125,7 @@ public class ProtocolRequest implements PagedResult {
      * Constructor.
      */
     public ProtocolRequest() {
-        this.version = "1.0";
+        this.version = ProtocolConstants.CURRENT_VERSION;
         this.startIndex = 0;
         this.organism = "";
         this.maxHits = Integer.toString(ProtocolConstants.DEFAULT_MAX_HITS);
