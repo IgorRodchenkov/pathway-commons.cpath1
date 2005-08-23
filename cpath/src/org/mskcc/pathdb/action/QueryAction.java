@@ -41,8 +41,8 @@ import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.sql.query.GetPathwaysInteractionsViaLucene;
-import org.mskcc.pathdb.sql.query.Query;
+import org.mskcc.pathdb.lucene.LuceneQuery;
+import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -89,6 +89,8 @@ public class QueryAction extends BaseAction {
             HashMap parameterMap = XssFilter.filterAllParameters
                     (request.getParameterMap());
             protocolRequest = new ProtocolRequest(parameterMap);
+            xdebug.logMsg(this, "Executing Web Service API Query:  "
+                + protocolRequest.getUri());
             return processQuery(mapping, protocolRequest, request,
                     response, xdebug);
         } catch (NeedsHelpException e) {
@@ -147,7 +149,9 @@ public class QueryAction extends BaseAction {
             xml = e.getMessage();
             returnXml(response, xml);
         }
-        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+        //  Return null here, because we do not want Struts to do any
+        //  forwarding.
+        return null;
     }
 
     private ActionForward processHtmlRequest(ActionMapping mapping,
@@ -191,8 +195,8 @@ public class QueryAction extends BaseAction {
             HttpServletRequest request, ActionMapping mapping)
             throws QueryException, IOException,
             AssemblyException, ParseException {
-        GetPathwaysInteractionsViaLucene search =
-                new GetPathwaysInteractionsViaLucene(protocolRequest,
+        LuceneQuery search =
+                new LuceneQuery(protocolRequest,
                         xdebug);
         long cpathIds[] = search.executeSearch();
         request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
@@ -241,8 +245,9 @@ public class QueryAction extends BaseAction {
             ProtocolRequest protocolRequest) throws ProtocolException {
         XmlAssembly xmlAssembly;
         try {
-            Query executeQuery = new Query(xdebug);
-            xmlAssembly = executeQuery.executeQuery(protocolRequest, true);
+            QueryManager executeQueryManager = new QueryManager(xdebug);
+            xmlAssembly = executeQueryManager.executeQuery(protocolRequest,
+                    true);
         } catch (QueryException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
