@@ -53,4 +53,9 @@ public class CPathConstants {
     public static final String CPATH_HOME_URI =
             "http://cbio.mskcc.org/cpath";
 
+    /**
+     * cPath Database Name.
+     */
+    public static final String CPATH_DB_NAME =
+            "CPATH";
 }
