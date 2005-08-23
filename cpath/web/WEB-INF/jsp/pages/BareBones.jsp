@@ -11,7 +11,9 @@
                  java.io.StringReader,
                  org.jdom.xpath.XPath,
                  java.util.List,
-                 org.mskcc.pathdb.model.*"%>
+                 org.mskcc.pathdb.model.*,
+                 org.mskcc.pathdb.protocol.ProtocolRequest,
+                 org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -69,7 +71,14 @@
                 +record.getId();
         out.println("<A HREF=\""+ xmlAbbrevUrl + "\">XML Abbrev</A>");
         out.println("&nbsp;&nbsp;");
-    out.println("<A HREF=\""+ xmlFullUrl + "\">XML Full</A>");
+
+        ProtocolRequest protocolRequest = new ProtocolRequest ();
+        protocolRequest.setCommand
+                (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
+        protocolRequest.setFormat(ProtocolConstants.FORMAT_BIO_PAX);
+        protocolRequest.setQuery(Long.toString(record.getId()));
+        out.println("<A HREF=\""+ protocolRequest.getUri()
+                + "\">XML Full</A>");
     %>
     </TD>
 </TR>
