@@ -78,41 +78,47 @@ public class ProtocolConstants {
     public static final String CURRENT_VERSION = "1.0";
 
     /**
-     * Get Interactions By Interactor Name.
+     * Get By Interactor Name.
      */
     public static final String COMMAND_GET_BY_INTERACTOR_NAME_XREF =
             "get_by_interactor_name_xref";
 
     /**
-     * Get Interactions By Interactor ID.
+     * Get By Interactor ID.
      */
     public static final String COMMAND_GET_BY_INTERACTOR_ID =
             "get_by_interactor_id";
+    
+    /**
+     * Get Record by cPath ID
+     */
+    public static final String COMMAND_GET_RECORD_BY_CPATH_ID =
+            "get_record_by_cpath_id";
 
     /**
-     * Get Interactions By Interactor Taxonomy ID.
+     * Get By Interactor Taxonomy ID.
      */
     public static final String COMMAND_GET_BY_ORGANISM = "get_by_organism";
 
     /**
-     * Get Interactions By Interactor Keyword.
+     * Get By Keyword.
      */
     public static final String COMMAND_GET_BY_KEYWORD = "get_by_keyword";
 
     /**
-     * Get Interactions By Interaction Database.
+     * Get By Interaction Database.
      */
     public static final String COMMAND_GET_BY_DATABASE =
             "get_by_database";
 
     /**
-     * Get Interactions By Interaction PubMedId.
+     * Get By Interaction PubMedId.
      */
     public static final String COMMAND_GET_BY_PMID =
             "get_by_pmid";
 
     /**
-     * Get Interactions By Interaction Type.
+     * Get By Experiment Type.
      */
     public static final String COMMAND_GET_BY_EXPERIMENT_TYPE =
             "get_by_experiment_type";
@@ -148,6 +154,7 @@ public class ProtocolConstants {
             validCommands = new HashSet();
             validCommands.add(COMMAND_GET_BY_INTERACTOR_NAME_XREF);
             validCommands.add(COMMAND_GET_BY_INTERACTOR_ID);
+            validCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
             validCommands.add(COMMAND_GET_BY_ORGANISM);
             validCommands.add(COMMAND_GET_BY_KEYWORD);
             validCommands.add(COMMAND_GET_BY_DATABASE);
