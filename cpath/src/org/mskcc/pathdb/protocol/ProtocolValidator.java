@@ -104,18 +104,19 @@ public class ProtocolValidator {
             throw new NeedsHelpException();
         }
 
-        //  For BioPAX format, the only valid command is get_by_keyword
+        //  For BioPAX format, the only valid commands are get_by_keyword
+        //  and get_record_by_cpath_id
         String format = request.getFormat();
         if (format != null && format.equals
                 (ProtocolConstants.FORMAT_BIO_PAX)) {
             String command = request.getCommand();
-            if (!command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD)) {
+            if (!(command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD)
+                || command.equals
+                    (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID))) {
                 throw new ProtocolException
-                        (ProtocolStatusCode.INVALID_ARGUMENT, "For format: "
-                        + ProtocolConstants.FORMAT_BIO_PAX
-                        + ", the only currently supported command is:  "
-                        + ProtocolConstants.COMMAND_GET_BY_KEYWORD
-                        + ".  Please try again.");
+                        (ProtocolStatusCode.INVALID_ARGUMENT,
+                                "The specified command:  " + command
+                                + " does not support the format:  " + format);
             }
         }
     }
@@ -142,15 +143,27 @@ public class ProtocolValidator {
      */
     private void validateFormat() throws ProtocolException {
         if (request.getFormat() == null) {
-            throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
+            throw new ProtocolException
+                    (ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_FORMAT
                     + "' is not specified." + HELP_MESSAGE);
         }
         HashSet set = constants.getValidFormats();
         if (!set.contains(request.getFormat())) {
             throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
-                    "Format:  '" + request.getFormat() + "' is not recognized."
+                    "Format:  '" + request.getFormat()
+                    + "' is not recognized."
                     + HELP_MESSAGE);
+        }
+        if (request.getCommand().equals
+                (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+            if (!request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
+                throw new ProtocolException (ProtocolStatusCode.BAD_FORMAT,
+                    "When using the command:  "
+                    + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID
+                    + ", the only supported format is:  "
+                    + ProtocolConstants.FORMAT_BIO_PAX);
+            }
         }
     }
 
@@ -160,15 +173,48 @@ public class ProtocolValidator {
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateQuery() throws ProtocolException {
-        String q = request.getQuery();
         String command = request.getCommand();
-        if ((q == null || q.length() == 0)
-                && (request.getOrganism() == null
-                || request.getOrganism().length() == 0)) {
+        String q = request.getQuery();
+        String org = request.getOrganism();
+        boolean qExists = true;
+        boolean organismExists = true;
+        boolean errorFlag = false;
+        if (q == null || q.length() == 0) {
+            qExists = false;
+        }
+        if (org == null || org.length() == 0) {
+            organismExists = false;
+        }
+
+        // ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID must have a query
+        // parameter.  All other commands must have either a query parameter
+        // or an organism paramter.
+        if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+            if (!qExists) {
+                errorFlag = true;
+            }
+
+            //  Verify that query parameter is an int/long number.
+            try {
+                Long.parseLong(q);
+            } catch (NumberFormatException e) {
+                throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                        "Argument:  '" + ProtocolRequest.ARG_QUERY
+                        + "' must be an integer value." + HELP_MESSAGE,
+                        "Query parameter must be an integer value. "
+                        + "Please try again.");
+            }
+        } else {
+            if (!qExists && !organismExists) {
+                errorFlag = true;
+            }
+        }
+
+        if (errorFlag) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_QUERY
                     + "' is not specified." + HELP_MESSAGE,
-                    "You did not specify a search term.  Please try again.");
+                    "You did not specify a query term.  Please try again.");
         }
     }
 
@@ -186,7 +232,7 @@ public class ProtocolValidator {
         if (!request.getVersion().equals(CURRENT_VERSION)) {
             throw new ProtocolException
                     (ProtocolStatusCode.VERSION_NOT_SUPPORTED,
-                            "This data service currently only supports "
+                    "This data service currently only supports "
                     + "version 1.0." + HELP_MESSAGE);
         }
     }
