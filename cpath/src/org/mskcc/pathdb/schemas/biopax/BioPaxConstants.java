@@ -130,6 +130,17 @@ public class BioPaxConstants {
     public static final String PATHWAY = "pathway";
 
     /**
+     * BioPax Utility Class:  XRef Unification.
+     */
+    public static final String XREF_UNIFICATION = "unificationXref";
+
+    /**
+     * BioPax Utility Class:  XRef Relationship.
+     */
+    public static final String XREF_RELATIONSHIP = "relationshipXref";
+
+
+    /**
      * BioPAX Namespace Prefix.
      */
     public static final String BIOPAX_NAMESPACE_PREFIX = "bp";
