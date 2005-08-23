@@ -96,17 +96,6 @@ public class BareBonesWeb extends BaseAction {
             stream.close();
         }
 
-        if (format != null && format.equalsIgnoreCase("xml_full")) {
-            response.setContentType("text/xml");
-            xdebug.logMsg(this, "Getting XML Assembly");
-            ServletOutputStream stream = response.getOutputStream();
-            XmlAssembly assembly =
-                    XmlAssemblyFactory.createXmlAssembly(Long.parseLong(id),
-                            XmlRecordType.BIO_PAX, 1, xdebug);
-            stream.println(assembly.getXmlString());
-            stream.flush();
-            stream.close();
-        }
         if (format != null && format.equalsIgnoreCase("xml_debug")) {
             xdebug.logMsg(this, "Getting XML Assembly");
             XmlAssembly assembly =
@@ -158,6 +147,8 @@ public class BareBonesWeb extends BaseAction {
                     pathwayList.add(pathway);
                 }
             }
+            xdebug.logMsg(this, "Total Number of Root Level Pathways:  "
+                    + pathwayList.size());
             Element newElement = new Element(EhCache.KEY_PATHWAY_LIST,
                     pathwayList);
             cache.put(newElement);
