@@ -206,6 +206,8 @@ public abstract class BaseAction extends Action {
         try {
             xdebug = new XDebug();
             xdebug.startTimer();
+            xdebug.logMsg(this, "===========================");
+            xdebug.logMsg(this, "Request:  " + request.getRequestURI());
             SnoopHttp snoop = new SnoopHttp(xdebug,
                     getServlet().getServletContext());
             snoop.process(request, response);
@@ -230,8 +232,10 @@ public abstract class BaseAction extends Action {
             request.setAttribute(ATTRIBUTE_EXCEPTION, e);
             forward = mapping.findForward(BaseAction.FORWARD_FAILURE);
         }
-        xdebug.logMsg(this, "Forwarding to Struts:  " + forward.getName());
-        xdebug.logMsg(this, "Forwarding to Path:  " + forward.getPath());
+        if (forward != null) {
+            xdebug.logMsg(this, "Forwarding to Struts:  " + forward.getName());
+            xdebug.logMsg(this, "Forwarding to Path:  " + forward.getPath());
+        }
         return forward;
     }
 
