@@ -101,6 +101,11 @@ public class TestImportBioPaxToCPath extends TestCase {
         int index = record.getXmlContent().indexOf("AFFYMETRIX");
         assertTrue(index > 0);
 
+        //  Verify that the BioPAX XML now contains an XREF for cPath
+        index = record.getXmlContent().indexOf
+                ("XMLSchema#string\">CPATH</bp:DB>");
+        assertTrue(index > 0);
+
         //  Try Saving Again
         importer = new ImportBioPaxToCPath();
         summary = importer.addRecord(xml, pMonitor);
