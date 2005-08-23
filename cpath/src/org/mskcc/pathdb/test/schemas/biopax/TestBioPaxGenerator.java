@@ -45,11 +45,11 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxGenerator;
 public class TestBioPaxGenerator extends TestCase {
 
     /**
-     * Tests the Xref Generator.
+     * Tests the Relationship Xref Generator.
      *
      * @throws Exception All Exceptions.
      */
-    public void testXrefGenerator() throws Exception {
+    public void testRelationshipXrefGenerator() throws Exception {
         ExternalReference ref = new ExternalReference("AFFYMETRIX",
                 "1919_at");
 
@@ -74,6 +74,37 @@ public class TestBioPaxGenerator extends TestCase {
                 BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
         Element idElement = (Element) xpath.selectSingleNode(doc);
         assertEquals("1919_at", idElement.getTextNormalize());
+    }
+
+    /**
+     * Tests the Unification Xref Generator.
+     *
+     * @throws Exception All Exceptions.
+     */
+    public void testUnificationXrefGenerator() throws Exception {
+        ExternalReference ref = new ExternalReference("CPATH", "1");
+
+        Element refElement = BioPaxGenerator.generateRelationshipXref(ref,
+                BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE);
+
+        //  Element must be attached to a Doument for XPath Queries to work
+        Document doc = new Document();
+        doc.setRootElement(refElement);
+
+        //  Verify that DB/ID are OK
+        assertEquals("XREF", refElement.getName());
+        XPath xpath = XPath.newInstance("bp:XREF/*/bp:DB");
+        xpath.addNamespace("bp",
+                BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
+        Element dbElement = (Element) xpath.selectSingleNode(doc);
+        assertEquals("CPATH", dbElement.getTextNormalize());
+
+        assertEquals("XREF", refElement.getName());
+        xpath = XPath.newInstance("bp:XREF/*/bp:ID");
+        xpath.addNamespace("bp",
+                BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
+        Element idElement = (Element) xpath.selectSingleNode(doc);
+        assertEquals("1", idElement.getTextNormalize());
     }
 
     /**
