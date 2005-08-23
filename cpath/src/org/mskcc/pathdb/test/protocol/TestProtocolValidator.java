@@ -48,6 +48,10 @@ public class TestProtocolValidator extends TestCase {
      */
     public void testProtocolValidator() throws Exception {
         HashMap map = new HashMap();
+
+        //  Try ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF
+        //  without any other parameters.  This should result in a protocol
+        //  error.
         map.put(ProtocolRequest.ARG_COMMAND,
                 ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF);
         ProtocolRequest request = new ProtocolRequest(map);
@@ -58,6 +62,50 @@ public class TestProtocolValidator extends TestCase {
         } catch (ProtocolException e) {
             ProtocolStatusCode statusCode = e.getStatusCode();
             assertEquals(ProtocolStatusCode.MISSING_ARGUMENTS, statusCode);
+        }
+
+        //  Try ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF with
+        //  a version number, and a query.  This should succeed w/o any
+        //  protocol errors.
+        map.put(ProtocolRequest.ARG_COMMAND,
+                ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
+        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.CURRENT_VERSION);
+        map.put(ProtocolRequest.ARG_QUERY, "1235");
+        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
+        request = new ProtocolRequest(map);
+        validator = new ProtocolValidator(request);
+        try {
+            validator.validate();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+            fail("ProtocolException should not have been thrown");
+        }
+
+        //  Try the same query as above, except this time, set q to
+        //  a non-number.
+        map.put(ProtocolRequest.ARG_QUERY, "ABCD");
+        request = new ProtocolRequest(map);
+        validator = new ProtocolValidator(request);
+        try {
+            validator.validate();
+            fail("ProtocolException should have been thrown");
+        } catch (ProtocolException e) {
+            assertEquals (ProtocolStatusCode.INVALID_ARGUMENT,
+                    e.getStatusCode());
+        }
+
+        //  Try the same query as above, except this time, set format to
+        //  PSI-MI
+        map.put(ProtocolRequest.ARG_QUERY, "12345");
+        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_PSI_MI);
+        request = new ProtocolRequest(map);
+        validator = new ProtocolValidator(request);
+        try {
+            validator.validate();
+            fail("ProtocolException should have been thrown");
+        } catch (ProtocolException e) {
+            assertEquals (ProtocolStatusCode.BAD_FORMAT,
+                    e.getStatusCode());
         }
     }
 
