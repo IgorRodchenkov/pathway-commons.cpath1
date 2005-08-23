@@ -49,8 +49,8 @@ public class DaoExternalDbCv {
     /**
      * Adds New ExternalDatabaseRecord CV Term.
      *
-     * @param dbId External Database ID.
-     * @param term Term.
+     * @param dbId       External Database ID.
+     * @param term       Term.
      * @param masterFlag Indicates that this term is a "master" term.
      * @return true indicates success.
      * @throws DaoException Error Retrieving Data.

@@ -47,6 +47,7 @@ public class TestRdfExtractor extends TestCase {
 
     /**
      * Tests the RDF Extractor.
+     *
      * @throws Exception All Errors.
      */
     public void testRdfExtractor() throws Exception {

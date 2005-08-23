@@ -109,6 +109,7 @@ public class TestBioPaxGenerator extends TestCase {
 
     /**
      * Gets Test Description.
+     *
      * @return Description.
      */
     public String getName() {

@@ -49,7 +49,7 @@ public class QueryException extends Exception {
     /**
      * Constructor.
      *
-     * @param msg   Error Message.
+     * @param msg Error Message.
      */
     public QueryException(String msg) {
         super(msg);

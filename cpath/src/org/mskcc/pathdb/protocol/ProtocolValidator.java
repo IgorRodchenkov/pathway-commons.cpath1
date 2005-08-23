@@ -111,12 +111,12 @@ public class ProtocolValidator {
                 (ProtocolConstants.FORMAT_BIO_PAX)) {
             String command = request.getCommand();
             if (!(command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD)
-                || command.equals
+                    || command.equals
                     (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID))) {
                 throw new ProtocolException
                         (ProtocolStatusCode.INVALID_ARGUMENT,
                                 "The specified command:  " + command
-                                + " does not support the format:  " + format);
+                        + " does not support the format:  " + format);
             }
         }
     }
@@ -145,7 +145,7 @@ public class ProtocolValidator {
         if (request.getFormat() == null) {
             throw new ProtocolException
                     (ProtocolStatusCode.MISSING_ARGUMENTS,
-                    "Argument:  '" + ProtocolRequest.ARG_FORMAT
+                            "Argument:  '" + ProtocolRequest.ARG_FORMAT
                     + "' is not specified." + HELP_MESSAGE);
         }
         HashSet set = constants.getValidFormats();
@@ -158,11 +158,11 @@ public class ProtocolValidator {
         if (request.getCommand().equals
                 (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
             if (!request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
-                throw new ProtocolException (ProtocolStatusCode.BAD_FORMAT,
-                    "When using the command:  "
-                    + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID
-                    + ", the only supported format is:  "
-                    + ProtocolConstants.FORMAT_BIO_PAX);
+                throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
+                        "When using the command:  "
+                        + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID
+                        + ", the only supported format is:  "
+                        + ProtocolConstants.FORMAT_BIO_PAX);
             }
         }
     }
@@ -232,7 +232,7 @@ public class ProtocolValidator {
         if (!request.getVersion().equals(CURRENT_VERSION)) {
             throw new ProtocolException
                     (ProtocolStatusCode.VERSION_NOT_SUPPORTED,
-                    "This data service currently only supports "
+                            "This data service currently only supports "
                     + "version 1.0." + HELP_MESSAGE);
         }
     }

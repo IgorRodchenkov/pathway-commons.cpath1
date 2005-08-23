@@ -29,8 +29,8 @@
  **/
 package org.mskcc.pathdb.sql.query;
 
-import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
@@ -141,7 +141,7 @@ public class QueryManager {
         //  2.  get BioPaxRecord.
         if (request.getCommand().equals
                 (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
-            query = new GetBioPaxCommand (request);
+            query = new GetBioPaxCommand(request);
         } else {
             query = new SearchCommand(request);
         }

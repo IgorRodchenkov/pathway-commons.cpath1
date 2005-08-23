@@ -37,13 +37,13 @@ import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.lucene.LuceneQuery;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.lucene.LuceneQuery;
-import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -90,7 +90,7 @@ public class QueryAction extends BaseAction {
                     (request.getParameterMap());
             protocolRequest = new ProtocolRequest(parameterMap);
             xdebug.logMsg(this, "Executing Web Service API Query:  "
-                + protocolRequest.getUri());
+                    + protocolRequest.getUri());
             return processQuery(mapping, protocolRequest, request,
                     response, xdebug);
         } catch (NeedsHelpException e) {

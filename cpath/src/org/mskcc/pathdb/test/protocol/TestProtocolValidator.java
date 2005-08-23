@@ -90,7 +90,7 @@ public class TestProtocolValidator extends TestCase {
             validator.validate();
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
-            assertEquals (ProtocolStatusCode.INVALID_ARGUMENT,
+            assertEquals(ProtocolStatusCode.INVALID_ARGUMENT,
                     e.getStatusCode());
         }
 
@@ -104,7 +104,7 @@ public class TestProtocolValidator extends TestCase {
             validator.validate();
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
-            assertEquals (ProtocolStatusCode.BAD_FORMAT,
+            assertEquals(ProtocolStatusCode.BAD_FORMAT,
                     e.getStatusCode());
         }
     }

@@ -52,7 +52,7 @@ public class BioPaxGenerator {
      */
     public static Element generateRelationshipXref(ExternalReference ref,
             Namespace bioPaxNamespace) throws DaoException {
-        return generateXref (ref, bioPaxNamespace,
+        return generateXref(ref, bioPaxNamespace,
                 BioPaxConstants.XREF_RELATIONSHIP);
     }
 
@@ -66,7 +66,7 @@ public class BioPaxGenerator {
      */
     public static Element generateUnificationXref(ExternalReference ref,
             Namespace bioPaxNamespace) throws DaoException {
-        return generateXref (ref, bioPaxNamespace,
+        return generateXref(ref, bioPaxNamespace,
                 BioPaxConstants.XREF_UNIFICATION);
     }
 

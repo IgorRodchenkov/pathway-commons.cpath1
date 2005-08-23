@@ -35,9 +35,9 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolValidator;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
-import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryFileReader;
+import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;

@@ -88,7 +88,7 @@ public class ProtocolConstants {
      */
     public static final String COMMAND_GET_BY_INTERACTOR_ID =
             "get_by_interactor_id";
-    
+
     /**
      * Get Record by cPath ID
      */

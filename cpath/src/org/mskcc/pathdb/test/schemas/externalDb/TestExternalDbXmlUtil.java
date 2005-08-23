@@ -71,11 +71,12 @@ public class TestExternalDbXmlUtil extends TestCase {
 
     /**
      * Gets Test Description.
+     *
      * @return Description.
      */
     public String getName() {
         return "Test that we can parse an XML file containing external "
-              + "database information";
+                + "database information";
     }
 
 }

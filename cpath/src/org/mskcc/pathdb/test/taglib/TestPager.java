@@ -155,6 +155,6 @@ public class TestPager extends TestCase {
      */
     public String getName() {
         return "Test the Pager Object, used to generate Next/Previous "
-            + "web links";
+                + "web links";
     }
 }

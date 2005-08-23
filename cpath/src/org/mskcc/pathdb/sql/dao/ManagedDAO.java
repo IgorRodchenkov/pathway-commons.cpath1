@@ -107,8 +107,8 @@ public abstract class ManagedDAO {
      * a new connection
      *
      * @return active database connection
-     * @throws SQLException             Database Error.
-     * @throws ClassNotFoundException   Class Not Found Error.
+     * @throws SQLException           Database Error.
+     * @throws ClassNotFoundException Class Not Found Error.
      */
     public Connection getConnection() throws SQLException,
             ClassNotFoundException {

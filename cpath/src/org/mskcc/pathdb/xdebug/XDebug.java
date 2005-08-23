@@ -70,6 +70,7 @@ public class XDebug {
         XDebugMessage message = new XDebugMessage
                 (callerClass.getName(), msg, color);
         messages.add(message);
+        System.err.println(msg);
     }
 
     /**

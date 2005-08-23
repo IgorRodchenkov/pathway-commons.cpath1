@@ -31,8 +31,6 @@ package org.mskcc.pathdb.lucene;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.Hits;
-import org.mskcc.pathdb.lucene.LuceneReader;
-import org.mskcc.pathdb.lucene.RequestAdapter;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.query.QueryException;
@@ -71,7 +69,8 @@ public class LuceneQuery {
      * Executes Query, and returns an Array of cPath Long IDs.
      *
      * @return array of long cPath IDs.
-     * @throws org.mskcc.pathdb.sql.query.QueryException    Query Error.
+     * @throws org.mskcc.pathdb.sql.query.QueryException
+     *                           Query Error.
      * @throws IOException       I/O Error.
      * @throws AssemblyException XML Assembly Error.
      * @throws ParseException    Lucene Parsing Error.
