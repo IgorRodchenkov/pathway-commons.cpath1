@@ -43,6 +43,7 @@ import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ExternalReferenceUtil;
+import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
@@ -279,6 +280,14 @@ public class ImportBioPaxToCPath {
                 //  Store the Actual XML
                 CPathRecord record = (CPathRecord) cPathRecordList.get(i);
                 Element resource = (Element) resourceList.get(i);
+
+                //  Append a Unification XREF for cPath
+                ExternalReference cpathRef = new ExternalReference
+                        (CPathConstants.CPATH_DB_NAME,
+                                Long.toString(record.getId()));
+                BioPaxGenerator.appendUnificationXref(cpathRef, resource);
+
+                //  Serialize XML
                 String xml = XmlUtil.serializeToXml(resource);
                 daoCPath.updateXml(record.getId(), xml);
 
