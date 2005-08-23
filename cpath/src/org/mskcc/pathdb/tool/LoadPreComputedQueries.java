@@ -35,7 +35,7 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolValidator;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
-import org.mskcc.pathdb.sql.query.Query;
+import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryFileReader;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -74,8 +74,8 @@ public class LoadPreComputedQueries {
             ProtocolValidator validator = new ProtocolValidator(request);
             validator.validate();
             System.out.print("Running Query:  " + request.getUri());
-            Query executeQuery = new Query(xdebug);
-            executeQuery.executeQuery(request, false);
+            QueryManager executeQueryManager = new QueryManager(xdebug);
+            executeQueryManager.executeQuery(request, false);
             System.out.println(" -->  OK");
         }
     }
