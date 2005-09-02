@@ -47,7 +47,7 @@ public class AssemblySuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestAssembly.class);
+        suite.addTestSuite(TestXmlAssembly.class);
         suite.setName("SQL Assembly Database Tests");
         return suite;
     }

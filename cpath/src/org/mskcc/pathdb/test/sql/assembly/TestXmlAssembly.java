@@ -41,6 +41,7 @@ import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.XmlRecordType;
 
 import java.io.StringReader;
 import java.util.List;
@@ -54,7 +55,7 @@ import java.util.List;
  *
  * @author Ethan Cerami
  */
-public class TestAssembly extends TestCase {
+public class TestXmlAssembly extends TestCase {
 
     /**
      * Tests the PSI-MI Assembly Functionality.
@@ -103,11 +104,11 @@ public class TestAssembly extends TestCase {
     }
 
     /**
-     * Test BioPAX Assembly.
+     * Test BioPAX Assembly:  XML_FULL.
      *
      * @throws Exception All Errors.
      */
-    public void testBioPaxAssembly() throws Exception {
+    public void testBioPaxAssemblyFull() throws Exception {
         //  Assemble Interaction with specified cPath ID (hard-coded value)
         XDebug xdebug = new XDebug();
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
@@ -116,8 +117,8 @@ public class TestAssembly extends TestCase {
         Element rootElement = (Element) assembly.getXmlObject();
         List children = rootElement.getChildren();
 
-        //  We should have one Catalsis element, one Protein element,
-        //  and four Small Molecule elements.
+        //  We should have one OWL element, one catalysis element,
+        //  one protein element, and four small molecule elements.
         Element child = (Element) children.get(0);
         assertEquals(OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
         child = (Element) children.get(1);
@@ -142,7 +143,44 @@ public class TestAssembly extends TestCase {
         Attribute baseAttribute =
                 rootElement.getAttribute("base", Namespace.XML_NAMESPACE);
         assertEquals(CPathConstants.CPATH_HOME_URI, baseAttribute.getValue());
-        //        System.out.print(xmlAssembly);
+    }
+
+    /**
+     * Test BioPAX Assembly:  XML_ABBREV.
+     *
+     * @throws Exception All Errors.
+     */
+    public void testBioPaxAssemblyAbbrev() throws Exception {
+        //  Assemble Interaction with specified cPath ID (hard-coded value)
+        XDebug xdebug = new XDebug();
+        long cpathIds[] = new long[1];
+        cpathIds[0] = 7;
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
+                XmlRecordType.BIO_PAX, 1, XmlAssemblyFactory.XML_ABBREV,
+                xdebug);
+        String xmlAssembly = assembly.getXmlString();
+
+        Element rootElement = (Element) assembly.getXmlObject();
+        List children = rootElement.getChildren();
+
+        //  We should have one OWL Element, one Catalysis element, and
+        //  that's it.  We shouldn't see the one protein elements and four small
+        //  molecule elements that we saw in the above XML_FULL text
+        Element child = (Element) children.get(0);
+        assertEquals(OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
+        child = (Element) children.get(1);
+        assertEquals(BioPaxConstants.CATAYLSIS, child.getName());
+        assertEquals (2, children.size());
+
+        //  Check that this is valid RDF
+        StringReader reader = new StringReader(xmlAssembly);
+        RdfValidator rdfValidator = new RdfValidator(reader);
+        assertTrue(!rdfValidator.hasErrorsOrWarnings());
+
+        //  Validate that Root RDF Element has an xml:base attribute
+        Attribute baseAttribute =
+                rootElement.getAttribute("base", Namespace.XML_NAMESPACE);
+        assertEquals(CPathConstants.CPATH_HOME_URI, baseAttribute.getValue());
     }
 
     /**
