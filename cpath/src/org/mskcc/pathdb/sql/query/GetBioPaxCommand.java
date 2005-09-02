@@ -78,9 +78,8 @@ class GetBioPaxCommand extends Query {
         xdebug.logMsg(this, "Checking that record is of type:  BioPAX --> OK");
 
         //  Go ahead and create the assembly.
-        XmlAssembly assembly =
-                XmlAssemblyFactory.createXmlAssembly(id,
-                        XmlRecordType.BIO_PAX, 1, xdebug);
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
+                (id, XmlRecordType.BIO_PAX, 1, xdebug);
         return assembly;
     }
 }

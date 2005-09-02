@@ -132,16 +132,19 @@ public class QueryManager {
     /**
      * Instantiates Correct Query based on Protocol Request.
      */
-    private Query determineQueryType
-            (ProtocolRequest request) {
+    private Query determineQueryType (ProtocolRequest request) {
         Query query = null;
 
         //  We currently have two types of queries:
-        //  1.  search via Lucene; and
-        //  2.  get BioPaxRecord.
+        //  1.  get BioPaxRecord
+        //  2.  get top level pathway list
+        //  2.  search via Lucene
         if (request.getCommand().equals
                 (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
             query = new GetBioPaxCommand(request);
+        } else if (request.getCommand().equals
+                (ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST)) {
+            query = new GetTopLevelPathwayListCommand(request, xdebug);
         } else {
             query = new SearchCommand(request);
         }

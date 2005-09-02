@@ -92,10 +92,12 @@ class SearchCommand extends Query {
         if (cpathIds != null && cpathIds.length > 0) {
             if (request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
-                        XmlRecordType.BIO_PAX, hits.length(), xdebug);
+                        XmlRecordType.BIO_PAX, hits.length(),
+                        XmlAssemblyFactory.XML_FULL, xdebug);
             } else {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
-                        XmlRecordType.PSI_MI, hits.length(), xdebug);
+                        XmlRecordType.PSI_MI, hits.length(),
+                        XmlAssemblyFactory.XML_FULL, xdebug);
             }
         } else {
             xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
