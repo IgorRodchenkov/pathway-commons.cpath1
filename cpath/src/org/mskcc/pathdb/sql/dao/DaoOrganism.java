@@ -37,6 +37,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Data Access Object to the Organism Table.
@@ -115,6 +116,22 @@ public class DaoOrganism {
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
+    }
+
+    /**
+     * Gets All Organisms in Database.
+     *
+     * @return HashMap of Taxonomy ID String Objects to Organism Objects.
+     * @throws DaoException Error Connecting to Database.
+     */
+    public HashMap getAllOrganismsMap() throws DaoException {
+        ArrayList organismList = this.getAllOrganisms();
+        HashMap map = new HashMap();
+        for (int i=0; i<organismList.size(); i++) {
+            Organism organism = (Organism) organismList.get(i);
+            map.put(Integer.toString(organism.getTaxonomyId()), organism);
+        }
+        return map;
     }
 
     /**
