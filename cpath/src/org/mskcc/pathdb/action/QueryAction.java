@@ -108,15 +108,13 @@ public class QueryAction extends BaseAction {
             return processHtmlRequest(mapping, protocolRequest,
                     request, xdebug);
         } else {
-            return processXmlRequest(mapping, protocolRequest,
-                    response, xdebug);
+            return processXmlRequest(protocolRequest, response, xdebug);
         }
     }
 
-    private ActionForward processXmlRequest(ActionMapping mapping,
-            ProtocolRequest protocolRequest, HttpServletResponse response,
-            XDebug xdebug)
-            throws NeedsHelpException {
+    private ActionForward processXmlRequest(ProtocolRequest protocolRequest,
+            HttpServletResponse response,
+            XDebug xdebug) throws NeedsHelpException {
         String xml = null;
         XmlAssembly xmlAssembly = null;
         try {
@@ -245,9 +243,8 @@ public class QueryAction extends BaseAction {
             ProtocolRequest protocolRequest) throws ProtocolException {
         XmlAssembly xmlAssembly;
         try {
-            QueryManager executeQueryManager = new QueryManager(xdebug);
-            xmlAssembly = executeQueryManager.executeQuery(protocolRequest,
-                    true);
+            QueryManager queryManager = new QueryManager(xdebug);
+            xmlAssembly = queryManager.executeQuery(protocolRequest, true);
         } catch (QueryException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
