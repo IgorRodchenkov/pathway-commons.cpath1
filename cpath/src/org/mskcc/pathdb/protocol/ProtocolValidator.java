@@ -103,22 +103,6 @@ public class ProtocolValidator {
         if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
             throw new NeedsHelpException();
         }
-
-        //  For BioPAX format, the only valid commands are get_by_keyword
-        //  and get_record_by_cpath_id
-        String format = request.getFormat();
-        if (format != null && format.equals
-                (ProtocolConstants.FORMAT_BIO_PAX)) {
-            String command = request.getCommand();
-            if (!(command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD)
-                    || command.equals
-                    (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID))) {
-                throw new ProtocolException
-                        (ProtocolStatusCode.INVALID_ARGUMENT,
-                                "The specified command:  " + command
-                        + " does not support the format:  " + format);
-            }
-        }
     }
 
     /**
@@ -155,12 +139,27 @@ public class ProtocolValidator {
                     + "' is not recognized."
                     + HELP_MESSAGE);
         }
+
+        //  When using COMMAND_GET_RECORD_BY_CPATH_ID, BioPAX must be specified.
         if (request.getCommand().equals
                 (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
             if (!request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
                 throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
                         "When using the command:  "
                         + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID
+                        + ", the only supported format is:  "
+                        + ProtocolConstants.FORMAT_BIO_PAX);
+            }
+        }
+
+        //  When using COMMAND_GET_TOP_LEVEL_PATHWAY_LIST,
+        //  BioPAX must be specified.
+        if (request.getCommand().equals
+                (ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST)) {
+            if (!request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
+                throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
+                        "When using the command:  "
+                        + ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST
                         + ", the only supported format is:  "
                         + ProtocolConstants.FORMAT_BIO_PAX);
             }
@@ -186,10 +185,10 @@ public class ProtocolValidator {
             organismExists = false;
         }
 
-        // ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID must have a query
-        // parameter.  All other commands must have either a query parameter
-        // or an organism paramter.
         if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+            // ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID must have a query
+            // parameter.  All other commands must have either a query parameter
+            // or an organism paramter.
             if (!qExists) {
                 errorFlag = true;
             }
@@ -204,6 +203,11 @@ public class ProtocolValidator {
                         "Query parameter must be an integer value. "
                         + "Please try again.");
             }
+        } else if (command.equals
+                (ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST)) {
+            // ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST can appear
+            // without a query parameter or an organism parameter.
+            return;
         } else {
             if (!qExists && !organismExists) {
                 errorFlag = true;
