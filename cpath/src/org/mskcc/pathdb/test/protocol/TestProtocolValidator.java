@@ -120,7 +120,8 @@ public class TestProtocolValidator extends TestCase {
         try {
             validator.validate();
         } catch (ProtocolException e) {
-            fail("ProtocolException should not have been thrown");        }
+            fail("ProtocolException should not have been thrown");
+        }
     }
 
     /**

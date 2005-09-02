@@ -29,23 +29,14 @@
  **/
 package org.mskcc.pathdb.action;
 
-import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.query.GetTopLevelPathwayListCommand;
-import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.ServletOutputStream;
@@ -53,7 +44,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Bare Bones cPath Web Site:  Prototype.
@@ -111,7 +101,7 @@ public class BareBonesWeb extends BaseAction {
             HttpServletRequest request) throws DaoException, IOException,
             CacheException {
         GetTopLevelPathwayListCommand getPathwayListCommand =
-                new GetTopLevelPathwayListCommand (xdebug);
+                new GetTopLevelPathwayListCommand(xdebug);
         ArrayList pathwayList = getPathwayListCommand.getTopLevelPathwayList();
         request.setAttribute("RECORDS", pathwayList);
     }

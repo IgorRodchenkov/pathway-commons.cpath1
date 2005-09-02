@@ -127,7 +127,7 @@ public class DaoOrganism {
     public HashMap getAllOrganismsMap() throws DaoException {
         ArrayList organismList = this.getAllOrganisms();
         HashMap map = new HashMap();
-        for (int i=0; i<organismList.size(); i++) {
+        for (int i = 0; i < organismList.size(); i++) {
             Organism organism = (Organism) organismList.get(i);
             map.put(Integer.toString(organism.getTaxonomyId()), organism);
         }

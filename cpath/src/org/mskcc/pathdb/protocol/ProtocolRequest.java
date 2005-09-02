@@ -34,9 +34,9 @@ import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.mskcc.pathdb.model.PagedResult;
 
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Encapsulates Request object from client/browser application.
@@ -349,24 +349,24 @@ public class ProtocolRequest implements PagedResult {
     private String createUri(GetMethod method) {
         String uri;
         List list = new ArrayList();
-        list.add (new NameValuePair(ARG_VERSION, version));
-        list.add (new NameValuePair(ARG_COMMAND, command));
+        list.add(new NameValuePair(ARG_VERSION, version));
+        list.add(new NameValuePair(ARG_COMMAND, command));
         if (query != null) {
-            list.add (new NameValuePair(ARG_QUERY, query));
+            list.add(new NameValuePair(ARG_QUERY, query));
         }
-        list.add (new NameValuePair(ARG_FORMAT, format));
+        list.add(new NameValuePair(ARG_FORMAT, format));
         if (startIndex != 0) {
-            list.add (new NameValuePair(ARG_START_INDEX,
-                Long.toString(startIndex)));
+            list.add(new NameValuePair(ARG_START_INDEX,
+                    Long.toString(startIndex)));
         }
         if (organism != null) {
-            list.add (new NameValuePair(ARG_ORGANISM, organism));
+            list.add(new NameValuePair(ARG_ORGANISM, organism));
         }
         if (maxHits != null) {
-            list.add (new NameValuePair(ARG_MAX_HITS, maxHits));
+            list.add(new NameValuePair(ARG_MAX_HITS, maxHits));
         }
 
-        NameValuePair nvps[] = (NameValuePair [])
+        NameValuePair nvps[] = (NameValuePair[])
                 list.toArray(new NameValuePair[list.size()]);
         method.setQueryString(nvps);
         try {

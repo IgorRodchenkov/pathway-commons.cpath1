@@ -34,6 +34,7 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
@@ -41,7 +42,6 @@ import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.model.XmlRecordType;
 
 import java.io.StringReader;
 import java.util.List;
@@ -170,7 +170,7 @@ public class TestXmlAssembly extends TestCase {
         assertEquals(OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
         child = (Element) children.get(1);
         assertEquals(BioPaxConstants.CATAYLSIS, child.getName());
-        assertEquals (2, children.size());
+        assertEquals(2, children.size());
 
         //  Check that this is valid RDF
         StringReader reader = new StringReader(xmlAssembly);

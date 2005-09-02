@@ -37,9 +37,9 @@ import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.schemas.biopax.BioPaxElementFilter;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
-import org.mskcc.pathdb.schemas.biopax.BioPaxElementFilter;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.CPathConstants;
@@ -75,7 +75,7 @@ public class BioPaxAssembly implements XmlAssembly {
      *
      * @param recordList ArrayList of CPathRecord objects.  Each CPathRecord
      *                   contains a Pathway or an Interaction.
-     * @param mode     Mode must be one of XML_ABBREV, XML_FULL.
+     * @param mode       Mode must be one of XML_ABBREV, XML_FULL.
      * @param xdebug     XDebug Object.
      * @throws AssemblyException Error In Assembly.
      */

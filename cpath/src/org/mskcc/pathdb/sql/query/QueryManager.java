@@ -132,7 +132,7 @@ public class QueryManager {
     /**
      * Instantiates Correct Query based on Protocol Request.
      */
-    private Query determineQueryType (ProtocolRequest request) {
+    private Query determineQueryType(ProtocolRequest request) {
         Query query = null;
 
         //  We currently have two types of queries:

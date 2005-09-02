@@ -186,9 +186,9 @@ public class ProtocolValidator {
         }
 
         if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
-            // ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID must have a query
-            // parameter.  All other commands must have either a query parameter
-            // or an organism paramter.
+            // ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID must have a
+            // query parameter.  All other commands must have either a query
+            // parameter or an organism paramter.
             if (!qExists) {
                 errorFlag = true;
             }
