@@ -96,6 +96,12 @@ public class ProtocolConstants {
             "get_record_by_cpath_id";
 
     /**
+     * Get Top-Level Pathway List.
+     */
+    public static final String COMMAND_GET_TOP_LEVEL_PATHWAY_LIST =
+            "get_top_level_pathway_list";
+
+    /**
      * Get By Interactor Taxonomy ID.
      */
     public static final String COMMAND_GET_BY_ORGANISM = "get_by_organism";
@@ -154,13 +160,14 @@ public class ProtocolConstants {
             validCommands = new HashSet();
             validCommands.add(COMMAND_GET_BY_INTERACTOR_NAME_XREF);
             validCommands.add(COMMAND_GET_BY_INTERACTOR_ID);
-            validCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
             validCommands.add(COMMAND_GET_BY_ORGANISM);
             validCommands.add(COMMAND_GET_BY_KEYWORD);
             validCommands.add(COMMAND_GET_BY_DATABASE);
             validCommands.add(COMMAND_GET_BY_PMID);
             validCommands.add(COMMAND_GET_BY_EXPERIMENT_TYPE);
             validCommands.add(COMMAND_HELP);
+            validCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
+            validCommands.add(COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
         }
         return validCommands;
     }
