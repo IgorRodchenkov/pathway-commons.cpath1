@@ -57,8 +57,8 @@ public class TestQueryFileReader extends TestCase {
         assertEquals("1.0", request.getVersion());
         assertEquals(null, request.getQuery());
         assertEquals("psi", request.getFormat());
-        assertEquals("webservice.do?version=1.0&cmd=get_by_keyword&q=&"
-                + "format=psi&startIndex=0&organism=562&maxHits=10",
+        assertEquals("webservice.do?version=1.0&cmd=get_by_keyword"
+                + "&format=psi&organism=562&maxHits=10",
                 request.getUri());
     }
 

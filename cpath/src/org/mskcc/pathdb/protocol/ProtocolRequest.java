@@ -349,12 +349,18 @@ public class ProtocolRequest implements PagedResult {
     private String createUri(GetMethod method) {
         String uri;
         List list = new ArrayList();
-        list.add(new NameValuePair(ARG_VERSION, version));
-        list.add(new NameValuePair(ARG_COMMAND, command));
+        if (version != null) {
+            list.add(new NameValuePair(ARG_VERSION, version));
+        }
+        if (command != null) {
+            list.add(new NameValuePair(ARG_COMMAND, command));
+        }
         if (query != null) {
             list.add(new NameValuePair(ARG_QUERY, query));
         }
-        list.add(new NameValuePair(ARG_FORMAT, format));
+        if (format != null) {
+            list.add(new NameValuePair(ARG_FORMAT, format));
+        }
         if (startIndex != 0) {
             list.add(new NameValuePair(ARG_START_INDEX,
                     Long.toString(startIndex)));

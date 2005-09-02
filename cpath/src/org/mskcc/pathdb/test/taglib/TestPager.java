@@ -59,8 +59,8 @@ public class TestPager extends TestCase {
         String prevUrl = pager.getPreviousUrl();
         assertEquals(0, start);
         assertEquals(20, end);
-        assertEquals("webservice.do?version=1.0&cmd=&q=ABC123&format=&"
-                + "startIndex=20&organism=&maxHits=20", nextUrl);
+        assertEquals("webservice.do?version=1.0&q=ABC123"
+                + "&startIndex=20&maxHits=20", nextUrl);
         assertEquals(null, firstUrl);
         assertEquals(null, prevUrl);
     }
@@ -83,12 +83,12 @@ public class TestPager extends TestCase {
         String prevUrl = pager.getPreviousUrl();
         assertEquals(20, start);
         assertEquals(40, end);
-        assertEquals("webservice.do?version=1.0&cmd=&q=ABC123&format="
-                + "&startIndex=0&organism=&maxHits=20", firstUrl);
-        assertEquals("webservice.do?version=1.0&cmd=&q=ABC123&format="
-                + "&startIndex=40&organism=&maxHits=20", nextUrl);
-        assertEquals("webservice.do?version=1.0&cmd=&q=ABC123&format="
-                + "&startIndex=0&organism=&maxHits=20", prevUrl);
+        assertEquals("webservice.do?version=1.0&q=ABC123"
+                + "&maxHits=20", firstUrl);
+        assertEquals("webservice.do?version=1.0&q=ABC123"
+                + "&startIndex=40&maxHits=20", nextUrl);
+        assertEquals("webservice.do?version=1.0&q=ABC123"
+                + "&maxHits=20", prevUrl);
     }
 
     /**
@@ -110,11 +110,11 @@ public class TestPager extends TestCase {
         String prevUrl = pager.getPreviousUrl();
         assertEquals(240, start);
         assertEquals(255, end);
-        assertEquals("webservice.do?version=1.0&cmd=&q=ABC123&format=&"
-                + "startIndex=0&organism=&maxHits=20", firstUrl);
+        assertEquals("webservice.do?version=1.0&q=ABC123"
+                + "&maxHits=20", firstUrl);
         assertEquals(null, nextUrl);
-        assertEquals("webservice.do?version=1.0&cmd=&q=ABC123&format=&"
-                + "startIndex=220&organism=&maxHits=20", prevUrl);
+        assertEquals("webservice.do?version=1.0&q=ABC123"
+                + "&startIndex=220&maxHits=20", prevUrl);
     }
 
     /**
