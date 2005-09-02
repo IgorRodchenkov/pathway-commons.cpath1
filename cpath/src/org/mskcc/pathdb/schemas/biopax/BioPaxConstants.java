@@ -130,6 +130,31 @@ public class BioPaxConstants {
     public static final String PATHWAY = "pathway";
 
     /**
+     * BioPAX Name Element.
+     */
+    public static final String NAME_ELEMENT = "NAME";
+
+    /**
+     * BioPAX ShortName Element.
+     */
+    public static final String SHORT_NAME_ELEMENT = "SHORT-NAME";
+
+    /**
+     * BioPAX Organism Element.
+     */
+    public static final String ORGANISM_ELEMENT = "ORGANISM";
+
+    /**
+     * BioPAX Comment Element.
+     */
+    public static final String COMMENT_ELEMENT = "COMMENT";
+
+    /**
+     * BioPAX XRef Element.
+     */
+    public static final String XREF_ELEMENT = "XREF";
+
+    /**
      * BioPax Utility Class:  XRef Unification.
      */
     public static final String XREF_UNIFICATION = "unificationXref";
@@ -138,7 +163,6 @@ public class BioPaxConstants {
      * BioPax Utility Class:  XRef Relationship.
      */
     public static final String XREF_RELATIONSHIP = "relationshipXref";
-
 
     /**
      * BioPAX Namespace Prefix.
