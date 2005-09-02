@@ -35,6 +35,8 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.mskcc.pathdb.model.PagedResult;
 
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Encapsulates Request object from client/browser application.
@@ -127,8 +129,8 @@ public class ProtocolRequest implements PagedResult {
     public ProtocolRequest() {
         this.version = ProtocolConstants.CURRENT_VERSION;
         this.startIndex = 0;
-        this.organism = "";
-        this.maxHits = Integer.toString(ProtocolConstants.DEFAULT_MAX_HITS);
+        this.organism = null;
+        this.maxHits = null;
     }
 
     /**
@@ -346,15 +348,26 @@ public class ProtocolRequest implements PagedResult {
 
     private String createUri(GetMethod method) {
         String uri;
-        NameValuePair nvps[] = new NameValuePair[7];
-        nvps[0] = new NameValuePair(ARG_VERSION, version);
-        nvps[1] = new NameValuePair(ARG_COMMAND, command);
-        nvps[2] = new NameValuePair(ARG_QUERY, query);
-        nvps[3] = new NameValuePair(ARG_FORMAT, format);
-        nvps[4] = new NameValuePair(ARG_START_INDEX,
-                Long.toString(startIndex));
-        nvps[5] = new NameValuePair(ARG_ORGANISM, organism);
-        nvps[6] = new NameValuePair(ARG_MAX_HITS, maxHits);
+        List list = new ArrayList();
+        list.add (new NameValuePair(ARG_VERSION, version));
+        list.add (new NameValuePair(ARG_COMMAND, command));
+        if (query != null) {
+            list.add (new NameValuePair(ARG_QUERY, query));
+        }
+        list.add (new NameValuePair(ARG_FORMAT, format));
+        if (startIndex != 0) {
+            list.add (new NameValuePair(ARG_START_INDEX,
+                Long.toString(startIndex)));
+        }
+        if (organism != null) {
+            list.add (new NameValuePair(ARG_ORGANISM, organism));
+        }
+        if (maxHits != null) {
+            list.add (new NameValuePair(ARG_MAX_HITS, maxHits));
+        }
+
+        NameValuePair nvps[] = (NameValuePair [])
+                list.toArray(new NameValuePair[list.size()]);
         method.setQueryString(nvps);
         try {
             uri = method.getURI().getEscapedURI();
