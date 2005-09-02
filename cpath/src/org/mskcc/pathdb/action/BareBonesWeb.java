@@ -44,6 +44,7 @@ import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.query.GetTopLevelPathwayListCommand;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -96,13 +97,6 @@ public class BareBonesWeb extends BaseAction {
             stream.close();
         }
 
-        if (format != null && format.equalsIgnoreCase("xml_debug")) {
-            xdebug.logMsg(this, "Getting XML Assembly");
-            XmlAssembly assembly =
-                    XmlAssemblyFactory.createXmlAssembly(Long.parseLong(id),
-                            XmlRecordType.BIO_PAX, 1, xdebug);
-            return mapping.findForward("record");
-        }
         if (id == null) {
             return mapping.findForward("pathways");
         } else {
@@ -116,43 +110,9 @@ public class BareBonesWeb extends BaseAction {
     private void getTopLevelPathways(XDebug xdebug, DaoCPath dao,
             HttpServletRequest request) throws DaoException, IOException,
             CacheException {
-        xdebug.logMsg(this, "Checking Memory Cache:  "
-                + EhCache.KEY_PATHWAY_LIST);
-        CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.GLOBAL_CACHE_NAME);
-        Element element = cache.get(EhCache.KEY_PATHWAY_LIST);
-
-        ArrayList pathwayList = new ArrayList();
-        if (element != null) {
-            xdebug.logMsg(this, "Successfully Retrieved from Cache");
-            xdebug.logMsg(this, "Cached Element created at:  "
-                    + new Date(element.getCreationTime()));
-            xdebug.logMsg(this, "Time to Live:  "
-                    + cache.getTimeToLiveSeconds() / 60.0 + " minutes");
-            pathwayList = (ArrayList) element.getValue();
-        } else {
-            xdebug.logMsg(this, "Not hit in cache.  Getting all pathways.");
-            ArrayList candidateList = dao.getAllRecords
-                    (CPathRecordType.PATHWAY);
-            xdebug.logMsg(this, "Total Number of Candidate Pathways Found:  "
-                    + candidateList.size());
-            DaoInternalLink daoInternalLink = new DaoInternalLink();
-            for (int i = 0; i < candidateList.size(); i++) {
-                CPathRecord pathway = (CPathRecord) candidateList.get(i);
-                ArrayList sourceLinks = daoInternalLink.getSources
-                        (pathway.getId());
-                //  If nothing points to this pathway, it is a top
-                //  level pathway.
-                if (sourceLinks.size() == 0) {
-                    pathwayList.add(pathway);
-                }
-            }
-            xdebug.logMsg(this, "Total Number of Root Level Pathways:  "
-                    + pathwayList.size());
-            Element newElement = new Element(EhCache.KEY_PATHWAY_LIST,
-                    pathwayList);
-            cache.put(newElement);
-        }
+        GetTopLevelPathwayListCommand getPathwayListCommand =
+                new GetTopLevelPathwayListCommand (xdebug);
+        ArrayList pathwayList = getPathwayListCommand.getTopLevelPathwayList();
         request.setAttribute("RECORDS", pathwayList);
     }
 }
