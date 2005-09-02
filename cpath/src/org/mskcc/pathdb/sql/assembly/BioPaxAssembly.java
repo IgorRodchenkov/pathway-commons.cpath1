@@ -39,6 +39,7 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.schemas.biopax.BioPaxElementFilter;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.CPathConstants;
@@ -66,6 +67,7 @@ public class BioPaxAssembly implements XmlAssembly {
     private Document globalDoc;
     private int numHits = 0;
     private ArrayList queue;
+    private int mode;
 
     /**
      * Package Only Constructor.  Class must be instantiated via the
@@ -73,16 +75,23 @@ public class BioPaxAssembly implements XmlAssembly {
      *
      * @param recordList ArrayList of CPathRecord objects.  Each CPathRecord
      *                   contains a Pathway or an Interaction.
+     * @param mode     Mode must be one of XML_ABBREV, XML_FULL.
      * @param xdebug     XDebug Object.
      * @throws AssemblyException Error In Assembly.
      */
-    BioPaxAssembly(ArrayList recordList, XDebug xdebug)
+    BioPaxAssembly(ArrayList recordList, int mode, XDebug xdebug)
             throws AssemblyException {
         this.nodesVisited = new LinkedHashMap();
         this.queue = recordList;
+        this.mode = mode;
         this.xdebug = xdebug;
         try {
             xdebug.logMsg(this, "Start: Creating BioPAX Assembly Document");
+            if (mode == XmlAssemblyFactory.XML_ABBREV) {
+                xdebug.logMsg(this, "Mode set to:  XML_ABBREV");
+            } else {
+                xdebug.logMsg(this, "Mode set to:  XML_FULL");
+            }
             traverseRecordsInQueue();
             assembleRdfDocument();
             xdebug.logMsg(this, "End: Creating BioPAX Assembly Document");
@@ -150,7 +159,7 @@ public class BioPaxAssembly implements XmlAssembly {
     }
 
     /**
-     * Gets Comlete Xml Assembly (in String form).
+     * Gets Complete Xml Assembly (in String form).
      * All Internal IDs are converted from the form: 1234 to CPATH-1234.
      * See org.mskcc.pathdb.sql.assembly.CPathIdFilter for more details.
      *
@@ -238,16 +247,19 @@ public class BioPaxAssembly implements XmlAssembly {
         //  Add to List of Nodes Visited
         nodesVisited.put(new Long(record.getId()), record);
 
-        //  Get All Links
-        DaoInternalLink internalLinker = new DaoInternalLink();
-        ArrayList internalLinks =
-                internalLinker.getTargetsWithLookUp(record.getId());
+        //  If XML_FULL Mode, recursively traverse and get all linked resources.
+        if (mode == XmlAssemblyFactory.XML_FULL) {
+            //  Get All Links
+            DaoInternalLink internalLinker = new DaoInternalLink();
+            ArrayList internalLinks =
+                    internalLinker.getTargetsWithLookUp(record.getId());
 
-        //  Iterate through all Links, e.g. children
-        for (int i = 0; i < internalLinks.size(); i++) {
-            CPathRecord child = (CPathRecord) internalLinks.get(i);
-            if (!nodesVisited.containsKey(new Long(child.getId()))) {
-                traverseNode(child);
+            //  Iterate through all Links, e.g. children
+            for (int i = 0; i < internalLinks.size(); i++) {
+                CPathRecord child = (CPathRecord) internalLinks.get(i);
+                if (!nodesVisited.containsKey(new Long(child.getId()))) {
+                    traverseNode(child);
+                }
             }
         }
     }
@@ -303,6 +315,12 @@ public class BioPaxAssembly implements XmlAssembly {
             Element localRoot = localDoc.getRootElement();
             localRoot.detach();
             updateNamespace(localRoot);
+
+            //  If we are in XML_ABBREV mode, strip down to core elements only.
+            if (mode == XmlAssemblyFactory.XML_ABBREV) {
+                BioPaxElementFilter.retainCoreElementsOnly(localRoot);
+            }
+
             globalRoot.addContent(localRoot);
         }
 

@@ -45,6 +45,23 @@ import java.util.ArrayList;
 public class XmlAssemblyFactory {
 
     /**
+     * In XML_ABBREV mode, the root XML document is retrieved, but linked
+     * resources are not retrieved.  For example, if you retrieve an
+     * interaction in XML_ABBREV, you get back XML for the interaction,
+     * but no XML for its protein participants.
+     */
+    public static final int XML_ABBREV = 0;
+
+    /**
+     * In XML_FULL mode, the root XML document is retrieved, as are all linked
+     * resources.  For example, if you retrieve an ineraction in XML_FULL,
+     * you get back XML for the interaction, plus XML for all its protein
+     * participants.
+     */
+    public static final int XML_FULL = 1;
+
+
+    /**
      * Creates an XmlAssembly based on specified cPathId.
      *
      * @param cpathId cPathID must refer to an Interaction record.
@@ -55,12 +72,13 @@ public class XmlAssemblyFactory {
      * @throws AssemblyException Error in Assembly.
      */
     public static XmlAssembly createXmlAssembly(long cpathId, XmlRecordType
-            xmlType, int numHits,
-            XDebug xdebug) throws AssemblyException {
+            xmlType, int numHits, XDebug xdebug)
+            throws AssemblyException {
         try {
             DaoCPath dao = DaoCPath.getInstance();
             CPathRecord record = dao.getRecordById(cpathId);
-            return createAssemblyInstance(record, xmlType, numHits, xdebug);
+            return createAssemblyInstance(record, xmlType, numHits, XML_FULL,
+                    xdebug);
         } catch (DaoException e) {
             throw new AssemblyException(e);
         }
@@ -81,7 +99,7 @@ public class XmlAssemblyFactory {
             DaoCPath dao = DaoCPath.getInstance();
             CPathRecord record = dao.getRecordById(cpathId);
             return createAssemblyInstance(record, record.getXmlType(),
-                    numHits, xdebug);
+                    numHits, XML_FULL, xdebug);
         } catch (DaoException e) {
             throw new AssemblyException(e);
         }
@@ -93,12 +111,14 @@ public class XmlAssemblyFactory {
      * @param cpathIds Each cPathID must refer to an Interaction record.
      * @param xmlType  XmlRecordType Object.
      * @param numHits  Total Number of Hits.
+     * @param mode     Mode must be one of XML_ABBREV, XML_FULL.
      * @param xdebug   XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
     public static XmlAssembly createXmlAssembly(long cpathIds[], XmlRecordType
-            xmlType, int numHits, XDebug xdebug) throws AssemblyException {
+            xmlType, int numHits, int mode, XDebug xdebug)
+            throws AssemblyException {
         try {
             ArrayList records = new ArrayList();
             DaoCPath dao = DaoCPath.getInstance();
@@ -106,7 +126,8 @@ public class XmlAssemblyFactory {
                 CPathRecord record = dao.getRecordById(cpathIds[i]);
                 records.add(record);
             }
-            return createAssemblyInstance(records, xmlType, numHits, xdebug);
+            return createAssemblyInstance(records, xmlType, numHits, mode,
+                    xdebug);
         } catch (DaoException e) {
             throw new AssemblyException(e);
         }
@@ -125,7 +146,8 @@ public class XmlAssemblyFactory {
     public static XmlAssembly createXmlAssembly(CPathRecord record,
             XmlRecordType xmlType, int numHits, XDebug xdebug)
             throws AssemblyException {
-        return createAssemblyInstance(record, xmlType, numHits, xdebug);
+        return createAssemblyInstance(record, xmlType, numHits, XML_FULL,
+                xdebug);
     }
 
     /**
@@ -134,12 +156,13 @@ public class XmlAssemblyFactory {
      * @param recordList An ArrayList of CPathRecord Objects.
      * @param xmlType    XmlRecordType Object.
      * @param numHits    Total Number of Hits.
+     * @param mode       Mode must be one of XML_ABBREV, XML_FULL.
      * @param xdebug     XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
     public static XmlAssembly createXmlAssembly(ArrayList recordList,
-            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            XmlRecordType xmlType, int numHits, int mode, XDebug xdebug)
             throws AssemblyException {
         for (int i = 0; i < recordList.size(); i++) {
             Object object = recordList.get(i);
@@ -147,11 +170,10 @@ public class XmlAssemblyFactory {
                 throw new IllegalArgumentException("ArrayList must "
                         + "contain objects of type:  "
                         + CPathRecord.class.getName());
-            } else {
-                CPathRecord record = (CPathRecord) object;
             }
         }
-        return createAssemblyInstance(recordList, xmlType, numHits, xdebug);
+        return createAssemblyInstance(recordList, xmlType, numHits, mode,
+                xdebug);
     }
 
     /**
@@ -190,30 +212,20 @@ public class XmlAssemblyFactory {
 
     /**
      * Creates an Instance of the XmlAssembly interface.
-     *
-     * @param record  CPathRecord Object.
-     * @param xmlType XmlRecordType Object.
-     * @return XmlAssembly Object.
-     * @throws AssemblyException Error in Assembly.
      */
     private static XmlAssembly createAssemblyInstance(CPathRecord record,
-            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            XmlRecordType xmlType, int numHits, int mode, XDebug xdebug)
             throws AssemblyException {
         ArrayList records = new ArrayList();
         records.add(record);
-        return createAssemblyInstance(records, xmlType, numHits, xdebug);
+        return createAssemblyInstance(records, xmlType, numHits, mode, xdebug);
     }
 
     /**
      * Creates an Instance of the XmlAssembly interface.
-     *
-     * @param recordList ArrayList of CPathRecord Objects.
-     * @param xmlType    XmlRecordType Object.
-     * @return XmlAssembly Object.
-     * @throws AssemblyException Error in Assembly.
      */
     private static XmlAssembly createAssemblyInstance(ArrayList recordList,
-            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            XmlRecordType xmlType, int numHits, int mode, XDebug xdebug)
             throws AssemblyException {
         xdebug.logMsg(XmlAssemblyFactory.class,
                 "Creating XML Assembly of Type:  " + xmlType);
@@ -227,7 +239,7 @@ public class XmlAssemblyFactory {
         if (xmlType.equals(XmlRecordType.PSI_MI)) {
             xmlAssembly = new PsiAssembly(recordList, xdebug);
         } else {
-            xmlAssembly = new BioPaxAssembly(recordList, xdebug);
+            xmlAssembly = new BioPaxAssembly(recordList, mode, xdebug);
         }
         xmlAssembly.setNumHits(numHits);
         return xmlAssembly;
