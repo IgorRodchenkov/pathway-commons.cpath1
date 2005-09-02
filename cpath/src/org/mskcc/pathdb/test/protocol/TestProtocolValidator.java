@@ -107,6 +107,20 @@ public class TestProtocolValidator extends TestCase {
             assertEquals(ProtocolStatusCode.BAD_FORMAT,
                     e.getStatusCode());
         }
+
+        //  Try getting all pathways w/o an organism parameter
+        map = new HashMap();
+        map.put(ProtocolRequest.ARG_COMMAND,
+                ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
+        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.CURRENT_VERSION);
+        map.put(ProtocolRequest.ARG_QUERY, "1235");
+        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
+        request = new ProtocolRequest(map);
+        validator = new ProtocolValidator(request);
+        try {
+            validator.validate();
+        } catch (ProtocolException e) {
+            fail("ProtocolException should not have been thrown");        }
     }
 
     /**
