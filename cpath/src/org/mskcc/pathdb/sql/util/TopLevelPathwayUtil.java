@@ -72,6 +72,7 @@ public class TopLevelPathwayUtil {
                         + new Date(element.getCreationTime()));
                 pathwayList = (ArrayList) element.getValue();
             } else {
+                xdebug.logMsg(this, "Nothing in cache");
                 pathwayList = determineTopLevelPathwayList(taxonomyId, key);
             }
         } else {
@@ -109,9 +110,10 @@ public class TopLevelPathwayUtil {
     }
 
     //  Determine high-level pathways
-    private ArrayList filterCandidateList
-            (ArrayList
-            candidateList) throws DaoException {
+    private ArrayList filterCandidateList (ArrayList candidateList)
+            throws DaoException {
+        xdebug.logMsg(this, "Number of Candidate Pathways:  "
+            + candidateList.size());
         ArrayList topLevelPathwayList = new ArrayList();
         DaoInternalLink daoInternalLink = new DaoInternalLink();
         for (int i = 0; i < candidateList.size(); i++) {
