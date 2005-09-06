@@ -38,12 +38,18 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
+import org.mskcc.pathdb.sql.util.TopLevelPathwayUtil;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.EhCache;
+import org.mskcc.pathdb.util.cache.AutoPopulateCache;
+import org.mskcc.pathdb.xdebug.XDebug;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import java.util.Date;
 
 /**
  * CPath Servlet.
@@ -57,6 +63,14 @@ public final class CPathServlet extends ActionServlet {
      */
     public void destroy() {
         super.destroy();
+        try {
+            SchedulerFactory schedFact = new StdSchedulerFactory();
+            Scheduler sched = schedFact.getScheduler();
+            sched.shutdown();
+        } catch (SchedulerException e) {
+            System.err.println("Error Stopping Quartz Scheduler:  "
+                    + e.getMessage());
+        }
     }
 
     /**
@@ -110,10 +124,46 @@ public final class CPathServlet extends ActionServlet {
         String dir = context.getRealPath("WEB-INF/"
                 + LuceneConfig.INDEX_DIR_PREFIX);
         manager.setProperty(LuceneConfig.PROPERTY_LUCENE_DIR, dir);
+
+        //  Init the Global Cache
+        initGlobalCache();
+
+        //  Start Quartz Scheduler
+        initQuartzScheduler();
+    }
+
+    /**
+     * Initializes the Quartz Scheduler.
+     */
+    private void initQuartzScheduler() {
+        try {
+            Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
+            JobDetail jobDetail = new JobDetail ("autoPopulateCache",
+                    Scheduler.DEFAULT_GROUP, AutoPopulateCache.class);
+
+            //  Currently set to run every 60 minutes
+            SimpleTrigger trigger = new SimpleTrigger ("cPathTrigger",
+                    Scheduler.DEFAULT_GROUP, SimpleTrigger.REPEAT_INDEFINITELY,
+                    60L * 60L * 1000L);
+            sched.scheduleJob(jobDetail, trigger);
+            sched.start();
+            System.err.println("Starting Quartz Scheduler:  [OK]");
+        } catch (SchedulerException e) {
+            System.err.println("Error Starting Quartz Scheduler:  "
+                    + e.getMessage());
+        }
+    }
+
+    /**
+     * Initializes the Global Cache.
+     */
+    private void initGlobalCache() {
         try {
             EhCache.initCache();
-        } catch (CacheException e) {
-            System.err.println("Error Initializing Cache:  " + e.getMessage());
+            System.err.println("Initializing Cache:  [OK]");
+        } catch (Exception e) {
+            System.err.println("Error Initializing/Prepopulating Cache:  "
+                    + e.getMessage());
         }
     }
 
@@ -137,5 +187,4 @@ public final class CPathServlet extends ActionServlet {
             System.err.println("DaoException:  " + e.toString());
         }
     }
-
 }
