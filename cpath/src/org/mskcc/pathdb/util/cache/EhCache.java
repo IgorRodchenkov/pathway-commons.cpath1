@@ -77,9 +77,9 @@ public class EhCache {
     private static int SHORT_TERM_TIME_TO_LIVE = 30 * 60;
 
     /**
-     * Currently Set to 24 hours.
+     * Currently Set to 2 hours.
      */
-    private static int LONG_TERM_TIME_TO_LIVE = 24 * 60 * 60;
+    private static int LONG_TERM_TIME_TO_LIVE = 2 * 60 * 60;
 
 
     /**
