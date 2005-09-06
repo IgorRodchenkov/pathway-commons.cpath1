@@ -68,7 +68,7 @@ public class AdminResetGlobalCache extends AdminBaseAction {
         cache.resetCache();
 
         CacheManager manager = CacheManager.create();
-        Cache ehCache = manager.getCache(EhCache.GLOBAL_CACHE_NAME);
+        Cache ehCache = manager.getCache(EhCache.LONG_TERM_CACHE);
         ehCache.removeAll();
 
         this.setUserMessage(request, "Global Cache has been reset.");
