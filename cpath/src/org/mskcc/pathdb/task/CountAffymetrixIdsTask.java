@@ -180,11 +180,14 @@ public class CountAffymetrixIdsTask extends Task {
             numEntitiesWithoutXrefs++;
             recordEmptyEntity (record);
         } else {
+//            System.out.println("Record:  " + record.getId());
             for (int i = 0; i < externalLinkList.size(); i++) {
                 ExternalLinkRecord externalLink = (ExternalLinkRecord)
                         externalLinkList.get(i);
                 ExternalDatabaseRecord externalDb =
                         externalLink.getExternalDatabase();
+//                System.out.println("---  " + externalDb.getName()
+//                    + ":  " + externalLink.getLinkedToId());
                 incrementMapCounter(externalDb);
             }
         }
