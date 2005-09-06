@@ -41,9 +41,14 @@ import net.sf.ehcache.CacheManager;
 public class EhCache {
 
     /**
-     * Name of Global Cache.
+     * Name of Long-term Cache.
      */
-    public static final String GLOBAL_CACHE_NAME = "global_cache";
+    public static final String LONG_TERM_CACHE = "long_term_cache";
+
+    /**
+     * Name of Short-term Cache.
+     */
+    public static final String SHORT_TERM_CACHE = "short_term_cache";
 
     /**
      * Key for Pathway List.
@@ -62,19 +67,38 @@ public class EhCache {
     public static final String KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES
             = "KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES";
 
+    private static int MAX_ELEMENTS_IN_MEMORY = 1000;
+    private static boolean OVERFLOW_TO_DISK = false;
+    private static boolean ETERNAL = false;
+
+    /**
+     * Currently Set to 30 minutes.
+     */
+    private static int SHORT_TERM_TIME_TO_LIVE = 30 * 60;
+
+    /**
+     * Currently Set to 24 hours.
+     */
+    private static int LONG_TERM_TIME_TO_LIVE = 24 * 60 * 60;
+
+
     /**
      * Initializes the EhCache.
      *
      * @throws CacheException Error Initializing Cache.
      */
     public static void initCache() throws CacheException {
-        //Create a CacheManager using defaults
+        //  Create a CacheManager using defaults
         CacheManager manager = CacheManager.create();
 
-        //Create a Cache specifying its configuration.
-        Cache testCache = new Cache(EhCache.GLOBAL_CACHE_NAME,
-                1000, false, false, 1800, 1800,
-                false, 120);
-        manager.addCache(testCache);
+        //  Create Long and Short Term Caches
+        Cache shortTermCache = new Cache(EhCache.SHORT_TERM_CACHE,
+                MAX_ELEMENTS_IN_MEMORY, OVERFLOW_TO_DISK, ETERNAL,
+                SHORT_TERM_TIME_TO_LIVE, SHORT_TERM_TIME_TO_LIVE);
+        Cache longTermCache = new Cache(EhCache.LONG_TERM_CACHE,
+                MAX_ELEMENTS_IN_MEMORY, OVERFLOW_TO_DISK, ETERNAL,
+                LONG_TERM_TIME_TO_LIVE, LONG_TERM_TIME_TO_LIVE);
+        manager.addCache(shortTermCache);
+        manager.addCache(longTermCache);
     }
 }
