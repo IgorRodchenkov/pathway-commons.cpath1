@@ -34,12 +34,12 @@ import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.DbReferenceType;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.dataservices.schemas.psi.XrefType;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.io.StringReader;
 import java.text.DecimalFormat;
@@ -48,20 +48,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * Given a TaxonomyId, this class locates all physical entity records
+ * Given a TaxonomyId, this class locates all proteins records
  * for the specified organism, and calculates how many of these records have
  * Affymetrix identifiers.
  *
  * @author Ethan Cerami.
  */
 public class CountAffymetrixIdsTask extends Task {
-    private static final String AFFYMETRIX_NAME = "Affymetrix";
+    private static final String AFFYMETRIX_NAME = "AFFYMETRIX";
     private int taxonomyId;
     private int affyCount = 0;
     private int totalNumRecords;
     private HashMap dbMap;
-    private int numProteinsWithoutXrefs;
-    private ArrayList proteinsWithOutRefs = new ArrayList();
+    private int numEntitiesWithoutXrefs;
+    private ArrayList entitiesWithOutXRefs = new ArrayList();
 
     /**
      * Constructor.
@@ -78,7 +78,7 @@ public class CountAffymetrixIdsTask extends Task {
                 + " -->  NCBI Taxonomy ID:  " + taxonomyId);
         this.taxonomyId = taxonomyId;
         this.execute();
-        pMonitor.setCurrentMessage("\nTotal Number of Records "
+        pMonitor.setCurrentMessage("\nTotal Number of Proteins "
                 + "for NCBI Taxonomy ID " + taxonomyId + ":  "
                 + this.totalNumRecords);
 
@@ -101,14 +101,14 @@ public class CountAffymetrixIdsTask extends Task {
                 System.out.println(dbName + ":  " + counter);
             }
         }
-        pMonitor.setCurrentMessage("\nTotal Number of Proteins that have no "
-                + "external database identifiers:  " + numProteinsWithoutXrefs);
+        pMonitor.setCurrentMessage("\nTotal Number of proteins that have no "
+                + "external database identifiers:  " + numEntitiesWithoutXrefs);
         pMonitor.setCurrentMessage("\nThe following proteins have no "
                 + "external database identifiers:  ");
-        for (int i = 0; i < proteinsWithOutRefs.size(); i++) {
-            ProteinInteractorType protein =
-                    (ProteinInteractorType) proteinsWithOutRefs.get(i);
-            pMonitor.setCurrentMessage(protein.getNames().getShortLabel());
+        for (int i = 0; i < entitiesWithOutXRefs.size(); i++) {
+            CPathRecord record = (CPathRecord) entitiesWithOutXRefs.get(i);
+            pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
+                + record.getId() + "]");
         }
     }
 
@@ -145,7 +145,7 @@ public class CountAffymetrixIdsTask extends Task {
         ArrayList records = dao.getRecordByTaxonomyID
                 (CPathRecordType.PHYSICAL_ENTITY, taxonomyId);
 
-        this.totalNumRecords = records.size();
+        this.totalNumRecords = 0;
         pMonitor.setMaxValue(records.size());
         pMonitor.setCurValue(1);
 
@@ -154,70 +154,54 @@ public class CountAffymetrixIdsTask extends Task {
             ConsoleUtil.showProgress(pMonitor);
             CPathRecord record = (CPathRecord) records.get(i);
             String xmlContent = record.getXmlContent();
-            if (xmlContent.toLowerCase().indexOf("affymetrix") > -1) {
-                affyCount++;
-            } else {
-                trackOtherIds(record, dbMap);
+
+            XmlRecordType xmlType = record.getXmlType();
+            String specificType = record.getSpecificType();
+            if (xmlType.equals(XmlRecordType.PSI_MI)
+                || xmlType.equals(XmlRecordType.BIO_PAX)
+                && specificType.equals(BioPaxConstants.PROTEIN)) {
+                totalNumRecords++;
+                if (xmlContent.toUpperCase().indexOf(AFFYMETRIX_NAME) > -1) {
+                    affyCount++;
+                } else {
+                    trackOtherIds(record);
+                }
             }
             pMonitor.incrementCurValue();
         }
     }
 
-    private void trackOtherIds(CPathRecord record, HashMap dbMap)
+    private void trackOtherIds(CPathRecord record)
             throws DaoException {
-        //  Ignore BioPAX Records for Now.
-        if (record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
-            return;
-        }
-        StringReader reader = new StringReader(record.getXmlContent());
-        try {
-            ProteinInteractorType protein =
-                    ProteinInteractorType.unmarshalProteinInteractorType
-                    (reader);
-            XrefType xref = protein.getXref();
-            if (xref != null) {
-                DbReferenceType primaryRef = xref.getPrimaryRef();
-                if (primaryRef != null) {
-                    incrementMapCounter(primaryRef, dbMap);
-                    for (int i = 0; i < xref.getSecondaryRefCount(); i++) {
-                        DbReferenceType secondaryRef = xref.getSecondaryRef(i);
-                        incrementMapCounter(secondaryRef, dbMap);
-                    }
-                }
-                if (primaryRef == null && xref.getSecondaryRefCount() == 0) {
-                    recordEmptyProtein(protein);
-                    numProteinsWithoutXrefs++;
-                }
-            } else {
-                recordEmptyProtein(protein);
-                numProteinsWithoutXrefs++;
-            }
-        } catch (ValidationException e) {
-            System.err.println("Failed while processing XML:  "
-                    + record.getXmlContent());
-            throw new DaoException(e);
-        } catch (MarshalException e) {
-            System.err.println("Failed while processing XML:  "
-                    + record.getXmlContent());
-            throw new DaoException(e);
-        }
-    }
-
-    private void recordEmptyProtein(ProteinInteractorType protein) {
-        proteinsWithOutRefs.add(protein);
-    }
-
-    private void incrementMapCounter(DbReferenceType dbRef, HashMap dbMap) {
-        String db = dbRef.getDb();
-        if (db.equals("uniprot")) {
-            System.out.println("uniprot: " + dbRef.getId());
-        }
-        if (dbMap.containsKey(db)) {
-            Integer counter = (Integer) dbMap.get(db);
-            counter = new Integer(counter.intValue() + 1);
-            dbMap.put(db, counter);
+        DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
+        ArrayList externalLinkList = daoExternalLinker.getRecordsByCPathId
+                (record.getId());
+        if (externalLinkList.size() == 0) {
+            numEntitiesWithoutXrefs++;
+            recordEmptyEntity (record);
         } else {
-            dbMap.put(db, new Integer(1));
+            for (int i = 0; i < externalLinkList.size(); i++) {
+                ExternalLinkRecord externalLink = (ExternalLinkRecord)
+                        externalLinkList.get(i);
+                ExternalDatabaseRecord externalDb =
+                        externalLink.getExternalDatabase();
+                incrementMapCounter(externalDb);
+            }
+        }
+    }
+
+    private void recordEmptyEntity (CPathRecord record) {
+        entitiesWithOutXRefs.add(record);
+    }
+
+    private void incrementMapCounter(ExternalDatabaseRecord externalDb) {
+        String key = externalDb.getName();
+        if (dbMap.containsKey(key)) {
+            Integer counter = (Integer) dbMap.get(key);
+            counter = new Integer(counter.intValue() + 1);
+            dbMap.put(key, counter);
+        } else {
+            dbMap.put(key, new Integer(1));
         }
     }
 }
