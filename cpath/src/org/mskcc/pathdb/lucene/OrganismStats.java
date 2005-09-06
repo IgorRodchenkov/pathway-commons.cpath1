@@ -64,7 +64,7 @@ public class OrganismStats {
     public ArrayList getOrganismsSortedByName() throws DaoException,
             QueryException, IOException, CacheException {
         CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.GLOBAL_CACHE_NAME);
+        Cache cache = manager.getCache(EhCache.LONG_TERM_CACHE);
         Element element = cache.get
                 (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME);
         if (element != null) {
@@ -88,7 +88,7 @@ public class OrganismStats {
     public ArrayList getOrganismsSortedByNumInteractions() throws DaoException,
             QueryException, IOException, CacheException {
         CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.GLOBAL_CACHE_NAME);
+        Cache cache = manager.getCache(EhCache.LONG_TERM_CACHE);
         Element element = cache.get
                 (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES);
         if (element != null) {
@@ -111,7 +111,7 @@ public class OrganismStats {
     public void resetStats() throws DaoException, IOException,
             QueryException, CacheException {
         CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.GLOBAL_CACHE_NAME);
+        Cache cache = manager.getCache(EhCache.LONG_TERM_CACHE);
         this.lookUpOrganisms(cache, 0);
     }
 
