@@ -29,19 +29,13 @@
  **/
 package org.mskcc.pathdb.task;
 
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
-import org.mskcc.dataservices.schemas.psi.DbReferenceType;
-import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
-import org.mskcc.dataservices.schemas.psi.XrefType;
 import org.mskcc.pathdb.model.*;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
-import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,7 +102,7 @@ public class CountAffymetrixIdsTask extends Task {
         for (int i = 0; i < entitiesWithOutXRefs.size(); i++) {
             CPathRecord record = (CPathRecord) entitiesWithOutXRefs.get(i);
             pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
-                + record.getId() + "]");
+                    + record.getId() + "]");
         }
     }
 
@@ -158,8 +152,8 @@ public class CountAffymetrixIdsTask extends Task {
             XmlRecordType xmlType = record.getXmlType();
             String specificType = record.getSpecificType();
             if (xmlType.equals(XmlRecordType.PSI_MI)
-                || xmlType.equals(XmlRecordType.BIO_PAX)
-                && specificType.equals(BioPaxConstants.PROTEIN)) {
+                    || xmlType.equals(XmlRecordType.BIO_PAX)
+                    && specificType.equals(BioPaxConstants.PROTEIN)) {
                 totalNumRecords++;
                 if (xmlContent.toUpperCase().indexOf(AFFYMETRIX_NAME) > -1) {
                     affyCount++;
@@ -178,7 +172,7 @@ public class CountAffymetrixIdsTask extends Task {
                 (record.getId());
         if (externalLinkList.size() == 0) {
             numEntitiesWithoutXrefs++;
-            recordEmptyEntity (record);
+            recordEmptyEntity(record);
         } else {
 //            System.out.println("Record:  " + record.getId());
             for (int i = 0; i < externalLinkList.size(); i++) {
@@ -193,7 +187,7 @@ public class CountAffymetrixIdsTask extends Task {
         }
     }
 
-    private void recordEmptyEntity (CPathRecord record) {
+    private void recordEmptyEntity(CPathRecord record) {
         entitiesWithOutXRefs.add(record);
     }
 

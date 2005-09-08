@@ -84,7 +84,7 @@ public class ParseAffymetrixFileTask extends Task {
             String firstLine = buf.readLine();
             columnIndex = determineIdColumn(firstLine);
             pMonitor.setCurrentMessage("Column match found an column number:  "
-                + columnIndex);
+                    + columnIndex);
             extractIds(buf, columnIndex);
             pMonitor.setCurrentMessage("Mapping File is now complete:  "
                     + outFile);

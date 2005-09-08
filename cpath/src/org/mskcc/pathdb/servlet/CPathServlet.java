@@ -29,7 +29,6 @@
  **/
 package org.mskcc.pathdb.servlet;
 
-import net.sf.ehcache.CacheException;
 import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
@@ -38,18 +37,15 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
-import org.mskcc.pathdb.sql.util.TopLevelPathwayUtil;
 import org.mskcc.pathdb.util.CPathConstants;
-import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.util.cache.AutoPopulateCache;
-import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.util.cache.EhCache;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import java.util.Date;
 
 /**
  * CPath Servlet.
@@ -138,11 +134,11 @@ public final class CPathServlet extends ActionServlet {
     private void initQuartzScheduler() {
         try {
             Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
-            JobDetail jobDetail = new JobDetail ("autoPopulateCache",
+            JobDetail jobDetail = new JobDetail("autoPopulateCache",
                     Scheduler.DEFAULT_GROUP, AutoPopulateCache.class);
 
             //  Currently set to run every 60 minutes
-            SimpleTrigger trigger = new SimpleTrigger ("cPathTrigger",
+            SimpleTrigger trigger = new SimpleTrigger("cPathTrigger",
                     Scheduler.DEFAULT_GROUP, SimpleTrigger.REPEAT_INDEFINITELY,
                     60L * 60L * 1000L);
             sched.scheduleJob(jobDetail, trigger);

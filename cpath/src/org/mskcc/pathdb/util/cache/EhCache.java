@@ -67,19 +67,19 @@ public class EhCache {
     public static final String KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES
             = "KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES";
 
-    private static int MAX_ELEMENTS_IN_MEMORY = 1000;
-    private static boolean OVERFLOW_TO_DISK = false;
-    private static boolean ETERNAL = false;
+    private static final int MAX_ELEMENTS_IN_MEMORY = 1000;
+    private static final boolean OVERFLOW_TO_DISK = false;
+    private static final boolean ETERNAL = false;
 
     /**
      * Currently Set to 30 minutes.
      */
-    private static int SHORT_TERM_TIME_TO_LIVE = 30 * 60;
+    private static final int SHORT_TERM_TIME_TO_LIVE = 30 * 60;
 
     /**
      * Currently Set to 2 hours.
      */
-    private static int LONG_TERM_TIME_TO_LIVE = 2 * 60 * 60;
+    private static final int LONG_TERM_TIME_TO_LIVE = 2 * 60 * 60;
 
 
     /**

@@ -106,7 +106,7 @@ public class GetTopLevelPathwayListCommand extends Query {
      */
     private void processHtmlRequest(XDebug xdebug) throws CacheException,
             DaoException, IOException {
-        determineTopLevelPathwayList (xdebug);
+        determineTopLevelPathwayList(xdebug);
     }
 
     /**

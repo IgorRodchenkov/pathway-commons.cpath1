@@ -74,7 +74,7 @@ public class ParseAffymetrix {
             File inFile = new File(args[0]);
             File outFile = new File(args[1]);
             StringBuffer columnPrefix = new StringBuffer();
-            for (int i=2; i< args.length; i++) {
+            for (int i = 2; i < args.length; i++) {
                 columnPrefix.append(args[i] + " ");
             }
             ParseAffymetrixFileTask task =
