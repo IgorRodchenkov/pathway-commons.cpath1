@@ -7,6 +7,49 @@
 
   <body>
 
+<section name="Release 0.5 Beta">
+<P>
+<UL>
+    <LI>Second iteration of support for BioPAX data.
+        <UL>
+            <LI>Before saving a new BioPAX pathway, interaction, or
+            physical entity, cPath now makes sure that the entity is not
+            already stored.  Identity is currently determined via
+            Unification XRefs.
+            </LI>
+            <LI>Upon import of new BioPAX entities, cPath now queries the
+            Background Reference subsystem, so that other identifiers, such
+            as Affymetrix IDs are added automatically appended.
+            </LI>
+        </UL>
+    </LI>
+    <LI>Modifications to the Web Services API:
+        <UL>
+            <LI>New command:  get_top_level_pathway_list.  Retrieves a
+            complete list of top-level pathways store in cPath.  A top-level
+            pathway is defined as a pathway that contains other
+            pathways.  For example, the Reactome Apoptosis pathway
+            contains several other pathways, such
+            as:  Extrinsic Pathway for Apoptosis, Intrinsic Pathway for
+            Apoptosis, etc.  The response to this command is a BioPAX
+            XML document.
+            </LI>
+            <LI>New command:  get_record_by_cpath_id.  Retrieves a BioPAX
+            document from cPath.  The response to this command is a BioPAX
+            XML document.
+            </LI>
+            <LI>Note that neither of these commands is documented
+            on the Web Service API Help Page.  We did this because we
+            needed these new commands ASAP, but did not want to spend
+            the time to revisit the web service API in its entirety.
+            In a later phase, we place to revisit the API, and these
+            commands may change.</LI>
+        </UL>
+    </LI>
+</UL>
+</P>
+</section>
+
 <section name="Release 0.4 Beta">
 <P>
 <UL>
