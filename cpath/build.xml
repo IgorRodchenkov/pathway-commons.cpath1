@@ -267,7 +267,7 @@
 	<!-- Target to Load Bootstrap data into MySQL -->
 	<target name="boot" depends="compile" description="Loads Bootstrap data into MySQL.
         Required for running JUnit Tests.">
-		<exec dir="." executable="scripts/boot.pl"/>
+		<exec dir="." executable="scripts/boot.pl" vmlauncher="false"/>
 	</target>
 
 	<target name="test" depends="compile, boot" description="Runs all JUnit Tests">
@@ -276,7 +276,7 @@
         <mkdir  dir="${junit.dir}/reports"/>
 		<junit printsummary="yes" fork="no" haltonfailure="no">
 			<formatter type="xml"/>
-            <sysproperty key="CPATH_HOME" value="/Users/cerami/dev/sander/cpath"/>
+            <sysproperty key="CPATH_HOME" value="${basedir}"/>
             <test name="org.mskcc.pathdb.test.AllTest"
                 haltonfailure="no" todir="${junit.dir}">
                 <formatter type="xml"/>
