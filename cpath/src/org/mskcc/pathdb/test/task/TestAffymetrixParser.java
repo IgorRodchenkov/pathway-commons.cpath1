@@ -49,7 +49,6 @@ public class TestAffymetrixParser extends TestCase {
      */
     public void testParser() throws Exception {
         String outFileName = "testData/affymetrix/AffyId_SampleOutput.txt";
-        String lineSeparator = System.getProperty("line.separator");
         File inFile = new File("testData/affymetrix/HG-U133_Sample.csv");
         File outFile = new File(outFileName);
         ParseAffymetrixFileTask task =
@@ -63,7 +62,7 @@ public class TestAffymetrixParser extends TestCase {
         //  Verify the Output File
         ContentReader reader = new ContentReader();
         String content = reader.retrieveContent(outFileName);
-        String lines[] = content.split(lineSeparator);
+        String lines[] = content.split("\n");
 
         //  Verify First four identifiers.
         assertEquals("Affymetrix\tSwissProt", lines[0]);
