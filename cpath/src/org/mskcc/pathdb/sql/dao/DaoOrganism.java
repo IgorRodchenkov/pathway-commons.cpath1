@@ -116,6 +116,35 @@ public class DaoOrganism {
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
+    }    
+    
+    /**     
+     * @return the number of rows in the organism table, or -1 if 
+     * none are found 
+     * @throws DaoException Error Connecting to Database.
+     */
+    public int countAllOrganisms() throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        ArrayList organisms = new ArrayList();
+        int organismCount = -1;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("select count(*) from organism order by species_name");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                organismCount = rs.getInt(1);
+            }
+            return organismCount;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
     }
 
     /**
