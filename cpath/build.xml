@@ -6,14 +6,14 @@
 <project name="CPath" default="compile" basedir=".">
 	<!-- ==================== File and Directory Names ======================== -->
 
-        <!-- The directory containing the configuration files -->
-        <property name="config.dir" value="config"/>
+    <!-- The directory containing the configuration files -->
+    <property name="config.dir" value="config"/>
 
 	<!-- The lib directory -->
 	<property name="lib.dir" value="lib"/>
 	
 	<!-- Production Directory -->
-        <property name="prod.dir" value="/var/lib/tomcat4/webapps"/>
+    <!-- <property name="prod.dir" value="/var/lib/tomcat4/webapps"/> -->
 
 	<!-- Lucene Directory -->
 	<property name="lucene.dir" value="build/textIndex"/>
@@ -27,10 +27,12 @@
 	<property name="app.name"      value="cpath"/>
   	<property name="app.path"      value="/${app.name}"/>
   	<property name="build.home"    value="${basedir}/build"/>
-  	<property name="dist.home"     value="${basedir}/dist"/>
+  	<property name="dist.home"     value="dist"/>
   	<property name="manager.url"   value="http://localhost:8080/manager"/>
   	<property name="src.home"      value="${basedir}/src"/>
   	<property name="web.home"      value="${basedir}/web"/>
+	<property name="release.home"  value="${basedir}/release"/>
+	
 
 	<!-- ================== Custom Ant Task Definitions ======================= -->
   	<taskdef name="install" classname="org.apache.catalina.ant.InstallTask"/>
@@ -112,15 +114,34 @@
 
   <target name="deploy_war" depends="war"
       description="Deploy WAR to cBIO Production server.">
-    <apply executable="scp">
+<!--     <apply executable="scp">
    	<srcfile/>
         <fileset dir="${dist.home}">
         	<include name="*.war"/>
         </fileset>
         <arg line="cerami@cbio:${prod.dir}"/>
-     </apply>
+     </apply> -->
+  	<exec executable="scp">
+  	    <arg line="${dist.home}/${app.name}.war"/>
+  	  	<arg line="${deploy_location}${app.name}.war"/>
+  	</exec>
   </target>
 
+<!-- Additional deply targets to get rouns some reload issues -->
+	<!-- Used in development to deploy the class files to a live tomcat -->
+	<target name="deploy_classes" depends="compile" description="deploy classes only, to live tomcat">
+		<copy todir="${prod.dir}/${app.name}/WEB-INF/classes">
+			<fileset dir="${build.home}/WEB-INF/classes" />
+		</copy>
+	</target>
+	
+	<!-- Used in development to deploy the web files to a live tomcat -->
+	<target name="deploy_web_content" depends="prepare" description="deploy web content to tomcat">
+		<copy todir="${prod.dir}/${app.name}">
+			<fileset dir="${build.home}"/>
+		</copy>
+	</target>
+	
 <!-- ==================== Install Target ================================== -->
 
 <!--
@@ -307,5 +328,39 @@
 		<replacetoken>maven.site.deploy.method = ssh</replacetoken>
 		<replacevalue>maven.site.deploy.method = fs</replacevalue>
 		</replace>
+	</target>
+
+        <!-- used to create deployment packages -->
+	<target name="release">
+		<mkdir  dir="${release.home}"/>
+		<mkdir  dir="${release.home}/admin"/>	
+		<mkdir  dir="${release.home}/admin/build/WEB-INF/textIndex" />
+		
+		<!-- create admin -->
+		<copy todir="${release.home}/admin/bin">
+			<fileset dir="bin" includes="*.*" excludes="bin/tinymonitor"/>
+		</copy>
+		<copy todir="${release.home}/admin/build/WEB-INF/classes">
+			<fileset dir="build/WEB-INF/classes" includes="**/*"/>
+		</copy>
+		<copy todir="${release.home}/admin/lib/">
+			<fileset dir="lib/" includes="*"/>
+		</copy>
+		<copy todir="${release.home}/admin/dbData">
+			<fileset dir="dbData" includes="*"/>
+		</copy>	
+
+		<tar destFile="${release.home}/cpath_webapp.tar.gz" 
+			basedir="${build.home}"
+			includes="**/*"			
+			compression="gzip"
+			longfile="gnu"/>
+		
+		<tar destFile="${release.home}/cpath_admin.tar.gz" 
+			basedir="${release.home}/admin"
+			includes="**/*"
+			excludes="${release.home}/*.tar.gz"
+			compression="gzip"
+			longfile="gnu"/>
 	</target>
 </project>
