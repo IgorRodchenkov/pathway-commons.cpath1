@@ -246,10 +246,24 @@ public class Admin {
         if (argv.length == 0) {
             displayHelp();
         }
-        Getopt g = new Getopt("admin.pl", argv, "q:o:u:p:f:xdr");
+        
+        PropertyManager manager = PropertyManager.getInstance();
+        
+        Getopt g = new Getopt("admin.pl", argv, "o:u:p:f:h:b:xdr");
         int c;
         while ((c = g.getopt()) != -1) {
             switch (c) {
+                case 'b':   
+                    String database = g.getOptarg();
+                    database = database.replaceFirst("=", "");
+                    manager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE,
+                            database);
+                    break;
+                case 'h':
+                    String hostname = g.getOptarg();
+                    hostname = hostname.replaceFirst("=", "");
+                    manager.setProperty(PropertyManager.DB_LOCATION, hostname);
+                    break;
                 case 'u':
                     userName = g.getOptarg();
                     break;
@@ -288,7 +302,7 @@ public class Admin {
             throw new IllegalArgumentException("You Must Specify a Command");
         }
     }
-
+ 
     /**
      * Verifies that the specified file exists.
      */
@@ -312,15 +326,16 @@ public class Admin {
         if (userName == null && !(command.equals(COMMAND_VALIDATE)
                 || command.equals(COMMAND_QUERY))) {
             System.out.print("Enter Database User Name: ");
-            userName = in.readLine();
-            propertyManager.setProperty(PropertyManager.DB_USER, userName);
+            userName = in.readLine();            
         }
-        if (pwd == null && !(command.equals(COMMAND_VALIDATE)
-                || command.equals(COMMAND_QUERY))) {
+        propertyManager.setProperty(PropertyManager.DB_USER, userName);
+        
+        if (pwd == null) {
             System.out.print("Enter Database Password: ");
-            pwd = in.readLine();
-            propertyManager.setProperty(PropertyManager.DB_PASSWORD, pwd);
+            pwd = in.readLine();            
         }
+        propertyManager.setProperty(PropertyManager.DB_PASSWORD, pwd);
+        
         if (command.equals(COMMAND_PRE_COMPUTE) && fileName == null) {
             System.out.print("Enter Path to Precompute Config File:  ");
             fileName = in.readLine();
@@ -371,6 +386,9 @@ public class Admin {
                 + "Messages/Stack Traces");
         System.out.println("  -u, -u=name     Database User Name");
         System.out.println("  -p, -p=name     Database Password");
+        System.out.println
+               ("  -h, -h=hostname Database Server Name (default: localhost)");
+        System.out.println("  -b, -b=database Database name (default: cpath)");
         System.out.println("  -x              Skips Validation of External "
                 + "References");
         System.out.println("  -o, -o=id       NCBI TaxonomyID");
