@@ -41,6 +41,13 @@ public class CPathConstants {
      */
     public static final String VERSION = "0.5 (Beta)";
 
+    /** db name property */
+    public static final String PROPERTY_MYSQL_DATABASE = "mysql.database_name";
+
+    /** default database name */
+    public static final String DEFAULT_DB_NAME = "cpath";
+
+
     /**
      * Property Name for PSI_SCHEMA_LOCATION
      */
