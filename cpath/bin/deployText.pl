@@ -4,17 +4,15 @@
 
 use strict;
 
-my $tom = "/var/lib/tomcat4/webapps/cpath/WEB-INF/textIndex";
-
-# CD to the cpath tomcat dir
-chdir "$tom" or die "Error:  $!";
+#my $tom = "/var/lib/tomcat4/webapps/cpath/WEB-INF/textIndex";
+my $tom = "C:/programming/Tomcat_4.1/webapps/cpath/WEB-INF/textIndex";
 
 printf "Deleting Current Production Index Files\n";
-system "rm *";
+system "rm $tom/*";
 
 printf "Copying Full Text Index to Tomcat\n";
-system "cp /home/cerami/dev/sander/cpath/build/WEB-INF/textIndex/* .";
+system "cp ../build/WEB-INF/textIndex/*  $tom";
 
 # Set Sticky Bit so that Tomcat can write to this directory
-system "chmod 1777 $tom";
+system "chmod 1777 $tom/*";
 printf "Done.\n";
