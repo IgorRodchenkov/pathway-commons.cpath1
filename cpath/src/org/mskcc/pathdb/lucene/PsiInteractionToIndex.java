@@ -37,6 +37,7 @@ import org.mskcc.pathdb.util.xml.XmlUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Encapsulates a PSI-MI Interaction Record scheduled for indexing in Lucene.
@@ -129,6 +130,12 @@ public class PsiInteractionToIndex implements ItemToIndex {
             throws IOException {
         EntrySet entrySet = (EntrySet) xmlAssembly.getXmlObject();
 
+        boolean furtherIndexing = false;
+        ConfigurableIndexCollector configurableIndexCollector = 
+             ConfigurableIndexCollector.getInstance();
+        
+        furtherIndexing = configurableIndexCollector.enabled();
+        
         //  Index All Interactors and Interactions.
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
@@ -136,6 +143,10 @@ public class PsiInteractionToIndex implements ItemToIndex {
             indexInteractorData(interactorList);
             InteractionList interactionList = entry.getInteractionList();
             indexInteractionData(interactionList);
+            
+            if (furtherIndexing) {
+                indexConfigurableFields(configurableIndexCollector, entry);
+            }
         }
 
         //  Index All Terms -->  Default Field.
@@ -148,6 +159,40 @@ public class PsiInteractionToIndex implements ItemToIndex {
                 Long.toString(cpathId)));
     }
 
+
+    /**
+     * use configuration properties to collect further fields to index
+     * 
+     * @param entry
+     */
+    private void indexConfigurableFields(
+            ConfigurableIndexCollector configurableIndexCollector, 
+            Entry entry) {
+        configurableIndexCollector.setContext(entry);
+
+        ArrayList indexTokenList;
+        String fieldName;
+
+        // run through each configured indexable item
+        while (configurableIndexCollector.next()) {
+            StringBuffer extraTokens = new StringBuffer();
+            indexTokenList = configurableIndexCollector.getIndexTokens();
+            fieldName = configurableIndexCollector.getIndexField();
+
+            // combine the individual tokens
+            for (Iterator iter = indexTokenList.iterator(); iter.hasNext();) {
+                String token = (String) iter.next();
+                appendToken(extraTokens, XmlUtil.normalizeText(token));
+            }
+
+            // add them to the index
+            if (extraTokens.length() > 0) {
+                fields.add(Field.Text(XmlUtil.normalizeText(fieldName),
+                        extraTokens.toString()));
+            }
+        }
+    }
+    
     /**
      * Gets Total Number of Fields to Index.
      *
