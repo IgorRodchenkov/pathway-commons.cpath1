@@ -29,6 +29,10 @@
             <param-name>db_host</param-name>
             <param-value>localhost</param-value>
         </init-param>
+         <init-param>
+            <param-name>db_name</param-name>
+            <param-value>cpath</param-value>
+        </init-param>
         <init-param>
             <param-name>db_user</param-name>
             <param-value>tomcat</param-value>
