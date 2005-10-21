@@ -32,6 +32,7 @@ package org.mskcc.pathdb.sql;
 import org.apache.commons.dbcp.*;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.util.CPathConstants;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -47,6 +48,8 @@ public class JdbcUtil {
     private static final String DB_CPATH = "cpath";
     private static boolean commandLineFlag = false;
     private static Connection commandLineConnection;
+
+    private static final String PROPERTY_MYSQL_DATABASE = "mysql.database_name";
 
     /**
      * Special Setting for Command Line Applications
@@ -101,27 +104,14 @@ public class JdbcUtil {
         String host = manager.getProperty(PropertyManager.DB_LOCATION);
         String userName = manager.getProperty(PropertyManager.DB_USER);
         String password = manager.getProperty(PropertyManager.DB_PASSWORD);
+        String database = manager
+                .getProperty(CPathConstants.PROPERTY_MYSQL_DATABASE);
 
-        //  Note that the zeroDateTimeBehavor value is set to "convertToNull"
-        //  Here is an excerpted exlanation from the MySQL JDBC driver
-        //  documentation:
-
-        //  Datetimes with all-zero components ('0000-00-00 ...') -
-        //  These values can not be represented reliably in Java.
-        //  Connector/J 3.0.x always converted them to NULL when being read
-        //  from a ResultSet.
-
-        //  Connector/J 3.1 throws an exception by default when these values
-        //  are encountered as this is the most correct behavior according to
-        //  the JDBC and SQL standards. This behavior can be modified using
-        //  the 'zeroDateTimeBehavior' configuration property. The allowable
-        //  values are: 'exception' (the default), which throws a SQLException
-        //  with a SQLState of 'S1009', 'convertToNull', which returns NULL
-        //  instead of the date, and 'round', which rounds the date to the
-        // nearest closest value which is '0001-01-01'.
-
+        if (database == null) {
+            database = CPathConstants.DEFAULT_DB_NAME;
+        }
         String url =
-                new String("jdbc:mysql://" + host + "/" + DB_CPATH
+                new String("jdbc:mysql://" + host + "/" + database
                 + "?user=" + userName + "&password=" + password
                 + "&zeroDateTimeBehavior=convertToNull");
 
