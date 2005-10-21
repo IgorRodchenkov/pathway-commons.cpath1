@@ -33,10 +33,9 @@ import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.lucene.LuceneConfig;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
+import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.AutoPopulateCache;
 import org.mskcc.pathdb.util.cache.EhCache;
@@ -111,6 +110,10 @@ public final class CPathServlet extends ActionServlet {
         manager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 psiSchemaUrl);
         manager.setProperty(BaseAction.PROPERTY_WEB_MODE, webMode);
+
+        String dbName = config.getInitParameter("db_name");
+        manager.setProperty(PropertyManager.DB_LOCATION, dbHost);
+        manager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE, dbName);
         verifyDbConnection();
 
         //  Set Location of TextIndexer based on servlet real path.
@@ -149,7 +152,7 @@ public final class CPathServlet extends ActionServlet {
                     + e.getMessage());
         }
     }
-
+ 
     /**
      * Initializes the Global Cache.
      */
@@ -173,9 +176,11 @@ public final class CPathServlet extends ActionServlet {
         try {
             System.err.println("Attempting to retrieve Log Records...");
             adminLogger.getLogRecords();
-            DaoCPath dao = DaoCPath.getInstance();
+            DaoOrganism dao = new DaoOrganism();
             System.err.println("Attempting to retrieve Entity Records...");
-            int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
+            // getNumEntities take a few mins on a large database!
+            // int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
+            dao.countAllOrganisms();
             System.err.println("Database Connection -->  [OK]");
         } catch (DaoException e) {
             System.err.println("****  Fatal Error.  Could not connect to "
