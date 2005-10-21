@@ -66,6 +66,11 @@ public class TestDaoOrganism extends TestCase {
         assertEquals(taxId, organism.getTaxonomyId());
         assertEquals(speciesName, organism.getSpeciesName());
         assertEquals(commonName, organism.getCommonName());
+        
+        // count the organisms
+        int organismCount = dao.countAllOrganisms();
+        assertEquals("Incorrect number of organisms recovered", 1,
+                organismCount);
 
         //  Delete Record
         assertTrue(dao.deleteRecord(taxId));
