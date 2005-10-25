@@ -59,13 +59,11 @@ public class ConfigurableIndexCollector {
 
     private static final String CONFIG_FILENAME = "indexConfig.properties";
 
-    private ArrayList configInfoList = null;
+    private static ArrayList configInfoList = null;
 
     private Iterator infoIterator;
 
     private ConfigInfo currentConfigInfo;
-
-    private static ConfigurableIndexCollector configurableIndexCollector = null;
     
     private JXPathContext context;
 
@@ -80,21 +78,15 @@ public class ConfigurableIndexCollector {
 
     private static final String PROP_FIELD = "field";
 
-    /**
-     * @return a handel to the singleton instance
-     */
-    public static synchronized ConfigurableIndexCollector getInstance() {
-        if (configurableIndexCollector == null) {
-            configurableIndexCollector = new ConfigurableIndexCollector();
-            configurableIndexCollector.initialise();
-        }
-        return configurableIndexCollector;
+ 
+    static {
+        initialise();
     }
     
     /**
      * Static initialiser to setup the properties to be used by all instances
      */
-    public void initialise() {
+    public static void initialise() {
         Properties properties = new Properties();
         configInfoList = new ArrayList();
         String cpathHome = System.getProperty("CPATH_HOME");
@@ -140,7 +132,7 @@ public class ConfigurableIndexCollector {
     /**
      * Configuration details must be loaded before use
      */
-    private ConfigurableIndexCollector() {
+    public ConfigurableIndexCollector() {
     }
 
     /**
@@ -251,7 +243,7 @@ public class ConfigurableIndexCollector {
     /**
      * @return Returns the configInfoList.
      */
-    public ArrayList getConfigInfoList() {
+    public static ArrayList getConfigInfoList() {
         return configInfoList;
     }
 
@@ -259,7 +251,7 @@ public class ConfigurableIndexCollector {
      * @param configInfoList
      *            The configInfoList to set.
      */
-    public void setConfigInfoList(ArrayList configInfoList) {
-        this.configInfoList = configInfoList;
+    public static void setConfigInfoList(ArrayList configInfoList) {
+        ConfigurableIndexCollector.configInfoList = configInfoList;
     }
 }
