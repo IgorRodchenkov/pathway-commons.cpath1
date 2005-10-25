@@ -132,7 +132,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
 
         boolean furtherIndexing = false;
         ConfigurableIndexCollector configurableIndexCollector = 
-             ConfigurableIndexCollector.getInstance();
+             new ConfigurableIndexCollector();;
         
         furtherIndexing = configurableIndexCollector.enabled();
         
