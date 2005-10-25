@@ -55,7 +55,7 @@ public class TestConfigurableIndexCollector extends TestCase {
         //String testFile = "testData/1000.xml";
 
         ConfigurableIndexCollector configurableIndexCollector = 
-             ConfigurableIndexCollector.getInstance();
+            new ConfigurableIndexCollector();
 
         ArrayList configInfoList = new ArrayList();
 
