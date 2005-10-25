@@ -29,10 +29,12 @@
  **/
 package org.mskcc.pathdb.lucene;
 
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.store.Directory;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 
 import java.io.IOException;
@@ -46,6 +48,18 @@ public class LuceneWriter {
     private String dir = LuceneConfig.getLuceneDirectory();
     private Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
     private IndexWriter writer = null;
+    private Logger log = Logger.getLogger(LuceneWriter.class);
+    
+    /**
+     * Constructor
+     * @param dir directory to create index
+     * @param resetFlag If Set to True, Existing Index is deleted!
+     * @throws IOException IO Error.
+     */
+    public LuceneWriter(String dir, boolean resetFlag) throws IOException {
+        this.dir = dir;
+        init(resetFlag);       
+    }
 
     /**
      * Constructor.
@@ -54,6 +68,16 @@ public class LuceneWriter {
      * @throws IOException IO Error.
      */
     public LuceneWriter(boolean resetFlag) throws IOException {
+        init(resetFlag);
+    }
+
+    /**
+     * initialises this object
+     * @param resetFlag If Set to True, Existing Index is deleted!
+     * @throws IOException IO Error.
+     */
+    public void init(boolean resetFlag) throws IOException {
+        log.debug("Createing index on: " + dir);
         writer = new IndexWriter(dir, analyzer, resetFlag);
 
         //  Set CompoundFile to True
@@ -67,7 +91,11 @@ public class LuceneWriter {
         //  Increase the Merge Factor.
         //  Results in faster indexing.  For details, refer to:
         //  http://www.onjava.com/pub/a/onjava/2003/03/05/lucene.html
-        writer.mergeFactor = 1000;
+        writer.mergeFactor = 100;
+        
+        // see recomendation from 
+        // http://wiki.apache.org/jakarta-lucene/PainlessIndexing
+        writer.minMergeDocs = 1000;
     }
 
     /**
@@ -93,6 +121,15 @@ public class LuceneWriter {
     }
 
     /**
+     * add the indexes from the supplied directories to this one.
+     * @param dirs array of directories to be added
+     * @throws IOException IO exception
+     */
+    public void addIndexes(Directory[] dirs)throws IOException {
+        writer.addIndexes(dirs);
+    }
+    
+    /**
      * Optimizes Lucene Index Files.
      * For details:  http://www.onjava.com/pub/a/onjava/2003/03/05/lucene.html.
      *
@@ -109,5 +146,11 @@ public class LuceneWriter {
      */
     public void closeWriter() throws IOException {
         writer.close();
+    }
+    /**
+     * @return Returns the dir.
+     */
+    public String getDirectory() {
+        return dir;
     }
 }
