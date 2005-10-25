@@ -61,7 +61,7 @@ CREATE TABLE `external_db` (
   `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`EXTERNAL_DB_ID`),
   UNIQUE KEY `NAME` (`NAME`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
+) ENGINE=MyISAM CHARSET=latin1 COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
 
 
 #
@@ -77,7 +77,7 @@ CREATE TABLE `external_db_cv` (
   `MASTER_FLAG` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`CV_ID`),
   UNIQUE KEY `CV_TERM` (`CV_TERM`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains controlled vocabulary terms for external databases.' AUTO_INCREMENT=1;
+) ENGINE=MyISAM CHARSET=latin1 COMMENT='Contains controlled vocabulary terms for external databases.' AUTO_INCREMENT=1;
 
 # --------------------------------------------------------
 
@@ -132,7 +132,7 @@ CREATE TABLE `internal_link` (
   `SOURCE_ID` int(11) NOT NULL default '0',
   `TARGET_ID` int(11) NOT NULL default '0',
   PRIMARY KEY  (`INTERNAL_LINK_ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains all Internal cPath Links' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM CHARSET=latin1 COMMENT='Contains all Internal cPath Links' AUTO_INCREMENT=1 ;
 
 #
 # Table structure for table `log`
@@ -217,3 +217,7 @@ CREATE TABLE `background_reference` (
 CREATE TABLE `id_generator` (
   `NEXT_ID` int(11) NOT NULL default '0'
 ) TYPE=MyISAM COMMENT='ID Generator';
+
+Alter table internal_link add INDEX internal_link_source_idx (SOURCE_ID);
+Alter table internal_link add INDEX internal_link_target_idx (TARGET_ID);
+Alter table external_link add INDEX cpath_id_idx (cpath_id); 
