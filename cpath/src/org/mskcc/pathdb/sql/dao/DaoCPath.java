@@ -109,6 +109,12 @@ public class DaoCPath extends ManagedDAO {
             "UPDATE cpath SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
             + "WHERE `CPATH_ID` = ?";
 
+    // get the max cpath id
+    private static final String SELECT_MAX_CPATH_ID_KEY = 
+        "SELECT_MAX_CPATH_ID_KEY";
+    private static final String SELECT_MAX_CPATH_ID = 
+            "SELECT MAX(CPATH_ID) FROM cpath";
+    
     /**
      * Private Constructor (Singleton pattern).
      */
@@ -147,6 +153,7 @@ public class DaoCPath extends ManagedDAO {
         addPreparedStatement(GET_BY_NAME_KEY, GET_BY_NAME);
         addPreparedStatement(DELETE_BY_ID_KEY, DELETE_BY_ID);
         addPreparedStatement(UPDATE_XML_KEY, UPDATE_XML);
+        addPreparedStatement(SELECT_MAX_CPATH_ID_KEY, SELECT_MAX_CPATH_ID);
     }
 
     /**
@@ -392,7 +399,8 @@ public class DaoCPath extends ManagedDAO {
      * @return cPath Record.
      * @throws DaoException Error Retrieving Data.
      */
-    public CPathRecord getRecordById(long cpathId) throws DaoException {
+    public synchronized CPathRecord getRecordById(long cpathId)
+            throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -445,6 +453,38 @@ public class DaoCPath extends ManagedDAO {
         }
     }
 
+    /**
+     * get the highest cpath ID
+     * 
+     * @return the highest cpath ID
+     * @throws DaoException is there are problems accessing the database
+     */
+    public long getMaxCpathID() throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        long maxId = -1;
+        try {
+            
+            con = getConnection();
+            pstmt = getStatement(con, SELECT_MAX_CPATH_ID_KEY);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                maxId = rs.getLong(1);
+            }
+
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            localCloseAll(con, pstmt, rs);
+        }
+        return maxId;
+    }
+    
     /**
      * Deletes cPath Record with the specified CPATH_ID.
      * This will also delete all external links associated with this record.
