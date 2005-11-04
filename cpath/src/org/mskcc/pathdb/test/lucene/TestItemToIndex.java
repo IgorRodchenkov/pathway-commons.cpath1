@@ -34,7 +34,9 @@ import org.apache.lucene.document.Field;
 import org.mskcc.pathdb.lucene.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.CPathRecord;
 
 /**
  * Tests the ItemToIndex factory and classes.
@@ -50,8 +52,10 @@ public class TestItemToIndex extends TestCase {
      */
     public void testPsiRecord() throws Exception {
         XDebug xdebug = new XDebug();
+        DaoCPath dao = DaoCPath.getInstance();
+        CPathRecord record = dao.getRecordById(4);
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (4, 1, xdebug);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
 
         ItemToIndex item = IndexFactory.createItemToIndex(4, assembly);
 
@@ -120,25 +124,30 @@ public class TestItemToIndex extends TestCase {
         XDebug xdebug = new XDebug();
 
         //  Get the Glycolysis Pathway
+        DaoCPath dao = DaoCPath.getInstance();
+        CPathRecord record = dao.getRecordById(5);
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (5, 1, xdebug);
-        ItemToIndex item = IndexFactory.createItemToIndex(5, assembly);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
+        ItemToIndex item = IndexFactory.createItemToIndex(record.getId(),
+                assembly);
 
         //  Validate that this is actually a BioPAX Record
         assertTrue(item instanceof BioPaxToIndex);
 
         //  Validate Number of Fields
         int numFields = item.getNumFields();
-        assertEquals(3, numFields);
+        assertEquals(4, numFields);
 
         Field allField = item.getField(0);
         Field idField = item.getField(1);
-        Field organismField = item.getField(2);
+        Field nameField = item.getField(2);
+        Field organismField = item.getField(3);
 
         //  Validate Individual Fields
         assertTrue(allField.stringValue().startsWith
                 ("This example is meant to provide an illustration of how"));
-        assertTrue(idField.stringValue().equals("5"));
+        assertEquals("5", idField.stringValue());
+        assertEquals ("Glycolysis Pathway glycolysis", nameField.stringValue());
         assertTrue(organismField.stringValue().startsWith
                 ("Escherichia coli 562"));
     }
