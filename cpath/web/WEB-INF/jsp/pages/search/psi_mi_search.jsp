@@ -4,10 +4,10 @@
                  org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.sql.assembly.XmlAssembly"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
-<%@ page errorPage = "JspError.jsp" %>
+<%@ page errorPage = "../JspError.jsp" %>
 
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath::Search Results"); %>
-<jsp:include page="../global/header.jsp" flush="true" />
+<jsp:include page="../../global/header.jsp" flush="true" />
 <%
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
@@ -20,4 +20,4 @@
 <cbio:interactionTable xmlAssembly="<%= xmlAssembly %>"
     interactorList="<%= interactorList %>"
     protocolRequest="<%= protocolRequest %>"/>
-<jsp:include page="../global/footer.jsp" flush="true" />
+<jsp:include page="../../global/footer.jsp" flush="true" />
