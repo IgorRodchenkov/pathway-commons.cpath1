@@ -15,6 +15,11 @@
     </global-forwards>
 
     <action-mappings>
+        <action path="/tree"
+            type="org.mskcc.pathdb.action.Tree">
+            <forward name="success" path="/WEB-INF/jsp/pages/Home.jsp"/>
+        </action>
+
         <!--  Home Page -->
         <action path="/home"
             type="org.mskcc.pathdb.action.HomeAction">
@@ -54,8 +59,8 @@
         <!--  Query / Web Service API -->
         <action path="/webservice"
             type="org.mskcc.pathdb.action.QueryAction">
-            <forward name="psi_mi_only" path="/WEB-INF/jsp/pages/Interactions.jsp"/>
-            <forward name="mixed" path="/WEB-INF/jsp/pages/HitList.jsp"/>
+            <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
+            <forward name="biopax" path="/WEB-INF/jsp/pages/search/biopax_search.jsp"/>
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
         </action>
 
