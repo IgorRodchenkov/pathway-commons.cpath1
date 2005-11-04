@@ -30,8 +30,8 @@
 /*
  * Created 04-Jul-2005
  * @author Iain Keddie
- * @author <BR>$Author: keddie $ (last revision)
- * @version $Revision: 1.1 $
+ * @author <BR>$Author: cerami $ (last revision)
+ * @version $Revision: 1.2 $
  */
 package org.mskcc.pathdb.lucene;
 
@@ -41,6 +41,8 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
@@ -148,19 +150,22 @@ public class RecordIndexer extends Thread {
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(pMonitor);
 
-        // Create XML Assembly Object of Specified Record
-        XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly(record
-                .getId(), 1, new XDebug());
+        int indexMode = IndexRules.indexRecord(record);
 
-        //  Determine which fields to index
-        ItemToIndex item = IndexFactory.createItemToIndex(record.getId(),
-                xmlAssembly);
+        if (indexMode != IndexRules.NO_INDEX) {
+            // Create XML Assembly Object of Specified Record
+            XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly
+                    (record, 1, indexMode, new XDebug());
 
-        // Then, index all fields in Lucene
-        indexWriter.addRecord(item);
+            //  Determine which fields to index
+            ItemToIndex item = IndexFactory.createItemToIndex(record.getId(),
+                    xmlAssembly);
 
-        item = null;
-        xmlAssembly = null;
+            // Then, index all fields in Lucene
+            indexWriter.addRecord(item);
+            item = null;
+            xmlAssembly = null;
+        }
     }
 
     /**
