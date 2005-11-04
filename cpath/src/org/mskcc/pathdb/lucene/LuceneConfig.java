@@ -48,6 +48,11 @@ public class LuceneConfig {
     public static final String FIELD_ALL = "all";
 
     /**
+     * Lucene Field for Storing Entity Name.
+     */
+    public static final String FIELD_NAME = "name";
+
+    /**
      * Lucene Field for Storing Intractor CPath ID.
      */
     public static final String FIELD_INTERACTOR_ID = "interactor_id";
