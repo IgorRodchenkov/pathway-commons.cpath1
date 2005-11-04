@@ -65,41 +65,20 @@ public class XmlAssemblyFactory {
      * Creates an XmlAssembly based on specified cPathId.
      *
      * @param cpathId cPathID must refer to an Interaction record.
-     * @param xmlType XmlRecordType Object.
      * @param numHits Total Number of Hits.
-     * @param xdebug  XDebug Object
-     * @return XmlAssembly object.
-     * @throws AssemblyException Error in Assembly.
-     */
-    public static XmlAssembly createXmlAssembly(long cpathId, XmlRecordType
-            xmlType, int numHits, XDebug xdebug)
-            throws AssemblyException {
-        try {
-            DaoCPath dao = DaoCPath.getInstance();
-            CPathRecord record = dao.getRecordById(cpathId);
-            return createAssemblyInstance(record, xmlType, numHits, XML_FULL,
-                    xdebug);
-        } catch (DaoException e) {
-            throw new AssemblyException(e);
-        }
-    }
-
-    /**
-     * Creates an XmlAssembly based on specified cPathId.
-     *
-     * @param cpathId cPathID must refer to an Interaction record.
-     * @param numHits Total Number of Hits.
+     * @param mode XML_ABBREV or XML_FULL.
      * @param xdebug  XDebug Object
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
     public static XmlAssembly createXmlAssembly(long cpathId, int numHits,
-            XDebug xdebug) throws AssemblyException {
+            int mode, XDebug xdebug) throws AssemblyException {
+        validateModeParameter(mode);
         try {
             DaoCPath dao = DaoCPath.getInstance();
             CPathRecord record = dao.getRecordById(cpathId);
             return createAssemblyInstance(record, record.getXmlType(),
-                    numHits, XML_FULL, xdebug);
+                    numHits, mode, xdebug);
         } catch (DaoException e) {
             throw new AssemblyException(e);
         }
@@ -111,7 +90,7 @@ public class XmlAssemblyFactory {
      * @param cpathIds Each cPathID must refer to an Interaction record.
      * @param xmlType  XmlRecordType Object.
      * @param numHits  Total Number of Hits.
-     * @param mode     Mode must be one of XML_ABBREV, XML_FULL.
+     * @param mode     XML_ABBREV or XML_FULL.
      * @param xdebug   XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
@@ -119,6 +98,7 @@ public class XmlAssemblyFactory {
     public static XmlAssembly createXmlAssembly(long cpathIds[], XmlRecordType
             xmlType, int numHits, int mode, XDebug xdebug)
             throws AssemblyException {
+        validateModeParameter(mode);
         try {
             ArrayList records = new ArrayList();
             DaoCPath dao = DaoCPath.getInstance();
@@ -137,17 +117,17 @@ public class XmlAssemblyFactory {
      * Creates an XmlAssembly based on specified cPathRecord.
      *
      * @param record  CPathRecord Object.
-     * @param xmlType XmlRecordType Object.
      * @param numHits Total Number of Hits.
      * @param xdebug  XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
     public static XmlAssembly createXmlAssembly(CPathRecord record,
-            XmlRecordType xmlType, int numHits, XDebug xdebug)
+            int numHits, int mode, XDebug xdebug)
             throws AssemblyException {
-        return createAssemblyInstance(record, xmlType, numHits, XML_FULL,
-                xdebug);
+        validateModeParameter(mode);
+        return createAssemblyInstance(record, record.getXmlType(),
+                numHits, mode, xdebug);
     }
 
     /**
@@ -259,5 +239,12 @@ public class XmlAssemblyFactory {
             }
         }
         return filteredList;
+    }
+
+    private static void validateModeParameter(int mode) {
+        if (mode != XML_ABBREV && mode != XML_FULL) {
+            throw new IllegalArgumentException ("mode parameter must be set" +
+                    "to XML_ABBREV or XML_FULL.");
+        }
     }
 }
