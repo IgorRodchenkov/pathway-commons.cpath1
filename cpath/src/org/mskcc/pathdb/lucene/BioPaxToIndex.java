@@ -35,7 +35,10 @@ import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.xml.XmlStripper;
+import org.mskcc.pathdb.model.CPathRecord;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,7 +59,11 @@ import java.util.List;
  * <TD>FIELD_ALL</TD>
  * </TR>
  * <TR>
- * <TD>Interaction/Pathway CPath ID</TD>
+ * <TD>NAME/SHORT-NAME</TD>
+ * <TD>FIELD_NAME</TD>
+ * </TR>
+ * <TR>
+ * <TD>cPath ID</TD>
  * <TD>FIELD_CPATH_ID</TD>
  * </TR>
  * <TR>
@@ -96,6 +103,25 @@ public class BioPaxToIndex implements ItemToIndex {
         //  Index cPath ID --> FIELD_CPATH_ID
         fields.add(Field.Text(LuceneConfig.FIELD_CPATH_ID,
                 Long.toString(cpathId)));
+
+        //  Index Name/Short Name --> FIELD_NAME
+        Element rdfRoot = (Element) xmlAssembly.getXmlObject();
+        XPath xpath = XPath.newInstance("*/bp:NAME");
+        xpath.addNamespace("bp", BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
+        Element nameElement = (Element) xpath.selectSingleNode(rdfRoot);
+
+        xpath = XPath.newInstance("*/bp:SHORT-NAME");
+        xpath.addNamespace("bp", BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
+        Element shortNameElement = (Element) xpath.selectSingleNode(rdfRoot);
+
+        StringBuffer nameBuf = new StringBuffer();
+        if (nameElement != null) {
+            nameBuf.append(nameElement.getTextNormalize() + " ");
+        }
+        if (shortNameElement != null) {
+            nameBuf.append(shortNameElement.getTextNormalize());
+        }
+        fields.add(Field.Text(LuceneConfig.FIELD_NAME, nameBuf.toString()));
 
         //  Index Organism Data --> FIELD_ORGANISM
         indexOrganismData(xmlAssembly);
