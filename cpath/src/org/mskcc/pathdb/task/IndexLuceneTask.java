@@ -130,13 +130,19 @@ public class IndexLuceneTask extends Task {
         int numPathways     = cpath.getNumEntities(CPathRecordType.PATHWAY);
         int numInteractions = cpath
             .getNumEntities(CPathRecordType.INTERACTION);
-        
-        pMonitor.setCurrentMessage("Indexing all cPath Pathways/Interactions");
+        int numPhysicalEntities = cpath.getNumEntities
+                (CPathRecordType.PHYSICAL_ENTITY);
+        int totalNumEntities = numPathways + numInteractions
+                + numPhysicalEntities;
+
+        pMonitor.setCurrentMessage("Indexing all cPath Records");
         pMonitor.setCurrentMessage("Total Number of Pathways:  "
                 + numPathways);
         pMonitor.setCurrentMessage("Total Number of Interactions:  "
                 + numInteractions);
-        pMonitor.setMaxValue(numPathways + numInteractions);
+        pMonitor.setCurrentMessage("Total Number of Physical Entities:  "
+                + numInteractions);
+        pMonitor.setMaxValue(totalNumEntities);
 
         LuceneWriter indexWriter = new LuceneWriter(true);
         
@@ -171,19 +177,14 @@ public class IndexLuceneTask extends Task {
                         + startId + " to " + endId + ">");
                 pstmt = con.prepareStatement
                         ("select * from cpath WHERE "
-                        + " ( TYPE = ? OR TYPE = ? )"
-                        + " AND CPATH_ID BETWEEN " + startId + " and " + endId
+                        + " CPATH_ID BETWEEN " + startId + " and " + endId
                         + " order by CPATH_ID ");
-                pstmt.setString(1, CPathRecordType.INTERACTION.toString());
-                pstmt.setString(2, CPathRecordType.PATHWAY.toString());
                 rs = pstmt.executeQuery();
 
                 try {
                     while (rs.next()) {                    
-                        //indexRecord(cpath, rs, indexWriter);
                         record = cpath.extractRecord(rs);
                         indexManager.pushRecord(record);
-                        //indexManager.indexOneRecord(record); 
                         indexedRecordCount++;
                     }
                 } catch (Exception e1) {
