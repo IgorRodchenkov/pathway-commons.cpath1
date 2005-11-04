@@ -51,9 +51,8 @@ import java.io.IOException;
  * @author Ethan Cerami
  */
 public class QueryUtil {
-    private static final String START_TAG =
-            "<SPAN STYLE='background-color: yellow'>";
-    private static final String END_TAG = "</SPAN>";
+    private static final String START_TAG = "<B>";
+    private static final String END_TAG = "</B>";
 
 
     /**
