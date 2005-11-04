@@ -77,7 +77,7 @@ public class LuceneQuery {
      */
     public long[] executeSearch() throws QueryException,
             IOException, AssemblyException, ParseException {
-        xdebug.logMsg(this, "Getting Pathways/Interactions via Lucene. "
+        xdebug.logMsg(this, "Searching Full Text Index, "
                 + "Using search term(s):  " + searchTerms);
         LuceneReader indexer = new LuceneReader();
         try {
@@ -115,8 +115,7 @@ public class LuceneQuery {
     private Hits executeLuceneSearch(LuceneReader indexer)
             throws QueryException {
         Hits hits = indexer.executeQuery(searchTerms);
-        xdebug.logMsg(this, "Total Number of Matching Pathways/Interactions "
-                + "Found:  " + hits.length());
+        xdebug.logMsg(this, "Total Number of Hits Found:  " + hits.length());
         this.totalNumHits = hits.length();
         return hits;
     }
