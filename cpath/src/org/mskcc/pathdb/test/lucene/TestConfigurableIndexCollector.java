@@ -117,8 +117,6 @@ public class TestConfigurableIndexCollector extends TestCase {
                     fieldName = configurableIndexCollector.getIndexField();
 
                     tokenCount = indexTokenList.size();
-                    System.out.println("Field: '" + fieldName + "' has "
-                            + tokenCount + " tokens");
                     assertEquals("incorrectfield name", fieldName,
                             expectedFieldNames[expectedIterator]);
                     assertEquals("incorrect number of tokens found",

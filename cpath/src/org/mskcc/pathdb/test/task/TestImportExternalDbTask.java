@@ -67,7 +67,6 @@ public class TestImportExternalDbTask extends TestCase {
             fail("DaoException should have been thrown.");
         } catch (DaoException e) {
             String msg = e.getMessage();
-            System.out.println(msg);
         }
     }
 
