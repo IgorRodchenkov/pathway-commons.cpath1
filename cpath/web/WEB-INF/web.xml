@@ -55,9 +55,9 @@
             </param-value>
         </init-param>
         <init-param>
-            <!-- set to "mixed" or "psi_mi_only" -->
+            <!-- set to "psi_mi" or "biopax" -->
 	    <param-name>web_mode</param-name>
-            <param-value>mixed</param-value>
+            <param-value>biopax</param-value>
         </init-param>
         <load-on-startup/>
     </servlet>
