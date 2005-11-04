@@ -32,6 +32,7 @@ package org.mskcc.pathdb.lucene;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -78,8 +79,15 @@ public class LuceneReader {
             String dir = LuceneConfig.getLuceneDirectory();
             reader = new IndexSearcher(dir);
             Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
-            Query query = QueryParser.parse(term, LuceneConfig.FIELD_ALL,
-                    analyzer);
+
+            //  Create a Multi-Term Query.
+            //  By using a multi-term query, hits within FIELD_NAME
+            //  have more weight than hits within FIELD_ALL.  This results
+            //  in more relevant search results percolating to the top.
+            String fields[] = new String[2];
+            fields[0] = LuceneConfig.FIELD_NAME;
+            fields[1] = LuceneConfig.FIELD_ALL;
+            Query query = MultiFieldQueryParser.parse(term, fields, analyzer);
             Hits hits = reader.search(query);
             return hits;
         } catch (IOException e) {
