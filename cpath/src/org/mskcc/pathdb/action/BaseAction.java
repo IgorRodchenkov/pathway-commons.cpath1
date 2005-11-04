@@ -141,17 +141,22 @@ public abstract class BaseAction extends Action {
     /**
      * Web Mode:  cPath contains only PSI_MI data.
      */
-    public static final String WEB_MODE_PSI_MI_ONLY = "psi_mi_only";
+    public static final String WEB_MODE_PSI_MI = "psi_mi";
 
     /**
-     * Web Mode:  cPath contains a mix of BioPAX/PSI-MI Data
+     * Web Mode:  cPath contains only BioPAX Data
      */
-    public static final String WEB_MODE_MIXED = "mixed";
+    public static final String WEB_MODE_BIOPAX = "biopax";
 
     /**
      * Admin page
      */
     public static final String PAGE_IS_ADMIN = "admin_page";
+
+    /**
+     * Search Results Page Flag.
+     */
+    public static final String PAGE_IS_SEARCH_RESULT = "search_result_page";
 
     /**
      * Page should be automatically updated.

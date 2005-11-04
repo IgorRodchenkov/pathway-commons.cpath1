@@ -157,6 +157,7 @@ public class QueryAction extends BaseAction {
             XDebug xdebug)
             throws ProtocolException, NeedsHelpException {
         request.setAttribute(ATTRIBUTE_PROTOCOL_REQUEST, protocolRequest);
+        request.setAttribute(BaseAction.PAGE_IS_SEARCH_RESULT, BaseAction.YES);
         ProtocolValidator validator =
                 new ProtocolValidator(protocolRequest);
         validator.validate();
@@ -166,11 +167,11 @@ public class QueryAction extends BaseAction {
         xdebug.logMsg(this, "Branching based on web mode:  " + webMode);
 
         try {
-            if (webMode.equals(BaseAction.WEB_MODE_PSI_MI_ONLY)) {
+            if (webMode.equals(BaseAction.WEB_MODE_PSI_MI)) {
                 return processHtmlRequestPsiMode(xdebug, protocolRequest,
                         request, mapping);
             } else {
-                return processHtmlRequestMixedMode(xdebug, protocolRequest,
+                return processHtmlRequestBioPaxMode(xdebug, protocolRequest,
                         request, mapping);
             }
         } catch (MarshalException e) {
@@ -188,21 +189,19 @@ public class QueryAction extends BaseAction {
         }
     }
 
-    private ActionForward processHtmlRequestMixedMode
+    private ActionForward processHtmlRequestBioPaxMode
             (XDebug xdebug, ProtocolRequest protocolRequest,
             HttpServletRequest request, ActionMapping mapping)
             throws QueryException, IOException,
             AssemblyException, ParseException {
-        LuceneQuery search =
-                new LuceneQuery(protocolRequest,
-                        xdebug);
+        LuceneQuery search = new LuceneQuery(protocolRequest, xdebug);
         long cpathIds[] = search.executeSearch();
         request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
         request.setAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS,
                 new Integer(search.getTotalNumHits()));
         request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
                 search.getTextFragments());
-        return mapping.findForward(BaseAction.WEB_MODE_MIXED);
+        return mapping.findForward(BaseAction.WEB_MODE_BIOPAX);
     }
 
     /**
@@ -222,7 +221,7 @@ public class QueryAction extends BaseAction {
         if (interactorList != null) {
             request.setAttribute(ATTRIBUTE_INTERACTOR_SET, interactorList);
         }
-        return mapping.findForward(BaseAction.WEB_MODE_PSI_MI_ONLY);
+        return mapping.findForward(BaseAction.WEB_MODE_PSI_MI);
     }
 
     private ArrayList extractInteractors(XmlAssembly xmlAssembly,
