@@ -34,8 +34,10 @@ import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
 import org.mskcc.pathdb.model.ProteinWithWeight;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.util.ArrayList;
@@ -55,8 +57,12 @@ public class TestPsiInteractorExtractor extends TestCase {
      */
     public void testExtractor() throws Exception {
         XDebug xdebug = new XDebug();
+
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        CPathRecord record = daoCPath.getRecordById(4);
+
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (4, 1, xdebug);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
         EntrySet entrySet = (EntrySet) assembly.getXmlObject();
         PsiInteractorExtractor interactorExtractor = new PsiInteractorExtractor
                 (entrySet, "chaperonin +interaction_type:Genetic",

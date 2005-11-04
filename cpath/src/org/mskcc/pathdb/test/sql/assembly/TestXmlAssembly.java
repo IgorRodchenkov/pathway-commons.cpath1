@@ -35,10 +35,12 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -68,9 +70,11 @@ public class TestXmlAssembly extends TestCase {
                 "http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
 
         //  Assemble Interaction with specified cPath ID (hard-coded value)
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        CPathRecord record = daoCPath.getRecordById(4);
         XDebug xdebug = new XDebug();
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (4, 1, xdebug);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
         String xmlAssembly = assembly.getXmlString();
 
         //  Verify that Assembled XML Record contains both interactors
@@ -111,8 +115,11 @@ public class TestXmlAssembly extends TestCase {
     public void testBioPaxAssemblyFull() throws Exception {
         //  Assemble Interaction with specified cPath ID (hard-coded value)
         XDebug xdebug = new XDebug();
+
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        CPathRecord record = daoCPath.getRecordById(7);
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (7, 1, xdebug);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
         String xmlAssembly = assembly.getXmlString();
         Element rootElement = (Element) assembly.getXmlObject();
         List children = rootElement.getChildren();

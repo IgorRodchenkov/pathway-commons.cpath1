@@ -38,8 +38,10 @@ import org.mskcc.pathdb.lucene.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.util.xml.XmlStripper;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.CPathRecord;
 
 import java.io.IOException;
 
@@ -57,8 +59,10 @@ public class TestIndexer extends TestCase {
      */
     public void testIndexer() throws Exception {
         XDebug xdebug = new XDebug();
+        DaoCPath dao = DaoCPath.getInstance();
+        CPathRecord record = dao.getRecordById(4);
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (4, 1, xdebug);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
         ItemToIndex item = IndexFactory.createItemToIndex(4, assembly);
         LuceneWriter indexWriter = new LuceneWriter(true);
         indexWriter.addRecord(item);

@@ -32,9 +32,11 @@ package org.mskcc.pathdb.test.sql;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.model.XmlCacheRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.util.ArrayList;
@@ -61,8 +63,10 @@ public class TestDaoXmlCache extends TestCase {
         dao.deleteAllRecords();
 
         //  Add a new record, and verify success.
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        CPathRecord record = daoCPath.getRecordById(4);
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (4, 1, xdebug);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
         String originalXml = assembly.getXmlString();
         assembly.setNumHits(100);
 
@@ -77,7 +81,9 @@ public class TestDaoXmlCache extends TestCase {
         assertEquals(XmlRecordType.PSI_MI, assembly.getXmlType());
 
         //  Update the record, and verify success.
-        assembly = XmlAssemblyFactory.createXmlAssembly(4, 1, xdebug);
+        record = daoCPath.getRecordById(4);
+        assembly = XmlAssemblyFactory.createXmlAssembly(record, 1,
+                XmlAssemblyFactory.XML_FULL, xdebug);
         assembly.setNumHits(200);
 
         success = dao.updateXmlAssemblyByKey(HASH_KEY, assembly);
@@ -92,10 +98,10 @@ public class TestDaoXmlCache extends TestCase {
         //  Get all Records (there should only be 1)
         ArrayList records = dao.getAllRecords();
         assertEquals(1, records.size());
-        XmlCacheRecord record = (XmlCacheRecord) records.get(0);
-        assertEquals(URL, record.getUrl());
-        assertEquals(HASH_KEY, record.getMd5());
-        assertEquals(200, record.getNumHits());
+        XmlCacheRecord cacheRecord = (XmlCacheRecord) records.get(0);
+        assertEquals(URL, cacheRecord.getUrl());
+        assertEquals(HASH_KEY, cacheRecord.getMd5());
+        assertEquals(200, cacheRecord.getNumHits());
 
         //  Delete record, and verify success.
         success = dao.deleteRecordByKey(HASH_KEY);
@@ -124,8 +130,10 @@ public class TestDaoXmlCache extends TestCase {
         dao.deleteAllRecords();
 
         //  Get a Sample Assembly
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        CPathRecord record = daoCPath.getRecordById(4);
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (4, 1, xdebug);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
         assembly.setNumHits(100);
 
         //  Add 500 Records

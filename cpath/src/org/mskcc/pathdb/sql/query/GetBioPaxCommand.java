@@ -79,7 +79,7 @@ class GetBioPaxCommand extends Query {
 
         //  Go ahead and create the assembly.
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (id, XmlRecordType.BIO_PAX, 1, xdebug);
+                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
         return assembly;
     }
 }
