@@ -1,4 +1,4 @@
-/* $Id: tigris.css,v 1.3 2004-06-07 19:06:40 cerami Exp $
+/* $Id: tigris.css,v 1.4 2005-11-07 17:20:38 cerami Exp $
 	
 	This file defines basic default formatting for HTML conforming to Tigris application style. To extend or override these rules for your instance, edit inst.css instead of this file. */
 
@@ -14,11 +14,12 @@ body {
 }
 
 .functnbar, .functnbar2 {
-	background-color: #aaa;
+	background-color: #ddd;
+	font-weight:bold;
 }
 
 .functnbar2, .functnbar3 {
-	background-color: #aaa;
+	background-color: #ddd;
 	background-image: url(../images/sw_maj_rond.gif);
 	background-repeat: no-repeat;
 	background-position: bottom left;
@@ -426,11 +427,15 @@ body, .app h3, .app h4, #rightcol h3, pre, code, #apphead h2 small {
 	font-size: small;
 }
 
-small, div#footer, div#login, div.tabs th, div.tabs td, input, select, .paginate, .functnbar, .functnbar2, .functnbar3, #breadcrumbs, .courtesylinks, #rightcol div.help, .colbar, .tasknav, body.docs div#toc, #leftcol, .legend, .bars {
+small, div#footer, div#login, div.tabs th, div.tabs td, input, select, .paginate, #breadcrumbs, .courtesylinks, #rightcol div.help, .colbar, .tasknav, body.docs div#toc, #leftcol, .legend, .bars {
 	font-size: xx-small;
 	voice-family: "\"}\"";
 	voice-family: inherit;
 	font-size: x-small;
+}
+
+.functnbar, .functnbar2, .functnbar3 {
+  font-weigth: bold;
 }
 
 .tabs td, .tabs th, dt, .tasknav .selfref, #login .username, .selection {
