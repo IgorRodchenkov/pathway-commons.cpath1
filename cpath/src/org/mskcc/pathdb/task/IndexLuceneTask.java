@@ -173,8 +173,6 @@ public class IndexLuceneTask extends Task {
 
                 con = JdbcUtil.getCPathConnection();
                 
-                System.out.println("<getting batch of entities from cpathID: "
-                        + startId + " to " + endId + ">");
                 pstmt = con.prepareStatement
                         ("select * from cpath WHERE "
                         + " CPATH_ID BETWEEN " + startId + " and " + endId
