@@ -154,16 +154,16 @@ public class Pager {
         String firstUrl = this.getFirstUrl();
         String previousUrl = this.getPreviousUrl();
         String nextUrl = this.getNextUrl();
-        if (firstUrl != null) {
-            String link = createLink("First Page", firstUrl);
+        if (nextUrl != null) {
+            String link = createLink("Next " + hitsPerPage, nextUrl);
             text.append(bar + link);
         }
         if (previousUrl != null) {
             String link = createLink("Previous " + hitsPerPage, previousUrl);
             text.append(bar + link);
         }
-        if (nextUrl != null) {
-            String link = createLink("Next " + hitsPerPage, nextUrl);
+        if (firstUrl != null) {
+            String link = createLink("First Page", firstUrl);
             text.append(bar + link);
         }
         return text.toString();
