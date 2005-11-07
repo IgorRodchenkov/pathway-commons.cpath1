@@ -67,14 +67,21 @@
 
 <jsp:include page="../global/tabs.jsp" flush="true" />
 
+<!-- Search Box -->
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+    <tr valign="top">
+        <td align=left>
+            <jsp:include page="../global/searchBox.jsp" flush="true" />
+        </td>
+    </tr>
+</table>
+
 <!-- Start Main Table -->
 <table border="0" cellspacing="0" cellpadding="4" width="100%" id="main">
     <tr valign="top">
-
         <jsp:include page="../global/leftColumn.jsp" flush="true" />
-
         <!-- Start Body Column -->
-        <td>
+        <td valign=top>
             <!-- Start Div:  bodycol/projecthome -->
             <div id="bodycol">
                 <!-- Start Div:  app -->
