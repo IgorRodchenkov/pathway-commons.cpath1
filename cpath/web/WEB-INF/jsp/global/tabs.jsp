@@ -38,7 +38,7 @@
     PropertyManager pManager = PropertyManager.getInstance();
     String webMode = pManager.getProperty(BaseAction.PROPERTY_WEB_MODE);
     if (webMode.equals(BaseAction.WEB_MODE_BIOPAX)) {
-        tabNames.add("Browse by Pathway");
+        tabNames.add("Pathways");
         String browsePathwayUrl = "bb_web.do";
         tabUrls.add(browsePathwayUrl);
         if (url.startsWith(browsePathwayUrl)) {
@@ -48,7 +48,7 @@
         }
     }
 
-    tabNames.add("Browse By Organism");
+    tabNames.add("Organisms");
     String browseUrl = "browse.do";
     tabUrls.add(browseUrl);
     if (url.equals(browseUrl)) {
@@ -57,7 +57,7 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    tabNames.add("Database Stats");
+    tabNames.add("Stats");
     String dbStatsUrl = "dbStats.do";
     tabUrls.add(dbStatsUrl);
     if (url.equals(dbStatsUrl)) {
@@ -75,7 +75,7 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    tabNames.add("Web Service API");
+    tabNames.add("Web Service");
     String webServiceUrl = "webservice.do?cmd=help";
     tabUrls.add(webServiceUrl);
     if (url.equals("webservice.do") && searchResultsPage == null) {
@@ -84,7 +84,7 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    tabNames.add("Cytoscape PlugIn");
+    tabNames.add("Cytoscape");
     String cytoscapeUrl = "cytoscape.do";
     tabUrls.add(cytoscapeUrl);
     if (url.equals(cytoscapeUrl)) {
@@ -99,7 +99,7 @@
             || (host != null && host.indexOf("mskcc.org") > -1)
             || (host != null && host.indexOf("localhost") > -1)
             || (host != null && host.indexOf("127.0.0.1") >-1)) {
-        tabNames.add("Administration");
+        tabNames.add("Admin");
         String adminUrl = "adminHome.do";
         tabUrls.add(adminUrl);
         if (url.equals(adminUrl) || isAdmin != null) {
@@ -110,7 +110,7 @@
     }
 
     if (searchResultsPage != null) {
-        tabNames.add("Search Results");
+        tabNames.add("Results");
         tabUrls.add("");
         tabActive.add(Boolean.TRUE);
     }
