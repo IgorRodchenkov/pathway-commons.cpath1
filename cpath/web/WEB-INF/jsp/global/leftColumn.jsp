@@ -14,19 +14,14 @@
 <!-- Start Left Column -->
 <td id="leftcol" width="200">
     <div id="navcolumn">
-
-        <jsp:include page="../global/getInteractionsBox.jsp" flush="true" />
-
         <% if (protocolRequest1 != null && interactorList1 != null) { %>
             <cbio:interactorTable interactorList="<%= interactorList1 %>"
                    protocolRequest="<%= protocolRequest1 %>"/>
         <% } %>
-
         <% if (isAdminPage != null) { %>
         <jsp:include page="../global/adminTasks.jsp" flush="true" />
         <% } else { %>
         <jsp:include page="../global/browse.jsp" flush="true" />
-
         <% if (protocolRequest1 == null) { %>
         <jsp:include page="../global/community.jsp" flush="true" />
         <jsp:include page="../global/docs.jsp" flush="true" />
