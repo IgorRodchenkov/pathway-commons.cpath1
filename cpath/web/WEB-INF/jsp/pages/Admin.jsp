@@ -45,55 +45,55 @@
 	<html:form action="adminUpdateWebUI.do" focus="logo">
 		<table border="0" cellspacing="2" cellpadding="3" width="100%">
 			<tr>
-				<th>Logo</th>
+				<th align="LEFT">Logo</th>
 				<td>
 					<html:text property="logo"/>
 				</td>
 			</tr>
 			<tr>
-				<th>Home Page Title</th>
+				<th align="LEFT">Home Page Title</th>
 				<td>
 					<html:text property="homePageTitle"/>
 				</td>
 			</tr>
 			<tr>
-				<th>Home Page Tag Line</th>
+				<th align="LEFT">Home Page Tag Line</th>
 				<td>
 					<html:text property="homePageTagLine"/>
 				</td>
 			</tr>
 			<tr>
-				<th>Home Page Right Columnt Content</th>
+				<th align="LEFT">Home Page Right Column Content</th>
 				<td>
 					<html:text property="homePageRightColumnContent"/>
 				</td>
 			</tr>
 			<tr>
-				<th>Display Browse by Pathway Tab</th>
+				<th align="LEFT">Display Browse by Pathway Tab</th>
 				<td>
 					<html:checkbox property="displayBrowseByPathwayTab"/>
 				</td>
 			</tr>
 			<tr>
-				<th>Display Browse by Organism Tab</th>
+				<th align="LEFT">Display Browse by Organism Tab</th>
 				<td>
 					<html:checkbox property="displayBrowseByOrganismTab"/>
 				</td>
 			</tr>
 			<tr>
-				<th>FAQ Page Content</th>
+				<th align="LEFT">FAQ Page Content</th>
 				<td>
 					<html:text property="FAQPageContent"/>
 				</td>
 			</tr>
 			<tr>
-				<th>About Page Content</th>
+				<th align="LEFT">About Page Content</th>
 				<td>
 					<html:text property="aboutPageContent"/>
 				</td>
 			</tr>
 			<tr>
-				<th>Home Page Maintenance Tag Line</th>
+				<th align="LEFT">Home Page Maintenance Tag Line</th>
 				<td>
 					<html:text property="homePageMaintenanceTagLine"/>
 				</td>
