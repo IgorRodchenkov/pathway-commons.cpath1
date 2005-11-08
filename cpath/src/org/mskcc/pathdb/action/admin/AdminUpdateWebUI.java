@@ -1,5 +1,5 @@
 //
-// $Id: AdminUpdateWebUI.java,v 1.2 2005-11-08 18:03:16 grossb Exp $
+// $Id: AdminUpdateWebUI.java,v 1.3 2005-11-08 21:09:08 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,7 +38,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.form.WebUIForm;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.dao.DaoWebUI;
 import org.mskcc.pathdb.sql.dao.DaoException;
 
@@ -70,12 +70,12 @@ public class AdminUpdateWebUI extends AdminBaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
 
 		// get our form
-        WebUIForm webUIForm = (WebUIForm) form;
+        WebUIBean webUIBean = (WebUIBean) form;
 
 		// lets do the update
-        if (webUIForm != null){
+        if (webUIBean != null){
 			DaoWebUI dbWebUI = new DaoWebUI();
-			dbWebUI.updateRecord(webUIForm);
+			dbWebUI.updateRecord(webUIBean);
         }
 
 		// outta here

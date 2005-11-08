@@ -1,5 +1,5 @@
 //
-// $Id: DaoWebUI.java,v 1.2 2005-11-08 19:27:50 grossb Exp $
+// $Id: DaoWebUI.java,v 1.3 2005-11-08 21:10:13 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,7 +33,7 @@
 package org.mskcc.pathdb.sql.dao;
 
 // imports
-import org.mskcc.pathdb.form.WebUIForm;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import java.io.IOException;		
 import java.sql.*;
@@ -48,16 +48,16 @@ public class DaoWebUI {
     /**
      * Gets the one and only record.
      *
-     * @return WebUIForm.
+     * @return WebUIBean.
      * @throws DaoException Error Retrieving Data.
      */
-    public WebUIForm getRecord() throws DaoException {
+    public WebUIBean getRecord() throws DaoException {
 
 		// init some local vars
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        WebUIForm webUIForm = null;
+        WebUIBean webUIBean = null;
 		
         try {
 			// perform the query
@@ -67,16 +67,16 @@ public class DaoWebUI {
             rs = pstmt.executeQuery();
 			// set the form object
 			if (rs.next()){
-				webUIForm = new WebUIForm();
-				webUIForm.setLogo(rs.getString("LOGO"));
-				webUIForm.setHomePageTitle(rs.getString("HOME_PAGE_TITLE"));
-				webUIForm.setHomePageTagLine(rs.getString("HOME_PAGE_TAG_LINE"));
-				webUIForm.setHomePageRightColumnContent(rs.getString("HOME_PAGE_RIGHT_COLUMN_CONTENT"));
-				webUIForm.setDisplayBrowseByPathwayTab(rs.getBoolean("DISPLAY_BROWSE_BY_PATHWAY_TAB"));
-				webUIForm.setDisplayBrowseByOrganismTab(rs.getBoolean("DISPLAY_BROWSE_BY_ORGANISM_TAB"));
-				webUIForm.setFAQPageContent(rs.getString("FAQ_PAGE_CONTENT"));
-				webUIForm.setAboutPageContent(rs.getString("ABOUT_PAGE_CONTENT"));
-				webUIForm.setHomePageMaintenanceTagLine(rs.getString("HOME_PAGE_MAINTENANCE_TAG_LINE"));
+				webUIBean = new WebUIBean();
+				webUIBean.setLogo(rs.getString("LOGO"));
+				webUIBean.setHomePageTitle(rs.getString("HOME_PAGE_TITLE"));
+				webUIBean.setHomePageTagLine(rs.getString("HOME_PAGE_TAG_LINE"));
+				webUIBean.setHomePageRightColumnContent(rs.getString("HOME_PAGE_RIGHT_COLUMN_CONTENT"));
+				webUIBean.setDisplayBrowseByPathwayTab(rs.getBoolean("DISPLAY_BROWSE_BY_PATHWAY_TAB"));
+				webUIBean.setDisplayBrowseByOrganismTab(rs.getBoolean("DISPLAY_BROWSE_BY_ORGANISM_TAB"));
+				webUIBean.setFAQPageContent(rs.getString("FAQ_PAGE_CONTENT"));
+				webUIBean.setAboutPageContent(rs.getString("ABOUT_PAGE_CONTENT"));
+				webUIBean.setHomePageMaintenanceTagLine(rs.getString("HOME_PAGE_MAINTENANCE_TAG_LINE"));
 			}
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
@@ -87,17 +87,17 @@ public class DaoWebUI {
         }
 
 		// outta here
-		return webUIForm;
+		return webUIBean;
     }
 
     /**
      * Updates Record Status.
      *
-     * @param form WebUIForm ref.
+     * @param form WebUIBean ref.
      * @return Number of Rows Affected.
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean updateRecord(WebUIForm form)
+    public boolean updateRecord(WebUIBean form)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;

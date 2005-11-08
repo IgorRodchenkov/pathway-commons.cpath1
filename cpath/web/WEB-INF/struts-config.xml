@@ -7,7 +7,7 @@
         <form-bean name="importDataForm"
             type="org.mskcc.pathdb.form.FileUploadForm"/>
         <form-bean name="webUIForm"
-                    type="org.mskcc.pathdb.form.WebUIForm"/>
+                    type="org.mskcc.pathdb.form.WebUIBean"/>
     </form-beans>
     
     <global-forwards>

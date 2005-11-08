@@ -29,7 +29,7 @@
  **/
 package org.mskcc.pathdb.action.admin;
 
-import org.mskcc.pathdb.form.WebUIForm;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.dao.DaoWebUI;
 import org.mskcc.pathdb.sql.dao.DaoException;
 
@@ -69,9 +69,9 @@ public abstract class AdminBaseAction extends BaseAction {
         request.setAttribute(BaseAction.PAGE_IS_ADMIN, "YES");
         checkErrorPage(request, xdebug);
 
-		// populate webUIForm if necessary
+		// populate webUIBean if necessary
 		if (form != null){
-			populateWebUIForm(form, xdebug);
+			populateWebUIBean(form, xdebug);
 		}
 
         return adminExecute(mapping, form, request, response, xdebug);
@@ -157,28 +157,28 @@ public abstract class AdminBaseAction extends BaseAction {
 
      * @throws Exception All Exceptions.
      */
-	private void populateWebUIForm(ActionForm form, XDebug xdebug) throws Exception {
+	private void populateWebUIBean(ActionForm form, XDebug xdebug) throws Exception {
 
 		// cast form
-		WebUIForm webUIForm = (WebUIForm) form;
+		WebUIBean webUIBean = (WebUIBean) form;
 
 		// only retrieve form data if the form is empty
-		if (webUIForm.getLogo() == null){
+		if (webUIBean.getLogo() == null){
 
 			// create dao object
 			DaoWebUI dbWebUI = new DaoWebUI();
-			WebUIForm record = dbWebUI.getRecord();
+			WebUIBean record = dbWebUI.getRecord();
 
 			// set fields
-			webUIForm.setLogo(record.getLogo());
-			webUIForm.setHomePageTitle(record.getHomePageTitle());
-			webUIForm.setHomePageTagLine(record.getHomePageTagLine());
-            webUIForm.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
-            webUIForm.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
-            webUIForm.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
-            webUIForm.setFAQPageContent(record.getFAQPageContent());
-            webUIForm.setAboutPageContent(record.getAboutPageContent());
-            webUIForm.setHomePageMaintenanceTagLine(record.getHomePageMaintenanceTagLine());
+			webUIBean.setLogo(record.getLogo());
+			webUIBean.setHomePageTitle(record.getHomePageTitle());
+			webUIBean.setHomePageTagLine(record.getHomePageTagLine());
+            webUIBean.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
+            webUIBean.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
+            webUIBean.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
+            webUIBean.setFAQPageContent(record.getFAQPageContent());
+            webUIBean.setAboutPageContent(record.getAboutPageContent());
+            webUIBean.setHomePageMaintenanceTagLine(record.getHomePageMaintenanceTagLine());
 		}
 	}
 }
