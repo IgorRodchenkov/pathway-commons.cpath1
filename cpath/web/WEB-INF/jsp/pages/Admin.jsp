@@ -43,7 +43,7 @@
         <h3>Configurable UI Elements</h3>
     </div>
 	<html:form action="adminUpdateWebUI.do" focus="logo">
-		<table border="0" cellspacing="2" cellpadding="3" width="100%">
+		<table border="0" cellspacing="2" cellpadding="3">
 			<tr>
 				<th align="LEFT">Logo</th>
 				<td>
@@ -99,9 +99,7 @@
 				</td>
 			</tr>
 		</table>
-	    <div class="functnbar3">
-    		<input type="submit" value="Update">
-        </div>
+	   	<input type="submit" size=20 value="Update">
 	</html:form>
 
     <div class="h3">
