@@ -44,7 +44,8 @@
     <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 
-<body marginwidth="0" marginheight="0" class="composite">
+<body marginwidth="0" marginheight="0" class="composite"
+  OnLoad="document.searchbox.q.focus();">
 
 <div id="banner">
     <table border="0" cellspacing="0" cellpadding="8" width="100%">
