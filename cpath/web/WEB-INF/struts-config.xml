@@ -6,6 +6,8 @@
     <form-beans>
         <form-bean name="importDataForm"
             type="org.mskcc.pathdb.form.FileUploadForm"/>
+        <form-bean name="webUIForm"
+                    type="org.mskcc.pathdb.form.WebUIForm"/>
     </form-beans>
     
     <global-forwards>
@@ -79,8 +81,12 @@
 
         <!-- Admin Actions -->
         <action path="/adminHome"
-            type="org.mskcc.pathdb.action.admin.AdminHomeAction">
-            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+            type="org.mskcc.pathdb.action.admin.AdminHomeAction"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/Admin.jsp"
+			scope="request"
+			validate="false">
+			    <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
         <action path="/adminRemoveTask"
@@ -124,7 +130,11 @@
         </action>
 
         <action path="/adminWebLogging"
-            type="org.mskcc.pathdb.action.admin.AdminWebLogging">
+            type="org.mskcc.pathdb.action.admin.AdminWebLogging"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/Admin.jsp"
+            scope="request"
+			validate="false">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
@@ -142,6 +152,15 @@
             type="org.mskcc.pathdb.action.admin.AdminImportData"
             name="importDataForm"
             scope="request">
+            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+        </action>
+
+        <action path="/adminUpdateWebUI"
+            type="org.mskcc.pathdb.action.admin.AdminUpdateWebUI"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/Admin.jsp"
+            scope="request"
+			validate="true">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
