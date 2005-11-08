@@ -60,16 +60,16 @@
 
         <!--  Query / Web Service API -->
         <action path="/webservice"
-            type="org.mskcc.pathdb.action.QueryAction">
+            type="org.mskcc.pathdb.action.ExecuteSearch">
             <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
             <forward name="biopax" path="/WEB-INF/jsp/pages/search/biopax_search.jsp"/>
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
         </action>
 
-        <!--  Bare Bones Web -->
-        <action path="/bb_web"
-            type="org.mskcc.pathdb.action.BareBonesWeb">
-            <forward name="record" path="/WEB-INF/jsp/pages/BareBones.jsp"/>
+        <!--  BioPAX Record Page -->
+        <action path="/record"
+            type="org.mskcc.pathdb.action.ShowBioPaxRecord">
+            <forward name="record" path="/WEB-INF/jsp/pages/BioPaxRecord.jsp"/>
             <forward name="pathways" path="/WEB-INF/jsp/pages/PathwayList.jsp"/>
         </action>
 
