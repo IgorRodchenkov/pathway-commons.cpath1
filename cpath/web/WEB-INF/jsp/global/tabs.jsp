@@ -6,7 +6,8 @@
                  org.mskcc.dataservices.util.PropertyManager,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstants,
-                 org.mskcc.pathdb.action.ToggleSearchOptions"%>
+                 org.mskcc.pathdb.action.ToggleSearchOptions,
+                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%
     String url = "";
     String baseAction = (String) request.getAttribute
@@ -35,9 +36,7 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    PropertyManager pManager = PropertyManager.getInstance();
-    String webMode = pManager.getProperty(BaseAction.PROPERTY_WEB_MODE);
-    if (webMode.equals(BaseAction.WEB_MODE_BIOPAX)) {
+    if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
         tabNames.add("Pathways");
         String browsePathwayUrl = "bb_web.do";
         tabUrls.add(browsePathwayUrl);
