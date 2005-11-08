@@ -1,5 +1,5 @@
 //
-// $Id: AdminUpdateWebUI.java,v 1.3 2005-11-08 21:09:08 grossb Exp $
+// $Id: AdminUpdateWebUI.java,v 1.4 2005-11-08 21:27:52 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,8 +41,8 @@ import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.dao.DaoWebUI;
 import org.mskcc.pathdb.sql.dao.DaoException;
-
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,6 +77,9 @@ public class AdminUpdateWebUI extends AdminBaseAction {
 			DaoWebUI dbWebUI = new DaoWebUI();
 			dbWebUI.updateRecord(webUIBean);
         }
+
+		// set webUIBean ref inside CPathUIConfConfig
+		CPathUIConfig.setWebUIBean(webUIBean);
 
 		// outta here
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
