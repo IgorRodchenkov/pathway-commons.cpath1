@@ -1,5 +1,5 @@
 //
-// $Id: AdminUpdateWebUI.java,v 1.1 2005-11-08 16:53:40 grossb Exp $
+// $Id: AdminUpdateWebUI.java,v 1.2 2005-11-08 18:03:16 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,15 +47,13 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
 /**
  * Administrative Action for updating Web UI elements.
  *
  * @author Benjamin Gross
  */
 public class AdminUpdateWebUI extends AdminBaseAction {
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+
     /**
      * Executes Action.
      *
