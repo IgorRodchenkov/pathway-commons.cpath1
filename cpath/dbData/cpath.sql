@@ -237,6 +237,17 @@ CREATE TABLE `web_ui` (
 `HOME_PAGE_MAINTENANCE_TAG_LINE` TINYTEXT NOT NULL
 ) TYPE = MYISAM COMMENT = 'Contains configurable Web UI Elements';
 
+INSERT INTO `web_ui` ( `LOGO` , `HOME_PAGE_TITLE` ,
+`HOME_PAGE_TAG_LINE` , `HOME_PAGE_RIGHT_COLUMN_CONTENT` ,
+`DISPLAY_BROWSE_BY_PATHWAY_TAB` , `DISPLAY_BROWSE_BY_ORGANISM_TAB` ,
+`FAQ_PAGE_CONTENT` , `ABOUT_PAGE_CONTENT` ,
+`HOME_PAGE_MAINTENANCE_TAG_LINE` )
+VALUES (
+'Logo', 'Home Page Title', 'Home Page Tag Line', 'Home Page Right
+Column Content', '1', '1', 'Faq Page Content', 'About Page Content',
+'Home Page Maintenance Tag Line'
+);
+
 Alter table internal_link add INDEX internal_link_source_idx (SOURCE_ID);
 Alter table internal_link add INDEX internal_link_target_idx (TARGET_ID);
 Alter table external_link add INDEX cpath_id_idx (cpath_id); 
