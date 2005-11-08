@@ -1,5 +1,5 @@
 <%@ page import="java.net.URL,
-                 org.mskcc.pathdb.action.QueryAction,
+                 org.mskcc.pathdb.action.ExecuteSearch,
                  org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.util.CPathConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
