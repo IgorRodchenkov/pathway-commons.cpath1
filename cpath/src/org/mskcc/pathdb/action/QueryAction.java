@@ -46,6 +46,7 @@ import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -167,7 +168,7 @@ public class QueryAction extends BaseAction {
         xdebug.logMsg(this, "Branching based on web mode:  " + webMode);
 
         try {
-            if (webMode.equals(BaseAction.WEB_MODE_PSI_MI)) {
+            if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
                 return processHtmlRequestPsiMode(xdebug, protocolRequest,
                         request, mapping);
             } else {
@@ -201,7 +202,7 @@ public class QueryAction extends BaseAction {
                 new Integer(search.getTotalNumHits()));
         request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
                 search.getTextFragments());
-        return mapping.findForward(BaseAction.WEB_MODE_BIOPAX);
+        return mapping.findForward(CPathUIConfig.BIOPAX);
     }
 
     /**
@@ -221,7 +222,7 @@ public class QueryAction extends BaseAction {
         if (interactorList != null) {
             request.setAttribute(ATTRIBUTE_INTERACTOR_SET, interactorList);
         }
-        return mapping.findForward(BaseAction.WEB_MODE_PSI_MI);
+        return mapping.findForward(CPathUIConfig.PSI_MI);
     }
 
     private ArrayList extractInteractors(XmlAssembly xmlAssembly,

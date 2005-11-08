@@ -139,16 +139,6 @@ public abstract class BaseAction extends Action {
     public static final String PROPERTY_WEB_MODE = "web_mode";
 
     /**
-     * Web Mode:  cPath contains only PSI_MI data.
-     */
-    public static final String WEB_MODE_PSI_MI = "psi_mi";
-
-    /**
-     * Web Mode:  cPath contains only BioPAX Data
-     */
-    public static final String WEB_MODE_BIOPAX = "biopax";
-
-    /**
      * Admin page
      */
     public static final String PAGE_IS_ADMIN = "admin_page";

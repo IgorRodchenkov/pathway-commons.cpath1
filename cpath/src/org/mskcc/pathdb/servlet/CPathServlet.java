@@ -111,6 +111,8 @@ public final class CPathServlet extends ActionServlet {
                 psiSchemaUrl);
         manager.setProperty(BaseAction.PROPERTY_WEB_MODE, webMode);
 
+        storeWebMode(webMode);
+
         String dbName = config.getInitParameter("db_name");
         manager.setProperty(PropertyManager.DB_LOCATION, dbHost);
         manager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE, dbName);
@@ -129,6 +131,24 @@ public final class CPathServlet extends ActionServlet {
 
         //  Start Quartz Scheduler
         initQuartzScheduler();
+    }
+
+    /**
+     * Stores the Web Mode in CPathUIConfig.
+     * @param webMode web mode String.
+     */
+    private void storeWebMode(String webMode) {
+        int mode;
+        if (webMode.equals (CPathUIConfig.PSI_MI)) {
+            mode = CPathUIConfig.WEB_MODE_PSI_MI;
+        } else if (webMode.equals(CPathUIConfig.BIOPAX)){
+            mode = CPathUIConfig.WEB_MODE_BIOPAX;
+        } else {
+            System.err.println("Web mode not recognized:  " + webMode
+                + ".  Defaulting to:  " + CPathUIConfig.BIOPAX);
+            mode = CPathUIConfig.WEB_MODE_BIOPAX;
+        }
+        CPathUIConfig.setWebMode(mode);
     }
 
     /**
