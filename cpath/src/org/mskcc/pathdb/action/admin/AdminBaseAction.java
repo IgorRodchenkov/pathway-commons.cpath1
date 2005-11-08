@@ -172,6 +172,13 @@ public abstract class AdminBaseAction extends BaseAction {
 			// set fields
 			webUIForm.setLogo(record.getLogo());
 			webUIForm.setHomePageTitle(record.getHomePageTitle());
+			webUIForm.setHomePageTagLine(record.getHomePageTagLine());
+            webUIForm.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
+            webUIForm.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
+            webUIForm.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
+            webUIForm.setFAQPageContent(record.getFAQPageContent());
+            webUIForm.setAboutPageContent(record.getAboutPageContent());
+            webUIForm.setHomePageMaintenanceTagLine(record.getHomePageMaintenanceTagLine());
 		}
 	}
 }
