@@ -11,15 +11,27 @@
 <%
     String searchTerm = new String("");
     String taxId = new String("");
+    String command = new String ("");
     ProtocolRequest pRequest = (ProtocolRequest) request.getAttribute
             (BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
     if (pRequest != null) {
         if (pRequest.getQuery() != null) {
             searchTerm = pRequest.getQuery();
         }
+        command = pRequest.getCommand();
         taxId = pRequest.getOrganism();
     }
+    Boolean searchOptionsFlag = (Boolean)
+        session.getAttribute(ToggleSearchOptions.SESSION_SEARCH_OPTIONS_FLAG);
 %>
+
+<SCRIPT language="JavaScript">
+function toggleSearchOptions()
+{
+  document.searchbox.action="toggleSearchOptions.do";
+  return document.searchbox.submit();
+}
+</SCRIPT>
 
 <div id="search" class="searchbox">
     <FORM name="searchbox" ACTION="webservice.do" METHOD="GET">
@@ -28,17 +40,14 @@
         <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
         <NOBR>
         <INPUT TYPE="TEXT" name="<%= ProtocolRequest.ARG_QUERY %>"
-            SIZE="15" VALUE='<%= searchTerm %>'/>
+            SIZE="25" VALUE='<%= searchTerm %>'/>
 
         <INPUT TYPE="SUBMIT" value="Search"/>
         </NOBR>
         <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_FORMAT %>"
             value="<%= ProtocolConstants.FORMAT_HTML %>"/>
-        <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_COMMAND %>"
-            value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
 
         <% try { %>
-        &nbsp;Filter by Organism:
         &nbsp;
         <SELECT NAME="<%= ProtocolRequest.ARG_ORGANISM %>">
             <OPTION VALUE="">All Organisms</OPTION>
@@ -68,6 +77,63 @@
         <% } catch (Exception e) { %>
             </SELECT>
         <% } %>
+
+        <% if (searchOptionsFlag != null
+                && searchOptionsFlag.booleanValue() == true) { %>
+        &nbsp;
+            <%
+                String getByKeyword = "";
+                String getByInteractor = "";
+                String getByExperimentType = "";
+                String getByPmid = "";
+                String getByDb = "";
+            %>
+            <%
+                if (command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD))  {
+                    getByKeyword = new String("SELECTED");
+                } else if (command.equals
+                        (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF))  {
+                    getByInteractor = new String("SELECTED");
+                } else if (command.equals
+                        (ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE))  {
+                    getByExperimentType = new String("SELECTED");
+                } else if (command.equals(ProtocolConstants.COMMAND_GET_BY_PMID))  {
+                    getByPmid = new String("SELECTED");
+                } else if (command.equals
+                        (ProtocolConstants.COMMAND_GET_BY_DATABASE))  {
+                    getByDb = new String("SELECTED");
+                }
+            %>
+            <SELECT NAME="<%= ProtocolRequest.ARG_COMMAND %>">
+            <OPTION
+                VALUE="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"
+                <%= getByKeyword %>>All Fields</OPTION>
+            <OPTION
+                VALUE="<%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF %>"
+                <%= getByInteractor %>>Interactor</OPTION>
+            <OPTION
+                VALUE="<%= ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE %>"
+                <%= getByExperimentType %>>Experimental Evidence</OPTION>
+            <OPTION
+                VALUE="<%= ProtocolConstants.COMMAND_GET_BY_PMID %>"
+                <%= getByPmid %>>Pub Med ID</OPTION>
+            <OPTION
+                VALUE="<%= ProtocolConstants.COMMAND_GET_BY_DATABASE %>"
+                <%= getByDb %>>Database Source</OPTION>
+        </SELECT>
+        <% } %>
+        <span style="text-align:right">
+            <% if (searchOptionsFlag != null
+                    && searchOptionsFlag.booleanValue() == true) { %>
+                <A TITLE="Hide Search Options"
+                    HREF="javascript:toggleSearchOptions();">[Hide...]</A>
+            <% } else { %>
+            <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
+                value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
+            <A TITLE="Show Search Options"
+                    HREF="javascript:toggleSearchOptions();">[Options...]</A>
+            <% } %>
+        </span>
         </FORM>
     </div>
 </div>
