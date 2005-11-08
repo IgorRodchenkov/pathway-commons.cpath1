@@ -8,6 +8,7 @@
                  java.text.NumberFormat,
                  java.text.DecimalFormat"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
+<%@ taglib uri="/WEB-INF/taglib/struts-html.tld" prefix="html" %>
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
@@ -15,6 +16,7 @@
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
+<html:errors/>
 
 <div id="apphead">
     <h2>cPath Administration</h2>
@@ -36,6 +38,71 @@
                 &nbsp;<INPUT TYPE="SUBMIT" VALUE="Go">
 
     </FORM>
+
+    <div class="h3">
+        <h3>Configurable UI Elements</h3>
+    </div>
+	<html:form action="adminUpdateWebUI.do" focus="logo">
+		<table border="0" cellspacing="2" cellpadding="3" width="100%">
+			<tr>
+				<th>Logo</th>
+				<td>
+					<html:text property="logo"/>
+				</td>
+			</tr>
+			<tr>
+				<th>Home Page Title</th>
+				<td>
+					<html:text property="homePageTitle"/>
+				</td>
+			</tr>
+			<tr>
+				<th>Home Page Tag Line</th>
+				<td>
+					<html:text property="homePageTagLine"/>
+				</td>
+			</tr>
+			<tr>
+				<th>Home Page Right Columnt Content</th>
+				<td>
+					<html:text property="homePageRightColumnContent"/>
+				</td>
+			</tr>
+			<tr>
+				<th>Display Browse by Pathway Tab</th>
+				<td>
+					<html:checkbox property="displayBrowseByPathwayTab"/>
+				</td>
+			</tr>
+			<tr>
+				<th>Display Browse by Organism Tab</th>
+				<td>
+					<html:checkbox property="displayBrowseByOrganismTab"/>
+				</td>
+			</tr>
+			<tr>
+				<th>FAQ Page Content</th>
+				<td>
+					<html:text property="FAQPageContent"/>
+				</td>
+			</tr>
+			<tr>
+				<th>About Page Content</th>
+				<td>
+					<html:text property="aboutPageContent"/>
+				</td>
+			</tr>
+			<tr>
+				<th>Home Page Maintenance Tag Line</th>
+				<td>
+					<html:text property="homePageMaintenanceTagLine"/>
+				</td>
+			</tr>
+		</table>
+	    <div class="functnbar3">
+    		<input type="submit" value="Save">
+        </div>
+	</html:form>
 
     <div class="h3">
         <h3>Web Diagnostics</h3>

@@ -1,5 +1,5 @@
 //
-// $Id: DaoWebUI.java,v 1.1 2005-11-08 17:55:59 grossb Exp $
+// $Id: DaoWebUI.java,v 1.2 2005-11-08 19:27:50 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,7 +37,6 @@ import org.mskcc.pathdb.form.WebUIForm;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import java.io.IOException;		
 import java.sql.*;
-import org.apache.log4j.Logger;
 
 /**
  * Data Access Object to the WEB_UI Table.
@@ -45,51 +44,6 @@ import org.apache.log4j.Logger;
  * @author Benjamin Gross
  */
 public class DaoWebUI {
-	private Logger logger = Logger.getLogger(this.getClass().getName());
-	/**
-	 * Column name string.
-	 */
-    private static final String LOGO = "LOGO";
-
-	/**
-	 * Column name string.
-	 */
-    private static final String HOME_PAGE_TITLE = "HOME_PAGE_TITLE";
-
-	/**
-	 * Column name string.
-	 */
-    private static final String HOME_PAGE_TAG_LINE = "HOME_PAGE_TAG_LINE";
-
-	/**
-	 * Column name string.
-	 */
-    private static final String HOME_PAGE_RIGHT_COLUMN_CONTENT = "HOME_PAGE_RIGHT_COLUMN_CONTENT";
-
-	/**
-	 * Column name string.
-	 */
-    private static final String DISPLAY_BROWSE_BY_PATHWAY_TAB = "DISPLAY_BROWSE_BY_PATHWAY_TAB";
-
-	/**
-	 * Column name string.
-	 */
-    private static final String DISPLAY_BROWSE_BY_ORGANISM_TAB = "DISPLAY_BROWSE_BY_ORGANISM_TAB";
-
-	/**
-	 * Column name string.
-	 */
-    private static final String FAQ_PAGE_CONTENT = "FAQ_PAGE_CONTENT";
-
-	/**
-	 * Column name string.
-	 */
-    private static final String ABOUT_PAGE_CONTENT = "FAQ_PAGE_CONTENT";
-
-	/**
-	 * Column name string.
-	 */
-    private static final String HOME_PAGE_MAINTENANCE_TAG_LINE = "HOME_PAGE_MAINTENANCE_TAG_LINE";
 
     /**
      * Gets the one and only record.
@@ -114,8 +68,15 @@ public class DaoWebUI {
 			// set the form object
 			if (rs.next()){
 				webUIForm = new WebUIForm();
-				webUIForm.setLogo(rs.getString(LOGO));
-				webUIForm.setHomePageTitle(rs.getString(HOME_PAGE_TITLE));
+				webUIForm.setLogo(rs.getString("LOGO"));
+				webUIForm.setHomePageTitle(rs.getString("HOME_PAGE_TITLE"));
+				webUIForm.setHomePageTagLine(rs.getString("HOME_PAGE_TAG_LINE"));
+				webUIForm.setHomePageRightColumnContent(rs.getString("HOME_PAGE_RIGHT_COLUMN_CONTENT"));
+				webUIForm.setDisplayBrowseByPathwayTab(rs.getBoolean("DISPLAY_BROWSE_BY_PATHWAY_TAB"));
+				webUIForm.setDisplayBrowseByOrganismTab(rs.getBoolean("DISPLAY_BROWSE_BY_ORGANISM_TAB"));
+				webUIForm.setFAQPageContent(rs.getString("FAQ_PAGE_CONTENT"));
+				webUIForm.setAboutPageContent(rs.getString("ABOUT_PAGE_CONTENT"));
+				webUIForm.setHomePageMaintenanceTagLine(rs.getString("HOME_PAGE_MAINTENANCE_TAG_LINE"));
 			}
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
@@ -142,22 +103,29 @@ public class DaoWebUI {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
-		logger.info("INFO in updateRecord");
-		logger.info("logo: " + form.getLogo());
-		logger.info("homePageTile: " + form.getHomePageTitle());
-
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("UPDATE web_ui set " +
 					 "`LOGO` = ?, " +
-					 "`HOME_PAGE_TITLE` = ?");
+					 "`HOME_PAGE_TITLE` = ?, " +
+					 "`HOME_PAGE_TAG_LINE` = ?, " +
+					 "`HOME_PAGE_RIGHT_COLUMN_CONTENT` = ?, " +
+					 "`DISPLAY_BROWSE_BY_PATHWAY_TAB` = ?, " +
+					 "`DISPLAY_BROWSE_BY_ORGANISM_TAB` = ?, " +
+					 "`FAQ_PAGE_CONTENT` = ?, " +
+					 "`ABOUT_PAGE_CONTENT` = ?, " +
+					 "`HOME_PAGE_MAINTENANCE_TAG_LINE` = ?");
             pstmt.setString(1, form.getLogo());
             pstmt.setString(2, form.getHomePageTitle());
+            pstmt.setString(3, form.getHomePageTagLine());
+            pstmt.setString(4, form.getHomePageRightColumnContent());
+            pstmt.setBoolean(5, form.getDisplayBrowseByPathwayTab());
+            pstmt.setBoolean(6, form.getDisplayBrowseByOrganismTab());
+            pstmt.setString(7, form.getFAQPageContent());
+            pstmt.setString(8, form.getAboutPageContent());
+            pstmt.setString(9, form.getHomePageMaintenanceTagLine());
             int rows = pstmt.executeUpdate();
-			if (rows > 0){
-				logger.info("INFO in updateRecord - SUCCESS!");
-			}
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
