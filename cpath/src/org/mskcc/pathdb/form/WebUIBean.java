@@ -1,5 +1,5 @@
 //
-// $Id: WebUIForm.java,v 1.2 2005-11-08 19:27:20 grossb Exp $
+// $Id: WebUIBean.java,v 1.1 2005-11-08 21:00:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Benjamin Gross
  */
-public class WebUIForm extends ActionForm {
+public class WebUIBean extends ActionForm {
 
 	/**
 	 * Logo (URL to Logo).
