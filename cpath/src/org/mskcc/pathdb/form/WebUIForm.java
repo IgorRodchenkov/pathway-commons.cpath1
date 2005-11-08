@@ -1,5 +1,5 @@
 //
-// $Id: WebUIForm.java,v 1.1 2005-11-08 17:57:01 grossb Exp $
+// $Id: WebUIForm.java,v 1.2 2005-11-08 19:27:20 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,7 +33,6 @@
 package org.mskcc.pathdb.form;
 
 // imports
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
@@ -47,7 +46,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class WebUIForm extends ActionForm {
 
-	private Logger logger = Logger.getLogger(this.getClass().getName());
 	/**
 	 * Logo (URL to Logo).
 	 */
@@ -57,6 +55,41 @@ public class WebUIForm extends ActionForm {
 	 * Home Page Title.
 	 */
     private String homePageTitle;
+
+	/**
+	 * Home Page Tag Line.
+	 */
+    private String homePageTagLine;
+
+	/**
+	 * Home Page Right Column Content.
+	 */
+    private String homePageRightColumnContent;
+
+	/**
+	 * Display Browse by Pathway Tab.
+	 */
+    private boolean displayBrowseByPathwayTab;
+
+	/**
+	 * Display Browse by Organism Tab.
+	 */
+    private boolean displayBrowseByOrganismTab;
+
+	/**
+	 * FAQ Page Content.
+	 */
+    private String FAQPageContent;
+
+	/**
+	 * About Page Content.
+	 */
+    private String aboutPageContent;
+
+	/**
+	 * Home Page Maintenance Tag Line.
+	 */
+    private String homePageMaintenanceTagLine;
 
     /**
      * Sets the logo.
@@ -94,6 +127,132 @@ public class WebUIForm extends ActionForm {
         return homePageTitle;
     }
 
+    /**
+     * Sets the Home Page Tag Line.
+     *
+     * @param homePageTagLine String.
+     */
+    public void setHomePageTagLine(String homePageTagLine) {
+        this.homePageTagLine = homePageTagLine;
+    }
+
+    /**
+     * Gets the Home Page Tag Line.
+     *
+     * @return homePageTagLine.
+     */
+    public String getHomePageTagLine() {
+        return homePageTagLine;
+    }
+
+    /**
+     * Sets the Home Page Right Column Content.
+     *
+     * @param homePageRightColumnContent String.
+     */
+    public void setHomePageRightColumnContent(String homePageRightColumnContent) {
+        this.homePageRightColumnContent = homePageRightColumnContent;
+    }
+
+    /**
+     * Gets the Home Page Right Column Content.
+     *
+     * @return homePageRightColumnContent.
+     */
+    public String getHomePageRightColumnContent() {
+        return homePageRightColumnContent;
+    }
+
+    /**
+     * Sets the Display Browse by Pathway Tab.
+     *
+     * @param displayBrowseByPathwayTab boolean.
+     */
+    public void setDisplayBrowseByPathwayTab(boolean displayBrowseByPathwayTab) {
+        this.displayBrowseByPathwayTab = displayBrowseByPathwayTab;
+    }
+
+    /**
+     * Gets the Display Browse by Pathway Tab.
+     *
+     * @return displayBrowseByPathwayTab.
+     */
+    public boolean getDisplayBrowseByPathwayTab() {
+        return displayBrowseByPathwayTab;
+    }
+
+    /**
+     * Sets the Display Browse by Organism Tab.
+     *
+     * @param displayBrowseByOrganismTab boolean.
+     */
+    public void setDisplayBrowseByOrganismTab(boolean displayBrowseByOrganismTab) {
+        this.displayBrowseByOrganismTab = displayBrowseByOrganismTab;
+    }
+
+    /**
+     * Gets the Display Browse by Organism Tab.
+     *
+     * @return displayBrowseByOrganismTab.
+     */
+    public boolean getDisplayBrowseByOrganismTab() {
+        return displayBrowseByOrganismTab;
+    }
+
+    /**
+     * Sets the FAQ Page Content.
+     *
+     * @param FAQPageContent String.
+     */
+    public void setFAQPageContent(String FAQPageContent) {
+        this.FAQPageContent = FAQPageContent;
+    }
+
+    /**
+     * Gets the FAQ Page Content.
+     *
+     * @return FAQPageContent.
+     */
+    public String getFAQPageContent() {
+        return FAQPageContent;
+    }
+
+    /**
+     * Sets the About Page Content.
+     *
+     * @param aboutPageContent String.
+     */
+    public void setAboutPageContent(String aboutPageContent) {
+        this.aboutPageContent = aboutPageContent;
+    }
+
+    /**
+     * Gets the About Page Content.
+     *
+     * @return aboutPageContent.
+     */
+    public String getAboutPageContent() {
+        return aboutPageContent;
+    }
+
+    /**
+     * Sets the Home Page Maintenance Tag Line.
+     *
+     * @param homePageMaintenanceTagLine String.
+     */
+    public void setHomePageMaintenanceTagLine(String homePageMaintenanceTagLine) {
+        this.homePageMaintenanceTagLine = homePageMaintenanceTagLine;
+    }
+
+    /**
+     * Gets the Home Page Maintenance Tag Line.
+     *
+     * @return homePageMaintenanceTagLine.
+     */
+    public String getHomePageMaintenanceTagLine() {
+        return homePageMaintenanceTagLine;
+    }
+
 	/**
 	 * Our implementation of validate.
 	 *
@@ -107,20 +266,34 @@ public class WebUIForm extends ActionForm {
 		// create errors object to return
 		ActionErrors errors = new ActionErrors();
 
-		logger.info("INFO in validate()");
-		logger.info("logo: " + logo);
-		logger.info("homePageTile: " + homePageTitle);
-
 		// logo
 		if (logo == null || logo.equals("")) {
-			logger.info("logo is null or empty");
 			errors.add("logo", new ActionError("error.missing.logo"));
 		}
 
 		// homePageTitle
 		if (homePageTitle == null || homePageTitle.equals("")) {
-			logger.info("homePageTitle is null or empty");
 			errors.add("homePageTitle", new ActionError("error.missing.homePageTitle"));
+		}
+
+		// homePageTagLine
+		if (homePageTagLine == null || homePageTagLine.equals("")) {
+			errors.add("homePageTagLine", new ActionError("error.missing.homePageTagLine"));
+		}
+
+		// FAQ Page Content
+		if (FAQPageContent == null || FAQPageContent.equals("")) {
+			errors.add("FAQPageContent", new ActionError("error.missing.FAQPageContent"));
+		}
+
+		// About Page Content
+		if (aboutPageContent == null || aboutPageContent.equals("")) {
+			errors.add("aboutPageContent", new ActionError("error.missing.aboutPageContent"));
+		}
+
+		// homePageMaintenanceTagLine
+		if (homePageMaintenanceTagLine == null || homePageMaintenanceTagLine.equals("")) {
+			errors.add("homePageMaintenanceTagLine", new ActionError("error.missing.homePageMaintenanceTagLine"));
 		}
 
 		// outta here
