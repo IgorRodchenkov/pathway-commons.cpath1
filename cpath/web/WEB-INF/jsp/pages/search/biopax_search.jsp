@@ -51,7 +51,7 @@
         CPathRecord record = dao.getRecordById(cpathIds[i]);
         out.println("<tr>");
         out.println("<td colspan=2>");
-        String url = "bb_web.do?id=" + record.getId();
+        String url = "record.do?id=" + record.getId();
         out.println("<A HREF=\"" + url + "\">" + record.getName() + "</A>");
         out.println("</td>");
         out.println("</tr>");

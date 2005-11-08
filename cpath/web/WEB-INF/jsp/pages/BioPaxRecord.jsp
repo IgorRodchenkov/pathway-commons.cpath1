@@ -18,16 +18,17 @@
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
-    String title = "cPath:: Bare Bones Web Site";
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
     CPathRecord record = (CPathRecord) request.getAttribute("RECORD");
-    ArrayList records = (ArrayList) request.getAttribute("RECORDS");
+    String title = "cPath:: " + record.getName();
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
 <div id='axial' class='h3'>
-<h3>cPath Record Details</h3>
+<% if (record != null) { %>
+<h3><%= record.getName() %></h3>
+<% } %>
 </div>
 
 <TABLE WIDTH=100%>
@@ -65,9 +66,7 @@
     <TD>XML Content:</TD>
     <TD>
     <%
-        String xmlAbbrevUrl = "bb_web.do?format=xml_abbrev&id="
-                +record.getId();
-        String xmlFullUrl = "bb_web.do?format=xml_full&id="
+        String xmlAbbrevUrl = "record.do?format=xml_abbrev&id="
                 +record.getId();
         out.println("<A HREF=\""+ xmlAbbrevUrl + "\">XML Abbrev</A>");
         out.println("&nbsp;&nbsp;");
@@ -148,7 +147,7 @@
         out.println("<UL>");
         for (int i=0; i<recordList.size(); i++) {
             CPathRecord link = (CPathRecord) recordList.get(i);
-            String url = "bb_web.do?id="+link.getId();
+            String url = "record.do?id="+link.getId();
             if (link.getName().equals("N/A")) {
                 out.println("<LI><A HREF=\""+url+ "\">"
                     + link.getType()

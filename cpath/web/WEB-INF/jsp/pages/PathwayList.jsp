@@ -53,7 +53,7 @@
         } else {
             out.println("<tr class='b'>");
         }
-        String uri = "bb_web.do?id=" + rec.getId();
+        String uri = "record.do?id=" + rec.getId();
         out.println("<TD><A HREF=\"" + uri + "\">"
                 + rec.getName() + "</A>");
         out.println("</TD>");

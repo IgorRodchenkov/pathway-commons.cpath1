@@ -38,7 +38,7 @@
 
     if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) {
         tabNames.add("Pathways");
-        String browsePathwayUrl = "bb_web.do";
+        String browsePathwayUrl = "record.do";
         tabUrls.add(browsePathwayUrl);
         if (url.startsWith(browsePathwayUrl)) {
             tabActive.add (Boolean.TRUE);
