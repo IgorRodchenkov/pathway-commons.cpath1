@@ -46,11 +46,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Bare Bones cPath Web Site:  Prototype.
+ * Shows a BioPAX Record.
  *
  * @author Ethan Cerami
  */
-public class BareBonesWeb extends BaseAction {
+public class ShowBioPaxRecord extends BaseAction {
 
     /**
      * Executes Bare Bones Web.

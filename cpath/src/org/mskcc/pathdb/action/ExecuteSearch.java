@@ -56,11 +56,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Action for cPath Queries.
+ * Executes Search.
  *
  * @author Ethan Cerami
  */
-public class QueryAction extends BaseAction {
+public class ExecuteSearch extends BaseAction {
 
     /**
      * Executes cPath Query.
