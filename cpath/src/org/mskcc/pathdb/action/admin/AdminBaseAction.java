@@ -39,6 +39,7 @@ import org.apache.struts.action.ActionMapping;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -179,6 +180,9 @@ public abstract class AdminBaseAction extends BaseAction {
             webUIBean.setFAQPageContent(record.getFAQPageContent());
             webUIBean.setAboutPageContent(record.getAboutPageContent());
             webUIBean.setHomePageMaintenanceTagLine(record.getHomePageMaintenanceTagLine());
+
+			// set webUIBean ref inside CPathUIConfConfig
+			CPathUIConfig.setWebUIBean(record);
 		}
 	}
 }
