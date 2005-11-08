@@ -21,7 +21,12 @@
 %>
 
 <div id='apphead'>
-<h2>Search Results:  <%= protocolRequest.getQuery() %></h2>
+<%
+    String q = protocolRequest.getQuery();
+    if (q != null && q.trim().length() > 0) {
+        out.println("<h2>Search Results:  " + q + "</h2>");
+    }
+%>
 </div>
 
 <table border='0' cellspacing='0' cellpadding='3' width='100%'>
