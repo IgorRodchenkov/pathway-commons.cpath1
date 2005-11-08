@@ -162,12 +162,8 @@ public abstract class AdminBaseAction extends BaseAction {
 		// cast form
 		WebUIForm webUIForm = (WebUIForm) form;
 
-        xdebug.logMsg(this, "webUIForm: " + webUIForm);
-
 		// only retrieve form data if the form is empty
 		if (webUIForm.getLogo() == null){
-
-			xdebug.logMsg(this, "grabbing data: " + webUIForm);
 
 			// create dao object
 			DaoWebUI dbWebUI = new DaoWebUI();
