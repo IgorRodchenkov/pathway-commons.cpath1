@@ -100,7 +100,7 @@
 			</tr>
 		</table>
 	    <div class="functnbar3">
-    		<input type="submit" value="Save">
+    		<input type="submit" value="Update">
         </div>
 	</html:form>
 
