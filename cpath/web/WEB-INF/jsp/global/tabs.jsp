@@ -36,7 +36,7 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
+    if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) {
         tabNames.add("Pathways");
         String browsePathwayUrl = "bb_web.do";
         tabUrls.add(browsePathwayUrl);
