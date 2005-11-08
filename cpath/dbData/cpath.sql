@@ -218,6 +218,25 @@ CREATE TABLE `id_generator` (
   `NEXT_ID` int(11) NOT NULL default '0'
 ) TYPE=MyISAM COMMENT='ID Generator';
 
+#
+# Table structure for table `web_ui`
+#
+# Creation: Nov 4, 2005 at 9:47 AM
+# Last update: Nov 4, 2005 at 9:47 AM
+#
+
+CREATE TABLE `web_ui` (
+`LOGO` TINYTEXT NOT NULL ,
+`HOME_PAGE_TITLE` TINYTEXT NOT NULL ,
+`HOME_PAGE_TAG_LINE` TINYTEXT NOT NULL ,
+`HOME_PAGE_RIGHT_COLUMN_CONTENT` TEXT NOT NULL ,
+`DISPLAY_BROWSE_BY_PATHWAY_TAB` BOOL NOT NULL ,
+`DISPLAY_BROWSE_BY_ORGANISM_TAB` BOOL NOT NULL ,
+`FAQ_PAGE_CONTENT` TEXT NOT NULL ,
+`ABOUT_PAGE_CONTENT` TEXT NOT NULL ,
+`HOME_PAGE_MAINTENANCE_TAG_LINE` TINYTEXT NOT NULL
+) TYPE = MYISAM COMMENT = 'Contains configurable Web UI Elements';
+
 Alter table internal_link add INDEX internal_link_source_idx (SOURCE_ID);
 Alter table internal_link add INDEX internal_link_target_idx (TARGET_ID);
 Alter table external_link add INDEX cpath_id_idx (cpath_id); 
