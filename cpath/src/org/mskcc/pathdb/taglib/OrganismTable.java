@@ -104,7 +104,7 @@ public class OrganismTable extends HtmlTable {
         startTable();
         startRow();
         createColumnHeader("Species Name", SORT_BY_NAME, sortBy, sortOrder);
-        createColumnHeader("Number of Pathways/Interactions",
+        createColumnHeader("Number of Records",
                 SORT_BY_NUM_INTERACTIONS, sortBy, sortOrder);
         outputRecords(sortBy, sortOrder);
         endTable();
