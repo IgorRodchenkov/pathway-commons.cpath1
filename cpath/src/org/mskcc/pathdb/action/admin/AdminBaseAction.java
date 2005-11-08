@@ -29,6 +29,10 @@
  **/
 package org.mskcc.pathdb.action.admin;
 
+import org.mskcc.pathdb.form.WebUIForm;
+import org.mskcc.pathdb.sql.dao.DaoWebUI;
+import org.mskcc.pathdb.sql.dao.DaoException;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -64,6 +68,12 @@ public abstract class AdminBaseAction extends BaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
         request.setAttribute(BaseAction.PAGE_IS_ADMIN, "YES");
         checkErrorPage(request, xdebug);
+
+		// populate webUIForm if necessary
+		if (form != null){
+			populateWebUIForm(form, xdebug);
+		}
+
         return adminExecute(mapping, form, request, response, xdebug);
     }
 
@@ -138,4 +148,34 @@ public abstract class AdminBaseAction extends BaseAction {
                     + " page functionality");
         }
     }
+
+    /**
+     * Must Be Implemented By Subclass.
+     *
+     * @param form     Struts ActionForm Object.
+     * @param xdebug   XDebug Object.
+
+     * @throws Exception All Exceptions.
+     */
+	private void populateWebUIForm(ActionForm form, XDebug xdebug) throws Exception {
+
+		// cast form
+		WebUIForm webUIForm = (WebUIForm) form;
+
+        xdebug.logMsg(this, "webUIForm: " + webUIForm);
+
+		// only retrieve form data if the form is empty
+		if (webUIForm.getLogo() == null){
+
+			xdebug.logMsg(this, "grabbing data: " + webUIForm);
+
+			// create dao object
+			DaoWebUI dbWebUI = new DaoWebUI();
+			WebUIForm record = dbWebUI.getRecord();
+
+			// set fields
+			webUIForm.setLogo(record.getLogo());
+			webUIForm.setHomePageTitle(record.getHomePageTitle());
+		}
+	}
 }
