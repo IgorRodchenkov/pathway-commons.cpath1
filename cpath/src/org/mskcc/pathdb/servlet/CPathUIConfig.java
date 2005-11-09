@@ -61,8 +61,8 @@ public class CPathUIConfig {
 	 *
      * @param webUIBean.
      */
-    public static void setWebUIBean (WebUIBean webUIBean) {
-        webUIBean = webUIBean;
+    public static void setWebUIBean (WebUIBean bean) {
+        webUIBean = bean;
     }
 
     /**
