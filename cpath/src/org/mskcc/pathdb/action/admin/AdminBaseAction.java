@@ -30,9 +30,6 @@
 package org.mskcc.pathdb.action.admin;
 
 import org.mskcc.pathdb.form.WebUIBean;
-import org.mskcc.pathdb.sql.dao.DaoWebUI;
-import org.mskcc.pathdb.sql.dao.DaoException;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -165,24 +162,16 @@ public abstract class AdminBaseAction extends BaseAction {
 
 		// only retrieve form data if the form is empty
 		if (webUIBean.getLogo() == null){
-
-			// create dao object
-			DaoWebUI dbWebUI = new DaoWebUI();
-			WebUIBean record = dbWebUI.getRecord();
-
-			// set fields
-			webUIBean.setLogo(record.getLogo());
-			webUIBean.setHomePageTitle(record.getHomePageTitle());
-			webUIBean.setHomePageTagLine(record.getHomePageTagLine());
-            webUIBean.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
-            webUIBean.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
-            webUIBean.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
-            webUIBean.setFAQPageContent(record.getFAQPageContent());
-            webUIBean.setAboutPageContent(record.getAboutPageContent());
-            webUIBean.setHomePageMaintenanceTagLine(record.getHomePageMaintenanceTagLine());
-
-			// set webUIBean ref inside CPathUIConfConfig
-			CPathUIConfig.setWebUIBean(record);
+			WebUIBean record = CPathUIConfig.getWebUIBean();
+ 			webUIBean.setLogo(record.getLogo());
+ 			webUIBean.setHomePageTitle(record.getHomePageTitle());
+ 			webUIBean.setHomePageTagLine(record.getHomePageTagLine());
+			webUIBean.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
+			webUIBean.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
+			webUIBean.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
+			webUIBean.setFAQPageContent(record.getFAQPageContent());
+			webUIBean.setAboutPageContent(record.getAboutPageContent());
+			webUIBean.setHomePageMaintenanceTagLine(record.getHomePageMaintenanceTagLine());
 		}
 	}
 }
