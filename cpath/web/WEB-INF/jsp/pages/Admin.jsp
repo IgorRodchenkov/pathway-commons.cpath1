@@ -43,29 +43,35 @@
         <h3>Configurable UI Elements</h3>
     </div>
 	<html:form action="adminUpdateWebUI.do" focus="logo">
-		<table border="0" cellspacing="2" cellpadding="3">
+		<table border="0" cellspacing="2" cellpadding="3" width="100%">
 			<tr>
-				<th align="LEFT">Logo</th>
+				<th align="LEFT">Logo (URL to image)</th>
 				<td>
-					<html:text property="logo"/>
+					<html:text property="logo" size="95"/>
 				</td>
 			</tr>
 			<tr>
 				<th align="LEFT">Home Page Title</th>
 				<td>
-					<html:text property="homePageTitle"/>
+					<html:text property="homePageTitle" size="95"/>
 				</td>
 			</tr>
 			<tr>
 				<th align="LEFT">Home Page Tag Line</th>
 				<td>
-					<html:text property="homePageTagLine"/>
+					<html:text property="homePageTagLine" size="95"/>
 				</td>
 			</tr>
 			<tr>
 				<th align="LEFT">Home Page Right Column Content</th>
 				<td>
-					<html:text property="homePageRightColumnContent"/>
+					<html:textarea property="homePageRightColumnContent" rows="25" cols="80"/>
+				</td>
+			</tr>
+			<tr>
+				<th align="LEFT">Home Page Maintenance Tag Line</th>
+				<td>
+					<html:text property="homePageMaintenanceTagLine" size="95"/>
 				</td>
 			</tr>
 			<tr>
@@ -83,23 +89,19 @@
 			<tr>
 				<th align="LEFT">FAQ Page Content</th>
 				<td>
-					<html:text property="FAQPageContent"/>
+					<html:textarea property="FAQPageContent" rows="25" cols="80"/>
 				</td>
 			</tr>
 			<tr>
 				<th align="LEFT">About Page Content</th>
 				<td>
-					<html:text property="aboutPageContent"/>
+					<html:textarea property="aboutPageContent" rows="25" cols="80"/>
 				</td>
 			</tr>
-			<tr>
-				<th align="LEFT">Home Page Maintenance Tag Line</th>
-				<td>
-					<html:text property="homePageMaintenanceTagLine"/>
-				</td>
+            <tr>
+     	   	<td><input type="submit" size=20 value="Update"></td>
 			</tr>
 		</table>
-	   	<input type="submit" size=20 value="Update">
 	</html:form>
 
     <div class="h3">
