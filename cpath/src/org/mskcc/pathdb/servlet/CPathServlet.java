@@ -33,12 +33,14 @@ import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.lucene.LuceneConfig;
+import org.mskcc.pathdb.sql.dao.DaoWebUI;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.AutoPopulateCache;
 import org.mskcc.pathdb.util.cache.EhCache;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -131,6 +133,9 @@ public final class CPathServlet extends ActionServlet {
 
         //  Start Quartz Scheduler
         initQuartzScheduler();
+
+		// populate the CPathUIConfig
+		populateWebUIBean();
     }
 
     /**
@@ -208,4 +213,34 @@ public final class CPathServlet extends ActionServlet {
             System.err.println("DaoException:  " + e.toString());
         }
     }
+
+	/**
+	 * Populates WebUIBean within CPathUIConfig.
+	 */
+	private void populateWebUIBean() {
+
+		// bean we retrieve
+		WebUIBean record = null;
+
+		System.err.print("Attempting to populate WebUIBean...");
+
+		// create dao object
+		try{
+			DaoWebUI dbWebUI = new DaoWebUI();
+			record = dbWebUI.getRecord();
+		}
+		catch (DaoException e) {
+            System.err.println("****  Fatal Error.  Could not connect to "
+                    + "database");
+            System.err.println("DaoException:  " + e.toString());
+        }
+
+		// set the bean
+		if (record != null){
+			CPathUIConfig.setWebUIBean(record);
+		}
+
+		// outta here
+		System.err.println("SUCCESS!");
+	}
 }
