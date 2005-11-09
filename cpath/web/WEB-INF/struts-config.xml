@@ -79,6 +79,12 @@
             <forward name="success" path="/WEB-INF/jsp/pages/FAQ.jsp"/>
         </action>
 
+        <!--  About Page -->
+        <action path="/about"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/About.jsp"/>
+        </action>
+
         <!-- Admin Actions -->
         <action path="/adminHome"
             type="org.mskcc.pathdb.action.admin.AdminHomeAction"
