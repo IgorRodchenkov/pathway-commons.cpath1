@@ -7,6 +7,7 @@
                  org.mskcc.pathdb.action.ToggleSearchOptions,
                  org.mskcc.pathdb.xdebug.XDebug,
                  org.mskcc.pathdb.lucene.OrganismStats,
+                 org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 
 <%
@@ -24,6 +25,10 @@
     }
     Boolean searchOptionsFlag = (Boolean)
         session.getAttribute(ToggleSearchOptions.SESSION_SEARCH_OPTIONS_FLAG);
+
+	// get tag line
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String tagLine = webUIBean.getHomePageTagLine();
 %>
 
 <SCRIPT language="JavaScript">
@@ -38,6 +43,9 @@ function toggleSearchOptions()
     <FORM name="searchbox" ACTION="webservice.do" METHOD="GET">
     <div class="body">
         &nbsp;&nbsp;&nbsp;
+	<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="3">
+	<TR>
+        <% out.print(tagLine + "&nbsp;&nbsp;&nbsp;"); %>	
         <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
         <NOBR>
         <INPUT TYPE="TEXT" name="<%= ProtocolRequest.ARG_QUERY %>"
@@ -47,6 +55,8 @@ function toggleSearchOptions()
         </NOBR>
         <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_FORMAT %>"
             value="<%= ProtocolConstants.FORMAT_HTML %>"/>
+	</TR>
+	</TABLE>
 
         <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
             <% try { %>

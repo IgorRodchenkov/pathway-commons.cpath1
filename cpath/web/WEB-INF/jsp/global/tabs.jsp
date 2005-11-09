@@ -7,6 +7,7 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstants,
                  org.mskcc.pathdb.action.ToggleSearchOptions,
+                 org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%
     String url = "";
@@ -26,6 +27,9 @@
     ArrayList tabNames = new ArrayList();
     ArrayList tabActive = new ArrayList();
 
+	// get WebUIBean
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+
     tabNames.add("Home");
     String homeUrl = "home.do";
     tabUrls.add(homeUrl);
@@ -36,7 +40,8 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) {
+    if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX &&
+	    webUIBean.getDisplayBrowseByPathwayTab()) {
         tabNames.add("Pathways");
         String browsePathwayUrl = "record.do";
         tabUrls.add(browsePathwayUrl);
@@ -47,14 +52,16 @@
         }
     }
 
-    tabNames.add("Organisms");
-    String browseUrl = "browse.do";
-    tabUrls.add(browseUrl);
-    if (url.equals(browseUrl)) {
-        tabActive.add (Boolean.TRUE);
-    } else {
-        tabActive.add (Boolean.FALSE);
-    }
+    if (webUIBean.getDisplayBrowseByOrganismTab()) {
+    	tabNames.add("Organisms");
+	    String browseUrl = "browse.do";
+    	tabUrls.add(browseUrl);
+    	if (url.equals(browseUrl)) {
+        	tabActive.add (Boolean.TRUE);
+	    } else {
+    	    tabActive.add (Boolean.FALSE);
+	    }
+	}
 
     tabNames.add("Stats");
     String dbStatsUrl = "dbStats.do";

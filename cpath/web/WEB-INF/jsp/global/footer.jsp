@@ -1,3 +1,10 @@
+<%@ page import="org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%
+	// get tag line
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String tagLine = webUIBean.getHomePageMaintenanceTagLine();
+%>
                 </div>
                 <!-- End Div:  app -->
             </div>
@@ -14,6 +21,9 @@
             <div/>
             <div/>
             <div id="footer">
+	            <div>
+                <% out.print(tagLine); %>
+                </div>
                 <div>
                   <a href="disclaimer.do">Legal Disclaimer / Privacy Notice</a> |
                   <a href="http://cbio.mskcc.org">Computational Biology Center</a> |

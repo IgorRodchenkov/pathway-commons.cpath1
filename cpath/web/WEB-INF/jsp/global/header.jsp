@@ -1,6 +1,8 @@
 <%@ page import="java.net.URL,
                  org.mskcc.pathdb.action.ExecuteSearch,
                  org.mskcc.pathdb.action.BaseAction,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.util.CPathConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
 <%
@@ -9,6 +11,11 @@
         title = "cPath";
     }
     String style = request.getParameter(BaseAction.ATTRIBUTE_STYLE);
+
+	// setup some configurable UI elements
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String image = new String("<IMG SRC=\"" + webUIBean.getLogo() + "\">&nbsp;");
+	String banner = (image + webUIBean.getHomePageTitle());
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -51,9 +58,9 @@
     <table border="0" cellspacing="0" cellpadding="8" width="100%">
         <tr>
             <td>
-                <h1>cPath:  Cancer Pathway Database</h1>
-                <small>Memorial Sloan-Kettering
-                Cancer Center</small>
+            <% 
+	             out.println(banner);
+	        %>
             </td>
             <td>
                 <div align="right" id="login">
