@@ -99,6 +99,15 @@
         tabActive.add (Boolean.FALSE);
     }
 
+    tabNames.add("About");
+    String aboutUrl = "about.do";
+    tabUrls.add(aboutUrl);
+    if (url.equals(aboutUrl)) {
+        tabActive.add (Boolean.TRUE);
+    } else {
+        tabActive.add (Boolean.FALSE);
+    }
+
     String isAdmin = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
     String host = request.getRemoteHost();
     if (isAdmin != null
