@@ -1,5 +1,8 @@
 package org.mskcc.pathdb.servlet;
 
+// imports
+import org.mskcc.pathdb.form.WebUIBean;
+
 /**
  * Encapsulates Configuration options for the cPath Web UI.
  *
@@ -29,6 +32,11 @@ public class CPathUIConfig {
     private static int webMode;
 
     /**
+     * Reference to WebUIBean.
+     */
+    private static WebUIBean webUIBean;
+
+    /**
      * Sets the Web Mode.
      * @param mode WEB_MODE_BIOPAX or WEB_MODE_PSI_MI.
      */
@@ -48,4 +56,21 @@ public class CPathUIConfig {
         return webMode;
     }
 
+    /**
+     * Sets the WebUIBean reference.
+	 *
+     * @param webUIBean.
+     */
+    public static void setWebUIBean (WebUIBean webUIBean) {
+        webUIBean = webUIBean;
+    }
+
+    /**
+     * Gets the WebUIBean ref.
+	 *
+     * @return webUIBean.
+     */
+    public static WebUIBean getWebUIBean() {
+        return webUIBean;
+    }
 }
