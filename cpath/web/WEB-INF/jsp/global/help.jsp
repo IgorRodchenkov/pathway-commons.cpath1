@@ -2,13 +2,9 @@
                  java.util.ArrayList,
                  org.mskcc.pathdb.protocol.ProtocolConstants,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
-                 org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 
 <%
-	// get WebUIBean
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-
 	// if we are in psi mode print the following content
     if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI){
         out.println("<div id=\"apphead\">");
@@ -237,7 +233,7 @@
         out.println("            </SMALL>");
         out.println("        </UL>");
         out.println("");
-                     pRequest.setVersion(\"0.9\");
+                     pRequest.setVersion("0.9");
                      pRequest.setFormat(ProtocolConstants.FORMAT_PSI_MI);
         out.println("");
         out.println("        The following query is invalid.");
