@@ -1,13 +1,20 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolException,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  org.mskcc.pathdb.action.HomeAction,
-                 org.mskcc.pathdb.action.BaseAction"%>
+                 org.mskcc.pathdb.action.BaseAction,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
     String title = "cPath Home";
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+
+	// get right column content
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String homePageRightColumnContent = webUIBean.getHomePageRightColumnContent();
+%>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
@@ -53,18 +60,7 @@ genomics data is essential to the achievement of these goals.
     &nbsp;
 </TD>
 
-<TD ALIGN="center">
-    <IMG SRC="jsp/images/ismb_poster_small.gif"/>
-    <center>
-    <small>
-        Download cPath Poster from
-        <A HREF="http://www.iscb.org/ismbeccb2004/">ISMB 2004</A>.
-        <BR>
-        <A HREF="http://www.cbio.mskcc.org/dev_site/cpath_poster.pdf">PDF Format</A>
-        [3.9 MB]
-    </small>
-    </center>
-</TD>
+<% out.println(homePageRightColumnContent); %>
 </TR>
 
 <TR>
