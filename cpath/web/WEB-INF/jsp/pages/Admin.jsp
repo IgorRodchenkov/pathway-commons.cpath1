@@ -99,7 +99,7 @@
 				</td>
 			</tr>
             <tr>
-     	   	<td><input type="submit" size=20 value="Update"></td>
+     	   	<td><input type="submit" value="Update"></td>
 			</tr>
 		</table>
 	</html:form>
