@@ -95,6 +95,7 @@ public class ExecuteSearch extends BaseAction {
             return processQuery(mapping, protocolRequest, request,
                     response, xdebug);
         } catch (NeedsHelpException e) {
+            request.removeAttribute(BaseAction.PAGE_IS_SEARCH_RESULT);    
             return mapping.findForward(BaseAction.FORWARD_HELP);
         }
     }
@@ -127,6 +128,8 @@ public class ExecuteSearch extends BaseAction {
                 String q = protocolRequest.getQuery();
                 if (q == null && protocolRequest.getOrganism() != null) {
                     q = protocolRequest.getOrganism();
+                } else if (q == null) {
+                    q = protocolRequest.getCommand();
                 }
                 throw new ProtocolException
                         (ProtocolStatusCode.NO_RESULTS_FOUND,
