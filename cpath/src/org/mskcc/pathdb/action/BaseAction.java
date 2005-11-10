@@ -181,7 +181,7 @@ public abstract class BaseAction extends Action {
     /**
      * Yes Value
      */
-    public static final String YES = "YES";
+    public static final String YES = "yes";
 
     /**
      * Executes Action.
