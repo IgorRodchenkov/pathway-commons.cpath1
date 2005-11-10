@@ -87,7 +87,15 @@
 <!-- Start Main Table -->
 <table border="0" cellspacing="0" cellpadding="4" width="100%" id="main">
     <tr valign="top">
-        <jsp:include page="../global/leftColumn.jsp" flush="true" />
+	    <%
+			// only show left hand column on admin page or
+			// if mode is psi and we are on psi_mi_search.jsp
+			if (title.equals("cPath::Administration") ||
+	           (title.equals("cPath::Search Results") &&
+			    CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI)){
+	    %>
+            <jsp:include page="../global/leftColumn.jsp" flush="true" />
+		<% } %>
         <!-- Start Body Column -->
         <td valign=top>
             <!-- Start Div:  bodycol/projecthome -->
