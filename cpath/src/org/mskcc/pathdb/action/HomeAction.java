@@ -29,9 +29,12 @@
  **/
 package org.mskcc.pathdb.action;
 
+import java.util.ArrayList;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.mskcc.pathdb.sql.query.GetTopLevelPathwayListCommand;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +61,17 @@ public class HomeAction extends BaseAction {
     public ActionForward subExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
-        return mapping.findForward(BaseAction.FORWARD_SUCCESS);
-    }
+
+		// if biopax, get list of pathways
+		if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX){
+		
+			// get top level pathways
+			GetTopLevelPathwayListCommand getPathwayListCommand =
+                new GetTopLevelPathwayListCommand(xdebug);
+			ArrayList pathwayList = getPathwayListCommand.getTopLevelPathwayList();
+			request.setAttribute("RECORDS", pathwayList);
+		}
+
+		return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+	}
 }
