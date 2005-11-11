@@ -139,12 +139,7 @@
             String tabName = (String) tabNames.get(i);
             Boolean active = (Boolean) tabActive.get(i);
             if (active.booleanValue()) {
-                if (tabUrl.length() > 0) {
-                    out.println("<th>" + "<a href='"+tabUrl+"'> " +
-                        tabName + "</A></th>");
-                } else {
-                    out.println("<th>" + tabName + "</th>");
-                }
+                out.println("<th>" + tabName + "</th>");
             } else {
                 if (tabUrl.length() > 0) {
                     out.println("<td>" + "<a href='"+tabUrl+"'> " +
