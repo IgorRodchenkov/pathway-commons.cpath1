@@ -16,20 +16,13 @@
 	</organization>
 	<inceptionYear>2003</inceptionYear>
     <package>org.mskcc.pathdb</package>
-   	<shortDescription>cPath is a freely available cancer pathway database.
+   	<shortDescription>cPath is an open source pathway database and software suite designed for
+        systems biology research.
     </shortDescription>
 
     <description>
-        cPath is a freely available cancer pathway database built
-        as a community resource.
-        Currently, basic protein-protein interaction functionality
-        is available. We expect to make a preliminary version of cPath
-        available to the public in early 2004. In the near future, we
-        also plan to make cPath <a href="http://www.biopax.org">BioPAX</a> compatible.
-        <P/>
-        cPath is currently being developed by the <a href="http://www.cbio.mskcc.org">
-	Computational Biology Center</a> of <a href="http://www.mskcc.org">Memorial
-	Sloan-Kettering Cancer Center</a>.
+        cPath is an open source pathway database and software suite designed for
+        systems biology research.
     </description>
 
 	<!--  Specifies current temporary location of public web site -->
@@ -73,19 +66,36 @@
 
     <developers>
         <developer>
-          <name>Ethan Cerami</name>
-          <id>cerami</id>
-          <email>cerami A@T cbio.mskc.org</email>
-          <organization>Memorial Sloan-Kettering Cancer Center</organization>
-	  <timezone>-5</timezone>
-        </developer>
-        <developer>
           <name>Gary Bader</name>
           <id>bader</id>
           <email>bader A@T cbio.mskc.org</email>
           <organization>Memorial Sloan-Kettering Cancer Center</organization>
-	  <url>http://www.cbio.mskcc.org/~bader</url>
-	  <timezone>-5</timezone>
+	      <url>http://www.cbio.mskcc.org/~bader</url>
+    	  <timezone>-5</timezone>
+        </developer>
+        <developer>
+          <name>Ethan Cerami</name>
+          <id>cerami</id>
+          <email>cerami A@T cbio.mskc.org</email>
+          <organization>Memorial Sloan-Kettering Cancer Center</organization>
+          <url>http://cbio.mskcc.org/people/info/ethan_cerami.html</url>
+	      <timezone>-5</timezone>
+        </developer>
+        <developer>
+          <name>Benjamin Gross</name>
+          <id>grossb</id>
+          <email>grossb A@T cbio.mskc.org</email>
+          <organization>Memorial Sloan-Kettering Cancer Center</organization>
+	      <url>http://cbio.mskcc.org/people/info/benjamin_gross.html</url>
+    	  <timezone>-5</timezone>
+        </developer>
+        <developer>
+          <name>Iain Keddie</name>
+          <id>keddie</id>
+          <email>iain.d.keddie A@T gsk.com</email>
+          <organization>GlaxoSmithKline</organization>
+	      <url>http://www.gsk.com/index.htm</url>
+    	  <timezone>-5</timezone>
         </developer>
     </developers>
 
@@ -123,6 +133,7 @@
 <dependency><groupId>commons-digester</groupId><artifactId>commons-digester</artifactId></dependency>
 <dependency><groupId>commons-fileupload</groupId><artifactId>commons-fileupload</artifactId></dependency>
 <dependency><groupId>commons-httpclient-2.0.2</groupId><artifactId>commons-httpclient-2.0.2</artifactId></dependency>
+<dependency><groupId>commons-jxpath-1.2</groupId><artifactId>commons-jxpath-1.2</artifactId></dependency>
 <dependency><groupId>commons-lang</groupId><artifactId>commons-lang</artifactId></dependency>
 <dependency><groupId>commons-logging</groupId><artifactId>commons-logging</artifactId></dependency>
 <dependency><groupId>commons-pool-1.1</groupId><artifactId>commons-pool-1.1</artifactId></dependency>
@@ -138,9 +149,11 @@
 <dependency><groupId>jdom</groupId><artifactId>jdom</artifactId></dependency>
 <dependency><groupId>jdom_result</groupId><artifactId>jdom_result</artifactId></dependency>
 <dependency><groupId>junit</groupId><artifactId>junit</artifactId></dependency>
-<dependency><groupId>lucene-1.3-final</groupId><artifactId>lucene-1.3-final</artifactId></dependency>
+<dependency><groupId>log4j</groupId><artifactId>log4j</artifactId></dependency>
+<dependency><groupId>lucene-1.4.3</groupId><artifactId>lucene-1.4.3</artifactId></dependency>
 <dependency><groupId>mysql-connector-java-3.1.10-bin</groupId><artifactId>mysql-connector-java-3.1.10-bin</artifactId></dependency>
 <dependency><groupId>natural-order-comparator</groupId><artifactId>natural-order-comparator</artifactId></dependency>
+<dependency><groupId>quartz</groupId><artifactId>quartz</artifactId></dependency>
 <dependency><groupId>rdf-api-2001-01-19</groupId><artifactId>rdf-api-2001-01-19</artifactId></dependency>
 <dependency><groupId>saxpath</groupId><artifactId>saxpath</artifactId></dependency>
 <dependency><groupId>servlet</groupId><artifactId>servlet</artifactId></dependency>
