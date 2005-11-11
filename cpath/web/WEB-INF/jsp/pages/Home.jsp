@@ -40,10 +40,4 @@
 </td>
 </tr>
 </table>
-<table width=100%>
-<tr>
-<td>
 <jsp:include page="../global/footer.jsp" flush="true" />
-</td>
-</tr>
-</table>
