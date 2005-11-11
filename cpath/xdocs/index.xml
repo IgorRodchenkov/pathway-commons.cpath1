@@ -8,19 +8,23 @@
   <body>
     <section name="About cPath">
         <p>
-        cPath aims to be a freely available cancer pathway database. Currently, only
-        information about protein-protein interactions collected from major
-        interaction databases that support the PSI-MI format is available. cPath is
-        open-source and is easy to locally install for private management of
-        protein-protein interactions. Future directions include support for the
-        <a href="http://biopax.org">BioPAX format</a> so that entire pathways can be
-        stored, queried and presented.
+        cPath is an open source pathway database and software suite designed for
+        systems biology research.
         </p>
         <p>
-        cPath is currently being developed by the
-            <A HREF="http://cbio.mskcc.org">Computational Biology Center</A>
-            of <A HREF="http://www.mskcc.org">Memorial Sloan-Kettering
-            Cancer Center.</A>
+        Main features include:
+        <UL>
+        <LI>Import pipeline capable of aggregrating pathway and interaction data sets from multiple sources, including:  MINT, IntAct,  HPRD, DIP, BioCyc, KEGG, PUMA2 and Reactome.</LI>
+        <LI>Import/Export support for the <A HREF="http://psidev.sourceforge.net/mi/xml/doc/user/">Proteomics Standards Initiative Molecular Interaction</A> (PSI-MI) and the <A HREF="http://www.biopax.org">Biological Pathways Exchange</A> (BioPAX) XML formats.</LI>
+        <LI>Data visualization and analysis via <A HREF="http://www.cytoscape.org">Cytoscape</A>.</LI>
+        <LI>Simple HTTP URL based XML web service.</LI>
+        <LI>Complete software is freely available for local install.  Easy to install and administer.</LI>
+        <LI>Partly funded by the U.S. National Cancer Institute, via the <A HREF="https://cabig.nci.nih.gov/">Cancer Biomedical Informatics Grid (caBIG)</A>, and aims to meet "silver-level" requirements for software interoperability and data exchange.</LI>
+        </UL>
+        </p>
+        <p>cPath is currently being developed by the
+        <A HREF="http://cbio.mskcc.org">Computational Biology Center</A>
+        at <A HREF="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</A>.
         </p>
     </section>
     <section name="About the Developer Site">

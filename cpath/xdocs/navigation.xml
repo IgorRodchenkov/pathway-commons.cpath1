@@ -10,7 +10,6 @@
       <item name="PDF Documentation" href="/cpath.pdf"   img="/images/pdf.gif"/>
     </links>
     <menu name="Project Status">
-        <item name="Current To Do List"      href="/todo.html"/>
         <item name="Release Notes"          href="/release.html"/>
 	<item name="Automated Tests"	    href="reports/noframes/junit-noframes.html"/>
 
