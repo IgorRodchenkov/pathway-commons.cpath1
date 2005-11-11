@@ -31,7 +31,6 @@ package org.mskcc.pathdb.sql.query;
 
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.protocol.ProtocolException;
 
 /**
  * Abstract Base Class for all queries.
@@ -48,15 +47,12 @@ abstract class Query {
      * @return XmlAssembly XML Assembly Object.
      * @throws QueryException Error Executing Query.
      */
-    public XmlAssembly execute(XDebug xdebug) throws QueryException,
-            ProtocolException {
+    public XmlAssembly execute(XDebug xdebug) throws QueryException {
         this.xdebug = xdebug;
         xdebug.logMsg(this, "Executing Query Type:  "
                 + getClass().getName());
         try {
             return executeSub();
-        } catch (ProtocolException e) {
-            throw e;
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         }

@@ -32,8 +32,6 @@ package org.mskcc.pathdb.sql.query;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
-import org.mskcc.pathdb.protocol.ProtocolException;
-import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
@@ -59,7 +57,7 @@ class GetBioPaxCommand extends Query {
     }
 
     protected XmlAssembly executeSub() throws DaoException,
-            AssemblyException, QueryException, ProtocolException {
+            AssemblyException, QueryException {
 
         //  Extract the cPath ID
         //  If we get here, the protocol validator has already verified
@@ -73,9 +71,7 @@ class GetBioPaxCommand extends Query {
         DaoCPath dao = DaoCPath.getInstance();
         CPathRecord record = dao.getRecordById(id);
         if (record == null) {
-            throw new ProtocolException
-                (ProtocolStatusCode.NO_RESULTS_FOUND,
-                "No Results Found for:  " + request.getQuery());
+            return XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
         }
         XmlRecordType xmlType = record.getXmlType();
         if (!xmlType.equals(XmlRecordType.BIO_PAX)) {
