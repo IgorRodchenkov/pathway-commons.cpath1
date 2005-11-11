@@ -25,10 +25,6 @@
     }
     Boolean searchOptionsFlag = (Boolean)
         session.getAttribute(ToggleSearchOptions.SESSION_SEARCH_OPTIONS_FLAG);
-
-	// get tag line
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String tagLine = webUIBean.getHomePageTagLine();
 %>
 
 <SCRIPT language="JavaScript">
@@ -45,7 +41,6 @@ function toggleSearchOptions()
         &nbsp;&nbsp;&nbsp;
 	<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="3">
 	<TR>
-        <% out.print(tagLine + "&nbsp;&nbsp;&nbsp;"); %>	
         <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
         <NOBR>
         <INPUT TYPE="TEXT" name="<%= ProtocolRequest.ARG_QUERY %>"
