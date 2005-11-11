@@ -19,6 +19,9 @@
         <div>
             <A HREF="adminDiagnostics.do">Run cPath Diagnostics</A>
         </div>
+        <div>
+            <A HREF="adminWebUIConfig.do">Configure User Interface</A>
+        </div>
     </div>
     
     <div class="label">
