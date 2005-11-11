@@ -1,6 +1,10 @@
-<%@ page import="org.mskcc.pathdb.form.WebUIBean,
+<%@ page import="org.mskcc.pathdb.action.BaseAction,
+				 org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%
+	// get title
+    String title = (String) request.getAttribute(BaseAction.ATTRIBUTE_TITLE);
+
 	// get tag line
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 	String tagLine = webUIBean.getHomePageMaintenanceTagLine();
@@ -15,8 +19,12 @@
 
     <!-- Start Footer -->
     <tr>
-        <td></td>
+        <% if (title.equals("cPath::Administration")){ %>
+		<td></td>
         <td>
+		<% } else { %>
+	    <td colspan=2 width=100%>
+	    <% } %>
             <div/>
             <div/>
             <div/>
