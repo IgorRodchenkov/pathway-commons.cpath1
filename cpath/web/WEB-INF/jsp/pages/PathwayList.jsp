@@ -34,42 +34,5 @@
     </tr>
 </table>
 
-<div id='axial' class='h3'>
-<h3>Pathway Information</h3>
-</div>
-
-<table border='0' cellspacing='2' cellpadding='3' width='100%'>
-<TR>
-<TH>Pathway</TH>
-<TH>Organism</TH>
-</TR>
-<%
-    DaoOrganism daoOrganism = new DaoOrganism();
-    HashMap organismMap = daoOrganism.getAllOrganismsMap();
-    for (int i=0; i<records.size(); i++) {
-        CPathRecord rec = (CPathRecord) records.get(i);
-        if (i % 2 == 0) {
-            out.println("<tr class='a'>");
-        } else {
-            out.println("<tr class='b'>");
-        }
-        String uri = "record.do?id=" + rec.getId();
-        out.println("<TD><A HREF=\"" + uri + "\">"
-                + rec.getName() + "</A>");
-        out.println("</TD>");
-
-        Organism organism = (Organism) organismMap.get(Integer.toString
-                (rec.getNcbiTaxonomyId()));
-        if (organism != null) {
-            out.println("<TD>");
-            if (organism.getSpeciesName() != null) {
-                out.println (organism.getSpeciesName());
-            }
-            out.println("</TD>");
-        }
-        out.println("</TR>");
-    }
-%>
-</TABLE>
-
+<jsp:include page="./PathwayListTable.jsp" flush="true" />
 <jsp:include page="../global/footer.jsp" flush="true" />
