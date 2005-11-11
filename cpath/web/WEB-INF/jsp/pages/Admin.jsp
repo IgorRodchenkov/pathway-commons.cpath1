@@ -6,7 +6,8 @@
                  org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  java.text.NumberFormat,
-                 java.text.DecimalFormat"%>
+                 java.text.DecimalFormat,
+                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ taglib uri="/WEB-INF/taglib/struts-html.tld" prefix="html" %>
 <%@ page errorPage = "JspError.jsp" %>
@@ -30,9 +31,12 @@
     <FORM ACTION="adminImportData.do" METHOD="POST"
         ENCTYPE="multipart/form-data">
                 <P>Currently, you can import data formatted in
+                <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
                 <A HREF="http://psidev.sourceforge.net/mi/xml/doc/user/">PSI-MI</A>
-                Level 1 or <A HREF="http://www.biopax.org">BioPAX</A> Level 1,2
-                Format.
+                Level 1 Format.
+                <% } else { %>
+                    <A HREF="http://www.biopax.org">BioPAX</A> Level 1,2 Format.
+                <% } %>
                 <P>
                 <INPUT TYPE="FILE" SIZE=20 NAME="file">
                 &nbsp;<INPUT TYPE="SUBMIT" VALUE="Go">
