@@ -95,6 +95,15 @@
 			    <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
+        <action path="/adminWebUIConfig"
+            type="org.mskcc.pathdb.action.admin.AdminHomeAction"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/AdminWebUIConfig.jsp"
+			scope="request"
+			validate="false">
+			    <forward name="success" path="/WEB-INF/jsp/pages/AdminWebUIConfig.jsp"/>
+        </action>
+
         <action path="/adminRemoveTask"
             type="org.mskcc.pathdb.action.admin.AdminRemoveTask">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
