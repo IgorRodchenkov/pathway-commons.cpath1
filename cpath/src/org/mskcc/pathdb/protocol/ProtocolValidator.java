@@ -29,6 +29,8 @@
  **/
 package org.mskcc.pathdb.protocol;
 
+import org.mskcc.pathdb.servlet.CPathUIConfig;
+
 import java.util.HashSet;
 
 /**
@@ -94,7 +96,21 @@ public class ProtocolValidator {
                     "Argument:  '" + ProtocolRequest.ARG_COMMAND
                     + "' is not specified." + HELP_MESSAGE);
         }
-        HashSet set = constants.getValidCommands();
+        HashSet set;
+        if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
+            set = constants.getValidPsiMiCommands();
+        } else {
+            //  Special Case
+            set = constants.getValidBioPaxCommands();
+            if (request.getCommand().equals
+                    (ProtocolConstants.COMMAND_GET_BY_KEYWORD)) {
+                if (request.getFormat() != null&& request.getFormat().equals
+                        (ProtocolConstants.FORMAT_BIO_PAX)) {
+                    throw new ProtocolException (ProtocolStatusCode.BAD_FORMAT,
+                            "BioPAX format not supported for this command.");
+                }
+            }
+        }
         if (!set.contains(request.getCommand())) {
             throw new ProtocolException(ProtocolStatusCode.BAD_COMMAND,
                     "Command:  '" + request.getCommand()
@@ -111,12 +127,14 @@ public class ProtocolValidator {
      * @throws ProtocolException Indicates Violation of Protocol.
      */
     private void validateMaxHits() throws ProtocolException {
-        int maxHits = request.getMaxHitsInt();
-        if (maxHits > ProtocolConstants.MAX_NUM_HITS) {
-            throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-                    "To prevent overloading of the system, clients are "
-                    + "restricted to a maximum of "
-                    + ProtocolConstants.MAX_NUM_HITS + " hits at a time.");
+        if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
+            int maxHits = request.getMaxHitsInt();
+            if (maxHits > ProtocolConstants.MAX_NUM_HITS) {
+                throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                        "To prevent overloading of the system, clients are "
+                        + "restricted to a maximum of "
+                        + ProtocolConstants.MAX_NUM_HITS + " hits at a time.");
+            }
         }
     }
 
@@ -132,37 +150,17 @@ public class ProtocolValidator {
                             "Argument:  '" + ProtocolRequest.ARG_FORMAT
                     + "' is not specified." + HELP_MESSAGE);
         }
-        HashSet set = constants.getValidFormats();
+        HashSet set;
+        if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
+            set = constants.getValidPsiMiFormats();
+        } else {
+            set = constants.getValidBioPaxFormats();
+        }
         if (!set.contains(request.getFormat())) {
             throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
                     "Format:  '" + request.getFormat()
                     + "' is not recognized."
                     + HELP_MESSAGE);
-        }
-
-        //  When using COMMAND_GET_RECORD_BY_CPATH_ID, BioPAX must be specified.
-        if (request.getCommand().equals
-                (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
-            if (!request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
-                throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
-                        "When using the command:  "
-                        + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID
-                        + ", the only supported format is:  "
-                        + ProtocolConstants.FORMAT_BIO_PAX);
-            }
-        }
-
-        //  When using COMMAND_GET_TOP_LEVEL_PATHWAY_LIST,
-        //  BioPAX must be specified.
-        if (request.getCommand().equals
-                (ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST)) {
-            if (!request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
-                throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
-                        "When using the command:  "
-                        + ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST
-                        + ", the only supported format is:  "
-                        + ProtocolConstants.FORMAT_BIO_PAX);
-            }
         }
     }
 
@@ -236,7 +234,7 @@ public class ProtocolValidator {
         if (!request.getVersion().equals(CURRENT_VERSION)) {
             throw new ProtocolException
                     (ProtocolStatusCode.VERSION_NOT_SUPPORTED,
-                            "This data service currently only supports "
+                    "This data service currently only supports "
                     + "version 1.0." + HELP_MESSAGE);
         }
     }

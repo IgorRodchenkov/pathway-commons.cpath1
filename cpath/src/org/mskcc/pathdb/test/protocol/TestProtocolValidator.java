@@ -31,6 +31,7 @@ package org.mskcc.pathdb.test.protocol;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.protocol.*;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import java.util.HashMap;
 
@@ -42,11 +43,14 @@ import java.util.HashMap;
 public class TestProtocolValidator extends TestCase {
 
     /**
-     * Tests the Protocol Validator.
+     * Tests the Protocol Validator, PSI-MI Mode
      *
      * @throws Exception General Error.
      */
-    public void testProtocolValidator() throws Exception {
+    public void testProtocolValidatorPsiMi() throws Exception {
+
+        //  Set to PSI-MI Mode
+        CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_PSI_MI);
         HashMap map = new HashMap();
 
         //  Try ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF
@@ -64,16 +68,39 @@ public class TestProtocolValidator extends TestCase {
             assertEquals(ProtocolStatusCode.MISSING_ARGUMENTS, statusCode);
         }
 
-        //  Try ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF with
-        //  a version number, and a query.  This should succeed w/o any
-        //  protocol errors.
+        //  Try getting all pathways;  this is invalid in PSI-MI Mode
+        map.put(ProtocolRequest.ARG_COMMAND,
+                ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
+        request = new ProtocolRequest(map);
+        validator = new ProtocolValidator(request);
+        try {
+            validator.validate();
+            fail("ProtocolException should have been thrown");
+        } catch (ProtocolException e) {
+            ProtocolStatusCode statusCode = e.getStatusCode();
+            assertEquals(ProtocolStatusCode.BAD_COMMAND, statusCode);
+        }
+    }
+
+    /**
+     * Tests the Protocol Validator, BioPAX Mode
+     *
+     * @throws Exception General Error.
+     */
+    public void testProtocolValidatorBioPax() throws Exception {
+        //  Set to BioPAX Mode
+        CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_BIOPAX);
+
+        //  Validate GET_BY_CPATH_ID Command;  this should pass
+        //  w/o any validation errors.
+        HashMap map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
                 ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
         map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.CURRENT_VERSION);
         map.put(ProtocolRequest.ARG_QUERY, "1235");
         map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
-        request = new ProtocolRequest(map);
-        validator = new ProtocolValidator(request);
+        ProtocolRequest request = new ProtocolRequest(map);
+        ProtocolValidator validator = new ProtocolValidator(request);
         try {
             validator.validate();
         } catch (ProtocolException e) {
@@ -82,7 +109,7 @@ public class TestProtocolValidator extends TestCase {
         }
 
         //  Try the same query as above, except this time, set q to
-        //  a non-number.
+        //  a non-number.  This should result in a validation error.
         map.put(ProtocolRequest.ARG_QUERY, "ABCD");
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
@@ -95,7 +122,8 @@ public class TestProtocolValidator extends TestCase {
         }
 
         //  Try the same query as above, except this time, set format to
-        //  PSI-MI
+        //  PSI-MI.  This should result in a validation error, because
+        //  BioPAX is the only valid format.
         map.put(ProtocolRequest.ARG_QUERY, "12345");
         map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_PSI_MI);
         request = new ProtocolRequest(map);
@@ -108,13 +136,13 @@ public class TestProtocolValidator extends TestCase {
                     e.getStatusCode());
         }
 
-        //  Try getting all pathways w/o an organism parameter
+        //  Try getting all pathways.  This should result in no validation
+        //  errors.
         map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
                 ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
         map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.CURRENT_VERSION);
-        map.put(ProtocolRequest.ARG_QUERY, "1235");
-        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
+         map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
@@ -125,7 +153,7 @@ public class TestProtocolValidator extends TestCase {
     }
 
     /**
-     * Tests the Protocol Validator.
+     * Tests the Protocol Validator, with Empty Parameters.
      *
      * @throws Exception General Error.
      */
@@ -147,6 +175,9 @@ public class TestProtocolValidator extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testMaxHits() throws Exception {
+        //  Set to PSI-MI Mode
+        CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_PSI_MI);
+
         HashMap map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
                 ProtocolConstants.COMMAND_GET_BY_KEYWORD);

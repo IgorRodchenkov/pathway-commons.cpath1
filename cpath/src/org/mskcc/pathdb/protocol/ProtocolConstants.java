@@ -38,14 +38,25 @@ import java.util.HashSet;
  */
 public class ProtocolConstants {
     /**
-     * HashSet of Valid Commands.
+     * HashSet of Valid PSI-MI Commands.
      */
-    private static HashSet validCommands;
+    private static HashSet validPsiMiCommands;
 
     /**
-     * HashMap of Valid Formats.
+     * HashSet of Valid BioPAX Commands.
      */
-    private static HashSet validFormats;
+    private static HashSet validBioPaxCommands;
+
+    /**
+     * HashMap of Valid PSI-MI Formats.
+     */
+    private static HashSet validPsiMiFormats;
+
+    /**
+     * HashMap of Valid BioPax Formats.
+     */
+    private static HashSet validBioPaxFormats;
+
 
     /**
      * XML Format.
@@ -151,41 +162,70 @@ public class ProtocolConstants {
     public static final int MAX_NUM_HITS = 100;
 
     /**
-     * Gets HashSet of Valid Commands.
+     * Gets HashSet of Valid PSI-MI Commands.
      *
      * @return HashMap of Valid Commands.
      */
-    public HashSet getValidCommands() {
-        if (validCommands == null) {
-            validCommands = new HashSet();
-            validCommands.add(COMMAND_GET_BY_INTERACTOR_NAME_XREF);
-            validCommands.add(COMMAND_GET_BY_INTERACTOR_ID);
-            validCommands.add(COMMAND_GET_BY_ORGANISM);
-            validCommands.add(COMMAND_GET_BY_KEYWORD);
-            validCommands.add(COMMAND_GET_BY_DATABASE);
-            validCommands.add(COMMAND_GET_BY_PMID);
-            validCommands.add(COMMAND_GET_BY_EXPERIMENT_TYPE);
-            validCommands.add(COMMAND_HELP);
-            validCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
-            validCommands.add(COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
+    public HashSet getValidPsiMiCommands() {
+        if (validPsiMiCommands == null) {
+            validPsiMiCommands = new HashSet();
+            validPsiMiCommands.add(COMMAND_GET_BY_INTERACTOR_NAME_XREF);
+            validPsiMiCommands.add(COMMAND_GET_BY_INTERACTOR_ID);
+            validPsiMiCommands.add(COMMAND_GET_BY_ORGANISM);
+            validPsiMiCommands.add(COMMAND_GET_BY_KEYWORD);
+            validPsiMiCommands.add(COMMAND_GET_BY_DATABASE);
+            validPsiMiCommands.add(COMMAND_GET_BY_PMID);
+            validPsiMiCommands.add(COMMAND_GET_BY_EXPERIMENT_TYPE);
+            validPsiMiCommands.add(COMMAND_HELP);
         }
-        return validCommands;
+        return validPsiMiCommands;
     }
 
     /**
-     * Gets HashMap of Valid Formats.
+     * Gets HashSet of Valid BioPAX Commands.
+     *
+     * @return HashMap of Valid Commands.
+     */
+    public HashSet getValidBioPaxCommands() {
+        if (validBioPaxCommands == null) {
+            validBioPaxCommands = new HashSet();
+            validBioPaxCommands.add(COMMAND_HELP);
+            validBioPaxCommands.add(COMMAND_GET_BY_KEYWORD);
+            validBioPaxCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
+            validBioPaxCommands.add(COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
+        }
+        return validBioPaxCommands;
+    }
+
+
+    /**
+     * Gets HashMap of Valid PSI-MI Formats.
      *
      * @return HashMap of Valid Formats.
      */
-    public HashSet getValidFormats() {
-        if (validFormats == null) {
-            validFormats = new HashSet();
-            validFormats.add(FORMAT_XML);
-            validFormats.add(FORMAT_PSI_MI);
-            validFormats.add(FORMAT_BIO_PAX);
-            validFormats.add(FORMAT_HTML);
-            validFormats.add(FORMAT_COUNT_ONLY);
+    public HashSet getValidPsiMiFormats() {
+        if (validPsiMiFormats == null) {
+            validPsiMiFormats = new HashSet();
+            validPsiMiFormats.add(FORMAT_XML);
+            validPsiMiFormats.add(FORMAT_PSI_MI);
+            validPsiMiFormats.add(FORMAT_HTML);
+            validPsiMiFormats.add(FORMAT_COUNT_ONLY);
         }
-        return validFormats;
+        return validPsiMiFormats;
     }
+
+    /**
+     * Gets HashMap of Valid BioPax Formats.
+     *
+     * @return HashMap of Valid Formats.
+     */
+    public HashSet getValidBioPaxFormats() {
+        if (validBioPaxFormats == null) {
+            validBioPaxFormats = new HashSet();
+            validBioPaxFormats.add(FORMAT_BIO_PAX);
+            validBioPaxFormats.add(FORMAT_HTML);
+        }
+        return validBioPaxFormats;
+    }
+
 }
