@@ -21,9 +21,9 @@
     <tr>
         <% if (title.equals("cPath::Administration")){ %>
 		<td></td>
-        <td>
+        <td align=center>
 		<% } else { %>
-	    <td colspan=2 width=100%>
+	    <td colspan=2 width=100% align=center>
 	    <% } %>
             <div/>
             <div/>
@@ -38,7 +38,7 @@
                   <a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
                 </div>
                 <div>
-                  Copyright &#169; 2004 Memorial Sloan-Kettering Cancer Center.
+                  Copyright &#169; 2005 Memorial Sloan-Kettering Cancer Center.
                 </div>
             </div>
         </td>
