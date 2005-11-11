@@ -91,6 +91,7 @@
 			// only show left hand column on admin page or
 			// if mode is psi and we are on psi_mi_search.jsp
 			if (title.equals("cPath::Administration") ||
+                title.equals("cPath::AdministrationWebUIConfig") ||
 	           (title.equals("cPath::Search Results") &&
 			    CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI)){
 	    %>
