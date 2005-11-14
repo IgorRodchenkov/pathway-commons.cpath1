@@ -1,5 +1,5 @@
-/* $Id: tigris.css,v 1.5 2005-11-07 20:06:56 cerami Exp $
-	
+/* $Id: tigris.css,v 1.6 2005-11-14 18:10:39 cerami Exp $
+
 	This file defines basic default formatting for HTML conforming to Tigris application style. To extend or override these rules for your instance, edit inst.css instead of this file. */
 
 /* colors, backgrounds, borders, link indication */
@@ -92,7 +92,7 @@ a:active, a:hover, #leftcol a:active, #leftcol a:hover {
 }
 
 table, th, td {
-	border: none;
+	border: 0px solid red;
 }
 
 div.colbar {
@@ -428,11 +428,15 @@ body, .app h3, .app h4, #rightcol h3, pre, code, #apphead h2 small {
 	font-size: small;
 }
 
-small, div#footer, div#login, div.tabs th, div.tabs td, input, select, .paginate, #breadcrumbs, .courtesylinks, #rightcol div.help, .colbar, .tasknav, body.docs div#toc, #leftcol, .legend, .bars {
+small, div#login, .paginate, #breadcrumbs, .courtesylinks, #rightcol div.help, .colbar, .tasknav, body.docs div#toc, #leftcol, .legend, .bars {
 	font-size: xx-small;
 	voice-family: "\"}\"";
 	voice-family: inherit;
 	font-size: x-small;
+}
+
+div.tabs th, div.tabs td {
+	font-size: 100%;
 }
 
 .functnbar, .functnbar2, .functnbar3 {
@@ -811,11 +815,4 @@ td.filebrowse h3 {
 
 .cpath3 {
 	border-bottom: 1px dashed #ccc;
-}
-
-.searchbox {
-  background: #ddd;
-	#border-bottom: 1px solid #666;
-	#margin-bottom: 6px;
-	padding: 4px 4px 4px 0;
 }

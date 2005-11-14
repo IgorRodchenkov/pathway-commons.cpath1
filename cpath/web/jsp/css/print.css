@@ -1,6 +1,6 @@
-/* $Id: print.css,v 1.1 2004-02-09 20:11:53 cerami Exp $ */
+/* $Id: print.css,v 1.2 2005-11-14 18:10:39 cerami Exp $ */
 
-#banner, #footer, #leftcol, #breadcrumbs, .docs #toc, .docs .courtesylinks	{
+#banner, #leftcol, #breadcrumbs, .docs #toc, .docs .courtesylinks	{
 	display: none;
 	}
 body.docs div.docs	{
