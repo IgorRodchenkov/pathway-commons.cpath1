@@ -100,7 +100,6 @@ public class OrganismTable extends HtmlTable {
             sortOrder = SORT_ASC;
         }
 
-        createHeader("Organism Information");
         startTable();
         startRow();
         createColumnHeader("Species Name", SORT_BY_NAME, sortBy, sortOrder);
