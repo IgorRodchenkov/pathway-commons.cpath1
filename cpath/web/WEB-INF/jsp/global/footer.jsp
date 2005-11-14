@@ -15,37 +15,19 @@
             <!-- End Div:  bodycol -->
         </td>
     </tr>
-    <!-- End Body Column -->
-
-    <!-- Start Footer -->
-    <tr>
-        <% if (title.equals("cPath::Administration")){ %>
-		<td></td>
-        <td align=center>
-		<% } else { %>
-	    <td colspan=2 width=100% align=center>
-	    <% } %>
-            <div/>
-            <div/>
-            <div/>
-            <div id="footer">
-	            <div>
-                <% out.print(tagLine); %>
-                </div>
-                <div>
-                  <a href="disclaimer.do">Legal Disclaimer / Privacy Notice</a> |
-                  <a href="http://cbio.mskcc.org">Computational Biology Center</a> |
-                  <a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
-                </div>
-                <div>
-                  Copyright &#169; 2005 Memorial Sloan-Kettering Cancer Center.
-                </div>
-            </div>
-        </td>
-    </tr>
-    <!-- End Footer -->
 </table>
-<!--  End Main Table -->
+
+<div id="footer">
+  <P><% out.print(tagLine); %></P>
+  <P>
+  <a href="disclaimer.do">Legal Disclaimer / Privacy Notice</a> |
+  <a href="http://cbio.mskcc.org">Computational Biology Center</a> |
+  <a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
+  </P>
+  <P>
+  Copyright &#169; 2005 Memorial Sloan-Kettering Cancer Center.
+  </P>
+</div>
 
 <jsp:include page="../global/xdebug.jsp" flush="true" />
 </body>
