@@ -96,7 +96,7 @@
         </action>
 
         <action path="/adminWebUIConfig"
-            type="org.mskcc.pathdb.action.admin.AdminHomeAction"
+            type="org.mskcc.pathdb.action.admin.AdminWebUIConfigAction"
             name="webUIForm"
 			input="/WEB-INF/jsp/pages/AdminWebUIConfig.jsp"
 			scope="request"
