@@ -63,15 +63,6 @@
 	    }
 	}
 
-    tabNames.add("Stats");
-    String dbStatsUrl = "dbStats.do";
-    tabUrls.add(dbStatsUrl);
-    if (url.equals(dbStatsUrl)) {
-        tabActive.add (Boolean.TRUE);
-    } else {
-        tabActive.add (Boolean.FALSE);
-    }
-
     tabNames.add("FAQ");
     String advancedSearchUrl = "faq.do";
     tabUrls.add(advancedSearchUrl);
