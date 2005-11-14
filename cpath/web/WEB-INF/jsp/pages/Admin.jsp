@@ -70,6 +70,9 @@
         <% }
     %>
 
+    <jsp:include page="../global/dbStats.jsp" flush="true" />
+    <cbio:importTable />
+
     <div class="h3">
         <h3>Java Virtual Machine (JVM) Memory Usage</h3>
     </div>
