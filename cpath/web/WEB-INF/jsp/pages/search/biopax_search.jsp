@@ -20,53 +20,30 @@
             (BaseAction.ATTRIBUTE_TEXT_FRAGMENTS);
 %>
 
-<div id='apphead'>
-<%
-    String q = protocolRequest.getQuery();
-    if (q != null && q.trim().length() > 0) {
-        out.println("<h2>Search Results:  " + q + "</h2>");
-    }
-%>
-</div>
-
-<table border='0' cellspacing='0' cellpadding='3' width='100%'>
+<div id="content">
 <% if (totalNumHits.intValue() ==0) { %>
-    <tr class='a'>
-    <td colspan=4>No Matching Records Found. Please try again.</td>
-    </tr>
+    <h1>No Matching Records Found. Please try again.</h1>
 <% } else {
     Pager pager = new Pager (protocolRequest, totalNumHits.intValue());
-    out.println("<tr><td colspan=2>");
-    out.println("<div class=\"functnbar\">");
+    out.println("<div id='search_bar'>");
     out.println(pager.getHeaderHtml());
-    out.println("</div></td>");
-    out.println("</tr>");
+    out.println("</div>");
 %>
-    <TR>
-    <TD></TD>
-    </TR>
-<%
+    <%
     DaoCPath dao = DaoCPath.getInstance();
     for (int i=0; i<cpathIds.length; i++) {
         CPathRecord record = dao.getRecordById(cpathIds[i]);
-        out.println("<tr>");
-        out.println("<td colspan=2>");
         String url = "record.do?id=" + record.getId();
-        out.println("<A HREF=\"" + url + "\">" + record.getName() + "</A>");
-        out.println("</td>");
-        out.println("</tr>");
-        out.println("<tr>");
-        out.println("<td>" + HtmlUtil.truncateLongWords(fragments[i], 40));
-        out.println("<BR>&nbsp;</td>");
-        out.println("</tr>");
+        out.println("<div id='search_name'>" +
+                "<A HREF=\"" + url + "\">" + record.getName() + "</A></div>");
+        out.println("<div id='search_blob'>"
+                + HtmlUtil.truncateLongWords(fragments[i], 40)
+                +"</div>");
     }
-    out.println("<tr><td colspan=2>");
-    out.println("<div class=\"functnbar2\">");
+    out.println("<div id='search_bar'>");
     out.println(pager.getHeaderHtml());
     out.println("</div>");
-    out.println("</td>");
-    out.println("</tr>");
 }
 %>
-</TABLE>
+</div>
 <jsp:include page="../../global/footer.jsp" flush="true" />

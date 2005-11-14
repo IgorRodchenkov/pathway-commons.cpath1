@@ -12,7 +12,6 @@
 <jsp:include page="../global/header.jsp" flush="true" />
 
 <% // render the following content if we are in psi mode %>
-<% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI){ %>
 <div id="content">
 
 <h1>About Cytoscape</h1>
@@ -21,6 +20,8 @@ Cytoscape is an open source bioinformatics software platform for
 visualizing molecular interaction networks and integrating these
 interactions with gene expression profiles and other state data.
 (Find out more at:  <A HREF="http://cytoscape.org/">cytoscape.org</A>).
+
+<% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI){ %>
 
 <h1>About the cPath PlugIn</h1>
 

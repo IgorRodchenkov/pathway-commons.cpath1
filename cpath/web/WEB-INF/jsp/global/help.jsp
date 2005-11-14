@@ -4,7 +4,7 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 
-<div id="content">             
+<div id="content">
 <h1>Web Service API:  Introduction</h1>
 <P>
 If you wish to programmatically access our data, you can do so via our
@@ -77,6 +77,7 @@ URL parameters.  Parameters are as follows:
 </P>
 
 <h1>Commands </h1>
+        <div id="box">
         <TABLE>
             <tr>
                 <th>Command</font></th>
@@ -154,6 +155,7 @@ URL parameters.  Parameters are as follows:
             </tr>
             <% } %>
             </TABLE>
+        </div>
 
 <h1>Error Codes</h1>
 <P>
@@ -173,6 +175,7 @@ The table below provides a list of error codes, with their
         descriptions.
 </P>
 <P>
+<div id="box">
     <TABLE>
             <tr>
                 <th>Error Code</font></th>
@@ -194,6 +197,7 @@ The table below provides a list of error codes, with their
                 </TR>
             <% } %>
         </TABLE>
+</div>        
 <%
     ProtocolRequest pRequest = new ProtocolRequest();
 %>
