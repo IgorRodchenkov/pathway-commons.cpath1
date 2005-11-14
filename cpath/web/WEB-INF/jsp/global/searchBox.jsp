@@ -35,116 +35,100 @@ function toggleSearchOptions()
 }
 </SCRIPT>
 
-<div id="search" class="searchbox">
-    <FORM name="searchbox" ACTION="webservice.do" METHOD="GET">
-    <div class="body">
-        &nbsp;&nbsp;&nbsp;
-	<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="3">
-	<TR>
-        <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
-        <NOBR>
-        <INPUT TYPE="TEXT" name="<%= ProtocolRequest.ARG_QUERY %>"
-            SIZE="25" VALUE='<%= searchTerm %>'/>
+<DIV id="search">
+<FORM name="searchbox" ACTION="webservice.do" METHOD="GET">
+    <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
+    <INPUT TYPE="TEXT" name="<%= ProtocolRequest.ARG_QUERY %>" SIZE="25" VALUE='<%= searchTerm %>'/>
+    <INPUT TYPE="SUBMIT" value="Search"/>
+    <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
 
-        <INPUT TYPE="SUBMIT" value="Search"/>
-        </NOBR>
-        <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_FORMAT %>"
-            value="<%= ProtocolConstants.FORMAT_HTML %>"/>
-	</TR>
-	</TABLE>
-
-        <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
-            <% try { %>
-            &nbsp;
-            <SELECT NAME="<%= ProtocolRequest.ARG_ORGANISM %>">
-                <OPTION VALUE="">All Organisms</OPTION>
-            <%
-                OrganismStats orgStats = new OrganismStats();
-                ArrayList organisms = orgStats.getOrganismsSortedByName();
-            %>
-            <% for (int i=0; i<organisms.size(); i++) {
-                Organism organism = (Organism) organisms.get(i);
-                String currentTaxId = Integer.toString(organism.getTaxonomyId());
-                String species = organism.getSpeciesName();
-                String speciesShort = species;
-                if (species.length() > 12) {
-                    speciesShort = new String (species.substring(0,12) + "...");
-                }
-            %>
-                <% if (currentTaxId.equals(taxId)) { %>
-                    <OPTION TITLE='<%= species %>'
-                        VALUE="<%= organism.getTaxonomyId()%>" SELECTED>
-                    <%= speciesShort %></OPTION>
-                <% } else { %>
-                    <OPTION TITLE='<%= species %>' VALUE="<%= organism.getTaxonomyId()%>">
-                    <%= speciesShort %></OPTION>
-                <% } %>
+    <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
+        <% try { %>
+        <SELECT NAME="<%= ProtocolRequest.ARG_ORGANISM %>">
+            <OPTION VALUE="">All Organisms</OPTION>
+        <%
+            OrganismStats orgStats = new OrganismStats();
+            ArrayList organisms = orgStats.getOrganismsSortedByName();
+        %>
+        <% for (int i=0; i<organisms.size(); i++) {
+            Organism organism = (Organism) organisms.get(i);
+            String currentTaxId = Integer.toString(organism.getTaxonomyId());
+            String species = organism.getSpeciesName();
+            String speciesShort = species;
+            if (species.length() > 12) {
+                speciesShort = new String (species.substring(0,12) + "...");
+            }
+        %>
+            <% if (currentTaxId.equals(taxId)) { %>
+                <OPTION TITLE='<%= species %>'
+                    VALUE="<%= organism.getTaxonomyId()%>" SELECTED>
+                <%= speciesShort %></OPTION>
+            <% } else { %>
+                <OPTION TITLE='<%= species %>' VALUE="<%= organism.getTaxonomyId()%>">
+                <%= speciesShort %></OPTION>
             <% } %>
+        <% } %>
+        </SELECT>
+        <% } catch (Exception e) { %>
             </SELECT>
-            <% } catch (Exception e) { %>
-                </SELECT>
-            <% } %>
+        <% } %>
 
-            <% if (searchOptionsFlag != null
-                    && searchOptionsFlag.booleanValue() == true) { %>
-            &nbsp;
-                <%
-                    String getByKeyword = "";
-                    String getByInteractor = "";
-                    String getByExperimentType = "";
-                    String getByPmid = "";
-                    String getByDb = "";
-                %>
-                <%
-                    if (command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD))  {
-                        getByKeyword = new String("SELECTED");
-                    } else if (command.equals
-                            (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF))  {
-                        getByInteractor = new String("SELECTED");
-                    } else if (command.equals
-                            (ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE))  {
-                        getByExperimentType = new String("SELECTED");
-                    } else if (command.equals(ProtocolConstants.COMMAND_GET_BY_PMID))  {
-                        getByPmid = new String("SELECTED");
-                    } else if (command.equals
-                            (ProtocolConstants.COMMAND_GET_BY_DATABASE))  {
-                        getByDb = new String("SELECTED");
-                    }
-                %>
-                <SELECT NAME="<%= ProtocolRequest.ARG_COMMAND %>">
-                <OPTION
-                    VALUE="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"
-                    <%= getByKeyword %>>All Fields</OPTION>
-                <OPTION
-                    VALUE="<%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF %>"
-                    <%= getByInteractor %>>Interactor</OPTION>
-                <OPTION
-                    VALUE="<%= ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE %>"
-                    <%= getByExperimentType %>>Experimental Evidence</OPTION>
-                <OPTION
-                    VALUE="<%= ProtocolConstants.COMMAND_GET_BY_PMID %>"
-                    <%= getByPmid %>>Pub Med ID</OPTION>
-                <OPTION
-                    VALUE="<%= ProtocolConstants.COMMAND_GET_BY_DATABASE %>"
-                    <%= getByDb %>>Database Source</OPTION>
-            </SELECT>
-            <% } %>
-            <span style="text-align:right">
-                <% if (searchOptionsFlag != null
-                        && searchOptionsFlag.booleanValue() == true) { %>
-                    <A TITLE="Hide Search Options"
-                        HREF="javascript:toggleSearchOptions();">[Hide...]</A>
-                <% } else { %>
-                <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
-                    value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
-                <A TITLE="Show Search Options"
-                        HREF="javascript:toggleSearchOptions();">[Options...]</A>
-                <% } %>
-            </span>
-            <%  } else { %>
-                <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_COMMAND %>"
-                SIZE="25" VALUE='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>                
-            <% } %>
-        </FORM>
-    </div>
-</div>
+    <% if (searchOptionsFlag != null
+            && searchOptionsFlag.booleanValue() == true) { %>
+        <%
+            String getByKeyword = "";
+            String getByInteractor = "";
+            String getByExperimentType = "";
+            String getByPmid = "";
+            String getByDb = "";
+        %>
+        <%
+            if (command.equals(ProtocolConstants.COMMAND_GET_BY_KEYWORD))  {
+                getByKeyword = new String("SELECTED");
+            } else if (command.equals
+                    (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF))  {
+                getByInteractor = new String("SELECTED");
+            } else if (command.equals
+                    (ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE))  {
+                getByExperimentType = new String("SELECTED");
+            } else if (command.equals(ProtocolConstants.COMMAND_GET_BY_PMID))  {
+                getByPmid = new String("SELECTED");
+            } else if (command.equals
+                    (ProtocolConstants.COMMAND_GET_BY_DATABASE))  {
+                getByDb = new String("SELECTED");
+            }
+        %>
+        <SELECT NAME="<%= ProtocolRequest.ARG_COMMAND %>">
+        <OPTION
+            VALUE="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"
+            <%= getByKeyword %>>All Fields</OPTION>
+        <OPTION
+            VALUE="<%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF %>"
+            <%= getByInteractor %>>Interactor</OPTION>
+        <OPTION
+            VALUE="<%= ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE %>"
+            <%= getByExperimentType %>>Experimental Evidence</OPTION>
+        <OPTION
+            VALUE="<%= ProtocolConstants.COMMAND_GET_BY_PMID %>"
+            <%= getByPmid %>>Pub Med ID</OPTION>
+        <OPTION
+            VALUE="<%= ProtocolConstants.COMMAND_GET_BY_DATABASE %>"
+            <%= getByDb %>>Database Source</OPTION>
+    </SELECT>
+    <% } %>
+    <% if (searchOptionsFlag != null
+            && searchOptionsFlag.booleanValue() == true) { %>
+        <A TITLE="Hide Search Options"
+            HREF="javascript:toggleSearchOptions();">[Hide...]</A>
+    <% } else { %>
+        <INPUT TYPE="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
+            value="<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>"/>
+        <A TITLE="Show Search Options"
+                HREF="javascript:toggleSearchOptions();">[Options...]</A>
+    <% } %>
+    <%  } else { %>
+        <INPUT TYPE="HIDDEN" name="<%= ProtocolRequest.ARG_COMMAND %>"
+        SIZE="25" VALUE='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
+    <% } %>
+</FORM>
+</DIV>

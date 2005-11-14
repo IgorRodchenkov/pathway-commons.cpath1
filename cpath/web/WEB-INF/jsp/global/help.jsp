@@ -4,18 +4,16 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 
-<div id="apphead">
-    <h2>Web Service API</h2>
-</div>
-<h3>Introduction</h3>
-<TABLE><TR><TD>
+<div id="content">             
+<h1>Web Service API:  Introduction</h1>
+<P>
 If you wish to programmatically access our data, you can do so via our
 Web Service API.  This page provides a quick reference guide to help you
 get started.
-</TD></TR></TABLE>
+</P>
 
-<h3>Issuing Client Requests</h3>
-<TABLE><TR><TD>
+<h1>Issuing Client Requests</h1>
+<P>
 Client requests to the Web Service are formed by specifying
 URL parameters.  Parameters are as follows:
         <UL>
@@ -76,9 +74,9 @@ URL parameters.  Parameters are as follows:
                     </LI>
                 <% } %>
 	    </UL>
-</TD></TR></TABLE>
+</P>
 
-<h3>Commands </h3>
+<h1>Commands </h1>
         <TABLE>
             <tr>
                 <th>Command</font></th>
@@ -157,12 +155,11 @@ URL parameters.  Parameters are as follows:
             <% } %>
             </TABLE>
 
-<h3>Error Codes</h3>
-<TABLE><TR><TD>
+<h1>Error Codes</h1>
+<P>
 If an error occurs while processing your request, you will
 receive an XML document with detailed information about the cause of
 the error.  Error documents have the following format:
-
 <PRE>
 &lt;error&gt;
     &lt;error_code&gt;[ERROR_CODE]&lt;/error_code&gt;
@@ -170,13 +167,13 @@ the error.  Error documents have the following format:
     &lt;error_details&gt;[ADDITIONAL_ERROR _DETAILS]&lt;/error_details&gt;
 &lt;/error&gt;
 </PRE>
-
-        The table below provides a list of error codes, with their
+</P>
+<P>
+The table below provides a list of error codes, with their
         descriptions.
-</TD></TR></TABLE>
-
-        <P>
-        <TABLE>
+</P>
+<P>
+    <TABLE>
             <tr>
                 <th>Error Code</font></th>
                 <th>Error Description</font></th>
@@ -197,13 +194,11 @@ the error.  Error documents have the following format:
                 </TR>
             <% } %>
         </TABLE>
-
-
 <%
     ProtocolRequest pRequest = new ProtocolRequest();
 %>
-<h3>Examples of Usage</h3>
-<TABLE><TR><TD>
+<h1>Examples of Usage</h1>
+<P>
         <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             pRequest.setQuery("DNA");
@@ -214,8 +209,8 @@ the error.  Error documents have the following format:
             <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
             </SMALL>
         </UL>
-
-		The following query searches for the keyword "DNA".
+</P>
+<P>The following query searches for the keyword "DNA".
         Data will be formatted in HTML.
         <% pRequest.setFormat(ProtocolConstants.FORMAT_HTML); %>
         <UL>
@@ -226,13 +221,16 @@ the error.  Error documents have the following format:
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
             pRequest.setFormat(ProtocolConstants.FORMAT_BIO_PAX);
         %>
-        The following requests a summary of all top-level pathways
-        in the database:
+</P>
+<P>
+    The following requests a summary of all top-level pathways
+    in the database:
         <UL>
             <LI><SMALL><A HREF="<%=  pRequest.getUri() %>"><%= pRequest.getUri() %></A>.</SMALL>
         </UL>
-
-        The following requests the full BioPAX record for local ID 1:
+</P>
+<P>
+    The following requests the full BioPAX record for local ID 1:
         <%
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery("1");
@@ -244,18 +242,20 @@ the error.  Error documents have the following format:
         <%
             pRequest.setFormat("svg");
         %>
-        The following query specifies an invalid format.
-        The web service will return an XML document with a specific error code
-        and error message.
+</P>
+<P>
+    The following query specifies an invalid format.
+    The web service will return an XML document with a specific error code
+    and error message.
         <UL>
             <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
             </SMALL>
         </UL>
-</TD></TR></TABLE>
+</P>
 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
 
-<h3><A NAME="large">Retrieving Large Sets of Data</A></h3>
-<TABLE><TR><TD>
+<h1><A NAME="large">Retrieving Large Sets of Data</A></h1>
+<P>
     To prevent overloading of the system, clients are restricted to a maximum of
     <%= ProtocolConstants.MAX_NUM_HITS %> hits at a time.
     However, it is still possible to retrieve larger sets of data
@@ -267,15 +267,14 @@ the error.  Error documents have the following format:
     via the Web Service API, you follow the same procedure and
     retrieve results one "page" at a time.  This requires multiple client
     requests, and some more intelligent client processing.
-
+</P>
 <%
     pRequest = new ProtocolRequest();
     pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_ORGANISM);
     pRequest.setQuery("562");
     pRequest.setFormat(ProtocolConstants.FORMAT_COUNT_ONLY);
 %>
-
-    <P>For example, assume a client wishes to download the full set
+<P>For example, assume a client wishes to download the full set
     of interactions for E. coli.  Here's how such client processing would work:
     <UL>
     <LI>First, find out how many interactions for E. coli exist.  To do so,
@@ -286,6 +285,8 @@ the error.  Error documents have the following format:
             <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
             </SMALL>
         </UL>
+</P>
+<P>
     You will receive back a single integer value, indicating the total
     number of matching interactions.
     <LI>Next, create a while loop or a for loop for retrieving data
@@ -297,7 +298,8 @@ the error.  Error documents have the following format:
     <%= ProtocolRequest.ARG_MAX_HITS%> is set to 50, you will retrieve interactions
     100-150 in the complete data set.
     </UL>
-    <P>Complete psuedocode of the entire process looks like this:
+</P>
+<P>Complete psuedocode of the entire process looks like this:
     <PRE>
 totalNumInteractions = [Issue search resuest with <%= ProtocolRequest.ARG_FORMAT %> set to <%= ProtocolConstants.FORMAT_COUNT_ONLY %>.]
 index = 0;
@@ -306,7 +308,4 @@ while (index < totalNumInteractions) {
     index += 50;
 }</PRE>
     After the while loop exits, you have a complete set of E. Coli data.
-    </UL>
-    </TD></TR></TABLE>
 <% } %>
-

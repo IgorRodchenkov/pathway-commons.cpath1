@@ -21,5 +21,7 @@ String faqContent = webUIBean.getFAQPageContent();
         "cPath::FAQ"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
-<% out.print(faqContent); %>
+<div id="content">
+<%= faqContent %>
+</div>
 <jsp:include page="../global/footer.jsp" flush="true" />

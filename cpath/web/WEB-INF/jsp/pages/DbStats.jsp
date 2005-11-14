@@ -6,16 +6,9 @@
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
-<div id="apphead">
-    <h2>Database Stats and Information</h2>
-</div>
-
-<P>Note that cPath currently aggregrates interaction records from
-multiple data sources, and does not yet detect duplicate interaction records.
-As a result, some interaction records may be redundant.
-</P>
-
+<div id="content">
 <jsp:include page="../global/dbStats.jsp" flush="true" />
 <cbio:importTable />
+</div>
 
 <jsp:include page="../global/footer.jsp" flush="true" />

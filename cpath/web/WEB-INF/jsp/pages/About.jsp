@@ -18,8 +18,10 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 String aboutContent = webUIBean.getAboutPageContent();
 %>
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE,
-        "cPath::FAQ"); %>
+        "cPath::About"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
-<% out.print(aboutContent); %>
+<div id="content">
+<%= aboutContent %>
+</div>
 <jsp:include page="../global/footer.jsp" flush="true" />
