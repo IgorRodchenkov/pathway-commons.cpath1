@@ -3,7 +3,7 @@
                          "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
     <display-name>cPath: Cancer Pathway Database</display-name>
-    <!-- XML-RPC Servelt -->
+    <!-- XML-RPC Servlet -->
     <servlet>
         <servlet-name>XmlRpcServlet</servlet-name>
         <servlet-class>org.mskcc.pathdb.servlet.XmlRpcServlet</servlet-class>
@@ -56,7 +56,7 @@
         </init-param>
         <init-param>
             <!-- set to "psi_mi" or "biopax" -->
-	    <param-name>web_mode</param-name>
+	        <param-name>web_mode</param-name>
             <param-value>biopax</param-value>
         </init-param>
         <load-on-startup/>
