@@ -7,10 +7,8 @@
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
-	String title =
-		(CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) ?
-	    "cPath:: Browse by Pathway" : "cPath::Browse By Organism";
-    	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+	String title = "cPath:: Home";
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 
 	// get right column content
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
@@ -20,24 +18,26 @@
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
-<div id="apphead">
-<h2><% out.print(tagLine);%></h2>
+
+<TABLE>
+<TR>
+<TD WIDTH=60%>
+<div id="tagline">
+    <% out.print(tagLine);%>
 </div>
 
-<table>
-<tr>
-<td width=100%>
 <% // render the following content if we are in biopax mode %>
 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX){ %>
-<jsp:include page="./PathwayListTable.jsp" flush="true" />
+    <jsp:include page="./PathwayListTable.jsp" flush="true" />
 <% // render the following in psi mi mode %>
 <% } else { %>
-<cbio:organismTable />
+    <cbio:organismTable />
 <% } %>
-</td>
-<td>
+</TD>
+<TD>
 <% out.println(homePageRightColumnContent); %>
-</td>
-</tr>
-</table>
+</TD>
+</TR>
+</TABLE>
+
 <jsp:include page="../global/footer.jsp" flush="true" />
