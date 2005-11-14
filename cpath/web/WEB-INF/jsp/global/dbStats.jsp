@@ -18,8 +18,9 @@ try {
 
 %>
 <div class="h3">
-    <h3>Database Stats</h3>
+        <h3>Database Stats</h3>
 </div>
+
 <TABLE>
 
     <TR>
