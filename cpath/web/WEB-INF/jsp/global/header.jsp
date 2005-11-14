@@ -54,35 +54,16 @@
 <body marginwidth="0" marginheight="0" class="composite"
   OnLoad="document.searchbox.q.focus();">
 
-<div id="banner">
-    <table border="0" cellspacing="0" cellpadding="8" width="100%">
-        <tr>
-            <td>
-            <% 
-	             out.println(banner);
-	        %>
-            </td>
-            <td>
-                <div align="right" id="login">
-                Version:  <%= CPathConstants.VERSION %>
-
-                <jsp:include page="../global/printFriendlyLink.jsp" flush="true" />
-                </div>
-            </td>
-        </tr>
-    </table>
+<!-- Header/Banner -->
+<div id="home_page_header">
+<%= banner %>
 </div>
 
+<!-- Navigation Tabs -->
 <jsp:include page="../global/tabs.jsp" flush="true" />
 
 <!-- Search Box -->
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-    <tr valign="top">
-        <td align=left>
-            <jsp:include page="../global/searchBox.jsp" flush="true" />
-        </td>
-    </tr>
-</table>
+<jsp:include page="../global/searchBox.jsp" flush="true" />
 
 <!-- Start Main Table -->
 <table border="0" cellspacing="0" cellpadding="4" width="100%" id="main">
