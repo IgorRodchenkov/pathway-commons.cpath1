@@ -29,14 +29,12 @@
  **/
 package org.mskcc.pathdb.action.admin;
 
-import org.mskcc.pathdb.form.WebUIBean;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.servlet.CPathUIConfig;
 import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,11 +64,6 @@ public abstract class AdminBaseAction extends BaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
         request.setAttribute(BaseAction.PAGE_IS_ADMIN, "YES");
         checkErrorPage(request, xdebug);
-
-		// populate webUIBean if necessary
-		if (form != null){
-			populateWebUIBean(form, xdebug);
-		}
 
         return adminExecute(mapping, form, request, response, xdebug);
     }
@@ -146,32 +139,4 @@ public abstract class AdminBaseAction extends BaseAction {
                     + " page functionality");
         }
     }
-
-    /**
-     * Must Be Implemented By Subclass.
-     *
-     * @param form     Struts ActionForm Object.
-     * @param xdebug   XDebug Object.
-
-     * @throws Exception All Exceptions.
-     */
-	private void populateWebUIBean(ActionForm form, XDebug xdebug) throws Exception {
-
-		// cast form
-		WebUIBean webUIBean = (WebUIBean) form;
-
-		// only retrieve form data if the form is empty
-		if (webUIBean.getLogo() == null){
-			WebUIBean record = CPathUIConfig.getWebUIBean();
- 			webUIBean.setLogo(record.getLogo());
- 			webUIBean.setHomePageTitle(record.getHomePageTitle());
- 			webUIBean.setHomePageTagLine(record.getHomePageTagLine());
-			webUIBean.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
-			webUIBean.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
-			webUIBean.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
-			webUIBean.setFAQPageContent(record.getFAQPageContent());
-			webUIBean.setAboutPageContent(record.getAboutPageContent());
-			webUIBean.setHomePageMaintenanceTagLine(record.getHomePageMaintenanceTagLine());
-		}
-	}
 }
