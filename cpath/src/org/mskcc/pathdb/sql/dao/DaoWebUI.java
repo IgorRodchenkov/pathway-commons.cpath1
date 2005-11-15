@@ -1,5 +1,5 @@
 //
-// $Id: DaoWebUI.java,v 1.3 2005-11-08 21:10:13 grossb Exp $
+// $Id: DaoWebUI.java,v 1.4 2005-11-15 18:34:56 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -68,15 +68,14 @@ public class DaoWebUI {
 			// set the form object
 			if (rs.next()){
 				webUIBean = new WebUIBean();
-				webUIBean.setLogo(rs.getString("LOGO"));
-				webUIBean.setHomePageTitle(rs.getString("HOME_PAGE_TITLE"));
+				webUIBean.setHomePageHeader(rs.getString("HOME_PAGE_HEADER"));
 				webUIBean.setHomePageTagLine(rs.getString("HOME_PAGE_TAG_LINE"));
 				webUIBean.setHomePageRightColumnContent(rs.getString("HOME_PAGE_RIGHT_COLUMN_CONTENT"));
 				webUIBean.setDisplayBrowseByPathwayTab(rs.getBoolean("DISPLAY_BROWSE_BY_PATHWAY_TAB"));
 				webUIBean.setDisplayBrowseByOrganismTab(rs.getBoolean("DISPLAY_BROWSE_BY_ORGANISM_TAB"));
 				webUIBean.setFAQPageContent(rs.getString("FAQ_PAGE_CONTENT"));
 				webUIBean.setAboutPageContent(rs.getString("ABOUT_PAGE_CONTENT"));
-				webUIBean.setHomePageMaintenanceTagLine(rs.getString("HOME_PAGE_MAINTENANCE_TAG_LINE"));
+				webUIBean.setMaintenanceTagLine(rs.getString("MAINTENANCE_TAG_LINE"));
 			}
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
@@ -107,24 +106,22 @@ public class DaoWebUI {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("UPDATE web_ui set " +
-					 "`LOGO` = ?, " +
-					 "`HOME_PAGE_TITLE` = ?, " +
+					 "`HOME_PAGE_HEADER` = ?, " +
 					 "`HOME_PAGE_TAG_LINE` = ?, " +
 					 "`HOME_PAGE_RIGHT_COLUMN_CONTENT` = ?, " +
 					 "`DISPLAY_BROWSE_BY_PATHWAY_TAB` = ?, " +
 					 "`DISPLAY_BROWSE_BY_ORGANISM_TAB` = ?, " +
 					 "`FAQ_PAGE_CONTENT` = ?, " +
 					 "`ABOUT_PAGE_CONTENT` = ?, " +
-					 "`HOME_PAGE_MAINTENANCE_TAG_LINE` = ?");
-            pstmt.setString(1, form.getLogo());
-            pstmt.setString(2, form.getHomePageTitle());
-            pstmt.setString(3, form.getHomePageTagLine());
-            pstmt.setString(4, form.getHomePageRightColumnContent());
-            pstmt.setBoolean(5, form.getDisplayBrowseByPathwayTab());
-            pstmt.setBoolean(6, form.getDisplayBrowseByOrganismTab());
-            pstmt.setString(7, form.getFAQPageContent());
-            pstmt.setString(8, form.getAboutPageContent());
-            pstmt.setString(9, form.getHomePageMaintenanceTagLine());
+					 "`MAINTENANCE_TAG_LINE` = ?");
+            pstmt.setString(1, form.getHomePageHeader());
+            pstmt.setString(2, form.getHomePageTagLine());
+            pstmt.setString(3, form.getHomePageRightColumnContent());
+            pstmt.setBoolean(4, form.getDisplayBrowseByPathwayTab());
+            pstmt.setBoolean(5, form.getDisplayBrowseByOrganismTab());
+            pstmt.setString(6, form.getFAQPageContent());
+            pstmt.setString(7, form.getAboutPageContent());
+            pstmt.setString(8, form.getMaintenanceTagLine());
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
