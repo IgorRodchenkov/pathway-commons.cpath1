@@ -154,6 +154,11 @@ public abstract class BaseAction extends Action {
     public static final String PROPERTY_WEB_MODE = "web_mode";
 
     /**
+     * Global Property:  Admin Page Active.
+     */
+    public static final String PROPERTY_ADMIN_MODE_ACTIVE = "admin_mode_active";
+
+    /**
      * Admin page
      */
     public static final String PAGE_IS_ADMIN = "admin_page";
