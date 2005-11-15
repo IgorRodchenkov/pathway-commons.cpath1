@@ -14,8 +14,7 @@
 
 	// setup some configurable UI elements
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String image = new String("<IMG SRC=\"" + webUIBean.getLogo() + "\">&nbsp;");
-	String banner = (image + webUIBean.getHomePageTitle());
+	String homePageHeader = webUIBean.getHomePageHeader();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -56,7 +55,7 @@
 
 <!-- Header/Banner -->
 <div id="home_page_header">
-<%= banner %>
+<%= homePageHeader %>
 </div>
 
 <!-- Navigation Tabs -->
