@@ -1,5 +1,5 @@
 //
-// $Id: AdminWebUIConfigAction.java,v 1.1 2005-11-14 17:45:15 grossb Exp $
+// $Id: AdminWebUIConfigAction.java,v 1.2 2005-11-15 18:36:01 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,17 +87,16 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
 		WebUIBean webUIBean = (WebUIBean) form;
 
 		// only retrieve form data if the form is empty
-		if (webUIBean.getLogo() == null){
+		if (webUIBean.getHomePageHeader() == null){
 			WebUIBean record = CPathUIConfig.getWebUIBean();
- 			webUIBean.setLogo(record.getLogo());
- 			webUIBean.setHomePageTitle(record.getHomePageTitle());
+ 			webUIBean.setHomePageHeader(record.getHomePageHeader());
  			webUIBean.setHomePageTagLine(record.getHomePageTagLine());
 			webUIBean.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
 			webUIBean.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
 			webUIBean.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
 			webUIBean.setFAQPageContent(record.getFAQPageContent());
 			webUIBean.setAboutPageContent(record.getAboutPageContent());
-			webUIBean.setHomePageMaintenanceTagLine(record.getHomePageMaintenanceTagLine());
+			webUIBean.setMaintenanceTagLine(record.getMaintenanceTagLine());
 		}
 	}
 }
