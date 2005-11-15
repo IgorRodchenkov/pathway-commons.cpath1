@@ -29,7 +29,25 @@ public class CPathUIConfig {
      */
     public static final String BIOPAX = "biopax";
 
+	/**
+	 * WebMode.
+	 */
     private static int webMode;
+
+    /**
+     * Flag for AdminMode Deactive.
+     */
+    public static final int ADMIN_MODE_DEACTIVE = 0;
+
+    /**
+     * Flag for AdminMode Active.
+     */
+    public static final int ADMIN_MODE_ACTIVE = 1;
+
+	/**
+	 * Admin Mode Active.
+	 */
+    private static int adminModeActive;
 
     /**
      * Reference to WebUIBean.
@@ -54,6 +72,27 @@ public class CPathUIConfig {
      */
     public static int getWebMode() {
         return webMode;
+    }
+
+	/**
+	 * Sets Admin Mode Active.
+	 *
+	 * @param adminModeActive ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.
+	 */
+    public static void setAdminModeActive (int activeMode) {
+        if (activeMode != ADMIN_MODE_ACTIVE && activeMode != ADMIN_MODE_DEACTIVE) {
+            throw new IllegalArgumentException ("activeMode must be set to:  "
+                + "ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.");
+        }
+        adminModeActive = activeMode;
+    }
+	
+    /**
+     * Gets the Admin Mode Active.
+     * @return ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.
+     */
+    public static int getAdminModeActive() {
+        return adminModeActive;
     }
 
     /**
