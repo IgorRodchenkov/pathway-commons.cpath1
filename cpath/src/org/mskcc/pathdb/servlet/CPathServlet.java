@@ -88,6 +88,7 @@ public final class CPathServlet extends ActionServlet {
         String adminUser = config.getInitParameter("admin_user");
         String adminPassword = config.getInitParameter("admin_password");
         String webMode = config.getInitParameter(BaseAction.PROPERTY_WEB_MODE);
+        String adminModeActive = config.getInitParameter(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE);
         String psiSchemaUrl = config.getInitParameter
                 (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
         System.err.println("web.xml param:  db_host --> " + dbHost + " [OK]");
@@ -103,6 +104,9 @@ public final class CPathServlet extends ActionServlet {
         System.err.println("web.xml param:  "
                 + BaseAction.PROPERTY_WEB_MODE + "--> "
                 + webMode + " [OK]");
+        System.err.println("web.xml param:  "
+                + BaseAction.PROPERTY_ADMIN_MODE_ACTIVE + "--> "
+                + adminModeActive + " [OK]");
 
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
@@ -112,8 +116,10 @@ public final class CPathServlet extends ActionServlet {
         manager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 psiSchemaUrl);
         manager.setProperty(BaseAction.PROPERTY_WEB_MODE, webMode);
+        manager.setProperty(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE, adminModeActive);
 
         storeWebMode(webMode);
+		storeAdminModeActive(adminModeActive);
 
         String dbName = config.getInitParameter("db_name");
         manager.setProperty(PropertyManager.DB_LOCATION, dbHost);
@@ -154,6 +160,23 @@ public final class CPathServlet extends ActionServlet {
             mode = CPathUIConfig.WEB_MODE_BIOPAX;
         }
         CPathUIConfig.setWebMode(mode);
+    }
+
+    /**
+     * Stores the Admin Mode in CPathUIConfig.
+     * @param adminModeActive web mode String.
+     */
+    private void storeAdminModeActive(String adminModeActive) {
+        int activeMode;
+        if (adminModeActive.equals (String.valueOf(CPathUIConfig.ADMIN_MODE_DEACTIVE))){
+            activeMode = CPathUIConfig.ADMIN_MODE_DEACTIVE;
+        } else if (adminModeActive.equals(String.valueOf(CPathUIConfig.ADMIN_MODE_ACTIVE))){
+            activeMode = CPathUIConfig.ADMIN_MODE_ACTIVE;
+        } else {
+            System.err.println("Admin mode not recognized, deactivating Admin Mode");
+            activeMode = CPathUIConfig.ADMIN_MODE_DEACTIVE;
+        }
+        CPathUIConfig.setAdminModeActive(activeMode);
     }
 
     /**
