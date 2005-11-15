@@ -1,5 +1,5 @@
 //
-// $Id: AdminWebUIConfigAction.java,v 1.2 2005-11-15 18:36:01 grossb Exp $
+// $Id: AdminWebUIConfigAction.java,v 1.3 2005-11-15 19:29:23 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,6 +64,12 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
     public ActionForward adminExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
+
+		// only process if we are authorized
+		if (CPathUIConfig.getAdminModeActive() ==
+			CPathUIConfig.ADMIN_MODE_DEACTIVE){
+			return mapping.findForward(BaseAction.FORWARD_UNAUTHORIZED);
+		}
 
 		// populate webUIBean if necessary
 		if (form != null){

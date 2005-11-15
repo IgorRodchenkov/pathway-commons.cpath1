@@ -1,3 +1,8 @@
+<%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%
+	// get admin mode active
+	int adminModeActive = CPathUIConfig.getAdminModeActive();
+%>
 <div id="docs" class="toolgroup">
     <div class="label">
         <strong>Administration Tasks</strong>
@@ -19,9 +24,11 @@
         <div>
             <A HREF="adminDiagnostics.do">Run cPath Diagnostics</A>
         </div>
+<% if (adminModeActive == CPathUIConfig.ADMIN_MODE_ACTIVE){ %>
         <div>
             <A HREF="adminWebUIConfig.do">Configure User Interface</A>
         </div>
+<% } %>
     </div>
     
     <div class="label">
