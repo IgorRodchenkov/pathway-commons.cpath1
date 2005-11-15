@@ -7,7 +7,7 @@
 
 	// get tag line
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String tagLine = webUIBean.getHomePageMaintenanceTagLine();
+	String maintenanceTagLine = webUIBean.getMaintenanceTagLine();
 %>
                 </div>
                 <!-- End Div:  app -->
@@ -18,7 +18,7 @@
 </table>
 
 <div id="footer">
-  <P><% out.print(tagLine); %></P>
+  <P><% out.print(maintenanceTagLine); %></P>
   <P>
   <a href="disclaimer.do">Legal Disclaimer / Privacy Notice</a> |
   <a href="http://cbio.mskcc.org">Computational Biology Center</a> |
