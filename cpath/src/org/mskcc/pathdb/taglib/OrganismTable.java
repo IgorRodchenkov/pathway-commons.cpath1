@@ -32,6 +32,7 @@ package org.mskcc.pathdb.taglib;
 import net.sf.ehcache.CacheException;
 import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.Organism;
+import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.protocol.ProtocolConstants;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -49,6 +50,13 @@ import java.util.Collections;
  * @author Ethan Cerami
  */
 public class OrganismTable extends HtmlTable {
+
+
+    /**
+     * URL Value for Referrer.
+     */
+    private String referer = "HOME";
+
     /**
      * URL Parameter for Sort By Parameter.
      */
@@ -79,6 +87,15 @@ public class OrganismTable extends HtmlTable {
      * Sort Descending.
      */
     public static final String SORT_DESC = "desc";
+
+	/**
+	 * Receives Tag Attribute.
+	 *
+	 * @param String referer.
+	 */
+	public void setReferer(String referer){
+		this.referer = referer;
+	}
 
     /**
      * Executes JSP Custom Tag
@@ -112,7 +129,8 @@ public class OrganismTable extends HtmlTable {
     private void createColumnHeader(String columnHeading, String targetSortBy,
             String userSortBy, String userSortOrder) {
         StringBuffer url = new StringBuffer
-                ("browse.do?" + SORT_BY_PARAMETER + "="
+                ("browse.do?" + BaseAction.REFERER + "=" + referer + "&" +
+				 SORT_BY_PARAMETER + "="
                 + targetSortBy + "&" + SORT_ORDER_PARAMETER + "=");
         String title = "Sort Organisms by " + columnHeading;
         if (userSortBy.equals(targetSortBy)) {

@@ -14,6 +14,9 @@
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 	String tagLine = webUIBean.getHomePageTagLine();
 	String homePageRightColumnContent = webUIBean.getHomePageRightColumnContent();
+
+	// referer string used in tabs
+	request.setAttribute(BaseAction.REFERER, BaseAction.FORWARD_HOME);
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
@@ -34,7 +37,7 @@
     </div>
 <% // render the following in psi mi mode %>
 <% } else { %>
-    <cbio:organismTable />
+    <cbio:organismTable referer="HOME" />
 <% } %>
 </TD>
 <TD>

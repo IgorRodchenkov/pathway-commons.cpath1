@@ -49,6 +49,21 @@ import java.io.IOException;
 public abstract class BaseAction extends Action {
 
     /**
+     * URL Parameter for Referrer.
+     */
+    public static final String REFERER = "referer";
+
+    /**
+     * URL Parameter for HOME.
+     */
+    public static final String FORWARD_HOME = "HOME";
+
+    /**
+     * URL Parameter for BROWSE.
+     */
+    public static final String FORWARD_BROWSE = "BROWSE";
+
+    /**
      * Struts Forward:  FAILURE.
      */
     public static final String FORWARD_FAILURE = "failure";

@@ -22,6 +22,10 @@
         uri = new StringBuffer(uri.substring(1));
         url = uri.toString();
     }
+	String referer = (String)request.getAttribute(BaseAction.REFERER);
+	if (referer == null){
+		referer = new String();
+	}
 
     ArrayList tabUrls = new ArrayList();
     ArrayList tabNames = new ArrayList();
@@ -34,7 +38,8 @@
     String homeUrl = "home.do";
     tabUrls.add(homeUrl);
     if (url.equals(homeUrl) || url.equals("toggleSearchOptions.do")
-        || url.equals("disclaimer.do")) {
+        || url.equals("disclaimer.do")
+		|| referer.equals(BaseAction.FORWARD_HOME)) {
         tabActive.add (Boolean.TRUE);
     } else {
         tabActive.add (Boolean.FALSE);
@@ -56,7 +61,8 @@
     	tabNames.add("Organisms");
 	    String browseUrl = "browse.do";
     	tabUrls.add(browseUrl);
-    	if (url.equals(browseUrl)) {
+    	if (url.equals(browseUrl) &&
+			!referer.equals(BaseAction.FORWARD_HOME)) {
         	tabActive.add (Boolean.TRUE);
 	    } else {
     	    tabActive.add (Boolean.FALSE);

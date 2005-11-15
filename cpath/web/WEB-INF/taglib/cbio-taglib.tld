@@ -60,6 +60,10 @@
     <tag-class>org.mskcc.pathdb.taglib.OrganismTable</tag-class>
     <body-content>empty</body-content>
     <description>Displays Organism Table</description>
+	<attribute>
+		<name>referer</name>
+		<required>true</required>
+	</attribute>
   </tag>
 
   <tag>

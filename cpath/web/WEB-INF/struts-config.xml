@@ -36,8 +36,9 @@
 
         <!--  Browse By Organism Page -->
         <action path="/browse"
-            type="org.mskcc.pathdb.action.HomeAction">
-            <forward name="success" path="/WEB-INF/jsp/pages/Browse.jsp"/>
+            type="org.mskcc.pathdb.action.SortAction">
+            <forward name="HOME" path="/WEB-INF/jsp/pages/Home.jsp"/>
+            <forward name="BROWSE" path="/WEB-INF/jsp/pages/Browse.jsp"/>
         </action>
 
         <!--  Cytoscape PlugIn Page -->

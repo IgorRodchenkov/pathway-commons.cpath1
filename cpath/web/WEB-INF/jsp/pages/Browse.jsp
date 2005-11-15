@@ -2,13 +2,15 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
+	// set title
     String title = "cPath::Browse By Organism";
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+ %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 <div id="content">
 <h1>Browse by Organism</h1>
-<cbio:organismTable />
+<cbio:organismTable referer="BROWSE" />
 </div>
 
 <jsp:include page="../global/footer.jsp" flush="true" />
