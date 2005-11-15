@@ -16,12 +16,17 @@
 
 <UL>
 <%
-    for (int i=0; i<records.size(); i++) {
-        CPathRecord rec = (CPathRecord) records.get(i);
-        String uri = "record.do?id=" + rec.getId();
-        out.println("<LI><A HREF=\"" + uri + "\">"
-                + rec.getName() + "</A>");
-        out.println("</LI>");
-    }
+	if (records.size() > 0){
+	    for (int i=0; i<records.size(); i++) {
+    	    CPathRecord rec = (CPathRecord) records.get(i);
+        	String uri = "record.do?id=" + rec.getId();
+	        out.println("<LI><A HREF=\"" + uri + "\">"
+    	            + rec.getName() + "</A>");
+        	out.println("</LI>");
+	    }
+	}
+	else{
+		out.println("No Pathway Records Exist");
+	}
 %>
 </UL>
