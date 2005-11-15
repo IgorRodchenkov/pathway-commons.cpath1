@@ -1,5 +1,5 @@
 //
-// $Id: WebUIBean.java,v 1.1 2005-11-08 21:00:57 grossb Exp $
+// $Id: WebUIBean.java,v 1.2 2005-11-15 18:35:15 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,14 +47,9 @@ import javax.servlet.http.HttpServletRequest;
 public class WebUIBean extends ActionForm {
 
 	/**
-	 * Logo (URL to Logo).
-	 */
-    private String logo;
-
-	/**
 	 * Home Page Title.
 	 */
-    private String homePageTitle;
+    private String homePageHeader;
 
 	/**
 	 * Home Page Tag Line.
@@ -87,44 +82,26 @@ public class WebUIBean extends ActionForm {
     private String aboutPageContent;
 
 	/**
-	 * Home Page Maintenance Tag Line.
+	 * Maintenance Tag Line.
 	 */
-    private String homePageMaintenanceTagLine;
+    private String maintenanceTagLine;
 
     /**
-     * Sets the logo.
+     * Sets the Home Page Header.
      *
-     * @param logo String.
+     * @param homePageHeader String.
      */
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setHomePageHeader(String homePageHeader) {
+        this.homePageHeader = homePageHeader;
     }
 
     /**
-     * Gets the logo.
+     * Gets the Home Page Header.
      *
-     * @return logo.
+     * @return homePageHeader.
      */
-    public String getLogo() {
-        return logo;
-    }
-
-    /**
-     * Sets the Home Page Title.
-     *
-     * @param homePageTitle String.
-     */
-    public void setHomePageTitle(String homePageTitle) {
-        this.homePageTitle = homePageTitle;
-    }
-
-    /**
-     * Gets the Home Page Title.
-     *
-     * @return homePageTitle.
-     */
-    public String getHomePageTitle() {
-        return homePageTitle;
+    public String getHomePageHeader() {
+        return homePageHeader;
     }
 
     /**
@@ -236,21 +213,21 @@ public class WebUIBean extends ActionForm {
     }
 
     /**
-     * Sets the Home Page Maintenance Tag Line.
+     * Sets the Maintenance Tag Line.
      *
-     * @param homePageMaintenanceTagLine String.
+     * @param maintenanceTagLine String.
      */
-    public void setHomePageMaintenanceTagLine(String homePageMaintenanceTagLine) {
-        this.homePageMaintenanceTagLine = homePageMaintenanceTagLine;
+    public void setMaintenanceTagLine(String maintenanceTagLine) {
+        this.maintenanceTagLine = maintenanceTagLine;
     }
 
     /**
-     * Gets the Home Page Maintenance Tag Line.
+     * Gets the Maintenance Tag Line.
      *
-     * @return homePageMaintenanceTagLine.
+     * @return maintenanceTagLine.
      */
-    public String getHomePageMaintenanceTagLine() {
-        return homePageMaintenanceTagLine;
+    public String getMaintenanceTagLine() {
+        return maintenanceTagLine;
     }
 
 	/**
@@ -266,14 +243,9 @@ public class WebUIBean extends ActionForm {
 		// create errors object to return
 		ActionErrors errors = new ActionErrors();
 
-		// logo
-		if (logo == null || logo.equals("")) {
-			errors.add("logo", new ActionError("error.missing.logo"));
-		}
-
-		// homePageTitle
-		if (homePageTitle == null || homePageTitle.equals("")) {
-			errors.add("homePageTitle", new ActionError("error.missing.homePageTitle"));
+		// homePageHeader
+		if (homePageHeader == null || homePageHeader.equals("")) {
+			errors.add("homePageHeader", new ActionError("error.missing.homePageHeader"));
 		}
 
 		// homePageTagLine
@@ -291,9 +263,9 @@ public class WebUIBean extends ActionForm {
 			errors.add("aboutPageContent", new ActionError("error.missing.aboutPageContent"));
 		}
 
-		// homePageMaintenanceTagLine
-		if (homePageMaintenanceTagLine == null || homePageMaintenanceTagLine.equals("")) {
-			errors.add("homePageMaintenanceTagLine", new ActionError("error.missing.homePageMaintenanceTagLine"));
+		// MaintenanceTagLine
+		if (maintenanceTagLine == null || maintenanceTagLine.equals("")) {
+			errors.add("maintenanceTagLine", new ActionError("error.missing.maintenanceTagLine"));
 		}
 
 		// outta here
