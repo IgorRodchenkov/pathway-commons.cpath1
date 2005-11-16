@@ -1,4 +1,4 @@
-use cpath;
+use db_name;
 #
 # 1) Insert a Sample PSI-MI Interaction with Two Sample Interactors.
 # 2) Insert a Sample BioPAX Pathway.
