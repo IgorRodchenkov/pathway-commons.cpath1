@@ -184,10 +184,39 @@
           <fileset dir="${web.dir}"/>
         </copy>
 
+        <!-- Force copy of web.xml -->
+        <copy overwrite="yes" todir="${build.dir}/WEB-INF"
+            file="${web.dir}/WEB-INF/web.xml"/>
+
         <!-- Copy external dependencies as required -->
         <mkdir  dir="${build.dir}/WEB-INF/lib"/>
-    </target>
 
+        <!-- Prepare web.xml, based on build.properties -->
+		<replace file="${build.dir}/WEB-INF/web.xml"
+             token="db_host__value" value="${db.host}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="db_name__value" value="${db.name}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="db_user__value" value="${db.user}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="db_password__value" value="${db.password}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="admin_user__value" value="${web.admin.user}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="admin_password__value" value="${web.admin.password}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="web_mode__value" value="${web.mode}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="admin_mode_active__value" value="${web.admin.active}"
+             summary="yes"/>
+    </target>
 
     <!-- ==================== Reload Target =============================== -->
     <!--
