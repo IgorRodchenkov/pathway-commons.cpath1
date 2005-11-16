@@ -43,6 +43,12 @@ import org.mskcc.pathdb.test.task.TaskSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
+import org.mskcc.pathdb.util.CPathConstants;
+
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Runs all Unit Tests.
@@ -56,7 +62,23 @@ public class AllTest extends TestCase {
      *
      * @return junit.framework.Test
      */
-    public static Test suite() {
+    public static Test suite() throws IOException {
+        PropertyManager manager = PropertyManager.getInstance();
+
+        //  Load build.properties
+        Properties buildProps = new Properties();
+        buildProps.load(new FileInputStream ("build.properties"));
+
+        String dbUser = buildProps.getProperty("db.user");
+        String dbPwd = buildProps.getProperty("db.password");
+        String dbName = buildProps.getProperty("db.name");
+        String dbHost = buildProps.getProperty("db.host");
+
+        manager.setProperty(PropertyManager.DB_USER, dbUser);
+        manager.setProperty(PropertyManager.DB_PASSWORD, dbPwd);
+        manager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE, dbName);
+        manager.setProperty(PropertyManager.DB_LOCATION, dbHost);
+
         TestSuite suite = new TestSuite();
         suite.addTest(ProtocolSuite.suite());
         suite.addTest(ModelSuite.suite());
@@ -76,11 +98,9 @@ public class AllTest extends TestCase {
      * Run the all tests method.
      *
      * @param args java.lang.String[]
+     * @throws Exception All Errors.
      */
-    public static void main(String[] args) {
-        PropertyManager manager = PropertyManager.getInstance();
-        manager.setProperty(PropertyManager.CPATH_READ_LOCATION,
-                "http://localhost:8080/ds/dataservice");
+    public static void main(String[] args) throws Exception {
         if (args.length > 0 && args[0] != null && args[0].equals("-ui")) {
             String newargs[] = {"org.mskcc.pathdb.test.AllTest",
                                 "-noloading"};
