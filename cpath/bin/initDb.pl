@@ -31,14 +31,14 @@ print ("Using Database User:      $db_user\n");
 print ("Using Database Password:  $db_password\n");
 
 $unitTestFlag = 0;
+$answer = 0;
 if ($arg0 eq "load_test_data") {
     $unitTestFlag = 1;
 } else {
     print "\n! Running this command will delete all existing data !\n";
     print "Are you sure you wish to proceed (Type: YES):  ";
-    chomp (my $answer = <STDIN>);
+    chomp ($answer = <STDIN>);
 }
-
 if ($answer eq 'YES' || $unitTestFlag == 1) {
 
     #  Prepare cpath.sql
