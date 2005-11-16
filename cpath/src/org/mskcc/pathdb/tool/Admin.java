@@ -47,6 +47,7 @@ import org.xml.sax.SAXParseException;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Properties;
 
 /**
  * Command Line cPath Administrator.
@@ -65,8 +66,10 @@ public class Admin {
     private static final int NOT_SET = -9999;
 
     //  User Parameters
-    private static String userName = null;
-    private static String pwd = null;
+    private static String dbName = null;
+    private static String dbHost = null;
+    private static String dbUser = null;
+    private static String dbPwd = null;
     private static String fileName = null;
     private static boolean validateExternalReferences = true;
     private static int taxonomyId = NOT_SET;
@@ -82,13 +85,45 @@ public class Admin {
      */
     public static void main(String[] argv) {
         try {
-            //  Init Cache
             EhCache.initCache();
 
+            //  Load build.properties
+            String cpathHome = System.getProperty("CPATH_HOME");
+            String separator = System.getProperty("file.separator");
+            Properties buildProps = new Properties();
+            buildProps.load(new FileInputStream (cpathHome
+                + separator + "build.properties"));
+
+            dbUser = buildProps.getProperty("db.user");
+            dbPwd = buildProps.getProperty("db.password");
+            dbName = buildProps.getProperty("db.name");
+            dbHost = buildProps.getProperty("db.host");
+
+            //  Process Command Line Arguments
+            processCommandLineArgs(argv);
+
+            PropertyManager propertyManager = PropertyManager.getInstance();
+            propertyManager.setProperty(PropertyManager.DB_USER, dbUser);
+            propertyManager.setProperty(PropertyManager.DB_PASSWORD, dbPwd);
+            propertyManager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE,
+                            dbName);
+            propertyManager.setProperty(PropertyManager.DB_LOCATION, dbHost);
+
+            System.out.println("cPath Admin.  cPath Version:  "
+                    + CPathConstants.VERSION);
+            System.out.println("Copyright (c) 2005 Memorial Sloan-Kettering "
+                    + "Cancer Center.\n");
+
+            System.out.println("----------------------------------");
+            System.out.println("Database Name:     " + dbName);
+            System.out.println("Database Host:     " + dbHost);
+            System.out.println("Database User:     " + dbUser);
+            System.out.println("Database Password: " + dbPwd);
+            System.out.println("----------------------------------\n");
+
+            getFromConsole();
             XDebug xdebug = new XDebug();
             xdebug.startTimer();
-            processCommandLineArgs(argv);
-            getFromConsole();
 
             //  Turn on Command Line JDBC Connection
             JdbcUtil.setCommandLineFlag(true);
@@ -254,18 +289,15 @@ public class Admin {
         while ((c = g.getopt()) != -1) {
             switch (c) {
                 case 'b':   
-                    String database = g.getOptarg();
-                    database = database.replaceFirst("=", "");
-                    manager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE,
-                            database);
+                    dbName = g.getOptarg();
+                    dbName = dbName.replaceFirst("=", "");
                     break;
                 case 'h':
-                    String hostname = g.getOptarg();
-                    hostname = hostname.replaceFirst("=", "");
-                    manager.setProperty(PropertyManager.DB_LOCATION, hostname);
+                    dbHost = g.getOptarg();
+                    dbHost = dbHost.replaceFirst("=", "");
                     break;
                 case 'u':
-                    userName = g.getOptarg();
+                    dbUser = g.getOptarg();
                     break;
                 case 'o':
                     try {
@@ -275,7 +307,7 @@ public class Admin {
                     }
                     break;
                 case 'p':
-                    pwd = g.getOptarg();
+                    dbPwd = g.getOptarg();
                     break;
                 case 'f':
                     fileName = g.getOptarg();
@@ -322,20 +354,6 @@ public class Admin {
     private static void getFromConsole() throws IOException {
         BufferedReader in = new BufferedReader
                 (new InputStreamReader(System.in));
-        PropertyManager propertyManager = PropertyManager.getInstance();
-        if (userName == null && !(command.equals(COMMAND_VALIDATE)
-                || command.equals(COMMAND_QUERY))) {
-            System.out.print("Enter Database User Name: ");
-            userName = in.readLine();            
-        }
-        propertyManager.setProperty(PropertyManager.DB_USER, userName);
-        
-        if (pwd == null) {
-            System.out.print("Enter Database Password: ");
-            pwd = in.readLine();            
-        }
-        propertyManager.setProperty(PropertyManager.DB_PASSWORD, pwd);
-        
         if (command.equals(COMMAND_PRE_COMPUTE) && fileName == null) {
             System.out.print("Enter Path to Precompute Config File:  ");
             fileName = in.readLine();
@@ -377,18 +395,21 @@ public class Admin {
     private static void displayHelp() {
         System.out.println("cPath Admin.  cPath Version:  "
                 + CPathConstants.VERSION);
-        System.out.println("Copyright (c) 2004 Memorial Sloan-Kettering "
+        System.out.println("Copyright (c) 2005 Memorial Sloan-Kettering "
                 + "Cancer Center.");
         System.out.println("\nAdministration Program for the cPath Database");
         System.out.println("Usage:  admin.pl [OPTIONS] command");
         System.out.println("  -f, -f=filename Name of File / Directory");
         System.out.println("  -d,             Shows all Debug/Log "
                 + "Messages/Stack Traces");
-        System.out.println("  -u, -u=name     Database User Name");
-        System.out.println("  -p, -p=name     Database Password");
-        System.out.println
-               ("  -h, -h=hostname Database Server Name (default: localhost)");
-        System.out.println("  -b, -b=database Database name (default: cpath)");
+        System.out.println("  -u, -u=name     Database User Name "
+            + "(overrides build.properties)");
+        System.out.println("  -p, -p=name     Database Password "
+            +"(overrides build.properties)");
+        System.out.println ("  -h, -h=hostname Database Server Name "
+            + "(overrides build.properties)");
+        System.out.println("  -b, -b=database Database name "
+            + "(overrides build.properties)");
         System.out.println("  -x              Skips Validation of External "
                 + "References");
         System.out.println("  -o, -o=id       NCBI TaxonomyID");
@@ -396,7 +417,9 @@ public class Admin {
         System.out.println("\nWhere command is a one of:  ");
         System.out.println("  import          Imports Specified File.");
         System.out.println("                  Used to Import BioPAX Files, "
-                + "PSI-MI Files, ID Mapping Files, or External Database files");
+                + "PSI-MI Files");
+        System.out.println("                  ID Mapping Files, or External "
+                + "Database files");
         System.out.println("  index           Indexes All Items in cPath");
         System.out.println("  precompute      Precomputes all queries in "
                 + "specified config file.");
@@ -405,7 +428,7 @@ public class Admin {
         System.out.println("  validate        Valdates the specified XML "
                 + "file.");
         System.out.println("  query           Executes Full Text Query");
-        System.out.println("\n\nExtra Options (not guaranteed to be available "
+        System.out.println("\nExtra Options (not guaranteed to be available "
                 + "in future versions of cPath)");
         System.out.println("  -r              Removes all Interaction PSI-MI "
                 + "xrefs  (not recommended)");
