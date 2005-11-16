@@ -15,6 +15,7 @@
 	// setup some configurable UI elements
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 	String homePageHeader = webUIBean.getHomePageHeader();
+    String isAdminPage = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -70,8 +71,7 @@
 	    <%
 			// only show left hand column on admin page or
 			// if mode is psi and we are on psi_mi_search.jsp
-			if (title.equals("cPath::Administration") ||
-                title.equals("cPath::AdministrationWebUIConfig") ||
+			if (isAdminPage != null  ||
 	           (title.equals("cPath::Search Results") &&
 			    CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI)){
 	    %>
