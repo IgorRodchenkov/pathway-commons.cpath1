@@ -15,9 +15,9 @@
 # Creation: May 25, 2004 at 03:36 PM
 # Last update: May 25, 2004 at 04:56 PM
 #
-DROP DATABASE IF EXISTS db_name;
-CREATE DATABASE db_name;
-USE db_name;
+DROP DATABASE IF EXISTS db_name__value;
+CREATE DATABASE db_name__value;
+USE db_name__value;
 
 #
 # Table structure for table `cpath`

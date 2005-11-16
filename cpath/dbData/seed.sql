@@ -9,7 +9,7 @@
 # --------------------------------------------------------
 #
 
-use db_name;
+use db_name__value;
 truncate table import;
 truncate table external_db;
 truncate table external_db_cv;

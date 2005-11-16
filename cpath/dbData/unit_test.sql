@@ -1,4 +1,4 @@
-use db_name;
+use db_name__value;
 #
 # 1) Insert a Sample PSI-MI Interaction with Two Sample Interactors.
 # 2) Insert a Sample BioPAX Pathway.
