@@ -425,7 +425,7 @@ public class Admin {
                 + "specified config file.");
         System.out.println("  count_affy      Counts Records with Affymetrix "
                 + "identifiers.");
-        System.out.println("  validate        Valdates the specified XML "
+        System.out.println("  validate        Validates the specified XML "
                 + "file.");
         System.out.println("  query           Executes Full Text Query");
         System.out.println("\nExtra Options (not guaranteed to be available "
