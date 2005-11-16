@@ -259,7 +259,7 @@
     -->
     <target name="check" description="Run CheckStyle on all source code.">
         <checkstyle config="${config.dir}/sun_checks.xml">
-            <fileset dir="${src.home}">
+            <fileset dir="${src.dir}">
                 <include name="**/*.java"/>
             </fileset>
         </checkstyle>
