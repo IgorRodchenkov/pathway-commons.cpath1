@@ -47,7 +47,6 @@ public class XmlRpcSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestDataSubmission.class);
         suite.setName("XML-RPC Tests");
         return suite;
     }
