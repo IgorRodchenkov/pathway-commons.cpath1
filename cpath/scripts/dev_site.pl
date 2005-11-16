@@ -22,8 +22,6 @@ chdir "sander/cpath" or die;
 system "ant prepare_dev_site";
 
 # Create source distribition
-&debug ("Create war file...");
-system "ant war";
 &debug ("Tar up everything...");
 system "tar -cvf cpath.tar *";
 &debug ("Gzip everything...");
