@@ -66,6 +66,7 @@ public class ImportRecordTask extends Task {
         this.validateExternalReferences = validateExternalReferences;
         this.removeAllInteractionXRefs = removeAllInteractionXRefs;
         pMonitor = this.getProgressMonitor();
+        pMonitor.setCurrentMessage("Importing File...");
         pMonitor.setConsoleMode(consoleMode);
     }
 
