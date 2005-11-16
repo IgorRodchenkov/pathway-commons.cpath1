@@ -57,7 +57,7 @@
  	<path id="compile.classpath">
 		<pathelement path="${build.dir}/WEB-INF/classes"/>
 		<fileset dir="${lib.dir}">
-       		 	<include name="**/*.jar"/>
+       		 	<include name="*.jar"/>
 		</fileset>
   	</path>
 
@@ -95,6 +95,10 @@
         <!-- Copy Struts cpathResources.properties -->
         <copy todir="${build.dir}/WEB-INF/classes"
             file="${config.dir}/cpathResources.properties"/>
+
+        <!-- Copy Cache Config -->
+        <copy todir="${build.dir}/WEB-INF/classes"
+            file="${config.dir}/ehcache.xml"/>
     </target>
 
     <!-- ==================== War Target ================================== -->
@@ -231,7 +235,6 @@
     <!-- ==================== test Target ======================== -->
 	<target name="test" depends="test_prepare, test_run, test_report"
         description="Loads sample data into MySQL, runs JUnit tests, generates test reports.">
-		<exec dir="." executable="scripts/boot.pl" vmlauncher="false"/>
 	</target>
 
     <!-- ==================== prepare_test Target ======================== -->
@@ -240,16 +243,18 @@
     -->
 	<target name="test_prepare" depends="compile"
         description="Loads test data set into MySQL.  Required for running JUnit Tests.">
-		<exec dir="." executable="scripts/boot.pl" vmlauncher="false"/>
+		<exec dir="bin" executable="initDb.pl" vmlauncher="false">
+            <arg line="load_test_data"/>
+        </exec>
 	</target>
 
     <!-- ==================== test Target ================================ -->
-	<target name="test_run" depends="compile, test_prepare"
+	<target name="test_run" depends="compile"
         description="Runs all JUnit Tests">
         <delete dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}/reports"/>
-		<junit printsummary="yes" fork="no" haltonfailure="no">
+		<junit showoutput="no" printsummary="yes" fork="no" haltonfailure="no">
 			<formatter type="xml"/>
             <sysproperty key="CPATH_HOME" value="${basedir}"/>
             <test name="org.mskcc.pathdb.test.AllTest"
