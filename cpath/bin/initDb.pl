@@ -4,8 +4,6 @@ require "env.pl";
 print "Script to Initialize cPath Database\n";
 print "===================================\n\n";
 
-$arg0 = $ARGV[0];
-
 #  Read in build.properties File
 open (PROPS, "< $cpathHome/build.properties");
 while (<PROPS>) {
@@ -30,63 +28,32 @@ print ("Using Database Host:      $db_host\n");
 print ("Using Database User:      $db_user\n");
 print ("Using Database Password:  $db_password\n");
 
+$arg0 = $ARGV[0];
+$arg1 = $ARGV[1];
+
 $unitTestFlag = 0;
+$foceFlag = 0;
 $answer = 0;
-if ($arg0 eq "load_test_data") {
+
+if  ($arg0 eq "-f") {
+    $forceFlag = 1;
+}
+if ($arg1 eq "load_test_data") {
     $unitTestFlag = 1;
-} else {
+}
+
+if ($forceFlag == 0) {
     print "\n! Running this command will delete all existing data !\n";
     print "Are you sure you wish to proceed (Type: YES):  ";
     chomp ($answer = <STDIN>);
 }
-if ($answer eq 'YES' || $unitTestFlag == 1) {
 
-    #  Prepare cpath.sql
-    open (OLD, "< $cpathHome/dbData/cpath.sql");
-    open (NEW, "> $cpathHome/dbData/temp1.sql") or die;
-    while (<OLD>) {
-        $line = $_;
-        $line =~ s/db_name/$db_name/;
-        print NEW $line;
-    }
-    close (OLD);
-    close (NEW);
-
-    #  Prepare seed.sql
-    open (OLD, "< $cpathHome/dbData/seed.sql");
-    open (NEW, "> $cpathHome/dbData/temp2.sql") or die;
-    while (<OLD>) {
-        $line = $_;
-        $line =~ s/db_name/$db_name/;
-        print NEW $line;
-    }
-    close (OLD);
-    close (NEW);
-
-    #  Load up Table Structure
-    system "mysql --host=$db_host --user=$db_user --password=$db_password < ../dbData/temp1.sql";
-
-    #  Load up Seed Data
-    system "mysql --host=$db_host --user=$db_user --password=$db_password < ../dbData/temp2.sql";
-
-    #  Delete Temp Files
-    unlink ("$cpathHome/dbData/temp1.sql");
-    unlink ("$cpathHome/dbData/temp2.sql");
+if ($answer eq 'YES' || $forceFlag == 1) {
+    &importSql ("cpath.sql");
+    &importSql ("seed.sql");
 
     if ($unitTestFlag ==1) {
-        #  Prepare cpath.sql
-        open (OLD, "< $cpathHome/dbData/unit_test.sql");
-        open (NEW, "> $cpathHome/dbData/temp3.sql") or die;
-        while (<OLD>) {
-            $line = $_;
-            $line =~ s/db_name/$db_name/;
-            print NEW $line;
-        }
-        close (OLD);
-        close (NEW);
-
-        #  Load up Test Data
-        system "mysql --host=$db_host --user=$db_user --password=$db_password < ../dbData/temp3.sql";
+        &importSql ("unit_test.sql");
     }
 
     #  All is done
@@ -95,3 +62,25 @@ if ($answer eq 'YES' || $unitTestFlag == 1) {
     print "Command cancelled...\n";
 }
 
+# Imports a MySQL File
+sub importSql {
+    #  Prepare seed.sql
+    open (OLD, "< $cpathHome/dbData/$_[0].sql");
+    open (NEW, "> $cpathHome/dbData/temp.sql") or die;
+    while (<OLD>) {
+        $line = $_;
+        $line =~ s/db_name__value/$db_name/;
+        print NEW $line;
+    }
+    close (OLD);
+    close (NEW);
+
+    #  Indicate what we are doing
+    print "Importing MySQL File:  $_[0]\n";
+
+    #  Load up Table Structure
+    system "mysql --host=$db_host --user=$db_user --password=$db_password < ../dbData/temp.sql";
+
+    #  Delete Temp File
+    unlink ("$cpathHome/dbData/temp.sql");
+}
