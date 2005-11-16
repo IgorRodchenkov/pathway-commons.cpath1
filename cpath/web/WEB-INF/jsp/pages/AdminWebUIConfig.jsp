@@ -35,19 +35,19 @@
 			<tr>
 				<th align="LEFT">Home Page Header</th>
 				<td>
-					<html:textarea property="homePageHeader" rows="25" cols="80"/>
+					<html:textarea property="homePageHeader" rows="5" cols="70"/>
 				</td>
 			</tr>
 			<tr>
 				<th align="LEFT">Home Page Tag Line</th>
 				<td>
-					<html:textarea property="homePageTagLine" rows="5" cols="80"/>
+					<html:textarea property="homePageTagLine" rows="5" cols="70"/>
 				</td>
 			</tr>
 			<tr>
 				<th align="LEFT">Home Page Right Column Content</th>
 				<td>
-					<html:textarea property="homePageRightColumnContent" rows="25" cols="80"/>
+					<html:textarea property="homePageRightColumnContent" rows="25" cols="70"/>
 				</td>
 			</tr>
 			<tr>
@@ -65,23 +65,23 @@
 			<tr>
 				<th align="LEFT">FAQ Page Content</th>
 				<td>
-					<html:textarea property="FAQPageContent" rows="25" cols="80"/>
+					<html:textarea property="FAQPageContent" rows="25" cols="70"/>
 				</td>
 			</tr>
 			<tr>
 				<th align="LEFT">About Page Content</th>
 				<td>
-					<html:textarea property="aboutPageContent" rows="25" cols="80"/>
+					<html:textarea property="aboutPageContent" rows="25" cols="70"/>
 				</td>
-			</tr>
-            <tr>
-     	   	<td><input type="submit" value="Update"></td>
 			</tr>
 			<tr>
 				<th align="LEFT">Maintenance Tag Line</th>
 				<td>
-					<html:textarea property="maintenanceTagLine" rows="5" cols="80"/>
+					<html:textarea property="maintenanceTagLine" rows="5" cols="70"/>
 				</td>
+			</tr>
+            <tr>
+     	   	<td><input type="submit" value="Update"></td>
 			</tr>
 		</table>
 	</html:form>
