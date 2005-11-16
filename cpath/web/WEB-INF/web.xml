@@ -2,13 +2,8 @@
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
                          "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
-    <display-name>cPath: Cancer Pathway Database</display-name>
-    <!-- XML-RPC Servlet -->
-    <servlet>
-        <servlet-name>XmlRpcServlet</servlet-name>
-        <servlet-class>org.mskcc.pathdb.servlet.XmlRpcServlet</servlet-class>
-        <load-on-startup/>
-    </servlet>
+    <display-name>cPath: Pathway Database</display-name>
+
     <!-- Struts cPath Action Servlet Configuration -->
     <servlet>
         <servlet-name>action</servlet-name>
@@ -27,27 +22,27 @@
         </init-param>
         <init-param>
             <param-name>db_host</param-name>
-            <param-value>localhost</param-value>
+            <param-value>db_host__value</param-value>
         </init-param>
          <init-param>
             <param-name>db_name</param-name>
-            <param-value>cpath</param-value>
+            <param-value>db_name__value</param-value>
         </init-param>
         <init-param>
             <param-name>db_user</param-name>
-            <param-value>tomcat</param-value>
+            <param-value>db_user__value</param-value>
         </init-param>
         <init-param>
             <param-name>db_password</param-name>
-            <param-value>kitty</param-value>
+            <param-value>db_password__value</param-value>
         </init-param>
         <init-param>
             <param-name>admin_user</param-name>
-            <param-value>admin</param-value>
+            <param-value>admin_user__value</param-value>
         </init-param>
         <init-param>
             <param-name>admin_password</param-name>
-            <param-value>cpath</param-value>
+            <param-value>admin_password__value</param-value>
         </init-param>
         <init-param>
             <param-name>psi_schema_location</param-name>
@@ -57,21 +52,17 @@
         <init-param>
             <!-- set to "psi_mi" or "biopax" -->
 	        <param-name>web_mode</param-name>
-            <param-value>biopax</param-value>
+            <param-value>web_mode__value</param-value>
         </init-param>
         <init-param>
             <!-- set to "0" or "1" -->
 	        <param-name>admin_mode_active</param-name>
-            <param-value>1</param-value>
+            <param-value>admin_mode_active__value</param-value>
         </init-param>
         <load-on-startup/>
     </servlet>
     
     <!-- Servlet Mappings -->
-    <servlet-mapping>
-        <servlet-name>XmlRpcServlet</servlet-name>
-        <url-pattern>/xmlrpc</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>
