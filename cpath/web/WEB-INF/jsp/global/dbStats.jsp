@@ -36,7 +36,14 @@ try {
     </TR>
     <TR>
         <TD>Number of Organisms:</TD>
-        <TD><%= formatter.format(orgStats.getOrganismsSortedByName().size()) %></TD>
+        <TD>
+            <% try {
+                formatter.format(orgStats.getOrganismsSortedByName().size());
+            } catch (Exception e) {
+                out.println("Cannot determine organism data:  " + e.getMessage());
+            }
+            %>
+        </TD>
     </TR>
 
 </TABLE>
