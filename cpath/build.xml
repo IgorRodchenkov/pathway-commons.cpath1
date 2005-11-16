@@ -277,7 +277,7 @@
 	<target name="test_prepare" depends="compile"
         description="Loads test data set into MySQL.  Required for running JUnit Tests.">
 		<exec dir="bin" executable="initDb.pl" vmlauncher="false">
-            <arg line="load_test_data"/>
+            <arg line="-f load_test_data"/>
         </exec>
 	</target>
 
