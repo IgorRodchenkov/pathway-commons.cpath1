@@ -65,7 +65,7 @@ if ($answer eq 'YES' || $forceFlag == 1) {
 # Imports a MySQL File
 sub importSql {
     #  Prepare seed.sql
-    open (OLD, "< $cpathHome/dbData/$_[0].sql");
+    open (OLD, "< $cpathHome/dbData/$_[0]");
     open (NEW, "> $cpathHome/dbData/temp.sql") or die;
     while (<OLD>) {
         $line = $_;
