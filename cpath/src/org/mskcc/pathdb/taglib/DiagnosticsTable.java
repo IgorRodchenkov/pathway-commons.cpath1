@@ -34,6 +34,8 @@ import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.dataservices.util.PropertyManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +56,12 @@ public class DiagnosticsTable extends HtmlTable {
     public void subDoStartTag() throws Exception {
         String headers[] = {"Result", "DiagnosticTestResults", "Error"};
         createHeader("cPath Diagnostics");
+                PropertyManager pManager = PropertyManager.getInstance();
+        append("<TABLE><TR><TD>Using Database Host:  "
+                + pManager.getProperty(PropertyManager.DB_LOCATION));
+        append("<P>Using Database Name:  "
+                + pManager.getProperty(CPathConstants.PROPERTY_MYSQL_DATABASE));
+        append("</TD></TR></TABLE>");
         startTable();
         createTableHeaders(headers);
         testList = new ArrayList();
