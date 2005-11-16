@@ -67,6 +67,10 @@
         <delete dir="${build.dir}"/>
         <delete dir="ant_eater/reports"/>
         <delete dir="ant_eater/logs"/>
+        <delete dir="bin/_tempIndexDir0"/>
+        <delete dir="bin/_tempIndexDir1"/>
+        <delete dir="bin/_tempIndexDir2"/>
+        <delete dir="bin/_tempIndexDir3"/>
         <delete>
             <fileset dir="." includes="*.log*"/>
         </delete>
