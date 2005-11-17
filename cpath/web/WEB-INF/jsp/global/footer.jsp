@@ -18,15 +18,15 @@
 </table>
 
 <div id="footer">
-  <P><% out.print(maintenanceTagLine); %></P>
-  <P>
+  <p><% out.print(maintenanceTagLine); %></p>
+  <p>
   <a href="disclaimer.do">Legal Disclaimer / Privacy Notice</a> |
   <a href="http://cbio.mskcc.org">Computational Biology Center</a> |
   <a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
-  </P>
-  <P>
+  </p>
+  <p>
   Copyright &#169; 2005 Memorial Sloan-Kettering Cancer Center.
-  </P>
+  </p>
 </div>
 
 <jsp:include page="../global/xdebug.jsp" flush="true" />

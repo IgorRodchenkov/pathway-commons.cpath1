@@ -139,8 +139,8 @@
                 out.println("<th>" + tabName + "</th>");
             } else {
                 if (tabUrl.length() > 0) {
-                    out.println("<td>" + "<a href='"+tabUrl+"'> " +
-                        tabName + "</A></td>");
+                    out.println("<td>" + "<a href=\""+tabUrl+"\"> " +
+                        tabName + "</a></td>");
                 } else {
                     out.println("<td>" + tabName + "</td>");
                 }

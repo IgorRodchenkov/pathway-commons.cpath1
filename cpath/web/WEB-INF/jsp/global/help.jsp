@@ -6,58 +6,67 @@
 
 <div id="content">
 <h1>Web Service API:  Introduction</h1>
-<P>
+<p>
 If you wish to programmatically access our data, you can do so via our
 Web Service API.  This page provides a quick reference guide to help you
 get started.
-</P>
+</p>
 
 <h1>Issuing Client Requests</h1>
-<P>
+<p>
 Client requests to the Web Service are formed by specifying
 URL parameters.  Parameters are as follows:
-        <UL>
-		    <LI><B><%= ProtocolRequest.ARG_COMMAND %></B>:  Indicates the
+</p>
+        <ul>
+		    <li><b><%= ProtocolRequest.ARG_COMMAND %></b>:  Indicates the
             command to execute.
             Current valid commands are defined in the commands section below.
-		    <LI><B>q</B>:  Indicates the query parameter.  Depending on the command,
+            </li>
+		    <li><b>q</b>:  Indicates the query parameter.  Depending on the command,
             this is used to indicate one or more search terms or a unique ID.
             For example, "dna repair" or "P09097".
- 		    <LI><B><%= ProtocolRequest.ARG_FORMAT %></B>:  Indicates the
+            </li>
+ 		    <li><b><%= ProtocolRequest.ARG_FORMAT %></b>:  Indicates the
             format of returned results.
             Current valid formats are as follows:
-                <UL>
+                <ul>
                 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
-                    <LI><%= ProtocolConstants.FORMAT_PSI_MI %>:  Data will be
+                    <li><%= ProtocolConstants.FORMAT_PSI_MI %>:  Data will be
                     formatted in the
-                    <A HREF="http://psidev.sourceforge.net/">Proteomics
-                    Standards Initiative Molecular Interaction (PSI-MI)</A>
-                    Standards Initiative Molecular Interaction (PSI-MI)</A>
+                    <a href="http://psidev.sourceforge.net/">Proteomics
+                    Standards Initiative Molecular Interaction (PSI-MI)</a>
+                    Standards Initiative Molecular Interaction (PSI-MI)</a>
                     XML format.
-                    <LI><%= ProtocolConstants.FORMAT_HTML %>:  Data will be
+                    </li>
+                    <li><%= ProtocolConstants.FORMAT_HTML %>:  Data will be
                     formatted in HTML.  This is useful for creating link outs to
                     specific web pages.
-                    <LI><%= ProtocolConstants.FORMAT_COUNT_ONLY %>:  Returns a
+                    </li>
+                    <li><%= ProtocolConstants.FORMAT_COUNT_ONLY %>:  Returns a
                     single integer value, representing the total number of matches
                     for your query.  This is useful for using paged scroll results
-                    (see <A HREF="#large">Retrieving Large Sets of Data</A> below).
+                    (see <a href="#large">Retrieving Large Sets of Data</A> below).
                 <% } else { %>
-                     <LI><%= ProtocolConstants.FORMAT_BIO_PAX %>:  Data will be
-                        formatted in the <A HREF="http://www.biopax.org">BioPAX</A>
+                     <li><%= ProtocolConstants.FORMAT_BIO_PAX %>:  Data will be
+                        formatted in the <a href="http://www.biopax.org">BioPAX</a>
                         XML format.
+                     </li>
                 <% } %>
-                </UL>
-    		    <LI><B><%= ProtocolRequest.ARG_VERSION %></B>:  Indicates the
+                </ul>
+                </li>
+                <li><b><%= ProtocolRequest.ARG_VERSION %></b>:  Indicates the
                 version of the web service API.
                 Must be specified.  The only supported version is "1.0".
+                </li>
                 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
-                    <LI><B><%= ProtocolRequest.ARG_ORGANISM %></B>:  an optional
+                    <li><b><%= ProtocolRequest.ARG_ORGANISM %></b>:  an optional
                     parameter used to filter for
                     specific organisms.  The value of this parameter must be set
-                    to an <A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=Taxonomy">
-                    NCBI Taxonomy Identifier</A>.   For example, organism=9606 will
+                    to an <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=Taxonomy">
+                    NCBI Taxonomy Identifier</a>.   For example, organism=9606 will
                     filter for Homo Sapiens.
-                    <LI><B><%= ProtocolRequest.ARG_MAX_HITS %></B>:
+                    </li>
+                    <li><b><%= ProtocolRequest.ARG_MAX_HITS %></b>:
                     Indicates the maximum number of interactions
                     returned in the response.  If maxHits is not specified, it will
                     default to:
@@ -66,22 +75,22 @@ URL parameters.  Parameters are as follows:
                     <%= ProtocolConstants.MAX_NUM_HITS %> hits at a time.
                     However, it is still possible to retrieve larger sets of data by
                     using paged scroll results (see
-                    <A HREF="#large">Retrieving Large Sets of Data</A> below).
-                    <LI><B><%= ProtocolRequest.ARG_START_INDEX %></B>:  Indicates
+                    <a HREF="#large">Retrieving Large Sets of Data</A> below).
+                    </li>
+                    <li><b><%= ProtocolRequest.ARG_START_INDEX %></b>:  Indicates
                     the start index to use in a set of paged results.  For full
                     details, refer to <A HREF="#large">Retrieving Large Sets of Data</A>
                     below.).
-                    </LI>
+                    </li>
                 <% } %>
-	    </UL>
-</P>
+	    </ul>
 
 <h1>Commands </h1>
         <div id="box">
-        <TABLE>
+        <table>
             <tr>
-                <th>Command</font></th>
-                <th>Description</font></th>
+                <th>Command</th>
+                <th>Description</th>
             </tr>
             <tr>
                 <td><%= ProtocolConstants.COMMAND_HELP %></td>
@@ -106,7 +115,7 @@ URL parameters.  Parameters are as follows:
             <tr>
                 <td><%= ProtocolConstants.COMMAND_GET_BY_ORGANISM %></td>
                 <td>Finds all interactions for the specified organism.
-                The organism value must be specified with an <A HREF=
+                The organism value must be specified with an <a href=
                 "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=Taxonomy">NCBI
                 Taxonomy ID</A>.  Note that you can also attach
                 an organism filter to any search command by using the
@@ -154,33 +163,32 @@ URL parameters.  Parameters are as follows:
                 The response is a BioPAX XML document.</td>
             </tr>
             <% } %>
-            </TABLE>
+            </table>
         </div>
 
 <h1>Error Codes</h1>
-<P>
+<p>
 If an error occurs while processing your request, you will
 receive an XML document with detailed information about the cause of
 the error.  Error documents have the following format:
-<PRE>
+</p>
+<pre>
 &lt;error&gt;
     &lt;error_code&gt;[ERROR_CODE]&lt;/error_code&gt;
     &lt;error_msg&gt;[ERROR_DESCRIPTION]&lt;/error_msg&gt;
     &lt;error_details&gt;[ADDITIONAL_ERROR _DETAILS]&lt;/error_details&gt;
 &lt;/error&gt;
-</PRE>
-</P>
-<P>
+</pre>
+<p>
 The table below provides a list of error codes, with their
         descriptions.
-</P>
-<P>
-<div id="box">
-    <TABLE>
+</p>
+<div class="box">
+    <table>
             <tr>
-                <th>Error Code</font></th>
-                <th>Error Description</font></th>
-            </TR>
+                <th>Error Code</th>
+                <th>Error Description</th>
+            </tr>
             <%
                 ArrayList statusCodes = ProtocolStatusCode.getAllStatusCodes();
             %>
@@ -191,75 +199,78 @@ The table below provides a list of error codes, with their
                     int errorCode = code.getErrorCode();
                     String errorMsg = code.getErrorMsg();
                     %>
-                <TR>
-                    <TD><%= errorCode %></TD>
-                    <TD><%= errorMsg %></TD>
-                </TR>
+                <tr>
+                    <td><%= errorCode %></td>
+                    <td><%= errorMsg %></td>
+                </tr>
             <% } %>
-        </TABLE>
-</div>        
+        </table>
+</div>
+
 <%
     ProtocolRequest pRequest = new ProtocolRequest();
 %>
 <h1>Examples of Usage</h1>
-<P>
+<p>
         <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             pRequest.setQuery("DNA");
             pRequest.setFormat(ProtocolConstants.FORMAT_PSI_MI);  %>
 		The following example searches for the keyword "DNA".
         Data will be formatted in the PSI-MI XML format.
-        <UL>
-            <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
-            </SMALL>
-        </UL>
-</P>
-<P>The following query searches for the keyword "DNA".
+        <ul>
+            <li><small><a HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></a>
+            </small>
+            </li>
+        </ul>
+</p>
+<p>The following query searches for the keyword "DNA".
         Data will be formatted in HTML.
         <% pRequest.setFormat(ProtocolConstants.FORMAT_HTML); %>
-        <UL>
-            <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
-            </SMALL>
-        </UL>
+</p>
+        <ul>
+            <li><small><a href="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></a>
+            </small>
+            </li>
+        </ul>
         <% } else {
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
             pRequest.setFormat(ProtocolConstants.FORMAT_BIO_PAX);
         %>
-</P>
-<P>
+<p>
     The following requests a summary of all top-level pathways
     in the database:
-        <UL>
-            <LI><SMALL><A HREF="<%=  pRequest.getUri() %>"><%= pRequest.getUri() %></A>.</SMALL>
-        </UL>
-</P>
-<P>
+        <ul>
+            <li><small><a href="<%=  pRequest.getUri() %>"><%= pRequest.getUri() %></a>.</small></li>
+        </ul>
+</p>
+<p>
     The following requests the full BioPAX record for local ID 1:
         <%
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery("1");
         %>
-        <UL>
-            <LI><SMALL><A HREF="<%=  pRequest.getUri() %>"><%= pRequest.getUri() %></A>.</SMALL>
-        </UL>
+</p>
+        <ul>
+            <li><small><a href="<%=  pRequest.getUri() %>"><%= pRequest.getUri() %></a>.</small></li>
+        </ul>
         <% } %>
         <%
             pRequest.setFormat("svg");
         %>
-</P>
-<P>
+<p>
     The following query specifies an invalid format.
     The web service will return an XML document with a specific error code
     and error message.
-        <UL>
-            <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
-            </SMALL>
-        </UL>
-</P>
+</p>
+        <ul>
+            <li><small><a href="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></a>
+            </small></li>
+        </ul>
 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
 
-<h1><A NAME="large">Retrieving Large Sets of Data</A></h1>
-<P>
+<h1><a name="large">Retrieving Large Sets of Data</a></h1>
+<p>
     To prevent overloading of the system, clients are restricted to a maximum of
     <%= ProtocolConstants.MAX_NUM_HITS %> hits at a time.
     However, it is still possible to retrieve larger sets of data
@@ -271,29 +282,30 @@ The table below provides a list of error codes, with their
     via the Web Service API, you follow the same procedure and
     retrieve results one "page" at a time.  This requires multiple client
     requests, and some more intelligent client processing.
-</P>
+</p>
 <%
     pRequest = new ProtocolRequest();
     pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_ORGANISM);
     pRequest.setQuery("562");
     pRequest.setFormat(ProtocolConstants.FORMAT_COUNT_ONLY);
 %>
-<P>For example, assume a client wishes to download the full set
+<p>For example, assume a client wishes to download the full set
     of interactions for E. coli.  Here's how such client processing would work:
-    <UL>
-    <LI>First, find out how many interactions for E. coli exist.  To do so,
+</p>
+    <ul>
+    <li>First, find out how many interactions for E. coli exist.  To do so,
     issue a query with <%= ProtocolRequest.ARG_FORMAT %>
     set to "<%= ProtocolConstants.FORMAT_COUNT_ONLY %>".
     For example:
-        <UL>
-            <LI><SMALL><A HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></A>
-            </SMALL>
-        </UL>
-</P>
-<P>
+        <ul>
+            <li><small><a href="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></a>
+            </small>
+            </li>
+        </ul>
+    </li>
     You will receive back a single integer value, indicating the total
     number of matching interactions.
-    <LI>Next, create a while loop or a for loop for retrieving data
+    <li>Next, create a while loop or a for loop for retrieving data
     sets in small bundles or "pages".  For example, if there are 1000
     interactions for E. coli, you could retrieve interactions in sets of 50.
     The client uses the <%= ProtocolRequest.ARG_START_INDEX %> parameter to specify a
@@ -301,15 +313,19 @@ The table below provides a list of error codes, with their
     <%= ProtocolRequest.ARG_START_INDEX %> is set to 100, and
     <%= ProtocolRequest.ARG_MAX_HITS%> is set to 50, you will retrieve interactions
     100-150 in the complete data set.
-    </UL>
-</P>
-<P>Complete psuedocode of the entire process looks like this:
-    <PRE>
+    </li>
+    </ul>
+</p>
+<p>Complete psuedocode of the entire process looks like this:
+</p>
+<pre>
 totalNumInteractions = [Issue search resuest with <%= ProtocolRequest.ARG_FORMAT %> set to <%= ProtocolConstants.FORMAT_COUNT_ONLY %>.]
 index = 0;
 while (index < totalNumInteractions) {
     [Issue request with <%= ProtocolRequest.ARG_START_INDEX %> = index; and <%= ProtocolRequest.ARG_MAX_HITS %> = 50.]
     index += 50;
-}</PRE>
-    After the while loop exits, you have a complete set of E. Coli data.
+}
+</pre>
+<p>After the while loop exits, you have a complete set of E. Coli data.
+</p>
 <% } %>

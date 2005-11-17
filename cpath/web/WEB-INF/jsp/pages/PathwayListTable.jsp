@@ -14,19 +14,19 @@
 	records = (ArrayList) request.getAttribute("RECORDS");
 %>
 
-<UL>
+<ul>
 <%
 	if (records.size() > 0){
 	    for (int i=0; i<records.size(); i++) {
     	    CPathRecord rec = (CPathRecord) records.get(i);
         	String uri = "record.do?id=" + rec.getId();
-	        out.println("<LI><A HREF=\"" + uri + "\">"
-    	            + rec.getName() + "</A>");
-        	out.println("</LI>");
+	        out.println("<li><a href=\"" + uri + "\">"
+    	            + rec.getName() + "</a>");
+        	out.println("</li>");
 	    }
 	}
 	else{
 		out.println("No Pathway Records Exist");
 	}
 %>
-</UL>
+</ul>

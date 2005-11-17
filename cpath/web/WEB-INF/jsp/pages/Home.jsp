@@ -22,9 +22,9 @@
 <jsp:include page="../global/header.jsp" flush="true" />
 
 
-<TABLE>
-<TR>
-<TD WIDTH=60%>
+<table>
+<tr>
+<td width="60%">
 <div id="tagline">
     <% out.print(tagLine);%>
 </div>
@@ -39,11 +39,11 @@
 <% } else { %>
     <cbio:organismTable referer="HOME" />
 <% } %>
-</TD>
-<TD>
+</td>
+<td>
 <% out.println(homePageRightColumnContent); %>
-</TD>
-</TR>
-</TABLE>
+</td>
+</tr>
+</table>
 
 <jsp:include page="../global/footer.jsp" flush="true" />

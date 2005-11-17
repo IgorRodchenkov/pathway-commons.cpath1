@@ -1,34 +1,26 @@
-<%@ page import="java.net.URL,
-                 org.mskcc.pathdb.action.ExecuteSearch,
-                 org.mskcc.pathdb.action.BaseAction,
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<%@ page import="org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.form.WebUIBean,
-                 org.mskcc.pathdb.servlet.CPathUIConfig,
-                 org.mskcc.pathdb.util.CPathConstants"%>
+                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
 <%
     String title = (String) request.getAttribute(BaseAction.ATTRIBUTE_TITLE);
     if (title == null) {
         title = "cPath";
     }
-    String style = request.getParameter(BaseAction.ATTRIBUTE_STYLE);
 
 	// setup some configurable UI elements
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 	String homePageHeader = webUIBean.getHomePageHeader();
     String isAdminPage = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 <head>
     <title><%= title %></title>
-    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="jsp/css/style.css" type="text/css"/>
     <link rel="stylesheet" href="jsp/css/tigris.css" type="text/css"/>
     <link rel="stylesheet" href="jsp/css/inst.css" type="text/css"/>
-    <% if (style != null && style.equals(BaseAction.ATTRIBUTE_STYLE_PRINT)) { %>
-        <link rel="stylesheet" href="jsp/css/print.css" type="text/css"/>
-    <% } %>
 
     <%--  Set Auto-Update for Admin Page --%>
     <%
@@ -39,31 +31,29 @@
         <% }
     %>
 
-    <%-- Include cPath JavaScript module --%>
-    <script src="jsp/javascript/cpath.js" LANGUAGE="JAVASCRIPT"
-        TYPE="TEXT/JAVASCRIPT">
-    </script>
-
     <%-- Explicitly Set Character Encoding
     Helps prevent against Cross-site scripting attacks:
     See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
     --%>
-    <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 </head>
 
-<body marginwidth="0" marginheight="0" class="composite"
-  OnLoad="document.searchbox.q.focus();">
+<body class="composite" onload="document.searchbox.q.focus();">
 
 <!-- Header/Banner -->
-<div id="home_page_header">
-<%= homePageHeader %>
+<div id="page_header">
+    <div id="page_title">
+    <%= homePageHeader %>
+    </div>
+
+    <!-- Search Box -->
+    <div id="search">
+        <jsp:include page="../global/searchBox.jsp" flush="true" />
+    </div>
 </div>
 
 <!-- Navigation Tabs -->
 <jsp:include page="../global/tabs.jsp" flush="true" />
-
-<!-- Search Box -->
-<jsp:include page="../global/searchBox.jsp" flush="true" />
 
 <!-- Start Main Table -->
 <table border="0" cellspacing="0" cellpadding="4" width="100%" id="main">
@@ -78,7 +68,7 @@
             <jsp:include page="../global/leftColumn.jsp" flush="true" />
 		<% } %>
         <!-- Start Body Column -->
-        <td valign=top>
+        <td valign="top">
             <!-- Start Div:  bodycol/projecthome -->
             <div id="bodycol">
                 <!-- Start Div:  app -->

@@ -120,6 +120,10 @@ if (xdebug != null) {
 		</TR>
 		<% } %>
 </TABLE>
+<P>&nbsp;
+<P>&nbsp;
+</div>
+</div>
 <% } %>
 <% } %>
 
@@ -143,7 +147,3 @@ private String wrapText (String text) {
     }
 }
 %>
-<P>&nbsp;
-<P>&nbsp;
-</div>
-</div>
