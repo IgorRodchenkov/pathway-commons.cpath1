@@ -42,14 +42,22 @@
 
 <!-- Header/Banner -->
 <div id="page_header">
-    <div id="page_title">
-    <%= homePageHeader %>
-    </div>
+<table width="100%">
+    <tr>
+        <td valign="top" width="60%">
+        <div id="page_title">
+            <%= homePageHeader %>
+        </div>
+        </td>
 
-    <!-- Search Box -->
-    <div id="search">
-        <jsp:include page="../global/searchBox.jsp" flush="true" />
-    </div>
+        <td align="right" valign="top">
+        <!-- Search Box -->
+        <div id="search">
+            <jsp:include page="../global/searchBox.jsp" flush="true" />
+        </div>
+        </td>
+    </tr>
+</table>
 </div>
 
 <!-- Navigation Tabs -->
