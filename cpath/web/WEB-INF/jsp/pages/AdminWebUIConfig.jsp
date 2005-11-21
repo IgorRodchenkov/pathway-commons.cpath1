@@ -33,6 +33,12 @@
 	<html:form action="adminUpdateWebUI.do" focus="logo">
 		<table border="0" cellspacing="2" cellpadding="3" width="100%">
 			<tr>
+				<th align="LEFT">Application Name</th>
+				<td>
+					<html:text property="applicationName" size="72" />
+				</td>
+			</tr>
+			<tr>
 				<th align="LEFT">Home Page Header</th>
 				<td>
 					<html:textarea property="homePageHeader" rows="5" cols="70"/>

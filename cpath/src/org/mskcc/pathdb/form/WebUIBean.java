@@ -1,5 +1,5 @@
 //
-// $Id: WebUIBean.java,v 1.2 2005-11-15 18:35:15 grossb Exp $
+// $Id: WebUIBean.java,v 1.3 2005-11-21 21:17:22 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,7 +47,12 @@ import javax.servlet.http.HttpServletRequest;
 public class WebUIBean extends ActionForm {
 
 	/**
-	 * Home Page Title.
+	 * Application Name.
+	 */
+    private String applicationName;
+
+	/**
+	 * Home Page Header.
 	 */
     private String homePageHeader;
 
@@ -85,6 +90,24 @@ public class WebUIBean extends ActionForm {
 	 * Maintenance Tag Line.
 	 */
     private String maintenanceTagLine;
+
+    /**
+     * Sets the Application Name.
+     *
+     * @param applicationName String.
+     */
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
+    /**
+     * Gets the Application Name.
+     *
+     * @return applicationName.
+     */
+    public String getApplicationName() {
+        return applicationName;
+    }
 
     /**
      * Sets the Home Page Header.
