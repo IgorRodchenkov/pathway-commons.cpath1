@@ -2,12 +2,16 @@
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  org.mskcc.pathdb.action.HomeAction,
                  org.mskcc.pathdb.action.BaseAction,
+                 org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
-<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE,
-        "cPath::Cytoscape PlugIn"); %>
+<%
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::Cytoscape PlugIn";
+	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+%>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 

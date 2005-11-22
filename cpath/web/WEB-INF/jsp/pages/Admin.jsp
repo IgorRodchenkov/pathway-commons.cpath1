@@ -7,14 +7,17 @@
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  java.text.NumberFormat,
                  java.text.DecimalFormat,
+                 org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ taglib uri="/WEB-INF/taglib/struts-html.tld" prefix="html" %>
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
-    String title = "cPath::Administration";
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::Administration";
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+%>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 <html:errors/>

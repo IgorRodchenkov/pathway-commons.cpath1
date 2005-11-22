@@ -2,12 +2,18 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.taglib.Pager,
                  org.mskcc.pathdb.sql.dao.DaoCPath,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.model.CPathRecord,
                  org.mskcc.pathdb.util.html.HtmlUtil"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 
-<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath::Search Results"); %>
+<%
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::Search Results";
+	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+%>
 <jsp:include page="../../global/header.jsp" flush="true" />
 <%
     ProtocolRequest protocolRequest = (ProtocolRequest)

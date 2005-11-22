@@ -2,11 +2,17 @@
                  java.util.ArrayList,
                  org.mskcc.pathdb.protocol.ProtocolConstants,
                  org.mskcc.pathdb.action.BaseAction,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.sql.assembly.XmlAssembly"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 
-<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "cPath::Search Results"); %>
+<%
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::Search Results";
+	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+%>
 <jsp:include page="../../global/header.jsp" flush="true" />
 <%
     ProtocolRequest protocolRequest = (ProtocolRequest)

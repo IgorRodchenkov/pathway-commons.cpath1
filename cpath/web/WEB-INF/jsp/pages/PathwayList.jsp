@@ -1,5 +1,7 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.model.CPathRecord,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  java.util.ArrayList,
                  org.mskcc.pathdb.sql.dao.DaoOrganism,
                  java.util.HashMap,
@@ -7,7 +9,9 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%
-    String title = "cPath:: Browse Pathways";
+	// set title
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::Browse Pathway(s)";
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 %>
 

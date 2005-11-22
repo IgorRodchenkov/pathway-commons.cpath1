@@ -1,8 +1,12 @@
 <%@ page import="java.util.Enumeration,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.action.BaseAction"%>
 <%
-    String title = "cPath::404 Not Found";
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title); %>
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::404 Not Found";
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+%>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 

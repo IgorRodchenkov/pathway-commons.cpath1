@@ -1,6 +1,12 @@
-<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
-<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE,
-        "cPath::Legal Disclaimer / Privacy Notice"); %>
+<%@ page import="org.mskcc.pathdb.action.BaseAction,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%
+	// set title
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::Legal Disclaimer / Privacy Notice";
+	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+%>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 

@@ -1,9 +1,12 @@
-<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
+<%@ page import="org.mskcc.pathdb.action.BaseAction,
+				 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
 	// set title
-    String title = "cPath::Browse By Organism";
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::Browse Organism(s)";
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
  %>
 

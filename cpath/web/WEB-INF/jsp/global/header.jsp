@@ -6,13 +6,16 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
 <%
+	// get WebUIBean
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+
+	// title
     String title = (String) request.getAttribute(BaseAction.ATTRIBUTE_TITLE);
     if (title == null) {
-        title = "cPath";
+        title = webUIBean.getApplicationName();
     }
 
-	// setup some configurable UI elements
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	// setup some other configurable UI elements
 	String homePageHeader = webUIBean.getHomePageHeader();
     String isAdminPage = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
 %>
@@ -70,7 +73,7 @@
 			// only show left hand column on admin page or
 			// if mode is psi and we are on psi_mi_search.jsp
 			if (isAdminPage != null  ||
-	           (title.equals("cPath::Search Results") &&
+	           ((title.indexOf("::Search Results") > -1) &&
 			    CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI)){
 	    %>
             <jsp:include page="../global/leftColumn.jsp" flush="true" />

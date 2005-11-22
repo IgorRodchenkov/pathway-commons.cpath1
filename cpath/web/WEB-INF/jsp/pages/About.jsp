@@ -16,9 +16,11 @@ request.setAttribute("advancedSearch", "true");
 // get tag line
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 String aboutContent = webUIBean.getAboutPageContent();
+
+// title
+String title = webUIBean.getApplicationName() + "::About";
+request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 %>
-<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE,
-        "cPath::About"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 <div id="content">

@@ -7,11 +7,14 @@
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
-	String title = "cPath:: Home";
+	// get bean
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+
+	// title
+	String title = webUIBean.getApplicationName() + "::Home";
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 
 	// get right column content
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 	String tagLine = webUIBean.getHomePageTagLine();
 	String homePageRightColumnContent = webUIBean.getHomePageRightColumnContent();
 

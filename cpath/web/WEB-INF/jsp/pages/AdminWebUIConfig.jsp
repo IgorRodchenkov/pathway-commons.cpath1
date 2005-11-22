@@ -1,11 +1,13 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction,
+                 org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ taglib uri="/WEB-INF/taglib/struts-html.tld" prefix="html" %>
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
-    String title = "cPath::AdministrationWebUIConfig";
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+	String title = webUIBean.getApplicationName() + "::Administration::User Interface Configuration";
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 
 	// web mode
