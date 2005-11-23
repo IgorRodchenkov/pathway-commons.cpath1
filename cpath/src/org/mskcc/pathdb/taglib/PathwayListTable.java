@@ -32,17 +32,13 @@ package org.mskcc.pathdb.taglib;
 // imports
 import java.util.ArrayList;
 import org.mskcc.pathdb.model.CPathRecord;
-//import net.sf.ehcache.CacheException;
-//import org.mskcc.pathdb.sql.dao.DaoException;
-//import org.mskcc.pathdb.sql.query.QueryException;
-//import java.io.IOException;
 
 /**
  * Custom JSP Tag for displaying a pathway list in a table.
  *
  * @author Benjamin Gross
  */
-public class PathwayListTable extends HtmlTable {
+public class InteractionTable extends HtmlTable {
 
     /**
      * Executes JSP Custom Tag
@@ -51,9 +47,15 @@ public class PathwayListTable extends HtmlTable {
      */
     protected void subDoStartTag() throws Exception {
 
-        startTable();
-        outputRecords();
-        endTable();
+		BioPaxConstants biopaxConstants = new BioPaxConstants();
+		CPathRecord record = (CPathRecord)pageContext.getRequest().getAttribute("RECORD");
+
+		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+			createHeader("Interactions");
+			startTable();
+			outputRecords();
+			endTable();
+		}
     }
 
     /**
@@ -64,6 +66,10 @@ public class PathwayListTable extends HtmlTable {
 		// get pathway list records
 		ArrayList records = null;
 		records = (ArrayList) pageContext.getRequest().getAttribute("RECORDS");
+
+		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+			createHeader("Interactions");
+		}
             
         if (records.size() == 0) {
             startRow();
