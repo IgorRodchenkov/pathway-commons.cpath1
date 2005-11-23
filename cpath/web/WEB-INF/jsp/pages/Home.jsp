@@ -36,7 +36,7 @@
 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX){ %>
     <div id="home_page_box">
     Browse Pathways:
-    <jsp:include page="./PathwayListTable.jsp" flush="true" />
+    <cbio:pathwayListTable/>
     </div>
 <% // render the following in psi mi mode %>
 <% } else { %>

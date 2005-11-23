@@ -19,6 +19,6 @@
 
 <div id="content">
 <h1>Browse Pathways</h1>
-<jsp:include page="./PathwayListTable.jsp" flush="true" />
+<cbio:pathwayListTable/>
 </div>
 <jsp:include page="../global/footer.jsp" flush="true" />
