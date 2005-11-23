@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import org.mskcc.pathdb.model.CPathRecord;
 
 /**
- * Custom JSP Tag for displaying a pathway list in a table.
+ * Custom jsp tag for displaying a pathway list in a table.
  *
  * @author Benjamin Gross
  */
@@ -67,10 +67,7 @@ public class InteractionTable extends HtmlTable {
 		ArrayList records = null;
 		records = (ArrayList) pageContext.getRequest().getAttribute("RECORDS");
 
-		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
-			createHeader("Interactions");
-		}
-            
+		// process records
         if (records.size() == 0) {
             startRow();
             append("<TD COLSPAN=5>No Pathway Records Exist</TD>");
