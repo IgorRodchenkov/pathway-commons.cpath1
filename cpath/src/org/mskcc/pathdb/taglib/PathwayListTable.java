@@ -34,11 +34,11 @@ import java.util.ArrayList;
 import org.mskcc.pathdb.model.CPathRecord;
 
 /**
- * Custom JSP Tag for displaying a Pathway List in a table.
+ * Custom JSP Tag for displaying a Pathway List in a Table.
  *
  * @author Benjamin Gross
  */
-public class InteractionTable extends HtmlTable {
+public class PathwayListTable extends HtmlTable {
 
     /**
      * Executes JSP Custom Tag
