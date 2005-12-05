@@ -8,6 +8,8 @@
                  org.mskcc.pathdb.model.Organism,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
+<%@ page errorPage = "JspError.jsp" %>
 <%
 	// set title
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
@@ -18,7 +20,7 @@
 <jsp:include page="../global/header.jsp" flush="true" />
 
 <div id="content">
-<h1>Browse Pathways</h1>
-<cbio:pathwayListTable/>
+<h1>Browse Pathways:</h1>
 </div>
+<cbio:pathwayListTable/>
 <jsp:include page="../global/footer.jsp" flush="true" />
