@@ -74,6 +74,13 @@
   </tag>
 
   <tag>
+    <name>interactionTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.InteractionTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays PathwayList Table</description>
+  </tag>
+
+  <tag>
     <name>logTable</name>
     <tag-class>org.mskcc.pathdb.taglib.LogTable</tag-class>
     <body-content>empty</body-content>
