@@ -260,6 +260,17 @@ public class BioPaxConstants {
     }
 
     /**
+     * Determines if the Specified Element is of type:  physicalInteraction.
+     *
+     * @param elementName Element Name.
+     * @return boolean value.
+     */
+    public boolean isPhysicalInteraction(String elementName) {
+        return (interactionSet.contains(elementName.trim()) &&
+				!elementName.trim().equals(INTERACTION));
+    }
+
+    /**
      * Determines if the Specified Element is of type:  pathway.
      *
      * @param elementName Element Name.
