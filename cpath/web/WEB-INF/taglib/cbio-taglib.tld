@@ -74,10 +74,10 @@
   </tag>
 
   <tag>
-    <name>interactionTable</name>
-    <tag-class>org.mskcc.pathdb.taglib.InteractionTable</tag-class>
+    <name>pathwayInteractionTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.PathwayInteractionTable</tag-class>
     <body-content>empty</body-content>
-    <description>Displays PathwayList Table</description>
+    <description>Displays Pathway Interaction Table</description>
   </tag>
 
   <tag>
