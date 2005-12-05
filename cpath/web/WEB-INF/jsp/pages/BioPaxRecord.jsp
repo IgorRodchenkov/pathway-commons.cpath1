@@ -140,6 +140,10 @@
             externalLinker.getRecordsByCPathId(record.getId());
     if (externalLinks.size() > 0) {
         for (int i = 0; i < externalLinks.size(); i++) {
+			// for nice spacing
+			if (i > 0){
+				out.println("<TD></TD>");
+			}
 			out.println("<TD COLSPAN=3>");
             ExternalLinkRecord link = (ExternalLinkRecord) externalLinks.get(i);
             ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
@@ -156,7 +160,7 @@
     	out.println("<TR>");
 	}
 	else{
-        out.println("None");
+        out.println("<TD>None</TD></TR>");
     }
 %>
 </TD>
