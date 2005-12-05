@@ -46,16 +46,9 @@ public class PathwayListTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     protected void subDoStartTag() throws Exception {
-
-		BioPaxConstants biopaxConstants = new BioPaxConstants();
-		CPathRecord record = (CPathRecord)pageContext.getRequest().getAttribute("RECORD");
-
-		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
-			createHeader("Interactions");
-			startTable();
-			outputRecords();
-			endTable();
-		}
+		startTable();
+		outputRecords();
+		endTable();
     }
 
     /**
