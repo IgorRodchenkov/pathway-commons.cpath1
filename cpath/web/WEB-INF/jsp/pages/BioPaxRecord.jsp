@@ -12,186 +12,182 @@
                  org.jdom.xpath.XPath,
                  java.util.List,
                  org.mskcc.pathdb.model.*,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
+	// ui bean
+	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+
+	// get the cpath record
     CPathRecord record = (CPathRecord) request.getAttribute("RECORD");
-    String title = "cPath:: " + record.getName();
+
+	// our biopax entity type 2 plain english hashmap
+    BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
+
+	// set request title attribute
+    String title = webUIBean.getApplicationName() + "::" + record.getName();
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+
+	// setup for biopax queries
+	Element e = null;
+	XPath xpath = null;
+	StringReader reader = new StringReader (record.getXmlContent());
+    SAXBuilder builder = new SAXBuilder();
+	Document bioPaxDoc = builder.build(reader);
+    Element root = bioPaxDoc.getRootElement();
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
-<div id='axial' class='h3'>
 <% if (record != null) { %>
-<h3><%= record.getName() %></h3>
-<% } %>
+<div id="apphead">
+<h2><%= record.getName() %></h2>
 </div>
+<% } %>
 
-<TABLE WIDTH=100%>
 <% if (record != null) { %>
-<TR>
-    <TD>Name:</TD>
-    <TD><%= record.getName() %></TD>
-    <TD>Type:</TD>
-    <TD><%= record.getType() %></TD>
-</TR>
-<TR>
-    <TD>Description:</TD>
-    <TD><%= record.getDescription() %></TD>
-    <TD>Specific Type:</TD>
-    <TD><%= record.getSpecificType() %></TD>
-</TR>
-<TR>
-    <TD>Taxonomy ID:</TD>
-    <TD>
-        <%
-        int taxId= record.getNcbiTaxonomyId();
-        if (taxId == CPathRecord.TAXONOMY_NOT_SPECIFIED) {
-            out.println(CPathRecord.NA_STRING);
-        } else {
-            out.println(taxId);
-        }
-        %>
-    </TD>
-    <TD>XML Type:</TD>
-    <TD><%= record.getXmlType() %></TD>
-</TR>
-<TR>
-</TR>
-<TR>
-    <TD>XML Content:</TD>
-    <TD>
-    <%
-        String xmlAbbrevUrl = "record.do?format=xml_abbrev&id="
-                +record.getId();
-        out.println("<A HREF=\""+ xmlAbbrevUrl + "\">XML Abbrev</A>");
-        out.println("&nbsp;&nbsp;");
+<div class ='h3'>
+	<h3>Common</h3>
+</div>
+<TABLE WIDTH=100%>
+<%
+	// short name
+	xpath = XPath.newInstance("/*/bp:SHORT-NAME");
+   	xpath.addNamespace("bp", root.getNamespaceURI());
+	e = (Element) xpath.selectSingleNode(root);
+	String shortName = null;
+	if (e != null) {
+		shortName = e.getTextNormalize();
+		if (!shortName.equals(record.getName())){
+			out.println("<TR>");
+			out.println("<TD>Short Name:</TD>");
+			out.println("<TD COLSPAN=3>" + shortName + "</TD>");
+			out.println("</TR>");
+		}
+	}
 
-        ProtocolRequest protocolRequest = new ProtocolRequest ();
-        protocolRequest.setCommand
-                (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
-        protocolRequest.setFormat(ProtocolConstants.FORMAT_BIO_PAX);
-        protocolRequest.setQuery(Long.toString(record.getId()));
-        out.println("<A HREF=\""+ protocolRequest.getUri()
-                + "\">XML Full</A>");
-    %>
-    </TD>
-</TR>
-<% if (record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
-        StringReader reader = new StringReader (record.getXmlContent());
-        SAXBuilder builder = new SAXBuilder();
-        Document bioPaxDoc = builder.build(reader);
-
-        //  Get Root Element
-        Element root = bioPaxDoc.getRootElement();
-
-        XPath xpath = XPath.newInstance("/*/bp:AVAILABILITY");
-        xpath.addNamespace("bp", root.getNamespaceURI());
-        Element e = (Element) xpath.selectSingleNode(root);
-        if (e != null) {
-            out.println("<TR>");
-            out.println("<TD>Availability:</TD>");
-            out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
-            out.println("</TR>");
-        }
-
-        xpath = XPath.newInstance("/*/bp:COMMENT");
-        xpath.addNamespace("bp", root.getNamespaceURI());
-        e = (Element) xpath.selectSingleNode(root);
-        if (e != null) {
-            out.println("<TR>");
-            out.println("<TD>Comment:</TD>");
-            String text = e.getTextNormalize();
-            text = text.replaceAll("<BR>", "<P>");
-            out.println("<TD COLSPAN=3>" + text + "</TD>");
-            out.println("</TR>");
-        }
-
-        xpath = XPath.newInstance("/*/bp:DATA-SOURCE/*/bp:NAME");
-        xpath.addNamespace("bp", root.getNamespaceURI());
-        e = (Element) xpath.selectSingleNode(root);
-        if (e != null) {
-            out.println("<TR>");
-            out.println("<TD>Data Source:</TD>");
-            out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
-            out.println("</TR>");
-        }
-
-        xpath = XPath.newInstance("/*/bp:SYNONYMS");
-        xpath.addNamespace("bp", root.getNamespaceURI());
-        List list = xpath.selectNodes(root);
-        if (list != null && list.size() > 0) {
-            out.println("<TR>");
-            out.println("<TD>Synonyms:</TD>");
-            out.println("<TD COLSPAN=3><UL>");
-            for (int i=0; i<list.size(); i++) {
-                e = (Element) list.get(i);
-                out.println("<LI>" + e.getTextNormalize());
-            }
-            out.println("</UL></TD>");
-            out.println("</TR>");
-        }
-}
+	// name
+	xpath = XPath.newInstance("/*/bp:NAME");
+   	xpath.addNamespace("bp", root.getNamespaceURI());
+	e = (Element) xpath.selectSingleNode(root);
+	if (e != null){
+		String name = e.getTextNormalize();
+		if ((shortName == null || !shortName.equals(name)) &&
+			!name.equals(record.getName())){
+				out.println("<TR>");
+				out.println("<TD>Name:</TD>");
+				out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
+				out.println("</TR>");
+		}
+	}
 %>
 <TR>
-    <TD>Internal Links:</TD>
-    <TD>
-    <%
-    DaoInternalLink internalLinker = new DaoInternalLink();
-    ArrayList recordList = internalLinker.getTargetsWithLookUp(record.getId());
-    if (recordList.size() > 0) {
-        out.println("<UL>");
-        for (int i=0; i<recordList.size(); i++) {
-            CPathRecord link = (CPathRecord) recordList.get(i);
-            String url = "record.do?id="+link.getId();
-            if (link.getName().equals("N/A")) {
-                out.println("<LI><A HREF=\""+url+ "\">"
-                    + link.getType()
-                    + ":: " + link.getSpecificType()
-                    + "</A>");
-            } else {
-                out.println("<LI><A HREF=\""+url+ "\">"
-                    + link.getName() + "</A>");
-            }
+<TD>Specific Type:</TD>
+<TD COLSPAN=3><%= entityTypeMap.get(record.getSpecificType()) %></TD>
+</TR>
+<%
+	// organism
+	xpath = XPath.newInstance("/*/bp:ORGANISM/*/bp:NAME");
+   	xpath.addNamespace("bp", root.getNamespaceURI());
+	e = (Element) xpath.selectSingleNode(root);
+	if (e != null){
+		out.println("<TR>");
+		out.println("<TD>Organism:</TD>");
+		out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
+		out.println("</TR>");
+	}
+
+	// synonym
+	xpath = XPath.newInstance("/*/bp:SYNONYMS");
+    xpath.addNamespace("bp", root.getNamespaceURI());
+    List list = xpath.selectNodes(root);
+    if (list != null && list.size() > 0) {
+    	out.println("<TR>");
+        out.println("<TD>Synonyms:</TD>");
+        out.println("<TD COLSPAN=3>");
+        for (int i=0; i<list.size(); i++) {
+        	e = (Element) list.get(i);
+            out.println(e.getTextNormalize());
         }
-        out.println("</UL>");
-    } else {
-        out.println("None");
+        out.println("</TD>");
+        out.println("</TR>");
     }
 
-    %></TD>
-</TR>
+	// comment
+	xpath = XPath.newInstance("/*/bp:COMMENT");
+    xpath.addNamespace("bp", root.getNamespaceURI());
+    e = (Element) xpath.selectSingleNode(root);
+    if (e != null) {
+        out.println("<TR>");
+        out.println("<TD>Comment:</TD>");
+        String text = e.getTextNormalize();
+        text = text.replaceAll("<BR>", "<P>");
+        out.println("<TD COLSPAN=3>" + text + "</TD>");
+        out.println("</TR>");
+    }
+%>
 <TR>
-    <TD>External Links:</TD>
-    <TD>
-    <%
+<TD>External Links:</TD>
+<%
+	// xrefs
     DaoExternalLink externalLinker = DaoExternalLink.getInstance();
     ArrayList externalLinks =
             externalLinker.getRecordsByCPathId(record.getId());
     if (externalLinks.size() > 0) {
-        out.println("<UL>");
         for (int i = 0; i < externalLinks.size(); i++) {
+			out.println("<TD COLSPAN=3>");
             ExternalLinkRecord link = (ExternalLinkRecord) externalLinks.get(i);
             ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
             String dbId = link.getLinkedToId();
-            out.println("<LI>" + dbRecord.getName() + ": " + dbId);
+            out.println(dbRecord.getName() + ": " + dbId);
             String uri = link.getWebLink();
             if (uri != null && uri.length() > 0) {
-                out.println(" [<A HREF=\""+ uri + "\">Web Link</A>]");
+                out.println("[<A HREF=\""+ uri + "\">Web Link</A>]");
             } else {
-                out.println(" [No Web Link Available]");
+                out.println("[No Web Link Available]");
             }
+			out.println("</TD></TR>");
         }
-        out.println("</UL>");
-    }  else {
+    	out.println("<TR>");
+	}
+	else{
         out.println("None");
     }
-    %>
-<% }%>
+%>
+</TD>
+</TR>
+<%
+	// data source
+    xpath = XPath.newInstance("/*/bp:DATA-SOURCE/*/bp:NAME");
+    xpath.addNamespace("bp", root.getNamespaceURI());
+    e = (Element) xpath.selectSingleNode(root);
+    if (e != null) {
+        out.println("<TR>");
+        out.println("<TD>Data Source:</TD>");
+        out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
+        out.println("</TR>");
+    }
+
+	// availability
+	xpath = XPath.newInstance("/*/bp:AVAILABILITY");
+    xpath.addNamespace("bp", root.getNamespaceURI());
+    e = (Element) xpath.selectSingleNode(root);
+    if (e != null) {
+        out.println("<TR>");
+        out.println("<TD>Availability:</TD>");
+        out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
+        out.println("</TR>");
+    }
+%>
 </TABLE>
 
+<% // physical interactions %>
+<cbio:pathwayInteractionTable/>
+
+<% } // record not equal to null %>
 <jsp:include page="../global/footer.jsp" flush="true" />
