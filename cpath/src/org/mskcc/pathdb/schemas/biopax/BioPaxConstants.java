@@ -211,6 +211,16 @@ public class BioPaxConstants {
     private Set pathwaySet = new HashSet();
 
     /**
+     * Set of All Conversion Types.
+     */
+    private Set conversionSet = new HashSet();
+
+    /**
+     * Set of All Control Types.
+     */
+    private Set controlSet = new HashSet();
+
+    /**
      * Constructor.
      */
     public BioPaxConstants() {
@@ -237,6 +247,16 @@ public class BioPaxConstants {
 
         //  Intialize Pathway Set
         pathwaySet.add(PATHWAY);
+		
+		// Initialize Conversion Set
+		conversionSet.add(BIOCHEMICAL_REACTION);
+		conversionSet.add(COMPLEX_ASSEMBLY);
+		conversionSet.add(TRANSPORT);
+		conversionSet.add(TRANSPORT_WITH_BIOCHEMICAL_REACTION);
+
+		// Initialize Control Set
+		controlSet.add(CATAYLSIS);
+		controlSet.add(MODULATION);
     }
 
     /**
@@ -297,5 +317,25 @@ public class BioPaxConstants {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Determines if the Specified Element is of type:  conversion.
+     *
+     * @param elementName Element Name.
+     * @return boolean value.
+     */
+    public boolean isConversion(String elementName) {
+        return conversionSet.contains(elementName.trim());
+    }
+
+    /**
+     * Determines if the Specified Element is of type:  control.
+     *
+     * @param elementName Element Name.
+     * @return boolean value.
+     */
+    public boolean isControl(String elementName) {
+        return controlSet.contains(elementName.trim());
     }
 }
