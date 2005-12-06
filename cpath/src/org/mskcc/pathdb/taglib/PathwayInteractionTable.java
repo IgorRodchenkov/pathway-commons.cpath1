@@ -58,27 +58,41 @@ public class PathwayInteractionTable extends HtmlTable {
 	/**
 	 * Reference to XML Element.
 	 */
-	Element e;
+	private Element e;
 
 	/**
 	 * Reference to XML Root.
 	 */
-	Element root;
+	private Element root;
 
 	/**
 	 * Reference to XPath Class.
 	 */
-	XPath xpath;
+	private XPath xpath;
 
 	/**
 	 * Reference to BioPaxConstants Class.
 	 */
-	BioPaxConstants biopaxConstants;
+	private BioPaxConstants biopaxConstants;
+
+    /**
+     * Record ID.
+     */
+    private long recID;
 
 	/**
 	 * Reference to CPathRecord.
 	 */
 	CPathRecord record;
+
+	/**
+	 * Receives Record ID Attribute.
+	 *
+	 * @param long recid.
+	 */
+	public void setRecid(long recID){
+		this.recID = recID;
+	}
 
     /**
      * Executes JSP Custom Tag
@@ -87,9 +101,14 @@ public class PathwayInteractionTable extends HtmlTable {
      */
     protected void subDoStartTag() throws Exception {
 
+		// create our biopaxConstants "helper" class
 		biopaxConstants = new BioPaxConstants();
-		record = (CPathRecord)pageContext.getRequest().getAttribute("RECORD");
 
+		// get record using ID attribute
+		DaoCPath cPath = DaoCPath.getInstance();
+		record = cPath.getRecordById(recID);
+
+		// is this a physical interaction
 		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
 			createHeader("Interactions");
 			startTable();
