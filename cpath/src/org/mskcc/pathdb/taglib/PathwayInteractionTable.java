@@ -43,6 +43,7 @@ import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 import org.mskcc.pathdb.schemas.biopax.RdfUtil;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
@@ -138,8 +139,8 @@ public class PathwayInteractionTable extends HtmlTable {
 	private void outputConversionInformation() throws Exception {
 
 		// get participants
-		Vector leftParticipants = getConversionInformation("/*/bp:LEFT/*/bp:PHYSICAL-ENTITY");
-		Vector rightParticipants = getConversionInformation("/*/bp:RIGHT/*/bp:PHYSICAL-ENTITY");
+		Vector leftParticipants = getPhysicalInteractionInformation("/*/bp:LEFT/*/bp:PHYSICAL-ENTITY");
+		Vector rightParticipants = getPhysicalInteractionInformation("/*/bp:RIGHT/*/bp:PHYSICAL-ENTITY");
 
 		startTable();
 		startRow();
@@ -147,6 +148,7 @@ public class PathwayInteractionTable extends HtmlTable {
 		endRow();
 
 		startRow();
+		// substrates
 		if (leftParticipants != null){
 			append("<TD>Substrates");
 			for (int lc = 0; lc < leftParticipants.size(); lc++) {
@@ -160,6 +162,7 @@ public class PathwayInteractionTable extends HtmlTable {
 			append("</TD>");
 		}
 
+		// products
 		if (rightParticipants != null){
 			append("<TD>Products");
 			for (int lc = 0; lc < rightParticipants.size(); lc++) {
@@ -177,22 +180,81 @@ public class PathwayInteractionTable extends HtmlTable {
 		endTable();
 	}
 
+    /**
+     * Output the Control Information.
+	 *
+	 * @throws Exception
+     */
+	private void outputControlInformation() throws Exception {
+
+		// get controlled/controller
+		Vector controllers = getPhysicalInteractionInformation("/*/bp:CONTROLLER/*/bp:PHYSICAL-ENTITY");
+		Vector controlled = getPhysicalInteractionInformation("/*/bp:CONTROLLED");
+
+		startTable();
+		startRow();
+		append("<TD><b>Control Information:</b></TD>");
+		endRow();
+
+		// control type info
+		String controlType = getControlType();
+		if (controlType != null){
+			startRow();
+			append("<TD>Type: " + controlType + "</TD>");
+			endRow();
+		}
+
+		startRow();
+		// controllers
+		if (controllers != null){
+			append("<TD>Controllers");
+			for (int lc = 0; lc < controllers.size(); lc++) {
+				if (lc == 0){
+					append("<UL>");
+				}
+				append("<LI>");
+				append((String)controllers.get(lc));
+			}
+			append("</UL>");
+			append("</TD>");
+		}
+
+		// controlled
+		if (controlled != null){
+			append("<TD>Controlled");
+			for (int lc = 0; lc < controlled.size(); lc++) {
+				if (lc == 0){
+					append("<UL>");
+				}
+				append("<LI>");
+				append((String)controlled.get(lc));
+			}
+			append("</UL>");
+			append("</TD>");
+		}
+		endRow();
+
+		endTable();
+	}
+
 	/**
-	 * Gets conversion information given query.
+	 * Gets PhysicalInteractionInformation, given query.
 	 *
 	 * @param query String
 	 * @return Vector
-	 * @throws JDOMException
+	 * @throws Exception
 	 */
-	private Vector getConversionInformation(String query) throws Exception {
+	private Vector getPhysicalInteractionInformation(String query) throws Exception {
 
 		// our list to return
 		Vector participantVector = new Vector();
 
-		// interate through "left" participants
+		// perform query
 		xpath = XPath.newInstance(query);
 		xpath.addNamespace("bp", root.getNamespaceURI());
 		List list = xpath.selectNodes(root);
+
+		// interate through results
 		if (list != null && list.size() > 0) {
 			for (int lc = 0; lc < list.size(); lc++) {
 				e = (Element) list.get(lc);
@@ -264,12 +326,27 @@ public class PathwayInteractionTable extends HtmlTable {
 		return link;
 	}
 
-    /**
-     * Output the Control Information.
+	/**
+	 * Gets Control Type in Plain English.
 	 *
+	 * @return String
 	 * @throws Exception
-     */
-	private void outputControlInformation() throws Exception {
+	 */
+	private String getControlType() throws Exception {
+
+		// perform query
+		xpath = XPath.newInstance("/*/bp:CONTROL-TYPE");
+		xpath.addNamespace("bp", root.getNamespaceURI());
+		Element e  = (Element)xpath.selectSingleNode(root);
+
+		// set the control type string
+		String controlType = null;
+		if (e != null){
+			// our biopax control type 2 plain english hashmap
+			BioPaxControlTypeMap controlTypeMap = new BioPaxControlTypeMap();
+			controlType = (String)controlTypeMap.get(e.getTextNormalize());
+		}
+		return controlType;
 	}
 
     /**
