@@ -49,7 +49,7 @@ import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 /**
- * Custom jps tag for displaying interactions
+ * Custom jsp tag for displaying interactions
  *
  * @author Benjamin Gross
  */
@@ -370,6 +370,8 @@ public class PathwayInteractionTable extends HtmlTable {
 
     /**
      * Handles error processing.
+	 *
+	 * @param e Exception.
      */
 	private void jspError(Exception e){
 		startRow();
