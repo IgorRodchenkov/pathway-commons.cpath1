@@ -110,7 +110,6 @@ public class PathwayInteractionTable extends HtmlTable {
 
 		// is this a physical interaction
 		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
-			createHeader("Interactions");
 			startTable();
 			outputRecords();
 			endTable();
@@ -137,6 +136,14 @@ public class PathwayInteractionTable extends HtmlTable {
 				root = bioPaxDoc.getRootElement();
 			}
 
+			// interaction type
+			String interactionType = getInteractionType();
+			if (interactionType != null){
+				startRow();
+				append("<TD>Interaction Type: " + interactionType + "</TD>");
+				endRow();
+			}
+
 			// display conversion or control information
 			if (biopaxConstants.isConversion(record.getSpecificType())){
 				outputConversionInformation();
@@ -161,12 +168,14 @@ public class PathwayInteractionTable extends HtmlTable {
 		Vector leftParticipants = getPhysicalInteractionInformation("/*/bp:LEFT/*/bp:PHYSICAL-ENTITY");
 		Vector rightParticipants = getPhysicalInteractionInformation("/*/bp:RIGHT/*/bp:PHYSICAL-ENTITY");
 
-		startTable();
+		// header
 		startRow();
 		append("<TD><b>Conversion Information:</b></TD>");
 		endRow();
 
+		// start row
 		startRow();
+
 		// substrates
 		if (leftParticipants != null){
 			append("<TD>Substrates");
@@ -194,9 +203,9 @@ public class PathwayInteractionTable extends HtmlTable {
 			append("</UL>");
 			append("</TD>");
 		}
-		endRow();
 
-		endTable();
+		// end row
+		endRow();
 	}
 
     /**
@@ -210,7 +219,7 @@ public class PathwayInteractionTable extends HtmlTable {
 		Vector controllers = getPhysicalInteractionInformation("/*/bp:CONTROLLER/*/bp:PHYSICAL-ENTITY");
 		Vector controlled = getPhysicalInteractionInformation("/*/bp:CONTROLLED");
 
-		startTable();
+		// header
 		startRow();
 		append("<TD><b>Control Information:</b></TD>");
 		endRow();
@@ -219,11 +228,13 @@ public class PathwayInteractionTable extends HtmlTable {
 		String controlType = getControlType();
 		if (controlType != null){
 			startRow();
-			append("<TD>Type: " + controlType + "</TD>");
+			append("<TD>Control Type: " + controlType + "</TD>");
 			endRow();
 		}
 
+		// start row
 		startRow();
+
 		// controllers
 		if (controllers != null){
 			append("<TD>Controllers");
@@ -251,9 +262,9 @@ public class PathwayInteractionTable extends HtmlTable {
 			append("</UL>");
 			append("</TD>");
 		}
-		endRow();
 
-		endTable();
+		// end row
+		endRow();
 	}
 
 	/**
@@ -343,6 +354,21 @@ public class PathwayInteractionTable extends HtmlTable {
 
 		// outta here
 		return link;
+	}
+
+	/**
+	 * Gets Interaction Type in Plain English.
+	 *
+	 * @return String
+	 * @throws Exception
+	 */
+	private String getInteractionType() throws Exception {
+
+		// set the control type string
+		String interactionType = null;
+
+		// outta here
+		return interactionType;
 	}
 
 	/**
