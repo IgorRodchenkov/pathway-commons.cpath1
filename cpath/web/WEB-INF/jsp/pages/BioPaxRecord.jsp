@@ -2,12 +2,17 @@
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  org.mskcc.pathdb.action.HomeAction,
                  org.mskcc.pathdb.action.BaseAction,
+				 org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.sql.dao.DaoInternalLink,
-                 java.util.ArrayList,
                  org.mskcc.pathdb.sql.dao.DaoExternalLink,
+                 java.util.ArrayList,
                  org.jdom.input.SAXBuilder,
                  org.jdom.Element,
                  org.jdom.Document,
+				 org.jdom.Attribute,
+				 org.mskcc.pathdb.schemas.biopax.RdfUtil,
+				 org.mskcc.pathdb.schemas.biopax.RdfConstants,
+				 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
                  java.io.StringReader,
                  org.jdom.xpath.XPath,
                  java.util.List,
@@ -28,6 +33,9 @@
 
 	// our biopax entity type 2 plain english hashmap
     BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
+
+	// create our biopaxConstants "helper" class
+	BioPaxConstants biopaxConstants = new BioPaxConstants();
 
 	// set request title attribute
     String title = webUIBean.getApplicationName() + "::" + record.getName();
@@ -190,8 +198,66 @@
 %>
 </TABLE>
 
-<% // physical interactions %>
-<cbio:pathwayInteractionTable/>
+<%
+	// pathway interactions
+	if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+%>
+		<div class ='h3'>
+		<h3>Interactions</h3>
+		</div>
+		<table>
+		<cbio:pathwayInteractionTable recid="<%=record.getId()%>"/>
+		</table>
+<%
+	}
+%>
+<%
+	// child nodes
+	xpath = XPath.newInstance("/*/bp:PATHWAY-COMPONENTS");
+    xpath.addNamespace("bp", root.getNamespaceURI());
+    list = xpath.selectNodes(root);
+	// interate through results
+	if (list != null && list.size() > 0) {
+%>
+		<div class ='h3'>
+		<h3>First Level Child Nodes</h3>
+		</div>
+		<table>
+<%
+		for (int lc = 0; lc < list.size(); lc++) {
+			e = (Element) list.get(lc);
+			Attribute rdfResourceAttribute =
+				e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+			if (rdfResourceAttribute != null) {
+				String rdfKey = RdfUtil.removeHashMark
+					(rdfResourceAttribute.getValue());
+				// cook id
+				int indexOfId = rdfKey.lastIndexOf("-");
+				if (indexOfId == -1){
+					continue;
+				}
+				indexOfId += 1;
+				String cookedRecord = rdfKey.substring(indexOfId);
+				Long id = new Long(cookedRecord);
+				// render child node info (1 level deep)
+				DaoCPath cPath = DaoCPath.getInstance();
+				CPathRecord childRecord = cPath.getRecordById(id.longValue());
+				// render interaction information
+%>
+				<tr><td>
+				<cbio:pathwayChildNodeTable recid="<%=id.longValue()%>"/>
+				</td></tr>
+				<tr><td>
+				<cbio:pathwayInteractionTable recid="<%=id.longValue()%>"/>
+				</td></tr>
+<%
+			}
+		}
+%>
+		</table>
+<%
+	}
+%>
 
 <% } // record not equal to null %>
 <jsp:include page="../global/footer.jsp" flush="true" />
