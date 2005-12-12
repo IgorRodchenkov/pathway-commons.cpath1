@@ -30,23 +30,9 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
-import java.util.List;
 import java.util.Vector;
-import java.io.StringReader;
-
-import org.jdom.Attribute;
-import org.jdom.Element;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.xpath.XPath;
-import org.jdom.input.SAXBuilder;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.BioPaxControlTypeMap;
-import org.mskcc.pathdb.schemas.biopax.RdfUtil;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.model.PhysicalInteraction;
+import org.mskcc.pathdb.model.PhysicalInteractionComponent;
 
 /**
  * Custom jsp tag for displaying interactions
@@ -55,43 +41,18 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
  */
 public class PathwayInteractionTable extends HtmlTable {
 
-	/**
-	 * Reference to XML Element.
-	 */
-	private Element e;
-
-	/**
-	 * Reference to XML Root.
-	 */
-	private Element root;
-
-	/**
-	 * Reference to XPath Class.
-	 */
-	private XPath xpath;
-
-	/**
-	 * Reference to BioPaxConstants Class.
-	 */
-	private BioPaxConstants biopaxConstants;
-
     /**
-     * Record ID.
+     * Physical Interaction.
      */
-    private long recID;
+    private PhysicalInteraction physicalInteraction;
 
 	/**
-	 * Reference to CPathRecord.
-	 */
-	CPathRecord record;
-
-	/**
-	 * Receives Record ID Attribute.
+	 * Receives PhysicalInteraction Attribute.
 	 *
-	 * @param long recid.
+	 * @param physicalInteraction PhysicalInteraction.
 	 */
-	public void setRecid(long recID){
-		this.recID = recID;
+	public void setPhysicalinteraction(PhysicalInteraction physicalInteraction){
+		this.physicalInteraction = physicalInteraction;
 	}
 
     /**
@@ -101,15 +62,8 @@ public class PathwayInteractionTable extends HtmlTable {
      */
     protected void subDoStartTag() throws Exception {
 
-		// create our biopaxConstants "helper" class
-		biopaxConstants = new BioPaxConstants();
-
-		// get record using ID attribute
-		DaoCPath cPath = DaoCPath.getInstance();
-		record = cPath.getRecordById(recID);
-
-		// is this a physical interaction
-		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+		// here we go
+		if (physicalInteraction != null){
 			startTable();
 			outputRecords();
 			endTable();
@@ -121,287 +75,43 @@ public class PathwayInteractionTable extends HtmlTable {
      */
     private void outputRecords() {
 
-		// used for xml parsing
-		SAXBuilder builder = new SAXBuilder();
-		StringReader reader = new StringReader (record.getXmlContent());
-		if (reader == null){
-			jspError(new Exception("Cannot initialize Reader"));
-			return;
-		}
+		int lc, cnt;
+		Vector components;
 
-		try{
-			Document bioPaxDoc = builder.build(reader);
-
-			if (bioPaxDoc != null){
-				root = bioPaxDoc.getRootElement();
-			}
-
-			// interaction type
-			String interactionType = getInteractionType();
-			if (interactionType != null){
-				startRow();
-				append("<TD>Interaction Type: " + interactionType + "</TD>");
-				endRow();
-			}
-
-			// display conversion or control information
-			if (biopaxConstants.isConversion(record.getSpecificType())){
-				outputConversionInformation();
-			}
-			else if (biopaxConstants.isControl(record.getSpecificType())){
-				outputControlInformation();
-			}
-		}
-		catch(Exception e){
-			jspError(e);
-		}
-    }
-
-    /**
-     * Output the Conversion Information.
-	 *
-	 * @throws Exception.
-     */
-	private void outputConversionInformation() throws Exception {
-
-		// get participants
-		Vector leftParticipants = getPhysicalInteractionInformation("/*/bp:LEFT/*/bp:PHYSICAL-ENTITY");
-		Vector rightParticipants = getPhysicalInteractionInformation("/*/bp:RIGHT/*/bp:PHYSICAL-ENTITY");
-
-		// header
-		startRow();
-		append("<TD><b>Conversion Information:</b></TD>");
-		endRow();
-
-		// start row
-		startRow();
-
-		// substrates
-		if (leftParticipants != null){
-			append("<TD>Substrates");
-			for (int lc = 0; lc < leftParticipants.size(); lc++) {
-				if (lc == 0){
-					append("<UL>");
-				}
-				append("<LI>");
-				append((String)leftParticipants.get(lc));
-			}
-			append("</UL>");
-			append("</TD>");
-		}
-
-		// products
-		if (rightParticipants != null){
-			append("<TD>Products");
-			for (int lc = 0; lc < rightParticipants.size(); lc++) {
-				if (lc == 0){
-					append("<UL>");
-				}
-				append("<LI>");
-				append((String)rightParticipants.get(lc));
-			}
-			append("</UL>");
-			append("</TD>");
-		}
-
-		// end row
-		endRow();
-	}
-
-    /**
-     * Output the Control Information.
-	 *
-	 * @throws Exception
-     */
-	private void outputControlInformation() throws Exception {
-
-		// get controlled/controller
-		Vector controllers = getPhysicalInteractionInformation("/*/bp:CONTROLLER/*/bp:PHYSICAL-ENTITY");
-		Vector controlled = getPhysicalInteractionInformation("/*/bp:CONTROLLED");
-
-		// header
-		startRow();
-		append("<TD><b>Control Information:</b></TD>");
-		endRow();
-
-		// control type info
-		String controlType = getControlType();
-		if (controlType != null){
-			startRow();
-			append("<TD>Control Type: " + controlType + "</TD>");
-			endRow();
-		}
-
-		// start row
-		startRow();
-
-		// controllers
-		if (controllers != null){
-			append("<TD>Controllers");
-			for (int lc = 0; lc < controllers.size(); lc++) {
-				if (lc == 0){
-					append("<UL>");
-				}
-				append("<LI>");
-				append((String)controllers.get(lc));
-			}
-			append("</UL>");
-			append("</TD>");
-		}
-
-		// controlled
-		if (controlled != null){
-			append("<TD>Controlled");
-			for (int lc = 0; lc < controlled.size(); lc++) {
-				if (lc == 0){
-					append("<UL>");
-				}
-				append("<LI>");
-				append((String)controlled.get(lc));
-			}
-			append("</UL>");
-			append("</TD>");
-		}
-
-		// end row
-		endRow();
-	}
-
-	/**
-	 * Gets PhysicalInteractionInformation, given query.
-	 *
-	 * @param query String
-	 * @return Vector
-	 * @throws Exception
-	 */
-	private Vector getPhysicalInteractionInformation(String query) throws Exception {
-
-		// our list to return
-		Vector participantVector = new Vector();
-
-		// perform query
-		xpath = XPath.newInstance(query);
-		xpath.addNamespace("bp", root.getNamespaceURI());
-		List list = xpath.selectNodes(root);
-
-		// interate through results
-		if (list != null && list.size() > 0) {
-			for (int lc = 0; lc < list.size(); lc++) {
-				e = (Element) list.get(lc);
-				Attribute rdfResourceAttribute =
-					e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
-				if (rdfResourceAttribute != null) {
-					String rdfKey = RdfUtil.removeHashMark
-						(rdfResourceAttribute.getValue());
-					// create link
-					String link = getPhysicalEntityLink(rdfKey);
-					// add to record
-					if (link != null){
-						participantVector.add(link);
-					}
-				}
+		// left side
+		components = physicalInteraction.getLeftSideComponents();
+		cnt = components.size();
+		for (lc = 0; lc < cnt; lc++){
+			PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
+			String link = new String("<a href=\"record.do?id=" +
+									 String.valueOf(component.getRecordID()) +
+									 "\">" + component.getName() +
+									 "</a>");
+			append(link);
+			if (lc < cnt-1){
+				append(" +");
 			}
 		}
 
-		return (participantVector.size() > 0) ? participantVector : null;
-	}
+		// --> or controller type
+		//if (physicalInteraction.getPhysicalInteractionType().equals("");
+		append("-->");
 
-    /**
-     * Gets Physical Entity Link.
-	 *
-	 * @param record String
-	 * @return String
-	 * @throws Exception
-     */
-	private String getPhysicalEntityLink(String record) throws Exception {
-
-		// String to return
-		String link = null;
+		// right side
+		components = physicalInteraction.getRightSideComponents();
+		cnt = components.size();
+		for (lc = 0; lc < cnt; lc++){
+			PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
+			String link = new String("<a href=\"record.do?id=" +
+									 String.valueOf(component.getRecordID()) +
+									 "\">" + component.getName() +
+									 "</a>");
+			append(link);
+			if (lc < cnt-1){
+				append(" +");
+			}
+		}
 		
-		// get CPathRecord given record id argument
-		int indexOfId = record.lastIndexOf("-");
-		if (indexOfId == -1){
-			throw new Exception("Corrupt Record ID");
-		}
-		indexOfId += 1;
-		String cookedRecord = record.substring(indexOfId);
-		Long id = new Long(cookedRecord);
-		DaoCPath cPath = DaoCPath.getInstance();
-		CPathRecord cPathRecord = cPath.getRecordById(id.longValue());
 
-		// setup xml parsing
-		Vector queries = new Vector();
-		queries.add(new String("/*/bp:SHORT-NAME"));
-		queries.add(new String("/*/bp:NAME"));
-		queries.add(new String("/bp:NAME"));
-		SAXBuilder builder = new SAXBuilder();
-		StringReader reader = new StringReader (cPathRecord.getXmlContent());
-		Document bioPaxDoc = builder.build(reader);
-		Element root = bioPaxDoc.getRootElement();
-		XPath xpath;
-		for (int lc = 0; lc < queries.size(); lc++){
-			xpath = XPath.newInstance((String)queries.elementAt(lc));
-			xpath.addNamespace("bp", root.getNamespaceURI());
-			Element e = (Element) xpath.selectSingleNode(root);
-			if (e != null) {
-				link = new String("<a href=\"record.do?id=" +
-								  cookedRecord +
-								  "\">" + e.getTextNormalize() +
-								  "</a>");
-				break;
-			}
-		}
-
-		// outta here
-		return link;
-	}
-
-	/**
-	 * Gets Interaction Type in Plain English.
-	 *
-	 * @return String
-	 * @throws Exception
-	 */
-	private String getInteractionType() throws Exception {
-
-		// set the control type string
-		String interactionType = null;
-
-		// outta here
-		return interactionType;
-	}
-
-	/**
-	 * Gets Control Type in Plain English.
-	 *
-	 * @return String
-	 * @throws Exception
-	 */
-	private String getControlType() throws Exception {
-
-		// perform query
-		xpath = XPath.newInstance("/*/bp:CONTROL-TYPE");
-		xpath.addNamespace("bp", root.getNamespaceURI());
-		Element e  = (Element)xpath.selectSingleNode(root);
-
-		// set the control type string
-		String controlType = null;
-		if (e != null){
-			// our biopax control type 2 plain english hashmap
-			BioPaxControlTypeMap controlTypeMap = new BioPaxControlTypeMap();
-			controlType = (String)controlTypeMap.get(e.getTextNormalize());
-		}
-		return controlType;
-	}
-
-    /**
-     * Handles error processing.
-	 *
-	 * @param e Exception.
-     */
-	private void jspError(Exception e){
-		startRow();
-		append("<td><font color=\"red\">Exception Thrown: " + e.getMessage() + "</font></td>");
-		endRow();
-	}
+    }
 }
