@@ -79,7 +79,7 @@
     <body-content>empty</body-content>
     <description>Displays Pathway Interaction Table</description>
 	<attribute>
-		<name>recid</name>
+		<name>physicalinteraction</name>
 		<required>true</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
