@@ -97,7 +97,9 @@ public class PathwayChildNodeTable extends HtmlTable {
 
 		// is this a physical interaction
 		startTable();
+		startRow();
 		outputRecords();
+		endRow();
 		endTable();
     }
 
@@ -121,9 +123,6 @@ public class PathwayChildNodeTable extends HtmlTable {
 				root = bioPaxDoc.getRootElement();
 			}
 
-			// start row
-			startRow();
-
 			// name
 			append("<td>" + record.getName() + "</td>");
 
@@ -141,10 +140,7 @@ public class PathwayChildNodeTable extends HtmlTable {
 
 			// details hyperlink
 			String uri = "record.do?id=" + recID;
-			append("<td align=right><a href=\"" + uri + "\">View Details</a></td>");
-
-			// end row
-			endRow();
+			append("<td><a href=\"" + uri + "\">View Details</a></td>");
 		}
 		catch(Exception e){
 			jspError(e);
@@ -158,7 +154,7 @@ public class PathwayChildNodeTable extends HtmlTable {
      */
 	private void jspError(Exception e){
 		startRow();
-		append("<td COLSPAN=3><font color=\"red\">Exception Thrown: " + e.getMessage() + "</font></td>");
+		append("<td><font color=\"red\">Exception Thrown: " + e.getMessage() + "</font></td>");
 		endRow();
 	}
 }
