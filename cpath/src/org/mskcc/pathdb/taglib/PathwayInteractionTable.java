@@ -65,7 +65,9 @@ public class PathwayInteractionTable extends HtmlTable {
 		// here we go
 		if (physicalInteraction != null){
 			startTable();
+			startRow();
 			outputRecords();
+			endRow();
 			endTable();
 		}
     }
@@ -111,7 +113,5 @@ public class PathwayInteractionTable extends HtmlTable {
 				append(" +");
 			}
 		}
-		
-
     }
 }
