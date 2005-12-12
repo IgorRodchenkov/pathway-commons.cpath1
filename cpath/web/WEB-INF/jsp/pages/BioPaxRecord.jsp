@@ -10,9 +10,11 @@
                  org.jdom.Element,
                  org.jdom.Document,
 				 org.jdom.Attribute,
+				 org.mskcc.pathdb.model.PhysicalInteraction,
 				 org.mskcc.pathdb.schemas.biopax.RdfUtil,
 				 org.mskcc.pathdb.schemas.biopax.RdfConstants,
 				 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
+				 org.mskcc.pathdb.schemas.biopax.InteractionParser,
                  java.io.StringReader,
                  org.jdom.xpath.XPath,
                  java.util.List,
@@ -52,17 +54,7 @@
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
-<% if (record != null) { %>
 <div id="apphead">
-<h2><%= record.getName() %></h2>
-</div>
-<% } %>
-
-<% if (record != null) { %>
-<div class ='h3'>
-	<h3>Common</h3>
-</div>
-<TABLE WIDTH=100%>
 <%
 	// short name
 	xpath = XPath.newInstance("/*/bp:SHORT-NAME");
@@ -71,26 +63,40 @@
 	String shortName = null;
 	if (e != null) {
 		shortName = e.getTextNormalize();
-		if (!shortName.equals(record.getName())){
-			out.println("<TR>");
-			out.println("<TD>Short Name:</TD>");
-			out.println("<TD COLSPAN=3>" + shortName + "</TD>");
-			out.println("</TR>");
+		out.println("<h2>" + shortName + "</h2>");
+	}
+	String name = null;
+	if (shortName == null){
+		xpath = XPath.newInstance("/*/bp:NAME");
+	   	xpath.addNamespace("bp", root.getNamespaceURI());
+		e = (Element) xpath.selectSingleNode(root);
+		if (e != null){
+			name = e.getTextNormalize();
+			out.println("<h2>" + name + "</h2>");	
 		}
 	}
+%>
+</div>
 
+<% if (record != null) { %>
+<div class ='h3'>
+	<h3>Common</h3>
+</div>
+<TABLE WIDTH=100%>
+<%
 	// name
-	xpath = XPath.newInstance("/*/bp:NAME");
-   	xpath.addNamespace("bp", root.getNamespaceURI());
-	e = (Element) xpath.selectSingleNode(root);
-	if (e != null){
-		String name = e.getTextNormalize();
-		if ((shortName == null || !shortName.equals(name)) &&
-			!name.equals(record.getName())){
+	if (name == null){
+		xpath = XPath.newInstance("/*/bp:NAME");
+	   	xpath.addNamespace("bp", root.getNamespaceURI());
+		e = (Element) xpath.selectSingleNode(root);
+		if (e != null){
+			name = e.getTextNormalize();
+			if (!shortName.equals(name)){
 				out.println("<TR>");
 				out.println("<TD>Name:</TD>");
 				out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
 				out.println("</TR>");
+			}
 		}
 	}
 %>
@@ -205,56 +211,55 @@
 		<div class ='h3'>
 		<h3>Interactions</h3>
 		</div>
-		<table>
-		<cbio:pathwayInteractionTable recid="<%=record.getId()%>"/>
-		</table>
 <%
+		// init an interaction parser
+		InteractionParser interactionParser = null;
+	 	try{
+			interactionParser = new InteractionParser(record.getId());
+		}
+		catch(Exception exception){
+		}
+		PhysicalInteraction physicalInteraction = null;
+
+		// get conversion information
+		physicalInteraction = interactionParser.getConversionInformation();
+		if (physicalInteraction != null){
+			out.println("Conversion Summary:");
+%>
+			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
+<%
+		}
+%>
+<%
+		// get controller information
+		physicalInteraction = interactionParser.getControllerInformation();
+		if (physicalInteraction != null){
+			out.println("Controller Summary:");
+%>
+			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
+<%
+		}
 	}
 %>
 <%
 	// child nodes
-	xpath = XPath.newInstance("/*/bp:PATHWAY-COMPONENTS");
-    xpath.addNamespace("bp", root.getNamespaceURI());
-    list = xpath.selectNodes(root);
+	DaoInternalLink daoInternalLinks = new DaoInternalLink();
+	ArrayList internalLinks = daoInternalLinks.getTargetsWithLookUp(record.getId());
 	// interate through results
-	if (list != null && list.size() > 0) {
+	if (internalLinks.size() > 0){
 %>
 		<div class ='h3'>
 		<h3>First Level Child Nodes</h3>
 		</div>
-		<table>
 <%
-		for (int lc = 0; lc < list.size(); lc++) {
-			e = (Element) list.get(lc);
-			Attribute rdfResourceAttribute =
-				e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
-			if (rdfResourceAttribute != null) {
-				String rdfKey = RdfUtil.removeHashMark
-					(rdfResourceAttribute.getValue());
-				// cook id
-				int indexOfId = rdfKey.lastIndexOf("-");
-				if (indexOfId == -1){
-					continue;
-				}
-				indexOfId += 1;
-				String cookedRecord = rdfKey.substring(indexOfId);
-				Long id = new Long(cookedRecord);
-				// render child node info (1 level deep)
-				DaoCPath cPath = DaoCPath.getInstance();
-				CPathRecord childRecord = cPath.getRecordById(id.longValue());
-				// render interaction information
+		for (int lc = 0; lc < internalLinks.size(); lc++) {
+			CPathRecord childRecord = (CPathRecord)internalLinks.get(lc);
+			// render interaction information
 %>
-				<tr><td>
-				<cbio:pathwayChildNodeTable recid="<%=id.longValue()%>"/>
-				</td></tr>
-				<tr><td>
-				<cbio:pathwayInteractionTable recid="<%=id.longValue()%>"/>
-				</td></tr>
+			<cbio:pathwayChildNodeTable recid="<%=childRecord.getId()%>"/>
 <%
-			}
 		}
 %>
-		</table>
 <%
 	}
 %>
