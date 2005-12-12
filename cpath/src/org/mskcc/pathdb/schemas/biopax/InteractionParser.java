@@ -51,6 +51,7 @@ import org.mskcc.pathdb.schemas.biopax.RdfUtil;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.model.PhysicalInteraction;
+import org.mskcc.pathdb.model.PhysicalInteractionComponent;
 
 /**
  * This class parses interaction data
@@ -212,9 +213,17 @@ public class InteractionParser {
 						(rdfResourceAttribute.getValue());
 					// get physical entity
 					String physicalEntity = getPhysicalEntity(rdfKey);
+					// cook id to save
+					int indexOfID = rdfKey.lastIndexOf("-");
+					if (indexOfID == -1){
+						throw new Exception("Corrupt Record ID");
+					}
+					indexOfID += 1;
+					String cookedKey = rdfKey.substring(indexOfID);
+					Long recordID = new Long(cookedKey);
 					// add to vector
 					if (physicalEntity != null){
-						participantVector.add(physicalEntity);
+						participantVector.add(new PhysicalInteractionComponent(physicalEntity, recordID.longValue()));
 					}
 				}
 			}
