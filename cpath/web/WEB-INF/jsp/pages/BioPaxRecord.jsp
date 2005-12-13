@@ -17,6 +17,7 @@
 				 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
 				 org.mskcc.pathdb.schemas.biopax.InteractionParser,
 				 org.mskcc.pathdb.schemas.biopax.MemberMolecules,
+				 org.mskcc.pathdb.schemas.biopax.MemberPathways,
                  java.io.StringReader,
                  org.jdom.xpath.XPath,
                  java.util.List,
@@ -266,11 +267,27 @@
 	}
 %>
 <%
-	// molecules
+	// if physical entity, show pathway(s) it belongs to
+	if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
+%>
+		<div class ='h3'>
+		<h3>Member of the following Pathways</h3>
+		</div>
+<%
+		HashSet pathwaySet = MemberPathways.getMemberPathways(record);
+		String[] pathways = (String[])pathwaySet.toArray(new String[0]);
+		for (int lc = 0; lc < pathways.length; lc++){
+			out.println(pathways[lc]);
+		}
+	}
+%>
+
+<%
+	// if pathway, show member molecules
 	if (biopaxConstants.isPathway(record.getSpecificType())){
 %>
 		<div class ='h3'>
-		<h3>Molecules</h3>
+		<h3>Contains the followng Molecules</h3>
 		</div>
 <%
 		HashSet moleculeSet = MemberMolecules.getMemberMolecules(record);
