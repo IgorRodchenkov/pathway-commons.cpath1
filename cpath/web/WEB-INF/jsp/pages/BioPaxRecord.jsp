@@ -6,6 +6,7 @@
                  org.mskcc.pathdb.sql.dao.DaoInternalLink,
                  org.mskcc.pathdb.sql.dao.DaoExternalLink,
                  java.util.ArrayList,
+                 java.util.HashSet,
                  org.jdom.input.SAXBuilder,
                  org.jdom.Element,
                  org.jdom.Document,
@@ -15,6 +16,7 @@
 				 org.mskcc.pathdb.schemas.biopax.RdfConstants,
 				 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
 				 org.mskcc.pathdb.schemas.biopax.InteractionParser,
+				 org.mskcc.pathdb.schemas.biopax.MemberMolecules,
                  java.io.StringReader,
                  org.jdom.xpath.XPath,
                  java.util.List,
@@ -261,6 +263,21 @@
 		}
 %>
 <%
+	}
+%>
+<%
+	// molecules
+	if (biopaxConstants.isPathway(record.getSpecificType())){
+%>
+		<div class ='h3'>
+		<h3>Molecules</h3>
+		</div>
+<%
+		HashSet moleculeSet = MemberMolecules.getMemberMolecules(record);
+		String[] molecules = (String[])moleculeSet.toArray(new String[0]);
+		for (int lc = 0; lc < molecules.length; lc++){
+			out.println(molecules[lc]);
+		}
 	}
 %>
 
