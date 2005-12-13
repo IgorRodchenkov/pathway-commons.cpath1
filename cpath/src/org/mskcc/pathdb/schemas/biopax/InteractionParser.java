@@ -45,13 +45,12 @@ import org.jdom.xpath.XPath;
 import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 import org.mskcc.pathdb.schemas.biopax.RdfUtil;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.model.PhysicalInteraction;
 import org.mskcc.pathdb.model.PhysicalInteractionComponent;
+import org.mskcc.pathdb.model.CPathRecord;
 
 /**
  * This class parses interaction data
@@ -76,15 +75,20 @@ public class InteractionParser {
 	 */
 	private XPath xpath;
 
-	/**
+	/*
 	 * Reference to CPathRecord.
 	 */
-	CPathRecord record;
+	private CPathRecord record;
 
 	/**
 	 * Reference to BioPaxConstants Class.
 	 */
 	private BioPaxConstants biopaxConstants;
+
+	/**
+	 * Reference to SAXBuilder.
+	 */
+	private SAXBuilder builder;
 
 	/**
 	 * Constructor.
@@ -100,6 +104,9 @@ public class InteractionParser {
 		// get cpath record
 		DaoCPath cPath = DaoCPath.getInstance();
 		record = cPath.getRecordById(recordID);
+
+		// init our builder
+		builder = new SAXBuilder();
 	}
 
 	/**
@@ -212,7 +219,7 @@ public class InteractionParser {
 					String rdfKey = RdfUtil.removeHashMark
 						(rdfResourceAttribute.getValue());
 					// get physical entity
-					String physicalEntity = getPhysicalEntity(rdfKey);
+					String physicalEntity = BioPaxRecordUtil.getEntity(rdfKey);
 					// cook id to save
 					int indexOfID = rdfKey.lastIndexOf("-");
 					if (indexOfID == -1){
@@ -230,51 +237,5 @@ public class InteractionParser {
 		}
 
 		return (participantVector.size() > 0) ? participantVector : null;
-	}
-
-    /**
-     * Gets Physical Entity.
-	 *
-	 * @param record String
-	 * @return String
-     */
-	private String getPhysicalEntity(String record) throws Exception {
-
-		// String to return
-		String physicalEntity = null;
-		
-		// get CPathRecord given record id argument
-		int indexOfId = record.lastIndexOf("-");
-		if (indexOfId == -1){
-			return null;
-		}
-		indexOfId += 1;
-		String cookedRecord = record.substring(indexOfId);
-		Long id = new Long(cookedRecord);
-		DaoCPath cPath = DaoCPath.getInstance();
-		CPathRecord cPathRecord = cPath.getRecordById(id.longValue());
-
-		// setup xml parsing
-		Vector queries = new Vector();
-		queries.add(new String("/*/bp:SHORT-NAME"));
-		queries.add(new String("/*/bp:NAME"));
-		queries.add(new String("/bp:NAME"));
-		SAXBuilder builder = new SAXBuilder();
-		StringReader reader = new StringReader (cPathRecord.getXmlContent());
-		Document bioPaxDoc = builder.build(reader);
-		Element root = bioPaxDoc.getRootElement();
-		XPath xpath;
-		for (int lc = 0; lc < queries.size(); lc++){
-			xpath = XPath.newInstance((String)queries.elementAt(lc));
-			xpath.addNamespace("bp", root.getNamespaceURI());
-			Element e = (Element) xpath.selectSingleNode(root);
-			if (e != null) {
-				physicalEntity = new String(e.getTextNormalize());
-				break;
-			}
-		}
-
-		// outta here
-		return physicalEntity;
 	}
 }
