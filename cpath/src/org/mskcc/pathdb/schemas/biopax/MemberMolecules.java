@@ -80,50 +80,12 @@ public class MemberMolecules {
 		else{
 			BioPaxConstants biopaxConstants = new BioPaxConstants();
 			if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
-				String molecule = getPhysicalEntity(record.getId(), record.getXmlContent());
-				molecules.add(molecule);
+				String molecule = BioPaxRecordUtil.getEntity(record.getId(), record.getXmlContent());
+				if (molecule != null){
+					molecules.add(molecule);
+				}
 			}
 		}
 		return molecules;
-	}
-
-    /**
-     * Gets Physical Entity.
-	 *
-	 * @param recordID long.
-	 * @param xmlContent String.
-	 * @return String
-     */
-	private static String getPhysicalEntity(long recordID, String xmlContent) throws Exception {
-
-		// string to return
-		String link = null;
-
-		// setup xml parsing
-		Vector queries = new Vector();
-		queries.add(new String("/*/bp:SHORT-NAME"));
-		queries.add(new String("/*/bp:NAME"));
-		queries.add(new String("/bp:NAME"));
-		SAXBuilder builder = new SAXBuilder();
-		StringReader reader = new StringReader(xmlContent);
-		Document bioPaxDoc = builder.build(reader);
-		Element root = bioPaxDoc.getRootElement();
-		XPath xpath;
-		for (int lc = 0; lc < queries.size(); lc++){
-			xpath = XPath.newInstance((String)queries.elementAt(lc));
-			xpath.addNamespace("bp", root.getNamespaceURI());
-			Element e = (Element) xpath.selectSingleNode(root);
-			if (e != null) {
-				String physicalEntity = new String(e.getTextNormalize());
-				link = new String("<a href=\"record.do?id=" +
-								  String.valueOf(recordID) +
-								  "\">" + physicalEntity +
-								  "</a>");
-				break;
-			}
-		}
-
-		// outta here
-		return link;
 	}
 }
