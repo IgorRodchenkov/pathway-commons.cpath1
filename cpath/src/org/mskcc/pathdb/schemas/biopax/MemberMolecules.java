@@ -64,7 +64,7 @@ public class MemberMolecules {
 	 */
 	public static HashSet getMemberMolecules(CPathRecord record) throws Exception {
 
-		// vector to return
+		// hashset to return
 		HashSet molecules = new HashSet();
 
 		// get internal links
