@@ -69,11 +69,11 @@ public class MemberMolecules {
 
 		// get internal links
 		DaoInternalLink daoInternalLinks = new DaoInternalLink();
-		ArrayList internalLinks = daoInternalLinks.getTargetsWithLookUp(record.getId());
+		ArrayList targets = daoInternalLinks.getTargetsWithLookUp(record.getId());
 
-		if (internalLinks.size() > 0){
-			for (int lc = 0; lc < internalLinks.size(); lc++){
-				CPathRecord linkRecord = (CPathRecord)internalLinks.get(lc);
+		if (targets.size() > 0){
+			for (int lc = 0; lc < targets.size(); lc++){
+				CPathRecord linkRecord = (CPathRecord)targets.get(lc);
 				molecules.addAll(getMemberMolecules(linkRecord));
 			}
 		}
