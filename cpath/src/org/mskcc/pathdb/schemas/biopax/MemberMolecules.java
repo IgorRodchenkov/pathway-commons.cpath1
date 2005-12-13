@@ -73,8 +73,8 @@ public class MemberMolecules {
 
 		if (targets.size() > 0){
 			for (int lc = 0; lc < targets.size(); lc++){
-				CPathRecord linkRecord = (CPathRecord)targets.get(lc);
-				molecules.addAll(getMemberMolecules(linkRecord));
+				CPathRecord targetRecord = (CPathRecord)targets.get(lc);
+				molecules.addAll(getMemberMolecules(targetRecord));
 			}
 		}
 		else{
