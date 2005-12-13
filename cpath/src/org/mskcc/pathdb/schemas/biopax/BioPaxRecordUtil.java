@@ -40,6 +40,8 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.jdom.input.SAXBuilder;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.model.CPathRecord;
 
 /**
  * This class contains utilities
@@ -50,16 +52,57 @@ import org.jdom.input.SAXBuilder;
 public class BioPaxRecordUtil {
 
     /**
+     * Gets Physical Entity.
+	 *
+	 * @param record String.
+	 * @return String.
+	 * @throws Exception.
+     */
+	public static String getEntity(String record) throws Exception {
+
+		// get CPathRecord given record id argument
+		int indexOfId = record.lastIndexOf("-");
+		if (indexOfId == -1){
+			return null;
+		}
+		indexOfId += 1;
+		String cookedRecord = record.substring(indexOfId);
+		Long id = new Long(cookedRecord);
+		DaoCPath cPath = DaoCPath.getInstance();
+		CPathRecord cPathRecord = cPath.getRecordById(id.longValue());
+
+		return getEntityName(cPathRecord.getXmlContent());
+	}
+
+    /**
      * Gets Entity Name, return as link.
 	 *
 	 * @param recordID long.
 	 * @param xmlContent String.
-	 * @return String
+	 * @return String.
+	 * @throws Exception.
      */
-	public static String getEntityAsLink(long recordID, String xmlContent) throws Exception {
+	public static String getEntity(long recordID, String xmlContent) throws Exception {
 
 		// string to return
-		String link = null;
+		String entity = getEntityName(xmlContent);
+		return (entity != null) ?
+			new String("<a href=\"record.do?id=" +
+					   String.valueOf(recordID) +
+					   "\">" + entity +
+					   "</a>")
+			: null;
+	}
+
+
+    /**
+     * Gets Entity Name, return as link.
+	 *
+	 * @param xmlContent String.
+	 * @return String.
+	 * @throws Exception.
+     */
+	private static String getEntityName(String xmlContent) throws Exception {
 
 		// setup xml parsing
 		Vector queries = new Vector();
@@ -76,16 +119,10 @@ public class BioPaxRecordUtil {
 			xpath.addNamespace("bp", root.getNamespaceURI());
 			Element e = (Element) xpath.selectSingleNode(root);
 			if (e != null) {
-				String entity = new String(e.getTextNormalize());
-				link = new String("<a href=\"record.do?id=" +
-								  String.valueOf(recordID) +
-								  "\">" + entity +
-								  "</a>");
-				break;
+				return new String(e.getTextNormalize());
 			}
 		}
-
-		// outta here
-		return link;
+		return null;
 	}
+	
 }
