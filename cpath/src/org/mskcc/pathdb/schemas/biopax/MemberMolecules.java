@@ -34,16 +34,7 @@ package org.mskcc.pathdb.schemas.biopax;
 
 // imports
 import java.util.HashSet;
-import java.util.Vector;
 import java.util.ArrayList;
-import java.io.StringReader;
-
-import org.jdom.Attribute;
-import org.jdom.Element;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.xpath.XPath;
-import org.jdom.input.SAXBuilder;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
