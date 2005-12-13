@@ -34,16 +34,7 @@ package org.mskcc.pathdb.schemas.biopax;
 
 // imports
 import java.util.HashSet;
-import java.util.Vector;
 import java.util.ArrayList;
-import java.io.StringReader;
-
-import org.jdom.Attribute;
-import org.jdom.Element;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.xpath.XPath;
-import org.jdom.input.SAXBuilder;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
@@ -84,43 +75,14 @@ public class MemberPathways {
 		else{
 			BioPaxConstants biopaxConstants = new BioPaxConstants();
 			if (biopaxConstants.isPathway(record.getSpecificType())){
-				String pathway = getPathway(record.getId(), record.getXmlContent());
-				pathways.add(pathway);
+				String pathway = BioPaxRecordUtil.getEntity(record.getId(), record.getXmlContent());
+				if (pathway != null){
+					pathways.add(pathway);
+				}
 			}
-		}
-		return pathways;
-	}
-
-    /**
-     * Gets Physical Entity.
-	 *
-	 * @param recordID long.
-	 * @param xmlContent String.
-	 * @return String
-     */
-	private static String getPathway(long recordID, String xmlContent) throws Exception {
-
-		// string to return
-		String link = null;
-
-		// setup xml parsing
-		SAXBuilder builder = new SAXBuilder();
-		StringReader reader = new StringReader(xmlContent);
-		Document bioPaxDoc = builder.build(reader);
-		Element root = bioPaxDoc.getRootElement();
-		XPath xpath;
-		xpath = XPath.newInstance("/*/bp:NAME");
-		xpath.addNamespace("bp", root.getNamespaceURI());
-		Element e = (Element) xpath.selectSingleNode(root);
-		if (e != null) {
-			String pathway = new String(e.getTextNormalize());
-			link = new String("<a href=\"record.do?id=" +
-							  String.valueOf(recordID) +
-							  "\">" + pathway +
-							  "</a>");
 		}
 
 		// outta here
-		return link;
+		return pathways;
 	}
 }
