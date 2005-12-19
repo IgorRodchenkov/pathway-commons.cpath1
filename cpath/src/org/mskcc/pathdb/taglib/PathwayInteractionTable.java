@@ -79,7 +79,7 @@ public class PathwayInteractionTable extends HtmlTable {
 
 		int lc, cnt;
 		Vector components;
-
+		
 		// left side
 		components = physicalInteraction.getLeftSideComponents();
 		cnt = components.size();
@@ -95,9 +95,8 @@ public class PathwayInteractionTable extends HtmlTable {
 			}
 		}
 
-		// --> or controller type
-		//if (physicalInteraction.getPhysicalInteractionType().equals("");
-		append("-->");
+		// operator
+		append(" " + physicalInteraction.getOperator() + " ");
 
 		// right side
 		components = physicalInteraction.getRightSideComponents();
