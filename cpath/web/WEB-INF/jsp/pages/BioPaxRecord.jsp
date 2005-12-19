@@ -5,8 +5,10 @@
 				 org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.sql.dao.DaoInternalLink,
                  org.mskcc.pathdb.sql.dao.DaoExternalLink,
+                 java.util.Arrays,
                  java.util.ArrayList,
                  java.util.HashSet,
+				 java.util.Collections,
                  org.jdom.input.SAXBuilder,
                  org.jdom.Element,
                  org.jdom.Document,
@@ -18,6 +20,7 @@
 				 org.mskcc.pathdb.schemas.biopax.InteractionParser,
 				 org.mskcc.pathdb.schemas.biopax.MemberMolecules,
 				 org.mskcc.pathdb.schemas.biopax.MemberPathways,
+				 org.mskcc.pathdb.schemas.biopax.RecordLinkSorter,
                  java.io.StringReader,
                  org.jdom.xpath.XPath,
                  java.util.List,
@@ -83,7 +86,7 @@
 
 <% if (record != null) { %>
 <div class ='h3'>
-	<h3>Common</h3>
+	<h3>Basic Information</h3>
 </div>
 <TABLE WIDTH=100%>
 <%
@@ -212,22 +215,16 @@
 	if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
 %>
 		<div class ='h3'>
-		<h3>Interactions</h3>
+		<h3>Summary</h3>
 		</div>
 <%
 		// init an interaction parser
-		InteractionParser interactionParser = null;
-	 	try{
-			interactionParser = new InteractionParser(record.getId());
-		}
-		catch(Exception exception){
-		}
+		InteractionParser interactionParser = new InteractionParser(record.getId());
 		PhysicalInteraction physicalInteraction = null;
 
 		// get conversion information
 		physicalInteraction = interactionParser.getConversionInformation();
 		if (physicalInteraction != null){
-			out.println("Conversion Summary:");
 %>
 			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
 <%
@@ -237,7 +234,6 @@
 		// get controller information
 		physicalInteraction = interactionParser.getControllerInformation();
 		if (physicalInteraction != null){
-			out.println("Controller Summary:");
 %>
 			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
 <%
@@ -252,7 +248,7 @@
 	if (internalLinks.size() > 0){
 %>
 		<div class ='h3'>
-		<h3>First Level Child Nodes</h3>
+		<h3>Contains the Following</h3>
 		</div>
 <%
 		for (int lc = 0; lc < internalLinks.size(); lc++) {
@@ -276,8 +272,11 @@
 <%
 		HashSet pathwaySet = MemberPathways.getMemberPathways(record);
 		String[] pathways = (String[])pathwaySet.toArray(new String[0]);
-		for (int lc = 0; lc < pathways.length; lc++){
-			out.println(pathways[lc]);
+		List pathwayList = Arrays.asList(pathways);
+		Collections.sort(pathwayList, new RecordLinkSorter());
+		int cnt = pathwayList.size();
+		for (int lc = 0; lc < cnt; lc++){
+			out.println(pathwayList.get(lc));
 		}
 	}
 %>
@@ -287,13 +286,16 @@
 	if (biopaxConstants.isPathway(record.getSpecificType())){
 %>
 		<div class ='h3'>
-		<h3>Contains the followng Molecules</h3>
+		<h3>Contains the following Molecules</h3>
 		</div>
 <%
-		HashSet moleculeSet = MemberMolecules.getMemberMolecules(record);
+		HashSet moleculeSet = MemberMolecules.getMemberMolecules(record);	
 		String[] molecules = (String[])moleculeSet.toArray(new String[0]);
-		for (int lc = 0; lc < molecules.length; lc++){
-			out.println(molecules[lc]);
+		List moleculesList = Arrays.asList(molecules);
+		Collections.sort(moleculesList, new RecordLinkSorter());
+		int cnt = moleculesList.size();
+		for (int lc = 0; lc < cnt; lc++){
+			out.println(moleculesList.get(lc));
 		}
 	}
 %>
