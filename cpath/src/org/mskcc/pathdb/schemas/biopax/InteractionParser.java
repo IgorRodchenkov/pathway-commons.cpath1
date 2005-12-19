@@ -48,6 +48,8 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.schemas.biopax.RdfUtil;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.model.BioPaxControlTypeMap;
+import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.model.PhysicalInteraction;
 import org.mskcc.pathdb.model.PhysicalInteractionComponent;
 import org.mskcc.pathdb.model.CPathRecord;
@@ -118,7 +120,8 @@ public class InteractionParser {
 
 		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
 			biopaxConstants.isConversion(record.getSpecificType())){
-			return getInformation("/*/bp:LEFT/*/bp:PHYSICAL-ENTITY",
+			return getInformation("-->",
+								  "/*/bp:LEFT/*/bp:PHYSICAL-ENTITY",
 								  "/*/bp:RIGHT/*/bp:PHYSICAL-ENTITY");
 		}
 		return null;
@@ -134,7 +137,8 @@ public class InteractionParser {
 		// is this a physical interaction
 		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
 			biopaxConstants.isControl(record.getSpecificType())){
-			return getInformation("/*/bp:CONTROLLER/*/bp:PHYSICAL-ENTITY",
+			return getInformation("",
+								  "/*/bp:CONTROLLER/*/bp:PHYSICAL-ENTITY",
 								  "/*/bp:CONTROLLED");
 		}
 		return null;
@@ -143,11 +147,12 @@ public class InteractionParser {
 	/**
 	 * Finds/returns conversion information.
 	 *
+	 * @param operator String.
 	 * @param leftSideParticipants String.
 	 * @param rightSideParticipants String.
 	 * @return PhysicalInteraction.
 	 */
-	public PhysicalInteraction getInformation(String leftSideParticipants, String rightSideParticipants){
+	public PhysicalInteraction getInformation(String operator, String leftSideParticipants, String rightSideParticipants){
 
 		// used for xml parsing
 		SAXBuilder builder = new SAXBuilder();
@@ -170,7 +175,15 @@ public class InteractionParser {
 			Vector leftParticipants = getPhysicalInteractionInformation(leftSideParticipants);
 			Vector rightParticipants = getPhysicalInteractionInformation(rightSideParticipants);
 
-			return (new PhysicalInteraction(interactionType, leftParticipants, rightParticipants));
+			// get operator
+			if (operator.equals("")){
+				operator = getControlType();
+				if (operator == null){
+					operator = "CONTROL-TYPE NOT FOUND";
+				}
+			}
+
+			return (new PhysicalInteraction(interactionType, operator, leftParticipants, rightParticipants));
 		}
 		catch(Exception e){
 			return null;
@@ -181,15 +194,69 @@ public class InteractionParser {
 	 * Gets Interaction Type in Plain English.
 	 *
 	 * @return String
-	 * @throws Exception
 	 */
-	private String getInteractionType() throws Exception {
+	private String getInteractionType() {
 
 		// set the control type string
 		String interactionType = null;
 
+		// our biopax entity type 2 plain english hashmap
+		BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
+		interactionType = (String)entityTypeMap.get(record.getSpecificType());
+
 		// outta here
 		return interactionType;
+	}
+
+	/**
+	 * Get Control Type.
+	 *
+	 * @return String.
+	 */
+	private String getControlType() {
+
+		// set the control type string
+		String controlType = null;
+
+		// our biopax entity type 2 plain english hashmap
+		BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
+		BioPaxControlTypeMap controlTypeMap = new BioPaxControlTypeMap();
+		if (record.getSpecificType().equalsIgnoreCase("Catalysis")){
+			controlType = new String ("[" + controlTypeMap.get("ACTIVATION") + "]");
+		}
+		else{
+			try{
+				controlType =
+					new String ("[" + controlTypeMap.get(getControlTypeInformation("/*/bp:CONTROL-TYPE")) + "]");
+			}
+			catch(Exception e){
+			}
+	    }
+
+		// outta here
+		return controlType;
+	}
+
+	/**
+	 * Gets CONTROL-TYPE.
+	 *
+	 * @param query String.
+	 * @return String.
+	 * @throws Exception
+	 */
+	private String getControlTypeInformation(String query) throws Exception {
+
+		// our list to return
+		String controlType = null;
+
+		// perform query
+		xpath = XPath.newInstance(query);
+		xpath.addNamespace("bp", root.getNamespaceURI());
+		Element e = (Element) xpath.selectSingleNode(root);
+		if (e != null) {
+			controlType = e.getTextNormalize();
+		}
+		return controlType;
 	}
 
 	/**
