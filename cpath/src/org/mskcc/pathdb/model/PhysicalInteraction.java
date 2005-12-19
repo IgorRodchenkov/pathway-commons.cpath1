@@ -48,6 +48,11 @@ public class PhysicalInteraction {
 	private String physicalInteractionType;
 
 	/**
+	 * Operator (--> or CONTROL-TYPE)
+	 */
+	private String operator;
+
+	/**
 	 * Our vector of controllers or substrates (left side guys).
 	 */
 	private Vector leftSideComponents = null;
@@ -64,20 +69,22 @@ public class PhysicalInteraction {
 	 * @param rightSideComponents Vector.
      */
     public PhysicalInteraction(Vector leftSideComponents, Vector rightSideComponents) {
-		this (new String("Not Available"), leftSideComponents, rightSideComponents);
+		this ("Not Available", "", leftSideComponents, rightSideComponents);
 	}
 
 	/**
      * Constructor.
 	 *
 	 * @param physicalInteractionType String.
+	 * @param operator String.
 	 * @param leftSideComponents Vector.
 	 * @param rightSideComponents Vector.
      */
-    public PhysicalInteraction(String physicalInteractionType, Vector leftSideComponents, Vector rightSideComponents) {
+    public PhysicalInteraction(String physicalInteractionType, String operator, Vector leftSideComponents, Vector rightSideComponents) {
 
 		// init our members
 		this.physicalInteractionType = physicalInteractionType;
+		this.operator = operator;
 		this.leftSideComponents = leftSideComponents;
 		this.rightSideComponents = rightSideComponents;
 	}
@@ -89,6 +96,15 @@ public class PhysicalInteraction {
 	 */
 	public String getPhysicalInteractionType(){
 		return physicalInteractionType;
+	}
+
+	/**
+	 * Returns the operator.
+	 *
+	 * @return String.
+	 */
+	public String getOperator(){
+		return operator;
 	}
 
 	/**
