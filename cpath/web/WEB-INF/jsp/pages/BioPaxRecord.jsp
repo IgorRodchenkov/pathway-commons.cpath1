@@ -28,7 +28,8 @@
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
-                 org.mskcc.pathdb.protocol.ProtocolConstants"%>
+                 org.mskcc.pathdb.protocol.ProtocolConstants,
+                 org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -85,6 +86,17 @@
 </div>
 
 <% if (record != null) { %>
+
+<%	
+	// xml abbrev content link - log/debug mode only
+	String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
+	if (xdebugFlag != null){
+		String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
+		out.println("<a href=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</a>");
+		out.println("<br>");
+	}
+%>
+
 <div class ='h3'>
 	<h3>Basic Information</h3>
 </div>
@@ -248,7 +260,7 @@
 	if (internalLinks.size() > 0){
 %>
 		<div class ='h3'>
-		<h3>Contains the Following</h3>
+		<h3>Contains the following Interactions</h3>
 		</div>
 <%
 		for (int lc = 0; lc < internalLinks.size(); lc++) {
