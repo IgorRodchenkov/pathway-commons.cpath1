@@ -66,7 +66,9 @@ public class PathwayInteractionTable extends HtmlTable {
 		if (physicalInteraction != null){
 			startTable();
 			startRow();
+			append("<td>");
 			outputRecords();
+			append("</td>");
 			endRow();
 			endTable();
 		}
