@@ -99,11 +99,9 @@ public class PathwayChildNodeTable extends HtmlTable {
 		record = cPath.getRecordById(recID);
 
 		// is this a physical interaction
-		startTable();
 		startRow();
 		outputRecords();
 		endRow();
-		endTable();
     }
 
     /**
