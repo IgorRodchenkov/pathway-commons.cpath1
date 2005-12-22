@@ -95,7 +95,8 @@
 
 <%	
 	// xml abbrev content link - log/debug mode only
-	if (queryString.indexOf("debug=1") != -1){
+	String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
+	if (queryString.indexOf("debug=1") != -1 || xdebugFlag != null){
 		String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
 		out.println("<a href=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</a>");
 		out.println("<br>");
@@ -234,6 +235,7 @@
 		<div class ='h3'>
 		<h3>Summary</h3>
 		</div>
+		<table>
 <%
 		// init an interaction parser
 		InteractionParser interactionParser = new InteractionParser(record.getId());
@@ -255,6 +257,9 @@
 			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
 <%
 		}
+%>
+		</table>
+<%
 	}
 %>
 <%
@@ -267,6 +272,7 @@
 		<div class ='h3'>
 		<h3>Contains the following Interactions and/or Physical Entities</h3>
 		</div>
+		<table>
 <%
 		for (int lc = 0; lc < internalLinks.size(); lc++) {
 			CPathRecord childRecord = (CPathRecord)internalLinks.get(lc);
@@ -276,6 +282,7 @@
 <%
 		}
 %>
+		</table>
 <%
 	}
 %>
@@ -292,8 +299,18 @@
 		List pathwayList = Arrays.asList(pathways);
 		Collections.sort(pathwayList, new RecordLinkSorter());
 		int cnt = pathwayList.size();
+		if (cnt > 0){
+			out.println("<table>");
+			out.println("<tr>");
+			out.println("<td>");
+		}
 		for (int lc = 0; lc < cnt; lc++){
 			out.println(pathwayList.get(lc));
+		}
+		if (cnt > 0){
+			out.println("</td>");
+			out.println("</tr>");
+			out.println("</table>");
 		}
 	}
 %>
@@ -311,8 +328,18 @@
 		List moleculesList = Arrays.asList(molecules);
 		Collections.sort(moleculesList, new RecordLinkSorter());
 		int cnt = moleculesList.size();
+		if (cnt > 0){
+			out.println("<table>");
+			out.println("<tr>");
+			out.println("<td>");
+		}
 		for (int lc = 0; lc < cnt; lc++){
 			out.println(moleculesList.get(lc));
+		}
+		if (cnt > 0){
+			out.println("</td>");
+			out.println("</tr>");
+			out.println("</table>");
 		}
 	}
 %>
