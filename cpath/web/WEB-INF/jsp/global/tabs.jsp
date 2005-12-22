@@ -26,6 +26,10 @@
 	if (referer == null){
 		referer = new String();
 	}
+	String queryString = request.getQueryString();
+	if (queryString == null){
+		queryString = "";
+	}
 
     ArrayList tabUrls = new ArrayList();
     ArrayList tabNames = new ArrayList();
@@ -50,7 +54,8 @@
         tabNames.add("Pathways");
         String browsePathwayUrl = "record.do";
         tabUrls.add(browsePathwayUrl);
-        if (url.startsWith(browsePathwayUrl)) {
+        if (url.startsWith(browsePathwayUrl) &&
+			queryString.indexOf("id=") == -1) {
             tabActive.add (Boolean.TRUE);
         } else {
             tabActive.add (Boolean.FALSE);
