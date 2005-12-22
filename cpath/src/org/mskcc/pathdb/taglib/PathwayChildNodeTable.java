@@ -42,6 +42,9 @@ import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.PhysicalInteraction;
+import org.mskcc.pathdb.model.PhysicalInteractionComponent;
+import org.mskcc.pathdb.schemas.biopax.InteractionParser;
 
 /**
  * Custom jsp tag for displaying pathway child node (1 level deep)
@@ -138,6 +141,10 @@ public class PathwayChildNodeTable extends HtmlTable {
 				}
 			}
 
+			// interaction summary
+			String interactionString = getInteractionSummary(record.getId());
+			append("<td>" + interactionString + "</td>");
+
 			// details hyperlink
 			String uri = "record.do?id=" + recID;
 			append("<td><a href=\"" + uri + "\">View Details</a></td>");
@@ -146,6 +153,78 @@ public class PathwayChildNodeTable extends HtmlTable {
 			jspError(e);
 		}
     }
+
+    /**
+     * Gets Interaction Summary string.
+	 *
+	 * @param recordID long.
+	 * @return String.
+	 * @throws Exception.
+     */
+	private String getInteractionSummary(long recordID) throws Exception {
+		// get interaction parser
+		InteractionParser interactionParser = new InteractionParser(recordID);
+
+		// get physical interacittion
+		PhysicalInteraction physicalInteraction = interactionParser.getConversionInformation();
+		if (physicalInteraction == null){
+			physicalInteraction = interactionParser.getControllerInformation();
+		}
+		if (physicalInteraction == null){
+			return "";
+		}
+
+		return createInteractionSummaryString(physicalInteraction);
+	}
+
+    /**
+     * Creates the interaction summary string.
+	 *
+	 * @param physicalInteraction PhysicalInteractiong.
+	 * @return String.
+     */
+	private String createInteractionSummaryString(PhysicalInteraction physicalInteraction){
+
+		int lc, cnt;
+		Vector components;
+		String summaryString = new String();
+		
+		// left side
+		components = physicalInteraction.getLeftSideComponents();
+		cnt = components.size();
+		for (lc = 0; lc < cnt; lc++){
+			PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
+			String link = new String("<a href=\"record.do?id=" +
+									 String.valueOf(component.getRecordID()) +
+									 "\">" + component.getName() +
+									 "</a>");
+			summaryString = link;
+			if (lc < cnt-1){
+				summaryString += " +";
+			}
+		}
+
+		// operator
+		summaryString += (" " + physicalInteraction.getOperator() + " ");
+
+		// right side
+		components = physicalInteraction.getRightSideComponents();
+		cnt = components.size();
+		for (lc = 0; lc < cnt; lc++){
+			PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
+			String link = new String("<a href=\"record.do?id=" +
+									 String.valueOf(component.getRecordID()) +
+									 "\">" + component.getName() +
+									 "</a>");
+			summaryString += link;
+			if (lc < cnt-1){
+				summaryString += " +";
+			}
+		}
+		
+		// outta here
+		return summaryString;
+	}
 
     /**
      * Handles error processing.
