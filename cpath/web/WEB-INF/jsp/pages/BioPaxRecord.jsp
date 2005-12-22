@@ -34,6 +34,12 @@
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
+	// query string
+	String queryString = request.getQueryString();
+	if (queryString == null){
+		queryString = "";
+	}
+
 	// ui bean
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 
@@ -89,8 +95,7 @@
 
 <%	
 	// xml abbrev content link - log/debug mode only
-	String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
-	if (xdebugFlag != null){
+	if (queryString.indexOf("debug=1") != -1){
 		String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
 		out.println("<a href=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</a>");
 		out.println("<br>");
