@@ -260,7 +260,7 @@
 	if (internalLinks.size() > 0){
 %>
 		<div class ='h3'>
-		<h3>Contains the following Interactions</h3>
+		<h3>Contains the following Interactions and/or Physical Entities</h3>
 		</div>
 <%
 		for (int lc = 0; lc < internalLinks.size(); lc++) {
