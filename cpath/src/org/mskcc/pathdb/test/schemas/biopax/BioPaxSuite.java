@@ -53,6 +53,7 @@ public class BioPaxSuite extends TestCase {
         suite.addTestSuite(TestImportBioPaxToCPath.class);
         suite.addTestSuite(TestBioPaxGenerator.class);
         suite.addTestSuite(TestBioPaxElementFilter.class);
+		suite.addTestSuite(TestInteractionParser.class);
         suite.setName("BioPax Tests");
         return suite;
     }
