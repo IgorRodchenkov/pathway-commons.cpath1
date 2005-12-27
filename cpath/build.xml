@@ -34,6 +34,9 @@
     <!-- The config directory-->
     <property name="config.dir"    value="config"/>
 
+    <!-- The config directory-->
+    <property name="bin.dir"    value="${basedir}/bin"/>
+
     <!--  Build.properties File -->
   	<property file="build.properties"/>
 
@@ -276,7 +279,7 @@
     -->
 	<target name="test_prepare" depends="compile"
         description="Loads test data set into MySQL.  Required for running JUnit Tests.">
-		<exec dir="bin" executable="initDb.pl" vmlauncher="false">
+		<exec dir="${bin.dir}" executable="${bin.dir}/initDb.pl" vmlauncher="false">
             <arg line="-f load_test_data"/>
         </exec>
 	</target>
