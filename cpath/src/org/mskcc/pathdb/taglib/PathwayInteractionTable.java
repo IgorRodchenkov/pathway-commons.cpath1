@@ -91,7 +91,7 @@ public class PathwayInteractionTable extends HtmlTable {
 									 "</a>");
 			append(link);
 			if (lc < cnt-1){
-				append(" +");
+				append(" + ");
 			}
 		}
 
@@ -109,7 +109,7 @@ public class PathwayInteractionTable extends HtmlTable {
 									 "</a>");
 			append(link);
 			if (lc < cnt-1){
-				append(" +");
+				append(" + ");
 			}
 		}
     }

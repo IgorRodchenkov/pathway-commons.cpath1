@@ -198,7 +198,7 @@ public class PathwayChildNodeTable extends HtmlTable {
 									 "</a>");
 			summaryString = link;
 			if (lc < cnt-1){
-				summaryString += " +";
+				summaryString += " + ";
 			}
 		}
 
@@ -216,7 +216,7 @@ public class PathwayChildNodeTable extends HtmlTable {
 									 "</a>");
 			summaryString += link;
 			if (lc < cnt-1){
-				summaryString += " +";
+				summaryString += " + ";
 			}
 		}
 		
