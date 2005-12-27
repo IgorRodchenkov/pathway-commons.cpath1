@@ -46,11 +46,11 @@ import org.mskcc.pathdb.schemas.biopax.InteractionParser;
 public class TestInteractionParser extends TestCase {
 
     /**
-     * Tests control interaction parsing.
+     * Tests conversion interaction parsing.
      *
      * @throws Exception All Exceptions.
      */
-    public void testControlInteractionParser() throws Exception {
+    public void testConversionInteractionParser() throws Exception {
 
 		// shared vars
 		int cnt = 0;
@@ -58,30 +58,34 @@ public class TestInteractionParser extends TestCase {
 		PhysicalInteractionComponent component = null;
 
 		// perform the interaction parsing
-		InteractionParser interactionParser = new InteractionParser(1069);
-		PhysicalInteraction physicalInteraction = interactionParser.getControllerInformation();
+		InteractionParser interactionParser = new InteractionParser(8);
+		PhysicalInteraction physicalInteraction = interactionParser.getConversionInformation();
 
 		// test left side
 		components = physicalInteraction.getLeftSideComponents();
 		cnt = components.size();
 		
 		// left side count
-        assertTrue(cnt == 1);
+		assertTrue(cnt == 2);
 
-		// left side name
+		// left side names
 		component = (PhysicalInteractionComponent)components.elementAt(0);
-        assertEquals("6PFK-2-CPX", component.getName());
+		assertEquals("a-D-glu", component.getName());
+		component = (PhysicalInteractionComponent)components.elementAt(1);
+		assertEquals("ATP", component.getName());
 
 		// test right side
 		components = physicalInteraction.getRightSideComponents();
 		cnt = components.size();
 
 		// right side count
-		assertTrue(cnt == 1);
+		assertTrue(cnt == 2);
 
-		// left side name
+		// right side names
 		component = (PhysicalInteractionComponent)components.elementAt(0);
-        assertEquals("6PFRUCTPHOS-RXN", component.getName());
+		assertEquals("ADP", component.getName());
+		component = (PhysicalInteractionComponent)components.elementAt(1);
+		assertEquals("a-D-glu-6-p", component.getName());
 	}
 
 
