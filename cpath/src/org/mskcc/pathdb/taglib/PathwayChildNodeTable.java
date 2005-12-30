@@ -44,6 +44,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.PhysicalInteraction;
 import org.mskcc.pathdb.model.PhysicalInteractionComponent;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.InteractionParser;
 
 /**
@@ -124,18 +125,21 @@ public class PathwayChildNodeTable extends HtmlTable {
 				root = bioPaxDoc.getRootElement();
 			}
 
-			// name
-			append("<td>" + record.getName() + "</td>");
+			BioPaxConstants biopaxConstants = new BioPaxConstants();
+			if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
+				// name
+				append("<td>" + record.getName() + "</td>");
 
-			// short name
-			xpath = XPath.newInstance("/*/bp:SHORT-NAME");
-			xpath.addNamespace("bp", root.getNamespaceURI());
-			e = (Element) xpath.selectSingleNode(root);
-			String shortName = null;
-			if (e != null) {
-				shortName = e.getTextNormalize();
-				if (!shortName.equals(record.getName())){
-					append("<td>" + shortName + "</td>");
+				// short name
+				xpath = XPath.newInstance("/*/bp:SHORT-NAME");
+				xpath.addNamespace("bp", root.getNamespaceURI());
+				e = (Element) xpath.selectSingleNode(root);
+				String shortName = null;
+				if (e != null) {
+					shortName = e.getTextNormalize();
+					if (!shortName.equals(record.getName())){
+						append("<td>" + shortName + "</td>");
+					}
 				}
 			}
 

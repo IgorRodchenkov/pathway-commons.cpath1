@@ -34,6 +34,10 @@
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
+	// used to indicate if basic information
+	// section header has been rendered
+	boolean basicInformationHeaderRendered = false;
+
 	// query string
 	String queryString = request.getQueryString();
 	if (queryString == null){
@@ -67,29 +71,74 @@
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
-<div id="apphead">
+<DIV ID="apphead">
 <%
-	// short name
+	// get name (short name else name, else shortest synonym)
 	xpath = XPath.newInstance("/*/bp:SHORT-NAME");
    	xpath.addNamespace("bp", root.getNamespaceURI());
 	e = (Element) xpath.selectSingleNode(root);
-	String shortName = null;
-	if (e != null) {
-		shortName = e.getTextNormalize();
-		out.println("<h2>" + shortName + "</h2>");
-	}
 	String name = null;
-	if (shortName == null){
+	if (e != null) {
+		name = e.getTextNormalize();
+	}
+	// no short name, try to use name
+	if (name == null) {
 		xpath = XPath.newInstance("/*/bp:NAME");
 	   	xpath.addNamespace("bp", root.getNamespaceURI());
 		e = (Element) xpath.selectSingleNode(root);
 		if (e != null){
 			name = e.getTextNormalize();
-			out.println("<h2>" + name + "</h2>");	
 		}
 	}
+	// synonym
+	xpath = XPath.newInstance("/*/bp:SYNONYMS");
+    xpath.addNamespace("bp", root.getNamespaceURI());
+	List list = xpath.selectNodes(root);
+    List synonymList = null;
+	String synonym = "";
+	int synonymIndex = -1;
+    if (list != null && list.size() > 0) {
+		int minLength = 0;
+		synonymList = list;
+        for (int i=0; i<list.size(); i++) {
+        	e = (Element) list.get(i);
+			if (i == 0){
+				minLength = e.getTextNormalize().length();
+				synonym = e.getTextNormalize();
+				synonymIndex = i;
+			}
+			else if (e.getTextNormalize().length() < minLength){
+				minLength = e.getTextNormalize().length();
+				synonym = e.getTextNormalize();
+				synonymIndex = i;
+			}
+        }
+    }
+	// no short name, use synonym (may be empty)
+	if (name == null) {
+		name = synonym;
+		// we are using synonym as name, remove synonym from list
+		if (synonymIndex >= 0){
+			synonymList.remove(synonymIndex);
+		}
+	}
+	
+	// organism
+	xpath = XPath.newInstance("/*/bp:ORGANISM/*/bp:NAME");
+   	xpath.addNamespace("bp", root.getNamespaceURI());
+	e = (Element) xpath.selectSingleNode(root);
+	String organism = null;
+	if (e != null){
+		organism = e.getTextNormalize();
+	}
+
+	// our heading 
+	String headerString = (organism != null) ?
+		("<H2>" + name + " from " + organism + "</H2>") :
+		("<H2>" + name + "</H2>");
+	out.println(headerString);
 %>
-</div>
+</DIV>
 
 <% if (record != null) { %>
 
@@ -98,69 +147,126 @@
 	String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
 	if (queryString.indexOf("debug=1") != -1 || xdebugFlag != null){
 		String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
-		out.println("<a href=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</a>");
-		out.println("<br>");
+		out.println("<A HREF=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</A>");
+		out.println("<BR>");
 	}
 %>
-
-<div class ='h3'>
-	<h3>Basic Information</h3>
-</div>
-<TABLE WIDTH=100%>
 <%
-	// name
-	if (name == null){
-		xpath = XPath.newInstance("/*/bp:NAME");
-	   	xpath.addNamespace("bp", root.getNamespaceURI());
-		e = (Element) xpath.selectSingleNode(root);
-		if (e != null){
-			name = e.getTextNormalize();
-			if (!shortName.equals(name)){
-				out.println("<TR>");
-				out.println("<TD>Name:</TD>");
-				out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
-				out.println("</TR>");
-			}
-		}
-	}
-%>
-<TR>
-<TD>Specific Type:</TD>
-<TD COLSPAN=3><%= entityTypeMap.get(record.getSpecificType()) %></TD>
-</TR>
-<%
-	// organism
-	xpath = XPath.newInstance("/*/bp:ORGANISM/*/bp:NAME");
-   	xpath.addNamespace("bp", root.getNamespaceURI());
-	e = (Element) xpath.selectSingleNode(root);
-	if (e != null){
-		out.println("<TR>");
-		out.println("<TD>Organism:</TD>");
-		out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
-		out.println("</TR>");
-	}
-
 	// synonym
-	xpath = XPath.newInstance("/*/bp:SYNONYMS");
-    xpath.addNamespace("bp", root.getNamespaceURI());
-    List list = xpath.selectNodes(root);
-    if (list != null && list.size() > 0) {
+    if (synonymList != null && synonymList.size() > 0) {
+		// render basic information header if necessary
+		if (!basicInformationHeaderRendered){
+			out.println("<div class ='h3'>");
+			out.println("<h3>Basic Information</h3>");
+			out.println("</div>");
+			out.println("<TABLE>");
+			basicInformationHeaderRendered = true;
+		}
     	out.println("<TR>");
         out.println("<TD>Synonyms:</TD>");
         out.println("<TD COLSPAN=3>");
-        for (int i=0; i<list.size(); i++) {
-        	e = (Element) list.get(i);
+        for (int i=0; i<synonymList.size(); i++) {
+        	e = (Element) synonymList.get(i);
             out.println(e.getTextNormalize());
         }
         out.println("</TD>");
         out.println("</TR>");
     }
-
+%>
+<%
+	// data source
+    xpath = XPath.newInstance("/*/bp:DATA-SOURCE/*/bp:NAME");
+    xpath.addNamespace("bp", root.getNamespaceURI());
+    e = (Element) xpath.selectSingleNode(root);
+    if (e != null) {
+		// render basic information header if necessary
+		if (!basicInformationHeaderRendered){
+			out.println("<div class ='h3'>");
+			out.println("<h3>Basic Information</h3>");
+			out.println("</div>");
+			out.println("<TABLE>");
+			basicInformationHeaderRendered = true;
+		}
+        out.println("<TR>");
+        out.println("<TD>Data Source:</TD>");
+        out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
+        out.println("</TR>");
+    }
+%>
+<%
+	// availability
+	xpath = XPath.newInstance("/*/bp:AVAILABILITY");
+    xpath.addNamespace("bp", root.getNamespaceURI());
+    e = (Element) xpath.selectSingleNode(root);
+    if (e != null) {
+		// render basic information header if necessary
+		if (!basicInformationHeaderRendered){
+			out.println("<div class ='h3'>");
+			out.println("<h3>Basic Information</h3>");
+			out.println("</div>");
+			out.println("<TABLE>");
+			basicInformationHeaderRendered = true;
+		}
+        out.println("<TR>");
+        out.println("<TD>Availability:</TD>");
+        out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
+        out.println("</TR>");
+    }
+%>
+<%
+	// xrefs
+    DaoExternalLink externalLinker = DaoExternalLink.getInstance();
+    ArrayList externalLinks =
+            externalLinker.getRecordsByCPathId(record.getId());
+    if (externalLinks.size() > 0) {
+		// render basic information header if necessary
+		if (!basicInformationHeaderRendered){
+			out.println("<div class ='h3'>");
+			out.println("<h3>Basic Information</h3>");
+			out.println("</div>");
+			out.println("<TABLE>");
+			basicInformationHeaderRendered = true;
+		}
+		out.println("<TR>");
+		out.println("<TD>External Links:</TD>");
+        for (int lc = 1; lc <= externalLinks.size(); lc++) {
+			out.println("<TD>");
+            ExternalLinkRecord link = (ExternalLinkRecord) externalLinks.get(lc-1);
+            ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
+            String dbId = link.getLinkedToId();
+            String linkStr = dbRecord.getName() + ":" + dbId;
+            String uri = link.getWebLink();
+            if (uri != null && uri.length() > 0) {
+                out.println("<A HREF=\""+ uri + "\">" + linkStr + "</A>");
+            } else {
+                out.println(linkStr);
+            }
+			out.println("</TD>");
+			//if ((lc != 0) && (lc % 3) == 0){
+			if (lc % 3 == 0){
+				out.println("</TR>");
+				out.println("<TR>");
+				// for nice spacing
+	 			out.println("<TD></TD>");
+			}
+        }
+	   	out.println("</TR>");
+	}
+%>
+<%
 	// comment
 	xpath = XPath.newInstance("/*/bp:COMMENT");
     xpath.addNamespace("bp", root.getNamespaceURI());
     e = (Element) xpath.selectSingleNode(root);
     if (e != null) {
+		// render basic information header if necessary
+		if (!basicInformationHeaderRendered){
+			out.println("<div class ='h3'>");
+			out.println("<h3>Basic Information</h3>");
+			out.println("</div>");
+			out.println("<TABLE>");
+			basicInformationHeaderRendered = true;
+		}
         out.println("<TR>");
         out.println("<TD>Comment:</TD>");
         String text = e.getTextNormalize();
@@ -169,73 +275,20 @@
         out.println("</TR>");
     }
 %>
-<TR>
-<TD>External Links:</TD>
 <%
-	// xrefs
-    DaoExternalLink externalLinker = DaoExternalLink.getInstance();
-    ArrayList externalLinks =
-            externalLinker.getRecordsByCPathId(record.getId());
-    if (externalLinks.size() > 0) {
-        for (int i = 0; i < externalLinks.size(); i++) {
-			// for nice spacing
-			if (i > 0){
-				out.println("<TD></TD>");
-			}
-			out.println("<TD COLSPAN=3>");
-            ExternalLinkRecord link = (ExternalLinkRecord) externalLinks.get(i);
-            ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
-            String dbId = link.getLinkedToId();
-            out.println(dbRecord.getName() + ": " + dbId);
-            String uri = link.getWebLink();
-            if (uri != null && uri.length() > 0) {
-                out.println("[<A HREF=\""+ uri + "\">Web Link</A>]");
-            } else {
-                out.println("[No Web Link Available]");
-            }
-			out.println("</TD></TR>");
-        }
-    	out.println("<TR>");
+	// close basic information table if necessary
+	if (basicInformationHeaderRendered){
+		out.println("</TABLE>");
 	}
-	else{
-        out.println("<TD>None</TD></TR>");
-    }
 %>
-</TD>
-</TR>
-<%
-	// data source
-    xpath = XPath.newInstance("/*/bp:DATA-SOURCE/*/bp:NAME");
-    xpath.addNamespace("bp", root.getNamespaceURI());
-    e = (Element) xpath.selectSingleNode(root);
-    if (e != null) {
-        out.println("<TR>");
-        out.println("<TD>Data Source:</TD>");
-        out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
-        out.println("</TR>");
-    }
-
-	// availability
-	xpath = XPath.newInstance("/*/bp:AVAILABILITY");
-    xpath.addNamespace("bp", root.getNamespaceURI());
-    e = (Element) xpath.selectSingleNode(root);
-    if (e != null) {
-        out.println("<TR>");
-        out.println("<TD>Availability:</TD>");
-        out.println("<TD COLSPAN=3>" + e.getTextNormalize() + "</TD>");
-        out.println("</TR>");
-    }
-%>
-</TABLE>
-
 <%
 	// pathway interactions
 	if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
 %>
-		<div class ='h3'>
-		<h3>Summary</h3>
-		</div>
-		<table>
+		<DIV CLASS ='h3'>
+		<H3>Summary</H3>
+		</DIV>
+		<TABLE>
 <%
 		// init an interaction parser
 		InteractionParser interactionParser = new InteractionParser(record.getId());
@@ -258,10 +311,40 @@
 <%
 		}
 %>
-		</table>
+		</TABLE>
 <%
 	}
 %>
+
+<%
+	// if pathway, show member molecules
+	if (biopaxConstants.isPathway(record.getSpecificType())){
+%>
+		<DIV class ='h3'>
+		<H3>Contains the following Molecules</H3>
+		</DIV>
+<%
+		HashSet moleculeSet = MemberMolecules.getMemberMolecules(record);	
+		String[] molecules = (String[])moleculeSet.toArray(new String[0]);
+		List moleculesList = Arrays.asList(molecules);
+		Collections.sort(moleculesList, new RecordLinkSorter());
+		int cnt = moleculesList.size();
+		if (cnt > 0){
+			out.println("<TABLE>");
+			out.println("<TR>");
+			out.println("<TD>");
+		}
+		for (int lc = 0; lc < cnt; lc++){
+			out.println(moleculesList.get(lc));
+		}
+		if (cnt > 0){
+			out.println("</TD>");
+			out.println("</TR>");
+			out.println("</TABLE>");
+		}
+	}
+%>
+
 <%
 	// child nodes
 	DaoInternalLink daoInternalLinks = new DaoInternalLink();
@@ -269,10 +352,10 @@
 	// interate through results
 	if (internalLinks.size() > 0){
 %>
-		<div class ='h3'>
-		<h3>Contains the following Interactions and/or Physical Entities</h3>
-		</div>
-		<table>
+		<DIV CLASS ='h3'>
+		<H3>Contains the following Interactions and/or Physical Entities</H3>
+		</DIV>
+		<TABLE>
 <%
 		for (int lc = 0; lc < internalLinks.size(); lc++) {
 			CPathRecord childRecord = (CPathRecord)internalLinks.get(lc);
@@ -282,7 +365,7 @@
 <%
 		}
 %>
-		</table>
+		</TABLE>
 <%
 	}
 %>
@@ -290,9 +373,9 @@
 	// if physical entity, show pathway(s) it belongs to
 	if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
 %>
-		<div class ='h3'>
+		<DIV CLASS ='h3'>
 		<h3>Member of the following Pathways</h3>
-		</div>
+		</DIV>
 <%
 		HashSet pathwaySet = MemberPathways.getMemberPathways(record);
 		String[] pathways = (String[])pathwaySet.toArray(new String[0]);
@@ -300,49 +383,19 @@
 		Collections.sort(pathwayList, new RecordLinkSorter());
 		int cnt = pathwayList.size();
 		if (cnt > 0){
-			out.println("<table>");
-			out.println("<tr>");
-			out.println("<td>");
+			out.println("<TABLE>");
+			out.println("<TR>");
+			out.println("<TD>");
 		}
 		for (int lc = 0; lc < cnt; lc++){
 			out.println(pathwayList.get(lc));
 		}
 		if (cnt > 0){
-			out.println("</td>");
-			out.println("</tr>");
-			out.println("</table>");
+			out.println("</TD>");
+			out.println("</TR>");
+			out.println("</TABLE>");
 		}
 	}
 %>
-
-<%
-	// if pathway, show member molecules
-	if (biopaxConstants.isPathway(record.getSpecificType())){
-%>
-		<div class ='h3'>
-		<h3>Contains the following Molecules</h3>
-		</div>
-<%
-		HashSet moleculeSet = MemberMolecules.getMemberMolecules(record);	
-		String[] molecules = (String[])moleculeSet.toArray(new String[0]);
-		List moleculesList = Arrays.asList(molecules);
-		Collections.sort(moleculesList, new RecordLinkSorter());
-		int cnt = moleculesList.size();
-		if (cnt > 0){
-			out.println("<table>");
-			out.println("<tr>");
-			out.println("<td>");
-		}
-		for (int lc = 0; lc < cnt; lc++){
-			out.println(moleculesList.get(lc));
-		}
-		if (cnt > 0){
-			out.println("</td>");
-			out.println("</tr>");
-			out.println("</table>");
-		}
-	}
-%>
-
 <% } // record not equal to null %>
 <jsp:include page="../global/footer.jsp" flush="true" />
