@@ -112,6 +112,19 @@ public class InteractionParser {
 	}
 
 	/**
+	 * Finds/returns physical interaction information.
+	 *
+	 * @return PhysicalInteraction.
+	 */
+	public PhysicalInteraction getPhysicalInteractionInformation(){
+
+		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+			return getInformation("/*/bp:PARTICIPANTS/*/bp:PHYSICAL-ENTITY");
+		}
+		return null;
+	}
+
+	/**
 	 * Finds/returns conversion information.
 	 *
 	 * @return PhysicalInteraction.
@@ -145,14 +158,50 @@ public class InteractionParser {
 	}
 
 	/**
-	 * Finds/returns conversion information.
+	 * Finds/returns interaction information.
+	 *
+	 * @param participants String.
+	 * @return PhysicalInteraction.
+	 */
+	private PhysicalInteraction getInformation(String participants){
+
+		// used for xml parsing
+		SAXBuilder builder = new SAXBuilder();
+		StringReader reader = new StringReader (record.getXmlContent());
+		if (reader == null){
+			return null;
+		}
+
+		try{
+			Document bioPaxDoc = builder.build(reader);
+			
+			if (bioPaxDoc != null){
+				root = bioPaxDoc.getRootElement();
+			}
+
+			// get type
+			String interactionType = getInteractionType();
+
+			// get participants
+			Vector participantsVector = getPhysicalInteractionInformation(participants);
+
+			// outta here
+			return (new PhysicalInteraction(interactionType, "", participantsVector, null));
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+
+	/**
+	 * Finds/returns interaction information.
 	 *
 	 * @param operator String.
 	 * @param leftSideParticipants String.
 	 * @param rightSideParticipants String.
 	 * @return PhysicalInteraction.
 	 */
-	public PhysicalInteraction getInformation(String operator, String leftSideParticipants, String rightSideParticipants){
+	private PhysicalInteraction getInformation(String operator, String leftSideParticipants, String rightSideParticipants){
 
 		// used for xml parsing
 		SAXBuilder builder = new SAXBuilder();
@@ -183,6 +232,7 @@ public class InteractionParser {
 				}
 			}
 
+			// outta here
 			return (new PhysicalInteraction(interactionType, operator, leftParticipants, rightParticipants));
 		}
 		catch(Exception e){
