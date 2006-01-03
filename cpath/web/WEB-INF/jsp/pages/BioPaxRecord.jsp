@@ -132,6 +132,15 @@
 		organism = e.getTextNormalize();
 	}
 
+	// type
+	String type = null;
+	if (record != null){
+		type = record.getSpecificType();
+	}
+	if (type != null){
+		name = (name + " (" + entityTypeMap.get(type) + ")");
+	}
+
 	// our heading 
 	String headerString = (organism != null) ?
 		("<H2>" + name + " from " + organism + "</H2>") :
@@ -156,9 +165,6 @@
     if (synonymList != null && synonymList.size() > 0) {
 		// render basic information header if necessary
 		if (!basicInformationHeaderRendered){
-			out.println("<div class ='h3'>");
-			out.println("<h3>Basic Information</h3>");
-			out.println("</div>");
 			out.println("<TABLE>");
 			basicInformationHeaderRendered = true;
 		}
@@ -181,9 +187,6 @@
     if (e != null) {
 		// render basic information header if necessary
 		if (!basicInformationHeaderRendered){
-			out.println("<div class ='h3'>");
-			out.println("<h3>Basic Information</h3>");
-			out.println("</div>");
 			out.println("<TABLE>");
 			basicInformationHeaderRendered = true;
 		}
@@ -201,9 +204,6 @@
     if (e != null) {
 		// render basic information header if necessary
 		if (!basicInformationHeaderRendered){
-			out.println("<div class ='h3'>");
-			out.println("<h3>Basic Information</h3>");
-			out.println("</div>");
 			out.println("<TABLE>");
 			basicInformationHeaderRendered = true;
 		}
@@ -221,9 +221,6 @@
     if (externalLinks.size() > 0) {
 		// render basic information header if necessary
 		if (!basicInformationHeaderRendered){
-			out.println("<div class ='h3'>");
-			out.println("<h3>Basic Information</h3>");
-			out.println("</div>");
 			out.println("<TABLE>");
 			basicInformationHeaderRendered = true;
 		}
@@ -261,9 +258,6 @@
     if (e != null) {
 		// render basic information header if necessary
 		if (!basicInformationHeaderRendered){
-			out.println("<div class ='h3'>");
-			out.println("<h3>Basic Information</h3>");
-			out.println("</div>");
 			out.println("<TABLE>");
 			basicInformationHeaderRendered = true;
 		}
@@ -311,6 +305,15 @@
 <%
 		}
 %>
+<%
+		// get physical interaction information
+		physicalInteraction = interactionParser.getPhysicalInteractionInformation();
+		if (physicalInteraction != null){
+%>
+			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
+<%
+		}
+%>
 		</TABLE>
 <%
 	}
@@ -346,27 +349,30 @@
 %>
 
 <%
-	// child nodes
-	DaoInternalLink daoInternalLinks = new DaoInternalLink();
-	ArrayList internalLinks = daoInternalLinks.getTargetsWithLookUp(record.getId());
-	// interate through results
-	if (internalLinks.size() > 0){
+	// if physical entity, show pathway(s) it belongs to
+	if (biopaxConstants.isPathway(record.getSpecificType())){
+		// child nodes
+		DaoInternalLink daoInternalLinks = new DaoInternalLink();
+		ArrayList internalLinks = daoInternalLinks.getTargetsWithLookUp(record.getId());
+		// interate through results
+		if (internalLinks.size() > 0){
 %>
-		<DIV CLASS ='h3'>
-		<H3>Contains the following Interactions and/or Physical Entities</H3>
-		</DIV>
-		<TABLE>
+			<DIV CLASS ='h3'>
+			<H3>Contains the following interactions</H3>
+			</DIV>
+			<TABLE>
 <%
-		for (int lc = 0; lc < internalLinks.size(); lc++) {
-			CPathRecord childRecord = (CPathRecord)internalLinks.get(lc);
-			// render interaction information
+			for (int lc = 0; lc < internalLinks.size(); lc++) {
+				CPathRecord childRecord = (CPathRecord)internalLinks.get(lc);
+				// render interaction information
 %>
-			<cbio:pathwayChildNodeTable recid="<%=childRecord.getId()%>"/>
+				<cbio:pathwayChildNodeTable recid="<%=childRecord.getId()%>"/>
 <%
-		}
+			}
 %>
 		</TABLE>
 <%
+		}
 	}
 %>
 <%
