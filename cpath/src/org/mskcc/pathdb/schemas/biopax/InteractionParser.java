@@ -118,7 +118,9 @@ public class InteractionParser {
 	 */
 	public PhysicalInteraction getPhysicalInteractionInformation(){
 
-		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
+			!biopaxConstants.isConversion(record.getSpecificType()) &&
+			!biopaxConstants.isControl(record.getSpecificType())){
 			return getInformation("/*/bp:PARTICIPANTS/*/bp:PHYSICAL-ENTITY");
 		}
 		return null;
