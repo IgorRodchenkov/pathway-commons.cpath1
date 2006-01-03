@@ -125,24 +125,6 @@ public class PathwayChildNodeTable extends HtmlTable {
 				root = bioPaxDoc.getRootElement();
 			}
 
-			BioPaxConstants biopaxConstants = new BioPaxConstants();
-			if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
-				// name
-				append("<td>" + record.getName() + "</td>");
-
-				// short name
-				xpath = XPath.newInstance("/*/bp:SHORT-NAME");
-				xpath.addNamespace("bp", root.getNamespaceURI());
-				e = (Element) xpath.selectSingleNode(root);
-				String shortName = null;
-				if (e != null) {
-					shortName = e.getTextNormalize();
-					if (!shortName.equals(record.getName())){
-						append("<td>" + shortName + "</td>");
-					}
-				}
-			}
-
 			// interaction summary
 			String interactionString = getInteractionSummary(record.getId());
 			append("<td>" + interactionString + "</td>");
@@ -171,6 +153,9 @@ public class PathwayChildNodeTable extends HtmlTable {
 		PhysicalInteraction physicalInteraction = interactionParser.getConversionInformation();
 		if (physicalInteraction == null){
 			physicalInteraction = interactionParser.getControllerInformation();
+			if (physicalInteraction == null){
+				physicalInteraction = interactionParser.getPhysicalInteractionInformation();
+			}
 		}
 		if (physicalInteraction == null){
 			return "";
@@ -190,6 +175,8 @@ public class PathwayChildNodeTable extends HtmlTable {
 		int lc, cnt;
 		Vector components;
 		String summaryString = new String();
+		boolean physicalInteractionType =
+			physicalInteraction.getPhysicalInteractionType().equals("Physical Interaction");
 		
 		// left side
 		components = physicalInteraction.getLeftSideComponents();
@@ -200,27 +187,34 @@ public class PathwayChildNodeTable extends HtmlTable {
 									 String.valueOf(component.getRecordID()) +
 									 "\">" + component.getName() +
 									 "</a>");
-			summaryString = link;
+			summaryString += link;
 			if (lc < cnt-1){
-				summaryString += " + ";
+				if (!physicalInteractionType){
+					summaryString += " + ";
+				}
+				else{
+					summaryString += " ";
+				}
 			}
 		}
 
-		// operator
-		summaryString += (" " + physicalInteraction.getOperator() + " ");
+		if (!physicalInteractionType){
+			// operator
+			summaryString += (" " + physicalInteraction.getOperator() + " ");
 
-		// right side
-		components = physicalInteraction.getRightSideComponents();
-		cnt = components.size();
-		for (lc = 0; lc < cnt; lc++){
-			PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
-			String link = new String("<a href=\"record.do?id=" +
-									 String.valueOf(component.getRecordID()) +
-									 "\">" + component.getName() +
-									 "</a>");
-			summaryString += link;
-			if (lc < cnt-1){
-				summaryString += " + ";
+			// right side
+			components = physicalInteraction.getRightSideComponents();
+			cnt = components.size();
+			for (lc = 0; lc < cnt; lc++){
+				PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
+				String link = new String("<a href=\"record.do?id=" +
+										 String.valueOf(component.getRecordID()) +
+										 "\">" + component.getName() +
+										 "</a>");
+				summaryString += link;
+				if (lc < cnt-1){
+					summaryString += " + ";
+				}
 			}
 		}
 		

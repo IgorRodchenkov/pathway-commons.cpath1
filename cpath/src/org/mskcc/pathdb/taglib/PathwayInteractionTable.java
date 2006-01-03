@@ -79,6 +79,8 @@ public class PathwayInteractionTable extends HtmlTable {
 
 		int lc, cnt;
 		Vector components;
+		boolean physicalInteractionType =
+			physicalInteraction.getPhysicalInteractionType().equals("Physical Interaction");
 		
 		// left side
 		components = physicalInteraction.getLeftSideComponents();
@@ -91,25 +93,32 @@ public class PathwayInteractionTable extends HtmlTable {
 									 "</a>");
 			append(link);
 			if (lc < cnt-1){
-				append(" + ");
+				if (!physicalInteractionType){
+					append(" + ");
+				}
+				else{
+					append(" ");
+				}
 			}
 		}
 
-		// operator
-		append(" " + physicalInteraction.getOperator() + " ");
+		if (!physicalInteractionType){
+			// operator
+			append(" " + physicalInteraction.getOperator() + " ");
 
-		// right side
-		components = physicalInteraction.getRightSideComponents();
-		cnt = components.size();
-		for (lc = 0; lc < cnt; lc++){
-			PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
-			String link = new String("<a href=\"record.do?id=" +
-									 String.valueOf(component.getRecordID()) +
-									 "\">" + component.getName() +
-									 "</a>");
-			append(link);
-			if (lc < cnt-1){
-				append(" + ");
+			// right side
+			components = physicalInteraction.getRightSideComponents();
+			cnt = components.size();
+			for (lc = 0; lc < cnt; lc++){
+				PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
+				String link = new String("<a href=\"record.do?id=" +
+										 String.valueOf(component.getRecordID()) +
+										 "\">" + component.getName() +
+										 "</a>");
+				append(link);
+				if (lc < cnt-1){
+					append(" + ");
+				}
 			}
 		}
     }
