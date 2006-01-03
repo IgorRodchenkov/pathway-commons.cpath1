@@ -320,11 +320,12 @@
 %>
 
 <%
-	// if pathway, show member molecules
-	if (biopaxConstants.isPathway(record.getSpecificType())){
+	// if pathway or complex, show member molecules&complex
+	if (biopaxConstants.isPathway(record.getSpecificType()) ||
+		record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
 %>
 		<DIV class ='h3'>
-		<H3>Contains the following Molecules</H3>
+		<H3>Contains the Following Molecules</H3>
 		</DIV>
 <%
 		HashSet moleculeSet = MemberMolecules.getMemberMolecules(record);	
@@ -358,7 +359,7 @@
 		if (internalLinks.size() > 0){
 %>
 			<DIV CLASS ='h3'>
-			<H3>Contains the following interactions</H3>
+			<H3>Contains the Following Interactions</H3>
 			</DIV>
 			<TABLE>
 <%
@@ -380,7 +381,7 @@
 	if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
 %>
 		<DIV CLASS ='h3'>
-		<h3>Member of the following Pathways</h3>
+		<h3>Member of the Following Pathways</h3>
 		</DIV>
 <%
 		HashSet pathwaySet = MemberPathways.getMemberPathways(record);
