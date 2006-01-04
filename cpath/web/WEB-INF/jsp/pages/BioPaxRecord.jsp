@@ -364,22 +364,28 @@
 
 			// heading
 			out.println("<DIV CLASS ='h3'>");
-			out.println("<H3>" + heading + "</H3>");
-			out.println("</DIV>");
-			out.println("<TABLE>");
+			out.println("<H3>");
+			out.println("<TABLE><TR>");
+			out.println("<TD>" + heading + "</TD>");
 
 			// limited pagination support if necessary
 			if (internalLinks.size() > 10){
 				// generate link to change number of interactions to display
 				if (showAll){
 					String uri = "record.do?id=" + record.getId();
-					out.println("<TR><TD><A HREF=\"" + uri + "\">[display 10 interactions]</A></TD></TR");
+					out.println("<TD><A HREF=\"" + uri + "\">[display 10 interactions]</A></TD>");
 				}
 				else{
 					String uri = "record.do?id=" + record.getId() + "&show=ALL";
-					out.println("<TR><TD><A HREF=\"" + uri + "\">[display all interactions]</A></TD></TR");
+					out.println("<TD><A HREF=\"" + uri + "\">[display all interactions]</A></TD>");
 				}
 			}
+			out.println("</TR></TABLE>");
+			out.println("</H3>");
+			out.println("</DIV>");
+
+			// start child node output
+			out.println("<TABLE>");
 			for (int lc = 0; lc < cnt; lc++) {
 				CPathRecord childRecord = (CPathRecord)internalLinks.get(lc);
 				// render interaction information
