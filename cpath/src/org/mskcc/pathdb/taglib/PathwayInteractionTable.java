@@ -145,7 +145,7 @@ public class PathwayInteractionTable extends HtmlTable {
 			PathwayChildNodeTable pcnt = new PathwayChildNodeTable();
 			String summaryDetails = pcnt.getInteractionSummary(recordID);
 			if (summaryDetails.length() > 0){
-				append(": " + summaryDetails);
+				append(" (" + summaryDetails + ")");
 			}
 		}
 		catch (Exception e){

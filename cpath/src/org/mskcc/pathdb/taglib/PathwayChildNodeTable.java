@@ -244,7 +244,7 @@ public class PathwayChildNodeTable extends HtmlTable {
 		try{
 			String summaryDetails = getInteractionSummary(recordID);
 			if (summaryDetails.length() > 0){
-				return ": " + summaryDetails;
+				return " (" + summaryDetails + ")";
 			}
 		}
 		catch (Exception e){
