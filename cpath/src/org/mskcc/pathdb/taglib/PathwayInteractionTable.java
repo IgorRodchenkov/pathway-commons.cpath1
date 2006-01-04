@@ -92,6 +92,9 @@ public class PathwayInteractionTable extends HtmlTable {
 									 "\">" + component.getName() +
 									 "</a>");
 			append(link);
+			// add summary detail string - see function definition for more info
+			appendSummaryDetailString(component.getRecordID());
+			// we may have more than one left participant, if so, separate with "+" or " "
 			if (lc < cnt-1){
 				if (!physicalInteractionType){
 					append(" + ");
@@ -116,10 +119,48 @@ public class PathwayInteractionTable extends HtmlTable {
 										 "\">" + component.getName() +
 										 "</a>");
 				append(link);
+				// add summary detail string - see function definition for more info
+				appendSummaryDetailString(component.getRecordID());
+				// we may have more than one right participant, if so, separate with "+"
 				if (lc < cnt-1){
 					append(" + ");
 				}
 			}
 		}
     }
+
+    /**
+     * Gets Interaction Summary string.
+	 *
+	 * This has been added to augment originally spec'd
+	 * summary information like 'Phosphorylation' with
+	 * the actual interaction, like 'Alpha6 --> Alpha6',
+	 * so we will have 'Phosphorylation: Alpha6 --> Alpha6'
+	 *
+	 * @param recordID long.
+     */
+	private void appendSummaryDetailString(long recordID) {
+
+		try{
+			PathwayChildNodeTable pcnt = new PathwayChildNodeTable();
+			String summaryDetails = pcnt.getInteractionSummary(recordID);
+			if (summaryDetails.length() > 0){
+				append(": " + summaryDetails);
+			}
+		}
+		catch (Exception e){
+			jspError(e);
+		}
+	}
+
+    /**
+     * Handles error processing.
+	 *
+	 * @param e Exception.
+     */
+	private void jspError(Exception e){
+		startRow();
+		append("<td><font color=\"red\">Exception Thrown: " + e.getMessage() + "</font></td>");
+		endRow();
+	}
 }

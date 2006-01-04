@@ -145,7 +145,7 @@ public class PathwayChildNodeTable extends HtmlTable {
 	 * @return String.
 	 * @throws Exception.
      */
-	private String getInteractionSummary(long recordID) throws Exception {
+	public String getInteractionSummary(long recordID) throws Exception {
 		// get interaction parser
 		InteractionParser interactionParser = new InteractionParser(recordID);
 
@@ -188,6 +188,9 @@ public class PathwayChildNodeTable extends HtmlTable {
 									 "\">" + component.getName() +
 									 "</a>");
 			summaryString += link;
+			// add summary detail string - see function definition for more info
+			summaryString += summaryDetailString(component.getRecordID());
+			// we may have more than one left participant, if so, separate with "+" or " "
 			if (lc < cnt-1){
 				if (!physicalInteractionType){
 					summaryString += " + ";
@@ -212,6 +215,9 @@ public class PathwayChildNodeTable extends HtmlTable {
 										 "\">" + component.getName() +
 										 "</a>");
 				summaryString += link;
+				// add summary detail string - see function definition for more info
+				summaryString += summaryDetailString(component.getRecordID());
+				// we may have more than one right participant, if so, separate with "+"
 				if (lc < cnt-1){
 					summaryString += " + ";
 				}
@@ -220,6 +226,33 @@ public class PathwayChildNodeTable extends HtmlTable {
 		
 		// outta here
 		return summaryString;
+	}
+
+    /**
+     * Gets Interaction Summary string.
+	 *
+	 * This has been added to augment originally spec'd
+	 * summary information like 'Phosphorylation' with
+	 * the actual interaction, like 'Alpha6 --> Alpha6',
+	 * so we will have 'Phosphorylation: Alpha6 --> Alpha6'
+	 *
+	 * @param recordID long.
+	 * @return String.
+     */
+	private String summaryDetailString(long recordID) {
+
+		try{
+			String summaryDetails = getInteractionSummary(recordID);
+			if (summaryDetails.length() > 0){
+				return ": " + summaryDetails;
+			}
+		}
+		catch (Exception e){
+			jspError(e);
+		}
+
+		// outta here
+		return "";
 	}
 
     /**
