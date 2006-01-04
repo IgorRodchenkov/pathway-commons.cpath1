@@ -359,18 +359,21 @@
 		if (internalLinks.size() > 0){
 			boolean showAll = (queryString.indexOf("show=ALL") != -1) ? true : false;
 			int cnt = (showAll) ? internalLinks.size() : (internalLinks.size() > 10) ? 10 : internalLinks.size();
-%>
-			<DIV CLASS ='h3'>
-			<H3>Contains the Following Interactions</H3>
-			</DIV>
-			<TABLE>
-<%
+			String heading = (showAll) ? "Contains the Following Interactions" :
+				(internalLinks.size() > 10) ? "Includes the Following Ten Interactions" : "Contains the Following Interactions";
+
+			// heading
+			out.println("<DIV CLASS ='h3'>");
+			out.println("<H3>" + heading + "</H3>");
+			out.println("</DIV>");
+			out.println("<TABLE>");
+
 			// limited pagination support if necessary
 			if (internalLinks.size() > 10){
 				// generate link to change number of interactions to display
 				if (showAll){
 					String uri = "record.do?id=" + record.getId();
-					out.println("<TR><TD><A HREF=\"" + uri + "\">[display top 10 interactions]</A></TD></TR");
+					out.println("<TR><TD><A HREF=\"" + uri + "\">[display 10 interactions]</A></TD></TR");
 				}
 				else{
 					String uri = "record.do?id=" + record.getId() + "&show=ALL";
