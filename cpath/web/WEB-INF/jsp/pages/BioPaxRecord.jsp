@@ -404,7 +404,7 @@
 	if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
 %>
 		<DIV CLASS ='h3'>
-		<h3>Member of the Following Pathways</h3>
+		<H3>Member of the Following Pathways</H3>
 		</DIV>
 <%
 		HashSet pathwaySet = MemberPathways.getMemberPathways(record);
