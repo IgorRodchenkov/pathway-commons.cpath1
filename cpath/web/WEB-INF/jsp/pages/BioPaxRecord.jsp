@@ -357,13 +357,27 @@
 		ArrayList internalLinks = daoInternalLinks.getTargetsWithLookUp(record.getId());
 		// interate through results
 		if (internalLinks.size() > 0){
+			boolean showAll = (queryString.indexOf("show=ALL") != -1) ? true : false;
+			int cnt = (showAll) ? internalLinks.size() : (internalLinks.size() > 10) ? 10 : internalLinks.size();
 %>
 			<DIV CLASS ='h3'>
 			<H3>Contains the Following Interactions</H3>
 			</DIV>
 			<TABLE>
 <%
-			for (int lc = 0; lc < internalLinks.size(); lc++) {
+			// limited pagination support if necessary
+			if (internalLinks.size() > 10){
+				// generate link to change number of interactions to display
+				if (showAll){
+					String uri = "record.do?id=" + record.getId();
+					out.println("<TR><TD><A HREF=\"" + uri + "\">[display top 10 interactions]</A></TD></TR");
+				}
+				else{
+					String uri = "record.do?id=" + record.getId() + "&show=ALL";
+					out.println("<TR><TD><A HREF=\"" + uri + "\">[display all interactions]</A></TD></TR");
+				}
+			}
+			for (int lc = 0; lc < cnt; lc++) {
 				CPathRecord childRecord = (CPathRecord)internalLinks.get(lc);
 				// render interaction information
 %>
