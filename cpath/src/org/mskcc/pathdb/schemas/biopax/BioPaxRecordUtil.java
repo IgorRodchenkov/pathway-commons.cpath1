@@ -259,14 +259,14 @@ public class BioPaxRecordUtil {
 				xpath = XPath.newInstance("bp:FEATURE-TYPE/*/bp:TERM");
 				xpath.addNamespace("bp", e.getNamespaceURI());
 				Element feature = (Element) xpath.selectSingleNode(e);
-				if (feature != null){
+				if (feature != null && feature.getTextNormalize().length() > 0){
 					featureList.add(feature.getTextNormalize());
 				}
 				else{
 					xpath = XPath.newInstance("bp:FEATURE-TYPE/*/bp:XREF/*/bp:ID");
 					xpath.addNamespace("bp", e.getNamespaceURI());
 					feature = (Element) xpath.selectSingleNode(e);
-					if (feature != null){
+					if (feature != null && feature.getTextNormalize().length() > 0){
 						featureList.add(feature.getTextNormalize());
 					}
 					else{
@@ -308,7 +308,7 @@ public class BioPaxRecordUtil {
 			xpath = XPath.newInstance((String)queries.elementAt(lc));
 			xpath.addNamespace("bp", root.getNamespaceURI());
 			Element e = (Element) xpath.selectSingleNode(root);
-			if (e != null) {
+			if (e != null && e.getTextNormalize().length() > 0) {
 				return new String(e.getTextNormalize());
 			}
 		}
