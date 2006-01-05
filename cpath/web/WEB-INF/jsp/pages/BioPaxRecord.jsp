@@ -78,7 +78,7 @@
    	xpath.addNamespace("bp", root.getNamespaceURI());
 	e = (Element) xpath.selectSingleNode(root);
 	String name = null;
-	if (e != null) {
+	if (e != null && e.getTextNormalize().length() > 0) {
 		name = e.getTextNormalize();
 	}
 	// no short name, try to use name
@@ -86,7 +86,7 @@
 		xpath = XPath.newInstance("/*/bp:NAME");
 	   	xpath.addNamespace("bp", root.getNamespaceURI());
 		e = (Element) xpath.selectSingleNode(root);
-		if (e != null){
+		if (e != null && e.getTextNormalize().length() > 0){
 			name = e.getTextNormalize();
 		}
 	}
@@ -128,7 +128,7 @@
    	xpath.addNamespace("bp", root.getNamespaceURI());
 	e = (Element) xpath.selectSingleNode(root);
 	String organism = null;
-	if (e != null){
+	if (e != null && e.getTextNormalize().length() > 0){
 		organism = e.getTextNormalize();
 	}
 
@@ -184,7 +184,7 @@
     xpath = XPath.newInstance("/*/bp:DATA-SOURCE/*/bp:NAME");
     xpath.addNamespace("bp", root.getNamespaceURI());
     e = (Element) xpath.selectSingleNode(root);
-    if (e != null) {
+    if (e != null && e.getTextNormalize().length() > 0) {
 		// render basic information header if necessary
 		if (!basicInformationHeaderRendered){
 			out.println("<TABLE>");
