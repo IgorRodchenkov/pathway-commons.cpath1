@@ -121,7 +121,7 @@ public class InteractionParser {
 		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
 			!biopaxConstants.isConversion(record.getSpecificType()) &&
 			!biopaxConstants.isControl(record.getSpecificType())){
-			return getInformation("/*/bp:PARTICIPANTS/*/bp:PHYSICAL-ENTITY");
+			return getInformation("/*/bp:PARTICIPANTS/*");
 		}
 		return null;
 	}
@@ -136,8 +136,8 @@ public class InteractionParser {
 		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
 			biopaxConstants.isConversion(record.getSpecificType())){
 			return getInformation("-->",
-								  "/*/bp:LEFT/*/bp:PHYSICAL-ENTITY",
-								  "/*/bp:RIGHT/*/bp:PHYSICAL-ENTITY");
+								  "/*/bp:LEFT/*",
+								  "/*/bp:RIGHT/*");
 		}
 		return null;
 	}
@@ -153,7 +153,7 @@ public class InteractionParser {
 		if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
 			biopaxConstants.isControl(record.getSpecificType())){
 			return getInformation("",
-								  "/*/bp:CONTROLLER/*/bp:PHYSICAL-ENTITY",
+								  "/*/bp:CONTROLLER/*",
 								  "/*/bp:CONTROLLED");
 		}
 		return null;
@@ -320,6 +320,9 @@ public class InteractionParser {
 	 */
 	private Vector getPhysicalInteractionInformation(String query) throws Exception {
 
+		// we dont process controlled queries as all others
+		boolean processingControlled = (query.equals("/*/bp:CONTROLLED")) ? true : false;
+
 		// our list to return
 		Vector participantVector = new Vector();
 
@@ -328,33 +331,49 @@ public class InteractionParser {
 		xpath.addNamespace("bp", root.getNamespaceURI());
 		List list = xpath.selectNodes(root);
 
-		// interate through results
+		// interate through results - all physicalentity or sequence participants
 		if (list != null && list.size() > 0) {
 			for (int lc = 0; lc < list.size(); lc++) {
+				// get our next element to process
 				e = (Element) list.get(lc);
-				Attribute rdfResourceAttribute =
-					e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
-				if (rdfResourceAttribute != null) {
-					String rdfKey = RdfUtil.removeHashMark
-						(rdfResourceAttribute.getValue());
-					// get physical entity
-					String physicalEntity = BioPaxRecordUtil.getEntity(rdfKey);
-					// cook id to save
-					int indexOfID = rdfKey.lastIndexOf("-");
-					if (indexOfID == -1){
-						throw new Exception("Corrupt Record ID");
+				// create new physical interaction component for this participant
+				PhysicalInteractionComponent physicalInteractionComponent = null;
+				// special processing of controlled
+				if (processingControlled){
+					Attribute rdfResourceAttribute =
+						e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+					if (rdfResourceAttribute != null) {
+						String rdfKey = RdfUtil.removeHashMark
+							(rdfResourceAttribute.getValue());
+						// get physical entity
+						String physicalEntity = BioPaxRecordUtil.getEntity(rdfKey);
+						// cook id to save
+						int indexOfID = rdfKey.lastIndexOf("-");
+						if (indexOfID == -1){
+							throw new Exception("Corrupt Record ID");
+						}
+						indexOfID += 1;
+						String cookedKey = rdfKey.substring(indexOfID);
+						Long recordID = new Long(cookedKey);
+						// add to vector
+						if (physicalEntity != null){
+							physicalInteractionComponent = new PhysicalInteractionComponent();
+							physicalInteractionComponent.setName(physicalEntity);
+							physicalInteractionComponent.setRecordID(recordID.longValue());
+						}
 					}
-					indexOfID += 1;
-					String cookedKey = rdfKey.substring(indexOfID);
-					Long recordID = new Long(cookedKey);
-					// add to vector
-					if (physicalEntity != null){
-						participantVector.add(new PhysicalInteractionComponent(physicalEntity, recordID.longValue()));
-					}
+				}
+				else{
+					physicalInteractionComponent = BioPaxRecordUtil.createPhysicalInteractionComponent(e);
+				}
+				// add component to participant vector
+				if (physicalInteractionComponent != null){
+					participantVector.add(physicalInteractionComponent);
 				}
 			}
 		}
 
+		// outta here
 		return (participantVector.size() > 0) ? participantVector : null;
 	}
 }

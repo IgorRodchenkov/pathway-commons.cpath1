@@ -188,6 +188,8 @@ public class PathwayChildNodeTable extends HtmlTable {
 									 "\">" + component.getName() +
 									 "</a>");
 			summaryString += link;
+			// add location:feature string
+			summaryString += createSummaryFeatureString(component);
 			// add summary detail string - see function definition for more info
 			summaryString += summaryDetailString(component.getRecordID());
 			// we may have more than one left participant, if so, separate with "+" or " "
@@ -215,6 +217,8 @@ public class PathwayChildNodeTable extends HtmlTable {
 										 "\">" + component.getName() +
 										 "</a>");
 				summaryString += link;
+				// add location:feature string
+				summaryString += createSummaryFeatureString(component);
 				// add summary detail string - see function definition for more info
 				summaryString += summaryDetailString(component.getRecordID());
 				// we may have more than one right participant, if so, separate with "+"
@@ -253,6 +257,52 @@ public class PathwayChildNodeTable extends HtmlTable {
 
 		// outta here
 		return "";
+	}
+
+    /**
+     * Creates location:feature string.
+	 *
+	 * @param physicalInteractionComponent PhysicalInteractionComponent.
+	 * @return String.
+     */
+	private String createSummaryFeatureString(PhysicalInteractionComponent physicalInteractionComponent) {
+		
+		// string to return
+		String summaryFeatureString = "";
+
+		// get data from component
+		String cellularLocation = physicalInteractionComponent.getCellularLocation();
+		Vector featureList = physicalInteractionComponent.getFeatureList();
+		int cnt = featureList.size();
+
+		if (cellularLocation.length() > 0){
+			summaryFeatureString = "(" + physicalInteractionComponent.getCellularLocation() + ":";
+		}
+
+		// process feature list
+		if (cnt > 0){
+			if (summaryFeatureString.length() == 0){
+				summaryFeatureString = "(:";
+			}
+			for (int lc = 0; lc < cnt; lc++){
+				String feature = (String)featureList.get(lc);
+				if (lc == 0){
+					summaryFeatureString += feature;
+				}
+				else{
+					summaryFeatureString += ", " + feature;
+				}
+			}
+
+		}
+		
+		// cap off the string
+		if (summaryFeatureString.length() > 0){
+			summaryFeatureString += ")";
+		}
+
+		// outta here
+		return summaryFeatureString;
 	}
 
     /**

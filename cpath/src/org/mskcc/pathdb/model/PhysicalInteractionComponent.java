@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.model;
 
 // imports
+import java.util.Vector;
 
 /**
  * This class encapsulates
@@ -44,7 +45,7 @@ public class PhysicalInteractionComponent {
 	/**
 	 * The component name.
 	 */
-	private String name;
+	private String name = new String();
 
 	/**
 	 * The component id.
@@ -52,14 +53,22 @@ public class PhysicalInteractionComponent {
 	private long recordID;
 
 	/**
-     * Constructor.
+	 * The cellular location.
+	 */
+	private String cellularLocation = new String();
+
+	/**
+	 * The feature list vector.
+	 */
+	private Vector featureList = new Vector();
+
+	/**
+	 * Set the component name.
 	 *
 	 * @param name String.
-	 * @param recordID long.
-     */
-    public PhysicalInteractionComponent(String name, long recordID){
+	 */
+	public void setName(String name){
 		this.name = name;
-		this.recordID = recordID;
 	}
 
 	/**
@@ -72,11 +81,56 @@ public class PhysicalInteractionComponent {
 	}
 
 	/**
+	 * Sets the record id.
+	 *
+	 * @param recordID long.
+	 */
+	public void setRecordID(long recordID){
+		this.recordID = recordID;
+	}
+
+	/**
 	 * Returns the record id.
 	 *
 	 * @return long.
 	 */
 	public long getRecordID(){
 		return recordID;
+	}
+
+	/**
+	 * Sets the cellular location.
+	 *
+	 * @param cellularLocation String.
+	 */
+	public void setCellularLocation(String cellularLocation){
+		this.cellularLocation = cellularLocation;
+	}
+
+	/**
+	 * Returns the cellular location.
+	 *
+	 * @return String.
+	 */
+	public String getCellularLocation(){
+		return cellularLocation;
+	}
+
+	/**
+	 * Sets the feature list vector.
+	 *
+	 * @param featureList Vector.
+	 */
+	public void setFeatureList(Vector featureList){
+		this.featureList = featureList;
+	}
+
+	/**
+	 * Returns the feature list vector.
+	 *
+	 * @return Vector.
+	 */
+	public Vector getFeatureList(){
+		return featureList;
 	}
 }

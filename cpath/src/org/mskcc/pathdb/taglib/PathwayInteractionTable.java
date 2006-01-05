@@ -92,6 +92,8 @@ public class PathwayInteractionTable extends HtmlTable {
 									 "\">" + component.getName() +
 									 "</a>");
 			append(link);
+			// append location:feature string
+			appendSummaryFeatureString(component);
 			// add summary detail string - see function definition for more info
 			appendSummaryDetailString(component.getRecordID());
 			// we may have more than one left participant, if so, separate with "+" or " "
@@ -119,6 +121,8 @@ public class PathwayInteractionTable extends HtmlTable {
 										 "\">" + component.getName() +
 										 "</a>");
 				append(link);
+				// append location:feature string
+				appendSummaryFeatureString(component);
 				// add summary detail string - see function definition for more info
 				appendSummaryDetailString(component.getRecordID());
 				// we may have more than one right participant, if so, separate with "+"
@@ -128,6 +132,50 @@ public class PathwayInteractionTable extends HtmlTable {
 			}
 		}
     }
+
+    /**
+     * Appends location:feature information.
+	 *
+	 * @param physicalInteractionComponent PhysicalInteractionComponent.
+	 * @return String.
+     */
+	private void appendSummaryFeatureString(PhysicalInteractionComponent physicalInteractionComponent) {
+		
+		// string to append
+		String summaryFeatureString = "";
+
+		// get data from component
+		String cellularLocation = physicalInteractionComponent.getCellularLocation();
+		Vector featureList = physicalInteractionComponent.getFeatureList();
+		int cnt = featureList.size();
+
+		if (cellularLocation.length() > 0){
+			summaryFeatureString = "(" + physicalInteractionComponent.getCellularLocation() + ":";
+		}
+
+		// process feature list
+		if (cnt > 0){
+			if (summaryFeatureString.length() == 0){
+				summaryFeatureString = "(:";
+			}
+			for (int lc = 0; lc < cnt; lc++){
+				String feature = (String)featureList.get(lc);
+				if (lc == 0){
+					summaryFeatureString += feature;
+				}
+				else{
+					summaryFeatureString += ", " + feature;
+				}
+			}
+
+		}
+		
+		// cap off the string
+		if (summaryFeatureString.length() > 0){
+			summaryFeatureString += ")";
+			append(summaryFeatureString);
+		}
+	}
 
     /**
      * Gets Interaction Summary string.
