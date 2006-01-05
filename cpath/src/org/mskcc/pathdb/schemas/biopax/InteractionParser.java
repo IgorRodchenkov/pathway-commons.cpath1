@@ -305,7 +305,7 @@ public class InteractionParser {
 		xpath = XPath.newInstance(query);
 		xpath.addNamespace("bp", root.getNamespaceURI());
 		Element e = (Element) xpath.selectSingleNode(root);
-		if (e != null e.getTextNormalize().length() > 0) {
+		if (e != null && e.getTextNormalize().length() > 0) {
 			controlType = e.getTextNormalize();
 		}
 		return controlType;
