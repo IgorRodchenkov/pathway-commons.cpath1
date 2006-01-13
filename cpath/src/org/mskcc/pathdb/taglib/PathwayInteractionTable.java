@@ -32,6 +32,7 @@ package org.mskcc.pathdb.taglib;
 // imports
 import java.util.Vector;
 import org.mskcc.pathdb.model.PhysicalInteraction;
+import org.mskcc.pathdb.model.PhysicalInteractionUtils;
 import org.mskcc.pathdb.model.PhysicalInteractionComponent;
 
 /**
@@ -77,129 +78,9 @@ public class PathwayInteractionTable extends HtmlTable {
      */
     private void outputRecords() {
 
-		int lc, cnt;
-		Vector components;
-		boolean physicalInteractionType =
-			physicalInteraction.getPhysicalInteractionType().equals("Physical Interaction");
-		
-		// left side
-		components = physicalInteraction.getLeftSideComponents();
-		cnt = components.size();
-		for (lc = 0; lc < cnt; lc++){
-			PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
-			String link = new String("<a href=\"record.do?id=" +
-									 String.valueOf(component.getRecordID()) +
-									 "\">" + component.getName() +
-									 "</a>");
-			append(link);
-			// append location:feature string
-			appendSummaryFeatureString(component);
-			// add summary detail string - see function definition for more info
-			appendSummaryDetailString(component.getRecordID());
-			// we may have more than one left participant, if so, separate with "+" or " "
-			if (lc < cnt-1){
-				if (!physicalInteractionType){
-					append(" + ");
-				}
-				else{
-					append(" ");
-				}
-			}
-		}
-
-		if (!physicalInteractionType){
-			// operator
-			append(" " + physicalInteraction.getOperator() + " ");
-
-			// right side
-			components = physicalInteraction.getRightSideComponents();
-			cnt = components.size();
-			for (lc = 0; lc < cnt; lc++){
-				PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
-				String link = new String("<a href=\"record.do?id=" +
-										 String.valueOf(component.getRecordID()) +
-										 "\">" + component.getName() +
-										 "</a>");
-				append(link);
-				// append location:feature string
-				appendSummaryFeatureString(component);
-				// add summary detail string - see function definition for more info
-				appendSummaryDetailString(component.getRecordID());
-				// we may have more than one right participant, if so, separate with "+"
-				if (lc < cnt-1){
-					append(" + ");
-				}
-			}
-		}
+		//easy huh ?
+		append(PhysicalInteractionUtils.createInteractionSummaryString(physicalInteraction));
     }
-
-    /**
-     * Appends location:feature information.
-	 *
-	 * @param physicalInteractionComponent PhysicalInteractionComponent.
-	 * @return String.
-     */
-	private void appendSummaryFeatureString(PhysicalInteractionComponent physicalInteractionComponent) {
-		
-		// string to append
-		String summaryFeatureString = "";
-
-		// get data from component
-		String cellularLocation = physicalInteractionComponent.getCellularLocation();
-		Vector featureList = physicalInteractionComponent.getFeatureList();
-		int cnt = featureList.size();
-
-		if (cellularLocation.length() > 0){
-			summaryFeatureString = "(" + physicalInteractionComponent.getCellularLocation() + ":";
-		}
-
-		// process feature list
-		if (cnt > 0){
-			if (summaryFeatureString.length() == 0){
-				summaryFeatureString = "(:";
-			}
-			for (int lc = 0; lc < cnt; lc++){
-				String feature = (String)featureList.get(lc);
-				if (lc == 0){
-					summaryFeatureString += feature;
-				}
-				else{
-					summaryFeatureString += ", " + feature;
-				}
-			}
-
-		}
-		
-		// cap off the string
-		if (summaryFeatureString.length() > 0){
-			summaryFeatureString += ")";
-			append(summaryFeatureString);
-		}
-	}
-
-    /**
-     * Gets Interaction Summary string.
-	 *
-	 * This has been added to augment originally spec'd
-	 * summary information like 'Phosphorylation' with
-	 * the actual interaction, like 'Alpha6 --> Alpha6',
-	 * so we will have 'Phosphorylation: Alpha6 --> Alpha6'
-	 *
-	 * @param recordID long.
-     */
-	private void appendSummaryDetailString(long recordID) {
-
-		try{
-			PathwayChildNodeTable pcnt = new PathwayChildNodeTable();
-			String summaryDetails = pcnt.getInteractionSummary(recordID);
-			if (summaryDetails.length() > 0){
-				append(" (" + summaryDetails + ")");
-			}
-		}
-		catch (Exception e){
-			jspError(e);
-		}
-	}
 
     /**
      * Handles error processing.
