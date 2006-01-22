@@ -1,8 +1,5 @@
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolException,
-                 org.mskcc.pathdb.action.admin.AdminWebLogging,
-                 org.mskcc.pathdb.action.HomeAction,
+<%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging,
                  org.mskcc.pathdb.action.BaseAction,
-				 org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.sql.dao.DaoInternalLink,
                  org.mskcc.pathdb.sql.dao.DaoExternalLink,
                  java.util.Arrays,
@@ -12,12 +9,7 @@
                  org.jdom.input.SAXBuilder,
                  org.jdom.Element,
                  org.jdom.Document,
-				 org.jdom.Attribute,
-				 org.mskcc.pathdb.model.PhysicalInteraction,
-				 org.mskcc.pathdb.schemas.biopax.RdfUtil,
-				 org.mskcc.pathdb.schemas.biopax.RdfConstants,
 				 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
-				 org.mskcc.pathdb.schemas.biopax.InteractionParser,
 				 org.mskcc.pathdb.schemas.biopax.MemberMolecules,
 				 org.mskcc.pathdb.schemas.biopax.MemberPathways,
 				 org.mskcc.pathdb.schemas.biopax.RecordLinkSorter,
@@ -27,9 +19,9 @@
                  org.mskcc.pathdb.model.*,
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
-                 org.mskcc.pathdb.protocol.ProtocolRequest,
-                 org.mskcc.pathdb.protocol.ProtocolConstants,
                  org.mskcc.pathdb.action.admin.AdminWebLogging"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteraction"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.InteractionParser"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -61,8 +53,8 @@
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 
 	// setup for biopax queries
-	Element e = null;
-	XPath xpath = null;
+	Element e;
+	XPath xpath;
 	StringReader reader = new StringReader (record.getXmlContent());
     SAXBuilder builder = new SAXBuilder();
 	Document bioPaxDoc = builder.build(reader);
@@ -286,7 +278,7 @@
 <%
 		// init an interaction parser
 		InteractionParser interactionParser = new InteractionParser(record.getId());
-		PhysicalInteraction physicalInteraction = null;
+		PhysicalInteraction physicalInteraction;
 
 		// get conversion information
 		physicalInteraction = interactionParser.getConversionInformation();
@@ -357,7 +349,7 @@
 		ArrayList internalLinks = daoInternalLinks.getTargetsWithLookUp(record.getId());
 		// interate through results
 		if (internalLinks.size() > 0){
-			boolean showAll = (queryString.indexOf("show=ALL") != -1) ? true : false;
+			boolean showAll = (queryString.indexOf("show=ALL") != -1);
 			int cnt = (showAll) ? internalLinks.size() : (internalLinks.size() > 10) ? 10 : internalLinks.size();
 			String heading = (showAll) ? "Contains the Following Interactions" :
 				(internalLinks.size() > 10) ? "Includes the Following Ten Interactions" : "Contains the Following Interactions";
