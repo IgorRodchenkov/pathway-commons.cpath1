@@ -30,18 +30,14 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
-import java.util.List;
-import java.util.Vector;
-import java.io.StringReader;
-
-import org.jdom.Element;
-import org.jdom.Document;
+import java.io.IOException;
 import org.jdom.JDOMException;
-import org.jdom.xpath.XPath;
-import org.jdom.input.SAXBuilder;
+
 import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.PhysicalInteractionUtils;
+import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionUtils;
+import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryException;
 
 /**
  * Custom jsp tag for displaying pathway child node (1 level deep)
@@ -50,39 +46,24 @@ import org.mskcc.pathdb.model.PhysicalInteractionUtils;
  */
 public class PathwayChildNodeTable extends HtmlTable {
 
-	/**
-	 * Reference to XML Element.
-	 */
-	private Element e;
-
-	/**
-	 * Reference to XML Root.
-	 */
-	private Element root;
-
-	/**
-	 * Reference to XPath Class.
-	 */
-	private XPath xpath;
-
     /**
      * Record ID.
      */
     private long recID;
 
-	/**
-	 * Reference to CPathRecord.
-	 */
-	CPathRecord record;
+    /**
+     * Reference to CPathRecord.
+     */
+    CPathRecord record;
 
-	/**
-	 * Receives Record ID Attribute.
-	 *
-	 * @param long recid.
-	 */
-	public void setRecid(long recID){
-		this.recID = recID;
-	}
+    /**
+     * Receives Record ID Attribute.
+     *
+     * @param recID long.
+     */
+    public void setRecid(long recID){
+        this.recID = recID;
+    }
 
     /**
      * Executes JSP Custom Tag
@@ -91,57 +72,31 @@ public class PathwayChildNodeTable extends HtmlTable {
      */
     protected void subDoStartTag() throws Exception {
 
-		// get record using ID attribute
-		DaoCPath cPath = DaoCPath.getInstance();
-		record = cPath.getRecordById(recID);
+        // get record using ID attribute
+        DaoCPath cPath = DaoCPath.getInstance();
+        record = cPath.getRecordById(recID);
 
-		// is this a physical interaction
-		startRow();
-		outputRecords();
-		endRow();
+        // is this a physical interaction
+        startRow();
+        outputRecords();
+        endRow();
     }
 
     /**
      * Output the Interaction Information.
+     * @throws DaoException
+     * @throws IOException
+     * @throws InteractionSummaryException
+     * @throws JDOMException
      */
-    private void outputRecords() {
+    private void outputRecords() throws DaoException, IOException, InteractionSummaryException, JDOMException {
 
-		// used for xml parsing
-		SAXBuilder builder = new SAXBuilder();
-		StringReader reader = new StringReader (record.getXmlContent());
-		if (reader == null){
-			jspError(new Exception("Cannot initialize Reader"));
-			return;
-		}
+        // interaction summary
+        String interactionString = PhysicalInteractionUtils.getInteractionSummary(record.getId());
+        append("<td>" + interactionString + "</td>");
 
-		try{
-			Document bioPaxDoc = builder.build(reader);
-
-			if (bioPaxDoc != null){
-				root = bioPaxDoc.getRootElement();
-			}
-
-			// interaction summary
-			String interactionString = PhysicalInteractionUtils.getInteractionSummary(record.getId());
-			append("<td>" + interactionString + "</td>");
-
-			// details hyperlink
-			String uri = "record.do?id=" + recID;
-			append("<td><a href=\"" + uri + "\">View Details</a></td>");
-		}
-		catch(Exception e){
-			jspError(e);
-		}
+        // details hyperlink
+        String uri = "record.do?id=" + recID;
+        append("<td><a href=\"" + uri + "\">View Details</a></td>");
     }
-
-    /**
-     * Handles error processing.
-	 *
-	 * @param e Exception.
-     */
-	private void jspError(Exception e){
-		startRow();
-		append("<td><font color=\"red\">Exception Thrown: " + e.getMessage() + "</font></td>");
-		endRow();
-	}
 }

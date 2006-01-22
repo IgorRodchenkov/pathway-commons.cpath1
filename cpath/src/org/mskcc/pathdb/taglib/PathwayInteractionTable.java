@@ -30,10 +30,13 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
-import java.util.Vector;
-import org.mskcc.pathdb.model.PhysicalInteraction;
-import org.mskcc.pathdb.model.PhysicalInteractionUtils;
-import org.mskcc.pathdb.model.PhysicalInteractionComponent;
+import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteraction;
+import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionUtils;
+import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryException;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.jdom.JDOMException;
+
+import java.io.IOException;
 
 /**
  * Custom jsp tag for displaying interactions
@@ -47,49 +50,46 @@ public class PathwayInteractionTable extends HtmlTable {
      */
     private PhysicalInteraction physicalInteraction;
 
-	/**
-	 * Receives PhysicalInteraction Attribute.
-	 *
-	 * @param physicalInteraction PhysicalInteraction.
-	 */
-	public void setPhysicalinteraction(PhysicalInteraction physicalInteraction){
-		this.physicalInteraction = physicalInteraction;
-	}
+    /**
+     * Receives PhysicalInteraction Attribute.
+     *
+     * @param physicalInteraction PhysicalInteraction.
+     */
+    public void setPhysicalinteraction(PhysicalInteraction physicalInteraction){
+        this.physicalInteraction = physicalInteraction;
+    }
 
     /**
      * Executes JSP Custom Tag
      *
-     * @throws Exception Exception in writing to JspWriter.
+     * @throws DaoException
+     * @throws IOException
+     * @throws InteractionSummaryException
+     * @throws JDOMException
      */
-    protected void subDoStartTag() throws Exception {
+    protected void subDoStartTag() throws DaoException, IOException, InteractionSummaryException, JDOMException {
 
-		// here we go
-		if (physicalInteraction != null){
-			startRow();
-			append("<td>");
-			outputRecords();
-			append("</td>");
-			endRow();
-		}
+        // here we go
+        if (physicalInteraction != null){
+            startRow();
+            append("<td>");
+            outputRecords();
+            append("</td>");
+            endRow();
+        }
     }
 
     /**
      * Output the Interaction Information.
+     *
+     * @throws DaoException
+     * @throws IOException
+     * @throws InteractionSummaryException
+     * @throws JDOMException
      */
-    private void outputRecords() {
+    private void outputRecords() throws DaoException, IOException, InteractionSummaryException, JDOMException {
 
-		//easy huh ?
-		append(PhysicalInteractionUtils.createInteractionSummaryString(physicalInteraction));
+        //easy huh ?
+        append(PhysicalInteractionUtils.createInteractionSummaryString(physicalInteraction));
     }
-
-    /**
-     * Handles error processing.
-	 *
-	 * @param e Exception.
-     */
-	private void jspError(Exception e){
-		startRow();
-		append("<td><font color=\"red\">Exception Thrown: " + e.getMessage() + "</font></td>");
-		endRow();
-	}
 }
