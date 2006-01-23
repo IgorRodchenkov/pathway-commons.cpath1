@@ -30,8 +30,8 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
-import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteraction;
-import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionUtils;
+import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
+import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryException;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.jdom.JDOMException;
@@ -48,15 +48,15 @@ public class PathwayInteractionTable extends HtmlTable {
     /**
      * Physical Interaction.
      */
-    private PhysicalInteraction physicalInteraction;
+    private InteractionSummary interactionSummary;
 
     /**
-     * Receives PhysicalInteraction Attribute.
+     * Receives InteractionSummary Attribute.
      *
-     * @param physicalInteraction PhysicalInteraction.
+     * @param interactionSummary InteractionSummary.
      */
-    public void setPhysicalinteraction(PhysicalInteraction physicalInteraction){
-        this.physicalInteraction = physicalInteraction;
+    public void setInteractionSummary(InteractionSummary interactionSummary){
+        this.interactionSummary = interactionSummary;
     }
 
     /**
@@ -70,7 +70,7 @@ public class PathwayInteractionTable extends HtmlTable {
     protected void subDoStartTag() throws DaoException, IOException, InteractionSummaryException, JDOMException {
 
         // here we go
-        if (physicalInteraction != null){
+        if (interactionSummary != null){
             startRow();
             append("<td>");
             outputRecords();
@@ -90,6 +90,9 @@ public class PathwayInteractionTable extends HtmlTable {
     private void outputRecords() throws DaoException, IOException, InteractionSummaryException, JDOMException {
 
         //easy huh ?
-        append(PhysicalInteractionUtils.createInteractionSummaryString(physicalInteraction));
+		String interactionSummaryString = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
+		if (interactionSummaryString != null){
+			append(interactionSummaryString);
+		}
     }
 }

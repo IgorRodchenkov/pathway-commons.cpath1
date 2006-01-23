@@ -1,3 +1,5 @@
+// $Id: InteractionParser.java,v 1.4 2006-01-23 22:40:48 grossb Exp $
+//------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
@@ -12,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -46,8 +48,6 @@ import org.jdom.xpath.XPath;
 import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.model.BioPaxControlTypeMap;
-import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
@@ -118,163 +118,46 @@ public class InteractionParser {
     public InteractionSummary getInteractionSummary()
             throws IOException, JDOMException, InteractionSummaryException, DaoException {
 
-		// check for conversion interaction
+		// ref to return
+		InteractionSummary interactionSummary = null;
+
+        // used for xml parsing
+        SAXBuilder builder = new SAXBuilder();
+        StringReader reader = new StringReader (record.getXmlContent());
+        Document bioPaxDoc = builder.build(reader);
+
+		// get the doc root
+        if (bioPaxDoc != null){
+            root = bioPaxDoc.getRootElement();
+        }
+
+		// get interaction information
+		ArrayList leftParticipants, rightParticipants;
 		if (biopaxConstants.isConversion(record.getSpecificType())){
-            return getInformation("-->", "/*/bp:LEFT/*", "/*/bp:RIGHT/*");
+			// get conversion info
+			leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
+			rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
+			interactionSummary = new ConversionInteractionSummary(leftParticipants, rightParticipants);
 		}
-		// check for control interaction
 		else if (biopaxConstants.isControl(record.getSpecificType())){
-            return getInformation("", "/*/bp:CONTROLLER/*", "/*/bp:CONTROLLED");
+			// get control info
+			leftParticipants = getInteractionInformation("/*/bp:CONTROLLER/*");
+			rightParticipants = getInteractionInformation("/*/bp:CONTROLLED");
+			String controlType = getControlType("/*/bp:CONTROL-TYPE");
+			interactionSummary = new ControlInteractionSummary(controlType, leftParticipants, rightParticipants);
 		}
-		// check for physical interaction last
 		else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
-            return getInformation("/*/bp:PARTICIPANTS/*");
+			// get physical interaction info
+			leftParticipants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
+			interactionSummary = new PhysicalInteractionSummary(leftParticipants);
 		}
 
-		// made it here,
-		return null;
+		// outta here
+		return interactionSummary;
 	}
 
     /**
-     * Finds/returns interaction information.
-     *
-     * @param participants String
-     * @return InteractionSummary
-     * @throws IOException
-     * @throws JDOMException
-     * @throws InteractionSummaryException
-     * @throws DaoException
-     */
-    private InteractionSummary getInformation(String participants)
-            throws IOException, JDOMException, InteractionSummaryException, DaoException {
-
-        // used for xml parsing
-        SAXBuilder builder = new SAXBuilder();
-        StringReader reader = new StringReader (record.getXmlContent());
-
-        Document bioPaxDoc = builder.build(reader);
-
-        if (bioPaxDoc != null){
-            root = bioPaxDoc.getRootElement();
-        }
-
-        // get type
-        String interactionType = getInteractionType();
-
-        // get participants
-        ArrayList participantsVector = getPhysicalInteractionInformation(participants);
-
-        // outta here
-        return (new InteractionSummary(interactionType, "", participantsVector, null));
-    }
-
-    /**
-     * Finds/returns interaction information.
-     *
-     * @param operator String.
-     * @param leftSideParticipants String
-     * @param rightSideParticipants String
-     * @return InteractionSummary
-     * @throws IOException
-     * @throws JDOMException
-     * @throws InteractionSummaryException
-     * @throws DaoException
-     */
-    private InteractionSummary getInformation(String operator, String leftSideParticipants, String rightSideParticipants)
-            throws IOException, JDOMException, InteractionSummaryException, DaoException {
-
-        // used for xml parsing
-        SAXBuilder builder = new SAXBuilder();
-        StringReader reader = new StringReader (record.getXmlContent());
-
-        Document bioPaxDoc = builder.build(reader);
-
-        if (bioPaxDoc != null){
-            root = bioPaxDoc.getRootElement();
-        }
-
-        // get type
-        String interactionType = getInteractionType();
-
-        // get participants
-        ArrayList leftParticipants = getPhysicalInteractionInformation(leftSideParticipants);
-        ArrayList rightParticipants = getPhysicalInteractionInformation(rightSideParticipants);
-
-        // get operator
-        if (operator.equals("")){
-            operator = getControlType();
-            if (operator == null){
-                operator = "CONTROL-TYPE NOT FOUND";
-            }
-        }
-
-        // outta here
-        return (new InteractionSummary(interactionType, operator, leftParticipants, rightParticipants));
-    }
-
-    /**
-     * Gets Interaction Type in Plain English.
-     *
-     * @return String
-     */
-    private String getInteractionType() {
-
-        // set the control type string
-        String interactionType;
-
-        // our biopax entity type 2 plain english hashmap
-        BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
-        interactionType = (String)entityTypeMap.get(record.getSpecificType());
-
-        // outta here
-        return interactionType;
-    }
-
-    /**
-     * Get Control Type.
-     *
-     * @return String
-     * @throws JDOMException
-     */
-    private String getControlType() throws JDOMException {
-
-        // set the control type string
-        String controlType;
-
-        BioPaxControlTypeMap controlTypeMap = new BioPaxControlTypeMap();
-
-        controlType = (record.getSpecificType().equalsIgnoreCase("Catalysis")) ?
-            "[" + controlTypeMap.get("ACTIVATION") + "]" :
-            "[" + controlTypeMap.get(getControlTypeInformation("/*/bp:CONTROL-TYPE")) + "]";
-
-        // outta here
-        return controlType;
-    }
-
-    /**
-     * Gets CONTROL-TYPE.
-     *
-     * @param query String
-     * @return String
-     * @throws JDOMException
-     */
-    private String getControlTypeInformation(String query) throws JDOMException {
-
-        // our list to return
-        String controlType = null;
-
-        // perform query
-        XPath xpath = XPath.newInstance(query);
-        xpath.addNamespace("bp", root.getNamespaceURI());
-        Element e = (Element) xpath.selectSingleNode(root);
-        if (e != null && e.getTextNormalize().length() > 0) {
-            controlType = e.getTextNormalize();
-        }
-        return controlType;
-    }
-
-    /**
-     * Gets PhysicalInteractionInformation, given query.
+     * Gets Interaction Participants.
      *
      * @param query String
      * @return ArrayList
@@ -283,7 +166,7 @@ public class InteractionParser {
      * @throws DaoException
      * @throws IOException
      */
-    private ArrayList getPhysicalInteractionInformation(String query)
+    private ArrayList getInteractionInformation(String query)
             throws JDOMException, InteractionSummaryException, DaoException, IOException {
 
         // we dont process controlled queries as all others
@@ -330,7 +213,7 @@ public class InteractionParser {
                     }
                 }
                 else{
-                    interactionSummaryComponent = BioPaxRecordUtil.createPhysicalInteractionComponent(e);
+                    interactionSummaryComponent = BioPaxRecordUtil.createInteractionSummaryComponent(e);
                 }
                 // add component to participant ArrayList
                 if (interactionSummaryComponent != null){
@@ -341,5 +224,35 @@ public class InteractionParser {
 
         // outta here
         return (participantArrayList.size() > 0) ? participantArrayList : null;
+    }
+
+    /**
+     * Gets CONTROL-TYPE.
+     *
+     * @param query String
+     * @return String
+     * @throws JDOMException
+     */
+    private String getControlType(String query) throws JDOMException {
+
+        // our list to return
+        String controlType = null;
+
+		// if record type is catalysis, the control type is operator
+		if (record.getSpecificType().equalsIgnoreCase(BioPaxConstants.CATALYSIS)){
+			controlType = BioPaxConstants.ACTIVATION.toUpperCase();
+		}
+		else{
+			// lookup control type in xml blob
+			XPath xpath = XPath.newInstance(query);
+			xpath.addNamespace("bp", root.getNamespaceURI());
+			Element e = (Element) xpath.selectSingleNode(root);
+			if (e != null && e.getTextNormalize().length() > 0) {
+				controlType = e.getTextNormalize();
+			}
+		}
+
+		// outta here
+        return controlType;
     }
 }

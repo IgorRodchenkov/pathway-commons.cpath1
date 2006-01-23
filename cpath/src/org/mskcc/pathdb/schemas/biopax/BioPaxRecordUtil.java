@@ -33,7 +33,7 @@ package org.mskcc.pathdb.schemas.biopax;
 
 // imports
 import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.io.StringReader;
 import java.io.IOException;
 
@@ -46,7 +46,7 @@ import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionComponent;
+import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryComponent;
 
 /**
  * This class contains utilities
@@ -57,43 +57,43 @@ import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionComponent;
 public class BioPaxRecordUtil {
 
     /**
-     * Creates PhysicalInteractionComponent given
+     * Creates InteractionSummaryComponent given
      * sequence or physicalEntity participant Element.
      *
      * @param e Element
-     * @return PhysicalInteractionComponent
+     * @return InteractionSummaryComponent
      * @throws DaoException
      * @throws JDOMException
      * @throws IOException
      */
-    public static PhysicalInteractionComponent createPhysicalInteractionComponent(Element e)
+    public static InteractionSummaryComponent createInteractionSummaryComponent(Element e)
             throws DaoException, JDOMException, IOException {
 
         boolean success;
 
         // this is object to return
-        PhysicalInteractionComponent physicalInteractionComponent = new PhysicalInteractionComponent();
+        InteractionSummaryComponent interactionSummaryComponent = new InteractionSummaryComponent();
 
         // first get physical entity
-        success = BioPaxRecordUtil.setPhysicalEntity(physicalInteractionComponent, e);
+        success = BioPaxRecordUtil.setPhysicalEntity(interactionSummaryComponent, e);
         if (!success){
             return null;
         }
 
         // get cellular location
-        success = BioPaxRecordUtil.setCellularLocation(physicalInteractionComponent, e);
+        success = BioPaxRecordUtil.setCellularLocation(interactionSummaryComponent, e);
         if (!success){
             return null;
         }
 
         // feature list
-        success = BioPaxRecordUtil.setFeatureList(physicalInteractionComponent, e);
+        success = BioPaxRecordUtil.setFeatureList(interactionSummaryComponent, e);
         if (!success){
             return null;
         }
 
         // made it this far
-        return physicalInteractionComponent;
+        return interactionSummaryComponent;
     }
 
     /**
@@ -143,14 +143,14 @@ public class BioPaxRecordUtil {
      * Sets physical entity name and id of given component from
      * data within sequence or physicalEntity participant Element.
      *
-     * @param physicalInteractionComponent PhysicalInteractionComponent
+     * @param interactionSummaryComponent InteractionSummaryComponent
      * @param e Element
      * @return boolean
      * @throws JDOMException
      * @throws DaoException
      * @throws IOException
      */
-    private static boolean setPhysicalEntity(PhysicalInteractionComponent physicalInteractionComponent, Element e)
+    private static boolean setPhysicalEntity(InteractionSummaryComponent interactionSummaryComponent, Element e)
             throws JDOMException, DaoException, IOException {
 
         // setup/perform query
@@ -166,7 +166,7 @@ public class BioPaxRecordUtil {
                 String rdfKey = RdfUtil.removeHashMark(rdfResourceAttribute.getValue());
                 // get physical entity
                 String physicalEntityString = BioPaxRecordUtil.getEntity(rdfKey);
-                physicalInteractionComponent.setName(physicalEntityString);
+                interactionSummaryComponent.setName(physicalEntityString);
                 // cook id to save
                 int indexOfID = rdfKey.lastIndexOf("-");
                 if (indexOfID == -1){
@@ -175,7 +175,7 @@ public class BioPaxRecordUtil {
                 indexOfID += 1;
                 String cookedKey = rdfKey.substring(indexOfID);
                 Long recordID = new Long(cookedKey);
-                physicalInteractionComponent.setRecordID(recordID.longValue());
+                interactionSummaryComponent.setRecordID(recordID.longValue());
                 return true;
             }
         }
@@ -188,12 +188,12 @@ public class BioPaxRecordUtil {
      * Sets cellular location of given component from data within
      * sequence or physicalEntity participant Element.
      *
-     * @param physicalInteractionComponent PhysicalInteractionComponent
+     * @param interactionSummaryComponent InteractionSummaryComponent
      * @param e Element
      * @return boolean
      * @throws JDOMException
      */
-    private static boolean setCellularLocation(PhysicalInteractionComponent physicalInteractionComponent, Element e)
+    private static boolean setCellularLocation(InteractionSummaryComponent interactionSummaryComponent, Element e)
             throws JDOMException {
 
         // setup/perform query
@@ -208,7 +208,7 @@ public class BioPaxRecordUtil {
             Attribute rdfResourceAttribute =
                 cellularLocation.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
             if (rdfResourceAttribute != null){
-                //physicalInteractionComponent.setCellularLocation("undetermined");
+                //interactionSummaryComponent.setCellularLocation("undetermined");
                 return true;
             }
 
@@ -222,7 +222,7 @@ public class BioPaxRecordUtil {
 
             // process query
             if (cellularLocation != null){
-                physicalInteractionComponent.setCellularLocation(cellularLocation.getTextNormalize());
+                interactionSummaryComponent.setCellularLocation(cellularLocation.getTextNormalize());
                 return true;
             }
             // term not available, try for xref id
@@ -231,7 +231,7 @@ public class BioPaxRecordUtil {
                 xpath.addNamespace("bp", e.getNamespaceURI());
                 cellularLocation = (Element) xpath.selectSingleNode(e);
                 if (cellularLocation != null){
-                    physicalInteractionComponent.setCellularLocation(cellularLocation.getTextNormalize());
+                    interactionSummaryComponent.setCellularLocation(cellularLocation.getTextNormalize());
                     return true;
                 }
             }
@@ -245,16 +245,16 @@ public class BioPaxRecordUtil {
      * Sets feature list of given component from data within
      * sequence or physicalEntity participant Element.
      *
-     * @param physicalInteractionComponent PhysicalInteractionComponent
+     * @param interactionSummaryComponent InteractionSummaryComponent
      * @param e Element
      * @return boolean
      * @throws JDOMException
      */
-    private static boolean setFeatureList(PhysicalInteractionComponent physicalInteractionComponent, Element e)
+    private static boolean setFeatureList(InteractionSummaryComponent interactionSummaryComponent, Element e)
             throws JDOMException {
 
         // vector of features
-        Vector featureList = new Vector();
+        ArrayList featureList = new ArrayList();
 
         // setup/perform query
         XPath xpath = XPath.newInstance("bp:SEQUENCE-FEATURE-LIST/*");
@@ -288,7 +288,7 @@ public class BioPaxRecordUtil {
 
         // add list to component - if we have stuff to add
         if (featureList.size() > 0){
-            physicalInteractionComponent.setFeatureList(featureList);
+            interactionSummaryComponent.setFeatureList(featureList);
         }
 
         // made it here
@@ -306,7 +306,7 @@ public class BioPaxRecordUtil {
     private static String getEntityName(String xmlContent) throws IOException, JDOMException {
 
         // setup xml parsing
-        Vector queries = new Vector();
+        ArrayList queries = new ArrayList();
         queries.add("/*/bp:SHORT-NAME");
         queries.add("/*/bp:NAME");
         queries.add("/bp:NAME");
@@ -316,7 +316,7 @@ public class BioPaxRecordUtil {
         Element root = bioPaxDoc.getRootElement();
         XPath xpath;
         for (int lc = 0; lc < queries.size(); lc++){
-            xpath = XPath.newInstance((String)queries.elementAt(lc));
+            xpath = XPath.newInstance((String)queries.get(lc));
             xpath.addNamespace("bp", root.getNamespaceURI());
             Element e = (Element) xpath.selectSingleNode(root);
             if (e != null && e.getTextNormalize().length() > 0) {

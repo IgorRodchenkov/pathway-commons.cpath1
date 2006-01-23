@@ -1,4 +1,4 @@
-// $Id: InteractionSummary.java,v 1.2 2006-01-23 22:41:48 grossb Exp $
+// $Id: ControlInteractionSummary.java,v 1.1 2006-01-23 22:42:13 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,50 +38,37 @@ import java.util.ArrayList;
 
 /**
  * This class contains the information
- * needed to construct an interaction summary string.
+ * needed to construct a control interaction summary string.
  *
  * @author Benjamin Gross.
  */
-public class InteractionSummary {
+public class ControlInteractionSummary extends InteractionSummary {
 
 	/**
-	 * Our vector of controllers or substrates (left side guys).
+	 * The control type.
 	 */
-	private ArrayList leftSideComponents = null;
-
-	/**
-	 * Our vector of controlled or products (right side guys).
-	 */
-	private ArrayList rightSideComponents = null;
+	private String controlType;
 
 	/**
      * Constructor.
 	 *
+	 * @param controlType String
 	 * @param leftSideComponents ArrayList
 	 * @param rightSideComponents ArrayList
      */
-    public InteractionSummary(ArrayList leftSideComponents, ArrayList rightSideComponents) {
+    public ControlInteractionSummary(String controlType, ArrayList leftSideComponents, ArrayList rightSideComponents) {
 
 		// init our members
-		this.leftSideComponents = leftSideComponents;
-		this.rightSideComponents = rightSideComponents;
+		super(leftSideComponents, rightSideComponents);
+		this.controlType = controlType;
 	}
 
 	/**
-	 * Returns the ArrayList of leftSideComponents.
+	 * Returns the control type.
 	 *
-	 * @return ArrayList
+	 * @return String
 	 */
-	public ArrayList getLeftSideComponents(){
-		return leftSideComponents;
-	}
-
-	/**
-	 * Returns the ArrayList of rightSideComponents.
-	 *
-	 * @return ArrayList
-	 */
-	public ArrayList getRightSideComponents(){
-		return rightSideComponents;
+	public String getControlType(){
+		return controlType;
 	}
 }

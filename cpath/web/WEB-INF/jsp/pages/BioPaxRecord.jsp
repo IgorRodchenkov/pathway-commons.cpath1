@@ -20,7 +20,7 @@
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.action.admin.AdminWebLogging"%>
-<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteraction"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.InteractionParser"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
@@ -278,31 +278,12 @@
 <%
 		// init an interaction parser
 		InteractionParser interactionParser = new InteractionParser(record.getId());
-		PhysicalInteraction physicalInteraction;
+		InteractionSummary interactionSummary = interactionParser.getInteractionSummary();
 
-		// get conversion information
-		physicalInteraction = interactionParser.getConversionInformation();
-		if (physicalInteraction != null){
+		// display interaction summary
+		if (interactionSummary != null){
 %>
-			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
-<%
-		}
-%>
-<%
-		// get controller information
-		physicalInteraction = interactionParser.getControllerInformation();
-		if (physicalInteraction != null){
-%>
-			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
-<%
-		}
-%>
-<%
-		// get physical interaction information
-		physicalInteraction = interactionParser.getPhysicalInteractionInformation();
-		if (physicalInteraction != null){
-%>
-			<cbio:pathwayInteractionTable physicalinteraction="<%=physicalInteraction%>"/>
+			<cbio:pathwayInteractionTable interactionSummary="<%=interactionSummary%>"/>
 <%
 		}
 %>

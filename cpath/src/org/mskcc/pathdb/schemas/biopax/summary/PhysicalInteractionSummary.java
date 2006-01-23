@@ -1,4 +1,4 @@
-// $Id: InteractionSummary.java,v 1.2 2006-01-23 22:41:48 grossb Exp $
+// $Id: PhysicalInteractionSummary.java,v 1.1 2006-01-23 22:42:22 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,50 +38,20 @@ import java.util.ArrayList;
 
 /**
  * This class contains the information
- * needed to construct an interaction summary string.
+ * needed to construct a control physical interaction summary string.
  *
  * @author Benjamin Gross.
  */
-public class InteractionSummary {
-
-	/**
-	 * Our vector of controllers or substrates (left side guys).
-	 */
-	private ArrayList leftSideComponents = null;
-
-	/**
-	 * Our vector of controlled or products (right side guys).
-	 */
-	private ArrayList rightSideComponents = null;
+public class PhysicalInteractionSummary extends InteractionSummary {
 
 	/**
      * Constructor.
 	 *
-	 * @param leftSideComponents ArrayList
-	 * @param rightSideComponents ArrayList
+	 * @param components ArrayList
      */
-    public InteractionSummary(ArrayList leftSideComponents, ArrayList rightSideComponents) {
+    public PhysicalInteractionSummary(ArrayList components) {
 
 		// init our members
-		this.leftSideComponents = leftSideComponents;
-		this.rightSideComponents = rightSideComponents;
-	}
-
-	/**
-	 * Returns the ArrayList of leftSideComponents.
-	 *
-	 * @return ArrayList
-	 */
-	public ArrayList getLeftSideComponents(){
-		return leftSideComponents;
-	}
-
-	/**
-	 * Returns the ArrayList of rightSideComponents.
-	 *
-	 * @return ArrayList
-	 */
-	public ArrayList getRightSideComponents(){
-		return rightSideComponents;
+		super(components, null);
 	}
 }

@@ -34,8 +34,9 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 // imports
 import java.util.ArrayList;
 import java.io.IOException;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.jdom.JDOMException;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 
 /**
  * This class contains some utility methods
@@ -81,8 +82,7 @@ public class InteractionSummaryUtils {
         int lc, cnt;
         ArrayList components;
         String summaryString = "";
-        boolean physicalInteractionType =
-            interactionSummary.getPhysicalInteractionType().equals("Physical Interaction");
+        boolean isPhysicalInteraction = (interactionSummary instanceof PhysicalInteractionSummary);
 
         // left side
         components = interactionSummary.getLeftSideComponents();
@@ -103,7 +103,7 @@ public class InteractionSummaryUtils {
 			}
             // we may have more than one left participant, if so, separate with "+" or " "
             if (lc < cnt-1){
-                if (!physicalInteractionType){
+                if (!isPhysicalInteraction){
                     summaryString += " + ";
                 }
                 else{
@@ -112,9 +112,14 @@ public class InteractionSummaryUtils {
             }
         }
 
-        if (!physicalInteractionType){
+		// physical interactions do not have operators or 'righthand side' components
+        if (!isPhysicalInteraction){
+
             // operator
-            summaryString += (" " + interactionSummary.getOperator() + " ");
+			String operatorString = createOperatorString(interactionSummary);
+			if (operatorString != null){
+				summaryString += (" " + operatorString + " ");
+			}
 
             // right side
             components = interactionSummary.getRightSideComponents();
@@ -143,6 +148,37 @@ public class InteractionSummaryUtils {
         // outta here
         return summaryString;
     }
+
+    /**
+     * Creates operator string for Control or Conversion interaction.
+	 * Examples of an operator may be "-->" or "[Activates]"
+     *
+     * @param interactionSummary InteractionSummary
+     * @return String
+     */
+    public static String createOperatorString(InteractionSummary interactionSummary) {
+
+		// string to return
+		String operatorString = null;
+
+		// conversion interaction summary
+		if (interactionSummary instanceof ConversionInteractionSummary){
+			operatorString = "-->";
+		}
+		else if (interactionSummary instanceof ControlInteractionSummary){
+			String controlType = ((ControlInteractionSummary)interactionSummary).getControlType();
+			if (controlType != null){
+				BioPaxControlTypeMap controlTypeMap = new BioPaxControlTypeMap();
+				operatorString = "[" + controlTypeMap.get(controlType) + "]";
+			}
+			else{
+				operatorString = "[CONTROL-TYPE NOT FOUND]";
+			}
+		}
+
+		// outta here
+		return operatorString;
+	}
 
     /**
      * Gets Interaction Summary string.

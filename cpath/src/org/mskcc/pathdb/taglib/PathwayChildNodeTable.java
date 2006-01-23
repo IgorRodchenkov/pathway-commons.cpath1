@@ -36,7 +36,7 @@ import org.jdom.JDOMException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionUtils;
+import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryException;
 
 /**
@@ -92,11 +92,13 @@ public class PathwayChildNodeTable extends HtmlTable {
     private void outputRecords() throws DaoException, IOException, InteractionSummaryException, JDOMException {
 
         // interaction summary
-        String interactionString = PhysicalInteractionUtils.getInteractionSummary(record.getId());
-        append("<td>" + interactionString + "</td>");
+        String interactionString = InteractionSummaryUtils.getInteractionSummary(record.getId());
+		if (interactionString != null){
+			append("<td>" + interactionString + "</td>");
 
-        // details hyperlink
-        String uri = "record.do?id=" + recID;
-        append("<td><a href=\"" + uri + "\">View Details</a></td>");
+			// details hyperlink
+			String uri = "record.do?id=" + recID;
+			append("<td><a href=\"" + uri + "\">View Details</a></td>");
+		}
     }
 }
