@@ -88,16 +88,16 @@ public class InteractionSummaryUtils {
         components = interactionSummary.getLeftSideComponents();
         cnt = components.size();
         for (lc = 0; lc < cnt; lc++){
-            PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.get(lc);
-            summaryString += "<a href=\"record.do?id=" + String.valueOf(component.getRecordID()) +
-                             "\">" + component.getName() + "</a>";
+            InteractionSummaryComponent summaryComponent = (InteractionSummaryComponent)components.get(lc);
+            summaryString += "<a href=\"record.do?id=" + String.valueOf(summaryComponent.getRecordID()) +
+                             "\">" + summaryComponent.getName() + "</a>";
             // add location:feature string
-			String summaryFeatureString = createSummaryFeatureString(component);
+			String summaryFeatureString = createSummaryFeatureString(summaryComponent);
 			if (summaryFeatureString != null){
 				summaryString += summaryFeatureString;
 			}
             // add summary detail string - see function definition for more info
-			String summaryDetailString = createSummaryDetailString(component.getRecordID());
+			String summaryDetailString = createSummaryDetailString(summaryComponent.getRecordID());
 			if (summaryDetailString != null){
 				summaryString += summaryDetailString;
 			}
@@ -120,16 +120,16 @@ public class InteractionSummaryUtils {
             components = interactionSummary.getRightSideComponents();
             cnt = components.size();
             for (lc = 0; lc < cnt; lc++){
-                PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.get(lc);
-                summaryString += "<a href=\"record.do?id=" + String.valueOf(component.getRecordID()) +
-                              "\">" + component.getName() + "</a>";
+                InteractionSummaryComponent summaryComponent = (InteractionSummaryComponent)components.get(lc);
+                summaryString += "<a href=\"record.do?id=" + String.valueOf(summaryComponent.getRecordID()) +
+                              "\">" + summaryComponent.getName() + "</a>";
                 // add location:feature string
-				String summaryFeatureString = createSummaryFeatureString(component);
+				String summaryFeatureString = createSummaryFeatureString(summaryComponent);
 				if (summaryFeatureString != null){
 					summaryString += summaryFeatureString;
 				}
                 // add summary detail string - see function definition for more info
-				String summaryDetailString = createSummaryDetailString(component.getRecordID());
+				String summaryDetailString = createSummaryDetailString(summaryComponent.getRecordID());
 				if (summaryDetailString != null){
 					summaryString += summaryDetailString;
 				}
@@ -169,21 +169,21 @@ public class InteractionSummaryUtils {
     /**
      * Creates location:feature string.
      *
-     * @param physicalInteractionComponent PhysicalInteractionComponent
+     * @param interactionSummaryComponent InteractionSummaryComponent
      * @return String
      */
-    public static String createSummaryFeatureString(PhysicalInteractionComponent physicalInteractionComponent) {
+    public static String createSummaryFeatureString(InteractionSummaryComponent interactionSummaryComponent) {
 
         // string to return
         String summaryFeatureString = "";
 
         // get data from component
-        String cellularLocation = physicalInteractionComponent.getCellularLocation();
-        ArrayList featureList = physicalInteractionComponent.getFeatureList();
+        String cellularLocation = interactionSummaryComponent.getCellularLocation();
+        ArrayList featureList = interactionSummaryComponent.getFeatureList();
         int cnt = featureList.size();
 
         if (cellularLocation != null && cellularLocation.length() > 0){
-            summaryFeatureString = "(" + physicalInteractionComponent.getCellularLocation() + ":";
+            summaryFeatureString = "(" + interactionSummaryComponent.getCellularLocation() + ":";
         }
 
         // process feature list

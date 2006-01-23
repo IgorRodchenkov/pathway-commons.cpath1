@@ -40,7 +40,7 @@ import java.util.ArrayList;
  *
  * @author Benjamin Gross.
  */
-public class PhysicalInteractionComponent {
+public class InteractionSummaryComponent {
 
 	/**
 	 * The component name.

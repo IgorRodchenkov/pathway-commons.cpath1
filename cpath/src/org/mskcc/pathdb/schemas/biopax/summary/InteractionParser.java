@@ -303,7 +303,7 @@ public class InteractionParser {
                 // get our next element to process
                 Element e = (Element) list.get(lc);
                 // create new physical interaction component for this participant
-                PhysicalInteractionComponent physicalInteractionComponent = null;
+                InteractionSummaryComponent interactionSummaryComponent = null;
                 // special processing of controlled
                 if (processingControlled){
                     Attribute rdfResourceAttribute =
@@ -323,18 +323,18 @@ public class InteractionParser {
                         Long recordID = new Long(cookedKey);
                         // add to ArrayList
                         if (physicalEntity != null){
-                            physicalInteractionComponent = new PhysicalInteractionComponent();
-                            physicalInteractionComponent.setName(physicalEntity);
-                            physicalInteractionComponent.setRecordID(recordID.longValue());
+                            interactionSummaryComponent = new InteractionSummaryComponent();
+                            interactionSummaryComponent.setName(physicalEntity);
+                            interactionSummaryComponent.setRecordID(recordID.longValue());
                         }
                     }
                 }
                 else{
-                    physicalInteractionComponent = BioPaxRecordUtil.createPhysicalInteractionComponent(e);
+                    interactionSummaryComponent = BioPaxRecordUtil.createPhysicalInteractionComponent(e);
                 }
                 // add component to participant ArrayList
-                if (physicalInteractionComponent != null){
-                    participantArrayList.add(physicalInteractionComponent);
+                if (interactionSummaryComponent != null){
+                    participantArrayList.add(interactionSummaryComponent);
                 }
             }
         }
