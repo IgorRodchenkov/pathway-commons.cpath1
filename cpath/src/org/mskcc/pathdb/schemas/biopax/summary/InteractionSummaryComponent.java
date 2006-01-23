@@ -35,8 +35,9 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 import java.util.ArrayList;
 
 /**
- * This class encapsulates
- * the members of a physical interaction component.
+ * This class represents a component of an interaction.
+ * That is any entity or interaction that can be a left 
+ * or right side operand in an interaction.
  *
  * @author Benjamin Gross.
  */
@@ -58,7 +59,7 @@ public class InteractionSummaryComponent {
 	private String cellularLocation;
 
 	/**
-	 * The feature list ArrayList.
+	 * The feature list.
 	 */
 	private ArrayList featureList = new ArrayList();
 
