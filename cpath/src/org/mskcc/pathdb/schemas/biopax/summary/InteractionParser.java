@@ -34,7 +34,7 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
 import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.io.StringReader;
 import java.io.IOException;
 
@@ -48,6 +48,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.RdfUtil;
@@ -86,8 +87,9 @@ public class InteractionParser {
      *
      * @param recordID long
      * @throws DaoException
+	 * @throws IllegalArgumentException
      */
-    public InteractionParser(long recordID) throws DaoException {
+    public InteractionParser(long recordID) throws DaoException, IllegalArgumentException {
 
         // setup biopax constants
         biopaxConstants = new BioPaxConstants();
@@ -95,82 +97,55 @@ public class InteractionParser {
         // get cpath record
         DaoCPath cPath = DaoCPath.getInstance();
         record = cPath.getRecordById(recordID);
+		// check record for validity
+		if (record == null){
+			throw new IllegalArgumentException("cPath ID does not exist: " + recordID);
+		}
+		if (!record.getXmlType().equals(XmlRecordType.BIO_PAX)){
+			throw new IllegalArgumentException("Specified cPath record is not of type " + XmlRecordType.BIO_PAX);
+		}
     }
 
     /**
      * Finds/returns physical interaction information.
      *
-     * @return PhysicalInteraction
+     * @return InteractionSummary
      * @throws IOException
      * @throws JDOMException
      * @throws InteractionSummaryException
      * @throws DaoException
      */
-    public PhysicalInteraction getPhysicalInteractionInformation()
+    public InteractionSummary getInteractionSummary()
             throws IOException, JDOMException, InteractionSummaryException, DaoException {
 
-        if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
-            !biopaxConstants.isConversion(record.getSpecificType()) &&
-            !biopaxConstants.isControl(record.getSpecificType())){
+		// check for conversion interaction
+		if (biopaxConstants.isConversion(record.getSpecificType())){
+            return getInformation("-->", "/*/bp:LEFT/*", "/*/bp:RIGHT/*");
+		}
+		// check for control interaction
+		else if (biopaxConstants.isControl(record.getSpecificType())){
+            return getInformation("", "/*/bp:CONTROLLER/*", "/*/bp:CONTROLLED");
+		}
+		// check for physical interaction last
+		else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
             return getInformation("/*/bp:PARTICIPANTS/*");
-        }
-        return null;
-    }
+		}
 
-    /**
-     * Finds/returns conversion information.
-     *
-     * @return PhysicalInteraction
-     * @throws IOException
-     * @throws JDOMException
-     * @throws InteractionSummaryException
-     * @throws DaoException
-     */
-    public PhysicalInteraction getConversionInformation()
-            throws IOException, JDOMException, InteractionSummaryException, DaoException {
-
-        if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
-            biopaxConstants.isConversion(record.getSpecificType())){
-            return getInformation("-->",
-                                  "/*/bp:LEFT/*",
-                                  "/*/bp:RIGHT/*");
-        }
-        return null;
-    }
-
-    /**
-     * Finds/returns controller information.
-     *
-     * @return PhysicalInteraction
-     * @throws IOException
-     * @throws JDOMException
-     * @throws InteractionSummaryException
-     * @throws DaoException
-     */
-    public PhysicalInteraction getControllerInformation()
-            throws IOException, JDOMException, InteractionSummaryException, DaoException {
-
-        // is this a physical interaction
-        if (biopaxConstants.isPhysicalInteraction(record.getSpecificType()) &&
-            biopaxConstants.isControl(record.getSpecificType())){
-            return getInformation("",
-                                  "/*/bp:CONTROLLER/*",
-                                  "/*/bp:CONTROLLED");
-        }
-        return null;
-    }
+		// made it here,
+		return null;
+	}
 
     /**
      * Finds/returns interaction information.
      *
      * @param participants String
-     * @return PhysicalInteraction
+     * @return InteractionSummary
      * @throws IOException
      * @throws JDOMException
      * @throws InteractionSummaryException
      * @throws DaoException
      */
-    private PhysicalInteraction getInformation(String participants)
+    private InteractionSummary getInformation(String participants)
             throws IOException, JDOMException, InteractionSummaryException, DaoException {
 
         // used for xml parsing
@@ -187,10 +162,10 @@ public class InteractionParser {
         String interactionType = getInteractionType();
 
         // get participants
-        Vector participantsVector = getPhysicalInteractionInformation(participants);
+        ArrayList participantsVector = getPhysicalInteractionInformation(participants);
 
         // outta here
-        return (new PhysicalInteraction(interactionType, "", participantsVector, null));
+        return (new InteractionSummary(interactionType, "", participantsVector, null));
     }
 
     /**
@@ -199,13 +174,13 @@ public class InteractionParser {
      * @param operator String.
      * @param leftSideParticipants String
      * @param rightSideParticipants String
-     * @return PhysicalInteraction
+     * @return InteractionSummary
      * @throws IOException
      * @throws JDOMException
      * @throws InteractionSummaryException
      * @throws DaoException
      */
-    private PhysicalInteraction getInformation(String operator, String leftSideParticipants, String rightSideParticipants)
+    private InteractionSummary getInformation(String operator, String leftSideParticipants, String rightSideParticipants)
             throws IOException, JDOMException, InteractionSummaryException, DaoException {
 
         // used for xml parsing
@@ -222,8 +197,8 @@ public class InteractionParser {
         String interactionType = getInteractionType();
 
         // get participants
-        Vector leftParticipants = getPhysicalInteractionInformation(leftSideParticipants);
-        Vector rightParticipants = getPhysicalInteractionInformation(rightSideParticipants);
+        ArrayList leftParticipants = getPhysicalInteractionInformation(leftSideParticipants);
+        ArrayList rightParticipants = getPhysicalInteractionInformation(rightSideParticipants);
 
         // get operator
         if (operator.equals("")){
@@ -234,7 +209,7 @@ public class InteractionParser {
         }
 
         // outta here
-        return (new PhysicalInteraction(interactionType, operator, leftParticipants, rightParticipants));
+        return (new InteractionSummary(interactionType, operator, leftParticipants, rightParticipants));
     }
 
     /**
@@ -302,20 +277,20 @@ public class InteractionParser {
      * Gets PhysicalInteractionInformation, given query.
      *
      * @param query String
-     * @return Vector
+     * @return ArrayList
      * @throws JDOMException
      * @throws InteractionSummaryException
      * @throws DaoException
      * @throws IOException
      */
-    private Vector getPhysicalInteractionInformation(String query)
+    private ArrayList getPhysicalInteractionInformation(String query)
             throws JDOMException, InteractionSummaryException, DaoException, IOException {
 
         // we dont process controlled queries as all others
         boolean processingControlled = (query.equals("/*/bp:CONTROLLED"));
 
         // our list to return
-        Vector participantVector = new Vector();
+        ArrayList participantArrayList = new ArrayList();
 
         // perform query
         XPath xpath = XPath.newInstance(query);
@@ -346,7 +321,7 @@ public class InteractionParser {
                         indexOfID += 1;
                         String cookedKey = rdfKey.substring(indexOfID);
                         Long recordID = new Long(cookedKey);
-                        // add to vector
+                        // add to ArrayList
                         if (physicalEntity != null){
                             physicalInteractionComponent = new PhysicalInteractionComponent();
                             physicalInteractionComponent.setName(physicalEntity);
@@ -357,14 +332,14 @@ public class InteractionParser {
                 else{
                     physicalInteractionComponent = BioPaxRecordUtil.createPhysicalInteractionComponent(e);
                 }
-                // add component to participant vector
+                // add component to participant ArrayList
                 if (physicalInteractionComponent != null){
-                    participantVector.add(physicalInteractionComponent);
+                    participantArrayList.add(physicalInteractionComponent);
                 }
             }
         }
 
         // outta here
-        return (participantVector.size() > 0) ? participantVector : null;
+        return (participantArrayList.size() > 0) ? participantArrayList : null;
     }
 }

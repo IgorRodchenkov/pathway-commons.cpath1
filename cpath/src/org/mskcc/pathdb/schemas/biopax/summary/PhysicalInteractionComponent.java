@@ -32,7 +32,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * This class encapsulates
@@ -58,9 +58,9 @@ public class PhysicalInteractionComponent {
 	private String cellularLocation;
 
 	/**
-	 * The feature list vector.
+	 * The feature list ArrayList.
 	 */
-	private Vector featureList = new Vector();
+	private ArrayList featureList = new ArrayList();
 
 	/**
 	 * Set the component name.
@@ -117,20 +117,20 @@ public class PhysicalInteractionComponent {
 	}
 
 	/**
-	 * Sets the feature list vector.
+	 * Sets the feature list ArrayList.
 	 *
-	 * @param featureList Vector
+	 * @param featureList ArrayList
 	 */
-	public void setFeatureList(Vector featureList){
+	public void setFeatureList(ArrayList featureList){
 		this.featureList = featureList;
 	}
 
 	/**
-	 * Returns the feature list vector.
+	 * Returns the feature list ArrayList.
 	 *
-	 * @return Vector
+	 * @return ArrayList
 	 */
-	public Vector getFeatureList(){
+	public ArrayList getFeatureList(){
 		return featureList;
 	}
 }

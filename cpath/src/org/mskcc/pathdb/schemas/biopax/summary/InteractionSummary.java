@@ -32,7 +32,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * This class encapsulates
@@ -40,7 +40,7 @@ import java.util.Vector;
  *
  * @author Benjamin Gross.
  */
-public class PhysicalInteraction {
+public class InteractionSummary {
 
 	/**
 	 * The physical interaction type.
@@ -55,12 +55,12 @@ public class PhysicalInteraction {
 	/**
 	 * Our vector of controllers or substrates (left side guys).
 	 */
-	private Vector leftSideComponents = null;
+	private ArrayList leftSideComponents = null;
 
 	/**
 	 * Our vector of controlled or products (right side guys).
 	 */
-	private Vector rightSideComponents = null;
+	private ArrayList rightSideComponents = null;
 
 	/**
      * Constructor.
@@ -68,7 +68,7 @@ public class PhysicalInteraction {
 	 * @param leftSideComponents Vector
 	 * @param rightSideComponents Vector
      */
-    public PhysicalInteraction(Vector leftSideComponents, Vector rightSideComponents) {
+    public InteractionSummary(ArrayList leftSideComponents, ArrayList rightSideComponents) {
 		this ("Not Available", "", leftSideComponents, rightSideComponents);
 	}
 
@@ -77,10 +77,10 @@ public class PhysicalInteraction {
 	 *
 	 * @param physicalInteractionType String
 	 * @param operator String
-	 * @param leftSideComponents Vector
-	 * @param rightSideComponents Vector
+	 * @param leftSideComponents ArrayList
+	 * @param rightSideComponents ArrayList
      */
-    public PhysicalInteraction(String physicalInteractionType, String operator, Vector leftSideComponents, Vector rightSideComponents) {
+    public InteractionSummary(String physicalInteractionType, String operator, ArrayList leftSideComponents, ArrayList rightSideComponents) {
 
 		// init our members
 		this.physicalInteractionType = physicalInteractionType;
@@ -108,20 +108,20 @@ public class PhysicalInteraction {
 	}
 
 	/**
-	 * Returns the vector of leftSideComponents.
+	 * Returns the ArrayList of leftSideComponents.
 	 *
-	 * @return Vector
+	 * @return ArrayList
 	 */
-	public Vector getLeftSideComponents(){
+	public ArrayList getLeftSideComponents(){
 		return leftSideComponents;
 	}
 
 	/**
-	 * Returns the vector of rightSideComponents.
+	 * Returns the ArrayList of rightSideComponents.
 	 *
-	 * @return Vector
+	 * @return ArrayList
 	 */
-	public Vector getRightSideComponents(){
+	public ArrayList getRightSideComponents(){
 		return rightSideComponents;
 	}
 }

@@ -32,7 +32,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
-import java.util.Vector;
+import java.util.ArrayList;
 import java.io.IOException;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.jdom.JDOMException;
@@ -43,7 +43,7 @@ import org.jdom.JDOMException;
  *
  * @author Benjamin Gross.
  */
-public class PhysicalInteractionUtils {
+public class InteractionSummaryUtils {
 
     /**
      * Gets Interaction Summary string.
@@ -61,50 +61,46 @@ public class PhysicalInteractionUtils {
         InteractionParser interactionParser = new InteractionParser(recordID);
 
         // get physical interacittion
-        PhysicalInteraction physicalInteraction = interactionParser.getConversionInformation();
-        if (physicalInteraction == null){
-            physicalInteraction = interactionParser.getControllerInformation();
-            if (physicalInteraction == null){
-                physicalInteraction = interactionParser.getPhysicalInteractionInformation();
-            }
-        }
-        if (physicalInteraction == null){
-            return "";
-        }
-
-        return createInteractionSummaryString(physicalInteraction);
+        InteractionSummary interactionSummary = interactionParser.getInteractionSummary();
+        return (interactionSummary == null) ? null : createInteractionSummaryString(interactionSummary);
     }
 
     /**
      * Creates the interaction summary string.
      *
-     * @param physicalInteraction PhysicalInteractiong
+     * @param interactionSummary PhysicalInteractiong
      * @return String
      * @throws DaoException
      * @throws IOException
      * @throws InteractionSummaryException
      * @throws JDOMException
      */
-    public static String createInteractionSummaryString(PhysicalInteraction physicalInteraction)
+    public static String createInteractionSummaryString(InteractionSummary interactionSummary)
             throws DaoException, IOException, InteractionSummaryException, JDOMException {
 
         int lc, cnt;
-        Vector components;
+        ArrayList components;
         String summaryString = "";
         boolean physicalInteractionType =
-            physicalInteraction.getPhysicalInteractionType().equals("Physical Interaction");
+            interactionSummary.getPhysicalInteractionType().equals("Physical Interaction");
 
         // left side
-        components = physicalInteraction.getLeftSideComponents();
+        components = interactionSummary.getLeftSideComponents();
         cnt = components.size();
         for (lc = 0; lc < cnt; lc++){
-            PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
+            PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.get(lc);
             summaryString += "<a href=\"record.do?id=" + String.valueOf(component.getRecordID()) +
                              "\">" + component.getName() + "</a>";
             // add location:feature string
-            summaryString += createSummaryFeatureString(component);
+			String summaryFeatureString = createSummaryFeatureString(component);
+			if (summaryFeatureString != null){
+				summaryString += summaryFeatureString;
+			}
             // add summary detail string - see function definition for more info
-            summaryString += createSummaryDetailString(component.getRecordID());
+			String summaryDetailString = createSummaryDetailString(component.getRecordID());
+			if (summaryDetailString != null){
+				summaryString += summaryDetailString;
+			}
             // we may have more than one left participant, if so, separate with "+" or " "
             if (lc < cnt-1){
                 if (!physicalInteractionType){
@@ -118,19 +114,25 @@ public class PhysicalInteractionUtils {
 
         if (!physicalInteractionType){
             // operator
-            summaryString += (" " + physicalInteraction.getOperator() + " ");
+            summaryString += (" " + interactionSummary.getOperator() + " ");
 
             // right side
-            components = physicalInteraction.getRightSideComponents();
+            components = interactionSummary.getRightSideComponents();
             cnt = components.size();
             for (lc = 0; lc < cnt; lc++){
-                PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.elementAt(lc);
+                PhysicalInteractionComponent component = (PhysicalInteractionComponent)components.get(lc);
                 summaryString += "<a href=\"record.do?id=" + String.valueOf(component.getRecordID()) +
                               "\">" + component.getName() + "</a>";
                 // add location:feature string
-                summaryString += createSummaryFeatureString(component);
+				String summaryFeatureString = createSummaryFeatureString(component);
+				if (summaryFeatureString != null){
+					summaryString += summaryFeatureString;
+				}
                 // add summary detail string - see function definition for more info
-                summaryString += createSummaryDetailString(component.getRecordID());
+				String summaryDetailString = createSummaryDetailString(component.getRecordID());
+				if (summaryDetailString != null){
+					summaryString += summaryDetailString;
+				}
                 // we may have more than one right participant, if so, separate with "+"
                 if (lc < cnt-1){
                     summaryString += " + ";
@@ -161,12 +163,7 @@ public class PhysicalInteractionUtils {
             throws DaoException, IOException, InteractionSummaryException, JDOMException {
 
         String summaryDetails = getInteractionSummary(recordID);
-        if (summaryDetails.length() > 0){
-            return " (" + summaryDetails + ")";
-        }
-
-        // outta here
-        return "";
+        return (summaryDetails != null && summaryDetails.length() > 0) ? " (" + summaryDetails + ")" : null;
     }
 
     /**
@@ -182,10 +179,10 @@ public class PhysicalInteractionUtils {
 
         // get data from component
         String cellularLocation = physicalInteractionComponent.getCellularLocation();
-        Vector featureList = physicalInteractionComponent.getFeatureList();
+        ArrayList featureList = physicalInteractionComponent.getFeatureList();
         int cnt = featureList.size();
 
-        if (cellularLocation.length() > 0){
+        if (cellularLocation != null && cellularLocation.length() > 0){
             summaryFeatureString = "(" + physicalInteractionComponent.getCellularLocation() + ":";
         }
 
