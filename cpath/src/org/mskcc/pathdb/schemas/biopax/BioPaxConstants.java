@@ -42,6 +42,11 @@ import java.util.Set;
 public class BioPaxConstants {
 
     /**
+     * BioPAX Class:  activation.
+     */
+    public static final String ACTIVATION = "activation";
+
+    /**
      * BioPAX Class:  physicalEntity.
      */
     public static final String PHYSICAL_ENTITY = "physicalEntity";
@@ -90,7 +95,7 @@ public class BioPaxConstants {
     /**
      * BioPAX Class:  catalysis
      */
-    public static final String CATAYLSIS = "catalysis";
+    public static final String CATALYSIS = "catalysis";
 
     /**
      * BioPAX Class:  modulation
@@ -237,7 +242,7 @@ public class BioPaxConstants {
         interactionSet.add(INTERACTION);
         interactionSet.add(PHYSICAL_INTERACTION);
         interactionSet.add(CONTROL);
-        interactionSet.add(CATAYLSIS);
+        interactionSet.add(CATALYSIS);
         interactionSet.add(MODULATION);
         interactionSet.add(CONVERSION);
         interactionSet.add(BIOCHEMICAL_REACTION);
@@ -255,7 +260,7 @@ public class BioPaxConstants {
 		conversionSet.add(TRANSPORT_WITH_BIOCHEMICAL_REACTION);
 
 		// Initialize Control Set
-		controlSet.add(CATAYLSIS);
+		controlSet.add(CATALYSIS);
 		controlSet.add(MODULATION);
     }
 
