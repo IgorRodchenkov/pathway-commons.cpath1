@@ -82,47 +82,39 @@ public class InteractionSummaryUtils {
         int lc, cnt;
         ArrayList components;
         String summaryString = "";
-        boolean isPhysicalInteraction = (interactionSummary instanceof PhysicalInteractionSummary);
 
         // left side
         components = interactionSummary.getLeftSideComponents();
-        cnt = components.size();
-        for (lc = 0; lc < cnt; lc++){
-            InteractionSummaryComponent summaryComponent = (InteractionSummaryComponent)components.get(lc);
-            summaryString += "<a href=\"record.do?id=" + String.valueOf(summaryComponent.getRecordID()) +
-                             "\">" + summaryComponent.getName() + "</a>";
-            // add location:feature string
-			String summaryFeatureString = createSummaryFeatureString(summaryComponent);
-			if (summaryFeatureString != null){
-				summaryString += summaryFeatureString;
+		if (components != null){
+			cnt = components.size();
+			for (lc = 0; lc < cnt; lc++){
+				InteractionSummaryComponent summaryComponent = (InteractionSummaryComponent)components.get(lc);
+				summaryString += "<a href=\"record.do?id=" + String.valueOf(summaryComponent.getRecordID()) +
+					"\">" + summaryComponent.getName() + "</a>";
+				// add location:feature string
+				String summaryFeatureString = createSummaryFeatureString(summaryComponent);
+				if (summaryFeatureString != null){
+					summaryString += summaryFeatureString;
+				}
+				// add summary detail string - see function definition for more info
+				String summaryDetailString = createSummaryDetailString(summaryComponent.getRecordID());
+				if (summaryDetailString != null){
+					summaryString += summaryDetailString;
+				}
+				// add separator between participants
+				summaryString += (lc < cnt-1) ? createSeparatorString(interactionSummary) : " ";
 			}
-            // add summary detail string - see function definition for more info
-			String summaryDetailString = createSummaryDetailString(summaryComponent.getRecordID());
-			if (summaryDetailString != null){
-				summaryString += summaryDetailString;
-			}
-            // we may have more than one left participant, if so, separate with "+" or " "
-            if (lc < cnt-1){
-                if (!isPhysicalInteraction){
-                    summaryString += " + ";
-                }
-                else{
-                    summaryString += " ";
-                }
-            }
-        }
+		}
 
-		// physical interactions do not have operators or 'righthand side' components
-        if (!isPhysicalInteraction){
+		// operator
+		String operatorString = createOperatorString(interactionSummary);
+		if (operatorString != null){
+			summaryString += (" " + operatorString + " ");
+		}
 
-            // operator
-			String operatorString = createOperatorString(interactionSummary);
-			if (operatorString != null){
-				summaryString += (" " + operatorString + " ");
-			}
-
-            // right side
-            components = interactionSummary.getRightSideComponents();
+		// right side
+		components = interactionSummary.getRightSideComponents();
+		if (components != null){
             cnt = components.size();
             for (lc = 0; lc < cnt; lc++){
                 InteractionSummaryComponent summaryComponent = (InteractionSummaryComponent)components.get(lc);
@@ -138,10 +130,8 @@ public class InteractionSummaryUtils {
 				if (summaryDetailString != null){
 					summaryString += summaryDetailString;
 				}
-                // we may have more than one right participant, if so, separate with "+"
-                if (lc < cnt-1){
-                    summaryString += " + ";
-                }
+                // add separator between participants
+                summaryString += (lc < cnt-1) ? createSeparatorString(interactionSummary) : "";
             }
         }
 
@@ -175,6 +165,9 @@ public class InteractionSummaryUtils {
 				operatorString = "[CONTROL-TYPE NOT FOUND]";
 			}
 		}
+		// note physical interactions do not have operators, we do nothing
+		//else if (interactionSummary instanceof PhysicalInteractionSummary){
+		//}
 
 		// outta here
 		return operatorString;
@@ -247,4 +240,28 @@ public class InteractionSummaryUtils {
         // outta here
         return summaryFeatureString;
     }
+
+    /**
+     * Creates a separator string between interactions participants
+	 * on one side of an operator.  Currently ' + ' is used for
+	 * conversion and control interactions and ' ' for physical interactions.
+	 *
+     * @param interactionSummary InteractionSummary
+     * @return String
+     */
+    public static String createSeparatorString(InteractionSummary interactionSummary) {
+
+		// string to return
+		String separatorString = null;
+
+        if (interactionSummary instanceof PhysicalInteractionSummary){
+			separatorString = " ";
+		}
+		else{
+			separatorString = " + ";
+		}
+
+		// outta here
+		return separatorString;
+	}
 }
