@@ -66,7 +66,7 @@ public class BioPaxRecordUtil {
      * @throws JDOMException
      * @throws IOException
      */
-    public static InteractionSummaryComponent createInteractionSummaryComponent(Element e)
+    public static InteractionSummaryComponent createInteractionSummaryComponent(CPathRecord record, Element e)
             throws DaoException, JDOMException, IOException {
 
         boolean success;
@@ -81,7 +81,7 @@ public class BioPaxRecordUtil {
         }
 
         // get cellular location
-        success = BioPaxRecordUtil.setCellularLocation(interactionSummaryComponent, e);
+        success = BioPaxRecordUtil.setCellularLocation(interactionSummaryComponent, record, e);
         if (!success){
             return null;
         }
@@ -193,8 +193,12 @@ public class BioPaxRecordUtil {
      * @return boolean
      * @throws JDOMException
      */
-    private static boolean setCellularLocation(InteractionSummaryComponent interactionSummaryComponent, Element e)
-            throws JDOMException {
+    private static boolean setCellularLocation(InteractionSummaryComponent interactionSummaryComponent, CPathRecord record, Element e)
+            throws JDOMException, IOException {
+
+		System.out.println("setCellularLocation()");
+		System.out.println("record id: " + record.getId());
+        System.out.println("e: " + e.getAttributes());
 
         // setup/perform query
         XPath xpath = XPath.newInstance("bp:CELLULAR-LOCATION");
@@ -208,8 +212,12 @@ public class BioPaxRecordUtil {
             Attribute rdfResourceAttribute =
                 cellularLocation.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
             if (rdfResourceAttribute != null){
+				System.out.println("rdfAttribute: " + rdfResourceAttribute.getValue());
+				e = getLocalRecord(record, rdfResourceAttribute.getValue());
                 //interactionSummaryComponent.setCellularLocation("undetermined");
-                return true;
+				if (e == null){
+					return true;
+				}
             }
 
             // we should now set our element to cellular location and look from here.
@@ -219,6 +227,8 @@ public class BioPaxRecordUtil {
             xpath = XPath.newInstance("*/bp:TERM");
             xpath.addNamespace("bp", e.getNamespaceURI());
             cellularLocation = (Element) xpath.selectSingleNode(e);
+
+			System.out.println("cellularLocationText: " + cellularLocation.getTextNormalize());
 
             // process query
             if (cellularLocation != null){
@@ -325,4 +335,44 @@ public class BioPaxRecordUtil {
         }
         return null;
     }
+
+	private static Element getLocalRecord(CPathRecord record, String attribute) throws JDOMException, IOException {
+
+		System.out.println("getLocalRecord()");
+
+		Element root = null;
+        SAXBuilder builder = new SAXBuilder();
+        StringReader reader = new StringReader (record.getXmlContent());
+        Document bioPaxDoc = builder.build(reader);
+
+		// get the doc root
+        if (bioPaxDoc != null){
+            root = bioPaxDoc.getRootElement();
+        }
+
+        //XPath xpath = XPath.newInstance("/*/bp:LEFT/*");
+		XPath xpath = XPath.newInstance("/*/*");
+        xpath.addNamespace("bp", root.getNamespaceURI());
+        List list = xpath.selectNodes(root);
+
+        if (list != null && list.size() > 0) {
+			System.out.println("list size:" + list.size());
+            for (int lc = 0; lc < list.size(); lc++) {
+                // get our next element to process
+                Element e = (Element) list.get(lc);
+
+                    Attribute rdfIDAttribute =
+                        e.getAttribute(RdfConstants.ID_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+
+					if (rdfIDAttribute != null){
+						System.out.println(rdfIDAttribute.getValue());
+					}
+
+					if (rdfIDAttribute != null && rdfIDAttribute.getValue().equals(attribute)){
+						return e;
+					}
+			}
+		}
+		return null;
+	}
 }

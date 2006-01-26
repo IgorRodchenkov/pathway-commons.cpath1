@@ -1,4 +1,4 @@
-// $Id: InteractionParser.java,v 1.4 2006-01-23 22:40:48 grossb Exp $
+// $Id: InteractionParser.java,v 1.5 2006-01-26 15:26:02 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -213,7 +213,7 @@ public class InteractionParser {
                     }
                 }
                 else{
-                    interactionSummaryComponent = BioPaxRecordUtil.createInteractionSummaryComponent(e);
+                    interactionSummaryComponent = BioPaxRecordUtil.createInteractionSummaryComponent(record, e);
                 }
                 // add component to participant ArrayList
                 if (interactionSummaryComponent != null){
