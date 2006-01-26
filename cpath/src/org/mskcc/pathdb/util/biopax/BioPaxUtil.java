@@ -27,16 +27,16 @@
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
-package org.mskcc.biopax_plugin.util.biopax;
+package org.mskcc.pathdb.util.biopax;
 
-import cytoscape.task.TaskMonitor;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.mskcc.biopax_plugin.util.rdf.RdfConstants;
-import org.mskcc.biopax_plugin.util.rdf.RdfUtil;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfUtil;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -62,22 +62,6 @@ public class BioPaxUtil {
     private HashMap pathwayMembershipMap;
     private HashSet visitedNodeSet;
     private HashSet referenceSet;
-    private TaskMonitor taskMonitor;
-
-    /**
-     * Constructor.
-     *
-     * @param reader      Reader Object.
-     * @param taskMonitor taskMonitor Object.
-     * @throws IOException   Input/Output Error.
-     * @throws JDOMException XML Error.
-     */
-    public BioPaxUtil(Reader reader, TaskMonitor taskMonitor)
-            throws IOException, JDOMException {
-        this.taskMonitor = taskMonitor;
-        loadDocument(reader);
-    }
-
 
     /**
      * Constructor.
@@ -295,9 +279,9 @@ public class BioPaxUtil {
         if (idAttribute != null) {
             //  Store element to hashmap, keyed by RDF ID
             if (rdfResources.containsKey(idAttribute.getValue())) {
-                errorList.add(new String("Element:  " + e
+                errorList.add("Element:  " + e
                         + " declares RDF ID:  " + idAttribute.getValue()
-                        + ", but a resource with this ID already exists."));
+                        + ", but a resource with this ID already exists.");
             } else {
                 rdfResources.put(idAttribute.getValue(), e);
             }
@@ -305,7 +289,7 @@ public class BioPaxUtil {
             // If this is not a top-level element, it is implicitly
             // referenced via the XML hierarchy.  Therefore, add it to the
             // referenceSet
-            Element parent = e.getParent();
+            Element parent = (Element)e.getParent();
             if (!parent.getName().equals(RdfConstants.RDF_ROOT_NAME)) {
                 referenceSet.add(idAttribute.getValue());
             }
@@ -377,9 +361,9 @@ public class BioPaxUtil {
         if (resourceAttribute != null) {
             String key = RdfUtil.removeHashMark(resourceAttribute.getValue());
             if (!rdfResources.containsKey(key)) {
-                errorList.add(new String("Element:  " + e
+                errorList.add("Element:  " + e
                         + " references:  " + key + ", but no such resource "
-                        + "exists in document."));
+                        + "exists in document.");
             }
         }
 
