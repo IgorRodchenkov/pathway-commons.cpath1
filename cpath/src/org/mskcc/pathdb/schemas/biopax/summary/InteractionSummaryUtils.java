@@ -252,7 +252,7 @@ public class InteractionSummaryUtils {
     public static String createSeparatorString(InteractionSummary interactionSummary) {
 
 		// string to return
-		String separatorString = null;
+		String separatorString;
 
         if (interactionSummary instanceof PhysicalInteractionSummary){
 			separatorString = " ";

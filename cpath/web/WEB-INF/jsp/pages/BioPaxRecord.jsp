@@ -149,7 +149,7 @@
 	if (queryString.indexOf("debug=1") != -1 || xdebugFlag != null){
 		String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
 		out.println("<A HREF=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</A>");
-		out.println("<BR>");
+        out.println("<BR>");
 	}
 %>
 <%
