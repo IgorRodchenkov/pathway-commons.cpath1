@@ -1,4 +1,4 @@
-// $Id: InteractionParser.java,v 1.5 2006-01-26 15:26:02 grossb Exp $
+// $Id: InteractionParser.java,v 1.6 2006-01-26 22:48:35 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,8 +50,8 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
-import org.mskcc.pathdb.schemas.biopax.RdfUtil;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.schemas.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.model.CPathRecord;
 
