@@ -31,6 +31,7 @@ package org.mskcc.pathdb.util.biopax;
 
 import org.jdom.Attribute;
 import org.jdom.Document;
+import org.jdom.Parent;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -289,10 +290,12 @@ public class BioPaxUtil {
             // If this is not a top-level element, it is implicitly
             // referenced via the XML hierarchy.  Therefore, add it to the
             // referenceSet
-            Element parent = (Element)e.getParent();
-            if (!parent.getName().equals(RdfConstants.RDF_ROOT_NAME)) {
-                referenceSet.add(idAttribute.getValue());
-            }
+			if (! (e instanceof Parent)){
+				Element parent = (Element)e.getParent();
+				if (!parent.getName().equals(RdfConstants.RDF_ROOT_NAME)) {
+					referenceSet.add(idAttribute.getValue());
+				}
+			}
         } else if (pointerAttribute != null) {
             // If we point to something, mark it in the referenceSet
             String uri = RdfUtil.removeHashMark(pointerAttribute.getValue());
