@@ -364,7 +364,7 @@ public class BioPaxRecordUtil {
 		}
 		// term not available, try for xref id
 		else{
-			cellularLocation = rdfQuery.getNode(cellularLocationRef, "*/XREF/ID");
+			cellularLocation = rdfQuery.getNode(cellularLocationRef, "*/XREF/unificationXref/ID");
 			if (cellularLocation != null){
 				return cellularLocation.getTextNormalize();
 			}
