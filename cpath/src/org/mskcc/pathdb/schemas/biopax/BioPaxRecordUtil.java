@@ -29,7 +29,7 @@
  **/
 
 // package
-package org.mskcc.pathdb.util.biopax;
+package org.mskcc.pathdb.schemas.biopax;
 
 // imports
 import java.util.List;
