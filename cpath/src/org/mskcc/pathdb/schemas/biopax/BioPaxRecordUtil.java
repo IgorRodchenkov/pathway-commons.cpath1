@@ -49,7 +49,6 @@ import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.util.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryComponent;
 
 /**
