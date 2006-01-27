@@ -72,31 +72,24 @@ public class BioPaxRecordUtil {
     public static InteractionSummaryComponent createInteractionSummaryComponent(CPathRecord record, Element e)
             throws DaoException, JDOMException, IOException {
 
-        boolean success;
-
+        boolean setPhysicalEntitySuccess, setCellularLocationSuccess, setFeatureListSuccess;
+		
         // this is object to return
         InteractionSummaryComponent interactionSummaryComponent = new InteractionSummaryComponent();
 
         // first get physical entity
-        success = BioPaxRecordUtil.setPhysicalEntity(interactionSummaryComponent, e);
-        if (!success){
-            return null;
-        }
+        setPhysicalEntitySuccess = BioPaxRecordUtil.setPhysicalEntity(interactionSummaryComponent, e);
 
         // get cellular location
-        success = BioPaxRecordUtil.setCellularLocation(interactionSummaryComponent, record, e);
-        if (!success){
-            return null;
-        }
+        setCellularLocationSuccess = BioPaxRecordUtil.setCellularLocation(interactionSummaryComponent, record, e);
 
         // feature list
-        success = BioPaxRecordUtil.setFeatureList(interactionSummaryComponent, e);
-        if (!success){
-            return null;
-        }
+        setFeatureListSuccess = BioPaxRecordUtil.setFeatureList(interactionSummaryComponent, e);
 
         // made it this far
-        return interactionSummaryComponent;
+        return (setPhysicalEntitySuccess ||
+				setCellularLocationSuccess ||
+				setFeatureListSuccess) ? interactionSummaryComponent : null;
     }
 
     /**
