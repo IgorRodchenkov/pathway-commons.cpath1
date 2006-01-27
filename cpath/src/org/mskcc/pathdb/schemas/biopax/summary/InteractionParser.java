@@ -1,4 +1,4 @@
-// $Id: InteractionParser.java,v 1.8 2006-01-26 23:10:35 grossb Exp $
+// $Id: InteractionParser.java,v 1.9 2006-01-27 15:49:32 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,7 +52,7 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
-import org.mskcc.pathdb.schemas.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.model.CPathRecord;
 
 /**
