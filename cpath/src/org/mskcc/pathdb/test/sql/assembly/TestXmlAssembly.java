@@ -129,7 +129,7 @@ public class TestXmlAssembly extends TestCase {
         Element child = (Element) children.get(0);
         assertEquals(OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
         child = (Element) children.get(1);
-        assertEquals(BioPaxConstants.CATAYLSIS, child.getName());
+        assertEquals(BioPaxConstants.CATALYSIS, child.getName());
         child = (Element) children.get(2);
         assertEquals(BioPaxConstants.PROTEIN, child.getName());
         child = (Element) children.get(3);
@@ -176,7 +176,7 @@ public class TestXmlAssembly extends TestCase {
         Element child = (Element) children.get(0);
         assertEquals(OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
         child = (Element) children.get(1);
-        assertEquals(BioPaxConstants.CATAYLSIS, child.getName());
+        assertEquals(BioPaxConstants.CATALYSIS, child.getName());
         assertEquals(2, children.size());
 
         //  Check that this is valid RDF
