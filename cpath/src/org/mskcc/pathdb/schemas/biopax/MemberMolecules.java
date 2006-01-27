@@ -37,8 +37,10 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.util.biopax.BioPaxUtil;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 /**
  * This class parses interaction data
