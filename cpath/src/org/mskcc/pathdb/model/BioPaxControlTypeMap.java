@@ -1,5 +1,5 @@
 //
-// $Id: BioPaxControlTypeMap.java,v 1.2 2005-12-19 21:30:22 grossb Exp $
+// $Id: BioPaxControlTypeMap.java,v 1.3 2006-01-27 17:42:36 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,7 +53,9 @@ public class BioPaxControlTypeMap extends HashMap {
 		put("INHIBITION-NONCOMPETITIVE", "noncompetitively inhibits");
 		put("INHIBITION-OTHER", "inhibits (other)");
 		put("INHIBITION-UNCOMPETITIVE", "uncompetitively inhibits");
+		put("INHIBITION-UNKMECH", "inhibits (unkmech)");
 		put("ACTIVATION-NONALLOSTERIC", "nonallosterically activates");
 		put("ACTIVATION-ALLOSTERIC", "allosterically activates");
+		put("ACTIVATION-UNKMECH", "unkmech activates");
     }
 }
