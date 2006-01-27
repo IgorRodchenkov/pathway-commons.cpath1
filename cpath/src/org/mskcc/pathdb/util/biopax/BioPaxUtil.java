@@ -27,7 +27,7 @@
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
-package org.mskcc.pathdb.schemas.biopax;
+package org.mskcc.pathdb.util.biopax;
 
 import org.jdom.Attribute;
 import org.jdom.Document;
