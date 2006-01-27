@@ -33,6 +33,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.mskcc.pathdb.test.schemas.biopax.summary.TestInteractionParser;
+
 /**
  * Suite of all BioPax Unit Tests.
  *
