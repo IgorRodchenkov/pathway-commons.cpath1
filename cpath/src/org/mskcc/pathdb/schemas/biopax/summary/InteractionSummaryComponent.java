@@ -61,7 +61,7 @@ public class InteractionSummaryComponent {
 	/**
 	 * The feature list.
 	 */
-	private ArrayList featureList = new ArrayList();
+	private ArrayList featureList;
 
 	/**
 	 * Set the component name.
