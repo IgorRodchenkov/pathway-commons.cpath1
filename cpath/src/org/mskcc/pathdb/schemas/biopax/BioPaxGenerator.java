@@ -34,6 +34,7 @@ import org.jdom.Namespace;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 
 /**
  * Utility Class for generating BioPAX formatted data.
@@ -51,7 +52,7 @@ public class BioPaxGenerator {
      * @throws DaoException Error Accessing Database
      */
     public static Element generateRelationshipXref(ExternalReference ref,
-            Namespace bioPaxNamespace) throws DaoException {
+                                                   Namespace bioPaxNamespace) throws DaoException {
         return generateXref(ref, bioPaxNamespace,
                 BioPaxConstants.XREF_RELATIONSHIP);
     }
@@ -65,7 +66,7 @@ public class BioPaxGenerator {
      * @throws DaoException Error Accessing Database
      */
     public static Element generateUnificationXref(ExternalReference ref,
-            Namespace bioPaxNamespace) throws DaoException {
+                                                  Namespace bioPaxNamespace) throws DaoException {
         return generateXref(ref, bioPaxNamespace,
                 BioPaxConstants.XREF_UNIFICATION);
     }
@@ -105,7 +106,7 @@ public class BioPaxGenerator {
      * @throws DaoException Error Accessing Database
      */
     private static Element generateXref(ExternalReference ref,
-            Namespace bioPaxNamespace, String xrefType) throws DaoException {
+                                        Namespace bioPaxNamespace, String xrefType) throws DaoException {
 
         //  Create Element
         Element xrefElement = new Element("XREF", bioPaxNamespace);

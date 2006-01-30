@@ -36,6 +36,7 @@ import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 
 import java.util.ArrayList;
 

@@ -39,6 +39,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
 

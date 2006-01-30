@@ -34,6 +34,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 
 import java.util.*;
 
