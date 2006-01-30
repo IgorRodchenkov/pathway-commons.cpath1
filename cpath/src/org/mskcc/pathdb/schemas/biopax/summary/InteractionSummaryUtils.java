@@ -1,3 +1,5 @@
+// $Id: InteractionSummaryUtils.java,v 1.7 2006-01-30 23:00:54 grossb Exp $
+//------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
