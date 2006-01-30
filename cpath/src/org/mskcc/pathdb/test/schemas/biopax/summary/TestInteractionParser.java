@@ -1,4 +1,4 @@
-// $Id: TestInteractionParser.java,v 1.2 2006-01-27 22:28:36 grossb Exp $
+// $Id: TestInteractionParser.java,v 1.3 2006-01-30 14:23:36 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -109,27 +109,24 @@ public class TestInteractionParser extends TestCase {
 		// get left side components list
 		components = interactionSummary.getLeftSideComponents();
 		cnt = components.size();
-		System.out.println("cnt: " + cnt);
-		assertTrue(cnt == 1);
+ 		assertTrue(cnt == 2);
 
-		// get specific left component
+		// get left hand components
 		summaryComponent = (InteractionSummaryComponent)components.get(0);
 		assertEquals("AR", summaryComponent.getName());
 		assertTrue(18 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
 		assertTrue(null == summaryComponent.getFeatureList());
 
-		// get right side components list
-		components = interactionSummary.getRightSideComponents();
-		cnt = components.size();
-		assertTrue(cnt == 1);
-
-		// get specific right component
-		summaryComponent = (InteractionSummaryComponent)components.get(0);
+		summaryComponent = (InteractionSummaryComponent)components.get(1);
 		assertEquals("ETV5", summaryComponent.getName());
 		assertTrue(19 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
 		assertTrue(null == summaryComponent.getFeatureList());
+
+		// physical interaction has no right compontents
+		components = interactionSummary.getRightSideComponents();
+		assertTrue(null == components);
 	}
 
     /**
@@ -218,7 +215,7 @@ public class TestInteractionParser extends TestCase {
 		assertTrue(18 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
 		ArrayList featureList = summaryComponent.getFeatureList();
-		assertTrue(featureList.size() == 2);
+		assertTrue(featureList.size() == 1);
 		assertEquals("phosphorylation site", (String)featureList.get(0));
 	}
 
