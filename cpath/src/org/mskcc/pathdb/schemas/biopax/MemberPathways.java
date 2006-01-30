@@ -40,7 +40,6 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
-import org.mskcc.pathdb.util.biopax.BioPaxUtil;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 
@@ -77,7 +76,7 @@ public class MemberPathways {
 		else{
 			BioPaxConstants biopaxConstants = new BioPaxConstants();
 			if (biopaxConstants.isPathway(record.getSpecificType())){
-				String pathway = BioPaxRecordUtil.getEntity(record.getId(), record.getXmlContent());
+				String pathway = BioPaxRecordUtil.getPhysicalEntityNameAsLink(record.getId(), record.getXmlContent());
 				if (pathway != null){
 					pathways.add(pathway);
 				}

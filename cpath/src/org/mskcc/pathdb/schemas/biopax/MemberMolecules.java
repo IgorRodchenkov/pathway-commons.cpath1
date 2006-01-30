@@ -38,7 +38,6 @@ import java.util.ArrayList;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.util.biopax.BioPaxUtil;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
@@ -73,7 +72,7 @@ public class MemberMolecules {
 		else{
 			BioPaxConstants biopaxConstants = new BioPaxConstants();
 			if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
-				String molecule = BioPaxRecordUtil.getEntity(record.getId(), record.getXmlContent());
+				String molecule = BioPaxRecordUtil.getPhysicalEntityNameAsLink(record.getId(), record.getXmlContent());
 				if (molecule != null){
 					molecules.add(molecule);
 				}
