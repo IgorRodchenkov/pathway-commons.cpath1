@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 
 /**
  * Enables XPath-"lite" Queries on RDF Documents.
@@ -101,7 +100,7 @@ public class RdfQuery {
      * Traverse the Document Tree, matching the query one level at a time.
      */
     private ArrayList traverse(Element e, ArrayList queryList,
-            int index) {
+                               int index) {
         String target = (String) queryList.get(index);
         List children = new ArrayList();
 

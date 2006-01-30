@@ -34,7 +34,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
 import org.mskcc.pathdb.util.xml.XmlUtil;
 
 import java.io.File;
