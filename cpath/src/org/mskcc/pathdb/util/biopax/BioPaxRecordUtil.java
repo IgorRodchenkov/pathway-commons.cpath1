@@ -47,7 +47,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryComponent;
 

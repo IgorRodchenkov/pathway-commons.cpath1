@@ -34,7 +34,7 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.UpdateRdfLinks;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.task.ProgressMonitor;

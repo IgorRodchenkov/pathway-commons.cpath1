@@ -39,7 +39,7 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxElementFilter;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.CPathConstants;

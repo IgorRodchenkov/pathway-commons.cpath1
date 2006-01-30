@@ -34,7 +34,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
 

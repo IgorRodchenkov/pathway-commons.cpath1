@@ -37,7 +37,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 
 import java.io.IOException;

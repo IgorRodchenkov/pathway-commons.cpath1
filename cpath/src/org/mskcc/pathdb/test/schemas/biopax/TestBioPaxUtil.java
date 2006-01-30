@@ -38,7 +38,7 @@ import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.rdf.RdfValidator;

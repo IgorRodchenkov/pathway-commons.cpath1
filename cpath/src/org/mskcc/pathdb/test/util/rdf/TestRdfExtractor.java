@@ -32,7 +32,7 @@ package org.mskcc.pathdb.test.util.rdf;
 import junit.framework.TestCase;
 import org.jdom.Attribute;
 import org.jdom.Element;
-import org.mskcc.pathdb.schemas.biopax.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfExtractor;
 
 import java.io.File;
