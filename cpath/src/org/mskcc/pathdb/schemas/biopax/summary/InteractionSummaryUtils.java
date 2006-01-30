@@ -209,7 +209,7 @@ public class InteractionSummaryUtils {
         // get data from component
         String cellularLocation = interactionSummaryComponent.getCellularLocation();
         ArrayList featureList = interactionSummaryComponent.getFeatureList();
-        int cnt = featureList.size();
+        int cnt = (featureList != null) ? featureList.size() : 0;
 
         if (cellularLocation != null && cellularLocation.length() > 0){
             summaryFeatureString = "(" + interactionSummaryComponent.getCellularLocation() + ":";
