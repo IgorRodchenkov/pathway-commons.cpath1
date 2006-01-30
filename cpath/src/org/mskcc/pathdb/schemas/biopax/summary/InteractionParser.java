@@ -1,4 +1,4 @@
-// $Id: InteractionParser.java,v 1.11 2006-01-30 13:53:08 grossb Exp $
+// $Id: InteractionParser.java,v 1.12 2006-01-30 23:00:31 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -195,7 +195,7 @@ public class InteractionParser {
                         String rdfKey = RdfUtil.removeHashMark
                             (rdfResourceAttribute.getValue());
                         // get physical entity
-                        String physicalEntity = BioPaxRecordUtil.getEntity(rdfKey);
+                        String physicalEntity = BioPaxRecordUtil.getPhysicalEntityName(rdfKey);
                         // cook id to save
                         int indexOfID = rdfKey.lastIndexOf("-");
                         if (indexOfID == -1){
