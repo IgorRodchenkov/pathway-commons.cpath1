@@ -15,10 +15,7 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
 				 org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary,
-				 org.mskcc.pathdb.schemas.biopax.summary.InteractionParser,
-				 org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary,
-				 org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
-				 org.mskcc.pathdb.util.biopax.BioPaxRecordUtil"%>
+				 org.mskcc.pathdb.schemas.biopax.summary.InteractionParser"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -33,34 +30,29 @@
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 
 	// get the cpath record
-    CPathRecord record = (CPathRecord) request.getAttribute("RECORD");
+	CPathRecord record = null;
+    Object possibleRecord = request.getAttribute("RECORD");
+	if (possibleRecord instanceof CPathRecord){
+		record = (CPathRecord)possibleRecord;
+	}
 
 	// create our biopaxConstants "helper" class
 	BioPaxConstants biopaxConstants = new BioPaxConstants();
 
 	// set request title attribute
-    String title = webUIBean.getApplicationName() + "::" + record.getName();
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
-
-	// get biopax record summary
-	BioPaxRecordSummary biopaxRecordSummary =
-		(record != null) ? BioPaxRecordUtil.createBioPaxRecordSummary(record) : null;
+	if (record != null){
+	    String title = webUIBean.getApplicationName() + "::" + record.getName();
+	    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+	}
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
-<DIV ID="apphead">
-<%
-	// our heading
-	if (biopaxRecordSummary != null){
-		String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(biopaxRecordSummary);
-		if (header != null) out.println(header);
-	}
-%>
-</DIV>
-
 <% if (record != null) { %>
-
+<%
+	// biopax record summary
+%>
+	<cbio:biopaxRecordSummaryTable record="<%=record%>"/>
 <%
 	// xml abbrev content link - log/debug mode only
 	String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
@@ -68,37 +60,6 @@
 		String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
 		out.println("<A HREF=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</A>");
         out.println("<BR>");
-	}
-%>
-<%
-	// biopax record summary
-	if (biopaxRecordSummary != null){
-
-		// we have record data, start table
-		out.println("<TABLE>");
-
-		// synonym
-		String synonyms = BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString(biopaxRecordSummary);
-		if (synonyms != null) out.println(synonyms);
-
-		// data source
-		String dataSource = BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString(biopaxRecordSummary);
-		if (dataSource != null) out.println(dataSource);
-
-		// availability
-		String availability = BioPaxRecordSummaryUtils.getBioPaxRecordAvailabilityString(biopaxRecordSummary);
-		if (availability != null) out.println(availability);
-
-		// external links
-		String externalLinks = BioPaxRecordSummaryUtils.getBioPaxRecordExternalLinksString(biopaxRecordSummary);
-		if (externalLinks != null) out.println(externalLinks);
-
-		// comment
-		String comment = BioPaxRecordSummaryUtils.getBioPaxRecordCommentString(biopaxRecordSummary);
-		if (comment != null) out.println(comment);
-
-		// close table
-		out.println("</TABLE>");
 	}
 %>
 <%
@@ -234,5 +195,5 @@
 		}
 	}
 %>
-<% } // record not equal to null %>
+<% } // record != null %>
 <jsp:include page="../global/footer.jsp" flush="true" />
