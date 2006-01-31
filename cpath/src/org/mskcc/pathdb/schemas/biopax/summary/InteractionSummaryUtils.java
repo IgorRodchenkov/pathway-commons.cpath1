@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.7 2006-01-30 23:00:54 grossb Exp $
+// $Id: InteractionSummaryUtils.java,v 1.8 2006-01-31 15:03:33 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -223,12 +223,16 @@ public class InteractionSummaryUtils {
                 summaryFeatureString = "(:";
             }
             for (int lc = 0; lc < cnt; lc++){
-                String feature = (String)featureList.get(lc);
-                if (lc == 0){
-                    summaryFeatureString += feature;
-                }
-                else{
-                    summaryFeatureString += ", " + feature;
+                if (featureList != null && featureList.size() > 0){
+                    String feature = (String)featureList.get(lc);
+                    if (feature != null && feature.length() > 0){
+                        if (lc == 0){
+                            summaryFeatureString += feature;
+                        }
+                        else{
+                            summaryFeatureString += ", " + feature;
+                        }
+                    }
                 }
             }
 
