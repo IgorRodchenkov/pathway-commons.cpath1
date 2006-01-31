@@ -33,6 +33,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.mskcc.pathdb.test.schemas.biopax.summary.TestBioPaxSummary;
 import org.mskcc.pathdb.test.schemas.biopax.summary.TestInteractionParser;
 
 /**
@@ -56,6 +57,7 @@ public class BioPaxSuite extends TestCase {
         suite.addTestSuite(TestBioPaxGenerator.class);
         suite.addTestSuite(TestBioPaxElementFilter.class);
 		suite.addTestSuite(TestInteractionParser.class);
+		suite.addTestSuite(TestBioPaxSummary.class);
         suite.setName("BioPax Tests");
         return suite;
     }
