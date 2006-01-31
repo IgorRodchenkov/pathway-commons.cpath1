@@ -1,3 +1,5 @@
+// $Id: MemberPathways.java,v 1.5 2006-01-31 20:10:18 grossb Exp $
+//------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
@@ -31,15 +33,14 @@
 // package
 package org.mskcc.pathdb.schemas.biopax;
 
-
 // imports
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 
@@ -54,23 +55,35 @@ public class MemberPathways {
 	/**
 	 * Finds all member pathways given CPathRecord.
 	 *
+	 * @param record CPathRecord
+	 * @param longList ArrayList - if null, no timing performed
 	 * @return HashSet
 	 */
-	public static HashSet getMemberPathways(CPathRecord record) throws Exception {
+	public static HashSet getMemberPathways(CPathRecord record, ArrayList longList) throws Exception {
+
+		// for timing
+        long startTime = 0;
 
 		// vector to return
 		HashSet pathways = new HashSet();
 
 		// get internal links
 		DaoInternalLink daoInternalLinks = new DaoInternalLink();
+		if (longList != null){
+			startTime = Calendar.getInstance().getTimeInMillis();
+		}
 		ArrayList sources = daoInternalLinks.getSources(record.getId());
+		if (longList != null){
+			Long currentTime = new Long(Calendar.getInstance().getTimeInMillis() - startTime);
+			longList.add(currentTime);
+		}
 
 		if (sources.size() > 0){
 			for (int lc = 0; lc < sources.size(); lc++){
 				InternalLinkRecord link = (InternalLinkRecord)sources.get(lc);
 				DaoCPath cPath = DaoCPath.getInstance();
 				CPathRecord sourceRecord = cPath.getRecordById(link.getSourceId());
-				pathways.addAll(getMemberPathways(sourceRecord));
+				pathways.addAll(getMemberPathways(sourceRecord, longList));
 			}
 		}
 		else{
