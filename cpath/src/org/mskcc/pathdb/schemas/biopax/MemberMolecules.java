@@ -1,3 +1,5 @@
+// $Id: MemberMolecules.java,v 1.9 2006-01-31 20:10:03 grossb Exp $
+//------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
@@ -31,15 +33,14 @@
 // package
 package org.mskcc.pathdb.schemas.biopax;
 
-
 // imports
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 /**
  * This class parses interaction data
@@ -52,21 +53,33 @@ public class MemberMolecules {
 	/**
 	 * Finds all member molecules given CPathRecord.
 	 *
+	 * @param record CPathRecord
+	 * @param longList ArrayList - if null, no timing performed
 	 * @return HashSet
 	 */
-	public static HashSet getMemberMolecules(CPathRecord record) throws Exception {
+	public static HashSet getMemberMolecules(CPathRecord record, ArrayList longList) throws Exception {
+
+		// for timing
+        long startTime = 0;
 
 		// hashset to return
 		HashSet molecules = new HashSet();
 
 		// get internal links
 		DaoInternalLink daoInternalLinks = new DaoInternalLink();
+		if (longList != null){
+			startTime = Calendar.getInstance().getTimeInMillis();
+		}
 		ArrayList targets = daoInternalLinks.getTargetsWithLookUp(record.getId());
+		if (longList != null){
+			Long currentTime = new Long(Calendar.getInstance().getTimeInMillis() - startTime);
+			longList.add(currentTime);
+		}
 
 		if (targets.size() > 0){
 			for (int lc = 0; lc < targets.size(); lc++){
 				CPathRecord targetRecord = (CPathRecord)targets.get(lc);
-				molecules.addAll(getMemberMolecules(targetRecord));
+				molecules.addAll(getMemberMolecules(targetRecord, longList));
 			}
 		}
 		else{
