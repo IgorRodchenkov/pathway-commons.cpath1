@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.5 2006-01-31 16:12:30 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.6 2006-01-31 16:47:07 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -112,7 +112,7 @@ public class BioPaxRecordSummaryUtils {
         }
 
         // outta here
-        return synonymString;
+		return (synonymString.length() > 0) ? synonymString : null;
     }
 
     /**
