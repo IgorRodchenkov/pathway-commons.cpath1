@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.2 2006-01-31 15:02:45 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.3 2006-01-31 15:25:38 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,8 +51,14 @@ public class BioPaxRecordSummaryUtils {
 	 *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
+     * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordHeaderString(BioPaxRecordSummary biopaxRecordSummary) {
+    public static String getBioPaxRecordHeaderString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
+
+		// check args
+		if (biopaxRecordSummary == null){
+			throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString() argument is null");
+		}
 
 		// used to make type more readable
 		BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
@@ -82,71 +88,95 @@ public class BioPaxRecordSummaryUtils {
 	 *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
+     * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordSynonymString(BioPaxRecordSummary biopaxRecordSummary) {
+    public static String getBioPaxRecordSynonymString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
 
-		// string to return
-		String synonymString = null;
+        // check args
+        if (biopaxRecordSummary == null){
+            throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString() argument is null");
+        }
 
-		// get synonym list
-		List synonymList = biopaxRecordSummary.getSynonyms();
+        // string to return
+        String synonymString = null;
 
-		// concate them all into one long string
-		if (synonymList != null && synonymList.size() > 0) {
-			for (int lc = 0; lc < synonymList.size(); lc++) {
-				String synonym = (String)synonymList.get(lc);
-				synonymString += (synonym + " ");
-			}
-		}
+        // get synonym list
+        List synonymList = biopaxRecordSummary.getSynonyms();
 
-		// outta here
-		return synonymString;
-	}
+        // concate them all into one long string
+        if (synonymList != null && synonymList.size() > 0) {
+            for (int lc = 0; lc < synonymList.size(); lc++) {
+                String synonym = (String)synonymList.get(lc);
+                synonymString += (synonym + " ");
+            }
+        }
+
+        // outta here
+        return synonymString;
+    }
 
     /**
      * Gets the BioPax Data Source String to render.
 	 *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
+     * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordDataSourceString(BioPaxRecordSummary biopaxRecordSummary) {
+    public static String getBioPaxRecordDataSourceString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
 
-		// string to return
-		String dataSource = biopaxRecordSummary.getDataSource();
+        // check args
+        if (biopaxRecordSummary == null){
+            throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString() argument is null");
+        }
 
-		// outta here
-		return (dataSource != null && dataSource.length() > 0) ? dataSource : null;
-	}
+        // string to return
+        String dataSource = biopaxRecordSummary.getDataSource();
+
+        // outta here
+        return (dataSource != null && dataSource.length() > 0) ? dataSource : null;
+    }
 
     /**
      * Gets the BioPax Availability String to render.
 	 *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
+     * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordAvailabilityString(BioPaxRecordSummary biopaxRecordSummary) {
+    public static String getBioPaxRecordAvailabilityString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
 
-		// string to return
-		String availability = biopaxRecordSummary.getAvailability();
+        // check args
+        if (biopaxRecordSummary == null){
+            throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordAvailabilityString() argument is null");
+        }
 
-		// outta here
-		return (availability != null && availability.length() > 0) ? availability : null;
-	}
+        // string to return
+        String availability = biopaxRecordSummary.getAvailability();
+
+        // outta here
+        return (availability != null && availability.length() > 0) ? availability : null;
+    }
 
     /**
      * Gets the BioPax Comment String to render.
 	 *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
+     * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordCommentString(BioPaxRecordSummary biopaxRecordSummary) {
+    public static String getBioPaxRecordCommentString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
 
-		// string to return
-		String comment = biopaxRecordSummary.getComment();
+        // check args
+        if (biopaxRecordSummary == null){
+            throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordCommentString() argument is null");
+        }
 
-		// outta here
-		return (comment != null && comment.length() > 0) ? comment : null;
-	}
+        // string to return
+        String comment = biopaxRecordSummary.getComment();
+
+        // outta here
+        return (comment != null && comment.length() > 0) ? comment : null;
+    }
 
     /**
      * Gets the BioPax Record Name.
