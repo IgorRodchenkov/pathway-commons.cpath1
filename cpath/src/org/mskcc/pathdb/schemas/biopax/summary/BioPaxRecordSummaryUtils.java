@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.1 2006-01-30 22:59:57 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.2 2006-01-31 15:02:45 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -14,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -36,8 +36,7 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 // imports
 import java.util.List;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+
 
 /**
  * This class contains some utility methods
@@ -74,11 +73,8 @@ public class BioPaxRecordSummaryUtils {
 		// get organism
 		String organism = biopaxRecordSummary.getOrganism();
 
-		// construct header string
-		String headerString = (organism != null) ? (name + " from " + organism) : name;
-
-		// outta hear
-		return ("<H2>" + headerString + "</H2>");
+		// outta here
+		return (organism != null) ? (name + " from " + organism) : name;
 	}
 
     /**
@@ -94,17 +90,13 @@ public class BioPaxRecordSummaryUtils {
 
 		// get synonym list
 		List synonymList = biopaxRecordSummary.getSynonyms();
-		
+
+		// concate them all into one long string
 		if (synonymList != null && synonymList.size() > 0) {
-			synonymString = "<TR>";
-			synonymString += "<TD>Synonyms:</TD>";
-			synonymString += "<TD COLSPAN=3>";
 			for (int lc = 0; lc < synonymList.size(); lc++) {
 				String synonym = (String)synonymList.get(lc);
 				synonymString += (synonym + " ");
 			}
-			synonymString += "</TD>";
-			synonymString += "</TR>";
 		}
 
 		// outta here
@@ -120,18 +112,10 @@ public class BioPaxRecordSummaryUtils {
     public static String getBioPaxRecordDataSourceString(BioPaxRecordSummary biopaxRecordSummary) {
 
 		// string to return
-		String dataSourceString = null;
 		String dataSource = biopaxRecordSummary.getDataSource();
 
-		if (dataSource != null && dataSource.length() > 0){
-			dataSourceString = "<TR>";
-			dataSourceString += "<TD>Data Source:</TD>";
-			dataSourceString += "<TD COLSPAN=3>" + dataSource + "</TD>";
-			dataSourceString += "</TR>";
-		}
-
 		// outta here
-		return dataSourceString;
+		return (dataSource != null && dataSource.length() > 0) ? dataSource : null;
 	}
 
     /**
@@ -143,63 +127,10 @@ public class BioPaxRecordSummaryUtils {
     public static String getBioPaxRecordAvailabilityString(BioPaxRecordSummary biopaxRecordSummary) {
 
 		// string to return
-		String availabilityString = null;
 		String availability = biopaxRecordSummary.getAvailability();
 
-		if (availability != null && availability.length() > 0){
-			availabilityString = "<TR>";
-			availabilityString += "<TD>Availability:</TD>";
-			availabilityString += "<TD COLSPAN=3>" + availability + "</TD>";
-			availabilityString += "</TR>";
-		}
-
 		// outta here
-		return availabilityString;
-	}
-
-    /**
-     * Gets the BioPax External Links String to render.
-	 *
-     * @param biopaxRecordSummary BioPaxRecordSummary
-     * @return String
-     */
-    public static String getBioPaxRecordExternalLinksString(BioPaxRecordSummary biopaxRecordSummary) {
-
-		// string to return
-		String externalLinks = null;
-
-		// get the links
-		List links = biopaxRecordSummary.getExternalLinks();
-
-		// process them
-		if (links != null && links.size() > 0){
-			externalLinks = "<TR>";
-			externalLinks += "<TD>External Links:</TD>";
-			for (int lc = 1; lc <= links.size(); lc++) {
-				externalLinks += "<TD>";
-				ExternalLinkRecord link = (ExternalLinkRecord) links.get(lc-1);
-				ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
-				String dbId = link.getLinkedToId();
-				String linkStr = dbRecord.getName() + ":" + dbId;
-				String uri = link.getWebLink();
-				if (uri != null && uri.length() > 0) {
-					externalLinks += ("<A HREF=\""+ uri + "\">" + linkStr + "</A>");
-				} else {
-					externalLinks += linkStr;
-				}
-				externalLinks += "</TD>";
-				if (lc % 3 == 0){
-					externalLinks += "</TR>";
-					externalLinks += "<TR>";
-					// for nice spacing
-					externalLinks += "<TD></TD>";
-				}
-			}
-			externalLinks += "</TR>";
-		}
-
-		// outta here
-		return externalLinks;
+		return (availability != null && availability.length() > 0) ? availability : null;
 	}
 
     /**
@@ -211,19 +142,10 @@ public class BioPaxRecordSummaryUtils {
     public static String getBioPaxRecordCommentString(BioPaxRecordSummary biopaxRecordSummary) {
 
 		// string to return
-		String commentString = null;
 		String comment = biopaxRecordSummary.getComment();
 
-		if (comment != null && comment.length() > 0){
-			comment = comment.replaceAll("<BR>", "<P>");
-			commentString = "<TR>";
-			commentString += "<TD>Comment:</TD>";
-			commentString += "<TD COLSPAN=3>" + comment + "</TD>";
-			commentString += "</TR>";
-		}
-
 		// outta here
-		return commentString;
+		return (comment != null && comment.length() > 0) ? comment : null;
 	}
 
     /**
@@ -242,7 +164,7 @@ public class BioPaxRecordSummaryUtils {
 		// try short name
 		name = biopaxRecordSummary.getShortName();
 		if (name != null && name.length() > 0) return name;
-		
+
 		// try name
 		name = biopaxRecordSummary.getName();
 		if (name != null && name.length() > 0) return name;
