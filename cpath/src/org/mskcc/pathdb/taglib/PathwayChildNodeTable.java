@@ -1,3 +1,5 @@
+// $Id: PathwayChildNodeTable.java,v 1.14 2006-01-31 13:49:50 grossb Exp $
+//------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
