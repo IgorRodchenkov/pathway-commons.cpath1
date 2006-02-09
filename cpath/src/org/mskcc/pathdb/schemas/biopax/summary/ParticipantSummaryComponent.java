@@ -41,7 +41,7 @@ import java.util.ArrayList;
  *
  * @author Benjamin Gross.
  */
-public class InteractionSummaryComponent {
+public class ParticipantSummaryComponent {
 
 	/**
 	 * The component name.
