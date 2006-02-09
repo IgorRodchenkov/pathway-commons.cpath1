@@ -1,4 +1,4 @@
-// $Id: ControlInteractionSummary.java,v 1.1 2006-01-23 22:42:13 grossb Exp $
+// $Id: ControlInteractionSummary.java,v 1.2 2006-02-09 21:49:50 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,24 +42,37 @@ import java.util.ArrayList;
  *
  * @author Benjamin Gross.
  */
-public class ControlInteractionSummary extends InteractionSummary {
+public class ControlInteractionSummary extends PhysicalInteractionSummary {
 
 	/**
 	 * The control type.
 	 */
 	private String controlType;
 
+  	/**
+ 	 * Our list of controllers or substrates (left side guys).
+ 	 */
+ 	private ArrayList controllerComponents = null;
+ 
+ 	/**
+	 * Our list of controlled or products (right side guys).
+ 	 */
+	private ArrayList controlledComponents = null;
+
 	/**
      * Constructor.
 	 *
+	 * @param participants ArrayList
 	 * @param controlType String
-	 * @param leftSideComponents ArrayList
-	 * @param rightSideComponents ArrayList
+	 * @param controllerComponents ArrayList
+	 * @param controlledComponents ArrayList
      */
-    public ControlInteractionSummary(String controlType, ArrayList leftSideComponents, ArrayList rightSideComponents) {
+    public ControlInteractionSummary(ArrayList participants, String controlType, ArrayList controllerComponents, ArrayList controlledComponents) {
 
 		// init our members
-		super(leftSideComponents, rightSideComponents);
+		super (participants);
+		this.controllerComponents = controllerComponents;
+		this.controlledComponents = controlledComponents;
 		this.controlType = controlType;
 	}
 
@@ -70,5 +83,23 @@ public class ControlInteractionSummary extends InteractionSummary {
 	 */
 	public String getControlType(){
 		return controlType;
+	}
+
+	/**
+	 * Returns the ArrayList of Controllers.
+	 *
+	 * @return ArrayList
+	 */
+	public ArrayList getControllers(){
+		return controllerComponents;
+	}
+
+	/**
+	 * Returns the ArrayList of Controlled.
+	 *
+	 * @return ArrayList
+	 */
+	public ArrayList getControlled(){
+		return controlledComponents;
 	}
 }

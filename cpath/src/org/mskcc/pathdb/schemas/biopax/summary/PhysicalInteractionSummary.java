@@ -1,4 +1,4 @@
-// $Id: PhysicalInteractionSummary.java,v 1.1 2006-01-23 22:42:22 grossb Exp $
+// $Id: PhysicalInteractionSummary.java,v 1.2 2006-02-09 21:49:55 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,13 +45,40 @@ import java.util.ArrayList;
 public class PhysicalInteractionSummary extends InteractionSummary {
 
 	/**
+	 * Interaction Type.
+	 */
+	private String interactionType;
+
+	/**
      * Constructor.
 	 *
-	 * @param components ArrayList
+	 * @param participants ArrayList
      */
-    public PhysicalInteractionSummary(ArrayList components) {
+    public PhysicalInteractionSummary(ArrayList participants) {
 
 		// init our members
-		super(components, null);
+		super(participants);
+	}
+
+	/**
+     * Constructor.
+	 *
+	 * @param interactionType String
+	 * @param participants ArrayList
+     */
+    public PhysicalInteractionSummary(String interactionType, ArrayList participants) {
+
+		// init our members
+		super(participants);
+		this.interactionType = interactionType;
+	}
+
+	/**
+	 * Returns the interaction type.
+	 *
+	 * @return String
+	 */
+	public String getInteractionType(){
+		return interactionType;
 	}
 }

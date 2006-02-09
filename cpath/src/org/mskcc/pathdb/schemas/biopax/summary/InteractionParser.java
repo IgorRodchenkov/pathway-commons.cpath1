@@ -1,4 +1,4 @@
-// $Id: InteractionParser.java,v 1.12 2006-01-30 23:00:31 grossb Exp $
+// $Id: InteractionParser.java,v 1.13 2006-02-09 21:49:35 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -132,24 +132,28 @@ public class InteractionParser {
         }
 
 		// get interaction information
-		ArrayList leftParticipants, rightParticipants;
 		if (biopaxConstants.isConversion(record.getSpecificType())){
 			// get conversion info
-			leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
-			rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
-			interactionSummary = new ConversionInteractionSummary(leftParticipants, rightParticipants);
+			ArrayList leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
+			ArrayList rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
+			ArrayList participants = new ArrayList(leftParticipants);
+			participants.addAll(rightParticipants);
+			interactionSummary = new ConversionInteractionSummary(participants, leftParticipants, rightParticipants);
 		}
 		else if (biopaxConstants.isControl(record.getSpecificType())){
 			// get control info
-			leftParticipants = getInteractionInformation("/*/bp:CONTROLLER/*");
-			rightParticipants = getInteractionInformation("/*/bp:CONTROLLED");
+			ArrayList controllers = getInteractionInformation("/*/bp:CONTROLLER/*");
+			ArrayList controlled = getInteractionInformation("/*/bp:CONTROLLED");
+			ArrayList participants = new ArrayList(controllers);
+			participants.addAll(controlled);
 			String controlType = getControlType("/*/bp:CONTROL-TYPE");
-			interactionSummary = new ControlInteractionSummary(controlType, leftParticipants, rightParticipants);
+			interactionSummary = new ControlInteractionSummary(participants, controlType, controllers, controlled);
 		}
 		else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
 			// get physical interaction info
-			leftParticipants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
-			interactionSummary = new PhysicalInteractionSummary(leftParticipants);
+			ArrayList participants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
+			String interactionType = getInteractionType("/*/bp:INTERACTION-TYPE/openControlledVocabulary/TERM");
+			interactionSummary = new PhysicalInteractionSummary(interactionType, participants);
 		}
 
 		// outta here
@@ -186,7 +190,7 @@ public class InteractionParser {
                 // get our next element to process
                 Element e = (Element) list.get(lc);
                 // create new physical interaction component for this participant
-                InteractionSummaryComponent interactionSummaryComponent = null;
+                ParticipantSummaryComponent participantSummaryComponent = null;
                 // special processing of controlled
                 if (processingControlled){
                     Attribute rdfResourceAttribute =
@@ -206,18 +210,18 @@ public class InteractionParser {
                         Long recordID = new Long(cookedKey);
                         // add to ArrayList
                         if (physicalEntity != null){
-                            interactionSummaryComponent = new InteractionSummaryComponent();
-                            interactionSummaryComponent.setName(physicalEntity);
-                            interactionSummaryComponent.setRecordID(recordID.longValue());
+                            participantSummaryComponent = new ParticipantSummaryComponent();
+                            participantSummaryComponent.setName(physicalEntity);
+                            participantSummaryComponent.setRecordID(recordID.longValue());
                         }
                     }
                 }
                 else{
-                    interactionSummaryComponent = BioPaxRecordUtil.createInteractionSummaryComponent(record, e);
+                    participantSummaryComponent = BioPaxRecordUtil.createInteractionSummaryComponent(record, e);
                 }
                 // add component to participant ArrayList
-                if (interactionSummaryComponent != null){
-                    participantArrayList.add(interactionSummaryComponent);
+                if (participantSummaryComponent != null){
+                    participantArrayList.add(participantSummaryComponent);
                 }
             }
         }
@@ -254,5 +258,29 @@ public class InteractionParser {
 
 		// outta here
         return controlType;
+    }
+
+    /**
+     * Gets Interaction Type.
+     *
+     * @param query String
+     * @return String
+     * @throws JDOMException
+     */
+    private String getInteractionType(String query) throws JDOMException {
+
+        // our list to return
+        String interactionType = null;
+
+		// lookup control type in xml blob
+		XPath xpath = XPath.newInstance(query);
+		xpath.addNamespace("bp", root.getNamespaceURI());
+		Element e = (Element) xpath.selectSingleNode(root);
+		if (e != null && e.getTextNormalize().length() > 0) {
+			interactionType = e.getTextNormalize();
+		}
+
+		// outta here
+        return interactionType;
     }
 }

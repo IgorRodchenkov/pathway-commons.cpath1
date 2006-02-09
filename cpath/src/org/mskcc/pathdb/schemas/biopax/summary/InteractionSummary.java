@@ -1,4 +1,4 @@
-// $Id: InteractionSummary.java,v 1.2 2006-01-23 22:41:48 grossb Exp $
+// $Id: InteractionSummary.java,v 1.3 2006-02-09 21:50:01 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,43 +45,27 @@ import java.util.ArrayList;
 public class InteractionSummary {
 
 	/**
-	 * Our vector of controllers or substrates (left side guys).
+	 * A list of interaction participants.
 	 */
-	private ArrayList leftSideComponents = null;
-
-	/**
-	 * Our vector of controlled or products (right side guys).
-	 */
-	private ArrayList rightSideComponents = null;
+	private ArrayList participants;
 
 	/**
      * Constructor.
 	 *
-	 * @param leftSideComponents ArrayList
-	 * @param rightSideComponents ArrayList
+	 * @param participants ArrayList
      */
-    public InteractionSummary(ArrayList leftSideComponents, ArrayList rightSideComponents) {
+    public InteractionSummary(ArrayList participants){
 
 		// init our members
-		this.leftSideComponents = leftSideComponents;
-		this.rightSideComponents = rightSideComponents;
+		this.participants = participants;
 	}
 
 	/**
-	 * Returns the ArrayList of leftSideComponents.
+	 * Returns the ArrayList of participants.
 	 *
 	 * @return ArrayList
 	 */
-	public ArrayList getLeftSideComponents(){
-		return leftSideComponents;
-	}
-
-	/**
-	 * Returns the ArrayList of rightSideComponents.
-	 *
-	 * @return ArrayList
-	 */
-	public ArrayList getRightSideComponents(){
-		return rightSideComponents;
+	public ArrayList getParticipants(){
+		return participants;
 	}
 }

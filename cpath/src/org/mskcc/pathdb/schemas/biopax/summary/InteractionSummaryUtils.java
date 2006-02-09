@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.8 2006-01-31 15:03:33 grossb Exp $
+// $Id: InteractionSummaryUtils.java,v 1.9 2006-02-09 21:49:17 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -85,12 +85,15 @@ public class InteractionSummaryUtils {
         ArrayList components;
         String summaryString = "";
 
-        // left side
-        components = interactionSummary.getLeftSideComponents();
+        // set participants
+        components = (interactionSummary instanceof ControlInteractionSummary) ?
+			((ControlInteractionSummary)interactionSummary).getControllers() :
+			((interactionSummary instanceof ConversionInteractionSummary) ?
+			((ConversionInteractionSummary)interactionSummary).getLeftSideComponents() : interactionSummary.getParticipants());
 		if (components != null){
 			cnt = components.size();
 			for (lc = 0; lc < cnt; lc++){
-				InteractionSummaryComponent summaryComponent = (InteractionSummaryComponent)components.get(lc);
+				ParticipantSummaryComponent summaryComponent = (ParticipantSummaryComponent)components.get(lc);
 				summaryString += "<a href=\"record.do?id=" + String.valueOf(summaryComponent.getRecordID()) +
 					"\">" + summaryComponent.getName() + "</a>";
 				// add location:feature string
@@ -115,11 +118,14 @@ public class InteractionSummaryUtils {
 		}
 
 		// right side
-		components = interactionSummary.getRightSideComponents();
+        components = (interactionSummary instanceof ControlInteractionSummary) ?
+			((ControlInteractionSummary)interactionSummary).getControlled() :
+			((interactionSummary instanceof ConversionInteractionSummary) ?
+			 ((ConversionInteractionSummary)interactionSummary).getRightSideComponents() : null);
 		if (components != null){
             cnt = components.size();
             for (lc = 0; lc < cnt; lc++){
-                InteractionSummaryComponent summaryComponent = (InteractionSummaryComponent)components.get(lc);
+                ParticipantSummaryComponent summaryComponent = (ParticipantSummaryComponent)components.get(lc);
                 summaryString += "<a href=\"record.do?id=" + String.valueOf(summaryComponent.getRecordID()) +
                               "\">" + summaryComponent.getName() + "</a>";
                 // add location:feature string
@@ -200,21 +206,21 @@ public class InteractionSummaryUtils {
     /**
      * Creates location:feature string.
      *
-     * @param interactionSummaryComponent InteractionSummaryComponent
+     * @param participantSummaryComponent ParticipantSummaryComponent
      * @return String
      */
-    public static String createSummaryFeatureString(InteractionSummaryComponent interactionSummaryComponent) {
+    public static String createSummaryFeatureString(ParticipantSummaryComponent participantSummaryComponent) {
 
         // string to return
         String summaryFeatureString = "";
 
         // get data from component
-        String cellularLocation = interactionSummaryComponent.getCellularLocation();
-        ArrayList featureList = interactionSummaryComponent.getFeatureList();
+        String cellularLocation = participantSummaryComponent.getCellularLocation();
+        ArrayList featureList = participantSummaryComponent.getFeatureList();
         int cnt = (featureList != null) ? featureList.size() : 0;
 
         if (cellularLocation != null && cellularLocation.length() > 0){
-            summaryFeatureString = "(" + interactionSummaryComponent.getCellularLocation() + ":";
+            summaryFeatureString = "(" + participantSummaryComponent.getCellularLocation() + ":";
         }
 
         // process feature list

@@ -1,4 +1,4 @@
-// $Id: TestInteractionParser.java,v 1.3 2006-01-30 14:23:36 grossb Exp $
+// $Id: TestInteractionParser.java,v 1.4 2006-02-09 21:53:36 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,7 +40,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.ControlInteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.ConversionInteractionSummary;
-import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryComponent;
+import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
 
 /**
  * Tests the InteractionParser Class.
@@ -65,9 +65,9 @@ public class TestInteractionParser extends TestCase {
 	InteractionSummary interactionSummary = null;
 
 	/**
-	 * InteractionSummaryComponent ref.
+	 * ParticipantSummaryComponent ref.
 	 */
-	InteractionSummaryComponent summaryComponent = null;
+	ParticipantSummaryComponent summaryComponent = null;
 
     /**
      * Tests invalid cpath record id handling.
@@ -105,28 +105,25 @@ public class TestInteractionParser extends TestCase {
 
 		// this should be a control interaction summary
 		assertTrue(interactionSummary instanceof PhysicalInteractionSummary);
+		PhysicalInteractionSummary physicalInteractionSummary = (PhysicalInteractionSummary)interactionSummary;
 
 		// get left side components list
-		components = interactionSummary.getLeftSideComponents();
+		components = physicalInteractionSummary.getParticipants();
 		cnt = components.size();
  		assertTrue(cnt == 2);
 
-		// get left hand components
-		summaryComponent = (InteractionSummaryComponent)components.get(0);
+		// get participants
+		summaryComponent = (ParticipantSummaryComponent)components.get(0);
 		assertEquals("AR", summaryComponent.getName());
 		assertTrue(18 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
 		assertTrue(null == summaryComponent.getFeatureList());
 
-		summaryComponent = (InteractionSummaryComponent)components.get(1);
+		summaryComponent = (ParticipantSummaryComponent)components.get(1);
 		assertEquals("ETV5", summaryComponent.getName());
 		assertTrue(19 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
 		assertTrue(null == summaryComponent.getFeatureList());
-
-		// physical interaction has no right compontents
-		components = interactionSummary.getRightSideComponents();
-		assertTrue(null == components);
 	}
 
     /**
@@ -145,29 +142,30 @@ public class TestInteractionParser extends TestCase {
 
 		// this should be a control interaction summary
 		assertTrue(interactionSummary instanceof ControlInteractionSummary);
+		ControlInteractionSummary controlInteractionSummary = (ControlInteractionSummary)interactionSummary;
 
 		// assert control type
-		assertEquals("ACTIVATION", ((ControlInteractionSummary)interactionSummary).getControlType());
+		assertEquals("ACTIVATION", controlInteractionSummary.getControlType());
 
-		// get left side components list
-		components = interactionSummary.getLeftSideComponents();
+		// get controllers
+		components = controlInteractionSummary.getControllers();
 		cnt = components.size();
 		assertTrue(cnt == 1);
 
-		// get specific left component
-		summaryComponent = (InteractionSummaryComponent)components.get(0);
+		// get specific controller
+		summaryComponent = (ParticipantSummaryComponent)components.get(0);
 		assertEquals("MAPK1", summaryComponent.getName());
 		assertTrue(22 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
 		assertTrue(null == summaryComponent.getFeatureList());
 
-		// get right side components list
-		components = interactionSummary.getRightSideComponents();
+		// get controlled
+		components = controlInteractionSummary.getControlled();
 		cnt = components.size();
 		assertTrue(cnt == 1);
 
-		// get specific right component
-		summaryComponent = (InteractionSummaryComponent)components.get(0);
+		// get specific controlled
+		summaryComponent = (ParticipantSummaryComponent)components.get(0);
 		assertEquals("Phosphorylation", summaryComponent.getName());
 		assertTrue(21 == summaryComponent.getRecordID());
 		assertTrue(null == summaryComponent.getCellularLocation());
@@ -191,26 +189,27 @@ public class TestInteractionParser extends TestCase {
 
 		// this should be a conversion interaction summary
 		assertTrue(interactionSummary instanceof ConversionInteractionSummary);
+		ConversionInteractionSummary conversionInteractionSummary = (ConversionInteractionSummary)interactionSummary;
 
 		// get left side components list
-		components = interactionSummary.getLeftSideComponents();
+		components = conversionInteractionSummary.getLeftSideComponents();
 		cnt = components.size();
 		assertTrue(cnt == 1);
 
 		// get specific left component
-		summaryComponent = (InteractionSummaryComponent)components.get(0);
+		summaryComponent = (ParticipantSummaryComponent)components.get(0);
 		assertEquals("AR", summaryComponent.getName());
 		assertTrue(18 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
 		assertTrue(null == summaryComponent.getFeatureList());
 
 		// get right side components list
-		components = interactionSummary.getRightSideComponents();
+		components = conversionInteractionSummary.getRightSideComponents();
 		cnt = components.size();
 		assertTrue(cnt == 1);
 
 		// get specific right component
-		summaryComponent = (InteractionSummaryComponent)components.get(0);
+		summaryComponent = (ParticipantSummaryComponent)components.get(0);
 		assertEquals("AR", summaryComponent.getName());
 		assertTrue(18 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
