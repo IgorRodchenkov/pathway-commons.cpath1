@@ -54,7 +54,7 @@ public class TestInteractionSummaryUtils extends TestCase {
             + "true;\" onmouseout=\"nd(); return true;\">ADP</a> + <a href=\"record.do?id=12\" "
             + "onmouseover=\"drc('Also known as:  <UL><LI>ATP:D-glucose 6-phosphotransferase"
             + "</LI><LI>glucose ATP phosphotransferase</LI></UL>', 'a-D-glu-6-p in "
-            + "<FONT COLOR=LIGHTGREEN>cytoplasm</FONT>'); return true;\" onmouseout=\"nd(); " 
+            + "<FONT COLOR=LIGHTGREEN>cytoplasm</FONT>'); return true;\" onmouseout=\"nd(); "
             + "return true;\">a-D-glu-6-p</a>", summary);
     }
 
@@ -69,5 +69,17 @@ public class TestInteractionSummaryUtils extends TestCase {
                 entityParser.getEntitySummary();
         String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
         assertTrue (summary.indexOf("AR (Phosphorylated)")>0);
+    }
+
+    /**
+     * Validate the summary of a Control Interaction.
+     *
+     * @throws Exception All Exceptions.
+     */
+    public void testControlInteractionSummary() throws Exception {
+        EntitySummaryParser entityParser = new EntitySummaryParser(20);
+        InteractionSummary interactionSummary = (InteractionSummary)
+                entityParser.getEntitySummary();
+        String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
     }
 }
