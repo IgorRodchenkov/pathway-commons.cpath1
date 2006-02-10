@@ -1,4 +1,4 @@
-// $Id: ControlInteractionSummary.java,v 1.4 2006-02-10 21:19:19 cerami Exp $
+// $Id: ControlInteractionSummary.java,v 1.5 2006-02-10 21:43:20 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -92,7 +92,7 @@ public class ControlInteractionSummary extends PhysicalInteractionSummary {
 	/**
 	 * Returns the ArrayList of Controllers.
 	 *
-	 * @return ArrayList
+	 * @return ArrayList of ParticipantSummaryComponents
 	 */
 	public ArrayList getControllers(){
 		return controllerComponents;
@@ -101,7 +101,7 @@ public class ControlInteractionSummary extends PhysicalInteractionSummary {
 	/**
 	 * Returns the ArrayList of Controlled.
 	 *
-	 * @return ArrayList
+	 * @return ArrayList of ParticipantSummaryComponent or EntitySummary
 	 */
 	public ArrayList getControlled(){
 		return controlledComponents;
