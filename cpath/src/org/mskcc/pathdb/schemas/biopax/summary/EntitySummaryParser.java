@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.5 2006-02-10 23:12:04 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.6 2006-02-10 23:13:24 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -308,7 +308,6 @@ public class EntitySummaryParser {
 
 		// lookup control type in xml blob
 		XPath xpath = XPath.newInstance(query);
-		System.out.println("query: " + query);
 		xpath.addNamespace("bp", root.getNamespaceURI());
 		Element e = (Element) xpath.selectSingleNode(root);
 		if (e != null && e.getTextNormalize().length() > 0) {
