@@ -16,7 +16,7 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
 				 org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary,
-				 org.mskcc.pathdb.schemas.biopax.summary.InteractionParser"%>
+				 org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -56,6 +56,10 @@
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
+<!-- Courtesy of SimplytheBest.net - http://simplythebest.net/scripts/ -->
+<div id="overDiv" style="position:absolute; visibility:hide; z-index:1;">
+</div>
+<script LANGUAGE="JavaScript" SRC="jsp/javascript/overlib.js"></script>
 
 <% if (record != null) { %>
 <%
@@ -87,10 +91,10 @@
 		<TABLE>
 <%
 		// init an interaction parser
-		InteractionParser interactionParser = new InteractionParser(record.getId());
+		EntitySummaryParser entityParser = new EntitySummaryParser(record.getId());
 		long interactionSummaryTime = 0;
 		if (timingMode) startTime = Calendar.getInstance().getTimeInMillis();
-		InteractionSummary interactionSummary = interactionParser.getInteractionSummary();
+		InteractionSummary interactionSummary = (InteractionSummary) entityParser.getEntitySummary();
 		if (timingMode) interactionSummaryTime = Calendar.getInstance().getTimeInMillis() - startTime;	
 		// display interaction summary
 		if (interactionSummary != null){
