@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.4 2006-02-10 22:14:54 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.5 2006-02-10 23:12:04 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,9 +53,7 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
-import org.mskcc.pathdb.util.rdf.RdfQuery;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.util.biopax.BioPaxUtil;
 import org.mskcc.pathdb.model.CPathRecord;
 
 /**
@@ -302,22 +300,19 @@ public class EntitySummaryParser {
      * @param query String
      * @return String
      * @throws JDOMException
-	 * @throws IOException
      */
-    private String getInteractionType(String query) throws JDOMException, IOException {
+    private String getInteractionType(String query) throws JDOMException {
 
         // our list to return
         String interactionType = null;
 
-		// setup for rdf query
-        StringReader reader = new StringReader (record.getXmlContent());
-		BioPaxUtil bpUtil = new BioPaxUtil(reader);
-		RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
-
-		// try for cellular location term first
-        Element interactionTypeElement = rdfQuery.getNode(root, query);
-		if (interactionTypeElement != null){
-			interactionType = interactionTypeElement.getTextNormalize();
+		// lookup control type in xml blob
+		XPath xpath = XPath.newInstance(query);
+		System.out.println("query: " + query);
+		xpath.addNamespace("bp", root.getNamespaceURI());
+		Element e = (Element) xpath.selectSingleNode(root);
+		if (e != null && e.getTextNormalize().length() > 0) {
+			interactionType = e.getTextNormalize();
 		}
 
 		// outta here
