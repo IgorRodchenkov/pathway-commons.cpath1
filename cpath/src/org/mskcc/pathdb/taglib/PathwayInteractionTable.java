@@ -1,4 +1,4 @@
-// $Id: PathwayInteractionTable.java,v 1.19 2006-01-31 15:02:05 grossb Exp $
+// $Id: PathwayInteractionTable.java,v 1.20 2006-02-10 20:09:38 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,11 +34,12 @@ package org.mskcc.pathdb.taglib;
 // imports
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
-import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryException;
+import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryException;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.jdom.JDOMException;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Custom jsp tag for displaying interactions
@@ -66,10 +67,13 @@ public class PathwayInteractionTable extends HtmlTable {
      *
      * @throws DaoException
      * @throws IOException
-     * @throws InteractionSummaryException
+     * @throws EntitySummaryException
      * @throws JDOMException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
-    protected void subDoStartTag() throws DaoException, IOException, InteractionSummaryException, JDOMException {
+    protected void subDoStartTag() throws DaoException, IOException, EntitySummaryException, JDOMException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         // here we go
         if (interactionSummary != null){
@@ -86,15 +90,18 @@ public class PathwayInteractionTable extends HtmlTable {
      *
      * @throws DaoException
      * @throws IOException
-     * @throws InteractionSummaryException
+     * @throws EntitySummaryException
      * @throws JDOMException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
-    private void outputRecords() throws DaoException, IOException, InteractionSummaryException, JDOMException {
+    private void outputRecords() throws DaoException, IOException, EntitySummaryException, JDOMException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         //easy huh ?
-		String interactionSummaryString = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
-		if (interactionSummaryString != null){
-			append(interactionSummaryString);
-		}
+        String interactionSummaryString = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
+        if (interactionSummaryString != null){
+            append(interactionSummaryString);
+        }
     }
 }

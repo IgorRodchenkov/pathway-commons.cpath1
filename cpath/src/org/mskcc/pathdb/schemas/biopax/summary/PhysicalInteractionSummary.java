@@ -1,4 +1,4 @@
-// $Id: PhysicalInteractionSummary.java,v 1.2 2006-02-09 21:49:55 grossb Exp $
+// $Id: PhysicalInteractionSummary.java,v 1.3 2006-02-10 20:08:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,13 +51,8 @@ public class PhysicalInteractionSummary extends InteractionSummary {
 
 	/**
      * Constructor.
-	 *
-	 * @param participants ArrayList
      */
-    public PhysicalInteractionSummary(ArrayList participants) {
-
-		// init our members
-		super(participants);
+    public PhysicalInteractionSummary() {
 	}
 
 	/**

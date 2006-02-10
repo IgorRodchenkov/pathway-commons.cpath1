@@ -41,17 +41,7 @@ import java.util.ArrayList;
  *
  * @author Benjamin Gross.
  */
-public class ParticipantSummaryComponent {
-
-	/**
-	 * The component name.
-	 */
-	private String name;
-
-	/**
-	 * The component id.
-	 */
-	private long recordID;
+public class ParticipantSummaryComponent extends BioPaxRecordSummary {
 
 	/**
 	 * The cellular location.
@@ -64,39 +54,23 @@ public class ParticipantSummaryComponent {
 	private ArrayList featureList;
 
 	/**
-	 * Set the component name.
+     * Constructor.
 	 *
-	 * @param name String
-	 */
-	public void setName(String name){
-		this.name = name;
-	}
+	 * @param biopaxRecordSummary BioPaxRecordSummary
+     */
+    public ParticipantSummaryComponent(BioPaxRecordSummary biopaxRecordSummary){
 
-	/**
-	 * Returns the component name.
-	 *
-	 * @return String
-	 */
-	public String getName(){
-		return name;
-	}
-
-	/**
-	 * Sets the record id.
-	 *
-	 * @param recordID long
-	 */
-	public void setRecordID(long recordID){
-		this.recordID = recordID;
-	}
-
-	/**
-	 * Returns the record id.
-	 *
-	 * @return long
-	 */
-	public long getRecordID(){
-		return recordID;
+		// init our members
+		recordID = biopaxRecordSummary.getRecordID();
+		type = biopaxRecordSummary.getType();
+		name = biopaxRecordSummary.getName();
+		shortName = biopaxRecordSummary.getShortName();
+		synonyms = biopaxRecordSummary.getSynonyms();
+		organism = biopaxRecordSummary.getOrganism();
+		dataSource = biopaxRecordSummary.getDataSource();
+		availability = biopaxRecordSummary.getAvailability();
+		externalLinks = biopaxRecordSummary.getExternalLinks();
+		comment = biopaxRecordSummary.getComment();
 	}
 
 	/**

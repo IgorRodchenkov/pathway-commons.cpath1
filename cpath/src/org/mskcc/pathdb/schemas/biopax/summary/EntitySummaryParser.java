@@ -1,4 +1,4 @@
-// $Id: InteractionParser.java,v 1.13 2006-02-09 21:49:35 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.1 2006-02-10 20:07:53 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.StringReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.jdom.Attribute;
 import org.jdom.Element;
@@ -65,7 +66,7 @@ import org.mskcc.pathdb.model.CPathRecord;
  *
  * @author Benjamin Gross.
  */
-public class InteractionParser {
+public class EntitySummaryParser {
 
     /**
      * Reference to XML Root.
@@ -89,7 +90,7 @@ public class InteractionParser {
      * @throws DaoException
 	 * @throws IllegalArgumentException
      */
-    public InteractionParser(long recordID) throws DaoException, IllegalArgumentException {
+    public EntitySummaryParser(long recordID) throws DaoException, IllegalArgumentException {
 
         // setup biopax constants
         biopaxConstants = new BioPaxConstants();
@@ -109,56 +110,55 @@ public class InteractionParser {
     /**
      * Finds/returns physical interaction information.
      *
-     * @return InteractionSummary
+     * @return EntitySummary
      * @throws IOException
      * @throws JDOMException
-     * @throws InteractionSummaryException
+     * @throws EntitySummaryException
      * @throws DaoException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
-    public InteractionSummary getInteractionSummary()
-            throws IOException, JDOMException, InteractionSummaryException, DaoException {
+    public EntitySummary getEntitySummary()
+            throws IOException, JDOMException, EntitySummaryException, DaoException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
-		// ref to return
-		InteractionSummary interactionSummary = null;
+        // ref to return
+        EntitySummary entitySummary = null;
 
         // used for xml parsing
         SAXBuilder builder = new SAXBuilder();
         StringReader reader = new StringReader (record.getXmlContent());
         Document bioPaxDoc = builder.build(reader);
 
-		// get the doc root
+        // get the doc root
         if (bioPaxDoc != null){
             root = bioPaxDoc.getRootElement();
         }
 
-		// get interaction information
-		if (biopaxConstants.isConversion(record.getSpecificType())){
-			// get conversion info
-			ArrayList leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
-			ArrayList rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
-			ArrayList participants = new ArrayList(leftParticipants);
-			participants.addAll(rightParticipants);
-			interactionSummary = new ConversionInteractionSummary(participants, leftParticipants, rightParticipants);
-		}
-		else if (biopaxConstants.isControl(record.getSpecificType())){
-			// get control info
-			ArrayList controllers = getInteractionInformation("/*/bp:CONTROLLER/*");
-			ArrayList controlled = getInteractionInformation("/*/bp:CONTROLLED");
-			ArrayList participants = new ArrayList(controllers);
-			participants.addAll(controlled);
-			String controlType = getControlType("/*/bp:CONTROL-TYPE");
-			interactionSummary = new ControlInteractionSummary(participants, controlType, controllers, controlled);
-		}
-		else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
-			// get physical interaction info
-			ArrayList participants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
-			String interactionType = getInteractionType("/*/bp:INTERACTION-TYPE/openControlledVocabulary/TERM");
-			interactionSummary = new PhysicalInteractionSummary(interactionType, participants);
-		}
+        // get interaction information
+        if (biopaxConstants.isConversion(record.getSpecificType())){
+            // get conversion info
+            ArrayList leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
+            ArrayList rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
+            entitySummary = new ConversionInteractionSummary(leftParticipants, rightParticipants);
+        }
+        else if (biopaxConstants.isControl(record.getSpecificType())){
+            // get control info
+            ArrayList controllers = getInteractionInformation("/*/bp:CONTROLLER/*");
+            ArrayList controlled = getInteractionInformation("/*/bp:CONTROLLED");
+            String controlType = getControlType("/*/bp:CONTROL-TYPE");
+            entitySummary = new ControlInteractionSummary(controlType, controllers, controlled);
+        }
+        else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+            // get physical interaction info
+            ArrayList participants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
+            String interactionType = getInteractionType("/*/bp:INTERACTION-TYPE/openControlledVocabulary/TERM");
+            entitySummary = new PhysicalInteractionSummary(interactionType, participants);
+        }
 
-		// outta here
-		return interactionSummary;
-	}
+        // outta here
+        return entitySummary;
+    }
 
     /**
      * Gets Interaction Participants.
@@ -166,12 +166,15 @@ public class InteractionParser {
      * @param query String
      * @return ArrayList
      * @throws JDOMException
-     * @throws InteractionSummaryException
+     * @throws EntitySummaryException
      * @throws DaoException
      * @throws IOException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
     private ArrayList getInteractionInformation(String query)
-            throws JDOMException, InteractionSummaryException, DaoException, IOException {
+            throws JDOMException, EntitySummaryException, DaoException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         // we dont process controlled queries as all others
         boolean processingControlled = (query.equals("/*/bp:CONTROLLED"));
@@ -184,43 +187,20 @@ public class InteractionParser {
         xpath.addNamespace("bp", root.getNamespaceURI());
         List list = xpath.selectNodes(root);
 
-        // interate through results - all physicalentity or sequence participants
+        // interate through results
         if (list != null && list.size() > 0) {
             for (int lc = 0; lc < list.size(); lc++) {
                 // get our next element to process
                 Element e = (Element) list.get(lc);
-                // create new physical interaction component for this participant
-                ParticipantSummaryComponent participantSummaryComponent = null;
                 // special processing of controlled
                 if (processingControlled){
-                    Attribute rdfResourceAttribute =
-                        e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
-                    if (rdfResourceAttribute != null) {
-                        String rdfKey = RdfUtil.removeHashMark
-                            (rdfResourceAttribute.getValue());
-                        // get physical entity
-                        String physicalEntity = BioPaxRecordUtil.getPhysicalEntityName(rdfKey);
-                        // cook id to save
-                        int indexOfID = rdfKey.lastIndexOf("-");
-                        if (indexOfID == -1){
-                            throw new InteractionSummaryException("Corrupt Record ID: " + rdfResourceAttribute.getValue());
-                        }
-                        indexOfID += 1;
-                        String cookedKey = rdfKey.substring(indexOfID);
-                        Long recordID = new Long(cookedKey);
-                        // add to ArrayList
-                        if (physicalEntity != null){
-                            participantSummaryComponent = new ParticipantSummaryComponent();
-                            participantSummaryComponent.setName(physicalEntity);
-                            participantSummaryComponent.setRecordID(recordID.longValue());
-                        }
-                    }
+                    // we cast return as object because it could be a ParticipantSummaryComponent or another EntitySummary
+                    Object participant = getControlledInteractionType(e);
+                    if (participant != null) participantArrayList.add(participant);
                 }
                 else{
-                    participantSummaryComponent = BioPaxRecordUtil.createInteractionSummaryComponent(record, e);
-                }
-                // add component to participant ArrayList
-                if (participantSummaryComponent != null){
+                    // not processing controlled, we need to create a participant summary component
+                    ParticipantSummaryComponent participantSummaryComponent = BioPaxRecordUtil.createInteractionSummaryComponent(record, e);
                     participantArrayList.add(participantSummaryComponent);
                 }
             }
@@ -228,6 +208,59 @@ public class InteractionParser {
 
         // outta here
         return (participantArrayList.size() > 0) ? participantArrayList : null;
+    }
+
+    /**
+     * Gets Controlled Interaction Information.
+     *
+     * @param element Element
+     * @return Object
+     * @throws EntitySummaryException
+     * @throws DaoException
+     * @throws IOException
+     * @throws JDOMException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    private Object getControlledInteractionType(Element element) throws EntitySummaryException, DaoException, IOException, JDOMException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+
+        // this is the object to return, but you didnt need me to tell you that
+        Object objectToReturn = null;
+
+        // get this element's attribute
+        Attribute rdfResourceAttribute =
+            element.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+
+        // attribute not null
+        if (rdfResourceAttribute != null) {
+            // lets get the rdf key
+            String rdfKey = RdfUtil.removeHashMark
+                (rdfResourceAttribute.getValue());
+            // cook id to save
+            int indexOfID = rdfKey.lastIndexOf("-");
+            if (indexOfID == -1){
+                throw new EntitySummaryException("Corrupt Record ID: " + rdfResourceAttribute.getValue());
+            }
+            indexOfID += 1;
+            String cookedKey = rdfKey.substring(indexOfID);
+            Long recordID = new Long(cookedKey);
+            // get cpath record for this id
+            DaoCPath cPath = DaoCPath.getInstance();
+            CPathRecord record = cPath.getRecordById(recordID.longValue());
+            // is it an interaction ? if so, we create an entitySummary to add to our participant list
+            if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+                EntitySummaryParser entitySummaryParser = new EntitySummaryParser(recordID.longValue());
+                objectToReturn = entitySummaryParser.getEntitySummary();
+            }
+            else{
+                // this isn't an interaction, lets create a participant summary component
+                objectToReturn = BioPaxRecordUtil.createInteractionSummaryComponent(record, element);
+            }
+        }
+
+        // outta here
+        return objectToReturn;
     }
 
     /**

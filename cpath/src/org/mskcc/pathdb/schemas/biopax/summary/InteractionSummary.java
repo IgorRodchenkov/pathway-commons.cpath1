@@ -1,4 +1,4 @@
-// $Id: InteractionSummary.java,v 1.3 2006-02-09 21:50:01 grossb Exp $
+// $Id: InteractionSummary.java,v 1.4 2006-02-10 20:08:39 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,12 +42,18 @@ import java.util.ArrayList;
  *
  * @author Benjamin Gross.
  */
-public class InteractionSummary {
+public class InteractionSummary extends EntitySummary {
 
 	/**
 	 * A list of interaction participants.
 	 */
-	private ArrayList participants;
+	protected ArrayList participants = new ArrayList();
+
+	/**
+     * Constructor.
+     */
+    public InteractionSummary(){
+	}
 
 	/**
      * Constructor.

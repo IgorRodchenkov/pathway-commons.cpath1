@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.9 2006-02-09 21:52:42 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.10 2006-02-10 20:09:53 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -156,9 +156,12 @@ public class BioPaxRecordUtil {
      * @throws JDOMException
      * @throws IOException
 	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
      */
     public static ParticipantSummaryComponent createInteractionSummaryComponent(CPathRecord record, Element e)
-            throws DaoException, JDOMException, IOException, IllegalArgumentException {
+            throws DaoException, JDOMException, IOException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
 		// check record for validity
 		if (record == null){
@@ -171,8 +174,11 @@ public class BioPaxRecordUtil {
 		// success flags
         boolean setPhysicalEntitySuccess, setCellularLocationSuccess, setFeatureListSuccess;
 
+		// create a biopaxRecordSummary
+		BioPaxRecordSummary biopaxRecordSummary = createBioPaxRecordSummary(record);
+
         // this is object to return
-        ParticipantSummaryComponent participantSummaryComponent = new ParticipantSummaryComponent();
+        ParticipantSummaryComponent participantSummaryComponent = new ParticipantSummaryComponent(biopaxRecordSummary);
 
         // first get physical entity
         setPhysicalEntitySuccess = BioPaxRecordUtil.setPhysicalEntity(participantSummaryComponent, e);
@@ -299,7 +305,7 @@ public class BioPaxRecordUtil {
                 indexOfID += 1;
                 String cookedKey = rdfKey.substring(indexOfID);
                 Long recordID = new Long(cookedKey);
-                participantSummaryComponent.setRecordID(recordID.longValue());
+                ((BioPaxRecordSummary)participantSummaryComponent).setRecordID(recordID.longValue());
                 return true;
             }
         }

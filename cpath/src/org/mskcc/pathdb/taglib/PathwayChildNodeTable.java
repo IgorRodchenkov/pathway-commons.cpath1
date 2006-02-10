@@ -1,4 +1,4 @@
-// $Id: PathwayChildNodeTable.java,v 1.14 2006-01-31 13:49:50 grossb Exp $
+// $Id: PathwayChildNodeTable.java,v 1.15 2006-02-10 20:09:29 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,13 +33,15 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
 import org.jdom.JDOMException;
 
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
-import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryException;
+import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryException;
 
 /**
  * Custom jsp tag for displaying pathway child node (1 level deep)
@@ -88,19 +90,22 @@ public class PathwayChildNodeTable extends HtmlTable {
      * Output the Interaction Information.
      * @throws DaoException
      * @throws IOException
-     * @throws InteractionSummaryException
+     * @throws EntitySummaryException
      * @throws JDOMException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
-    private void outputRecords() throws DaoException, IOException, InteractionSummaryException, JDOMException {
+    private void outputRecords() throws DaoException, IOException, EntitySummaryException, JDOMException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         // interaction summary
         String interactionString = InteractionSummaryUtils.getInteractionSummary(record.getId());
-		if (interactionString != null){
-			append("<td>" + interactionString + "</td>");
+        if (interactionString != null){
+            append("<td>" + interactionString + "</td>");
 
-			// details hyperlink
-			String uri = "record.do?id=" + recID;
-			append("<td><a href=\"" + uri + "\">View Details</a></td>");
-		}
+            // details hyperlink
+            String uri = "record.do?id=" + recID;
+            append("<td><a href=\"" + uri + "\">View Details</a></td>");
+        }
     }
 }
