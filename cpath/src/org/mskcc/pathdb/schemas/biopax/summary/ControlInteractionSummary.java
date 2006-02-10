@@ -1,4 +1,4 @@
-// $Id: ControlInteractionSummary.java,v 1.3 2006-02-10 19:58:24 grossb Exp $
+// $Id: ControlInteractionSummary.java,v 1.4 2006-02-10 21:19:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,9 +72,13 @@ public class ControlInteractionSummary extends PhysicalInteractionSummary {
 		this.controllerComponents = controllerComponents;
 		this.controlledComponents = controlledComponents;
 		this.controlType = controlType;
-		participants.addAll(controllerComponents);
-		participants.addAll(controlledComponents);
-	}
+        if (controllerComponents != null) {
+            participants.addAll(controllerComponents);
+        }
+        if (controlledComponents != null) {
+            participants.addAll(controlledComponents);
+        }
+    }
 
 	/**
 	 * Returns the control type.
