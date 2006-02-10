@@ -1,4 +1,4 @@
-// $Id: EntitySummary.java,v 1.1 2006-02-10 19:59:04 grossb Exp $
+// $Id: EntitySummary.java,v 1.2 2006-02-10 20:34:12 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,7 +45,7 @@ public class EntitySummary {
 	/**
 	 * CPath record ID of the record that this class summarizes.
 	 */
-	private long id;
+	private long recordID;
 
 	/**
 	 * The name of the entity.
@@ -66,14 +66,14 @@ public class EntitySummary {
 	/**
      * Constructor.
 	 *
-	 * @param id long
+	 * @param recordID long
 	 * @param name String
 	 * @param specificType String
      */
-    public EntitySummary(long id, String name, String specificType){
+    public EntitySummary(long recordID, String name, String specificType){
 
 		// init our members
-		this.id = id;
+		this.recordID = recordID;
 		this.name = name;
 		this.specificType = specificType;
 	}
@@ -81,19 +81,19 @@ public class EntitySummary {
     /**
      * Sets the cpath id for this summary.
      *
-     * @param id long
+     * @param recordID long
      */
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long recordID) {
+        this.recordID = recordID;
     }
 
     /**
-     * Gets the Primary Key Id.
+     * Gets the cpath id for this summary.
      *
      * @return long
      */
-    public long getId(){
-        return id;
+    public long getRecordID(){
+        return recordID;
     }
 
     /**
