@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.2 2006-02-10 21:31:00 cerami Exp $
+// $Id: TestEntitySummaryParser.java,v 1.3 2006-02-10 22:41:13 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -105,9 +105,12 @@ public class TestEntitySummaryParser extends TestCase {
 		entitySummaryParser = new EntitySummaryParser(17);
 		entitySummary = entitySummaryParser.getEntitySummary();
 
-		// this should be a control interaction summary
+		// this should be a physical interaction summary
 		assertTrue(entitySummary instanceof PhysicalInteractionSummary);
 		PhysicalInteractionSummary physicalInteractionSummary = (PhysicalInteractionSummary)entitySummary;
+
+		// get type
+		System.out.println("interaction type: " + physicalInteractionSummary.getInteractionType());
 
 		// get left side components list
 		components = physicalInteractionSummary.getParticipants();
@@ -167,12 +170,37 @@ public class TestEntitySummaryParser extends TestCase {
 		assertTrue(cnt == 1);
 
 		// get specific controlled
-		Object potentialEntitySummary = components.get(0);
-		assertTrue(potentialEntitySummary instanceof EntitySummary);
+		Object potentialConversionInteractionSummary = components.get(0);
+		assertTrue(potentialConversionInteractionSummary instanceof ConversionInteractionSummary);
 
-		EntitySummary entitySummary = (EntitySummary)potentialEntitySummary;
-		assertEquals("Phosphorylation", entitySummary.getName());
-		assertTrue(21 == entitySummary.getRecordID());
+		// controlled is a conversion, lets test its components
+		ConversionInteractionSummary conversionInteractionSummary = (ConversionInteractionSummary)potentialConversionInteractionSummary;
+
+		// get left side components list
+		components = conversionInteractionSummary.getLeftSideComponents();
+		cnt = components.size();
+		assertTrue(cnt == 1);
+
+		// get specific left component
+		summaryComponent = (ParticipantSummaryComponent)components.get(0);
+		assertEquals("AR", summaryComponent.getName());
+		assertTrue(18 == summaryComponent.getRecordID());
+		assertEquals("nucleus", summaryComponent.getCellularLocation());
+		assertTrue(null == summaryComponent.getFeatureList());
+
+		// get right side components list
+		components = conversionInteractionSummary.getRightSideComponents();
+		cnt = components.size();
+		assertTrue(cnt == 1);
+
+		// get specific right component
+		summaryComponent = (ParticipantSummaryComponent)components.get(0);
+		assertEquals("AR", summaryComponent.getName());
+		assertTrue(18 == summaryComponent.getRecordID());
+		assertEquals("nucleus", summaryComponent.getCellularLocation());
+		ArrayList featureList = summaryComponent.getFeatureList();
+		assertTrue(featureList.size() == 1);
+		assertEquals("phosphorylation site", (String)featureList.get(0));
 	}
 
 
