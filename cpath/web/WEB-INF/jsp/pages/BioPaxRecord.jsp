@@ -179,7 +179,7 @@
 			boolean showAll = (queryString.indexOf("show=ALL") != -1);
 			int cnt = (showAll) ? internalLinks.size() : (internalLinks.size() > 10) ? 10 : internalLinks.size();
 			String heading = (showAll) ? "Contains the Following Interactions" :
-				(internalLinks.size() > 10) ? "Includes the Following Ten Interactions" : "Contains the Following Interactions";
+				(internalLinks.size() > 10) ? "Contains the Following Interactions (first ten interactions shown)" : "Contains the Following Interactions";
 
 			// heading
 			out.println("<DIV CLASS ='h3'>");
