@@ -1,4 +1,4 @@
-// $Id: TestBioPaxSummary.java,v 1.1 2006-01-31 16:11:49 grossb Exp $
+// $Id: TestBioPaxSummary.java,v 1.2 2006-02-10 22:49:12 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -81,29 +81,24 @@ public class TestBioPaxSummary extends TestCase {
 
 		// get a real biopaxRecordSummary
         DaoCPath cPath = DaoCPath.getInstance();
-        CPathRecord cPathRecord = cPath.getRecordById(51);
+        CPathRecord cPathRecord = cPath.getRecordById(15);
 		biopaxRecordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(cPathRecord);
 
 		// header
 		String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(biopaxRecordSummary);
-		assertEquals("glycolysis (Pathway) from Escherichia coli", header);
+		assertEquals("GLK (Protein) from Escherichia coli", header);
 		// synonyms
 		String synonyms = BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString(biopaxRecordSummary);
-		assertEquals("glucose degradation Embden-Meyerhof pathway", synonyms);
+		assertEquals("Glucose kinase GLK_ECOLI", synonyms);
 		// data source
 		String dataSource = BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString(biopaxRecordSummary);
-		assertEquals("KEGG", dataSource );
+		assertEquals("Swiss-Prot/TrEMBL", dataSource );
  		// availability
 		String availability = BioPaxRecordSummaryUtils.getBioPaxRecordAvailabilityString(biopaxRecordSummary);
 		assertEquals("see http://www.amaze.ulb.ac.be/", availability );
 		// external links
 		List links = biopaxRecordSummary.getExternalLinks();
-		assertTrue(links.size() == 3);
-		ExternalLinkRecord link = (ExternalLinkRecord) links.get(1);
-		ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
-		String dbId = link.getLinkedToId();
-		assertEquals("PubMed", dbRecord.getName());
-		assertEquals("2549346", dbId);
+		assertTrue(links == null);
 		// comment
 		String comment = BioPaxRecordSummaryUtils.getBioPaxRecordCommentString(biopaxRecordSummary);
 		assertTrue(comment.startsWith("This example is meant to provide an illustration"));
