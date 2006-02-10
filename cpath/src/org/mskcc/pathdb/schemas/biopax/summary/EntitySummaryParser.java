@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.3 2006-02-10 21:09:06 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.4 2006-02-10 22:14:54 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -251,13 +251,14 @@ public class EntitySummaryParser {
             // get cpath record for this id
             DaoCPath cPath = DaoCPath.getInstance();
             CPathRecord record = cPath.getRecordById(recordID.longValue());
-            // is it an interaction ? if so, we create an entitySummary to add to our participant list
+            // is it an interaction ? if so, we go through the process again
             if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
-                objectToReturn = new EntitySummary(recordID.longValue(), record.getName(), record.getSpecificType());
+				EntitySummaryParser entitySummaryParser = new EntitySummaryParser(recordID.longValue());
+                objectToReturn = entitySummaryParser.getEntitySummary();
             }
             else{
-                // this isn't an interaction, lets create a participant summary component
-                objectToReturn = BioPaxRecordUtil.createInteractionSummaryComponent(record, element);
+                // this isn't an interaction, just create a top-level EntitySummary
+                objectToReturn = new EntitySummary(recordID.longValue(), record.getName(), record.getSpecificType());
             }
         }
 
