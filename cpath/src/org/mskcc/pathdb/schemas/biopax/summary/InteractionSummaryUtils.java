@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.10 2006-02-10 20:56:46 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.11 2006-02-10 21:19:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -82,6 +82,8 @@ public class InteractionSummaryUtils {
                 createSide(left, buf);
                 buf.append (" &rarr; ");
                 createSide(right, buf);
+            } else if (interactionSummary instanceof ControlInteractionSummary) {
+                buf.append ("Conversion Interaction Type:  Not Yet Supported!");
             } else if (interactionSummary instanceof PhysicalInteractionSummary) {
                 PhysicalInteractionSummary summary =
                         (PhysicalInteractionSummary) interactionSummary;
