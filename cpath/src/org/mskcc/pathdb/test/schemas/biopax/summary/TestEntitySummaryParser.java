@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.1 2006-02-10 20:39:05 grossb Exp $
+// $Id: TestEntitySummaryParser.java,v 1.2 2006-02-10 21:31:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,8 @@ package org.mskcc.pathdb.test.schemas.biopax.summary;
 
 // imports
 import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser;
@@ -218,6 +220,20 @@ public class TestEntitySummaryParser extends TestCase {
 		assertTrue(featureList.size() == 1);
 		assertEquals("phosphorylation site", (String)featureList.get(0));
 	}
+
+    /**
+     * Tests Conversion Interaction from IOB.
+     * @throws Exception All Exceptions.
+     */
+    public void testIOBData() throws Exception {
+		entitySummaryParser = new EntitySummaryParser(31);
+		entitySummary = entitySummaryParser.getEntitySummary();
+        ConversionInteractionSummary summary = (ConversionInteractionSummary)entitySummary;
+        List left = summary.getLeftSideComponents();
+        ParticipantSummaryComponent component = (ParticipantSummaryComponent) left.get(0);
+        List synList = component.getSynonyms();
+        System.out.println("SynList Size:  " + synList.size());
+    }
 
     /**
      * Gets Name of Test.
