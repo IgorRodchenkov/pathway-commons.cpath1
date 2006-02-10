@@ -42,9 +42,9 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class TestDaoOrganism extends TestCase {
-    private int taxId = 4932;
-    private String speciesName = "Saccharomyces cerevisiae";
-    private String commonName = "baker's yeast";
+    private int taxId = 9913;
+    private String speciesName = "Bos taurus";
+    private String commonName = "cattle";
 
     /**
      * Tests DaoAccess.
@@ -69,7 +69,7 @@ public class TestDaoOrganism extends TestCase {
         
         // count the organisms
         int organismCount = dao.countAllOrganisms();
-        assertEquals("Incorrect number of organisms recovered", 1,
+        assertEquals("Incorrect number of organisms recovered", 4,
                 organismCount);
 
         //  Delete Record
