@@ -1,4 +1,4 @@
-// $Id: ConversionInteractionSummary.java,v 1.3 2006-02-10 19:58:39 grossb Exp $
+// $Id: EntitySummary.java,v 1.1 2006-02-10 19:59:04 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,56 +34,101 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
-import java.util.ArrayList;
 
 /**
- * This class contains the information
- * needed to construct a conversion interaction summary string.
+ * This is the base class of an interaction summary.
  *
  * @author Benjamin Gross.
  */
-public class ConversionInteractionSummary extends PhysicalInteractionSummary {
+public class EntitySummary {
 
 	/**
-	 * The left side components of this conversion interaction.
+	 * CPath record ID of the record that this class summarizes.
 	 */
-	private ArrayList leftSideComponents = null;
+	private long id;
 
 	/**
-	 * The right side components of this conversion interaction.
+	 * The name of the entity.
 	 */
-	private ArrayList rightSideComponents = null;
+    private String name;
+
+	/**
+	 * The specific type of the entity.
+	 */
+    private String specificType;
+
+	/**
+     * Constructor.
+     */
+    public EntitySummary(){
+	}
 
 	/**
      * Constructor.
 	 *
-	 * @param leftSideComponents ArrayList
-	 * @param rightSideComponents ArrayList
+	 * @param id long
+	 * @param name String
+	 * @param specificType String
      */
-    public ConversionInteractionSummary(ArrayList leftSideComponents, ArrayList rightSideComponents) {
+    public EntitySummary(long id, String name, String specificType){
 
 		// init our members
-		this.leftSideComponents = leftSideComponents;
-		this.rightSideComponents = rightSideComponents;
-		participants.addAll(leftSideComponents);
-		participants.addAll(rightSideComponents);
+		this.id = id;
+		this.name = name;
+		this.specificType = specificType;
 	}
 
-  	/**
-	 * Returns the ArrayList of Left Components.
-  	 *
-  	 * @return ArrayList
-  	 */
- 	public ArrayList getLeftSideComponents(){
- 		return leftSideComponents;
- 	}
- 
- 	/**
- 	 * Returns the ArrayList of Right Components.
- 	 *
- 	 * @return ArrayList
- 	 */
- 	public ArrayList getRightSideComponents(){
- 		return rightSideComponents;
-  	}
+    /**
+     * Sets the cpath id for this summary.
+     *
+     * @param id long
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * Gets the Primary Key Id.
+     *
+     * @return long
+     */
+    public long getId(){
+        return id;
+    }
+
+    /**
+     * Sets the Entity Name.
+     *
+     * @param name String
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets the Entity Name.
+     *
+     * @return String
+     */
+    public String getName(){
+        return name;
+    }
+
+    /**
+     * Sets the most specific class type in the ontology for this summary.
+     *
+     * @param specificType String
+     */
+    public void setSpecificType(String specificType) {
+        this.specificType = specificType;
+    }
+
+    /**
+     * Gets the most specific class type in the ontology for this summary.
+     *
+     * @return String
+     */
+    public String getSpecificType() {
+        return specificType;
+    }
 }

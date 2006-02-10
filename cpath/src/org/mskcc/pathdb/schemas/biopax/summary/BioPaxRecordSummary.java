@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.1 2006-01-30 22:59:28 grossb Exp $
+// $Id: BioPaxRecordSummary.java,v 1.2 2006-02-10 19:58:08 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,49 +46,72 @@ import java.util.List;
 public class BioPaxRecordSummary {
 
 	/**
+	 * The cpath record id.
+	 */
+    protected long recordID;
+
+	/**
 	 * The record type.
 	 */
-	private String type;
+	protected String type;
 
 	/**
 	 * The record name.
 	 */
-	private String name;
+	protected String name;
 
 	/**
 	 * The record short name.
 	 */
-	private String shortName;
+	protected String shortName;
 
 	/**
 	 * The record synonyms.
 	 */
-	private List synonyms;
+	protected List synonyms;
 
 	/**
 	 * The record organism.
 	 */
-	private String organism;
+	protected String organism;
 
 	/**
 	 * The record data source.
 	 */
-	private String dataSource;
+	protected String dataSource;
 
 	/**
 	 * The record availability.
 	 */
-	private String availability;
+	protected String availability;
 
 	/**
 	 * The record external links.
 	 */
-	private List externalLinks;
+	protected List externalLinks;
 
 	/**
 	 * The record comment.
 	 */
-	private String comment;
+	protected String comment;
+
+    /**
+     * Sets the cpath record id.
+     *
+     * @param recordID long
+     */
+    public void setRecordID(long recordID) {
+        this.recordID = recordID;
+    }
+
+    /**
+     * Gets the cpath record id.
+     *
+     * @return long
+     */
+    public long getRecordID() {
+        return recordID;
+    }
 
 	/**
 	 * Set the record type.
