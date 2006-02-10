@@ -19,11 +19,202 @@
 	<array>
 		<dict>
 			<key>Bounds</key>
+			<string>{{236, 542}, {194, 20}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>ID</key>
+			<integer>747</integer>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>fill</key>
+				<dict>
+					<key>Color</key>
+					<dict>
+						<key>a</key>
+						<string>1</string>
+						<key>b</key>
+						<string>1</string>
+						<key>g</key>
+						<string>0.906293</string>
+						<key>r</key>
+						<string>0.975068</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Align</key>
+				<integer>0</integer>
+				<key>Text</key>
+				<string>{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\fs26 \cf0 Target Date:  March 15, 2006}</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{396, 432}, {194, 20}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>ID</key>
+			<integer>746</integer>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>fill</key>
+				<dict>
+					<key>Color</key>
+					<dict>
+						<key>a</key>
+						<string>1</string>
+						<key>b</key>
+						<string>1</string>
+						<key>g</key>
+						<string>0.906293</string>
+						<key>r</key>
+						<string>0.975068</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Align</key>
+				<integer>0</integer>
+				<key>Text</key>
+				<string>{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\fs26 \cf0 Target Date:  March 15, 2006}</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{402, 254}, {194, 20}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>ID</key>
+			<integer>745</integer>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>fill</key>
+				<dict>
+					<key>Color</key>
+					<dict>
+						<key>a</key>
+						<string>1</string>
+						<key>b</key>
+						<string>1</string>
+						<key>g</key>
+						<string>0.906293</string>
+						<key>r</key>
+						<string>0.975068</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Align</key>
+				<integer>0</integer>
+				<key>Text</key>
+				<string>{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\fs26 \cf0 Target Date:  March 15, 2006}</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{230, 388}, {74, 18}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>ID</key>
+			<integer>744</integer>
+			<key>Shape</key>
+			<string>RoundRect</string>
+			<key>Style</key>
+			<dict>
+				<key>fill</key>
+				<dict>
+					<key>Color</key>
+					<dict>
+						<key>a</key>
+						<string>1</string>
+						<key>b</key>
+						<string>0.798336</string>
+						<key>g</key>
+						<string>0.664244</string>
+						<key>r</key>
+						<string>1</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Text</key>
+				<string>{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
+
+\f0\fs20 \cf0 40%}</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{272, 510}, {110, 18}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>ID</key>
+			<integer>743</integer>
+			<key>Shape</key>
+			<string>RoundRect</string>
+			<key>Style</key>
+			<dict>
+				<key>fill</key>
+				<dict>
+					<key>Color</key>
+					<dict>
+						<key>a</key>
+						<string>1</string>
+						<key>b</key>
+						<string>0.798336</string>
+						<key>g</key>
+						<string>0.664244</string>
+						<key>r</key>
+						<string>1</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Text</key>
+				<string>{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
+
+\f0\fs20 \cf0 Outline Done}</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Bounds</key>
 			<string>{{22, 448}, {22, 20}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3146</integer>
+			<integer>742</integer>
 			<key>Shape</key>
 			<string>Circle</string>
 			<key>Style</key>
@@ -78,7 +269,7 @@
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3145</integer>
+			<integer>741</integer>
 			<key>Shape</key>
 			<string>Circle</string>
 			<key>Style</key>
@@ -133,7 +324,7 @@
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3144</integer>
+			<integer>740</integer>
 			<key>Shape</key>
 			<string>Circle</string>
 			<key>Style</key>
@@ -188,7 +379,7 @@
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3143</integer>
+			<integer>739</integer>
 			<key>Shape</key>
 			<string>Circle</string>
 			<key>Style</key>
@@ -229,10 +420,10 @@
 				<key>Text</key>
 				<string>{\rtf1\mac\ansicpg10000\cocoartf102
 {\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;}
-{\colortbl;\red255\green255\blue255;\red255\green255\blue255;}
+{\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
 
-\f0\b\fs22 \cf2 3}</string>
+\f0\b\fs22 \cf1 3}</string>
 			</dict>
 			<key>TextPlacement</key>
 			<integer>0</integer>
@@ -243,7 +434,7 @@
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3142</integer>
+			<integer>738</integer>
 			<key>Shape</key>
 			<string>Circle</string>
 			<key>Style</key>
@@ -284,10 +475,10 @@
 				<key>Text</key>
 				<string>{\rtf1\mac\ansicpg10000\cocoartf102
 {\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;}
-{\colortbl;\red255\green255\blue255;\red255\green255\blue255;}
+{\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
 
-\f0\b\fs22 \cf2 2}</string>
+\f0\b\fs22 \cf1 2}</string>
 			</dict>
 			<key>TextPlacement</key>
 			<integer>0</integer>
@@ -298,7 +489,7 @@
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3141</integer>
+			<integer>737</integer>
 			<key>Shape</key>
 			<string>Circle</string>
 			<key>Style</key>
@@ -339,21 +530,21 @@
 				<key>Text</key>
 				<string>{\rtf1\mac\ansicpg10000\cocoartf102
 {\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;}
-{\colortbl;\red255\green255\blue255;\red255\green255\blue255;}
+{\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
 
-\f0\b\fs22 \cf2 1}</string>
+\f0\b\fs22 \cf1 1}</string>
 			</dict>
 			<key>TextPlacement</key>
 			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{162, 338}, {74, 18}}</string>
+			<string>{{232, 358}, {74, 18}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3140</integer>
+			<integer>736</integer>
 			<key>Shape</key>
 			<string>RoundRect</string>
 			<key>Style</key>
@@ -381,7 +572,7 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
 
-\f0\fs20 \cf0 90%}</string>
+\f0\fs20 \cf0 DONE}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -390,7 +581,7 @@
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3139</integer>
+			<integer>735</integer>
 			<key>Shape</key>
 			<string>RoundRect</string>
 			<key>Style</key>
@@ -418,16 +609,16 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
 
-\f0\fs20 \cf0 Outline DONE}</string>
+\f0\fs20 \cf0 1st Draft Done}</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{28, 658}, {564, 78}}</string>
+			<string>{{28, 660}, {564, 78}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3138</integer>
+			<integer>734</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -462,7 +653,7 @@
 \f1\b0 \
 
 \fs18 1.   
-\fs22 Will Cytoscape 2.2 be ready for the rolling out of cellmap.org?\
+\fs22 Will Cytoscape 2.2 be ready for the rolling out of cellmap.org? [YES, no longer a risk]\
 2.  Will IOB be able to finalize all the cancer pathways in time for the rolling out of cellmap.org?\
 3.  How much time will Ben be working on the IHOP project?}</string>
 			</dict>
@@ -475,7 +666,7 @@
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3137</integer>
+			<integer>733</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -487,11 +678,11 @@
 						<key>a</key>
 						<string>1</string>
 						<key>b</key>
-						<string>0.690196</string>
+						<string>0.822494</string>
 						<key>g</key>
-						<string>1</string>
+						<string>0.970991</string>
 						<key>r</key>
-						<string>0.588235</string>
+						<string>1</string>
 					</dict>
 					<key>GradientColor</key>
 					<dict>
@@ -524,7 +715,7 @@
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3136</integer>
+			<integer>732</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -570,11 +761,11 @@ Cytoscape PlugIn\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{162, 316}, {74, 18}}</string>
+			<string>{{232, 326}, {74, 18}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3135</integer>
+			<integer>731</integer>
 			<key>Shape</key>
 			<string>RoundRect</string>
 			<key>Style</key>
@@ -611,7 +802,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3134</integer>
+			<integer>730</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -643,7 +834,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3133</integer>
+			<integer>729</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -693,7 +884,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3132</integer>
+			<integer>728</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -743,7 +934,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3131</integer>
+			<integer>727</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -772,11 +963,11 @@ Cytoscape PlugIn\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{274, 342}, {52, 12}}</string>
+			<string>{{312, 354}, {52, 12}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3130</integer>
+			<integer>726</integer>
 			<key>Shape</key>
 			<string>HorizontalArrow</string>
 			<key>VFlip</key>
@@ -788,7 +979,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3129</integer>
+			<integer>725</integer>
 			<key>Shape</key>
 			<string>HorizontalArrow</string>
 		</dict>
@@ -798,7 +989,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3128</integer>
+			<integer>724</integer>
 			<key>Shape</key>
 			<string>RoundRect</string>
 			<key>Style</key>
@@ -837,7 +1028,7 @@ Cytoscape PlugIn\
 			<key>FitText</key>
 			<string>YES</string>
 			<key>ID</key>
-			<integer>3127</integer>
+			<integer>723</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -877,7 +1068,7 @@ Cytoscape PlugIn\
 			<key>FitText</key>
 			<string>YES</string>
 			<key>ID</key>
-			<integer>3126</integer>
+			<integer>722</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -922,7 +1113,7 @@ Cytoscape PlugIn\
 					<key>FitText</key>
 					<string>Vertical</string>
 					<key>ID</key>
-					<integer>3119</integer>
+					<integer>715</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -950,7 +1141,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3120</integer>
+					<integer>716</integer>
 					<key>Points</key>
 					<array>
 						<string>{176.27, 203.916}</string>
@@ -973,7 +1164,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3121</integer>
+					<integer>717</integer>
 					<key>Points</key>
 					<array>
 						<string>{176.27, 203.916}</string>
@@ -996,7 +1187,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3122</integer>
+					<integer>718</integer>
 					<key>Points</key>
 					<array>
 						<string>{176.27, 214.191}</string>
@@ -1019,7 +1210,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3123</integer>
+					<integer>719</integer>
 					<key>Points</key>
 					<array>
 						<string>{176.27, 214.191}</string>
@@ -1042,7 +1233,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3124</integer>
+					<integer>720</integer>
 					<key>Points</key>
 					<array>
 						<string>{176.27, 198.78}</string>
@@ -1065,7 +1256,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>3125</integer>
+					<integer>721</integer>
 					<key>Shape</key>
 					<string>Circle</string>
 					<key>Style</key>
@@ -1093,7 +1284,7 @@ Cytoscape PlugIn\
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>3118</integer>
+			<integer>714</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -1108,7 +1299,7 @@ Cytoscape PlugIn\
 					<key>FitText</key>
 					<string>Vertical</string>
 					<key>ID</key>
-					<integer>3111</integer>
+					<integer>707</integer>
 					<key>Shape</key>
 					<string>Rectangle</string>
 					<key>Style</key>
@@ -1136,7 +1327,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3112</integer>
+					<integer>708</integer>
 					<key>Points</key>
 					<array>
 						<string>{215.73, 202.562}</string>
@@ -1159,7 +1350,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3113</integer>
+					<integer>709</integer>
 					<key>Points</key>
 					<array>
 						<string>{215.73, 202.562}</string>
@@ -1182,7 +1373,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3114</integer>
+					<integer>710</integer>
 					<key>Points</key>
 					<array>
 						<string>{215.73, 212.27}</string>
@@ -1205,7 +1396,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3115</integer>
+					<integer>711</integer>
 					<key>Points</key>
 					<array>
 						<string>{215.73, 212.27}</string>
@@ -1228,7 +1419,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3116</integer>
+					<integer>712</integer>
 					<key>Points</key>
 					<array>
 						<string>{215.73, 197.708}</string>
@@ -1251,7 +1442,7 @@ Cytoscape PlugIn\
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>3117</integer>
+					<integer>713</integer>
 					<key>Shape</key>
 					<string>Circle</string>
 					<key>Style</key>
@@ -1279,7 +1470,7 @@ Cytoscape PlugIn\
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>3110</integer>
+			<integer>706</integer>
 		</dict>
 		<dict>
 			<key>Bounds</key>
@@ -1287,7 +1478,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3109</integer>
+			<integer>705</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -1337,7 +1528,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3108</integer>
+			<integer>704</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -1387,7 +1578,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3107</integer>
+			<integer>703</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -1435,7 +1626,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3106</integer>
+			<integer>702</integer>
 			<key>Shape</key>
 			<string>RoundRect</string>
 			<key>Style</key>
@@ -1483,7 +1674,7 @@ Cytoscape PlugIn\
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3105</integer>
+			<integer>701</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -1513,8 +1704,8 @@ Cytoscape PlugIn\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
 
-\f0\fs26 \cf0 Document Revision:  1.9\
-November 10, 2005}</string>
+\f0\fs26 \cf0 Document Revision:  2.0\
+February, 9, 2006}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -1523,10 +1714,10 @@ November 10, 2005}</string>
 			<key>Head</key>
 			<dict>
 				<key>ID</key>
-				<integer>3107</integer>
+				<integer>703</integer>
 			</dict>
 			<key>ID</key>
-			<integer>3104</integer>
+			<integer>700</integer>
 			<key>Labels</key>
 			<array>
 				<dict>
@@ -1592,7 +1783,7 @@ November 10, 2005}</string>
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>3103</integer>
+				<integer>699</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -1601,7 +1792,7 @@ November 10, 2005}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3103</integer>
+			<integer>699</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -1650,7 +1841,7 @@ November 10, 2005}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3102</integer>
+			<integer>698</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -1700,7 +1891,7 @@ November 10, 2005}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3101</integer>
+			<integer>697</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Text</key>
@@ -1722,7 +1913,7 @@ November 10, 2005}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3100</integer>
+			<integer>696</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -1761,7 +1952,7 @@ November 10, 2005}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3099</integer>
+			<integer>695</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -1807,7 +1998,7 @@ November 10, 2005}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3098</integer>
+			<integer>694</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -1855,7 +2046,7 @@ November 10, 2005}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3097</integer>
+			<integer>693</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -1907,7 +2098,7 @@ November 10, 2005}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3096</integer>
+			<integer>692</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -1957,7 +2148,7 @@ PlugIn to easily view expression data in the context of pathways}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3095</integer>
+			<integer>691</integer>
 			<key>Shape</key>
 			<string>RoundedRectangle</string>
 			<key>Style</key>
@@ -2005,7 +2196,7 @@ PlugIn to easily view expression data in the context of pathways}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3094</integer>
+			<integer>690</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -2033,11 +2224,11 @@ PlugIn to easily view expression data in the context of pathways}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{30, 280}, {556, 162}}</string>
+			<string>{{32, 282}, {556, 162}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>3093</integer>
+			<integer>689</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -2202,8 +2393,8 @@ PlugIn to easily view expression data in the context of pathways}</string>
 	bD4KCQkJCQkJPHJlYWw+NTc2PC9yZWFsPgoJCQkJCTwvYXJyYXk+CgkJCQkJPGtleT5j
 	b20uYXBwbGUucHJpbnQudGlja2V0LmNsaWVudDwva2V5PgoJCQkJCTxzdHJpbmc+Y29t
 	LmFwcGxlLnByaW50aW5nbWFuYWdlcjwvc3RyaW5nPgoJCQkJCTxrZXk+Y29tLmFwcGxl
-	LnByaW50LnRpY2tldC5tb2REYXRlPC9rZXk+CgkJCQkJPGRhdGU+MjAwNS0xMS0xMFQx
-	NTo1MDowOVo8L2RhdGU+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LnN0
+	LnByaW50LnRpY2tldC5tb2REYXRlPC9rZXk+CgkJCQkJPGRhdGU+MjAwNi0wMi0wOVQx
+	NDoxNDoyOVo8L2RhdGU+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LnN0
 	YXRlRmxhZzwva2V5PgoJCQkJCTxpbnRlZ2VyPjA8L2ludGVnZXI+CgkJCQk8L2RpY3Q+
 	CgkJCTwvYXJyYXk+CgkJPC9kaWN0PgoJCTxrZXk+Y29tLmFwcGxlLnByaW50LlBhZ2VG
 	b3JtYXQuUE1BZGp1c3RlZFBhcGVyUmVjdDwva2V5PgoJCTxkaWN0PgoJCQk8a2V5PmNv
@@ -2216,7 +2407,7 @@ PlugIn to easily view expression data in the context of pathways}</string>
 	PjU5NDwvcmVhbD4KCQkJCQk8L2FycmF5PgoJCQkJCTxrZXk+Y29tLmFwcGxlLnByaW50
 	LnRpY2tldC5jbGllbnQ8L2tleT4KCQkJCQk8c3RyaW5nPmNvbS5hcHBsZS5wcmludGlu
 	Z21hbmFnZXI8L3N0cmluZz4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQu
-	bW9kRGF0ZTwva2V5PgoJCQkJCTxkYXRlPjIwMDUtMTEtMTBUMTU6NTA6MDlaPC9kYXRl
+	bW9kRGF0ZTwva2V5PgoJCQkJCTxkYXRlPjIwMDYtMDItMDlUMTQ6MTQ6MjlaPC9kYXRl
 	PgoJCQkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5zdGF0ZUZsYWc8L2tleT4K
 	CQkJCQk8aW50ZWdlcj4wPC9pbnRlZ2VyPgoJCQkJPC9kaWN0PgoJCQk8L2FycmF5PgoJ
 	CTwvZGljdD4KCQk8a2V5PmNvbS5hcHBsZS5wcmludC5QYXBlckluZm8uUE1QYXBlck5h
@@ -2299,7 +2490,7 @@ PlugIn to easily view expression data in the context of pathways}</string>
 	<key>WindowInfo</key>
 	<dict>
 		<key>Frame</key>
-		<string>{{23, 122}, {1315, 882}}</string>
+		<string>{{17, 95}, {1315, 882}}</string>
 		<key>VisibleRegion</key>
 		<string>{{-344, -6}, {1300, 805}}</string>
 		<key>Zoom</key>
