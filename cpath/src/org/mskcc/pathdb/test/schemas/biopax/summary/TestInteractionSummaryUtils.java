@@ -14,48 +14,24 @@ import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 public class TestInteractionSummaryUtils extends TestCase {
 
     /**
-     * Validate the summary of a Physical Interaction.
-     *
-     * @throws Exception All Exceptions.
-     */
-    public void testPhysicalInteractionSummary() throws Exception {
-        EntitySummaryParser entityParser = new EntitySummaryParser(17);
-        InteractionSummary interactionSummary = (InteractionSummary)
-                entityParser.getEntitySummary();
-        String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
-        assertEquals ("<a href=\"record.do?id=18\" onmouseover=\"drc('', 'AR in "
-            + "<FONT COLOR=LIGHTGREEN>nucleus</FONT>'); return true;\" onmouseout=\"nd(); "
-            + "return true;\">AR</a>, <a href=\"record.do?id=19\" onmouseover=\"drc"
-            + "('', 'ETV5 in <FONT COLOR=LIGHTGREEN>nucleus</FONT>'); return true;\""
-            + " onmouseout=\"nd(); return true;\">ETV5</a>", summary);
-    }
-
-    /**
      * Validate the summary of a Conversion Interaction.
      *
      * @throws Exception All Exceptions.
      */
     public void testConversionInteractionSummary() throws Exception {
-        EntitySummaryParser entityParser = new EntitySummaryParser(8);
+        EntitySummaryParser entityParser = new EntitySummaryParser(10);
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
         String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
-        assertEquals ("<a href=\"record.do?id=10\" onmouseover=\"drc('Also known as:  "
-            + "<UL><LI>ATP:D-glucose 6-phosphotransferase</LI><LI>glucose ATP phosphotransferase"
-            + "</LI></UL>', 'a-D-glu in <FONT COLOR=LIGHTGREEN>cytoplasm</FONT>'); "
-            + "return true;\" onmouseout=\"nd(); return true;\">a-D-glu</a> + "
-            + "<a href=\"record.do?id=14\" onmouseover=\"drc('Also known as:  "
-            + "<UL><LI>ATP:D-glucose 6-phosphotransferase</LI><LI>glucose ATP "
-            + "phosphotransferase</LI></UL>', 'ATP in <FONT COLOR=LIGHTGREEN>cytoplasm</FONT>'); "
-            + "return true;\" onmouseout=\"nd(); return true;\">ATP</a> &rarr; "
-            + "<a href=\"record.do?id=11\" onmouseover=\"drc('Also known as:  <UL><LI>"
-            + "ATP:D-glucose 6-phosphotransferase</LI><LI>glucose ATP phosphotransferase"
-            + "</LI></UL>', 'ADP in <FONT COLOR=LIGHTGREEN>cytoplasm</FONT>'); return "
-            + "true;\" onmouseout=\"nd(); return true;\">ADP</a> + <a href=\"record.do?id=12\" "
-            + "onmouseover=\"drc('Also known as:  <UL><LI>ATP:D-glucose 6-phosphotransferase"
-            + "</LI><LI>glucose ATP phosphotransferase</LI></UL>', 'a-D-glu-6-p in "
-            + "<FONT COLOR=LIGHTGREEN>cytoplasm</FONT>'); return true;\" onmouseout=\"nd(); "
-            + "return true;\">a-D-glu-6-p</a>", summary);
+
+        // Verify Left Side is present
+        assertTrue (summary.indexOf("3-phosphoglycerate")>0);
+
+        //  Verify Right Side is present
+        assertTrue (summary.indexOf("2-phosphoglycerate")>0);
+
+        // Verify Some Synonyms
+        assertTrue (summary.indexOf("3-phospho-glyceric acid")>0);
     }
 
     /**
@@ -64,11 +40,11 @@ public class TestInteractionSummaryUtils extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testPhosphorylationInteractionSummary() throws Exception {
-        EntitySummaryParser entityParser = new EntitySummaryParser(23);
+        EntitySummaryParser entityParser = new EntitySummaryParser(172);
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
         String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
-        assertTrue (summary.indexOf("AR (Phosphorylated)")>0);
+        assertTrue (summary.indexOf("SMAD3 (Phosphorylated)")>0);
     }
 
     /**
@@ -77,9 +53,10 @@ public class TestInteractionSummaryUtils extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testControlInteractionSummary() throws Exception {
-        EntitySummaryParser entityParser = new EntitySummaryParser(20);
+        EntitySummaryParser entityParser = new EntitySummaryParser(159);
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
         String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
+        assertTrue (summary.indexOf("activates [") > 0);
     }
 }
