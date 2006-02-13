@@ -54,6 +54,8 @@ public class TestDaoOrganism extends TestCase {
     public void testAccess() throws DaoException {
         DaoOrganism dao = new DaoOrganism();
 
+        int beforeCount = dao.countAllOrganisms();
+
         //  Clear out record (if it already exists)
         dao.deleteRecord(taxId);
 
@@ -68,9 +70,8 @@ public class TestDaoOrganism extends TestCase {
         assertEquals(commonName, organism.getCommonName());
         
         // count the organisms
-        int organismCount = dao.countAllOrganisms();
-        assertEquals("Incorrect number of organisms recovered", 4,
-                organismCount);
+        int afterCount = dao.countAllOrganisms();
+        assertTrue(afterCount > beforeCount);
 
         //  Delete Record
         assertTrue(dao.deleteRecord(taxId));
