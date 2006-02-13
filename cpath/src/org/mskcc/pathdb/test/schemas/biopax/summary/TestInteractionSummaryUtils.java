@@ -1,9 +1,7 @@
 package org.mskcc.pathdb.test.schemas.biopax.summary;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser;
-import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
-import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
+import org.mskcc.pathdb.schemas.biopax.summary.*;
 
 /**
  * Tests the InteractionSummaryUtils Class.
@@ -70,6 +68,11 @@ public class TestInteractionSummaryUtils extends TestCase {
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
         String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
-        //        System.out.println(summary);
+
+        //  Validate cellular component on left
+        assertTrue (summary.indexOf("(in cytoplasm)") >0);
+
+        //  Validate cellular component on right
+        assertTrue (summary.indexOf("(in nucleus)") >0);
     }
 }
