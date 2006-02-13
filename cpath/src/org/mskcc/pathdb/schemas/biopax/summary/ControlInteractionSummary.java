@@ -1,4 +1,4 @@
-// $Id: ControlInteractionSummary.java,v 1.6 2006-02-10 22:14:49 grossb Exp $
+// $Id: ControlInteractionSummary.java,v 1.7 2006-02-13 16:01:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,12 +50,12 @@ public class ControlInteractionSummary extends PhysicalInteractionSummary {
 	private String controlType;
 
   	/**
- 	 * Our list of controllers or substrates (left side guys).
+ 	 * Our list of controller components.
  	 */
  	private ArrayList controllerComponents = null;
  
  	/**
-	 * Our list of controlled or products (right side guys).
+	 * Our list of controlled compontents.
  	 */
 	private ArrayList controlledComponents = null;
 
