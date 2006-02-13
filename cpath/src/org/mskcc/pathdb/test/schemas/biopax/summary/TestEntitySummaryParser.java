@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.4 2006-02-10 23:12:15 grossb Exp $
+// $Id: TestEntitySummaryParser.java,v 1.5 2006-02-13 16:44:04 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -108,6 +108,9 @@ public class TestEntitySummaryParser extends TestCase {
 		// this should be a physical interaction summary
 		assertTrue(entitySummary instanceof PhysicalInteractionSummary);
 		PhysicalInteractionSummary physicalInteractionSummary = (PhysicalInteractionSummary)entitySummary;
+
+		// get physical interaction type
+		assertEquals("direct interaction reaction", physicalInteractionSummary.getInteractionType());
 
 		// get left side components list
 		components = physicalInteractionSummary.getParticipants();
