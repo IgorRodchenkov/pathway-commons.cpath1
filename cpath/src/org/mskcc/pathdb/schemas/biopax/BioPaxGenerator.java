@@ -131,7 +131,7 @@ public class BioPaxGenerator {
         //  Set an RDF ID, based on locally generated ID.
         DaoIdGenerator idGenerator = new DaoIdGenerator();
         relationshipElement.setAttribute(RdfConstants.ID_ATTRIBUTE,
-                idGenerator.getNextId());
+                idGenerator.getNextId(), RdfConstants.RDF_NAMESPACE);
         return xrefElement;
     }
 }
