@@ -125,15 +125,16 @@ public class TestXmlAssembly extends TestCase {
         List children = rootElement.getChildren();
 
         //  We should have one OWL element, one catalysis element,
-        //  one protein element, and four small molecule elements.
+        //  one small molecule, one biochemical reaction, followed
+        //  by several small molecules.
         Element child = (Element) children.get(0);
         assertEquals(OwlConstants.OWL_ONTOLOGY_ELEMENT, child.getName());
         child = (Element) children.get(1);
         assertEquals(BioPaxConstants.CATALYSIS, child.getName());
         child = (Element) children.get(2);
-        assertEquals(BioPaxConstants.PROTEIN, child.getName());
-        child = (Element) children.get(3);
         assertEquals(BioPaxConstants.SMALL_MOLECULE, child.getName());
+        child = (Element) children.get(3);
+        assertEquals(BioPaxConstants.BIOCHEMICAL_REACTION, child.getName());
         child = (Element) children.get(4);
         assertEquals(BioPaxConstants.SMALL_MOLECULE, child.getName());
         child = (Element) children.get(5);

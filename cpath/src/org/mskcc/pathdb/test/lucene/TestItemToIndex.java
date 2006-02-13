@@ -145,11 +145,11 @@ public class TestItemToIndex extends TestCase {
 
         //  Validate Individual Fields
         assertTrue(allField.stringValue().startsWith
-                ("This example is meant to provide an illustration of how"));
+                ("This pathway is freely available to all users and may be"));
         assertEquals("5", idField.stringValue());
-        assertEquals ("Glycolysis Pathway glycolysis", nameField.stringValue());
+        assertEquals ("glycolysis I", nameField.stringValue().trim());
         assertTrue(organismField.stringValue().startsWith
-                ("Escherichia coli 562"));
+                ("Escherichia coli K-12 83333"));
     }
 
     /**
