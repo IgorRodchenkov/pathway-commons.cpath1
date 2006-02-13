@@ -59,4 +59,17 @@ public class TestInteractionSummaryUtils extends TestCase {
         String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
         assertTrue (summary.indexOf("activates [") > 0);
     }
+
+    /**
+     * Validate the summary of a Transport Interaction.
+     *
+     * @throws Exception All Exceptions.
+     */
+    public void testTransportInteractionSummary() throws Exception {
+        EntitySummaryParser entityParser = new EntitySummaryParser(123);
+        InteractionSummary interactionSummary = (InteractionSummary)
+                entityParser.getEntitySummary();
+        String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
+        //        System.out.println(summary);
+    }
 }
