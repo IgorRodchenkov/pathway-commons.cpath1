@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.11 2006-02-10 21:19:32 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.12 2006-02-13 16:02:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,6 +52,7 @@ import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 public class InteractionSummaryUtils {
     private static String PHOSPHORYLATED = " (Phosphorylated)";
     private static String PHOSPHORYLATION_FEATURE = "phosphorylation";
+    private static String SPACE = " ";
 
     public static String getInteractionSummary(long recordID)
             throws DaoException, IOException, JDOMException, NoSuchMethodException,
@@ -83,7 +84,7 @@ public class InteractionSummaryUtils {
                 buf.append (" &rarr; ");
                 createSide(right, buf);
             } else if (interactionSummary instanceof ControlInteractionSummary) {
-                buf.append ("Conversion Interaction Type:  Not Yet Supported!");
+                createControlSummary(interactionSummary, buf);
             } else if (interactionSummary instanceof PhysicalInteractionSummary) {
                 PhysicalInteractionSummary summary =
                         (PhysicalInteractionSummary) interactionSummary;
@@ -100,6 +101,42 @@ public class InteractionSummaryUtils {
                 buf.append ("Not yet supported!");
             }
             return buf.toString();
+    }
+
+    private static void createControlSummary(InteractionSummary interactionSummary, StringBuffer buf) {
+        BioPaxControlTypeMap map = new BioPaxControlTypeMap();
+        ControlInteractionSummary summary = (ControlInteractionSummary)
+                interactionSummary;
+        List controllerList = summary.getControllers();
+        for (int i=0; i<controllerList.size(); i++) {
+            ParticipantSummaryComponent component = (ParticipantSummaryComponent)
+                    controllerList.get(i);
+            buf.append (createLink(component));
+            if (i < controllerList.size() -1) {
+                buf.append (", ");
+            }
+        }
+        String controlType = summary.getControlType();
+        String controlTypeInEnglish = (String) map.get(controlType);
+        if (controlTypeInEnglish != null) {
+            buf.append (SPACE + controlTypeInEnglish + SPACE);
+        }
+        List controlledList = summary.getControlled();
+
+        if (controlledList != null) {
+            if (controlledList.size() == 1) {
+                EntitySummary entitySummary = (EntitySummary) controlledList.get(0);
+                if (entitySummary instanceof InteractionSummary) {
+                    InteractionSummary intxnSummary = (InteractionSummary) entitySummary;
+                    buf.append ("[");
+                    buf.append (InteractionSummaryUtils.createInteractionSummaryString
+                            (intxnSummary));
+                    buf.append ("]");
+                } else {
+                    buf.append(entitySummary.getName());
+                }
+            }
+        }
     }
 
     private static void createSide(ArrayList list, StringBuffer buf) {
