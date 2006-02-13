@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.6 2006-02-10 23:13:24 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.7 2006-02-13 16:36:02 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -153,7 +153,7 @@ public class EntitySummaryParser {
         else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
             // get physical interaction info
             ArrayList participants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
-            String interactionType = getInteractionType("/*/bp:INTERACTION-TYPE/openControlledVocabulary/TERM");
+			String interactionType = getInteractionType("/*/bp:INTERACTION-TYPE/*/bp:TERM");
             entitySummary = new PhysicalInteractionSummary(interactionType, participants);
         }
 
