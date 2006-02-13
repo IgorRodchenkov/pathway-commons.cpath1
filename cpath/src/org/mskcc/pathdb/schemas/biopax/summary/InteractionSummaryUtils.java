@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.13 2006-02-13 21:18:23 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.14 2006-02-13 21:35:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -56,9 +57,19 @@ public class InteractionSummaryUtils {
     private static String PHOSPHORYLATED = " (Phosphorylated)";
 
     /**
+     * Ubiquitinated Keyword.
+     */
+    private static String UBIQUITINATED = " (Ubiquitinated)";
+
+    /**
      * Phosphorylation Feature.
      */
     private static String PHOSPHORYLATION_FEATURE = "phosphorylation";
+
+    /**
+     * Ubiquitination Feature.
+     */
+    private static String UBIQUITINATION_FEATURE = "ubiquitination";
 
     /**
      * Space Character.
@@ -66,16 +77,22 @@ public class InteractionSummaryUtils {
     private static String SPACE = " ";
 
     /**
+     * Names longer than this will be truncated.
+     */
+    private static int NAME_LENGTH = 10;
+
+    /**
      * Gets an Interaction Summary for the specified cPath ID.
-     * @param recordID  cPath ID.
+     *
+     * @param recordID cPath ID.
      * @return Interaction HTML String.
-     * @throws DaoException Data Access Error.
-     * @throws IOException  IO Error.
-     * @throws JDOMException XML Parsing Error.
-     * @throws NoSuchMethodException XML Parsing Error.
-     * @throws IllegalAccessException XML Parsing Error.
+     * @throws DaoException              Data Access Error.
+     * @throws IOException               IO Error.
+     * @throws JDOMException             XML Parsing Error.
+     * @throws NoSuchMethodException     XML Parsing Error.
+     * @throws IllegalAccessException    XML Parsing Error.
      * @throws InvocationTargetException XML Parsing Error.
-     * @throws EntitySummaryException Error Parsing Summary.
+     * @throws EntitySummaryException    Error Parsing Summary.
      */
     public static String getInteractionSummary(long recordID)
             throws DaoException, IOException, JDOMException, NoSuchMethodException,
@@ -98,25 +115,26 @@ public class InteractionSummaryUtils {
      * @return HTML String
      */
     public static String createInteractionSummaryString(InteractionSummary interactionSummary) {
-            StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer();
 
-            //  Branch, depending on interaction type.
-            if (interactionSummary instanceof ConversionInteractionSummary) {
-                createConversionInteractionSummary(interactionSummary, buf);
-            } else if (interactionSummary instanceof ControlInteractionSummary) {
-                createControlSummary(interactionSummary, buf);
-            } else if (interactionSummary instanceof PhysicalInteractionSummary) {
-                createPhysicalInteractionSummary(interactionSummary, buf);
-            } else {
-                buf.append ("Interaction Type Not yet supported!");
-            }
-            return buf.toString();
+        //  Branch, depending on interaction type.
+        if (interactionSummary instanceof ConversionInteractionSummary) {
+            createConversionInteractionSummary(interactionSummary, buf);
+        } else if (interactionSummary instanceof ControlInteractionSummary) {
+            createControlSummary(interactionSummary, buf);
+        } else if (interactionSummary instanceof PhysicalInteractionSummary) {
+            createPhysicalInteractionSummary(interactionSummary, buf);
+        } else {
+            buf.append("Interaction Type Not yet supported!");
+        }
+        return buf.toString();
     }
 
     /**
      * Creates a Conversion Interaction Summary.
+     *
      * @param interactionSummary InteractionSummary Object.
-     * @param buf HTML String Buffer.
+     * @param buf                HTML String Buffer.
      */
     private static void createConversionInteractionSummary(InteractionSummary
             interactionSummary, StringBuffer buf) {
@@ -129,14 +147,15 @@ public class InteractionSummaryUtils {
 
         //  Create rigth side
         ArrayList right = summary.getRightSideComponents();
-        buf.append (" &rarr; ");
+        buf.append(" &rarr; ");
         createSide(right, interactionSummary, buf);
     }
 
     /**
      * Creates a Physical Interaction Summary.
+     *
      * @param interactionSummary InteractionSummary Object.
-     * @param buf HTML String Buffer.
+     * @param buf                HTML String Buffer.
      */
     private static void createPhysicalInteractionSummary(InteractionSummary
             interactionSummary, StringBuffer buf) {
@@ -145,34 +164,35 @@ public class InteractionSummaryUtils {
 
         //  Iterate through all participants
         ArrayList participantList = summary.getParticipants();
-        for (int i=0; i<participantList.size(); i++) {
+        for (int i = 0; i < participantList.size(); i++) {
             ParticipantSummaryComponent component = (ParticipantSummaryComponent)
-                participantList.get(i);
-            buf.append (createComponentLink(component, interactionSummary));
-            if (i < participantList.size() -1) {
-                buf.append (", ");
+                    participantList.get(i);
+            buf.append(createComponentLink(component, interactionSummary));
+            if (i < participantList.size() - 1) {
+                buf.append(", ");
             }
         }
     }
 
     /**
      * Creates a Control Interaction Summary.
+     *
      * @param interactionSummary InteractionSummary.
-     * @param buf HTML String Buffer.
+     * @param buf                HTML String Buffer.
      */
     private static void createControlSummary(InteractionSummary interactionSummary,
-                                             StringBuffer buf) {
+            StringBuffer buf) {
         BioPaxControlTypeMap map = new BioPaxControlTypeMap();
         ControlInteractionSummary summary = (ControlInteractionSummary) interactionSummary;
         List controllerList = summary.getControllers();
 
         //  Iterate through all controllers.
-        for (int i=0; i<controllerList.size(); i++) {
+        for (int i = 0; i < controllerList.size(); i++) {
             ParticipantSummaryComponent component = (ParticipantSummaryComponent)
                     controllerList.get(i);
-            buf.append (createComponentLink(component, interactionSummary));
-            if (i < controllerList.size() -1) {
-                buf.append (", ");
+            buf.append(createComponentLink(component, interactionSummary));
+            if (i < controllerList.size() - 1) {
+                buf.append(", ");
             }
         }
 
@@ -180,7 +200,7 @@ public class InteractionSummaryUtils {
         String controlType = summary.getControlType();
         String controlTypeInEnglish = (String) map.get(controlType);
         if (controlTypeInEnglish != null) {
-            buf.append (SPACE + controlTypeInEnglish + SPACE);
+            buf.append(SPACE + controlTypeInEnglish + SPACE);
         }
 
         //  Iterate through all controlled elements.
@@ -191,10 +211,10 @@ public class InteractionSummaryUtils {
                 EntitySummary entitySummary = (EntitySummary) controlledList.get(0);
                 if (entitySummary instanceof InteractionSummary) {
                     InteractionSummary intxnSummary = (InteractionSummary) entitySummary;
-                    buf.append ("[");
-                    buf.append (InteractionSummaryUtils.createInteractionSummaryString
+                    buf.append("[");
+                    buf.append(InteractionSummaryUtils.createInteractionSummaryString
                             (intxnSummary));
-                    buf.append ("]");
+                    buf.append("]");
                 } else {
                     buf.append(entitySummary.getName());
                 }
@@ -204,40 +224,43 @@ public class InteractionSummaryUtils {
 
     /**
      * Create Left/Right Side of a reaction.
-     * @param list  List of ParticipantSummaryComponent Objects.
+     *
+     * @param list    List of ParticipantSummaryComponent Objects.
      * @param summary InteractionSummary Object.
-     * @param buf HTML String Buffer.
+     * @param buf     HTML String Buffer.
      */
     private static void createSide(ArrayList list, InteractionSummary summary, StringBuffer buf) {
-        for (int i=0; i<list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             ParticipantSummaryComponent component = (ParticipantSummaryComponent)
-                list.get(i);
-            buf.append (createComponentLink(component, summary));
-            if (i < list.size() -1) {
-                buf.append (" + ");
+                    list.get(i);
+            buf.append(createComponentLink(component, summary));
+            if (i < list.size() - 1) {
+                buf.append(" + ");
             }
         }
     }
 
     /**
      * Creates an HTML Link to the Specified Component Object.
+     *
      * @param component ParticipantSummaryComponent Object.
-     * @param summary Interaction Summary Object.
+     * @param summary   Interaction Summary Object.
      * @return HTML String.
      */
-    private static String createComponentLink (ParticipantSummaryComponent component,
-                                      InteractionSummary summary) {
+    private static String createComponentLink(ParticipantSummaryComponent component,
+            InteractionSummary summary) {
         String name = component.getName();
 
         //  Determine if we have any special cases to deal with.
-        boolean isPhosphorylated = isPhosphorylated (component);
-        boolean isTransport = isTransport (summary);
+        boolean isPhosphorylated = isPhosphorylated(component);
+        boolean isUbiquitinated = isUbiquitinated(component);
+        boolean isTransport = isTransport(summary);
 
         //  Start HTML A Link Tag.
         StringBuffer buf = new StringBuffer("<a href=\"record.do?id=" + component.getRecordID());
 
         //  Create JavaScript for MouseOver Pop-Up Box
-        buf.append ("\" onmouseover=\"drc('");
+        buf.append("\" onmouseover=\"drc('");
 
         //  Add Synonyms to Pop-Up Box
         addSynonmys(component, buf);
@@ -247,19 +270,22 @@ public class InteractionSummaryUtils {
 
         //  Create Header for Pop-Up Box
         buf.append("', '");
-        buf.append (name);
+        buf.append(name);
         if (isPhosphorylated) {
-            buf.append (PHOSPHORYLATED);
+            buf.append(PHOSPHORYLATED);
+        }
+        if (isUbiquitinated) {
+            buf.append(UBIQUITINATED);
         }
         if (component.getCellularLocation() != null) {
-            buf.append (" in <FONT COLOR=LIGHTGREEN>" + component.getCellularLocation()
-                + "</FONT>");
+            buf.append(" in <FONT COLOR=LIGHTGREEN>" + component.getCellularLocation()
+                    + "</FONT>");
         }
-        buf.append ("'); return true;\" onmouseout=\"nd(); return true;\">");
+        buf.append("'); return true;\" onmouseout=\"nd(); return true;\">");
 
         //  Output Component Name and end A Tag.
-        buf.append (name);
-        buf.append ("</a>");
+        buf.append(truncateLongName(name));
+        buf.append("</a>");
 
         //  If this is a transport interaction, show cellular location explicitly
         if (isTransport && component.getCellularLocation() != null) {
@@ -270,54 +296,67 @@ public class InteractionSummaryUtils {
         if (isPhosphorylated) {
             buf.append(PHOSPHORYLATED);
         }
+        if (isUbiquitinated) {
+            buf.append(UBIQUITINATED);
+        }
         return buf.toString();
+    }
+
+    private static String truncateLongName (String name) {
+        if (name.length() > NAME_LENGTH) {
+            return name.substring(0, NAME_LENGTH) + "...";
+        }
+        return name;
     }
 
     /**
      * Adds Feature List.
+     *
      * @param component ParticipantSummaryComponent Object.
-     * @param buf HTML StringBuffer Object.
+     * @param buf       HTML StringBuffer Object.
      */
     private static void addFeatures(ParticipantSummaryComponent component, StringBuffer buf) {
         if (component.getFeatureList() != null && component.getFeatureList().size() > 0) {
-            buf.append ("<P>Features:<UL>");
+            buf.append("<P>Features:<UL>");
             ArrayList featureList = component.getFeatureList();
-            for (int i=0; i<featureList.size(); i++) {
+            for (int i = 0; i < featureList.size(); i++) {
                 String feature = (String) featureList.get(i);
-                buf.append ("<LI>" + feature + "</LI>");
+                buf.append("<LI>" + feature + "</LI>");
             }
-            buf.append ("</UL>");
+            buf.append("</UL>");
         }
     }
 
     /**
      * Adds Synonym List.
+     *
      * @param component ParticipantSummaryComponent Object.
-     * @param buf HTML StringBuffer Object.
+     * @param buf       HTML StringBuffer Object.
      */
     private static void addSynonmys(ParticipantSummaryComponent component, StringBuffer buf) {
         List synList = component.getSynonyms();
         if (synList != null && synList.size() > 0) {
             buf.append("Also known as:  <UL>");
-            for (int i=0; i<synList.size(); i++) {
+            for (int i = 0; i < synList.size(); i++) {
                 String synonym = (String) synList.get(i);
                 buf.append("<LI>" + synonym + "</LI>");
             }
-            buf.append ("</UL>");
+            buf.append("</UL>");
         }
     }
 
     /**
      * Determines if the specified interaction is of type:  TRANSPORT.
-     * @param summary   InteractionSummary Object.
+     *
+     * @param summary InteractionSummary Object.
      * @return boolean value.
      */
-    private static boolean isTransport (InteractionSummary summary) {
+    private static boolean isTransport(InteractionSummary summary) {
         String interactionType = summary.getSpecificType();
         if (interactionType != null) {
             if (interactionType.equalsIgnoreCase(BioPaxConstants.TRANSPORT)
-                || interactionType.equalsIgnoreCase
-                (BioPaxConstants.TRANSPORT_WITH_BIOCHEMICAL_REACTION)) {
+                    || interactionType.equalsIgnoreCase
+                    (BioPaxConstants.TRANSPORT_WITH_BIOCHEMICAL_REACTION)) {
                 return true;
             }
         }
@@ -326,16 +365,37 @@ public class InteractionSummaryUtils {
 
     /**
      * Determines if the specified component is phosphorylated.
+     *
      * @param component ParticipantSummaryComponent Object.
      * @return boolean value.
      */
-    private static boolean isPhosphorylated (ParticipantSummaryComponent component) {
+    private static boolean isPhosphorylated(ParticipantSummaryComponent component) {
         if (component.getFeatureList() != null && component.getFeatureList().size() > 0) {
             ArrayList featureList = component.getFeatureList();
-            for (int i=0; i<featureList.size(); i++) {
+            for (int i = 0; i < featureList.size(); i++) {
                 String feature = (String) featureList.get(i);
                 feature = feature.toLowerCase();
                 if (feature.indexOf(PHOSPHORYLATION_FEATURE) > -1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determines if the specified component is ubiquitinated.
+     *
+     * @param component ParticipantSummaryComponent Object.
+     * @return boolean value.
+     */
+    private static boolean isUbiquitinated(ParticipantSummaryComponent component) {
+        if (component.getFeatureList() != null && component.getFeatureList().size() > 0) {
+            ArrayList featureList = component.getFeatureList();
+            for (int i = 0; i < featureList.size(); i++) {
+                String feature = (String) featureList.get(i);
+                feature = feature.toLowerCase();
+                if (feature.indexOf(UBIQUITINATION_FEATURE) > -1) {
                     return true;
                 }
             }
