@@ -17,6 +17,8 @@
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
 				 org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary,
 				 org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.EntitySummary"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -169,18 +171,14 @@
 	// if pathway, show 1st level child nodes
 	if (biopaxConstants.isPathway(record.getSpecificType())){
 		// child nodes
-		DaoInternalLink daoInternalLinks = new DaoInternalLink();
-		long internalLinksTime = 0;
-		if (timingMode) startTime = Calendar.getInstance().getTimeInMillis();
-		ArrayList internalLinks = daoInternalLinks.getTargetsWithLookUp(record.getId());
-		if (timingMode) internalLinksTime = Calendar.getInstance().getTimeInMillis() - startTime;	
-		long totalPathwayChildNodeTableTime = 0;
-		// interate through results
-		if (internalLinks.size() > 0){
+        SummaryListUtil util = new SummaryListUtil (record.getId());
+        ArrayList summaryList = util.getSummaryList();
+        // interate through results
+		if (summaryList.size() > 0){
 			boolean showAll = (queryString.indexOf("show=ALL") != -1);
-			int cnt = (showAll) ? internalLinks.size() : (internalLinks.size() > 10) ? 10 : internalLinks.size();
+			int cnt = (showAll) ? summaryList.size() : (summaryList.size() > 10) ? 10 : summaryList.size();
 			String heading = (showAll) ? "Contains the Following Interactions" :
-				(internalLinks.size() > 10) ? "Contains the Following Interactions (first ten interactions shown)" : "Contains the Following Interactions";
+				(summaryList.size() > 10) ? "Contains the Following Interactions (first ten interactions shown)" : "Contains the Following Interactions";
 
 			// heading
 			out.println("<DIV CLASS ='h3'>");
@@ -189,7 +187,7 @@
 			out.println("<TD>" + heading + "</TD>");
 
 			// limited pagination support if necessary
-			if (internalLinks.size() > 10){
+			if (summaryList.size() > 10){
 				// generate link to change number of interactions to display
 				if (showAll){
 					String uri = "record.do?id=" + record.getId();
@@ -207,24 +205,15 @@
 			// start child node output
 			out.println("<TABLE>");
 			for (int lc = 0; lc < cnt; lc++) {
-				CPathRecord childRecord = (CPathRecord)internalLinks.get(lc);
-				if (timingMode) startTime = Calendar.getInstance().getTimeInMillis();
+				EntitySummary entitySummary = (EntitySummary) summaryList.get(lc);
 				// render interaction information
 %>
-				<cbio:pathwayChildNodeTable recid="<%=childRecord.getId()%>"/>
+				<cbio:pathwayChildNodeTable entitySummary="<%= entitySummary %>"/>
 <%
-				if (timingMode) totalPathwayChildNodeTableTime += Calendar.getInstance().getTimeInMillis() - startTime;
 			}
 %>
 		</TABLE>
 <%
-		}
-		if (timingMode){
-			out.println("<BR>");
-			out.println("(time (ms) to get internal links: " + String.valueOf(internalLinksTime) + ")<BR>");
-			out.println("(time (ms) to generate child node table(s): " + String.valueOf(totalPathwayChildNodeTableTime) + ")<BR>");
-			out.println("(total time (ms): " + String.valueOf(internalLinksTime + totalPathwayChildNodeTableTime) + ")<BR>");
-			out.println("<BR>");
 		}
 	}
 %>
