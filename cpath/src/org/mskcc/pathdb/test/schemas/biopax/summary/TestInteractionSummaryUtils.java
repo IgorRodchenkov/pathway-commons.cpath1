@@ -42,7 +42,7 @@ public class TestInteractionSummaryUtils extends TestCase {
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
         String summary = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
-        assertTrue (summary.indexOf("SMAD3 (Phosphorylated)")>0);
+        assertTrue (summary.indexOf("MADH3 (Phosphorylated)")>0);
     }
 
     /**
