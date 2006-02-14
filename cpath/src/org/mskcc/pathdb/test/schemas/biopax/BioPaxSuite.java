@@ -36,6 +36,7 @@ import junit.framework.TestSuite;
 import org.mskcc.pathdb.test.schemas.biopax.summary.TestBioPaxSummary;
 import org.mskcc.pathdb.test.schemas.biopax.summary.TestEntitySummaryParser;
 import org.mskcc.pathdb.test.schemas.biopax.summary.TestInteractionSummaryUtils;
+import org.mskcc.pathdb.test.schemas.biopax.summary.TestSummaryListUtil;
 
 /**
  * Suite of all BioPax Unit Tests.
@@ -60,6 +61,7 @@ public class BioPaxSuite extends TestCase {
         suite.addTestSuite(TestEntitySummaryParser.class);
         suite.addTestSuite(TestBioPaxSummary.class);
         suite.addTestSuite(TestInteractionSummaryUtils.class);
+        suite.addTestSuite(TestSummaryListUtil.class);
         suite.setName("BioPax Tests");
         return suite;
     }
