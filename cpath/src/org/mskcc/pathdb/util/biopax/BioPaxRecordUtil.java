@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.10 2006-02-10 20:09:53 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.11 2006-02-14 16:23:20 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ package org.mskcc.pathdb.util.biopax;
 
 // imports
 import java.util.List;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.io.StringReader;
 import java.io.IOException;
@@ -187,7 +188,7 @@ public class BioPaxRecordUtil {
         setCellularLocationSuccess = BioPaxRecordUtil.setCellularLocation(participantSummaryComponent, record, e);
 
         // feature list
-        setFeatureListSuccess = BioPaxRecordUtil.setFeatureList(participantSummaryComponent, e);
+        setFeatureListSuccess = BioPaxRecordUtil.setFeatureList(participantSummaryComponent, record, e);
 
         // made it this far
         return (setPhysicalEntitySuccess ||
@@ -319,6 +320,7 @@ public class BioPaxRecordUtil {
      * sequence or physicalEntity participant Element.
      *
      * @param participantSummaryComponent ParticipantSummaryComponent
+	 * @param record CPathRecord
      * @param e Element
      * @return boolean
      * @throws JDOMException
@@ -421,15 +423,16 @@ public class BioPaxRecordUtil {
      * sequence or physicalEntity participant Element.
      *
      * @param participantSummaryComponent ParticipantSummaryComponent
+     * @param record CPathRecord
      * @param e Element
      * @return boolean
      * @throws JDOMException
      */
-    private static boolean setFeatureList(ParticipantSummaryComponent participantSummaryComponent, Element e)
-            throws JDOMException {
+    private static boolean setFeatureList(ParticipantSummaryComponent participantSummaryComponent, CPathRecord record, Element e)
+            throws JDOMException, IOException {
 
         // vector of features
-        ArrayList featureList = new ArrayList();
+		HashSet featureSet = new HashSet();
 
         // setup/perform query
         XPath xpath = XPath.newInstance("bp:SEQUENCE-FEATURE-LIST/*");
@@ -437,33 +440,36 @@ public class BioPaxRecordUtil {
         List list = xpath.selectNodes(e);
 
         if (list != null && list.size() > 0) {
+			// drill down to feature type - setup for rdf query
+			StringReader reader = new StringReader (record.getXmlContent());
+			BioPaxUtil bpUtil = new BioPaxUtil(reader);
+			RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
+			// loop through feature list
             for (int lc = 0; lc < list.size(); lc++) {
                 // reset the list element
                 e = (Element)list.get(lc);
                 // try to get term
-                xpath = XPath.newInstance("bp:FEATURE-TYPE/*/bp:TERM");
-                xpath.addNamespace("bp", e.getNamespaceURI());
-                Element feature = (Element) xpath.selectSingleNode(e);
+				Element feature = rdfQuery.getNode(e, "FEATURE-TYPE/*/TERM");
                 if (feature != null && feature.getTextNormalize().length() > 0){
-                    featureList.add(feature.getTextNormalize());
+                    featureSet.add(feature.getTextNormalize());
                 }
+				// no term, try to get xref id
                 else{
-                    xpath = XPath.newInstance("bp:FEATURE-TYPE/*/bp:XREF/*/bp:ID");
-                    xpath.addNamespace("bp", e.getNamespaceURI());
-                    feature = (Element) xpath.selectSingleNode(e);
+					feature = rdfQuery.getNode(e, "FEATURE-TYPE/*/XREF/*/ID");
                     if (feature != null && feature.getTextNormalize().length() > 0){
-                        featureList.add(feature.getTextNormalize());
+                        featureSet.add(feature.getTextNormalize());
                     }
+					// we should have found something, made it here, return false
                     else{
                         return false;
-                    }
+					}
                 }
             }
         }
 
         // add list to component - if we have stuff to add
-        if (featureList.size() > 0){
-            participantSummaryComponent.setFeatureList(featureList);
+        if (featureSet.size() > 0){
+            participantSummaryComponent.setFeatureList(new ArrayList(featureSet));
         }
 
         // made it here
