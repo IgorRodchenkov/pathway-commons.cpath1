@@ -173,49 +173,11 @@
 		// child nodes
         SummaryListUtil util = new SummaryListUtil (record.getId());
         ArrayList summaryList = util.getSummaryList();
-        // interate through results
-		if (summaryList.size() > 0){
-			boolean showAll = (queryString.indexOf("show=ALL") != -1);
-			int cnt = (showAll) ? summaryList.size() : (summaryList.size() > 10) ? 10 : summaryList.size();
-			String heading = (showAll) ? "Contains the Following Interactions" :
-				(summaryList.size() > 10) ? "Contains the Following Interactions (first ten interactions shown)" : "Contains the Following Interactions";
-
-			// heading
-			out.println("<DIV CLASS ='h3'>");
-			out.println("<H3>");
-			out.println("<TABLE><TR>");
-			out.println("<TD>" + heading + "</TD>");
-
-			// limited pagination support if necessary
-			if (summaryList.size() > 10){
-				// generate link to change number of interactions to display
-				if (showAll){
-					String uri = "record.do?id=" + record.getId();
-					out.println("<TD><A HREF=\"" + uri + "\">[display 10 interactions]</A></TD>");
-				}
-				else{
-					String uri = "record.do?id=" + record.getId() + "&show=ALL";
-					out.println("<TD><A HREF=\"" + uri + "\">[display all interactions]</A></TD>");
-				}
-			}
-			out.println("</TR></TABLE>");
-			out.println("</H3>");
-			out.println("</DIV>");
-
-			// start child node output
-			out.println("<TABLE>");
-			for (int lc = 0; lc < cnt; lc++) {
-				EntitySummary entitySummary = (EntitySummary) summaryList.get(lc);
-				// render interaction information
 %>
-				<cbio:pathwayChildNodeTable entitySummary="<%= entitySummary %>"/>
+    <cbio:pathwayChildNodeTable entitySummaryList="<%= summaryList %>"
+                                queryString="<%= queryString %>" cpathId="<%= record.getId()%>"/>
 <%
-			}
-%>
-		</TABLE>
-<%
-		}
-	}
+    }
 %>
 <%
 	// if physical entity, show pathway(s) it belongs to
