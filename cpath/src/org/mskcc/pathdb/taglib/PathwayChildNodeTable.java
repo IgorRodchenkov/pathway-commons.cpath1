@@ -1,4 +1,4 @@
-// $Id: PathwayChildNodeTable.java,v 1.15 2006-02-10 20:09:29 grossb Exp $
+// $Id: PathwayChildNodeTable.java,v 1.16 2006-02-14 17:24:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,72 +40,57 @@ import org.jdom.JDOMException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryException;
+import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
+import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 
 /**
  * Custom jsp tag for displaying pathway child node (1 level deep)
  *
- * @author Benjamin Gross
+ * @author Benjamin Gross, Ethan Cerami.
  */
 public class PathwayChildNodeTable extends HtmlTable {
+    private EntitySummary entitySummary;
 
     /**
-     * Record ID.
-     */
-    private long recID;
-
-    /**
-     * Reference to CPathRecord.
-     */
-    CPathRecord record;
-
-    /**
-     * Receives Record ID Attribute.
+     * Receives EntitySummary Object.
      *
-     * @param recID long.
+     * @param entitySummary EntitySummary
      */
-    public void setRecid(long recID){
-        this.recID = recID;
+    public void setEntitySummary (EntitySummary entitySummary){
+        this.entitySummary = entitySummary;
     }
 
     /**
      * Executes JSP Custom Tag
-     *
-     * @throws Exception Exception in writing to JspWriter.
      */
-    protected void subDoStartTag() throws Exception {
-
-        // get record using ID attribute
-        DaoCPath cPath = DaoCPath.getInstance();
-        record = cPath.getRecordById(recID);
-
-        // is this a physical interaction
+    protected void subDoStartTag() {
         startRow();
-        outputRecords();
+        outputRecord();
         endRow();
     }
 
     /**
-     * Output the Interaction Information.
-     * @throws DaoException
-     * @throws IOException
-     * @throws EntitySummaryException
-     * @throws JDOMException
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     * Output the EntitySummary Information.
      */
-    private void outputRecords() throws DaoException, IOException, EntitySummaryException, JDOMException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-
-        // interaction summary
-        String interactionString = InteractionSummaryUtils.getInteractionSummary(record.getId());
-        if (interactionString != null){
-            append("<td>" + interactionString + "</td>");
-
-            // details hyperlink
-            String uri = "record.do?id=" + recID;
-            append("<td><a href=\"" + uri + "\">View Details</a></td>");
+    private void outputRecord()  {
+        BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
+        // summary
+        if (entitySummary instanceof InteractionSummary) {
+            InteractionSummary interactionSummary = (InteractionSummary) entitySummary;
+            String interactionString = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
+            if (interactionString != null) {
+                String interactionType = (String) map.get(entitySummary.getSpecificType());
+                append("<td>" + interactionType + "</td>");
+                append("<td>" + interactionString + "</td>");
+            }
+        } else {
+            append("<td>Not yet supported:   " + entitySummary.getSpecificType() + "</td>");
         }
+        // details hyperlink
+        String uri = "record.do?id=" + entitySummary.getRecordID();
+        append("<td><a href=\"" + uri + "\">View Details</a></td>");
     }
 }
