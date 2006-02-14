@@ -1,5 +1,5 @@
 //
-// $Id: BioPaxEntityTypeMap.java,v 1.1 2005-11-14 14:54:27 grossb Exp $
+// $Id: BioPaxEntityTypeMap.java,v 1.2 2006-02-14 18:17:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,13 +53,13 @@ public class BioPaxEntityTypeMap extends HashMap {
 		put("smallMolecule", "Small Molecule");
 		put("physicalEntity", "Physical Entity");
 		put("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
-		put("transport", "Transport");
+		put("transport", "Transport Reaction");
 		put("complexAssembly", "Complex Assembly");
 		put("biochemicalReaction", "Biochemical Reaction");
-		put("conversion", "Conversion");
-		put("modulation", "Modulation");
-		put("catalysis", "Catalysis");
-		put("control", "Control");
+		put("conversion", "Conversion Reaction");
+		put("modulation", "Modulation Reaction");
+		put("catalysis", "Catalysis Reaction");
+		put("control", "Control Reaction");
 		put("physicalInteraction", "Physical Interaction");
 		put("interaction", "Interaction");
     }
