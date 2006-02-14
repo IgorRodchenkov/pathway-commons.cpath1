@@ -1,4 +1,4 @@
-// $Id: PathwayChildNodeTable.java,v 1.16 2006-02-14 17:24:44 cerami Exp $
+// $Id: PathwayChildNodeTable.java,v 1.17 2006-02-14 18:17:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.taglib;
 // imports
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import org.jdom.JDOMException;
 
@@ -52,45 +53,138 @@ import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
  * @author Benjamin Gross, Ethan Cerami.
  */
 public class PathwayChildNodeTable extends HtmlTable {
-    private EntitySummary entitySummary;
+    private ArrayList entitySummaryList;
+    private String queryString;
+    private long cPathId;
+    private String currentType;
 
     /**
      * Receives EntitySummary Object.
      *
-     * @param entitySummary EntitySummary
+     * @param entitySummaryList EntitySummaryList.
      */
-    public void setEntitySummary (EntitySummary entitySummary){
-        this.entitySummary = entitySummary;
+    public void setEntitySummaryList (ArrayList entitySummaryList){
+        this.entitySummaryList = entitySummaryList;
+    }
+
+    /**
+     * Receives the Current Query String.
+     * @param queryString Query String.
+     */
+    public void setQueryString (String queryString) {
+        this.queryString = queryString;
+    }
+
+    /**
+     * Receives the Current cPath ID.
+     * @param cPathId cPath ID.
+     */
+    public void setcpathId (long cPathId) {
+        this.cPathId = cPathId;
     }
 
     /**
      * Executes JSP Custom Tag
      */
     protected void subDoStartTag() {
-        startRow();
-        outputRecord();
-        endRow();
+        currentType = null;
+        if (entitySummaryList.size() > 0){
+			boolean showAll = (queryString.indexOf("show=ALL") != -1);
+			int cnt = (showAll) ? entitySummaryList.size() : (entitySummaryList.size() > 10)
+                    ? 10 : entitySummaryList.size();
+			String heading = (showAll) ? "Contains the Following Interactions" :
+				(entitySummaryList.size() > 10) ?
+                        "Contains the Following Interactions (first ten interactions shown)"
+                        : "Contains the Following Interactions";
+
+            createHeader(heading, showAll);
+
+            // start child node output
+			startTable();
+			for (int lc = 0; lc < cnt; lc++) {
+                startRow();
+                outputRecord(entitySummaryList, lc);
+                endRow();
+            }
+            endTable();
+        }
     }
 
     /**
-     * Output the EntitySummary Information.
+     * Outputs the Table Header.
      */
-    private void outputRecord()  {
+    private void createHeader(String heading, boolean showAll) {
+        append("<DIV CLASS ='h3'>");
+        append("<H3>");
+        append("<TABLE><TR>");
+        append("<TD>" + heading + "</TD>");
+
+        // limited pagination support if necessary
+        if (entitySummaryList.size() > 10){
+            // generate link to change number of interactions to display
+            if (showAll){
+                String uri = "record.do?id=" + cPathId;
+                append("<TD><A HREF=\"" + uri + "\">[display 10 interactions]</A></TD>");
+            }
+            else{
+                String uri = "record.do?id=" + cPathId + "&show=ALL";
+                append("<TD><A HREF=\"" + uri + "\">[display all interactions]</A></TD>");
+            }
+        }
+        append("</TR></TABLE>");
+        append("</H3>");
+        append("</DIV>");
+    }
+
+    /**
+     * Outputs the EntitySummary Information.
+     */
+    private void outputRecord (ArrayList entitySummaryList, int index)  {
+        EntitySummary entitySummary = (EntitySummary) entitySummaryList.get(index);
+
+        String bgColor = "#FFFFFF";
+        if (index %2 == 0) {
+            bgColor ="#EEEEEE";
+        }
+
         BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
         // summary
         if (entitySummary instanceof InteractionSummary) {
             InteractionSummary interactionSummary = (InteractionSummary) entitySummary;
             String interactionString = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
             if (interactionString != null) {
-                String interactionType = (String) map.get(entitySummary.getSpecificType());
-                append("<td>" + interactionType + "</td>");
-                append("<td>" + interactionString + "</td>");
+                String interactionType = entitySummary.getSpecificType();
+                String interactionTypeInPlainEnglish = (String) map.get(interactionType);
+                if (currentType == null || ! interactionType.equals(currentType)) {
+                    int count = countRows (entitySummaryList, index);
+                    append("<td bgcolor=#DDDDDD width=15% rowspan=" + count + ">");
+                    append (interactionTypeInPlainEnglish +"(s)");
+                    append("</td>");
+                }
+                append("<td bgcolor=" + bgColor+ ">" + interactionString + "</td>");
+                currentType = entitySummary.getSpecificType();
             }
+
         } else {
-            append("<td>Not yet supported:   " + entitySummary.getSpecificType() + "</td>");
+            append("<td colspan=2 bgcolor=" + bgColor+ ">Not yet supported:   " + entitySummary.getSpecificType() + "</td>");
         }
         // details hyperlink
         String uri = "record.do?id=" + entitySummary.getRecordID();
-        append("<td><a href=\"" + uri + "\">View Details</a></td>");
+        append("<td bgcolor=" + bgColor + " width=15%><a href=\"" + uri + "\">View Details</a></td>");
+    }
+
+    private int countRows(ArrayList entitySummaryList, int index) {
+        int count = 1;
+        EntitySummary entitySummary = (EntitySummary) entitySummaryList.get(index);
+        String type = entitySummary.getSpecificType();
+        for (int i=index+1; i<entitySummaryList.size(); i++) {
+            entitySummary = (EntitySummary) entitySummaryList.get(i);
+            String currentType = entitySummary.getSpecificType();
+            if (!currentType.equals(type)) {
+                return count;
+            }
+            count++;
+        }
+        return count;
     }
 }
