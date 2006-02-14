@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.9 2006-02-14 17:23:09 cerami Exp $
+// $Id: EntitySummaryParser.java,v 1.10 2006-02-14 19:56:24 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -205,8 +205,16 @@ public class EntitySummaryParser {
                 }
                 else{
                     // not processing controlled, we need to create a participant summary component
-                    ParticipantSummaryComponent participantSummaryComponent = BioPaxRecordUtil.createInteractionSummaryComponent(record, e);
-                    participantArrayList.add(participantSummaryComponent);
+					// to do this, we need to get physical entity CPathRecord
+					xpath = XPath.newInstance("bp:PHYSICAL-ENTITY");
+					xpath.addNamespace("bp", e.getNamespaceURI());
+					Element physicalEntity = (Element) xpath.selectSingleNode(e);
+					CPathRecord physicalEntityRecord = getCPathRecord(physicalEntity); 
+					if (physicalEntityRecord != null){
+						ParticipantSummaryComponent participantSummaryComponent =
+							BioPaxRecordUtil.createInteractionSummaryComponent(record, e, physicalEntityRecord);
+						participantArrayList.add(participantSummaryComponent);
+					}
                 }
             }
         }
@@ -233,36 +241,20 @@ public class EntitySummaryParser {
         // this is the object to return, but you didnt need me to tell you that
         Object objectToReturn = null;
 
-        // get this element's attribute
-        Attribute rdfResourceAttribute =
-            element.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+		// get the cPath record
+		CPathRecord record = getCPathRecord(element);
 
-        // attribute not null
-        if (rdfResourceAttribute != null) {
-            // lets get the rdf key
-            String rdfKey = RdfUtil.removeHashMark
-                (rdfResourceAttribute.getValue());
-            // cook id to save
-            int indexOfID = rdfKey.lastIndexOf("-");
-            if (indexOfID == -1){
-                throw new EntitySummaryException("Corrupt Record ID: " + rdfResourceAttribute.getValue());
-            }
-            indexOfID += 1;
-            String cookedKey = rdfKey.substring(indexOfID);
-            Long recordID = new Long(cookedKey);
-            // get cpath record for this id
-            DaoCPath cPath = DaoCPath.getInstance();
-            CPathRecord record = cPath.getRecordById(recordID.longValue());
-            // is it an interaction ? if so, we go through the process again
-            if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
-				EntitySummaryParser entitySummaryParser = new EntitySummaryParser(recordID.longValue());
-                objectToReturn = entitySummaryParser.getEntitySummary();
-            }
-            else{
-                // this isn't an interaction, just create a top-level EntitySummary
-                objectToReturn = new EntitySummary(recordID.longValue(), record.getName(), record.getSpecificType());
-            }
-        }
+		if (record != null){
+			// is it an interaction ? if so, we go through the process again
+			if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+				EntitySummaryParser entitySummaryParser = new EntitySummaryParser(record.getId());
+				objectToReturn = entitySummaryParser.getEntitySummary();
+			}
+			else{
+				// this isn't an interaction, just create a top-level EntitySummary
+				objectToReturn = new EntitySummary(record.getId(), record.getName(), record.getSpecificType());
+			}
+		}
 
         // outta here
         return objectToReturn;
@@ -320,5 +312,40 @@ public class EntitySummaryParser {
 
 		// outta here
         return interactionType;
+    }
+
+    /**
+     * Gets a cpath record given an element whose attribute is an rdf resource attribute is a cpath id.
+     *
+     * @param e Element
+     * @return CPathRecord
+	 * @throws EntitySummaryException
+	 * @throws DaoException
+     */
+    private CPathRecord getCPathRecord(Element e) throws EntitySummaryException, DaoException {
+
+		// get elements attribute
+		Attribute rdfResourceAttribute =
+			e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+
+		// attribute not null
+		if (rdfResourceAttribute != null) {
+			// get the rdf key
+			String rdfKey = RdfUtil.removeHashMark(rdfResourceAttribute.getValue());
+			// cook id to save
+			int indexOfID = rdfKey.lastIndexOf("-");
+			if (indexOfID == -1){
+                throw new EntitySummaryException("Corrupt Record ID: " + rdfResourceAttribute.getValue());
+			}
+			indexOfID += 1;
+			String cookedKey = rdfKey.substring(indexOfID);
+			Long recordID = new Long(cookedKey);
+            // get cpath record for this id
+            DaoCPath cPath = DaoCPath.getInstance();
+            return cPath.getRecordById(recordID.longValue());
+		}
+
+		// made it here
+		return null;
     }
 }

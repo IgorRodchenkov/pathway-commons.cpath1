@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.11 2006-02-14 16:23:20 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.12 2006-02-14 19:57:45 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -106,6 +106,9 @@ public class BioPaxRecordUtil {
         // this is object to return
         BioPaxRecordSummary biopaxRecordSummary = new BioPaxRecordSummary();
 
+		// set id
+		biopaxRecordSummary.setRecordID(record.getId());
+
 		// set type
 		String type = record.getSpecificType();
 		if (type != null){
@@ -120,7 +123,7 @@ public class BioPaxRecordUtil {
 		// set short name
 		setShortNameSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:SHORT-NAME", "setShortName", biopaxRecordSummary);
 		// set synonyms
-		setSynonymSuccess = setBioPaxRecordRecordListAttribute(root, "/*/bp:SYNONYMS", "setSynonyms", biopaxRecordSummary);
+		setSynonymSuccess = setBioPaxRecordListAttribute(root, "/*/bp:SYNONYMS", "setSynonyms", biopaxRecordSummary);
 		// set organsim
 		setOrganismSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:ORGANISM/*/bp:NAME", "setOrganism", biopaxRecordSummary);
 		// set data source
@@ -150,8 +153,9 @@ public class BioPaxRecordUtil {
      * Creates ParticipantSummaryComponent given
      * sequence or physicalEntity participant Element.
      *
-	 * @param record CPathRecord
-     * @param e Element
+	 * @param interactionRecord CPathRecord of interaction
+     * @param e Element of Participant
+	 * @param physicalEntityRecord CPathRecord of physicalEntity
      * @return ParticipantSummaryComponent
      * @throws DaoException
      * @throws JDOMException
@@ -161,39 +165,34 @@ public class BioPaxRecordUtil {
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
      */
-    public static ParticipantSummaryComponent createInteractionSummaryComponent(CPathRecord record, Element e)
+    public static ParticipantSummaryComponent createInteractionSummaryComponent(CPathRecord interactionRecord, Element e, CPathRecord physicalEntityRecord)
             throws DaoException, JDOMException, IOException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
 		// check record for validity
-		if (record == null){
-			throw new IllegalArgumentException("Record Argument is Null" + record);
+		if (interactionRecord == null){
+			throw new IllegalArgumentException("Record Argument is Null" + interactionRecord);
 		}
-		if (!record.getXmlType().equals(XmlRecordType.BIO_PAX)){
+		if (!interactionRecord.getXmlType().equals(XmlRecordType.BIO_PAX)){
 			throw new IllegalArgumentException("Specified cPath record is not of type " + XmlRecordType.BIO_PAX);
 		}
 
 		// success flags
-        boolean setPhysicalEntitySuccess, setCellularLocationSuccess, setFeatureListSuccess;
+        boolean setCellularLocationSuccess, setFeatureListSuccess;
 
 		// create a biopaxRecordSummary
-		BioPaxRecordSummary biopaxRecordSummary = createBioPaxRecordSummary(record);
+		BioPaxRecordSummary biopaxRecordSummary = createBioPaxRecordSummary(physicalEntityRecord);
 
         // this is object to return
         ParticipantSummaryComponent participantSummaryComponent = new ParticipantSummaryComponent(biopaxRecordSummary);
 
-        // first get physical entity
-        setPhysicalEntitySuccess = BioPaxRecordUtil.setPhysicalEntity(participantSummaryComponent, e);
-
         // get cellular location
-        setCellularLocationSuccess = BioPaxRecordUtil.setCellularLocation(participantSummaryComponent, record, e);
+        setCellularLocationSuccess = BioPaxRecordUtil.setCellularLocation(participantSummaryComponent, interactionRecord, e);
 
         // feature list
-        setFeatureListSuccess = BioPaxRecordUtil.setFeatureList(participantSummaryComponent, record, e);
+        setFeatureListSuccess = BioPaxRecordUtil.setFeatureList(participantSummaryComponent, interactionRecord, e);
 
         // made it this far
-        return (setPhysicalEntitySuccess ||
-				setCellularLocationSuccess ||
-				setFeatureListSuccess) ? participantSummaryComponent : null;
+        return (setCellularLocationSuccess || setFeatureListSuccess) ? participantSummaryComponent : null;
     }
 
     /**
@@ -268,51 +267,6 @@ public class BioPaxRecordUtil {
             }
         }
         return null;
-    }
-
-    /**
-     * Gets physical entity name and id of given component from
-     * data within sequence or physicalEntity participant Element.
-     *
-     * @param participantSummaryComponent ParticipantSummaryComponent
-     * @param e Element
-     * @return boolean
-     * @throws JDOMException
-     * @throws DaoException
-     * @throws IOException
-     */
-    private static boolean setPhysicalEntity(ParticipantSummaryComponent participantSummaryComponent, Element e)
-            throws JDOMException, DaoException, IOException {
-
-        // setup/perform query
-        XPath xpath = XPath.newInstance("bp:PHYSICAL-ENTITY");
-        xpath.addNamespace("bp", e.getNamespaceURI());
-        Element physicalEntity = (Element) xpath.selectSingleNode(e);
-
-        // process query
-        if (physicalEntity != null) {
-            Attribute rdfResourceAttribute =
-                physicalEntity.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
-            if (rdfResourceAttribute != null) {
-                String rdfKey = RdfUtil.removeHashMark(rdfResourceAttribute.getValue());
-                // get physical entity
-                String physicalEntityString = BioPaxRecordUtil.getPhysicalEntityName(rdfKey);
-                participantSummaryComponent.setName(physicalEntityString);
-                // cook id to save
-                int indexOfID = rdfKey.lastIndexOf("-");
-                if (indexOfID == -1){
-                    return false;
-                }
-                indexOfID += 1;
-                String cookedKey = rdfKey.substring(indexOfID);
-                Long recordID = new Long(cookedKey);
-                ((BioPaxRecordSummary)participantSummaryComponent).setRecordID(recordID.longValue());
-                return true;
-            }
-        }
-
-        // made it here
-        return false;
     }
 
     /**
@@ -526,7 +480,7 @@ public class BioPaxRecordUtil {
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
      */
-    private static boolean setBioPaxRecordRecordListAttribute(Element root, String query, String methodName, BioPaxRecordSummary biopaxRecordSummary)
+    private static boolean setBioPaxRecordListAttribute(Element root, String query, String methodName, BioPaxRecordSummary biopaxRecordSummary)
             throws JDOMException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
 		// setup for query
