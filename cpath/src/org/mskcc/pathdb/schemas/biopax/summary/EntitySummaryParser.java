@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.10 2006-02-14 19:56:24 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.11 2006-02-14 20:33:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -158,10 +158,12 @@ public class EntitySummaryParser {
         }
 
         // outta here
-        if (record != null && entitySummary != null) {
-            entitySummary.setSpecificType(record.getSpecificType());
-            entitySummary.setId(record.getId());
+        if (entitySummary == null) {
+            entitySummary = new EntitySummary();
         }
+        entitySummary.setSpecificType(record.getSpecificType());
+        entitySummary.setId(record.getId());
+        entitySummary.setName(record.getName());
         return entitySummary;
     }
 
