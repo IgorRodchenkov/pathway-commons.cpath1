@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.16 2006-02-14 17:22:47 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.17 2006-02-14 20:32:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -56,6 +56,11 @@ public class InteractionSummaryUtils {
     private static String UBIQUITINATED = " (Ubiquitinated)";
 
     /**
+     * Acetylated Keyword.
+     */
+    private static String ACETYLATED = " (Acetylated)";
+
+    /**
      * Phosphorylation Feature.
      */
     private static String PHOSPHORYLATION_FEATURE = "phosphorylation";
@@ -64,6 +69,11 @@ public class InteractionSummaryUtils {
      * Ubiquitination Feature.
      */
     private static String UBIQUITINATION_FEATURE = "ubiquitination";
+
+    /**
+     * Acetylation Feature.
+     */
+    private static String ACETYLATION_FEATURE = "acetylation";
 
     /**
      * Space Character.
@@ -219,8 +229,9 @@ public class InteractionSummaryUtils {
         String name = component.getName();
 
         //  Determine if we have any special cases to deal with.
-        boolean isPhosphorylated = isPhosphorylated(component);
-        boolean isUbiquitinated = isUbiquitinated(component);
+        boolean isPhosphorylated = hasFeature(component, PHOSPHORYLATION_FEATURE);
+        boolean isUbiquitinated = hasFeature(component, UBIQUITINATION_FEATURE);
+        boolean isAcetylated = hasFeature(component, ACETYLATION_FEATURE);
         boolean isTransport = isTransport(summary);
 
         //  Start HTML A Link Tag.
@@ -238,12 +249,7 @@ public class InteractionSummaryUtils {
         //  Create Header for Pop-Up Box
         buf.append("', WRAP, CELLPAD, 5, OFFSETY, 0, CAPTION, '");
         buf.append(name);
-        if (isPhosphorylated) {
-            buf.append(PHOSPHORYLATED);
-        }
-        if (isUbiquitinated) {
-            buf.append(UBIQUITINATED);
-        }
+        appendFeatures(isPhosphorylated, buf, isUbiquitinated, isAcetylated);
         if (component.getCellularLocation() != null) {
             buf.append(" in <FONT COLOR=LIGHTGREEN>" + component.getCellularLocation()
                     + "</FONT>");
@@ -260,18 +266,27 @@ public class InteractionSummaryUtils {
         }
 
         //  If component is phosphorylated, show explicitly
-        if (isPhosphorylated) {
-            buf.append(PHOSPHORYLATED);
-        }
-        if (isUbiquitinated) {
-            buf.append(UBIQUITINATED);
-        }
+        appendFeatures(isPhosphorylated, buf, isUbiquitinated, isAcetylated);
         return buf.toString();
     }
 
+    private static void appendFeatures(boolean phosphorylated, StringBuffer buf, boolean ubiquitinated, boolean acetylated) {
+        if (phosphorylated) {
+            buf.append(PHOSPHORYLATED);
+        }
+        if (ubiquitinated) {
+            buf.append(UBIQUITINATED);
+        }
+        if (acetylated) {
+            buf.append(ACETYLATED);
+        }
+    }
+
     private static String truncateLongName (String name) {
-        if (name.length() > NAME_LENGTH) {
-            return name.substring(0, NAME_LENGTH) + "...";
+        if (name !=null ) {
+            if (name.length() > NAME_LENGTH) {
+                return name.substring(0, NAME_LENGTH) + "...";
+            }
         }
         return name;
     }
@@ -331,38 +346,18 @@ public class InteractionSummaryUtils {
     }
 
     /**
-     * Determines if the specified component is phosphorylated.
+     * Determines if the specified component has the specified target feature.
      *
      * @param component ParticipantSummaryComponent Object.
      * @return boolean value.
      */
-    private static boolean isPhosphorylated(ParticipantSummaryComponent component) {
+    private static boolean hasFeature (ParticipantSummaryComponent component, String featureTarget) {
         if (component.getFeatureList() != null && component.getFeatureList().size() > 0) {
             ArrayList featureList = component.getFeatureList();
             for (int i = 0; i < featureList.size(); i++) {
                 String feature = (String) featureList.get(i);
                 feature = feature.toLowerCase();
-                if (feature.indexOf(PHOSPHORYLATION_FEATURE) > -1) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Determines if the specified component is ubiquitinated.
-     *
-     * @param component ParticipantSummaryComponent Object.
-     * @return boolean value.
-     */
-    private static boolean isUbiquitinated(ParticipantSummaryComponent component) {
-        if (component.getFeatureList() != null && component.getFeatureList().size() > 0) {
-            ArrayList featureList = component.getFeatureList();
-            for (int i = 0; i < featureList.size(); i++) {
-                String feature = (String) featureList.get(i);
-                feature = feature.toLowerCase();
-                if (feature.indexOf(UBIQUITINATION_FEATURE) > -1) {
+                if (feature.indexOf(featureTarget) > -1) {
                     return true;
                 }
             }
