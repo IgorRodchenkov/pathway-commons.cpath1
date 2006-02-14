@@ -39,9 +39,14 @@
     See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
     --%>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+
+    <script type="text/javascript" src="jsp/javascript/overlib/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>
 </head>
 
 <body class="composite" onload="document.searchbox.q.focus();">
+
+<!-- For OverLib PopUp Boxes -->
+<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
 <!-- Header/Banner -->
 <div id="page_header">

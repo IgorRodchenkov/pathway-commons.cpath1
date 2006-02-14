@@ -56,10 +56,7 @@
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
-<!-- Courtesy of SimplytheBest.net - http://simplythebest.net/scripts/ -->
-<div id="overDiv" style="position:absolute; visibility:hide; z-index:1;">
-</div>
-<script LANGUAGE="JavaScript" SRC="jsp/javascript/overlib.js"></script>
+
 
 <% if (record != null) { %>
 <%
@@ -282,4 +279,4 @@
 	}
 %>
 <% } // record != null %>
-<jsp:include page="../global/footer.jsp" flush="true" />
+</p><jsp:include page="../global/footer.jsp" flush="true" />

@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.14 2006-02-13 21:35:54 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.15 2006-02-14 15:41:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -260,7 +260,7 @@ public class InteractionSummaryUtils {
         StringBuffer buf = new StringBuffer("<a href=\"record.do?id=" + component.getRecordID());
 
         //  Create JavaScript for MouseOver Pop-Up Box
-        buf.append("\" onmouseover=\"drc('");
+        buf.append("\" onmouseover=\"return overlib('");
 
         //  Add Synonyms to Pop-Up Box
         addSynonmys(component, buf);
@@ -269,7 +269,7 @@ public class InteractionSummaryUtils {
         addFeatures(component, buf);
 
         //  Create Header for Pop-Up Box
-        buf.append("', '");
+        buf.append("', WRAP, CELLPAD, 5, OFFSETY, 0, CAPTION, '");
         buf.append(name);
         if (isPhosphorylated) {
             buf.append(PHOSPHORYLATED);
@@ -281,7 +281,7 @@ public class InteractionSummaryUtils {
             buf.append(" in <FONT COLOR=LIGHTGREEN>" + component.getCellularLocation()
                     + "</FONT>");
         }
-        buf.append("'); return true;\" onmouseout=\"nd(); return true;\">");
+        buf.append("'); return true;\" onmouseout=\"return nd();\">");
 
         //  Output Component Name and end A Tag.
         buf.append(truncateLongName(name));
