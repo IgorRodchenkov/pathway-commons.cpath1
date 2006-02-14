@@ -1,4 +1,4 @@
-// $Id: TestBioPaxSummary.java,v 1.2 2006-02-10 22:49:12 grossb Exp $
+// $Id: TestBioPaxSummary.java,v 1.3 2006-02-14 21:08:06 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -81,27 +81,27 @@ public class TestBioPaxSummary extends TestCase {
 
 		// get a real biopaxRecordSummary
         DaoCPath cPath = DaoCPath.getInstance();
-        CPathRecord cPathRecord = cPath.getRecordById(15);
+        CPathRecord cPathRecord = cPath.getRecordById(418);
 		biopaxRecordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(cPathRecord);
 
 		// header
 		String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(biopaxRecordSummary);
-		assertEquals("GLK (Protein) from Escherichia coli", header);
+		assertEquals("AR (Protein) from Homo sapiens", header);
 		// synonyms
 		String synonyms = BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString(biopaxRecordSummary);
-		assertEquals("Glucose kinase GLK_ECOLI", synonyms);
+		assertEquals("NR3C4 AR SBMA SMAX1 Dihydrotestosterone receptor HUMARA KD AIS DHTR TFM", synonyms);
 		// data source
 		String dataSource = BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString(biopaxRecordSummary);
-		assertEquals("Swiss-Prot/TrEMBL", dataSource );
+		assertTrue(dataSource == null);
  		// availability
 		String availability = BioPaxRecordSummaryUtils.getBioPaxRecordAvailabilityString(biopaxRecordSummary);
-		assertEquals("see http://www.amaze.ulb.ac.be/", availability );
+		assertTrue(availability == null);
 		// external links
 		List links = biopaxRecordSummary.getExternalLinks();
-		assertTrue(links == null);
+		assertTrue(links.size() == 4);
 		// comment
 		String comment = BioPaxRecordSummaryUtils.getBioPaxRecordCommentString(biopaxRecordSummary);
-		assertTrue(comment.startsWith("This example is meant to provide an illustration"));
+		assertEquals("Description of AR", comment);
 	}
 
     /**
