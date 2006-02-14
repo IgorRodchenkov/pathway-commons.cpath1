@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.15 2006-02-14 15:41:25 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.16 2006-02-14 17:22:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,14 +34,8 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
-
 import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
-import org.jdom.JDOMException;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
@@ -80,33 +74,6 @@ public class InteractionSummaryUtils {
      * Names longer than this will be truncated.
      */
     private static int NAME_LENGTH = 10;
-
-    /**
-     * Gets an Interaction Summary for the specified cPath ID.
-     *
-     * @param recordID cPath ID.
-     * @return Interaction HTML String.
-     * @throws DaoException              Data Access Error.
-     * @throws IOException               IO Error.
-     * @throws JDOMException             XML Parsing Error.
-     * @throws NoSuchMethodException     XML Parsing Error.
-     * @throws IllegalAccessException    XML Parsing Error.
-     * @throws InvocationTargetException XML Parsing Error.
-     * @throws EntitySummaryException    Error Parsing Summary.
-     */
-    public static String getInteractionSummary(long recordID)
-            throws DaoException, IOException, JDOMException, NoSuchMethodException,
-            IllegalAccessException, InvocationTargetException, EntitySummaryException {
-
-        // get entity summary parser
-        EntitySummaryParser entityParser = new EntitySummaryParser(recordID);
-
-        // get entity summary
-        InteractionSummary interactionSummary = (InteractionSummary)
-                entityParser.getEntitySummary();
-        return (interactionSummary == null) ? "Not yet supported:  ID:  " + recordID
-                : createInteractionSummaryString(interactionSummary);
-    }
 
     /**
      * Creates the interaction summary string.
