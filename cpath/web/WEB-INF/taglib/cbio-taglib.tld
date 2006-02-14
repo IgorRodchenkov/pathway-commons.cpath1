@@ -91,7 +91,17 @@
     <body-content>empty</body-content>
     <description>Displays Pathway Child Node Table 1 Level Deep</description>
 	<attribute>
-		<name>entitySummary</name>
+		<name>entitySummaryList</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>queryString</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>cpathId</name>
 		<required>true</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
