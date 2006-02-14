@@ -66,10 +66,15 @@ class SummaryComparator implements Comparator {
      * or greater than the second.
      */
     public int compare(Object object0, Object object1) {
-        EntitySummary summary0 = (EntitySummary) object0;
-        EntitySummary summary1 = (EntitySummary) object1;
-        String type0 = summary0.getSpecificType();
-        String type1 = summary1.getSpecificType();
-        return type0.compareTo(type1);
+        if (object0 != null && object1 != null) {
+            EntitySummary summary0 = (EntitySummary) object0;
+            EntitySummary summary1 = (EntitySummary) object1;
+            String type0 = summary0.getSpecificType();
+            String type1 = summary1.getSpecificType();
+            if (type0 != null && type1!= null) {
+                return type0.compareTo(type1);
+            }
+        }
+        return -1;
     }
 }
