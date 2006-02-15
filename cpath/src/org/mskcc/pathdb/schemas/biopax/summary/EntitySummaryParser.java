@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.12 2006-02-15 14:39:31 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.13 2006-02-15 14:42:09 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -183,9 +183,10 @@ public class EntitySummaryParser {
      * @throws NoSuchMethodException
      * @throws IllegalAccessException
      * @throws InvocationTargetException
+	 * @throws BioPaxRecordSummaryException
      */
     private ArrayList getInteractionInformation(String query)
-            throws JDOMException, EntitySummaryException, DaoException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+            throws JDOMException, EntitySummaryException, DaoException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, BioPaxRecordSummaryException {
 
         // we dont process controlled queries as all others
         boolean processingControlled = (query.equals("/*/bp:CONTROLLED"));

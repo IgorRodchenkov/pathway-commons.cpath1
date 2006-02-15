@@ -1,4 +1,4 @@
-// $Id: EntitySummaryException.java,v 1.2 2006-02-15 14:39:20 grossb Exp $
+// $Id: BioPaxRecordSummaryException.java,v 1.1 2006-02-15 14:39:12 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,14 +40,14 @@ package org.mskcc.pathdb.schemas.biopax.summary;
  *
  * @author Benjamin Gross
  */
-public class EntitySummaryException extends Exception {
+public class BioPaxRecordSummaryException extends Exception {
 
     /**
      * Constructor.
      *
      * @param throwable Any Throwable Object
      */
-    public EntitySummaryException(Throwable throwable) {
+    public BioPaxRecordSummaryException(Throwable throwable) {
         super(throwable);
     }
 }
