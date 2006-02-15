@@ -1,4 +1,4 @@
-// $Id: PathwayChildNodeTable.java,v 1.18 2006-02-14 20:33:47 cerami Exp $
+// $Id: PathwayChildNodeTable.java,v 1.19 2006-02-15 20:07:27 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,7 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
+import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
@@ -148,7 +149,10 @@ public class PathwayChildNodeTable extends HtmlTable {
         if (currentType == null || ! interactionType.equals(currentType)) {
             int count = countRows(entitySummaryList, index);
             append("<td bgcolor=#DDDDDD width=15% rowspan=" + count + ">");
+			String interactionTypePopupCode = getInteractionTypePopupCode(interactionType);
+			append("<a href=\"javascript:void(0);\"" + interactionTypePopupCode + ">");
             append(interactionTypeInPlainEnglish + "(s)");
+			append("</a>");
             append("</td>");
             currentType = entitySummary.getSpecificType();
         }
@@ -187,4 +191,24 @@ public class PathwayChildNodeTable extends HtmlTable {
         }
         return count;
     }
+
+	/**
+	 * Returns the proper javascript code (as string)
+	 * which displays the interaction description for 
+	 * the given interactionType in a popup box (aka tooltip).
+	 *
+	 * @param interactionType String
+	 * @return String
+	 */
+	private String getInteractionTypePopupCode(String interactionType){
+
+		// map used to get interaction descriptions
+		BioPaxInteractionDescriptionMap map = new BioPaxInteractionDescriptionMap();
+
+		// set interaction description
+		String interactionDescription = (String)map.get(interactionType);
+
+		// outta here
+		return " onmouseover=\"return overlib('" + interactionDescription + "');\" onmouseout=\"return nd();\"";
+	}
 }
