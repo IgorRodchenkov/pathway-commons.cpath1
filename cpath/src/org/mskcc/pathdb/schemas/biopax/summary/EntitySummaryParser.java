@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.11 2006-02-14 20:33:03 cerami Exp $
+// $Id: EntitySummaryParser.java,v 1.12 2006-02-15 14:39:31 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -111,17 +111,10 @@ public class EntitySummaryParser {
      * Finds/returns physical interaction information.
      *
      * @return EntitySummary
-     * @throws IOException
-     * @throws JDOMException
      * @throws EntitySummaryException
-     * @throws DaoException
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-	 * @throws IOException
      */
     public EntitySummary getEntitySummary()
-            throws IOException, JDOMException, EntitySummaryException, DaoException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, IOException {
+            throws EntitySummaryException {
 
         // ref to return
         EntitySummary entitySummary = null;
@@ -129,33 +122,44 @@ public class EntitySummaryParser {
         // used for xml parsing
         SAXBuilder builder = new SAXBuilder();
         StringReader reader = new StringReader (record.getXmlContent());
-        Document bioPaxDoc = builder.build(reader);
+        Document bioPaxDoc;
+        try {
+            bioPaxDoc = builder.build(reader);
+        }
+		catch (Throwable throwable) {
+            throw new EntitySummaryException(throwable);
+        }
 
         // get the doc root
         if (bioPaxDoc != null){
             root = bioPaxDoc.getRootElement();
         }
 
-        // get interaction information
-        if (biopaxConstants.isConversion(record.getSpecificType())){
-            // get conversion info
-            ArrayList leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
-            ArrayList rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
-            entitySummary = new ConversionInteractionSummary(leftParticipants, rightParticipants);
-        }
-        else if (biopaxConstants.isControl(record.getSpecificType())){
-            // get control info
-            ArrayList controllers = getInteractionInformation("/*/bp:CONTROLLER/*");
-            ArrayList controlled = getInteractionInformation("/*/bp:CONTROLLED");
-            String controlType = getControlType("/*/bp:CONTROL-TYPE");
-            entitySummary = new ControlInteractionSummary(controlType, controllers, controlled);
-        }
-        else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
-            // get physical interaction info
-            ArrayList participants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
-			String interactionType = getInteractionType("/*/bp:INTERACTION-TYPE/*/bp:TERM");
-            entitySummary = new PhysicalInteractionSummary(interactionType, participants);
-        }
+		try{
+			// get interaction information
+			if (biopaxConstants.isConversion(record.getSpecificType())){
+				// get conversion info
+				ArrayList leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
+				ArrayList rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
+				entitySummary = new ConversionInteractionSummary(leftParticipants, rightParticipants);
+			}
+			else if (biopaxConstants.isControl(record.getSpecificType())){
+				// get control info
+				ArrayList controllers = getInteractionInformation("/*/bp:CONTROLLER/*");
+				ArrayList controlled = getInteractionInformation("/*/bp:CONTROLLED");
+				String controlType = getControlType("/*/bp:CONTROL-TYPE");
+				entitySummary = new ControlInteractionSummary(controlType, controllers, controlled);
+			}
+			else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())){
+				// get physical interaction info
+				ArrayList participants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
+				String interactionType = getInteractionType("/*/bp:INTERACTION-TYPE/*/bp:TERM");
+				entitySummary = new PhysicalInteractionSummary(interactionType, participants);
+			}
+		}
+		catch(Throwable throwable){
+			throw new EntitySummaryException(throwable);
+		}
 
         // outta here
         if (entitySummary == null) {
@@ -211,7 +215,7 @@ public class EntitySummaryParser {
 					xpath = XPath.newInstance("bp:PHYSICAL-ENTITY");
 					xpath.addNamespace("bp", e.getNamespaceURI());
 					Element physicalEntity = (Element) xpath.selectSingleNode(e);
-					CPathRecord physicalEntityRecord = getCPathRecord(physicalEntity); 
+					CPathRecord physicalEntityRecord = getCPathRecord(physicalEntity);
 					if (physicalEntityRecord != null){
 						ParticipantSummaryComponent participantSummaryComponent =
 							BioPaxRecordUtil.createInteractionSummaryComponent(record, e, physicalEntityRecord);
@@ -232,13 +236,8 @@ public class EntitySummaryParser {
      * @return Object
      * @throws EntitySummaryException
      * @throws DaoException
-     * @throws IOException
-     * @throws JDOMException
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
-    private Object getControlledInteractionType(Element element) throws EntitySummaryException, DaoException, IOException, JDOMException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private Object getControlledInteractionType(Element element) throws EntitySummaryException, DaoException {
 
         // this is the object to return, but you didnt need me to tell you that
         Object objectToReturn = null;
@@ -337,7 +336,7 @@ public class EntitySummaryParser {
 			// cook id to save
 			int indexOfID = rdfKey.lastIndexOf("-");
 			if (indexOfID == -1){
-                throw new EntitySummaryException("Corrupt Record ID: " + rdfResourceAttribute.getValue());
+                throw new EntitySummaryException(new Exception("Corrupt Record ID: " + rdfResourceAttribute.getValue()));
 			}
 			indexOfID += 1;
 			String cookedKey = rdfKey.substring(indexOfID);

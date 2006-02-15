@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.12 2006-02-14 19:57:45 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.13 2006-02-15 14:38:59 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,13 +51,13 @@ import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 /**
  * This class contains utilities
@@ -73,17 +73,9 @@ public class BioPaxRecordUtil {
      *
      * @param record CPathRecord
      * @return BioPaxRecordSummary
-     * @throws IllegalArgumentException
-     * @throws JDOMException
-     * @throws IOException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws DaoException
+     * @throws BioPaxRecordSummaryException
      */
-    public static BioPaxRecordSummary createBioPaxRecordSummary(CPathRecord record)
-		throws IllegalArgumentException, JDOMException, IOException, IllegalAccessException,
-			   NoSuchMethodException, InvocationTargetException, DaoException {
+    public static BioPaxRecordSummary createBioPaxRecordSummary(CPathRecord record) throws BioPaxRecordSummaryException {
 
 		// check record for validity
 		if (record == null){
@@ -100,7 +92,13 @@ public class BioPaxRecordUtil {
 		// setup for queries
 		StringReader reader = new StringReader (record.getXmlContent());
 		SAXBuilder builder = new SAXBuilder();
-		Document bioPaxDoc = builder.build(reader);
+		Document bioPaxDoc;
+		try{
+			bioPaxDoc = builder.build(reader);
+		}
+		catch (Throwable throwable){
+			throw new BioPaxRecordSummaryException(throwable);
+		}
 		Element root = bioPaxDoc.getRootElement();
 
         // this is object to return
@@ -118,30 +116,36 @@ public class BioPaxRecordUtil {
 		else{
 			setTypeSuccess = false;
 		}
-		// set name
-		setNameSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:NAME", "setName", biopaxRecordSummary);
-		// set short name
-		setShortNameSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:SHORT-NAME", "setShortName", biopaxRecordSummary);
-		// set synonyms
-		setSynonymSuccess = setBioPaxRecordListAttribute(root, "/*/bp:SYNONYMS", "setSynonyms", biopaxRecordSummary);
-		// set organsim
-		setOrganismSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:ORGANISM/*/bp:NAME", "setOrganism", biopaxRecordSummary);
-		// set data source
-		setDataSourceSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:DATA-SOURCE/*/bp:NAME", "setDataSource", biopaxRecordSummary);
-		// availability
-		setAvailabilitySuccess = setBioPaxRecordStringAttribute(root, "/*/bp:AVAILABILITY", "setAvailability", biopaxRecordSummary);
-		// external links
-		DaoExternalLink externalLinker = DaoExternalLink.getInstance();
-		ArrayList externalLinks = externalLinker.getRecordsByCPathId(record.getId());
-		if (externalLinks.size() > 0) {
-			biopaxRecordSummary.setExternalLinks(externalLinks);
-			setExternalLinksSuccess = true;
+
+		try{
+			// set name
+			setNameSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:NAME", "setName", biopaxRecordSummary);
+			// set short name
+			setShortNameSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:SHORT-NAME", "setShortName", biopaxRecordSummary);
+			// set synonyms
+			setSynonymSuccess = setBioPaxRecordListAttribute(root, "/*/bp:SYNONYMS", "setSynonyms", biopaxRecordSummary);
+			// set organsim
+			setOrganismSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:ORGANISM/*/bp:NAME", "setOrganism", biopaxRecordSummary);
+			// set data source
+			setDataSourceSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:DATA-SOURCE/*/bp:NAME", "setDataSource", biopaxRecordSummary);
+			// availability
+			setAvailabilitySuccess = setBioPaxRecordStringAttribute(root, "/*/bp:AVAILABILITY", "setAvailability", biopaxRecordSummary);
+			// external links
+			DaoExternalLink externalLinker = DaoExternalLink.getInstance();
+			ArrayList externalLinks = externalLinker.getRecordsByCPathId(record.getId());
+			if (externalLinks.size() > 0) {
+				biopaxRecordSummary.setExternalLinks(externalLinks);
+				setExternalLinksSuccess = true;
+			}
+			else{
+				setExternalLinksSuccess = false;
+			}
+			// comment
+			setCommentSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:COMMENT", "setComment", biopaxRecordSummary);
 		}
-		else{
-			setExternalLinksSuccess = false;
+		catch (Throwable throwable){
+			throw new BioPaxRecordSummaryException(throwable);
 		}
-		// comment
-		setCommentSuccess = setBioPaxRecordStringAttribute(root, "/*/bp:COMMENT", "setComment", biopaxRecordSummary);
 
 		// outta here
 		return (setTypeSuccess || setNameSuccess || setShortNameSuccess ||
@@ -157,16 +161,10 @@ public class BioPaxRecordUtil {
      * @param e Element of Participant
 	 * @param physicalEntityRecord CPathRecord of physicalEntity
      * @return ParticipantSummaryComponent
-     * @throws DaoException
-     * @throws JDOMException
-     * @throws IOException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
+     * @throws BioPaxRecordSummaryException
      */
     public static ParticipantSummaryComponent createInteractionSummaryComponent(CPathRecord interactionRecord, Element e, CPathRecord physicalEntityRecord)
-            throws DaoException, JDOMException, IOException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+            throws BioPaxRecordSummaryException {
 
 		// check record for validity
 		if (interactionRecord == null){
@@ -185,11 +183,16 @@ public class BioPaxRecordUtil {
         // this is object to return
         ParticipantSummaryComponent participantSummaryComponent = new ParticipantSummaryComponent(biopaxRecordSummary);
 
-        // get cellular location
-        setCellularLocationSuccess = BioPaxRecordUtil.setCellularLocation(participantSummaryComponent, interactionRecord, e);
+		try{
+			// get cellular location
+			setCellularLocationSuccess = BioPaxRecordUtil.setCellularLocation(participantSummaryComponent, interactionRecord, e);
 
-        // feature list
-        setFeatureListSuccess = BioPaxRecordUtil.setFeatureList(participantSummaryComponent, interactionRecord, e);
+			// feature list
+			setFeatureListSuccess = BioPaxRecordUtil.setFeatureList(participantSummaryComponent, interactionRecord, e);
+		}
+		catch (Throwable throwable){
+			throw new BioPaxRecordSummaryException(throwable);
+		}
 
         // made it this far
         return (setCellularLocationSuccess || setFeatureListSuccess) ? participantSummaryComponent : null;
