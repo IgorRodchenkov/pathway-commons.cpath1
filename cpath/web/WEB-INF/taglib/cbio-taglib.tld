@@ -108,6 +108,18 @@
   </tag>
 
   <tag>
+    <name>pathwayMoleculesTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.PathwayMoleculesTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Pathway - Molecules Table</description>
+	<attribute>
+		<name>moleculeSet</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+  </tag>
+
+  <tag>
     <name>biopaxRecordSummaryTable</name>
     <tag-class>org.mskcc.pathdb.taglib.BioPaxRecordSummaryTable</tag-class>
     <body-content>empty</body-content>
