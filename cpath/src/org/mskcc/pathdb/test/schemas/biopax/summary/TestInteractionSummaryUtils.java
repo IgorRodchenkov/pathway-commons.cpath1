@@ -10,6 +10,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.*;
  *
  */
 public class TestInteractionSummaryUtils extends TestCase {
+    private String testName;
 
     /**
      * Validate the summary of a Conversion Interaction.
@@ -17,6 +18,7 @@ public class TestInteractionSummaryUtils extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testConversionInteractionSummary() throws Exception {
+        testName = "Test Conversion Interaction Summary";
         EntitySummaryParser entityParser = new EntitySummaryParser(10);
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
@@ -38,6 +40,7 @@ public class TestInteractionSummaryUtils extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testPhosphorylationInteractionSummary() throws Exception {
+        testName = "Test Phosphorylation Interaction Summary";
         EntitySummaryParser entityParser = new EntitySummaryParser(172);
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
@@ -51,6 +54,7 @@ public class TestInteractionSummaryUtils extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testControlInteractionSummary() throws Exception {
+        testName = "Test Control Interaction Summary";
         EntitySummaryParser entityParser = new EntitySummaryParser(159);
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
@@ -64,6 +68,7 @@ public class TestInteractionSummaryUtils extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testTransportInteractionSummary() throws Exception {
+        testName = "Test Transport Interaction Summary";
         EntitySummaryParser entityParser = new EntitySummaryParser(123);
         InteractionSummary interactionSummary = (InteractionSummary)
                 entityParser.getEntitySummary();
@@ -74,5 +79,13 @@ public class TestInteractionSummaryUtils extends TestCase {
 
         //  Validate cellular component on right
         assertTrue (summary.indexOf("(in nucleus)") >0);
+    }
+
+    /**
+     * Returns Name of Unit Test.
+     * @return Name of Unit Test.
+     */
+    public String getName() {
+        return "Test the Creation of Interaction Summaries:  " + testName;
     }
 }

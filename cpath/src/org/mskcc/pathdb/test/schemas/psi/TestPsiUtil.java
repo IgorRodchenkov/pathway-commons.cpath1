@@ -46,6 +46,7 @@ import java.util.HashMap;
  * @author Ethan Cerami
  */
 public class TestPsiUtil extends TestCase {
+    private String testName;
 
     /**
      * Tests the PsiUtil Class.
@@ -53,6 +54,7 @@ public class TestPsiUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testNormalization() throws Exception {
+        testName = "Test Data Normalization";
         ContentReader reader = new ContentReader();
         String file = new String("testData/psi_mi/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
@@ -73,6 +75,7 @@ public class TestPsiUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testRemovalOfSecondaryRefs() throws Exception {
+        testName = "Test Removal of Secondary References";
         // An actual excerpt from HPRD:
         // <xref>
         //   <primaryRef db="HPRD" id="HPRD_00400"/>
@@ -136,6 +139,7 @@ public class TestPsiUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testRemovalOfVersionInformation() throws Exception {
+        testName = "Test Removal of Version Information";
         XrefType xref = new XrefType();
         DbReferenceType primaryRef = new DbReferenceType();
         primaryRef.setDb("Ref-Seq");
@@ -156,6 +160,7 @@ public class TestPsiUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAddXRefs() throws Exception {
+        testName = "Test Addition of External References";
         //  Create Initial XRef
         XrefType xref = new XrefType();
         DbReferenceType primaryRef = new DbReferenceType();
@@ -299,6 +304,6 @@ public class TestPsiUtil extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the PSI-MI Utility Class";
+        return "Test the PSI-MI Utility Class:  " + testName;
     }
 }
