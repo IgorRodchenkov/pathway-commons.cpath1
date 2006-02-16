@@ -49,6 +49,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.File;
 
 /**
  * Runs all Unit Tests.
@@ -67,7 +68,13 @@ public class AllTest extends TestCase {
 
         //  Load build.properties
         Properties buildProps = new Properties();
-        buildProps.load(new FileInputStream ("build.properties"));
+        File file = new File ("build.properties");
+        try {
+            buildProps.load(new FileInputStream (file));
+        } catch (FileNotFoundException e) {
+            System.err.println("Error.  Cannot find file:  " + file.getAbsolutePath());
+            throw e;
+        }
 
         String dbUser = buildProps.getProperty("db.user");
         String dbPwd = buildProps.getProperty("db.password");
