@@ -326,4 +326,18 @@
 		<replacevalue>maven.site.deploy.method = fs</replacevalue>
 		</replace>
 	</target>
+
+    <!-- ==================== prepare_cruise_control Target ===================== -->
+	<target name="prepare_cruise_control" depends="prepare"
+		description="Prepares Everything for Cruise Control Build">
+        <replace file="${basedir}/build.properties">
+         <replacetoken>db.name=cpath</replacetoken>
+          <replacevalue>db.name=cpath_cruise</replacevalue>
+        </replace>
+    </target>
+
+    <!-- ==================== prepare_cruise_control Target ===================== -->
+	<target name="cruise_control" depends="prepare_cruise_control, test"
+		description="Executes a Cruise Control Build">
+    </target>
 </project>
