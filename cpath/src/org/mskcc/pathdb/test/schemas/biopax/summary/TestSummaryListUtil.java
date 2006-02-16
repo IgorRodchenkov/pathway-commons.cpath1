@@ -32,4 +32,13 @@ public class TestSummaryListUtil extends TestCase {
             currentType = summary.getSpecificType();
         }
     }
+
+    /**
+     * Gets Name of Test.
+     *
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test that we can retrieve a list of Interaction Summary objects";
+    }
 }

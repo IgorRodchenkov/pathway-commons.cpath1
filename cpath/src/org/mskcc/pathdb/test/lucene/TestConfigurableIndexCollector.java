@@ -30,6 +30,8 @@ import org.mskcc.pathdb.lucene.ConfigInfo;
 import org.mskcc.pathdb.lucene.ConfigurableIndexCollector;
 
 /**
+ * Tests the Configurable Index Collector.
+ *
  * @author idk37697
  */
 public class TestConfigurableIndexCollector extends TestCase {
@@ -139,5 +141,14 @@ public class TestConfigurableIndexCollector extends TestCase {
             assertTrue("Exception thrown [" + e + "]", false);
         }
 
+    }
+
+    /**
+     * Gets Name of Test.
+     *
+     * @return Name of Test.
+     */
+    public String getName() {
+        return "Test the Configurable Index Collector";
     }
 }

@@ -41,6 +41,7 @@ import java.util.HashMap;
  * @author Ethan Cerami
  */
 public class TestProtocolValidator extends TestCase {
+    private String testName;
 
     /**
      * Tests the Protocol Validator, PSI-MI Mode
@@ -48,6 +49,7 @@ public class TestProtocolValidator extends TestCase {
      * @throws Exception General Error.
      */
     public void testProtocolValidatorPsiMi() throws Exception {
+        testName = "Test PSI_MI Mode";
 
         //  Set to PSI-MI Mode
         CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_PSI_MI);
@@ -88,6 +90,8 @@ public class TestProtocolValidator extends TestCase {
      * @throws Exception General Error.
      */
     public void testProtocolValidatorBioPax() throws Exception {
+        testName = "Test BioPAX Mode";
+
         //  Set to BioPAX Mode
         CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_BIOPAX);
 
@@ -158,6 +162,8 @@ public class TestProtocolValidator extends TestCase {
      * @throws Exception General Error.
      */
     public void testEmptyParameterSet() throws Exception {
+        testName = "Test Empty Parameter Case";
+
         HashMap map = new HashMap();
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
@@ -175,6 +181,8 @@ public class TestProtocolValidator extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testMaxHits() throws Exception {
+        testName = "Test Maximum Number of Hits";
+        
         //  Set to PSI-MI Mode
         CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_PSI_MI);
 
@@ -202,6 +210,6 @@ public class TestProtocolValidator extends TestCase {
      */
     public String getName() {
         return "Test the Protocol Validator, "
-                + "used for all HTML/XML Web Requests";
+                + "used for all HTML/XML Web Requests:  " + testName;
     }
 }

@@ -59,6 +59,7 @@ import java.util.Set;
 public class TestBioPaxUtil extends TestCase {
     private Set rdfIdSet = new HashSet();
     private ProgressMonitor pMonitor = new ProgressMonitor();
+    private String testName;
 
     /**
      * Tests a BioPAX Level 1 File that we know is "legal".
@@ -66,6 +67,7 @@ public class TestBioPaxUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testLegalLevel1File() throws Exception {
+        testName = "Test a Legal Level 1 BioPAX File";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample1.owl");
         BioPaxUtil util = new BioPaxUtil(file, pMonitor);
@@ -174,6 +176,7 @@ public class TestBioPaxUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testInvalidRdfLinks() throws Exception {
+        testName = "Detect Invalid RDF Links";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample2.owl");
         BioPaxUtil util = new BioPaxUtil(file, pMonitor);
@@ -201,6 +204,7 @@ public class TestBioPaxUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testRedundantRdfIds() throws Exception {
+        testName = "Detect Redundant RDF IDs";
         FileReader file = new FileReader("testData/biopax/biopax1_sample3.owl");
         BioPaxUtil util = new BioPaxUtil(file, pMonitor);
 
@@ -228,6 +232,7 @@ public class TestBioPaxUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testInvalidDatabaseXrefs() throws Exception {
+        testName = "Detect Invalid Database XRefs";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample4.owl");
         BioPaxUtil util = new BioPaxUtil(file, pMonitor);
@@ -246,6 +251,7 @@ public class TestBioPaxUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testCircularPathway() throws Exception {
+        testName = "Detect Circular Pathways";
         FileReader file = new FileReader
                 ("testData/biopax/circular_example.owl");
         BioPaxUtil util = new BioPaxUtil(file, pMonitor);
@@ -327,6 +333,6 @@ public class TestBioPaxUtil extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the BioPAX Utility Class";
+        return "Test the BioPAX Utility Class:  " + testName;
     }
 }
