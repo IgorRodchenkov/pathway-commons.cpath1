@@ -176,7 +176,7 @@ public class TestBioPaxUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testInvalidRdfLinks() throws Exception {
-        testName = "Detect Invalid RDF Links";
+        testName = "Detect TInvalid RDF Links";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample2.owl");
         BioPaxUtil util = new BioPaxUtil(file, pMonitor);

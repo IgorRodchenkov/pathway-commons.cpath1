@@ -40,6 +40,7 @@ import org.mskcc.pathdb.util.ExternalReferenceUtil;
  * @author Ethan Cerami
  */
 public class TestExternalReferenceUtil extends TestCase {
+    private String testName;
 
     /**
      * Tests the Filter Method.
@@ -47,6 +48,7 @@ public class TestExternalReferenceUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testFilterReferences() throws Exception {
+        testName = "Test Filtering of Reference List";
         ExternalReference refs[] = new ExternalReference[7];
         refs[0] = new ExternalReference("SwissProt", "P25300");
         refs[1] = new ExternalReference("GO", "ABCD");
@@ -69,6 +71,7 @@ public class TestExternalReferenceUtil extends TestCase {
      * Tests the createUnifiedList method.
      */
     public void testUnionMethod() {
+        testName = "Test Union of References";
         ExternalReference refs1[] = new ExternalReference[2];
         refs1[0] = new ExternalReference("SwissProt", "P25300");
         refs1[1] = new ExternalReference("GO", "ABCD");
@@ -88,6 +91,7 @@ public class TestExternalReferenceUtil extends TestCase {
      * Tests the RemoveDuplicates Method.
      */
     public void testRemoveDuplicates() {
+        testName = "Test Removal of Duplicate References";
         ExternalReference refs[] = new ExternalReference[4];
         refs[0] = new ExternalReference("SwissProt", "P25300");
         refs[1] = new ExternalReference("GO", "ABCD");
@@ -103,6 +107,6 @@ public class TestExternalReferenceUtil extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the External Reference Utility Class";
+        return "Test the External Reference Utility Class:  " + testName;
     }
 }

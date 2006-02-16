@@ -49,6 +49,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class TestParseBackgroundReferenceTask extends TestCase {
+    private String testName;
 
     /**
      * Tests the Unification Parser, without saving anything to the database.
@@ -56,6 +57,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testUnificationParserWithOutSave() throws Exception {
+        testName = "Test Unification Parser (without Save)";
         File file = new File("testData/references/unification_refs.txt");
         ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
                 (file, false);
@@ -84,6 +86,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testLinkOutParserWithoutSave() throws Exception {
+        testName = "Test Link Out Parser (without Save)";
         File file = new File("testData/references/link_out_refs.txt");
         ParseBackgroundReferencesTask task = new ParseBackgroundReferencesTask
                 (file, false);
@@ -108,6 +111,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testUnificationParserWithSave() throws Exception {
+        testName = "Test Unification Parser (with Save)";
         // Start with a clean slate
         DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
@@ -162,6 +166,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testLinkOutParserWithSave() throws Exception {
+        testName = "Test Link Out Parser (with Save)";
         // Start with a clean slate
         DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
@@ -202,6 +207,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testParserWithInvalidDataFiles() throws Exception {
+        testName = "Detect Invalid Data Files";
         //  Test:  This file is invalid because it contains a non-existent
         //  database called 'SANDER.'
         File file = new File("testData/references/refs_invalid1.txt");
@@ -285,6 +291,6 @@ public class TestParseBackgroundReferenceTask extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test that we can properly parse background reference/id files";
+        return "Test that we can properly parse background reference/id files:  " + testName;
     }
 }

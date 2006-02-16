@@ -58,6 +58,7 @@ import java.util.List;
  * @author Ethan Cerami
  */
 public class TestXmlAssembly extends TestCase {
+    private String testName;
 
     /**
      * Tests the PSI-MI Assembly Functionality.
@@ -65,6 +66,7 @@ public class TestXmlAssembly extends TestCase {
      * @throws Exception All Exceptions
      */
     public void testPsiAssembly() throws Exception {
+        testName = "Test PSI-MI Assembly";
         PropertyManager pManager = PropertyManager.getInstance();
         pManager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 "http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
@@ -113,6 +115,7 @@ public class TestXmlAssembly extends TestCase {
      * @throws Exception All Errors.
      */
     public void testBioPaxAssemblyFull() throws Exception {
+        testName = "Test BioPAX Assembly (Full)";
         //  Assemble Interaction with specified cPath ID (hard-coded value)
         XDebug xdebug = new XDebug();
 
@@ -159,6 +162,7 @@ public class TestXmlAssembly extends TestCase {
      * @throws Exception All Errors.
      */
     public void testBioPaxAssemblyAbbrev() throws Exception {
+        testName = "Test BioPAX Assembly (Abbreviated)";
         //  Assemble Interaction with specified cPath ID (hard-coded value)
         XDebug xdebug = new XDebug();
         long cpathIds[] = new long[1];
@@ -197,6 +201,6 @@ public class TestXmlAssembly extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test that we can generate BioPAX/PSI-MI XML Assemblies";
+        return "Test that we can generate BioPAX/PSI-MI XML Assemblies:  " + testName;
     }
 }

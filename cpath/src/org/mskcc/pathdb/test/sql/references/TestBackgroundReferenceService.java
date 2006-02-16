@@ -44,6 +44,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class TestBackgroundReferenceService extends TestCase {
+    private String testName;
 
     /**
      * Tests the Unification Look up Service.
@@ -51,6 +52,7 @@ public class TestBackgroundReferenceService extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testUnificationService() throws Exception {
+        testName = "Test Unification Service";
         //  Delete all records, so that we start with a clean slate.
         DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
@@ -133,6 +135,7 @@ public class TestBackgroundReferenceService extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testLinkOutService() throws Exception {
+        testName = "Test Link Out Service";
         //  Delete all records, so that we start with a clean slate.
         DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
@@ -168,6 +171,6 @@ public class TestBackgroundReferenceService extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the Background Reference / ID Service";
+        return "Test the Background Reference / ID Service:  " + testName;
     }
 }
