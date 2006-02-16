@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.4 2006-02-16 21:41:20 grossb Exp $
+// $Id: PathwayMembershipTable.java,v 1.5 2006-02-16 22:05:29 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Collections;
 import java.util.Comparator;
+
 
 /**
  * Custom jsp tag to generate a table of pathways that a molecule is a member of.
