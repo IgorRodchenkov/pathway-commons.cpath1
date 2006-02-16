@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.17 2006-02-14 20:32:35 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.18 2006-02-16 14:39:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,42 +48,47 @@ public class InteractionSummaryUtils {
     /**
      * Phosphorylated Keyword.
      */
-    private static String PHOSPHORYLATED = " (Phosphorylated)";
+    private static final String PHOSPHORYLATED = " (Phosphorylated)";
 
     /**
      * Ubiquitinated Keyword.
      */
-    private static String UBIQUITINATED = " (Ubiquitinated)";
+    private static final String UBIQUITINATED = " (Ubiquitinated)";
 
     /**
      * Acetylated Keyword.
      */
-    private static String ACETYLATED = " (Acetylated)";
+    private static final String ACETYLATED = " (Acetylated)";
 
     /**
      * Phosphorylation Feature.
      */
-    private static String PHOSPHORYLATION_FEATURE = "phosphorylation";
+    private static final String PHOSPHORYLATION_FEATURE = "phosphorylation";
 
     /**
      * Ubiquitination Feature.
      */
-    private static String UBIQUITINATION_FEATURE = "ubiquitination";
+    private static final String UBIQUITINATION_FEATURE = "ubiquitination";
 
     /**
      * Acetylation Feature.
      */
-    private static String ACETYLATION_FEATURE = "acetylation";
+    private static final String ACETYLATION_FEATURE = "acetylation";
 
     /**
      * Space Character.
      */
-    private static String SPACE = " ";
+    private static final String SPACE = " ";
 
     /**
      * Names longer than this will be truncated.
      */
-    private static int NAME_LENGTH = 10;
+    private static final int NAME_LENGTH = 10;
+
+    /**
+     * No name available.
+     */
+    private static final String NO_NAME_AVAILABLE = "[No Name Available]";
 
     /**
      * Creates the interaction summary string.
@@ -226,7 +231,7 @@ public class InteractionSummaryUtils {
      */
     private static String createComponentLink(ParticipantSummaryComponent component,
             InteractionSummary summary) {
-        String name = component.getName();
+        String name = determineName(component);
 
         //  Determine if we have any special cases to deal with.
         boolean isPhosphorylated = hasFeature(component, PHOSPHORYLATION_FEATURE);
@@ -249,7 +254,7 @@ public class InteractionSummaryUtils {
         //  Create Header for Pop-Up Box
         buf.append("', WRAP, CELLPAD, 5, OFFSETY, 0, CAPTION, '");
         buf.append(name);
-        appendFeatures(isPhosphorylated, buf, isUbiquitinated, isAcetylated);
+        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated, buf);
         if (component.getCellularLocation() != null) {
             buf.append(" in <FONT COLOR=LIGHTGREEN>" + component.getCellularLocation()
                     + "</FONT>");
@@ -266,11 +271,47 @@ public class InteractionSummaryUtils {
         }
 
         //  If component is phosphorylated, show explicitly
-        appendFeatures(isPhosphorylated, buf, isUbiquitinated, isAcetylated);
+        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated, buf);
         return buf.toString();
     }
 
-    private static void appendFeatures(boolean phosphorylated, StringBuffer buf, boolean ubiquitinated, boolean acetylated) {
+    /**
+     * Determines a Component Name.
+     * The following order of precedence is used to determine a name:
+     * <UL>
+     * <LI>Name</LI>
+     * <LI>Short Name</LI>
+     * <LI>First Synonym</LI>
+     * </UL>
+     * If none of these attributes are available, the name is set to NO_NAME_AVAILABLE.
+     * @param component ParticipantSummaryComponent Object.
+     * @return Name string.
+     */
+    private static String determineName (ParticipantSummaryComponent component) {
+        String name = component.getName();
+        if (name == null) {
+            name = component.getShortName();
+            if (name == null) {
+                List synList = component.getSynonyms();
+                if (synList != null && synList.size() > 0) {
+                    name = (String) synList.get(0);
+                } else {
+                    name = NO_NAME_AVAILABLE;
+                }
+            }
+        }
+        return name;
+    }
+
+    /**
+     * Appends Features, such as Phosphorylated, Ubiquitinated or Acetylated.
+     * @param phosphorylated isPhosphorylated.
+     * @param ubiquitinated
+     * @param acetylated
+     * @param buf
+     */
+    private static void appendFeatures(boolean phosphorylated, boolean ubiquitinated,
+            boolean acetylated, StringBuffer buf) {
         if (phosphorylated) {
             buf.append(PHOSPHORYLATED);
         }
