@@ -124,11 +124,13 @@
 		<DIV class ='h3'>
 		<H3>Contains the Following Molecules</H3>
 		</DIV>
+		<TABLE>
 <%
 		HashSet moleculeSet;
 		if (timingMode){
 			ArrayList longList = new ArrayList();
 	        startTime = Calendar.getInstance().getTimeInMillis();
+			MemberMolecules.reset();
 			moleculeSet = MemberMolecules.getMemberMolecules(record, longList);
 			long totalMemberMoleculeTime = Calendar.getInstance().getTimeInMillis() - startTime;
 			long totalDaoTime = 0;
@@ -143,27 +145,17 @@
 			out.println("<BR>");
 		}
 		else{
+			MemberMolecules.reset();
 			moleculeSet = MemberMolecules.getMemberMolecules(record, null);
 		}
 		if (moleculeSet != null && moleculeSet.size() > 0){
-			String[] molecules = (String[])moleculeSet.toArray(new String[0]);
-			List moleculesList = Arrays.asList(molecules);
-			Collections.sort(moleculesList, new RecordLinkSorter());
-			int cnt = moleculesList.size();
-			if (cnt > 0){
-				out.println("<TABLE>");
-				out.println("<TR>");
-				out.println("<TD>");
-			}
-			for (int lc = 0; lc < cnt; lc++){
-				out.println(moleculesList.get(lc));
-			}
-			if (cnt > 0){
-				out.println("</TD>");
-				out.println("</TR>");
-				out.println("</TABLE>");
-			}
+%>
+			<cbio:pathwayMoleculesTable moleculeSet="<%=moleculeSet%>"/>
+<%
 		}
+%>
+		</TABLE>
+<%
 	}
 %>
 

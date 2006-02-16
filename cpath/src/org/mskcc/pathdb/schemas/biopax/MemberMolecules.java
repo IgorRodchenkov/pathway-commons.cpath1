@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.9 2006-01-31 20:10:03 grossb Exp $
+// $Id: MemberMolecules.java,v 1.10 2006-02-16 15:18:50 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import java.util.Calendar;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 
 /**
  * This class parses interaction data
@@ -49,6 +50,18 @@ import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
  * @author Benjamin Gross.
  */
 public class MemberMolecules {
+
+	/**
+	 *  Used to help us determine if moleculeSummary should be added to molecules hashset.
+	*/
+	private static HashSet moleculeNames;
+
+	/**
+	 * Should be called before each call to getMemberMolecules.
+	 */
+	public static void reset(){
+		moleculeNames = new HashSet();
+	}
 
 	/**
 	 * Finds all member molecules given CPathRecord.
@@ -85,12 +98,18 @@ public class MemberMolecules {
 		else{
 			BioPaxConstants biopaxConstants = new BioPaxConstants();
 			if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
-				String molecule = BioPaxRecordUtil.getPhysicalEntityNameAsLink(record.getId(), record.getXmlContent());
-				if (molecule != null){
-					molecules.add(molecule);
+				BioPaxRecordSummary moleculeSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
+				if (moleculeSummary != null){
+					String name = (moleculeSummary.getName() != null) ? moleculeSummary.getName() : moleculeSummary.getShortName();
+					if (name != null && name.length() > 0){
+						boolean addSummaryToMoleculesSet = moleculeNames.add(name);
+						if (addSummaryToMoleculesSet) molecules.add(moleculeSummary);
+					}
 				}
 			}
 		}
+
+		// outta here
 		return molecules;
 	}
 }
