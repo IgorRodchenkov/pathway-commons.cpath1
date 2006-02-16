@@ -15,6 +15,7 @@ if ($cpathHome eq "") {
 }
 
 # Set up Classpath to use all JAR files in lib dir.
+print "Using CPATH_HOME $cpathHome\n";
 $cp="$cpathHome/build/WEB-INF/classes";
 @jar_files = glob ("$cpathHome/lib/*.jar");
 foreach my $jar (@jar_files) {
