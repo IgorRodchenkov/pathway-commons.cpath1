@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.6 2006-01-31 16:47:07 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.7 2006-02-16 15:08:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,66 +35,111 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
 import java.util.List;
-import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
+import java.util.ArrayList;
 
+import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 /**
  * This class contains some utility methods
  * used primarily by BioPaxRecord.jsp
  *
- * @author Benjamin Gross.
+ * @author Benjamin Gross, Ethan Cerami.
  */
 public class BioPaxRecordSummaryUtils {
+    /**
+     * Phosphorylated Keyword.
+     */
+    private static final String PHOSPHORYLATED = " (Phosphorylated)";
+
+    /**
+     * Ubiquitinated Keyword.
+     */
+    private static final String UBIQUITINATED = " (Ubiquitinated)";
+
+    /**
+     * Acetylated Keyword.
+     */
+    private static final String ACETYLATED = " (Acetylated)";
+
+    /**
+     * Phosphorylation Feature.
+     */
+    private static final String PHOSPHORYLATION_FEATURE = "phosphorylation";
+
+    /**
+     * Ubiquitination Feature.
+     */
+    private static final String UBIQUITINATION_FEATURE = "ubiquitination";
+
+    /**
+     * Acetylation Feature.
+     */
+    private static final String ACETYLATION_FEATURE = "acetylation";
+
+    /**
+     * Names longer than this will be truncated.
+     */
+    private static final int NAME_LENGTH = 10;
+
+    /**
+     * No name available.
+     */
+    private static final String NO_NAME_AVAILABLE = "[No Name Available]";
 
     /**
      * Gets the BioPax Header String to render.
-	 *
+     *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
      * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordHeaderString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
-
-		// check args
-		if (biopaxRecordSummary == null){
-			throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString() argument is null");
-		}
-
-		// used to make type more readable
-		BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
-
-		// get type
-		String type = biopaxRecordSummary.getType();
-
-		// build up name
-		String name = getBioPaxRecordName(biopaxRecordSummary);
-		if (name != null){
-			name += (type != null) ? (" (" + entityTypeMap.get(type) +")") : "";
-		}
-		else{
-			// cannot do anything without a name
-			return null;
-		}
-
-		// get organism
-		String organism = biopaxRecordSummary.getOrganism();
-
-		// outta here
-		return (organism != null) ? (name + " from " + organism) : name;
-	}
-
-    /**
-     * Gets the BioPax Synonym String to render.
-	 *
-     * @param biopaxRecordSummary BioPaxRecordSummary
-     * @return String
-     * @throws IllegalArgumentException
-     */
-    public static String getBioPaxRecordSynonymString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
+    public static String getBioPaxRecordHeaderString(BioPaxRecordSummary biopaxRecordSummary)
+            throws IllegalArgumentException {
 
         // check args
         if (biopaxRecordSummary == null){
-            throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString() argument is null");
+            throw new IllegalArgumentException
+                    ("BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString() argument is null");
+        }
+
+        // used to make type more readable
+        BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
+
+        // get type
+        String type = biopaxRecordSummary.getType();
+
+        // build up name
+        String name = getBioPaxRecordName(biopaxRecordSummary);
+        if (name != null){
+            name += (type != null) ? (" (" + entityTypeMap.get(type) +")") : "";
+        }
+        else{
+            // cannot do anything without a name
+            return null;
+        }
+
+        // get organism
+        String organism = biopaxRecordSummary.getOrganism();
+
+        // outta here
+        return (organism != null) ? (name + " from " + organism) : name;
+    }
+
+    /**
+     * Gets the BioPax Synonym String to render.
+     *
+     * @param biopaxRecordSummary BioPaxRecordSummary
+     * @return String
+     * @throws IllegalArgumentException
+     */
+    public static String getBioPaxRecordSynonymString(BioPaxRecordSummary biopaxRecordSummary)
+            throws IllegalArgumentException {
+
+        // check args
+        if (biopaxRecordSummary == null){
+            throw new IllegalArgumentException
+                    ("BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString() argument is null");
         }
 
         // string to return
@@ -107,26 +152,28 @@ public class BioPaxRecordSummaryUtils {
         if (synonymList != null && synonymList.size() > 0) {
             for (int lc = 0; lc < synonymList.size(); lc++) {
                 String synonym = (String)synonymList.get(lc);
-				synonymString += (lc == synonymList.size()-1) ? synonym : (synonym + " ");
+                synonymString += (lc == synonymList.size()-1) ? synonym : (synonym + " ");
             }
         }
 
         // outta here
-		return (synonymString.length() > 0) ? synonymString : null;
+        return (synonymString.length() > 0) ? synonymString : null;
     }
 
     /**
      * Gets the BioPax Data Source String to render.
-	 *
+     *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
      * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordDataSourceString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
+    public static String getBioPaxRecordDataSourceString(BioPaxRecordSummary biopaxRecordSummary)
+            throws IllegalArgumentException {
 
         // check args
         if (biopaxRecordSummary == null){
-            throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString() argument is null");
+            throw new IllegalArgumentException
+                    ("BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString() argument is null");
         }
 
         // string to return
@@ -138,16 +185,18 @@ public class BioPaxRecordSummaryUtils {
 
     /**
      * Gets the BioPax Availability String to render.
-	 *
+     *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
      * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordAvailabilityString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
+    public static String getBioPaxRecordAvailabilityString(BioPaxRecordSummary biopaxRecordSummary)
+            throws IllegalArgumentException {
 
         // check args
         if (biopaxRecordSummary == null){
-            throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordAvailabilityString() argument is null");
+            throw new IllegalArgumentException
+                    ("BioPaxRecordSummaryUtils.getBioPaxRecordAvailabilityString() argument is null");
         }
 
         // string to return
@@ -159,16 +208,18 @@ public class BioPaxRecordSummaryUtils {
 
     /**
      * Gets the BioPax Comment String to render.
-	 *
+     *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
      * @throws IllegalArgumentException
      */
-    public static String getBioPaxRecordCommentString(BioPaxRecordSummary biopaxRecordSummary) throws IllegalArgumentException {
+    public static String getBioPaxRecordCommentString(BioPaxRecordSummary biopaxRecordSummary)
+            throws IllegalArgumentException {
 
         // check args
         if (biopaxRecordSummary == null){
-            throw new IllegalArgumentException("BioPaxRecordSummaryUtils.getBioPaxRecordCommentString() argument is null");
+            throw new IllegalArgumentException
+                    ("BioPaxRecordSummaryUtils.getBioPaxRecordCommentString() argument is null");
         }
 
         // string to return
@@ -179,53 +230,256 @@ public class BioPaxRecordSummaryUtils {
     }
 
     /**
+     * Creates an HTML Link to the Specified BioPaxRecordSummary Object.
+     *
+     * @param entitySummary ParticipantSummaryComponent Object.
+     * @param interactionSummary   Interaction Summary Object.
+     * @return HTML String.
+     */
+    public static String createEntityLink(BioPaxRecordSummary entitySummary,
+            InteractionSummary interactionSummary) {
+        return createComponentLink (entitySummary, interactionSummary);
+    }
+
+    /**
+     * Creates an HTML Link to the Specified BioPaxRecordSummary Object.
+     *
+     * @param entitySummary ParticipantSummaryComponent Object.
+     * @return HTML String.
+     */
+    public static String createEntityLink(BioPaxRecordSummary entitySummary) {
+        return createComponentLink (entitySummary, null);
+    }
+
+    /**
+     * Creates an HTML Link to the Specified Component Object.
+     *
+     * @param component ParticipantSummaryComponent Object.
+     * @param interactionSummary   Interaction Summary Object.
+     * @return HTML String.
+     */
+    private static String createComponentLink(BioPaxRecordSummary component,
+            InteractionSummary interactionSummary) {
+        String name = getBioPaxRecordName(component);
+        boolean isPhosphorylated = false;
+        boolean isUbiquitinated = false;
+        boolean isAcetylated = false;
+        boolean isTransport = false;
+        ParticipantSummaryComponent participant = null;
+
+        //  Determine if we have any special cases to deal with.
+        if (component instanceof ParticipantSummaryComponent) {
+             participant = (ParticipantSummaryComponent) component;
+        }
+
+        if (participant != null) {
+            isPhosphorylated = hasFeature(participant, PHOSPHORYLATION_FEATURE);
+            isUbiquitinated = hasFeature(participant, UBIQUITINATION_FEATURE);
+            isAcetylated = hasFeature(participant, ACETYLATION_FEATURE);
+            if (interactionSummary != null) {
+                isTransport = isTransport(interactionSummary);
+            }
+        }
+
+        //  Start HTML A Link Tag.
+        StringBuffer buf = new StringBuffer("<a href=\"record.do?id=" + component.getRecordID());
+
+        //  Create JavaScript for MouseOver Pop-Up Box
+        buf.append("\" onmouseover=\"return overlib('");
+
+        //  Add Synonyms to Pop-Up Box
+        addSynonmys(component, buf);
+
+        //  Add Features to Pop-Up Box
+        if (participant != null) {
+            addFeatures(participant, buf);
+        }
+
+        //  Create Header for Pop-Up Box
+        buf.append("', WRAP, CELLPAD, 5, OFFSETY, 0, CAPTION, '");
+        buf.append(name);
+        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated, buf);
+        if (participant != null) {
+            if (participant.getCellularLocation() != null) {
+                buf.append(" in <FONT COLOR=LIGHTGREEN>" + participant.getCellularLocation()
+                        + "</FONT>");
+            }
+        }
+        buf.append("'); return true;\" onmouseout=\"return nd();\">");
+
+        //  Output Component Name and end A Tag.
+        buf.append(truncateLongName(name));
+        buf.append("</a>");
+
+        //  If this is a transport interaction, show cellular location explicitly
+        if (participant != null) {
+            if (isTransport && participant.getCellularLocation() != null) {
+                buf.append(" (in " + participant.getCellularLocation() + ")");
+            }
+        }
+
+        //  If component is phosphorylated, show explicitly
+        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated, buf);
+        return buf.toString();
+    }
+
+
+    /**
      * Gets the BioPax Record Name.
-	 *
-	 * (use short name or name or shortest synonyms)
+     *
+     * (use short name or name or shortest synonyms)
      *
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
      */
     private static String getBioPaxRecordName(BioPaxRecordSummary biopaxRecordSummary) {
 
-		// name to return
-		String name;
+        // name to return
+        String name;
 
-		// try short name
-		name = biopaxRecordSummary.getShortName();
-		if (name != null && name.length() > 0) return name;
+        // try short name
+        name = biopaxRecordSummary.getShortName();
+        if (name != null && name.length() > 0) return name;
 
-		// try name
-		name = biopaxRecordSummary.getName();
-		if (name != null && name.length() > 0) return name;
+        // try name
+        name = biopaxRecordSummary.getName();
+        if (name != null && name.length() > 0) return name;
 
-		// get shortest synonym
-		int shortestSynonymIndex = -1;
-		List list = biopaxRecordSummary.getSynonyms();
-		if (list != null && list.size() > 0){
-			int minLength = -1;
-			for (int lc = 0; lc < list.size(); lc++){
-				String synonym = (String)list.get(lc);
-				if (minLength == -1 || synonym.length() < minLength){
-					minLength = synonym.length();
-					shortestSynonymIndex = lc;
-				}
-			}
-		}
-		else{
-			return null;
-		}
+        // get shortest synonym
+        int shortestSynonymIndex = -1;
+        List list = biopaxRecordSummary.getSynonyms();
+        if (list != null && list.size() > 0){
+            int minLength = -1;
+            for (int lc = 0; lc < list.size(); lc++){
+                String synonym = (String)list.get(lc);
+                if (minLength == -1 || synonym.length() < minLength){
+                    minLength = synonym.length();
+                    shortestSynonymIndex = lc;
+                }
+            }
+        }
+        else{
+            return NO_NAME_AVAILABLE;
+        }
 
-		// set name to return
-		if (shortestSynonymIndex > -1){
-			name = (String)list.get(shortestSynonymIndex);
+        // set name to return
+        if (shortestSynonymIndex > -1){
+            name = (String)list.get(shortestSynonymIndex);
 
-			// we are using synonym as name, remove synonym from list
-			list.remove(shortestSynonymIndex);
-			biopaxRecordSummary.setSynonyms(list);
-		}
+            // we are using synonym as name, remove synonym from list
+            list.remove(shortestSynonymIndex);
+            biopaxRecordSummary.setSynonyms(list);
+        }
 
-		// outta here
-		return name;
-	}
+        // outta here
+        return name;
+    }
+
+    /**
+     * Appends Features, such as Phosphorylated, Ubiquitinated or Acetylated.
+     * @param phosphorylated isPhosphorylated.
+     * @param ubiquitinated
+     * @param acetylated
+     * @param buf
+     */
+    private static void appendFeatures(boolean phosphorylated, boolean ubiquitinated,
+            boolean acetylated, StringBuffer buf) {
+        if (phosphorylated) {
+            buf.append(PHOSPHORYLATED);
+        }
+        if (ubiquitinated) {
+            buf.append(UBIQUITINATED);
+        }
+        if (acetylated) {
+            buf.append(ACETYLATED);
+        }
+    }
+
+    /**
+     * Automatically Truncates Long Names.
+     * @param name Name.
+     * @return Truncated name.
+     */
+    private static String truncateLongName (String name) {
+        if (name !=null ) {
+            if (name.length() > NAME_LENGTH) {
+                return name.substring(0, NAME_LENGTH) + "...";
+            }
+        }
+        return name;
+    }
+
+    /**
+     * Adds Feature List.
+     *
+     * @param component ParticipantSummaryComponent Object.
+     * @param buf       HTML StringBuffer Object.
+     */
+    private static void addFeatures(ParticipantSummaryComponent component, StringBuffer buf) {
+        if (component.getFeatureList() != null && component.getFeatureList().size() > 0) {
+            buf.append("<P>Features:<UL>");
+            ArrayList featureList = component.getFeatureList();
+            for (int i = 0; i < featureList.size(); i++) {
+                String feature = (String) featureList.get(i);
+                buf.append("<LI>" + feature + "</LI>");
+            }
+            buf.append("</UL>");
+        }
+    }
+
+    /**
+     * Adds Synonym List.
+     *
+     * @param component ParticipantSummaryComponent Object.
+     * @param buf       HTML StringBuffer Object.
+     */
+    private static void addSynonmys(BioPaxRecordSummary component, StringBuffer buf) {
+        List synList = component.getSynonyms();
+        if (synList != null && synList.size() > 0) {
+            buf.append("Also known as:  <UL>");
+            for (int i = 0; i < synList.size(); i++) {
+                String synonym = (String) synList.get(i);
+                buf.append("<LI>" + synonym + "</LI>");
+            }
+            buf.append("</UL>");
+        }
+    }
+
+    /**
+     * Determines if the specified interaction is of type:  TRANSPORT.
+     *
+     * @param summary InteractionSummary Object.
+     * @return boolean value.
+     */
+    private static boolean isTransport(InteractionSummary summary) {
+        String interactionType = summary.getSpecificType();
+        if (interactionType != null) {
+            if (interactionType.equalsIgnoreCase(BioPaxConstants.TRANSPORT)
+                    || interactionType.equalsIgnoreCase
+                    (BioPaxConstants.TRANSPORT_WITH_BIOCHEMICAL_REACTION)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determines if the specified component has the specified target feature.
+     *
+     * @param component ParticipantSummaryComponent Object.
+     * @return boolean value.
+     */
+    private static boolean hasFeature (ParticipantSummaryComponent component, String featureTarget) {
+        if (component.getFeatureList() != null && component.getFeatureList().size() > 0) {
+            ArrayList featureList = component.getFeatureList();
+            for (int i = 0; i < featureList.size(); i++) {
+                String feature = (String) featureList.get(i);
+                feature = feature.toLowerCase();
+                if (feature.indexOf(featureTarget) > -1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
