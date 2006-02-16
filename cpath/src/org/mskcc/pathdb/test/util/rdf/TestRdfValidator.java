@@ -81,6 +81,6 @@ public class TestRdfValidator extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Tests the RDF Validator Utility Class";
+        return "Test the RDF Validator Utility Class";
     }
 }

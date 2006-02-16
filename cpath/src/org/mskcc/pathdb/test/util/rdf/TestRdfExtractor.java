@@ -92,6 +92,6 @@ public class TestRdfExtractor extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Tests the RDF Extractor Utility Class";
+        return "Test the RDF Extractor Utility Class";
     }
 }
