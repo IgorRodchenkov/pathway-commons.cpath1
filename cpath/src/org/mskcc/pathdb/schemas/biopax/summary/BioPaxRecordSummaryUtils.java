@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.7 2006-02-16 15:08:41 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.8 2006-02-16 21:39:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -406,7 +406,7 @@ public class BioPaxRecordSummaryUtils {
                 return name.substring(0, NAME_LENGTH) + "...";
             }
         }
-        return name;
+        return entityFilter(name);
     }
 
     /**
@@ -421,6 +421,7 @@ public class BioPaxRecordSummaryUtils {
             ArrayList featureList = component.getFeatureList();
             for (int i = 0; i < featureList.size(); i++) {
                 String feature = (String) featureList.get(i);
+                feature = entityFilter(feature);
                 buf.append("<LI>" + feature + "</LI>");
             }
             buf.append("</UL>");
@@ -439,10 +440,20 @@ public class BioPaxRecordSummaryUtils {
             buf.append("Also known as:  <UL>");
             for (int i = 0; i < synList.size(); i++) {
                 String synonym = (String) synList.get(i);
+                synonym = entityFilter (synonym);
                 buf.append("<LI>" + synonym + "</LI>");
             }
             buf.append("</UL>");
         }
+    }
+
+    /**
+     * Replaces Various Characters with their HTML Entities.
+     */
+    private static String entityFilter(String str) {
+        str = str.replaceAll("'", "&rsquo;");
+        str = str.replaceAll("\"", "&quot;");
+        return str;
     }
 
     /**
