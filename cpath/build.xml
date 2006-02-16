@@ -294,7 +294,7 @@
     <!-- ==================== test Target ================================ -->
 	<target name="test_run" depends="compile"
         description="Runs all JUnit Tests">
-        <echo>Using CPATH_HOME:  ${cPath.home}</echo>
+        <echo>Running from basedir:  ${basedir}</echo>
         <delete dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}/reports"/>
