@@ -67,8 +67,10 @@ public class AllTest extends TestCase {
         PropertyManager manager = PropertyManager.getInstance();
 
         //  Load build.properties
+        String cpathHome = System.getProperty("CPATH_HOME");
+        String separator = System.getProperty("file.separator");
         Properties buildProps = new Properties();
-        File file = new File ("build.properties");
+        File file = new File (cpathHome + separator + "build.properties");
         try {
             buildProps.load(new FileInputStream (file));
         } catch (FileNotFoundException e) {
