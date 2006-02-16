@@ -285,7 +285,7 @@
 	<target name="test_prepare" depends="compile"
         description="Loads test data set into MySQL.  Required for running JUnit Tests.">
         <echo>Using CPATH_HOME:  ${cPath.home}</echo>
-        <exec dir="${bin.dir}" executable="${bin.dir}/initDb.pl" vmlauncher="false">
+        <exec dir="${basedir}/bin" executable="initDb.pl" vmlauncher="false">
             <arg line="-f load_test_data"/>
             <env key="CPATH_HOME" value="${cPath.home}"/>
         </exec>
