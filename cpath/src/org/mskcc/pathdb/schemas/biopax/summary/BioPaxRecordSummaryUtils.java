@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.8 2006-02-16 21:39:24 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.9 2006-02-16 21:40:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -451,7 +451,7 @@ public class BioPaxRecordSummaryUtils {
      * Replaces Various Characters with their HTML Entities.
      */
     private static String entityFilter(String str) {
-        str = str.replaceAll("'", "&rsquo;");
+        str = str.replaceAll("\'", "&rsquo;");
         str = str.replaceAll("\"", "&quot;");
         return str;
     }
