@@ -131,10 +131,6 @@
     <module name="LineLength"/>
     <module name="MethodLength"/>
     <module name="FileLength"/>
-
-    <!-- don't allow tabs -->
-    <module name="TabCharacter"/>
-
   </module>
 
   <!-- enforce package documentation -->
