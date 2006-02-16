@@ -298,8 +298,7 @@
         <delete dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}/reports"/>
-		<junit showoutput="no" printsummary="yes" fork="yes" haltonfailure="no">
-            <env key="CPATH_HOME" value="${cPath.home}"/>
+		<junit dir="${basedir}" showoutput="no" printsummary="yes" fork="yes" haltonfailure="no">
             <formatter type="xml"/>
             <sysproperty key="CPATH_HOME" value="${basedir}"/>
             <test name="org.mskcc.pathdb.test.AllTest"
