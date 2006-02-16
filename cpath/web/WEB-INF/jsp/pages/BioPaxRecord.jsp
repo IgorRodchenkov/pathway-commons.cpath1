@@ -1,16 +1,11 @@
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging,
                  org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.sql.dao.DaoInternalLink,
-                 java.util.Arrays,
                  java.util.ArrayList,
                  java.util.HashSet,
 				 java.util.Calendar,
-				 java.util.Collections,
 				 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
 				 org.mskcc.pathdb.schemas.biopax.MemberMolecules,
 				 org.mskcc.pathdb.schemas.biopax.MemberPathways,
-				 org.mskcc.pathdb.schemas.biopax.RecordLinkSorter,
-                 java.util.List,
                  org.mskcc.pathdb.model.*,
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
@@ -18,7 +13,6 @@
 				 org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary,
 				 org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil"%>
-<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.EntitySummary"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -178,6 +172,7 @@
 		<DIV CLASS ='h3'>
 		<H3>Member of the Following Pathways</H3>
 		</DIV>
+		<TABLE>
 <%
         HashSet pathwaySet;
 		// if timing mode, compute/display timing
@@ -201,24 +196,13 @@
 			pathwaySet = MemberPathways.getMemberPathways(record, null);
 		}
 		if (pathwaySet != null && pathwaySet.size() > 0){
-			String[] pathways = (String[])pathwaySet.toArray(new String[0]);
-			List pathwayList = Arrays.asList(pathways);
-			Collections.sort(pathwayList, new RecordLinkSorter());
-			int cnt = pathwayList.size();
-			if (cnt > 0){
-				out.println("<TABLE>");
-				out.println("<TR>");
-				out.println("<TD>");
-			}
-			for (int lc = 0; lc < cnt; lc++){
-				out.println(pathwayList.get(lc));
-			}
-			if (cnt > 0){
-				out.println("</TD>");
-				out.println("</TR>");
-				out.println("</TABLE>");
-			}
+%>
+			<cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
+<%
 		}
+%>
+		</TABLE>
+<%
 	}
 %>
 <% } // record != null %>

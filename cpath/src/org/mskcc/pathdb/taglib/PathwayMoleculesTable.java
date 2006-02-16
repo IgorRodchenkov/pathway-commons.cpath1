@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.1 2006-02-16 15:18:38 grossb Exp $
+// $Id: PathwayMoleculesTable.java,v 1.2 2006-02-16 15:41:27 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,7 +41,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
 
 /**
- * Custom jsp tag for displaying interactions
+ * Custom jsp tag for displaying the set of molecules contained in a pathway.
  *
  * @author Benjamin Gross
  */

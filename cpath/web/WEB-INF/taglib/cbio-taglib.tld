@@ -120,6 +120,18 @@
   </tag>
 
   <tag>
+    <name>pathwayMembershipTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.PathwayMembershipTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Pathway Membership Table</description>
+	<attribute>
+		<name>pathwaySet</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+  </tag>
+
+  <tag>
     <name>biopaxRecordSummaryTable</name>
     <tag-class>org.mskcc.pathdb.taglib.BioPaxRecordSummaryTable</tag-class>
     <body-content>empty</body-content>
