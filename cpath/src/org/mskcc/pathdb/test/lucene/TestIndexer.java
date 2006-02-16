@@ -51,6 +51,7 @@ import java.io.IOException;
  * @author Ethan Cerami
  */
 public class TestIndexer extends TestCase {
+    private String testName;
 
     /**
      * Tests the Full Text Indexer.
@@ -58,6 +59,7 @@ public class TestIndexer extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testIndexer() throws Exception {
+        testName = "Test the Lucene Indexer";
         XDebug xdebug = new XDebug();
         DaoCPath dao = DaoCPath.getInstance();
         CPathRecord record = dao.getRecordById(4);
@@ -108,6 +110,7 @@ public class TestIndexer extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testStripper() throws Exception {
+        testName = "Test the XML Markup Stripper";
         ContentReader reader = new ContentReader();
         String file = new String("testData/psi_mi/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
@@ -124,6 +127,6 @@ public class TestIndexer extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the Lucene Index/Query functionality";
+        return "Test the Lucene Index/Query functionality:  " + testName;
     }
 }

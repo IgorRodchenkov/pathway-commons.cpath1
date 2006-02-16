@@ -44,6 +44,7 @@ import org.mskcc.pathdb.model.CPathRecord;
  * @author Ethan Cerami
  */
 public class TestItemToIndex extends TestCase {
+    private String testName;
 
     /**
      * Tests the ItemToIndex Factory and a PSI-MI Record.
@@ -51,6 +52,7 @@ public class TestItemToIndex extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testPsiRecord() throws Exception {
+        testName = "Test PSI-MI Record";
         XDebug xdebug = new XDebug();
         DaoCPath dao = DaoCPath.getInstance();
         CPathRecord record = dao.getRecordById(4);
@@ -121,6 +123,7 @@ public class TestItemToIndex extends TestCase {
      * @throws Exception All Errors.
      */
     public void testBioPaxRecord() throws Exception {
+        testName = "Test BioPAX Record";
         XDebug xdebug = new XDebug();
 
         //  Get the Glycolysis Pathway
@@ -158,6 +161,6 @@ public class TestItemToIndex extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test that we can index BioPAX/PSI-MI Records in Lucene";
+        return "Test that we can index BioPAX/PSI-MI Records in Lucene:  " + testName;
     }
 }
