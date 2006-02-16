@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.9 2006-02-16 21:40:58 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.10 2006-02-16 22:01:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -293,6 +293,15 @@ public class BioPaxRecordSummaryUtils {
         //  Add Features to Pop-Up Box
         if (participant != null) {
             addFeatures(participant, buf);
+
+            if ((participant.getSynonyms() == null || participant.getSynonyms().size()==0)
+                    && (participant.getFeatureList() == null || participant.getFeatureList().size()==0)) {
+                buf.append("No synonyms or features specified");
+            }
+        }
+
+        if (participant == null && (component.getSynonyms() == null || component.getSynonyms().size() ==0)) {
+            buf.append("No synonyms specified");
         }
 
         //  Create Header for Pop-Up Box
@@ -301,8 +310,8 @@ public class BioPaxRecordSummaryUtils {
         appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated, buf);
         if (participant != null) {
             if (participant.getCellularLocation() != null) {
-                buf.append(" in <FONT COLOR=LIGHTGREEN>" + participant.getCellularLocation()
-                        + "</FONT>");
+                buf.append(" in <B>" + participant.getCellularLocation()
+                        + "</B>");
             }
         }
         buf.append("'); return true;\" onmouseout=\"return nd();\">");
