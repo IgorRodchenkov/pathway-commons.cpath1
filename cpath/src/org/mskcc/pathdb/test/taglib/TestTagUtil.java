@@ -39,11 +39,13 @@ import org.mskcc.pathdb.taglib.TagUtil;
  * @author Ethan Cerami
  */
 public class TestTagUtil extends TestCase {
+    private String testName;
 
     /**
      * Tests the getLabel method.
      */
     public void testGetLabel() {
+        testName = "Test the Get Label Functionality";
         //  Test 1
         NamesType name = new NamesType();
         name.setShortLabel("TNFB");
@@ -84,6 +86,7 @@ public class TestTagUtil extends TestCase {
      * Tests the truncateLabel method.
      */
     public void testTruncateLabel() {
+        testName = "Test the Truncate Label Functionality";
         //  Test 1
         String label = TagUtil.truncateLabel
                 ("This is a test of a long protein name with a very long name");
@@ -98,6 +101,7 @@ public class TestTagUtil extends TestCase {
      * Tests the CreateLink method.
      */
     public void testCreateLink() {
+        testName = "Test the Creation of HTML Links";
         String link = TagUtil.createLink("Tip", "http://www.yahoo.com",
                 "Click for yahoo");
         assertEquals("<A TITLE='Tip' HREF='http://www.yahoo.com'>"
@@ -110,6 +114,6 @@ public class TestTagUtil extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the Html Tag Utility, used by custom JSP Tags";
+        return "Test the Html Tag Utility, used by custom JSP Tags:  " + testName;
     }
 }

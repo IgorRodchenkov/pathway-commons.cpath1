@@ -50,6 +50,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class TestImportPsiToCPath extends TestCase {
+    private String testName;
 
     /**
      * Tests Import.
@@ -57,6 +58,7 @@ public class TestImportPsiToCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
+        testName = "Test PSI-MI Import";
         ProgressMonitor pMonitor = new ProgressMonitor();
         ContentReader reader = new ContentReader();
         String file = new String("testData/psi_mi/psi_sample_mixed.xml");
@@ -105,6 +107,7 @@ public class TestImportPsiToCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testImportWithBackroundReferenceService() throws Exception {
+        testName = "Test PSI-MI Import with Background Reference Service";
         //  Start with zero background references
         DaoBackgroundReferences dao = new DaoBackgroundReferences();
         dao.deleteAllRecords();
@@ -177,6 +180,6 @@ public class TestImportPsiToCPath extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test that we can import PSI-MI records into cPath";
+        return "Test that we can import PSI-MI records into cPath:  " + testName;
     }
 }

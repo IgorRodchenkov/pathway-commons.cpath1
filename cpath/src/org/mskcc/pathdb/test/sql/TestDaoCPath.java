@@ -62,6 +62,7 @@ public class TestDaoCPath extends TestCase {
     private static final String DB_ID_0 = "P25300";
     private static final String DB_ID_1 = "BWBYD5";
     private static final String REVISED_XML = "<new>This is revised xml</new>";
+    private String testName;
 
     /**
      * Tests Dao Access.
@@ -69,6 +70,7 @@ public class TestDaoCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
+        testName = "Test Add, Get, Delete Methods";
         DaoCPath dao = DaoCPath.getInstance();
 
         ExternalReference refs[] = new ExternalReference[2];
@@ -149,6 +151,7 @@ public class TestDaoCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testGetAllTaxonomyIds() throws Exception {
+        testName = "Get All Taxonomy IDs";
         DaoCPath cpath = DaoCPath.getInstance();
         ArrayList taxonomyList = cpath.getAllTaxonomyIds();
         Integer taxId = (Integer) taxonomyList.get(0);
@@ -161,6 +164,6 @@ public class TestDaoCPath extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the MySQL CPath Data Access Object (DAO)";
+        return "Test the MySQL CPath Data Access Object (DAO):  " + testName;
     }
 }

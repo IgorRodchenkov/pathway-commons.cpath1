@@ -40,6 +40,7 @@ import org.mskcc.pathdb.taglib.Pager;
  * @author Ethan Cerami
  */
 public class TestPager extends TestCase {
+    private String testName;
 
     /**
      * Tests the Pager Class.
@@ -47,6 +48,7 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess1() throws Exception {
+        testName = "Case 1";
         ProtocolRequest request = new ProtocolRequest();
         request.setMaxHits("20");
         request.setQuery("ABC123");
@@ -71,6 +73,7 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess2() throws Exception {
+        testName = "Case 2";
         ProtocolRequest request = new ProtocolRequest();
         request.setMaxHits("20");
         request.setQuery("ABC123");
@@ -97,6 +100,7 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess3() throws Exception {
+        testName = "Case 3";
         ProtocolRequest request = new ProtocolRequest();
         request.setMaxHits("20");
         request.setQuery("ABC123");
@@ -123,6 +127,7 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess4() throws Exception {
+        testName = "Case 4";
         ProtocolRequest request = new ProtocolRequest();
         request.setMaxHits("20");
         request.setQuery("ABC123");
@@ -138,6 +143,7 @@ public class TestPager extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess5() throws Exception {
+        testName = "Case 5";
         ProtocolRequest request = new ProtocolRequest();
         request.setMaxHits("20");
         request.setQuery("ABC123");
@@ -155,6 +161,6 @@ public class TestPager extends TestCase {
      */
     public String getName() {
         return "Test the Pager Object, used to generate Next/Previous "
-                + "web links";
+                + "web links:  " + testName;
     }
 }

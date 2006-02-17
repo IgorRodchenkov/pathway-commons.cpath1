@@ -43,6 +43,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxGenerator;
  * @author Ethan Cerami.
  */
 public class TestBioPaxGenerator extends TestCase {
+    private String testName;
 
     /**
      * Tests the Relationship Xref Generator.
@@ -50,6 +51,7 @@ public class TestBioPaxGenerator extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testRelationshipXrefGenerator() throws Exception {
+        testName = "Create Relationship XRefs";
         ExternalReference ref = new ExternalReference("AFFYMETRIX",
                 "1919_at");
 
@@ -82,6 +84,7 @@ public class TestBioPaxGenerator extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testUnificationXrefGenerator() throws Exception {
+        testName = "Create Unifications XRefs";
         ExternalReference ref = new ExternalReference("CPATH", "1");
 
         Element refElement = BioPaxGenerator.generateRelationshipXref(ref,
@@ -113,6 +116,6 @@ public class TestBioPaxGenerator extends TestCase {
      * @return Description.
      */
     public String getName() {
-        return "Test that we can generate new BioPAX Elements, such as XRefs";
+        return "Test that we can generate new BioPAX Elements, such as XRefs:  " + testName;
     }
 }

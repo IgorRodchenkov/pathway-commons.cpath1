@@ -49,6 +49,7 @@ import java.util.ArrayList;
 public class TestDaoExternalLink extends TestCase {
     private static final String DB_NAME = "PIR";
     private static final String DB_ID = "BVECGL";
+    private String testName;
 
     /**
      * Tests Access to the ExternalLinkRecord Table.
@@ -56,6 +57,7 @@ public class TestDaoExternalLink extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
+        testName = "Test Add, Get, Delete Methods";
         DaoExternalLink db = DaoExternalLink.getInstance();
         addSampleRecord();
 
@@ -96,6 +98,7 @@ public class TestDaoExternalLink extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testEmptyIds() throws Exception {
+        testName = "Test Empty ID Issue";
         DaoExternalDb dbTable = new DaoExternalDb();
         ExternalDatabaseRecord externalDb = dbTable.getRecordByTerm(DB_NAME);
         DaoExternalLink db = DaoExternalLink.getInstance();
@@ -150,6 +153,6 @@ public class TestDaoExternalLink extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the MySQL ExternalLink Data Access Object (DAO)";
+        return "Test the MySQL ExternalLink Data Access Object (DAO):  " + testName;
     }
 }

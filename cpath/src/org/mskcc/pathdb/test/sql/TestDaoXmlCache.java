@@ -49,6 +49,7 @@ import java.util.ArrayList;
 public class TestDaoXmlCache extends TestCase {
     private static final String HASH_KEY = "sander#bader#123";
     private static final String URL = "webservice.do?example";
+    private String testName;
 
     /**
      * Tests DaoXmlCache.
@@ -56,6 +57,7 @@ public class TestDaoXmlCache extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
+        testName = "Test Add, Get, Delete Methods";
         XDebug xdebug = new XDebug();
         DaoXmlCache dao = new DaoXmlCache(xdebug);
 
@@ -119,6 +121,7 @@ public class TestDaoXmlCache extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAutoPurge() throws Exception {
+        testName = "Test Auto-Purge Feature";
         XDebug xdebug = new XDebug();
         DaoXmlCache dao = new DaoXmlCache(xdebug);
 
@@ -153,6 +156,6 @@ public class TestDaoXmlCache extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the MySQL XML Cache Data Access Object (DAO)";
+        return "Test the MySQL XML Cache Data Access Object (DAO):  " + testName;
     }
 }
