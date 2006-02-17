@@ -86,6 +86,6 @@ public class TestInteractionSummaryUtils extends TestCase {
      * @return Name of Unit Test.
      */
     public String getName() {
-        return "Test the Creation of Interaction Summaries:  " + testName;
+        return "Test the Creation of HTML Interaction Summaries:  " + testName;
     }
 }
