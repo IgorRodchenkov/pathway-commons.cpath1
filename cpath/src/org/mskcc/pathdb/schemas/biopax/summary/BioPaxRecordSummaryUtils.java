@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.10 2006-02-16 22:01:36 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.11 2006-02-17 19:24:37 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -301,7 +301,7 @@ public class BioPaxRecordSummaryUtils {
         }
 
         if (participant == null && (component.getSynonyms() == null || component.getSynonyms().size() ==0)) {
-            buf.append("No synonyms specified");
+             buf.append("No synonyms specified");
         }
 
         //  Create Header for Pop-Up Box

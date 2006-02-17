@@ -53,6 +53,7 @@ public class TestDaoExternalDb extends TestCase {
             + "niceprot.pl?%ID%";
     private static final String SAMPLE_ID = "123XYZ";
     private static final String NEW_NAME = "ACME Improved Database";
+    private String testName;
 
     /**
      * Tests Access.
@@ -60,6 +61,7 @@ public class TestDaoExternalDb extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
+        testName = "Test Table Access";
         DaoExternalDb dao = new DaoExternalDb();
 
         //  Add a Sample Record
@@ -116,6 +118,7 @@ public class TestDaoExternalDb extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testEmptyRefs() throws Exception {
+        testName = "Validate Empty Reference Check";
         try {
             DaoExternalDb dao = new DaoExternalDb();
             dao.getRecordByName("");
@@ -188,6 +191,6 @@ public class TestDaoExternalDb extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the MySQL ExternalDb Data Access Object (DAO)";
+        return "Test the MySQL ExternalDb Data Access Object (DAO):  " + testName;
     }
 }
