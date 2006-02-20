@@ -1,9 +1,7 @@
-// $Id: InteractionSummaryUtils.java,v 1.19 2006-02-16 15:08:41 cerami Exp $
-//------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
  **
- ** Code written by: Benjamin Gross
- ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander
+ ** Code written by: Ethan Cerami
+ ** Authors: Ethan Cerami, Gary Bader, Chris Sander
  **
  ** This library is free software; you can redistribute it and/or modify it
  ** under the terms of the GNU Lesser General Public License as published
@@ -29,14 +27,14 @@
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
-
-// package
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+
+import org.mskcc.pathdb.model.BioPaxControlTypeMap;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 
 /**
  * This class generates Summary Strings of BioPAX Interaction Objects.
@@ -56,7 +54,8 @@ public class InteractionSummaryUtils {
      * @param interactionSummary PhysicalInteractiong
      * @return HTML String
      */
-    public static String createInteractionSummaryString(InteractionSummary interactionSummary) {
+    public static String createInteractionSummaryString
+            (InteractionSummary interactionSummary) {
         StringBuffer buf = new StringBuffer();
 
         //  Branch, depending on interaction type.
@@ -107,9 +106,10 @@ public class InteractionSummaryUtils {
         //  Iterate through all participants
         ArrayList participantList = summary.getParticipants();
         for (int i = 0; i < participantList.size(); i++) {
-            ParticipantSummaryComponent component = (ParticipantSummaryComponent)
-                    participantList.get(i);
-            buf.append(BioPaxRecordSummaryUtils.createEntityLink(component, interactionSummary));
+            ParticipantSummaryComponent component =
+                    (ParticipantSummaryComponent) participantList.get(i);
+            buf.append(BioPaxRecordSummaryUtils.createEntityLink
+                    (component, interactionSummary));
             if (i < participantList.size() - 1) {
                 buf.append(", ");
             }
@@ -122,17 +122,19 @@ public class InteractionSummaryUtils {
      * @param interactionSummary InteractionSummary.
      * @param buf                HTML String Buffer.
      */
-    private static void createControlSummary(InteractionSummary interactionSummary,
-            StringBuffer buf) {
+    private static void createControlSummary(InteractionSummary
+            interactionSummary, StringBuffer buf) {
         BioPaxControlTypeMap map = new BioPaxControlTypeMap();
-        ControlInteractionSummary summary = (ControlInteractionSummary) interactionSummary;
+        ControlInteractionSummary summary =
+                (ControlInteractionSummary) interactionSummary;
         List controllerList = summary.getControllers();
 
         //  Iterate through all controllers.
         for (int i = 0; i < controllerList.size(); i++) {
-            ParticipantSummaryComponent component = (ParticipantSummaryComponent)
-                    controllerList.get(i);
-            buf.append(BioPaxRecordSummaryUtils.createEntityLink(component, interactionSummary));
+            ParticipantSummaryComponent component =
+                    (ParticipantSummaryComponent) controllerList.get(i);
+            buf.append(BioPaxRecordSummaryUtils.createEntityLink
+                    (component, interactionSummary));
             if (i < controllerList.size() - 1) {
                 buf.append(", ");
             }
@@ -150,12 +152,14 @@ public class InteractionSummaryUtils {
 
         if (controlledList != null) {
             if (controlledList.size() == 1) {
-                EntitySummary entitySummary = (EntitySummary) controlledList.get(0);
+                EntitySummary entitySummary =
+                        (EntitySummary) controlledList.get(0);
                 if (entitySummary instanceof InteractionSummary) {
-                    InteractionSummary intxnSummary = (InteractionSummary) entitySummary;
+                    InteractionSummary intxnSummary =
+                            (InteractionSummary) entitySummary;
                     buf.append("[");
-                    buf.append(InteractionSummaryUtils.createInteractionSummaryString
-                            (intxnSummary));
+                    buf.append(InteractionSummaryUtils.
+                            createInteractionSummaryString(intxnSummary));
                     buf.append("]");
                 } else {
                     buf.append(entitySummary.getName());
@@ -171,11 +175,13 @@ public class InteractionSummaryUtils {
      * @param summary InteractionSummary Object.
      * @param buf     HTML String Buffer.
      */
-    private static void createSide(ArrayList list, InteractionSummary summary, StringBuffer buf) {
+    private static void createSide(ArrayList list, InteractionSummary summary,
+            StringBuffer buf) {
         for (int i = 0; i < list.size(); i++) {
-            ParticipantSummaryComponent component = (ParticipantSummaryComponent)
-                    list.get(i);
-            buf.append(BioPaxRecordSummaryUtils.createEntityLink(component, summary));
+            ParticipantSummaryComponent component =
+                    (ParticipantSummaryComponent) list.get(i);
+            buf.append(BioPaxRecordSummaryUtils.createEntityLink
+                    (component, summary));
             if (i < list.size() - 1) {
                 buf.append(" + ");
             }

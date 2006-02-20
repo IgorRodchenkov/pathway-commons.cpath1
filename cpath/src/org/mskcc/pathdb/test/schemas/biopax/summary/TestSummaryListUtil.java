@@ -68,6 +68,7 @@ public class TestSummaryListUtil extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test that we can retrieve a list of Interaction Summary objects";
+        return "Test that we can retrieve a list of Interaction "
+            + " Summary objects";
     }
 }
