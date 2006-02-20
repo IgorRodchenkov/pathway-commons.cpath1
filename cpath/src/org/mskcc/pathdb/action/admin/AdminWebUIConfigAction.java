@@ -1,5 +1,5 @@
 //
-// $Id: AdminWebUIConfigAction.java,v 1.4 2005-11-21 21:17:54 grossb Exp $
+// $Id: AdminWebUIConfigAction.java,v 1.5 2006-02-20 16:21:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,19 +62,19 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
      * @throws Exception All Exceptions.
      */
     public ActionForward adminExecute(ActionMapping mapping,
-            ActionForm form, HttpServletRequest request,
-            HttpServletResponse response, XDebug xdebug) throws Exception {
+                                      ActionForm form, HttpServletRequest request,
+                                      HttpServletResponse response, XDebug xdebug) throws Exception {
 
-		// only process if we are authorized
-		if (CPathUIConfig.getAdminModeActive() ==
-			CPathUIConfig.ADMIN_MODE_DEACTIVE){
-			return mapping.findForward(BaseAction.FORWARD_UNAUTHORIZED);
-		}
+        // only process if we are authorized
+        if (CPathUIConfig.getAdminModeActive() ==
+                CPathUIConfig.ADMIN_MODE_DEACTIVE) {
+            return mapping.findForward(BaseAction.FORWARD_UNAUTHORIZED);
+        }
 
-		// populate webUIBean if necessary
-		if (form != null){
-			populateWebUIBean(form, xdebug);
-		}
+        // populate webUIBean if necessary
+        if (form != null) {
+            populateWebUIBean(form);
+        }
 
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
@@ -82,28 +82,26 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
     /**
      * Must Be Implemented By Subclass.
      *
-     * @param form     Struts ActionForm Object.
-     * @param xdebug   XDebug Object.
-
+     * @param form   Struts ActionForm Object.
      * @throws Exception All Exceptions.
      */
-	private void populateWebUIBean(ActionForm form, XDebug xdebug) throws Exception {
+    private void populateWebUIBean(ActionForm form) throws Exception {
 
-		// cast form
-		WebUIBean webUIBean = (WebUIBean) form;
+        // cast form
+        WebUIBean webUIBean = (WebUIBean) form;
 
-		// only retrieve form data if the form is empty
-		if (webUIBean.getApplicationName() == null){
-			WebUIBean record = CPathUIConfig.getWebUIBean();
- 			webUIBean.setApplicationName(record.getApplicationName());
- 			webUIBean.setHomePageHeader(record.getHomePageHeader());
- 			webUIBean.setHomePageTagLine(record.getHomePageTagLine());
-			webUIBean.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
-			webUIBean.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
-			webUIBean.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
-			webUIBean.setFAQPageContent(record.getFAQPageContent());
-			webUIBean.setAboutPageContent(record.getAboutPageContent());
-			webUIBean.setMaintenanceTagLine(record.getMaintenanceTagLine());
-		}
-	}
+        // only retrieve form data if the form is empty
+        if (webUIBean.getApplicationName() == null) {
+            WebUIBean record = CPathUIConfig.getWebUIBean();
+            webUIBean.setApplicationName(record.getApplicationName());
+            webUIBean.setHomePageHeader(record.getHomePageHeader());
+            webUIBean.setHomePageTagLine(record.getHomePageTagLine());
+            webUIBean.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
+            webUIBean.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
+            webUIBean.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
+            webUIBean.setFAQPageContent(record.getFAQPageContent());
+            webUIBean.setAboutPageContent(record.getAboutPageContent());
+            webUIBean.setMaintenanceTagLine(record.getMaintenanceTagLine());
+        }
+    }
 }
