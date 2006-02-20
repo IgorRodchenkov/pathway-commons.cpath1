@@ -191,6 +191,7 @@ public class TestDaoExternalDb extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the MySQL ExternalDb Data Access Object (DAO):  " + testName;
+        return "Test the MySQL ExternalDb Data Access Object (DAO):  "
+                + testName;
     }
 }

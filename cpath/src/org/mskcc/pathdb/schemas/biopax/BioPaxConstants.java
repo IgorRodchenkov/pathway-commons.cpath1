@@ -252,16 +252,16 @@ public class BioPaxConstants {
 
         //  Intialize Pathway Set
         pathwaySet.add(PATHWAY);
-		
-		// Initialize Conversion Set
-		conversionSet.add(BIOCHEMICAL_REACTION);
-		conversionSet.add(COMPLEX_ASSEMBLY);
-		conversionSet.add(TRANSPORT);
-		conversionSet.add(TRANSPORT_WITH_BIOCHEMICAL_REACTION);
 
-		// Initialize Control Set
-		controlSet.add(CATALYSIS);
-		controlSet.add(MODULATION);
+        // Initialize Conversion Set
+        conversionSet.add(BIOCHEMICAL_REACTION);
+        conversionSet.add(COMPLEX_ASSEMBLY);
+        conversionSet.add(TRANSPORT);
+        conversionSet.add(TRANSPORT_WITH_BIOCHEMICAL_REACTION);
+
+        // Initialize Control Set
+        controlSet.add(CATALYSIS);
+        controlSet.add(MODULATION);
     }
 
     /**
@@ -292,7 +292,7 @@ public class BioPaxConstants {
      */
     public boolean isPhysicalInteraction(String elementName) {
         return (interactionSet.contains(elementName.trim()) &&
-				!elementName.trim().equals(INTERACTION));
+                !elementName.trim().equals(INTERACTION));
     }
 
     /**

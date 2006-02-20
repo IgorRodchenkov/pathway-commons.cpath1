@@ -35,10 +35,7 @@ import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.xml.XmlStripper;
-import org.mskcc.pathdb.model.CPathRecord;
 
 import java.io.IOException;
 import java.util.ArrayList;

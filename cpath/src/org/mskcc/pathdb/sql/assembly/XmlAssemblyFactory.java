@@ -66,7 +66,7 @@ public class XmlAssemblyFactory {
      *
      * @param cpathId cPathID must refer to an Interaction record.
      * @param numHits Total Number of Hits.
-     * @param mode XML_ABBREV or XML_FULL.
+     * @param mode    XML_ABBREV or XML_FULL.
      * @param xdebug  XDebug Object
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
@@ -118,6 +118,7 @@ public class XmlAssemblyFactory {
      *
      * @param record  CPathRecord Object.
      * @param numHits Total Number of Hits.
+     * @param mode    Mode must be one of XML_ABBREV, XML_FULL.
      * @param xdebug  XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
@@ -243,8 +244,8 @@ public class XmlAssemblyFactory {
 
     private static void validateModeParameter(int mode) {
         if (mode != XML_ABBREV && mode != XML_FULL) {
-            throw new IllegalArgumentException ("mode parameter must be set" +
-                    "to XML_ABBREV or XML_FULL.");
+            throw new IllegalArgumentException("mode parameter must be set"
+                    + "to XML_ABBREV or XML_FULL.");
         }
     }
 }

@@ -156,6 +156,7 @@ public class TestDaoXmlCache extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the MySQL XML Cache Data Access Object (DAO):  " + testName;
+        return "Test the MySQL XML Cache Data Access Object (DAO):  "
+                + testName;
     }
 }

@@ -161,6 +161,7 @@ public class TestItemToIndex extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test that we can index BioPAX/PSI-MI Records in Lucene:  " + testName;
+        return "Test that we can index BioPAX/PSI-MI Records in Lucene:  "
+                + testName;
     }
 }

@@ -153,6 +153,7 @@ public class TestDaoExternalLink extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the MySQL ExternalLink Data Access Object (DAO):  " + testName;
+        return "Test the MySQL ExternalLink Data Access Object (DAO):  "
+                + testName;
     }
 }

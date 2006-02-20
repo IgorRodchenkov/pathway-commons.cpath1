@@ -116,6 +116,7 @@ public class TestBioPaxGenerator extends TestCase {
      * @return Description.
      */
     public String getName() {
-        return "Test that we can generate new BioPAX Elements, such as XRefs:  " + testName;
+        return "Test that we can generate new BioPAX Elements, such as XRefs:  "
+                + testName;
     }
 }

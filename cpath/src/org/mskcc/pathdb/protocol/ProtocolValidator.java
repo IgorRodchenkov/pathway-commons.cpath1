@@ -94,7 +94,7 @@ public class ProtocolValidator {
         if (request.getCommand() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_COMMAND
-                    + "' is not specified." + HELP_MESSAGE);
+                            + "' is not specified." + HELP_MESSAGE);
         }
         HashSet set;
         if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
@@ -104,9 +104,9 @@ public class ProtocolValidator {
             set = constants.getValidBioPaxCommands();
             if (request.getCommand().equals
                     (ProtocolConstants.COMMAND_GET_BY_KEYWORD)) {
-                if (request.getFormat() != null&& request.getFormat().equals
+                if (request.getFormat() != null && request.getFormat().equals
                         (ProtocolConstants.FORMAT_BIO_PAX)) {
-                    throw new ProtocolException (ProtocolStatusCode.BAD_FORMAT,
+                    throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
                             "BioPAX format not supported for this command.");
                 }
             }
@@ -114,7 +114,7 @@ public class ProtocolValidator {
         if (!set.contains(request.getCommand())) {
             throw new ProtocolException(ProtocolStatusCode.BAD_COMMAND,
                     "Command:  '" + request.getCommand()
-                    + "' is not recognized." + HELP_MESSAGE);
+                            + "' is not recognized." + HELP_MESSAGE);
         }
         if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
             throw new NeedsHelpException();
@@ -132,8 +132,8 @@ public class ProtocolValidator {
             if (maxHits > ProtocolConstants.MAX_NUM_HITS) {
                 throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                         "To prevent overloading of the system, clients are "
-                        + "restricted to a maximum of "
-                        + ProtocolConstants.MAX_NUM_HITS + " hits at a time.");
+                                + "restricted to a maximum of "
+                                + ProtocolConstants.MAX_NUM_HITS + " hits at a time.");
             }
         }
     }
@@ -148,7 +148,7 @@ public class ProtocolValidator {
             throw new ProtocolException
                     (ProtocolStatusCode.MISSING_ARGUMENTS,
                             "Argument:  '" + ProtocolRequest.ARG_FORMAT
-                    + "' is not specified." + HELP_MESSAGE);
+                                    + "' is not specified." + HELP_MESSAGE);
         }
         HashSet set;
         if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
@@ -159,8 +159,8 @@ public class ProtocolValidator {
         if (!set.contains(request.getFormat())) {
             throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,
                     "Format:  '" + request.getFormat()
-                    + "' is not recognized."
-                    + HELP_MESSAGE);
+                            + "' is not recognized."
+                            + HELP_MESSAGE);
         }
     }
 
@@ -197,9 +197,9 @@ public class ProtocolValidator {
             } catch (NumberFormatException e) {
                 throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                         "Argument:  '" + ProtocolRequest.ARG_QUERY
-                        + "' must be an integer value." + HELP_MESSAGE,
+                                + "' must be an integer value." + HELP_MESSAGE,
                         "Query parameter must be an integer value. "
-                        + "Please try again.");
+                                + "Please try again.");
             }
         } else if (command.equals
                 (ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST)) {
@@ -215,7 +215,7 @@ public class ProtocolValidator {
         if (errorFlag) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_QUERY
-                    + "' is not specified." + HELP_MESSAGE,
+                            + "' is not specified." + HELP_MESSAGE,
                     "You did not specify a query term.  Please try again.");
         }
     }
@@ -229,13 +229,13 @@ public class ProtocolValidator {
         if (request.getVersion() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument: '" + ProtocolRequest.ARG_VERSION
-                    + "' is not specified." + HELP_MESSAGE);
+                            + "' is not specified." + HELP_MESSAGE);
         }
         if (!request.getVersion().equals(CURRENT_VERSION)) {
             throw new ProtocolException
                     (ProtocolStatusCode.VERSION_NOT_SUPPORTED,
-                    "This data service currently only supports "
-                    + "version 1.0." + HELP_MESSAGE);
+                            "This data service currently only supports "
+                                    + "version 1.0." + HELP_MESSAGE);
         }
     }
 

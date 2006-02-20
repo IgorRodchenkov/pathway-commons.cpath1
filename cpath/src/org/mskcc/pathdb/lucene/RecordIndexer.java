@@ -31,7 +31,7 @@
  * Created 04-Jul-2005
  * @author Iain Keddie
  * @author <BR>$Author: cerami $ (last revision)
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 package org.mskcc.pathdb.lucene;
 
@@ -41,8 +41,6 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;

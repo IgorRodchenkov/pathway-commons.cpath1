@@ -43,7 +43,7 @@ public class IndexRules {
     /**
      * Flag Used to indicate record should not be indexed by Lucene.
      */
-    public static int NO_INDEX = -1;
+    public static final int NO_INDEX = -1;
 
     /**
      * Determines if/how the specified cPath record should be indexed by Lucene.
