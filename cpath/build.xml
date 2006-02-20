@@ -298,7 +298,8 @@
         <delete dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}/reports"/>
-		<junit dir="${basedir}" showoutput="no" printsummary="yes" fork="yes" haltonfailure="no">
+		<junit dir="${basedir}" showoutput="no" printsummary="yes" fork="yes"
+               haltonfailure="no" failureproperty="tests.failed">
             <formatter type="xml"/>
             <sysproperty key="CPATH_HOME" value="${basedir}"/>
             <test name="org.mskcc.pathdb.test.AllTest"
@@ -307,7 +308,8 @@
             </test>
 			<classpath refid="compile.classpath"/>
 		</junit>
-	 </target>
+        <fail message="Build failed because of test failure." if="tests.failed"/>
+     </target>
 
     <!-- ==================== test_report Target ========================= -->
     <target name="test_report"
