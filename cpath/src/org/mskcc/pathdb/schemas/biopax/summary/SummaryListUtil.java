@@ -29,13 +29,10 @@
  **/
 package org.mskcc.pathdb.schemas.biopax.summary;
 
-import org.jdom.JDOMException;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -66,16 +63,10 @@ public class SummaryListUtil {
      * Gets Summaries for all Children of the specified cPathId.
      * @return ArrayList of EntitySummary Objects.
      * @throws DaoException Database Access Error.
-     * @throws NoSuchMethodException XML Parsing Error.
-     * @throws IllegalAccessException XML Parsing Error.
-     * @throws IOException File Read Error
-     * @throws InvocationTargetException XML Parsing Error.
      * @throws EntitySummaryException Error Creating Summary.
-     * @throws JDOMException XML Parsing Error.
      */
-    public ArrayList getSummaryList() throws DaoException,
-            NoSuchMethodException, IllegalAccessException, IOException,
-            InvocationTargetException, EntitySummaryException, JDOMException {
+    public ArrayList getSummaryList() throws EntitySummaryException,
+            DaoException {
         DaoInternalLink daoInternalLinks = new DaoInternalLink();
         ArrayList internalLinks = daoInternalLinks.getTargets(cPathId);
         for (int i = 0; i < internalLinks.size(); i++) {
