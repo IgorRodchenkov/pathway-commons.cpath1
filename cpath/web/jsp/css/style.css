@@ -147,3 +147,12 @@
 .popup_organism {
     color:  lightgreen;
 }
+
+/* Table Headers */
+.table_head2 {
+    background-color: #CC9999;
+}
+
+.table_head2 a:link {
+    color: #000000
+}
