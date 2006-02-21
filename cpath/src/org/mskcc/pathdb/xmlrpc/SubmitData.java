@@ -1,4 +1,6 @@
-/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+// $Id: SubmitData.java,v 1.12 2006-02-21 22:58:36 grossb Exp $
+//------------------------------------------------------------------------------
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander
