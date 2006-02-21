@@ -1,7 +1,6 @@
-//
-// $Id: DaoWebUI.java,v 1.5 2005-11-21 21:17:41 grossb Exp $
+// $Id: DaoWebUI.java,v 1.6 2006-02-21 22:51:10 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami, Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander

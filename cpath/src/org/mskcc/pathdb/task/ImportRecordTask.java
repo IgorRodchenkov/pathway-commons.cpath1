@@ -1,4 +1,6 @@
-/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+// $Id: ImportRecordTask.java,v 1.18 2006-02-21 22:51:10 grossb Exp $
+//------------------------------------------------------------------------------
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

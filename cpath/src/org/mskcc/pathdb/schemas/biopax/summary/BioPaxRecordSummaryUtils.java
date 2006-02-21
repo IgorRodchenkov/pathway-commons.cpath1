@@ -1,6 +1,6 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.15 2006-02-21 18:04:27 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.16 2006-02-21 22:51:10 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander

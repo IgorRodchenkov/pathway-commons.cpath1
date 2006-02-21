@@ -1,7 +1,6 @@
-//
-// $Id: BioPaxControlTypeMap.java,v 1.3 2006-01-27 17:42:36 grossb Exp $
+// $Id: BioPaxControlTypeMap.java,v 1.4 2006-02-21 22:51:10 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami, Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander

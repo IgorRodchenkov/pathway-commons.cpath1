@@ -1,7 +1,6 @@
-//
-// $Id: AdminUpdateWebUI.java,v 1.4 2005-11-08 21:27:52 grossb Exp $
+// $Id: AdminUpdateWebUI.java,v 1.5 2006-02-21 22:51:09 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami, Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander

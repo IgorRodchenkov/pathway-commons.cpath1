@@ -1,6 +1,6 @@
-// $Id: MemberMolecules.java,v 1.10 2006-02-16 15:18:50 grossb Exp $
+// $Id: MemberMolecules.java,v 1.11 2006-02-21 22:51:10 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander

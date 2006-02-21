@@ -1,6 +1,6 @@
-// $Id: TestEntitySummaryParser.java,v 1.6 2006-02-14 20:52:03 grossb Exp $
+// $Id: TestEntitySummaryParser.java,v 1.7 2006-02-21 22:51:10 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander

@@ -1,7 +1,6 @@
-//
-// $Id: BioPaxInteractionDescriptionMap.java,v 1.1 2006-02-15 20:05:12 grossb Exp $
+// $Id: BioPaxInteractionDescriptionMap.java,v 1.2 2006-02-21 22:51:10 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami, Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander
