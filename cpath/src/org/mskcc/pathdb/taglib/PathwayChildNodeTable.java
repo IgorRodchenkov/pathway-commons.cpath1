@@ -1,6 +1,6 @@
-// $Id: PathwayChildNodeTable.java,v 1.20 2006-02-21 22:06:37 cerami Exp $
+// $Id: PathwayChildNodeTable.java,v 1.21 2006-02-21 22:50:54 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander
