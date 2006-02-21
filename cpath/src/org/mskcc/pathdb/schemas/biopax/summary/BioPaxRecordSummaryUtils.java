@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.14 2006-02-21 16:36:40 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.15 2006-02-21 18:04:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -314,6 +314,21 @@ public class BioPaxRecordSummaryUtils {
         //  Create JavaScript for MouseOver Pop-Up Box
         buf.append("\" onmouseover=\"return overlib('");
 
+        //  Create Header for Pop-Up Box
+        buf.append("<DIV CLASS=popup>");
+        buf.append("<DIV CLASS=popup_caption>");
+        buf.append(name);
+        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
+                isSumoylated, buf);
+        if (participant != null) {
+            if (participant.getCellularLocation() != null) {
+                buf.append(" in <SPAN CLASS=popup_organism>" + participant.getCellularLocation()
+                        + "</SPAN>");
+            }
+        }
+        buf.append("</DIV>");
+        buf.append("<DIV CLASS=popup_text>");
+
         //  Add Synonyms to Pop-Up Box
         addSynonmys(component, buf);
 
@@ -334,18 +349,10 @@ public class BioPaxRecordSummaryUtils {
             buf.append("No synonyms specified");
         }
 
-        //  Create Header for Pop-Up Box
-        buf.append("', WRAP, CELLPAD, 5, OFFSETY, 0, CAPTION, '");
-        buf.append(name);
-        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
-                isSumoylated, buf);
-        if (participant != null) {
-            if (participant.getCellularLocation() != null) {
-                buf.append(" in <B>" + participant.getCellularLocation()
-                        + "</B>");
-            }
-        }
-        buf.append("'); return true;\" onmouseout=\"return nd();\">");
+        buf.append("</DIV>");
+        buf.append("</DIV>");
+        buf.append("', FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0");
+        buf.append("); return true;\" onmouseout=\"return nd();\">");
 
         //  Output Component Name and end A Tag.
         buf.append(truncateLongName(name));
