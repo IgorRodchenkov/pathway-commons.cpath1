@@ -1,4 +1,4 @@
-// $Id: PathwayChildNodeTable.java,v 1.19 2006-02-15 20:07:27 grossb Exp $
+// $Id: PathwayChildNodeTable.java,v 1.20 2006-02-21 22:06:37 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -147,13 +147,14 @@ public class PathwayChildNodeTable extends HtmlTable {
         String interactionTypeInPlainEnglish = (String) map.get(interactionType);
 
         if (currentType == null || ! interactionType.equals(currentType)) {
-            int count = countRows(entitySummaryList, index);
-            append("<td bgcolor=#DDDDDD width=15% rowspan=" + count + ">");
+            append ("<td class=table_head2 colspan=2>");
 			String interactionTypePopupCode = getInteractionTypePopupCode(interactionType);
 			append("<a href=\"javascript:void(0);\"" + interactionTypePopupCode + ">");
-            append(interactionTypeInPlainEnglish + "(s)");
+            append(interactionTypeInPlainEnglish + "(s): ");
 			append("</a>");
             append("</td>");
+            append("</tr>");
+            append("</tr>");
             currentType = entitySummary.getSpecificType();
         }
 
