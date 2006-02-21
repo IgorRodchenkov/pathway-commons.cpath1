@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.11 2006-02-17 19:24:37 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.12 2006-02-21 16:12:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2005 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,6 +63,11 @@ public class BioPaxRecordSummaryUtils {
     private static final String ACETYLATED = " (Acetylated)";
 
     /**
+     * Sumoylated Keyword.
+     */
+    private static final String SUMOYLATED = " (Sumoylated)";
+
+    /**
      * Phosphorylation Feature.
      */
     private static final String PHOSPHORYLATION_FEATURE = "phosphorylation";
@@ -76,6 +81,11 @@ public class BioPaxRecordSummaryUtils {
      * Acetylation Feature.
      */
     private static final String ACETYLATION_FEATURE = "acetylation";
+
+    /**
+     * Sumoylation Feature.
+     */
+    private static final String SUMOYLATION_FEATURE = "sumoylation";
 
     /**
      * Names longer than this will be truncated.
@@ -264,6 +274,7 @@ public class BioPaxRecordSummaryUtils {
         boolean isPhosphorylated = false;
         boolean isUbiquitinated = false;
         boolean isAcetylated = false;
+        boolean isSumoylated = false;
         boolean isTransport = false;
         ParticipantSummaryComponent participant = null;
 
@@ -276,6 +287,7 @@ public class BioPaxRecordSummaryUtils {
             isPhosphorylated = hasFeature(participant, PHOSPHORYLATION_FEATURE);
             isUbiquitinated = hasFeature(participant, UBIQUITINATION_FEATURE);
             isAcetylated = hasFeature(participant, ACETYLATION_FEATURE);
+            isSumoylated = hasFeature(participant, SUMOYLATION_FEATURE);
             if (interactionSummary != null) {
                 isTransport = isTransport(interactionSummary);
             }
@@ -307,7 +319,7 @@ public class BioPaxRecordSummaryUtils {
         //  Create Header for Pop-Up Box
         buf.append("', WRAP, CELLPAD, 5, OFFSETY, 0, CAPTION, '");
         buf.append(name);
-        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated, buf);
+        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated, isSumoylated, buf);
         if (participant != null) {
             if (participant.getCellularLocation() != null) {
                 buf.append(" in <B>" + participant.getCellularLocation()
@@ -328,7 +340,8 @@ public class BioPaxRecordSummaryUtils {
         }
 
         //  If component is phosphorylated, show explicitly
-        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated, buf);
+        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
+                isSumoylated, buf);
         return buf.toString();
     }
 
@@ -392,7 +405,7 @@ public class BioPaxRecordSummaryUtils {
      * @param buf
      */
     private static void appendFeatures(boolean phosphorylated, boolean ubiquitinated,
-            boolean acetylated, StringBuffer buf) {
+            boolean acetylated, boolean sumoylated, StringBuffer buf) {
         if (phosphorylated) {
             buf.append(PHOSPHORYLATED);
         }
@@ -401,6 +414,9 @@ public class BioPaxRecordSummaryUtils {
         }
         if (acetylated) {
             buf.append(ACETYLATED);
+        }
+        if (sumoylated) {
+            buf.append(SUMOYLATED);
         }
     }
 
