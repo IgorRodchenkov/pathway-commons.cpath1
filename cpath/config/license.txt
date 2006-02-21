@@ -1,6 +1,6 @@
 ^// \$[I][d]: .*\$$
 ^//-{78}$
-^/\*\* Copyright \(c\) \d\d\d\d Memorial Sloan-Kettering Cancer Center.
+^/\*\* Copyright \(c\) \d\d\d\d  Memorial Sloan-Kettering Cancer Center.
 ^ \*\*
 ^ \*\* Code written by: .*
 ^ \*\* Authors: .*
