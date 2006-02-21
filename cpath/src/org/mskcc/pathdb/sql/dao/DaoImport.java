@@ -1,4 +1,6 @@
-/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+// $Id: DaoImport.java,v 1.22 2006-02-21 23:13:26 grossb Exp $
+//------------------------------------------------------------------------------
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

@@ -1,6 +1,6 @@
-// $Id: RecordIndexerManager.java,v 1.2 2006-02-21 22:51:10 grossb Exp $
+// $Id: RecordIndexerManager.java,v 1.3 2006-02-21 23:12:42 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander
@@ -33,7 +33,7 @@
  * Created 04-Jul-2005
  * @author Iain Keddie
  * @author <BR>$Author: grossb $ (last revision)
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 package org.mskcc.pathdb.lucene;
 

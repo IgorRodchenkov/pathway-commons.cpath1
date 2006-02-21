@@ -1,6 +1,6 @@
-// $Id: XDebug.java,v 1.13 2006-02-21 22:58:36 grossb Exp $
+// $Id: XDebug.java,v 1.14 2006-02-21 23:12:29 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

@@ -1,6 +1,6 @@
-// $Id: CPathUIConfig.java,v 1.5 2006-02-21 22:51:10 grossb Exp $
+// $Id: CPathUIConfig.java,v 1.6 2006-02-21 23:13:16 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

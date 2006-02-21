@@ -1,4 +1,6 @@
-/** Copyright (c) 2004 Memorial Sloan-Kettering Cancer Center.
+// $Id: ProtocolSuite.java,v 1.5 2006-02-21 23:12:36 grossb Exp $
+//------------------------------------------------------------------------------
+/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander
