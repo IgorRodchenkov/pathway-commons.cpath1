@@ -1,6 +1,6 @@
-// $Id: CPathServlet.java,v 1.27 2006-02-21 23:14:08 grossb Exp $
+// $Id: CPathServlet.java,v 1.28 2006-02-22 22:54:10 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

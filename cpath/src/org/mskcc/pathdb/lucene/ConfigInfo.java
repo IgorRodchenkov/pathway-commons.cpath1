@@ -1,6 +1,6 @@
-// $Id: ConfigInfo.java,v 1.3 2006-02-21 23:12:16 grossb Exp $
+// $Id: ConfigInfo.java,v 1.4 2006-02-22 22:55:11 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander
@@ -33,7 +33,7 @@
  * Created 05-Jul-2005
  * @author Iain Keddie
  * @author <BR>$Author: grossb $ (last revision)
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 package org.mskcc.pathdb.lucene;
 
