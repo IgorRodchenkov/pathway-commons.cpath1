@@ -1,6 +1,6 @@
-// $Id: SortAction.java,v 1.2 2006-02-21 22:51:09 grossb Exp $
+// $Id: SortAction.java,v 1.3 2006-02-22 22:47:50 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

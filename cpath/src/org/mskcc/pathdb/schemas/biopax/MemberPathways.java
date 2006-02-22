@@ -1,6 +1,6 @@
-// $Id: MemberPathways.java,v 1.6 2006-02-21 22:51:10 grossb Exp $
+// $Id: MemberPathways.java,v 1.7 2006-02-22 22:47:50 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Benjamin Gross
  ** Authors: Ethan Cerami, Benjamin Gross, Gary Bader, Chris Sander

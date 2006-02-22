@@ -1,6 +1,6 @@
-// $Id: ConfigurableIndexCollector.java,v 1.4 2006-02-21 23:12:23 grossb Exp $
+// $Id: ConfigurableIndexCollector.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

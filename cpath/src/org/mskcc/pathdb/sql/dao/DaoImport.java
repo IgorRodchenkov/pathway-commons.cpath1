@@ -1,6 +1,6 @@
-// $Id: DaoImport.java,v 1.22 2006-02-21 23:13:26 grossb Exp $
+// $Id: DaoImport.java,v 1.23 2006-02-22 22:47:51 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

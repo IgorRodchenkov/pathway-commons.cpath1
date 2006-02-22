@@ -1,6 +1,6 @@
-// $Id: TestDaoCPath.java,v 1.19 2006-02-21 22:51:10 grossb Exp $
+// $Id: TestDaoCPath.java,v 1.20 2006-02-22 22:47:51 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Ethan Cerami
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander

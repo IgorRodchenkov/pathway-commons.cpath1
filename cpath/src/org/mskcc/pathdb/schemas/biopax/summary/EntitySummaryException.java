@@ -1,6 +1,6 @@
-// $Id: EntitySummaryException.java,v 1.3 2006-02-21 22:51:10 grossb Exp $
+// $Id: EntitySummaryException.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006  Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
  ** Code written by: Robert Hoffmann, Benjamin Gross
  ** Authors: Robert Hoffmann, Benjamin Gross, Chris Sander
