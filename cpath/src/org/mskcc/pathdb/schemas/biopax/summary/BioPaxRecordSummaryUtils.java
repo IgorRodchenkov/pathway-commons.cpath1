@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.18 2006-02-23 17:30:38 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.19 2006-02-23 18:43:59 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,14 +48,6 @@ import java.util.List;
  * @author Benjamin Gross, Ethan Cerami.
  */
 public class BioPaxRecordSummaryUtils {
-    /**
-     * The number of synonyms per row.
-     */
-    private static final int SYNONYMS_PER_ROW = 3;
-    /**
-     * The spacing between synonyms
-     */
-    private static final String SYNONYM_SPACING = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
     /**
      * Phosphorylated Keyword.
      */
@@ -173,31 +165,11 @@ public class BioPaxRecordSummaryUtils {
 
         // concate them all into one long string
         if (synonymList != null && synonymList.size() > 0) {
-			synonymString += "<table>";
-			synonymString += "<tr>";
-			int cnt = synonymList.size();
-			boolean endedRow = false;
-            for (int lc = 1; lc <= cnt; lc++) {
-				synonymString += "<td>";
-                synonymString += (String) synonymList.get(lc-1);
-				synonymString += "</td>";
-				// some spacing
-				synonymString += "<td>";
-				synonymString += SYNONYM_SPACING;
-				synonymString += "</td>";
-				// do we start a new row ?
-				if ((lc % SYNONYMS_PER_ROW) == 0){
-					synonymString += "</tr>";
-					endedRow = true;
-					if (lc < cnt){
-						synonymString += "<tr>";
-						endedRow = false;
-					}
-				}
+            for (int lc = 0; lc < synonymList.size(); lc++) {
+                String synonym = (String) synonymList.get(lc);
+                synonymString += (lc == synonymList.size() - 1)
+                        ? synonym : (synonym + " ");
             }
-			// do we have to cap a row ?
-			if (!endedRow) synonymString += "</tr>";
-			synonymString += "</table>";
         }
 
         // outta here
