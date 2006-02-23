@@ -1,4 +1,4 @@
-// $Id: TestSummaryListUtil.java,v 1.7 2006-02-23 22:15:47 cerami Exp $
+// $Id: TestSummaryListUtil.java,v 1.8 2006-02-23 22:23:37 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,7 +51,7 @@ public class TestSummaryListUtil extends TestCase {
      */
     public void testSummaryList() throws Exception {
         SummaryListUtil util = new SummaryListUtil(108,
-                SummaryListUtil.MODE_GET_PARENTS);
+                SummaryListUtil.MODE_GET_CHILDREN);
         ArrayList list = util.getSummaryList();
         EntitySummary summary = (EntitySummary) list.get(0);
         String currentType = summary.getSpecificType();
