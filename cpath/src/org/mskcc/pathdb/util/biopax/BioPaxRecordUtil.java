@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.15 2006-02-22 22:51:58 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.16 2006-02-23 22:31:21 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,6 +48,7 @@ import org.jdom.Attribute;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.jdom.input.SAXBuilder;
+import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
@@ -55,6 +56,7 @@ import org.mskcc.pathdb.util.rdf.RdfQuery;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
@@ -175,7 +177,7 @@ public class BioPaxRecordUtil {
 		}
 
 		// success flags
-        boolean setCellularLocationSuccess, setFeatureListSuccess;
+        boolean setCellularLocationSuccess, setFeatureListSuccess, setComplexMembersSuccess;
 
 		// create a biopaxRecordSummary
 		BioPaxRecordSummary biopaxRecordSummary = createBioPaxRecordSummary(physicalEntityRecord);
@@ -189,13 +191,19 @@ public class BioPaxRecordUtil {
 
 			// feature list
 			setFeatureListSuccess = BioPaxRecordUtil.setFeatureList(participantSummaryComponent, interactionRecord, e);
+
+			// if physical entity record is a complex, lets get its members
+			setComplexMembersSuccess = false;
+			if (physicalEntityRecord.getSpecificType().equals(BioPaxConstants.COMPLEX)){
+				setComplexMembersSuccess = BioPaxRecordUtil.setComplexMembers(participantSummaryComponent, physicalEntityRecord);
+			}
 		}
 		catch (Throwable throwable){
 			throw new BioPaxRecordSummaryException(throwable);
 		}
 
         // made it this far
-        return (setCellularLocationSuccess || setFeatureListSuccess) ? participantSummaryComponent : null;
+        return (setCellularLocationSuccess || setFeatureListSuccess || setComplexMembersSuccess) ? participantSummaryComponent : null;
     }
 
     /**
@@ -239,6 +247,41 @@ public class BioPaxRecordUtil {
         return (entity != null) ?
             ("<a href=\"record.do?id=" + String.valueOf(recordID) + "\">" + entity + "</a>") :
             null;
+    }
+
+    /**
+     * Gets a cpath record given an element whose attribute is an rdf resource attribute is a cpath id.
+     *
+     * @param e Element
+     * @return CPathRecord
+	 * @throws RuntimeException
+	 * @throws DaoException
+     */
+    public static CPathRecord getCPathRecord(Element e) throws RuntimeException, DaoException {
+
+		// get elements attribute
+		Attribute rdfResourceAttribute =
+			e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+
+		// attribute not null
+		if (rdfResourceAttribute != null) {
+			// get the rdf key
+			String rdfKey = RdfUtil.removeHashMark(rdfResourceAttribute.getValue());
+			// cook id to save
+			int indexOfID = rdfKey.lastIndexOf("-");
+			if (indexOfID == -1){
+                throw new RuntimeException("Corrupt Record ID: " + rdfResourceAttribute.getValue());
+			}
+			indexOfID += 1;
+			String cookedKey = rdfKey.substring(indexOfID);
+			Long recordID = new Long(cookedKey);
+            // get cpath record for this id
+            DaoCPath cPath = DaoCPath.getInstance();
+            return cPath.getRecordById(recordID.longValue());
+		}
+
+		// made it here
+		return null;
     }
 
     /**
@@ -353,7 +396,6 @@ public class BioPaxRecordUtil {
 	private static String getCellularLocation(CPathRecord record, Element cellularLocationRef) throws JDOMException, IOException {
 
 		// setup for rdf query
-        //SAXBuilder builder = new SAXBuilder();
         StringReader reader = new StringReader (record.getXmlContent());
 		BioPaxUtil bpUtil = new BioPaxUtil(reader);
 		RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
@@ -384,6 +426,7 @@ public class BioPaxRecordUtil {
      * @param e Element
      * @return boolean
      * @throws JDOMException
+	 * @throws IOException
      */
     private static boolean setFeatureList(ParticipantSummaryComponent participantSummaryComponent, CPathRecord record, Element e)
             throws JDOMException, IOException {
@@ -432,6 +475,50 @@ public class BioPaxRecordUtil {
         // made it here
         return true;
     }
+
+    /**
+     * Sets the member list of a complex.
+     *
+     * @param participantSummaryComponent ParticipantSummaryComponent
+     * @param record CPathRecord
+     * @param e Element
+     * @return boolean
+     * @throws JDOMException
+	 * @throws IOException
+	 * @throws DaoException
+	 * @throws BioPaxRecordSummaryException
+	 * @throws RuntimeException
+     */
+    private static boolean setComplexMembers(ParticipantSummaryComponent participantSummaryComponent, CPathRecord record)
+            throws JDOMException, IOException, DaoException, BioPaxRecordSummaryException, RuntimeException {
+
+        // our complex member list
+        ArrayList complexMemberList = new ArrayList();
+
+		// setup for rdf query
+        StringReader reader = new StringReader (record.getXmlContent());
+		BioPaxUtil bpUtil = new BioPaxUtil(reader);
+		RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
+
+		// grab all complex components
+		Element root = bpUtil.getRootElement();
+        List complexMembers = rdfQuery.getNodes(root, "COMPONENTS/*/PHYSICAL-ENTITY");
+		if (complexMembers != null && complexMembers.size() > 0){
+			for (int lc = 0; lc < complexMembers.size(); lc++){
+				Element e = (Element)complexMembers.get(lc);
+				CPathRecord memberRecord = getCPathRecord(e);
+				if (memberRecord != null){
+					BioPaxRecordSummary bioPaxRecordSummary =
+						BioPaxRecordUtil.createBioPaxRecordSummary(memberRecord);
+					complexMemberList.add(bioPaxRecordSummary);
+				}
+			}
+			if (complexMemberList.size() > 0) participantSummaryComponent.setComplexMemberList(complexMemberList);
+		}
+
+		// outta here
+		return true;
+	}
 
     /**
      * Sets a BioPaxRecordSummary string attribute.

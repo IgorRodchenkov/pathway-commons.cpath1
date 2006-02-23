@@ -1,4 +1,4 @@
-// $Id: ParticipantSummaryComponent.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: ParticipantSummaryComponent.java,v 1.5 2006-02-23 22:31:33 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,6 +44,12 @@ import java.util.ArrayList;
  * @author Benjamin Gross.
  */
 public class ParticipantSummaryComponent extends BioPaxRecordSummary {
+
+	/**
+	 * In the case of a Complex, this is a list of
+	 * BioPaxRecordSummary that make up the complex.
+	 */
+	private ArrayList complexMemberList;
 
 	/**
 	 * The cellular location.
@@ -109,5 +115,23 @@ public class ParticipantSummaryComponent extends BioPaxRecordSummary {
 	 */
 	public ArrayList getFeatureList(){
 		return featureList;
+	}
+
+	/**
+	 * Sets the member list of a complex.
+	 *
+	 * @param complexMemberList ArrayList
+	 */
+	public void setComplexMemberList(ArrayList complexMemberList){
+		this.complexMemberList = complexMemberList;
+	}
+
+	/**
+	 * Gets the member list of a complex.
+	 *
+	 * @return ArrayList
+	 */
+	public ArrayList getComplexMemberList(){
+		return complexMemberList;
 	}
 }
