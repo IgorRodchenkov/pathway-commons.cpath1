@@ -308,7 +308,6 @@
             </test>
 			<classpath refid="compile.classpath"/>
 		</junit>
-        <fail message="Build failed because of test failure." if="tests.failed"/>
      </target>
 
     <!-- ==================== test_report Target ========================= -->
@@ -322,6 +321,7 @@
                 styledir="${config.dir}"/>
         </junitreport>
         <echo>JUnit Reports written to:  ${junit.dir}/reports</echo>
+        <fail message="Build failed because of test failure." if="tests.failed"/>
     </target>
 
     <!-- ==================== prepare_dev_site Target ===================== -->
