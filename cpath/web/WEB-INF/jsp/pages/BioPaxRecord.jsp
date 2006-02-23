@@ -2,7 +2,6 @@
                  org.mskcc.pathdb.action.BaseAction,
                  java.util.ArrayList,
                  java.util.HashSet,
-				 java.util.Calendar,
 				 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
 				 org.mskcc.pathdb.schemas.biopax.MemberMolecules,
 				 org.mskcc.pathdb.schemas.biopax.MemberPathways,
@@ -45,28 +44,14 @@
 	// debug mode boolean
 	String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
 	boolean debugMode = (queryString.indexOf("debug=1") != -1 || xdebugFlag != null);
-
-	// timing mode vars
-	long startTime = 0;
-	boolean timingMode = (queryString.indexOf("timing=1") != -1);
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 
 
 <% if (record != null) { %>
-<%
-	// biopax record summary
-	if (timingMode) startTime = Calendar.getInstance().getTimeInMillis();
-%>
 	<cbio:biopaxRecordSummaryTable record="<%=record%>"/>
 <%
-	if (timingMode){
-		long biopaxRecordSummaryTableTime = Calendar.getInstance().getTimeInMillis() - startTime;
-		out.println("<BR>");
-		out.println("(time (ms) to generate biopax record summary table: " + String.valueOf(biopaxRecordSummaryTableTime) + ")<BR>");
-		out.println("<BR>");
-	}
 	// xml abbrev content link - log/debug mode only
 	if (debugMode){
 		String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
@@ -86,24 +71,13 @@
 		// init an interaction parser
 		EntitySummaryParser entityParser = new EntitySummaryParser(record.getId());
 		long interactionSummaryTime = 0;
-		if (timingMode) startTime = Calendar.getInstance().getTimeInMillis();
 		InteractionSummary interactionSummary = (InteractionSummary) entityParser.getEntitySummary();
-		if (timingMode) interactionSummaryTime = Calendar.getInstance().getTimeInMillis() - startTime;	
 		// display interaction summary
 		if (interactionSummary != null){
-			if (timingMode) startTime = Calendar.getInstance().getTimeInMillis();
 %>
 			<cbio:pathwayInteractionTable interactionSummary="<%=interactionSummary%>"/>
 <%
-			if (timingMode){
-				long pathwayInteractionTableTime = Calendar.getInstance().getTimeInMillis() - startTime;
-				out.println("<BR>");
-				out.println("(time (ms) to get interaction summary: " + String.valueOf(interactionSummaryTime) + ")<BR>");
-				out.println("(time (ms) to generate pathway interaction table: " + String.valueOf(pathwayInteractionTableTime) + ")<BR>");
-				out.println("(total time (ms): " + String.valueOf(interactionSummaryTime + pathwayInteractionTableTime) + ")<BR>");
-				out.println("<BR>");
-			}
-		}
+    }
 %>
 		</TABLE>
 <%
@@ -121,27 +95,8 @@
 		<TABLE>
 <%
 		HashSet moleculeSet;
-		if (timingMode){
-			ArrayList longList = new ArrayList();
-	        startTime = Calendar.getInstance().getTimeInMillis();
-			MemberMolecules.reset();
-			moleculeSet = MemberMolecules.getMemberMolecules(record, longList);
-			long totalMemberMoleculeTime = Calendar.getInstance().getTimeInMillis() - startTime;
-			long totalDaoTime = 0;
-			for (int lc = 0; lc < longList.size(); lc++){
-				Long quantum = (Long)longList.get(lc);
-				totalDaoTime += quantum.longValue();
-			}
-			out.println("<BR>");
-			out.println("(time (ms) for dao access: " + String.valueOf(totalDaoTime) + ")<BR>");
-			out.println("(time (ms) for member molecule query (less dao access): " + String.valueOf(totalMemberMoleculeTime-totalDaoTime) + ")<BR>");
-			out.println("(time (ms) for member molecule query: " + String.valueOf(totalMemberMoleculeTime) + ")<BR>");
-			out.println("<BR>");
-		}
-		else{
-			MemberMolecules.reset();
-			moleculeSet = MemberMolecules.getMemberMolecules(record, null);
-		}
+        MemberMolecules.reset();
+        moleculeSet = MemberMolecules.getMemberMolecules(record, null);
 		if (moleculeSet != null && moleculeSet.size() > 0){
 %>
 			<cbio:pathwayMoleculesTable moleculeSet="<%=moleculeSet%>"/>
@@ -157,11 +112,14 @@
 	// if pathway, show 1st level child nodes
 	if (biopaxConstants.isPathway(record.getSpecificType())){
 		// child nodes
-        SummaryListUtil util = new SummaryListUtil (record.getId());
+        SummaryListUtil util = new SummaryListUtil (record.getId(), SummaryListUtil.MODE_GET_CHILDREN);
         ArrayList summaryList = util.getSummaryList();
 %>
-    <cbio:pathwayChildNodeTable entitySummaryList="<%= summaryList %>"
-                                queryString="<%= queryString %>" cpathId="<%= record.getId()%>"/>
+    <cbio:bioPaxParentChildTable
+            entitySummaryList="<%= summaryList %>"
+            queryString="<%= queryString %>"
+            cpathId="<%= record.getId()%>"
+            mode="<%= SummaryListUtil.MODE_GET_CHILDREN %>"/>
 <%
     }
 %>
@@ -175,26 +133,7 @@
 		<TABLE>
 <%
         HashSet pathwaySet;
-		// if timing mode, compute/display timing
-		if (timingMode){
-			ArrayList longList = new ArrayList();
-	        startTime = Calendar.getInstance().getTimeInMillis();
-			pathwaySet = MemberPathways.getMemberPathways(record, longList);
-			long totalMemberPathwayTime = Calendar.getInstance().getTimeInMillis() - startTime;
-			long totalDaoTime = 0;
-			for (int lc = 0; lc < longList.size(); lc++){
-				Long quantum = (Long)longList.get(lc);
-				totalDaoTime += quantum.longValue();
-			}
-			out.println("<BR>");
-			out.println("(time (ms) for dao access: " + String.valueOf(totalDaoTime) + ")<BR>");
-			out.println("(time (ms) for member pathway query (less dao access): " + String.valueOf(totalMemberPathwayTime-totalDaoTime) +")<BR>");
-			out.println("(time (ms) for member pathway query: " + String.valueOf(totalMemberPathwayTime) + ")<BR>");
-			out.println("<BR>");
-		}
-		else{
-			pathwaySet = MemberPathways.getMemberPathways(record, null);
-		}
+        pathwaySet = MemberPathways.getMemberPathways(record, null);
 		if (pathwaySet != null && pathwaySet.size() > 0){
 %>
 			<cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
@@ -203,7 +142,18 @@
 %>
 		</TABLE>
 <%
-	}
+        SummaryListUtil util = new SummaryListUtil (record.getId(), SummaryListUtil.MODE_GET_PARENTS);
+        ArrayList summaryList = util.getSummaryList();
 %>
+    <cbio:bioPaxParentChildTable
+            entitySummaryList="<%= summaryList %>"
+            queryString="<%= queryString %>"
+            cpathId="<%= record.getId()%>"
+            mode="<%= SummaryListUtil.MODE_GET_PARENTS %>"/>
+<%
+    }
+%>
+
+
 <% } // record != null %>
 </p><jsp:include page="../global/footer.jsp" flush="true" />
