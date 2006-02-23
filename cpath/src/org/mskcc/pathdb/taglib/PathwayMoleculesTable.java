@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.5 2006-02-23 15:44:08 grossb Exp $
+// $Id: PathwayMoleculesTable.java,v 1.6 2006-02-23 17:29:35 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,7 +50,7 @@ public class PathwayMoleculesTable extends HtmlTable {
     /**
      * The number of molecules per row.
      */
-    private static int MOLECULES_PER_ROW = 4;
+    private static final int MOLECULES_PER_ROW = 4;
 
     /**
      * HashSet of BioPaxSummary Molecules.
