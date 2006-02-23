@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.3 2006-02-22 22:47:51 grossb Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.4 2006-02-23 18:43:49 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,6 +47,14 @@ import org.mskcc.pathdb.model.ExternalDatabaseRecord;
  * @author Benjamin Gross
  */
 public class BioPaxRecordSummaryTable extends HtmlTable {
+    /**
+     * The number of synonyms per row.
+     */
+    private static final int SYNONYMS_PER_ROW = 3;
+    /**
+     * The spacing between synonyms
+     */
+    private static final String SYNONYM_SPACING = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
     /**
      * Reference to CPathRecord.
@@ -126,7 +134,32 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 		if (synonymString != null) {
 			append("<TR>");
 			append("<TD>Synonyms:</TD>");
-			append("<TD COLSPAN=3>" + synonymString + "</TD>");
+			append("<TD COLSPAN=3>");
+			String[] synonyms = synonymString.split(" ");
+			boolean endedRow = false;
+			if (synonyms.length > 0) append("<table>");
+            for (int lc = 1; lc <= synonyms.length; lc++) {
+				append("<td>");
+				append(synonyms[lc-1]);
+				append("</td>");
+				// some spacing
+				append("<td>");
+				append(SYNONYM_SPACING);
+				append("</td>");
+				// do we start a new row ?
+				if ((lc % SYNONYMS_PER_ROW) == 0){
+					append("</tr>");
+					endedRow = true;
+					if (lc < synonyms.length){
+						append("<tr>");
+						endedRow = false;
+					}
+				}
+            }
+			// do we have to cap a row ?
+			if (!endedRow) append("</tr>");
+			append("</table>");
+			append("</TD>");
 			append("</TR>");
 		}
 	}
