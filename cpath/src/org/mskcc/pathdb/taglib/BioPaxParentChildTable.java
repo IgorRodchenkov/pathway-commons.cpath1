@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.2 2006-02-23 21:14:49 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.3 2006-02-23 21:17:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -91,10 +91,10 @@ public class BioPaxParentChildTable extends HtmlTable {
                     : (entitySummaryList.size() > 10)
                     ? 10 : entitySummaryList.size();
             String heading = (showAll)
-                    ? "Contains the Following Interactions / Pathways" :
-                    (entitySummaryList.size() > 10) ?
-                    "Contains the Following Interactions / "
-                    + "Pathways (first ten shown)"
+                    ? "Contains the Following Interactions / Pathways"
+                    : (entitySummaryList.size() > 10)
+                    ? "Contains the Following Interactions / "
+                      + "Pathways (first ten shown)"
                     : "Contains the Following Interactions / Pathways";
 
             createHeader(heading, showAll);
@@ -153,7 +153,7 @@ public class BioPaxParentChildTable extends HtmlTable {
         String interactionTypeInPlainEnglish =
                 (String) map.get(interactionType);
 
-        if (currentType == null || ! interactionType.equals(currentType)) {
+        if (currentType == null || !interactionType.equals(currentType)) {
             append("<td class=table_head2 colspan=2>");
             String interactionTypePopupCode =
                     getInteractionTypePopupCode(interactionType);
