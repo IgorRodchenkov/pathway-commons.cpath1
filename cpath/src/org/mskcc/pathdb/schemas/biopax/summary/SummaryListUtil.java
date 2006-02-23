@@ -1,4 +1,4 @@
-// $Id: SummaryListUtil.java,v 1.6 2006-02-22 22:47:50 grossb Exp $
+// $Id: SummaryListUtil.java,v 1.7 2006-02-23 22:15:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,16 +49,28 @@ import java.util.Comparator;
  * @author Ethan Cerami.
  */
 public class SummaryListUtil {
+    /**
+     * Mode:  Get Immediate Children.
+     */
+    public static final int MODE_GET_CHILDREN = 1;
+
+    /**
+     * Mode:  Get Immediate Parents.
+     */
+    public static final int MODE_GET_PARENTS = 2;
+
     private long cPathId;
     private ArrayList summaryList = new ArrayList();
+    private int mode;
 
     /**
      * Constructor.
      *
      * @param cPathId cPath ID.
      */
-    public SummaryListUtil(long cPathId) {
+    public SummaryListUtil(long cPathId, int mode) {
         this.cPathId = cPathId;
+        this.mode = mode;
     }
 
     /**
@@ -70,11 +82,21 @@ public class SummaryListUtil {
     public ArrayList getSummaryList() throws EntitySummaryException,
             DaoException {
         DaoInternalLink daoInternalLinks = new DaoInternalLink();
-        ArrayList internalLinks = daoInternalLinks.getTargets(cPathId);
+        ArrayList internalLinks = null;
+        if (mode == MODE_GET_CHILDREN) {
+            internalLinks = daoInternalLinks.getTargets(cPathId);
+        } else {
+            internalLinks = daoInternalLinks.getSources(cPathId);
+        }
         for (int i = 0; i < internalLinks.size(); i++) {
             InternalLinkRecord internalLink =
                     (InternalLinkRecord) internalLinks.get(i);
-            long targetId = internalLink.getTargetId();
+            long targetId;
+            if (mode == MODE_GET_CHILDREN) {
+                targetId = internalLink.getTargetId();
+            } else {
+                targetId = internalLink.getSourceId();
+            }
             EntitySummaryParser summaryParser =
                     new EntitySummaryParser(targetId);
             EntitySummary summary = summaryParser.getEntitySummary();

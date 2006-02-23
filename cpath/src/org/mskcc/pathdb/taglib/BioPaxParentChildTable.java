@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.3 2006-02-23 21:17:24 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.4 2006-02-23 22:14:37 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,17 +32,21 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
+import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
+import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
 
+import java.util.ArrayList;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
+import org.mskcc.pathdb.schemas.biopax.summary.*;
 
 import java.util.ArrayList;
 
 /**
- * Custom jsp tag for displaying a list of BioPAX Parent Elements
+ * Custom JSP tag for displaying a list of BioPAX Parent Elements
  * or Children Elements.
  *
  * @author Benjamin Gross, Ethan Cerami.
@@ -52,9 +56,21 @@ public class BioPaxParentChildTable extends HtmlTable {
     private String queryString;
     private long cPathId;
     private String currentType;
+    private BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
+    private int mode;
 
     /**
-     * Receives EntitySummary Object.
+     * Alternating Colors for Table Rows:  Color 1.
+     */
+    private static final String COLOR_1 = "#FFFFFF";
+
+    /**
+     * Alternating Colors for Table Rows:  Color 2.
+     */
+    private static final String COLOR_2 = "#EEEEEE";
+
+    /**
+     * Receives List of EntitySummary Objects
      *
      * @param entitySummaryList EntitySummaryList.
      */
@@ -81,6 +97,14 @@ public class BioPaxParentChildTable extends HtmlTable {
     }
 
     /**
+     * Sets the Mode:  Show Parents or Show Children.
+     * @param mode
+     */
+    public void setMode (int mode) {
+        this.mode = mode;
+    }
+
+    /**
      * Executes JSP Custom Tag
      */
     protected void subDoStartTag() {
@@ -90,16 +114,10 @@ public class BioPaxParentChildTable extends HtmlTable {
             int cnt = (showAll) ? entitySummaryList.size()
                     : (entitySummaryList.size() > 10)
                     ? 10 : entitySummaryList.size();
-            String heading = (showAll)
-                    ? "Contains the Following Interactions / Pathways"
-                    : (entitySummaryList.size() > 10)
-                    ? "Contains the Following Interactions / "
-                      + "Pathways (first ten shown)"
-                    : "Contains the Following Interactions / Pathways";
-
+            String heading = getHeader(showAll);
             createHeader(heading, showAll);
 
-            // start child node output
+            // start record output
             startTable();
             for (int lc = 0; lc < cnt; lc++) {
                 startRow();
@@ -111,26 +129,48 @@ public class BioPaxParentChildTable extends HtmlTable {
     }
 
     /**
+     * Determines the Correct Table Header.
+     * @param showAll Whether or not to show all.
+     * @return Header String
+     */
+    private String getHeader (boolean showAll) {
+        String heading;
+        if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
+            if (showAll) {
+                heading = "Contains the Following Interactions / Pathways";
+            } else {
+                if (entitySummaryList.size() > 10) {
+                    heading = "Contains the Following Interactions / "
+                      + "Pathways (first ten shown)";
+                } else {
+                    heading = "Contains the Following Interactions / Pathways";
+                }
+            }
+        } else {
+            heading = "Member of the Following Interactions / Complexes";
+        }
+        return heading;
+    }
+
+    /**
      * Outputs the Table Header.
      */
     private void createHeader(String heading, boolean showAll) {
         append("<DIV CLASS ='h3'>");
         append("<H3>");
-        append("<TABLE><TR>");
-        append("<TD>" + heading + "</TD>");
+        append(heading);
 
         // limited pagination support if necessary
         if (entitySummaryList.size() > 10) {
             // generate link to change number of interactions to display
             if (showAll) {
                 String uri = "record.do?id=" + cPathId;
-                append("<TD><A HREF=\"" + uri + "\">[display 10]</A></TD>");
+                append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 10]</A>");
             } else {
                 String uri = "record.do?id=" + cPathId + "&show=ALL";
-                append("<TD><A HREF=\"" + uri + "\">[display all]</A></TD>");
+                append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display all]</A>");
             }
         }
-        append("</TR></TABLE>");
         append("</H3>");
         append("</DIV>");
     }
@@ -139,31 +179,25 @@ public class BioPaxParentChildTable extends HtmlTable {
      * Outputs the EntitySummary Information.
      */
     private void outputRecord(ArrayList entitySummaryList, int index) {
-        EntitySummary entitySummary =
-                (EntitySummary) entitySummaryList.get(index);
+        EntitySummary entitySummary = (EntitySummary)
+                entitySummaryList.get(index);
 
-        String bgColor = "#FFFFFF";
-        if (index % 2 == 0) {
-            bgColor = "#EEEEEE";
-        }
+        String bgColor = getRowColor(index);
+        String type = entitySummary.getSpecificType();
+        String typeInPlainEnglish = (String) map.get (type);
 
-        BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
-        // summary
-        String interactionType = entitySummary.getSpecificType();
-        String interactionTypeInPlainEnglish =
-                (String) map.get(interactionType);
-
-        if (currentType == null || !interactionType.equals(currentType)) {
-            append("<td class=table_head2 colspan=2>");
+        // Output Type Header
+        if (currentType == null || !type.equals(currentType)) {
+            append("<td colspan=2 class='table_head2'>");
             String interactionTypePopupCode =
-                    getInteractionTypePopupCode(interactionType);
+                    getInteractionTypePopupCode(type);
             append("<a href=\"javascript:void(0);\""
                     + interactionTypePopupCode + ">");
-            append(interactionTypeInPlainEnglish + "(s): ");
+            append(typeInPlainEnglish + "(s): ");
             append("</a>");
             append("</td>");
             append("</tr>");
-            append("</tr>");
+            append("<tr>");
             currentType = entitySummary.getSpecificType();
         }
 
@@ -178,11 +212,11 @@ public class BioPaxParentChildTable extends HtmlTable {
                         + interactionString + "</td>");
             }
         } else {
-            append("<td colspan=2 bgcolor=" + bgColor + ">");
+            append("<td bgcolor=" + bgColor + ">");
             if (entitySummary != null) {
                 append("<a href=\"record.do?id="
                         + entitySummary.getRecordID() + "\">"
-                        + entitySummary.getName() + "</A>");
+                        + entitySummary.getName() + "</a></td>");
             }
         }
         // details hyperlink
@@ -193,20 +227,17 @@ public class BioPaxParentChildTable extends HtmlTable {
         }
     }
 
-    private int countRows(ArrayList entitySummaryList, int index) {
-        int count = 1;
-        EntitySummary entitySummary =
-                (EntitySummary) entitySummaryList.get(index);
-        String type = entitySummary.getSpecificType();
-        for (int i = index + 1; i < entitySummaryList.size(); i++) {
-            entitySummary = (EntitySummary) entitySummaryList.get(i);
-            String currentType = entitySummary.getSpecificType();
-            if (!currentType.equals(type)) {
-                return count;
-            }
-            count++;
+    /**
+     * Gets the Background Color for the Current Row.
+     * @param index Index value.
+     * @return String Color, in HEX.
+     */
+    private String getRowColor(int index) {
+        String bgColor = COLOR_1;
+        if (index % 2 == 0) {
+            bgColor = COLOR_2;
         }
-        return count;
+        return bgColor;
     }
 
     /**
