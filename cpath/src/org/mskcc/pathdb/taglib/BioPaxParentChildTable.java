@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.1 2006-02-23 21:13:25 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.2 2006-02-23 21:14:49 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
+
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
@@ -86,12 +87,15 @@ public class BioPaxParentChildTable extends HtmlTable {
         currentType = null;
         if (entitySummaryList.size() > 0) {
             boolean showAll = (queryString.indexOf("show=ALL") != -1);
-            int cnt = (showAll) ? entitySummaryList.size() : (entitySummaryList.size() > 10)
+            int cnt = (showAll) ? entitySummaryList.size()
+                    : (entitySummaryList.size() > 10)
                     ? 10 : entitySummaryList.size();
-            String heading = (showAll) ? "Contains the Following Interactions / Pathways" :
+            String heading = (showAll)
+                    ? "Contains the Following Interactions / Pathways" :
                     (entitySummaryList.size() > 10) ?
-                            "Contains the Following Interactions / Pathways (first ten shown)"
-                            : "Contains the Following Interactions / Pathways";
+                    "Contains the Following Interactions / "
+                    + "Pathways (first ten shown)"
+                    : "Contains the Following Interactions / Pathways";
 
             createHeader(heading, showAll);
 
@@ -135,7 +139,8 @@ public class BioPaxParentChildTable extends HtmlTable {
      * Outputs the EntitySummary Information.
      */
     private void outputRecord(ArrayList entitySummaryList, int index) {
-        EntitySummary entitySummary = (EntitySummary) entitySummaryList.get(index);
+        EntitySummary entitySummary =
+                (EntitySummary) entitySummaryList.get(index);
 
         String bgColor = "#FFFFFF";
         if (index % 2 == 0) {
@@ -145,14 +150,17 @@ public class BioPaxParentChildTable extends HtmlTable {
         BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
         // summary
         String interactionType = entitySummary.getSpecificType();
-        String interactionTypeInPlainEnglish = (String) map.get(interactionType);
+        String interactionTypeInPlainEnglish =
+                (String) map.get(interactionType);
 
         if (currentType == null || ! interactionType.equals(currentType)) {
-            append ("<td class=table_head2 colspan=2>");
-			String interactionTypePopupCode = getInteractionTypePopupCode(interactionType);
-			append("<a href=\"javascript:void(0);\"" + interactionTypePopupCode + ">");
+            append("<td class=table_head2 colspan=2>");
+            String interactionTypePopupCode =
+                    getInteractionTypePopupCode(interactionType);
+            append("<a href=\"javascript:void(0);\""
+                    + interactionTypePopupCode + ">");
             append(interactionTypeInPlainEnglish + "(s): ");
-			append("</a>");
+            append("</a>");
             append("</td>");
             append("</tr>");
             append("</tr>");
@@ -160,28 +168,35 @@ public class BioPaxParentChildTable extends HtmlTable {
         }
 
         if (entitySummary instanceof InteractionSummary) {
-            InteractionSummary interactionSummary = (InteractionSummary) entitySummary;
-            String interactionString = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
+            InteractionSummary interactionSummary =
+                    (InteractionSummary) entitySummary;
+            String interactionString =
+                    InteractionSummaryUtils.createInteractionSummaryString
+                            (interactionSummary);
             if (interactionString != null) {
-                append("<td bgcolor=" + bgColor + ">" + interactionString + "</td>");
+                append("<td bgcolor=" + bgColor + ">"
+                        + interactionString + "</td>");
             }
         } else {
             append("<td colspan=2 bgcolor=" + bgColor + ">");
             if (entitySummary != null) {
-                append("<a href=\"record.do?id=" + entitySummary.getRecordID() + "\">"
-                    + entitySummary.getName() + "</A>");
+                append("<a href=\"record.do?id="
+                        + entitySummary.getRecordID() + "\">"
+                        + entitySummary.getName() + "</A>");
             }
         }
         // details hyperlink
         if (entitySummary != null) {
             String uri = "record.do?id=" + entitySummary.getRecordID();
-            append("<td bgcolor=" + bgColor + " width=15%><a href=\"" + uri + "\">View Details</a></td>");
+            append("<td bgcolor=" + bgColor + " width=15%><a href=\""
+                    + uri + "\">View Details</a></td>");
         }
     }
 
     private int countRows(ArrayList entitySummaryList, int index) {
         int count = 1;
-        EntitySummary entitySummary = (EntitySummary) entitySummaryList.get(index);
+        EntitySummary entitySummary =
+                (EntitySummary) entitySummaryList.get(index);
         String type = entitySummary.getSpecificType();
         for (int i = index + 1; i < entitySummaryList.size(); i++) {
             entitySummary = (EntitySummary) entitySummaryList.get(i);
@@ -194,23 +209,25 @@ public class BioPaxParentChildTable extends HtmlTable {
         return count;
     }
 
-	/**
-	 * Returns the proper javascript code (as string)
-	 * which displays the interaction description for 
-	 * the given interactionType in a popup box (aka tooltip).
-	 *
-	 * @param interactionType String
-	 * @return String
-	 */
-	private String getInteractionTypePopupCode(String interactionType){
+    /**
+     * Returns the proper javascript code (as string)
+     * which displays the interaction description for
+     * the given interactionType in a popup box (aka tooltip).
+     *
+     * @param interactionType String
+     * @return String
+     */
+    private String getInteractionTypePopupCode(String interactionType) {
 
-		// map used to get interaction descriptions
-		BioPaxInteractionDescriptionMap map = new BioPaxInteractionDescriptionMap();
+        // map used to get interaction descriptions
+        BioPaxInteractionDescriptionMap map =
+                new BioPaxInteractionDescriptionMap();
 
-		// set interaction description
-		String interactionDescription = (String)map.get(interactionType);
+        // set interaction description
+        String interactionDescription = (String) map.get(interactionType);
 
-		// outta here
-		return " onmouseover=\"return overlib('" + interactionDescription + "');\" onmouseout=\"return nd();\"";
-	}
+        // outta here
+        return " onmouseover=\"return overlib('" + interactionDescription
+                + "');\" onmouseout=\"return nd();\"";
+    }
 }
