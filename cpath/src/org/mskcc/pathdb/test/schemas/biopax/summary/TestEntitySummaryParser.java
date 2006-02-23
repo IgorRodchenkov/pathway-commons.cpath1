@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestEntitySummaryParser.java,v 1.9 2006-02-23 22:31:05 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,8 +37,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser;
 import org.mskcc.pathdb.schemas.biopax.summary.ControlInteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.ConversionInteractionSummary;
@@ -102,7 +103,7 @@ public class TestEntitySummaryParser extends TestCase {
 		int cnt;
 
 		// perform the interaction parsing
-		entitySummaryParser = new EntitySummaryParser(369);
+		entitySummaryParser = new EntitySummaryParser(362);
 		entitySummary = entitySummaryParser.getEntitySummary();
 
 		// this should be a physical interaction summary
@@ -119,16 +120,21 @@ public class TestEntitySummaryParser extends TestCase {
 
 		// get participants
 		summaryComponent = (ParticipantSummaryComponent)components.get(0);
-		assertEquals("POU2F1", summaryComponent.getName());
-		assertTrue(497 == summaryComponent.getRecordID());
-		assertEquals("nucleus", summaryComponent.getCellularLocation());
-		assertTrue(null == summaryComponent.getFeatureList());
-
-		summaryComponent = (ParticipantSummaryComponent)components.get(1);
 		assertEquals("AR", summaryComponent.getName());
 		assertTrue(418 == summaryComponent.getRecordID());
 		assertEquals("nucleus", summaryComponent.getCellularLocation());
 		assertTrue(null == summaryComponent.getFeatureList());
+
+		summaryComponent = (ParticipantSummaryComponent)components.get(1);
+		assertEquals("APPL-Human_AKT1-Human", summaryComponent.getName());
+		assertTrue(468 == summaryComponent.getRecordID());
+		//assertEquals("cytoplasm", summaryComponent.getCellularLocation());
+		assertTrue(null == summaryComponent.getFeatureList());
+		// this component is a complex, test for members
+		ArrayList complexMemberList = summaryComponent.getComplexMemberList();
+		assertTrue(2 == complexMemberList.size());
+		assertEquals("APPL", ((BioPaxRecordSummary)complexMemberList.get(0)).getName());
+		assertEquals("AKT1", ((BioPaxRecordSummary)complexMemberList.get(1)).getName());
 	}
 
     /**
