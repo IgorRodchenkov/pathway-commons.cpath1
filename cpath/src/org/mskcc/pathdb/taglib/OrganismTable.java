@@ -1,4 +1,4 @@
-// $Id: OrganismTable.java,v 1.18 2006-02-24 17:50:31 cerami Exp $
+// $Id: OrganismTable.java,v 1.19 2006-02-24 18:25:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -122,7 +122,7 @@ public class OrganismTable extends HtmlTable {
         startTable();
         startRow();
         createColumnHeader("Species Name", SORT_BY_NAME, sortBy, sortOrder);
-        createColumnHeader("Number of Records",
+        createColumnHeader("Number of Molecules/Complexes",
                 SORT_BY_NUM_INTERACTIONS, sortBy, sortOrder);
         outputRecords(sortBy, sortOrder);
         endTable();
