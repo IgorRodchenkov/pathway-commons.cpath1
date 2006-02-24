@@ -157,6 +157,7 @@
 /* Table Headers */
 .table_head2 {
     background-color: #CC9999;
+    font-weight:bold;
 }
 
 .table_head2 a:link {
