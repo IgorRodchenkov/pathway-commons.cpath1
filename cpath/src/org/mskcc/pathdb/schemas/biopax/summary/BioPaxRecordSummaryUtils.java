@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.20 2006-02-24 17:51:14 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.21 2006-02-24 18:28:33 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -137,43 +137,6 @@ public class BioPaxRecordSummaryUtils {
 
         // outta here
         return (organism != null) ? (name + " from " + organism) : name;
-    }
-
-    /**
-     * Gets the BioPax Synonym String to render.
-     *
-     * @param biopaxRecordSummary BioPaxRecordSummary Object.
-     * @return String HTML String.
-     * @throws IllegalArgumentException Illegal Argument Specified.
-     */
-    public static String getBioPaxRecordSynonymString
-            (BioPaxRecordSummary biopaxRecordSummary)
-            throws IllegalArgumentException {
-
-        // check args
-        if (biopaxRecordSummary == null) {
-            throw new IllegalArgumentException
-                    ("BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString() "
-                    + "argument is null");
-        }
-
-        // string to return
-        String synonymString = "";
-
-        // get synonym list
-        List synonymList = biopaxRecordSummary.getSynonyms();
-
-        // concate them all into one long string
-        if (synonymList != null && synonymList.size() > 0) {
-            for (int lc = 0; lc < synonymList.size(); lc++) {
-                String synonym = (String) synonymList.get(lc);
-                synonymString += (lc == synonymList.size() - 1)
-                        ? synonym : (synonym + " ");
-            }
-        }
-
-        // outta here
-        return (synonymString.length() > 0) ? synonymString : null;
     }
 
     /**
