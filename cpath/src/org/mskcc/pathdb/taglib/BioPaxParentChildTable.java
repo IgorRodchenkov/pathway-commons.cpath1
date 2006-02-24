@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.7 2006-02-24 18:22:13 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.8 2006-02-24 18:29:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -205,7 +205,7 @@ public class BioPaxParentChildTable extends HtmlTable {
                     getInteractionTypePopupCode(type);
             append("<a href=\"javascript:void(0);\""
                     + interactionTypePopupCode + ">");
-            append(typeInPlainEnglish + "(s): ");
+            append(typeInPlainEnglish + "(s)");
             append("</a>");
             append("</td>");
             append("</tr>");
