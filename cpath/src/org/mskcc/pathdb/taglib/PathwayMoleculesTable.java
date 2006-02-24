@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.7 2006-02-24 18:17:17 cerami Exp $
+// $Id: PathwayMoleculesTable.java,v 1.8 2006-02-24 22:40:17 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,9 +48,14 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
 public class PathwayMoleculesTable extends HtmlTable {
 
     /**
+     * Our assumed number cols/window.
+     */
+    private static final int NUM_COLS = 100;
+
+    /**
      * The number of molecules per row.
      */
-    private static final int MOLECULES_PER_ROW = 4;
+    private int MOLECULES_PER_ROW = 4;
 
     /**
      * HashSet of BioPaxSummary Molecules.
@@ -100,10 +105,33 @@ public class PathwayMoleculesTable extends HtmlTable {
 
 		// interate through the molecules list
 		int cnt = molecules.size();
+		int max_molecule_name_length = 0;
 		for (int lc = 0; lc < cnt; lc++){
-			String moleculeLink = BioPaxRecordSummaryUtils.createEntityLink((BioPaxRecordSummary)molecules.get(lc));
+			BioPaxRecordSummary molecule = (BioPaxRecordSummary)molecules.get(lc);
+			String moleculeLink = BioPaxRecordSummaryUtils.createEntityLink(molecule);
 			moleculesLinkList.add(moleculeLink);
+			// compute max molecule name length
+			// consult BioPaxRecordSummaryUtils.getRecordName() to see how name is created in call to createEntityLink above
+			String moleculeName = (molecule.getShortName() != null && molecule.getShortName().length() > 0) ? molecule.getShortName() :
+				(molecule.getName() != null && molecule.getName().length() > 0) ? molecule.getName() : null;
+			if (moleculeName != null){
+				max_molecule_name_length = computeMaxMoleculeNameLength(moleculeName, max_molecule_name_length);
+			}
 		}
+		MOLECULES_PER_ROW = (max_molecule_name_length > 0) ? (NUM_COLS / max_molecule_name_length) : MOLECULES_PER_ROW;
+	}
+
+    /**
+     * Computes max molecule name length.
+	 *
+	 * @param moleculeName String
+	 * @param currentMaxNameLength int
+	 * @return int 
+     */
+    private int computeMaxMoleculeNameLength(String moleculeName, int currentMaxNameLength) {
+
+		return (moleculeName.length() > BioPaxRecordSummaryUtils.NAME_LENGTH) ? BioPaxRecordSummaryUtils.NAME_LENGTH :
+			(moleculeName.length() > currentMaxNameLength) ? moleculeName.length() : currentMaxNameLength;
 	}
 
     /**
