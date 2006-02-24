@@ -1,4 +1,4 @@
-// $Id: TestBioPaxSummary.java,v 1.5 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestBioPaxSummary.java,v 1.6 2006-02-24 18:28:13 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -88,8 +88,19 @@ public class TestBioPaxSummary extends TestCase {
 		String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(biopaxRecordSummary);
 		assertEquals("AR (Protein) from Homo sapiens", header);
 		// synonyms
-		String synonyms = BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString(biopaxRecordSummary);
-		assertEquals("NR3C4 AR SBMA SMAX1 Dihydrotestosterone receptor HUMARA KD AIS DHTR TFM", synonyms);
+        List synonymList = biopaxRecordSummary.getSynonyms();
+		assertTrue(synonymList != null);
+		assertTrue(synonymList.size() == 10);
+		assertEquals((String)synonymList.get(0), "NR3C4");
+		assertEquals((String)synonymList.get(1), "AR");
+		assertEquals((String)synonymList.get(2), "SBMA");
+		assertEquals((String)synonymList.get(3), "SMAX1");
+		assertEquals((String)synonymList.get(4), "Dihydrotestosterone receptor");
+		assertEquals((String)synonymList.get(5), "HUMARA");
+		assertEquals((String)synonymList.get(6), "KD");
+		assertEquals((String)synonymList.get(7), "AIS");
+		assertEquals((String)synonymList.get(8), "DHTR");
+		assertEquals((String)synonymList.get(9), "TFM");
 		// data source
 		String dataSource = BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString(biopaxRecordSummary);
 		assertTrue(dataSource == null);

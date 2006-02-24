@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.6 2006-02-24 17:17:16 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.7 2006-02-24 18:28:20 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,14 +47,26 @@ import org.mskcc.pathdb.model.ExternalDatabaseRecord;
  * @author Benjamin Gross
  */
 public class BioPaxRecordSummaryTable extends HtmlTable {
+
     /**
      * The number of synonyms per row.
      */
     private static final int SYNONYMS_PER_ROW = 3;
+
     /**
      * The spacing between synonyms
      */
     private static final String SYNONYM_SPACING = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+    /**
+     * The number of synonyms per row.
+     */
+    private static final int EXTERNAL_LINKS_PER_ROW = 3;
+
+    /**
+     * The spacing between synonyms
+     */
+    private static final String EXTERNAL_LINKS_SPACING = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
     /**
      * Reference to CPathRecord.
@@ -127,40 +139,34 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      */
     private void outputSynonyms() {
 
-		// get synonym string
-		String synonymString = BioPaxRecordSummaryUtils.getBioPaxRecordSynonymString(biopaxRecordSummary);
+		// get synonym list
+        List synonymList = biopaxRecordSummary.getSynonyms();
 		
 		// do we have something to process ?
-		if (synonymString != null) {
+        if (synonymList != null && synonymList.size() > 0) {
 			append("<TR>");
 			append("<TD>Synonyms:</TD>");
-			append("<TD COLSPAN=3>");
-			String[] synonyms = synonymString.split(" ");
 			boolean endedRow = false;
-			if (synonyms.length > 0) append("<table>");
-            for (int lc = 1; lc <= synonyms.length; lc++) {
+			int cnt = synonymList.size();
+            for (int lc = 1; lc <= cnt; lc++) {
 				append("<td>");
-				append(synonyms[lc-1]);
-				append("</td>");
-				// some spacing
-				append("<td>");
+				append((String)synonymList.get(lc-1));
 				append(SYNONYM_SPACING);
 				append("</td>");
 				// do we start a new row ?
 				if ((lc % SYNONYMS_PER_ROW) == 0){
 					append("</tr>");
 					endedRow = true;
-					if (lc < synonyms.length){
+					if (lc < cnt){
 						append("<tr>");
 						endedRow = false;
+						// to indent after synonym label
+						append("<td></td>");
 					}
 				}
             }
 			// do we have to cap a row ?
 			if (!endedRow) append("</tr>");
-			append("</table>");
-			append("</TD>");
-			append("</TR>");
 		}
 	}
 
@@ -212,7 +218,9 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 		if (links != null && links.size() > 0){
 			append("<TR>");
 			append("<TD>External Links:</TD>");
-			for (int lc = 1; lc <= links.size(); lc++) {
+			boolean endedRow = false;
+			int cnt = links.size();
+			for (int lc = 1; lc <= cnt; lc++) {
 				append("<TD>");
 				ExternalLinkRecord link = (ExternalLinkRecord) links.get(lc-1);
 				ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
@@ -224,15 +232,21 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 				} else {
 					append(linkStr);
 				}
+				append(EXTERNAL_LINKS_SPACING);
 				append("</TD>");
-				if (lc % 3 == 0){
-					append("</TR>");
-					append("<TR>");
-					// for nice spacing
-					append("<TD></TD>");
+				if ((lc % EXTERNAL_LINKS_PER_ROW) == 0){
+					append("</tr>");
+					endedRow = true;
+					if (lc < cnt){
+						append("<tr>");
+						endedRow = false;
+						// to indent after external links label
+						append("<td></td>");
+					}
 				}
-			}
-			append("</TR>");
+            }
+			// do we have to cap a row ?
+			if (!endedRow) append("</tr>");
 		}
 	}
 
