@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.10 2006-02-23 23:39:31 grossb Exp $
+// $Id: TestEntitySummaryParser.java,v 1.11 2006-02-24 17:43:10 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -130,7 +130,7 @@ public class TestEntitySummaryParser extends TestCase {
 		assertTrue(468 == summaryComponent.getRecordID());
 		assertTrue(null == summaryComponent.getFeatureList());
 		// this component is a complex, test for members
-		ArrayList complexMemberList = summaryComponent.getComplexMemberList();
+		ArrayList complexMemberList = summaryComponent.getComponentList();
 		assertTrue(2 == complexMemberList.size());
 		assertEquals("APPL", ((BioPaxRecordSummary)complexMemberList.get(0)).getName());
 		assertEquals("AKT1", ((BioPaxRecordSummary)complexMemberList.get(1)).getName());

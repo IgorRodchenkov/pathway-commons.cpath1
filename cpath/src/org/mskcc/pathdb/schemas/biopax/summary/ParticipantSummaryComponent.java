@@ -1,4 +1,4 @@
-// $Id: ParticipantSummaryComponent.java,v 1.6 2006-02-24 16:58:53 grossb Exp $
+// $Id: ParticipantSummaryComponent.java,v 1.7 2006-02-24 17:42:22 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -122,7 +122,7 @@ public class ParticipantSummaryComponent extends BioPaxRecordSummary {
 	 *
 	 * @param complexMemberList ArrayList of BioPaxRecordSummary
 	 */
-	public void setComplexMemberList(ArrayList complexMemberList){
+	public void setComponentList(ArrayList complexMemberList){
 		this.complexMemberList = complexMemberList;
 	}
 
@@ -131,7 +131,7 @@ public class ParticipantSummaryComponent extends BioPaxRecordSummary {
 	 *
 	 * @return ArrayList of BioPaxRecordSummary
 	 */
-	public ArrayList getComplexMemberList(){
+	public ArrayList getComponentList(){
 		return complexMemberList;
 	}
 }

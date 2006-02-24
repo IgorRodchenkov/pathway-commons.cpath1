@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.16 2006-02-23 22:31:21 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.17 2006-02-24 17:42:11 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -513,7 +513,7 @@ public class BioPaxRecordUtil {
 					complexMemberList.add(bioPaxRecordSummary);
 				}
 			}
-			if (complexMemberList.size() > 0) participantSummaryComponent.setComplexMemberList(complexMemberList);
+			if (complexMemberList.size() > 0) participantSummaryComponent.setComponentList(complexMemberList);
 		}
 
 		// outta here
