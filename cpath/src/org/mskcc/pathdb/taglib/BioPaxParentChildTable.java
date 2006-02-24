@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.4 2006-02-23 22:14:37 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.5 2006-02-24 18:09:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,7 +114,7 @@ public class BioPaxParentChildTable extends HtmlTable {
             int cnt = (showAll) ? entitySummaryList.size()
                     : (entitySummaryList.size() > 10)
                     ? 10 : entitySummaryList.size();
-            String heading = getHeader(showAll);
+            String heading = getHeader(showAll, entitySummaryList);
             createHeader(heading, showAll);
 
             // start record output
@@ -133,22 +133,32 @@ public class BioPaxParentChildTable extends HtmlTable {
      * @param showAll Whether or not to show all.
      * @return Header String
      */
-    private String getHeader (boolean showAll) {
+    private String getHeader (boolean showAll, ArrayList entitySummaryList) {
         String heading;
+        int start = 1;
+        int end = 0;
+        int all = 0;
         if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
+            heading = "Contains the Following Interactions / Pathways ";
             if (showAll) {
-                heading = "Contains the Following Interactions / Pathways";
+                end = entitySummaryList.size() + 1;
+                all = entitySummaryList.size() + 1;
             } else {
                 if (entitySummaryList.size() > 10) {
-                    heading = "Contains the Following Interactions / "
-                      + "Pathways (first ten shown)";
+                    end = 10;
+                    all = entitySummaryList.size() + 1;
                 } else {
-                    heading = "Contains the Following Interactions / Pathways";
+                    end = entitySummaryList.size() + 1;;
+                    all = entitySummaryList.size() + 1;
                 }
             }
         } else {
             heading = "Member of the Following Interactions / Complexes";
+            end = entitySummaryList.size() + 1;
+            all = entitySummaryList.size() + 1;
         }
+        heading += " (Showing " + start + " - " + end
+                + " of " + all + ")";
         return heading;
     }
 
@@ -165,7 +175,7 @@ public class BioPaxParentChildTable extends HtmlTable {
             // generate link to change number of interactions to display
             if (showAll) {
                 String uri = "record.do?id=" + cPathId;
-                append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 10]</A>");
+                append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 1-10]</A>");
             } else {
                 String uri = "record.do?id=" + cPathId + "&show=ALL";
                 append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display all]</A>");
