@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.19 2006-02-23 18:43:59 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.20 2006-02-24 17:51:14 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -342,6 +342,7 @@ public class BioPaxRecordSummaryUtils {
                     || participant.getFeatureList().size() == 0)) {
                 buf.append("No synonyms or features specified");
             }
+            addComponents(participant, buf);
         }
 
         if (participant == null && (component.getSynonyms() == null
@@ -372,6 +373,27 @@ public class BioPaxRecordSummaryUtils {
         return buf.toString();
     }
 
+    /**
+     * Adds SubComponents of the current Node.
+     * This is currently only applied when we are dealing with Complexes,
+     * but this might become more general in the future.
+     * @param participant ParticipantSummaryComponent Object.
+     * @param buf StringBuffer Object.
+     */
+    private static void addComponents(ParticipantSummaryComponent participant,
+            StringBuffer buf) {
+        ArrayList componentList = participant.getComponentList();
+        if (componentList != null && componentList.size() > 0) {
+            buf.append("<P>Complex contains the following molecules:");
+            buf.append("<UL>");
+            for (int i=0; i<componentList.size(); i++) {
+                BioPaxRecordSummary child =
+                        (BioPaxRecordSummary) componentList.get(i);
+                buf.append ("<LI>" + child.getName() + "</LI>");
+            }
+            buf.append("</UL>");
+        }
+    }
 
     /**
      * Gets the BioPax Record Name.
