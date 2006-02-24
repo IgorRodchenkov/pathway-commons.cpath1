@@ -9,11 +9,11 @@
 #footer {
 	clear: both;
 	color: #003366;
-    font-size: 95%;
+    font-size: 85%;
     border-left: 1px solid #DDDDDD;
     border-top: 1px solid #DDDDDD;
     /* margin:  top, right, bottom, left */
-	margin:  5px 20px 5px 15px;
+	margin:  25px 20px 5px 15px;
 	/* padding:  top, right, bottom, left */
 	padding:  5px 5px 5px 20px;
 }
