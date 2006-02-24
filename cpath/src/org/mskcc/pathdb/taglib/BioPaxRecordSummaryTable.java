@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.4 2006-02-23 18:43:49 grossb Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.5 2006-02-24 15:50:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -116,9 +116,9 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 
 		// do we have something to process ?
 		if (header != null){
-			append("<DIV ID=\"apphead\">");
-			append("<H2>" + header + "</H2>");
-			append("</DIV>");
+			append("<div CLASS ='h3'>");
+			append("<h3>" + header + "</h3>");
+			append("</div>");
 		}
 	}
 
