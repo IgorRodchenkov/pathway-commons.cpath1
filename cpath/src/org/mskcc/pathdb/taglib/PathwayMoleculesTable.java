@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.6 2006-02-23 17:29:35 grossb Exp $
+// $Id: PathwayMoleculesTable.java,v 1.7 2006-02-24 18:17:17 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -104,7 +104,6 @@ public class PathwayMoleculesTable extends HtmlTable {
 			String moleculeLink = BioPaxRecordSummaryUtils.createEntityLink((BioPaxRecordSummary)molecules.get(lc));
 			moleculesLinkList.add(moleculeLink);
 		}
-
 	}
 
     /**

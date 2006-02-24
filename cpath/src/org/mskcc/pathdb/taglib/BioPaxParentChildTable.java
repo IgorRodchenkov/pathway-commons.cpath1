@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.5 2006-02-24 18:09:16 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.6 2006-02-24 18:17:17 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -58,6 +58,7 @@ public class BioPaxParentChildTable extends HtmlTable {
     private String currentType;
     private BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
     private int mode;
+    private static final int DEFAULT_NUM_RECORDS = 20;
 
     /**
      * Alternating Colors for Table Rows:  Color 1.
@@ -112,8 +113,8 @@ public class BioPaxParentChildTable extends HtmlTable {
         if (entitySummaryList.size() > 0) {
             boolean showAll = (queryString.indexOf("show=ALL") != -1);
             int cnt = (showAll) ? entitySummaryList.size()
-                    : (entitySummaryList.size() > 10)
-                    ? 10 : entitySummaryList.size();
+                    : (entitySummaryList.size() > DEFAULT_NUM_RECORDS)
+                    ? DEFAULT_NUM_RECORDS : entitySummaryList.size();
             String heading = getHeader(showAll, entitySummaryList);
             createHeader(heading, showAll);
 
@@ -144,8 +145,8 @@ public class BioPaxParentChildTable extends HtmlTable {
                 end = entitySummaryList.size() + 1;
                 all = entitySummaryList.size() + 1;
             } else {
-                if (entitySummaryList.size() > 10) {
-                    end = 10;
+                if (entitySummaryList.size() > DEFAULT_NUM_RECORDS) {
+                    end = DEFAULT_NUM_RECORDS;
                     all = entitySummaryList.size() + 1;
                 } else {
                     end = entitySummaryList.size() + 1;;
@@ -171,11 +172,12 @@ public class BioPaxParentChildTable extends HtmlTable {
         append(heading);
 
         // limited pagination support if necessary
-        if (entitySummaryList.size() > 10) {
+        if (entitySummaryList.size() > DEFAULT_NUM_RECORDS) {
             // generate link to change number of interactions to display
             if (showAll) {
                 String uri = "record.do?id=" + cPathId;
-                append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 1-10]</A>");
+                append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 1- "
+                        + DEFAULT_NUM_RECORDS +  "]</A>");
             } else {
                 String uri = "record.do?id=" + cPathId + "&show=ALL";
                 append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display all]</A>");
