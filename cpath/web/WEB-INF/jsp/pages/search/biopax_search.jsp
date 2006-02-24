@@ -31,9 +31,10 @@
     <h1>No Matching Records Found. Please try again.</h1>
 <% } else {
     Pager pager = new Pager (protocolRequest, totalNumHits.intValue());
-    out.println("<div id='search_bar'>");
+    out.println ("<div CLASS ='h3'><h3>");
     out.println(pager.getHeaderHtml());
-    out.println("</div>");
+    out.println ("</h3>");
+    out.println ("<div>");
 %>
     <%
     DaoCPath dao = DaoCPath.getInstance();

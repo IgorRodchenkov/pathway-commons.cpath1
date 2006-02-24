@@ -79,18 +79,24 @@
 
 /* Search Results Bar */
 #search_bar {
+        background: #036;
+        color: #FFFFFF;
 	font-size: 100%;
 	font-weight: bold;
 	/* margin:  top, right, bottom, left */
 	margin: 5px 5px 15px 0px;
-	border: 1px solid #AAAAAA;
 	padding: 5px 5px 5px 5px;
+}
+
+#search_bar a:link {
+      color: #FFFFFF;
 }
 
 /*  Search Hit */
 #search_name
 {
 	font-size: 110%;
+        margin: 5px 5px 5px 5px;
 }
 
 /*  Search Blob  */
@@ -98,7 +104,7 @@
 	font-size:  100%;
 	color:  #555555;
 	/* margin:  top, right, bottom, left */
-	margin: 5px 5px 15px 0px;
+	margin: 5px 5px 15px 5px;
 }
 
 #box {
