@@ -6,7 +6,7 @@
 <%
 	// set title
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String title = webUIBean.getApplicationName() + "::Browse Organism(s)";
+	String title = webUIBean.getApplicationName() + "::Browse by Organism";
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
  %>
 
