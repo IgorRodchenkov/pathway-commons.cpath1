@@ -54,10 +54,13 @@
 <%
 	// xml abbrev content link - log/debug mode only
 	if (debugMode){
-		String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
-		out.println("<A HREF=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</A>");
+        out.println("<TABLE><TR><TD>");
+        String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
+		out.println("<FONT COLOR=RED>&gt;&gt;</FONT>");
+        out.println("<A HREF=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</A>");
         out.println("<BR>");
-	}
+        out.println("</TD></TR></TABLE>");
+    }
 %>
 <%
 	// pathway interactions
