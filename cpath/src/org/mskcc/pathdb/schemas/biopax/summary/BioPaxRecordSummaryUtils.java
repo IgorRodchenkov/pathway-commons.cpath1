@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.21 2006-02-24 18:28:33 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.22 2006-02-24 22:39:18 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -91,7 +91,7 @@ public class BioPaxRecordSummaryUtils {
     /**
      * Names longer than this will be truncated.
      */
-    private static final int NAME_LENGTH = 20;
+    public static final int NAME_LENGTH = 20;
 
     /**
      * No name available.
