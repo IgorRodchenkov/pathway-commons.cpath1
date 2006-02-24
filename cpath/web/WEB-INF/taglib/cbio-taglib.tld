@@ -86,10 +86,10 @@
   </tag>
 
   <tag>
-    <name>pathwayChildNodeTable</name>
+    <name>bioPaxParentChildTable</name>
     <tag-class>org.mskcc.pathdb.taglib.BioPaxParentChildTable</tag-class>
     <body-content>empty</body-content>
-    <description>Displays Pathway Child Node Table 1 Level Deep</description>
+    <description>Displays One Level of BioPax Parent Elements or Children Elements</description>
 	<attribute>
 		<name>entitySummaryList</name>
 		<required>true</required>
@@ -102,6 +102,11 @@
 	</attribute>
 	<attribute>
 		<name>cpathId</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>mode</name>
 		<required>true</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
