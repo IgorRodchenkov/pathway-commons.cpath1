@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.8 2006-02-24 22:40:17 grossb Exp $
+// $Id: PathwayMoleculesTable.java,v 1.9 2006-02-27 16:09:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,10 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
  * @author Benjamin Gross
  */
 public class PathwayMoleculesTable extends HtmlTable {
+    /**
+     * Default Number of Records to Show
+     */
+    private static final int DEFAULT_NUM_RECORDS = 20;
 
     /**
      * Our assumed number cols/window.
@@ -67,6 +71,11 @@ public class PathwayMoleculesTable extends HtmlTable {
      */
     private ArrayList moleculesLinkList;
 
+    private int cnt;
+    private String queryString;
+    private boolean showAll;
+    private long cPathId;
+
     /**
      * Receives HashSet Attribute.
      *
@@ -77,18 +86,57 @@ public class PathwayMoleculesTable extends HtmlTable {
     }
 
     /**
+     * Receives the Current Query String.
+     *
+     * @param queryString Query String.
+     */
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
+    }
+
+    /**
+     * Receives the Current cPath ID.
+     *
+     * @param cPathId cPath ID.
+     */
+    public void setcpathId(long cPathId) {
+        this.cPathId = cPathId;
+    }
+
+    /**
      * Executes JSP Custom Tag
      */
     protected void subDoStartTag() {
-
-        // here we go
+        cnt = 0;
+        showAll = (queryString.indexOf("show=all_molecules") != -1);
         if (moleculeSet != null && moleculeSet.size() > 0){
-			processMoleculeSet();
+            processMoleculeSet();
+            outputHeader();
+            startTable();
             outputRecords();
+            endTable();
         }
     }
 
-	/**
+    private void outputHeader() {
+        StringBuffer header = new StringBuffer("Contains the Following Molecules ");
+        header.append (" (Showing 1 - " + cnt + " of " + moleculeSet.size() + ")");
+        if (!showAll) {
+            if (cnt + DEFAULT_NUM_RECORDS < moleculeSet.size()) {
+                String uri = "record.do?id=" + cPathId + "&show=all_molecules";
+                header.append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display all]</A>");
+            }
+        } else {
+            String uri = "record.do?id=" + cPathId;
+            header.append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 1 - " + DEFAULT_NUM_RECORDS
+                +"]</A>");
+        }
+        append("<DIV class ='h3'>");
+		append("<H3>" + header.toString() + "</H3>");
+		append("</DIV>");
+    }
+
+    /**
 	 * Creates populates the molecule link set
 	 * given the molecule set.
 	 */
@@ -104,21 +152,31 @@ public class PathwayMoleculesTable extends HtmlTable {
 		moleculesLinkList = new ArrayList();
 
 		// interate through the molecules list
-		int cnt = molecules.size();
-		int max_molecule_name_length = 0;
+        if (showAll) {
+            cnt = molecules.size();
+        } else {
+            cnt = Math.min(molecules.size(), DEFAULT_NUM_RECORDS);
+        }
+
+        int max_molecule_name_length = 0;
 		for (int lc = 0; lc < cnt; lc++){
 			BioPaxRecordSummary molecule = (BioPaxRecordSummary)molecules.get(lc);
 			String moleculeLink = BioPaxRecordSummaryUtils.createEntityLink(molecule);
 			moleculesLinkList.add(moleculeLink);
 			// compute max molecule name length
-			// consult BioPaxRecordSummaryUtils.getRecordName() to see how name is created in call to createEntityLink above
-			String moleculeName = (molecule.getShortName() != null && molecule.getShortName().length() > 0) ? molecule.getShortName() :
-				(molecule.getName() != null && molecule.getName().length() > 0) ? molecule.getName() : null;
+			// consult BioPaxRecordSummaryUtils.getRecordName() to see how name is
+            // created in call to createEntityLink above
+			String moleculeName = (molecule.getShortName() != null
+                    && molecule.getShortName().length() > 0) ? molecule.getShortName() :
+				(molecule.getName() != null && molecule.getName().length() > 0)
+                        ? molecule.getName() : null;
 			if (moleculeName != null){
-				max_molecule_name_length = computeMaxMoleculeNameLength(moleculeName, max_molecule_name_length);
+				max_molecule_name_length = computeMaxMoleculeNameLength
+                        (moleculeName, max_molecule_name_length);
 			}
 		}
-		MOLECULES_PER_ROW = (max_molecule_name_length > 0) ? (NUM_COLS / max_molecule_name_length) : MOLECULES_PER_ROW;
+		MOLECULES_PER_ROW = (max_molecule_name_length > 0)
+                ? (NUM_COLS / max_molecule_name_length) : MOLECULES_PER_ROW;
 	}
 
     /**
@@ -130,8 +188,10 @@ public class PathwayMoleculesTable extends HtmlTable {
      */
     private int computeMaxMoleculeNameLength(String moleculeName, int currentMaxNameLength) {
 
-		return (moleculeName.length() > BioPaxRecordSummaryUtils.NAME_LENGTH) ? BioPaxRecordSummaryUtils.NAME_LENGTH :
-			(moleculeName.length() > currentMaxNameLength) ? moleculeName.length() : currentMaxNameLength;
+		return (moleculeName.length() > BioPaxRecordSummaryUtils.NAME_LENGTH)
+                ? BioPaxRecordSummaryUtils.NAME_LENGTH :
+			(moleculeName.length() > currentMaxNameLength)
+                    ? moleculeName.length() : currentMaxNameLength;
 	}
 
     /**
@@ -175,15 +235,17 @@ class MoleculeComparator implements Comparator {
 	 *
      * @param object0 Object
      * @param object1 Object
-     * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to,
-     * or greater than the second.
+     * @return a negative integer, zero, or a positive integer as the first argument is
+     * less than, equal to, or greater than the second.
      */
     public int compare(Object object0, Object object1) {
         if (object0 != null && object1 != null) {
             BioPaxRecordSummary summary0 = (BioPaxRecordSummary) object0;
             BioPaxRecordSummary summary1 = (BioPaxRecordSummary) object1;
-			String name0 = (summary0.getName() != null) ? summary0.getName() : summary0.getShortName();
-			String name1 = (summary1.getName() != null) ? summary1.getName() : summary1.getShortName();
+			String name0 = (summary0.getName() != null)
+                    ? summary0.getName() : summary0.getShortName();
+			String name1 = (summary1.getName() != null)
+                    ? summary1.getName() : summary1.getShortName();
             if (name0 != null && name1!= null) {
                 return name0.compareTo(name1);
             }
