@@ -1,4 +1,4 @@
-// $Id: TestHtmlUtil.java,v 1.6 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestHtmlUtil.java,v 1.7 2006-02-27 21:56:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,11 +40,13 @@ import org.mskcc.pathdb.util.html.HtmlUtil;
  * @author Ethan Cerami
  */
 public class TestHtmlUtil extends TestCase {
+    private String testName;
 
     /**
      * Tests the Truncate Words Method.
      */
-    public void testTruncationMethod() {
+    public void testTruncationMethod0() {
+        testName = "Simulation truncation of sequence string.";
         String truncated = HtmlUtil.truncateLongWords
                 ("here is a sequence: AAAAAAAAAAAAAAAAAA more stuff", 10);
         assertEquals("here is a sequence: AAAAAAAAAA [Cont.] more stuff",
@@ -52,11 +54,23 @@ public class TestHtmlUtil extends TestCase {
     }
 
     /**
+     * Tests the Truncate Words Method.
+     */
+    public void testTruncationMetho10() {
+        testName = "Simulation truncation of HTML string.";
+        String truncated = HtmlUtil.truncateLongWords
+                ("<B>here is a sequence: AAAAAAAAAAAAAAAAAA</B> more stuff", 10);
+        assertEquals("<B>here is a sequence: AAAAAAAAAA [Cont.]</B> more stuff",
+                truncated);
+    }
+
+
+    /**
      * Gets Name of Test.
      *
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the HTML Utility Class";
+        return "Test the HTML Utility Class:  " + testName;
     }
 }
