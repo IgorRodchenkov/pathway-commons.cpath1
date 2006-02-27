@@ -1,4 +1,4 @@
-// $Id: OrganismTable.java,v 1.19 2006-02-24 18:25:36 cerami Exp $
+// $Id: OrganismTable.java,v 1.20 2006-02-27 22:01:43 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -95,7 +95,7 @@ public class OrganismTable extends HtmlTable {
 	 *
 	 * @param referer Referer String.
 	 */
-	public void setReferer(String referer){
+	public void setReferer(String referer) {
 		this.referer = referer;
 	}
 
@@ -131,9 +131,9 @@ public class OrganismTable extends HtmlTable {
     private void createColumnHeader(String columnHeading, String targetSortBy,
             String userSortBy, String userSortOrder) {
         StringBuffer url = new StringBuffer
-                ("browse.do?" + BaseAction.REFERER + "=" + referer + "&" +
-				 SORT_BY_PARAMETER + "="
-                + targetSortBy + "&" + SORT_ORDER_PARAMETER + "=");
+                ("browse.do?" + BaseAction.REFERER + "=" + referer + "&"
+				 + SORT_BY_PARAMETER + "="
+                 + targetSortBy + "&" + SORT_ORDER_PARAMETER + "=");
         String title = "Sort Organisms by " + columnHeading;
         if (userSortBy.equals(targetSortBy)) {
             String iconUrl, iconGif;

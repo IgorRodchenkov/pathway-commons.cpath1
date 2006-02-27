@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.11 2006-02-24 17:43:10 grossb Exp $
+// $Id: TestEntitySummaryParser.java,v 1.12 2006-02-27 22:07:26 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.test.schemas.biopax.summary;
 
 // imports
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,25 +53,25 @@ import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
  */
 public class TestEntitySummaryParser extends TestCase {
 
-	/**
-	 * ArrayList to hold InteractionSummaryComponents.
-	 */
-	ArrayList components = null;
+    /**
+     * ArrayList to hold InteractionSummaryComponents.
+     */
+    private ArrayList components = null;
 
-	/**
-	 * EntitySummaryParser ref.
-	 */
-	EntitySummaryParser entitySummaryParser = null;
+    /**
+     * EntitySummaryParser ref.
+     */
+    private EntitySummaryParser entitySummaryParser = null;
 
-	/**
-	 * InteractionSummary ref.
-	 */
-	EntitySummary entitySummary = null;
+    /**
+     * InteractionSummary ref.
+     */
+    private EntitySummary entitySummary = null;
 
-	/**
-	 * ParticipantSummaryComponent ref.
-	 */
-	ParticipantSummaryComponent summaryComponent = null;
+    /**
+     * ParticipantSummaryComponent ref.
+     */
+    private ParticipantSummaryComponent summaryComponent = null;
 
     /**
      * Tests invalid cpath record id handling.
@@ -79,18 +80,17 @@ public class TestEntitySummaryParser extends TestCase {
      */
     public void testInvalidRecordID() throws Exception {
 
-		// catch invalid record id exception
-		try{
-			entitySummaryParser = new EntitySummaryParser(-999);
-		}
-		catch (IllegalArgumentException e){
-			assertTrue(true);
-			return;
-		}
+        // catch invalid record id exception
+        try {
+            entitySummaryParser = new EntitySummaryParser(-999);
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+            return;
+        }
 
-		// were proper exceptions thrown ?
-		assertTrue(false);
-	}
+        // were proper exceptions thrown ?
+        assertTrue(false);
+    }
 
     /**
      * Test physical interaction summary parsing.
@@ -99,42 +99,44 @@ public class TestEntitySummaryParser extends TestCase {
      */
     public void testPhysicalInteractionSummaryParsing() throws Exception {
 
-		// shared var
-		int cnt;
+        // shared var
+        int cnt;
 
-		// perform the interaction parsing
-		entitySummaryParser = new EntitySummaryParser(362);
-		entitySummary = entitySummaryParser.getEntitySummary();
+        // perform the interaction parsing
+        entitySummaryParser = new EntitySummaryParser(362);
+        entitySummary = entitySummaryParser.getEntitySummary();
 
-		// this should be a physical interaction summary
-		assertTrue(entitySummary instanceof PhysicalInteractionSummary);
-		PhysicalInteractionSummary physicalInteractionSummary = (PhysicalInteractionSummary)entitySummary;
+        // this should be a physical interaction summary
+        assertTrue(entitySummary instanceof PhysicalInteractionSummary);
+        PhysicalInteractionSummary physicalInteractionSummary =
+                (PhysicalInteractionSummary) entitySummary;
 
-		// get physical interaction type
-		assertEquals("direct interaction reaction", physicalInteractionSummary.getInteractionType());
+        // get physical interaction type
+        assertEquals("direct interaction reaction",
+                     physicalInteractionSummary.getInteractionType());
 
-		// get left side components list
-		components = physicalInteractionSummary.getParticipants();
-		cnt = components.size();
- 		assertTrue(cnt == 2);
+        // get left side components list
+        components = physicalInteractionSummary.getParticipants();
+        cnt = components.size();
+        assertTrue(cnt == 2);
 
-		// get participants
-		summaryComponent = (ParticipantSummaryComponent)components.get(0);
-		assertEquals("AR", summaryComponent.getName());
-		assertTrue(418 == summaryComponent.getRecordID());
-		assertEquals("nucleus", summaryComponent.getCellularLocation());
-		assertTrue(null == summaryComponent.getFeatureList());
+        // get participants
+        summaryComponent = (ParticipantSummaryComponent) components.get(0);
+        assertEquals("AR", summaryComponent.getName());
+        assertTrue(418 == summaryComponent.getRecordID());
+        assertEquals("nucleus", summaryComponent.getCellularLocation());
+        assertTrue(null == summaryComponent.getFeatureList());
 
-		summaryComponent = (ParticipantSummaryComponent)components.get(1);
-		assertEquals("APPL-Human_AKT1-Human", summaryComponent.getName());
-		assertTrue(468 == summaryComponent.getRecordID());
-		assertTrue(null == summaryComponent.getFeatureList());
-		// this component is a complex, test for members
-		ArrayList complexMemberList = summaryComponent.getComponentList();
-		assertTrue(2 == complexMemberList.size());
-		assertEquals("APPL", ((BioPaxRecordSummary)complexMemberList.get(0)).getName());
-		assertEquals("AKT1", ((BioPaxRecordSummary)complexMemberList.get(1)).getName());
-	}
+        summaryComponent = (ParticipantSummaryComponent) components.get(1);
+        assertEquals("APPL-Human_AKT1-Human", summaryComponent.getName());
+        assertTrue(468 == summaryComponent.getRecordID());
+        assertTrue(null == summaryComponent.getFeatureList());
+        // this component is a complex, test for members
+        ArrayList complexMemberList = summaryComponent.getComponentList();
+        assertTrue(2 == complexMemberList.size());
+        assertEquals("APPL", ((BioPaxRecordSummary) complexMemberList.get(0)).getName());
+        assertEquals("AKT1", ((BioPaxRecordSummary) complexMemberList.get(1)).getName());
+    }
 
     /**
      * Test control interaction summary parsing.
@@ -143,70 +145,72 @@ public class TestEntitySummaryParser extends TestCase {
      */
     public void testControlInteractionSummaryParsing() throws Exception {
 
-		// shared var
-		int cnt;
+        // shared var
+        int cnt;
 
-		// perform the interaction parsing
-		entitySummaryParser = new EntitySummaryParser(175);
-		entitySummary = entitySummaryParser.getEntitySummary();
+        // perform the interaction parsing
+        entitySummaryParser = new EntitySummaryParser(175);
+        entitySummary = entitySummaryParser.getEntitySummary();
 
-		// this should be a control interaction summary
-		assertTrue(entitySummary instanceof ControlInteractionSummary);
-		ControlInteractionSummary controlInteractionSummary = (ControlInteractionSummary)entitySummary;
+        // this should be a control interaction summary
+        assertTrue(entitySummary instanceof ControlInteractionSummary);
+        ControlInteractionSummary controlInteractionSummary =
+                (ControlInteractionSummary) entitySummary;
 
-		// assert control type
-		assertEquals("ACTIVATION", controlInteractionSummary.getControlType());
+        // assert control type
+        assertEquals("ACTIVATION", controlInteractionSummary.getControlType());
 
-		// get controllers
-		components = controlInteractionSummary.getControllers();
-		cnt = components.size();
-		assertTrue(cnt == 1);
+        // get controllers
+        components = controlInteractionSummary.getControllers();
+        cnt = components.size();
+        assertTrue(cnt == 1);
 
-		// get specific controller
-		summaryComponent = (ParticipantSummaryComponent)components.get(0);
-		assertEquals("PRKCG", summaryComponent.getName());
-		assertTrue(238 == summaryComponent.getRecordID());
-		assertEquals("cytoplasm", summaryComponent.getCellularLocation());
-		assertTrue(null == summaryComponent.getFeatureList());
+        // get specific controller
+        summaryComponent = (ParticipantSummaryComponent) components.get(0);
+        assertEquals("PRKCG", summaryComponent.getName());
+        assertTrue(238 == summaryComponent.getRecordID());
+        assertEquals("cytoplasm", summaryComponent.getCellularLocation());
+        assertTrue(null == summaryComponent.getFeatureList());
 
-		// get controlled
-		components = controlInteractionSummary.getControlled();
-		cnt = components.size();
-		assertTrue(cnt == 1);
+        // get controlled
+        components = controlInteractionSummary.getControlled();
+        cnt = components.size();
+        assertTrue(cnt == 1);
 
-		// get specific controlled
-		Object potentialConversionInteractionSummary = components.get(0);
-		assertTrue(potentialConversionInteractionSummary instanceof ConversionInteractionSummary);
+        // get specific controlled
+        Object potentialConversionInteractionSummary = components.get(0);
+        assertTrue(potentialConversionInteractionSummary instanceof ConversionInteractionSummary);
 
-		// controlled is a conversion, lets test its components
-		ConversionInteractionSummary conversionInteractionSummary = (ConversionInteractionSummary)potentialConversionInteractionSummary;
+        // controlled is a conversion, lets test its components
+        ConversionInteractionSummary conversionInteractionSummary =
+                (ConversionInteractionSummary) potentialConversionInteractionSummary;
 
-		// get left side components list
-		components = conversionInteractionSummary.getLeftSideComponents();
-		cnt = components.size();
-		assertTrue(cnt == 1);
+        // get left side components list
+        components = conversionInteractionSummary.getLeftSideComponents();
+        cnt = components.size();
+        assertTrue(cnt == 1);
 
-		// get specific left component
-		summaryComponent = (ParticipantSummaryComponent)components.get(0);
-		assertEquals("DAB2", summaryComponent.getName());
-		assertTrue(250 == summaryComponent.getRecordID());
-		assertEquals("cytoplasm", summaryComponent.getCellularLocation());
-		assertTrue(null == summaryComponent.getFeatureList());
+        // get specific left component
+        summaryComponent = (ParticipantSummaryComponent) components.get(0);
+        assertEquals("DAB2", summaryComponent.getName());
+        assertTrue(250 == summaryComponent.getRecordID());
+        assertEquals("cytoplasm", summaryComponent.getCellularLocation());
+        assertTrue(null == summaryComponent.getFeatureList());
 
-		// get right side components list
-		components = conversionInteractionSummary.getRightSideComponents();
-		cnt = components.size();
-		assertTrue(cnt == 1);
+        // get right side components list
+        components = conversionInteractionSummary.getRightSideComponents();
+        cnt = components.size();
+        assertTrue(cnt == 1);
 
-		// get specific right component
-		summaryComponent = (ParticipantSummaryComponent)components.get(0);
-		assertEquals("DAB2", summaryComponent.getName());
-		assertTrue(250 == summaryComponent.getRecordID());
-		assertEquals("cytoplasm", summaryComponent.getCellularLocation());
-		ArrayList featureList = summaryComponent.getFeatureList();
-		assertTrue(featureList.size() == 1);
-		assertEquals("phosphorylation site", (String)featureList.get(0));
-	}
+        // get specific right component
+        summaryComponent = (ParticipantSummaryComponent) components.get(0);
+        assertEquals("DAB2", summaryComponent.getName());
+        assertTrue(250 == summaryComponent.getRecordID());
+        assertEquals("cytoplasm", summaryComponent.getCellularLocation());
+        ArrayList featureList = summaryComponent.getFeatureList();
+        assertTrue(featureList.size() == 1);
+        assertEquals("phosphorylation site", (String) featureList.get(0));
+    }
 
 
     /**
@@ -216,54 +220,56 @@ public class TestEntitySummaryParser extends TestCase {
      */
     public void testConversionInteractionSummaryParsing() throws Exception {
 
-		// shared vars
-		int cnt = 0;
+        // shared vars
+        int cnt;
 
-		// perform the interaction parsing
-		entitySummaryParser = new EntitySummaryParser(158);
-		entitySummary = entitySummaryParser.getEntitySummary();
+        // perform the interaction parsing
+        entitySummaryParser = new EntitySummaryParser(158);
+        entitySummary = entitySummaryParser.getEntitySummary();
 
-		// this should be a conversion interaction summary
-		assertTrue(entitySummary instanceof ConversionInteractionSummary);
-		ConversionInteractionSummary conversionInteractionSummary = (ConversionInteractionSummary)entitySummary;
+        // this should be a conversion interaction summary
+        assertTrue(entitySummary instanceof ConversionInteractionSummary);
+        ConversionInteractionSummary conversionInteractionSummary =
+                (ConversionInteractionSummary) entitySummary;
 
-		// get left side components list
-		components = conversionInteractionSummary.getLeftSideComponents();
-		cnt = components.size();
-		assertTrue(cnt == 1);
+        // get left side components list
+        components = conversionInteractionSummary.getLeftSideComponents();
+        cnt = components.size();
+        assertTrue(cnt == 1);
 
-		// get specific left component
-		summaryComponent = (ParticipantSummaryComponent)components.get(0);
-		assertEquals("TGFBR2", summaryComponent.getName());
-		assertTrue(207 == summaryComponent.getRecordID());
-		assertEquals("plasma membrane", summaryComponent.getCellularLocation());
-		assertTrue(null == summaryComponent.getFeatureList());
+        // get specific left component
+        summaryComponent = (ParticipantSummaryComponent) components.get(0);
+        assertEquals("TGFBR2", summaryComponent.getName());
+        assertTrue(207 == summaryComponent.getRecordID());
+        assertEquals("plasma membrane", summaryComponent.getCellularLocation());
+        assertTrue(null == summaryComponent.getFeatureList());
 
-		// get right side components list
-		components = conversionInteractionSummary.getRightSideComponents();
-		cnt = components.size();
-		assertTrue(cnt == 1);
+        // get right side components list
+        components = conversionInteractionSummary.getRightSideComponents();
+        cnt = components.size();
+        assertTrue(cnt == 1);
 
-		// get specific right component
-		summaryComponent = (ParticipantSummaryComponent)components.get(0);
-		assertEquals("TGFBR2", summaryComponent.getName());
-		assertTrue(207 == summaryComponent.getRecordID());
-		assertEquals("plasma membrane", summaryComponent.getCellularLocation());
+        // get specific right component
+        summaryComponent = (ParticipantSummaryComponent) components.get(0);
+        assertEquals("TGFBR2", summaryComponent.getName());
+        assertTrue(207 == summaryComponent.getRecordID());
+        assertEquals("plasma membrane", summaryComponent.getCellularLocation());
 
-		// feature list
-		ArrayList featureList = summaryComponent.getFeatureList();
-		assertTrue(featureList.size() == 1);
-		assertEquals("phosphorylation site", (String)featureList.get(0));
-	}
+        // feature list
+        ArrayList featureList = summaryComponent.getFeatureList();
+        assertTrue(featureList.size() == 1);
+        assertEquals("phosphorylation site", (String) featureList.get(0));
+    }
 
     /**
      * Tests Conversion Interaction from IOB.
+     *
      * @throws Exception All Exceptions.
      */
     public void testIOBData() throws Exception {
-		entitySummaryParser = new EntitySummaryParser(158);
-		entitySummary = entitySummaryParser.getEntitySummary();
-        ConversionInteractionSummary summary = (ConversionInteractionSummary)entitySummary;
+        entitySummaryParser = new EntitySummaryParser(158);
+        entitySummary = entitySummaryParser.getEntitySummary();
+        ConversionInteractionSummary summary = (ConversionInteractionSummary) entitySummary;
         List left = summary.getLeftSideComponents();
         ParticipantSummaryComponent component = (ParticipantSummaryComponent) left.get(0);
         List synList = component.getSynonyms();
