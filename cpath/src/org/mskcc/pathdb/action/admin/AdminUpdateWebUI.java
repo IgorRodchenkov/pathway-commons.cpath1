@@ -1,4 +1,4 @@
-// $Id: AdminUpdateWebUI.java,v 1.6 2006-02-22 22:47:50 grossb Exp $
+// $Id: AdminUpdateWebUI.java,v 1.7 2006-02-27 14:57:02 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,14 +32,13 @@
 package org.mskcc.pathdb.action.admin;
 
 //imports
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.upload.FormFile;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.dao.DaoWebUI;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 
@@ -65,22 +64,24 @@ public class AdminUpdateWebUI extends AdminBaseAction {
      * @throws Exception All Exceptions.
      */
     public ActionForward adminExecute(ActionMapping mapping,
-            ActionForm form, HttpServletRequest request,
-            HttpServletResponse response, XDebug xdebug) throws Exception {
+                                      ActionForm form,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      XDebug xdebug) throws Exception {
 
-		// get our form
+        // get our form
         WebUIBean webUIBean = (WebUIBean) form;
 
-		// lets do the update
-        if (webUIBean != null){
-			DaoWebUI dbWebUI = new DaoWebUI();
-			dbWebUI.updateRecord(webUIBean);
+        // lets do the update
+        if (webUIBean != null) {
+            DaoWebUI dbWebUI = new DaoWebUI();
+            dbWebUI.updateRecord(webUIBean);
         }
 
-		// set webUIBean ref inside CPathUIConfConfig
-		CPathUIConfig.setWebUIBean(webUIBean);
+        // set webUIBean ref inside CPathUIConfConfig
+        CPathUIConfig.setWebUIBean(webUIBean);
 
-		// outta here
+        // outta here
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 }
