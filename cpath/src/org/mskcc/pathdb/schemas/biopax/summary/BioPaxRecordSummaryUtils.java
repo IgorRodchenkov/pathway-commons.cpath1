@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.22 2006-02-24 22:39:18 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.23 2006-02-27 19:29:52 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -154,7 +154,7 @@ public class BioPaxRecordSummaryUtils {
         if (biopaxRecordSummary == null) {
             throw new IllegalArgumentException
                     ("BioPaxRecordSummaryUtils.getBioPaxRecordDataSource"
-                    + "String() argument is null");
+                            + "String() argument is null");
         }
 
         // string to return
@@ -180,7 +180,7 @@ public class BioPaxRecordSummaryUtils {
         if (biopaxRecordSummary == null) {
             throw new IllegalArgumentException
                     ("BioPaxRecordSummaryUtils.getBioPaxRecord"
-                    + "AvailabilityString() argument is null");
+                            + "AvailabilityString() argument is null");
         }
 
         // string to return
@@ -206,7 +206,7 @@ public class BioPaxRecordSummaryUtils {
         if (biopaxRecordSummary == null) {
             throw new IllegalArgumentException
                     ("BioPaxRecordSummaryUtils.getBioPaxRecordComment"
-                    + "String() argument is null");
+                            + "String() argument is null");
         }
 
         // string to return
@@ -224,7 +224,7 @@ public class BioPaxRecordSummaryUtils {
      * @return HTML String.
      */
     public static String createEntityLink(BioPaxRecordSummary entitySummary,
-            InteractionSummary interactionSummary) {
+                                          InteractionSummary interactionSummary) {
         return createComponentLink(entitySummary, interactionSummary);
     }
 
@@ -246,7 +246,7 @@ public class BioPaxRecordSummaryUtils {
      * @return HTML String.
      */
     private static String createComponentLink(BioPaxRecordSummary component,
-            InteractionSummary interactionSummary) {
+                                              InteractionSummary interactionSummary) {
         String name = getBioPaxRecordName(component);
         boolean isPhosphorylated = false;
         boolean isUbiquitinated = false;
@@ -340,19 +340,20 @@ public class BioPaxRecordSummaryUtils {
      * Adds SubComponents of the current Node.
      * This is currently only applied when we are dealing with Complexes,
      * but this might become more general in the future.
+     *
      * @param participant ParticipantSummaryComponent Object.
-     * @param buf StringBuffer Object.
+     * @param buf         StringBuffer Object.
      */
     private static void addComponents(ParticipantSummaryComponent participant,
-            StringBuffer buf) {
+                                      StringBuffer buf) {
         ArrayList componentList = participant.getComponentList();
         if (componentList != null && componentList.size() > 0) {
             buf.append("<P>Complex contains the following molecules:");
             buf.append("<UL>");
-            for (int i=0; i<componentList.size(); i++) {
+            for (int i = 0; i < componentList.size(); i++) {
                 BioPaxRecordSummary child =
                         (BioPaxRecordSummary) componentList.get(i);
-                buf.append ("<LI>" + child.getName() + "</LI>");
+                buf.append("<LI>" + child.getName() + "</LI>");
             }
             buf.append("</UL>");
         }
@@ -422,8 +423,10 @@ public class BioPaxRecordSummaryUtils {
      * @param buf
      */
     private static void appendFeatures(boolean phosphorylated,
-            boolean ubiquitinated, boolean acetylated, boolean sumoylated,
-            StringBuffer buf) {
+                                       boolean ubiquitinated,
+                                       boolean acetylated,
+                                       boolean sumoylated,
+                                       StringBuffer buf) {
         if (phosphorylated) {
             buf.append(PHOSPHORYLATED);
         }
@@ -460,7 +463,7 @@ public class BioPaxRecordSummaryUtils {
      * @param buf       HTML StringBuffer Object.
      */
     private static void addFeatures(ParticipantSummaryComponent component,
-            StringBuffer buf) {
+                                    StringBuffer buf) {
         if (component.getFeatureList() != null
                 && component.getFeatureList().size() > 0) {
             buf.append("<P>Features:<UL>");
@@ -481,7 +484,7 @@ public class BioPaxRecordSummaryUtils {
      * @param buf       HTML StringBuffer Object.
      */
     private static void addSynonmys(BioPaxRecordSummary component,
-            StringBuffer buf) {
+                                    StringBuffer buf) {
         List synList = component.getSynonyms();
         if (synList != null && synList.size() > 0) {
             buf.append("Also known as:  <UL>");
@@ -528,7 +531,7 @@ public class BioPaxRecordSummaryUtils {
      * @return boolean value.
      */
     private static boolean hasFeature(ParticipantSummaryComponent component,
-            String featureTarget) {
+                                      String featureTarget) {
         if (component.getFeatureList() != null
                 && component.getFeatureList().size() > 0) {
             ArrayList featureList = component.getFeatureList();

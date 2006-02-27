@@ -1,4 +1,4 @@
-// $Id: ControlInteractionSummary.java,v 1.9 2006-02-22 22:47:50 grossb Exp $
+// $Id: ControlInteractionSummary.java,v 1.10 2006-02-27 19:31:14 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+
 import java.util.ArrayList;
 
 /**
@@ -44,34 +45,34 @@ import java.util.ArrayList;
  */
 public class ControlInteractionSummary extends PhysicalInteractionSummary {
 
-	/**
-	 * The control type.
-	 */
-	private String controlType;
+    /**
+     * The control type.
+     */
+    private String controlType;
 
-  	/**
- 	 * Our list of controller components.
- 	 */
- 	private ArrayList controllerComponents = null;
- 
- 	/**
-	 * Our list of controlled compontents.
- 	 */
-	private ArrayList controlledComponents = null;
+    /**
+     * Our list of controller components.
+     */
+    private ArrayList controllerComponents = null;
 
-	/**
+    /**
+     * Our list of controlled compontents.
+     */
+    private ArrayList controlledComponents = null;
+
+    /**
      * Constructor.
-	 *
-	 * @param controlType String
-	 * @param controllerComponents ArrayList
-	 * @param controlledComponents ArrayList
+     *
+     * @param controlType          String
+     * @param controllerComponents ArrayList
+     * @param controlledComponents ArrayList
      */
     public ControlInteractionSummary(String controlType, ArrayList controllerComponents, ArrayList controlledComponents) {
 
-		// init our members
-		this.controllerComponents = controllerComponents;
-		this.controlledComponents = controlledComponents;
-		this.controlType = controlType;
+        // init our members
+        this.controllerComponents = controllerComponents;
+        this.controlledComponents = controlledComponents;
+        this.controlType = controlType;
         if (controllerComponents != null) {
             participants.addAll(controllerComponents);
         }
@@ -80,30 +81,30 @@ public class ControlInteractionSummary extends PhysicalInteractionSummary {
         }
     }
 
-	/**
-	 * Returns the control type.
-	 *
-	 * @return String
-	 */
-	public String getControlType(){
-		return controlType;
-	}
+    /**
+     * Returns the control type.
+     *
+     * @return String
+     */
+    public String getControlType() {
+        return controlType;
+    }
 
-	/**
-	 * Returns the ArrayList of Controllers.
-	 *
-	 * @return ArrayList of ParticipantSummaryComponents
-	 */
-	public ArrayList getControllers(){
-		return controllerComponents;
-	}
+    /**
+     * Returns the ArrayList of Controllers.
+     *
+     * @return ArrayList of ParticipantSummaryComponents
+     */
+    public ArrayList getControllers() {
+        return controllerComponents;
+    }
 
-	/**
-	 * Returns the ArrayList of Controlled.
-	 *
-	 * @return ArrayList of EntitySummary or one of its subclasses
-	 */
-	public ArrayList getControlled(){
-		return controlledComponents;
-	}
+    /**
+     * Returns the ArrayList of Controlled.
+     *
+     * @return ArrayList of EntitySummary or one of its subclasses
+     */
+    public ArrayList getControlled() {
+        return controlledComponents;
+    }
 }
