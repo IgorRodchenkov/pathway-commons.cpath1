@@ -1,4 +1,4 @@
-// $Id: AdminWebUIConfigAction.java,v 1.7 2006-02-22 22:47:50 grossb Exp $
+// $Id: AdminWebUIConfigAction.java,v 1.8 2006-02-27 15:02:16 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -61,8 +61,10 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
      * @throws Exception All Exceptions.
      */
     public ActionForward adminExecute(ActionMapping mapping,
-                                      ActionForm form, HttpServletRequest request,
-                                      HttpServletResponse response, XDebug xdebug) throws Exception {
+                                      ActionForm form,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      XDebug xdebug) throws Exception {
 
         // only process if we are authorized
         if (CPathUIConfig.getAdminModeActive() ==
@@ -81,7 +83,7 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
     /**
      * Must Be Implemented By Subclass.
      *
-     * @param form   Struts ActionForm Object.
+     * @param form Struts ActionForm Object.
      * @throws Exception All Exceptions.
      */
     private void populateWebUIBean(ActionForm form) throws Exception {
