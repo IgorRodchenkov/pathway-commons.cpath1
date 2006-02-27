@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.8 2006-02-27 19:18:20 grossb Exp $
+// $Id: MemberPathways.java,v 1.9 2006-02-27 19:23:58 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,12 +38,15 @@ package org.mskcc.pathdb.schemas.biopax;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.io.IOException;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.jdom.JDOMException;
 
 /**
  * This class parses interaction data
@@ -59,9 +62,12 @@ public class MemberPathways {
      * @param record   CPathRecord
      * @param longList ArrayList - if null, no timing performed
      * @return HashSet
+     * @throws IOException
+     * @throws JDOMException
+     * @throws DaoException
      */
     public static HashSet getMemberPathways(CPathRecord record, ArrayList longList)
-            throws Exception {
+            throws IOException, JDOMException, DaoException {
 
         // for timing
         long startTime = 0;
