@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.28 2006-02-22 22:54:10 grossb Exp $
+// $Id: CPathServlet.java,v 1.29 2006-02-27 19:55:21 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -121,7 +121,7 @@ public final class CPathServlet extends ActionServlet {
         manager.setProperty(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE, adminModeActive);
 
         storeWebMode(webMode);
-		storeAdminModeActive(adminModeActive);
+        storeAdminModeActive(adminModeActive);
 
         String dbName = config.getInitParameter("db_name");
         manager.setProperty(PropertyManager.DB_LOCATION, dbHost);
@@ -142,23 +142,24 @@ public final class CPathServlet extends ActionServlet {
         //  Start Quartz Scheduler
         initQuartzScheduler();
 
-		// populate the CPathUIConfig
-		populateWebUIBean();
+        // populate the CPathUIConfig
+        populateWebUIBean();
     }
 
     /**
      * Stores the Web Mode in CPathUIConfig.
+     *
      * @param webMode web mode String.
      */
     private void storeWebMode(String webMode) {
         int mode;
-        if (webMode.equals (CPathUIConfig.PSI_MI)) {
+        if (webMode.equals(CPathUIConfig.PSI_MI)) {
             mode = CPathUIConfig.WEB_MODE_PSI_MI;
-        } else if (webMode.equals(CPathUIConfig.BIOPAX)){
+        } else if (webMode.equals(CPathUIConfig.BIOPAX)) {
             mode = CPathUIConfig.WEB_MODE_BIOPAX;
         } else {
             System.err.println("Web mode not recognized:  " + webMode
-                + ".  Defaulting to:  " + CPathUIConfig.BIOPAX);
+                    + ".  Defaulting to:  " + CPathUIConfig.BIOPAX);
             mode = CPathUIConfig.WEB_MODE_BIOPAX;
         }
         CPathUIConfig.setWebMode(mode);
@@ -166,13 +167,14 @@ public final class CPathServlet extends ActionServlet {
 
     /**
      * Stores the Admin Mode in CPathUIConfig.
+     *
      * @param adminModeActive web mode String.
      */
     private void storeAdminModeActive(String adminModeActive) {
         int activeMode;
-        if (adminModeActive.equals (String.valueOf(CPathUIConfig.ADMIN_MODE_DEACTIVE))){
+        if (adminModeActive.equals(String.valueOf(CPathUIConfig.ADMIN_MODE_DEACTIVE))) {
             activeMode = CPathUIConfig.ADMIN_MODE_DEACTIVE;
-        } else if (adminModeActive.equals(String.valueOf(CPathUIConfig.ADMIN_MODE_ACTIVE))){
+        } else if (adminModeActive.equals(String.valueOf(CPathUIConfig.ADMIN_MODE_ACTIVE))) {
             activeMode = CPathUIConfig.ADMIN_MODE_ACTIVE;
         } else {
             System.err.println("Admin mode not recognized, deactivating Admin Mode");
@@ -202,7 +204,7 @@ public final class CPathServlet extends ActionServlet {
                     + e.getMessage());
         }
     }
- 
+
     /**
      * Initializes the Global Cache.
      */
@@ -239,33 +241,32 @@ public final class CPathServlet extends ActionServlet {
         }
     }
 
-	/**
-	 * Populates WebUIBean within CPathUIConfig.
-	 */
-	private void populateWebUIBean() {
+    /**
+     * Populates WebUIBean within CPathUIConfig.
+     */
+    private void populateWebUIBean() {
 
-		// bean we retrieve
-		WebUIBean record = null;
+        // bean we retrieve
+        WebUIBean record = null;
 
-		System.err.print("Attempting to populate WebUIBean...");
+        System.err.print("Attempting to populate WebUIBean...");
 
-		// create dao object
-		try{
-			DaoWebUI dbWebUI = new DaoWebUI();
-			record = dbWebUI.getRecord();
-		}
-		catch (DaoException e) {
+        // create dao object
+        try {
+            DaoWebUI dbWebUI = new DaoWebUI();
+            record = dbWebUI.getRecord();
+        } catch (DaoException e) {
             System.err.println("****  Fatal Error.  Could not connect to "
                     + "database");
             System.err.println("DaoException:  " + e.toString());
         }
 
-		// set the bean
-		if (record != null){
-			CPathUIConfig.setWebUIBean(record);
-		}
+        // set the bean
+        if (record != null) {
+            CPathUIConfig.setWebUIBean(record);
+        }
 
-		// outta here
-		System.err.println("SUCCESS!");
-	}
+        // outta here
+        System.err.println("SUCCESS!");
+    }
 }

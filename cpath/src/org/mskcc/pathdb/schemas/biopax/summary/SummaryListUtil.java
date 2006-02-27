@@ -1,4 +1,4 @@
-// $Id: SummaryListUtil.java,v 1.7 2006-02-23 22:15:20 cerami Exp $
+// $Id: SummaryListUtil.java,v 1.8 2006-02-27 19:50:31 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,6 +67,7 @@ public class SummaryListUtil {
      * Constructor.
      *
      * @param cPathId cPath ID.
+     * @param mode int.
      */
     public SummaryListUtil(long cPathId, int mode) {
         this.cPathId = cPathId;
@@ -82,7 +83,7 @@ public class SummaryListUtil {
     public ArrayList getSummaryList() throws EntitySummaryException,
             DaoException {
         DaoInternalLink daoInternalLinks = new DaoInternalLink();
-        ArrayList internalLinks = null;
+        ArrayList internalLinks;
         if (mode == MODE_GET_CHILDREN) {
             internalLinks = daoInternalLinks.getTargets(cPathId);
         } else {

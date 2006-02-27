@@ -1,4 +1,4 @@
-// $Id: CPathUIConfig.java,v 1.7 2006-02-22 22:47:51 grossb Exp $
+// $Id: CPathUIConfig.java,v 1.8 2006-02-27 19:58:20 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.servlet;
 
 // imports
+
 import org.mskcc.pathdb.form.WebUIBean;
 
 /**
@@ -60,9 +61,9 @@ public class CPathUIConfig {
      */
     public static final String BIOPAX = "biopax";
 
-	/**
-	 * WebMode.
-	 */
+    /**
+     * WebMode.
+     */
     private static int webMode;
 
     /**
@@ -75,9 +76,9 @@ public class CPathUIConfig {
      */
     public static final int ADMIN_MODE_ACTIVE = 1;
 
-	/**
-	 * Admin Mode Active.
-	 */
+    /**
+     * Admin Mode Active.
+     */
     private static int adminModeActive;
 
     /**
@@ -87,39 +88,42 @@ public class CPathUIConfig {
 
     /**
      * Sets the Web Mode.
+     *
      * @param mode WEB_MODE_BIOPAX or WEB_MODE_PSI_MI.
      */
-    public static void setWebMode (int mode) {
+    public static void setWebMode(int mode) {
         if (mode != WEB_MODE_BIOPAX && mode != WEB_MODE_PSI_MI) {
-            throw new IllegalArgumentException ("mode must be set to:  "
-                + "WEB_MODE_BIOPAX or WEB_MODE_PSI_MI.");
+            throw new IllegalArgumentException("mode must be set to:  "
+                    + "WEB_MODE_BIOPAX or WEB_MODE_PSI_MI.");
         }
         webMode = mode;
     }
 
     /**
      * Gets the Web Mode.
+     *
      * @return WEB_MODE_BIOPAX or WEB_MODE_PSI_MI.
      */
     public static int getWebMode() {
         return webMode;
     }
 
-	/**
-	 * Sets Admin Mode Active.
-	 *
-	 * @param adminModeActive ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.
-	 */
-    public static void setAdminModeActive (int activeMode) {
+    /**
+     * Sets Admin Mode Active.
+     *
+     * @param activeMode ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.
+     */
+    public static void setAdminModeActive(int activeMode) {
         if (activeMode != ADMIN_MODE_ACTIVE && activeMode != ADMIN_MODE_DEACTIVE) {
-            throw new IllegalArgumentException ("activeMode must be set to:  "
-                + "ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.");
+            throw new IllegalArgumentException("activeMode must be set to:  "
+                    + "ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.");
         }
         adminModeActive = activeMode;
     }
-	
+
     /**
      * Gets the Admin Mode Active.
+     *
      * @return ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.
      */
     public static int getAdminModeActive() {
@@ -128,16 +132,16 @@ public class CPathUIConfig {
 
     /**
      * Sets the WebUIBean reference.
-	 *
-     * @param webUIBean.
+     *
+     * @param bean WebUIBean.
      */
-    public static void setWebUIBean (WebUIBean bean) {
+    public static void setWebUIBean(WebUIBean bean) {
         webUIBean = bean;
     }
 
     /**
      * Gets the WebUIBean ref.
-	 *
+     *
      * @return webUIBean.
      */
     public static WebUIBean getWebUIBean() {

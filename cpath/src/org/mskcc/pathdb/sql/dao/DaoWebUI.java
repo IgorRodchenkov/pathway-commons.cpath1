@@ -1,4 +1,4 @@
-// $Id: DaoWebUI.java,v 1.7 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoWebUI.java,v 1.8 2006-02-27 20:02:48 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,7 +34,6 @@ package org.mskcc.pathdb.sql.dao;
 // imports
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.JdbcUtil;
-import java.io.IOException;		
 import java.sql.*;
 
 /**
@@ -65,14 +64,17 @@ public class DaoWebUI {
 				("select * from web_ui where 1");
             rs = pstmt.executeQuery();
 			// set the form object
-			if (rs.next()){
+			if (rs.next()) {
 				webUIBean = new WebUIBean();
 				webUIBean.setApplicationName(rs.getString("APPLICATION_NAME"));
 				webUIBean.setHomePageHeader(rs.getString("HOME_PAGE_HEADER"));
 				webUIBean.setHomePageTagLine(rs.getString("HOME_PAGE_TAG_LINE"));
-				webUIBean.setHomePageRightColumnContent(rs.getString("HOME_PAGE_RIGHT_COLUMN_CONTENT"));
-				webUIBean.setDisplayBrowseByPathwayTab(rs.getBoolean("DISPLAY_BROWSE_BY_PATHWAY_TAB"));
-				webUIBean.setDisplayBrowseByOrganismTab(rs.getBoolean("DISPLAY_BROWSE_BY_ORGANISM_TAB"));
+				webUIBean.setHomePageRightColumnContent(
+                        rs.getString("HOME_PAGE_RIGHT_COLUMN_CONTENT"));
+				webUIBean.setDisplayBrowseByPathwayTab(
+                        rs.getBoolean("DISPLAY_BROWSE_BY_PATHWAY_TAB"));
+				webUIBean.setDisplayBrowseByOrganismTab(
+                        rs.getBoolean("DISPLAY_BROWSE_BY_ORGANISM_TAB"));
 				webUIBean.setFAQPageContent(rs.getString("FAQ_PAGE_CONTENT"));
 				webUIBean.setAboutPageContent(rs.getString("ABOUT_PAGE_CONTENT"));
 				webUIBean.setMaintenanceTagLine(rs.getString("MAINTENANCE_TAG_LINE"));
@@ -105,16 +107,16 @@ public class DaoWebUI {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("UPDATE web_ui set " +
-					 "`APPLICATION_NAME` = ?, " +
-					 "`HOME_PAGE_HEADER` = ?, " +
-					 "`HOME_PAGE_TAG_LINE` = ?, " +
-					 "`HOME_PAGE_RIGHT_COLUMN_CONTENT` = ?, " +
-					 "`DISPLAY_BROWSE_BY_PATHWAY_TAB` = ?, " +
-					 "`DISPLAY_BROWSE_BY_ORGANISM_TAB` = ?, " +
-					 "`FAQ_PAGE_CONTENT` = ?, " +
-					 "`ABOUT_PAGE_CONTENT` = ?, " +
-					 "`MAINTENANCE_TAG_LINE` = ?");
+                    ("UPDATE web_ui set "
+					 + "`APPLICATION_NAME` = ?, "
+					 + "`HOME_PAGE_HEADER` = ?, "
+					 + "`HOME_PAGE_TAG_LINE` = ?, "
+					 + "`HOME_PAGE_RIGHT_COLUMN_CONTENT` = ?, "
+					 + "`DISPLAY_BROWSE_BY_PATHWAY_TAB` = ?, "
+					 + "`DISPLAY_BROWSE_BY_ORGANISM_TAB` = ?, "
+					 + "`FAQ_PAGE_CONTENT` = ?, "
+					 + "`ABOUT_PAGE_CONTENT` = ?, "
+					 + "`MAINTENANCE_TAG_LINE` = ?");
             pstmt.setString(1, form.getApplicationName());
             pstmt.setString(2, form.getHomePageHeader());
             pstmt.setString(3, form.getHomePageTagLine());
@@ -125,7 +127,7 @@ public class DaoWebUI {
             pstmt.setString(8, form.getAboutPageContent());
             pstmt.setString(9, form.getMaintenanceTagLine());
             int rows = pstmt.executeUpdate();
-            return (rows > 0) ? true : false;
+            return (rows > 0);
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
