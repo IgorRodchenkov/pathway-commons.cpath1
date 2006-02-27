@@ -91,23 +91,16 @@
 	// if pathway or complex, show member molecules&complex
 	if (biopaxConstants.isPathway(record.getSpecificType()) ||
 		record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
-%>
-		<DIV class ='h3'>
-		<H3>Contains the Following Molecules</H3>
-		</DIV>
-		<TABLE>
-<%
 		HashSet moleculeSet;
         MemberMolecules.reset();
         moleculeSet = MemberMolecules.getMemberMolecules(record, null);
 		if (moleculeSet != null && moleculeSet.size() > 0){
 %>
-			<cbio:pathwayMoleculesTable moleculeSet="<%=moleculeSet%>"/>
+			<cbio:pathwayMoleculesTable moleculeSet="<%=moleculeSet%>"
+                    queryString="<%= queryString %>"
+                    cpathId="<%= record.getId() %>"/>
 <%
 		}
-%>
-		</TABLE>
-<%
 	}
 %>
 
