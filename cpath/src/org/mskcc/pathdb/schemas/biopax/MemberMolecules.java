@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.12 2006-02-22 22:47:50 grossb Exp $
+// $Id: MemberMolecules.java,v 1.13 2006-02-27 15:45:15 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,14 +34,17 @@
 package org.mskcc.pathdb.schemas.biopax;
 
 // imports
+
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 /**
  * This class parses interaction data
@@ -51,65 +54,71 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
  */
 public class MemberMolecules {
 
-	/**
-	 *  Used to help us determine if moleculeSummary should be added to molecules hashset.
-	*/
-	private static HashSet moleculeNames;
+    /**
+     * Used to help us determine if moleculeSummary should be added to molecules hashset.
+     */
+    private static HashSet moleculeNames;
 
-	/**
-	 * Should be called before each call to getMemberMolecules.
-	 */
-	public static void reset(){
-		moleculeNames = new HashSet();
-	}
+    /**
+     * Should be called before each call to getMemberMolecules.
+     */
+    public static void reset() {
+        moleculeNames = new HashSet();
+    }
 
-	/**
-	 * Finds all member molecules given CPathRecord.
-	 *
-	 * @param record CPathRecord
-	 * @param longList ArrayList - if null, no timing performed
-	 * @return HashSet
-	 */
-	public static HashSet getMemberMolecules(CPathRecord record, ArrayList longList) throws Exception {
+    /**
+     * Finds all member molecules given CPathRecord.
+     *
+     * @param record   CPathRecord
+     * @param longList ArrayList - if null, no timing performed
+     * @return HashSet
+	 * @throws BioPaxRecordSummaryException
+	 * @throws DaoException
+     */
+    public static HashSet getMemberMolecules(CPathRecord record, ArrayList longList)
+            throws BioPaxRecordSummaryException, DaoException {
 
-		// for timing
+        // for timing
         long startTime = 0;
 
-		// hashset to return
-		HashSet molecules = new HashSet();
+        // hashset to return
+        HashSet molecules = new HashSet();
 
-		// get internal links
-		DaoInternalLink daoInternalLinks = new DaoInternalLink();
-		if (longList != null){
-			startTime = Calendar.getInstance().getTimeInMillis();
-		}
-		ArrayList targets = daoInternalLinks.getTargetsWithLookUp(record.getId());
-		if (longList != null){
-			Long currentTime = new Long(Calendar.getInstance().getTimeInMillis() - startTime);
-			longList.add(currentTime);
-		}
+        // get internal links
+        DaoInternalLink daoInternalLinks = new DaoInternalLink();
+        if (longList != null) {
+            startTime = Calendar.getInstance().getTimeInMillis();
+        }
+        ArrayList targets = daoInternalLinks.getTargetsWithLookUp(record.getId());
+        if (longList != null) {
+            Long currentTime = new Long(Calendar.getInstance().getTimeInMillis() - startTime);
+            longList.add(currentTime);
+        }
 
-		if (targets.size() > 0){
-			for (int lc = 0; lc < targets.size(); lc++){
-				CPathRecord targetRecord = (CPathRecord)targets.get(lc);
-				molecules.addAll(getMemberMolecules(targetRecord, longList));
-			}
-		}
-		else{
-			BioPaxConstants biopaxConstants = new BioPaxConstants();
-			if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
-				BioPaxRecordSummary moleculeSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
-				if (moleculeSummary != null){
-					String name = (moleculeSummary.getName() != null) ? moleculeSummary.getName() : moleculeSummary.getShortName();
-					if (name != null && name.length() > 0){
-						boolean addSummaryToMoleculesSet = moleculeNames.add(name);
-						if (addSummaryToMoleculesSet) molecules.add(moleculeSummary);
-					}
-				}
-			}
-		}
+        if (targets.size() > 0) {
+            for (int lc = 0; lc < targets.size(); lc++) {
+                CPathRecord targetRecord = (CPathRecord) targets.get(lc);
+                molecules.addAll(getMemberMolecules(targetRecord, longList));
+            }
+        } else {
+            BioPaxConstants biopaxConstants = new BioPaxConstants();
+            if (biopaxConstants.isPhysicalEntity(record.getSpecificType())) {
+                BioPaxRecordSummary moleculeSummary =
+                    BioPaxRecordUtil.createBioPaxRecordSummary(record);
+                if (moleculeSummary != null) {
+                    String name = (moleculeSummary.getName() != null)
+                        ? moleculeSummary.getName() : moleculeSummary.getShortName();
+                    if (name != null && name.length() > 0) {
+                        boolean addSummaryToMoleculesSet = moleculeNames.add(name);
+                        if (addSummaryToMoleculesSet) {
+                            molecules.add(moleculeSummary);
+                        }
+                    }
+                }
+            }
+        }
 
-		// outta here
-		return molecules;
-	}
+        // outta here
+        return molecules;
+    }
 }
