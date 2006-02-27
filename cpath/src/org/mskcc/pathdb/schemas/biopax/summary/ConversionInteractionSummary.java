@@ -1,4 +1,4 @@
-// $Id: ConversionInteractionSummary.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: ConversionInteractionSummary.java,v 1.6 2006-02-27 19:33:13 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+
 import java.util.ArrayList;
 
 /**
@@ -44,46 +45,47 @@ import java.util.ArrayList;
  */
 public class ConversionInteractionSummary extends PhysicalInteractionSummary {
 
-	/**
-	 * The left side components of this conversion interaction.
-	 */
-	private ArrayList leftSideComponents = null;
-
-	/**
-	 * The right side components of this conversion interaction.
-	 */
-	private ArrayList rightSideComponents = null;
-
-	/**
-     * Constructor.
-	 *
-	 * @param leftSideComponents ArrayList
-	 * @param rightSideComponents ArrayList
+    /**
+     * The left side components of this conversion interaction.
      */
-    public ConversionInteractionSummary(ArrayList leftSideComponents, ArrayList rightSideComponents) {
+    private ArrayList leftSideComponents = null;
 
-		// init our members
-		this.leftSideComponents = leftSideComponents;
-		this.rightSideComponents = rightSideComponents;
-		participants.addAll(leftSideComponents);
-		participants.addAll(rightSideComponents);
-	}
+    /**
+     * The right side components of this conversion interaction.
+     */
+    private ArrayList rightSideComponents = null;
 
-  	/**
-	 * Returns the ArrayList of Left Components.
-  	 *
-  	 * @return ArrayList
-  	 */
- 	public ArrayList getLeftSideComponents(){
- 		return leftSideComponents;
- 	}
- 
- 	/**
- 	 * Returns the ArrayList of Right Components.
- 	 *
- 	 * @return ArrayList
- 	 */
- 	public ArrayList getRightSideComponents(){
- 		return rightSideComponents;
-  	}
+    /**
+     * Constructor.
+     *
+     * @param leftSideComponents  ArrayList
+     * @param rightSideComponents ArrayList
+     */
+    public ConversionInteractionSummary(ArrayList leftSideComponents,
+                                        ArrayList rightSideComponents) {
+
+        // init our members
+        this.leftSideComponents = leftSideComponents;
+        this.rightSideComponents = rightSideComponents;
+        participants.addAll(leftSideComponents);
+        participants.addAll(rightSideComponents);
+    }
+
+    /**
+     * Returns the ArrayList of Left Components.
+     *
+     * @return ArrayList
+     */
+    public ArrayList getLeftSideComponents() {
+        return leftSideComponents;
+    }
+
+    /**
+     * Returns the ArrayList of Right Components.
+     *
+     * @return ArrayList
+     */
+    public ArrayList getRightSideComponents() {
+        return rightSideComponents;
+    }
 }
