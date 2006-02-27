@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: WebUIBean.java,v 1.6 2006-02-27 15:33:16 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,10 +32,12 @@
 package org.mskcc.pathdb.form;
 
 // imports
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionError;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -45,49 +47,49 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class WebUIBean extends ActionForm {
 
-	/**
-	 * Application Name.
-	 */
+    /**
+     * Application Name.
+     */
     private String applicationName;
 
-	/**
-	 * Home Page Header.
-	 */
+    /**
+     * Home Page Header.
+     */
     private String homePageHeader;
 
-	/**
-	 * Home Page Tag Line.
-	 */
+    /**
+     * Home Page Tag Line.
+     */
     private String homePageTagLine;
 
-	/**
-	 * Home Page Right Column Content.
-	 */
+    /**
+     * Home Page Right Column Content.
+     */
     private String homePageRightColumnContent;
 
-	/**
-	 * Display Browse by Pathway Tab.
-	 */
+    /**
+     * Display Browse by Pathway Tab.
+     */
     private boolean displayBrowseByPathwayTab;
 
-	/**
-	 * Display Browse by Organism Tab.
-	 */
+    /**
+     * Display Browse by Organism Tab.
+     */
     private boolean displayBrowseByOrganismTab;
 
-	/**
-	 * FAQ Page Content.
-	 */
-    private String FAQPageContent;
+    /**
+     * FAQ Page Content.
+     */
+    private String faqPageContent;
 
-	/**
-	 * About Page Content.
-	 */
+    /**
+     * About Page Content.
+     */
     private String aboutPageContent;
 
-	/**
-	 * Maintenance Tag Line.
-	 */
+    /**
+     * Maintenance Tag Line.
+     */
     private String maintenanceTagLine;
 
     /**
@@ -201,19 +203,19 @@ public class WebUIBean extends ActionForm {
     /**
      * Sets the FAQ Page Content.
      *
-     * @param FAQPageContent String.
+     * @param faqPageContent String.
      */
-    public void setFAQPageContent(String FAQPageContent) {
-        this.FAQPageContent = FAQPageContent;
+    public void setFAQPageContent(String faqPageContent) {
+        this.faqPageContent = faqPageContent;
     }
 
     /**
      * Gets the FAQ Page Content.
      *
-     * @return FAQPageContent.
+     * @return faqPageContent.
      */
     public String getFAQPageContent() {
-        return FAQPageContent;
+        return faqPageContent;
     }
 
     /**
@@ -252,45 +254,45 @@ public class WebUIBean extends ActionForm {
         return maintenanceTagLine;
     }
 
-	/**
-	 * Our implementation of validate.
-	 *
-	 * @param mapping ActionMapping reference.
-	 * @param request HttpServletRequest.
-	 * @return ActionErrors reference.
-	 *
-	 */
+    /**
+     * Our implementation of validate.
+     *
+     * @param mapping ActionMapping reference.
+     * @param request HttpServletRequest.
+     * @return ActionErrors reference.
+     *
+     */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
 
-		// create errors object to return
-		ActionErrors errors = new ActionErrors();
+        // create errors object to return
+        ActionErrors errors = new ActionErrors();
 
-		// homePageHeader
-		if (homePageHeader == null || homePageHeader.equals("")) {
-			errors.add("homePageHeader", new ActionError("error.missing.homePageHeader"));
-		}
+        // homePageHeader
+        if (homePageHeader == null || homePageHeader.equals("")) {
+            errors.add("homePageHeader", new ActionError("error.missing.homePageHeader"));
+        }
 
-		// homePageTagLine
-		if (homePageTagLine == null || homePageTagLine.equals("")) {
-			errors.add("homePageTagLine", new ActionError("error.missing.homePageTagLine"));
-		}
+        // homePageTagLine
+        if (homePageTagLine == null || homePageTagLine.equals("")) {
+            errors.add("homePageTagLine", new ActionError("error.missing.homePageTagLine"));
+        }
 
-		// FAQ Page Content
-		if (FAQPageContent == null || FAQPageContent.equals("")) {
-			errors.add("FAQPageContent", new ActionError("error.missing.FAQPageContent"));
-		}
+        // FAQ Page Content
+        if (faqPageContent == null || faqPageContent.equals("")) {
+            errors.add("faqPageContent", new ActionError("error.missing.faqPageContent"));
+        }
 
-		// About Page Content
-		if (aboutPageContent == null || aboutPageContent.equals("")) {
-			errors.add("aboutPageContent", new ActionError("error.missing.aboutPageContent"));
-		}
+        // About Page Content
+        if (aboutPageContent == null || aboutPageContent.equals("")) {
+            errors.add("aboutPageContent", new ActionError("error.missing.aboutPageContent"));
+        }
 
-		// MaintenanceTagLine
-		if (maintenanceTagLine == null || maintenanceTagLine.equals("")) {
-			errors.add("maintenanceTagLine", new ActionError("error.missing.maintenanceTagLine"));
-		}
+        // MaintenanceTagLine
+        if (maintenanceTagLine == null || maintenanceTagLine.equals("")) {
+            errors.add("maintenanceTagLine", new ActionError("error.missing.maintenanceTagLine"));
+        }
 
-		// outta here
+        // outta here
 		return errors;
 	}
 }

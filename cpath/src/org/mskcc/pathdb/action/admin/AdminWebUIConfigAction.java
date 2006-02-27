@@ -1,4 +1,4 @@
-// $Id: AdminWebUIConfigAction.java,v 1.8 2006-02-27 15:02:16 grossb Exp $
+// $Id: AdminWebUIConfigAction.java,v 1.9 2006-02-27 15:33:27 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,8 +67,7 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
                                       XDebug xdebug) throws Exception {
 
         // only process if we are authorized
-        if (CPathUIConfig.getAdminModeActive() ==
-                CPathUIConfig.ADMIN_MODE_DEACTIVE) {
+        if (CPathUIConfig.getAdminModeActive() == CPathUIConfig.ADMIN_MODE_DEACTIVE) {
             return mapping.findForward(BaseAction.FORWARD_UNAUTHORIZED);
         }
 
