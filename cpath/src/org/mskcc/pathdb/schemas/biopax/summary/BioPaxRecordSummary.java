@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: BioPaxRecordSummary.java,v 1.5 2006-02-27 19:27:28 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+
 import java.util.List;
 
 /**
@@ -45,55 +46,55 @@ import java.util.List;
  */
 public class BioPaxRecordSummary {
 
-	/**
-	 * The cpath record id.
-	 */
+    /**
+     * The cpath record id.
+     */
     protected long recordID;
 
-	/**
-	 * The record type.
-	 */
-	protected String type;
+    /**
+     * The record type.
+     */
+    protected String type;
 
-	/**
-	 * The record name.
-	 */
-	protected String name;
+    /**
+     * The record name.
+     */
+    protected String name;
 
-	/**
-	 * The record short name.
-	 */
-	protected String shortName;
+    /**
+     * The record short name.
+     */
+    protected String shortName;
 
-	/**
-	 * The record synonyms.
-	 */
-	protected List synonyms;
+    /**
+     * The record synonyms.
+     */
+    protected List synonyms;
 
-	/**
-	 * The record organism.
-	 */
-	protected String organism;
+    /**
+     * The record organism.
+     */
+    protected String organism;
 
-	/**
-	 * The record data source.
-	 */
-	protected String dataSource;
+    /**
+     * The record data source.
+     */
+    protected String dataSource;
 
-	/**
-	 * The record availability.
-	 */
-	protected String availability;
+    /**
+     * The record availability.
+     */
+    protected String availability;
 
-	/**
-	 * The record external links.
-	 */
-	protected List externalLinks;
+    /**
+     * The record external links.
+     */
+    protected List externalLinks;
 
-	/**
-	 * The record comment.
-	 */
-	protected String comment;
+    /**
+     * The record comment.
+     */
+    protected String comment;
 
     /**
      * Sets the cpath record id.
@@ -113,165 +114,165 @@ public class BioPaxRecordSummary {
         return recordID;
     }
 
-	/**
-	 * Set the record type.
-	 *
-	 * @param type String
-	 */
-	public void setType(String type){
-		this.type = type;
-	}
+    /**
+     * Set the record type.
+     *
+     * @param type String
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	/**
-	 * Returns the record type.
-	 *
-	 * @return String
-	 */
-	public String getType(){
-		return type;
-	}
+    /**
+     * Returns the record type.
+     *
+     * @return String
+     */
+    public String getType() {
+        return type;
+    }
 
-	/**
-	 * Set the record name.
-	 *
-	 * @param name String
-	 */
-	public void setName(String name){
-		this.name = name;
-	}
+    /**
+     * Set the record name.
+     *
+     * @param name String
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * Returns the record name.
-	 *
-	 * @return String
-	 */
-	public String getName(){
-		return name;
-	}
+    /**
+     * Returns the record name.
+     *
+     * @return String
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * Set the record short name.
-	 *
-	 * @param shortName String
-	 */
-	public void setShortName(String shortName){
-		this.shortName = shortName;
-	}
+    /**
+     * Set the record short name.
+     *
+     * @param shortName String
+     */
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
 
-	/**
-	 * Returns the record short name.
-	 *
-	 * @return String
-	 */
-	public String getShortName(){
-		return shortName;
-	}
+    /**
+     * Returns the record short name.
+     *
+     * @return String
+     */
+    public String getShortName() {
+        return shortName;
+    }
 
-	/**
-	 * Set the record synonyms list.
-	 *
-	 * @param synonyms List
-	 */
-	public void setSynonyms(List synonyms){
-		this.synonyms = synonyms;
-	}
+    /**
+     * Set the record synonyms list.
+     *
+     * @param synonyms List
+     */
+    public void setSynonyms(List synonyms) {
+        this.synonyms = synonyms;
+    }
 
-	/**
-	 * Returns the record synonym list.
-	 *
-	 * @return List
-	 */
-	public List getSynonyms(){
-		return synonyms;
-	}
+    /**
+     * Returns the record synonym list.
+     *
+     * @return List
+     */
+    public List getSynonyms() {
+        return synonyms;
+    }
 
-	/**
-	 * Set the record organism.
-	 *
-	 * @param organism String
-	 */
-	public void setOrganism(String organism){
-		this.organism = organism;
-	}
+    /**
+     * Set the record organism.
+     *
+     * @param organism String
+     */
+    public void setOrganism(String organism) {
+        this.organism = organism;
+    }
 
-	/**
-	 * Returns the record organism.
-	 *
-	 * @return String
-	 */
-	public String getOrganism(){
-		return organism;
-	}
+    /**
+     * Returns the record organism.
+     *
+     * @return String
+     */
+    public String getOrganism() {
+        return organism;
+    }
 
-	/**
-	 * Set the record data source.
-	 *
-	 * @param dataSource String
-	 */
-	public void setDataSource(String dataSource){
-		this.dataSource = dataSource;
-	}
+    /**
+     * Set the record data source.
+     *
+     * @param dataSource String
+     */
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
+    }
 
-	/**
-	 * Returns the record data source.
-	 *
-	 * @return String
-	 */
-	public String getDataSource(){
-		return dataSource;
-	}
+    /**
+     * Returns the record data source.
+     *
+     * @return String
+     */
+    public String getDataSource() {
+        return dataSource;
+    }
 
-	/**
-	 * Set the record availability.
-	 *
-	 * @param availability String
-	 */
-	public void setAvailability(String availability){
-		this.availability = availability;
-	}
+    /**
+     * Set the record availability.
+     *
+     * @param availability String
+     */
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
 
-	/**
-	 * Returns the record availabilty.
-	 *
-	 * @return String
-	 */
-	public String getAvailability(){
-		return availability;
-	}
+    /**
+     * Returns the record availabilty.
+     *
+     * @return String
+     */
+    public String getAvailability() {
+        return availability;
+    }
 
-	/**
-	 * Set the record external links list.
-	 *
-	 * @param externalLinks List
-	 */
-	public void setExternalLinks(List externalLinks){
-		this.externalLinks = externalLinks;
-	}
+    /**
+     * Set the record external links list.
+     *
+     * @param externalLinks List
+     */
+    public void setExternalLinks(List externalLinks) {
+        this.externalLinks = externalLinks;
+    }
 
-	/**
-	 * Returns the record external links list.
-	 *
-	 * @return List
-	 */
-	public List getExternalLinks(){
-		return externalLinks;
-	}
+    /**
+     * Returns the record external links list.
+     *
+     * @return List
+     */
+    public List getExternalLinks() {
+        return externalLinks;
+    }
 
-	/**
-	 * Set the record comment.
-	 *
-	 * @param comment String
-	 */
-	public void setComment(String comment){
-		this.comment = comment;
-	}
+    /**
+     * Set the record comment.
+     *
+     * @param comment String
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
-	/**
-	 * Returns the record comment.
-	 *
-	 * @return String
-	 */
-	public String getComment(){
-		return comment;
-	}
+    /**
+     * Returns the record comment.
+     *
+     * @return String
+     */
+    public String getComment() {
+        return comment;
+    }
 }
