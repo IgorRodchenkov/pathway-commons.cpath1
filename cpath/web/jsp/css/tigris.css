@@ -1,4 +1,4 @@
-/* $Id: tigris.css,v 1.7 2005-11-17 16:11:28 cerami Exp $
+/* $Id: tigris.css,v 1.8 2006-02-27 17:22:26 cerami Exp $
 
 	This file defines basic default formatting for HTML conforming to Tigris application style. To extend or override these rules for your instance, edit inst.css instead of this file. */
 
@@ -89,10 +89,6 @@ a:active, a:hover, #leftcol a:active, #leftcol a:hover {
 
 .b td {
 	background: #efefef;
-}
-
-table, th, td {
-	border: 0px solid red;
 }
 
 div.colbar {
@@ -511,10 +507,6 @@ ol ol ol {
 	padding: 5px;
 	margin-right: 2px;
 	margin-left: 2px;
-}
-
-.app td, .app th {
-	padding: 2px 3px;
 }
 
 .h3 p, .h4 p, .h3 dt, .h4 dt {

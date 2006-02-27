@@ -166,6 +166,7 @@
 /* Table Headers */
 .table_head2 {
     background-color: #CC9999;
+    padding: 5px 2px 5px 5px;
     font-weight:bold;
 }
 
