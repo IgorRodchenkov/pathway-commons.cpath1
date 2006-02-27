@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.40 2006-02-22 22:47:51 grossb Exp $
+// $Id: Admin.java,v 1.41 2006-02-27 22:38:19 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -407,7 +407,7 @@ public class Admin {
         System.out.println("  -u, -u=name     Database User Name "
             + "(overrides build.properties)");
         System.out.println("  -p, -p=name     Database Password "
-            +"(overrides build.properties)");
+            + "(overrides build.properties)");
         System.out.println ("  -h, -h=hostname Database Server Name "
             + "(overrides build.properties)");
         System.out.println("  -b, -b=database Database name "

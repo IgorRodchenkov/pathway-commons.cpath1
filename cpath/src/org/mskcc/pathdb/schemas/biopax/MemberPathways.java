@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.9 2006-02-27 19:23:58 grossb Exp $
+// $Id: MemberPathways.java,v 1.10 2006-02-27 22:43:03 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,9 +62,9 @@ public class MemberPathways {
      * @param record   CPathRecord
      * @param longList ArrayList - if null, no timing performed
      * @return HashSet
-     * @throws IOException
-     * @throws JDOMException
-     * @throws DaoException
+     * @throws IOException Throwable
+     * @throws JDOMException Throwable
+     * @throws DaoException Throwable
      */
     public static HashSet getMemberPathways(CPathRecord record, ArrayList longList)
             throws IOException, JDOMException, DaoException {

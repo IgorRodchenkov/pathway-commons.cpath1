@@ -1,4 +1,4 @@
-// $Id: SortAction.java,v 1.3 2006-02-22 22:47:50 grossb Exp $
+// $Id: SortAction.java,v 1.4 2006-02-27 22:33:06 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -65,7 +65,7 @@ public class SortAction extends BaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
 
 		// if biopax, get list of pathways
-		if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX){
+		if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) {
 		
 			// get top level pathways
 			GetTopLevelPathwayListCommand getPathwayListCommand =
@@ -75,7 +75,7 @@ public class SortAction extends BaseAction {
 		}
 
 		String referer = request.getParameter(BaseAction.REFERER);
-		return (referer == null) ?
-			mapping.findForward(BaseAction.FORWARD_BROWSE) : mapping.findForward(referer);
+		return (referer == null)
+			? mapping.findForward(BaseAction.FORWARD_BROWSE) : mapping.findForward(referer);
 	}
 }
