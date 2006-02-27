@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.9 2006-02-27 16:10:21 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.10 2006-02-27 17:30:17 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -142,21 +142,21 @@ public class BioPaxParentChildTable extends HtmlTable {
         if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
             heading = "Contains the Following Interactions / Pathways ";
             if (showAll) {
-                end = entitySummaryList.size() + 1;
-                all = entitySummaryList.size() + 1;
+                end = entitySummaryList.size();
+                all = entitySummaryList.size();
             } else {
                 if (entitySummaryList.size() > DEFAULT_NUM_RECORDS) {
                     end = DEFAULT_NUM_RECORDS;
-                    all = entitySummaryList.size() + 1;
+                    all = entitySummaryList.size();
                 } else {
-                    end = entitySummaryList.size() + 1;;
-                    all = entitySummaryList.size() + 1;
+                    end = entitySummaryList.size();
+                    all = entitySummaryList.size();
                 }
             }
         } else {
             heading = "Member of the Following Interactions / Complexes";
-            end = entitySummaryList.size() + 1;
-            all = entitySummaryList.size() + 1;
+            end = entitySummaryList.size();
+            all = entitySummaryList.size();
         }
         heading += " (Showing " + start + " - " + end
                 + " of " + all + ")";
