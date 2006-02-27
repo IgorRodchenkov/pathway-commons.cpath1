@@ -1,4 +1,4 @@
-// $Id: BioPaxConstants.java,v 1.15 2006-02-22 22:47:50 grossb Exp $
+// $Id: BioPaxConstants.java,v 1.16 2006-02-27 22:34:23 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -293,8 +293,8 @@ public class BioPaxConstants {
      * @return boolean value.
      */
     public boolean isPhysicalInteraction(String elementName) {
-        return (interactionSet.contains(elementName.trim()) &&
-                !elementName.trim().equals(INTERACTION));
+        return (interactionSet.contains(elementName.trim())
+				&& !elementName.trim().equals(INTERACTION));
     }
 
     /**
