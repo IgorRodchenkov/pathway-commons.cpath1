@@ -1,4 +1,4 @@
-// $Id: PathwayListTable.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: PathwayListTable.java,v 1.9 2006-02-27 21:55:03 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,7 +32,9 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
+
 import java.util.ArrayList;
+
 import org.mskcc.pathdb.model.CPathRecord;
 
 /**
@@ -48,9 +50,9 @@ public class PathwayListTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     protected void subDoStartTag() throws Exception {
-		startTable();
-		outputRecords();
-		endTable();
+        startTable();
+        outputRecords();
+        endTable();
     }
 
     /**
@@ -58,20 +60,20 @@ public class PathwayListTable extends HtmlTable {
      */
     private void outputRecords() {
 
-		// get pathway list records
-		ArrayList records = null;
-		records = (ArrayList) pageContext.getRequest().getAttribute("RECORDS");
+        // get pathway list records
+        ArrayList records = null;
+        records = (ArrayList) pageContext.getRequest().getAttribute("RECORDS");
 
-		// process records
+        // process records
         if (records.size() == 0) {
             startRow();
             append("<TD COLSPAN=5>No Pathway Records Exist</TD>");
             endRow();
         } else {
             for (int lc = 0; lc < records.size(); lc++) {
-                CPathRecord rec = (CPathRecord)records.get(lc);
+                CPathRecord rec = (CPathRecord) records.get(lc);
                 startRow(1);
-				String uri = "record.do?id=" + rec.getId();
+                String uri = "record.do?id=" + rec.getId();
                 outputDataField("<a href=\"" + uri + "\">" + rec.getName() + "</a>");
                 endRow();
             }

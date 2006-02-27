@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.10 2006-02-22 22:47:51 grossb Exp $
+// $Id: PathwayMembershipTable.java,v 1.11 2006-02-27 21:54:06 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
+
 import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -55,7 +56,7 @@ public class PathwayMembershipTable extends HtmlTable {
      *
      * @param pathwaySet HashSet.
      */
-    public void setPathwaySet(HashSet pathwaySet){
+    public void setPathwaySet(HashSet pathwaySet) {
         this.pathwaySet = pathwaySet;
     }
 
@@ -65,7 +66,7 @@ public class PathwayMembershipTable extends HtmlTable {
     protected void subDoStartTag() {
 
         // here we go
-        if (pathwaySet != null && pathwaySet.size() > 0){
+        if (pathwaySet != null && pathwaySet.size() > 0) {
             outputRecords();
         }
     }
@@ -75,24 +76,24 @@ public class PathwayMembershipTable extends HtmlTable {
      */
     private void outputRecords() {
 
-		// sort the pathways
-		String[] pathways = (String[])pathwaySet.toArray(new String[0]);
-		List pathwayList = Arrays.asList(pathways);
-		Collections.sort(pathwayList, new RecordLinkSorter());
+        // sort the pathways
+        String[] pathways = (String[]) pathwaySet.toArray(new String[0]);
+        List pathwayList = Arrays.asList(pathways);
+        Collections.sort(pathwayList, new RecordLinkSorter());
 
-		// render the table
-		startRow();
+        // render the table
+        startRow();
 
-		// interate through list
-		int cnt = pathwayList.size();
-		for (int lc = 1; lc <= cnt; lc++){
+        // interate through list
+        int cnt = pathwayList.size();
+        for (int lc = 1; lc <= cnt; lc++) {
             append("<td>");
-			append((String)pathwayList.get(lc-1));
+            append((String) pathwayList.get(lc - 1));
             append("</td>");
-		}
+        }
 
-		// end the row
-		endRow();
+        // end the row
+        endRow();
     }
 }
 
@@ -101,34 +102,35 @@ public class PathwayMembershipTable extends HtmlTable {
  * Only works with strings in the following format:
  * <a href="record.do?id=52">LinkName</a>
  * We sort on the LinkName.
+ *
+ * @author Benjamin Gross
  */
 class RecordLinkSorter implements Comparator {
 
-	/**
-	 * Our implementation of compare.
-	 */
-	public int compare(Object o1, Object o2){
+    /**
+     * Our implementation of compare.
+     */
+    public int compare(Object o1, Object o2) {
 
-		// only work with strings
-		if (o1 instanceof String && o2 instanceof String){
-			String s1 = (String)o1;
-			String s2 = (String)o2;
+        // only work with strings
+        if (o1 instanceof String && o2 instanceof String) {
+            String s1 = (String) o1;
+            String s2 = (String) o2;
 
-			// get the strings to compare
-			String sub1, sub2;
-			try {
-				sub1 = s1.substring(s1.indexOf('>')+1, s1.lastIndexOf('<'));
-				sub2 = s2.substring(s2.indexOf('>')+1, s2.lastIndexOf('<'));
-			}
-			catch(Exception e){
-				throw new IllegalArgumentException("Invalid arguments to RecordLinkSorter.compare()");
-			}
+            // get the strings to compare
+            String sub1, sub2;
+            try {
+                sub1 = s1.substring(s1.indexOf('>') + 1, s1.lastIndexOf('<'));
+                sub2 = s2.substring(s2.indexOf('>') + 1, s2.lastIndexOf('<'));
+            } catch (Exception e) {
+              throw new IllegalArgumentException("Invalid arguments to RecordLinkSorter.compare()");
+            }
 
-			// return string compare
-			return sub1.compareToIgnoreCase(sub2);
-		}
-		
-		// made it here, we have invalid args
-		throw new IllegalArgumentException("Invalid arguments to RecordLinkSorter.compare()");
-	}
+            // return string compare
+            return sub1.compareToIgnoreCase(sub2);
+        }
+
+        // made it here, we have invalid args
+        throw new IllegalArgumentException("Invalid arguments to RecordLinkSorter.compare()");
+    }
 }

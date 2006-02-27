@@ -1,4 +1,4 @@
-// $Id: PathwayInteractionTable.java,v 1.22 2006-02-22 22:47:51 grossb Exp $
+// $Id: PathwayInteractionTable.java,v 1.23 2006-02-27 21:51:11 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
+
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryException;
@@ -58,7 +59,7 @@ public class PathwayInteractionTable extends HtmlTable {
      *
      * @param interactionSummary InteractionSummary.
      */
-    public void setInteractionSummary(InteractionSummary interactionSummary){
+    public void setInteractionSummary(InteractionSummary interactionSummary) {
         this.interactionSummary = interactionSummary;
     }
 
@@ -73,10 +74,12 @@ public class PathwayInteractionTable extends HtmlTable {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    protected void subDoStartTag() throws DaoException, IOException, EntitySummaryException, JDOMException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    protected void subDoStartTag()
+            throws DaoException, IOException, EntitySummaryException, JDOMException,
+            IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         // here we go
-        if (interactionSummary != null){
+        if (interactionSummary != null) {
             startRow();
             append("<td>");
             outputRecords();
@@ -87,20 +90,13 @@ public class PathwayInteractionTable extends HtmlTable {
 
     /**
      * Output the Interaction Information.
-     *
-     * @throws DaoException
-     * @throws IOException
-     * @throws EntitySummaryException
-     * @throws JDOMException
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
-    private void outputRecords() throws DaoException, IOException, EntitySummaryException, JDOMException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private void outputRecords() {
 
         //easy huh ?
-        String interactionSummaryString = InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
-        if (interactionSummaryString != null){
+        String interactionSummaryString =
+                InteractionSummaryUtils.createInteractionSummaryString(interactionSummary);
+        if (interactionSummaryString != null) {
             append(interactionSummaryString);
         }
     }
