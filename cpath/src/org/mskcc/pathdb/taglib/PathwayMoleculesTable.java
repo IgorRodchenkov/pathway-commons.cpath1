@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.9 2006-02-27 16:09:41 cerami Exp $
+// $Id: PathwayMoleculesTable.java,v 1.10 2006-02-27 17:23:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -112,7 +112,7 @@ public class PathwayMoleculesTable extends HtmlTable {
         if (moleculeSet != null && moleculeSet.size() > 0){
             processMoleculeSet();
             outputHeader();
-            startTable();
+            append ("<TABLE>");
             outputRecords();
             endTable();
         }

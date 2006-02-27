@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.7 2006-02-24 18:28:20 grossb Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.8 2006-02-27 17:23:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -109,7 +109,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
     private void outputRecords() {
 
 		outputHeader();
-		append("<TABLE>");
+		append("<TABLE CELLSPACING=5 CELLPADDING=0>");
 		outputSynonyms();
 		outputDataSource();
 		outputAvailability();
@@ -145,11 +145,14 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 		// do we have something to process ?
         if (synonymList != null && synonymList.size() > 0) {
 			append("<TR>");
-			append("<TD>Synonyms:</TD>");
-			boolean endedRow = false;
+            append("<TD><B>Synonyms:</B></TD>");
+            append("<TD VALIGN=TOP>");
+            append("<TABLE VALIGN=TOP CELLSPACING=2 CELLPADDING=0>");
+            append("<TR VALIGN=TOP>");
+            boolean endedRow = false;
 			int cnt = synonymList.size();
             for (int lc = 1; lc <= cnt; lc++) {
-				append("<td>");
+				append("<td BGCOLOR=#EEEEEE VALIGN=TOP>");
 				append((String)synonymList.get(lc-1));
 				append(SYNONYM_SPACING);
 				append("</td>");
@@ -157,17 +160,13 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 				if ((lc % SYNONYMS_PER_ROW) == 0){
 					append("</tr>");
 					endedRow = true;
-					if (lc < cnt){
-						append("<tr>");
-						endedRow = false;
-						// to indent after synonym label
-						append("<td></td>");
-					}
 				}
             }
 			// do we have to cap a row ?
 			if (!endedRow) append("</tr>");
-		}
+            append ("</TABLE>");
+            append ("</TD></TR>");
+        }
 	}
 
     /**
@@ -176,12 +175,13 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
     private void outputDataSource() {
 
 		// get synonym string
-		String dataSourceString = BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString(biopaxRecordSummary);
+		String dataSourceString =
+                BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString(biopaxRecordSummary);
 		
 		// do we have something to process ?
 		if (dataSourceString != null) {
 			append("<TR>");
-			append("<TD>Data Source:</TD>");
+			append("<TD><B>Data Source:</B></TD>");
 			append("<TD COLSPAN=3>" + dataSourceString + "</TD>");
 			append("</TR>");
 		}
@@ -193,12 +193,13 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
     private void outputAvailability() {
 
 		// get synonym string
-		String availabilityString = BioPaxRecordSummaryUtils.getBioPaxRecordAvailabilityString(biopaxRecordSummary);
+		String availabilityString =
+                BioPaxRecordSummaryUtils.getBioPaxRecordAvailabilityString(biopaxRecordSummary);
 		
 		// do we have something to process ?
 		if (availabilityString != null) {
 			append("<TR>");
-			append("<TD>Availability:</TD>");
+			append("<TD><B>Availability:</B></TD>");
 			append("<TD COLSPAN=3>" + availabilityString + "</TD>");
 			append("</TR>");
 		}
@@ -217,11 +218,14 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 		// process them
 		if (links != null && links.size() > 0){
 			append("<TR>");
-			append("<TD>External Links:</TD>");
-			boolean endedRow = false;
+			append("<TD><B>External Links:</B></TD>");
+            append("<TD VALIGN=TOP>");
+            append("<TABLE VALIGN=TOP CELLSPACING=2 CELLPADDING=0>");
+            append("<TR VALIGN=TOP>");
+            boolean endedRow = false;
 			int cnt = links.size();
 			for (int lc = 1; lc <= cnt; lc++) {
-				append("<TD>");
+				append("<TD BGCOLOR=#EEEEEE>");
 				ExternalLinkRecord link = (ExternalLinkRecord) links.get(lc-1);
 				ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
 				String dbId = link.getLinkedToId();
@@ -240,14 +244,14 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 					if (lc < cnt){
 						append("<tr>");
 						endedRow = false;
-						// to indent after external links label
-						append("<td></td>");
 					}
 				}
             }
 			// do we have to cap a row ?
 			if (!endedRow) append("</tr>");
-		}
+            append ("</TABLE>");
+            append ("</TD></TR>");
+        }
 	}
 
     /**
@@ -262,7 +266,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 		if (commentString != null) {
 			commentString = commentString.replaceAll("<BR>", "<P>");
 			append("<TR>");
-			append("<TD>Comment:</TD>");
+			append("<TD><B>Comment:</B></TD>");
 			append("<TD COLSPAN=3>" + commentString + "</TD>");
 			append("</TR>");
 		}
