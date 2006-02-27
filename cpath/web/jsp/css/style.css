@@ -87,9 +87,9 @@
 }
 
 /* Search Results Bar */
-#search_bar {
-        background: #036;
-        color: #FFFFFF;
+.search_bar {
+    background: #036;
+     color: #FFFFFF;
 	font-size: 100%;
 	font-weight: bold;
 	/* margin:  top, right, bottom, left */
@@ -97,19 +97,19 @@
 	padding: 5px 5px 5px 5px;
 }
 
-#search_bar a:link {
-      color: #FFFFFF;
+.search_bar a:link, .search_bar a:visited, .search_bar a:active {
+    color: #fff !important;
 }
 
 /*  Search Hit */
-#search_name
+.search_name
 {
 	font-size: 110%;
-        margin: 5px 5px 5px 5px;
+     margin: 5px 5px 5px 5px;
 }
 
 /*  Search Blob  */
-#search_blob {
+.search_blob {
 	font-size:  100%;
 	color:  #555555;
 	/* margin:  top, right, bottom, left */
