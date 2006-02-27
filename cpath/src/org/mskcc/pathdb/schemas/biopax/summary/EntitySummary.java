@@ -1,4 +1,4 @@
-// $Id: EntitySummary.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: EntitySummary.java,v 1.5 2006-02-27 19:34:54 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,41 +42,41 @@ package org.mskcc.pathdb.schemas.biopax.summary;
  */
 public class EntitySummary {
 
-	/**
-	 * CPath record ID of the record that this class summarizes.
-	 */
-	private long recordID;
+    /**
+     * CPath record ID of the record that this class summarizes.
+     */
+    private long recordID;
 
-	/**
-	 * The name of the entity.
-	 */
+    /**
+     * The name of the entity.
+     */
     private String name;
 
-	/**
-	 * The specific type of the entity.
-	 */
+    /**
+     * The specific type of the entity.
+     */
     private String specificType;
 
-	/**
+    /**
      * Constructor.
      */
-    public EntitySummary(){
-	}
+    public EntitySummary() {
+    }
 
-	/**
+    /**
      * Constructor.
-	 *
-	 * @param recordID long
-	 * @param name String
-	 * @param specificType String
+     *
+     * @param recordID     long
+     * @param name         String
+     * @param specificType String
      */
-    public EntitySummary(long recordID, String name, String specificType){
+    public EntitySummary(long recordID, String name, String specificType) {
 
-		// init our members
-		this.recordID = recordID;
-		this.name = name;
-		this.specificType = specificType;
-	}
+        // init our members
+        this.recordID = recordID;
+        this.name = name;
+        this.specificType = specificType;
+    }
 
     /**
      * Sets the cpath id for this summary.
@@ -92,7 +92,7 @@ public class EntitySummary {
      *
      * @return long
      */
-    public long getRecordID(){
+    public long getRecordID() {
         return recordID;
     }
 
@@ -110,7 +110,7 @@ public class EntitySummary {
      *
      * @return String
      */
-    public String getName(){
+    public String getName() {
         return name;
     }
 

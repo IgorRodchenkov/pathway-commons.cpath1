@@ -1,4 +1,4 @@
-// $Id: ControlInteractionSummary.java,v 1.10 2006-02-27 19:31:14 grossb Exp $
+// $Id: ControlInteractionSummary.java,v 1.11 2006-02-27 19:32:59 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,7 +67,9 @@ public class ControlInteractionSummary extends PhysicalInteractionSummary {
      * @param controllerComponents ArrayList
      * @param controlledComponents ArrayList
      */
-    public ControlInteractionSummary(String controlType, ArrayList controllerComponents, ArrayList controlledComponents) {
+    public ControlInteractionSummary(String controlType,
+									 ArrayList controllerComponents,
+									 ArrayList controlledComponents) {
 
         // init our members
         this.controllerComponents = controllerComponents;
