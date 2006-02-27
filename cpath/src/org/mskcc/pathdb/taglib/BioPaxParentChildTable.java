@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.8 2006-02-24 18:29:57 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.9 2006-02-27 16:10:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -111,7 +111,7 @@ public class BioPaxParentChildTable extends HtmlTable {
     protected void subDoStartTag() {
         currentType = null;
         if (entitySummaryList.size() > 0) {
-            boolean showAll = (queryString.indexOf("show=ALL") != -1);
+            boolean showAll = (queryString.indexOf("show=all_children") != -1);
             int cnt = (showAll) ? entitySummaryList.size()
                     : (entitySummaryList.size() > DEFAULT_NUM_RECORDS)
                     ? DEFAULT_NUM_RECORDS : entitySummaryList.size();
@@ -179,7 +179,7 @@ public class BioPaxParentChildTable extends HtmlTable {
                 append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 1- "
                         + DEFAULT_NUM_RECORDS +  "]</A>");
             } else {
-                String uri = "record.do?id=" + cPathId + "&show=ALL";
+                String uri = "record.do?id=" + cPathId + "&show=all_children";
                 append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display all]</A>");
             }
         }
