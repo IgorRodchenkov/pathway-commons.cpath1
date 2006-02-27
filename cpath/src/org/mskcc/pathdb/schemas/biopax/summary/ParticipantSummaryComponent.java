@@ -1,4 +1,4 @@
-// $Id: ParticipantSummaryComponent.java,v 1.7 2006-02-24 17:42:22 grossb Exp $
+// $Id: ParticipantSummaryComponent.java,v 1.8 2006-02-27 19:44:32 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -14,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -34,104 +34,105 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+
 import java.util.ArrayList;
 
 /**
  * This class represents a component of an interaction.
- * That is any entity or interaction that can be a left 
+ * That is any entity or interaction that can be a left
  * or right side operand in an interaction.
  *
  * @author Benjamin Gross.
  */
 public class ParticipantSummaryComponent extends BioPaxRecordSummary {
 
-	/**
-	 * In the case of a Complex, this is a list of
-	 * BioPaxRecordSummary that make up the complex.
-	 */
-	private ArrayList complexMemberList;
-
-	/**
-	 * The cellular location.
-	 */
-	private String cellularLocation;
-
-	/**
-	 * The feature list.
-	 */
-	private ArrayList featureList;
-
-	/**
-     * Constructor.
-	 *
-	 * @param biopaxRecordSummary BioPaxRecordSummary
+    /**
+     * In the case of a Complex, this is a list of
+     * BioPaxRecordSummary that make up the complex.
      */
-    public ParticipantSummaryComponent(BioPaxRecordSummary biopaxRecordSummary){
+    private ArrayList complexMemberList;
 
-		// init our members
-		recordID = biopaxRecordSummary.getRecordID();
-		type = biopaxRecordSummary.getType();
-		name = biopaxRecordSummary.getName();
-		shortName = biopaxRecordSummary.getShortName();
-		synonyms = biopaxRecordSummary.getSynonyms();
-		organism = biopaxRecordSummary.getOrganism();
-		dataSource = biopaxRecordSummary.getDataSource();
-		availability = biopaxRecordSummary.getAvailability();
-		externalLinks = biopaxRecordSummary.getExternalLinks();
-		comment = biopaxRecordSummary.getComment();
-	}
+    /**
+     * The cellular location.
+     */
+    private String cellularLocation;
 
-	/**
-	 * Sets the cellular location.
-	 *
-	 * @param cellularLocation String.
-	 */
-	public void setCellularLocation(String cellularLocation){
-		this.cellularLocation = cellularLocation;
-	}
+    /**
+     * The feature list.
+     */
+    private ArrayList featureList;
 
-	/**
-	 * Returns the cellular location.
-	 *
-	 * @return String
-	 */
-	public String getCellularLocation(){
-		return cellularLocation;
-	}
+    /**
+     * Constructor.
+     *
+     * @param biopaxRecordSummary BioPaxRecordSummary
+     */
+    public ParticipantSummaryComponent(BioPaxRecordSummary biopaxRecordSummary) {
 
-	/**
-	 * Sets the feature list ArrayList.
-	 *
-	 * @param featureList ArrayList
-	 */
-	public void setFeatureList(ArrayList featureList){
-		this.featureList = featureList;
-	}
+        // init our members
+        recordID = biopaxRecordSummary.getRecordID();
+        type = biopaxRecordSummary.getType();
+        name = biopaxRecordSummary.getName();
+        shortName = biopaxRecordSummary.getShortName();
+        synonyms = biopaxRecordSummary.getSynonyms();
+        organism = biopaxRecordSummary.getOrganism();
+        dataSource = biopaxRecordSummary.getDataSource();
+        availability = biopaxRecordSummary.getAvailability();
+        externalLinks = biopaxRecordSummary.getExternalLinks();
+        comment = biopaxRecordSummary.getComment();
+    }
 
-	/**
-	 * Returns the feature list ArrayList.
-	 *
-	 * @return ArrayList
-	 */
-	public ArrayList getFeatureList(){
-		return featureList;
-	}
+    /**
+     * Sets the cellular location.
+     *
+     * @param cellularLocation String.
+     */
+    public void setCellularLocation(String cellularLocation) {
+        this.cellularLocation = cellularLocation;
+    }
 
-	/**
-	 * Sets the member list of a complex.
-	 *
-	 * @param complexMemberList ArrayList of BioPaxRecordSummary
-	 */
-	public void setComponentList(ArrayList complexMemberList){
-		this.complexMemberList = complexMemberList;
-	}
+    /**
+     * Returns the cellular location.
+     *
+     * @return String
+     */
+    public String getCellularLocation() {
+        return cellularLocation;
+    }
 
-	/**
-	 * Gets the member list of a complex.
-	 *
-	 * @return ArrayList of BioPaxRecordSummary
-	 */
-	public ArrayList getComponentList(){
-		return complexMemberList;
-	}
+    /**
+     * Sets the feature list ArrayList.
+     *
+     * @param featureList ArrayList
+     */
+    public void setFeatureList(ArrayList featureList) {
+        this.featureList = featureList;
+    }
+
+    /**
+     * Returns the feature list ArrayList.
+     *
+     * @return ArrayList
+     */
+    public ArrayList getFeatureList() {
+        return featureList;
+    }
+
+    /**
+     * Sets the member list of a complex.
+     *
+     * @param complexMemberList ArrayList of BioPaxRecordSummary
+     */
+    public void setComponentList(ArrayList complexMemberList) {
+        this.complexMemberList = complexMemberList;
+    }
+
+    /**
+     * Gets the member list of a complex.
+     *
+     * @return ArrayList of BioPaxRecordSummary
+     */
+    public ArrayList getComponentList() {
+        return complexMemberList;
+    }
 }

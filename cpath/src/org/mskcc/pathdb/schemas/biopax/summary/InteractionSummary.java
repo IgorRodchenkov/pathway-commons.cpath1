@@ -1,4 +1,4 @@
-// $Id: InteractionSummary.java,v 1.6 2006-02-22 22:47:50 grossb Exp $
+// $Id: InteractionSummary.java,v 1.7 2006-02-27 19:43:35 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+
 import java.util.ArrayList;
 
 /**
@@ -44,34 +45,34 @@ import java.util.ArrayList;
  */
 public class InteractionSummary extends EntitySummary {
 
-	/**
-	 * A list of interaction participants.
-	 */
-	protected ArrayList participants = new ArrayList();
+    /**
+     * A list of interaction participants.
+     */
+    protected ArrayList participants = new ArrayList();
 
-	/**
+    /**
      * Constructor.
      */
-    public InteractionSummary(){
-	}
+    public InteractionSummary() {
+    }
 
-	/**
+    /**
      * Constructor.
-	 *
-	 * @param participants ArrayList
+     *
+     * @param participants ArrayList
      */
-    public InteractionSummary(ArrayList participants){
+    public InteractionSummary(ArrayList participants) {
 
-		// init our members
-		this.participants = participants;
-	}
+        // init our members
+        this.participants = participants;
+    }
 
-	/**
-	 * Returns the ArrayList of participants.
-	 *
-	 * @return ArrayList
-	 */
-	public ArrayList getParticipants(){
-		return participants;
-	}
+    /**
+     * Returns the ArrayList of participants.
+     *
+     * @return ArrayList
+     */
+    public ArrayList getParticipants() {
+        return participants;
+    }
 }

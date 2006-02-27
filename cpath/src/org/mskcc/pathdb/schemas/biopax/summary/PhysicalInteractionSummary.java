@@ -1,4 +1,4 @@
-// $Id: PhysicalInteractionSummary.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: PhysicalInteractionSummary.java,v 1.6 2006-02-27 19:45:04 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+
 import java.util.ArrayList;
 
 /**
@@ -44,36 +45,36 @@ import java.util.ArrayList;
  */
 public class PhysicalInteractionSummary extends InteractionSummary {
 
-	/**
-	 * Interaction Type.
-	 */
-	private String interactionType;
+    /**
+     * Interaction Type.
+     */
+    private String interactionType;
 
-	/**
+    /**
      * Constructor.
      */
     public PhysicalInteractionSummary() {
-	}
+    }
 
-	/**
+    /**
      * Constructor.
-	 *
-	 * @param interactionType String
-	 * @param participants ArrayList
+     *
+     * @param interactionType String
+     * @param participants    ArrayList
      */
     public PhysicalInteractionSummary(String interactionType, ArrayList participants) {
 
-		// init our members
-		super(participants);
-		this.interactionType = interactionType;
-	}
+        // init our members
+        super(participants);
+        this.interactionType = interactionType;
+    }
 
-	/**
-	 * Returns the interaction type.
-	 *
-	 * @return String
-	 */
-	public String getInteractionType(){
-		return interactionType;
-	}
+    /**
+     * Returns the interaction type.
+     *
+     * @return String
+     */
+    public String getInteractionType() {
+        return interactionType;
+    }
 }
