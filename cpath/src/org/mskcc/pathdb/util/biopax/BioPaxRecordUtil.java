@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.18 2006-02-27 22:24:49 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.19 2006-02-27 22:46:40 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,7 +76,7 @@ public class BioPaxRecordUtil {
      *
      * @param record CPathRecord
      * @return BioPaxRecordSummary
-     * @throws BioPaxRecordSummaryException
+     * @throws BioPaxRecordSummaryException Throwable
      */
     public static BioPaxRecordSummary createBioPaxRecordSummary(CPathRecord record)
             throws BioPaxRecordSummaryException {
@@ -186,7 +186,7 @@ public class BioPaxRecordUtil {
      * @param e                    Element of Participant
      * @param physicalEntityRecord CPathRecord of physicalEntity
      * @return ParticipantSummaryComponent
-     * @throws BioPaxRecordSummaryException
+     * @throws BioPaxRecordSummaryException Throwable
      */
     public static ParticipantSummaryComponent createInteractionSummaryComponent(
             CPathRecord interactionRecord, Element e, CPathRecord physicalEntityRecord)
@@ -243,9 +243,9 @@ public class BioPaxRecordUtil {
      *
      * @param record String
      * @return String
-     * @throws DaoException
-     * @throws IOException
-     * @throws JDOMException
+     * @throws DaoException Throwable
+     * @throws IOException Throwable
+     * @throws JDOMException Throwable
      */
     public static String getPhysicalEntityName(String record)
             throws DaoException, IOException, JDOMException {
@@ -270,8 +270,8 @@ public class BioPaxRecordUtil {
      * @param recordID   long
      * @param xmlContent String
      * @return String
-     * @throws IOException
-     * @throws JDOMException
+     * @throws IOException Throwable
+     * @throws JDOMException Throwable
      */
     public static String getPhysicalEntityNameAsLink(long recordID, String xmlContent)
             throws IOException, JDOMException {
@@ -289,8 +289,8 @@ public class BioPaxRecordUtil {
      *
      * @param e Element
      * @return CPathRecord
-     * @throws RuntimeException
-     * @throws DaoException
+     * @throws RuntimeException Throwable
+     * @throws DaoException Throwable
      */
     public static CPathRecord getCPathRecord(Element e) throws RuntimeException, DaoException {
 
@@ -324,8 +324,8 @@ public class BioPaxRecordUtil {
      *
      * @param xmlContent String
      * @return String
-     * @throws IOException
-     * @throws JDOMException
+     * @throws IOException Throwable
+     * @throws JDOMException Throwable
      */
     private static String getEntityName(String xmlContent) throws IOException, JDOMException {
 
@@ -358,8 +358,8 @@ public class BioPaxRecordUtil {
      * @param record                      CPathRecord
      * @param e                           Element
      * @return boolean
-     * @throws JDOMException
-     * @throws IOException
+     * @throws JDOMException Throwable
+     * @throws IOException Throwable
      */
     private static boolean setCellularLocation(
             ParticipantSummaryComponent participantSummaryComponent, CPathRecord record, Element e)
@@ -426,8 +426,8 @@ public class BioPaxRecordUtil {
      * @param record              CPathRecord
      * @param cellularLocationRef Element
      * @return String
-     * @throws JDOMException
-     * @throws IOException
+     * @throws JDOMException Throwable
+     * @throws IOException Throwable
      */
     private static String getCellularLocation(CPathRecord record, Element cellularLocationRef)
             throws JDOMException, IOException {
@@ -461,8 +461,8 @@ public class BioPaxRecordUtil {
      * @param record                      CPathRecord
      * @param e                           Element
      * @return boolean
-     * @throws JDOMException
-     * @throws IOException
+     * @throws JDOMException Throwable
+     * @throws IOException Throwable
      */
     private static boolean setFeatureList(ParticipantSummaryComponent participantSummaryComponent,
                                           CPathRecord record, Element e)
@@ -517,11 +517,11 @@ public class BioPaxRecordUtil {
      * @param participantSummaryComponent ParticipantSummaryComponent
      * @param record                      CPathRecord
      * @return boolean
-     * @throws JDOMException
-     * @throws IOException
-     * @throws DaoException
-     * @throws BioPaxRecordSummaryException
-     * @throws RuntimeException
+     * @throws JDOMException Throwable
+     * @throws IOException Throwable
+     * @throws DaoException Throwable
+     * @throws BioPaxRecordSummaryException Throwable
+     * @throws RuntimeException Throwable
      */
    private static boolean setComplexMembers(ParticipantSummaryComponent participantSummaryComponent,
                                             CPathRecord record)
@@ -566,10 +566,10 @@ public class BioPaxRecordUtil {
      * @param methodName          String
      * @param biopaxRecordSummary BiopaxRecordSummary
      * @return boolean
-     * @throws JDOMException
-     * @throws IllegalAccessException
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
+     * @throws JDOMException Throwable
+     * @throws IllegalAccessException Throwable
+     * @throws NoSuchMethodException Throwable
+     * @throws InvocationTargetException Throwable
      */
     private static boolean setBioPaxRecordStringAttribute(Element root,
                                                           String query,
@@ -609,10 +609,10 @@ public class BioPaxRecordUtil {
      * @param methodName          String
      * @param biopaxRecordSummary BiopaxRecordSummary
      * @return boolean
-     * @throws JDOMException
-     * @throws IllegalAccessException
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
+     * @throws JDOMException Throwable
+     * @throws IllegalAccessException Throwable
+     * @throws NoSuchMethodException Throwable
+     * @throws InvocationTargetException Throwable
      */
     private static boolean setBioPaxRecordListAttribute(Element root,
                                                         String query,

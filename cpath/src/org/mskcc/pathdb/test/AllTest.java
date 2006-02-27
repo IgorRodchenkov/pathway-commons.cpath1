@@ -1,4 +1,4 @@
-// $Id: AllTest.java,v 1.38 2006-02-27 22:37:37 grossb Exp $
+// $Id: AllTest.java,v 1.39 2006-02-27 22:46:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,7 +64,7 @@ public class AllTest extends TestCase {
      * The suite method kicks off all of the tests.
      *
      * @return junit.framework.Test
-	 * @throws IOException
+	 * @throws IOException Throwable
      */
     public static Test suite() throws IOException {
         PropertyManager manager = PropertyManager.getInstance();

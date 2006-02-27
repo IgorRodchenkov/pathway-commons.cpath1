@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.17 2006-02-27 19:41:39 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.18 2006-02-27 22:43:53 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -82,8 +82,8 @@ public class EntitySummaryParser {
      * Constructor.
      *
      * @param recordID long
-     * @throws DaoException
-     * @throws IllegalArgumentException
+     * @throws DaoException Throwable
+     * @throws IllegalArgumentException Throwable
      */
     public EntitySummaryParser(long recordID) throws DaoException, IllegalArgumentException {
 
@@ -107,7 +107,7 @@ public class EntitySummaryParser {
      * Finds/returns physical interaction information.
      *
      * @return EntitySummary
-     * @throws EntitySummaryException
+     * @throws EntitySummaryException Throwable
      */
     public EntitySummary getEntitySummary()
             throws EntitySummaryException {

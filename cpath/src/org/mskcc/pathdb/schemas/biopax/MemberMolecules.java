@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.13 2006-02-27 15:45:15 grossb Exp $
+// $Id: MemberMolecules.java,v 1.14 2006-02-27 22:43:11 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,8 +72,8 @@ public class MemberMolecules {
      * @param record   CPathRecord
      * @param longList ArrayList - if null, no timing performed
      * @return HashSet
-	 * @throws BioPaxRecordSummaryException
-	 * @throws DaoException
+	 * @throws BioPaxRecordSummaryException Throwable
+	 * @throws DaoException Throwable
      */
     public static HashSet getMemberMolecules(CPathRecord record, ArrayList longList)
             throws BioPaxRecordSummaryException, DaoException {
