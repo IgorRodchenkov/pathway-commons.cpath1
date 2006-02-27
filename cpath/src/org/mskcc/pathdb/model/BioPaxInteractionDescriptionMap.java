@@ -1,4 +1,4 @@
-// $Id: BioPaxInteractionDescriptionMap.java,v 1.3 2006-02-22 22:47:50 grossb Exp $
+// $Id: BioPaxInteractionDescriptionMap.java,v 1.4 2006-02-27 18:33:47 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -54,5 +54,6 @@ public class BioPaxInteractionDescriptionMap extends HashMap {
 		put("transportWithBiochemicalReaction", "A conversion interaction that is both a biochemicalReaction and a transport.");
 		put("complexAssembly", "A conversion interaction in which a set of physical entities, at least one being a macromolecule (protein, RNA, or DNA), aggregate via non-covalent interactions.");
 		put("transport", "A conversion interaction in which an entity (or set of entities) changes location within or with respect to the cell.");
+        put("complex", "A physical entity whose structure is comprised of other physical entities bound to each other non-covalently, at least one of which is a macromolecule (protein, DNA, or RNA).");
     }
 }
