@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.7 2006-02-22 22:47:50 grossb Exp $
+// $Id: MemberPathways.java,v 1.8 2006-02-27 19:18:20 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax;
 
 // imports
+
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,51 +53,53 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
  */
 public class MemberPathways {
 
-	/**
-	 * Finds all member pathways given CPathRecord.
-	 *
-	 * @param record CPathRecord
-	 * @param longList ArrayList - if null, no timing performed
-	 * @return HashSet
-	 */
-	public static HashSet getMemberPathways(CPathRecord record, ArrayList longList) throws Exception {
+    /**
+     * Finds all member pathways given CPathRecord.
+     *
+     * @param record   CPathRecord
+     * @param longList ArrayList - if null, no timing performed
+     * @return HashSet
+     */
+    public static HashSet getMemberPathways(CPathRecord record, ArrayList longList)
+            throws Exception {
 
-		// for timing
+        // for timing
         long startTime = 0;
 
-		// vector to return
-		HashSet pathways = new HashSet();
+        // vector to return
+        HashSet pathways = new HashSet();
 
-		// get internal links
-		DaoInternalLink daoInternalLinks = new DaoInternalLink();
-		if (longList != null){
-			startTime = Calendar.getInstance().getTimeInMillis();
-		}
-		ArrayList sources = daoInternalLinks.getSources(record.getId());
-		if (longList != null){
-			Long currentTime = new Long(Calendar.getInstance().getTimeInMillis() - startTime);
-			longList.add(currentTime);
-		}
+        // get internal links
+        DaoInternalLink daoInternalLinks = new DaoInternalLink();
+        if (longList != null) {
+            startTime = Calendar.getInstance().getTimeInMillis();
+        }
+        ArrayList sources = daoInternalLinks.getSources(record.getId());
+        if (longList != null) {
+            Long currentTime = new Long(Calendar.getInstance().getTimeInMillis() - startTime);
+            longList.add(currentTime);
+        }
 
-		if (sources.size() > 0){
-			for (int lc = 0; lc < sources.size(); lc++){
-				InternalLinkRecord link = (InternalLinkRecord)sources.get(lc);
-				DaoCPath cPath = DaoCPath.getInstance();
-				CPathRecord sourceRecord = cPath.getRecordById(link.getSourceId());
-				pathways.addAll(getMemberPathways(sourceRecord, longList));
-			}
-		}
-		else{
-			BioPaxConstants biopaxConstants = new BioPaxConstants();
-			if (biopaxConstants.isPathway(record.getSpecificType())){
-				String pathway = BioPaxRecordUtil.getPhysicalEntityNameAsLink(record.getId(), record.getXmlContent());
-				if (pathway != null){
-					pathways.add(pathway);
-				}
-			}
-		}
+        if (sources.size() > 0) {
+            for (int lc = 0; lc < sources.size(); lc++) {
+                InternalLinkRecord link = (InternalLinkRecord) sources.get(lc);
+                DaoCPath cPath = DaoCPath.getInstance();
+                CPathRecord sourceRecord = cPath.getRecordById(link.getSourceId());
+                pathways.addAll(getMemberPathways(sourceRecord, longList));
+            }
+        } else {
+            BioPaxConstants biopaxConstants = new BioPaxConstants();
+            if (biopaxConstants.isPathway(record.getSpecificType())) {
+                String pathway =
+                        BioPaxRecordUtil.getPhysicalEntityNameAsLink(record.getId(),
+                                                                     record.getXmlContent());
+                if (pathway != null) {
+                    pathways.add(pathway);
+                }
+            }
+        }
 
-		// outta here
-		return pathways;
-	}
+        // outta here
+        return pathways;
+    }
 }
