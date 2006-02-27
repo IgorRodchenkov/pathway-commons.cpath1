@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.10 2006-02-27 17:30:17 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.11 2006-02-27 22:41:38 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -14,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -32,18 +32,16 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
+
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
 
 import java.util.ArrayList;
-import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
-import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
+
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.*;
-
-import java.util.ArrayList;
 
 /**
  * Custom JSP tag for displaying a list of BioPAX Parent Elements
@@ -99,9 +97,10 @@ public class BioPaxParentChildTable extends HtmlTable {
 
     /**
      * Sets the Mode:  Show Parents or Show Children.
-     * @param mode
+     *
+     * @param mode int.
      */
-    public void setMode (int mode) {
+    public void setMode(int mode) {
         this.mode = mode;
     }
 
@@ -131,14 +130,15 @@ public class BioPaxParentChildTable extends HtmlTable {
 
     /**
      * Determines the Correct Table Header.
+     *
      * @param showAll Whether or not to show all.
      * @return Header String
      */
-    private String getHeader (boolean showAll, ArrayList entitySummaryList) {
+    private String getHeader(boolean showAll, ArrayList entitySummaryList) {
         String heading;
         int start = 1;
-        int end = 0;
-        int all = 0;
+        int end;
+        int all;
         if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
             heading = "Contains the Following Interactions / Pathways ";
             if (showAll) {
@@ -177,7 +177,7 @@ public class BioPaxParentChildTable extends HtmlTable {
             if (showAll) {
                 String uri = "record.do?id=" + cPathId;
                 append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 1- "
-                        + DEFAULT_NUM_RECORDS +  "]</A>");
+                        + DEFAULT_NUM_RECORDS + "]</A>");
             } else {
                 String uri = "record.do?id=" + cPathId + "&show=all_children";
                 append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display all]</A>");
@@ -196,7 +196,7 @@ public class BioPaxParentChildTable extends HtmlTable {
 
         String bgColor = getRowColor(index);
         String type = entitySummary.getSpecificType();
-        String typeInPlainEnglish = (String) map.get (type);
+        String typeInPlainEnglish = (String) map.get(type);
 
         // Output Type Header
         if (currentType == null || !type.equals(currentType)) {
@@ -241,6 +241,7 @@ public class BioPaxParentChildTable extends HtmlTable {
 
     /**
      * Gets the Background Color for the Current Row.
+     *
      * @param index Index value.
      * @return String Color, in HEX.
      */
