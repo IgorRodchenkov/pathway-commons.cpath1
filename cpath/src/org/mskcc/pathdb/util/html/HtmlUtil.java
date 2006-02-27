@@ -1,4 +1,4 @@
-// $Id: HtmlUtil.java,v 1.6 2006-02-22 22:51:58 grossb Exp $
+// $Id: HtmlUtil.java,v 1.7 2006-02-27 21:55:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,7 +73,15 @@ public class HtmlUtil {
         while (tokenizer.hasMoreElements()) {
             String token = tokenizer.nextToken();
             if (token.length() > maxLength) {
+                boolean appendEndBoldTag = false;
+                String strippedOut = token.substring(maxLength, token.length());
+                if (strippedOut.toUpperCase().indexOf("</B>") > -1) {
+                    appendEndBoldTag = true;
+                }
                 token = token.substring(0, maxLength) + " [Cont.]";
+                if (appendEndBoldTag) {
+                    token = token + "</B>";
+                }
             }
             revisedStr.append(token + " ");
         }
