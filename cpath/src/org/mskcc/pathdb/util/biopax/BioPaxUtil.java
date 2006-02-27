@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.10 2006-02-22 22:51:58 grossb Exp $
+// $Id: BioPaxUtil.java,v 1.11 2006-02-27 22:26:53 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -293,12 +293,12 @@ public class BioPaxUtil {
             // If this is not a top-level element, it is implicitly
             // referenced via the XML hierarchy.  Therefore, add it to the
             // referenceSet
-			if (! (e instanceof Parent)){
-				Element parent = (Element)e.getParent();
-				if (!parent.getName().equals(RdfConstants.RDF_ROOT_NAME)) {
-					referenceSet.add(idAttribute.getValue());
-				}
-			}
+            if (!(e instanceof Parent)) {
+                Element parent = (Element) e.getParent();
+                if (!parent.getName().equals(RdfConstants.RDF_ROOT_NAME)) {
+                    referenceSet.add(idAttribute.getValue());
+                }
+            }
         } else if (pointerAttribute != null) {
             // If we point to something, mark it in the referenceSet
             String uri = RdfUtil.removeHashMark(pointerAttribute.getValue());

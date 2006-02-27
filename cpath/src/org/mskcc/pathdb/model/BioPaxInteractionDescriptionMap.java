@@ -1,4 +1,4 @@
-// $Id: BioPaxInteractionDescriptionMap.java,v 1.5 2006-02-27 19:13:48 grossb Exp $
+// $Id: BioPaxInteractionDescriptionMap.java,v 1.6 2006-02-27 22:27:56 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,30 +44,30 @@ public class BioPaxInteractionDescriptionMap extends HashMap {
      * Constructor.
      */
     public BioPaxInteractionDescriptionMap() {
-		put("interaction", "A single biological relationship between two or more entities.");
-		put("physicalInteraction", "An interaction in which at least one participant is a "
-			+ "physical entity, e.g. a binding event.");
-		put("control", "An interaction in which one entity regulates, modifies, or otherwise "
-			+ "influences another. Two types of control interactions are defined: activation "
-			+ "and inhibition.");
-		put("catalysis", "A control interaction in which a physical entity (a catalyst) "
-			+ "increases the rate of a conversion interaction by lowering its activation energy.");
-		put("modulation", "A control interaction in which a physical entity modulates "
-			+ "a catalysis interaction.");
-		put("conversion", "An interaction in which one or more entities is physically "
-			+ "transformed into one or more other entities.");
-		put("biochemicalReaction", "A conversion interaction in which one or more entities "
-			+ "(substrates) undergo covalent changes to become one or more other "
-			+ "entities (products).");
-		put("transportWithBiochemicalReaction", "A conversion interaction that is both a "
-			+ "biochemicalReaction and a transport.");
-		put("complexAssembly", "A conversion interaction in which a set of physical entities, at "
-			+ "least one being a macromolecule (protein, RNA, or DNA), aggregate via non-covalent "
-			+ "interactions.");
-		put("transport", "A conversion interaction in which an entity (or set of entities) changes "
-			+ "location within or with respect to the cell.");
+        put("interaction", "A single biological relationship between two or more entities.");
+        put("physicalInteraction", "An interaction in which at least one participant is a "
+                + "physical entity, e.g. a binding event.");
+        put("control", "An interaction in which one entity regulates, modifies, or otherwise "
+                + "influences another. Two types of control interactions are defined: activation "
+                + "and inhibition.");
+        put("catalysis", "A control interaction in which a physical entity (a catalyst) "
+                + "increases the rate of a conversion interaction by lowering its activation energy.");
+        put("modulation", "A control interaction in which a physical entity modulates "
+                + "a catalysis interaction.");
+        put("conversion", "An interaction in which one or more entities is physically "
+                + "transformed into one or more other entities.");
+        put("biochemicalReaction", "A conversion interaction in which one or more entities "
+                + "(substrates) undergo covalent changes to become one or more other "
+                + "entities (products).");
+        put("transportWithBiochemicalReaction", "A conversion interaction that is both a "
+                + "biochemicalReaction and a transport.");
+        put("complexAssembly", "A conversion interaction in which a set of physical entities, at "
+                + "least one being a macromolecule (protein, RNA, or DNA), aggregate via non-covalent "
+                + "interactions.");
+        put("transport", "A conversion interaction in which an entity (or set of entities) changes "
+                + "location within or with respect to the cell.");
         put("complex", "A physical entity whose structure is comprised of other physical entities "
-			+ "bound to each other non-covalently, at least one of which is a macromolecule "
-			+ "(protein, DNA, or RNA).");
+                + "bound to each other non-covalently, at least one of which is a macromolecule "
+                + "(protein, DNA, or RNA).");
     }
 }
