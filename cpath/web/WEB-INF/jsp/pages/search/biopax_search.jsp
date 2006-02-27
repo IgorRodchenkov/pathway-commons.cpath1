@@ -49,17 +49,17 @@
         try {
             BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
-            out.println("<div id='search_name'>" +
+            out.println("<div class='search_name'>" +
                     "<A HREF=\"" + url + "\">" + header + "</A></div>");
         } catch (IllegalArgumentException e) {
-            out.println("<div id='search_name'>" +
+            out.println("<div class='search_name'>" +
                     "<A HREF=\"" + url + "\">" + record.getName() + "</A></div>");
         }
-        out.println("<div id='search_blob'>"
+        out.println("<div class='search_blob'>"
                 + HtmlUtil.truncateLongWords(fragments[i], 40)
                 +"</div>");
     }
-    out.println("<div id='search_bar'>");
+    out.println("<div class='search_bar'>");
     out.println(pager.getHeaderHtml());
     out.println("</div>");
 }
