@@ -6,6 +6,11 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.model.CPathRecord,
                  org.mskcc.pathdb.util.html.HtmlUtil"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.EntitySummary"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary"%>
+<%@ page import="org.mskcc.pathdb.util.biopax.BioPaxRecordUtil"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 
@@ -41,8 +46,15 @@
     for (int i=0; i<cpathIds.length; i++) {
         CPathRecord record = dao.getRecordById(cpathIds[i]);
         String url = "record.do?id=" + record.getId();
-        out.println("<div id='search_name'>" +
-                "<A HREF=\"" + url + "\">" + record.getName() + "</A></div>");
+        try {
+            BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
+            String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
+            out.println("<div id='search_name'>" +
+                    "<A HREF=\"" + url + "\">" + header + "</A></div>");
+        } catch (IllegalArgumentException e) {
+            out.println("<div id='search_name'>" +
+                    "<A HREF=\"" + url + "\">" + record.getName() + "</A></div>");
+        }
         out.println("<div id='search_blob'>"
                 + HtmlUtil.truncateLongWords(fragments[i], 40)
                 +"</div>");
