@@ -5,6 +5,7 @@
   <information>
     <title>Cytoscape WebStart</title>
     <vendor>Cytoscape Collaboration</vendor>
+    <homepage href="index.html"/>
     <offline-allowed/>
   </information>
   <security>
@@ -60,7 +61,7 @@
   </resources>
   <application-desc main-class="cytoscape.CyMain">
     <argument>-rp</argument>
-	<argument>org.mskcc.ped_viewer.plugin.PedViewerPlugIn</argument>
+    <argument>org.mskcc.ped_viewer.plugin.PedViewerPlugIn</argument>
   </application-desc>
 </jnlp>
 
