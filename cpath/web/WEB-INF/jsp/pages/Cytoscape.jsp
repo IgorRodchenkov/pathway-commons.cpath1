@@ -65,6 +65,7 @@ If you log a bug, we will automatically email you when the bug is resolved.
 <% // render the following content if we are in psi mode %>
 <% } else { %>
 <h1>Ped Viewer Cytoscape PlugIn</h1>
+Available <a href="jsp/cytoscape/cy1.jnlp">here</a>
 <% } %>
 <h1>Contacts</h1>
 <P>
