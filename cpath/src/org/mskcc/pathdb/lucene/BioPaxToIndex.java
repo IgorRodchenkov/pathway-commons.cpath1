@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.6 2006-02-22 22:47:50 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.7 2006-02-28 17:12:43 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,8 +38,11 @@ import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.xml.XmlStripper;
+import org.mskcc.pathdb.util.rdf.RdfQuery;
+import org.mskcc.pathdb.util.biopax.BioPaxUtil;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,6 +100,10 @@ public class BioPaxToIndex implements ItemToIndex {
         //  Index All Terms -->  FIELD_ALL
         String xml = xmlAssembly.getXmlString();
         String terms = XmlStripper.stripTags(xml, true);
+
+        //  Remove cPath IDs, part of bug:  #798
+        terms = removecPathIds(terms);
+        
         fields.add(Field.Text(LuceneConfig.FIELD_ALL, terms));
 
         //  Index cPath ID --> FIELD_CPATH_ID
@@ -125,6 +132,17 @@ public class BioPaxToIndex implements ItemToIndex {
         //  Index Organism Data --> FIELD_ORGANISM
         indexOrganismData(xmlAssembly);
 
+    }
+
+    /**
+     * Removes CPATH IDs from an abritrary String.
+     * For example, before:  "FOO CPATH 123 BAR"
+     * after:  "FOO BAR"
+     * @param str Input String.
+     * @return Output String.
+     */
+    public static String removecPathIds (String str) {
+        return str.replaceAll(" CPATH \\d*", "");
     }
 
     /**
