@@ -1,4 +1,4 @@
-// $Id: TestItemToIndex.java,v 1.17 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestItemToIndex.java,v 1.18 2006-02-28 17:13:05 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -155,6 +155,17 @@ public class TestItemToIndex extends TestCase {
         assertEquals ("glycolysis I", nameField.stringValue().trim());
         assertTrue(organismField.stringValue().startsWith
                 ("Escherichia coli K-12 83333"));
+    }
+
+    /**
+     * Tests Removal of cPath IDs.
+     * @throws Exception All Exceptions
+     */
+    public void testRemovalOfcPathIds() throws Exception {
+        testName = "Test Remove of cPath Ids Method";
+        String before = "TESTING CPATH 123 CBIO CPATH 432 APPLE";
+        String after = BioPaxToIndex.removecPathIds(before);
+        assertEquals ("TESTING CBIO APPLE", after);
     }
 
     /**
