@@ -1,0 +1,7 @@
+#Cytoscape Property File
+#Wed Apr 06 15:28:22 PDT 2005
+secondaryViewThreshold=2000
+viewType=tabbed
+dataservice.cpath_read_location=http\://toro.cbio.mskcc.org\:8080/cpath/webservice.do
+bioDataServer=PleaseSpecify
+viewThreshold=500
