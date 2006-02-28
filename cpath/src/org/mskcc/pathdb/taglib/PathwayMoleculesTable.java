@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.11 2006-02-27 22:00:10 grossb Exp $
+// $Id: PathwayMoleculesTable.java,v 1.12 2006-02-28 17:18:09 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -123,7 +123,7 @@ public class PathwayMoleculesTable extends HtmlTable {
         StringBuffer header = new StringBuffer("Contains the Following Molecules ");
         header.append(" (Showing 1 - " + cnt + " of " + moleculeSet.size() + ")");
         if (!showAll) {
-            if (cnt + DEFAULT_NUM_RECORDS < moleculeSet.size()) {
+            if (cnt< moleculeSet.size()) {
                 String uri = "record.do?id=" + cPathId + "&show=all_molecules";
                 header.append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display all]</A>");
             }
