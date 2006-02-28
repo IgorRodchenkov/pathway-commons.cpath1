@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.11 2006-02-27 22:41:38 grossb Exp $
+// $Id: BioPaxParentChildTable.java,v 1.12 2006-02-28 17:21:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -213,6 +213,12 @@ public class BioPaxParentChildTable extends HtmlTable {
             currentType = entitySummary.getSpecificType();
         }
 
+        if (entitySummary != null) {
+            String uri = "record.do?id=" + entitySummary.getRecordID();
+            append("<td bgcolor=" + bgColor + " width=15%><a href=\""
+                    + uri + "\">View Details</a></td>");
+        }
+        
         if (entitySummary instanceof InteractionSummary) {
             InteractionSummary interactionSummary =
                     (InteractionSummary) entitySummary;
@@ -232,11 +238,6 @@ public class BioPaxParentChildTable extends HtmlTable {
             }
         }
         // details hyperlink
-        if (entitySummary != null) {
-            String uri = "record.do?id=" + entitySummary.getRecordID();
-            append("<td bgcolor=" + bgColor + " width=15%><a href=\""
-                    + uri + "\">More</a></td>");
-        }
     }
 
     /**
