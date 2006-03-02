@@ -97,7 +97,7 @@
 		if (moleculeSet != null && moleculeSet.size() > 0){
 %>
 			<cbio:pathwayMoleculesTable moleculeSet="<%=moleculeSet%>"
-                    queryString="<%= queryString %>"
+                    request="<%= request %>"
                     cpathId="<%= record.getId() %>"/>
 <%
 		}
@@ -113,7 +113,7 @@
 %>
     <cbio:bioPaxParentChildTable
             entitySummaryList="<%= summaryList %>"
-            queryString="<%= queryString %>"
+            request="<%= request %>"
             cpathId="<%= record.getId()%>"
             mode="<%= SummaryListUtil.MODE_GET_CHILDREN %>"/>
 <%
@@ -143,7 +143,7 @@
 %>
     <cbio:bioPaxParentChildTable
             entitySummaryList="<%= summaryList %>"
-            queryString="<%= queryString %>"
+            request="<%= request %>"
             cpathId="<%= record.getId()%>"
             mode="<%= SummaryListUtil.MODE_GET_PARENTS %>"/>
 <%

@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.12 2006-02-28 17:21:31 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.13 2006-03-02 17:41:49 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -43,6 +43,8 @@ import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Custom JSP tag for displaying a list of BioPAX Parent Elements
  * or Children Elements.
@@ -51,7 +53,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.*;
  */
 public class BioPaxParentChildTable extends HtmlTable {
     private ArrayList entitySummaryList;
-    private String queryString;
+    private HttpServletRequest request;
     private long cPathId;
     private String currentType;
     private BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
@@ -78,12 +80,12 @@ public class BioPaxParentChildTable extends HtmlTable {
     }
 
     /**
-     * Receives the Current Query String.
+     * Receives the Current Request Object
      *
-     * @param queryString Query String.
+     * @param request HttpServletRequest Object.
      */
-    public void setQueryString(String queryString) {
-        this.queryString = queryString;
+    public void setRequest (HttpServletRequest request) {
+        this.request = request;
     }
 
     /**
@@ -110,12 +112,15 @@ public class BioPaxParentChildTable extends HtmlTable {
     protected void subDoStartTag() {
         currentType = null;
         if (entitySummaryList.size() > 0) {
-            boolean showAll = (queryString.indexOf("show=all_children") != -1);
-            int cnt = (showAll) ? entitySummaryList.size()
-                    : (entitySummaryList.size() > DEFAULT_NUM_RECORDS)
-                    ? DEFAULT_NUM_RECORDS : entitySummaryList.size();
-            String heading = getHeader(showAll, entitySummaryList);
-            createHeader(heading, showAll);
+            int flagIndex = getFlagIndex();
+            String param = request.getParameter(BioPaxShowFlag.SHOW_FLAG);
+            BioPaxShowFlag showFlag = new BioPaxShowFlag (param);
+            int cnt = BioPaxShowFlag.determineEndIndex(DEFAULT_NUM_RECORDS,
+                    entitySummaryList.size(), showFlag, flagIndex);
+            String title = getTitle();
+            String htmlHeader = BioPaxShowFlag.createHtmlHeader(DEFAULT_NUM_RECORDS,
+                    entitySummaryList.size(), cPathId, title, showFlag, flagIndex);
+            append (htmlHeader);
 
             // start record output
             startTable();
@@ -128,63 +133,20 @@ public class BioPaxParentChildTable extends HtmlTable {
         }
     }
 
-    /**
-     * Determines the Correct Table Header.
-     *
-     * @param showAll Whether or not to show all.
-     * @return Header String
-     */
-    private String getHeader(boolean showAll, ArrayList entitySummaryList) {
-        String heading;
-        int start = 1;
-        int end;
-        int all;
+    private String getTitle() {
         if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
-            heading = "Contains the Following Interactions / Pathways ";
-            if (showAll) {
-                end = entitySummaryList.size();
-                all = entitySummaryList.size();
-            } else {
-                if (entitySummaryList.size() > DEFAULT_NUM_RECORDS) {
-                    end = DEFAULT_NUM_RECORDS;
-                    all = entitySummaryList.size();
-                } else {
-                    end = entitySummaryList.size();
-                    all = entitySummaryList.size();
-                }
-            }
+            return "Contains the Following Interactions / Pathways ";
         } else {
-            heading = "Member of the Following Interactions / Complexes";
-            end = entitySummaryList.size();
-            all = entitySummaryList.size();
+            return "Member of the Following Interactions / Complexes";
         }
-        heading += " (Showing " + start + " - " + end
-                + " of " + all + ")";
-        return heading;
     }
 
-    /**
-     * Outputs the Table Header.
-     */
-    private void createHeader(String heading, boolean showAll) {
-        append("<DIV CLASS ='h3'>");
-        append("<H3>");
-        append(heading);
-
-        // limited pagination support if necessary
-        if (entitySummaryList.size() > DEFAULT_NUM_RECORDS) {
-            // generate link to change number of interactions to display
-            if (showAll) {
-                String uri = "record.do?id=" + cPathId;
-                append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display 1- "
-                        + DEFAULT_NUM_RECORDS + "]</A>");
-            } else {
-                String uri = "record.do?id=" + cPathId + "&show=all_children";
-                append("&nbsp;&nbsp;<A HREF=\"" + uri + "\">[display all]</A>");
-            }
+    private int getFlagIndex() {
+        if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
+            return BioPaxShowFlag.SHOW_ALL_CHILDREN;
+        } else {
+            return BioPaxShowFlag.SHOW_ALL_PARENTS;
         }
-        append("</H3>");
-        append("</DIV>");
     }
 
     /**
@@ -218,7 +180,7 @@ public class BioPaxParentChildTable extends HtmlTable {
             append("<td bgcolor=" + bgColor + " width=15%><a href=\""
                     + uri + "\">View Details</a></td>");
         }
-        
+
         if (entitySummary instanceof InteractionSummary) {
             InteractionSummary interactionSummary =
                     (InteractionSummary) entitySummary;

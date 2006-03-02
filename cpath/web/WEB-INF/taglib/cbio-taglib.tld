@@ -95,11 +95,11 @@
 		<required>true</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
-	<attribute>
-		<name>queryString</name>
-		<required>true</required>
-		<rtexprvalue>true</rtexprvalue>
-	</attribute>
+    <attribute>
+         <name>request</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
 	<attribute>
 		<name>cpathId</name>
 		<required>true</required>
@@ -122,11 +122,11 @@
 		<required>true</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
-	<attribute>
-		<name>queryString</name>
-		<required>true</required>
-		<rtexprvalue>true</rtexprvalue>
-	</attribute>
+    <attribute>
+         <name>request</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
 	<attribute>
 		<name>cpathId</name>
 		<required>true</required>
