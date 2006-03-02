@@ -1,4 +1,4 @@
-// $Id: TagLibSuite.java,v 1.10 2006-02-22 22:47:51 grossb Exp $
+// $Id: TagLibSuite.java,v 1.11 2006-03-02 17:42:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,6 +51,7 @@ public class TagLibSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestPager.class);
         suite.addTestSuite(TestTagUtil.class);
+        suite.addTestSuite(TestBioPaxShowFlag.class);
         suite.setName("TagLib Tests");
         return suite;
     }
