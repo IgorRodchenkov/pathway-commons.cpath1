@@ -1,4 +1,4 @@
-// $Id: SortAction.java,v 1.4 2006-02-27 22:33:06 grossb Exp $
+// $Id: SortAction.java,v 1.5 2006-03-02 17:38:07 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,6 +76,6 @@ public class SortAction extends BaseAction {
 
 		String referer = request.getParameter(BaseAction.REFERER);
 		return (referer == null)
-			? mapping.findForward(BaseAction.FORWARD_BROWSE) : mapping.findForward(referer);
+                ? mapping.findForward(BaseAction.FORWARD_BROWSE) : mapping.findForward(referer);
 	}
 }

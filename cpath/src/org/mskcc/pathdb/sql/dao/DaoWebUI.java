@@ -1,4 +1,4 @@
-// $Id: DaoWebUI.java,v 1.8 2006-02-27 20:02:48 grossb Exp $
+// $Id: DaoWebUI.java,v 1.9 2006-03-02 17:37:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -77,8 +77,8 @@ public class DaoWebUI {
                         rs.getBoolean("DISPLAY_BROWSE_BY_ORGANISM_TAB"));
 				webUIBean.setFAQPageContent(rs.getString("FAQ_PAGE_CONTENT"));
 				webUIBean.setAboutPageContent(rs.getString("ABOUT_PAGE_CONTENT"));
-				webUIBean.setMaintenanceTagLine(rs.getString("MAINTENANCE_TAG_LINE"));
-			}
+                webUIBean.setMaintenanceTagLine(rs.getString("MAINTENANCE_TAG_LINE"));
+            }
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {

@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.7 2006-02-28 17:12:43 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.8 2006-03-02 17:37:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,11 +38,8 @@ import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.xml.XmlStripper;
-import org.mskcc.pathdb.util.rdf.RdfQuery;
-import org.mskcc.pathdb.util.biopax.BioPaxUtil;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +100,7 @@ public class BioPaxToIndex implements ItemToIndex {
 
         //  Remove cPath IDs, part of bug:  #798
         terms = removecPathIds(terms);
-        
+
         fields.add(Field.Text(LuceneConfig.FIELD_ALL, terms));
 
         //  Index cPath ID --> FIELD_CPATH_ID

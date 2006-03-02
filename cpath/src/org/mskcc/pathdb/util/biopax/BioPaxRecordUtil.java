@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.19 2006-02-27 22:46:40 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.20 2006-03-02 17:36:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -173,8 +173,8 @@ public class BioPaxRecordUtil {
 
         // outta here
         return (setTypeSuccess || setNameSuccess || setShortNameSuccess
-				|| setSynonymSuccess || setOrganismSuccess || setDataSourceSuccess
-				|| setAvailabilitySuccess || setExternalLinksSuccess || setCommentSuccess)
+                || setSynonymSuccess || setOrganismSuccess || setDataSourceSuccess
+                || setAvailabilitySuccess || setExternalLinksSuccess || setCommentSuccess)
                 ? biopaxRecordSummary : null;
     }
 
@@ -495,7 +495,7 @@ public class BioPaxRecordUtil {
                     if (feature != null && feature.getTextNormalize().length() > 0) {
                         featureSet.add(feature.getTextNormalize());
                     } else {
-						// we should have found something, made it here, return false
+                        // we should have found something, made it here, return false
                         return false;
                     }
                 }
