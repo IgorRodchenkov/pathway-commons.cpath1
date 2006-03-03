@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: ExecuteSearch.java,v 1.5 2006-03-03 18:57:17 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -54,6 +54,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -262,10 +263,10 @@ public class ExecuteSearch extends BaseAction {
     private void returnXml(HttpServletResponse response, String xmlResponse) {
         try {
             response.setContentType("text/xml");
-            ServletOutputStream stream = response.getOutputStream();
-            stream.println(xmlResponse);
-            stream.flush();
-            stream.close();
+            PrintWriter writer = response.getWriter();
+            writer.println(xmlResponse);
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -278,10 +279,10 @@ public class ExecuteSearch extends BaseAction {
             XmlAssembly xmlAssembly) {
         try {
             response.setContentType("text/html");
-            ServletOutputStream stream = response.getOutputStream();
-            stream.println(xmlAssembly.getNumHits());
-            stream.flush();
-            stream.close();
+            PrintWriter writer = response.getWriter();
+            writer.println(xmlAssembly.getNumHits());
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
