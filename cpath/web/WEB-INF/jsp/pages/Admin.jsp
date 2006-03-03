@@ -1,14 +1,12 @@
-<%@ page import="org.mskcc.pathdb.model.ImportRecord,
-                 java.util.Enumeration,
-                 org.apache.struts.config.ActionConfig,
-                 org.mskcc.pathdb.action.HomeAction,
-                 org.mskcc.pathdb.model.CPathRecordType,
-                 org.mskcc.pathdb.action.BaseAction,
+<%@ page import="org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  java.text.NumberFormat,
                  java.text.DecimalFormat,
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="net.sf.ehcache.CacheManager"%>
+<%@ page import="net.sf.ehcache.Cache"%>
+<%@ page import="org.mskcc.pathdb.util.cache.EhCache"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ taglib uri="/WEB-INF/taglib/struts-html.tld" prefix="html" %>
 <%@ page errorPage = "JspError.jsp" %>
@@ -75,6 +73,44 @@
 
     <jsp:include page="../global/dbStats.jsp" flush="true" />
     <cbio:importTable />
+
+    <div class="h3">
+        <h3>Global Cache Stats</h3>
+    </div>
+    <%
+        CacheManager manager = CacheManager.getInstance();
+        Cache cache0 = manager.getCache(EhCache.PERSISTENT_CACHE);
+    %>
+    <TABLE>
+        <TR>
+            <TD>Name:</td>
+            <TD><%= cache0.getName() %></TD>
+        </TR>
+        <TR>
+            <TD>Status:</td>
+            <TD><%= cache0.getStatus()%></TD>
+        </TR>
+        <TR>
+            <TD>Cache overflow is stored to disk:</td>
+            <TD><%= cache0.isOverflowToDisk() %></TD>
+        </TR>
+        <TR>
+            <TD>Cache overflow to disk is persistent:</td>
+            <TD><%= cache0.isDiskPersistent()%></TD>
+        </TR>
+        <TR>
+            <TD>Number of elements currently in memory:</td>
+            <TD><%= cache0.getMemoryStoreSize() %></td>
+        </TR>
+        <TR>
+            <TD>Number of elements currently in disk store:</td>
+            <TD><%= cache0.getDiskStoreSize() %></td>
+        </TR>
+        <TR>
+            <TD>Maximum number of elements that can be stored in memory:</td>
+            <TD><%= cache0.getMaxElementsInMemory() %></td>
+        </TR>
+    </TABLE>
 
     <div class="h3">
         <h3>Java Virtual Machine (JVM) Memory Usage</h3>
