@@ -1,4 +1,4 @@
-// $Id: EhCache.java,v 1.6 2006-02-22 22:51:58 grossb Exp $
+// $Id: EhCache.java,v 1.7 2006-03-03 18:50:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,7 +31,6 @@
  **/
 package org.mskcc.pathdb.util.cache;
 
-import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 
@@ -43,14 +42,14 @@ import net.sf.ehcache.CacheManager;
 public class EhCache {
 
     /**
-     * Name of Long-term Cache.
+     * Name of In-Memory Cache.
      */
-    public static final String LONG_TERM_CACHE = "long_term_cache";
+    public static final String MEMORY_CACHE = "memory_cache";
 
     /**
-     * Name of Short-term Cache.
+     * Name of In-Memory Cache.
      */
-    public static final String SHORT_TERM_CACHE = "short_term_cache";
+    public static final String PERSISTENT_CACHE = "persistent_cache";
 
     /**
      * Key for Pathway List.
@@ -69,38 +68,13 @@ public class EhCache {
     public static final String KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES
             = "KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES";
 
-    private static final int MAX_ELEMENTS_IN_MEMORY = 1000;
-    private static final boolean OVERFLOW_TO_DISK = false;
-    private static final boolean ETERNAL = false;
-
     /**
-     * Currently Set to 30 minutes.
-     */
-    private static final int SHORT_TERM_TIME_TO_LIVE = 30 * 60;
-
-    /**
-     * Currently Set to 2 hours.
-     */
-    private static final int LONG_TERM_TIME_TO_LIVE = 2 * 60 * 60;
-
-
-    /**
-     * Initializes the EhCache.
+     * Initializes the EhCache with ehcache.xml.
      *
      * @throws CacheException Error Initializing Cache.
      */
     public static void initCache() throws CacheException {
-        //  Create a CacheManager using defaults
-        CacheManager manager = CacheManager.create();
-
-        //  Create Long and Short Term Caches
-        Cache shortTermCache = new Cache(EhCache.SHORT_TERM_CACHE,
-                MAX_ELEMENTS_IN_MEMORY, OVERFLOW_TO_DISK, ETERNAL,
-                SHORT_TERM_TIME_TO_LIVE, SHORT_TERM_TIME_TO_LIVE);
-        Cache longTermCache = new Cache(EhCache.LONG_TERM_CACHE,
-                MAX_ELEMENTS_IN_MEMORY, OVERFLOW_TO_DISK, ETERNAL,
-                LONG_TERM_TIME_TO_LIVE, LONG_TERM_TIME_TO_LIVE);
-        manager.addCache(shortTermCache);
-        manager.addCache(longTermCache);
+        //  Create a CacheManager using ehcache.xml
+        CacheManager manager = CacheManager.getInstance();
     }
 }
