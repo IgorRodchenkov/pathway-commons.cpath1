@@ -4,6 +4,18 @@
 <web-app>
     <display-name>cPath: Pathway Database</display-name>
 
+    <!-- Filter Cache -->
+    <filter>
+        <filter-name>Cache</filter-name>
+        <filter-class>org.mskcc.pathdb.servlet.CacheFilter</filter-class>
+    </filter>
+
+    <!-- Apply the Filter Cache to all Struts .do URLs -->
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
     <!-- Struts cPath Action Servlet Configuration -->
     <servlet>
         <servlet-name>action</servlet-name>
