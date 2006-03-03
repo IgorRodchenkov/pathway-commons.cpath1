@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.22 2006-02-22 22:47:50 grossb Exp $
+// $Id: InteractionSummaryUtils.java,v 1.23 2006-03-03 20:47:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -132,13 +132,15 @@ public class InteractionSummaryUtils {
         List controllerList = summary.getControllers();
 
         //  Iterate through all controllers.
-        for (int i = 0; i < controllerList.size(); i++) {
-            ParticipantSummaryComponent component =
-                    (ParticipantSummaryComponent) controllerList.get(i);
-            buf.append(BioPaxRecordSummaryUtils.createEntityLink
-                    (component, interactionSummary));
-            if (i < controllerList.size() - 1) {
-                buf.append(", ");
+        if (controllerList != null) {
+            for (int i = 0; i < controllerList.size(); i++) {
+                ParticipantSummaryComponent component =
+                        (ParticipantSummaryComponent) controllerList.get(i);
+                buf.append(BioPaxRecordSummaryUtils.createEntityLink
+                        (component, interactionSummary));
+                if (i < controllerList.size() - 1) {
+                    buf.append(", ");
+                }
             }
         }
 
