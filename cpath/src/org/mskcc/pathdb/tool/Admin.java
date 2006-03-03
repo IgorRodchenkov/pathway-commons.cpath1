@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.41 2006-02-27 22:38:19 grossb Exp $
+// $Id: Admin.java,v 1.42 2006-03-03 20:47:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,6 +50,8 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Properties;
+
+import net.sf.ehcache.CacheManager;
 
 /**
  * Command Line cPath Administrator.
@@ -186,6 +188,9 @@ public class Admin {
                 e.printStackTrace();
             }
             System.out.println("-----------------------------------------");
+        } finally {
+            CacheManager manager = CacheManager.getInstance();
+            manager.shutdown();
         }
     }
 
@@ -283,14 +288,14 @@ public class Admin {
         if (argv.length == 0) {
             displayHelp();
         }
-        
+
         PropertyManager manager = PropertyManager.getInstance();
-        
+
         Getopt g = new Getopt("admin.pl", argv, "o:u:p:f:h:b:xdr");
         int c;
         while ((c = g.getopt()) != -1) {
             switch (c) {
-                case 'b':   
+                case 'b':
                     dbName = g.getOptarg();
                     dbName = dbName.replaceFirst("=", "");
                     break;
@@ -336,7 +341,7 @@ public class Admin {
             throw new IllegalArgumentException("You Must Specify a Command");
         }
     }
- 
+
     /**
      * Verifies that the specified file exists.
      */
