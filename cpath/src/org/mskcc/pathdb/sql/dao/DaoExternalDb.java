@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.21 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoExternalDb.java,v 1.22 2006-03-03 18:53:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,13 +35,17 @@ import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.JdbcUtil;
-import org.mskcc.pathdb.util.cache.GlobalCache;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
 
 /**
  * Data Access Object to the External Database Table.
@@ -118,15 +122,17 @@ public class DaoExternalDb {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        ExternalDatabaseRecord dbRecord = null;
 
-        // First Check Global Cache
+        // First Check Cache
         String key = this.getClass().getName() + ".getRecordById." + id;
-        GlobalCache cache = GlobalCache.getInstance();
-        ExternalDatabaseRecord dbRecord = (ExternalDatabaseRecord)
-                cache.get(key);
+        CacheManager manager = CacheManager.create();
+        Cache cache = manager.getCache(EhCache.MEMORY_CACHE);
+
+        Element cachedElement = cache.get(key);
 
         //  If not in cache, get from Database
-        if (dbRecord == null) {
+        if (cachedElement == null) {
             try {
                 con = JdbcUtil.getCPathConnection();
                 pstmt = con.prepareStatement
@@ -137,7 +143,8 @@ public class DaoExternalDb {
 
                 //  Store to Cache
                 if (dbRecord != null) {
-                    cache.put(key, dbRecord);
+                    cachedElement = new Element (key, dbRecord);
+                    cache.put(cachedElement);
                 }
                 return dbRecord;
             } catch (ClassNotFoundException e) {
@@ -148,6 +155,7 @@ public class DaoExternalDb {
                 JdbcUtil.closeAll(con, pstmt, rs);
             }
         } else {
+            dbRecord = (ExternalDatabaseRecord) cachedElement.getValue();
             return dbRecord;
         }
     }
@@ -196,6 +204,7 @@ public class DaoExternalDb {
      */
     public ExternalDatabaseRecord getRecordByTerm(String term)
             throws DaoException {
+        ExternalDatabaseRecord dbRecord = null;
 
         //  Verify term is not null or empty;  part of bug #0000508
         if (term == null || term.length() == 0) {
@@ -205,17 +214,20 @@ public class DaoExternalDb {
 
         // First Check Global Cache
         String key = this.getClass().getName() + ".getRecordByTerm." + term;
-        GlobalCache cache = GlobalCache.getInstance();
-        ExternalDatabaseRecord dbRecord = (ExternalDatabaseRecord)
-                cache.get(key);
+        CacheManager manager = CacheManager.create();
+        Cache cache = manager.getCache(EhCache.MEMORY_CACHE);
+        Element cachedElement = cache.get(key);
 
         //  If not in cache, get from Database
-        if (dbRecord == null) {
+        if (cachedElement == null) {
             DaoExternalDbCv dao = new DaoExternalDbCv();
             dbRecord = dao.getExternalDbByTerm(term);
             if (dbRecord != null) {
-                cache.put(key, dbRecord);
+                cachedElement = new Element (key, dbRecord);
+                cache.put(cachedElement);
             }
+        } else {
+            dbRecord = (ExternalDatabaseRecord) cachedElement.getValue();
         }
         return dbRecord;
     }
@@ -272,8 +284,9 @@ public class DaoExternalDb {
             DaoExternalDbCv dao = new DaoExternalDbCv();
             dao.deleteTermsByDbId(id);
 
-            //  Remove from internal cache
-            GlobalCache cache = GlobalCache.getInstance();
+            //  Remove from global cache
+            CacheManager manager = CacheManager.create();
+            Cache cache = manager.getCache(EhCache.MEMORY_CACHE);
             String key = this.getClass().getName() + ".getRecordById." + id;
             cache.remove(key);
             return (rows > 0) ? true : false;
