@@ -1,4 +1,4 @@
-// $Id: OrganismStats.java,v 1.15 2006-02-22 22:47:50 grossb Exp $
+// $Id: OrganismStats.java,v 1.16 2006-03-03 18:55:59 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -66,7 +66,7 @@ public class OrganismStats {
     public ArrayList getOrganismsSortedByName() throws DaoException,
             QueryException, IOException, CacheException {
         CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.LONG_TERM_CACHE);
+        Cache cache = manager.getCache(EhCache.MEMORY_CACHE);
         Element element = cache.get
                 (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME);
         if (element != null) {
@@ -90,7 +90,7 @@ public class OrganismStats {
     public ArrayList getOrganismsSortedByNumInteractions() throws DaoException,
             QueryException, IOException, CacheException {
         CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.LONG_TERM_CACHE);
+        Cache cache = manager.getCache(EhCache.MEMORY_CACHE);
         Element element = cache.get
                 (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES);
         if (element != null) {
@@ -113,7 +113,7 @@ public class OrganismStats {
     public void resetStats() throws DaoException, IOException,
             QueryException, CacheException {
         CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.LONG_TERM_CACHE);
+        Cache cache = manager.getCache(EhCache.MEMORY_CACHE);
         this.lookUpOrganisms(cache, 0);
     }
 
