@@ -1,4 +1,4 @@
-// $Id: AdminResetGlobalCache.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: AdminResetGlobalCache.java,v 1.6 2006-03-03 18:56:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,7 +38,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.util.cache.EhCache;
-import org.mskcc.pathdb.util.cache.GlobalCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,12 +65,12 @@ public class AdminResetGlobalCache extends AdminBaseAction {
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
 
-        GlobalCache cache = GlobalCache.getInstance();
-        cache.resetCache();
-
         CacheManager manager = CacheManager.create();
-        Cache ehCache = manager.getCache(EhCache.LONG_TERM_CACHE);
-        ehCache.removeAll();
+        Cache cache0 = manager.getCache(EhCache.MEMORY_CACHE);
+        cache0.removeAll();
+
+        Cache cache1 = manager.getCache(EhCache.PERSISTENT_CACHE);
+        cache1.removeAll();
 
         this.setUserMessage(request, "Global Cache has been reset.");
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
