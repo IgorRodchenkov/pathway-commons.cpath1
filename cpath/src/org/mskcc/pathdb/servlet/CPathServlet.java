@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.29 2006-02-27 19:55:21 grossb Exp $
+// $Id: CPathServlet.java,v 1.30 2006-03-03 18:54:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,6 +50,8 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+import net.sf.ehcache.CacheManager;
+
 /**
  * CPath Servlet.
  *
@@ -63,9 +65,14 @@ public final class CPathServlet extends ActionServlet {
     public void destroy() {
         super.destroy();
         try {
+            System.err.println("Shutting Down cPath...");
+            System.err.println("Shutting Down Quartz Scheduler...");
             SchedulerFactory schedFact = new StdSchedulerFactory();
             Scheduler sched = schedFact.getScheduler();
             sched.shutdown();
+            System.err.println("Shutting Down Cache Manager...");
+            CacheManager manager = CacheManager.getInstance();
+            manager.shutdown();
         } catch (SchedulerException e) {
             System.err.println("Error Stopping Quartz Scheduler:  "
                     + e.getMessage());
