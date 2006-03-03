@@ -1,4 +1,4 @@
-// $Id: ExternalDatabaseRecord.java,v 1.15 2006-02-22 22:47:50 grossb Exp $
+// $Id: ExternalDatabaseRecord.java,v 1.16 2006-03-03 18:55:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,7 @@ package org.mskcc.pathdb.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * JavaBean to Encapsulate an External Database Record.
@@ -46,7 +47,7 @@ import java.util.Date;
  *
  * @author Ethan Cerami
  */
-public class ExternalDatabaseRecord {
+public class ExternalDatabaseRecord implements Serializable {
     private int id;
     private String name;
     private String description;
