@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.12 2006-02-27 22:07:26 grossb Exp $
+// $Id: TestEntitySummaryParser.java,v 1.13 2006-03-03 18:53:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -273,7 +273,7 @@ public class TestEntitySummaryParser extends TestCase {
         List left = summary.getLeftSideComponents();
         ParticipantSummaryComponent component = (ParticipantSummaryComponent) left.get(0);
         List synList = component.getSynonyms();
-        System.out.println("SynList Size:  " + synList.size());
+        assertEquals (6, synList.size());
     }
 
     /**
