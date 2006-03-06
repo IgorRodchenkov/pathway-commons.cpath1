@@ -1,4 +1,4 @@
-// $Id: ReferenceType.java,v 1.9 2006-02-22 22:47:50 grossb Exp $
+// $Id: ReferenceType.java,v 1.10 2006-03-06 17:29:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,12 +31,14 @@
  **/
 package org.mskcc.pathdb.model;
 
+import java.io.Serializable;
+
 /**
  * Enumeration of ExternalDatabase Types.
  *
  * @author Ethan Cerami
  */
-public class ReferenceType {
+public class ReferenceType implements Serializable {
     private String name;
 
     /**

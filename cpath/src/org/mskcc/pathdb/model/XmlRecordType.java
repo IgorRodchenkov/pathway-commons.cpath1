@@ -1,4 +1,4 @@
-// $Id: XmlRecordType.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: XmlRecordType.java,v 1.5 2006-03-06 17:29:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,13 +31,15 @@
  **/
 package org.mskcc.pathdb.model;
 
+import java.io.Serializable;
+
 /**
  * Enumeration of XML Record Types.
  * The list is currently constrained to:  PSI_MI and BIO_PAX.
  *
  * @author Ethan Cerami
  */
-public class XmlRecordType {
+public class XmlRecordType implements Serializable {
     private String name;
 
     /**
