@@ -1,4 +1,4 @@
-// $Id: AllTest.java,v 1.40 2006-03-06 16:28:29 cerami Exp $
+// $Id: AllTest.java,v 1.41 2006-03-06 17:26:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,7 @@ import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.cache.EhCache;
 import org.apache.log4j.Logger;
 
 import java.util.Properties;
@@ -115,6 +116,10 @@ public class AllTest extends TestCase {
      * @throws Exception All Errors.
      */
     public static void main(String[] args) throws Exception {
+        //  Start Cache with Clean Slate
+        EhCache.initCache();
+        EhCache.resetAllCaches();
+        
         if (args.length > 0 && args[0] != null && args[0].equals("-ui")) {
             String newargs[] = {"org.mskcc.pathdb.test.AllTest",
                                 "-noloading"};
