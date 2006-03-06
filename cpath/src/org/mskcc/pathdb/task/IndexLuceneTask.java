@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.41 2006-02-22 22:47:51 grossb Exp $
+// $Id: IndexLuceneTask.java,v 1.42 2006-03-06 17:27:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -108,7 +108,6 @@ public class IndexLuceneTask extends Task {
         indexAllInteractions();
 
         OrganismStats orgStats = new OrganismStats();
-        orgStats.resetStats();
         xdebug.stopTimer();
 
         pMonitor.setCurrentMessage("Indexing Complete -->  Number of "
