@@ -111,6 +111,10 @@
         <!-- Copy Cache Config -->
         <copy todir="${build.dir}/WEB-INF/classes"
             file="${config.dir}/ehcache.xml"/>
+
+        <!-- Copy log4J Config -->
+        <copy todir="${build.dir}/WEB-INF/classes"
+            file="${config.dir}/log4j.properties"/>
     </target>
 
     <!-- ==================== War Target ================================== -->
