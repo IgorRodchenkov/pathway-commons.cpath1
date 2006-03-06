@@ -27,7 +27,6 @@ import net.sf.ehcache.CacheException;
 public class CacheFilter implements Filter {
     private Logger log = Logger.getLogger(CacheFilter.class);
 
-
     /**
      * Initializes the Cache Filter.  Currently, a no-op.
      * @param filterConfig FilterConfig Object.
@@ -73,7 +72,7 @@ public class CacheFilter implements Filter {
                     Element element = cache.get(key);
                     log.info ("Checking Cache");
                     if (element != null) {
-                        processCacheHit(element, response);
+                        processCacheHit(cache, key, element, response);
                     } else {
                         processCacheMiss(response, filterChain, request, key, cache);
                     }
@@ -91,6 +90,7 @@ public class CacheFilter implements Filter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error ("Got Error:  " + e.getMessage(), e);
+            filterChain.doFilter(request, response);
         }
     }
 
@@ -116,21 +116,29 @@ public class CacheFilter implements Filter {
     /**
      * Processes Cache Hit.
      */
-    private void processCacheHit(Element element, HttpServletResponse response) throws IOException {
+    private void processCacheHit(Cache cache, String key, Element element,
+            HttpServletResponse response) throws IOException {
         //  Cache Hit
         log.info ("--> Hit");
-        String cachedHtml = (String) element.getValue();
-        PrintWriter writer = response.getWriter();
+        Object value = element.getValue();
+        if (value instanceof String) {
+            String cachedHtml = (String) element.getValue();
+            PrintWriter writer = response.getWriter();
 
-        //  Set Correct Content Type
-        if (cachedHtml.startsWith("<?xml ")) {
-            response.setContentType("text/xml");
+            //  Set Correct Content Type
+            if (cachedHtml.startsWith("<?xml ")) {
+                response.setContentType("text/xml");
+            } else {
+                response.setContentType("text/html");
+            }
+            writer.println(cachedHtml);
+            writer.flush();
+            writer.close();
         } else {
-            response.setContentType("text/html");
+            cache.remove(key);
+            throw new ClassCastException("Cached object is not of type String.  Is of type:  "
+                    + value.getClass().getName());
         }
-        writer.println(cachedHtml);
-        writer.flush();
-        writer.close();
     }
 
     /**
