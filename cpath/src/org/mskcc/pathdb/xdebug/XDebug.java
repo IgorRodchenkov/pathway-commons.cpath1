@@ -1,4 +1,4 @@
-// $Id: XDebug.java,v 1.15 2006-02-22 22:51:58 grossb Exp $
+// $Id: XDebug.java,v 1.16 2006-03-06 16:27:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,7 +72,6 @@ public class XDebug {
         XDebugMessage message = new XDebugMessage
                 (callerClass.getName(), msg, color);
         messages.add(message);
-//        System.err.println(msg);
     }
 
     /**
