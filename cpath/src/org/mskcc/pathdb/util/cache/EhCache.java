@@ -1,4 +1,4 @@
-// $Id: EhCache.java,v 1.7 2006-03-03 18:50:29 cerami Exp $
+// $Id: EhCache.java,v 1.8 2006-03-06 17:26:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,9 @@ package org.mskcc.pathdb.util.cache;
 
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Cache;
+
+import java.io.IOException;
 
 /**
  * Global Cache.
@@ -40,12 +43,6 @@ import net.sf.ehcache.CacheManager;
  * @author Ethan Cerami.
  */
 public class EhCache {
-
-    /**
-     * Name of In-Memory Cache.
-     */
-    public static final String MEMORY_CACHE = "memory_cache";
-
     /**
      * Name of In-Memory Cache.
      */
@@ -57,18 +54,6 @@ public class EhCache {
     public static final String KEY_PATHWAY_LIST = "KEY_PATHWAY_LIST";
 
     /**
-     * Key for Organism List, sorted by Name.
-     */
-    public static final String KEY_ORGANISM_LIST_SORTED_BY_NAME
-            = "KEY_ORGANISM_LIST_SORTED_BY_NAME";
-
-    /**
-     * Key for Organism List, sorted by number of interactions/pathways.
-     */
-    public static final String KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES
-            = "KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES";
-
-    /**
      * Initializes the EhCache with ehcache.xml.
      *
      * @throws CacheException Error Initializing Cache.
@@ -76,5 +61,23 @@ public class EhCache {
     public static void initCache() throws CacheException {
         //  Create a CacheManager using ehcache.xml
         CacheManager manager = CacheManager.getInstance();
+    }
+
+    /**
+     * Shuts down EhCache.
+     */
+    public static void shutDownCache() {
+        CacheManager manager = CacheManager.getInstance();
+        manager.shutdown();
+    }
+
+    /**
+     * Resets all EhCaches.
+     * @throws IOException IO Error.
+     */
+    public static void resetAllCaches() throws IOException {
+        CacheManager manager = CacheManager.create();
+        Cache cache1 = manager.getCache(EhCache.PERSISTENT_CACHE);
+        cache1.removeAll();
     }
 }

@@ -1,4 +1,4 @@
-// $Id: AutoPopulateCache.java,v 1.5 2006-03-06 16:27:08 cerami Exp $
+// $Id: AutoPopulateCache.java,v 1.6 2006-03-06 17:26:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -58,8 +58,8 @@ public class AutoPopulateCache implements Job {
             log.info("Running Job:  AutoPopulateCache");
             XDebug xdebug = new XDebug();
             TopLevelPathwayUtil pathwayUtil = new TopLevelPathwayUtil(xdebug);
-            pathwayUtil.getTopLevelPathwayList(false);
-            pathwayUtil.getTopLevelPathwayList(9606, false);
+            pathwayUtil.getTopLevelPathwayList(true);
+            pathwayUtil.getTopLevelPathwayList(9606, true);
             log.info("Job Done:  AutoPopulateCache");
         } catch (Exception e) {
             throw new JobExecutionException(e);
