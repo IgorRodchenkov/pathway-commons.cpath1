@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.31 2006-03-06 16:28:07 cerami Exp $
+// $Id: CPathServlet.java,v 1.32 2006-03-06 17:29:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,8 +73,7 @@ public final class CPathServlet extends ActionServlet {
             Scheduler sched = schedFact.getScheduler();
             sched.shutdown();
             log.info("Shutting Down Cache Manager...");
-            CacheManager manager = CacheManager.getInstance();
-            manager.shutdown();
+            EhCache.shutDownCache();
         } catch (SchedulerException e) {
             log.error("Error Stopping Quartz Scheduler:  " + e.getMessage());
         }
