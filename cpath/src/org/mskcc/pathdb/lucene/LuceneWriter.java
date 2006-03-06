@@ -1,4 +1,4 @@
-// $Id: LuceneWriter.java,v 1.11 2006-02-22 22:47:50 grossb Exp $
+// $Id: LuceneWriter.java,v 1.12 2006-03-06 16:28:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,7 +51,7 @@ public class LuceneWriter {
     private Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
     private IndexWriter writer = null;
     private Logger log = Logger.getLogger(LuceneWriter.class);
-    
+
     /**
      * Constructor
      * @param dir directory to create index

@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.8 2006-02-22 22:47:50 grossb Exp $
+// $Id: LuceneReader.java,v 1.9 2006-03-06 16:28:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.sql.query.QueryException;
 
 import java.io.IOException;
@@ -47,6 +48,8 @@ import java.io.IOException;
  * @author Ethan Cerami
  */
 public class LuceneReader {
+    private Logger log = Logger.getLogger(LuceneReader.class);
+
     /**
      * Index Search Object (for querying Lucene).
      */
@@ -64,7 +67,7 @@ public class LuceneReader {
                 reader.close();
             }
         } catch (IOException e) {
-            System.err.println(e);
+            log.error(e);
         }
     }
 

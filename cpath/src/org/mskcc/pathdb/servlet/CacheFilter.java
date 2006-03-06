@@ -4,6 +4,7 @@ import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.util.cache.CharArrayWrapper;
 import org.mskcc.pathdb.util.security.Md5Util;
 import org.mskcc.pathdb.action.admin.AdminWebLogging;
+import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,8 @@ import net.sf.ehcache.CacheException;
  * @author Ethan Cerami.
  */
 public class CacheFilter implements Filter {
+    private Logger log = Logger.getLogger(CacheFilter.class);
+
 
     /**
      * Initializes the Cache Filter.  Currently, a no-op.
@@ -54,7 +57,7 @@ public class CacheFilter implements Filter {
 
             //  Determine Complete URL (w/ URL Parameters included)
             String url = getUrl(request);
-            System.err.println("Got URL request:  " + url);
+            log.info("Got URL request:  " + url);
 
             HttpSession session = request.getSession(true);
             String xdebugSession = (String) session.getAttribute
@@ -64,31 +67,30 @@ public class CacheFilter implements Filter {
                 //  Translate to MD5 Hash Key
                 String key = getHashKey (url);
                 if (key !=  null) {
-                    System.out.println("Translates to key:  " + key);
+                    log.info("Translates to key:  " + key);
 
                     //  Query Cache
                     Element element = cache.get(key);
-                    System.err.println ("Checking Cache");
+                    log.info ("Checking Cache");
                     if (element != null) {
                         processCacheHit(element, response);
                     } else {
                         processCacheMiss(response, filterChain, request, key, cache);
                     }
                 } else {
-                    System.err.println("Could not obtain key.  Bypassing Cache Filter.");
+                    log.error("Could not obtain key.  Bypassing Cache Filter.");
                     filterChain.doFilter(request, response);
                 }
             } else {
-                System.err.println("In Debug Mode:  Bypassing Cache Filter");
+                log.info ("In Debug Mode:  Bypassing Cache Filter");
                 filterChain.doFilter(request, response);
             }
         } catch (CacheException e) {
-            System.err.println ("Got Cache Exception:  " + e.getMessage());
-            System.err.println ("Bypassing Cache Completely.");
+            log.error ("Got Cache Exception", e);
+            log.error ("Bypassing Cache Completely.");
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            System.err.println ("Got Error:  " + e.getMessage());
-            e.printStackTrace();
+            log.error ("Got Error:  " + e.getMessage(), e);
         }
     }
 
@@ -100,7 +102,7 @@ public class CacheFilter implements Filter {
             ServletException {
         Element element;
         //  Cache Miss
-        System.err.println("--> Miss");
+        log.info("--> Miss");
         CharArrayWrapper responseWrapper = new CharArrayWrapper (response);
         filterChain.doFilter(request, responseWrapper);
         PrintWriter writer = response.getWriter();
@@ -116,7 +118,7 @@ public class CacheFilter implements Filter {
      */
     private void processCacheHit(Element element, HttpServletResponse response) throws IOException {
         //  Cache Hit
-        System.err.println("--> Hit");
+        log.info ("--> Hit");
         String cachedHtml = (String) element.getValue();
         PrintWriter writer = response.getWriter();
 

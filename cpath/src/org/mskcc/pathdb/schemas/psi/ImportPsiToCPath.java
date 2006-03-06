@@ -1,4 +1,4 @@
-// $Id: ImportPsiToCPath.java,v 1.7 2006-02-22 22:47:50 grossb Exp $
+// $Id: ImportPsiToCPath.java,v 1.8 2006-03-06 16:28:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,6 +48,7 @@ import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ExternalReferenceUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -136,6 +137,7 @@ public class ImportPsiToCPath {
     private PsiUtil psiUtil;
     private ImportSummary summary;
     private ProgressMonitor pMonitor;
+    private Logger log = Logger.getLogger(ImportPsiToCPath.class);
 
     /**
      * Contains a HashMap of Protein IDs in the original XML file
@@ -265,9 +267,9 @@ public class ImportPsiToCPath {
         try {
             protein.marshal(writer);
         } catch (MarshalException e1) {
-            e.printStackTrace(System.err);
+            log.error(e);
         } catch (ValidationException e1) {
-            e.printStackTrace(System.err);
+            log.error(e);
         }
         throw new MissingDataException("PSI-MI Protein ["
                 + protein.getNames().getShortLabel() + ":"
@@ -290,9 +292,9 @@ public class ImportPsiToCPath {
         try {
             interaction.marshal(writer);
         } catch (MarshalException e1) {
-            e.printStackTrace(System.err);
+            log.error(e);
         } catch (ValidationException e1) {
-            e.printStackTrace(System.err);
+            log.error(e);
         }
         throw new MissingDataException("PSI-MI Interaction "
                 + "is missing data:  " + e.getMessage()

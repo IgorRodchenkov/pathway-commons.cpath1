@@ -1,4 +1,4 @@
-// $Id: DaoLog.java,v 1.10 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoLog.java,v 1.11 2006-03-06 16:27:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Admin/View the Log Messages.
+ * Admin/View the Error Log Messages.
  *
  * @author Ethan Cerami
  */

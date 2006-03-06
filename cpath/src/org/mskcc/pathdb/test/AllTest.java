@@ -1,4 +1,4 @@
-// $Id: AllTest.java,v 1.39 2006-02-27 22:46:57 grossb Exp $
+// $Id: AllTest.java,v 1.40 2006-03-06 16:28:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,7 @@ import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.apache.log4j.Logger;
 
 import java.util.Properties;
 import java.io.FileInputStream;
@@ -59,6 +60,7 @@ import java.io.File;
  * @author Ethan Cerami
  */
 public class AllTest extends TestCase {
+    private static Logger log = Logger.getLogger(AllTest.class);
 
     /**
      * The suite method kicks off all of the tests.
@@ -77,7 +79,7 @@ public class AllTest extends TestCase {
         try {
             buildProps.load(new FileInputStream (file));
         } catch (FileNotFoundException e) {
-            System.err.println("Error.  Cannot find file:  " + file.getAbsolutePath());
+            log.error("Error.  Cannot find file:  " + file.getAbsolutePath());
             throw e;
         }
 

@@ -1,4 +1,4 @@
-// $Id: LogUtil.java,v 1.3 2006-02-22 22:51:58 grossb Exp $
+// $Id: LogUtil.java,v 1.4 2006-03-06 16:27:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.util.log;
 import org.mskcc.pathdb.model.LogRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
+import org.apache.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -45,6 +46,7 @@ import java.util.Date;
  * @author Ethan Cerami.
  */
 public class LogUtil {
+    private static Logger log = Logger.getLogger(LogUtil.class);
 
     /**
      * Logs an Exception Message.
@@ -76,14 +78,12 @@ public class LogUtil {
         try {
             dao.addRecord(record);
         } catch (DaoException e) {
-            //  If we can't log to Database, log to catalina.out
-            System.err.println("An Error Has Occured, and the Database "
+            //  If we can't log to Database, log to Log4J
+            log.error("An Error Has Occured, and the Database "
                     + "is down, because of this error:  " + e.getMessage());
-            System.err.println("Error occurred while processing web request: "
+            log.error("Error occurred while processing web request: "
                     + url);
-            System.err.println("Got the Error Message:  "
-                    + throwable.getMessage());
-            System.err.println("Stack Trace Follows:\n" + writer.toString());
+            log.error("Got the Error Message:  " + throwable.getMessage());
         }
     }
 }

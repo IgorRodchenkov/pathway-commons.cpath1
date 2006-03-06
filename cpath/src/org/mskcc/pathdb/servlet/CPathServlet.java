@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.30 2006-03-03 18:54:35 cerami Exp $
+// $Id: CPathServlet.java,v 1.31 2006-03-06 16:28:07 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.servlet;
 
 import org.apache.struts.action.ActionServlet;
+import org.apache.log4j.Logger;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.lucene.LuceneConfig;
@@ -58,6 +59,7 @@ import net.sf.ehcache.CacheManager;
  * @author Ethan Cerami
  */
 public final class CPathServlet extends ActionServlet {
+    private Logger log = Logger.getLogger(CPathServlet.class);
 
     /**
      * Shutdown the Servlet.
@@ -65,17 +67,16 @@ public final class CPathServlet extends ActionServlet {
     public void destroy() {
         super.destroy();
         try {
-            System.err.println("Shutting Down cPath...");
-            System.err.println("Shutting Down Quartz Scheduler...");
+            log.info("Shutting Down cPath...");
+            log.info("Shutting Down Quartz Scheduler...");
             SchedulerFactory schedFact = new StdSchedulerFactory();
             Scheduler sched = schedFact.getScheduler();
             sched.shutdown();
-            System.err.println("Shutting Down Cache Manager...");
+            log.info("Shutting Down Cache Manager...");
             CacheManager manager = CacheManager.getInstance();
             manager.shutdown();
         } catch (SchedulerException e) {
-            System.err.println("Error Stopping Quartz Scheduler:  "
-                    + e.getMessage());
+            log.error("Error Stopping Quartz Scheduler:  " + e.getMessage());
         }
     }
 
@@ -86,9 +87,9 @@ public final class CPathServlet extends ActionServlet {
      */
     public void init() throws ServletException {
         super.init();
-        System.err.println("Starting up cPath...");
-        System.err.println("Using cPath Version:  " + CPathConstants.VERSION);
-        System.err.println("Reading in init parameters from web.xml");
+        log.info("Starting up cPath...");
+        log.info("Using cPath Version:  " + CPathConstants.VERSION);
+        log.info("Reading in init parameters from web.xml");
         PropertyManager manager = PropertyManager.getInstance();
         ServletConfig config = this.getServletConfig();
         String dbHost = config.getInitParameter("db_host");
@@ -100,20 +101,20 @@ public final class CPathServlet extends ActionServlet {
         String adminModeActive = config.getInitParameter(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE);
         String psiSchemaUrl = config.getInitParameter
                 (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
-        System.err.println("web.xml param:  db_host --> " + dbHost + " [OK]");
-        System.err.println("web.xml param:  db_user --> " + dbUser + " [OK]");
-        System.err.println("web.xml param:  db_password --> " + dbPassword
+        log.info("web.xml param:  db_host --> " + dbHost + " [OK]");
+        log.info("web.xml param:  db_user --> " + dbUser + " [OK]");
+        log.info("web.xml param:  db_password --> " + dbPassword
                 + " [OK]");
-        System.err.println("web.xml param:  admin_user --> " + adminUser
+        log.info("web.xml param:  admin_user --> " + adminUser
                 + " [OK]");
-        System.err.println("web.xml param:  admin_password --> "
+        log.info("web.xml param:  admin_password --> "
                 + adminPassword + " [OK]");
-        System.err.println("web.xml param:  psi_schema_location --> "
+        log.info("web.xml param:  psi_schema_location --> "
                 + psiSchemaUrl + " [OK]");
-        System.err.println("web.xml param:  "
+        log.info("web.xml param:  "
                 + BaseAction.PROPERTY_WEB_MODE + "--> "
                 + webMode + " [OK]");
-        System.err.println("web.xml param:  "
+        log.info("web.xml param:  "
                 + BaseAction.PROPERTY_ADMIN_MODE_ACTIVE + "--> "
                 + adminModeActive + " [OK]");
 
@@ -165,7 +166,7 @@ public final class CPathServlet extends ActionServlet {
         } else if (webMode.equals(CPathUIConfig.BIOPAX)) {
             mode = CPathUIConfig.WEB_MODE_BIOPAX;
         } else {
-            System.err.println("Web mode not recognized:  " + webMode
+            log.error ("Web mode not recognized:  " + webMode
                     + ".  Defaulting to:  " + CPathUIConfig.BIOPAX);
             mode = CPathUIConfig.WEB_MODE_BIOPAX;
         }
@@ -184,7 +185,7 @@ public final class CPathServlet extends ActionServlet {
         } else if (adminModeActive.equals(String.valueOf(CPathUIConfig.ADMIN_MODE_ACTIVE))) {
             activeMode = CPathUIConfig.ADMIN_MODE_ACTIVE;
         } else {
-            System.err.println("Admin mode not recognized, deactivating Admin Mode");
+            log.error("Admin mode not recognized, deactivating Admin Mode");
             activeMode = CPathUIConfig.ADMIN_MODE_DEACTIVE;
         }
         CPathUIConfig.setAdminModeActive(activeMode);
@@ -205,10 +206,9 @@ public final class CPathServlet extends ActionServlet {
                     60L * 60L * 1000L);
             sched.scheduleJob(jobDetail, trigger);
             sched.start();
-            System.err.println("Starting Quartz Scheduler:  [OK]");
+            log.info("Starting Quartz Scheduler:  [OK]");
         } catch (SchedulerException e) {
-            System.err.println("Error Starting Quartz Scheduler:  "
-                    + e.getMessage());
+            log.error("Error Starting Quartz Scheduler:  ", e);
         }
     }
 
@@ -218,10 +218,9 @@ public final class CPathServlet extends ActionServlet {
     private void initGlobalCache() {
         try {
             EhCache.initCache();
-            System.err.println("Initializing Cache:  [OK]");
+            log.info("Initializing Cache:  [OK]");
         } catch (Exception e) {
-            System.err.println("Error Initializing/Prepopulating Cache:  "
-                    + e.getMessage());
+            log.error("Error Initializing/Prepopulating Cache:  ", e);
         }
     }
 
@@ -230,21 +229,18 @@ public final class CPathServlet extends ActionServlet {
      * messages are written out to catalina.out.
      */
     private void verifyDbConnection() {
-        System.err.println("Verifying Database Connection...");
+        log.info("Verifying Database Connection...");
         DaoLog adminLogger = new DaoLog();
         try {
-            System.err.println("Attempting to retrieve Log Records...");
+            log.info("Attempting to retrieve Log Records...");
             adminLogger.getLogRecords();
             DaoOrganism dao = new DaoOrganism();
-            System.err.println("Attempting to retrieve Entity Records...");
-            // getNumEntities take a few mins on a large database!
-            // int num = dao.getNumEntities(CPathRecordType.PHYSICAL_ENTITY);
+            log.info("Attempting to retrieve Entity Records...");
             dao.countAllOrganisms();
-            System.err.println("Database Connection -->  [OK]");
+            log.info("Database Connection -->  [OK]");
         } catch (DaoException e) {
-            System.err.println("****  Fatal Error.  Could not connect to "
-                    + "database");
-            System.err.println("DaoException:  " + e.toString());
+            log.fatal("****  Fatal Error.  Could not connect to "
+                    + "database", e);
         }
     }
 
@@ -256,24 +252,19 @@ public final class CPathServlet extends ActionServlet {
         // bean we retrieve
         WebUIBean record = null;
 
-        System.err.print("Attempting to populate WebUIBean...");
-
+        log.info("Attempting to populate WebUIBean...");
         // create dao object
         try {
             DaoWebUI dbWebUI = new DaoWebUI();
             record = dbWebUI.getRecord();
         } catch (DaoException e) {
-            System.err.println("****  Fatal Error.  Could not connect to "
-                    + "database");
-            System.err.println("DaoException:  " + e.toString());
+            log.fatal("****  Fatal Error.  Could not connect to " + "database", e);
         }
 
         // set the bean
         if (record != null) {
             CPathUIConfig.setWebUIBean(record);
         }
-
-        // outta here
-        System.err.println("SUCCESS!");
+        log.info("WebUIBean [OK]");
     }
 }

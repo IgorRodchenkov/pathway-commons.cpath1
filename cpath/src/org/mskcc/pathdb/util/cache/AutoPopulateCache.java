@@ -1,4 +1,4 @@
-// $Id: AutoPopulateCache.java,v 1.4 2006-02-22 22:51:58 grossb Exp $
+// $Id: AutoPopulateCache.java,v 1.5 2006-03-06 16:27:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.apache.log4j.Logger;
 
 /**
  * Automatically Populates the Cache via a Quartz "cron" job.
@@ -43,6 +44,7 @@ import org.quartz.JobExecutionException;
  * @author Ethan Cerami.
  */
 public class AutoPopulateCache implements Job {
+    private Logger log = Logger.getLogger(AutoPopulateCache.class);
 
     /**
      * Executes the Job.
@@ -53,12 +55,12 @@ public class AutoPopulateCache implements Job {
     public void execute(JobExecutionContext jobExecutionContext)
             throws JobExecutionException {
         try {
-            System.err.println("Running Job:  AutoPopulateCache");
+            log.info("Running Job:  AutoPopulateCache");
             XDebug xdebug = new XDebug();
             TopLevelPathwayUtil pathwayUtil = new TopLevelPathwayUtil(xdebug);
             pathwayUtil.getTopLevelPathwayList(false);
             pathwayUtil.getTopLevelPathwayList(9606, false);
-            System.err.println("Job Done:  AutoPopulateCache");
+            log.info("Job Done:  AutoPopulateCache");
         } catch (Exception e) {
             throw new JobExecutionException(e);
         }

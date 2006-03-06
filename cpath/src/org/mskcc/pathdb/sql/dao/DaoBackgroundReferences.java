@@ -1,4 +1,4 @@
-// $Id: DaoBackgroundReferences.java,v 1.6 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoBackgroundReferences.java,v 1.7 2006-03-06 16:27:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import org.mskcc.pathdb.model.BackgroundReferencePair;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,6 +51,7 @@ import java.util.LinkedList;
  * @author Ethan Cerami
  */
 public class DaoBackgroundReferences {
+    private Logger log = Logger.getLogger(DaoBackgroundReferences.class);
     protected String tableName = "background_reference";
 
     /**
@@ -411,9 +413,8 @@ public class DaoBackgroundReferences {
             processResultSet(rs, xref, neighborList);
 
             if (neighborList.size() > 100) {
-                System.err.println("Warning!  Got "
-                        + neighborList.size() + " hits");
-                System.err.println("Quering for:  " + xref.toString());
+                log.warn("Warning!  Got "+ neighborList.size() + " hits");
+                log.warn("Quering for:  " + xref.toString());
             }
 
             return neighborList;
