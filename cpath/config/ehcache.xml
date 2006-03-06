@@ -89,15 +89,6 @@
                                          (specified as LFU)
         -->
 
-    <!-- Cache:  memory_cache. -->
-    <cache name="memory_cache"
-        maxElementsInMemory="10000"
-        eternal="true"
-        overflowToDisk="false"
-        timeToIdleSeconds="0"
-        timeToLiveSeconds="0"
-        />
-
     <!-- Cache:  long_term_cache. This cache overflows to disk. The disk store is persistent
          between cache and VM restarts. -->
     <cache name="persistent_cache"
