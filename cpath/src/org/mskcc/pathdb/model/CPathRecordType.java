@@ -1,4 +1,4 @@
-// $Id: CPathRecordType.java,v 1.6 2006-02-22 22:47:50 grossb Exp $
+// $Id: CPathRecordType.java,v 1.7 2006-03-06 20:28:51 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,6 +31,8 @@
  **/
 package org.mskcc.pathdb.model;
 
+import java.io.Serializable;
+
 /**
  * Enumeration of CPathRecord Types.
  * This list is currently constrained to:  PHYSICAL_ENTITY, INTERACTION,
@@ -38,7 +40,7 @@ package org.mskcc.pathdb.model;
  *
  * @author Ethan Cerami
  */
-public class CPathRecordType {
+public class CPathRecordType implements Serializable {
     private String name;
 
     /**
