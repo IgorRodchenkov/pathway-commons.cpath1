@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.42 2006-03-03 20:47:24 cerami Exp $
+// $Id: Admin.java,v 1.43 2006-03-06 17:26:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -89,7 +89,9 @@ public class Admin {
      */
     public static void main(String[] argv) {
         try {
+            //  Start Cache with Clean Slate
             EhCache.initCache();
+            EhCache.resetAllCaches();
 
             //  Load build.properties
             String cpathHome = System.getProperty("CPATH_HOME");
@@ -189,8 +191,7 @@ public class Admin {
             }
             System.out.println("-----------------------------------------");
         } finally {
-            CacheManager manager = CacheManager.getInstance();
-            manager.shutdown();
+            EhCache.shutDownCache();
         }
     }
 
