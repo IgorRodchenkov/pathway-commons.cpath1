@@ -1,4 +1,4 @@
-// $Id: AdminResetGlobalCache.java,v 1.6 2006-03-03 18:56:46 cerami Exp $
+// $Id: AdminResetGlobalCache.java,v 1.7 2006-03-06 17:27:33 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -65,13 +65,7 @@ public class AdminResetGlobalCache extends AdminBaseAction {
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
 
-        CacheManager manager = CacheManager.create();
-        Cache cache0 = manager.getCache(EhCache.MEMORY_CACHE);
-        cache0.removeAll();
-
-        Cache cache1 = manager.getCache(EhCache.PERSISTENT_CACHE);
-        cache1.removeAll();
-
+        EhCache.resetAllCaches();
         this.setUserMessage(request, "Global Cache has been reset.");
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
