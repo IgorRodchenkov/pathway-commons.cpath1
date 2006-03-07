@@ -6,6 +6,7 @@
                  java.util.Enumeration,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  java.util.ArrayList" %>
+<%@ page import="org.mskcc.pathdb.util.CPathConstants"%>
 <%
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
@@ -32,8 +33,16 @@ if (xdebug != null) {
 </div>
 
 <TABLE width="100%">
-	<TR>
-		<TH>
+    <TR>
+		<TH ALIGN=LEFT>
+            cPath Version
+        </TH>
+		<TD COLSPAN=2>
+            <%= CPathConstants.VERSION %>
+        </TD>
+    </TR>
+    <TR>
+		<TH ALIGN=LEFT>
             Total Time to Generate Page
         </TH>
 		<TD COLSPAN=2>
@@ -41,7 +50,7 @@ if (xdebug != null) {
         </TD>
     </TR>
     <TR>
-		<TH>
+		<TH ALIGN=LEFT>
             Current Time
         </TH>
 		<TD COLSPAN=2>
@@ -49,10 +58,10 @@ if (xdebug != null) {
         </TD>
 	</TR>
 	<TR>
-		<TH>
+		<TH ALIGN=LEFT>
             Class Name
         </TH>
-		<TH COLSPAN=2>
+		<TH ALIGN=LEFT COLSPAN=2>
             Message
         </TH>
 	</TR>
@@ -84,9 +93,9 @@ if (xdebug != null) {
 				***********************************
 	--%>
 	<TR>
-		<TH>Parameter Type</FONT></TH>
-		<TH>Name</FONT></TH>
-		<TH>Value</FONT></TH>
+		<TH ALIGN=LEFT>Parameter Type</TH>
+		<TH ALIGN=LEFT>Name</TH>
+		<TH ALIGN=LEFT>Value</TH>
 	</TR>
 	<%
 		ArrayList parameters = xdebug.getParameters();
