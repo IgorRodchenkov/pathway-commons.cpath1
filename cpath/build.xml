@@ -302,7 +302,7 @@
         <delete dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}"/>
         <mkdir  dir="${junit.dir}/reports"/>
-		<junit dir="${basedir}" showoutput="no" printsummary="yes" fork="yes"
+		<junit dir="${basedir}" showoutput="yes" printsummary="yes" fork="yes"
                haltonfailure="no" failureproperty="tests.failed">
             <formatter type="xml"/>
             <sysproperty key="CPATH_HOME" value="${basedir}"/>
