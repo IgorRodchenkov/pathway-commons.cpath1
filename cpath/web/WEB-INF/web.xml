@@ -10,10 +10,18 @@
         <filter-class>org.mskcc.pathdb.servlet.CacheFilter</filter-class>
     </filter>
 
-    <!-- Apply the Filter Cache to all Struts .do URLs -->
+    <!-- Apply the Filter Cache to select Struts actions -->
     <filter-mapping>
         <filter-name>Cache</filter-name>
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>/record.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <url-pattern>/browse.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <url-pattern>/webservice.do</url-pattern>
     </filter-mapping>
 
     <!-- Struts cPath Action Servlet Configuration -->
