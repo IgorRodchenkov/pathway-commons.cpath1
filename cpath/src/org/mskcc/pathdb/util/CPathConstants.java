@@ -1,4 +1,4 @@
-// $Id: CPathConstants.java,v 1.17 2006-02-22 22:47:51 grossb Exp $
+// $Id: CPathConstants.java,v 1.18 2006-03-07 16:50:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,7 +41,7 @@ public class CPathConstants {
     /**
      * Current cPath Version Number.
      */
-    public static final String VERSION = "0.5 (Beta)";
+    public static final String VERSION = "0.6 (Beta)";
 
     /** db name property */
     public static final String PROPERTY_MYSQL_DATABASE = "mysql.database_name";
