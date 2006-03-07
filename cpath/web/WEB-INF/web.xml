@@ -23,6 +23,23 @@
         <filter-name>Cache</filter-name>
         <url-pattern>/webservice.do</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <url-pattern>/home.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <url-pattern>/faq.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <url-pattern>/cytoscape.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <url-pattern>/about.do</url-pattern>
+    </filter-mapping>
+
 
     <!-- Struts cPath Action Servlet Configuration -->
     <servlet>
