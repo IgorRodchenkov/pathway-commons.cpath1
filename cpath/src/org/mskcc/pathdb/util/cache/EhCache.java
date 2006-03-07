@@ -1,4 +1,4 @@
-// $Id: EhCache.java,v 1.8 2006-03-06 17:26:00 cerami Exp $
+// $Id: EhCache.java,v 1.9 2006-03-07 16:06:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,7 +76,7 @@ public class EhCache {
      * @throws IOException IO Error.
      */
     public static void resetAllCaches() throws IOException {
-        CacheManager manager = CacheManager.create();
+        CacheManager manager = CacheManager.getInstance();
         Cache cache1 = manager.getCache(EhCache.PERSISTENT_CACHE);
         cache1.removeAll();
     }

@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.23 2006-03-06 17:28:29 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.24 2006-03-07 16:08:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -126,11 +126,10 @@ public class DaoExternalDb {
 
         // First Check Cache
         String key = this.getClass().getName() + ".getRecordById." + id;
-        CacheManager manager = CacheManager.create();
+        CacheManager manager = CacheManager.getInstance();
         Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
 
         Element cachedElement = cache.get(key);
-
         //  If not in cache, get from Database
         if (cachedElement == null) {
             try {
@@ -214,7 +213,7 @@ public class DaoExternalDb {
 
         // First Check Global Cache
         String key = this.getClass().getName() + ".getRecordByTerm." + term;
-        CacheManager manager = CacheManager.create();
+        CacheManager manager = CacheManager.getInstance();
         Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
         Element cachedElement = cache.get(key);
 
@@ -285,7 +284,7 @@ public class DaoExternalDb {
             dao.deleteTermsByDbId(id);
 
             //  Remove from global cache
-            CacheManager manager = CacheManager.create();
+            CacheManager manager = CacheManager.getInstance();
             Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
             String key = this.getClass().getName() + ".getRecordById." + id;
             cache.remove(key);
