@@ -100,8 +100,14 @@
         <copy  todir="${build.dir}/WEB-INF/classes">
           <fileset dir="${src.dir}" excludes="**/*.java"/>
         </copy>
+
+        <!-- Copy over all third-part libs -->
+        <!-- Exclude servlet.jar See Servlet Spec 2.3, section 9.7.2 -->
         <copy todir="${build.dir}/WEB-INF/lib">
-          <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+                <exclude name="servlet.jar"/>
+            </fileset>
         </copy>
 
         <!-- Copy Struts cpathResources.properties -->
