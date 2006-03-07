@@ -16,6 +16,7 @@
         </p>
      </section>
 
+    <!--
     <section name="Stable Releases">
         <p>
             The latest stable release of cPath is version:  0.3.2.
@@ -26,6 +27,7 @@
         </UL>
         </p>
      </section>
+     -->
 
     <section name="Automated Nightly Snapshots">
         <p>
