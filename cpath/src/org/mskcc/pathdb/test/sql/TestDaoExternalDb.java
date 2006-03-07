@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDb.java,v 1.21 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestDaoExternalDb.java,v 1.22 2006-03-07 16:07:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 import java.util.ArrayList;
 
@@ -63,6 +64,7 @@ public class TestDaoExternalDb extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
+        EhCache.resetAllCaches();
         testName = "Test Table Access";
         DaoExternalDb dao = new DaoExternalDb();
 
@@ -120,6 +122,7 @@ public class TestDaoExternalDb extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testEmptyRefs() throws Exception {
+        EhCache.resetAllCaches();
         testName = "Validate Empty Reference Check";
         try {
             DaoExternalDb dao = new DaoExternalDb();
