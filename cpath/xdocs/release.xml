@@ -7,7 +7,70 @@
 
   <body>
 
-<section name="Release 0.5 Beta">
+<section name="Release 0.6 Beta (March, 2006)">
+<P>
+<UL>
+    <LI>Third iteration of support for BioPAX data.
+        <UL>
+            <LI>Completely redesigned web interface for displaying BioPAX data.</LI>
+            <LI>Completely redesigned web interface for searching BioPAX data.</LI>
+            <LI>Updated stylesheets.</LI>
+        </UL>
+    </LI>
+    <LI>Newly Expanded Caching Framework
+        <UL>
+            <LI>All HTML pages are now cached in an in-memory / disk cache, resulting
+            in much faster user expeience.</LI>
+            <LI>Cache is now persistent across server restarts.</LI>
+        </UL>
+    </LI>
+    <LI>Modifications to the Web Service API:
+        <UL>
+            <LI>Web service API is now available in two flavors:  PSI-MI mode and
+                BioPAX Mode.
+            </LI>
+        </UL>
+    </LI>
+    <LI>Modifications to the Web based administrator:
+        <UL>
+            <LI>New section for globally modifying user interface components, such as
+            page header, footer, and home page.
+            </LI>
+            <LI>New section for displaying cache statistics.
+            </LI>
+        </UL>
+    </LI>
+    <LI>Modifications to the command line administrator tool:
+        <UL>
+            <LI>All scripts can now operate on multiple database instances, enabling an
+                administrator to, for example, maintain two separate instances of cPath
+                on the same machine.
+            </LI>
+        </UL>
+    </LI>
+    <LI>Modifications to the cPath documentation:
+        <UL>
+            <LI>Completely revised Administrator guide with full details on using the
+                revised command line administrator tool.
+            </LI>
+        </UL>
+    </LI>
+    <LI>
+        Numerous Bug Fixes:
+        <UL>
+            <LI><A HREF="http://cbio.mskcc.org/cytoscape/bugs/bug_view_page.php?bug_id=0000682">Bug 682</A></LI>
+            <LI><A HREF="http://cbio.mskcc.org/cytoscape/bugs/bug_view_page.php?bug_id=0000681">Bug 681</A></LI>
+            <LI><A HREF="http://cbio.mskcc.org/cytoscape/bugs/bug_view_page.php?bug_id=0000607">Bug 607</A></LI>
+            <LI><A HREF="http://cbio.mskcc.org/cytoscape/bugs/bug_view_page.php?bug_id=0000551">Bug 551</A></LI>
+            <LI><A HREF="http://cbio.mskcc.org/cytoscape/bugs/bug_view_page.php?bug_id=0000557">Bug 557</A></LI>
+            <LI><A HREF="http://cbio.mskcc.org/cytoscape/bugs/bug_view_page.php?bug_id=0000540">Bug 540</A></LI>
+        </UL>
+    </LI>
+</UL>
+</P>
+</section>
+
+<section name="Release 0.5 Beta (December, 2005)">
 <P>
 <UL>
     <LI>Second iteration of support for BioPAX data.
