@@ -1,4 +1,4 @@
-// $Id: TestExternalReferenceUtil.java,v 1.11 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestExternalReferenceUtil.java,v 1.12 2006-03-07 16:11:38 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.util.ExternalReferenceUtil;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 /**
  * Tests the ExternalReferenceUtil Class.
@@ -50,6 +51,7 @@ public class TestExternalReferenceUtil extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testFilterReferences() throws Exception {
+        EhCache.resetAllCaches();
         testName = "Test Filtering of Reference List";
         ExternalReference refs[] = new ExternalReference[7];
         refs[0] = new ExternalReference("SwissProt", "P25300");
@@ -71,8 +73,10 @@ public class TestExternalReferenceUtil extends TestCase {
 
     /**
      * Tests the createUnifiedList method.
+     * @throws Exception All Exceptions.
      */
-    public void testUnionMethod() {
+    public void testUnionMethod() throws Exception {
+        EhCache.resetAllCaches();
         testName = "Test Union of References";
         ExternalReference refs1[] = new ExternalReference[2];
         refs1[0] = new ExternalReference("SwissProt", "P25300");
@@ -91,8 +95,11 @@ public class TestExternalReferenceUtil extends TestCase {
 
     /**
      * Tests the RemoveDuplicates Method.
+     * 
+     * @throws Exception All Exceptions.
      */
-    public void testRemoveDuplicates() {
+    public void testRemoveDuplicates() throws Exception {
+        EhCache.resetAllCaches();
         testName = "Test Removal of Duplicate References";
         ExternalReference refs[] = new ExternalReference[4];
         refs[0] = new ExternalReference("SwissProt", "P25300");
