@@ -114,10 +114,6 @@
         <copy todir="${build.dir}/WEB-INF/classes"
             file="${config.dir}/cpathResources.properties"/>
 
-        <!-- Copy Cache Config -->
-        <copy todir="${build.dir}/WEB-INF/classes"
-            file="${config.dir}/ehcache.xml"/>
-
         <!-- Copy log4J Config -->
         <copy todir="${build.dir}/WEB-INF/classes"
             file="${config.dir}/log4j.properties"/>
@@ -234,6 +230,15 @@
         <replace file="${build.dir}/WEB-INF/web.xml"
              token="admin_mode_active__value" value="${web.admin.active}"
              summary="yes"/>
+
+
+        <!-- Force copy of ehcache Config -->
+        <copy overwrite="yes" todir="${build.dir}/WEB-INF/classes"
+            file="${config.dir}/ehcache.xml"/>
+        <replace file="${build.dir}/WEB-INF/classes/ehcache.xml"
+             token="cache_path__value" value="${cache.path}"
+             summary="yes"/>
+
     </target>
 
     <!-- ==================== Reload Target =============================== -->
