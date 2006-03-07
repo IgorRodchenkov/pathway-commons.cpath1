@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.5 2006-03-03 18:57:17 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.6 2006-03-07 17:06:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,7 +50,6 @@ import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

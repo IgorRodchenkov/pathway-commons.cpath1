@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.32 2006-03-06 17:29:52 cerami Exp $
+// $Id: CPathServlet.java,v 1.33 2006-03-07 17:06:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,8 +50,6 @@ import org.quartz.impl.StdSchedulerFactory;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
-import net.sf.ehcache.CacheManager;
 
 /**
  * CPath Servlet.

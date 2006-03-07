@@ -1,4 +1,4 @@
-// $Id: OrganismStats.java,v 1.17 2006-03-06 17:29:34 cerami Exp $
+// $Id: OrganismStats.java,v 1.18 2006-03-07 17:06:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,16 +31,12 @@
  **/
 package org.mskcc.pathdb.lucene;
 
-import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.model.Organism;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.util.cache.EhCache;
 
 import java.io.IOException;
 import java.util.ArrayList;

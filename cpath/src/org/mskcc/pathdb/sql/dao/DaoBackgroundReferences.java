@@ -1,4 +1,4 @@
-// $Id: DaoBackgroundReferences.java,v 1.7 2006-03-06 16:27:47 cerami Exp $
+// $Id: DaoBackgroundReferences.java,v 1.8 2006-03-07 17:06:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -413,7 +413,7 @@ public class DaoBackgroundReferences {
             processResultSet(rs, xref, neighborList);
 
             if (neighborList.size() > 100) {
-                log.warn("Warning!  Got "+ neighborList.size() + " hits");
+                log.warn("Warning!  Got " + neighborList.size() + " hits");
                 log.warn("Quering for:  " + xref.toString());
             }
 

@@ -1,4 +1,4 @@
-// $Id: AdminResetGlobalCache.java,v 1.7 2006-03-06 17:27:33 cerami Exp $
+// $Id: AdminResetGlobalCache.java,v 1.8 2006-03-07 17:06:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,8 +31,6 @@
  **/
 package org.mskcc.pathdb.action.admin;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

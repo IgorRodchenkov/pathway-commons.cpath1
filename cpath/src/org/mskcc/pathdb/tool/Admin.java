@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.43 2006-03-06 17:26:54 cerami Exp $
+// $Id: Admin.java,v 1.44 2006-03-07 17:06:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,8 +50,6 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Properties;
-
-import net.sf.ehcache.CacheManager;
 
 /**
  * Command Line cPath Administrator.
