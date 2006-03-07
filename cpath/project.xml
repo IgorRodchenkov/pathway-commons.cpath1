@@ -135,11 +135,11 @@
 <dependency><groupId>commons-httpclient-2.0.2</groupId><artifactId>commons-httpclient-2.0.2</artifactId></dependency>
 <dependency><groupId>commons-jxpath-1.2</groupId><artifactId>commons-jxpath-1.2</artifactId></dependency>
 <dependency><groupId>commons-lang</groupId><artifactId>commons-lang</artifactId></dependency>
-<dependency><groupId>commons-logging</groupId><artifactId>commons-logging</artifactId></dependency>
+<dependency><groupId>commons-logging-1.0.4</groupId><artifactId>commons-logging-1.0.4</artifactId></dependency>
 <dependency><groupId>commons-pool-1.1</groupId><artifactId>commons-pool-1.1</artifactId></dependency>
 <dependency><groupId>commons-validator</groupId><artifactId>commons-validator</artifactId></dependency>
 <dependency><groupId>dataservices</groupId><artifactId>dataservices</artifactId></dependency>
-<dependency><groupId>ehcache-1.1</groupId><artifactId>ehcache-1.1</artifactId></dependency>
+<dependency><groupId>ehcache-1.2beta4</groupId><artifactId>ehcache-1.2beta4</artifactId></dependency>
 <dependency><groupId>getopt</groupId><artifactId>getopt</artifactId></dependency>
 <dependency><groupId>highlighter</groupId><artifactId>highlighter</artifactId></dependency>
 <dependency><groupId>icu4j</groupId><artifactId>icu4j</artifactId></dependency>
