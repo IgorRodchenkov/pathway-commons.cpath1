@@ -55,7 +55,7 @@
 <jar href="plugins/biopax_core_0_3.jar"/>
 <jar href="plugins/data-aux.jar"/>
 <jar href="plugins/filter.jar"/>
-<jar href="plugins/pedviewer_plugin_0_1.jar"/>
+<jar href="plugins/expressionviewer_plugin_0_1.jar"/>
 <jar href="plugins/yLayouts.jar"/>
 
   </resources>
