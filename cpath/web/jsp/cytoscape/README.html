@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Cytoscape Expression Viewer PlugIn: READ ME</title></head>
+
+<body style="font-family: Arial,Helvetica,sans-serif; font-size: 11pt;">
+<h2>Cytoscape Expression Viewer PlugIn</h2>
+<h3>1. Introduction</h3>
+The Expression Viewer plugin enables Cytoscape users to visual expression data in the contect of cPath Pathways.
+<p>
+Updates regarding this plugin will be posted to the Cytoscape-announce mailing list. You can easily <a href="http://groups-beta.google.com/group/cytoscape-announce/subscribe">subscribe</a> to the mailing list or <a href="http://groups-beta.google.com/group/cytoscape-announce">browse the archives</a>. 
+</p>
+<h3>2. Using the Expression Viewer PlugIn</h3> 
+<ul>
+	<li>
+	    Start Cytoscape. For example, run: ./cytoscape.sh or cytoscape.bat. 
+	</li>
+	<li>
+	    Load a Pathway by selecting one from the Pathway List then clicking on the "Load Pathway" button.
+	    Below is a sample screenshot of the Pathway List:
+	    <p>
+	    <a href="/cpath/jsp/images/plugin/expression_viewer_pathway_list.png"><img alt="Sample Screenshot of the Pathway List" src="/cpath/jsp/images/plugin/expression_viewer_pathway_list_thumb.png" border="0"></a> 
+	    <br>
+	    <font size="-1">[<a href="/cpath/jsp/images/plugin/expression_viewer_pathway_list.png">Click to enlarge</a>]</font> 
+	    </p>
+	</li>
+	<li>
+	    Load an Expression Data file by selecting the Expression Data tab then clicking on the "Browse" button.  This will create a Dialog Box from which you can select a file containing Expression Data.
+	    Below is a sample screenshot of the Expression Data Panel:
+	    <p>
+	    <a href="/cpath/jsp/images/plugin/expression_viewer_expression_data_panel.png"><img alt="Sample Screenshot of the Expression Data Panel" src="/cpath/jsp/images/plugin/expression_viewer_expression_data_panel_thumb.png" border="0"></a> 
+	    <br>
+	    <font size="-1">[<a href="/cpath/jsp/images/plugin/expression_viewer_expression_data_panel.png">Click to enlarge</a>]</font> 
+	    </p>
+	</li>
+	<li>
+	    After loading a Pathway and Expression Data, the Experimental Conditions Panel will appear.  This window contains the following elements:
+		<ul>
+		    <li>
+			    A Condition Selector which allows you to move between Experimental Conditions.
+			</li>
+			<li>
+			    A Color Gradient which indicates for a selected node where its pValue falls in the domain of all possible pValues.
+			</li>
+			    A Configure Color Theme Panel which allows you to change the Color Gradient spectrum and/or change the MIN/CENTER/MAX boundaries of the Color Gradient.
+			<li>
+			    A Legend which indicates the color that nodes containing no expression data undertake.
+			</li>
+		</ul>
+	    Below is a sample screenshot of the Experimental Conditions Panel:
+	    <p>
+	    <a href="/cpath/jsp/images/plugin/expression_viewer.png"><img alt="Sample Screenshot of the Expression Conditions Panel" src="/cpath/jsp/images/plugin/expression_viewer_thumb.png" border="0"></a> 
+	    <br>
+	    <font size="-1">[<a href="/cpath/jsp/images/plugin/expression_viewer.png">Click to enlarge</a>]</font> 
+	    </p>
+	</li>
+</ul>
+
+<h3>3. Understanding Visual Rendering Clues</h3> The Expression Viewer PlugIn utilizes the BioPax PlugIn to load Pathway data.  By default, the BioPAX PlugIn renders nodes and edges as follows: 
+<p>
+</p>
+<table cellpadding="3" cellspacing="3">
+	<tbody><tr bgcolor="#dddddd">
+		<td>
+			BioPAX Entity 
+		</td>
+		<td>
+			Visual Shape 
+		</td>
+	</tr>
+	<tr>
+		<td>
+			BioPAX Physical Entities, such as proteins, small molecules, complexes, etc. 
+		</td>
+		<td>
+			<img alt="Ellipse Shape" src="README_files/ellipse.jpg"> 
+		</td>
+	</tr>
+	<tr>
+		<td>
+			BioPAX Interaction Entities, such as biochemical reactions, catalysis, etc. 
+		</td>
+		<td>
+			<img alt="Diamond Shape" src="README_files/diamond.jpg"> 
+		</td>
+	</tr>
+	<tr bgcolor="#dddddd">
+		<td>
+			BioPAX Edge Type 
+		</td>
+		<td>
+			Arrow Shape 
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Inhibition 
+		</td>
+		<td>
+			<img alt="Black inhibition arrow type" src="README_files/BLACK_T.jpg"> 
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Containment, e.g. a complex can contain one or more proteins. 
+		</td>
+		<td>
+			<img alt="Black ciricle arrow type" src="README_files/BLACK_CIRCLE.jpg"> 
+		</td>
+	</tr>
+	<tr>
+		<td>
+			All other edge types, e.g. activation, left, right, etc. 
+		</td>
+		<td>
+			<img alt="Black arrow type" src="README_files/BLACK_DELTA.jpg"> 
+		</td>
+	</tr>
+</tbody></table>
+<h3>5. Bugs / Feature Requests</h3> If you encounter a bug with this plugin, email Benjamin Gross or Ethan Cerami at the address(es) below, or log a bug directly to the <a href="http://www.cbio.mskcc.org/cytoscape/bugs/">Cytoscape Bug Tracker</a>. <h3>6. Contacts</h3> 
+<p>
+	Sander Group, <a href="http://www.cbio.mskcc.org/">Computational Biology Center</a> 
+	<br>
+	<a href="http://www.mskcc.org/">Memorial Sloan-Kettering Cancer Center</a>, New York City 
+	<br>
+</p>
+<p>
+	For any questions concerning this plugin, please contact: 
+</p>
+<p>
+	Gary Bader: baderg AT mskcc.org 
+	<br>
+	Benjamin Gross: grossb AT cbio.mskcc.org 
+	<br>
+	Ethan Cerami: cerami AT cbio.mskcc.org 
+</p>
+<p>
+	This software is made available under the <a href="http://www.gnu.org/licenses/lgpl.html">LGPL (Lesser General Public License)</a>. 
+</p>
+<h3>7. Release Notes / Current Limitations</h3> 
+<p>
+	Version: 0.1 
+</p>
+<ul>
+	<li>
+		Date: March 15, 2006 
+	</li>
+	<li>
+		Features: 
+		<ul>
+			<li>
+				Enables Cytoscape users to visualize expression data in the context of cPath Pathways.
+			</li>
+			<li>
+				Works with Cytoscape 2.2. 
+			</li>
+		</ul>
+	</li>
+</ul>
+Known Limitations / Known Bugs: 
+<ul>
+	<li>
+	    It is possible (in fact, probable), that there will be multiple expression data values per network node.  Which value gets used?  The Expression Viewer will map over the value with the largest absolute value.
+	</li>
+	<li>
+	    The Expression Viewer makes no distinction between expression data in real or log values.
+	</li>
+</ul>
+</body></html>
