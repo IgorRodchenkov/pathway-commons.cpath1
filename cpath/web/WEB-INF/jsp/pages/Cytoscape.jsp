@@ -55,6 +55,36 @@ Cytoscape 2.1, or later. It will not work with earlier versions of Cytoscape.
     Download Beta2 Version .zip</A> [2.7 MB]
 </UL>
 
+<% // render the following content if we are in psi mode %>
+<%} else { %>
+
+<h1>About the Expression Viewer Cytoscape PlugIn</h1>
+Cytoscape includes a built-in PlugIn framework for adding new features and
+functionality.  The Expression Viewer PlugIn enables Cytoscape users
+to visualize expression data in the context of cPath Pathways.
+
+<p><B>Note:</B>  The Expression Viewer PlugIn currently only works with
+Cytoscape 2.2, or later. It will not work with earlier versions of Cytoscape.
+
+<P>A sample screenshot of the Expression Viewer PlugIn in action is shown below:
+
+<P>
+<A HREF="/cpath/jsp/images/plugin/expression_viewer.png">
+<IMG TITLE="Click to View Full Image"
+    SRC="/cpath/jsp/images/plugin/expression_viewer_thumb.png" BORDER=0>
+</A>
+
+<h1>Access Expression Viewer PlugIn</h1>
+<UL>
+    <LI>View the
+    <A HREF="jsp/cytoscape/README.html">README</A>
+    File (includes User Guide and Release Notes).
+    <LI>Java Web Start the <A HREF="jsp/cytoscape/cy1.jnlp">Expression Viewer</A> PlugIn.
+    <LI>Download the <A HREF="jsp/cytoscape/expressionData/sample.pvals">Sample Expression Data</A> File.
+</UL>
+
+<% } %>
+
 <h1>Bugs / Feature Requests</h1>
 
 If you encounter a bug with this PlugIn, or have a feature suggestion, we
@@ -62,11 +92,7 @@ encourage you to use the
 <A HREF="http://www.cbio.mskcc.org/cytoscape/bugs">Cytoscape Bug Tracker</A>.
 <P>
 If you log a bug, we will automatically email you when the bug is resolved.
-<% // render the following content if we are in psi mode %>
-<% } else { %>
-<h1>Ped Viewer Cytoscape PlugIn</h1>
-Available <a href="jsp/cytoscape/cy1.jnlp">here</a>
-<% } %>
+
 <h1>Contacts</h1>
 <P>
 Sander Group, Computational Biology Center<BR>
