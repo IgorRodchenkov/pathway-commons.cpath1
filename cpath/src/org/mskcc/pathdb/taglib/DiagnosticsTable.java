@@ -1,4 +1,4 @@
-// $Id: DiagnosticsTable.java,v 1.21 2006-02-22 22:47:51 grossb Exp $
+// $Id: DiagnosticsTable.java,v 1.22 2006-03-09 18:25:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,10 +37,15 @@ import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.dataservices.util.PropertyManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
 
 /**
  * Custom JSP Tag for Displaying cPath Diagnostics.
@@ -76,6 +81,7 @@ public class DiagnosticsTable extends HtmlTable {
         runFirstBatch();
         runSecondBatch();
         runThirdBatch();
+        runFourthBatch();
     }
 
     private void runFirstBatch() {
@@ -198,6 +204,21 @@ public class DiagnosticsTable extends HtmlTable {
         }
     }
 
+    private void runFourthBatch() {
+        CacheManager manager = CacheManager.getInstance();
+        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
+        DiagnosticTestResults test = new DiagnosticTestResults
+                ("Testing access to cache disk store");
+        try {
+            Element e = new Element ("web_diagnostics", "value1");
+            cache.put(e);
+            cache.flush();
+        } catch (Throwable t) {
+            test.setException(t);
+        }
+        testList.add(test);
+    }
+
     /**
      * Output Diagnostic Tests.
      */
@@ -206,7 +227,7 @@ public class DiagnosticsTable extends HtmlTable {
             this.startRow(i);
             DiagnosticTestResults test = (DiagnosticTestResults)
                     testList.get(i);
-            Exception e = test.getException();
+            Throwable e = test.getException();
             if (e == null) {
                 outputDataField("<IMG SRC='jsp/images/icon_success_sml.gif'>");
             } else {
@@ -230,7 +251,7 @@ public class DiagnosticsTable extends HtmlTable {
  */
 class DiagnosticTestResults {
     private String name;
-    private Exception e;
+    private Throwable e;
 
     public DiagnosticTestResults(String name) {
         this.name = name;
@@ -244,11 +265,11 @@ class DiagnosticTestResults {
         this.name = name;
     }
 
-    public Exception getException() {
+    public Throwable getException() {
         return e;
     }
 
-    public void setException(Exception e) {
+    public void setException(Throwable e) {
         this.e = e;
     }
 }
