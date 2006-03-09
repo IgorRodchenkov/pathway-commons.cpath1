@@ -3,5 +3,6 @@
 secondaryViewThreshold=2000
 viewType=tabbed
 dataservice.cpath_read_location=http\://toro.cbio.mskcc.org\:8080/cpath/webservice.do
+dataservice.cellmap_org_read_location=http\://toro.cbio.mskcc.org\:8080/cpath/webservice.do
 bioDataServer=PleaseSpecify
 viewThreshold=500
