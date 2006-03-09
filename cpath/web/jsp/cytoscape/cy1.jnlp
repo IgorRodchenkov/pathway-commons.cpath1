@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp codebase="http://localhost:8080/cpath/jsp/cytoscape">
+<jnlp codebase="$$codebase">
 	<information>
     	<title>Cytoscape WebStart</title>
 	    <vendor>Cytoscape Collaboration</vendor>
@@ -56,7 +56,7 @@
 		<jar href="plugins/expressionviewer_plugin_0_1.jar"/>
 		<jar href="plugins/yLayouts.jar"/>
 
-		<property name="dataservice.cellmap_org_read_location" value="http://toro.cbio.mskcc.org:8080/cpath/webservice.do" />
+		<property name="dataservice.cellmap_org_read_location" value="$$context"/>
 	</resources>
 	<application-desc main-class="cytoscape.CyMain">
     	<argument>-rp</argument>
