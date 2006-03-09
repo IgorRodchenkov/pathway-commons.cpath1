@@ -74,7 +74,7 @@ Cytoscape 2.2, or later. It will not work with earlier versions of Cytoscape.
     SRC="/cpath/jsp/images/plugin/expression_viewer_thumb.png" BORDER=0>
 </A>
 
-<h1>Access Expression Viewer PlugIn</h1>
+<h1>Download Expression Viewer PlugIn</h1>
 <UL>
     <LI>View the
     <A HREF="jsp/cytoscape/README.html">README</A>
@@ -104,6 +104,8 @@ For any questions concerning this PlugIn, please contact:
 Gary Bader:  baderg AT mskcc.org
 <BR/>
 Ethan Cerami:  cerami AT cbio.mskcc.org
+<BR/>
+Benjamin Gross:  grossb AT cbio.mskcc.org
 <P>
 This software is made available under the LGPL (Lesser General Public License).
 </P>
