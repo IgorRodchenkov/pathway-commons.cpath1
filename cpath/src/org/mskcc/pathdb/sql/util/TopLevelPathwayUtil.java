@@ -1,4 +1,4 @@
-// $Id: TopLevelPathwayUtil.java,v 1.7 2006-03-06 17:28:29 cerami Exp $
+// $Id: TopLevelPathwayUtil.java,v 1.8 2006-03-10 16:18:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -96,7 +96,7 @@ public class TopLevelPathwayUtil {
             xdebug.logMsg(this, "Checking In-Memory Cache:  " + key);
             CacheManager manager = CacheManager.create();
             Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
-            Element element = cache.get(EhCache.KEY_PATHWAY_LIST);
+            Element element = cache.get(key);
 
             if (element != null) {
                 xdebug.logMsg(this, "Successfully Retrieved from Cache");
