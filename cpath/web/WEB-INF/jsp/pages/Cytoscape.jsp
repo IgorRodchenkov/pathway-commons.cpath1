@@ -77,10 +77,10 @@ Cytoscape 2.2, or later. It will not work with earlier versions of Cytoscape.
 <h1>Download Expression Viewer PlugIn</h1>
 <UL>
     <LI>View the
-    <A HREF="jsp/cytoscape/README.html">README</A>
+    <A HREF="/cpath/jsp/cytoscape/README.html">README</A>
     File (includes User Guide and Release Notes).
-    <LI>Java Web Start the <A HREF="jsp/cytoscape/cy1.jnlp">Expression Viewer</A> PlugIn.
-    <LI>Download the <A HREF="jsp/cytoscape/expressionData/sample.pvals">Sample Expression Data</A> File.
+    <LI>Java Web Start the <A HREF="/cpath/jsp/cytoscape/cy1.jnlp">Expression Viewer</A> PlugIn.
+    <LI>Download the <A HREF="/cpath/jsp/cytoscape/expressionData/sample.pvals">Sample Expression Data</A> File.
 </UL>
 
 <% } %>
