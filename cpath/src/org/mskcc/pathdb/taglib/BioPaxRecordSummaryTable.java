@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.10 2006-03-13 20:42:41 grossb Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.11 2006-03-13 21:40:51 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -294,7 +294,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      */
     private void outputCytoscapeLink() {
 		append("<TR>");
-		append("<TD><a href=\"cytoscape.do\">CYTOSCAPE_LINK_TEXT</a></TD>");
+		append("<TD COLSPAN=3><a href=\"cytoscape.do\">" + CYTOSCAPE_LINK_TEXT + "</a></TD>");
 		append("</TR>");
     }
 }
