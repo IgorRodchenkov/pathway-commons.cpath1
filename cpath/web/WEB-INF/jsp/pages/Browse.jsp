@@ -14,6 +14,10 @@
 <div id="content">
 <h1>Browse by Organism</h1>
 <cbio:organismTable referer="BROWSE" />
+<p>
+<div class="text">
+* Indicates number of pathways, molecules and complexes.
+</div>
 </div>
 
 <jsp:include page="../global/footer.jsp" flush="true" />
