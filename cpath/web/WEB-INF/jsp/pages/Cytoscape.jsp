@@ -61,7 +61,7 @@ Cytoscape 2.1, or later. It will not work with earlier versions of Cytoscape.
 <h1>About the Expression Viewer Cytoscape PlugIn</h1>
 Cytoscape includes a built-in PlugIn framework for adding new features and
 functionality.  The Expression Viewer PlugIn enables Cytoscape users
-to visualize expression data in the context of cPath Pathways.
+to visualize expression data in the context of Biological Pathways.
 
 <p><B>Note:</B>  The Expression Viewer PlugIn currently only works with
 Cytoscape 2.2, or later. It will not work with earlier versions of Cytoscape.
