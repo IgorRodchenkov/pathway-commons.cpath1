@@ -75,6 +75,9 @@
         <delete dir="${build.dir}"/>
         <delete dir="ant_eater/reports"/>
         <delete dir="ant_eater/logs"/>
+        <delete>
+            <fileset dir="bin" includes="persistent_cache.*"/>
+        </delete>
         <delete dir="bin/_tempIndexDir0"/>
         <delete dir="bin/_tempIndexDir1"/>
         <delete dir="bin/_tempIndexDir2"/>
