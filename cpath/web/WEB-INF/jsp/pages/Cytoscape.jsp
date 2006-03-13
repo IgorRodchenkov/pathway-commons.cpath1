@@ -74,14 +74,10 @@ Cytoscape 2.2, or later. It will not work with earlier versions of Cytoscape.
     SRC="jsp/images/plugin/expression_viewer_thumb.png" BORDER=0>
 </A>
 
-<h1>Download Expression Viewer PlugIn</h1>
-<UL>
-    <LI>View the
-    <A HREF="jsp/cytoscape/README.html">README</A>
-    File (includes User Guide and Release Notes).
-    <LI>Java Web Start the <A HREF="jsp/cytoscape/cy1.jnlp">Expression Viewer</A> PlugIn.
-    <LI>Download the <A HREF="jsp/cytoscape/expressionData/sample.pvals">Sample Expression Data</A> File.
-</UL>
+<h1><A HREF="jsp/cytoscape/cy1.jnlp">Run the Expression Viewer PlugIn</a></h1>
+
+<LI>View the <A HREF="jsp/cytoscape/README.html">README</A> File (includes User Guide and Release Notes).
+<LI>Download the <A HREF="jsp/cytoscape/expressionData/sample.pvals">Sample Expression Data</A> File.
 
 <% } %>
 
