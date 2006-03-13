@@ -57,28 +57,39 @@ Cytoscape 2.1, or later. It will not work with earlier versions of Cytoscape.
 
 <% // render the following content if we are in psi mode %>
 <%} else { %>
+<h1>View Human Affymetrix gene expression data on Cancer Cell Map 
+pathways in 3 easy steps</h1>
+<ol>
+<li><b><a href="jsp/cytoscape/cy1.jnlp">Click to start the Expression 
+Viewer software</a></b>
+<li>Select the Cancer Cell Map pathway you want to view
+<li>Load your Human Affymetrix gene expression data. Note: this requires 
+your data to conform to a specific, but easy to create format. <A 
+HREF="jsp/cytoscape/expressionData/sample.pvals">See a sample.</A>
+</ol>
 
-<h1>About the Expression Viewer Cytoscape PlugIn</h1>
-Cytoscape includes a built-in PlugIn framework for adding new features and
-functionality.  The Expression Viewer PlugIn enables Cytoscape users
-to visualize expression data in the context of Biological Pathways.
+<a href="jsp/cytoscape/README.html"><h1>More details...</h1></a>
 
-<p><B>Note:</B>  The Expression Viewer PlugIn currently only works with
-Cytoscape 2.2, or later. It will not work with earlier versions of Cytoscape.
-
-<P>A sample screenshot of the Expression Viewer PlugIn in action is shown below:
-
-<P>
+<h1>Screenshot</h1>
 <A HREF="jsp/images/plugin/expression_viewer.png">
 <IMG TITLE="Click to View Full Image"
-    SRC="jsp/images/plugin/expression_viewer_thumb.png" BORDER=0>
+     SRC="jsp/images/plugin/expression_viewer_thumb.png" BORDER=0>
 </A>
 
-<h1><A HREF="jsp/cytoscape/cy1.jnlp">Run the Expression Viewer PlugIn</a></h1>
+<h1>About the Cytoscape and the Expression Viewer Cytoscape Plugin</h1>
 
-<LI>View the <A HREF="jsp/cytoscape/README.html">README</A> File (includes User Guide and Release Notes).
-<LI>Download the <A HREF="jsp/cytoscape/expressionData/sample.pvals">Sample Expression Data</A> File.
+Cytoscape is an open source bioinformatics software platform for
+visualizing molecular interaction networks and integrating these
+interactions with gene expression profiles and other state data.
+(Find out more at:  <A HREF="http://cytoscape.org/">cytoscape.org</A>).
 
+Cytoscape includes a built-in plugin framework for adding new features 
+and functionality.  The Expression Viewer plugin enables Cytoscape users
+to visualize expression data in the context of cPath Pathways.
+
+<p><B>Note:</B> The Expression Viewer plugin currently only works with
+Cytoscape 2.2, or later. It will not work with earlier versions of 
+Cytoscape.
 <% } %>
 
 <h1>Bugs / Feature Requests</h1>
