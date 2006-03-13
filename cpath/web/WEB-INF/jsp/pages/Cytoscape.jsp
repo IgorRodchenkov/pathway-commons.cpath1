@@ -61,7 +61,7 @@ Cytoscape 2.1, or later. It will not work with earlier versions of Cytoscape.
 pathways in 3 easy steps</h1>
 <ol>
 <li><b><a href="jsp/cytoscape/cy1.jnlp">Click to start the Expression 
-Viewer software</a></b>
+Viewer software</a></b> (requires <a href="http://java.sun.com/docs/books/tutorial/information/javawebstart.html">Java Web Start</a>)
 <li>Select the Cancer Cell Map pathway you want to view
 <li>Load your Human Affymetrix gene expression data. Note: this requires 
 your data to conform to a specific, but easy to create format. <A 
