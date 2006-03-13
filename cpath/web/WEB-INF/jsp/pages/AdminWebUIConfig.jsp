@@ -83,7 +83,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th align="LEFT">Maintenance Tag Line</th>
+				<th align="LEFT">Footer</th>
 				<td>
 					<html:textarea property="maintenanceTagLine" rows="5" cols="70"/>
 				</td>
