@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.9 2006-02-27 20:07:54 grossb Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.10 2006-03-13 20:42:41 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ package org.mskcc.pathdb.taglib;
 import java.util.List;
 
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
@@ -55,7 +56,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
     private static final int SYNONYMS_PER_ROW = 3;
 
     /**
-     * The spacing between synonyms
+     * The spacing between synonyms.
      */
     private static final String SYNONYM_SPACING = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
@@ -65,9 +66,14 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
     private static final int EXTERNAL_LINKS_PER_ROW = 3;
 
     /**
-     * The spacing between synonyms
+     * The spacing between external links.
      */
     private static final String EXTERNAL_LINKS_SPACING = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+    /**
+     * The a href link text to cytoscape tab
+     */
+    private static final String CYTOSCAPE_LINK_TEXT = "View Expression Data on this Pathway";
 
     /**
      * Reference to CPathRecord.
@@ -109,6 +115,8 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      */
     private void outputRecords() {
 
+		BioPaxConstants biopaxConstants = new BioPaxConstants();
+
         outputHeader();
         append("<TABLE CELLSPACING=5 CELLPADDING=0>");
         outputSynonyms();
@@ -116,6 +124,9 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
         outputAvailability();
         outputExternalLinks();
         outputComment();
+		if (biopaxConstants.isPathway(record.getSpecificType())) {
+			outputCytoscapeLink();
+		}
         append("</TABLE>");
     }
 
@@ -276,5 +287,14 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
             append("<TD COLSPAN=3>" + commentString + "</TD>");
             append("</TR>");
         }
+    }
+
+    /**
+     * Output a link to the Cytoscape Tab.
+     */
+    private void outputCytoscapeLink() {
+		append("<TR>");
+		append("<TD><a href=\"cytoscape.do\">CYTOSCAPE_LINK_TEXT</a></TD>");
+		append("</TR>");
     }
 }
