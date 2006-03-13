@@ -4,18 +4,18 @@
 <body style="font-family: Arial,Helvetica,sans-serif; font-size: 11pt;">
 <h2>Cytoscape Expression Viewer PlugIn</h2>
 <h3>1. Introduction</h3>
-The Expression Viewer plugin enables Cytoscape users to visual expression data in the contect of cPath Pathways.
+The Expression Viewer plugin enables Cytoscape users to visualize expression data in the context of biological pathways.
 <p>
 Updates regarding this plugin will be posted to the Cytoscape-announce mailing list. You can easily <a href="http://groups-beta.google.com/group/cytoscape-announce/subscribe">subscribe</a> to the mailing list or <a href="http://groups-beta.google.com/group/cytoscape-announce">browse the archives</a>. 
 </p>
 <h3>2. Using the Expression Viewer PlugIn</h3> 
 <ul>
 	<li>
-	    Start Cytoscape. For example, run: ./cytoscape.sh or cytoscape.bat. 
+		<A HREF="jsp/cytoscape/cy1.jnlp">Run the Expression Viewer PlugIn</a>
 	</li>
 	<li>
-	    Load a Pathway by selecting one from the Pathway List then clicking on the "Load Pathway" button.  A good Pathway to select for use with our sample expression data file is the KitReceptor.
-	    Below is a sample screenshot of the Pathway List:
+	    Load a pathway by selecting one from the pathway list, and then clicking on the "Load Pathway" button.  A good pathway to select for use with our sample expression data file is the KitReceptor.
+	    Below is a sample screenshot of the pathway list:
 	    <p>
 	    <a href="../../jsp/images/plugin/expression_viewer_pathway_list.png"><img alt="Sample Screenshot of the Pathway List" src="../../jsp/images/plugin/expression_viewer_pathway_list_thumb.png" border="0"></a> 
 	    <br>
@@ -23,8 +23,8 @@ Updates regarding this plugin will be posted to the Cytoscape-announce mailing l
 	    </p>
 	</li>
 	<li>
-	    Load an Expression Data File by selecting the Expression Data Tab then clicking on the "Browse" button.  This will create a Dialog Box from which you can select a file containing Expression Data (<A HREF="../../jsp/cytoscape/expression_data_file_format.html">file format notes</A>).  You can find our sample data file <A HREF="../../jsp/cytoscape/expressionData/sample.pvals">here</A>.
-	    Below is a sample screenshot of the Expression Data Panel:
+	    Load an expression data file by selecting the expression data tab, and then clicking on the "Browse" button.  This will create a dialog box from which you can select a file containing expression data (<A HREF="../../jsp/cytoscape/expression_data_file_format.html">file format notes</A>).  You can find our sample data file <A HREF="../../jsp/cytoscape/expressionData/sample.pvals">here</A>.
+	    Below is a sample screenshot of the expression data panel:
 	    <p>
 	    <a href="../../../jsp/images/plugin/expression_viewer_expression_data_panel.png"><img alt="Sample Screenshot of the Expression Data Panel" src="../../jsp/images/plugin/expression_viewer_expression_data_panel_thumb.png" border="0"></a> 
 	    <br>
@@ -32,20 +32,22 @@ Updates regarding this plugin will be posted to the Cytoscape-announce mailing l
 	    </p>
 	</li>
 	<li>
-	    After loading a Pathway and Expression Data, the Experimental Conditions Panel will appear.  This window contains the following elements:
+	    After loading a pathway and expression data, the experimental conditions panel will appear.  This window contains the following elements:
 		<ul>
 		    <li>
-			    A Condition Selector which allows you to move between Experimental Conditions.
+			    A condition selector which allows you to move between experimental conditions.
 			</li>
 			<li>
-			    A Color Gradient which indicates for a selected node where its pValue falls in the domain of all possible pValues (denoted by a black tick mark that appears above the gradient when a node is selected).
+			    A color gradient which indicates for a selected node where its expression value falls in the domain of all possible expression values (denoted by a black tick mark that appears above the gradient when a node is selected).
 			</li>
-			    A Configure Color Theme Panel which allows you to change the Color Gradient spectrum and/or change the MIN/CENTER/MAX values of the Color Gradient.
 			<li>
-			    A Legend which indicates the color that nodes containing no expression data are colored.
+			    A configure color theme panel which allows you to change the color gradient spectrum and/or change the MIN/CENTER/MAX values of the color gradient.
+			</li>
+			<li>
+			    A legend which indicates those node(s) that contain no expression data.
 			</li>
 		</ul>
-	    Below is a sample screenshot of the Experimental Conditions Panel:
+	    Below is a sample screenshot of the experimental conditions panel:
 	    <p>
 	    <a href="../../jsp/images/plugin/expression_viewer.png"><img alt="Sample Screenshot of the Expression Conditions Panel" src="../../jsp/images/plugin/expression_viewer_thumb.png" border="0"></a> 
 	    <br>
