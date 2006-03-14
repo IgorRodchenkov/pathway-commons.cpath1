@@ -50,7 +50,8 @@
 		<jar href="lib/xerces.jar"/>
 		<jar href="lib/xml-apis.jar"/>
 
-		<jar href="plugins/biopax_core_0_3.jar"/>
+		<jar href="plugins/biopax_core_0_4.jar"/>
+		<jar href="plugins/biopax_plugin_0_4.jar"/>
 		<jar href="plugins/data-aux.jar"/>
 		<jar href="plugins/filter.jar"/>
 		<jar href="plugins/expressionviewer_plugin_0_1.jar"/>
