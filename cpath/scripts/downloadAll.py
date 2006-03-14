@@ -10,8 +10,10 @@ def getChild (root, target):
 			return node.firstChild.nodeValue
 
 # Get Complete List of Pathways
+#baseUrl = "http://cancer.cellmap.org/cellmap/webservice.do?version=1.0"
+baseUrl = "http://toro.cbio.mskcc.org:8080/cellmap/webservice.do?version=1.0"
 print "Getting List of Pathways"
-url = "http://cancer.cellmap.org/cellmap/webservice.do?version=1.0&cmd=get_top_level_pathway_list&format=biopax"
+url = baseUrl + "&cmd=get_top_level_pathway_list&format=biopax"
 filehandle = urllib.urlopen(url)
 xml = ""
 for line in filehandle:
@@ -39,8 +41,11 @@ else:
 # Download all pathways 
 for i in range(len(idList)):
 	print "Downloading Pathway:  " + nameList[i]
-	url = "http://cancer.cellmap.org/cellmap/webservice.do?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q="+idList[i];
+	url = baseUrl + "&cmd=get_record_by_cpath_id&format=biopax&q="+idList[i];
 	print "Connecting to:  " + url
 	fileName = dir + "/" + nameList[i] + ".owl"
 	print "Saving to:  " + fileName
 	urllib.urlretrieve(url, fileName)
+	# This little hack removes the ^M characters at the end of all lines
+	os.popen ("strings " + fileName + " > temp.txt")
+	os.popen ("mv temp.txt " + fileName)
