@@ -61,6 +61,8 @@
 	<application-desc main-class="cytoscape.CyMain">
     	<argument>-rp</argument>
 	    <argument>org.mskcc.ped_viewer.plugin.PedViewerPlugIn</argument>
+    	<argument>-rp</argument>
+	    <argument>yfiles.YFilesLayoutPlugin</argument>
 	</application-desc>
 </jnlp>
 
