@@ -108,11 +108,7 @@ Memorial Sloan-Kettering Cancer Center, New York City<BR>
 <P>
 For any questions concerning this PlugIn, please contact:
 </P>
-Gary Bader:  baderg AT mskcc.org
-<BR/>
-Ethan Cerami:  cerami AT cbio.mskcc.org
-<BR/>
-Benjamin Gross:  grossb AT cbio.mskcc.org
+<IMG SRC="jsp/images/emailimage.jpg" BORDER=0>
 <P>
 This software is made available under the LGPL (Lesser General Public License).
 </P>
