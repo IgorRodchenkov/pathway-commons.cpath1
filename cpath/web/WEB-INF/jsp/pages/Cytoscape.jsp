@@ -18,13 +18,6 @@
 <% // render the following content if we are in psi mode %>
 <div id="content">
 
-<h1>About Cytoscape</h1>
-
-Cytoscape is an open source bioinformatics software platform for
-visualizing molecular interaction networks and integrating these
-interactions with gene expression profiles and other state data.
-(Find out more at:  <A HREF="http://cytoscape.org/">cytoscape.org</A>).
-
 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI){ %>
 
 <h1>About the cPath PlugIn</h1>
@@ -54,6 +47,13 @@ Cytoscape 2.1, or later. It will not work with earlier versions of Cytoscape.
     <LI><A HREF="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath-beta2.zip">
     Download Beta2 Version .zip</A> [2.7 MB]
 </UL>
+
+<h1>About Cytoscape</h1>
+
+Cytoscape is an open source bioinformatics software platform for
+visualizing molecular interaction networks and integrating these
+interactions with gene expression profiles and other state data.
+(Find out more at:  <A HREF="http://cytoscape.org/">cytoscape.org</A>).
 
 <% // render the following content if we are in psi mode %>
 <%} else { %>
