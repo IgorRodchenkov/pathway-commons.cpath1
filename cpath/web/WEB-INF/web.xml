@@ -137,4 +137,9 @@
         <taglib-location>/WEB-INF/taglib/struts-bean.tld</taglib-location>
     </taglib>
 
+	<mime-mapping>
+	    <extension>pvals</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+
 </web-app>
