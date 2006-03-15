@@ -65,7 +65,7 @@ Viewer software</a></b> (requires <a href="http://java.sun.com/docs/books/tutori
 <li>Select the Cancer Cell Map pathway you want to view
 <li>Load your Human Affymetrix gene expression data. Note: this requires 
 your data to conform to a specific, but easy to create format. <A 
-HREF="jsp/cytoscape/expressionData/sample.pvals">See a sample.</A>
+HREF="jsp/cytoscape/expressionData/sample.pvals">See a sample</A> (right click to download and be sure to save with .pvals extension).
 </ol>
 
 <a href="jsp/cytoscape/README.html"><h1>More details...</h1></a>
