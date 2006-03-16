@@ -47,7 +47,7 @@
 		<jar href="lib/piccolox.jar"/>
 		<jar href="lib/tclib.jar"/>
 		<jar href="lib/violinstrings-1.0.2.jar"/>
-		<jar href="lib/xerces.jar"/>
+		<jar href="lib/xercesImpl.jar"/>
 		<jar href="lib/xml-apis.jar"/>
 
 		<jar href="plugins/biopax_core_0_4.jar"/>
