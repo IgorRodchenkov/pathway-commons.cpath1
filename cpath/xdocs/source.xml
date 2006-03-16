@@ -16,18 +16,16 @@
         </p>
      </section>
 
-    <!--
     <section name="Stable Releases">
         <p>
-            The latest stable release of cPath is version:  0.3.2.
+            The latest stable release of cPath is version:  0.6.
         </p>
         <p>
         <UL>
-        <LI><A HREF="stable/cpath_beta_03_2.tar.gz">Download Version 0.3.2</A> [tar.gz format] [~25 MB]</LI>
+        <LI><A HREF="stable/cpath_beta_06.tar.gz">Download Version 0.6</A> [tar.gz format]</LI>
         </UL>
         </p>
      </section>
-     -->
 
     <section name="Automated Nightly Snapshots">
         <p>
