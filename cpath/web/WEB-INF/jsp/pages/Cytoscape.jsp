@@ -72,9 +72,13 @@ HREF="jsp/cytoscape/expressionData/sample.pvals">See a sample</A> (right click t
 
 <h1>Screenshot</h1>
 <A HREF="jsp/images/plugin/expression_viewer.png">
-<IMG TITLE="Click to View Full Image"
+<IMG TITLE="Click to View Full Image" 
      SRC="jsp/images/plugin/expression_viewer_thumb.png" BORDER=0>
 </A>
+<br>
+<font size="1">(photo depicts Cytoscape running with the Expression Viewer Plugin.
+  The KitReceptor pathway has been loaded and overlaid with expression data.  Red circles
+ represent highly upregulated genes - an indication of unusually high mRNA levels)</font>
 
 <h1>About the Cytoscape and the Expression Viewer Cytoscape Plugin</h1>
 
