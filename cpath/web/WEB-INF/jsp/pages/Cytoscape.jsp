@@ -71,15 +71,19 @@ HREF="jsp/cytoscape/expressionData/sample.pvals">See a sample</A> (right click t
 <a href="jsp/cytoscape/README.html"><h1>More details...</h1></a>
 
 <h1>Screenshot</h1>
+<table width="576">
+<tr><td>
 <A HREF="jsp/images/plugin/expression_viewer.png">
 <IMG TITLE="Click to View Full Image" 
      SRC="jsp/images/plugin/expression_viewer_thumb.png" BORDER=0>
 </A>
-<br>
+</td></tr>
+<tr><td>
 <font size="1">(photo depicts Cytoscape running with the Expression Viewer Plugin.
   The KitReceptor pathway has been loaded and overlaid with expression data.  Red circles
  represent highly upregulated genes - an indication of unusually high mRNA levels)</font>
-
+</td></tr>
+</table>
 <h1>About the Cytoscape and the Expression Viewer Cytoscape Plugin</h1>
 
 Cytoscape is an open source bioinformatics software platform for
