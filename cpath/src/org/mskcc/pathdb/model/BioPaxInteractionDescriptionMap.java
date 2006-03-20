@@ -1,4 +1,4 @@
-// $Id: BioPaxInteractionDescriptionMap.java,v 1.7 2006-02-27 22:31:24 grossb Exp $
+// $Id: BioPaxInteractionDescriptionMap.java,v 1.8 2006-03-20 21:55:31 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,5 +70,8 @@ public class BioPaxInteractionDescriptionMap extends HashMap {
         put("complex", "A physical entity whose structure is comprised of other physical entities "
                 + "bound to each other non-covalently, at least one of which is a macromolecule "
                 + "(protein, DNA, or RNA).");
+        put("pathway", "A set or series of interactions, often forming a network, which "
+			    + "biologists have found useful to group together for organizational, "
+			    + "historic, biophysical or other reasons.");
     }
 }
