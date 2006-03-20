@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.14 2006-02-27 22:43:11 grossb Exp $
+// $Id: MemberMolecules.java,v 1.15 2006-03-20 20:55:41 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -98,7 +98,9 @@ public class MemberMolecules {
         if (targets.size() > 0) {
             for (int lc = 0; lc < targets.size(); lc++) {
                 CPathRecord targetRecord = (CPathRecord) targets.get(lc);
-                molecules.addAll(getMemberMolecules(targetRecord, longList));
+				if (targetRecord.getId() != record.getId()) {
+					molecules.addAll(getMemberMolecules(targetRecord, longList));
+				}
             }
         } else {
             BioPaxConstants biopaxConstants = new BioPaxConstants();
