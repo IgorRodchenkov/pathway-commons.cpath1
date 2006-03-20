@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.10 2006-02-27 22:43:03 grossb Exp $
+// $Id: MemberPathways.java,v 1.11 2006-03-20 20:55:25 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -91,7 +91,9 @@ public class MemberPathways {
                 InternalLinkRecord link = (InternalLinkRecord) sources.get(lc);
                 DaoCPath cPath = DaoCPath.getInstance();
                 CPathRecord sourceRecord = cPath.getRecordById(link.getSourceId());
-                pathways.addAll(getMemberPathways(sourceRecord, longList));
+				if (sourceRecord.getId() != record.getId()) {
+					pathways.addAll(getMemberPathways(sourceRecord, longList));
+				}
             }
         } else {
             BioPaxConstants biopaxConstants = new BioPaxConstants();
