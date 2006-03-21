@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.15 2006-03-20 20:55:41 grossb Exp $
+// $Id: MemberMolecules.java,v 1.16 2006-03-21 17:01:24 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ package org.mskcc.pathdb.schemas.biopax;
 // imports
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -55,6 +56,11 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 public class MemberMolecules {
 
     /**
+     * Stores already processed records.
+     */
+    private static ArrayList alreadyProcessedRecords;
+
+    /**
      * Used to help us determine if moleculeSummary should be added to molecules hashset.
      */
     private static HashSet moleculeNames;
@@ -64,6 +70,7 @@ public class MemberMolecules {
      */
     public static void reset() {
         moleculeNames = new HashSet();
+		alreadyProcessedRecords = new ArrayList();
     }
 
     /**
@@ -77,6 +84,13 @@ public class MemberMolecules {
      */
     public static HashSet getMemberMolecules(CPathRecord record, ArrayList longList)
             throws BioPaxRecordSummaryException, DaoException {
+
+		// have we already processed this record ?
+		for (Iterator i = alreadyProcessedRecords.iterator(); i.hasNext();) {
+			if (record.getId() == ((Long)i.next()).longValue()){
+				return null;
+			}
+		}
 
         // for timing
         long startTime = 0;
@@ -99,7 +113,11 @@ public class MemberMolecules {
             for (int lc = 0; lc < targets.size(); lc++) {
                 CPathRecord targetRecord = (CPathRecord) targets.get(lc);
 				if (targetRecord.getId() != record.getId()) {
-					molecules.addAll(getMemberMolecules(targetRecord, longList));
+					HashSet processedHashSet = getMemberMolecules(targetRecord, longList);
+					if (processedHashSet != null){
+						molecules.addAll(processedHashSet);
+						alreadyProcessedRecords.add(new Long(record.getId()));
+					}
 				}
             }
         } else {
@@ -114,6 +132,7 @@ public class MemberMolecules {
                         boolean addSummaryToMoleculesSet = moleculeNames.add(name);
                         if (addSummaryToMoleculesSet) {
                             molecules.add(moleculeSummary);
+							alreadyProcessedRecords.add(new Long(record.getId()));
                         }
                     }
                 }
