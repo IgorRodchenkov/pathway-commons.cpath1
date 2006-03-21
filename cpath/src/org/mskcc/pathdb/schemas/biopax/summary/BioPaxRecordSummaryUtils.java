@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.23 2006-02-27 19:29:52 grossb Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.24 2006-03-21 18:44:03 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -280,7 +280,7 @@ public class BioPaxRecordSummaryUtils {
         //  Create Header for Pop-Up Box
         buf.append("<DIV CLASS=popup>");
         buf.append("<DIV CLASS=popup_caption>");
-        buf.append(name);
+        buf.append(truncateLongName(name));
         appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
                 isSumoylated, buf);
         if (participant != null) {
@@ -353,7 +353,7 @@ public class BioPaxRecordSummaryUtils {
             for (int i = 0; i < componentList.size(); i++) {
                 BioPaxRecordSummary child =
                         (BioPaxRecordSummary) componentList.get(i);
-                buf.append("<LI>" + child.getName() + "</LI>");
+                buf.append("<LI>" + truncateLongName(child.getName()) + "</LI>");
             }
             buf.append("</UL>");
         }
@@ -491,7 +491,7 @@ public class BioPaxRecordSummaryUtils {
             for (int i = 0; i < synList.size(); i++) {
                 String synonym = (String) synList.get(i);
                 synonym = entityFilter(synonym);
-                buf.append("<LI>" + synonym + "</LI>");
+                buf.append("<LI>" + truncateLongName(synonym) + "</LI>");
             }
             buf.append("</UL>");
         }
