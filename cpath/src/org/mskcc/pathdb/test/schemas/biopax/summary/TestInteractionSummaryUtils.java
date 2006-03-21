@@ -1,4 +1,4 @@
-// $Id: TestInteractionSummaryUtils.java,v 1.12 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestInteractionSummaryUtils.java,v 1.13 2006-03-21 20:43:22 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,7 +64,7 @@ public class TestInteractionSummaryUtils extends TestCase {
         assertTrue(summary.indexOf("2-phosphoglycerate") > 0);
 
         // Verify Some Synonyms
-        assertTrue(summary.indexOf("3-phospho-glyceric acid") > 0);
+        assertTrue(summary.indexOf("3-phospho-glyceri...") > 0);
     }
 
     /**
