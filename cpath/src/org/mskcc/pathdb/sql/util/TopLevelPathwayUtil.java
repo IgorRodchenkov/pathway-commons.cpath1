@@ -1,4 +1,4 @@
-// $Id: TopLevelPathwayUtil.java,v 1.8 2006-03-10 16:18:44 cerami Exp $
+// $Id: TopLevelPathwayUtil.java,v 1.9 2006-03-21 17:24:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,10 +42,13 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Utility to determine top-level pathways.
@@ -149,16 +152,36 @@ public class TopLevelPathwayUtil {
         ArrayList topLevelPathwayList = new ArrayList();
         DaoInternalLink daoInternalLink = new DaoInternalLink();
         for (int i = 0; i < candidateList.size(); i++) {
+            boolean hasParents = true;
+            boolean containsPathways = false;
             CPathRecord pathway = (CPathRecord) candidateList.get(i);
             ArrayList sourceLinks = daoInternalLink.getSources
                     (pathway.getId());
-            //  If nothing points to this pathway, it is a top level pathway.
+
+            //  First Pass:  Does is have any parents?
             if (sourceLinks.size() == 0) {
+                hasParents = false;
+            }
+
+            //  Second Pass:  Does it contain other pathways?
+            if (!hasParents) {
+                ArrayList targetLinks = daoInternalLink.getTargetsWithLookUp(pathway.getId());
+                for (int j=0; j<targetLinks.size(); j++) {
+                    CPathRecord record = (CPathRecord) targetLinks.get(j);
+                    if (record.getType().equals(CPathRecordType.PATHWAY))  {
+                        containsPathways = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasParents && containsPathways) {
                 topLevelPathwayList.add(pathway);
             }
         }
         xdebug.logMsg(this, "Total Number of Top Level Pathways:  "
                 + topLevelPathwayList.size());
+        Collections.sort(topLevelPathwayList, new RecordComparator());
         return topLevelPathwayList;
     }
 
@@ -168,5 +191,34 @@ public class TopLevelPathwayUtil {
         } else {
             return EhCache.KEY_PATHWAY_LIST;
         }
+    }
+}
+
+/**
+ * Compares two cPathRecord Objects, and sorts by specific type.
+ *
+ * @author Ethan Cerami
+ */
+class RecordComparator implements Comparator {
+
+    /**
+     * Compares two cPathRecord Objects.
+     *
+     * @param object0 CPathRecord Object 0.
+     * @param object1 cPathRecord Object 1/
+     * @return a negative integer, zero, or a positive integer as the first
+     *          argument is less than, equal to, or greater than the second.
+     */
+    public int compare(Object object0, Object object1) {
+        if (object0 != null && object1 != null) {
+            CPathRecord record0 = (CPathRecord) object0;
+            CPathRecord record1 = (CPathRecord) object1;
+            String name0 = record0.getName();
+            String name1 = record1.getName();
+            if (name0 != null && name1 != null) {
+                return name0.toUpperCase().compareTo(name1.toUpperCase());
+            }
+        }
+        return -1;
     }
 }
