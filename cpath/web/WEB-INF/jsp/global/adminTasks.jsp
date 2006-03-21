@@ -19,7 +19,7 @@
             <A HREF="adminWebLogging.do">Toggle Web Diagnostics</A>
         </div>                
         <div>
-            <A HREF="adminResetCache.do">Purge In-Memory Cache</A>
+            <A HREF="adminResetCache.do">Purge In-Memory / Persistent Disk Cache</A>
         </div>
         <div>
             <A HREF="adminDiagnostics.do">Run cPath Diagnostics</A>
