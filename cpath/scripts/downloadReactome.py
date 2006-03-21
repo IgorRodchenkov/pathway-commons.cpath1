@@ -14,6 +14,18 @@ class HtmlParser(SGMLParser):
 		if text.startswith("[Pathway:"):
 			self.pathways.append(text)
 
+# Remove Empty Lines from File
+# This is required, b/c some of the Reactome files start with empty lines
+# and, this is considered invalid XML
+def removeEmptyLines (fileName):
+	infile = open (fileName, 'r')
+	outfile = open ("temp.txt", 'w')
+	for line in infile.readlines():
+		strippedline = line.strip()
+		if (len(strippedline) > 0):
+			outfile.write(line)
+	os.rename("temp.txt", fileName)
+
 # Conditionally create reactome directory
 dir = "reactome"
 if os.path.isdir(dir):
@@ -39,4 +51,5 @@ for pathway in parser.pathways:
 	print "Connecting to:  " + url
 	urllib.urlretrieve(url, fileName)
 	print "Stored to:  " + fileName
+	removeEmptyLines (fileName)
 
