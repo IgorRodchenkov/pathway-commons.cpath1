@@ -1,4 +1,4 @@
-// $Id: SnoopHttp.java,v 1.9 2006-02-22 22:51:58 grossb Exp $
+// $Id: SnoopHttp.java,v 1.10 2006-03-23 20:52:46 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -141,9 +141,9 @@ public class SnoopHttp {
                 "Protocol", request.getProtocol());
         xdebug.addParameter(XDebugParameter.HTTP_TYPE,
                 "HTTP Method", request.getMethod());
-        Enumeration enum = request.getHeaderNames();
-        while (enum.hasMoreElements()) {
-            String headerName = (String) enum.nextElement();
+        Enumeration headerEnum = request.getHeaderNames();
+        while (headerEnum.hasMoreElements()) {
+            String headerName = (String) headerEnum.nextElement();
             String value = request.getHeader(headerName);
             //  Filter out referer;  not really important right now
             if (!(headerName.equals("referer")
@@ -199,9 +199,9 @@ public class SnoopHttp {
             xdebug.addParameter(XDebugParameter.SESSION_TYPE,
                     "Session", "Session Created:  "
                     + new Date(session.getCreationTime()));
-            Enumeration enum = session.getAttributeNames();
-            while (enum.hasMoreElements()) {
-                String name = (String) enum.nextElement();
+            Enumeration headerEnum = session.getAttributeNames();
+            while (headerEnum.hasMoreElements()) {
+                String name = (String) headerEnum.nextElement();
                 Object object = session.getAttribute(name);
                 xdebug.addParameter(XDebugParameter.SESSION_TYPE,
                         name, object.toString());
@@ -213,9 +213,9 @@ public class SnoopHttp {
      * Extracts Everything in the Servlet Context.
      */
     private void extractServletContext() {
-        Enumeration enum = servletContext.getAttributeNames();
-        while (enum.hasMoreElements()) {
-            String name = (String) enum.nextElement();
+        Enumeration headerEnum = servletContext.getAttributeNames();
+        while (headerEnum.hasMoreElements()) {
+            String name = (String) headerEnum.nextElement();
             Object value = servletContext.getAttribute(name);
             if (!name.equals("org.apache.catalina.jsp_classpath")) {
                 xdebug.addParameter(XDebugParameter.SERVLET_CONTEXT_TYPE,
