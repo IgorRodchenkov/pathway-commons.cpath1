@@ -92,6 +92,7 @@
         description="Compile all Java source files.">
         <mkdir dir="${build.dir}/WEB-INF/classes"/>
         <javac srcdir="${src.dir}"
+		    source="1.4"
             destdir="${build.dir}/WEB-INF/classes"
             debug="${compile.debug}"
             deprecation="${compile.deprecation}"
