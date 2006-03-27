@@ -1,0 +1,126 @@
+Proposal to create a SOAP interface to cPath
+--------------------------------------------
+
+Revision History:
+=================
+March 27, 2006:  Version 0.1, created by Ethan Cerami, MSKCC.
+
+Scope of this document:  
+=======================
+This document describes the creation of a SOAP interface to the MSKCC cPath Pathway Database.  The document describes the query and retrieval of pathway objects only.  Other objects are not described in this initial proposal.
+
+Object Model:
+=============
+The object model for all inputs and outputs to cPath are fully described in the BioPAX UML Model.  BioPAX is fully described here:  http://www.biopax.org.  It is scheduled for full submission to the caBIG caDSR system.
+
+Messaging System:
+------------------
+The web service interface will use SOAP to encode requests, responses and error messages.  All requests and responses will be documented via WSDL.
+
+Request:
+--------
+A cPath request will consist of a SOAP message with an embedded BioPAX XML pathway object in it.  The user will specify fields within the pathway object, and these fields will be used to query cPath.  The initial proposal enables users to retrieve pathways by name, by organism, or by a combination of the two.
+
+Three sample requests are shown below.
+
+Request #1:  Retrieve all pathways that begin with the string "Alpha*":
+
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <soapenv:Body>
+ 	<!--  A Stub BioPAX Object -->
+	<bp:pathway>
+		<bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alpha*</bp:NAME>
+	</bp:pathway>
+ </soapenv:Body>
+</soapenv:Envelope>
+
+Request #2:  Retrieve all human pathways:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <soapenv:Body>
+ 	<!--  A Stub BioPAX Object -->
+	<bp:pathway>
+		<bp:ORGANISM>
+			<bp:bioSource>
+				<bp:TAXON-XREF>
+				<bp:unificationXref>
+				<bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9606</bp:ID>
+				<bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">taxon</bp:DB>
+				</bp:unificationXref>
+			</bp:TAXON-XREF>
+		</bp:bioSource>
+	</bp:ORGANISM>
+	</bp:pathway>
+ </soapenv:Body>
+</soapenv:Envelope>
+
+Request #3:  Retrieve all human pathways that begin with the string:  "Alpha*":
+
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <soapenv:Body>
+ 	<!--  A Stub BioPAX Object -->
+	<bp:pathway>
+		<bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alpha*</bp:NAME>
+		<bp:ORGANISM>
+			<bp:bioSource>
+				<bp:TAXON-XREF>
+				<bp:unificationXref>
+				<bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9606</bp:ID>
+				<bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">taxon</bp:DB>
+				</bp:unificationXref>
+			</bp:TAXON-XREF>
+		</bp:bioSource>
+	</bp:ORGANISM>
+	</bp:pathway>
+ </soapenv:Body>
+</soapenv:Envelope>
+
+Response:
+---------
+The response will consist of N number of pathway objects which match the specified stub object.
+
+Here is an example response to Request #1:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <soapenv:Body>
+ <bp:pathway rdf:ID="CPATH-1">
+    <bp:COMMENT rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The integrins are cell membrane receptors composed of alpha and beta subunits. There are about 18 alpha subunits and 8 beta subunits.Integrins alpha6 and beta 4 heterodimerises to form the active receptor complex. Alpha6Beta4 are mainly involved with hemidesmosomes formation, cell adhesion and cell attachments. Many cytoskeletal proteins like keratins and Bullous pemphigoid antigen (BPAG) are associated with Alpha6beta4.They also associate with other receptors like Epidermal Growth factor receptor(EGFR), macrophage stimulating factor receptors. The vital ligands are Laminins, Kalinins. Various kinases (like MEKs, ERKs, PKCs, YES, FYN) and adapter molecules like (GRBs) are involved in this pathway. Alpha6beta4 modulate processes as diverse as cell proliferation, differentiation, apoptosis, migration and tissue morphogenesis.</bp:COMMENT>
+    <bp:ORGANISM>
+      <bp:bioSource rdf:ID="CPATH-LOCAL-1">
+        <bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Homo sapiens</bp:NAME>
+        <bp:TAXON-XREF>
+          <bp:unificationXref rdf:ID="CPATH-LOCAL-2">
+            <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9606</bp:ID>
+            <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">taxon</bp:DB>
+          </bp:unificationXref>
+        </bp:TAXON-XREF>
+      </bp:bioSource>
+    </bp:ORGANISM>
+    <bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alpha6Beta4Integrin</bp:NAME>
+    <bp:XREF>
+      <bp:unificationXref rdf:ID="CPATH-LOCAL-1891">
+        <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CPATH</bp:DB>
+        <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1</bp:ID>
+      </bp:unificationXref>
+    </bp:XREF>
+  </bp:pathway>
+  <!-- BioPAX Document continues with interaction data sets, proteins, etc.
+ </soapenv:Body>
+</soapenv:Envelope>
+
