@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.44 2006-03-07 17:06:40 cerami Exp $
+// $Id: Admin.java,v 1.45 2006-03-31 15:02:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,7 +63,6 @@ public class Admin {
     private static final String COMMAND_PRE_COMPUTE = "precompute";
     private static final String COMMAND_COUNT_AFFYMETRIX = "count_affy";
     private static final String COMMAND_VALIDATE = "validate";
-    private static final String COMMAND_EXPORT = "export";
     private static final String COMMAND_QUERY = "query";
     private static final int NOT_SET = -9999;
 
@@ -115,7 +114,7 @@ public class Admin {
 
             System.out.println("cPath Admin.  cPath Version:  "
                     + CPathConstants.VERSION);
-            System.out.println("Copyright (c) 2005 Memorial Sloan-Kettering "
+            System.out.println("Copyright (c) 2005-2006 Memorial Sloan-Kettering "
                     + "Cancer Center.\n");
 
             System.out.println("----------------------------------");
@@ -148,10 +147,6 @@ public class Admin {
                 ValidateXmlTask validator = new ValidateXmlTask
                         (new File(fileName));
                 validator.validate(true);
-            } else if (command.equals(COMMAND_EXPORT)) {
-                ExportInteractionsToText export =
-                        new ExportInteractionsToText(true);
-                export.executeTask();
             } else if (command.equals(COMMAND_QUERY)) {
                 QueryFullText.queryFullText(ftQuery);
             } else {
@@ -401,7 +396,7 @@ public class Admin {
     private static void displayHelp() {
         System.out.println("cPath Admin.  cPath Version:  "
                 + CPathConstants.VERSION);
-        System.out.println("Copyright (c) 2005 Memorial Sloan-Kettering "
+        System.out.println("Copyright (c) 2005-2006 Memorial Sloan-Kettering "
                 + "Cancer Center.");
         System.out.println("\nAdministration Program for the cPath Database");
         System.out.println("Usage:  admin.pl [OPTIONS] command");
@@ -420,7 +415,7 @@ public class Admin {
                 + "References");
         System.out.println("  -o, -o=id       NCBI TaxonomyID");
         System.out.println("  -q, -q=term     Full Text Query Term");
-        System.out.println("\nWhere command is a one of:  ");
+        System.out.println("\nWhere command is one of:  ");
         System.out.println("  import          Imports Specified File.");
         System.out.println("                  Used to Import BioPAX Files, "
                 + "PSI-MI Files");
