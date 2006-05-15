@@ -1,4 +1,4 @@
-// $Id: ImportPsiToCPath.java,v 1.8 2006-03-06 16:28:29 cerami Exp $
+// $Id: ImportPsiToCPath.java,v 1.9 2006-05-15 16:26:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -148,15 +148,15 @@ public class ImportPsiToCPath {
     /**
      * Adds Specified PSI-MI Record.
      *
-     * @param xml                  PSI-MI XML Record.
-     * @param validateExternalRefs Validates External References.
-     * @param removeAllXrefs       Automatically Removes all Xrefs (not recmd).
-     * @param pMonitor             Progress Monitor Object.
+     * @param xml                           PSI-MI XML Record.
+     * @param autoAddMissingExternalDbs     Automatically adds missing XRef Databases.
+     * @param removeAllXrefs                Automatically Removes all Xrefs (not recmd).
+     * @param pMonitor                      Progress Monitor Object.
      * @return Import Summary Object.
      * @throws org.mskcc.pathdb.sql.transfer.ImportException
      *          Indicates Error in Import.
      */
-    public ImportSummary addRecord(String xml, boolean validateExternalRefs,
+    public ImportSummary addRecord(String xml, boolean autoAddMissingExternalDbs,
             boolean removeAllXrefs, ProgressMonitor pMonitor)
             throws ImportException {
         summary = new ImportSummary();
@@ -180,9 +180,7 @@ public class ImportPsiToCPath {
                     ("Normalization Complete:  Document is valid.");
 
             //  Validate Interactors / External References.
-            if (validateExternalRefs) {
-                validateExternalRefs(entrySet);
-            }
+            validateExternalRefs(autoAddMissingExternalDbs, entrySet);
 
             //  Step 3:  Process all Interactors.
             processInteractors(entrySet);
@@ -208,7 +206,7 @@ public class ImportPsiToCPath {
     /**
      * Validates all Interactors and External References.
      */
-    private void validateExternalRefs(EntrySet entrySet)
+    private void validateExternalRefs(boolean autoAddExternalDbs, EntrySet entrySet)
             throws DaoException, ExternalDatabaseNotFoundException,
             MissingDataException {
         pMonitor.setCurrentMessage("Step 2 of 4:  Validating All External "
@@ -232,7 +230,7 @@ public class ImportPsiToCPath {
                 try {
                     ExternalReference[] refs =
                             extractExternalReferences(protein);
-                    linker.validateExternalReferences(refs);
+                    linker.validateExternalReferences(refs, autoAddExternalDbs);
                 } catch (MissingDataException e) {
                     reportInteractorErrorDetails(protein, e, j, interactors);
                 }
@@ -247,7 +245,7 @@ public class ImportPsiToCPath {
                 try {
                     ExternalReference refs[] =
                             psiUtil.extractXrefs(interaction.getXref());
-                    linker.validateExternalReferences(refs);
+                    linker.validateExternalReferences(refs, autoAddExternalDbs);
                 } catch (MissingDataException e) {
                     reportInteractionErrorDetails(interaction, e, j,
                             interactions);

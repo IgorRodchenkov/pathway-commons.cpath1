@@ -1,4 +1,4 @@
-// $Id: ImportRecordTask.java,v 1.19 2006-02-22 22:47:51 grossb Exp $
+// $Id: ImportRecordTask.java,v 1.20 2006-05-15 16:26:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,7 +48,7 @@ import org.mskcc.pathdb.sql.transfer.ImportException;
 public class ImportRecordTask extends Task {
     private long importId;
     private ImportSummary summary;
-    private boolean validateExternalReferences;
+    private boolean autoAddMissingExternalDbs;
     private boolean removeAllInteractionXRefs;
     private ProgressMonitor pMonitor;
 
@@ -56,16 +56,15 @@ public class ImportRecordTask extends Task {
      * Constructor.
      *
      * @param importId                   Import ID.
-     * @param validateExternalReferences Flag to Validate All External
-     *                                   References.
+     * @param autoAddMissingExternalDbs  Auto-Add missing External Databases.
      * @param removeAllInteractionXRefs  Flag to Remove all Interaction XRefs.
      * @param consoleMode                Console Mode.
      */
-    public ImportRecordTask(long importId, boolean validateExternalReferences,
+    public ImportRecordTask(long importId, boolean autoAddMissingExternalDbs,
             boolean removeAllInteractionXRefs, boolean consoleMode) {
         super("Import PSI-MI/BioPAX Record", consoleMode);
         this.importId = importId;
-        this.validateExternalReferences = validateExternalReferences;
+        this.autoAddMissingExternalDbs = autoAddMissingExternalDbs;
         this.removeAllInteractionXRefs = removeAllInteractionXRefs;
         pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Importing File...");
@@ -96,11 +95,11 @@ public class ImportRecordTask extends Task {
         try {
             if (record.getXmlType().equals(XmlRecordType.PSI_MI)) {
                 ImportPsiToCPath importer = new ImportPsiToCPath();
-                summary = importer.addRecord(xml, validateExternalReferences,
+                summary = importer.addRecord(xml, autoAddMissingExternalDbs,
                         removeAllInteractionXRefs, pMonitor);
             } else {
                 ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
-                summary = importer.addRecord(xml, pMonitor);
+                summary = importer.addRecord(xml, autoAddMissingExternalDbs, pMonitor);
             }
             outputSummary(summary);
             daoImport.updateRecordStatus(record.getImportId(),

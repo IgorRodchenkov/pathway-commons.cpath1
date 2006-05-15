@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.13 2006-02-22 22:47:50 grossb Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.14 2006-05-15 16:26:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,19 +70,22 @@ public class ImportBioPaxToCPath {
     private ArrayList oldIdList;
     private BioPaxUtil bpUtil;
     private ProgressMonitor pMonitor;
+    private boolean autoAddMissingExternalDbs;
     private ImportSummary importSummary;
 
     /**
      * Adds BioPAX Data to cPath.
      *
-     * @param xml      BioPAX XML String.
-     * @param pMonitor ProgressMonitor Object.
+     * @param xml                           BioPAX XML String.
+     * @param autoAddMissingExternalDbs     Automatically adds missing XRef Databases.
+     * @param pMonitor                      ProgressMonitor Object.
      * @return ImportSummary Object.
      * @throws ImportException Error Importing BioPAX Data.
      */
-    public ImportSummary addRecord(String xml, ProgressMonitor pMonitor)
-            throws ImportException {
+    public ImportSummary addRecord(String xml, boolean autoAddMissingExternalDbs,
+            ProgressMonitor pMonitor) throws ImportException {
         this.pMonitor = pMonitor;
+        this.autoAddMissingExternalDbs = autoAddMissingExternalDbs;
         this.importSummary = new ImportSummary();
         this.newRecordFlags = new ArrayList();
         try {
@@ -97,6 +100,8 @@ public class ImportBioPaxToCPath {
         } catch (JDOMException e) {
             throw new ImportException(e);
         } catch (SAXException e) {
+            throw new ImportException(e);
+        } catch (ExternalDatabaseNotFoundException e) {
             throw new ImportException(e);
         }
         return importSummary;
@@ -149,7 +154,8 @@ public class ImportBioPaxToCPath {
     /**
      * Stores RDF Resource Placeholders (without XML) to MySQL.
      */
-    private void storeRecords() throws DaoException, JDOMException {
+    private void storeRecords() throws DaoException, JDOMException,
+            ExternalDatabaseNotFoundException {
         DaoCPath dao = DaoCPath.getInstance();
         DaoExternalLink externalLinker = DaoExternalLink.getInstance();
         pMonitor.setCurrentMessage("Storing records to MySQL:");
@@ -186,7 +192,10 @@ public class ImportBioPaxToCPath {
                         ExternalReferenceUtil.createUnifiedList(xrefs,
                                 linkOutRefs);
 
-                //  Store External Links
+                //  Validate All Refs
+                externalLinker.validateExternalReferences(unifiedRefs, autoAddMissingExternalDbs);
+
+                //  Store All Refs
                 externalLinker.addMulipleRecords(cPathId, unifiedRefs, false);
 
                 if (record.getType().equals(CPathRecordType.PATHWAY)) {
