@@ -3,42 +3,52 @@ Proposal to create a SOAP interface to cPath
 
 Revision History:
 =================
-March 27, 2006:  Version 0.1, created by Ethan Cerami, MSKCC.
+March 31, 2006:  Version 0.1, created by Ethan Cerami, MSKCC.
 
-Scope of this document:  
+About this document:  
 =======================
-This document describes the creation of a SOAP interface to the MSKCC cPath Pathway Database.  The document describes the query and retrieval of pathway objects only.  Other objects are not described in this initial proposal.
+This document describes the creation of a SOAP interface to the MSKCC cPath Pathway Database.  The document describes the query and retrieval of pathway objects only.  Other objects are not described in this initial proposal.  This document is not yet finalized, and is currently being used primarily to generate discussion with our caBIG mentors.
+
+In creating this proposal, I used the Reactome caBIG SOAP API as a model reference.  It is fully described here:
+http://www.reactome.org:8080/caBIOWebApp/docs/services.html
 
 Object Model:
 =============
-The object model for all inputs and outputs to cPath are fully described in the BioPAX UML Model.  BioPAX is fully described here:  http://www.biopax.org.  It is scheduled for full submission to the caBIG caDSR system.
+The object model for all inputs to the API match those currently provided by Reactome.  I am not sure if these are officially part of the caBIG caDSR.  All outputs to the service are fully described in the BioPAX UML Model.  BioPAX is fully described here:  http://www.biopax.org.  It is scheduled for full submission to the caBIG caDSR system.
+
+Use Cases Addressed:
+--------------------
+The SOAP API described here deals with one specific scientific use case, which we have prioritized throughout our caBIG/cPath work.
+
+Use Case: Researcher wants to overlay expression data onto pathway of choice.  
+
+The steps are as follows:
+1.  Researcher starts third-party application
+2.  Third-party application queries cPath for a complete list of pathways.
+3.  Third-party application displays pathway list to the researcher.
+4.  Researcher double clicks on pathway of choice.
+5.  Third-party application retrieves and parses pathway of choice.
+6.  Third-party application visualizes pathway of choice.
+7.  Researcher loads expression data file.
+8.  Third-party application overlays expression data onto pathway, and colors each node in the pathway along a color gradient.
 
 Messaging System:
 ------------------
 The web service interface will use SOAP to encode requests, responses and error messages.  All requests and responses will be documented via WSDL.
 
-Request:
---------
-A cPath request will consist of a SOAP message with an embedded BioPAX XML pathway object in it.  The user will specify fields within the pathway object, and these fields will be used to query cPath.  The initial proposal enables users to retrieve pathways by name, by organism, or by a combination of the two.
+API Overview:
+-------------
+Initially, the API will consist of just two methods:
+1.  listTopLevelPathways:  this returns a list of all top-level pathway objects. (Matches method provided by Reactome)
+2.  getBioPAXModel:  this returns the entire pathway specified by the ID parameter. (Matches method provided by Reactome) 
 
-Three sample requests are shown below.
+Method 1:  listTopLevelPathways
+-------------------------------
+Input Arguments:  None
+Output:  BioPAX document containing N number of BioPAX Pathway stub object.
 
-Request #1:  Retrieve all pathways that begin with the string "Alpha*":
-
-<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope
-    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
- <soapenv:Body>
- 	<!--  A Stub BioPAX Object -->
-	<bp:pathway>
-		<bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alpha*</bp:NAME>
-	</bp:pathway>
- </soapenv:Body>
-</soapenv:Envelope>
-
-Request #2:  Retrieve all human pathways:
+Example Request:
+================
 
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope
@@ -46,52 +56,15 @@ Request #2:  Retrieve all human pathways:
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  <soapenv:Body>
- 	<!--  A Stub BioPAX Object -->
-	<bp:pathway>
-		<bp:ORGANISM>
-			<bp:bioSource>
-				<bp:TAXON-XREF>
-				<bp:unificationXref>
-				<bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9606</bp:ID>
-				<bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">taxon</bp:DB>
-				</bp:unificationXref>
-			</bp:TAXON-XREF>
-		</bp:bioSource>
-	</bp:ORGANISM>
-	</bp:pathway>
+  <listTopLevelPathways 
+    soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  </listTopLevelPathways>
  </soapenv:Body>
 </soapenv:Envelope>
 
-Request #3:  Retrieve all human pathways that begin with the string:  "Alpha*":
-
-<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope
-    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
- <soapenv:Body>
- 	<!--  A Stub BioPAX Object -->
-	<bp:pathway>
-		<bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alpha*</bp:NAME>
-		<bp:ORGANISM>
-			<bp:bioSource>
-				<bp:TAXON-XREF>
-				<bp:unificationXref>
-				<bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9606</bp:ID>
-				<bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">taxon</bp:DB>
-				</bp:unificationXref>
-			</bp:TAXON-XREF>
-		</bp:bioSource>
-	</bp:ORGANISM>
-	</bp:pathway>
- </soapenv:Body>
-</soapenv:Envelope>
-
-Response:
----------
-The response will consist of N number of pathway objects which match the specified stub object.
-
-Here is an example response to Request #1:
+Example Response:
+================
+The response will consist of N number of pathway stub objects.
 
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope
@@ -100,18 +73,7 @@ Here is an example response to Request #1:
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  <soapenv:Body>
  <bp:pathway rdf:ID="CPATH-1">
-    <bp:COMMENT rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The integrins are cell membrane receptors composed of alpha and beta subunits. There are about 18 alpha subunits and 8 beta subunits.Integrins alpha6 and beta 4 heterodimerises to form the active receptor complex. Alpha6Beta4 are mainly involved with hemidesmosomes formation, cell adhesion and cell attachments. Many cytoskeletal proteins like keratins and Bullous pemphigoid antigen (BPAG) are associated with Alpha6beta4.They also associate with other receptors like Epidermal Growth factor receptor(EGFR), macrophage stimulating factor receptors. The vital ligands are Laminins, Kalinins. Various kinases (like MEKs, ERKs, PKCs, YES, FYN) and adapter molecules like (GRBs) are involved in this pathway. Alpha6beta4 modulate processes as diverse as cell proliferation, differentiation, apoptosis, migration and tissue morphogenesis.</bp:COMMENT>
-    <bp:ORGANISM>
-      <bp:bioSource rdf:ID="CPATH-LOCAL-1">
-        <bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Homo sapiens</bp:NAME>
-        <bp:TAXON-XREF>
-          <bp:unificationXref rdf:ID="CPATH-LOCAL-2">
-            <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9606</bp:ID>
-            <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">taxon</bp:DB>
-          </bp:unificationXref>
-        </bp:TAXON-XREF>
-      </bp:bioSource>
-    </bp:ORGANISM>
+    <bp:COMMENT rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The integrins are cell membrane receptors composed of alpha and beta subunits....</bp:COMMENT>
     <bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alpha6Beta4Integrin</bp:NAME>
     <bp:XREF>
       <bp:unificationXref rdf:ID="CPATH-LOCAL-1891">
@@ -120,7 +82,76 @@ Here is an example response to Request #1:
       </bp:unificationXref>
     </bp:XREF>
   </bp:pathway>
-  <!-- BioPAX Document continues with interaction data sets, proteins, etc.
+  <!-- etc -->
  </soapenv:Body>
 </soapenv:Envelope>
 
+Method 2:  getBioPAXModel
+-------------------------------
+Input Arguments:  Single long value
+Output:  BioPAX document containing a fully described BioPAX Pathway object.
+
+Example Request:
+================
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <soapenv:Body>
+  <getBioPAXModel
+    soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+   <arg0 xsi:type="xsd:long">1891</arg0>
+  </getBioPAXModel>
+ </soapenv:Body>
+</soapenv:Envelope>
+
+Example Response:
+================
+The response will consist of one fully fleshed out pathway object.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <soapenv:Body>
+ <bp:pathway rdf:ID="CPATH-1">
+    <bp:COMMENT rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The integrins are cell membrane receptors composed of alpha and beta subunits....</bp:COMMENT>
+    <bp:NAME rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alpha6Beta4Integrin</bp:NAME>
+    <bp:XREF>
+      <bp:unificationXref rdf:ID="CPATH-LOCAL-1891">
+        <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CPATH</bp:DB>
+        <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1</bp:ID>
+      </bp:unificationXref>
+    </bp:XREF>
+  </bp:pathway>
+  <!-- Interactions, Participating Proteins, etc... -->
+ </soapenv:Body>
+</soapenv:Envelope>
+
+Discussion Points:
+------------------
+1.  This proposal assumes that the SOAP response documents contain BioPAX XML documents.  Is this compliant with Silver-Level requirements?
+
+Where is the Reactome data model?
+Where is BioPAX in the caDSR?
+Yes, OK.
+
+2.  The listTopLevelPathways is not exactly like the one provided by Reactome.  For example, when you query Reactome for top level pathways, you get back a bunch of Reactome pathway stub objects.  When you query the cPath API, you get back a bunch of BioPAX pathway stub objects.  Is that OK?
+
+OK, as long as I reference the CDE ID.
+
+3.  Are the input arguments already part of caDSR?  I think they might be, as Reactome has already implemented these.  If not, how would we go about adding these to the caDSR?
+
+Create UML Model. 
+Enterprise Architect.
+Create an XMI File.
+
+4.  How do we get approval on just these two methods, e.g. method name, tied to inputs and outputs?  How would we submit them to the caDSR?
+
+Patrick, Duke.
+
+5.  The first draft of this proposal only deals with two methods.  I did this to a) reduce the scope of work involved;  and b) help focus our discussion more explicitly on implementation details.  If we decide to add additional methods, what criteria shall we use to prioritize work?  For example, does it make sense to have clear scientific use cases for each method we design?  Can we phase in methods over time?  For example, could we start with the base level described here, and state that the base level is now Silver-Level compliant, and that we plan to add additional Silver-Level compliant methods in the future?  At what point would the entire system be considered Silver-Level compliant?
+
+caBIG OHSU, adopter.
