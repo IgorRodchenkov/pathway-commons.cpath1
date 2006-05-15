@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.45 2006-03-31 15:02:04 cerami Exp $
+// $Id: Admin.java,v 1.46 2006-05-15 16:24:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,7 +72,7 @@ public class Admin {
     private static String dbUser = null;
     private static String dbPwd = null;
     private static String fileName = null;
-    private static boolean validateExternalReferences = true;
+    private static boolean autoAddMissingExternalDbs = true;
     private static int taxonomyId = NOT_SET;
     private static String ftQuery = null;
     private static boolean xdebugFlag = false;
@@ -243,7 +243,7 @@ public class Admin {
         }
         if (importId != NOT_SET) {
             ImportRecordTask importTask = new ImportRecordTask(importId,
-                    validateExternalReferences, removeAllInteractionXrefs,
+                    autoAddMissingExternalDbs, removeAllInteractionXrefs,
                     true);
             importTask.transferRecord();
         }
@@ -318,7 +318,7 @@ public class Admin {
                     xdebugFlag = true;
                     break;
                 case 'x':
-                    validateExternalReferences = false;
+                    autoAddMissingExternalDbs = false;
                     break;
                 case 'r':
                     removeAllInteractionXrefs = true;
@@ -411,8 +411,8 @@ public class Admin {
             + "(overrides build.properties)");
         System.out.println("  -b, -b=database Database name "
             + "(overrides build.properties)");
-        System.out.println("  -x              Skips Validation of External "
-                + "References");
+        System.out.println("  -x              Production Mode (enforces "
+                + "that all External DBs exist in cPath)");
         System.out.println("  -o, -o=id       NCBI TaxonomyID");
         System.out.println("  -q, -q=term     Full Text Query Term");
         System.out.println("\nWhere command is one of:  ");
