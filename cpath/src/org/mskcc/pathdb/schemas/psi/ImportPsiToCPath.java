@@ -1,4 +1,4 @@
-// $Id: ImportPsiToCPath.java,v 1.9 2006-05-15 16:26:21 cerami Exp $
+// $Id: ImportPsiToCPath.java,v 1.10 2006-05-15 20:55:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -349,9 +349,9 @@ public class ImportPsiToCPath {
                     idMap.put(protein.getId(), new Long(record.getId()));
                     summary.incrementNumPhysicalEntitiesFound();
                     String refListText = getReferencesAsText(unificationRefs);
-                    pMonitor.setCurrentMessage("\nExisting interactor found "
-                            + " in cPath,  " + "based on xrefs:  "
-                            + refListText);
+                    //                    pMonitor.setCurrentMessage("\nExisting interactor found "
+                    //                            + " in cPath,  " + "based on xrefs:  "
+                    //                            + refListText);
                 } else {
                     //  Query Background Reference Service for other
                     //  unification identifiers.
