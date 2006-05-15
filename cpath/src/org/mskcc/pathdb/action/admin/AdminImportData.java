@@ -1,4 +1,4 @@
-// $Id: AdminImportData.java,v 1.14 2006-02-22 22:47:50 grossb Exp $
+// $Id: AdminImportData.java,v 1.15 2006-05-15 20:55:51 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -124,7 +124,7 @@ public class AdminImportData extends AdminBaseAction {
             //  If marshalling fails, validate and get more user-friendly
             //  error message with error location.
             XmlValidator validator = new XmlValidator();
-            ArrayList errors = validator.validate(data);
+            ArrayList errors = validator.validatePsiMiLevel1(data);
             if (errors != null && errors.size() > 0) {
                 SAXParseException exc = (SAXParseException) errors.get(0);
                 throw exc;

@@ -1,4 +1,4 @@
-// $Id: ValidateXmlTask.java,v 1.7 2006-02-22 22:47:51 grossb Exp $
+// $Id: ValidateXmlTask.java,v 1.8 2006-05-15 20:55:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -74,7 +74,7 @@ public class ValidateXmlTask {
         XmlValidator validator = new XmlValidator();
         ContentReader reader = new ContentReader();
         String xmlStr = reader.retrieveContent(file.getAbsolutePath());
-        ArrayList errors = validator.validate(xmlStr);
+        ArrayList errors = validator.validatePsiMiLevel1(xmlStr);
         if (errors != null && errors.size() > 0) {
             System.out.println("XML File is Invalid.");
             for (int i = 0; i < errors.size(); i++) {
