@@ -1,4 +1,4 @@
-// $Id: DaoExternalLink.java,v 1.27 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoExternalLink.java,v 1.28 2006-05-15 16:24:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,10 +37,7 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.schemas.psi.DbReferenceType;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.dataservices.schemas.psi.XrefType;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.*;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -230,12 +227,14 @@ public class DaoExternalLink extends ManagedDAO {
      * Validates all External References.
      *
      * @param refs Array of External Reference objects.
+     * @param autoAddExternalDb If a external database does not exist, auto add it to cPath.
      * @return true is all ref.getDatabase() items match.
      * @throws DaoException Error Retrieving Data.
      * @throws ExternalDatabaseNotFoundException
      *                      Database Not Found.
      */
-    public boolean validateExternalReferences(ExternalReference refs[])
+    public boolean validateExternalReferences(ExternalReference refs[],
+            boolean autoAddExternalDb)
             throws DaoException, ExternalDatabaseNotFoundException {
         if (refs != null) {
             for (int i = 0; i < refs.length; i++) {
@@ -257,13 +256,32 @@ public class DaoExternalLink extends ManagedDAO {
                 ExternalDatabaseRecord exDb =
                         dao.getRecordByTerm(refs[i].getDatabase());
                 if (exDb == null) {
-                    throw new ExternalDatabaseNotFoundException
-                            ("No matching database "
-                            + "found for:  " + dbName + " [" + id + "]");
+                    if (autoAddExternalDb == false) {
+                        throw new ExternalDatabaseNotFoundException
+                                ("No matching database "
+                                + "found for:  " + dbName + " [" + id + "]");
+                    } else {
+                        autoAddMissingExternalDb(refs[i]);
+                    }
                 }
             }
         }
         return true;
+    }
+
+    /**
+     * Automatically add missing External DB.
+     * @param ref External Reference
+     * @throws DaoException Database Error.
+     */
+    private void autoAddMissingExternalDb(ExternalReference ref)
+            throws DaoException {
+        ExternalDatabaseRecord dbRecord = new ExternalDatabaseRecord();
+        dbRecord.setName(ref.getDatabase());
+        dbRecord.setMasterTerm(ref.getDatabase());
+        dbRecord.setDbType(ReferenceType.LINK_OUT);
+        DaoExternalDb daoDb = new DaoExternalDb();
+        daoDb.addRecord(dbRecord);
     }
 
     /**
