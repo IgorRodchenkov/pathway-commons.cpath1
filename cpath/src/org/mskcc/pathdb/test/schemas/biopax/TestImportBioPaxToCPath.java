@@ -1,4 +1,4 @@
-// $Id: TestImportBioPaxToCPath.java,v 1.12 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestImportBioPaxToCPath.java,v 1.13 2006-05-15 16:25:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,7 +76,7 @@ public class TestImportBioPaxToCPath extends TestCase {
                 ("testData/biopax/biopax1_sample1.owl");
         ProgressMonitor pMonitor = new ProgressMonitor();
         ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
-        ImportSummary summary = importer.addRecord(xml, pMonitor);
+        ImportSummary summary = importer.addRecord(xml, false, pMonitor);
         assertEquals(1, summary.getNumPathwaysSaved());
         assertEquals(0, summary.getNumPathwaysFound());
         assertEquals(4, summary.getNumInteractionsSaved());
@@ -110,7 +110,7 @@ public class TestImportBioPaxToCPath extends TestCase {
 
         //  Try Saving Again
         importer = new ImportBioPaxToCPath();
-        summary = importer.addRecord(xml, pMonitor);
+        summary = importer.addRecord(xml, false, pMonitor);
 
         //  Because the pathway has a unification xref, it should not
         //  be saved again.
