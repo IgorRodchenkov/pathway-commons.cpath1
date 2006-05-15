@@ -1,4 +1,4 @@
-// $Id: XmlValidator.java,v 1.3 2006-02-22 22:51:58 grossb Exp $
+// $Id: XmlValidator.java,v 1.4 2006-05-15 20:54:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -94,6 +94,27 @@ public class XmlValidator extends DefaultHandler {
     public ArrayList validate(String xml, String schemaLocation)
             throws SAXException, IOException {
         return execute(xml, schemaLocation);
+    }
+
+    /**
+     * Validates the Specified Document against PSI-MI Level 1.
+     *
+     * Unfortunately, there is no strict rule for how PSI-MI Level 1 documents reference
+     * the external schema.  Some use absolute URLs to the schema;  others use relative URLs
+     * to local files (which do not actually exist).  To get around this very common problem,
+     * this method explicitly validates the XML document against the local MIF.xsd in cPath. 
+     *
+     * @param xml   XML Document.
+     * @return ArrayList of SAXExceptions (if any).
+     * @throws SAXException
+     * @throws IOException
+     */
+    public ArrayList validatePsiMiLevel1 (String xml) throws SAXException, IOException {
+        String cpathHome = System.getProperty("CPATH_HOME");
+        String separator = System.getProperty("file.separator");
+        String psiMiLevel1 = "net:sf:psidev:mi " + cpathHome + separator + "testData"
+            + separator + "psi_mi" + separator + "MIF.xsd";
+        return validate (xml, psiMiLevel1);
     }
 
     private ArrayList execute(String xmlData, String schemaLocation)
