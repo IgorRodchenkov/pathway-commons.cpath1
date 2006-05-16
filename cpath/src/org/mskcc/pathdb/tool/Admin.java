@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.46 2006-05-15 16:24:45 cerami Exp $
+// $Id: Admin.java,v 1.47 2006-05-16 14:37:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -257,18 +257,17 @@ public class Admin {
         ValidateXmlTask validator = new ValidateXmlTask(file);
         boolean isValid = validator.validate(false);
         long importId = NOT_SET;
-        if (isValid) {
-            importId = LoadBioPaxPsi.importDataFile(file, XmlRecordType.PSI_MI);
-        } else {
+        if (!isValid) {
             System.out.println("\n-------------------------------------");
-            System.out.println("Import aborted due to invalid XML.");
+            System.out.print("! Import detected XML validity errors.  However, ");
+            System.out.println("import will proceed.");
             System.out.println("Use the validate command to view "
-                    + "a list of XML validation errors.\n"
+                    + "a complete list of XML validation errors.\n"
                     + "For example:  admin.pl"
-                    + " -f human_small.xml validate");
+                    + " -f " + file.getAbsolutePath() + " validate");
             System.out.println("-------------------------------------");
-            System.exit(-1);
         }
+        importId = LoadBioPaxPsi.importDataFile(file, XmlRecordType.PSI_MI);
         return importId;
     }
 
