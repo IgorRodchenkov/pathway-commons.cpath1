@@ -1,4 +1,4 @@
-// $Id: TestUpdateRdfLinks.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestUpdateRdfLinks.java,v 1.9 2006-05-16 16:51:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,7 +62,7 @@ public class TestUpdateRdfLinks extends TestCase {
     public void testUpdateRdfLinks() throws Exception {
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample1.owl");
-        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
         ArrayList pathwayList = util.getPathwayList();
 
         //  Create a Sample ID Map

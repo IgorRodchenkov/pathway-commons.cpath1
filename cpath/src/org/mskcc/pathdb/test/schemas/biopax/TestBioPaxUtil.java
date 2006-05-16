@@ -1,4 +1,4 @@
-// $Id: TestBioPaxUtil.java,v 1.14 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestBioPaxUtil.java,v 1.15 2006-05-16 16:51:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,7 +72,7 @@ public class TestBioPaxUtil extends TestCase {
         testName = "Test a Legal Level 1 BioPAX File";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample1.owl");
-        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
 
         ArrayList pathwayList = util.getPathwayList();
         ArrayList interactionList = util.getInteractionList();
@@ -181,7 +181,7 @@ public class TestBioPaxUtil extends TestCase {
         testName = "Detect Invalid RDF Links";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample2.owl");
-        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
 
         ArrayList pathwayList = util.getPathwayList();
         ArrayList interactionList = util.getInteractionList();
@@ -208,7 +208,7 @@ public class TestBioPaxUtil extends TestCase {
     public void testRedundantRdfIds() throws Exception {
         testName = "Detect Redundant RDF IDs";
         FileReader file = new FileReader("testData/biopax/biopax1_sample3.owl");
-        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
 
         ArrayList pathwayList = util.getPathwayList();
         ArrayList interactionList = util.getInteractionList();
@@ -237,7 +237,7 @@ public class TestBioPaxUtil extends TestCase {
         testName = "Detect Invalid Database XRefs";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample4.owl");
-        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
         ArrayList errorList = util.getErrorList();
 
         assertTrue(errorList.size() > 0);
@@ -256,7 +256,7 @@ public class TestBioPaxUtil extends TestCase {
         testName = "Detect Circular Pathways";
         FileReader file = new FileReader
                 ("testData/biopax/circular_example.owl");
-        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
         Element root = util.getReorganizedXml();
 
         //  Verify that the embedded rdf:resource points back to

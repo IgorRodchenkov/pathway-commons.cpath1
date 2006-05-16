@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.14 2006-05-15 16:26:21 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.15 2006-05-16 16:51:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -131,7 +131,7 @@ public class ImportBioPaxToCPath {
     private void massageBioPaxData(Reader reader) throws ImportException,
             DaoException, IOException, JDOMException {
 
-        bpUtil = new BioPaxUtil(reader, pMonitor);
+        bpUtil = new BioPaxUtil(reader, autoAddMissingExternalDbs, pMonitor);
 
         //  Check for Errors in BioPAX Transformation
         ArrayList errorList = bpUtil.getErrorList();

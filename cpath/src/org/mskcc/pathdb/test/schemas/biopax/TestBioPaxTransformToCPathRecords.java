@@ -1,4 +1,4 @@
-// $Id: TestBioPaxTransformToCPathRecords.java,v 1.7 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestBioPaxTransformToCPathRecords.java,v 1.8 2006-05-16 16:51:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,7 +59,7 @@ public class TestBioPaxTransformToCPathRecords extends TestCase {
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample1.owl");
         ProgressMonitor pMonitor = new ProgressMonitor();
-        BioPaxUtil util = new BioPaxUtil(file, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
         ArrayList pathwayList = util.getPathwayList();
 
         //  Try with a Pathway

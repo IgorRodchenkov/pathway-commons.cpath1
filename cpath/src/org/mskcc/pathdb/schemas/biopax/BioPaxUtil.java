@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.17 2006-02-22 22:47:50 grossb Exp $
+// $Id: BioPaxUtil.java,v 1.18 2006-05-16 16:51:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,9 +36,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
-import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
+import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
@@ -70,18 +68,22 @@ public class BioPaxUtil {
     private HashMap localIdMap;
     private ProgressMonitor pMonitor;
     private boolean debugFlag = false;
+    private boolean autoAddMissingExternalDbs = false;
 
     /**
      * Constructor.
      *
      * @param reader   Reader Object.
+     * @param autoAddMissingExternalDbs Automatically Adds Missing External DBs to cPath.
      * @param pMonitor ProgressMonitor Object.
      * @throws IOException   Input/Output Error.
      * @throws JDOMException XML Error.
      * @throws DaoException  Database Access Error.
      */
-    public BioPaxUtil(Reader reader, ProgressMonitor pMonitor)
+    public BioPaxUtil(Reader reader, boolean autoAddMissingExternalDbs,
+            ProgressMonitor pMonitor)
             throws IOException, JDOMException, DaoException {
+        this.autoAddMissingExternalDbs = autoAddMissingExternalDbs;
         this.pMonitor = pMonitor;
         //  Read in File via JDOM SAX Builder
         SAXBuilder builder = new SAXBuilder();
@@ -643,7 +645,6 @@ public class BioPaxUtil {
      */
     private void validateExternalReferences(Element root)
             throws JDOMException, DaoException {
-        DaoExternalDb dao = new DaoExternalDb();
         pMonitor.setCurrentMessage("Validating All External References:");
 
         //  Get DB Children of All XREF Elements
@@ -658,8 +659,12 @@ public class BioPaxUtil {
         for (int i = 0; i < xrefs.size(); i++) {
             Element dbElement = (Element) xrefs.get(i);
             String dbTerm = dbElement.getTextNormalize();
-            ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(dbTerm);
-            if (dbRecord == null) {
+            ExternalReference refs[] = new ExternalReference[1];
+            refs[0] = new ExternalReference (dbTerm, "BLANK_ID");
+            DaoExternalLink dao = DaoExternalLink.getInstance();
+            try {
+                dao.validateExternalReferences(refs, autoAddMissingExternalDbs);
+            } catch (ExternalDatabaseNotFoundException e) {
                 errorList.add(new String("XREF Element references a "
                         + "database which does not exist in cPath:  "
                         + dbTerm + ".  Occurred in:  " + dbElement));

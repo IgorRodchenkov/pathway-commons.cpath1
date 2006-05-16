@@ -1,4 +1,4 @@
-// $Id: TestBioPaxElementFilter.java,v 1.4 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestBioPaxElementFilter.java,v 1.5 2006-05-16 16:51:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -57,7 +57,7 @@ public class TestBioPaxElementFilter extends TestCase {
     public void testBioPaxElementFilter() throws Exception {
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample1.owl");
-        BioPaxUtil util = new BioPaxUtil(file, new ProgressMonitor());
+        BioPaxUtil util = new BioPaxUtil(file, false, new ProgressMonitor());
 
         ArrayList pathwayList = util.getPathwayList();
         assertEquals(1, pathwayList.size());
