@@ -1,4 +1,4 @@
-// $Id: TopLevelPathwayUtil.java,v 1.9 2006-03-21 17:24:12 cerami Exp $
+// $Id: TopLevelPathwayUtil.java,v 1.10 2006-05-19 19:58:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -175,9 +175,9 @@ public class TopLevelPathwayUtil {
                 }
             }
 
-            if (!hasParents && containsPathways) {
+//            if (!hasParents && containsPathways) {
                 topLevelPathwayList.add(pathway);
-            }
+//            }
         }
         xdebug.logMsg(this, "Total Number of Top Level Pathways:  "
                 + topLevelPathwayList.size());
