@@ -2,6 +2,7 @@
 import urllib
 import xml.dom.minidom as minidom
 import os
+import re
 
 # Gets text of direct child with target name
 def getChild (root, target):
@@ -43,7 +44,9 @@ for i in range(len(idList)):
 	print "Downloading Pathway:  " + nameList[i]
 	url = baseUrl + "&cmd=get_record_by_cpath_id&format=biopax&q="+idList[i];
 	print "Connecting to:  " + url
-	fileName = dir + "/" + nameList[i] + ".owl"
+	# Replace any non-alpha_num chars with _
+	name = re.sub ("\W", "_", nameList[i]);
+	fileName = dir + "/" + name + ".owl"
 	print "Saving to:  " + fileName
 	urllib.urlretrieve(url, fileName)
 	# This little hack removes the ^M characters at the end of all lines
