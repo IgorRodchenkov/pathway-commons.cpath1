@@ -118,9 +118,6 @@
         <copy todir="${build.dir}/WEB-INF/classes"
             file="${config.dir}/cpathResources.properties"/>
 
-        <!-- Copy log4J Config -->
-        <copy todir="${build.dir}/WEB-INF/classes"
-            file="${config.dir}/log4j.properties"/>
     </target>
 
     <!-- ==================== War Target ================================== -->
@@ -235,6 +232,17 @@
              token="admin_mode_active__value" value="${web.admin.active}"
              summary="yes"/>
 
+        <!-- Copy log4J Config -->
+        <copy overwrite="yes" todir="${build.dir}/WEB-INF/classes"
+            file="${config.dir}/log4j.properties"/>
+
+        <!--  Prepare log4j.properties, based on build.properties -->
+        <replace file="${build.dir}/WEB-INF/classes/log4j.properties"
+             token="log_level__value" value="${log4j.level}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/classes/log4j.properties"
+             token="log_file__value" value="${log4j.file}"
+             summary="yes"/>
 
         <!-- Force copy of ehcache Config -->
         <copy overwrite="yes" todir="${build.dir}/WEB-INF/classes"
