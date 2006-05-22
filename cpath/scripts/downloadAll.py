@@ -11,8 +11,8 @@ def getChild (root, target):
 			return node.firstChild.nodeValue
 
 # Get Complete List of Pathways
-#baseUrl = "http://cancer.cellmap.org/cellmap/webservice.do?version=1.0"
-baseUrl = "http://toro.cbio.mskcc.org:8080/cellmap/webservice.do?version=1.0"
+baseUrl = "http://cancer.cellmap.org/cellmap/webservice.do?version=1.0"
+#baseUrl = "http://toro.cbio.mskcc.org:8080/cellmap/webservice.do?version=1.0"
 print "Getting List of Pathways"
 url = baseUrl + "&cmd=get_top_level_pathway_list&format=biopax"
 filehandle = urllib.urlopen(url)
