@@ -1,4 +1,4 @@
-// $Id: TopLevelPathwayUtil.java,v 1.10 2006-05-19 19:58:45 cerami Exp $
+// $Id: TopLevelPathwayUtil.java,v 1.11 2006-05-22 19:45:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -175,12 +175,23 @@ public class TopLevelPathwayUtil {
                 }
             }
 
-//            if (!hasParents && containsPathways) {
+            if (!hasParents && containsPathways) {
                 topLevelPathwayList.add(pathway);
-//            }
+            }
         }
         xdebug.logMsg(this, "Total Number of Top Level Pathways:  "
                 + topLevelPathwayList.size());
+
+        //  In the case where we have only pathways and no sub-pathways, e.g. in the
+        //  case of cellmap.org data, the above filter results in 0 pathways.  That's
+        //  not good, and would result in 0 pathways on the home page.  To get around
+        //  this, we need to roll back to use original candidate list.
+        if (topLevelPathwayList.size() == 0) {
+            xdebug.logMsg(this, "Total Number of Top Level Pathways is Zero!");
+            xdebug.logMsg(this, "Would result in Zero pathways on home page.");
+            xdebug.logMsg(this, "Rolling back to show all candidate pathways");
+            topLevelPathwayList = candidateList;
+        }
         Collections.sort(topLevelPathwayList, new RecordComparator());
         return topLevelPathwayList;
     }
