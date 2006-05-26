@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.47 2006-05-16 14:37:22 cerami Exp $
+// $Id: Admin.java,v 1.48 2006-05-26 17:25:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -65,6 +65,7 @@ public class Admin {
     private static final String COMMAND_VALIDATE = "validate";
     private static final String COMMAND_QUERY = "query";
     private static final int NOT_SET = -9999;
+    private static final String CPATH_HOME = "CPATH_HOME";
 
     //  User Parameters
     private static String dbName = null;
@@ -91,7 +92,7 @@ public class Admin {
             EhCache.resetAllCaches();
 
             //  Load build.properties
-            String cpathHome = System.getProperty("CPATH_HOME");
+            String cpathHome = System.getProperty(CPATH_HOME);
             String separator = System.getProperty("file.separator");
             Properties buildProps = new Properties();
             buildProps.load(new FileInputStream (cpathHome
@@ -101,6 +102,15 @@ public class Admin {
             dbPwd = buildProps.getProperty("db.password");
             dbName = buildProps.getProperty("db.name");
             dbHost = buildProps.getProperty("db.host");
+
+            //  Remove CPATH_HOME, if provided
+            if (argv.length > 0 && argv[0].startsWith(CPATH_HOME)) {
+                String reducedArgv[] = new String[argv.length-1];
+                for (int i=1; i<argv.length; i++) {
+                    reducedArgv[i-1] = argv[i];
+                }
+                argv = reducedArgv;
+            }
 
             //  Process Command Line Arguments
             processCommandLineArgs(argv);
@@ -398,7 +408,7 @@ public class Admin {
         System.out.println("Copyright (c) 2005-2006 Memorial Sloan-Kettering "
                 + "Cancer Center.");
         System.out.println("\nAdministration Program for the cPath Database");
-        System.out.println("Usage:  admin.pl [OPTIONS] command");
+        System.out.println("Usage:  admin.pl [CPATH_HOME=XXX] [OPTIONS] command");
         System.out.println("  -f, -f=filename Name of File / Directory");
         System.out.println("  -d,             Shows all Debug/Log "
                 + "Messages/Stack Traces");

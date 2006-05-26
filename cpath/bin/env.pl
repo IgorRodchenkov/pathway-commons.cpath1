@@ -1,5 +1,15 @@
 #  Set up Environment for Running cPath Java Tools
 
+# Check to see if CPATH_HOME is set via command line arguments
+if ($#ARGV >= 0) {
+	$arg0 = $ARGV[0];
+	$index = index($arg0, "CPATH_HOME");
+	if ($index >= 0) {
+		$home = substr($arg0, 11);
+		$ENV{CPATH_HOME}=$home;
+	}
+}
+
 $cpathHome = $ENV{CPATH_HOME};
 my $osCheck = $ENV{OS};
 my $pathDelim;
