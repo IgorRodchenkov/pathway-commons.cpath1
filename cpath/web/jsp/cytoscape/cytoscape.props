@@ -1,8 +1,19 @@
 #Cytoscape Property File
 #Wed Apr 06 15:28:22 PDT 2005
-secondaryViewThreshold=2000
+secondaryViewThreshold=30000
 viewType=tabbed
-dataservice.cpath_read_location=http\://toro.cbio.mskcc.org\:8080/cpath/webservice.do
-dataservice.cellmap_org_read_location=http\://toro.cbio.mskcc.org\:8080/cpath/webservice.do
+defaultSpeciesName=Saccharomyces cerevisiae
 bioDataServer=PleaseSpecify
-viewThreshold=500
+viewThreshold=10000
+defaultVisualStyle=default
+canonicalizeNames=true
+render.renderAllEdges=1
+render.fullDetailThreshold=10000
+render.nodeBorderThreshold=10000
+render.nodeLabelThreshold=10000
+render.customGraphicsThreshold=10000
+render.edgeArrowThreshold=10000
+render.edgeLabelThreshold=10000
+render.renderDashedEdges=true
+render.renderEdgeAnchors=true
+render.renderTextAsShape=false
