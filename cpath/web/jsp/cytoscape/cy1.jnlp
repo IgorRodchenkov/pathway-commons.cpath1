@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp codebase="$$codebase">
 	<information>
-    	<title>CellMap WebStart</title>
+    	<title>Cytoscape Web Start</title>
 	    <vendor>Memorial Sloan-Kettering Cancer Center</vendor>
 	    <homepage href="index.html"/>
 	    <offline-allowed/>
