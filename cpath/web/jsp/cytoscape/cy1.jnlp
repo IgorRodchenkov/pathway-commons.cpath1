@@ -85,6 +85,8 @@
 	    <argument>-P</argument>
 	    <argument>$$context/jsp/cytoscape/cytoscape.props</argument>
     	<argument>-p</argument>
+	    <argument>csplugins.layout.LayoutPlugin</argument>
+    	<argument>-p</argument>
 	    <argument>org.mskcc.ped_viewer.plugin.PedViewerPlugIn</argument>
 	</application-desc>
 </jnlp>
