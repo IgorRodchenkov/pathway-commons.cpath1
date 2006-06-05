@@ -77,7 +77,8 @@
 		<jar href="plugins/AutomaticLayout.jar"/>
 		<jar href="plugins/biopax_core_0_4.jar"/>
 		<jar href="plugins/biopax_plugin_0_4.jar"/>
-		<jar href="plugins/expressionviewer_plugin_0_1.jar"/>
+		<jar href="plugins/expressionviewer_plugin_0_1.jar"/>	
+		<jar href="plugins/yLayouts.jar"/>	
 
 		<property name="dataservice.cellmap_org_read_location" value="$$context"/>
 	</resources>
@@ -86,6 +87,8 @@
 	    <argument>$$context/jsp/cytoscape/cytoscape.props</argument>
     	<argument>-p</argument>
 	    <argument>csplugins.layout.LayoutPlugin</argument>
+    	<argument>-p</argument>
+	    <argument>yfiles.YFilesLayoutPlugin</argument>
     	<argument>-p</argument>
 	    <argument>org.mskcc.ped_viewer.plugin.PedViewerPlugIn</argument>
 	</application-desc>
