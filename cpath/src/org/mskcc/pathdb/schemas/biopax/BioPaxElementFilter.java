@@ -1,4 +1,4 @@
-// $Id: BioPaxElementFilter.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: BioPaxElementFilter.java,v 1.5 2006-06-07 13:54:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,32 +38,42 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Examines a BioPAX Document and retains the following core elements:
- * NAME, SHORT-NAME, ORGANISM, COMMENT and XREFs.  All other elements are
- * stripped out.
+ * Examines a BioPAX Document and removes "Black Listed" Elements. All other elements are
+ * retained.  The set of "Black Listed" Elements currently contains the following:
+ * <UL>
+ * <LI>{@link BioPaxConstants#PATHWAY_COMPONENTS_ELEMENT PATHWAY_COMPONENTS_ELEMENT}
+ * </UL>
+ *
+ * Comment from Ethan Cerami, June 7, 2006:  On why we remove black listed elements.
+ * <P>
+ * The get_top_level_pathway_list command in the Web Services API uses XML_ABBREV
+ * to retrieve all pathways in the database.  By default, these pathways contain
+ * much additional information that is not needed for the command, and may confuse
+ * the end user.  For example, the pathway may contains dozens of PATHWAY-COMPONENT
+ * elements.  To clean things up, we remove these black listed elements. Note also that
+ * those elements which are black listed will not be indexed by lucene either.
  *
  * @author Ethan Cerami
  */
 public class BioPaxElementFilter {
-    private static HashSet coreElements;
+    private static HashSet blackListedElements;
 
     /**
-     * Retains the following core elements:  NAME, SHORT-NAME, ORGANISM,
-     * COMMENT and XREFs.  All other elements are stripped out.
+     * Removes all Black Listed Elements.  All other elements are retained.
      *
      * @param e Element Object.
      */
-    public static void retainCoreElementsOnly(Element e) {
-        if (coreElements == null) {
-            initCoreElements();
+    public static void removeBlackListedElements(Element e) {
+        if (blackListedElements == null) {
+            initBlackListedElements();
         }
         List children = e.getChildren();
         List scheduledForRemoval = new ArrayList();
         for (int i = 0; i < children.size(); i++) {
             Element child = (Element) children.get(i);
             String name = child.getName();
-            //  If this is not a core element, schedule it for removal
-            if (!coreElements.contains(name)) {
+            //  If this is a black listed element, schedule it for removal
+            if (blackListedElements.contains(name)) {
                 scheduledForRemoval.add(child);
             }
         }
@@ -73,12 +83,8 @@ public class BioPaxElementFilter {
         }
     }
 
-    private static void initCoreElements() {
-        coreElements = new HashSet();
-        coreElements.add(BioPaxConstants.NAME_ELEMENT);
-        coreElements.add(BioPaxConstants.SHORT_NAME_ELEMENT);
-        coreElements.add(BioPaxConstants.ORGANISM_ELEMENT);
-        coreElements.add(BioPaxConstants.XREF_ELEMENT);
-        coreElements.add(BioPaxConstants.COMMENT_ELEMENT);
+    private static void initBlackListedElements() {
+        blackListedElements = new HashSet();
+        blackListedElements.add(BioPaxConstants.PATHWAY_COMPONENTS_ELEMENT);
     }
 }
