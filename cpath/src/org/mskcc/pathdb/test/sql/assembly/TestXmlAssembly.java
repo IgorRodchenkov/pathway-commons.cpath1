@@ -1,4 +1,4 @@
-// $Id: TestXmlAssembly.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestXmlAssembly.java,v 1.9 2006-06-07 13:54:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -195,6 +195,23 @@ public class TestXmlAssembly extends TestCase {
         Attribute baseAttribute =
                 rootElement.getAttribute("base", Namespace.XML_NAMESPACE);
         assertEquals(CPathConstants.CPATH_HOME_URI, baseAttribute.getValue());
+    }
+
+    /**
+     * Provides an explicit unit test for bug #1009:  "Cannot search for synonyms of any proteins"
+     * @throws Exception All Exceptions.
+     */
+    public void testBioPaxAssemblyAbbrevForSynonyms () throws Exception {
+        testName = "Verify that BioPAX Assembly contains synonyms";
+        XDebug xdebug = new XDebug();
+        long cpathIds[] = new long[1];
+        cpathIds[0] = 90;
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
+                XmlRecordType.BIO_PAX, 1, XmlAssemblyFactory.XML_ABBREV,
+                xdebug);
+        String xmlAssembly = assembly.getXmlString();
+        int index = xmlAssembly.indexOf("bp:SYNONYMS");
+        assertTrue (index > 0);
     }
 
     /**
