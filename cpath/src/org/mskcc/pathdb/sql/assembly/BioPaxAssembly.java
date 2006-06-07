@@ -1,4 +1,4 @@
-// $Id: BioPaxAssembly.java,v 1.10 2006-02-22 22:47:51 grossb Exp $
+// $Id: BioPaxAssembly.java,v 1.11 2006-06-07 13:56:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -318,9 +318,17 @@ public class BioPaxAssembly implements XmlAssembly {
             localRoot.detach();
             updateNamespace(localRoot);
 
-            //  If we are in XML_ABBREV mode, strip down to core elements only.
+            //  If we are in XML_ABBREV mode, remove black listed elements.
+            //  Comment from Ethan Cerami, June 7, 2006:  On why we remove black listed elements.
+            //  The get_top_level_pathway_list command in the Web Services API uses XML_ABBREV
+            //  to retrieve all pathways in the database.  By default, these pathways contain
+            //  much additional information that is not needed for the command, and may confuse
+            //  the end user.  For example, the pathway may contains dozens of PATHWAY-COMPONENT
+            //  elements.  To clean things up, we therefore remove these black listed elements.
+            //  Note also that those elements which are black listed will not be indexed by lucene
+            //  either.
             if (mode == XmlAssemblyFactory.XML_ABBREV) {
-                BioPaxElementFilter.retainCoreElementsOnly(localRoot);
+                BioPaxElementFilter.removeBlackListedElements(localRoot);
             }
 
             globalRoot.addContent(localRoot);
