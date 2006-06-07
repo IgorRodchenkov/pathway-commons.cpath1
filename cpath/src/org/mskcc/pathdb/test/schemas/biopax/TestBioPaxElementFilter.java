@@ -1,4 +1,4 @@
-// $Id: TestBioPaxElementFilter.java,v 1.5 2006-05-16 16:51:16 cerami Exp $
+// $Id: TestBioPaxElementFilter.java,v 1.6 2006-06-07 13:55:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -66,35 +66,29 @@ public class TestBioPaxElementFilter extends TestCase {
         List children = pathway.getChildren();
         assertEquals(14, children.size());
 
-        BioPaxElementFilter.retainCoreElementsOnly(pathway);
+        BioPaxElementFilter.removeBlackListedElements(pathway);
         children = pathway.getChildren();
-        assertEquals(7, children.size());
+        assertEquals(12, children.size());
         for (int i = 0; i < children.size(); i++) {
             Element e = (Element) children.get(i);
             String name = e.getName();
+            if (name.equalsIgnoreCase(BioPaxConstants.PATHWAY_COMPONENTS_ELEMENT)) {
+                fail ("This element should be black listed:  "
+                    + BioPaxConstants.PATHWAY_COMPONENTS_ELEMENT);
+            }
             switch (i) {
                 case 0:
-                    assertEquals(BioPaxConstants.COMMENT_ELEMENT, name);
+                    assertEquals(BioPaxConstants.SYNONYMS_ELEMENT, name);
                     break;
                 case 1:
-                    assertEquals(BioPaxConstants.XREF_ELEMENT, name);
+                    assertEquals(BioPaxConstants.COMMENT_ELEMENT, name);
                     break;
                 case 2:
                     assertEquals(BioPaxConstants.XREF_ELEMENT, name);
                     break;
                 case 3:
-                    assertEquals(BioPaxConstants.ORGANISM_ELEMENT, name);
-                    break;
-                case 4:
-                    assertEquals(BioPaxConstants.NAME_ELEMENT, name);
-                    break;
-                case 5:
-                    assertEquals(BioPaxConstants.SHORT_NAME_ELEMENT, name);
-                    break;
-                case 6:
                     assertEquals(BioPaxConstants.XREF_ELEMENT, name);
                     break;
-
             }
         }
     }
@@ -105,7 +99,6 @@ public class TestBioPaxElementFilter extends TestCase {
      * @return Description.
      */
     public String getName() {
-        return "Test that we can filter BioPAX Documents for core "
-                + "elements only";
+        return "Test that we can remove black listed elements from BioPAX Documents";
     }
 }
