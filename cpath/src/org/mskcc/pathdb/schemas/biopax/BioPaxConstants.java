@@ -1,4 +1,4 @@
-// $Id: BioPaxConstants.java,v 1.16 2006-02-27 22:34:23 grossb Exp $
+// $Id: BioPaxConstants.java,v 1.17 2006-06-07 13:53:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -147,6 +147,11 @@ public class BioPaxConstants {
     public static final String SHORT_NAME_ELEMENT = "SHORT-NAME";
 
     /**
+     * Synonyms Element.
+     */
+    public static final String SYNONYMS_ELEMENT = "SYNONYMS";    
+
+    /**
      * BioPAX Organism Element.
      */
     public static final String ORGANISM_ELEMENT = "ORGANISM";
@@ -160,6 +165,11 @@ public class BioPaxConstants {
      * BioPAX XRef Element.
      */
     public static final String XREF_ELEMENT = "XREF";
+
+    /**
+     * PATHWAY-COMPONENTS Element
+     */
+    public static final String PATHWAY_COMPONENTS_ELEMENT = "PATHWAY-COMPONENTS";
 
     /**
      * BioPax Utility Class:  XRef Unification.
