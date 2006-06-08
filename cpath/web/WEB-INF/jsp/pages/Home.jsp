@@ -28,14 +28,12 @@
 <table>
 <tr>
 <td width="60%">
-<div id="tagline">
-    <% out.print(tagLine);%>
-</div>
+<% out.print(tagLine);%>
 
 <% // render the following content if we are in biopax mode %>
 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX){ %>
     <div id="home_page_box">
-    Browse Pathways:
+    <b>Browse Pathways:</b>
     <cbio:pathwayListTable/>
     </div>
 <% // render the following in psi mi mode %>
