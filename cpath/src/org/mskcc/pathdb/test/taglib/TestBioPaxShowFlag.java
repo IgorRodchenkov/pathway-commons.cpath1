@@ -1,4 +1,4 @@
-// $Id: TestBioPaxShowFlag.java,v 1.1 2006-03-02 17:42:18 cerami Exp $
+// $Id: TestBioPaxShowFlag.java,v 1.2 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -88,6 +88,7 @@ public class TestBioPaxShowFlag extends TestCase {
 
     /**
      * Gets the Current Test Name.
+     *
      * @return test name.
      */
     public String getName() {

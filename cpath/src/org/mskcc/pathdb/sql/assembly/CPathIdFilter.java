@@ -1,4 +1,4 @@
-// $Id: CPathIdFilter.java,v 1.6 2006-02-22 22:47:51 grossb Exp $
+// $Id: CPathIdFilter.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,7 +41,7 @@ import org.mskcc.dataservices.schemas.psi.*;
  * 12345.  However, in PSI-MI, protein IDs must be of type NCNAME, which
  * requires:
  * <P>NCName ::= (Letter | '_') (NCNameChar)*
- * <P>
+ * <p/>
  * If we output the protein Ids as is, cPath therefore generates invalid XML
  * (see Bug #0000290 for more details.)
  * <p/>

@@ -1,4 +1,4 @@
-// $Id: TestDaoXmlCache.java,v 1.17 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestDaoXmlCache.java,v 1.18 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,13 +32,13 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlCacheRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
-import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.util.ArrayList;

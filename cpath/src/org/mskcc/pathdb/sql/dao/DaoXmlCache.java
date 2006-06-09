@@ -1,4 +1,4 @@
-// $Id: DaoXmlCache.java,v 1.15 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoXmlCache.java,v 1.16 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,8 +114,8 @@ public class DaoXmlCache {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO xml_cache (`URL`, `XML_TYPE`, `DOC_MD5`,"
-                    + "`NUM_HITS`, "
-                    + "`DOC_BLOB`, `LAST_USED`) VALUES (?,?,?,?,?,?)");
+                            + "`NUM_HITS`, "
+                            + "`DOC_BLOB`, `LAST_USED`) VALUES (?,?,?,?,?,?)");
 
             byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
@@ -168,7 +168,7 @@ public class DaoXmlCache {
                 String xml = ZipUtil.unzip(blobData);
                 XmlAssembly xmlAssembly =
                         XmlAssemblyFactory.createXmlAssembly
-                        (xml, xmlType, numHits, xdebug);
+                                (xml, xmlType, numHits, xdebug);
                 updateLastUsedField(hashKey);
                 return xmlAssembly;
             } else {
@@ -258,7 +258,7 @@ public class DaoXmlCache {
 
             pstmt = con.prepareStatement
                     ("UPDATE xml_cache SET `DOC_BLOB` = ?, `LAST_USED` = ?, "
-                    + "`NUM_HITS` = ? WHERE `DOC_MD5` = ?");
+                            + "`NUM_HITS` = ? WHERE `DOC_MD5` = ?");
             byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
@@ -297,7 +297,7 @@ public class DaoXmlCache {
 
             pstmt = con.prepareStatement
                     ("UPDATE xml_cache SET `LAST_USED` = ? "
-                    + "WHERE `DOC_MD5` = ?");
+                            + "WHERE `DOC_MD5` = ?");
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 
@@ -394,7 +394,7 @@ public class DaoXmlCache {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT DOC_MD5 FROM `xml_cache` ORDER BY "
-                    + "LAST_USED ASC LIMIT 0 , " + purgeIncrement);
+                            + "LAST_USED ASC LIMIT 0 , " + purgeIncrement);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 String hashKey = rs.getString("DOC_MD5");

@@ -1,4 +1,4 @@
-// $Id: TestXmlValidator.java,v 1.12 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestXmlValidator.java,v 1.13 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,7 +67,7 @@ public class TestXmlValidator extends TestCase {
                 ("testData/psi_mi/dip_no_schema_location.xml");
         errors = validator.validate(xml,
                 "net:sf:psidev:mi http://psidev.sourceforge.net/mi/"
-                + "xml/src/MIF.xsd");
+                        + "xml/src/MIF.xsd");
         assertEquals(0, errors.size());
     }
 

@@ -1,4 +1,4 @@
-// $Id: HtmlUtil.java,v 1.7 2006-02-27 21:55:50 cerami Exp $
+// $Id: HtmlUtil.java,v 1.8 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -58,7 +58,7 @@ public class HtmlUtil {
      * Given a string, this method will truncate any very long words to
      * the maxLength value.  This is useful for truncating long DNA or Protein
      * sequences, so that the beginning of the sequence can be safely displayed.
-     * <P>
+     * <p/>
      * For example, given the string: "here is a sequence: AAAAAAAAAAAAAAAAAA",
      * and maxLength set to 10, the returned string will look like this:
      * "here is a sequence:  AAAAAAAAAA [Cont.]"

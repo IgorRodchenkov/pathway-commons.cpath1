@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.14 2006-03-02 19:13:05 cerami Exp $
+// $Id: PathwayMoleculesTable.java,v 1.15 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,15 +33,14 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.Comparator;
-
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 
 /**
  * Custom jsp tag for displaying the set of molecules contained in a pathway.
@@ -98,7 +97,7 @@ public class PathwayMoleculesTable extends HtmlTable {
      *
      * @param request HttpServletRequest Object.
      */
-    public void setRequest (HttpServletRequest request) {
+    public void setRequest(HttpServletRequest request) {
         this.request = request;
     }
 
@@ -116,15 +115,15 @@ public class PathwayMoleculesTable extends HtmlTable {
      */
     protected void subDoStartTag() {
         String param = request.getParameter(BioPaxShowFlag.SHOW_FLAG);
-        BioPaxShowFlag showFlag = new BioPaxShowFlag (param);
+        BioPaxShowFlag showFlag = new BioPaxShowFlag(param);
         if (moleculeSet != null && moleculeSet.size() > 0) {
             processMoleculeSet(showFlag);
             String title = "Contains the Following Molecules";
             String htmlHeader = BioPaxShowFlag.createHtmlHeader(DEFAULT_NUM_RECORDS,
                     moleculeSet.size(), cPathId, title, showFlag,
                     BioPaxShowFlag.SHOW_ALL_MOLECULES);
-            append (htmlHeader);
-            append ("<TABLE>");
+            append(htmlHeader);
+            append("<TABLE>");
             outputRecords();
             endTable();
         }
@@ -156,8 +155,8 @@ public class PathwayMoleculesTable extends HtmlTable {
             // created in call to createEntityLink above
             String moleculeName = (molecule.getShortName() != null
                     && molecule.getShortName().length() > 0) ? molecule.getShortName()
-                : (molecule.getName() != null && molecule.getName().length() > 0)
-                            ? molecule.getName() : null;
+                    : (molecule.getName() != null && molecule.getName().length() > 0)
+                    ? molecule.getName() : null;
             if (moleculeName != null) {
                 maxMoleculeNameLength = computeMaxMoleculeNameLength
                         (moleculeName, maxMoleculeNameLength);
@@ -179,7 +178,7 @@ public class PathwayMoleculesTable extends HtmlTable {
         return (moleculeName.length() > BioPaxRecordSummaryUtils.NAME_LENGTH)
                 ? BioPaxRecordSummaryUtils.NAME_LENGTH
                 : (moleculeName.length() > currentMaxNameLength)
-                        ? moleculeName.length() : currentMaxNameLength;
+                ? moleculeName.length() : currentMaxNameLength;
     }
 
     /**

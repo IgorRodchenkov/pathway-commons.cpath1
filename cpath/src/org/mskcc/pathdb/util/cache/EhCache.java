@@ -1,4 +1,4 @@
-// $Id: EhCache.java,v 1.9 2006-03-07 16:06:41 cerami Exp $
+// $Id: EhCache.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,9 +31,9 @@
  **/
 package org.mskcc.pathdb.util.cache;
 
+import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Cache;
 
 import java.io.IOException;
 
@@ -73,6 +73,7 @@ public class EhCache {
 
     /**
      * Resets all EhCaches.
+     *
      * @throws IOException IO Error.
      */
     public static void resetAllCaches() throws IOException {

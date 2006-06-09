@@ -1,4 +1,4 @@
-// $Id: BackgroundReferenceService.java,v 1.7 2006-02-22 22:47:51 grossb Exp $
+// $Id: BackgroundReferenceService.java,v 1.8 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -43,10 +43,10 @@ import java.util.HashSet;
 
 /**
  * cPath Background Reference Service.
- * <P>
+ * <p/>
  * The cPath Background Reference Service is a distinct subsystem of cPath
  * responsible for storing external references for biological entities.
- * <P>
+ * <p/>
  * There are two main types of external references:
  * <UL>
  * <LI>Unification:  A unification reference uniquely identifies a biological
@@ -218,7 +218,7 @@ public class BackgroundReferenceService {
      * Creates a Non-Redundant Set of Normalized External Reference Objects.
      * Normalization sets the Database Name to the Fixed Controlled Vocabulary
      * Term, as defined by cPath.
-     * <P>
+     * <p/>
      * Implementation Note:  dao.getRecordByTerm() uses an internal cache.
      * In most cases, this method will therefore be extremely fast.
      */

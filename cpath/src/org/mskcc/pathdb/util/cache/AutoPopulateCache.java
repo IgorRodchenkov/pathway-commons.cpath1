@@ -1,4 +1,4 @@
-// $Id: AutoPopulateCache.java,v 1.6 2006-03-06 17:26:00 cerami Exp $
+// $Id: AutoPopulateCache.java,v 1.7 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,12 +31,12 @@
  **/
 package org.mskcc.pathdb.util.cache;
 
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.sql.util.TopLevelPathwayUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.apache.log4j.Logger;
 
 /**
  * Automatically Populates the Cache via a Quartz "cron" job.

@@ -1,4 +1,4 @@
-// $Id: XmlStripper.java,v 1.6 2006-02-22 22:51:58 grossb Exp $
+// $Id: XmlStripper.java,v 1.7 2006-06-09 19:22:05 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,9 +36,9 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
-import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 
 import java.io.IOException;
 import java.io.StringReader;

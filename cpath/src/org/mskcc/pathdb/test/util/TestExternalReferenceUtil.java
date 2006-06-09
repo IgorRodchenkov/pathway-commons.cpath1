@@ -1,4 +1,4 @@
-// $Id: TestExternalReferenceUtil.java,v 1.12 2006-03-07 16:11:38 cerami Exp $
+// $Id: TestExternalReferenceUtil.java,v 1.13 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,6 +73,7 @@ public class TestExternalReferenceUtil extends TestCase {
 
     /**
      * Tests the createUnifiedList method.
+     *
      * @throws Exception All Exceptions.
      */
     public void testUnionMethod() throws Exception {
@@ -95,7 +96,7 @@ public class TestExternalReferenceUtil extends TestCase {
 
     /**
      * Tests the RemoveDuplicates Method.
-     * 
+     *
      * @throws Exception All Exceptions.
      */
     public void testRemoveDuplicates() throws Exception {

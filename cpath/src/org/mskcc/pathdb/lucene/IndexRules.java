@@ -1,4 +1,4 @@
-// $Id: IndexRules.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: IndexRules.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,9 +31,9 @@
  **/
 package org.mskcc.pathdb.lucene;
 
-import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 
 /**
@@ -55,10 +55,11 @@ public class IndexRules {
      * <LI>{@link XmlAssemblyFactory#XML_FULL}:  Full XML should be indexed.
      * <LI>{@link XmlAssemblyFactory#XML_ABBREV}:  Abbreviated XML should be
      * indexed.
+     *
      * @param record CPath Record Object.
      * @return integer value;  see description above for full details.
      */
-    public static int indexRecord (CPathRecord record) {
+    public static int indexRecord(CPathRecord record) {
         if (record.getXmlType().equals(XmlRecordType.PSI_MI)) {
             // Rules for PSI-MI
             if (record.getType().equals(CPathRecordType.INTERACTION)) {
@@ -67,7 +68,7 @@ public class IndexRules {
         } else if (record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
             //  Rules for BioPAX
             if (record.getType().equals(CPathRecordType.PATHWAY)
-                || record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
+                    || record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
                 return XmlAssemblyFactory.XML_ABBREV;
             }
         }

@@ -1,4 +1,4 @@
-// $Id: CacheTable.java,v 1.13 2006-02-22 22:47:51 grossb Exp $
+// $Id: CacheTable.java,v 1.14 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -57,8 +57,8 @@ public class CacheTable extends HtmlTable {
      */
     public void subDoStartTag() throws Exception {
         String headers[] = {"#", "URL", "Command",
-                            "Query", "Format", "Organism",
-                            "Last Used"};
+                "Query", "Format", "Organism",
+                "Last Used"};
         createHeader("XML Cache Contents");
         startTable();
         createTableHeaders(headers);

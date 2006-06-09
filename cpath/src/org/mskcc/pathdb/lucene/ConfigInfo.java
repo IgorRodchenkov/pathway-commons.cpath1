@@ -1,4 +1,4 @@
-// $Id: ConfigInfo.java,v 1.4 2006-02-22 22:55:11 grossb Exp $
+// $Id: ConfigInfo.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,15 +32,16 @@
 /*
  * Created 05-Jul-2005
  * @author Iain Keddie
- * @author <BR>$Author: grossb $ (last revision)
- * @version $Revision: 1.4 $
+ * @author <BR>$Author: cerami $ (last revision)
+ * @version $Revision: 1.5 $
  */
 package org.mskcc.pathdb.lucene;
 
-/** 
- * local container class 
+/**
+ * local container class
+ *
  * @author Iain Keddie
- * */
+ */
 public class ConfigInfo {
     private String xpath;
 
@@ -48,31 +49,36 @@ public class ConfigInfo {
 
     /**
      * constructor
+     *
      * @param fieldName index field name
-     * @param xpath path to item to index
+     * @param xpath     path to item to index
      */
     public ConfigInfo(String fieldName, String xpath) {
         this.xpath = xpath;
         this.fieldName = fieldName;
     }
+
     /**
      * @return Returns the fieldName.
      */
     public String getFieldName() {
         return fieldName;
     }
+
     /**
      * @param fieldName The fieldName to set.
      */
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
     }
+
     /**
      * @return Returns the xpath.
      */
     public String getXpath() {
         return xpath;
     }
+
     /**
      * @param xpath The xpath to set.
      */

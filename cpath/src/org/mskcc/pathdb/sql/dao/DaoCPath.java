@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.26 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoCPath.java,v 1.27 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,9 +62,9 @@ public class DaoCPath extends ManagedDAO {
     private static final String INSERT_KEY = "INSERT_KEY";
     private static final String INSERT =
             "INSERT INTO cpath (`NAME`,`DESC`,"
-            + "`TYPE`, `SPECIFIC_TYPE`, `NCBI_TAX_ID`, `XML_TYPE`, "
-            + "`XML_CONTENT` ,"
-            + " `CREATE_TIME`) VALUES (?, ?,?,?,?,?,?,?)";
+                    + "`TYPE`, `SPECIFIC_TYPE`, `NCBI_TAX_ID`, `XML_TYPE`, "
+                    + "`XML_CONTENT` ,"
+                    + " `CREATE_TIME`) VALUES (?, ?,?,?,?,?,?,?)";
 
     private static final String GET_MAX_ID_KEY = "GET_MAX_ID_KEY";
     private static final String GET_MAX_ID =
@@ -109,14 +109,14 @@ public class DaoCPath extends ManagedDAO {
     private static final String UPDATE_XML_KEY = "UPDATE_XML_KEY";
     private static final String UPDATE_XML =
             "UPDATE cpath SET `XML_CONTENT` = ?, `UPDATE_TIME` = ? "
-            + "WHERE `CPATH_ID` = ?";
+                    + "WHERE `CPATH_ID` = ?";
 
     // get the max cpath id
-    private static final String SELECT_MAX_CPATH_ID_KEY = 
-        "SELECT_MAX_CPATH_ID_KEY";
-    private static final String SELECT_MAX_CPATH_ID = 
+    private static final String SELECT_MAX_CPATH_ID_KEY =
+            "SELECT_MAX_CPATH_ID_KEY";
+    private static final String SELECT_MAX_CPATH_ID =
             "SELECT MAX(CPATH_ID) FROM cpath";
-    
+
     /**
      * Private Constructor (Singleton pattern).
      */
@@ -457,7 +457,7 @@ public class DaoCPath extends ManagedDAO {
 
     /**
      * get the highest cpath ID
-     * 
+     *
      * @return the highest cpath ID
      * @throws DaoException is there are problems accessing the database
      */
@@ -467,7 +467,7 @@ public class DaoCPath extends ManagedDAO {
         ResultSet rs = null;
         long maxId = -1;
         try {
-            
+
             con = getConnection();
             pstmt = getStatement(con, SELECT_MAX_CPATH_ID_KEY);
 
@@ -486,7 +486,7 @@ public class DaoCPath extends ManagedDAO {
         }
         return maxId;
     }
-    
+
     /**
      * Deletes cPath Record with the specified CPATH_ID.
      * This will also delete all external links associated with this record.

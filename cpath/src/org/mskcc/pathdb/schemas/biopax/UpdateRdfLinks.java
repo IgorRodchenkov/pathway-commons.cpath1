@@ -1,4 +1,4 @@
-// $Id: UpdateRdfLinks.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: UpdateRdfLinks.java,v 1.6 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,31 +35,31 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
-import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfUtil;
 
 import java.util.*;
 
 /**
  * Updates all RDF "id" and RDF "resource" attributes to use newly updated
  * RDF IDs.
- * <P>
+ * <p/>
  * This class requires a HashMap which maps old IDs to new IDs.
- * <P>
+ * <p/>
  * For example, if we have an ID map like this:
- * <P>
+ * <p/>
  * (String) catalysis43 -->  (Long) 1
- * <P>
+ * <p/>
  * and, we encounter an element like this:
- * <P>
+ * <p/>
  * &lt;bp:STEP-INTERACTIONS rdf:resource="#catalysis43" /&gt;
- * <P>
+ * <p/>
  * and, our ID prefix is"CPATH-", the element is modified like so:
- * <P>
+ * <p/>
  * &lt;bp:STEP-INTERACTIONS rdf:resource="#CPATH-1" /&gt;
- * <P>
+ * <p/>
  * This class performs in-place memory changes on the original JDOM elements.
- * <P>
+ * <p/>
  *
  * @author Ethan Cerami
  */

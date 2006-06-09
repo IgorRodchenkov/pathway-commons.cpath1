@@ -1,4 +1,4 @@
-// $Id: BioPaxConstants.java,v 1.17 2006-06-07 13:53:18 cerami Exp $
+// $Id: BioPaxConstants.java,v 1.18 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -149,7 +149,7 @@ public class BioPaxConstants {
     /**
      * Synonyms Element.
      */
-    public static final String SYNONYMS_ELEMENT = "SYNONYMS";    
+    public static final String SYNONYMS_ELEMENT = "SYNONYMS";
 
     /**
      * BioPAX Organism Element.
@@ -304,7 +304,7 @@ public class BioPaxConstants {
      */
     public boolean isPhysicalInteraction(String elementName) {
         return (interactionSet.contains(elementName.trim())
-				&& !elementName.trim().equals(INTERACTION));
+                && !elementName.trim().equals(INTERACTION));
     }
 
     /**

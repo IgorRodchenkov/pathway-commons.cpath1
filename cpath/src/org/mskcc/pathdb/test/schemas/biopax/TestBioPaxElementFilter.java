@@ -1,4 +1,4 @@
-// $Id: TestBioPaxElementFilter.java,v 1.6 2006-06-07 13:55:47 cerami Exp $
+// $Id: TestBioPaxElementFilter.java,v 1.7 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,8 +73,8 @@ public class TestBioPaxElementFilter extends TestCase {
             Element e = (Element) children.get(i);
             String name = e.getName();
             if (name.equalsIgnoreCase(BioPaxConstants.PATHWAY_COMPONENTS_ELEMENT)) {
-                fail ("This element should be black listed:  "
-                    + BioPaxConstants.PATHWAY_COMPONENTS_ELEMENT);
+                fail("This element should be black listed:  "
+                        + BioPaxConstants.PATHWAY_COMPONENTS_ELEMENT);
             }
             switch (i) {
                 case 0:

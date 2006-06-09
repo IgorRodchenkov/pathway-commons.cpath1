@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.6 2006-02-27 15:33:16 grossb Exp $
+// $Id: WebUIBean.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,10 +33,10 @@ package org.mskcc.pathdb.form;
 
 // imports
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionError;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -260,7 +260,6 @@ public class WebUIBean extends ActionForm {
      * @param mapping ActionMapping reference.
      * @param request HttpServletRequest.
      * @return ActionErrors reference.
-     *
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
 
@@ -293,6 +292,6 @@ public class WebUIBean extends ActionForm {
         }
 
         // outta here
-		return errors;
-	}
+        return errors;
+    }
 }

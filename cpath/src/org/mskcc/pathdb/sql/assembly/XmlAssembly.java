@@ -1,4 +1,4 @@
-// $Id: XmlAssembly.java,v 1.12 2006-02-22 22:47:51 grossb Exp $
+// $Id: XmlAssembly.java,v 1.13 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,7 +35,7 @@ import org.mskcc.pathdb.model.XmlRecordType;
 
 /**
  * Encapsulates a complete XML Document Assembly.
- * <P>
+ * <p/>
  * In cPath, we currently store XML document fragments.  For example, a
  * cPath interaction record contains an XML fragment describing the interaction,
  * and includes references to interactors.  However, each interactor is

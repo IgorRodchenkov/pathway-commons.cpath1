@@ -1,4 +1,4 @@
-// $Id: ImportPsiToCPath.java,v 1.10 2006-05-15 20:55:39 cerami Exp $
+// $Id: ImportPsiToCPath.java,v 1.11 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,6 +31,7 @@
  **/
 package org.mskcc.pathdb.schemas.psi;
 
+import org.apache.log4j.Logger;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.ValidationException;
@@ -48,7 +49,6 @@ import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ExternalReferenceUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -148,10 +148,10 @@ public class ImportPsiToCPath {
     /**
      * Adds Specified PSI-MI Record.
      *
-     * @param xml                           PSI-MI XML Record.
-     * @param autoAddMissingExternalDbs     Automatically adds missing XRef Databases.
-     * @param removeAllXrefs                Automatically Removes all Xrefs (not recmd).
-     * @param pMonitor                      Progress Monitor Object.
+     * @param xml                       PSI-MI XML Record.
+     * @param autoAddMissingExternalDbs Automatically adds missing XRef Databases.
+     * @param removeAllXrefs            Automatically Removes all Xrefs (not recmd).
+     * @param pMonitor                  Progress Monitor Object.
      * @return Import Summary Object.
      * @throws org.mskcc.pathdb.sql.transfer.ImportException
      *          Indicates Error in Import.
@@ -330,11 +330,11 @@ public class ImportPsiToCPath {
                 //  contains those used for LINK_OUT.
                 ExternalReference[] unificationRefs =
                         ExternalReferenceUtil.filterByReferenceType
-                        (refs, ReferenceType.PROTEIN_UNIFICATION);
+                                (refs, ReferenceType.PROTEIN_UNIFICATION);
 
                 ExternalReference[] linkOutRefs =
                         ExternalReferenceUtil.filterByReferenceType
-                        (refs, ReferenceType.LINK_OUT);
+                                (refs, ReferenceType.LINK_OUT);
 
                 ArrayList records = externalLinker.lookUpByExternalRefs
                         (unificationRefs);
@@ -365,7 +365,7 @@ public class ImportPsiToCPath {
                     //  LINK_OUT Refs
                     ExternalReference allRefs[] =
                             ExternalReferenceUtil.createUnifiedList
-                            (unificationRefs, linkOutRefs);
+                                    (unificationRefs, linkOutRefs);
                     if (backgroundLinkOutRefs != null
                             && backgroundLinkOutRefs.length > 0) {
                         allRefs =
@@ -538,7 +538,7 @@ public class ImportPsiToCPath {
         }
         ExternalReference[] filteredRefs =
                 ExternalReferenceUtil.filterByReferenceType
-                (refs, ReferenceType.INTERACTION_PATHWAY_UNIFICATION);
+                        (refs, ReferenceType.INTERACTION_PATHWAY_UNIFICATION);
         DaoExternalLink linker = DaoExternalLink.getInstance();
         DaoCPath cpath = DaoCPath.getInstance();
         ArrayList records = linker.lookUpByExternalRefs(filteredRefs);

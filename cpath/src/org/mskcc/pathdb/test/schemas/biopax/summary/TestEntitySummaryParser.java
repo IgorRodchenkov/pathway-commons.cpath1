@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.13 2006-03-03 18:53:52 cerami Exp $
+// $Id: TestEntitySummaryParser.java,v 1.14 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,18 +33,11 @@ package org.mskcc.pathdb.test.schemas.biopax.summary;
 
 // imports
 
+import junit.framework.TestCase;
+import org.mskcc.pathdb.schemas.biopax.summary.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
-
-import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
-import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
-import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser;
-import org.mskcc.pathdb.schemas.biopax.summary.ControlInteractionSummary;
-import org.mskcc.pathdb.schemas.biopax.summary.PhysicalInteractionSummary;
-import org.mskcc.pathdb.schemas.biopax.summary.ConversionInteractionSummary;
-import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
 
 /**
  * Tests the EntitySummaryParser Class.
@@ -113,7 +106,7 @@ public class TestEntitySummaryParser extends TestCase {
 
         // get physical interaction type
         assertEquals("direct interaction reaction",
-                     physicalInteractionSummary.getInteractionType());
+                physicalInteractionSummary.getInteractionType());
 
         // get left side components list
         components = physicalInteractionSummary.getParticipants();
@@ -273,7 +266,7 @@ public class TestEntitySummaryParser extends TestCase {
         List left = summary.getLeftSideComponents();
         ParticipantSummaryComponent component = (ParticipantSummaryComponent) left.get(0);
         List synList = component.getSynonyms();
-        assertEquals (6, synList.size());
+        assertEquals(6, synList.size());
     }
 
     /**

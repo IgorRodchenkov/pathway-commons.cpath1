@@ -1,4 +1,4 @@
-// $Id: QueryFileReader.java,v 1.10 2006-02-22 22:47:51 grossb Exp $
+// $Id: QueryFileReader.java,v 1.11 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,7 +46,7 @@ import java.util.Hashtable;
  * Reads in a Text File of Relative URLs and returns a List of
  * Protocol Request objects.
  * <p/>
- * <P>
+ * <p/>
  * Sample file format:
  * </P>
  * <PRE>

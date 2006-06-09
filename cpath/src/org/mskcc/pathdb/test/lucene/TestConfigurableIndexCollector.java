@@ -1,4 +1,4 @@
-// $Id: TestConfigurableIndexCollector.java,v 1.7 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestConfigurableIndexCollector.java,v 1.8 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,12 +35,7 @@
  */
 package org.mskcc.pathdb.test.lucene;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-
 import junit.framework.TestCase;
-
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Unmarshaller;
@@ -49,6 +44,10 @@ import org.mskcc.dataservices.schemas.psi.Entry;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.pathdb.lucene.ConfigInfo;
 import org.mskcc.pathdb.lucene.ConfigurableIndexCollector;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 
 /**
  * Tests the Configurable Index Collector.
@@ -61,6 +60,7 @@ public class TestConfigurableIndexCollector extends TestCase {
 
     /**
      * setup the root
+     *
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
@@ -71,14 +71,14 @@ public class TestConfigurableIndexCollector extends TestCase {
     }
 
     /**
-     *  test the configurable index collector
+     * test the configurable index collector
      */
     public void testConfigurableIndexCollector() {
         String testFile = cpathRoot + "/testData/psi_mi/dip_sample.xml";
         //String testFile = "testData/1000.xml";
 
-        ConfigurableIndexCollector configurableIndexCollector = 
-            new ConfigurableIndexCollector();
+        ConfigurableIndexCollector configurableIndexCollector =
+                new ConfigurableIndexCollector();
 
         ArrayList configInfoList = new ArrayList();
 
@@ -104,7 +104,7 @@ public class TestConfigurableIndexCollector extends TestCase {
                     .add(new ConfigInfo(
                             "experimentDescription",
                             "interactionList/interaction/experimentList/"
-                            + "experimentListItem/experimentDescription/id"));
+                                    + "experimentListItem/experimentDescription/id"));
             configInfoList.add(new ConfigInfo("fullName",
                     "interactorList/proteinInteractor/names/fullName"));
             configInfoList.add(new ConfigInfo("noEntrys",
@@ -114,8 +114,8 @@ public class TestConfigurableIndexCollector extends TestCase {
                     .add(new ConfigInfo(
                             "experiment_type",
                             "interactionList/interaction/experimentList/"
-                            + "experimentListItem/experimentDescription/names"
-                            + "/shortLabel"));
+                                    + "experimentListItem/experimentDescription/names"
+                                    + "/shortLabel"));
             configurableIndexCollector.setConfigInfoList(configInfoList);
 
             //Index All Interactors and Interactions.
@@ -126,9 +126,9 @@ public class TestConfigurableIndexCollector extends TestCase {
                 String fieldName;
                 String[] expectedFieldNames = {
                         "experimentDescription",
-                        "fullName", "noEntrys", "experiment_type" };
-                int[] expectedFieldCounts = { 
-                        5, 2, 0, 0 };
+                        "fullName", "noEntrys", "experiment_type"};
+                int[] expectedFieldCounts = {
+                        5, 2, 0, 0};
                 int expectedIterator = 0;
                 int tokenCount;
 

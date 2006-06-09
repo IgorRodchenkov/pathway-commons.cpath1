@@ -1,4 +1,4 @@
-// $Id: TestParseBackgroundReferenceTask.java,v 1.9 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestParseBackgroundReferenceTask.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -223,7 +223,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
             //  Validate the actual exception message.
             assertTrue(e.getMessage().indexOf
                     ("Unable to import background references data file.  "
-                    + "Database:  SANDER is not known to cPath.") >= 0);
+                            + "Database:  SANDER is not known to cPath.") >= 0);
         }
 
         //  Test:  This file is invalid because it is not tab-delimited.
@@ -236,8 +236,8 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         } catch (ImportException e) {
             assertTrue(e.getMessage().indexOf
                     ("Unable to import background reference file.  "
-                    + "File must be tab delimited.  Check the file and "
-                    + "try again.") >= 0);
+                            + "File must be tab delimited.  Check the file and "
+                            + "try again.") >= 0);
         }
 
         //  Test:  This file is invalid because it contains only one column
@@ -251,7 +251,7 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         } catch (ImportException e) {
             assertTrue(e.getMessage().indexOf
                     ("Unable to import background reference file.  "
-                    + "File must contain at least two columns of data.") >= 0);
+                            + "File must contain at least two columns of data.") >= 0);
         }
 
         //  Test:  This file is invalid because it is a LINK_OUT file,
@@ -266,8 +266,8 @@ public class TestParseBackgroundReferenceTask extends TestCase {
         } catch (ImportException e) {
             assertTrue(e.getMessage().indexOf
                     ("Unable to import background reference file of LINK_OUT "
-                    + "data.  First column must be of type:  "
-                    + ReferenceType.LINK_OUT) >= 0);
+                            + "data.  First column must be of type:  "
+                            + ReferenceType.LINK_OUT) >= 0);
         }
     }
 

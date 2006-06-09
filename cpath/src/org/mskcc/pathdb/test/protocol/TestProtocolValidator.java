@@ -1,4 +1,4 @@
-// $Id: TestProtocolValidator.java,v 1.16 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestProtocolValidator.java,v 1.17 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -148,7 +148,7 @@ public class TestProtocolValidator extends TestCase {
         map.put(ProtocolRequest.ARG_COMMAND,
                 ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
         map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.CURRENT_VERSION);
-         map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
+        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
@@ -184,7 +184,7 @@ public class TestProtocolValidator extends TestCase {
      */
     public void testMaxHits() throws Exception {
         testName = "Test Maximum Number of Hits";
-        
+
         //  Set to PSI-MI Mode
         CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_PSI_MI);
 

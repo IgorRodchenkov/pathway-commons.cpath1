@@ -1,4 +1,4 @@
-// $Id: DiagnosticsTable.java,v 1.22 2006-03-09 18:25:00 cerami Exp $
+// $Id: DiagnosticsTable.java,v 1.23 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,21 +31,20 @@
  **/
 package org.mskcc.pathdb.taglib;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.EhCache;
-import org.mskcc.dataservices.util.PropertyManager;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
 
 /**
  * Custom JSP Tag for Displaying cPath Diagnostics.
@@ -63,7 +62,7 @@ public class DiagnosticsTable extends HtmlTable {
     public void subDoStartTag() throws Exception {
         String headers[] = {"Result", "DiagnosticTestResults", "Error"};
         createHeader("cPath Diagnostics");
-                PropertyManager pManager = PropertyManager.getInstance();
+        PropertyManager pManager = PropertyManager.getInstance();
         append("<TABLE><TR><TD>Using Database Host:  "
                 + pManager.getProperty(PropertyManager.DB_LOCATION));
         append("<P>Using Database Name:  "
@@ -190,8 +189,8 @@ public class DiagnosticsTable extends HtmlTable {
         try {
             DiagnosticTestResults test = new DiagnosticTestResults
                     ("Testing access to Lucene Full Text Index<BR>"
-                    + "Lucene Directory:  "
-                    + LuceneConfig.getLuceneDirectory());
+                            + "Lucene Directory:  "
+                            + LuceneConfig.getLuceneDirectory());
             try {
                 indexer.executeQuery("dna");
             } catch (QueryException e) {
@@ -210,7 +209,7 @@ public class DiagnosticsTable extends HtmlTable {
         DiagnosticTestResults test = new DiagnosticTestResults
                 ("Testing access to cache disk store");
         try {
-            Element e = new Element ("web_diagnostics", "value1");
+            Element e = new Element("web_diagnostics", "value1");
             cache.put(e);
             cache.flush();
         } catch (Throwable t) {

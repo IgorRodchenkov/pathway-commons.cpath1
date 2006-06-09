@@ -1,4 +1,4 @@
-// $Id: TestIndexer.java,v 1.19 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestIndexer.java,v 1.20 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,13 +37,13 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.search.Hits;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.lucene.*;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
-import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.util.xml.XmlStripper;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.model.CPathRecord;
 
 import java.io.IOException;
 

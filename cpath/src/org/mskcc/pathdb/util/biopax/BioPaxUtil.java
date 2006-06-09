@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.11 2006-02-27 22:26:53 grossb Exp $
+// $Id: BioPaxUtil.java,v 1.12 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,14 +31,10 @@
  **/
 package org.mskcc.pathdb.util.biopax;
 
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.Parent;
-import org.jdom.Element;
-import org.jdom.JDOMException;
+import org.jdom.*;
 import org.jdom.input.SAXBuilder;
-import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 

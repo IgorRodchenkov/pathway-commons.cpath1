@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.13 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoInternalLink.java,v 1.14 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,7 +64,7 @@ public class DaoInternalLink {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO internal_link (`SOURCE_ID`,`TARGET_ID`)"
-                    + " VALUES (?,?)");
+                            + " VALUES (?,?)");
             pstmt.setLong(1, sourceId);
             pstmt.setLong(2, targetId);
             int rows = pstmt.executeUpdate();
@@ -146,7 +146,7 @@ public class DaoInternalLink {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT * FROM internal_link WHERE SOURCE_ID = ?"
-                    + " ORDER BY INTERNAL_LINK_ID");
+                            + " ORDER BY INTERNAL_LINK_ID");
             pstmt.setLong(1, sourceId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -183,7 +183,7 @@ public class DaoInternalLink {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT * FROM internal_link WHERE TARGET_ID = ?"
-                    + " ORDER BY INTERNAL_LINK_ID");
+                            + " ORDER BY INTERNAL_LINK_ID");
             pstmt.setLong(1, targetId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -223,7 +223,7 @@ public class DaoInternalLink {
                 InternalLinkRecord link = (InternalLinkRecord) links.get(i);
                 pstmt = con.prepareStatement
                         ("DELETE FROM internal_link WHERE "
-                        + "INTERNAL_LINK_ID = ?");
+                                + "INTERNAL_LINK_ID = ?");
                 pstmt.setLong(1, link.getId());
                 counter += pstmt.executeUpdate();
             }

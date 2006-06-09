@@ -1,4 +1,4 @@
-// $Id: PsiAssembler.java,v 1.9 2006-02-22 22:47:51 grossb Exp $
+// $Id: PsiAssembler.java,v 1.10 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -83,7 +83,7 @@ public class PsiAssembler {
             StringReader reader = new StringReader(xml);
             InteractionElementType cInteraction =
                     InteractionElementType.unmarshalInteractionElementType
-                    (reader);
+                            (reader);
 
             //  Append cPath ID as a Reference
             XrefType xref = cInteraction.getXref();
@@ -115,7 +115,7 @@ public class PsiAssembler {
             StringReader reader = new StringReader(xml);
             ProteinInteractorType cProtein =
                     ProteinInteractorType.unmarshalProteinInteractorType
-                    (reader);
+                            (reader);
             interactorList.addProteinInteractor(cProtein);
         }
         return interactorList;

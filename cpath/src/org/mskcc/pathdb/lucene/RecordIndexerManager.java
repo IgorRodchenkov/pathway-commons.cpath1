@@ -1,4 +1,4 @@
-// $Id: RecordIndexerManager.java,v 1.4 2006-02-22 22:54:40 grossb Exp $
+// $Id: RecordIndexerManager.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,15 +32,10 @@
 /*
  * Created 04-Jul-2005
  * @author Iain Keddie
- * @author <BR>$Author: grossb $ (last revision)
- * @version $Revision: 1.4 $
+ * @author <BR>$Author: cerami $ (last revision)
+ * @version $Revision: 1.5 $
  */
 package org.mskcc.pathdb.lucene;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.store.Directory;
@@ -48,12 +43,17 @@ import org.apache.lucene.store.FSDirectory;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.task.ProgressMonitor;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+
 /**
  * Class to manage the threaded approach to running Lucene indexing
- * 
+ * <p/>
  * Class stores a queue of objects to be indexed and starts a number of threads
  * which remove items from the queue to process
- * 
+ *
  * @author idk37697
  */
 public class RecordIndexerManager {
@@ -75,16 +75,17 @@ public class RecordIndexerManager {
     /**
      * specify the number of indexers used and hence the number of threads
      * defaults to four
+     *
      * @param indexers the number of seperate index threads to create
      */
     public static void setIndexerCount(int indexers) {
         indexerCount = indexers;
-    }   
+    }
 
     /**
      * initialise all of the indexing process objects
-     * 
-     * @param pMonitor cpath progress monitor
+     *
+     * @param pMonitor  cpath progress monitor
      * @param resetFlag If Set to True, Existing Index is deleted!
      * @throws IOException if problems creating the index
      */
@@ -104,6 +105,7 @@ public class RecordIndexerManager {
 
     /**
      * add a record to the bottom of the queue for processing
+     *
      * @param record cpath record to be indexed
      */
     public synchronized void pushRecord(CPathRecord record) {
@@ -112,6 +114,7 @@ public class RecordIndexerManager {
 
     /**
      * collect a record from the processing queue
+     *
      * @return pop a cpath record off the top of the queue
      */
     public synchronized CPathRecord popRecord() {
@@ -155,7 +158,7 @@ public class RecordIndexerManager {
         for (int i = 0; i < indexerList.length; i++) {
             recordIndexer = indexerList[i];
             recordIndexer.start();
-        }        
+        }
     }
 
     /**
@@ -170,7 +173,7 @@ public class RecordIndexerManager {
 
     /**
      * testing method for single threaded mode
-     * 
+     *
      * @param record cpath record to be indexed
      * @throws Exception general exception thrown
      */
@@ -193,7 +196,8 @@ public class RecordIndexerManager {
     }
 
     /**
-     * close all of the indexing threads managed 
+     * close all of the indexing threads managed
+     *
      * @throws IOException IOError closing the indexer threads
      */
     public void closeAll() throws IOException {

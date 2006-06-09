@@ -1,4 +1,4 @@
-// $Id: RdfQuery.java,v 1.5 2006-02-22 22:51:58 grossb Exp $
+// $Id: RdfQuery.java,v 1.6 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -102,7 +102,7 @@ public class RdfQuery {
      * Traverse the Document Tree, matching the query one level at a time.
      */
     private ArrayList traverse(Element e, ArrayList queryList,
-                               int index) {
+            int index) {
         String target = (String) queryList.get(index);
         List children = new ArrayList();
 

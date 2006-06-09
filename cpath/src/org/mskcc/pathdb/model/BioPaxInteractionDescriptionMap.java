@@ -1,4 +1,4 @@
-// $Id: BioPaxInteractionDescriptionMap.java,v 1.8 2006-03-20 21:55:31 grossb Exp $
+// $Id: BioPaxInteractionDescriptionMap.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -71,7 +71,7 @@ public class BioPaxInteractionDescriptionMap extends HashMap {
                 + "bound to each other non-covalently, at least one of which is a macromolecule "
                 + "(protein, DNA, or RNA).");
         put("pathway", "A set or series of interactions, often forming a network, which "
-			    + "biologists have found useful to group together for organizational, "
-			    + "historic, biophysical or other reasons.");
+                + "biologists have found useful to group together for organizational, "
+                + "historic, biophysical or other reasons.");
     }
 }

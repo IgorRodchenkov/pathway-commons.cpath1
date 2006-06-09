@@ -1,4 +1,4 @@
-// $Id: RecordIndexer.java,v 1.6 2006-02-22 22:54:55 grossb Exp $
+// $Id: RecordIndexer.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,13 +32,10 @@
 /*
  * Created 04-Jul-2005
  * @author Iain Keddie
- * @author <BR>$Author: grossb $ (last revision)
- * @version $Revision: 1.6 $
+ * @author <BR>$Author: cerami $ (last revision)
+ * @version $Revision: 1.7 $
  */
 package org.mskcc.pathdb.lucene;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
@@ -50,6 +47,9 @@ import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * threaded class to carry out a single indexing task this class monitors a que
@@ -77,7 +77,7 @@ public class RecordIndexer extends Thread {
     public RecordIndexer() {
     }
 
-    /**     
+    /**
      * @return the directory used by the index writer
      */
     public String getDirectory() {
@@ -87,10 +87,11 @@ public class RecordIndexer extends Thread {
 
     /**
      * initialise this object
+     *
      * @param recordManager the containing record manager
-     * @param pMonitor the cpath progress monitor
-     * @param dir directory containing the index
-     * @param resetFlag If Set to True, Existing Index is deleted!
+     * @param pMonitor      the cpath progress monitor
+     * @param dir           directory containing the index
+     * @param resetFlag     If Set to True, Existing Index is deleted!
      * @throws IOException if there are problems creating the index
      */
     public void init(RecordIndexerManager recordManager,
@@ -137,12 +138,13 @@ public class RecordIndexer extends Thread {
 
     /**
      * collect the items to be indexed, then pass them to the indexer
+     *
      * @param record record to be indexed
-     * @throws SQLException Database Error
-     * @throws IOException I/O Error
-     * @throws ImportException Import Error
+     * @throws SQLException      Database Error
+     * @throws IOException       I/O Error
+     * @throws ImportException   Import Error
      * @throws AssemblyException Assembly Error
-     * @throws JDOMException JDOM Error
+     * @throws JDOMException     JDOM Error
      */
     public void indexRecord(CPathRecord record) throws SQLException,
             IOException, ImportException, AssemblyException, JDOMException {
@@ -170,6 +172,7 @@ public class RecordIndexer extends Thread {
 
     /**
      * collect a record from the manager
+     *
      * @param recordManager
      * @return the record
      */
@@ -178,14 +181,15 @@ public class RecordIndexer extends Thread {
     }
 
     /**
-     * signal to finish up indexing     
+     * signal to finish up indexing
      */
     public void signalFinish() {
         continuing = false;
     }
 
     /**
-     *  close the indexWriter
+     * close the indexWriter
+     *
      * @throws IOException if there are problems closing the indexer
      */
     public void close() throws IOException {

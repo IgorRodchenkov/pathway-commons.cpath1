@@ -1,4 +1,4 @@
-// $Id: CPathRecord.java,v 1.10 2006-03-06 17:29:04 cerami Exp $
+// $Id: CPathRecord.java,v 1.11 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,8 +31,8 @@
  **/
 package org.mskcc.pathdb.model;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * JavaBean to Encapsulate a cPath Record.

@@ -1,4 +1,4 @@
-// $Id: ImportLinkOutRefs.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: ImportLinkOutRefs.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,10 +48,10 @@ import java.util.ArrayList;
 /**
  * Parses a tab-delimited text file of LINK_OUT references,
  * and stores the new background references to the database.
- * <P>
+ * <p/>
  * Here are the first few lines from a sample link_out reference file
  * (see:  testData/references/link_out_refs.txt):
- * <P>
+ * <p/>
  * <table>
  * <tr>
  * <th>Affymetrix</th>
@@ -102,12 +102,12 @@ import java.util.ArrayList;
  * because directional links are created from all IDs to the primary ID
  * specified in column 1.  In the sample data file above, Affymetrix IDs
  * serve as the hub of the spoke, and all other identifers point to hub.
- * <P>
+ * <p/>
  * This is best illustrated with sample data.
  * For example, the first line of data above generates the following
  * set of background reference links:
  * <p/>
- * <P>
+ * <p/>
  * The parser is capable of handling blank columns.  For example, the third
  * line of sample data above generates just one background reference link:
  * <UL>
@@ -174,7 +174,7 @@ public class ImportLinkOutRefs {
                     token = (IndexedToken) tokenizer.nextElement();
                     ExternalDatabaseRecord dbRecord =
                             (ExternalDatabaseRecord) dbList.get
-                            (token.getColumnNumber());
+                                    (token.getColumnNumber());
                     BackgroundReferencePair idPair =
                             new BackgroundReferencePair
                                     (dbRecord.getId(), token.getToken(),

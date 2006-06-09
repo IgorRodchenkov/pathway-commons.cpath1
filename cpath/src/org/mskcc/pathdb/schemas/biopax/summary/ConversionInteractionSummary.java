@@ -1,4 +1,4 @@
-// $Id: ConversionInteractionSummary.java,v 1.6 2006-02-27 19:33:13 grossb Exp $
+// $Id: ConversionInteractionSummary.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,7 +62,7 @@ public class ConversionInteractionSummary extends PhysicalInteractionSummary {
      * @param rightSideComponents ArrayList
      */
     public ConversionInteractionSummary(ArrayList leftSideComponents,
-                                        ArrayList rightSideComponents) {
+            ArrayList rightSideComponents) {
 
         // init our members
         this.leftSideComponents = leftSideComponents;

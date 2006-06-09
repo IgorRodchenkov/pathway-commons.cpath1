@@ -1,4 +1,4 @@
-// $Id: ImportUnificationRefs.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: ImportUnificationRefs.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,7 +47,7 @@ import java.util.ArrayList;
 /**
  * Parses a tab-delimited text file of PROTEIN_UNIFICATION references,
  * and stores the new background references to the database.
- * <P>
+ * <p/>
  * Here is an example unification reference file
  * (see:  testData/references/unification_refs.txt):
  * <BR>
@@ -73,7 +73,7 @@ import java.util.ArrayList;
  * <TD>HUGE_4321</TD>
  * </TR>
  * </TABLE>
- * <P>
+ * <p/>
  * This class uses a simple "stone-skipping" algorithm to create links
  * between IDs and stores these links within the database.  This is best
  * illustrated with sample data.  For example, the first line of data above
@@ -83,7 +83,7 @@ import java.util.ArrayList;
  * <LI>PIR_4321 &lt;---&gt; PIR_4321
  * <LI>PIR_4321 &lt;---&gt; HUGE_1234
  * </UL>
- * <P>
+ * <p/>
  * The parser is capable of handling blank columns.  For example, the third
  * line of sample data above generates just one background reference link:
  * <UL>

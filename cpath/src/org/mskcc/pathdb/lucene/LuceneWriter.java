@@ -1,4 +1,4 @@
-// $Id: LuceneWriter.java,v 1.12 2006-03-06 16:28:29 cerami Exp $
+// $Id: LuceneWriter.java,v 1.13 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -54,13 +54,14 @@ public class LuceneWriter {
 
     /**
      * Constructor
-     * @param dir directory to create index
+     *
+     * @param dir       directory to create index
      * @param resetFlag If Set to True, Existing Index is deleted!
      * @throws IOException IO Error.
      */
     public LuceneWriter(String dir, boolean resetFlag) throws IOException {
         this.dir = dir;
-        init(resetFlag);       
+        init(resetFlag);
     }
 
     /**
@@ -75,6 +76,7 @@ public class LuceneWriter {
 
     /**
      * initialises this object
+     *
      * @param resetFlag If Set to True, Existing Index is deleted!
      * @throws IOException IO Error.
      */
@@ -94,7 +96,7 @@ public class LuceneWriter {
         //  Results in faster indexing.  For details, refer to:
         //  http://www.onjava.com/pub/a/onjava/2003/03/05/lucene.html
         writer.mergeFactor = 100;
-        
+
         // see recomendation from 
         // http://wiki.apache.org/jakarta-lucene/PainlessIndexing
         writer.minMergeDocs = 1000;
@@ -124,13 +126,14 @@ public class LuceneWriter {
 
     /**
      * add the indexes from the supplied directories to this one.
+     *
      * @param dirs array of directories to be added
      * @throws IOException IO exception
      */
-    public void addIndexes(Directory[] dirs)throws IOException {
+    public void addIndexes(Directory[] dirs) throws IOException {
         writer.addIndexes(dirs);
     }
-    
+
     /**
      * Optimizes Lucene Index Files.
      * For details:  http://www.onjava.com/pub/a/onjava/2003/03/05/lucene.html.
@@ -149,6 +152,7 @@ public class LuceneWriter {
     public void closeWriter() throws IOException {
         writer.close();
     }
+
     /**
      * @return Returns the dir.
      */

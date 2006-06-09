@@ -1,4 +1,4 @@
-// $Id: TabSpaceTokenizer.java,v 1.4 2006-02-22 22:47:51 grossb Exp $
+// $Id: TabSpaceTokenizer.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,7 +35,7 @@ import java.util.Enumeration;
 
 /**
  * Tokenizer for parsing Tab/Space delimited files.
- * <P>
+ * <p/>
  * This tokenizer assumes two different levels of delimiters.
  * <UL>
  * <LI>At the first level, tabs are used to separate columns.
@@ -65,7 +65,7 @@ import java.util.Enumeration;
  * <TD>HUGE_4321</TD>
  * </TR>
  * </TABLE>
- * <P>
+ * <p/>
  * The tokenizer enables you to easily get all the tokens sequentially within
  * a line of text, but it also enables you to easily identify which column the
  * specific token came from.  Therefore, when reading the first line of the
@@ -73,10 +73,10 @@ import java.util.Enumeration;
  * HUGE_1234.  However, you can also query each token to determine that token0
  * belongs to column 0 (UNIPROT), but that both tokens 1 and 2 belong to
  * column 1 (PIR).
- * <P>
+ * <p/>
  * If the input line contains no tabs, the tokenizer just assumes that
  * there is only one column, and will tokenize based on space characters.
- * <P>
+ * <p/>
  *
  * @author Ethan Cerami
  */

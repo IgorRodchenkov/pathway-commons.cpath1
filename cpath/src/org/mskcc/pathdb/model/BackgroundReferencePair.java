@@ -1,4 +1,4 @@
-// $Id: BackgroundReferencePair.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: BackgroundReferencePair.java,v 1.6 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -169,7 +169,7 @@ public class BackgroundReferencePair extends BackgroundReference {
     /**
      * Generates an integer hash code for quick lookups.
      * Consider that we have two Background Reference Objects:
-     * <P>
+     * <p/>
      * 1:ABC <--> 2:XYZ; and 2:XYZ <--> 1:ABC
      * <BR>
      * These two records are functionaly equivalent, and therefore

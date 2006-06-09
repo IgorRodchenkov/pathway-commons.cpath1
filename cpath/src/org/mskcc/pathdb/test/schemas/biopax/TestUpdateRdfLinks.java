@@ -1,4 +1,4 @@
-// $Id: TestUpdateRdfLinks.java,v 1.9 2006-05-16 16:51:16 cerami Exp $
+// $Id: TestUpdateRdfLinks.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,10 +36,10 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
-import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.schemas.biopax.UpdateRdfLinks;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 
 import java.io.FileReader;
 import java.util.ArrayList;

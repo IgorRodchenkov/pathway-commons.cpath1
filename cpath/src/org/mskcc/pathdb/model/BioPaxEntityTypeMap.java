@@ -1,4 +1,4 @@
-// $Id: BioPaxEntityTypeMap.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: BioPaxEntityTypeMap.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,23 +44,23 @@ public class BioPaxEntityTypeMap extends HashMap {
      * Constructor.
      */
     public BioPaxEntityTypeMap() {
-		put("complex", "Complex");
-		put("pathway", "Pathway");
-		put("protein", "Protein");
-		put("rna", "RNA");
-		put("dna", "DNA");
-		put("smallMolecule", "Small Molecule");
-		put("physicalEntity", "Physical Entity");
-		put("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
-		put("transport", "Transport Reaction");
-		put("complexAssembly", "Complex Assembly");
-		put("biochemicalReaction", "Biochemical Reaction");
-		put("conversion", "Conversion Reaction");
-		put("modulation", "Modulation Reaction");
-		put("catalysis", "Catalysis Reaction");
-		put("control", "Control Reaction");
-		put("physicalInteraction", "Physical Interaction");
-		put("interaction", "Interaction");
+        put("complex", "Complex");
+        put("pathway", "Pathway");
+        put("protein", "Protein");
+        put("rna", "RNA");
+        put("dna", "DNA");
+        put("smallMolecule", "Small Molecule");
+        put("physicalEntity", "Physical Entity");
+        put("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
+        put("transport", "Transport Reaction");
+        put("complexAssembly", "Complex Assembly");
+        put("biochemicalReaction", "Biochemical Reaction");
+        put("conversion", "Conversion Reaction");
+        put("modulation", "Modulation Reaction");
+        put("catalysis", "Catalysis Reaction");
+        put("control", "Control Reaction");
+        put("physicalInteraction", "Physical Interaction");
+        put("interaction", "Interaction");
     }
 
 }

@@ -1,4 +1,4 @@
-// $Id: BioPaxSuite.java,v 1.12 2006-02-22 22:47:51 grossb Exp $
+// $Id: BioPaxSuite.java,v 1.13 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,7 +34,6 @@ package org.mskcc.pathdb.test.schemas.biopax;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.mskcc.pathdb.test.schemas.biopax.summary.TestBioPaxSummary;
 import org.mskcc.pathdb.test.schemas.biopax.summary.TestEntitySummaryParser;
 import org.mskcc.pathdb.test.schemas.biopax.summary.TestInteractionSummaryUtils;

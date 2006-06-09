@@ -1,4 +1,4 @@
-// $Id: LogUtil.java,v 1.4 2006-03-06 16:27:08 cerami Exp $
+// $Id: LogUtil.java,v 1.5 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,10 +31,10 @@
  **/
 package org.mskcc.pathdb.util.log;
 
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.model.LogRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
-import org.apache.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

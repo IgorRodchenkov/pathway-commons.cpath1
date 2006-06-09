@@ -1,4 +1,4 @@
-// $Id: TestBioPaxUtil.java,v 1.15 2006-05-16 16:51:16 cerami Exp $
+// $Id: TestBioPaxUtil.java,v 1.16 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,8 +40,8 @@ import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
-import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 
@@ -133,7 +133,7 @@ public class TestBioPaxUtil extends TestCase {
         //  Ensure that all RDF links actually point to existing RDF Resources
         //  in this document.
         checkAllRdfLinks(root);
-        
+
         //  Validate that the resulting document is valid RDF
         writer = new StringWriter();
         out.output(root, writer);

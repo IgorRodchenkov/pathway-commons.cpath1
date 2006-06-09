@@ -1,4 +1,4 @@
-// $Id: PsiUtil.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: PsiUtil.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -296,16 +296,16 @@ public class PsiUtil {
                         }
                         pMonitor.setCurrentMessage
                                 ("Warning!  Removing Secondary Xref with "
-                                + "empty db attribute: [xref id = "
-                                + id.trim() + "]");
+                                        + "empty db attribute: [xref id = "
+                                        + id.trim() + "]");
                     } else if (id == null || id.trim().length() == 0) {
                         if (db == null) {
                             db = "No db attribute available either";
                         }
                         pMonitor.setCurrentMessage
                                 ("Warning!  Removing Secondary Xref with "
-                                + "empty id attribute:  [xref db = "
-                                + db.trim() + "]");
+                                        + "empty id attribute:  [xref db = "
+                                        + db.trim() + "]");
                     } else {
                         dbRef.setDb(db.trim());
                         dbRef.setId(id.trim());
@@ -380,7 +380,7 @@ public class PsiUtil {
                             participantList.getProteinParticipant(k);
                     ProteinParticipantTypeChoice choice =
                             proteinParticipant.
-                            getProteinParticipantTypeChoice();
+                                    getProteinParticipantTypeChoice();
                     ProteinInteractorType protein =
                             choice.getProteinInteractor();
                     createInteractorRef(protein, interactorList,

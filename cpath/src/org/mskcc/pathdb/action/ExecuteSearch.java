@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.6 2006-03-07 17:06:40 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,13 +42,13 @@ import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.lucene.LuceneQuery;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
 import org.mskcc.pathdb.protocol.*;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,15 +97,15 @@ public class ExecuteSearch extends BaseAction {
             return processQuery(mapping, protocolRequest, request,
                     response, xdebug);
         } catch (NeedsHelpException e) {
-            request.removeAttribute(BaseAction.PAGE_IS_SEARCH_RESULT);    
+            request.removeAttribute(BaseAction.PAGE_IS_SEARCH_RESULT);
             return mapping.findForward(BaseAction.FORWARD_HELP);
         }
     }
 
     private ActionForward processQuery
             (ActionMapping mapping, ProtocolRequest protocolRequest,
-            HttpServletRequest request, HttpServletResponse response,
-            XDebug xdebug) throws ProtocolException, NeedsHelpException {
+                    HttpServletRequest request, HttpServletResponse response,
+                    XDebug xdebug) throws ProtocolException, NeedsHelpException {
         if (protocolRequest.getFormat() == null
                 || protocolRequest.getFormat()
                 .equals(ProtocolConstants.FORMAT_HTML)) {
@@ -197,7 +197,7 @@ public class ExecuteSearch extends BaseAction {
 
     private ActionForward processHtmlRequestBioPaxMode
             (XDebug xdebug, ProtocolRequest protocolRequest,
-            HttpServletRequest request, ActionMapping mapping)
+                    HttpServletRequest request, ActionMapping mapping)
             throws QueryException, IOException,
             AssemblyException, ParseException {
         LuceneQuery search = new LuceneQuery(protocolRequest, xdebug);

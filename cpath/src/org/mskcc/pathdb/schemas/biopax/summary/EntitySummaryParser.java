@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.18 2006-02-27 22:43:53 grossb Exp $
+// $Id: EntitySummaryParser.java,v 1.19 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,21 +35,21 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
 
-import java.util.List;
-import java.util.ArrayList;
-import java.io.StringReader;
-
-import org.jdom.Element;
 import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.xpath.XPath;
 import org.jdom.input.SAXBuilder;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
+import org.jdom.xpath.XPath;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.model.CPathRecord;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class parses interaction data
@@ -82,7 +82,7 @@ public class EntitySummaryParser {
      * Constructor.
      *
      * @param recordID long
-     * @throws DaoException Throwable
+     * @throws DaoException             Throwable
      * @throws IllegalArgumentException Throwable
      */
     public EntitySummaryParser(long recordID) throws DaoException, IllegalArgumentException {
@@ -176,9 +176,9 @@ public class EntitySummaryParser {
      */
     private ArrayList getInteractionInformation(String query)
             throws JDOMException,
-                   EntitySummaryException,
-                   DaoException,
-                   BioPaxRecordSummaryException {
+            EntitySummaryException,
+            DaoException,
+            BioPaxRecordSummaryException {
 
         // we dont process controlled queries as all others
         boolean processingControlled = (query.equals("/*/bp:CONTROLLED"));
@@ -202,8 +202,8 @@ public class EntitySummaryParser {
                     // another EntitySummary
                     Object participant = getControlledInteractionType(e);
                     if (participant != null) {
-						participantArrayList.add(participant);
-					}
+                        participantArrayList.add(participant);
+                    }
                 } else {
                     // not processing controlled, we need to create a participant summary component
                     // to do this, we need to get physical entity CPathRecord
@@ -218,9 +218,9 @@ public class EntitySummaryParser {
                     }
                     if (physicalEntityRecord != null) {
                         ParticipantSummaryComponent participantSummaryComponent =
-                           BioPaxRecordUtil.createInteractionSummaryComponent(record,
-                                                                              e,
-                                                                              physicalEntityRecord);
+                                BioPaxRecordUtil.createInteractionSummaryComponent(record,
+                                        e,
+                                        physicalEntityRecord);
                         participantArrayList.add(participantSummaryComponent);
                     }
                 }
@@ -261,8 +261,8 @@ public class EntitySummaryParser {
             } else {
                 // this isn't an interaction, just create a top-level EntitySummary
                 objectToReturn = new EntitySummary(record.getId(),
-                                                   record.getName(),
-                                                   record.getSpecificType());
+                        record.getName(),
+                        record.getSpecificType());
             }
         }
 

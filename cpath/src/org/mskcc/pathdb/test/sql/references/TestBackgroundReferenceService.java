@@ -1,4 +1,4 @@
-// $Id: TestBackgroundReferenceService.java,v 1.9 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestBackgroundReferenceService.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -91,32 +91,32 @@ public class TestBackgroundReferenceService extends TestCase {
             ExternalReference xref = (ExternalReference) unifiedList.get(i);
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [UNIPROT], ID:  "
-                    + "[UNIPROT_1234]")) {
+                            + "[UNIPROT_1234]")) {
                 got1 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [HUGE], ID:  "
-                    + "[HUGE_4321]")) {
+                            + "[HUGE_4321]")) {
                 got2 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [PIR], ID:  "
-                    + "[PIR_4321]")) {
+                            + "[PIR_4321]")) {
                 got3 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [PIR], ID:  "
-                    + "[SANDER_123]")) {
+                            + "[SANDER_123]")) {
                 got4 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [PIR], ID:  "
-                    + "[PIR_1234]")) {
+                            + "[PIR_1234]")) {
                 got5 = true;
             }
             if (xref.toString().equals
                     ("External Reference  -->  Database:  [HUGE], ID:  "
-                    + "[HUGE_1234]")) {
+                            + "[HUGE_1234]")) {
                 got6 = true;
             }
         }

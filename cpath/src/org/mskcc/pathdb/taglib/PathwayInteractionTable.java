@@ -1,4 +1,4 @@
-// $Id: PathwayInteractionTable.java,v 1.23 2006-02-27 21:51:11 grossb Exp $
+// $Id: PathwayInteractionTable.java,v 1.24 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,11 +33,11 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 
+import org.jdom.JDOMException;
+import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryException;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
-import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryException;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.jdom.JDOMException;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

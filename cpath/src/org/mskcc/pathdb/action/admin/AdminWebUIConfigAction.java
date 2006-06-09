@@ -1,4 +1,4 @@
-// $Id: AdminWebUIConfigAction.java,v 1.9 2006-02-27 15:33:27 grossb Exp $
+// $Id: AdminWebUIConfigAction.java,v 1.10 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,13 +31,13 @@
  **/
 package org.mskcc.pathdb.action.admin;
 
-import org.mskcc.pathdb.form.WebUIBean;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,10 +61,10 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
      * @throws Exception All Exceptions.
      */
     public ActionForward adminExecute(ActionMapping mapping,
-                                      ActionForm form,
-                                      HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      XDebug xdebug) throws Exception {
+            ActionForm form,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            XDebug xdebug) throws Exception {
 
         // only process if we are authorized
         if (CPathUIConfig.getAdminModeActive() == CPathUIConfig.ADMIN_MODE_DEACTIVE) {

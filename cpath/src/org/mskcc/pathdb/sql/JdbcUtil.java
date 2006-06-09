@@ -1,4 +1,4 @@
-// $Id: JdbcUtil.java,v 1.22 2006-02-22 22:47:51 grossb Exp $
+// $Id: JdbcUtil.java,v 1.23 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,8 +114,8 @@ public class JdbcUtil {
         }
         String url =
                 new String("jdbc:mysql://" + host + "/" + database
-                + "?user=" + userName + "&password=" + password
-                + "&zeroDateTimeBehavior=convertToNull");
+                        + "?user=" + userName + "&password=" + password
+                        + "&zeroDateTimeBehavior=convertToNull");
 
         Class.forName("com.mysql.jdbc.Driver");
         dataSource = setupDataSource(url);
@@ -214,7 +214,7 @@ public class JdbcUtil {
 
     /**
      * Gets the SQL string statement associated with a PreparedStatement.
-     * <P>
+     * <p/>
      * This method compensates for a bug in the DBCP Code.  DBCP wraps an
      * original PreparedStatement object, but when you call toString() on the
      * wrapper, it returns a generic String representation that does not include

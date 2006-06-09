@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.9 2006-03-06 16:28:29 cerami Exp $
+// $Id: LuceneReader.java,v 1.10 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,13 +31,13 @@
  **/
 package org.mskcc.pathdb.lucene;
 
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.log4j.Logger;
 import org.mskcc.pathdb.sql.query.QueryException;
 
 import java.io.IOException;

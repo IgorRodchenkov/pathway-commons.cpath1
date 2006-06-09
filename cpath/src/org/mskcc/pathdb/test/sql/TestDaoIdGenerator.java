@@ -1,4 +1,4 @@
-// $Id: TestDaoIdGenerator.java,v 1.6 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestDaoIdGenerator.java,v 1.7 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,7 +67,7 @@ public class TestDaoIdGenerator extends TestCase {
     private int parseId(String idStr) {
         return Integer.parseInt
                 (idStr.substring
-                (DaoIdGenerator.CPATH_LOCAL_ID_PREFIX.length()));
+                        (DaoIdGenerator.CPATH_LOCAL_ID_PREFIX.length()));
     }
 
     /**

@@ -1,4 +1,4 @@
-// $Id: ParseBackgroundReferencesTask.java,v 1.10 2006-02-22 22:47:51 grossb Exp $
+// $Id: ParseBackgroundReferencesTask.java,v 1.11 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -68,7 +68,7 @@ import java.util.StringTokenizer;
  * columns:  Affymetrix, SwissProt, and LocusLink, two sets of links will
  * be created:  SwissProt --&gt; Affymetrix, and LocusLink --&gt; Affymetrix.
  * </UL>
- * <P>
+ * <p/>
  * Here is an example PROTEIN_UNIFICATION reference file
  * (see:  testData/unification_refs.txt):
  * <BR>
@@ -203,7 +203,7 @@ public class ParseBackgroundReferencesTask extends Task {
                     ("Saving PROTEIN_UNIFICATION References.");
             ImportUnificationRefs importUnificationRefs = new
                     ImportUnificationRefs(dbList, backgroundRefList,
-                            getProgressMonitor(), saveToDatabase);
+                    getProgressMonitor(), saveToDatabase);
             return importUnificationRefs.parseData(buf);
         } else {
             ExternalDatabaseRecord db = (ExternalDatabaseRecord)
@@ -263,7 +263,7 @@ public class ParseBackgroundReferencesTask extends Task {
         int numLines = FileUtil.getNumLines(file);
         pMonitor.setCurrentMessage
                 ("Number of Lines of Data in File:  "
-                + formatter.format(numLines));
+                        + formatter.format(numLines));
         pMonitor.setMaxValue(numLines);
         pMonitor.setCurValue(1);
     }

@@ -1,4 +1,4 @@
-// $Id: RdfErrorHandler.java,v 1.5 2006-02-22 22:51:58 grossb Exp $
+// $Id: RdfErrorHandler.java,v 1.6 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 
 /**
  * RDF Error Handler.
- * <P>
+ * <p/>
  * Stores all RDF/XML fatal errors, errors, and warnings.
  *
  * @author Ethan Cerami

@@ -1,4 +1,4 @@
-// $Id: TestSummaryListUtil.java,v 1.8 2006-02-23 22:23:37 cerami Exp $
+// $Id: TestSummaryListUtil.java,v 1.9 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,6 +72,6 @@ public class TestSummaryListUtil extends TestCase {
      */
     public String getName() {
         return "Test that we can retrieve a list of Interaction "
-            + " Summary objects";
+                + " Summary objects";
     }
 }

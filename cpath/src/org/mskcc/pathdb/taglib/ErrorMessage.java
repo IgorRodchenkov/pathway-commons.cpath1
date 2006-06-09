@@ -1,4 +1,4 @@
-// $Id: ErrorMessage.java,v 1.16 2006-02-22 22:47:51 grossb Exp $
+// $Id: ErrorMessage.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -84,7 +84,7 @@ public class ErrorMessage extends HtmlTable {
         ServletContext servletContext = pageContext.getServletContext();
         PropertyMessageResources resource =
                 (PropertyMessageResources) servletContext.getAttribute
-                (STRUTS_MESSAGE_RESOURCE);
+                        (STRUTS_MESSAGE_RESOURCE);
 
         String header = resource.getMessage(MSG_ERROR_HEADER);
         this.append("<div class=\"errormessage\">");

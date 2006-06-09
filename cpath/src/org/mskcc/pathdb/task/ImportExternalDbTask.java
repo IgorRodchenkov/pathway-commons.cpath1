@@ -1,4 +1,4 @@
-// $Id: ImportExternalDbTask.java,v 1.4 2006-02-22 22:47:51 grossb Exp $
+// $Id: ImportExternalDbTask.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -54,8 +54,8 @@ public class ImportExternalDbTask extends Task {
     private boolean validateLinks;
     private static final String WARNING_MSG =
             "-->  Warning!  The sample URL provided did not work.  "
-            + "The external database will be stored anyway, but you may "
-            + "want to double check the url pattern / sample id.";
+                    + "The external database will be stored anyway, but you may "
+                    + "want to double check the url pattern / sample id.";
 
     /**
      * Constructor.

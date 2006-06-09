@@ -1,4 +1,4 @@
-// $Id: BioPaxControlTypeMap.java,v 1.6 2006-02-23 17:34:51 grossb Exp $
+// $Id: BioPaxControlTypeMap.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,17 +44,17 @@ public class BioPaxControlTypeMap extends HashMap {
      * Constructor.
      */
     public BioPaxControlTypeMap() {
-		put("INHIBITION", "inhibits");
-		put("ACTIVATION", "activates");
-		put("INHIBITION-ALLOSTERIC", "allosterically inhibits");
-		put("INHIBITION-COMPETITIVE", "competitively inhibits");
-		put("INHIBITION-IRREVERSIBLE", "irreversibly inhibits");
-		put("INHIBITION-NONCOMPETITIVE", "noncompetitively inhibits");
-		put("INHIBITION-OTHER", "inhibits (other)");
-		put("INHIBITION-UNCOMPETITIVE", "uncompetitively inhibits");
-		put("INHIBITION-UNKMECH", "inhibits");
-		put("ACTIVATION-NONALLOSTERIC", "nonallosterically activates");
-		put("ACTIVATION-ALLOSTERIC", "allosterically activates");
-		put("ACTIVATION-UNKMECH", "activates");
+        put("INHIBITION", "inhibits");
+        put("ACTIVATION", "activates");
+        put("INHIBITION-ALLOSTERIC", "allosterically inhibits");
+        put("INHIBITION-COMPETITIVE", "competitively inhibits");
+        put("INHIBITION-IRREVERSIBLE", "irreversibly inhibits");
+        put("INHIBITION-NONCOMPETITIVE", "noncompetitively inhibits");
+        put("INHIBITION-OTHER", "inhibits (other)");
+        put("INHIBITION-UNCOMPETITIVE", "uncompetitively inhibits");
+        put("INHIBITION-UNKMECH", "inhibits");
+        put("ACTIVATION-NONALLOSTERIC", "nonallosterically activates");
+        put("ACTIVATION-ALLOSTERIC", "allosterically activates");
+        put("ACTIVATION-UNKMECH", "activates");
     }
 }

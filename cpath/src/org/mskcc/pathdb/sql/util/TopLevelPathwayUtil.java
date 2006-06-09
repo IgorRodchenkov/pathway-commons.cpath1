@@ -1,4 +1,4 @@
-// $Id: TopLevelPathwayUtil.java,v 1.11 2006-05-22 19:45:53 cerami Exp $
+// $Id: TopLevelPathwayUtil.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,13 +42,12 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  * Utility to determine top-level pathways.
@@ -166,9 +165,9 @@ public class TopLevelPathwayUtil {
             //  Second Pass:  Does it contain other pathways?
             if (!hasParents) {
                 ArrayList targetLinks = daoInternalLink.getTargetsWithLookUp(pathway.getId());
-                for (int j=0; j<targetLinks.size(); j++) {
+                for (int j = 0; j < targetLinks.size(); j++) {
                     CPathRecord record = (CPathRecord) targetLinks.get(j);
-                    if (record.getType().equals(CPathRecordType.PATHWAY))  {
+                    if (record.getType().equals(CPathRecordType.PATHWAY)) {
                         containsPathways = true;
                         break;
                     }
@@ -218,7 +217,7 @@ class RecordComparator implements Comparator {
      * @param object0 CPathRecord Object 0.
      * @param object1 cPathRecord Object 1/
      * @return a negative integer, zero, or a positive integer as the first
-     *          argument is less than, equal to, or greater than the second.
+     *         argument is less than, equal to, or greater than the second.
      */
     public int compare(Object object0, Object object1) {
         if (object0 != null && object1 != null) {

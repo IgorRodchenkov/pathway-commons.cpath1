@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.14 2006-03-21 20:20:01 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.15 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,15 +35,13 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
-
-import java.util.ArrayList;
-
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
-import org.mskcc.pathdb.schemas.biopax.summary.*;
+import org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 /**
  * Custom JSP tag for displaying a list of BioPAX Parent Elements
@@ -84,7 +82,7 @@ public class BioPaxParentChildTable extends HtmlTable {
      *
      * @param request HttpServletRequest Object.
      */
-    public void setRequest (HttpServletRequest request) {
+    public void setRequest(HttpServletRequest request) {
         this.request = request;
     }
 
@@ -114,13 +112,13 @@ public class BioPaxParentChildTable extends HtmlTable {
         if (entitySummaryList.size() > 0) {
             int flagIndex = getFlagIndex();
             String param = request.getParameter(BioPaxShowFlag.SHOW_FLAG);
-            BioPaxShowFlag showFlag = new BioPaxShowFlag (param);
+            BioPaxShowFlag showFlag = new BioPaxShowFlag(param);
             int cnt = BioPaxShowFlag.determineEndIndex(DEFAULT_NUM_RECORDS,
                     entitySummaryList.size(), showFlag, flagIndex);
             String title = getTitle();
             String htmlHeader = BioPaxShowFlag.createHtmlHeader(DEFAULT_NUM_RECORDS,
                     entitySummaryList.size(), cPathId, title, showFlag, flagIndex);
-            append (htmlHeader);
+            append(htmlHeader);
 
             // start record output
             startTable();

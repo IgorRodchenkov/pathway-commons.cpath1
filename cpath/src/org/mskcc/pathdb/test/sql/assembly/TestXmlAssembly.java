@@ -1,4 +1,4 @@
-// $Id: TestXmlAssembly.java,v 1.9 2006-06-07 13:54:56 cerami Exp $
+// $Id: TestXmlAssembly.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,8 +36,8 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.mskcc.dataservices.util.PropertyManager;
-import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
@@ -199,9 +199,10 @@ public class TestXmlAssembly extends TestCase {
 
     /**
      * Provides an explicit unit test for bug #1009:  "Cannot search for synonyms of any proteins"
+     *
      * @throws Exception All Exceptions.
      */
-    public void testBioPaxAssemblyAbbrevForSynonyms () throws Exception {
+    public void testBioPaxAssemblyAbbrevForSynonyms() throws Exception {
         testName = "Verify that BioPAX Assembly contains synonyms";
         XDebug xdebug = new XDebug();
         long cpathIds[] = new long[1];
@@ -211,7 +212,7 @@ public class TestXmlAssembly extends TestCase {
                 xdebug);
         String xmlAssembly = assembly.getXmlString();
         int index = xmlAssembly.indexOf("bp:SYNONYMS");
-        assertTrue (index > 0);
+        assertTrue(index > 0);
     }
 
     /**

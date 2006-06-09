@@ -1,4 +1,4 @@
-// $Id: SummaryListUtil.java,v 1.8 2006-02-27 19:50:31 grossb Exp $
+// $Id: SummaryListUtil.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,7 +67,7 @@ public class SummaryListUtil {
      * Constructor.
      *
      * @param cPathId cPath ID.
-     * @param mode int.
+     * @param mode    int.
      */
     public SummaryListUtil(long cPathId, int mode) {
         this.cPathId = cPathId;
@@ -76,8 +76,9 @@ public class SummaryListUtil {
 
     /**
      * Gets Summaries for all Children of the specified cPathId.
+     *
      * @return ArrayList of EntitySummary Objects.
-     * @throws DaoException Database Access Error.
+     * @throws DaoException           Database Access Error.
      * @throws EntitySummaryException Error Creating Summary.
      */
     public ArrayList getSummaryList() throws EntitySummaryException,
@@ -123,7 +124,7 @@ class SummaryComparator implements Comparator {
      * @param object0 EntitySummary Object 0.
      * @param object1 EntitySummary Object 1/
      * @return a negative integer, zero, or a positive integer as the first
-     *          argument is less than, equal to, or greater than the second.
+     *         argument is less than, equal to, or greater than the second.
      */
     public int compare(Object object0, Object object1) {
         if (object0 != null && object1 != null) {

@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalLink.java,v 1.24 2006-05-15 16:25:37 cerami Exp $
+// $Id: TestDaoExternalLink.java,v 1.25 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,7 +40,6 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.ExternalDatabaseNotFoundException;
-import org.exolab.castor.jdo.DatabaseNotFoundException;
 
 import java.util.ArrayList;
 
@@ -130,36 +129,38 @@ public class TestDaoExternalLink extends TestCase {
 
     /**
      * Tests the Auto-Add Missing External DB Feature.
+     *
      * @throws DaoException Database Exception.
+     * @throws ExternalDatabaseNotFoundException External Database not stored in cPath.
      */
     public void testAutoAddMissingExternalDbs() throws DaoException,
             ExternalDatabaseNotFoundException {
         testName = "Test Auto Adding of Missing External Databases";
         ExternalReference refs[] = new ExternalReference[1];
-        refs[0] = new ExternalReference ("ACME_DB", "1234");
+        refs[0] = new ExternalReference("ACME_DB", "1234");
         DaoExternalLink dao = DaoExternalLink.getInstance();
 
         //  Test with autoAdd set to false.
         try {
             dao.validateExternalReferences(refs, false);
-            fail ("ExternalDatabaseNotFoundException should have been thrown");
+            fail("ExternalDatabaseNotFoundException should have been thrown");
         } catch (ExternalDatabaseNotFoundException e) {
         }
 
         //  Missing Database should not have been added
         DaoExternalDb daoDb = new DaoExternalDb();
         ExternalDatabaseRecord record = daoDb.getRecordByTerm("ACME_DB");
-        assertTrue (record == null);
+        assertTrue(record == null);
 
         //  Now test with autoAdd set to true.
         try {
             dao.validateExternalReferences(refs, true);
         } catch (ExternalDatabaseNotFoundException e) {
-            fail ("ExternalDatabaseNotFoundException should not have been thrown");
+            fail("ExternalDatabaseNotFoundException should not have been thrown");
         }
         daoDb = new DaoExternalDb();
         record = daoDb.getRecordByTerm("ACME_DB");
-        assertEquals ("ACME_DB", record.getMasterTerm());
+        assertEquals("ACME_DB", record.getMasterTerm());
         assertEquals("ACME_DB", record.getName());
     }
 

@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.48 2006-05-26 17:25:11 cerami Exp $
+// $Id: Admin.java,v 1.49 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,7 +39,10 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.task.*;
+import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
+import org.mskcc.pathdb.task.ImportRecordTask;
+import org.mskcc.pathdb.task.IndexLuceneTask;
+import org.mskcc.pathdb.task.ValidateXmlTask;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -95,8 +98,8 @@ public class Admin {
             String cpathHome = System.getProperty(CPATH_HOME);
             String separator = System.getProperty("file.separator");
             Properties buildProps = new Properties();
-            buildProps.load(new FileInputStream (cpathHome
-                + separator + "build.properties"));
+            buildProps.load(new FileInputStream(cpathHome
+                    + separator + "build.properties"));
 
             dbUser = buildProps.getProperty("db.user");
             dbPwd = buildProps.getProperty("db.password");
@@ -105,9 +108,9 @@ public class Admin {
 
             //  Remove CPATH_HOME, if provided
             if (argv.length > 0 && argv[0].startsWith(CPATH_HOME)) {
-                String reducedArgv[] = new String[argv.length-1];
-                for (int i=1; i<argv.length; i++) {
-                    reducedArgv[i-1] = argv[i];
+                String reducedArgv[] = new String[argv.length - 1];
+                for (int i = 1; i < argv.length; i++) {
+                    reducedArgv[i - 1] = argv[i];
                 }
                 argv = reducedArgv;
             }
@@ -119,7 +122,7 @@ public class Admin {
             propertyManager.setProperty(PropertyManager.DB_USER, dbUser);
             propertyManager.setProperty(PropertyManager.DB_PASSWORD, dbPwd);
             propertyManager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE,
-                            dbName);
+                    dbName);
             propertyManager.setProperty(PropertyManager.DB_LOCATION, dbHost);
 
             System.out.println("cPath Admin.  cPath Version:  "
@@ -413,13 +416,13 @@ public class Admin {
         System.out.println("  -d,             Shows all Debug/Log "
                 + "Messages/Stack Traces");
         System.out.println("  -u, -u=name     Database User Name "
-            + "(overrides build.properties)");
+                + "(overrides build.properties)");
         System.out.println("  -p, -p=name     Database Password "
-            + "(overrides build.properties)");
-        System.out.println ("  -h, -h=hostname Database Server Name "
-            + "(overrides build.properties)");
+                + "(overrides build.properties)");
+        System.out.println("  -h, -h=hostname Database Server Name "
+                + "(overrides build.properties)");
         System.out.println("  -b, -b=database Database name "
-            + "(overrides build.properties)");
+                + "(overrides build.properties)");
         System.out.println("  -x              Production Mode (enforces "
                 + "that all External DBs exist in cPath)");
         System.out.println("  -o, -o=id       NCBI TaxonomyID");

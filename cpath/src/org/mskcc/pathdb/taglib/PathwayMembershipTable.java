@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.11 2006-02-27 21:54:06 grossb Exp $
+// $Id: PathwayMembershipTable.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,11 +33,7 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 
-import java.util.List;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Custom jsp tag to generate a table of pathways that a molecule is a member of.
@@ -123,7 +119,8 @@ class RecordLinkSorter implements Comparator {
                 sub1 = s1.substring(s1.indexOf('>') + 1, s1.lastIndexOf('<'));
                 sub2 = s2.substring(s2.indexOf('>') + 1, s2.lastIndexOf('<'));
             } catch (Exception e) {
-              throw new IllegalArgumentException("Invalid arguments to RecordLinkSorter.compare()");
+                throw new IllegalArgumentException
+                        ("Invalid arguments to RecordLinkSorter.compare()");
             }
 
             // return string compare

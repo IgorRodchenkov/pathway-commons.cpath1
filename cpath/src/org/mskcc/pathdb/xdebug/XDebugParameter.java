@@ -1,4 +1,4 @@
-// $Id: XDebugParameter.java,v 1.7 2006-02-22 22:51:58 grossb Exp $
+// $Id: XDebugParameter.java,v 1.8 2006-06-09 19:22:05 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -93,8 +93,8 @@ public class XDebugParameter {
     private int type;
     private final String[] paramTypes =
             {"Cookie", "User Parameter", "Internal", "Environment",
-             "HTTP", "HTTP Header", "Internal Request Attribute", "Session",
-             "Servlet Context"};
+                    "HTTP", "HTTP Header", "Internal Request Attribute", "Session",
+                    "Servlet Context"};
 
     private static final String UNDEFINED = "Undefined";
 

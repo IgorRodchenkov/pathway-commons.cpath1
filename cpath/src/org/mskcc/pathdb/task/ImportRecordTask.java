@@ -1,4 +1,4 @@
-// $Id: ImportRecordTask.java,v 1.20 2006-05-15 16:26:21 cerami Exp $
+// $Id: ImportRecordTask.java,v 1.21 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,10 +55,10 @@ public class ImportRecordTask extends Task {
     /**
      * Constructor.
      *
-     * @param importId                   Import ID.
-     * @param autoAddMissingExternalDbs  Auto-Add missing External Databases.
-     * @param removeAllInteractionXRefs  Flag to Remove all Interaction XRefs.
-     * @param consoleMode                Console Mode.
+     * @param importId                  Import ID.
+     * @param autoAddMissingExternalDbs Auto-Add missing External Databases.
+     * @param removeAllInteractionXRefs Flag to Remove all Interaction XRefs.
+     * @param consoleMode               Console Mode.
      */
     public ImportRecordTask(long importId, boolean autoAddMissingExternalDbs,
             boolean removeAllInteractionXRefs, boolean consoleMode) {

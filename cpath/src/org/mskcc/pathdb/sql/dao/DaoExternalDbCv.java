@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbCv.java,v 1.16 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoExternalDbCv.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -66,7 +66,7 @@ public class DaoExternalDbCv {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO external_db_cv (`EXTERNAL_DB_ID`,`CV_TERM`,"
-                    + "`MASTER_FLAG`) VALUES (?,?,?)");
+                            + "`MASTER_FLAG`) VALUES (?,?,?)");
             pstmt.setInt(1, dbId);
             pstmt.setString(2, term.toUpperCase());
             pstmt.setInt(3, masterFlag ? 1 : 0);
@@ -151,7 +151,7 @@ public class DaoExternalDbCv {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT * FROM external_db_cv WHERE EXTERNAL_DB_ID = ? "
-                    + "ORDER BY CV_TERM DESC");
+                            + "ORDER BY CV_TERM DESC");
             pstmt.setInt(1, dbId);
             rs = pstmt.executeQuery();
             ArrayList synTerms = new ArrayList();

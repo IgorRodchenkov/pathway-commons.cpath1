@@ -1,4 +1,4 @@
-// $Id: ExportInteractionsToText.java,v 1.7 2006-02-22 22:47:51 grossb Exp $
+// $Id: ExportInteractionsToText.java,v 1.8 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -120,7 +120,7 @@ public class ExportInteractionsToText extends Task {
                         + i + " - " + end + ">");
                 pstmt = con.prepareStatement
                         ("select * from cpath WHERE TYPE = ?  order by "
-                        + "CPATH_ID LIMIT " + i + ", " + BLOCK_SIZE);
+                                + "CPATH_ID LIMIT " + i + ", " + BLOCK_SIZE);
                 pstmt.setString(1, CPathRecordType.INTERACTION.toString());
                 rs = pstmt.executeQuery();
 

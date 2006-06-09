@@ -1,4 +1,4 @@
-// $Id: BioPaxAssembly.java,v 1.11 2006-06-07 13:56:56 cerami Exp $
+// $Id: BioPaxAssembly.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,10 +41,10 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxElementFilter;
 import org.mskcc.pathdb.schemas.biopax.OwlConstants;
-import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.xml.XmlUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -294,7 +294,7 @@ public class BioPaxAssembly implements XmlAssembly {
                 OwlConstants.OWL_NAMESPACE);
         String bioPaxLevel2NamespaceUri =
                 BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI.replaceAll
-                ("#", "");
+                        ("#", "");
         owlImports.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE,
                 bioPaxLevel2NamespaceUri, RdfConstants.RDF_NAMESPACE);
         Element owlOntology = new Element(OwlConstants.OWL_ONTOLOGY_ELEMENT,

@@ -1,4 +1,4 @@
-// $Id: DaoImport.java,v 1.23 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoImport.java,v 1.24 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,8 +76,8 @@ public class DaoImport {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("select `IMPORT_ID`, `DESC`, `XML_TYPE`, `DOC_MD5`, "
-                    + "`STATUS`, `CREATE_TIME`, `UPDATE_TIME`"
-                    + " from import order by IMPORT_ID");
+                            + "`STATUS`, `CREATE_TIME`, `UPDATE_TIME`"
+                            + " from import order by IMPORT_ID");
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 ImportRecord record = extractRecord(rs, false);
@@ -110,7 +110,7 @@ public class DaoImport {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("select * from import where IMPORT_ID=? order "
-                    + "by IMPORT_ID");
+                            + "by IMPORT_ID");
             pstmt.setLong(1, importId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -168,8 +168,8 @@ public class DaoImport {
             byte zippedData[] = ZipUtil.zip(data);
             pstmt = con.prepareStatement
                     ("INSERT INTO import (`DESC`, `XML_TYPE`, `DOC_BLOB`, "
-                    + "`DOC_MD5`, `STATUS`, `CREATE_TIME`, `UPDATE_TIME`)"
-                    + " VALUES (?,?,?,?,?,?,?)");
+                            + "`DOC_MD5`, `STATUS`, `CREATE_TIME`, `UPDATE_TIME`)"
+                            + " VALUES (?,?,?,?,?,?,?)");
             pstmt.setString(1, description);
             pstmt.setString(2, xmlType.toString());
             pstmt.setBytes(3, zippedData);
@@ -190,12 +190,12 @@ public class DaoImport {
         } catch (BufferOverflowException e) {
             IllegalArgumentException ie = new IllegalArgumentException
                     ("BufferOverflowException occurred while trying to load a "
-                    + "large data file.  This is an existing bug in JDK 1.4,"
-                    + " and the work-around fixed has apparently failed.  "
-                    + "Please report this bug to the cPath Team and include a "
-                    + "copy of the data file while failed.  Alternatively, "
-                    + "refer to DaoImport.implementJdkWorkAround() for "
-                    + "complete details.");
+                            + "large data file.  This is an existing bug in JDK 1.4,"
+                            + " and the work-around fixed has apparently failed.  "
+                            + "Please report this bug to the cPath Team and include a "
+                            + "copy of the data file while failed.  Alternatively, "
+                            + "refer to DaoImport.implementJdkWorkAround() for "
+                            + "complete details.");
             throw new DaoException(ie);
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);

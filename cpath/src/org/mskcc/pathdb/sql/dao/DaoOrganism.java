@@ -1,4 +1,4 @@
-// $Id: DaoOrganism.java,v 1.10 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoOrganism.java,v 1.11 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -71,8 +71,8 @@ public class DaoOrganism {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO organism (`ncbi_taxonomy_id`, "
-                    + "`species_name`, `common_name`)"
-                    + " VALUES (?,?,?)");
+                            + "`species_name`, `common_name`)"
+                            + " VALUES (?,?,?)");
             pstmt.setInt(1, taxonomyId);
             pstmt.setString(2, speciesName);
             pstmt.setString(3, commonName);
@@ -118,11 +118,11 @@ public class DaoOrganism {
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
-    }    
-    
-    /**     
-     * @return the number of rows in the organism table, or -1 if 
-     * none are found 
+    }
+
+    /**
+     * @return the number of rows in the organism table, or -1 if
+     *         none are found
      * @throws DaoException Error Connecting to Database.
      */
     public int countAllOrganisms() throws DaoException {
@@ -180,7 +180,7 @@ public class DaoOrganism {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("select species_name from organism where "
-                    + "ncbi_taxonomy_id = ?");
+                            + "ncbi_taxonomy_id = ?");
             pstmt.setInt(1, taxonomyId);
             rs = pstmt.executeQuery();
             return rs.next();

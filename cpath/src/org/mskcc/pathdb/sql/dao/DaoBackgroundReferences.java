@@ -1,4 +1,4 @@
-// $Id: DaoBackgroundReferences.java,v 1.8 2006-03-07 17:06:40 cerami Exp $
+// $Id: DaoBackgroundReferences.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,12 +31,12 @@
  **/
 package org.mskcc.pathdb.sql.dao;
 
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.model.BackgroundReference;
 import org.mskcc.pathdb.model.BackgroundReferencePair;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.JdbcUtil;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -56,7 +56,7 @@ public class DaoBackgroundReferences {
 
     /**
      * Adds New Background Reference Pair Record.
-     * <P>
+     * <p/>
      * This method ensures that duplicate records are not stored to the
      * database.  Check the return value to determine if record was saved
      * successfully.  A true value indicates success.  A false value indicates
@@ -87,7 +87,7 @@ public class DaoBackgroundReferences {
             if (dbRecord1 == null) {
                 throw new IllegalArgumentException
                         ("External Database, DB1:  "
-                        + pair.getDbId1() + " does not exist in database.");
+                                + pair.getDbId1() + " does not exist in database.");
             }
             ExternalDatabaseRecord dbRecord2 = dao.getRecordById
                     (pair.getDbId2());
@@ -152,8 +152,8 @@ public class DaoBackgroundReferences {
                 con = JdbcUtil.getCPathConnection();
                 pstmt = con.prepareStatement
                         ("INSERT INTO " + tableName + " (`DB_1`, `ID_1`, "
-                        + "`DB_2`, `ID_2`, `REFERENCE_TYPE`, `HASH_CODE`) "
-                        + " VALUES (?,?,?,?,?,?)");
+                                + "`DB_2`, `ID_2`, `REFERENCE_TYPE`, `HASH_CODE`) "
+                                + " VALUES (?,?,?,?,?,?)");
                 pstmt.setInt(1, pair.getDbId1());
                 pstmt.setString(2, pair.getLinkedToId1().trim());
                 pstmt.setInt(3, pair.getDbId2());
@@ -190,7 +190,7 @@ public class DaoBackgroundReferences {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT * FROM " + tableName
-                    + " WHERE BACKGROUND_REFERENCE_ID = ?");
+                            + " WHERE BACKGROUND_REFERENCE_ID = ?");
             pstmt.setInt(1, identityId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -222,7 +222,7 @@ public class DaoBackgroundReferences {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("DELETE FROM " + tableName
-                    + " WHERE BACKGROUND_REFERENCE_ID = ?");
+                            + " WHERE BACKGROUND_REFERENCE_ID = ?");
             pstmt.setInt(1, primaryId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
@@ -237,12 +237,12 @@ public class DaoBackgroundReferences {
 
     /**
      * Gets the Record Specified by refRecord.
-     * <P>
+     * <p/>
      * All Background References are undirected.  Therefore the following
      * are considered equivalent:
      * <P>Affymetrix:155_s_at -- SwissProt: Q7272
      * <BR>SwissProt: Q7272 -- Affymetrix:155_s_at
-     * <P>
+     * <p/>
      * Given an Identity record, this method will therefore check for both
      * equivalent possibilities.  Either match will return a hit, and the
      * Data Access Object ensures that both options will never exist
@@ -289,7 +289,7 @@ public class DaoBackgroundReferences {
      * <p/>
      * Uses a bread-first search algorithm to determine complete set of
      * equivalent IDs.
-     * <P>
+     * <p/>
      * Implementation note:  JUnit Test for this method is in
      * TestIdMappingsParser.java, not TestDaoIdMap.java.
      *
@@ -354,7 +354,7 @@ public class DaoBackgroundReferences {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("SELECT * FROM " + tableName + " WHERE "
-                    + "(DB_1 = ? AND ID_1 = ? AND REFERENCE_TYPE = ?)");
+                            + "(DB_1 = ? AND ID_1 = ? AND REFERENCE_TYPE = ?)");
             pstmt.setInt(1, xref.getDbId1());
             pstmt.setString(2, xref.getLinkedToId1());
             pstmt.setString(3, ReferenceType.LINK_OUT.toString());
@@ -395,7 +395,7 @@ public class DaoBackgroundReferences {
             //  Issue and Process First Query
             pstmt = con.prepareStatement
                     ("SELECT * FROM " + tableName + " WHERE "
-                    + "(DB_1 = ? AND ID_1 = ? AND REFERENCE_TYPE = ?)");
+                            + "(DB_1 = ? AND ID_1 = ? AND REFERENCE_TYPE = ?)");
             pstmt.setInt(1, xref.getDbId1());
             pstmt.setString(2, xref.getLinkedToId1());
             pstmt.setString(3, ReferenceType.PROTEIN_UNIFICATION.toString());
@@ -405,7 +405,7 @@ public class DaoBackgroundReferences {
             //  Issue and Process Second Query
             pstmt = con.prepareStatement
                     ("SELECT * FROM " + tableName
-                    + " WHERE (DB_2 = ? AND ID_2 = ? AND REFERENCE_TYPE = ?)");
+                            + " WHERE (DB_2 = ? AND ID_2 = ? AND REFERENCE_TYPE = ?)");
             pstmt.setInt(1, xref.getDbId1());
             pstmt.setString(2, xref.getLinkedToId1());
             pstmt.setString(3, ReferenceType.PROTEIN_UNIFICATION.toString());

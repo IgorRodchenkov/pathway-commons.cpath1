@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.8 2006-03-02 17:37:42 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,7 +45,7 @@ import java.util.List;
 
 /**
  * Encapsulates a BioPAX Record scheduled for indexing in Lucene.
- * <P>
+ * <p/>
  * Currently indexes the following content:
  * <TABLE WIDTH=100%>
  * <TR>
@@ -135,10 +135,11 @@ public class BioPaxToIndex implements ItemToIndex {
      * Removes CPATH IDs from an abritrary String.
      * For example, before:  "FOO CPATH 123 BAR"
      * after:  "FOO BAR"
+     *
      * @param str Input String.
      * @return Output String.
      */
-    public static String removecPathIds (String str) {
+    public static String removecPathIds(String str) {
         return str.replaceAll(" CPATH \\d*", "");
     }
 

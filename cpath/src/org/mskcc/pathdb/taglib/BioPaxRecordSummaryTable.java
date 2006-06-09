@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.11 2006-03-13 21:40:51 grossb Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,15 +33,15 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 
-import java.util.List;
-
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+
+import java.util.List;
 
 /**
  * Custom jsp tag for displaying pathway child node (1 level deep)
@@ -115,7 +115,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      */
     private void outputRecords() {
 
-		BioPaxConstants biopaxConstants = new BioPaxConstants();
+        BioPaxConstants biopaxConstants = new BioPaxConstants();
 
         outputHeader();
         append("<TABLE CELLSPACING=5 CELLPADDING=0>");
@@ -124,9 +124,9 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
         outputAvailability();
         outputExternalLinks();
         outputComment();
-		if (biopaxConstants.isPathway(record.getSpecificType())) {
-			outputCytoscapeLink();
-		}
+        if (biopaxConstants.isPathway(record.getSpecificType())) {
+            outputCytoscapeLink();
+        }
         append("</TABLE>");
     }
 
@@ -176,8 +176,8 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
             }
             // do we have to cap a row ?
             if (!endedRow) {
-				append("</tr>");
-			}
+                append("</tr>");
+            }
             append("</TABLE>");
             append("</TD></TR>");
         }
@@ -263,8 +263,8 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
             }
             // do we have to cap a row ?
             if (!endedRow) {
-				append("</tr>");
-			}
+                append("</tr>");
+            }
             append("</TABLE>");
             append("</TD></TR>");
         }
@@ -293,8 +293,8 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      * Output a link to the Cytoscape Tab.
      */
     private void outputCytoscapeLink() {
-		append("<TR>");
-		append("<TD COLSPAN=3><a href=\"cytoscape.do\">" + CYTOSCAPE_LINK_TEXT + "</a></TD>");
-		append("</TR>");
+        append("<TR>");
+        append("<TD COLSPAN=3><a href=\"cytoscape.do\">" + CYTOSCAPE_LINK_TEXT + "</a></TD>");
+        append("</TR>");
     }
 }

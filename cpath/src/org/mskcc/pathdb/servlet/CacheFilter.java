@@ -1,4 +1,4 @@
-// $Id: CacheFilter.java,v 1.23 2006-03-07 17:06:40 cerami Exp $
+// $Id: CacheFilter.java,v 1.24 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,11 +31,15 @@
  **/
 package org.mskcc.pathdb.servlet;
 
-import org.mskcc.pathdb.util.cache.EhCache;
-import org.mskcc.pathdb.util.cache.CharArrayWrapper;
-import org.mskcc.pathdb.util.security.Md5Util;
-import org.mskcc.pathdb.action.admin.AdminWebLogging;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.apache.log4j.Logger;
+import org.mskcc.pathdb.action.admin.AdminWebLogging;
+import org.mskcc.pathdb.util.cache.CharArrayWrapper;
+import org.mskcc.pathdb.util.cache.EhCache;
+import org.mskcc.pathdb.util.security.Md5Util;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -44,11 +48,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
-import net.sf.ehcache.CacheException;
 
 /**
  * Intercepts all Servlet Requests, and provides built-in caching framework.
@@ -60,6 +59,7 @@ public class CacheFilter implements Filter {
 
     /**
      * Initializes the Cache Filter.  Currently, a no-op.
+     *
      * @param filterConfig FilterConfig Object.
      * @throws ServletException Servlet Error.
      */
@@ -68,9 +68,10 @@ public class CacheFilter implements Filter {
 
     /**
      * Process Request via Cache Filter.
-     * @param servletRequest    ServletRequest Object.
-     * @param servletResponse   ServletResponse Object.
-     * @param filterChain       FilterChain Object.
+     *
+     * @param servletRequest  ServletRequest Object.
+     * @param servletResponse ServletResponse Object.
+     * @param filterChain     FilterChain Object.
      * @throws IOException      IO Error.
      * @throws ServletException Servlet Error.
      */
@@ -91,17 +92,17 @@ public class CacheFilter implements Filter {
 
             HttpSession session = request.getSession(true);
             String xdebugSession = (String) session.getAttribute
-                (AdminWebLogging.WEB_LOGGING);
+                    (AdminWebLogging.WEB_LOGGING);
             String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
             if (xdebugSession == null && xdebugParameter == null) {
                 //  Translate to MD5 Hash Key
-                String key = getHashKey (url);
-                if (key !=  null) {
+                String key = getHashKey(url);
+                if (key != null) {
                     log.info("Translates to key:  " + key);
 
                     //  Query Cache
                     Element element = cache.get(key);
-                    log.info ("Checking Cache");
+                    log.info("Checking Cache");
                     if (element != null) {
                         processCacheHit(cache, key, element, response);
                     } else {
@@ -112,15 +113,15 @@ public class CacheFilter implements Filter {
                     filterChain.doFilter(request, response);
                 }
             } else {
-                log.info ("In Debug Mode:  Bypassing Cache Filter");
+                log.info("In Debug Mode:  Bypassing Cache Filter");
                 filterChain.doFilter(request, response);
             }
         } catch (CacheException e) {
-            log.error ("Got Cache Exception", e);
-            log.error ("Bypassing Cache Completely.");
+            log.error("Got Cache Exception", e);
+            log.error("Bypassing Cache Completely.");
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            log.error ("Got Error:  " + e.getMessage(), e);
+            log.error("Got Error:  " + e.getMessage(), e);
             filterChain.doFilter(request, response);
         }
     }
@@ -134,12 +135,12 @@ public class CacheFilter implements Filter {
         Element element;
         //  Cache Miss
         log.info("--> Miss");
-        CharArrayWrapper responseWrapper = new CharArrayWrapper (response);
+        CharArrayWrapper responseWrapper = new CharArrayWrapper(response);
         filterChain.doFilter(request, responseWrapper);
         PrintWriter writer = response.getWriter();
         writer.println(responseWrapper.toString());
-        element = new Element (key, responseWrapper.toString());
-        cache.put (element);
+        element = new Element(key, responseWrapper.toString());
+        cache.put(element);
         writer.flush();
         writer.close();
     }
@@ -150,7 +151,7 @@ public class CacheFilter implements Filter {
     private void processCacheHit(Cache cache, String key, Element element,
             HttpServletResponse response) throws IOException {
         //  Cache Hit
-        log.info ("--> Hit");
+        log.info("--> Hit");
         Object value = element.getValue();
         if (value instanceof String) {
             String cachedHtml = (String) element.getValue();
@@ -180,6 +181,7 @@ public class CacheFilter implements Filter {
 
     /**
      * Gets Complete URL with URL Parameters.
+     *
      * @param request HttpServletRequest Object.
      * @return Complete URL.
      */
@@ -193,6 +195,7 @@ public class CacheFilter implements Filter {
 
     /**
      * Translates URL into MD5 Hash Key.
+     *
      * @param url URL String.
      * @return MD5 Hash String.
      */

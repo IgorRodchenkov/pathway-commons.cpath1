@@ -1,4 +1,4 @@
-// $Id: DaoWebUI.java,v 1.9 2006-03-02 17:37:08 cerami Exp $
+// $Id: DaoWebUI.java,v 1.10 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,9 +32,14 @@
 package org.mskcc.pathdb.sql.dao;
 
 // imports
+
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.JdbcUtil;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Data Access Object to the WEB_UI Table.
@@ -51,32 +56,32 @@ public class DaoWebUI {
      */
     public WebUIBean getRecord() throws DaoException {
 
-		// init some local vars
+        // init some local vars
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         WebUIBean webUIBean = null;
-		
+
         try {
-			// perform the query
+            // perform the query
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-				("select * from web_ui where 1");
+                    ("select * from web_ui where 1");
             rs = pstmt.executeQuery();
-			// set the form object
-			if (rs.next()) {
-				webUIBean = new WebUIBean();
-				webUIBean.setApplicationName(rs.getString("APPLICATION_NAME"));
-				webUIBean.setHomePageHeader(rs.getString("HOME_PAGE_HEADER"));
-				webUIBean.setHomePageTagLine(rs.getString("HOME_PAGE_TAG_LINE"));
-				webUIBean.setHomePageRightColumnContent(
+            // set the form object
+            if (rs.next()) {
+                webUIBean = new WebUIBean();
+                webUIBean.setApplicationName(rs.getString("APPLICATION_NAME"));
+                webUIBean.setHomePageHeader(rs.getString("HOME_PAGE_HEADER"));
+                webUIBean.setHomePageTagLine(rs.getString("HOME_PAGE_TAG_LINE"));
+                webUIBean.setHomePageRightColumnContent(
                         rs.getString("HOME_PAGE_RIGHT_COLUMN_CONTENT"));
-				webUIBean.setDisplayBrowseByPathwayTab(
+                webUIBean.setDisplayBrowseByPathwayTab(
                         rs.getBoolean("DISPLAY_BROWSE_BY_PATHWAY_TAB"));
-				webUIBean.setDisplayBrowseByOrganismTab(
+                webUIBean.setDisplayBrowseByOrganismTab(
                         rs.getBoolean("DISPLAY_BROWSE_BY_ORGANISM_TAB"));
-				webUIBean.setFAQPageContent(rs.getString("FAQ_PAGE_CONTENT"));
-				webUIBean.setAboutPageContent(rs.getString("ABOUT_PAGE_CONTENT"));
+                webUIBean.setFAQPageContent(rs.getString("FAQ_PAGE_CONTENT"));
+                webUIBean.setAboutPageContent(rs.getString("ABOUT_PAGE_CONTENT"));
                 webUIBean.setMaintenanceTagLine(rs.getString("MAINTENANCE_TAG_LINE"));
             }
         } catch (ClassNotFoundException e) {
@@ -87,8 +92,8 @@ public class DaoWebUI {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
 
-		// outta here
-		return webUIBean;
+        // outta here
+        return webUIBean;
     }
 
     /**
@@ -108,15 +113,15 @@ public class DaoWebUI {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("UPDATE web_ui set "
-					 + "`APPLICATION_NAME` = ?, "
-					 + "`HOME_PAGE_HEADER` = ?, "
-					 + "`HOME_PAGE_TAG_LINE` = ?, "
-					 + "`HOME_PAGE_RIGHT_COLUMN_CONTENT` = ?, "
-					 + "`DISPLAY_BROWSE_BY_PATHWAY_TAB` = ?, "
-					 + "`DISPLAY_BROWSE_BY_ORGANISM_TAB` = ?, "
-					 + "`FAQ_PAGE_CONTENT` = ?, "
-					 + "`ABOUT_PAGE_CONTENT` = ?, "
-					 + "`MAINTENANCE_TAG_LINE` = ?");
+                            + "`APPLICATION_NAME` = ?, "
+                            + "`HOME_PAGE_HEADER` = ?, "
+                            + "`HOME_PAGE_TAG_LINE` = ?, "
+                            + "`HOME_PAGE_RIGHT_COLUMN_CONTENT` = ?, "
+                            + "`DISPLAY_BROWSE_BY_PATHWAY_TAB` = ?, "
+                            + "`DISPLAY_BROWSE_BY_ORGANISM_TAB` = ?, "
+                            + "`FAQ_PAGE_CONTENT` = ?, "
+                            + "`ABOUT_PAGE_CONTENT` = ?, "
+                            + "`MAINTENANCE_TAG_LINE` = ?");
             pstmt.setString(1, form.getApplicationName());
             pstmt.setString(2, form.getHomePageHeader());
             pstmt.setString(3, form.getHomePageTagLine());

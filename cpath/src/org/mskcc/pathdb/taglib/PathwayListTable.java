@@ -1,4 +1,4 @@
-// $Id: PathwayListTable.java,v 1.9 2006-02-27 21:55:03 grossb Exp $
+// $Id: PathwayListTable.java,v 1.10 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,9 +33,9 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 
-import java.util.ArrayList;
-
 import org.mskcc.pathdb.model.CPathRecord;
+
+import java.util.ArrayList;
 
 /**
  * Custom JSP Tag for displaying a Pathway List in a Table.

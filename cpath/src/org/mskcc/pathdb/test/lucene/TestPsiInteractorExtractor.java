@@ -1,4 +1,4 @@
-// $Id: TestPsiInteractorExtractor.java,v 1.9 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestPsiInteractorExtractor.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,8 +35,8 @@ import junit.framework.TestCase;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
-import org.mskcc.pathdb.model.ProteinWithWeight;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.ProteinWithWeight;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;

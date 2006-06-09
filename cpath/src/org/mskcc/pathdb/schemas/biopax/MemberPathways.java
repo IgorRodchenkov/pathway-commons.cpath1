@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.11 2006-03-20 20:55:25 grossb Exp $
+// $Id: MemberPathways.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,18 +35,18 @@ package org.mskcc.pathdb.schemas.biopax;
 
 // imports
 
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.io.IOException;
-
+import org.jdom.JDOMException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.jdom.JDOMException;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
 
 /**
  * This class parses interaction data
@@ -62,9 +62,9 @@ public class MemberPathways {
      * @param record   CPathRecord
      * @param longList ArrayList - if null, no timing performed
      * @return HashSet
-     * @throws IOException Throwable
+     * @throws IOException   Throwable
      * @throws JDOMException Throwable
-     * @throws DaoException Throwable
+     * @throws DaoException  Throwable
      */
     public static HashSet getMemberPathways(CPathRecord record, ArrayList longList)
             throws IOException, JDOMException, DaoException {
@@ -91,16 +91,16 @@ public class MemberPathways {
                 InternalLinkRecord link = (InternalLinkRecord) sources.get(lc);
                 DaoCPath cPath = DaoCPath.getInstance();
                 CPathRecord sourceRecord = cPath.getRecordById(link.getSourceId());
-				if (sourceRecord.getId() != record.getId()) {
-					pathways.addAll(getMemberPathways(sourceRecord, longList));
-				}
+                if (sourceRecord.getId() != record.getId()) {
+                    pathways.addAll(getMemberPathways(sourceRecord, longList));
+                }
             }
         } else {
             BioPaxConstants biopaxConstants = new BioPaxConstants();
             if (biopaxConstants.isPathway(record.getSpecificType())) {
                 String pathway =
                         BioPaxRecordUtil.getPhysicalEntityNameAsLink(record.getId(),
-                                                                     record.getXmlContent());
+                                record.getXmlContent());
                 if (pathway != null) {
                     pathways.add(pathway);
                 }

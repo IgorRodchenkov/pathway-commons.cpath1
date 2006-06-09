@@ -1,4 +1,4 @@
-// $Id: PsiInteractionToIndex.java,v 1.18 2006-02-22 22:47:50 grossb Exp $
+// $Id: PsiInteractionToIndex.java,v 1.19 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -43,7 +43,7 @@ import java.util.Iterator;
 
 /**
  * Encapsulates a PSI-MI Interaction Record scheduled for indexing in Lucene.
- * <P>
+ * <p/>
  * Currently indexes the following content:
  * <TABLE WIDTH=100%>
  * <TR>
@@ -133,11 +133,12 @@ public class PsiInteractionToIndex implements ItemToIndex {
         EntrySet entrySet = (EntrySet) xmlAssembly.getXmlObject();
 
         boolean furtherIndexing = false;
-        ConfigurableIndexCollector configurableIndexCollector = 
-             new ConfigurableIndexCollector();;
-        
+        ConfigurableIndexCollector configurableIndexCollector =
+                new ConfigurableIndexCollector();
+        ;
+
         furtherIndexing = configurableIndexCollector.enabled();
-        
+
         //  Index All Interactors and Interactions.
         for (int i = 0; i < entrySet.getEntryCount(); i++) {
             Entry entry = entrySet.getEntry(i);
@@ -145,7 +146,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
             indexInteractorData(interactorList);
             InteractionList interactionList = entry.getInteractionList();
             indexInteractionData(interactionList);
-            
+
             if (furtherIndexing) {
                 indexConfigurableFields(configurableIndexCollector, entry);
             }
@@ -164,11 +165,11 @@ public class PsiInteractionToIndex implements ItemToIndex {
 
     /**
      * use configuration properties to collect further fields to index
-     * 
+     *
      * @param entry
      */
     private void indexConfigurableFields(
-            ConfigurableIndexCollector configurableIndexCollector, 
+            ConfigurableIndexCollector configurableIndexCollector,
             Entry entry) {
         configurableIndexCollector.setContext(entry);
 
@@ -194,7 +195,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
             }
         }
     }
-    
+
     /**
      * Gets Total Number of Fields to Index.
      *

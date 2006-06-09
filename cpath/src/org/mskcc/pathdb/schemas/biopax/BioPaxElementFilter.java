@@ -1,4 +1,4 @@
-// $Id: BioPaxElementFilter.java,v 1.5 2006-06-07 13:54:08 cerami Exp $
+// $Id: BioPaxElementFilter.java,v 1.6 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -43,9 +43,9 @@ import java.util.List;
  * <UL>
  * <LI>{@link BioPaxConstants#PATHWAY_COMPONENTS_ELEMENT PATHWAY_COMPONENTS_ELEMENT}
  * </UL>
- *
+ * <p/>
  * Comment from Ethan Cerami, June 7, 2006:  On why we remove black listed elements.
- * <P>
+ * <p/>
  * The get_top_level_pathway_list command in the Web Services API uses XML_ABBREV
  * to retrieve all pathways in the database.  By default, these pathways contain
  * much additional information that is not needed for the command, and may confuse

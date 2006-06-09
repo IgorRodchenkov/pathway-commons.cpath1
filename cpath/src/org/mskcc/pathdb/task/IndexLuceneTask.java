@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.42 2006-03-06 17:27:58 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.43 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,7 +32,6 @@
 package org.mskcc.pathdb.task;
 
 import net.sf.ehcache.CacheException;
-
 import org.apache.lucene.store.Directory;
 import org.mskcc.pathdb.lucene.LuceneWriter;
 import org.mskcc.pathdb.lucene.OrganismStats;
@@ -126,11 +125,11 @@ public class IndexLuceneTask extends Task {
      */
     public void indexAllInteractions() throws DaoException, IOException,
             ImportException, AssemblyException {
-        ProgressMonitor pMonitor        = this.getProgressMonitor();
-        DaoCPath        cpath           = DaoCPath.getInstance();
-        int numPathways     = cpath.getNumEntities(CPathRecordType.PATHWAY);
+        ProgressMonitor pMonitor = this.getProgressMonitor();
+        DaoCPath cpath = DaoCPath.getInstance();
+        int numPathways = cpath.getNumEntities(CPathRecordType.PATHWAY);
         int numInteractions = cpath
-            .getNumEntities(CPathRecordType.INTERACTION);
+                .getNumEntities(CPathRecordType.INTERACTION);
         int numPhysicalEntities = cpath.getNumEntities
                 (CPathRecordType.PHYSICAL_ENTITY);
         int totalNumEntities = numPathways + numInteractions
@@ -146,42 +145,42 @@ public class IndexLuceneTask extends Task {
         pMonitor.setMaxValue(totalNumEntities);
 
         LuceneWriter indexWriter = new LuceneWriter(true);
-        
+
         // setup the threaded indexing
         RecordIndexerManager.setIndexerCount(4); // configure the number 
-                                                 // of threads
+        // of threads
         RecordIndexerManager indexManager = new RecordIndexerManager();
         indexManager.init(pMonitor, true);
 
         // fire off the indexing threads
         indexManager.startIndexing();
-                
-        Connection          con = null;
-        PreparedStatement   pstmt = null;
-        ResultSet           rs = null;
-        CPathRecord         record = null;
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        CPathRecord record = null;
         // keep track of how many records we have indexed
-        long                indexedRecordCount = 0; 
-        long                returnLong = -1;
-        
+        long indexedRecordCount = 0;
+        long returnLong = -1;
+
         try {
             long startId = 0;
             long endId = BLOCK_SIZE;
             long maxId = cpath.getMaxCpathID();
-            
+
             for (startId = 0; startId <= maxId; startId = endId + 1,
-                endId = startId + BLOCK_SIZE) {              
+                    endId = startId + BLOCK_SIZE) {
 
                 con = JdbcUtil.getCPathConnection();
-                
+
                 pstmt = con.prepareStatement
                         ("select * from cpath WHERE "
-                        + " CPATH_ID BETWEEN " + startId + " and " + endId
-                        + " order by CPATH_ID ");
+                                + " CPATH_ID BETWEEN " + startId + " and " + endId
+                                + " order by CPATH_ID ");
                 rs = pstmt.executeQuery();
 
                 try {
-                    while (rs.next()) {                    
+                    while (rs.next()) {
                         record = cpath.extractRecord(rs);
                         indexManager.pushRecord(record);
                         indexedRecordCount++;
@@ -190,8 +189,8 @@ public class IndexLuceneTask extends Task {
                     throw new DaoException(e1);
                 }
                 JdbcUtil.closeAll(con, pstmt, rs);
-            }           
-            
+            }
+
             // wind down the separate indexer threads
             indexManager.signalFinish();
             indexManager.waitForThreads();

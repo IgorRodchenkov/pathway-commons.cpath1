@@ -1,4 +1,4 @@
-// $Id: AdminUpdateWebUI.java,v 1.7 2006-02-27 14:57:02 grossb Exp $
+// $Id: AdminUpdateWebUI.java,v 1.8 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,9 +38,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.form.WebUIBean;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.sql.dao.DaoWebUI;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,10 +64,10 @@ public class AdminUpdateWebUI extends AdminBaseAction {
      * @throws Exception All Exceptions.
      */
     public ActionForward adminExecute(ActionMapping mapping,
-                                      ActionForm form,
-                                      HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      XDebug xdebug) throws Exception {
+            ActionForm form,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            XDebug xdebug) throws Exception {
 
         // get our form
         WebUIBean webUIBean = (WebUIBean) form;

@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.24 2006-03-07 16:08:10 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.25 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,6 +31,9 @@
  **/
 package org.mskcc.pathdb.sql.dao;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
@@ -42,10 +45,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
 
 /**
  * Data Access Object to the External Database Table.
@@ -76,7 +75,7 @@ public class DaoExternalDb {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO external_db (`NAME`,`URL`, `SAMPLE_ID`, "
-                    + "`DESC`,`CREATE_TIME`, `DB_TYPE`) VALUES (?,?,?,?,?,?)");
+                            + "`DESC`,`CREATE_TIME`, `DB_TYPE`) VALUES (?,?,?,?,?,?)");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getUrl());
             pstmt.setString(3, db.getSampleId());
@@ -142,7 +141,7 @@ public class DaoExternalDb {
 
                 //  Store to Cache
                 if (dbRecord != null) {
-                    cachedElement = new Element (key, dbRecord);
+                    cachedElement = new Element(key, dbRecord);
                     cache.put(cachedElement);
                 }
                 return dbRecord;
@@ -222,7 +221,7 @@ public class DaoExternalDb {
             DaoExternalDbCv dao = new DaoExternalDbCv();
             dbRecord = dao.getExternalDbByTerm(term);
             if (dbRecord != null) {
-                cachedElement = new Element (key, dbRecord);
+                cachedElement = new Element(key, dbRecord);
                 cache.put(cachedElement);
             }
         } else {
@@ -313,9 +312,9 @@ public class DaoExternalDb {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("UPDATE external_db SET `NAME` = ?, "
-                    + "`DESC` = ?, `URL` = ?, `SAMPLE_ID` = ?, "
-                    + "`UPDATE_TIME` = ? "
-                    + "WHERE `EXTERNAL_DB_ID` = ?");
+                            + "`DESC` = ?, `URL` = ?, `SAMPLE_ID` = ?, "
+                            + "`UPDATE_TIME` = ? "
+                            + "WHERE `EXTERNAL_DB_ID` = ?");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getDescription());
             pstmt.setString(3, db.getUrl());

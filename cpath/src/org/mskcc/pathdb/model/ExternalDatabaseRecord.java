@@ -1,4 +1,4 @@
-// $Id: ExternalDatabaseRecord.java,v 1.16 2006-03-03 18:55:03 cerami Exp $
+// $Id: ExternalDatabaseRecord.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,13 +31,13 @@
  **/
 package org.mskcc.pathdb.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.io.Serializable;
 
 /**
  * JavaBean to Encapsulate an External Database Record.
- * <P>
+ * <p/>
  * PSI-MI and BioPax do not yet have controlled vocabularies for external
  * references.  For example, one PSI file might include a reference to "SWP",
  * and another file might include a reference to "SWISS-PROT".  To accommodote

@@ -1,4 +1,4 @@
-// $Id: SortAction.java,v 1.5 2006-03-02 17:38:07 cerami Exp $
+// $Id: SortAction.java,v 1.6 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,16 +31,16 @@
  **/
 package org.mskcc.pathdb.action;
 
-import java.util.ArrayList;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.sql.query.GetTopLevelPathwayListCommand;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.mskcc.pathdb.sql.query.GetTopLevelPathwayListCommand;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  * Action for Main cPath Home Page.
@@ -64,18 +64,18 @@ public class SortAction extends BaseAction {
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception {
 
-		// if biopax, get list of pathways
-		if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) {
-		
-			// get top level pathways
-			GetTopLevelPathwayListCommand getPathwayListCommand =
-                new GetTopLevelPathwayListCommand(xdebug);
-			ArrayList pathwayList = getPathwayListCommand.getTopLevelPathwayList();
-			request.setAttribute("RECORDS", pathwayList);
-		}
+        // if biopax, get list of pathways
+        if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) {
 
-		String referer = request.getParameter(BaseAction.REFERER);
-		return (referer == null)
+            // get top level pathways
+            GetTopLevelPathwayListCommand getPathwayListCommand =
+                    new GetTopLevelPathwayListCommand(xdebug);
+            ArrayList pathwayList = getPathwayListCommand.getTopLevelPathwayList();
+            request.setAttribute("RECORDS", pathwayList);
+        }
+
+        String referer = request.getParameter(BaseAction.REFERER);
+        return (referer == null)
                 ? mapping.findForward(BaseAction.FORWARD_BROWSE) : mapping.findForward(referer);
-	}
+    }
 }

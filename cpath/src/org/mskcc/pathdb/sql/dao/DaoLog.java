@@ -1,4 +1,4 @@
-// $Id: DaoLog.java,v 1.11 2006-03-06 16:27:47 cerami Exp $
+// $Id: DaoLog.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -101,8 +101,8 @@ public class DaoLog {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO log (`TIMESTAMP`, `PRIORITY`, `MESSAGE`, "
-                    + "`STACK_TRACE`, `WEB_URL`, `REMOTE_HOST`, `REMOTE_IP`)"
-                    + " VALUES (?,?,?,?,?,?,?)");
+                            + "`STACK_TRACE`, `WEB_URL`, `REMOTE_HOST`, `REMOTE_IP`)"
+                            + " VALUES (?,?,?,?,?,?,?)");
             pstmt.setDate(1, new java.sql.Date(logRecord.getDate().getTime()));
             pstmt.setString(2, logRecord.getPriority());
             pstmt.setString(3, logRecord.getMessage());

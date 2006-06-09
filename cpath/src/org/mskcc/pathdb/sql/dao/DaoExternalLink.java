@@ -1,4 +1,4 @@
-// $Id: DaoExternalLink.java,v 1.30 2006-05-16 16:51:16 cerami Exp $
+// $Id: DaoExternalLink.java,v 1.31 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,14 +49,14 @@ import java.util.ArrayList;
 
 /**
  * Data Access Object to the External Link Table.
- * <P>
+ * <p/>
  * <B>Data Synchronization:</B>  As currently constructed, CPath maintains
  * external references for PHYSICAL_ENTITY records in two places:
  * the EXTERNAL_LINK table, and the embedded XML document in the CPATH table.
  * This XML is currently encoded in PSI-MI XML format, but in the future,
  * it will be encoded in BioPax XML format.  CPath records other than
  * PHYSICAL_ENTITY records do *not* have this data integrity requirement.
- * <P>
+ * <p/>
  * The DaoExternalLink class is currently responsible for enforcing the data
  * integrity requirement specified above.  However, there are two scenarios
  * for data synchronization:
@@ -82,8 +82,8 @@ public class DaoExternalLink extends ManagedDAO {
     private static final String INSERT_KEY = "INSERT_KEY";
     private static final String INSERT =
             "INSERT INTO external_link (`CPATH_ID`, "
-            + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`)"
-            + " VALUES (?,?,?)";
+                    + "`EXTERNAL_DB_ID`, `LINKED_TO_ID`)"
+                    + " VALUES (?,?,?)";
 
     private static final String GET_BY_LINK_ID_KEY = "GET_BY_LINK_ID_KEY";
     private static final String GET_BY_LINK_ID =
@@ -92,17 +92,17 @@ public class DaoExternalLink extends ManagedDAO {
     private static final String GET_BY_DB_ID_KEY = "GET_BY_DB_ID_KEY";
     private static final String GET_BY_DB_ID =
             "SELECT * FROM external_link WHERE "
-            + "EXTERNAL_DB_ID = ? AND LINKED_TO_ID =?";
+                    + "EXTERNAL_DB_ID = ? AND LINKED_TO_ID =?";
 
     private static final String GET_BY_DB_KEY = "GET_BY_DB_KEY";
     private static final String GET_BY_DB =
             "SELECT * FROM external_link WHERE"
-            + " EXTERNAL_DB_ID = ?";
+                    + " EXTERNAL_DB_ID = ?";
 
     private static final String GET_BY_CPATH_ID_KEY = "GET_BY_CPATH_ID_KEY";
     private static final String GET_BY_CPATH_ID =
             "SELECT * FROM external_link WHERE CPATH_ID = ? "
-            + "ORDER BY EXTERNAL_LINK_ID";
+                    + "ORDER BY EXTERNAL_LINK_ID";
 
     private static final String DELETE_BY_ID_KEY = "DELETE_BY_ID_KEY";
     private static final String DELETE_BY_ID =
@@ -111,8 +111,8 @@ public class DaoExternalLink extends ManagedDAO {
     private static final String RECORD_EXISTS_KEY = "RECORD_EXISTS_KEY";
     private static final String RECORD_EXISTS =
             "SELECT EXTERNAL_LINK_ID FROM external_link WHERE "
-            + "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND "
-            + "LINKED_TO_ID = ?";
+                    + "CPATH_ID = ? AND EXTERNAL_DB_ID = ? AND "
+                    + "LINKED_TO_ID = ?";
 
     /**
      * Private Constructor (Singleton pattern).
@@ -226,7 +226,7 @@ public class DaoExternalLink extends ManagedDAO {
     /**
      * Validates all External References.
      *
-     * @param refs Array of External Reference objects.
+     * @param refs              Array of External Reference objects.
      * @param autoAddExternalDb If a external database does not exist, auto add it to cPath.
      * @return true is all ref.getDatabase() items match.
      * @throws DaoException Error Retrieving Data.
@@ -256,10 +256,10 @@ public class DaoExternalLink extends ManagedDAO {
                 ExternalDatabaseRecord exDb =
                         dao.getRecordByTerm(refs[i].getDatabase());
                 if (exDb == null) {
-                    if (autoAddExternalDb == false) {
+                    if (!autoAddExternalDb) {
                         throw new ExternalDatabaseNotFoundException
                                 ("No matching database "
-                                + "found for:  " + dbName + " [" + id + "]");
+                                        + "found for:  " + dbName + " [" + id + "]");
                     } else {
                         autoAddMissingExternalDb(refs[i]);
                     }
@@ -271,13 +271,14 @@ public class DaoExternalLink extends ManagedDAO {
 
     /**
      * Automatically add missing External DB.
+     *
      * @param ref External Reference
      * @throws DaoException Database Error.
      */
     private void autoAddMissingExternalDb(ExternalReference ref)
             throws DaoException {
         System.err.println("\nAutomatically Adding Missing External Database:  "
-                + ref.getDatabase() +"\n");
+                + ref.getDatabase() + "\n");
         ExternalDatabaseRecord dbRecord = new ExternalDatabaseRecord();
         dbRecord.setName(ref.getDatabase());
         dbRecord.setMasterTerm(ref.getDatabase());

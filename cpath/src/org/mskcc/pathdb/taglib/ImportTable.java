@@ -1,4 +1,4 @@
-// $Id: ImportTable.java,v 1.16 2006-02-22 22:47:51 grossb Exp $
+// $Id: ImportTable.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,7 +55,7 @@ public class ImportTable extends HtmlTable {
                 + "records:");
         this.startTable();
         String headers[] = {
-            "Status", "File Name", "XML Type", "Date/Time Loaded",
+                "Status", "File Name", "XML Type", "Date/Time Loaded",
         };
         createTableHeaders(headers);
         outputRecords(records);

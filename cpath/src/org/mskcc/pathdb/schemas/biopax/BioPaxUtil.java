@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.18 2006-05-16 16:51:16 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.19 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,11 +35,13 @@ import org.jdom.*;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.sql.dao.*;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
+import org.mskcc.pathdb.sql.dao.ExternalDatabaseNotFoundException;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
 
@@ -73,9 +75,9 @@ public class BioPaxUtil {
     /**
      * Constructor.
      *
-     * @param reader   Reader Object.
+     * @param reader                    Reader Object.
      * @param autoAddMissingExternalDbs Automatically Adds Missing External DBs to cPath.
-     * @param pMonitor ProgressMonitor Object.
+     * @param pMonitor                  ProgressMonitor Object.
      * @throws IOException   Input/Output Error.
      * @throws JDOMException XML Error.
      * @throws DaoException  Database Access Error.
@@ -124,8 +126,8 @@ public class BioPaxUtil {
 
             pMonitor.setCurrentMessage
                     ("Preparing Physical Entity Elements:  "
-                    + " [" + physicalEntityList.size()
-                    + " Physical Entities]");
+                            + " [" + physicalEntityList.size()
+                            + " Physical Entities]");
             pMonitor.setMaxValue(physicalEntityList.size());
             for (int i = 0; i < physicalEntityList.size(); i++) {
                 Element physicalEntity = (Element) physicalEntityList.get(i);
@@ -639,7 +641,7 @@ public class BioPaxUtil {
     /**
      * Validates that All External References point to databases which
      * already exist within cPath.
-     * <P>
+     * <p/>
      * All invalid databases are added to the errorList Object, and can
      * therefore be presented to the end-user.
      */
@@ -660,7 +662,7 @@ public class BioPaxUtil {
             Element dbElement = (Element) xrefs.get(i);
             String dbTerm = dbElement.getTextNormalize();
             ExternalReference refs[] = new ExternalReference[1];
-            refs[0] = new ExternalReference (dbTerm, "BLANK_ID");
+            refs[0] = new ExternalReference(dbTerm, "BLANK_ID");
             DaoExternalLink dao = DaoExternalLink.getInstance();
             try {
                 dao.validateExternalReferences(refs, autoAddMissingExternalDbs);

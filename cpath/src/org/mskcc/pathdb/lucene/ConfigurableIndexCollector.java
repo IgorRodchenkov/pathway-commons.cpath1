@@ -1,4 +1,4 @@
-// $Id: ConfigurableIndexCollector.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: ConfigurableIndexCollector.java,v 1.6 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,15 +35,15 @@
  */
 package org.mskcc.pathdb.lucene;
 
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
+import org.mskcc.dataservices.schemas.psi.Entry;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
-
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathException;
-import org.mskcc.dataservices.schemas.psi.Entry;
 
 /**
  * Class uses JXPath libraries to tree walk an
@@ -52,15 +52,15 @@ import org.mskcc.dataservices.schemas.psi.Entry;
  * expressions. Please view the Javadoc for these before creating Xpath
  * expressions <br>
  * <br>
- * 
+ * <p/>
  * XPath expressions are used to define which tokens to collect. The xpath
  * expressions are routed at the Entry object so need to be below that. <br>
  * <br>
- * 
+ * <p/>
  * valid example xpath expressions are: <br>
  * <li>
  * interactionList/interaction/experimentList/experimentListItem/
- *            experimentDescription/id
+ * experimentDescription/id
  * </li>
  * <li>interactorList/proteinInteractor/names/fullName</li>
  * <br>
@@ -69,11 +69,11 @@ import org.mskcc.dataservices.schemas.psi.Entry;
  * the 'next' method is used to move the internal iterator on to the next
  * result. <br>
  * <br>
- * 
+ * <p/>
  * Configureation must be introduced and the context set before iterating can
  * commence. Properties may only be loaded once subsequent loads will not
  * collect propertes again.
- * 
+ *
  * @author idk37697
  */
 public class ConfigurableIndexCollector {
@@ -85,7 +85,7 @@ public class ConfigurableIndexCollector {
     private Iterator infoIterator;
 
     private ConfigInfo currentConfigInfo;
-    
+
     private JXPathContext context;
 
     private static boolean alreadyLoaded = false;
@@ -99,11 +99,11 @@ public class ConfigurableIndexCollector {
 
     private static final String PROP_FIELD = "field";
 
- 
+
     static {
         initialise();
     }
-    
+
     /**
      * Static initialiser to setup the properties to be used by all instances
      */
@@ -158,12 +158,12 @@ public class ConfigurableIndexCollector {
 
     /**
      * adds a config entry for interactors
-     * 
-     * @param xpath -
-     *            an xpath entry relative to the entry element, for example
-     *            interactorList/proteinInteractor/names/fullName
+     *
+     * @param xpath      -
+     *                   an xpath entry relative to the entry element, for example
+     *                   interactorList/proteinInteractor/names/fullName
      * @param indexField -
-     *            the index field to be used for the recoverd values
+     *                   the index field to be used for the recoverd values
      */
     public void addConfigEntry(String xpath, String indexField) {
         configInfoList.add(new ConfigInfo(xpath, indexField));
@@ -172,7 +172,7 @@ public class ConfigurableIndexCollector {
     /**
      * Initialises the class to search over the given entry object. This MUST be
      * done before any searching can commence
-     * 
+     *
      * @param entry A PSI-MI Entry Object
      */
     public void setContext(Entry entry) {
@@ -183,7 +183,7 @@ public class ConfigurableIndexCollector {
     /**
      * moves the internal iterator on to the next result. NOTE: this starts
      * before the first item, so looping with next() will work.
-     * 
+     *
      * @return true if there are more elements to collect
      */
     public boolean next() {
@@ -206,7 +206,7 @@ public class ConfigurableIndexCollector {
 
     /**
      * get the list of tokens collected from the entry
-     * 
+     *
      * @return ArrayList of Strings
      */
     public ArrayList getIndexTokens() {
@@ -243,7 +243,7 @@ public class ConfigurableIndexCollector {
 
     /**
      * local debug msg.
-     * 
+     *
      * @param msg
      */
     private static void debug(String msg) {
@@ -254,7 +254,7 @@ public class ConfigurableIndexCollector {
 
     /**
      * local warning mesage
-     * 
+     *
      * @param msg
      */
     private static void warn(String msg) {
@@ -269,8 +269,7 @@ public class ConfigurableIndexCollector {
     }
 
     /**
-     * @param configInfoList
-     *            The configInfoList to set.
+     * @param configInfoList The configInfoList to set.
      */
     public static void setConfigInfoList(ArrayList configInfoList) {
         ConfigurableIndexCollector.configInfoList = configInfoList;

@@ -1,4 +1,4 @@
-// $Id: AllTest.java,v 1.41 2006-03-06 17:26:31 cerami Exp $
+// $Id: AllTest.java,v 1.42 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.test;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.log4j.Logger;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.test.lucene.IndexerSuite;
 import org.mskcc.pathdb.test.model.ModelSuite;
@@ -47,13 +48,12 @@ import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.EhCache;
-import org.apache.log4j.Logger;
 
-import java.util.Properties;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.File;
+import java.util.Properties;
 
 /**
  * Runs all Unit Tests.
@@ -67,7 +67,7 @@ public class AllTest extends TestCase {
      * The suite method kicks off all of the tests.
      *
      * @return junit.framework.Test
-	 * @throws IOException Throwable
+     * @throws IOException Throwable
      */
     public static Test suite() throws IOException {
         PropertyManager manager = PropertyManager.getInstance();
@@ -76,9 +76,9 @@ public class AllTest extends TestCase {
         String cpathHome = System.getProperty("CPATH_HOME");
         String separator = System.getProperty("file.separator");
         Properties buildProps = new Properties();
-        File file = new File (cpathHome + separator + "build.properties");
+        File file = new File(cpathHome + separator + "build.properties");
         try {
-            buildProps.load(new FileInputStream (file));
+            buildProps.load(new FileInputStream(file));
         } catch (FileNotFoundException e) {
             log.error("Error.  Cannot find file:  " + file.getAbsolutePath());
             throw e;
@@ -119,10 +119,10 @@ public class AllTest extends TestCase {
         //  Start Cache with Clean Slate
         EhCache.initCache();
         EhCache.resetAllCaches();
-        
+
         if (args.length > 0 && args[0] != null && args[0].equals("-ui")) {
             String newargs[] = {"org.mskcc.pathdb.test.AllTest",
-                                "-noloading"};
+                    "-noloading"};
             junit.swingui.TestRunner.main(newargs);
         } else {
             junit.textui.TestRunner.run(suite());

@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.33 2006-03-07 17:06:40 cerami Exp $
+// $Id: CPathServlet.java,v 1.34 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,19 +31,19 @@
  **/
 package org.mskcc.pathdb.servlet;
 
-import org.apache.struts.action.ActionServlet;
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.lucene.LuceneConfig;
-import org.mskcc.pathdb.sql.dao.DaoWebUI;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
+import org.mskcc.pathdb.sql.dao.DaoWebUI;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.AutoPopulateCache;
 import org.mskcc.pathdb.util.cache.EhCache;
-import org.mskcc.pathdb.form.WebUIBean;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -163,7 +163,7 @@ public final class CPathServlet extends ActionServlet {
         } else if (webMode.equals(CPathUIConfig.BIOPAX)) {
             mode = CPathUIConfig.WEB_MODE_BIOPAX;
         } else {
-            log.error ("Web mode not recognized:  " + webMode
+            log.error("Web mode not recognized:  " + webMode
                     + ".  Defaulting to:  " + CPathUIConfig.BIOPAX);
             mode = CPathUIConfig.WEB_MODE_BIOPAX;
         }

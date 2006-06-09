@@ -1,4 +1,4 @@
-// $Id: TestBioPaxSummary.java,v 1.7 2006-02-27 22:04:12 grossb Exp $
+// $Id: TestBioPaxSummary.java,v 1.8 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,15 +33,14 @@ package org.mskcc.pathdb.test.schemas.biopax.summary;
 
 // imports
 
-import java.util.List;
-
 import junit.framework.TestCase;
-
-import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+
+import java.util.List;
 
 /**
  * Tests the BioPaxRecordUtil - BioPaxSummary gathering methods.

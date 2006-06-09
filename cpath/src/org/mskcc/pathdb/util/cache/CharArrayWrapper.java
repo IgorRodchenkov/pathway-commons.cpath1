@@ -1,4 +1,4 @@
-// $Id: CharArrayWrapper.java,v 1.2 2006-03-07 17:06:40 cerami Exp $
+// $Id: CharArrayWrapper.java,v 1.3 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,6 +45,7 @@ import java.io.PrintWriter;
  * from Prentice Hall and Sun Microsystems Press,
  * http://www.moreservlets.com/.
  * &copy; 2002 Marty Hall; may be freely used or adapted.
+ *
  * @author Marty Hall.
  */
 
@@ -98,11 +99,12 @@ public class CharArrayWrapper
         return (charWriter.toString());
     }
 
-    /** Get the underlying character array.
+    /**
+     * Get the underlying character array.
      *
      * @return Character Array.
-    */
+     */
     public char[] toCharArray() {
         return (charWriter.toCharArray());
-  }
+    }
 }

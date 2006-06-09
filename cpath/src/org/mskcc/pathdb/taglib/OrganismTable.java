@@ -1,4 +1,4 @@
-// $Id: OrganismTable.java,v 1.21 2006-03-13 21:03:22 cerami Exp $
+// $Id: OrganismTable.java,v 1.22 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,9 +32,9 @@
 package org.mskcc.pathdb.taglib;
 
 import net.sf.ehcache.CacheException;
+import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.Organism;
-import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.protocol.ProtocolConstants;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -90,14 +90,14 @@ public class OrganismTable extends HtmlTable {
      */
     public static final String SORT_DESC = "desc";
 
-	/**
-	 * Receives Tag Attribute.
-	 *
-	 * @param referer Referer String.
-	 */
-	public void setReferer(String referer) {
-		this.referer = referer;
-	}
+    /**
+     * Receives Tag Attribute.
+     *
+     * @param referer Referer String.
+     */
+    public void setReferer(String referer) {
+        this.referer = referer;
+    }
 
     /**
      * Executes JSP Custom Tag
@@ -132,8 +132,8 @@ public class OrganismTable extends HtmlTable {
             String userSortBy, String userSortOrder) {
         StringBuffer url = new StringBuffer
                 ("browse.do?" + BaseAction.REFERER + "=" + referer + "&"
-				 + SORT_BY_PARAMETER + "="
-                 + targetSortBy + "&" + SORT_ORDER_PARAMETER + "=");
+                        + SORT_BY_PARAMETER + "="
+                        + targetSortBy + "&" + SORT_ORDER_PARAMETER + "=");
         String title = "Sort Organisms by " + columnHeading;
         if (userSortBy.equals(targetSortBy)) {
             String iconUrl, iconGif;

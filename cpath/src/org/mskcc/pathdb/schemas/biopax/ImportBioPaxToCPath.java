@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.15 2006-05-16 16:51:16 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.16 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,9 +76,9 @@ public class ImportBioPaxToCPath {
     /**
      * Adds BioPAX Data to cPath.
      *
-     * @param xml                           BioPAX XML String.
-     * @param autoAddMissingExternalDbs     Automatically adds missing XRef Databases.
-     * @param pMonitor                      ProgressMonitor Object.
+     * @param xml                       BioPAX XML String.
+     * @param autoAddMissingExternalDbs Automatically adds missing XRef Databases.
+     * @param pMonitor                  ProgressMonitor Object.
      * @return ImportSummary Object.
      * @throws ImportException Error Importing BioPAX Data.
      */

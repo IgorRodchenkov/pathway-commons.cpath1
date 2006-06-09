@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.16 2006-03-21 17:01:24 grossb Exp $
+// $Id: MemberMolecules.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,17 +35,17 @@ package org.mskcc.pathdb.schemas.biopax;
 
 // imports
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * This class parses interaction data
@@ -70,7 +70,7 @@ public class MemberMolecules {
      */
     public static void reset() {
         moleculeNames = new HashSet();
-		alreadyProcessedRecords = new ArrayList();
+        alreadyProcessedRecords = new ArrayList();
     }
 
     /**
@@ -79,18 +79,18 @@ public class MemberMolecules {
      * @param record   CPathRecord
      * @param longList ArrayList - if null, no timing performed
      * @return HashSet
-	 * @throws BioPaxRecordSummaryException Throwable
-	 * @throws DaoException Throwable
+     * @throws BioPaxRecordSummaryException Throwable
+     * @throws DaoException                 Throwable
      */
     public static HashSet getMemberMolecules(CPathRecord record, ArrayList longList)
             throws BioPaxRecordSummaryException, DaoException {
 
-		// have we already processed this record ?
-		for (Iterator i = alreadyProcessedRecords.iterator(); i.hasNext();) {
-			if (record.getId() == ((Long)i.next()).longValue()){
-				return null;
-			}
-		}
+        // have we already processed this record ?
+        for (Iterator i = alreadyProcessedRecords.iterator(); i.hasNext();) {
+            if (record.getId() == ((Long) i.next()).longValue()) {
+                return null;
+            }
+        }
 
         // for timing
         long startTime = 0;
@@ -112,27 +112,27 @@ public class MemberMolecules {
         if (targets.size() > 0) {
             for (int lc = 0; lc < targets.size(); lc++) {
                 CPathRecord targetRecord = (CPathRecord) targets.get(lc);
-				if (targetRecord.getId() != record.getId()) {
-					HashSet processedHashSet = getMemberMolecules(targetRecord, longList);
-					if (processedHashSet != null){
-						molecules.addAll(processedHashSet);
-						alreadyProcessedRecords.add(new Long(record.getId()));
-					}
-				}
+                if (targetRecord.getId() != record.getId()) {
+                    HashSet processedHashSet = getMemberMolecules(targetRecord, longList);
+                    if (processedHashSet != null) {
+                        molecules.addAll(processedHashSet);
+                        alreadyProcessedRecords.add(new Long(record.getId()));
+                    }
+                }
             }
         } else {
             BioPaxConstants biopaxConstants = new BioPaxConstants();
             if (biopaxConstants.isPhysicalEntity(record.getSpecificType())) {
                 BioPaxRecordSummary moleculeSummary =
-                    BioPaxRecordUtil.createBioPaxRecordSummary(record);
+                        BioPaxRecordUtil.createBioPaxRecordSummary(record);
                 if (moleculeSummary != null) {
                     String name = (moleculeSummary.getName() != null)
-                        ? moleculeSummary.getName() : moleculeSummary.getShortName();
+                            ? moleculeSummary.getName() : moleculeSummary.getShortName();
                     if (name != null && name.length() > 0) {
                         boolean addSummaryToMoleculesSet = moleculeNames.add(name);
                         if (addSummaryToMoleculesSet) {
                             molecules.add(moleculeSummary);
-							alreadyProcessedRecords.add(new Long(record.getId()));
+                            alreadyProcessedRecords.add(new Long(record.getId()));
                         }
                     }
                 }

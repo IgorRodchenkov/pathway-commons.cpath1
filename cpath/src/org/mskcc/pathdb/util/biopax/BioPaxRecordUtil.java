@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.20 2006-03-02 17:36:39 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.21 2006-06-09 19:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,32 +35,32 @@ package org.mskcc.pathdb.util.biopax;
 
 // imports
 
-import java.util.List;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.io.StringReader;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-
-import org.jdom.Element;
-import org.jdom.Document;
 import org.jdom.Attribute;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.xpath.XPath;
 import org.jdom.input.SAXBuilder;
-import org.mskcc.pathdb.util.rdf.RdfUtil;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.util.rdf.RdfQuery;
-import org.mskcc.pathdb.util.rdf.RdfConstants;
+import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
-import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
+import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.util.rdf.RdfConstants;
+import org.mskcc.pathdb.util.rdf.RdfQuery;
+import org.mskcc.pathdb.util.rdf.RdfUtil;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * This class contains utilities
@@ -87,7 +87,7 @@ public class BioPaxRecordUtil {
         }
         if (!record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
             throw new IllegalArgumentException("Specified cPath record is not of type "
-                                               + XmlRecordType.BIO_PAX);
+                    + XmlRecordType.BIO_PAX);
         }
 
         // some flags to determine return
@@ -125,34 +125,34 @@ public class BioPaxRecordUtil {
         try {
             // set name
             setNameSuccess = setBioPaxRecordStringAttribute(root,
-                                                            "/*/bp:NAME",
-                                                            "setName",
-                                                            biopaxRecordSummary);
+                    "/*/bp:NAME",
+                    "setName",
+                    biopaxRecordSummary);
             // set short name
             setShortNameSuccess = setBioPaxRecordStringAttribute(root,
-                                                                 "/*/bp:SHORT-NAME",
-                                                                 "setShortName",
-                                                                 biopaxRecordSummary);
+                    "/*/bp:SHORT-NAME",
+                    "setShortName",
+                    biopaxRecordSummary);
             // set synonyms
             setSynonymSuccess = setBioPaxRecordListAttribute(root,
-                                                             "/*/bp:SYNONYMS",
-                                                             "setSynonyms",
-                                                             biopaxRecordSummary);
+                    "/*/bp:SYNONYMS",
+                    "setSynonyms",
+                    biopaxRecordSummary);
             // set organsim
             setOrganismSuccess = setBioPaxRecordStringAttribute(root,
-                                                                "/*/bp:ORGANISM/*/bp:NAME",
-                                                                "setOrganism",
-                                                                biopaxRecordSummary);
+                    "/*/bp:ORGANISM/*/bp:NAME",
+                    "setOrganism",
+                    biopaxRecordSummary);
             // set data source
             setDataSourceSuccess = setBioPaxRecordStringAttribute(root,
-                                                                  "/*/bp:DATA-SOURCE/*/bp:NAME",
-                                                                  "setDataSource",
-                                                                  biopaxRecordSummary);
+                    "/*/bp:DATA-SOURCE/*/bp:NAME",
+                    "setDataSource",
+                    biopaxRecordSummary);
             // availability
             setAvailabilitySuccess = setBioPaxRecordStringAttribute(root,
-                                                                    "/*/bp:AVAILABILITY",
-                                                                    "setAvailability",
-                                                                    biopaxRecordSummary);
+                    "/*/bp:AVAILABILITY",
+                    "setAvailability",
+                    biopaxRecordSummary);
             // external links
             DaoExternalLink externalLinker = DaoExternalLink.getInstance();
             ArrayList externalLinks = externalLinker.getRecordsByCPathId(record.getId());
@@ -164,9 +164,9 @@ public class BioPaxRecordUtil {
             }
             // comment
             setCommentSuccess = setBioPaxRecordStringAttribute(root,
-                                                               "/*/bp:COMMENT",
-                                                               "setComment",
-                                                               biopaxRecordSummary);
+                    "/*/bp:COMMENT",
+                    "setComment",
+                    biopaxRecordSummary);
         } catch (Throwable throwable) {
             throw new BioPaxRecordSummaryException(throwable);
         }
@@ -215,19 +215,19 @@ public class BioPaxRecordUtil {
             // get cellular location
             setCellularLocationSuccess =
                     BioPaxRecordUtil.setCellularLocation(participantSummaryComponent,
-                                                         interactionRecord, e);
+                            interactionRecord, e);
 
             // feature list
             setFeatureListSuccess =
                     BioPaxRecordUtil.setFeatureList(participantSummaryComponent,
-                                                    interactionRecord, e);
+                            interactionRecord, e);
 
             // if physical entity record is a complex, lets get its members
             setComplexMembersSuccess = false;
             if (physicalEntityRecord.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
                 setComplexMembersSuccess =
                         BioPaxRecordUtil.setComplexMembers(participantSummaryComponent,
-                                                           physicalEntityRecord);
+                                physicalEntityRecord);
             }
         } catch (Throwable throwable) {
             throw new BioPaxRecordSummaryException(throwable);
@@ -243,8 +243,8 @@ public class BioPaxRecordUtil {
      *
      * @param record String
      * @return String
-     * @throws DaoException Throwable
-     * @throws IOException Throwable
+     * @throws DaoException  Throwable
+     * @throws IOException   Throwable
      * @throws JDOMException Throwable
      */
     public static String getPhysicalEntityName(String record)
@@ -270,7 +270,7 @@ public class BioPaxRecordUtil {
      * @param recordID   long
      * @param xmlContent String
      * @return String
-     * @throws IOException Throwable
+     * @throws IOException   Throwable
      * @throws JDOMException Throwable
      */
     public static String getPhysicalEntityNameAsLink(long recordID, String xmlContent)
@@ -280,7 +280,7 @@ public class BioPaxRecordUtil {
         String entity = getEntityName(xmlContent);
         return (entity != null)
                 ? ("<a href=\"record.do?id=" + String.valueOf(recordID) + "\">" + entity + "</a>")
-			    : null;
+                : null;
     }
 
     /**
@@ -290,7 +290,7 @@ public class BioPaxRecordUtil {
      * @param e Element
      * @return CPathRecord
      * @throws RuntimeException Throwable
-     * @throws DaoException Throwable
+     * @throws DaoException     Throwable
      */
     public static CPathRecord getCPathRecord(Element e) throws RuntimeException, DaoException {
 
@@ -305,7 +305,8 @@ public class BioPaxRecordUtil {
             // cook id to save
             int indexOfID = rdfKey.lastIndexOf("-");
             if (indexOfID == -1) {
-                throw new RuntimeException("Corrupt Record ID: " + rdfResourceAttribute.getValue());
+                throw new RuntimeException("Corrupt Record ID: "
+                        + rdfResourceAttribute.getValue());
             }
             indexOfID += 1;
             String cookedKey = rdfKey.substring(indexOfID);
@@ -324,7 +325,7 @@ public class BioPaxRecordUtil {
      *
      * @param xmlContent String
      * @return String
-     * @throws IOException Throwable
+     * @throws IOException   Throwable
      * @throws JDOMException Throwable
      */
     private static String getEntityName(String xmlContent) throws IOException, JDOMException {
@@ -359,11 +360,11 @@ public class BioPaxRecordUtil {
      * @param e                           Element
      * @return boolean
      * @throws JDOMException Throwable
-     * @throws IOException Throwable
+     * @throws IOException   Throwable
      */
     private static boolean setCellularLocation(
-            ParticipantSummaryComponent participantSummaryComponent, CPathRecord record, Element e)
-            throws JDOMException, IOException {
+            ParticipantSummaryComponent participantSummaryComponent, CPathRecord record,
+            Element e) throws JDOMException, IOException {
 
         // setup/perform query
         XPath xpath = XPath.newInstance("bp:CELLULAR-LOCATION");
@@ -376,7 +377,7 @@ public class BioPaxRecordUtil {
             // does element point to a local id ?
             Attribute rdfResourceAttribute =
                     cellularLocation.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE,
-                                                  RdfConstants.RDF_NAMESPACE);
+                            RdfConstants.RDF_NAMESPACE);
             if (rdfResourceAttribute != null) {
                 // we've got to locate the cellular location via a cpath local id
                 String cellularLocationStr = getCellularLocation(record, cellularLocation);
@@ -398,10 +399,11 @@ public class BioPaxRecordUtil {
 
             // process query
             if (cellularLocation != null) {
-               participantSummaryComponent.setCellularLocation(cellularLocation.getTextNormalize());
-               return true;
+                participantSummaryComponent.setCellularLocation
+                        (cellularLocation.getTextNormalize());
+                return true;
             } else {
-				// term not available, try for xref id
+                // term not available, try for xref id
                 xpath = XPath.newInstance("*/bp:XREF/*/bp:ID");
                 xpath.addNamespace("bp", e.getNamespaceURI());
                 cellularLocation = (Element) xpath.selectSingleNode(e);
@@ -427,7 +429,7 @@ public class BioPaxRecordUtil {
      * @param cellularLocationRef Element
      * @return String
      * @throws JDOMException Throwable
-     * @throws IOException Throwable
+     * @throws IOException   Throwable
      */
     private static String getCellularLocation(CPathRecord record, Element cellularLocationRef)
             throws JDOMException, IOException {
@@ -442,7 +444,7 @@ public class BioPaxRecordUtil {
         if (cellularLocation != null) {
             return cellularLocation.getTextNormalize();
         } else {
-			// term not available, try for xref id
+            // term not available, try for xref id
             cellularLocation = rdfQuery.getNode(cellularLocationRef, "*/XREF/unificationXref/ID");
             if (cellularLocation != null) {
                 return cellularLocation.getTextNormalize();
@@ -462,11 +464,11 @@ public class BioPaxRecordUtil {
      * @param e                           Element
      * @return boolean
      * @throws JDOMException Throwable
-     * @throws IOException Throwable
+     * @throws IOException   Throwable
      */
-    private static boolean setFeatureList(ParticipantSummaryComponent participantSummaryComponent,
-                                          CPathRecord record, Element e)
-            throws JDOMException, IOException {
+    private static boolean setFeatureList
+            (ParticipantSummaryComponent participantSummaryComponent,
+                    CPathRecord record, Element e) throws JDOMException, IOException {
 
         // vector of features
         HashSet featureSet = new HashSet();
@@ -490,7 +492,7 @@ public class BioPaxRecordUtil {
                 if (feature != null && feature.getTextNormalize().length() > 0) {
                     featureSet.add(feature.getTextNormalize());
                 } else {
-					// no term, try to get xref id
+                    // no term, try to get xref id
                     feature = rdfQuery.getNode(e, "FEATURE-TYPE/*/XREF/*/ID");
                     if (feature != null && feature.getTextNormalize().length() > 0) {
                         featureSet.add(feature.getTextNormalize());
@@ -517,16 +519,16 @@ public class BioPaxRecordUtil {
      * @param participantSummaryComponent ParticipantSummaryComponent
      * @param record                      CPathRecord
      * @return boolean
-     * @throws JDOMException Throwable
-     * @throws IOException Throwable
-     * @throws DaoException Throwable
+     * @throws JDOMException                Throwable
+     * @throws IOException                  Throwable
+     * @throws DaoException                 Throwable
      * @throws BioPaxRecordSummaryException Throwable
-     * @throws RuntimeException Throwable
+     * @throws RuntimeException             Throwable
      */
-   private static boolean setComplexMembers(ParticipantSummaryComponent participantSummaryComponent,
-                                            CPathRecord record)
-            throws JDOMException, IOException, DaoException,
-                   BioPaxRecordSummaryException, RuntimeException {
+    private static boolean setComplexMembers
+            (ParticipantSummaryComponent participantSummaryComponent,
+            CPathRecord record) throws JDOMException, IOException, DaoException,
+            BioPaxRecordSummaryException, RuntimeException {
 
         // our complex member list
         ArrayList complexMemberList = new ArrayList();
@@ -566,17 +568,17 @@ public class BioPaxRecordUtil {
      * @param methodName          String
      * @param biopaxRecordSummary BiopaxRecordSummary
      * @return boolean
-     * @throws JDOMException Throwable
-     * @throws IllegalAccessException Throwable
-     * @throws NoSuchMethodException Throwable
+     * @throws JDOMException             Throwable
+     * @throws IllegalAccessException    Throwable
+     * @throws NoSuchMethodException     Throwable
      * @throws InvocationTargetException Throwable
      */
     private static boolean setBioPaxRecordStringAttribute(Element root,
-                                                          String query,
-                                                          String methodName,
-                                                          BioPaxRecordSummary biopaxRecordSummary)
+            String query,
+            String methodName,
+            BioPaxRecordSummary biopaxRecordSummary)
             throws JDOMException, IllegalAccessException,
-                   NoSuchMethodException, InvocationTargetException {
+            NoSuchMethodException, InvocationTargetException {
 
         // setup for query
         XPath xpath = XPath.newInstance(query);
@@ -590,7 +592,7 @@ public class BioPaxRecordUtil {
             // get method
             Method method =
                     biopaxRecordSummaryClass.getMethod(methodName,
-                                                       biopaxRecordSummaryClassMethodParameters);
+                            biopaxRecordSummaryClassMethodParameters);
             // invoke the method
             Object invokeParameters[] = {element.getTextNormalize()};
             method.invoke(biopaxRecordSummary, invokeParameters);
@@ -609,17 +611,17 @@ public class BioPaxRecordUtil {
      * @param methodName          String
      * @param biopaxRecordSummary BiopaxRecordSummary
      * @return boolean
-     * @throws JDOMException Throwable
-     * @throws IllegalAccessException Throwable
-     * @throws NoSuchMethodException Throwable
+     * @throws JDOMException             Throwable
+     * @throws IllegalAccessException    Throwable
+     * @throws NoSuchMethodException     Throwable
      * @throws InvocationTargetException Throwable
      */
     private static boolean setBioPaxRecordListAttribute(Element root,
-                                                        String query,
-                                                        String methodName,
-                                                        BioPaxRecordSummary biopaxRecordSummary)
+            String query,
+            String methodName,
+            BioPaxRecordSummary biopaxRecordSummary)
             throws JDOMException, IllegalAccessException,
-                   NoSuchMethodException, InvocationTargetException {
+            NoSuchMethodException, InvocationTargetException {
 
         // setup for query
         XPath xpath = XPath.newInstance(query);
@@ -642,8 +644,8 @@ public class BioPaxRecordUtil {
                 Class biopaxRecordSummaryClassMethodParameters[] = {List.class};
                 // get method
                 Method method =
-                       biopaxRecordSummaryClass.getMethod(methodName,
-                                                          biopaxRecordSummaryClassMethodParameters);
+                        biopaxRecordSummaryClass.getMethod(methodName,
+                                biopaxRecordSummaryClassMethodParameters);
                 // invoke the method
                 Object invokeParameters[] = {listOfStrings};
                 method.invoke(biopaxRecordSummary, invokeParameters);
