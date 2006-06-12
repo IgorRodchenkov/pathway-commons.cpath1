@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.43 2006-06-09 19:22:04 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.44 2006-06-12 14:23:09 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -141,7 +141,7 @@ public class IndexLuceneTask extends Task {
         pMonitor.setCurrentMessage("Total Number of Interactions:  "
                 + numInteractions);
         pMonitor.setCurrentMessage("Total Number of Physical Entities:  "
-                + numInteractions);
+                + numPhysicalEntities);
         pMonitor.setMaxValue(totalNumEntities);
 
         LuceneWriter indexWriter = new LuceneWriter(true);
