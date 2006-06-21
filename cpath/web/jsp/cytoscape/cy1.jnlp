@@ -29,7 +29,6 @@
 		<jar href="lib/cytoscape-render-stateful.jar"/>
 		<jar href="lib/cytoscape-task.jar"/>
 		<jar href="lib/cytoscape-util-intr.jar"/>
-		<jar href="lib/data-aux.jar"/>
 		<jar href="lib/ding.jar"/>
 		<jar href="lib/dom.jar"/>
 	    <jar href="lib/exesto.jar"/>
@@ -77,6 +76,7 @@
 		<jar href="plugins/AutomaticLayout.jar"/>
 		<jar href="plugins/biopax_core_0_4.jar"/>
 		<jar href="plugins/biopax_plugin_0_4.jar"/>
+		<jar href="plugins/data-aux.jar"/>
 		<jar href="plugins/expressionviewer_plugin_0_1.jar"/>	
 		<jar href="plugins/ManualLayout.jar"/>
 		<jar href="plugins/yLayouts.jar"/>	
