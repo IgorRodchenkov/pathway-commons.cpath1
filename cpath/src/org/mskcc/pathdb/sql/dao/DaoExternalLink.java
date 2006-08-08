@@ -1,4 +1,4 @@
-// $Id: DaoExternalLink.java,v 1.31 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoExternalLink.java,v 1.32 2006-08-08 14:23:01 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -277,8 +277,6 @@ public class DaoExternalLink extends ManagedDAO {
      */
     private void autoAddMissingExternalDb(ExternalReference ref)
             throws DaoException {
-        System.err.println("\nAutomatically Adding Missing External Database:  "
-                + ref.getDatabase() + "\n");
         ExternalDatabaseRecord dbRecord = new ExternalDatabaseRecord();
         dbRecord.setName(ref.getDatabase());
         dbRecord.setMasterTerm(ref.getDatabase());
