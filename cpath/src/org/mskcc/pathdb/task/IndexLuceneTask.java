@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.46 2006-06-12 14:29:15 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.47 2006-08-08 14:35:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import org.apache.lucene.store.Directory;
 import org.mskcc.pathdb.lucene.LuceneWriter;
 import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.lucene.RecordIndexerManager;
+import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
@@ -48,6 +49,7 @@ import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -141,61 +143,77 @@ public class IndexLuceneTask extends Task {
                 + numPhysicalEntities);
         pMonitor.setMaxValue(totalNumEntities);
 
-        LuceneWriter indexWriter = new LuceneWriter(true);
+        //Divide the indexing job up into sections.
+        int iteration_size = 20000; //chose 20000 because there are 4 threads and
+        //each thread can have a max of 5000 in the queue.
+        long maxIterId = cpath.getMaxCpathID();
 
-        // setup the threaded indexing
-        RecordIndexerManager.setIndexerCount(4); // configure the number 
-        // of threads
-        RecordIndexerManager indexManager = new RecordIndexerManager();
-        indexManager.init(pMonitor, true);
 
-        // fire off the indexing threads
-        indexManager.startIndexing();
+        for (int Id = 0; Id <= maxIterId; Id = Id + iteration_size + 1) {
 
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        CPathRecord record = null;
-        // keep track of how many records we have indexed
-        long indexedRecordCount = 0;
-        long returnLong = -1;
+            //First time through initialize the index writer to create directories
+            //and delete any existing indexes.
+            //subsequent indexes just get added to the initial index file.
+            LuceneWriter indexWriter;
+            if(Id==0){
+                indexWriter = new LuceneWriter(true);
+            }
+            else{
+                indexWriter = new LuceneWriter(false);
+            }
+            // setup the threaded indexing
+            RecordIndexerManager.setIndexerCount(4); // configure the number
+            // of threads
+            RecordIndexerManager indexManager = new RecordIndexerManager();
+            indexManager.init(pMonitor, true);
 
-        try {
-            long startId = 0;
-            long endId = BLOCK_SIZE;
-            long maxId = cpath.getMaxCpathID();
+            // fire off the indexing threads
+            indexManager.startIndexing();
 
-            for (startId = 0; startId <= maxId; startId = endId + 1,
+            Connection con = null;
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+            CPathRecord record = null;
+            // keep track of how many records we have indexed
+            long indexedRecordCount = 0;
+            long returnLong = -1;
+
+             try {
+                long startId = Id;
+                long endId = Id + BLOCK_SIZE;
+                long maxId = Id + iteration_size;
+                
+
+                for (; startId <= maxId; startId = endId + 1,
                     endId = startId + BLOCK_SIZE) {
 
-                con = JdbcUtil.getCPathConnection();
+                    con = JdbcUtil.getCPathConnection();
 
-                pstmt = con.prepareStatement
+                    pstmt = con.prepareStatement
                         ("select * from cpath WHERE "
                                 + " CPATH_ID BETWEEN " + startId + " and " + endId
                                 + " order by CPATH_ID ");
-                rs = pstmt.executeQuery();
+                    rs = pstmt.executeQuery();
 
-                try {
-                    while (rs.next()) {
-                        record = cpath.extractRecord(rs);
-                        indexManager.pushRecord(record);
-                        indexedRecordCount++;
+                    try {
+                        while (rs.next()) {
+                            record = cpath.extractRecord(rs);
+                            indexManager.pushRecord(record);
+                            indexedRecordCount++;
+                        }
+                    } catch (Exception e1) {
+                        throw new DaoException(e1);
                     }
-                } catch (Exception e1) {
-                    throw new DaoException(e1);
+                    JdbcUtil.closeAll(con, pstmt, rs);
                 }
-                JdbcUtil.closeAll(con, pstmt, rs);
-            }
 
-            // wind down the separate indexer threads
-            indexManager.signalFinish();
-            indexManager.waitForThreads();
-            indexManager.closeAll();
+                // wind down the separate indexer threads
+                indexManager.signalFinish();
+                indexManager.waitForThreads();
+                indexManager.closeAll();
 
             if (indexedRecordCount > 0) {
                 // tell the indexers to wind down
-
                 pMonitor.setCurrentMessage("\nOptimizing Indexes");
                 // merge the indexes, this also optimises
                 Directory[] dirs = indexManager.getLuceneDirs();
@@ -212,6 +230,7 @@ public class IndexLuceneTask extends Task {
             throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
+        }
         }
     }
 }
