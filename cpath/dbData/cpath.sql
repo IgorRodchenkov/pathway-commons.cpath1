@@ -72,7 +72,7 @@ CREATE TABLE `external_db` (
 CREATE TABLE `external_db_cv` (
   `CV_ID` int(11) NOT NULL auto_increment,
   `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
-  `CV_TERM` char(25) NOT NULL default '',
+  `CV_TERM` char(100) NOT NULL default '',
   `MASTER_FLAG` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`CV_ID`),
   UNIQUE KEY `CV_TERM` (`CV_TERM`)
