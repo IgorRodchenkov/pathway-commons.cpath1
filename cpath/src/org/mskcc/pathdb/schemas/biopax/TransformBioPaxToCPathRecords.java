@@ -1,4 +1,4 @@
-// $Id: TransformBioPaxToCPathRecords.java,v 1.7 2006-02-22 22:47:50 grossb Exp $
+// $Id: TransformBioPaxToCPathRecords.java,v 1.8 2006-08-10 21:23:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -167,9 +167,13 @@ public class TransformBioPaxToCPathRecords {
                 ("bp:ORGANISM/bp:bioSource/bp:TAXON-XREF/*/bp:ID");
         xpath.addNamespace("bp", bioPaxNamespaceUri);
         Element e = (Element) xpath.selectSingleNode(resource);
-        if (e != null) {
-            return Integer.parseInt(e.getTextNormalize());
-        } else {
+        try {
+            if (e != null) {
+                return Integer.parseInt(e.getTextNormalize());
+            } else {
+                return CPathRecord.TAXONOMY_NOT_SPECIFIED;
+            }
+        } catch (NumberFormatException exception) {
             return CPathRecord.TAXONOMY_NOT_SPECIFIED;
         }
     }
