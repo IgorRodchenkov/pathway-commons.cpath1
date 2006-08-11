@@ -1,4 +1,4 @@
-// $Id: DaoExternalLink.java,v 1.32 2006-08-08 14:23:01 cerami Exp $
+// $Id: DaoExternalLink.java,v 1.33 2006-08-11 17:48:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -209,15 +209,19 @@ public class DaoExternalLink extends ManagedDAO {
                 String dbName = refs[i].getDatabase();
                 String id = refs[i].getId();
 
-                DaoExternalDb dao = new DaoExternalDb();
-                ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(dbName);
+                if (dbName != null && dbName.trim().length() > 0
+                        && id != null && id.trim().length() > 0){
+                    DaoExternalDb dao = new DaoExternalDb();
+                    ExternalDatabaseRecord dbRecord =
+                            dao.getRecordByTerm(dbName);
 
-                if (dbRecord != null) {
-                    ExternalLinkRecord link = new ExternalLinkRecord();
-                    link.setExternalDatabase(dbRecord);
-                    link.setCpathId(cpathId);
-                    link.setLinkedToId(id);
-                    addRecord(link, synchronizeXml);
+                    if (dbRecord != null) {
+                        ExternalLinkRecord link = new ExternalLinkRecord();
+                        link.setExternalDatabase(dbRecord);
+                        link.setCpathId(cpathId);
+                        link.setLinkedToId(id);
+                        addRecord(link, synchronizeXml);
+                    }
                 }
             }
         }
@@ -227,7 +231,8 @@ public class DaoExternalLink extends ManagedDAO {
      * Validates all External References.
      *
      * @param refs              Array of External Reference objects.
-     * @param autoAddExternalDb If a external database does not exist, auto add it to cPath.
+     * @param autoAddExternalDb If a external database does not exist,
+     * auto add it to cPath.
      * @return true is all ref.getDatabase() items match.
      * @throws DaoException Error Retrieving Data.
      * @throws ExternalDatabaseNotFoundException
@@ -277,6 +282,8 @@ public class DaoExternalLink extends ManagedDAO {
      */
     private void autoAddMissingExternalDb(ExternalReference ref)
             throws DaoException {
+        //System.out.println("Automatically Adding database:  "
+        //        + ref.getDatabase());
         ExternalDatabaseRecord dbRecord = new ExternalDatabaseRecord();
         dbRecord.setName(ref.getDatabase());
         dbRecord.setMasterTerm(ref.getDatabase());
