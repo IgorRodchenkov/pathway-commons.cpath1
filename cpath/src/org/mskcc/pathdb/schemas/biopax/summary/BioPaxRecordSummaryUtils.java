@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.25 2006-06-09 19:22:03 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.26 2006-08-14 21:00:01 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -69,24 +69,24 @@ public class BioPaxRecordSummaryUtils {
     private static final String SUMOYLATED = " (Sumoylated)";
 
     /**
-     * Phosphorylation Feature.
+     * Phosphorylation Feature; start pattern.
      */
-    private static final String PHOSPHORYLATION_FEATURE = "phosphorylation";
+    private static final String PHOSPHORYLATION_FEATURE = "phosphorylat";
 
     /**
-     * Ubiquitination Feature.
+     * Ubiquitination Feature; start pattern.
      */
-    private static final String UBIQUITINATION_FEATURE = "ubiquitination";
+    private static final String UBIQUITINATION_FEATURE = "ubiquitinat";
 
     /**
-     * Acetylation Feature.
+     * Acetylation Feature; start pattern.
      */
-    private static final String ACETYLATION_FEATURE = "acetylation";
+    private static final String ACETYLATION_FEATURE = "acetylat";
 
     /**
-     * Sumoylation Feature.
+     * Sumoylation Feature; start pattern.
      */
-    private static final String SUMOYLATION_FEATURE = "sumoylation";
+    private static final String SUMOYLATION_FEATURE = "sumoylat";
 
     /**
      * Names longer than this will be truncated.
