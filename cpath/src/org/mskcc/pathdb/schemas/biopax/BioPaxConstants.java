@@ -1,4 +1,4 @@
-// $Id: BioPaxConstants.java,v 1.18 2006-06-09 19:22:03 cerami Exp $
+// $Id: BioPaxConstants.java,v 1.19 2006-08-14 21:00:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -266,6 +266,7 @@ public class BioPaxConstants {
         pathwaySet.add(PATHWAY);
 
         // Initialize Conversion Set
+        conversionSet.add(CONVERSION);
         conversionSet.add(BIOCHEMICAL_REACTION);
         conversionSet.add(COMPLEX_ASSEMBLY);
         conversionSet.add(TRANSPORT);
