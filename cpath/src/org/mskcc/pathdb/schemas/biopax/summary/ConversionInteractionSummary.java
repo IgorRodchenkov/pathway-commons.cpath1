@@ -1,4 +1,4 @@
-// $Id: ConversionInteractionSummary.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
+// $Id: ConversionInteractionSummary.java,v 1.8 2006-08-15 14:16:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,8 +67,12 @@ public class ConversionInteractionSummary extends PhysicalInteractionSummary {
         // init our members
         this.leftSideComponents = leftSideComponents;
         this.rightSideComponents = rightSideComponents;
-        participants.addAll(leftSideComponents);
-        participants.addAll(rightSideComponents);
+        if (leftSideComponents != null) {
+            participants.addAll(leftSideComponents);
+        }
+        if (rightSideComponents != null) {
+            participants.addAll(rightSideComponents);
+        }
     }
 
     /**

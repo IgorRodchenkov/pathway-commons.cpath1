@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.23 2006-03-03 20:47:55 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.24 2006-08-15 14:16:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -181,14 +181,18 @@ public class InteractionSummaryUtils {
      */
     private static void createSide(ArrayList list, InteractionSummary summary,
             StringBuffer buf) {
-        for (int i = 0; i < list.size(); i++) {
-            ParticipantSummaryComponent component =
-                    (ParticipantSummaryComponent) list.get(i);
-            buf.append(BioPaxRecordSummaryUtils.createEntityLink
-                    (component, summary));
-            if (i < list.size() - 1) {
-                buf.append(" + ");
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+                ParticipantSummaryComponent component =
+                        (ParticipantSummaryComponent) list.get(i);
+                buf.append(BioPaxRecordSummaryUtils.createEntityLink
+                        (component, summary));
+                if (i < list.size() - 1) {
+                    buf.append(" + ");
+                }
             }
+        } else {
+            buf.append ("[Could not parse reaction details]");
         }
     }
 }
