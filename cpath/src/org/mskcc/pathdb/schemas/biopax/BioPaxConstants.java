@@ -1,4 +1,4 @@
-// $Id: BioPaxConstants.java,v 1.19 2006-08-14 21:00:31 cerami Exp $
+// $Id: BioPaxConstants.java,v 1.20 2006-08-15 16:35:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -273,6 +273,7 @@ public class BioPaxConstants {
         conversionSet.add(TRANSPORT_WITH_BIOCHEMICAL_REACTION);
 
         // Initialize Control Set
+        controlSet.add(CONTROL);
         controlSet.add(CATALYSIS);
         controlSet.add(MODULATION);
     }
