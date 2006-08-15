@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.24 2006-08-15 14:16:52 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.25 2006-08-15 16:34:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -107,14 +107,18 @@ public class InteractionSummaryUtils {
 
         //  Iterate through all participants
         ArrayList participantList = summary.getParticipants();
-        for (int i = 0; i < participantList.size(); i++) {
-            ParticipantSummaryComponent component =
-                    (ParticipantSummaryComponent) participantList.get(i);
-            buf.append(BioPaxRecordSummaryUtils.createEntityLink
-                    (component, interactionSummary));
-            if (i < participantList.size() - 1) {
-                buf.append(", ");
+        if (participantList != null) {
+            for (int i = 0; i < participantList.size(); i++) {
+                ParticipantSummaryComponent component =
+                        (ParticipantSummaryComponent) participantList.get(i);
+                buf.append(BioPaxRecordSummaryUtils.createEntityLink
+                        (component, interactionSummary));
+                if (i < participantList.size() - 1) {
+                    buf.append(", ");
+                }
             }
+        } else {
+            buf.append("[Could not parse reaction details]");
         }
     }
 
@@ -146,9 +150,13 @@ public class InteractionSummaryUtils {
 
         //  Output control type in Plain English
         String controlType = summary.getControlType();
-        String controlTypeInEnglish = (String) map.get(controlType);
-        if (controlTypeInEnglish != null) {
-            buf.append(SPACE + controlTypeInEnglish + SPACE);
+        if (controlType != null) {
+            String controlTypeInEnglish = (String) map.get(controlType);
+            if (controlTypeInEnglish != null) {
+                buf.append(SPACE + controlTypeInEnglish + SPACE);
+            }
+        } else {
+            buf.append (SPACE + "controls" + SPACE);
         }
 
         //  Iterate through all controlled elements.
