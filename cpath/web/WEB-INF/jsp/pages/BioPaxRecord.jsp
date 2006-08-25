@@ -12,6 +12,7 @@
 				 org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary,
 				 org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil"%>
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoInternalLink"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -54,12 +55,27 @@
 <%
 	// xml abbrev content link - log/debug mode only
 	if (debugMode){
-        out.println("<TABLE><TR><TD>");
+        out.println("<TABLE WIDTH='100%'>");
+        out.println("<TR BGCOLOR=#DDDDDD><TD COLSPAN=2>Debug</TD></TR>");
+        out.println("<TR><TD>");
         String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
 		out.println("<FONT COLOR=RED>&gt;&gt;</FONT>");
         out.println("<A HREF=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</A>");
         out.println("<BR>");
-        out.println("</TD></TR></TABLE>");
+        out.println("</TD></TR>");
+
+        DaoInternalLink internalLinker = new DaoInternalLink();
+        out.println("<TR><TD><UL>");
+        ArrayList children = internalLinker.getTargetsWithLookUp(record.getId());
+        for (int i=0; i<children.size(); i++) {
+            CPathRecord child = (CPathRecord) children.get(i);
+            out.println("<LI><A HREF=\"record.do?id=" + child.getId()
+                + "\">" + child.getType().toString() + ":"
+                + child.getSpecificType() + ": "
+                + child.getName() + "</LI>");
+        }
+        out.println("</UL></TD></TR>");
+        out.println("</TABLE>");
     }
 %>
 <%
