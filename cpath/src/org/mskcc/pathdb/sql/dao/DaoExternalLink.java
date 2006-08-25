@@ -1,4 +1,4 @@
-// $Id: DaoExternalLink.java,v 1.33 2006-08-11 17:48:57 cerami Exp $
+// $Id: DaoExternalLink.java,v 1.34 2006-08-25 16:47:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -210,7 +210,7 @@ public class DaoExternalLink extends ManagedDAO {
                 String id = refs[i].getId();
 
                 if (dbName != null && dbName.trim().length() > 0
-                        && id != null && id.trim().length() > 0){
+                        && id != null && id.trim().length() > 0) {
                     DaoExternalDb dao = new DaoExternalDb();
                     ExternalDatabaseRecord dbRecord =
                             dao.getRecordByTerm(dbName);

@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.20 2006-08-15 14:16:52 cerami Exp $
+// $Id: EntitySummaryParser.java,v 1.21 2006-08-25 16:53:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -43,17 +43,13 @@ import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
-import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.util.rdf.RdfQuery;
-import org.mskcc.pathdb.task.ProgressMonitor;
 
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 
 /**
  * This class parses interaction data
