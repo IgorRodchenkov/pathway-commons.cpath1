@@ -38,7 +38,7 @@ CREATE TABLE `cpath` (
   `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
   `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`CPATH_ID`)
-) TYPE=MyISAM COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1;
+) ENGINE=InnoDB COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1;
 
 
 #
@@ -60,7 +60,7 @@ CREATE TABLE `external_db` (
   `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`EXTERNAL_DB_ID`),
   UNIQUE KEY `NAME` (`NAME`)
-) ENGINE=MyISAM CHARSET=latin1 COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
+) ENGINE=InnoDB CHARSET=latin1 COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
 
 
 #
@@ -240,3 +240,41 @@ Alter table internal_link add INDEX internal_link_source_idx (SOURCE_ID);
 Alter table internal_link add INDEX internal_link_target_idx (TARGET_ID);
 Alter table external_link add INDEX cpath_id_idx (cpath_id); 
 
+--
+-- Table structure for table `source_tracker`
+--
+CREATE TABLE `source_tracker` (
+  `SOURCE_TRACKER_ID` int(11) NOT NULL auto_increment,
+  `ID_OF_CPATH_GENERATED_RECORD` int(11) NOT NULL default '0',
+  `ID_OF_SOURCE_RECORD` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`SOURCE_TRACKER_ID`),
+  KEY `ID_OF_CPATH_GENERATED_RECORD` (`ID_OF_CPATH_GENERATED_RECORD`),
+  KEY `ID_OF_SOURCE_RECORD` (`ID_OF_SOURCE_RECORD`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 COMMENT = 'Links source records with cPath generated records.';
+
+--
+-- Table structure for table `external_db_snapshot`
+--
+
+CREATE TABLE `external_db_snapshot` (
+  `EXTERNAL_DB_SNAPSHOT_ID` int(11) NOT NULL auto_increment,
+  `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
+  `SNAPSHOT_DATE` date NOT NULL default '0000-00-00',
+  `SNAPSHOT_VERSION` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`EXTERNAL_DB_SNAPSHOT_ID`),
+  KEY `EXTERNAL_DB_ID` (`EXTERNAL_DB_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains database snapshot information.' AUTO_INCREMENT=1;
+
+
+--
+-- Constraints for table `source_tracker`
+--
+ALTER TABLE `source_tracker`
+  ADD CONSTRAINT `source_tracker_ibfk_2` FOREIGN KEY (`ID_OF_SOURCE_RECORD`) REFERENCES `cpath` (`CPATH_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `source_tracker_ibfk_1` FOREIGN KEY (`ID_OF_CPATH_GENERATED_RECORD`) REFERENCES `cpath` (`CPATH_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `external_db_snapshot`
+--
+ALTER TABLE `external_db_snapshot`
+  ADD CONSTRAINT `external_db_snapshot_ibfk_1` FOREIGN KEY (`EXTERNAL_DB_ID`) REFERENCES `external_db` (`EXTERNAL_DB_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
