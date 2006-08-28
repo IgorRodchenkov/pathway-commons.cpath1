@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.1 2006-08-28 16:25:27 cerami Exp $
+// $Id: DaoInternalFamily.java,v 1.2 2006-08-28 17:20:34 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -54,7 +54,7 @@ public class DaoInternalFamily {
      * @param descendentType    Record type of Descendent.
      * @throws DaoException     Database access error.
      */
-    public void addRecord (int ancestorId, int descendentId,
+    public void addRecord (long ancestorId, long descendentId,
             CPathRecordType descendentType) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -86,7 +86,7 @@ public class DaoInternalFamily {
      * @return array of all descendent IDs.
      * @throws DaoException     Database access error.
      */
-    public long[] getDescendentIds (int ancestorId)
+    public long[] getDescendentIds (long ancestorId)
         throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -116,7 +116,7 @@ public class DaoInternalFamily {
      * @return array of all descendent IDs.
      * @throws DaoException     Database access error.
      */
-    public long[] getDescendentIds (int ancestorId, CPathRecordType
+    public long[] getDescendentIds (long ancestorId, CPathRecordType
             descendentType) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
