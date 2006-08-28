@@ -256,6 +256,15 @@ CREATE TABLE `external_db_snapshot` (
   KEY `EXTERNAL_DB_ID` (`EXTERNAL_DB_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains database snapshot information.' AUTO_INCREMENT=1;
 
+-- 
+-- Table structure for table `internal_family`
+--
+
+CREATE TABLE `internal_family` (
+  `ANCESTOR_ID` int(11) NOT NULL default '0',
+  `DESCENDENT_ID` int(11) NOT NULL default '0',
+  `DESCENDENT_TYPE` varchar(255) NOT NULL default ''
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Constraints for table `source_tracker`
