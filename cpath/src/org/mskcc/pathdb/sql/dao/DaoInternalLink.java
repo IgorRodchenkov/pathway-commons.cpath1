@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.14 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.15 2006-08-28 17:20:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -131,6 +131,21 @@ public class DaoInternalLink {
     }
 
     /**
+     * Gets all descendents of the specified cPath record.
+     * <P>This is a potentially very slow query.
+     *
+     * @param cpathId CPath Record ID.
+     * @return arraylist of descendent Ids.
+     * @throws DaoException
+     */
+    public ArrayList getAllDescendents(long cpathId)
+            throws DaoException {
+        ArrayList masterList = new ArrayList();
+        traverseNode(cpathId, masterList);
+        return masterList;
+    }
+
+    /**
      * Gets all Target Links from the specified source cPath ID.
      *
      * @param sourceId CPath ID of Source.
@@ -234,6 +249,22 @@ public class DaoInternalLink {
             throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    private void traverseNode(long sourceId, ArrayList masterList)
+            throws DaoException {
+        ArrayList childrenList = getTargets(sourceId);
+        if (childrenList != null && childrenList.size() > 0) {
+            for (int i = 0; i < childrenList.size(); i++) {
+                InternalLinkRecord link = (InternalLinkRecord)
+                        childrenList.get(i);
+                Long childId = new Long(link.getTargetId());
+                if (!masterList.contains(childId)) {
+                    masterList.add(childId);
+                    traverseNode(link.getTargetId(), masterList);
+                }
+            }
         }
     }
 }
