@@ -22,30 +22,24 @@ USE db_name__value;
 #
 # Table structure for table `cpath`
 #
-# Creation: Apr 07, 2005 at 02:41 PM
-# Last update: Apr 07, 2005 at 02:41 PM
-#
 
 CREATE TABLE `cpath` (
-  `CPATH_ID` int(11) NOT NULL auto_increment,
-  `NAME` varchar(255) NOT NULL default '',
-  `DESC` varchar(255) default NULL,
-  `TYPE` varchar(255) NOT NULL default '',
-  `SPECIFIC_TYPE` varchar(255) default NULL,
-  `NCBI_TAX_ID` int(11) NOT NULL default '-9999',
-  `XML_TYPE` varchar(50) NOT NULL default '',
-  `XML_CONTENT` longtext NOT NULL,
-  `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00',
-  `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
+  `CPATH_ID` int(11) NOT NULL auto_increment COMMENT 'Primary Key',
+  `NAME` varchar(255) NOT NULL default '' COMMENT 'Preferred name of entity',
+  `DESC` varchar(255) default NULL COMMENT 'Short description of entity',
+  `TYPE` varchar(255) NOT NULL default '' COMMENT 'Indicates entity type, such as PATHWAY, INTERACTION or PHYSICAL_ENTITY',
+  `SPECIFIC_TYPE` varchar(255) default NULL COMMENT 'Specific entity type, e.g. protein, catalysis, etc. (mainly derived from BioPAX entity type)',
+  `NCBI_TAX_ID` int(11) NOT NULL default '-9999' COMMENT 'Organism NCBI Taxonomy ID',
+  `XML_TYPE` varchar(50) NOT NULL default '' COMMENT 'XML Record Type, e.g. PSI_MI or BIOPAX',
+  `XML_CONTENT` longtext NOT NULL COMMENT 'XML Content Blob',
+  `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Timestamp when record was originally created',
+  `UPDATE_TIME` datetime default '0000-00-00 00:00:00' COMMENT 'Timestamp when record was last modified',
   PRIMARY KEY  (`CPATH_ID`)
-) ENGINE=InnoDB COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1 ;
 
 
 #
 # Table structure for table `external_db`
-#
-# Creation: Mar 14, 2005 at 03:55 PM
-# Last update: Mar 14, 2005 at 03:55 PM
 #
 CREATE TABLE `external_db` (
   `EXTERNAL_DB_ID` int(11) NOT NULL auto_increment,
@@ -65,9 +59,6 @@ CREATE TABLE `external_db` (
 
 #
 # Table structure for table `external_db_cv`
-#
-# Creation: May 25, 2004 at 03:36 PM
-# Last update: May 25, 2004 at 03:37 PM
 #
 CREATE TABLE `external_db_cv` (
   `CV_ID` int(11) NOT NULL auto_increment,
