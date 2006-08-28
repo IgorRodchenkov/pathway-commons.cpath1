@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalLink.java,v 1.17 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestDaoInternalLink.java,v 1.18 2006-08-28 17:21:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoException;
 
 import java.util.ArrayList;
 
@@ -54,6 +55,7 @@ public class TestDaoInternalLink extends TestCase {
     private long cPathIdA;
     private long cPathIdB;
     private long cPathIdC;
+    private String testName;
 
     /**
      * Tests Data Access.
@@ -61,6 +63,7 @@ public class TestDaoInternalLink extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testAccess() throws Exception {
+        testName = "Test basic access methods";
         createSampleCPathRecords();
         DaoInternalLink linker = new DaoInternalLink();
 
@@ -115,7 +118,50 @@ public class TestDaoInternalLink extends TestCase {
         dao.deleteRecordById(cPathIdC);
     }
 
-    private void createSampleCPathRecords() throws Exception {
+    /**
+     * Test the get descendents method.
+     * @throws DaoException Database access error.
+     */
+    public void testGetDescendents() throws DaoException {
+        testName = "Test get descendents functionality";
+        DaoCPath dao = DaoCPath.getInstance();
+        long id1 = dao.addRecord(PROTEIN_A, "Protein A Blah", 101,
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, "protein a xml here");
+        long id2 = dao.addRecord(PROTEIN_B, "Protein B Blah", 101,
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, "protein B xml here");
+        long id3 = dao.addRecord(PROTEIN_C, "Protein C Blah", 101,
+                CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
+                XmlRecordType.PSI_MI, "protein C xml here");
+
+        DaoInternalLink linker = new DaoInternalLink();
+
+        // Add New Link 1 --> 2.
+        linker.addRecord(id1, id2);
+
+        // Then, link 2 --> 3
+        linker.addRecord(id2, id3);
+
+        //  Should get back two descendents
+        ArrayList list = linker.getAllDescendents(id1);
+        assertEquals (2, list.size());
+
+        boolean flag2 = false, flag3 = false;
+        for (int i = 0; i < list.size(); i++) {
+            Long descendentId =  (Long) list.get(i);
+            System.out.println(descendentId);
+            if (descendentId.longValue() == id2) {
+                flag2 = true;
+            } else if (descendentId.longValue() == id3) {
+                flag3 = true;
+            }
+        }
+        assertTrue (flag2);
+        assertTrue (flag3);
+    }
+
+    private void createSampleCPathRecords() throws DaoException {
         DaoCPath dao = DaoCPath.getInstance();
         cPathIdA = dao.addRecord(PROTEIN_A, "Protein A Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
@@ -134,6 +180,7 @@ public class TestDaoInternalLink extends TestCase {
      * @return Name of Test.
      */
     public String getName() {
-        return "Test the MySQL InternalLink Data Access Object (DAO)";
+        return "Test the MySQL InternalLink Data Access Object (DAO):  "
+            + testName;
     }
 }
