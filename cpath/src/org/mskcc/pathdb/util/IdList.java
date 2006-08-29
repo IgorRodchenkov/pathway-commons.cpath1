@@ -1,4 +1,4 @@
-// $Id: IdList.java,v 1.1 2006-08-28 18:11:36 grossb Exp $
+// $Id: IdList.java,v 1.2 2006-08-29 15:06:41 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,14 +38,14 @@ import java.util.Iterator;
  * Stores a list of ids in a memory efficient manner.
  * (a bit position is set if that id is in our list)
  *
- * Should not be used with sparse lists.
+ * Not efficient if used with sparse lists.
  *
  * @author Benjamin Gross
  */
 public class IdList {
 
 	// the number of ids we store
-	private int numIds;
+	private long maxId;
 
 	// the byte array to store ids
 	private byte[] byteArray;
@@ -53,31 +53,22 @@ public class IdList {
 	/**
 	 * Constructor.
 	 *
-	 * @param numIds int
+	 * @param maxId int
 	 */
-	public IdList(int numIds) {
+	public IdList(long maxId) {
 
 		// check args
-		if (numIds <= 0) {
+		if (maxId <= 0) {
 			throw new IllegalArgumentException("RecordIdListCommand Not Recognized");
 		}
 
 		// set members
-		this.numIds = numIds;
+		this.maxId = maxId;
 
-		// calc num bytes required to store numIds
-		int numBytesRequired = numIds / 8;
-		if (numIds % 8 > 0) ++numBytesRequired;
+		// calc num bytes required to store maxId
+		int numBytesRequired = (int)(maxId / 8);
+		if (maxId % 8 > 0) ++numBytesRequired;
 		this.byteArray = new byte[numBytesRequired];
-	}
-
-	/**
-	 * Gets the number of ids stored in lis.
-	 *
-	 * @return int
-	 */
-	public int getNumIds() {
-		return numIds;
 	}
 
 	/**
@@ -88,7 +79,7 @@ public class IdList {
 	public void addId(long id) {
 
 		// check args
-		if (id <= 0 || id > numIds) {
+		if (id <= 0 || id > maxId) {
 			throw new IllegalArgumentException("IdList.addId(): invalid id");
 		}
 
@@ -109,7 +100,7 @@ public class IdList {
 	public boolean idIsStored(long id) {
 
 		// check args
-		if (id <= 0 || id > numIds) {
+		if (id <= 0 || id > maxId) {
 			throw new IllegalArgumentException("IdList.idIsStored(): invalid id");
 		}
 
@@ -182,7 +173,7 @@ public class IdList {
 		 * Our implementation of hasNext().
 		 */
 		public boolean hasNext() {
-			return (currentPos < numIds);
+			return (currentPos < maxId);
 		}
 
 		/**
@@ -193,8 +184,8 @@ public class IdList {
 		 */
 		public Object next() {
 
-			while ((++currentPos <= numIds) && !idIsStored(currentPos)){}           
-			return (currentPos <= numIds) ? new Integer(currentPos) : null;
+			while ((++currentPos <= maxId) && !idIsStored(currentPos)){}           
+			return (currentPos <= maxId) ? new Integer(currentPos) : null;
 		}
 
 		/**
