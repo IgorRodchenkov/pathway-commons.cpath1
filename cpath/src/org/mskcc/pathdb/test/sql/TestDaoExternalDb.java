@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDb.java,v 1.22 2006-03-07 16:07:04 cerami Exp $
+// $Id: TestDaoExternalDb.java,v 1.23 2006-08-31 16:00:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,7 +38,9 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.util.cache.EhCache;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.io.File;
 
 /**
  * Tests Data Access for the External Database Table.
@@ -52,8 +54,10 @@ public class TestDaoExternalDb extends TestCase {
     private static final String TERM1 = "ACE";
     private static final String TERM2 = "ACME";
     private static final String MASTER_TERM = "ACME CORP";
-    private static final String URL = "http://us.expasy.org/cgi-bin/"
+    private static final String URL_PATTERN = "http://us.expasy.org/cgi-bin/"
             + "niceprot.pl?%ID%";
+    private static final String HOME_PAGE_URL = "http://www.acme.org";
+    private static final String PATH_GUIDE_ID = "xyz";
     private static final String SAMPLE_ID = "123XYZ";
     private static final String NEW_NAME = "ACME Improved Database";
     private String testName;
@@ -107,6 +111,16 @@ public class TestDaoExternalDb extends TestCase {
         record = dao.getRecordById(record.getId());
         assertEquals(NEW_NAME, record.getName());
 
+        //  Try adding an icon
+        boolean success = dao.addIcon
+                (new File ("testData/icons/Reactome.png"), record.getId());
+        assertTrue (success);
+
+        //  Verify icon was added
+        ImageIcon icon = dao.getIcon(record.getId());
+        assertEquals (87, icon.getIconWidth());
+        assertEquals (80, icon.getIconHeight());
+
         //  Delete Record.
         flag = dao.deleteRecordById(record.getId());
         assertEquals(true, flag);
@@ -149,9 +163,11 @@ public class TestDaoExternalDb extends TestCase {
         assertEquals(TERM1, term1);
         assertEquals(TERM2, term2);
         assertEquals(MASTER_TERM, record.getMasterTerm());
-        assertEquals(URL, record.getUrl());
+        assertEquals(URL_PATTERN, record.getUrlPattern());
         assertEquals(SAMPLE_ID, record.getSampleId());
         assertEquals(ReferenceType.PROTEIN_UNIFICATION, record.getDbType());
+        assertEquals(HOME_PAGE_URL, record.getHomePageUrl());
+        assertEquals(PATH_GUIDE_ID, record.getPathGuideId());
     }
 
     private void addSampleRecord() throws DaoException {
@@ -163,9 +179,11 @@ public class TestDaoExternalDb extends TestCase {
         terms.add(TERM1);
         terms.add(TERM2);
         db.setSynonymTerms(terms);
-        db.setUrl(URL);
+        db.setUrlPattern(URL_PATTERN);
         db.setSampleId(SAMPLE_ID);
         db.setDbType(ReferenceType.PROTEIN_UNIFICATION);
+        db.setHomePageUrl(HOME_PAGE_URL);
+        db.setPathGuideId(PATH_GUIDE_ID);
         DaoExternalDb cpath = new DaoExternalDb();
         cpath.addRecord(db);
     }
@@ -177,7 +195,7 @@ public class TestDaoExternalDb extends TestCase {
         db.setName("TEST");
         db.setDescription(DESC);
         db.setMasterTerm(MASTER_TERM);
-        db.setUrl(URL);
+        db.setUrlPattern(URL_PATTERN);
         db.setSampleId(SAMPLE_ID);
         db.setDbType(ReferenceType.PROTEIN_UNIFICATION);
         DaoExternalDb dao = new DaoExternalDb();
