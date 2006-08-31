@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.25 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.26 2006-08-31 15:58:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,11 +40,10 @@ import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.cache.EhCache;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.*;
+import java.sql.*;
 import java.util.ArrayList;
+import java.io.*;
 
 /**
  * Data Access Object to the External Database Table.
@@ -52,6 +51,10 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class DaoExternalDb {
+    private static final String ALL_FIELDS_EXCEPT_ICON =
+        "`EXTERNAL_DB_ID`, `NAME`, `DESC`, `DB_TYPE`, `HOME_PAGE_URL`, "
+        + "`EXTERNAL_DB_ID`, `NAME`, `DESC`, `DB_TYPE`, `HOME_PAGE_URL`, "
+        + "`URL_PATTERN`, `SAMPLE_ID`, `PATH_GUIDE_ID`, `CREATE_TIME`, `UPDATE_TIME`";
 
     /**
      * Adds Specified External Database Record to the CPath Database.
@@ -74,16 +77,20 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("INSERT INTO external_db (`NAME`,`URL`, `SAMPLE_ID`, "
-                            + "`DESC`,`CREATE_TIME`, `DB_TYPE`) VALUES (?,?,?,?,?,?)");
+                    ("INSERT INTO external_db (`NAME`,`URL_PATTERN`, `SAMPLE_ID`, "
+                            + "`DESC`,`CREATE_TIME`, `DB_TYPE`, "
+                            + "`HOME_PAGE_URL`, `PATH_GUIDE_ID`) "
+                            + "VALUES (?,?,?,?,?,?,?,?)");
             pstmt.setString(1, db.getName());
-            pstmt.setString(2, db.getUrl());
+            pstmt.setString(2, db.getUrlPattern());
             pstmt.setString(3, db.getSampleId());
             pstmt.setString(4, db.getDescription());
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
             pstmt.setDate(5, sqlDate);
             pstmt.setString(6, db.getDbType().toString());
+            pstmt.setString(7, db.getHomePageUrl());
+            pstmt.setString(8, db.getPathGuideId());
             int rows = pstmt.executeUpdate();
 
             // Save the Controlled Vocabulary Terms.
@@ -109,6 +116,79 @@ public class DaoExternalDb {
         }
     }
 
+    /**
+     * Adds Icon for the specified external database.
+     * @param file Icon File.
+     * @param externalDbId External DB ID.
+     * @return true indicates icon successfully added.
+     * @throws FileNotFoundException File not found.
+     * @throws DaoException Database access error.
+     */
+    public boolean addIcon (File file, int externalDbId)
+        throws DaoException, FileNotFoundException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        InputStream in = new FileInputStream (file);
+
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("UPDATE external_db SET `ICON` = ? "
+                            + "WHERE `EXTERNAL_DB_ID` = ?");
+            pstmt.setBinaryStream(1, in, (int) file.length());
+            pstmt.setInt(2, externalDbId);
+            int rowsUpdated = pstmt.executeUpdate();
+            if (rowsUpdated == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+            try {
+                in.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    /**
+     * Gets Icon for the specified external database.
+     * @param externalDbId External DB ID.
+     * @return Image Icon.
+     * @throws DaoException Database access error.
+     */
+    public ImageIcon getIcon (int externalDbId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT ICON FROM external_db "
+                            + "WHERE `EXTERNAL_DB_ID` = ?");
+            pstmt.setInt(1, externalDbId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Blob blob = rs.getBlob("ICON");
+                return new ImageIcon(blob.getBytes(1, (int)blob.length()));
+            } else {
+                return null;
+            }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
 
     /**
      * Retrieves the External Database Record with the specified Primary ID.
@@ -134,7 +214,8 @@ public class DaoExternalDb {
             try {
                 con = JdbcUtil.getCPathConnection();
                 pstmt = con.prepareStatement
-                        ("SELECT * FROM external_db WHERE EXTERNAL_DB_ID = ?");
+                        ("SELECT " + ALL_FIELDS_EXCEPT_ICON
+                                + " FROM external_db WHERE EXTERNAL_DB_ID = ?");
                 pstmt.setInt(1, id);
                 rs = pstmt.executeQuery();
                 dbRecord = extractRecord(rs);
@@ -180,7 +261,8 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM external_db WHERE NAME = ?");
+                    ("SELECT " + ALL_FIELDS_EXCEPT_ICON
+                            + " FROM external_db WHERE NAME = ?");
             pstmt.setString(1, name);
             rs = pstmt.executeQuery();
             return extractRecord(rs);
@@ -243,7 +325,8 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT * FROM external_db");
+                    ("SELECT " + ALL_FIELDS_EXCEPT_ICON
+                            + " FROM external_db");
             rs = pstmt.executeQuery();
             ArrayList records = new ArrayList();
             while (rs.next()) {
@@ -312,12 +395,12 @@ public class DaoExternalDb {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("UPDATE external_db SET `NAME` = ?, "
-                            + "`DESC` = ?, `URL` = ?, `SAMPLE_ID` = ?, "
+                            + "`DESC` = ?, `URL_PATTERN` = ?, `SAMPLE_ID` = ?, "
                             + "`UPDATE_TIME` = ? "
                             + "WHERE `EXTERNAL_DB_ID` = ?");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getDescription());
-            pstmt.setString(3, db.getUrl());
+            pstmt.setString(3, db.getUrlPattern());
             pstmt.setString(4, db.getSampleId());
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
@@ -365,8 +448,10 @@ public class DaoExternalDb {
         ExternalDatabaseRecord record = new ExternalDatabaseRecord();
         record.setId(rs.getInt("EXTERNAL_DB_ID"));
         record.setName(rs.getString("NAME"));
-        record.setUrl(rs.getString("URL"));
+        record.setUrlPattern(rs.getString("URL_PATTERN"));
+        record.setHomePageUrl(rs.getString("HOME_PAGE_URL"));
         record.setSampleId(rs.getString("SAMPLE_ID"));
+        record.setPathGuideId(rs.getString("PATH_GUIDE_ID"));
         record.setDescription(rs.getString("DESC"));
         record.setCreateTime(rs.getDate("CREATE_TIME"));
         record.setUpdateTime(rs.getDate("UPDATE_TIME"));

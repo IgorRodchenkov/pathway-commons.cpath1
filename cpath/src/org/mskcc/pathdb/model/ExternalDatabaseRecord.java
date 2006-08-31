@@ -1,4 +1,4 @@
-// $Id: ExternalDatabaseRecord.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
+// $Id: ExternalDatabaseRecord.java,v 1.18 2006-08-31 15:59:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,8 +53,10 @@ public class ExternalDatabaseRecord implements Serializable {
     private String description;
     private ArrayList synTerms;
     private String masterTerm;
-    private String url;
+    private String urlPattern;
+    private String homePageUrl;
     private String sampleId;
+    private String pathGuideId;
     private ReferenceType dbType;
     private Date createTime;
     private Date updateTime;
@@ -136,8 +138,8 @@ public class ExternalDatabaseRecord implements Serializable {
      *
      * @return URL String.
      */
-    public String getUrl() {
-        return url;
+    public String getUrlPattern() {
+        return urlPattern;
     }
 
     /**
@@ -150,8 +152,8 @@ public class ExternalDatabaseRecord implements Serializable {
         if (primaryId != null) {
             //  Hard-Coded Fix for HPRD Ids.
             primaryId = primaryId.replaceAll("HPRD_", "");
-            if (url != null && url.trim().length() > 0) {
-                return url.replaceAll("%ID%", primaryId);
+            if (urlPattern != null && urlPattern.trim().length() > 0) {
+                return urlPattern.replaceAll("%ID%", primaryId);
             } else {
                 return null;
             }
@@ -165,8 +167,46 @@ public class ExternalDatabaseRecord implements Serializable {
      *
      * @param url URL String.
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrlPattern(String url) {
+        this.urlPattern = url;
+    }
+
+    /**
+     * Gets the home page URL.
+     * @return home page URL.
+     */
+    public String getHomePageUrl() {
+        return homePageUrl;
+    }
+
+    /**
+     * Sets the home page URL.
+     * @param homePageUrl home page URL.
+     */
+    public void setHomePageUrl(String homePageUrl) {
+        this.homePageUrl = homePageUrl;
+    }
+
+    /**
+     * Gets the Path Guide ID.
+     *
+     * <P>For details, see pathguide.org
+     *
+     * @return page guide ID.
+     */
+    public String getPathGuideId() {
+        return pathGuideId;
+    }
+
+    /**
+     * Sets the Path Guide ID.
+     *
+     * <P>For details, see pathguide.org
+     *
+     * @param pathGuideId Path Guide ID.
+     */
+    public void setPathGuideId(String pathGuideId) {
+        this.pathGuideId = pathGuideId;
     }
 
     /**
