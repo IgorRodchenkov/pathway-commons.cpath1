@@ -156,15 +156,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/mysql-connector-java-3.1.10-bin.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/dataservices.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -345,7 +336,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/biopaxvalidator.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/mysql-connector-java-3.1.10-bin.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
