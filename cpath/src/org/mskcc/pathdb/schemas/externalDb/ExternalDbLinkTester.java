@@ -1,4 +1,4 @@
-// $Id: ExternalDbLinkTester.java,v 1.4 2006-02-22 22:47:50 grossb Exp $
+// $Id: ExternalDbLinkTester.java,v 1.5 2006-08-31 16:00:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -66,7 +66,7 @@ public class ExternalDbLinkTester {
      */
     public static int checkSampleLink(ExternalDatabaseRecord dbRecord)
             throws HttpException, IOException {
-        if (dbRecord.getUrl() == null) {
+        if (dbRecord.getUrlPattern() == null) {
             throw new IllegalArgumentException("External Database Url "
                     + "attribute is null");
         }

@@ -1,4 +1,4 @@
-// $Id: TestExternalDbXmlUtil.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestExternalDbXmlUtil.java,v 1.9 2006-08-31 16:00:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -61,7 +61,7 @@ public class TestExternalDbXmlUtil extends TestCase {
         assertEquals("Yahoo Search",
                 dbRecord.getDescription());
         assertEquals("http://search.yahoo.com/search?p=%ID%",
-                dbRecord.getUrl());
+                dbRecord.getUrlPattern());
         assertEquals("test", dbRecord.getSampleId());
         assertEquals("YAHOO", dbRecord.getMasterTerm());
 

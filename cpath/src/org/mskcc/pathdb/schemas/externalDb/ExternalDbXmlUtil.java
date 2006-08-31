@@ -1,4 +1,4 @@
-// $Id: ExternalDbXmlUtil.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: ExternalDbXmlUtil.java,v 1.6 2006-08-31 16:00:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -96,7 +96,7 @@ public class ExternalDbXmlUtil {
             dbRecord.setName(name);
             dbRecord.setDbType(ReferenceType.getType(type));
             dbRecord.setDescription(description);
-            dbRecord.setUrl(urlPattern);
+            dbRecord.setUrlPattern(urlPattern);
             dbRecord.setSampleId(sampleId);
             dbRecord.setMasterTerm(masterTerm);
             dbRecord.setSynonymTerms(synonymList);
