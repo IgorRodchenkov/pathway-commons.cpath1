@@ -12,11 +12,11 @@
 <!ELEMENT external_database_list (external_database)+>
 
 <!-- 
-    Each database must have a name, description, a url pattern, and a 
+    Each database must have a name, description, and a
     list of controlled vocabulary terms.
 -->
 <!ELEMENT external_database (name, description, 
-    url?, controlled_terms)>
+    home_page_url?, entity_url?, path_guide_id?, icon_path?, controlled_terms)>
     
 <!-- 
      We currectly support two type of databases:  PROTEIN_UNIFICATION and
@@ -30,7 +30,9 @@
 
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
-
+<!ELEMENT home_page_url (#PCDATA)>
+<!ELEMENT path_guide_id (#PCDATA)>
+<!ELEMENT icon_path (#PCDATA)>
 
 <!-- 
     The URL Pattern is a String pattern that enables direct linking to the database.
@@ -45,7 +47,7 @@
     This is important, as database providers may modify their linking rules at any time,
     and not inform us of the change.
 -->
-<!ELEMENT url (url_pattern, sample_id) >
+<!ELEMENT entity_url (url_pattern, sample_id) >
 <!ELEMENT url_pattern (#PCDATA)>
 <!ELEMENT sample_id (#PCDATA)>
 
