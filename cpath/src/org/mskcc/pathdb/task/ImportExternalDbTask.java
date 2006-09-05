@@ -1,4 +1,4 @@
-// $Id: ImportExternalDbTask.java,v 1.7 2006-09-05 13:33:43 cerami Exp $
+// $Id: ImportExternalDbTask.java,v 1.8 2006-09-05 13:39:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,7 +114,7 @@ public class ImportExternalDbTask extends Task {
      * are accesible.
      */
     private void validateIconFiles (ArrayList dbList)
-            throws FileNotFoundException{
+            throws FileNotFoundException {
         for (int i = 0; i < dbList.size(); i++) {
             ExternalDatabaseRecord dbRecord =
                     (ExternalDatabaseRecord) dbList.get(i);

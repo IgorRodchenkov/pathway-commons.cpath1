@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.15 2006-08-28 17:20:53 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.16 2006-09-05 13:39:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -136,7 +136,7 @@ public class DaoInternalLink {
      *
      * @param cpathId CPath Record ID.
      * @return arraylist of descendent Ids.
-     * @throws DaoException
+     * @throws DaoException Database Access Error.
      */
     public ArrayList getAllDescendents(long cpathId)
             throws DaoException {

@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.27 2006-09-05 13:31:45 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.28 2006-09-05 13:39:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -191,7 +191,7 @@ public class DaoExternalDb {
             if (rs.next()) {
                 Blob blob = rs.getBlob("ICON_BLOB");
                 if (blob != null) {
-                    return new ImageIcon(blob.getBytes(1, (int)blob.length()));
+                    return new ImageIcon(blob.getBytes(1, (int) blob.length()));
                 } else {
                     return null;
                 }
@@ -486,9 +486,9 @@ public class DaoExternalDb {
 
     private String getFileExtension (File file) {
         String ext;
-        int dotPlace = file.getName().lastIndexOf ( '.' );
-        if ( dotPlace >= 0 ) {
-            ext = file.getName().substring( dotPlace + 1 );
+        int dotPlace = file.getName().lastIndexOf ('.');
+        if (dotPlace >= 0) {
+            ext = file.getName().substring(dotPlace + 1);
         } else {
            ext = "";
         }

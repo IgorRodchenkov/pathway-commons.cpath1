@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.17 2006-08-28 17:21:56 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.18 2006-09-05 13:39:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -356,7 +356,7 @@ public class ImportBioPaxToCPath {
                 if (record.getType().equals(CPathRecordType.PATHWAY)) {
                     ArrayList idList = internalLinker.getAllDescendents
                             (record.getId());
-                    for (int j=0; j<idList.size(); j++) {
+                    for (int j = 0; j < idList.size(); j++) {
                         Long desendentId = (Long) idList.get(j);
                         CPathRecord descendentRecord = daoCPath.getRecordById
                                 (desendentId.longValue());
