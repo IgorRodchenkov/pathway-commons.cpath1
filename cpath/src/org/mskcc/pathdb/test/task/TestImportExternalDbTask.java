@@ -1,4 +1,4 @@
-// $Id: TestImportExternalDbTask.java,v 1.7 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestImportExternalDbTask.java,v 1.8 2006-09-05 13:32:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,7 +36,9 @@ import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.task.ImportExternalDbTask;
+import org.mskcc.pathdb.util.cache.EhCache;
 
+import javax.swing.*;
 import java.io.File;
 
 /**
@@ -52,6 +54,10 @@ public class TestImportExternalDbTask extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testImport() throws Exception {
+        //  Start Cache with Clean Slate
+        EhCache.initCache();
+        EhCache.resetAllCaches();
+
         File file = new File("testData/externalDb/external_db.xml");
         ImportExternalDbTask task = new ImportExternalDbTask(file, false,
                 false);
@@ -61,6 +67,17 @@ public class TestImportExternalDbTask extends TestCase {
         DaoExternalDb dao = new DaoExternalDb();
         ExternalDatabaseRecord dbRecord = dao.getRecordByTerm("YHO");
         assertEquals("Yahoo", dbRecord.getName());
+        assertEquals("http://www.yahoo.com", dbRecord.getHomePageUrl());
+        assertEquals("XYZ123", dbRecord.getPathGuideId());
+
+        //  Verify icon was added
+        ImageIcon icon = dao.getIcon(dbRecord.getId());
+        assertEquals (87, icon.getIconWidth());
+        assertEquals (80, icon.getIconHeight());
+
+        //  Verify icon file extension was set correctly
+        dbRecord = dao.getRecordByTerm("YHO");
+        assertEquals ("png", dbRecord.getIconFileExtension());
 
         //  Try adding again.  This should fail, as MySQL maintains that
         //  database names are unique.

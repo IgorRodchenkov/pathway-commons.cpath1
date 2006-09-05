@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDb.java,v 1.23 2006-08-31 16:00:26 cerami Exp $
+// $Id: TestDaoExternalDb.java,v 1.24 2006-09-05 13:33:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -115,6 +115,10 @@ public class TestDaoExternalDb extends TestCase {
         boolean success = dao.addIcon
                 (new File ("testData/icons/Reactome.png"), record.getId());
         assertTrue (success);
+
+        //  Verify File Icon extension.
+        record = dao.getRecordById(record.getId());
+        assertEquals("png", record.getIconFileExtension());
 
         //  Verify icon was added
         ImageIcon icon = dao.getIcon(record.getId());
