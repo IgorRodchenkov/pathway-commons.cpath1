@@ -10,10 +10,13 @@
     <external_database type="LINK_OUT">
         <name>Yahoo</name>
         <description>Yahoo Search</description>
-        <url>
+        <home_page_url>http://www.yahoo.com</home_page_url>
+        <entity_url>
             <url_pattern>http://search.yahoo.com/search?p=%ID%</url_pattern>
             <sample_id>test</sample_id>
-        </url>
+        </entity_url>
+        <path_guide_id>XYZ123</path_guide_id>
+        <icon_path>../icons/Reactome.png</icon_path>
         <controlled_terms>
             <master_term>YAHOO</master_term>
             <synonym>YHO</synonym>
@@ -23,10 +26,10 @@
     <external_database type="LINK_OUT">
         <name>Google</name>
         <description>Google Search</description>
-        <url>
+        <entity_url>
             <url_pattern>http://www.google.com/search?q=%ID%</url_pattern>
             <sample_id>NF01438533</sample_id>
-        </url>
+        </entity_url>
         <controlled_terms>
             <master_term>GOOGLE</master_term>
             <synonym>GOOGLE WEB</synonym>

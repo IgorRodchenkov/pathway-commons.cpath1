@@ -1,4 +1,4 @@
-// $Id: ExternalDbXmlUtil.java,v 1.6 2006-08-31 16:00:54 cerami Exp $
+// $Id: ExternalDbXmlUtil.java,v 1.7 2006-09-05 13:34:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -54,9 +54,12 @@ public class ExternalDbXmlUtil {
     private static final String TYPE_ATTRIBUTE = "type";
     private static final String NAME_ELEMENT = "name";
     private static final String DESCRIPTION_ELEMENT = "description";
-    private static final String URL_ELEMENT = "url";
-    private static final String URL_PATTERN_ELEMENT = "url_pattern";
+    private static final String HOME_PAGE_URL = "home_page_url";
+    private static final String ENTITY_URL_ELEMENT = "entity_url";
+    private static final String ENTITY_URL_PATTERN_ELEMENT = "url_pattern";
     private static final String SAMPLE_ID_ELEMENT = "sample_id";
+    private static final String PATH_GUIDE_ID_ELEMENT = "path_guide_id";
+    private static final String ICON_PATH = "icon_path";
     private static final String CONTROLLED_TERMS_ELEMENT = "controlled_terms";
     private static final String MASTER_TERM_ELEMENT = "master_term";
     private static final String SYNONYM_ELEMENT = "synonym";
@@ -84,10 +87,16 @@ public class ExternalDbXmlUtil {
             String name = extractElementText(externalDb, NAME_ELEMENT);
             String description = extractElementText(externalDb,
                     DESCRIPTION_ELEMENT);
-            String urlPattern = extractElementText(externalDb,
-                    URL_ELEMENT + SLASH + URL_PATTERN_ELEMENT);
+            String homePageUrl = extractElementText (externalDb,
+                    HOME_PAGE_URL);
+            String entityUrlPattern = extractElementText(externalDb,
+                    ENTITY_URL_ELEMENT + SLASH + ENTITY_URL_PATTERN_ELEMENT);
             String sampleId = extractElementText(externalDb,
-                    URL_ELEMENT + SLASH + SAMPLE_ID_ELEMENT);
+                    ENTITY_URL_ELEMENT + SLASH + SAMPLE_ID_ELEMENT);
+            String pathGuideId = extractElementText (externalDb,
+                    PATH_GUIDE_ID_ELEMENT);
+            String iconPath = extractElementText (externalDb,
+                    ICON_PATH);
             String masterTerm = extractElementText(externalDb,
                     CONTROLLED_TERMS_ELEMENT + SLASH + MASTER_TERM_ELEMENT);
             ArrayList synonymList = extractSynonymList(externalDb);
@@ -96,8 +105,11 @@ public class ExternalDbXmlUtil {
             dbRecord.setName(name);
             dbRecord.setDbType(ReferenceType.getType(type));
             dbRecord.setDescription(description);
-            dbRecord.setUrlPattern(urlPattern);
+            dbRecord.setHomePageUrl(homePageUrl);
+            dbRecord.setUrlPattern(entityUrlPattern);
             dbRecord.setSampleId(sampleId);
+            dbRecord.setPathGuideId(pathGuideId);
+            dbRecord.setIconPath(iconPath);
             dbRecord.setMasterTerm(masterTerm);
             dbRecord.setSynonymTerms(synonymList);
             dbList.add(dbRecord);
