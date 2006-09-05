@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.26 2006-08-31 15:58:58 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.27 2006-09-05 13:31:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,17 +53,17 @@ import java.io.*;
 public class DaoExternalDb {
     private static final String ALL_FIELDS_EXCEPT_ICON =
         "`EXTERNAL_DB_ID`, `NAME`, `DESC`, `DB_TYPE`, `HOME_PAGE_URL`, "
-        + "`EXTERNAL_DB_ID`, `NAME`, `DESC`, `DB_TYPE`, `HOME_PAGE_URL`, "
-        + "`URL_PATTERN`, `SAMPLE_ID`, `PATH_GUIDE_ID`, `CREATE_TIME`, `UPDATE_TIME`";
+        + "`URL_PATTERN`, `SAMPLE_ID`, `PATH_GUIDE_ID`, `CREATE_TIME`, `UPDATE_TIME`, "
+        + "`ICON_FILE_EXTENSION`";
 
     /**
      * Adds Specified External Database Record to the CPath Database.
      *
      * @param db External Database Record.
-     * @return true if record was successfully added.
+     * @return ID of newly generated record.
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean addRecord(ExternalDatabaseRecord db) throws DaoException {
+    public synchronized int addRecord(ExternalDatabaseRecord db) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -79,8 +79,8 @@ public class DaoExternalDb {
             pstmt = con.prepareStatement
                     ("INSERT INTO external_db (`NAME`,`URL_PATTERN`, `SAMPLE_ID`, "
                             + "`DESC`,`CREATE_TIME`, `DB_TYPE`, "
-                            + "`HOME_PAGE_URL`, `PATH_GUIDE_ID`) "
-                            + "VALUES (?,?,?,?,?,?,?,?)");
+                            + "`HOME_PAGE_URL`, `PATH_GUIDE_ID`, `ICON_FILE_EXTENSION`) "
+                            + "VALUES (?,?,?,?,?,?,?,?,?)");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getUrlPattern());
             pstmt.setString(3, db.getSampleId());
@@ -91,6 +91,7 @@ public class DaoExternalDb {
             pstmt.setString(6, db.getDbType().toString());
             pstmt.setString(7, db.getHomePageUrl());
             pstmt.setString(8, db.getPathGuideId());
+            pstmt.setString(9, db.getIconFileExtension());
             int rows = pstmt.executeUpdate();
 
             // Save the Controlled Vocabulary Terms.
@@ -106,7 +107,11 @@ public class DaoExternalDb {
             //  Save the Master Term
             dao.addRecord(db.getId(), masterTerm, true);
 
-            return (rows > 0) ? true : false;
+            //  Get New ID
+            pstmt = con.prepareStatement("SELECT MAX(EXTERNAL_DB_ID) from external_db");
+            rs = pstmt.executeQuery();
+            rs.next();
+            return rs.getInt(1);
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
@@ -131,19 +136,27 @@ public class DaoExternalDb {
         ResultSet rs = null;
         InputStream in = new FileInputStream (file);
 
+        // If object is already cached, reset it.
+        String key = this.getClass().getName() + ".getRecordById."
+                + externalDbId;
+        CacheManager manager = CacheManager.getInstance();
+        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
+        if (cache.get(key) != null) {
+            cache.remove(key);
+        }
+
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("UPDATE external_db SET `ICON` = ? "
+                    ("UPDATE external_db SET `ICON_BLOB` = ?, "
+                            + "`ICON_FILE_EXTENSION` = ? "
                             + "WHERE `EXTERNAL_DB_ID` = ?");
             pstmt.setBinaryStream(1, in, (int) file.length());
-            pstmt.setInt(2, externalDbId);
-            int rowsUpdated = pstmt.executeUpdate();
-            if (rowsUpdated == 0) {
-                return false;
-            } else {
-                return true;
-            }
+            String fileExtension = getFileExtension(file);
+            pstmt.setString(2, fileExtension);
+            pstmt.setInt(3, externalDbId);
+            int rows = pstmt.executeUpdate();
+            return (rows > 0) ? true : false;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
@@ -171,13 +184,17 @@ public class DaoExternalDb {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("SELECT ICON FROM external_db "
+                    ("SELECT ICON_BLOB FROM external_db "
                             + "WHERE `EXTERNAL_DB_ID` = ?");
             pstmt.setInt(1, externalDbId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                Blob blob = rs.getBlob("ICON");
-                return new ImageIcon(blob.getBytes(1, (int)blob.length()));
+                Blob blob = rs.getBlob("ICON_BLOB");
+                if (blob != null) {
+                    return new ImageIcon(blob.getBytes(1, (int)blob.length()));
+                } else {
+                    return null;
+                }
             } else {
                 return null;
             }
@@ -453,6 +470,7 @@ public class DaoExternalDb {
         record.setSampleId(rs.getString("SAMPLE_ID"));
         record.setPathGuideId(rs.getString("PATH_GUIDE_ID"));
         record.setDescription(rs.getString("DESC"));
+        record.setIconFileExtension(rs.getString("ICON_FILE_EXTENSION"));
         record.setCreateTime(rs.getDate("CREATE_TIME"));
         record.setUpdateTime(rs.getDate("UPDATE_TIME"));
         ReferenceType type = ReferenceType.getType
@@ -464,5 +482,16 @@ public class DaoExternalDb {
         record.setMasterTerm(cvRecord.getMasterTerm());
         record.setSynonymTerms(cvRecord.getSynonymTerms());
         return record;
+    }
+
+    private String getFileExtension (File file) {
+        String ext;
+        int dotPlace = file.getName().lastIndexOf ( '.' );
+        if ( dotPlace >= 0 ) {
+            ext = file.getName().substring( dotPlace + 1 );
+        } else {
+           ext = "";
+        }
+        return ext;
     }
 }
