@@ -1,4 +1,4 @@
-// $Id: FileUtil.java,v 1.3 2006-02-22 22:51:58 grossb Exp $
+// $Id: FileUtil.java,v 1.4 2006-09-05 14:17:49 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,30 @@ import java.io.IOException;
  * @author Ethan Cerami.
  */
 public class FileUtil {
+    /**
+     * BioPAX File Type.
+     */
+    public static final int BIOPAX = 0;
+
+    /**
+     * PSI_MI File Type.
+     */
+    public static final int PSI_MI = 1;
+
+    /**
+     * External DBs File Type.
+     */
+    public static final int EXTERNAL_DBS = 2;
+
+    /**
+     * Identifiers File Type.
+     */
+    public static final int IDENTIFIERS = 3;
+
+    /**
+     * Unknown File Type.
+     */
+    public static final int UNKNOWN = 4;
 
     /**
      * Gets Number of Lines in Specified File.
@@ -79,5 +103,43 @@ public class FileUtil {
             line = buf.readLine();
         }
         return line;
+    }
+
+    /**
+     * Given a file, determine what's in it.
+     * @param file  File.
+     * @return File type.  See contants above.
+     * @throws IOException File access error.
+     */
+    public static int getFileType (File file) throws IOException {
+        String fileName = file.getName();
+        if (fileName.endsWith("txt")) {
+            return IDENTIFIERS;
+        } else if (fileName.endsWith("owl")) {
+            return BIOPAX;
+        } else if (fileName.endsWith("psi")
+                || fileName.endsWith("mif")) {
+            return PSI_MI;
+        } else if (fileName.endsWith("xml")) {
+            BufferedReader reader = new BufferedReader (new FileReader(file));
+            StringBuffer header = new StringBuffer();
+            int lines = 0;
+            String line = reader.readLine();
+            while (lines < 5 && line != null) {
+                header.append(line);
+                lines++;
+                line = reader.readLine();
+            }
+            reader.close();
+            String headerStr = header.toString();
+            if (headerStr.indexOf("www.biopax.org") > 0) {
+                return BIOPAX;
+            } else if (headerStr.indexOf("net:sf:psidev:mi") > 0) {
+                return PSI_MI;
+            } else if (headerStr.indexOf("external_database_list") > 0) {
+                return EXTERNAL_DBS;
+            }
+        }
+        return UNKNOWN;
     }
 }
