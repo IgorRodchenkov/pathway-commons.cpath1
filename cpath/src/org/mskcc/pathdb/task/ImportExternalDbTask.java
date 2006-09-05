@@ -1,4 +1,4 @@
-// $Id: ImportExternalDbTask.java,v 1.6 2006-08-31 16:00:54 cerami Exp $
+// $Id: ImportExternalDbTask.java,v 1.7 2006-09-05 13:33:43 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -85,6 +86,7 @@ public class ImportExternalDbTask extends Task {
         ProgressMonitor pMonitor = getProgressMonitor();
         ExternalDbXmlUtil util = new ExternalDbXmlUtil(file);
         ArrayList dbList = util.getExternalDbList();
+        validateIconFiles (dbList);
         for (int i = 0; i < dbList.size(); i++) {
             ExternalDatabaseRecord dbRecord =
                     (ExternalDatabaseRecord) dbList.get(i);
@@ -98,9 +100,47 @@ public class ImportExternalDbTask extends Task {
                     checkUrl(dbRecord, pMonitor);
                 }
             }
-            daoExternalDb.addRecord(dbRecord);
+            int externalDbId = daoExternalDb.addRecord(dbRecord);
+            if (dbRecord.getIconPath() != null) {
+                File iconFile = getIconFile(dbRecord);
+                daoExternalDb.addIcon(iconFile, externalDbId);
+            }
         }
         return dbList.size();
+    }
+
+    /**
+     * Before importing any external dbs, verify that all icon files
+     * are accesible.
+     */
+    private void validateIconFiles (ArrayList dbList)
+            throws FileNotFoundException{
+        for (int i = 0; i < dbList.size(); i++) {
+            ExternalDatabaseRecord dbRecord =
+                    (ExternalDatabaseRecord) dbList.get(i);
+            if (dbRecord.getIconPath() != null) {
+                File iconFile = getIconFile(dbRecord);
+                if (!iconFile.exists()) {
+                    throw new FileNotFoundException ("Icon file not found:  "
+                        + iconFile);
+                }
+            }
+
+        }
+    }
+
+    private File getIconFile(ExternalDatabaseRecord dbRecord) {
+        String path = dbRecord.getIconPath();
+        File iconFile;
+
+        //  Deal with absolute and relative paths
+        if (path.startsWith("/") || path.startsWith("\"")) {
+            iconFile = new File (path);
+        } else {
+            iconFile = new File (file.getParentFile(),
+                dbRecord.getIconPath());
+        }
+        return iconFile;
     }
 
     private void checkUrl(ExternalDatabaseRecord dbRecord,
