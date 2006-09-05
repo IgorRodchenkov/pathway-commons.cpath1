@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.49 2006-06-09 19:22:04 cerami Exp $
+// $Id: Admin.java,v 1.50 2006-09-05 14:02:59 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,15 +39,13 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
-import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
-import org.mskcc.pathdb.task.ImportRecordTask;
-import org.mskcc.pathdb.task.IndexLuceneTask;
-import org.mskcc.pathdb.task.ValidateXmlTask;
+import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.jdom.JDOMException;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -205,7 +203,7 @@ public class Admin {
      * Imports a BioPAX, PSI-MI or an External Reference File.
      */
     private static void importData() throws IOException, DaoException,
-            ImportException, SAXException,
+            ImportException, SAXException, JDOMException,
             DataServiceException {
         if (fileName != null) {
             File file = new File(fileName);
@@ -230,16 +228,16 @@ public class Admin {
 
     private static void importDataFromSingleFile(File file) throws IOException,
             DaoException, SAXException, DataServiceException,
-            ImportException {
+            ImportException, JDOMException {
         String fileName = file.getName();
         long importId = NOT_SET;
-        if (fileName.endsWith("xml") || fileName.endsWith("psi")
-                || fileName.endsWith("mif")) {
+        int fileType = FileUtil.getFileType(file);
+        if (fileType == FileUtil.PSI_MI) {
             importId = importPsiMiFile(file);
-        } else if (fileName.endsWith("owl")) {
+        } else if (fileType == FileUtil.BIOPAX) {
             importId = LoadBioPaxPsi.importDataFile(file,
                     XmlRecordType.BIO_PAX);
-        } else if (fileName.endsWith("txt")) {
+        } else if (fileType == FileUtil.IDENTIFIERS) {
             ParseBackgroundReferencesTask task =
                     new ParseBackgroundReferencesTask(file, true);
             int numRecordsSaved = task.parseAndStoreToDb();
@@ -251,6 +249,11 @@ public class Admin {
             //  ImportReferencesTask task =
             //    new ImportReferencesTask(true, reader);
             //  task.importReferences();
+        } else if (fileType == FileUtil.EXTERNAL_DBS) {
+            System.out.println("Loading external databases...");
+            ImportExternalDbTask task = new ImportExternalDbTask
+                    (file, true, false);
+            task.importFile();
         } else {
             System.out.println("Cannot determine file type.  Skipping...");
         }
