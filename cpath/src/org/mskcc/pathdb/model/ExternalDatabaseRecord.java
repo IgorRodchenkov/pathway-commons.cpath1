@@ -1,4 +1,4 @@
-// $Id: ExternalDatabaseRecord.java,v 1.18 2006-08-31 15:59:35 cerami Exp $
+// $Id: ExternalDatabaseRecord.java,v 1.19 2006-09-05 13:34:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -57,6 +57,8 @@ public class ExternalDatabaseRecord implements Serializable {
     private String homePageUrl;
     private String sampleId;
     private String pathGuideId;
+    private String iconPath;
+    private String iconFileExtension;
     private ReferenceType dbType;
     private Date createTime;
     private Date updateTime;
@@ -297,5 +299,37 @@ public class ExternalDatabaseRecord implements Serializable {
      */
     public void setDbType(ReferenceType refType) {
         this.dbType = refType;
+    }
+
+    /**
+     * Gets the path to an external icon file.
+     * @return path to an external icon file.
+     */
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    /**
+     * Sets the path to an external icon file.
+     * @param iconPath path to an external icon file.
+     */
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
+    /**
+     * Gets file extension associated with icon.
+     * @return file extension associated with icon.
+     */
+    public String getIconFileExtension() {
+        return iconFileExtension;
+    }
+
+    /**
+     * Sets file extension associated with icon.
+     * @param iconFileExtension file extension associated with icon.
+     */
+    public void setIconFileExtension(String iconFileExtension) {
+        this.iconFileExtension = iconFileExtension;
     }
 }
