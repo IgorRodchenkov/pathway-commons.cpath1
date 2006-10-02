@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.51 2006-09-05 14:17:31 cerami Exp $
+// $Id: Admin.java,v 1.52 2006-10-02 20:46:43 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.file.FileUtil;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -208,17 +209,29 @@ public class Admin {
             DataServiceException {
         if (fileName != null) {
             File file = new File(fileName);
+            boolean allValid = true;
             if (file.isDirectory()) {
                 System.out.println("Loading all files in directory:  "
                         + file.getAbsolutePath());
                 File files[] = file.listFiles();
+                //  Do quick Validation pass on all files first.
                 for (int i = 0; i < files.length; i++) {
                     //  Avoid loading up hidden files, such as .DS_Store
                     //  files on Mac OS X.
                     if (!files[i].getName().startsWith(".")) {
-                        System.out.println(">  Loading File:  "
-                                + files[i].getAbsolutePath());
-                        importDataFromSingleFile(files[i]);
+                        boolean fileValid = validateSingleFile(files[i]);
+                        allValid = allValid && fileValid;
+                    }
+                }
+                if (allValid) {
+                    for (int i = 0; i < files.length; i++) {
+                        //  Avoid loading up hidden files, such as .DS_Store
+                        //  files on Mac OS X.
+                        if (!files[i].getName().startsWith(".")) {
+                            System.out.println(">  Loading File:  "
+                                    + files[i].getAbsolutePath());
+                            importDataFromSingleFile(files[i]);
+                        }
                     }
                 }
             } else {
@@ -227,10 +240,29 @@ public class Admin {
         }
     }
 
+    private static boolean validateSingleFile (File file) throws IOException,
+            SAXException {
+        if (file.isDirectory()) return true;
+        System.out.print ("Testing File for RDF Validity:  " + file.getName());
+        int fileType = FileUtil.getFileType(file);
+        FileReader reader = new FileReader (file);
+        if (fileType == FileUtil.BIOPAX) {
+            RdfValidator rdfValidator = new RdfValidator(reader);
+            boolean hasErrors = rdfValidator.hasErrorsOrWarnings();
+            if (hasErrors) {
+                System.out.println(" --> Invalid");
+                System.out.println(rdfValidator.getReadableErrorList());
+                return false;
+            } else {
+                System.out.println(" --> OK");
+            }
+        }
+        return true;
+    }
+
     private static void importDataFromSingleFile(File file) throws IOException,
             DaoException, SAXException, DataServiceException,
             ImportException, JDOMException {
-        String fileName = file.getName();
         long importId = NOT_SET;
         int fileType = FileUtil.getFileType(file);
         if (fileType == FileUtil.PSI_MI) {
