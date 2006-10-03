@@ -11,9 +11,9 @@
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
     xdebug.stopTimer();
-    Enumeration enum = request.getAttributeNames();
-    while (enum.hasMoreElements()) {
-        String name = (String) enum.nextElement();
+    Enumeration enum0 = request.getAttributeNames();
+    while (enum0.hasMoreElements()) {
+        String name = (String) enum0.nextElement();
         Object value = request.getAttribute(name);
         xdebug.addParameter(XDebugParameter.REQUEST_ATTRIBUTE_TYPE, name,
                 value.toString());
