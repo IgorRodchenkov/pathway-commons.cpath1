@@ -1,4 +1,4 @@
-// $Id: SnapshotReader.java,v 1.1 2006-10-03 19:50:36 cerami Exp $
+// $Id: SnapshotReader.java,v 1.2 2006-10-05 14:14:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,32 +63,37 @@ public class SnapshotReader {
     public SnapshotReader (File directory) throws ImportException {
         try {
             File file = new File (directory, "db.info");
+
+            //  Load properties
             Properties properties = new Properties ();
             properties.load(new FileInputStream (file));
-            String dbName = (String) properties.get("db_name");
-            String snapshotVersion = (String) properties.get
-                    ("db_snapshot_version");
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-            Date snapshotDate = format.parse((String) properties.get
-                    ("db_snapshot_date"));
 
-            DaoExternalDb daoDb = new DaoExternalDb();
-            ExternalDatabaseRecord dbRecord = daoDb.getRecordByName(dbName);
-            if (dbRecord == null) {
-                throw new ImportException ("In db.info, db_name is set to: "
-                    + dbName + ".  However, no such database currently exists "
-                    + "in cPath.  You must first load meta-data regarding "
-                    + "this database.  Refer to Administration Guide for "
-                    + "complete details.");
+            //  Extract Required Properties;  fail if any required properties are not specified.
+            String dbName = (String) properties.get("db_name");
+            if (dbName == null) {
+                throw new ImportException ("In db.info, you must specify a "
+                        + "db_name property.  Refer to Administration Guide "
+                        + "for complete details.");
             }
-            DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-            snapshotRecord = dao.getDatabaseSnapshot(dbRecord.getId(),
-                    snapshotDate);
-            if (snapshotRecord == null) {
-                dao.addRecord(dbRecord.getId(), snapshotDate, snapshotVersion);
-                snapshotRecord = dao.getDatabaseSnapshot(dbRecord.getId(),
-                        snapshotDate);
+
+            String snapshotVersion = (String) properties.get ("db_snapshot_version");
+            if (snapshotVersion == null) {
+                snapshotVersion = "N/A";
             }
+
+            String dateStr =(String) properties.get("db_snapshot_date");
+            if (dateStr ==  null) {
+                throw new ImportException ("In db.info, you must specifiy a "
+                    + "db_snapshot_date property.  Refer to Administration "
+                    + "Guide for complete details.");
+            }
+
+            //  Convert to Date Object
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+            Date snapshotDate = format.parse(dateStr);
+
+            //  Conditionally create new snapshot record
+            conditionallyCreateSnapshot(dbName, snapshotDate, snapshotVersion);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             throw new ImportException ("In order to load files in this "
@@ -100,6 +105,35 @@ public class SnapshotReader {
             throw new ImportException (e);
         } catch (DaoException e) {
             throw new ImportException (e);
+        }
+    }
+
+    /**
+     * Create new snapshot record, if it does not yet exist.
+     */
+    private void conditionallyCreateSnapshot(String dbName, Date snapshotDate,
+            String snapshotVersion) throws DaoException, ImportException {
+        //  Look up Specified Database
+        DaoExternalDb daoDb = new DaoExternalDb();
+        ExternalDatabaseRecord dbRecord = daoDb.getRecordByName(dbName);
+        if (dbRecord == null) {
+            throw new ImportException ("In db.info, db_name is set to: "
+                + dbName + ".  However, no such database currently exists "
+                + "in cPath.  You must first load meta-data regarding "
+                + "this database.  Refer to Administration Guide for "
+                + "complete details.");
+        }
+
+        //  Determine if snapshot already exists
+        DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+        snapshotRecord = dao.getDatabaseSnapshot(dbRecord.getId(),
+                snapshotDate);
+
+        //  If snapshot does not exist, go create it
+        if (snapshotRecord == null) {
+            dao.addRecord(dbRecord.getId(), snapshotDate, snapshotVersion);
+            snapshotRecord = dao.getDatabaseSnapshot(dbRecord.getId(),
+                    snapshotDate);
         }
     }
 
