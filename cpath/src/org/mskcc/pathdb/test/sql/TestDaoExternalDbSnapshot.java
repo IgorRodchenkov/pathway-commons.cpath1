@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDbSnapshot.java,v 1.1 2006-08-25 16:48:42 cerami Exp $
+// $Id: TestDaoExternalDbSnapshot.java,v 1.2 2006-10-05 19:36:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,9 +70,12 @@ public class TestDaoExternalDbSnapshot extends TestCase {
         id = dao.addRecord(1, date, "Version 2.0");
         assertTrue (id > 0);
 
-        //  Try retrieving the snapshot by ID and date
-        ExternalDatabaseSnapshotRecord record = dao.getDatabaseSnapshot(1,
-                date);
+        //  Try retrieving the snapshot by snapshot ID
+        ExternalDatabaseSnapshotRecord record = dao.getDatabaseSnapshot(id);
+        verifySnapshotRecord2(record);
+
+        //  Try retrieving the snapshot by Database ID and date
+        record = dao.getDatabaseSnapshot(1,  date);
         verifySnapshotRecord2(record);
 
         //  Try retrieving all snapshots by ID
