@@ -1,4 +1,4 @@
-// $Id: TestDaoCPath.java,v 1.20 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestDaoCPath.java,v 1.21 2006-10-05 20:09:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -86,7 +86,7 @@ public class TestDaoCPath extends TestCase {
         //  Test addRecord()
         long cpathId = dao.addRecord(NAME, DESCRIPTION, YEAST_NCBI_ID,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, XML, refs);
+                XmlRecordType.PSI_MI, XML, refs, 99, true);
         assertTrue(cpathId > 0);
 
         int numInteractionsAfter = dao.getNumEntities
@@ -145,6 +145,9 @@ public class TestDaoCPath extends TestCase {
         link = (ExternalLinkRecord) links.get(1);
         assertEquals(DB_NAME_1, link.getExternalDatabase().getName());
         assertEquals(DB_ID_1, link.getLinkedToId());
+
+        assertEquals (99, record.getSnapshotId());
+        assertEquals (true, record.isCpathGenerated());
     }
 
     /**
