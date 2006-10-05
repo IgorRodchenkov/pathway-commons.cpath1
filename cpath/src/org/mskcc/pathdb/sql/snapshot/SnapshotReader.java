@@ -1,4 +1,4 @@
-// $Id: SnapshotReader.java,v 1.2 2006-10-05 14:14:22 cerami Exp $
+// $Id: SnapshotReader.java,v 1.3 2006-10-05 14:28:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,25 +44,38 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Date;
+import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 /**
  * Utility to Read in Snapshot Data from db.info.
+ * <P>
+ * Class includes a simple static cache to prevent reading from file system over and over again.
  *
  * @author Ethan Cerami.
  */
 public class SnapshotReader {
     private ExternalDatabaseSnapshotRecord snapshotRecord;
+    private static HashMap cache = new HashMap();
+    private boolean isCachedResult = false;
 
     /**
      * Constructor.
      * @param directory             Directory containing db.info file.
      * @throws ImportException      Error in Importing Data.
      */
-    public SnapshotReader (File directory) throws ImportException {
+    public SnapshotReader (File directory, String fileName) throws ImportException {
         try {
-            File file = new File (directory, "db.info");
+
+            //  First, check static cache.
+            String key = directory.getAbsolutePath() + "/" + fileName;
+            if (cache.containsKey(key)) {
+                snapshotRecord = (ExternalDatabaseSnapshotRecord) cache.get (key);
+                isCachedResult = true;
+                return;
+            }
+            File file = new File (directory, fileName);
 
             //  Load properties
             Properties properties = new Properties ();
@@ -93,7 +106,7 @@ public class SnapshotReader {
             Date snapshotDate = format.parse(dateStr);
 
             //  Conditionally create new snapshot record
-            conditionallyCreateSnapshot(dbName, snapshotDate, snapshotVersion);
+            conditionallyCreateSnapshot(key, dbName, snapshotDate, snapshotVersion);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             throw new ImportException ("In order to load files in this "
@@ -109,9 +122,18 @@ public class SnapshotReader {
     }
 
     /**
+     * Determines if the ExternalDatabaseSnapshotRecord was obtained from the cache.
+     * Used by Unit tests only.
+     * @return true or false.
+     */
+    public boolean isCachedResult() {
+        return this.isCachedResult;
+    }
+
+    /**
      * Create new snapshot record, if it does not yet exist.
      */
-    private void conditionallyCreateSnapshot(String dbName, Date snapshotDate,
+    private void conditionallyCreateSnapshot(String key, String dbName, Date snapshotDate,
             String snapshotVersion) throws DaoException, ImportException {
         //  Look up Specified Database
         DaoExternalDb daoDb = new DaoExternalDb();
@@ -135,6 +157,9 @@ public class SnapshotReader {
             snapshotRecord = dao.getDatabaseSnapshot(dbRecord.getId(),
                     snapshotDate);
         }
+
+        //  store to static cache
+        cache.put(key, snapshotRecord);
     }
 
     /**
