@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.18 2006-09-05 13:39:44 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.19 2006-10-05 20:09:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -182,7 +182,7 @@ public class ImportBioPaxToCPath {
                         record.getType(),
                         record.getSpecificType(),
                         XmlRecordType.BIO_PAX,
-                        "[PLACE_HOLDER]");
+                        "[PLACE_HOLDER]", -1, false);
 
                 //  Find any LinkOut References, such as Affymetrix IDs
                 ExternalReference xrefs[] = bpUtil.extractXrefs(resource);

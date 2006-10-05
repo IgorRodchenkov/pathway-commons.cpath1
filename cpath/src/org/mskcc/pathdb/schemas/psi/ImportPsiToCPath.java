@@ -1,4 +1,4 @@
-// $Id: ImportPsiToCPath.java,v 1.11 2006-06-09 19:22:03 cerami Exp $
+// $Id: ImportPsiToCPath.java,v 1.12 2006-10-05 20:09:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -469,7 +469,7 @@ public class ImportPsiToCPath {
         //  Add New Record to cPath
         long cpathId = cpath.addRecord(name, desc, taxId,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, xml, refs);
+                XmlRecordType.PSI_MI, xml, refs, -1, false);
 
         //  Add to Id Hash Map
         idMap.put(protein.getId(), new Long(cpathId));
@@ -517,7 +517,7 @@ public class ImportPsiToCPath {
         long cpathId = cpath.addRecord(name, desc, taxId,
                 CPathRecordType.INTERACTION,
                 BioPaxConstants.PHYSICAL_INTERACTION, XmlRecordType.PSI_MI,
-                xml, allRefs);
+                xml, allRefs, -1, false);
 
         //  Creates Internal Links Between Interaction Record
         //  and all Interactor Records.

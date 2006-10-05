@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalLink.java,v 1.18 2006-08-28 17:21:22 cerami Exp $
+// $Id: TestDaoInternalLink.java,v 1.19 2006-10-05 20:09:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -127,13 +127,13 @@ public class TestDaoInternalLink extends TestCase {
         DaoCPath dao = DaoCPath.getInstance();
         long id1 = dao.addRecord(PROTEIN_A, "Protein A Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, "protein a xml here");
+                XmlRecordType.PSI_MI, "protein a xml here", -1, false);
         long id2 = dao.addRecord(PROTEIN_B, "Protein B Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, "protein B xml here");
+                XmlRecordType.PSI_MI, "protein B xml here", -1, false);
         long id3 = dao.addRecord(PROTEIN_C, "Protein C Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, "protein C xml here");
+                XmlRecordType.PSI_MI, "protein C xml here", -1, false);
 
         DaoInternalLink linker = new DaoInternalLink();
 
@@ -165,13 +165,13 @@ public class TestDaoInternalLink extends TestCase {
         DaoCPath dao = DaoCPath.getInstance();
         cPathIdA = dao.addRecord(PROTEIN_A, "Protein A Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, "protein a xml here");
+                XmlRecordType.PSI_MI, "protein a xml here", -1, false);
         cPathIdB = dao.addRecord(PROTEIN_B, "Protein B Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, "protein B xml here");
+                XmlRecordType.PSI_MI, "protein B xml here", -1, false);
         cPathIdC = dao.addRecord(PROTEIN_C, "Protein C Blah", 101,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, "protein C xml here");
+                XmlRecordType.PSI_MI, "protein C xml here", -1, false);
     }
 
     /**

@@ -1,4 +1,4 @@
-// $Id: TestUpdatePsiInteractor.java,v 1.18 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestUpdatePsiInteractor.java,v 1.19 2006-10-05 20:09:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,7 +79,7 @@ public class TestUpdatePsiInteractor extends TestCase {
         proteinA.marshal(writer);
         long cpathId = cpath.addRecord(NAME, DESCRIPTION, 25,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, writer.toString(), refsA);
+                XmlRecordType.PSI_MI, writer.toString(), refsA, -1, false);
         UpdatePsiInteractor updater = new UpdatePsiInteractor(proteinB,
                 new ProgressMonitor());
         boolean needsUpdating = updater.needsUpdating();

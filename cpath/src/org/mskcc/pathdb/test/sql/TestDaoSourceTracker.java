@@ -1,4 +1,4 @@
-// $Id: TestDaoSourceTracker.java,v 1.1 2006-08-25 16:48:42 cerami Exp $
+// $Id: TestDaoSourceTracker.java,v 1.2 2006-10-05 20:09:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,13 +73,13 @@ public class TestDaoSourceTracker extends TestCase {
         //  Add Sample Record #1:  Source Record
         long cpathId1 = dao.addRecord(NAME_1, DESCRIPTION_1, YEAST_NCBI_ID,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.BIO_PAX, XML_1, refs);
+                XmlRecordType.BIO_PAX, XML_1, refs, -1 , false);
         assertTrue(cpathId1 > 0);
 
         //  Add Sample Record #2:  cPath Generated Record
         long cpathId2 = dao.addRecord(NAME_2, DESCRIPTION_2, YEAST_NCBI_ID,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.BIO_PAX, XML_2, refs);
+                XmlRecordType.BIO_PAX, XML_2, refs, -1, false);
         assertTrue(cpathId2 > 0);
 
         //  Add link between records #1 and #2
