@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.27 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoCPath.java,v 1.28 2006-10-05 20:08:09 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,8 +63,8 @@ public class DaoCPath extends ManagedDAO {
     private static final String INSERT =
             "INSERT INTO cpath (`NAME`,`DESC`,"
                     + "`TYPE`, `SPECIFIC_TYPE`, `NCBI_TAX_ID`, `XML_TYPE`, "
-                    + "`XML_CONTENT` ,"
-                    + " `CREATE_TIME`) VALUES (?, ?,?,?,?,?,?,?)";
+                    + "`XML_CONTENT`, `EXTERNAL_DB_SNAPSHOT_ID`, `CPATH_GENERATED`,"
+                    + " `CREATE_TIME`) VALUES (?, ?,?,?,?,?,?,?,?,?)";
 
     private static final String GET_MAX_ID_KEY = "GET_MAX_ID_KEY";
     private static final String GET_MAX_ID =
@@ -207,7 +207,7 @@ public class DaoCPath extends ManagedDAO {
      */
     public synchronized long addRecord(String name, String description,
             int ncbiTaxonomyId, CPathRecordType type, String specificType,
-            XmlRecordType xmlType, String xml)
+            XmlRecordType xmlType, String xml, long snapshotId, boolean cpathGeneratedFlag)
             throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -222,9 +222,11 @@ public class DaoCPath extends ManagedDAO {
             pstmt.setInt(5, ncbiTaxonomyId);
             pstmt.setString(6, xmlType.toString());
             pstmt.setString(7, xml);
+            pstmt.setLong (8, snapshotId);
+            pstmt.setBoolean(9, cpathGeneratedFlag);
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
-            pstmt.setDate(8, sqlDate);
+            pstmt.setDate(10, sqlDate);
             pstmt.executeUpdate();
 
             //  Get New CPath ID
@@ -259,10 +261,11 @@ public class DaoCPath extends ManagedDAO {
      */
     public synchronized long addRecord(String name, String description,
             int ncbiTaxonomyId, CPathRecordType type, String specificType,
-            XmlRecordType xmlType, String xml, ExternalReference refs[])
+            XmlRecordType xmlType, String xml, ExternalReference refs[], long snapshotId,
+            boolean cpathGeneratedFlag)
             throws DaoException {
         long cpathId = this.addRecord(name, description, ncbiTaxonomyId,
-                type, specificType, xmlType, xml);
+                type, specificType, xmlType, xml, snapshotId, cpathGeneratedFlag);
         DaoExternalLink linker = DaoExternalLink.getInstance();
         linker.addMulipleRecords(cpathId, refs, false);
         return cpathId;
@@ -578,6 +581,8 @@ public class DaoCPath extends ManagedDAO {
         record.setXmlContent(rs.getString("XML_CONTENT"));
         record.setCreateTime(rs.getDate("CREATE_TIME"));
         record.setUpdateTime(rs.getDate("UPDATE_TIME"));
+        record.setSnapshotId(rs.getLong("EXTERNAL_DB_SNAPSHOT_ID"));
+        record.setCpathGenerated(rs.getBoolean("CPATH_GENERATED"));
         return record;
     }
 }
