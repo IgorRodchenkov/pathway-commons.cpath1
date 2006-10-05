@@ -1,4 +1,4 @@
-// $Id: ExternalDatabaseSnapshotRecord.java,v 1.1 2006-08-25 16:54:07 cerami Exp $
+// $Id: ExternalDatabaseSnapshotRecord.java,v 1.2 2006-10-05 19:36:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,13 +32,15 @@
 package org.mskcc.pathdb.model;
 
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * Encapsulates information regarding a database snapshot record.
  *
  * @author Ethan Cerami.
  */
-public class ExternalDatabaseSnapshotRecord {
+public class ExternalDatabaseSnapshotRecord implements Serializable {
+    private long id;
     private ExternalDatabaseRecord externalDatabase;
     private Date snapshotDate;
     private String snapshotVersion;
@@ -78,5 +80,21 @@ public class ExternalDatabaseSnapshotRecord {
      */
     public String getSnapshotVersion() {
         return snapshotVersion;
+    }
+
+    /**
+     * Gets the Primary ID.
+     * @return Primary ID.
+     */
+    public long getId() {
+        return this.id;
+    }
+
+    /**
+     * Sets the Primary ID.
+     * @param id Primary ID.
+     */
+    public void setId(long id) {
+        this.id = id;
     }
 }
