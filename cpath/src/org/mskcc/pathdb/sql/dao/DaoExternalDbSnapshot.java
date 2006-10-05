@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.1 2006-08-25 16:47:40 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.2 2006-10-05 19:35:51 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.sql.dao;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,6 +42,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
 
 /**
  * Data Access Object to the External Database Snapshot table.
@@ -113,8 +118,7 @@ public class DaoExternalDbSnapshot {
             pstmt.executeUpdate();
 
             //  Get New External DB Snapshot ID
-            pstmt = con.prepareStatement
-                    ("select MAX(EXTERNAL_DB_SNAPSHOT_ID) "
+            pstmt = con.prepareStatement ("select MAX(EXTERNAL_DB_SNAPSHOT_ID) "
                             + "from external_db_snapshot");
             rs = pstmt.executeQuery();
             rs.next();
@@ -130,7 +134,55 @@ public class DaoExternalDbSnapshot {
     }
 
     /**
-     * Gets the specified snapshot record.
+     * Gets the specified snapshot record by ID.
+     *
+     * @param snapshotId Snapshot ID.
+     * @return ExternalDatabaseSnapshotRecord
+     * @throws DaoException Error connecting to database.
+     */
+    public ExternalDatabaseSnapshotRecord getDatabaseSnapshot(long snapshotId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        // First Check Cache
+        String key = getClass().getName() + ".getDatabaseSnapshot." + snapshotId;
+        CacheManager manager = CacheManager.getInstance();
+        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
+        Element cachedElement = cache.get(key);
+
+        //  If not in cache, get from Database
+        if (cachedElement == null) {
+            try {
+                con = JdbcUtil.getCPathConnection();
+                pstmt = con.prepareStatement ("select * from external_db_snapshot where "
+                    + "EXTERNAL_DB_SNAPSHOT_ID = ?");
+                pstmt.setLong(1, snapshotId);
+                ArrayList snapshotList = getMultipleSnapshots(pstmt);
+                if (snapshotList.size() == 1) {
+                    ExternalDatabaseSnapshotRecord record = (ExternalDatabaseSnapshotRecord)
+                            snapshotList.get(0);
+                    //  Store to Cache
+                    cachedElement = new Element(key, record);
+                    cache.put(cachedElement);
+                    return record;
+                } else {
+                    return null;
+                }
+            } catch (ClassNotFoundException e) {
+                throw new DaoException(e);
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            } finally {
+                JdbcUtil.closeAll(con, pstmt, rs);
+            }
+        } else {
+            return (ExternalDatabaseSnapshotRecord) cachedElement.getValue();
+        }
+    }
+
+    /**
+     * Gets the snapshot record, from Database X on Date Y.
      *
      * @param externalDbId External database ID.
      * @param snapshotDate Snapshot date.
@@ -229,6 +281,7 @@ public class DaoExternalDbSnapshot {
         try {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
+                long id = rs.getInt("EXTERNAL_DB_SNAPSHOT_ID");
                 int externalDbId = rs.getInt("EXTERNAL_DB_ID");
                 String snapshotVersion = rs.getString("SNAPSHOT_VERSION");
                 java.sql.Date date = rs.getDate("SNAPSHOT_DATE");
@@ -238,6 +291,7 @@ public class DaoExternalDbSnapshot {
                 ExternalDatabaseSnapshotRecord snapshotRecord =
                         new ExternalDatabaseSnapshotRecord
                                 (dbRecord, new Date(date.getTime()), snapshotVersion);
+                snapshotRecord.setId(id);
                 snapshotList.add(snapshotRecord);
             }
         } catch (SQLException e) {
