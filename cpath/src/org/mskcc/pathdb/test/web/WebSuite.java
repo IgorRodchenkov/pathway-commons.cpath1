@@ -1,4 +1,4 @@
-// $Id: WebSuite.java,v 1.6 2006-02-22 22:47:51 grossb Exp $
+// $Id: WebSuite.java,v 1.7 2006-10-06 14:36:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,7 +49,6 @@ public class WebSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestProtocol.class);
         suite.setName("Web Tests");
         return suite;
     }
