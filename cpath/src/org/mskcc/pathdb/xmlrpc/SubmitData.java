@@ -1,4 +1,4 @@
-// $Id: SubmitData.java,v 1.13 2006-02-22 22:51:58 grossb Exp $
+// $Id: SubmitData.java,v 1.14 2006-10-06 14:36:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,7 +63,7 @@ public class SubmitData implements XmlRpcHandler {
             //  Import to Database.
             DaoImport dbImport = new DaoImport();
             dbImport.addRecord("Cytoscape Submission", XmlRecordType.PSI_MI,
-                    data);
+                    data, -1);
         } catch (DaoException e) {
             throw new XmlRpcException(1, e.toString());
         }

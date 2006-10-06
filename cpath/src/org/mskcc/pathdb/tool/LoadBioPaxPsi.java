@@ -1,4 +1,4 @@
-// $Id: LoadBioPaxPsi.java,v 1.6 2006-02-22 22:47:51 grossb Exp $
+// $Id: LoadBioPaxPsi.java,v 1.7 2006-10-06 14:36:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,7 +63,7 @@ public class LoadBioPaxPsi {
         ContentReader contentReader = new ContentReader();
         String data = contentReader.retrieveContent(file.getAbsolutePath());
         DaoImport dbImport = new DaoImport();
-        long importId = dbImport.addRecord(description, xmlType, data);
+        long importId = dbImport.addRecord(description, xmlType, data, -1);
         return importId;
     }
 }

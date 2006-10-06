@@ -1,4 +1,4 @@
-// $Id: AdminImportData.java,v 1.15 2006-05-15 20:55:51 cerami Exp $
+// $Id: AdminImportData.java,v 1.16 2006-10-06 14:36:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -141,7 +141,7 @@ public class AdminImportData extends AdminBaseAction {
         DaoImport dbImport = new DaoImport();
         xdebug.logMsg(this, "Importing File Type:  " + xmlType
                 + " to cPath IMPORT table");
-        long importId = dbImport.addRecord(fileName, xmlType, data);
+        long importId = dbImport.addRecord(fileName, xmlType, data, -1);
         xdebug.logMsg(this, "Import ID:  " + importId);
         ImportRecordTask task = new ImportRecordTask(importId, true, false,
                 false);
