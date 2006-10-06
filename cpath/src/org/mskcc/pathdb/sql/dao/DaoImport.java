@@ -1,4 +1,4 @@
-// $Id: DaoImport.java,v 1.24 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoImport.java,v 1.25 2006-10-06 14:35:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,13 +52,14 @@ import java.util.ArrayList;
  */
 public class DaoImport {
     private static final String IMPORT_ID = "IMPORT_ID";
-    private static final String DESCRIPTION = "DESC";
+    private static final String FILE_NAME = "FILE_NAME";
     private static final String XML_TYPE = "XML_TYPE";
     private static final String STATUS = "STATUS";
     private static final String CREATE_TIME = "CREATE_TIME";
     private static final String UPDATE_TIME = "UPDATE_TIME";
     private static final String DOC_BLOB = "DOC_BLOB";
     private static final String DOC_MD5 = "DOC_MD5";
+    private static final String EXTERNAL_DB_SNAPSHOT_ID = "EXTERNAL_DB_SNAPSHOT_ID";
 
     /**
      * Gets all Import Records.
@@ -75,8 +76,8 @@ public class DaoImport {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select `IMPORT_ID`, `DESC`, `XML_TYPE`, `DOC_MD5`, "
-                            + "`STATUS`, `CREATE_TIME`, `UPDATE_TIME`"
+                    ("select `IMPORT_ID`, `FILE_NAME`, `XML_TYPE`, `DOC_MD5`, "
+                            + "`STATUS`, `CREATE_TIME`, `UPDATE_TIME`, `EXTERNAL_DB_SNAPSHOT_ID`"
                             + " from import order by IMPORT_ID");
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -157,7 +158,7 @@ public class DaoImport {
      * @throws DaoException Error Retrieving Data.
      */
     public synchronized long addRecord(String description, XmlRecordType
-            xmlType, String data) throws DaoException {
+            xmlType, String data, long snapshotId) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -167,9 +168,10 @@ public class DaoImport {
             String hash = Md5Util.createMd5Hash(data);
             byte zippedData[] = ZipUtil.zip(data);
             pstmt = con.prepareStatement
-                    ("INSERT INTO import (`DESC`, `XML_TYPE`, `DOC_BLOB`, "
-                            + "`DOC_MD5`, `STATUS`, `CREATE_TIME`, `UPDATE_TIME`)"
-                            + " VALUES (?,?,?,?,?,?,?)");
+                    ("INSERT INTO import (`FILE_NAME`, `XML_TYPE`, `DOC_BLOB`, "
+                            + "`DOC_MD5`, `STATUS`, `CREATE_TIME`, `UPDATE_TIME`, "
+                            + "`EXTERNAL_DB_SNAPSHOT_ID`)"
+                            + " VALUES (?,?,?,?,?,?,?,?)");
             pstmt.setString(1, description);
             pstmt.setString(2, xmlType.toString());
             pstmt.setBytes(3, zippedData);
@@ -179,6 +181,7 @@ public class DaoImport {
             java.sql.Date sqlDate = new java.sql.Date(date.getTime());
             pstmt.setDate(6, sqlDate);
             pstmt.setDate(7, sqlDate);
+            pstmt.setLong(8, snapshotId);
             int rows = pstmt.executeUpdate();
 
             //  Get New ID
@@ -303,12 +306,13 @@ public class DaoImport {
             throws SQLException, IOException {
         ImportRecord record = new ImportRecord();
         record.setImportId(rs.getInt(IMPORT_ID));
-        record.setDescription(rs.getString(DESCRIPTION));
+        record.setDescription(rs.getString(FILE_NAME));
         record.setXmlType(XmlRecordType.getType(rs.getString(XML_TYPE)));
         record.setStatus(rs.getString(STATUS));
         record.setCreateTime(rs.getDate(CREATE_TIME));
         record.setUpdateTime(rs.getDate(UPDATE_TIME));
         record.setMd5Hash(rs.getString(DOC_MD5));
+        record.setSnapshotId(rs.getLong(EXTERNAL_DB_SNAPSHOT_ID));
 
         //  Unzip Blob
         if (extractBlob) {

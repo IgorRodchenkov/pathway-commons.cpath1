@@ -1,4 +1,4 @@
-// $Id: TestDaoImport.java,v 1.14 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestDaoImport.java,v 1.15 2006-10-06 14:35:38 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -96,6 +96,9 @@ public class TestDaoImport extends TestCase {
             // Verify End of XML Document.
             int end = data.indexOf("</interactionList>");
             assertEquals(58419, end);
+
+            //  Verify Snapshot ID
+            assertEquals (101, record.getSnapshotId());
         }
     }
 
@@ -116,7 +119,7 @@ public class TestDaoImport extends TestCase {
     public void addTestRecords() throws Exception {
         DaoImport dbImport = new DaoImport();
         String sampleData = getTextFromSampleFile();
-        dbImport.addRecord(DESCRIPTION, XmlRecordType.PSI_MI, sampleData);
+        dbImport.addRecord(DESCRIPTION, XmlRecordType.PSI_MI, sampleData, 101);
     }
 
     /**

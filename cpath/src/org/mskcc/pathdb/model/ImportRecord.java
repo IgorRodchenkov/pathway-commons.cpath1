@@ -1,4 +1,4 @@
-// $Id: ImportRecord.java,v 1.10 2006-02-22 22:47:50 grossb Exp $
+// $Id: ImportRecord.java,v 1.11 2006-10-06 14:35:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -43,6 +43,7 @@ public class ImportRecord {
     private String description;
     private XmlRecordType xmlType;
     private int importId;
+    private long snapshotId;
     private String status;
     private Date createTime;
     private Date updateTime;
@@ -205,5 +206,21 @@ public class ImportRecord {
      */
     public void setXmlType(XmlRecordType xmlType) {
         this.xmlType = xmlType;
+    }
+
+    /**
+     * Gets the snapsot ID.
+     * @return snapshot ID.
+     */
+    public long getSnapshotId() {
+        return snapshotId;
+    }
+
+    /**
+     * Sets the snapshot ID.
+     * @param snapshotId snapshot ID.
+     */
+    public void setSnapshotId(long snapshotId) {
+        this.snapshotId = snapshotId;
     }
 }
