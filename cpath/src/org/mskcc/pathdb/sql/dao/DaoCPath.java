@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.28 2006-10-05 20:08:09 cerami Exp $
+// $Id: DaoCPath.java,v 1.29 2006-10-09 14:59:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -201,8 +201,10 @@ public class DaoCPath extends ManagedDAO {
      * @param specificType   Specific Type of Record.  The value of this
      *                       field should be chosen from BioPaxConstants.java.
      * @param xmlType        XmlRecordType Object.
-     * @param xml            XML Content
-     * @return cPath Id for newly saved record
+     * @param xml            XML Content.
+     * @param snapshotId     Snapshot ID.
+     * @param cpathGeneratedFlag cPath Auto-Generated Flag.
+     * @return cPath Id for newly saved record.
      * @throws DaoException Error Retrieving Data.
      */
     public synchronized long addRecord(String name, String description,
