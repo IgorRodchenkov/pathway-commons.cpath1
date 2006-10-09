@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.52 2006-10-02 20:46:43 cerami Exp $
+// $Id: Admin.java,v 1.53 2006-10-09 18:17:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -302,7 +302,7 @@ public class Admin {
      * Imports PSI-MI File into Import Table.
      */
     private static long importPsiMiFile(File file) throws IOException,
-            SAXException, DataServiceException, DaoException {
+            SAXException, DataServiceException, DaoException, ImportException {
         ValidateXmlTask validator = new ValidateXmlTask(file);
         boolean isValid = validator.validate(false);
         long importId = NOT_SET;

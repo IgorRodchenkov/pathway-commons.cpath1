@@ -1,4 +1,4 @@
-// $Id: LoadBioPaxPsi.java,v 1.7 2006-10-06 14:36:36 cerami Exp $
+// $Id: LoadBioPaxPsi.java,v 1.8 2006-10-09 18:17:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,8 @@ import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoImport;
+import org.mskcc.pathdb.sql.snapshot.SnapshotReader;
+import org.mskcc.pathdb.sql.transfer.ImportException;
 
 import java.io.File;
 
@@ -55,15 +57,24 @@ public class LoadBioPaxPsi {
      * @return Import Record Primary ID.
      * @throws DataServiceException File Input Error.
      * @throws DaoException         Data Access Error.
+     * @throws ImportException      Import Error.
      */
     public static long importDataFile(File file, XmlRecordType xmlType)
-            throws DataServiceException, DaoException {
+            throws DataServiceException, DaoException, ImportException {
+        long snapshotId = -1;
         String description = file.getName();
+        System.out.println("Reading in file:  " + file.getName());
         System.out.println("XML Type:  " + xmlType.toString());
+
+        //  If this is a BioPAX file, read in meta-data from db.info
+        if (xmlType.equals (XmlRecordType.BIO_PAX)) {
+            System.out.println("Reading in meta-data from:  db.info");
+            SnapshotReader snapshotReader = new SnapshotReader(file.getParentFile(), "db.info");
+            snapshotId = snapshotReader.getSnapshotRecord().getId();
+        }
         ContentReader contentReader = new ContentReader();
         String data = contentReader.retrieveContent(file.getAbsolutePath());
         DaoImport dbImport = new DaoImport();
-        long importId = dbImport.addRecord(description, xmlType, data, -1);
-        return importId;
+        return dbImport.addRecord(description, xmlType, data, snapshotId);
     }
 }
