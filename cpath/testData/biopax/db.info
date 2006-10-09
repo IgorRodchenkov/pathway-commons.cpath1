@@ -1,0 +1,5 @@
+# Sample db.info
+# this file is required for loading BioPAX data from this directory
+db_name=Reactome
+db_snapshot_version=1.0
+db_snapshot_date=01/02/2006
