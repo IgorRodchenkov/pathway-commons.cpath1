@@ -1,4 +1,4 @@
-// $Id: ParseBackgroundReferencesTask.java,v 1.11 2006-06-09 19:22:03 cerami Exp $
+// $Id: ParseBackgroundReferencesTask.java,v 1.12 2006-10-09 18:16:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -212,7 +212,7 @@ public class ParseBackgroundReferencesTask extends Task {
                 throw new ImportException("Unable to import background "
                         + "reference file of " + ReferenceType.LINK_OUT
                         + " data.  First column must be of type:  "
-                        + ReferenceType.LINK_OUT + ".");
+                        + ReferenceType.LINK_OUT + ", but was:  " + db.getDbType());
             }
             this.referenceType = ReferenceType.LINK_OUT;
             this.getProgressMonitor().setCurrentMessage

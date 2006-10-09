@@ -1,4 +1,4 @@
-// $Id: SnapshotReader.java,v 1.3 2006-10-05 14:28:36 cerami Exp $
+// $Id: SnapshotReader.java,v 1.4 2006-10-09 18:16:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -85,7 +85,7 @@ public class SnapshotReader {
             String dbName = (String) properties.get("db_name");
             if (dbName == null) {
                 throw new ImportException ("In db.info, you must specify a "
-                        + "db_name property.  Refer to Administration Guide "
+                        + "db_name property.\nRefer to the Administration Guide "
                         + "for complete details.");
             }
 
@@ -97,7 +97,7 @@ public class SnapshotReader {
             String dateStr =(String) properties.get("db_snapshot_date");
             if (dateStr ==  null) {
                 throw new ImportException ("In db.info, you must specifiy a "
-                    + "db_snapshot_date property.  Refer to Administration "
+                    + "db_snapshot_date property.\nRefer to the Administration "
                     + "Guide for complete details.");
             }
 
@@ -108,10 +108,9 @@ public class SnapshotReader {
             //  Conditionally create new snapshot record
             conditionallyCreateSnapshot(key, dbName, snapshotDate, snapshotVersion);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new ImportException ("In order to load files in this "
+            throw new ImportException ("In order to load BioPAX files in this "
                 + "directory, you must create a valid db.info file.  "
-                + "Refer to Administration Guide for complete details.");
+                + "\nRefer to the Administration Guide for complete details.");
         } catch (IOException e) {
             throw new ImportException (e);
         } catch (ParseException e) {
@@ -139,10 +138,10 @@ public class SnapshotReader {
         DaoExternalDb daoDb = new DaoExternalDb();
         ExternalDatabaseRecord dbRecord = daoDb.getRecordByName(dbName);
         if (dbRecord == null) {
-            throw new ImportException ("In db.info, db_name is set to: "
-                + dbName + ".  However, no such database currently exists "
-                + "in cPath.  You must first load meta-data regarding "
-                + "this database.  Refer to Administration Guide for "
+            throw new ImportException ("In db.info, db_name is set to: '"
+                + dbName + "'.  However, no such database currently exists "
+                + "in cPath. \nTo proceed, you must first load meta-data regarding "
+                + "this database.\nRefer to the Administration Guide for "
                 + "complete details.");
         }
 
