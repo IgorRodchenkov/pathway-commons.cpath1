@@ -233,18 +233,6 @@ Alter table internal_link add INDEX internal_link_target_idx (TARGET_ID);
 Alter table external_link add INDEX cpath_id_idx (cpath_id); 
 
 --
--- Table structure for table `source_tracker`
---
-CREATE TABLE `source_tracker` (
-  `SOURCE_TRACKER_ID` int(11) NOT NULL auto_increment,
-  `ID_OF_CPATH_GENERATED_RECORD` int(11) NOT NULL default '0',
-  `ID_OF_SOURCE_RECORD` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`SOURCE_TRACKER_ID`),
-  KEY `ID_OF_CPATH_GENERATED_RECORD` (`ID_OF_CPATH_GENERATED_RECORD`),
-  KEY `ID_OF_SOURCE_RECORD` (`ID_OF_SOURCE_RECORD`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 COMMENT = 'Links source records with cPath generated records.';
-
---
 -- Table structure for table `external_db_snapshot`
 --
 
@@ -266,13 +254,6 @@ CREATE TABLE `internal_family` (
   `DESCENDENT_ID` int(11) NOT NULL default '0',
   `DESCENDENT_TYPE` varchar(255) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Constraints for table `source_tracker`
---
-ALTER TABLE `source_tracker`
-  ADD CONSTRAINT `source_tracker_ibfk_2` FOREIGN KEY (`ID_OF_SOURCE_RECORD`) REFERENCES `cpath` (`CPATH_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `source_tracker_ibfk_1` FOREIGN KEY (`ID_OF_CPATH_GENERATED_RECORD`) REFERENCES `cpath` (`CPATH_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `external_db_snapshot`

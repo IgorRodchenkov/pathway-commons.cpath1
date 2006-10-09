@@ -20,7 +20,6 @@ truncate table xml_cache;
 truncate table organism;
 truncate table background_reference;
 truncate table id_generator;
-truncate table source_tracker;
 truncate table external_db_snapshot;
 
 #
