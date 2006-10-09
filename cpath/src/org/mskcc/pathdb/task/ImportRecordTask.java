@@ -1,4 +1,4 @@
-// $Id: ImportRecordTask.java,v 1.21 2006-06-09 19:22:04 cerami Exp $
+// $Id: ImportRecordTask.java,v 1.22 2006-10-09 18:18:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -99,7 +99,8 @@ public class ImportRecordTask extends Task {
                         removeAllInteractionXRefs, pMonitor);
             } else {
                 ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
-                summary = importer.addRecord(xml, autoAddMissingExternalDbs, pMonitor);
+                summary = importer.addRecord(xml, record.getSnapshotId(),
+                        autoAddMissingExternalDbs, pMonitor);
             }
             outputSummary(summary);
             daoImport.updateRecordStatus(record.getImportId(),
