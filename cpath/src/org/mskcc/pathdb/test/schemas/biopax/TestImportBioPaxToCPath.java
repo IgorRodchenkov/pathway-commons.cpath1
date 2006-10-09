@@ -1,4 +1,4 @@
-// $Id: TestImportBioPaxToCPath.java,v 1.14 2006-10-09 18:18:12 cerami Exp $
+// $Id: TestImportBioPaxToCPath.java,v 1.15 2006-10-09 18:47:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -120,7 +120,15 @@ public class TestImportBioPaxToCPath extends TestCase {
                 ("XMLSchema#string\">CPATH</bp:DB>");
         assertTrue(index > 0);
 
-        //  Verify that record is linked to correct snapshot
+        //  Verify that record is not linked to any snapshot
+        assertEquals (-1, record.getSnapshotId());
+
+        //  Get Pathway by Unification Ref, and verify snapshot
+        recordList = externalLinker.lookUpByExternalRef
+                (new ExternalReference("Reactome", "69091"));
+        assertEquals (1, recordList.size());
+        record = (CPathRecord) recordList.get(0);
+        assertEquals("glycolysis", record.getName());
         DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
         ExternalDatabaseSnapshotRecord snapshotRecord =
                 daoSnapshot.getDatabaseSnapshot(record.getSnapshotId());
