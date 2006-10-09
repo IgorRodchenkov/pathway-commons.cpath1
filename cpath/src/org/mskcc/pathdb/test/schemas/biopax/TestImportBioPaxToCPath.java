@@ -1,4 +1,4 @@
-// $Id: TestImportBioPaxToCPath.java,v 1.13 2006-05-15 16:25:48 cerami Exp $
+// $Id: TestImportBioPaxToCPath.java,v 1.14 2006-10-09 18:18:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,11 +36,15 @@ import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ImportSummary;
+import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
+import org.mskcc.pathdb.sql.snapshot.SnapshotReader;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,6 +62,9 @@ public class TestImportBioPaxToCPath extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void testImport() throws Exception {
+        //  Start Cache with Clean Slate
+        EhCache.initCache();
+        EhCache.resetAllCaches();
 
         //  Store some dummy Affymetrix IDs to the Database
         File file = new File("testData/references/link_out_refs3.txt");
@@ -76,7 +83,12 @@ public class TestImportBioPaxToCPath extends TestCase {
                 ("testData/biopax/biopax1_sample1.owl");
         ProgressMonitor pMonitor = new ProgressMonitor();
         ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
-        ImportSummary summary = importer.addRecord(xml, false, pMonitor);
+
+        SnapshotReader snapshotReader = new SnapshotReader(
+                new File ("testData/biopax"), "db.info");
+        long snapshotId = snapshotReader.getSnapshotRecord().getId();
+
+        ImportSummary summary = importer.addRecord(xml, snapshotId, false, pMonitor);
         assertEquals(1, summary.getNumPathwaysSaved());
         assertEquals(0, summary.getNumPathwaysFound());
         assertEquals(4, summary.getNumInteractionsSaved());
@@ -108,9 +120,16 @@ public class TestImportBioPaxToCPath extends TestCase {
                 ("XMLSchema#string\">CPATH</bp:DB>");
         assertTrue(index > 0);
 
+        //  Verify that record is linked to correct snapshot
+        DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
+        ExternalDatabaseSnapshotRecord snapshotRecord =
+                daoSnapshot.getDatabaseSnapshot(record.getSnapshotId());
+        assertEquals ("Reactome", snapshotRecord.getExternalDatabase().getName());
+        assertEquals ("1.0", snapshotRecord.getSnapshotVersion());
+
         //  Try Saving Again
         importer = new ImportBioPaxToCPath();
-        summary = importer.addRecord(xml, false, pMonitor);
+        summary = importer.addRecord(xml, snapshotId, false, pMonitor);
 
         //  Because the pathway has a unification xref, it should not
         //  be saved again.
