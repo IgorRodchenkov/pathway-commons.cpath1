@@ -1,4 +1,4 @@
-// $Id: TestImportExternalDbTask.java,v 1.8 2006-09-05 13:32:21 cerami Exp $
+// $Id: TestImportExternalDbTask.java,v 1.9 2006-10-09 14:28:07 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -69,11 +69,6 @@ public class TestImportExternalDbTask extends TestCase {
         assertEquals("Yahoo", dbRecord.getName());
         assertEquals("http://www.yahoo.com", dbRecord.getHomePageUrl());
         assertEquals("XYZ123", dbRecord.getPathGuideId());
-
-        //  Verify icon was added
-        ImageIcon icon = dao.getIcon(dbRecord.getId());
-        assertEquals (87, icon.getIconWidth());
-        assertEquals (80, icon.getIconHeight());
 
         //  Verify icon file extension was set correctly
         dbRecord = dao.getRecordByTerm("YHO");

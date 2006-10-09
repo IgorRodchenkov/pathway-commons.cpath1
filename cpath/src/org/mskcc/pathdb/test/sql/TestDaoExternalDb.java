@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDb.java,v 1.24 2006-09-05 13:33:12 cerami Exp $
+// $Id: TestDaoExternalDb.java,v 1.25 2006-10-09 14:28:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -119,11 +119,6 @@ public class TestDaoExternalDb extends TestCase {
         //  Verify File Icon extension.
         record = dao.getRecordById(record.getId());
         assertEquals("png", record.getIconFileExtension());
-
-        //  Verify icon was added
-        ImageIcon icon = dao.getIcon(record.getId());
-        assertEquals (87, icon.getIconWidth());
-        assertEquals (80, icon.getIconHeight());
 
         //  Delete Record.
         flag = dao.deleteRecordById(record.getId());
