@@ -1,4 +1,4 @@
-// $Id: SqlSuite.java,v 1.31 2006-10-03 19:51:45 cerami Exp $
+// $Id: SqlSuite.java,v 1.32 2006-10-09 18:32:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,7 +64,6 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestDaoBackgroundReference.class);
         suite.addTestSuite(TestDaoIdGenerator.class);
         suite.addTestSuite(TestQueryFileReader.class);
-        suite.addTestSuite(TestDaoSourceTracker.class);
         suite.addTestSuite(TestDaoExternalDbSnapshot.class);
         suite.addTestSuite(TestDaoInternalFamily.class);
         suite.addTestSuite(TestSnapshotReader.class);
