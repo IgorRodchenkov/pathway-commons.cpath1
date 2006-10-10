@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.29 2006-10-09 14:59:10 cerami Exp $
+// $Id: DaoCPath.java,v 1.30 2006-10-10 14:48:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -258,6 +258,8 @@ public class DaoCPath extends ManagedDAO {
      * @param xmlType        XMLRecordType Object.
      * @param xml            XML Content
      * @param refs           Array of External References
+     * @param snapshotId     Snapshot Id
+     * @param cpathGeneratedFlag cPath Generated Flag.
      * @return cPath Id for newly saved record
      * @throws DaoException Error Retrieving Data.
      */
