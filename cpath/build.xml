@@ -231,6 +231,9 @@
         <replace file="${build.dir}/WEB-INF/web.xml"
              token="admin_mode_active__value" value="${web.admin.active}"
              summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="web_show_data_source__value" value="${web_show_data_source_details}"
+             summary="yes"/>
 
         <!-- Copy log4J Config -->
         <copy overwrite="yes" todir="${build.dir}/WEB-INF/classes"

@@ -100,6 +100,11 @@
 	        <param-name>admin_mode_active</param-name>
             <param-value>admin_mode_active__value</param-value>
         </init-param>
+        <init-param>
+            <!-- set to "0" or "1" -->
+	        <param-name>web_show_data_source_details</param-name>
+            <param-value>web_show_data_source__value</param-value>
+        </init-param>
         <load-on-startup/>
     </servlet>
     

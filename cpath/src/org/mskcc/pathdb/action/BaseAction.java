@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.26 2006-06-09 19:22:03 cerami Exp $
+// $Id: BaseAction.java,v 1.27 2006-10-24 15:13:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -159,6 +159,11 @@ public abstract class BaseAction extends Action {
      * Global Property:  Admin Page Active.
      */
     public static final String PROPERTY_ADMIN_MODE_ACTIVE = "admin_mode_active";
+
+    /**
+     * Global Property:  Show Data Source Details.
+     */
+    public static final String WEB_SHOW_DATA_SOURCE_DETAILS = "web_show_data_source_details";
 
     /**
      * Admin page
