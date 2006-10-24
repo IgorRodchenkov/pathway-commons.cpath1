@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.34 2006-06-09 19:22:03 cerami Exp $
+// $Id: CPathServlet.java,v 1.35 2006-10-24 15:10:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -95,6 +95,8 @@ public final class CPathServlet extends ActionServlet {
         String adminUser = config.getInitParameter("admin_user");
         String adminPassword = config.getInitParameter("admin_password");
         String webMode = config.getInitParameter(BaseAction.PROPERTY_WEB_MODE);
+        String showDataSourceDetails = config.getInitParameter
+                (BaseAction.WEB_SHOW_DATA_SOURCE_DETAILS);
         String adminModeActive = config.getInitParameter(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE);
         String psiSchemaUrl = config.getInitParameter
                 (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
@@ -114,6 +116,9 @@ public final class CPathServlet extends ActionServlet {
         log.info("web.xml param:  "
                 + BaseAction.PROPERTY_ADMIN_MODE_ACTIVE + "--> "
                 + adminModeActive + " [OK]");
+        log.info("web.xml param:  "
+                + BaseAction.WEB_SHOW_DATA_SOURCE_DETAILS + "-->"
+                + showDataSourceDetails + " [OK]");
 
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
@@ -123,9 +128,11 @@ public final class CPathServlet extends ActionServlet {
         manager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 psiSchemaUrl);
         manager.setProperty(BaseAction.PROPERTY_WEB_MODE, webMode);
+        manager.setProperty(BaseAction.WEB_SHOW_DATA_SOURCE_DETAILS, showDataSourceDetails);
         manager.setProperty(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE, adminModeActive);
 
         storeWebMode(webMode);
+        storeShowDataSourceDetails(showDataSourceDetails);
         storeAdminModeActive(adminModeActive);
 
         String dbName = config.getInitParameter("db_name");
@@ -177,15 +184,28 @@ public final class CPathServlet extends ActionServlet {
      */
     private void storeAdminModeActive(String adminModeActive) {
         int activeMode;
-        if (adminModeActive.equals(String.valueOf(CPathUIConfig.ADMIN_MODE_DEACTIVE))) {
-            activeMode = CPathUIConfig.ADMIN_MODE_DEACTIVE;
-        } else if (adminModeActive.equals(String.valueOf(CPathUIConfig.ADMIN_MODE_ACTIVE))) {
-            activeMode = CPathUIConfig.ADMIN_MODE_ACTIVE;
+        if (adminModeActive.equals(String.valueOf(CPathUIConfig.INACTIVE))) {
+            activeMode = CPathUIConfig.INACTIVE;
+        } else if (adminModeActive.equals(String.valueOf(CPathUIConfig.ACTIVE))) {
+            activeMode = CPathUIConfig.ACTIVE;
         } else {
             log.error("Admin mode not recognized, deactivating Admin Mode");
-            activeMode = CPathUIConfig.ADMIN_MODE_DEACTIVE;
+            activeMode = CPathUIConfig.INACTIVE;
         }
         CPathUIConfig.setAdminModeActive(activeMode);
+    }
+
+    /**
+     * Stores the Flag for Showing Data Sources in CPathUIConfig.
+     *
+     * @param flagStr "0" or "1".
+     */
+    private void storeShowDataSourceDetails (String flagStr) {
+        boolean flag = false;
+        if (flagStr.equals("1")) {
+            flag = true;
+        }
+        CPathUIConfig.setShowDataSourceDetails(flag);
     }
 
     /**

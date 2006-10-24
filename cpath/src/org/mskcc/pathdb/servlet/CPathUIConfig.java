@@ -1,4 +1,4 @@
-// $Id: CPathUIConfig.java,v 1.8 2006-02-27 19:58:20 grossb Exp $
+// $Id: CPathUIConfig.java,v 1.9 2006-10-24 15:10:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,14 +67,19 @@ public class CPathUIConfig {
     private static int webMode;
 
     /**
-     * Flag for AdminMode Deactive.
+     * Flag to show Data Sources.
      */
-    public static final int ADMIN_MODE_DEACTIVE = 0;
+    private static boolean showDataSourceDetails;
 
     /**
-     * Flag for AdminMode Active.
+     * Inactive Flag
      */
-    public static final int ADMIN_MODE_ACTIVE = 1;
+    public static final int INACTIVE = 0;
+
+    /**
+     * Active Flag
+     */
+    public static final int ACTIVE = 1;
 
     /**
      * Admin Mode Active.
@@ -111,12 +116,12 @@ public class CPathUIConfig {
     /**
      * Sets Admin Mode Active.
      *
-     * @param activeMode ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.
+     * @param activeMode ACTIVE or INACTIVE.
      */
     public static void setAdminModeActive(int activeMode) {
-        if (activeMode != ADMIN_MODE_ACTIVE && activeMode != ADMIN_MODE_DEACTIVE) {
+        if (activeMode != ACTIVE && activeMode != INACTIVE) {
             throw new IllegalArgumentException("activeMode must be set to:  "
-                    + "ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.");
+                    + "ACTIVE or INACTIVE.");
         }
         adminModeActive = activeMode;
     }
@@ -124,10 +129,27 @@ public class CPathUIConfig {
     /**
      * Gets the Admin Mode Active.
      *
-     * @return ADMIN_MODE_ACTIVE or ADMIN_MODE_DEACTIVE.
+     * @return ACTIVE or INACTIVE.
      */
     public static int getAdminModeActive() {
         return adminModeActive;
+    }
+
+    /**
+     * Sets the Show Datasource Details Flag.
+     *
+     * @param flag true or false
+     */
+    public static void setShowDataSourceDetails (boolean flag) {
+        showDataSourceDetails = flag;
+    }
+
+    /**
+     * Show Data Souce Details?
+     * @return true or false.
+     */
+    public static boolean getShowDataSourceDetails() {
+        return showDataSourceDetails;
     }
 
     /**
