@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.21 2006-08-25 16:53:12 cerami Exp $
+// $Id: EntitySummaryParser.java,v 1.22 2006-10-24 15:33:59 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -161,6 +161,7 @@ public class EntitySummaryParser {
         entitySummary.setSpecificType(record.getSpecificType());
         entitySummary.setId(record.getId());
         entitySummary.setName(record.getName());
+        entitySummary.setSnapshotId(record.getSnapshotId());
         return entitySummary;
     }
 

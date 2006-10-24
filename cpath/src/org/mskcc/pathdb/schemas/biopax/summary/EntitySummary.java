@@ -1,4 +1,4 @@
-// $Id: EntitySummary.java,v 1.5 2006-02-27 19:34:54 grossb Exp $
+// $Id: EntitySummary.java,v 1.6 2006-10-24 15:33:59 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -56,6 +56,11 @@ public class EntitySummary {
      * The specific type of the entity.
      */
     private String specificType;
+
+    /**
+     * Snapshot ID.
+     */
+    private long snapshotId;
 
     /**
      * Constructor.
@@ -130,5 +135,21 @@ public class EntitySummary {
      */
     public String getSpecificType() {
         return specificType;
+    }
+
+    /**
+     * Gets snapshot ID.
+     * @return snapshot ID.
+     */
+    public long getSnapshotId() {
+        return snapshotId;
+    }
+
+    /**
+     * Sets snapshot ID.
+     * @param snapshotId snapshot ID.
+     */
+    public void setSnapshotId(long snapshotId) {
+        this.snapshotId = snapshotId;
     }
 }
