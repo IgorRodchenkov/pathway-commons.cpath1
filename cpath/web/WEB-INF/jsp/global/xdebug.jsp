@@ -7,6 +7,7 @@
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  java.util.ArrayList" %>
 <%@ page import="org.mskcc.pathdb.util.CPathConstants"%>
+<%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
@@ -57,7 +58,13 @@ if (xdebug != null) {
             <%= new Date() %> ms
         </TD>
 	</TR>
-	<TR>
+    <TR>
+        <th ALIGN=LEFT>Web Mode:  Show Data Source Details</th>
+        <td colspan=2>
+            <%= CPathUIConfig.getShowDataSourceDetails() %>
+        </td>
+    </TR>
+    <TR>
 		<TH ALIGN=LEFT>
             Class Name
         </TH>

@@ -24,7 +24,7 @@
         <div>
             <A HREF="adminDiagnostics.do">Run cPath Diagnostics</A>
         </div>
-<% if (adminModeActive == CPathUIConfig.ADMIN_MODE_ACTIVE){ %>
+<% if (adminModeActive == CPathUIConfig.ACTIVE){ %>
         <div>
             <A HREF="adminWebUIConfig.do">Configure User Interface</A>
         </div>
