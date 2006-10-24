@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.15 2006-06-09 19:22:03 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.16 2006-10-24 15:32:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,13 +35,19 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
+import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 /**
  * Custom JSP tag for displaying a list of BioPAX Parent Elements
@@ -160,7 +166,7 @@ public class BioPaxParentChildTable extends HtmlTable {
 
         // Output Type Header
         if (currentType == null || !type.equals(currentType)) {
-            append("<td colspan=2 class='table_head2'>");
+            append("<td colspan=3 class='table_head2'>");
             String interactionTypePopupCode =
                     getInteractionTypePopupCode(type);
             append("<a href=\"javascript:void(0);\""
@@ -195,7 +201,15 @@ public class BioPaxParentChildTable extends HtmlTable {
                 append(entitySummary.getName() + "</td>");
             }
         }
-        // details hyperlink
+
+        if (CPathUIConfig.getShowDataSourceDetails()) {
+            try {
+                append("<td bgcolor=" + bgColor + ">");
+                append (DbSnapshotInfo.getDbSnapshotHtml(entitySummary.getSnapshotId()));
+                append ("</TD>");
+            } catch (DaoException e) {
+            }
+        }
     }
 
     /**
