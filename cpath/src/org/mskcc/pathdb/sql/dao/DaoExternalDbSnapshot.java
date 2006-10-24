@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.2 2006-10-05 19:35:51 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.3 2006-10-24 15:34:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -88,9 +88,6 @@ public class DaoExternalDbSnapshot {
     public synchronized long addRecord(int externalDbId,
             Date snapshotDate, String snapshotVersion) throws DaoException {
         long externalDbSnapshotId;
-        if (snapshotVersion == null) {
-            snapshotVersion = "N/A";
-        }
 
         //  Make sure record does not already exist.
         ExternalDatabaseSnapshotRecord record =
