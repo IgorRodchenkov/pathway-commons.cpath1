@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.13 2006-10-27 20:19:28 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,6 +40,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.sql.dao.DaoException;
 
 import java.util.List;
 
@@ -120,10 +121,10 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
         outputHeader();
         append("<TABLE CELLSPACING=5 CELLPADDING=0>");
         outputSynonyms();
-        outputDataSource();
-        outputAvailability();
         outputExternalLinks();
         outputComment();
+        outputDataSource(record.getSnapshotId());
+        outputAvailability();
         if (biopaxConstants.isPathway(record.getSpecificType())) {
             outputCytoscapeLink();
         }
@@ -186,18 +187,18 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
     /**
      * Output the Data Source information.
      */
-    private void outputDataSource() {
+    private void outputDataSource(long snapshotId) {
+        try {
+            String snapshotHtml = DbSnapshotInfo.getDbSnapshotHtml(snapshotId);
 
-        // get synonym string
-        String dataSourceString =
-                BioPaxRecordSummaryUtils.getBioPaxRecordDataSourceString(biopaxRecordSummary);
-
-        // do we have something to process ?
-        if (dataSourceString != null) {
-            append("<TR>");
-            append("<TD><B>Data Source:</B></TD>");
-            append("<TD COLSPAN=3>" + dataSourceString + "</TD>");
-            append("</TR>");
+            // do we have something to process ?
+            if (snapshotHtml != null && snapshotHtml.length() > 0) {
+                append("<TR>");
+                append("<TD WIDTH=10%><B>Data Source:</B></TD>");
+                append("<TD COLSPAN=3>" + snapshotHtml + "</TD>");
+                append("</TR>");
+            }
+        } catch (DaoException e) {
         }
     }
 
