@@ -1,4 +1,4 @@
-// $Id: DaoXmlCache.java,v 1.16 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoXmlCache.java,v 1.17 2006-10-27 16:48:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -117,7 +117,7 @@ public class DaoXmlCache {
                             + "`NUM_HITS`, "
                             + "`DOC_BLOB`, `LAST_USED`) VALUES (?,?,?,?,?,?)");
 
-            byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
+            byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString(), hashKey);
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 
@@ -259,7 +259,7 @@ public class DaoXmlCache {
             pstmt = con.prepareStatement
                     ("UPDATE xml_cache SET `DOC_BLOB` = ?, `LAST_USED` = ?, "
                             + "`NUM_HITS` = ? WHERE `DOC_MD5` = ?");
-            byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString());
+            byte zippedData[] = ZipUtil.zip(xmlAssembly.getXmlString(), hashKey);
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 

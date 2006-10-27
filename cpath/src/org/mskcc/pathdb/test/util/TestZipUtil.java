@@ -1,4 +1,4 @@
-// $Id: TestZipUtil.java,v 1.11 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestZipUtil.java,v 1.12 2006-10-27 16:48:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,7 +48,7 @@ public class TestZipUtil extends TestCase {
      */
     public void testZipUtil() throws Exception {
         String testString = "Hello, World!";
-        byte zippedData[] = ZipUtil.zip(testString);
+        byte zippedData[] = ZipUtil.zip(testString, "hello");
         String unzippedData = ZipUtil.unzip(zippedData);
         assertEquals(testString + "\n", unzippedData);
     }
