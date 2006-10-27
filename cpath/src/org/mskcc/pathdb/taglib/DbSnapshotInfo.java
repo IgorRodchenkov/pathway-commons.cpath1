@@ -23,10 +23,12 @@ public class DbSnapshotInfo {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
         if (snapShotId > 0) {
             ExternalDatabaseSnapshotRecord snapshot = dao.getDatabaseSnapshot (snapShotId);
+            html.append ("<A HREF='dbSnapshot.do?snapshot_id=" + snapShotId + "'>");
             html.append(snapshot.getExternalDatabase().getName() + ", ");
             if (snapshot.getSnapshotVersion() != null) {
                 html.append("Release:  " + snapshot.getSnapshotVersion());
             }
+            html.append ("</A>");
             Format formatter = new SimpleDateFormat("dd-MMM-yy");
             String s = formatter.format(snapshot.getSnapshotDate());
             html.append(" [" + s + "]");
