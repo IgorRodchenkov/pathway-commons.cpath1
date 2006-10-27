@@ -1,4 +1,4 @@
-// $Id: DaoImport.java,v 1.25 2006-10-06 14:35:10 cerami Exp $
+// $Id: DaoImport.java,v 1.26 2006-10-27 16:49:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -131,6 +131,41 @@ public class DaoImport {
     }
 
     /**
+     * Gets All Import Records Associated with a specific ID.
+     *
+     * @param snapshotId Snapshot ID.
+     * @return ArrayList of ImportRecord Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getImportRecordsBySnapshotId(long snapshotId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                ("select `IMPORT_ID`, `FILE_NAME`, `XML_TYPE`, `DOC_MD5`, "
+                    + "`STATUS`, `CREATE_TIME`, `UPDATE_TIME`, `EXTERNAL_DB_SNAPSHOT_ID`"
+                    + " from import where EXTERNAL_DB_SNAPSHOT_ID=? order by IMPORT_ID");
+            pstmt.setLong(1, snapshotId);
+            rs = pstmt.executeQuery();
+            ArrayList list = new ArrayList();
+            while (rs.next()) {
+                list.add(extractRecord(rs, false));
+            }
+            return list;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } catch (IOException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
      * Extracts Blob Data to Array of Bytes.
      */
     private byte[] extractBlobData(Blob blob) throws SQLException,
@@ -166,7 +201,7 @@ public class DaoImport {
             data = implementJdkWorkAround(data);
             con = JdbcUtil.getCPathConnection();
             String hash = Md5Util.createMd5Hash(data);
-            byte zippedData[] = ZipUtil.zip(data);
+            byte zippedData[] = ZipUtil.zip(data, description);
             pstmt = con.prepareStatement
                     ("INSERT INTO import (`FILE_NAME`, `XML_TYPE`, `DOC_BLOB`, "
                             + "`DOC_MD5`, `STATUS`, `CREATE_TIME`, `UPDATE_TIME`, "
