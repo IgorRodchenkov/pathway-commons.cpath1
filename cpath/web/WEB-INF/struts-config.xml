@@ -53,6 +53,17 @@
             <forward name="success" path="/WEB-INF/jsp/pages/DbStats.jsp"/>
         </action>
 
+        <!--  Database Snapshot Information -->
+        <action path="/dbSnapshot"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/DbSnapshotInfo.jsp"/>
+        </action>
+
+        <!--  Database Snapshot Information -->
+        <action path="/downloadSource"
+            type="org.mskcc.pathdb.action.DownloadSource">
+        </action>
+
         <!--  Toggle Search Options -->
         <action path="/toggleSearchOptions"
             type="org.mskcc.pathdb.action.ToggleSearchOptions">
