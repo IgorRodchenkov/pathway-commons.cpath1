@@ -1,4 +1,4 @@
-// $Id: ZipUtil.java,v 1.3 2006-02-22 22:51:58 grossb Exp $
+// $Id: ZipUtil.java,v 1.4 2006-10-27 16:47:30 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,16 +50,16 @@ public class ZipUtil {
      * @return Array of bytes.
      * @throws IOException Input Output Exception.
      */
-    public static byte[] zip(String data) throws IOException {
+    public static byte[] zip(String data, String fileName) throws IOException {
         byte bytes[] = data.getBytes();
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         ZipOutputStream zipOut = new ZipOutputStream(byteStream);
-        ZipEntry entry = new ZipEntry("data");
+        ZipEntry entry = new ZipEntry(fileName);
         zipOut.putNextEntry(entry);
         zipOut.write(bytes, 0, bytes.length);
         zipOut.closeEntry();
-        zipOut.close();
         byte zipData[] = byteStream.toByteArray();
+        zipOut.close();
         return zipData;
     }
 
