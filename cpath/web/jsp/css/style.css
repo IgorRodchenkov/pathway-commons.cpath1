@@ -126,13 +126,31 @@
 	text-align:  left;
 }
 
-#home_page_box {
+.tagline {
+    font-size:110%;
+}
+
+.home_page_box {
 	/* margin:  top, right, bottom, left */
-	margin: 10px 5px 5px 10px;
+    margin: 0px 5px 5px 0px;
 	border: 1px solid #DDDDDD;
 	padding: 5px 5px 5px 5px;
 }
 
+.large_search_box {
+	margin: 10px 5px 5px 0px;
+	border: 1px solid #000000;
+	padding: 5px 5px 5px 5px;
+    background: #CCCCFF;
+}
+
+.large_search_box h1 {
+   font-size:130%;
+}
+
+.large_search_box input {
+   font-size:135%;
+}
 
 /* Customized Pop up Boxes for Overlib */
 .popup {
