@@ -74,6 +74,13 @@
   </tag>
 
   <tag>
+    <name>dataSourceListTable</name>
+    <tag-class>org.mskcc.pathdb.taglib.DataSourceListTable</tag-class>
+    <body-content>empty</body-content>
+    <description>Displays Data Source List Table</description>
+  </tag>
+
+  <tag>
     <name>pathwayInteractionTable</name>
     <tag-class>org.mskcc.pathdb.taglib.PathwayInteractionTable</tag-class>
     <body-content>empty</body-content>
