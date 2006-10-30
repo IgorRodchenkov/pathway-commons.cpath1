@@ -85,6 +85,12 @@
         <delete>
             <fileset dir="." includes="*.log*"/>
         </delete>
+        <delete>
+            <fileset dir="." includes="cpath_log.*"/>
+        </delete>
+        <delete>
+            <fileset dir="bin" includes="cpath_log.*"/>
+        </delete>
     </target>
 
     <!-- ==================== Compile Target ==============================-->
