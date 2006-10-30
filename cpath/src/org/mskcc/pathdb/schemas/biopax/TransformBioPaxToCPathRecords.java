@@ -1,4 +1,4 @@
-// $Id: TransformBioPaxToCPathRecords.java,v 1.8 2006-08-10 21:23:27 cerami Exp $
+// $Id: TransformBioPaxToCPathRecords.java,v 1.9 2006-10-30 18:58:38 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -111,6 +111,11 @@ public class TransformBioPaxToCPathRecords {
             //  Extract the current RDF ID
             Attribute rdfId = resource.getAttribute(RdfConstants.ID_ATTRIBUTE,
                     RdfConstants.RDF_NAMESPACE);
+			// try ABOUT attribute if necessary
+			if (rdfId == null) {
+				rdfId = resource.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+											  RdfConstants.RDF_NAMESPACE);
+			}
             idList.add(rdfId.getValue());
 
             //  Create Corresponding cPath Record
