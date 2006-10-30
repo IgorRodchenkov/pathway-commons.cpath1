@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.2 2006-08-28 17:20:34 cerami Exp $
+// $Id: DaoInternalFamily.java,v 1.3 2006-10-30 21:49:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,11 +50,12 @@ public class DaoInternalFamily {
     /**
      * Adds a new record.
      * @param ancestorId        ID of Ancestor record.
+     * @param ancestorType      Record type of ancestor.
      * @param descendentId      ID of Descendent record.
      * @param descendentType    Record type of Descendent.
      * @throws DaoException     Database access error.
      */
-    public void addRecord (long ancestorId, long descendentId,
+    public void addRecord (long ancestorId, CPathRecordType ancestorType, long descendentId,
             CPathRecordType descendentType) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -63,13 +64,13 @@ public class DaoInternalFamily {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO internal_family "
-                            + "(`ANCESTOR_ID`, "
-                            + "`DESCENDENT_ID`,"
-                            + "`DESCENDENT_TYPE`)"
-                            + " VALUES (?,?,?)");
+                            + "(`ANCESTOR_ID`, `ANCESTOR_TYPE`, "
+                            + "`DESCENDENT_ID`, `DESCENDENT_TYPE`)"
+                            + " VALUES (?,?,?,?)");
             pstmt.setLong(1, ancestorId);
-            pstmt.setLong(2, descendentId);
-            pstmt.setString(3, descendentType.toString());
+            pstmt.setString(2, ancestorType.toString());
+            pstmt.setLong(3, descendentId);
+            pstmt.setString(4, descendentType.toString());
             pstmt.executeUpdate();
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
@@ -98,7 +99,7 @@ public class DaoInternalFamily {
                     ("select * from internal_family where "
                             + "ANCESTOR_ID = ?");
             pstmt.setLong(1, ancestorId);
-            return getIds(pstmt, rs, list);
+            return getDescendentIds(pstmt, rs, list);
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
@@ -129,7 +130,37 @@ public class DaoInternalFamily {
                             + "ANCESTOR_ID = ? AND DESCENDENT_TYPE = ?");
             pstmt.setLong(1, ancestorId);
             pstmt.setString(2, descendentType.toString());
-            return getIds(pstmt, rs, list);
+            return getDescendentIds(pstmt, rs, list);
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets all ancestors of this record, which are of type:
+     * CPathRecordType.
+     * @param cPathId        ID of record.
+     * @param ancestorType   CPathRecord Type of ancestor.
+     * @return array of all ancestor IDs.
+     * @throws DaoException     Database access error.
+     */
+    public long[] getAncestorIds (long cPathId, CPathRecordType ancestorType) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        ArrayList list = new ArrayList();
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("select * from internal_family where "
+                            + "DESCENDENT_ID = ? AND ANCESTOR_TYPE = ?");
+            pstmt.setLong(1, cPathId);
+            pstmt.setString(2, ancestorType.toString());
+            return getAncestorIds(pstmt, rs, list);
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
@@ -161,11 +192,26 @@ public class DaoInternalFamily {
         }
     }
 
-    private long[] getIds(PreparedStatement pstmt, ResultSet rs, ArrayList list)
+    private long[] getDescendentIds(PreparedStatement pstmt, ResultSet rs, ArrayList list)
             throws SQLException {
         rs = pstmt.executeQuery();
         while (rs.next()) {
             long descendentId = rs.getLong("DESCENDENT_ID");
+            list.add(new Long(descendentId));
+        }
+        long ids[] = new long[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            Long idLong = (Long) list.get(i);
+            ids[i] = idLong.longValue();
+        }
+        return ids;
+    }
+
+    private long[] getAncestorIds(PreparedStatement pstmt, ResultSet rs, ArrayList list)
+            throws SQLException {
+        rs = pstmt.executeQuery();
+        while (rs.next()) {
+            long descendentId = rs.getLong("ANCESTOR_ID");
             list.add(new Long(descendentId));
         }
         long ids[] = new long[list.size()];
