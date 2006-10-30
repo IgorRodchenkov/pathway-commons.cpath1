@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.20 2006-08-11 17:48:31 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.21 2006-10-30 18:58:21 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -349,6 +349,22 @@ public class BioPaxUtil {
                 rdfResources.put(idAttribute.getValue(), e);
             }
         }
+		else {
+			// check for about attribute
+			Attribute aboutAttribute = e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+													  RdfConstants.RDF_NAMESPACE);
+			if (aboutAttribute != null) {
+				//  Store element to hashmap, keyed by RDF ABOUT
+				if (rdfResources.containsKey(aboutAttribute.getValue())) {
+					errorList.add(new String("Element:  " + e
+											 + " declares RDF ABOUT:  " + aboutAttribute.getValue()
+											 + ", but a resource with this ABOUT value already exists."));
+				}
+				else {
+					rdfResources.put(aboutAttribute.getValue(), e);
+				}
+			}
+		}
 
         //  Categorize into separate bins
         String name = e.getName();
