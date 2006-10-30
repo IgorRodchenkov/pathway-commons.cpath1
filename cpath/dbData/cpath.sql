@@ -263,6 +263,7 @@ CREATE TABLE `external_db_snapshot` (
 
 CREATE TABLE `internal_family` (
   `ANCESTOR_ID` int(11) NOT NULL default '0',
+  `ANCESTOR_TYPE` varchar(255) NOT NULL default '',
   `DESCENDENT_ID` int(11) NOT NULL default '0',
   `DESCENDENT_TYPE` varchar(255) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
