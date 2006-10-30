@@ -113,7 +113,7 @@
         out.println("<INPUT TYPE=HIDDEN NAME='source_id' VALUE='"
                 + importRecord.getImportId() + "'>");
         out.println("<INPUT TYPE=SUBMIT VALUE='Download "
-            + importRecord.getDescription() + " +.gz file'>");
+            + importRecord.getDescription() + ".gz file'>");
         out.println("</FORM>");
         out.println("</TD>");
         out.println("</TR>");
