@@ -1,4 +1,4 @@
-// $Id: TestImportBioPaxToCPath.java,v 1.15 2006-10-09 18:47:12 cerami Exp $
+// $Id: TestImportBioPaxToCPath.java,v 1.16 2006-10-30 18:03:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import org.mskcc.pathdb.schemas.biopax.ImportBioPaxToCPath;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
+import org.mskcc.pathdb.sql.dao.DaoSourceTracker;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.snapshot.SnapshotReader;
 import org.mskcc.pathdb.task.ProgressMonitor;
@@ -123,15 +124,25 @@ public class TestImportBioPaxToCPath extends TestCase {
         //  Verify that record is not linked to any snapshot
         assertEquals (-1, record.getSnapshotId());
 
+        //  Verify that we can get from the merged physical entity record to the untouched
+        //  physical entity record
+        DaoSourceTracker daoSourceTracker = new DaoSourceTracker();
+        ArrayList list = daoSourceTracker.getSourceRecords(record.getId());
+        assertEquals (1, list.size());
+        CPathRecord sourceRecord = (CPathRecord) list.get(0);
+        DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
+        ExternalDatabaseSnapshotRecord snapshotRecord =
+                daoSnapshot.getDatabaseSnapshot(sourceRecord.getSnapshotId());
+        assertEquals ("Reactome", snapshotRecord.getExternalDatabase().getName());
+        assertEquals ("1.0", snapshotRecord.getSnapshotVersion());
+
         //  Get Pathway by Unification Ref, and verify snapshot
         recordList = externalLinker.lookUpByExternalRef
                 (new ExternalReference("Reactome", "69091"));
         assertEquals (1, recordList.size());
         record = (CPathRecord) recordList.get(0);
         assertEquals("glycolysis", record.getName());
-        DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
-        ExternalDatabaseSnapshotRecord snapshotRecord =
-                daoSnapshot.getDatabaseSnapshot(record.getSnapshotId());
+        snapshotRecord = daoSnapshot.getDatabaseSnapshot(record.getSnapshotId());
         assertEquals ("Reactome", snapshotRecord.getExternalDatabase().getName());
         assertEquals ("1.0", snapshotRecord.getSnapshotVersion());
 
