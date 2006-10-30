@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
+// $Id: MemberPathways.java,v 1.13 2006-10-30 21:51:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,9 +38,11 @@ package org.mskcc.pathdb.schemas.biopax;
 import org.jdom.JDOMException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 
 import java.io.IOException;
@@ -60,54 +62,18 @@ public class MemberPathways {
      * Finds all member pathways given CPathRecord.
      *
      * @param record   CPathRecord
-     * @param longList ArrayList - if null, no timing performed
      * @return HashSet
-     * @throws IOException   Throwable
-     * @throws JDOMException Throwable
      * @throws DaoException  Throwable
      */
-    public static HashSet getMemberPathways(CPathRecord record, ArrayList longList)
-            throws IOException, JDOMException, DaoException {
-
-        // for timing
-        long startTime = 0;
-
-        // vector to return
+    public static HashSet getMemberPathways(CPathRecord record) throws DaoException {
         HashSet pathways = new HashSet();
-
-        // get internal links
-        DaoInternalLink daoInternalLinks = new DaoInternalLink();
-        if (longList != null) {
-            startTime = Calendar.getInstance().getTimeInMillis();
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        DaoInternalFamily dao = new DaoInternalFamily();
+        long ids[] = dao.getAncestorIds(record.getId(), CPathRecordType.PATHWAY);
+        for (int i=0; i<ids.length; i++) {
+            CPathRecord pathwayRecord = daoCPath.getRecordById(ids[i]);
+            pathways.add(pathwayRecord);
         }
-        ArrayList sources = daoInternalLinks.getSources(record.getId());
-        if (longList != null) {
-            Long currentTime = new Long(Calendar.getInstance().getTimeInMillis() - startTime);
-            longList.add(currentTime);
-        }
-
-        if (sources.size() > 0) {
-            for (int lc = 0; lc < sources.size(); lc++) {
-                InternalLinkRecord link = (InternalLinkRecord) sources.get(lc);
-                DaoCPath cPath = DaoCPath.getInstance();
-                CPathRecord sourceRecord = cPath.getRecordById(link.getSourceId());
-                if (sourceRecord.getId() != record.getId()) {
-                    pathways.addAll(getMemberPathways(sourceRecord, longList));
-                }
-            }
-        } else {
-            BioPaxConstants biopaxConstants = new BioPaxConstants();
-            if (biopaxConstants.isPathway(record.getSpecificType())) {
-                String pathway =
-                        BioPaxRecordUtil.getPhysicalEntityNameAsLink(record.getId(),
-                                record.getXmlContent());
-                if (pathway != null) {
-                    pathways.add(pathway);
-                }
-            }
-        }
-
-        // outta here
         return pathways;
     }
 }

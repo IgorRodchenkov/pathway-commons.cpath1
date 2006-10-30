@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
+// $Id: MemberMolecules.java,v 1.18 2006-10-30 21:51:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,110 +36,68 @@ package org.mskcc.pathdb.schemas.biopax;
 // imports
 
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
- * This class parses interaction data
- * given a cPath record id.
+ * This class determines all molecules within a specific pathway.
  *
  * @author Benjamin Gross.
  */
 public class MemberMolecules {
 
-    /**
-     * Stores already processed records.
-     */
-    private static ArrayList alreadyProcessedRecords;
 
     /**
-     * Used to help us determine if moleculeSummary should be added to molecules hashset.
+     * Finds all member molecules for specified Pathway record.
+     *
+     * @param record   CPathRecord
+     * @return HashSet Set of BioPaxRecordSummary Objects.
+     * @throws BioPaxRecordSummaryException Error Creating Summary.
+     * @throws DaoException                 Database Access Error.
      */
-    private static HashSet moleculeNames;
-
-    /**
-     * Should be called before each call to getMemberMolecules.
-     */
-    public static void reset() {
-        moleculeNames = new HashSet();
-        alreadyProcessedRecords = new ArrayList();
+    public static HashSet getMoleculesInPathway(CPathRecord record) throws DaoException,
+        BioPaxRecordSummaryException {
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        HashSet molecules = new HashSet();
+        DaoInternalFamily dao = new DaoInternalFamily();
+        long ids[] = dao.getDescendentIds(record.getId(), CPathRecordType.PHYSICAL_ENTITY);
+        for (int i=0; i<ids.length; i++) {
+            CPathRecord peRecord = daoCPath.getRecordById(ids[i]);
+            BioPaxRecordSummary moleculeSummary =
+                BioPaxRecordUtil.createBioPaxRecordSummary(peRecord);
+            molecules.add(moleculeSummary);
+        }
+        return molecules;
     }
 
     /**
-     * Finds all member molecules given CPathRecord.
+     * Finds all member molecules for specified Complex record.
      *
      * @param record   CPathRecord
-     * @param longList ArrayList - if null, no timing performed
-     * @return HashSet
-     * @throws BioPaxRecordSummaryException Throwable
-     * @throws DaoException                 Throwable
+     * @return HashSet Set of BioPaxRecordSummary Objects.
+     * @throws BioPaxRecordSummaryException Error Creating Summary.
+     * @throws DaoException                 Database Access Error.
      */
-    public static HashSet getMemberMolecules(CPathRecord record, ArrayList longList)
-            throws BioPaxRecordSummaryException, DaoException {
-
-        // have we already processed this record ?
-        for (Iterator i = alreadyProcessedRecords.iterator(); i.hasNext();) {
-            if (record.getId() == ((Long) i.next()).longValue()) {
-                return null;
-            }
-        }
-
-        // for timing
-        long startTime = 0;
-
-        // hashset to return
+    public static HashSet getMoleculesInComplex(CPathRecord record) throws DaoException,
+        BioPaxRecordSummaryException {
+        DaoInternalLink dao = new DaoInternalLink();
         HashSet molecules = new HashSet();
-
-        // get internal links
-        DaoInternalLink daoInternalLinks = new DaoInternalLink();
-        if (longList != null) {
-            startTime = Calendar.getInstance().getTimeInMillis();
+        ArrayList list = dao.getTargetsWithLookUp(record.getId());
+        for (int i=0; i<list.size(); i++) {
+            CPathRecord peRecord = (CPathRecord) list.get(i);
+            BioPaxRecordSummary moleculeSummary =
+                BioPaxRecordUtil.createBioPaxRecordSummary(peRecord);
+            molecules.add(moleculeSummary);
         }
-        ArrayList targets = daoInternalLinks.getTargetsWithLookUp(record.getId());
-        if (longList != null) {
-            Long currentTime = new Long(Calendar.getInstance().getTimeInMillis() - startTime);
-            longList.add(currentTime);
-        }
-
-        if (targets.size() > 0) {
-            for (int lc = 0; lc < targets.size(); lc++) {
-                CPathRecord targetRecord = (CPathRecord) targets.get(lc);
-                if (targetRecord.getId() != record.getId()) {
-                    HashSet processedHashSet = getMemberMolecules(targetRecord, longList);
-                    if (processedHashSet != null) {
-                        molecules.addAll(processedHashSet);
-                        alreadyProcessedRecords.add(new Long(record.getId()));
-                    }
-                }
-            }
-        } else {
-            BioPaxConstants biopaxConstants = new BioPaxConstants();
-            if (biopaxConstants.isPhysicalEntity(record.getSpecificType())) {
-                BioPaxRecordSummary moleculeSummary =
-                        BioPaxRecordUtil.createBioPaxRecordSummary(record);
-                if (moleculeSummary != null) {
-                    String name = (moleculeSummary.getName() != null)
-                            ? moleculeSummary.getName() : moleculeSummary.getShortName();
-                    if (name != null && name.length() > 0) {
-                        boolean addSummaryToMoleculesSet = moleculeNames.add(name);
-                        if (addSummaryToMoleculesSet) {
-                            molecules.add(moleculeSummary);
-                            alreadyProcessedRecords.add(new Long(record.getId()));
-                        }
-                    }
-                }
-            }
-        }
-
-        // outta here
         return molecules;
     }
 }
