@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.21 2006-10-30 18:02:30 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.22 2006-10-30 21:51:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -402,9 +402,8 @@ public class ImportBioPaxToCPath {
                         Long desendentId = (Long) idList.get(j);
                         CPathRecord descendentRecord = daoCPath.getRecordById
                                 (desendentId.longValue());
-                        daoFamily.addRecord(record.getId(),
-                                descendentRecord.getId(),
-                                descendentRecord.getType());
+                        daoFamily.addRecord(record.getId(), CPathRecordType.PATHWAY,
+                                descendentRecord.getId(), descendentRecord.getType());
                     }
                 }
             pMonitor.incrementCurValue();
