@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
+// $Id: PathwayMembershipTable.java,v 1.13 2006-10-30 21:49:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,9 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.sql.dao.DaoException;
+
 import java.util.*;
 
 /**
@@ -59,7 +62,7 @@ public class PathwayMembershipTable extends HtmlTable {
     /**
      * Executes JSP Custom Tag
      */
-    protected void subDoStartTag() {
+    protected void subDoStartTag() throws DaoException {
 
         // here we go
         if (pathwaySet != null && pathwaySet.size() > 0) {
@@ -70,21 +73,27 @@ public class PathwayMembershipTable extends HtmlTable {
     /**
      * Output the Pathways.
      */
-    private void outputRecords() {
+    private void outputRecords() throws DaoException {
 
         // sort the pathways
-        String[] pathways = (String[]) pathwaySet.toArray(new String[0]);
+        CPathRecord[] pathways = (CPathRecord[]) pathwaySet.toArray(new CPathRecord[0]);
         List pathwayList = Arrays.asList(pathways);
-        Collections.sort(pathwayList, new RecordLinkSorter());
+        Collections.sort(pathwayList, new RecordSorter());
 
         // render the table
         startRow();
 
         // interate through list
         int cnt = pathwayList.size();
-        for (int lc = 1; lc <= cnt; lc++) {
+        for (int lc = 0; lc < cnt; lc++) {
+            startRow(lc);
             append("<td>");
-            append((String) pathwayList.get(lc - 1));
+            CPathRecord pathwayRecord = (CPathRecord) pathwayList.get(lc);
+            append("<A HREF='record.do?id=" + pathwayRecord.getId()
+                + "'>" + pathwayRecord.getName() + "</A>");
+            append("</td>");
+            append("<td>");
+            append(DbSnapshotInfo.getDbSnapshotHtml(pathwayRecord.getSnapshotId()));
             append("</td>");
         }
 
@@ -94,40 +103,19 @@ public class PathwayMembershipTable extends HtmlTable {
 }
 
 /**
- * This class is used to sort pathway link lists.
- * Only works with strings in the following format:
- * <a href="record.do?id=52">LinkName</a>
- * We sort on the LinkName.
+ * Sorts CPathRecords by Name
  *
  * @author Benjamin Gross
  */
-class RecordLinkSorter implements Comparator {
+class RecordSorter implements Comparator {
 
     /**
      * Our implementation of compare.
      */
     public int compare(Object o1, Object o2) {
+        CPathRecord record1 = (CPathRecord) o1;
+        CPathRecord record2 = (CPathRecord) o2;
 
-        // only work with strings
-        if (o1 instanceof String && o2 instanceof String) {
-            String s1 = (String) o1;
-            String s2 = (String) o2;
-
-            // get the strings to compare
-            String sub1, sub2;
-            try {
-                sub1 = s1.substring(s1.indexOf('>') + 1, s1.lastIndexOf('<'));
-                sub2 = s2.substring(s2.indexOf('>') + 1, s2.lastIndexOf('<'));
-            } catch (Exception e) {
-                throw new IllegalArgumentException
-                        ("Invalid arguments to RecordLinkSorter.compare()");
-            }
-
-            // return string compare
-            return sub1.compareToIgnoreCase(sub2);
-        }
-
-        // made it here, we have invalid args
-        throw new IllegalArgumentException("Invalid arguments to RecordLinkSorter.compare()");
+        return record1.getName().compareToIgnoreCase(record2.getName());
     }
 }

@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.13 2006-10-27 20:19:28 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.14 2006-10-30 21:49:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -141,8 +141,8 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 
         // do we have something to process ?
         if (header != null) {
-            append("<div ID='content'>");
-            append("<h1>" + header + "</h1>");
+            append("<div class='entity_header'>");
+            append(header);
             append("</div>");
         }
     }
@@ -158,16 +158,17 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
         // do we have something to process ?
         if (synonymList != null && synonymList.size() > 0) {
             append("<TR>");
-            append("<TD><B>Synonyms:</B></TD>");
+            append("<TD VALIGN=TOP><B>Synonyms:</B></TD>");
             append("<TD VALIGN=TOP>");
-            append("<TABLE VALIGN=TOP CELLSPACING=2 CELLPADDING=0>");
+            append("<TABLE VALIGN=TOP CELLSPACING=0 CELLPADDING=0>");
             append("<TR VALIGN=TOP>");
             boolean endedRow = false;
             int cnt = synonymList.size();
             for (int lc = 1; lc <= cnt; lc++) {
-                append("<td BGCOLOR=#EEEEEE VALIGN=TOP>");
+                append("<td VALIGN=TOP>");
+                append ("<div class=synonym>");
                 append((String) synonymList.get(lc - 1));
-                append(SYNONYM_SPACING);
+                append ("</dev>");
                 append("</td>");
                 // do we start a new row ?
                 if ((lc % SYNONYMS_PER_ROW) == 0) {
@@ -233,14 +234,15 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
         // process them
         if (links != null && links.size() > 0) {
             append("<TR>");
-            append("<TD><B>External Links:</B></TD>");
+            append("<TD><B>Links:</B></TD>");
             append("<TD VALIGN=TOP>");
-            append("<TABLE VALIGN=TOP CELLSPACING=2 CELLPADDING=0>");
+            append("<TABLE VALIGN=TOP CELLSPACING=0 CELLPADDING=0>");
             append("<TR VALIGN=TOP>");
             boolean endedRow = false;
             int cnt = links.size();
             for (int lc = 1; lc <= cnt; lc++) {
-                append("<TD BGCOLOR=#EEEEEE>");
+                append("<TD");
+                append ("<div class=synonym>");
                 ExternalLinkRecord link = (ExternalLinkRecord) links.get(lc - 1);
                 ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
                 String dbId = link.getLinkedToId();
@@ -251,7 +253,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
                 } else {
                     append(linkStr);
                 }
-                append(EXTERNAL_LINKS_SPACING);
+                append ("<div>");
                 append("</TD>");
                 if ((lc % EXTERNAL_LINKS_PER_ROW) == 0) {
                     append("</tr>");

@@ -55,27 +55,23 @@
 <%
 	// xml abbrev content link - log/debug mode only
 	if (debugMode){
-        out.println("<TABLE WIDTH='100%'>");
-        out.println("<TR BGCOLOR=#DDDDDD><TD COLSPAN=2>Debug</TD></TR>");
-        out.println("<TR><TD>");
+        out.println("<DIV CLASS='debug'>");
         String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + record.getId();
 		out.println("<FONT COLOR=RED>&gt;&gt;</FONT>");
         out.println("<A HREF=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</A>");
         out.println("<BR>");
-        out.println("</TD></TR>");
-
         DaoInternalLink internalLinker = new DaoInternalLink();
-        out.println("<TR><TD><UL>");
+        out.println("<UL>");
         ArrayList children = internalLinker.getTargetsWithLookUp(record.getId());
         for (int i=0; i<children.size(); i++) {
             CPathRecord child = (CPathRecord) children.get(i);
             out.println("<LI><A HREF=\"record.do?id=" + child.getId()
                 + "\">" + child.getType().toString() + ":"
                 + child.getSpecificType() + ": "
-                + child.getName() + "</LI>");
+                + child.getName() + "</A></LI>");
         }
-        out.println("</UL></TD></TR>");
-        out.println("</TABLE>");
+        out.println("</UL>");
+        out.println("</DIV>");
     }
 %>
 <%
@@ -108,14 +104,17 @@
 	if (biopaxConstants.isPathway(record.getSpecificType()) ||
 		record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
 		HashSet moleculeSet;
-        MemberMolecules.reset();
-        moleculeSet = MemberMolecules.getMemberMolecules(record, null);
+        if (biopaxConstants.isPathway(record.getSpecificType())) {
+            moleculeSet = MemberMolecules.getMoleculesInPathway(record);
+        } else {
+            moleculeSet = MemberMolecules.getMoleculesInComplex(record);
+        }
 		if (moleculeSet != null && moleculeSet.size() > 0){
 %>
 			<cbio:pathwayMoleculesTable moleculeSet="<%=moleculeSet%>"
                     request="<%= request %>"
                     cpathId="<%= record.getId() %>"/>
-<%
+    <%
 		}
 	}
 %>
@@ -142,10 +141,10 @@
 		<DIV CLASS ='h3'>
 		<H3>Member of the Following Pathways</H3>
 		</DIV>
-		<TABLE>
+		<TABLE WIDTH=100%>
 <%
         HashSet pathwaySet;
-        pathwaySet = MemberPathways.getMemberPathways(record, null);
+        pathwaySet = MemberPathways.getMemberPathways(record);
 		if (pathwaySet != null && pathwaySet.size() > 0){
 %>
 			<cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
