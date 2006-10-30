@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalFamily.java,v 1.1 2006-08-28 16:26:13 cerami Exp $
+// $Id: TestDaoInternalFamily.java,v 1.2 2006-10-30 21:50:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,14 +53,14 @@ public class TestDaoInternalFamily extends TestCase {
         testName = "Test Add, Get, Delete Methods";
         DaoInternalFamily dao = new DaoInternalFamily();
         dao.deleteAllRecords();
-        dao.addRecord(1, 2, CPathRecordType.PHYSICAL_ENTITY);
-        dao.addRecord(1, 3, CPathRecordType.PHYSICAL_ENTITY);
-        dao.addRecord(1, 4, CPathRecordType.INTERACTION);
+        dao.addRecord(1, CPathRecordType.PATHWAY, 2, CPathRecordType.PHYSICAL_ENTITY);
+        dao.addRecord(1, CPathRecordType.PATHWAY, 3, CPathRecordType.PHYSICAL_ENTITY);
+        dao.addRecord(1, CPathRecordType.PATHWAY, 4, CPathRecordType.INTERACTION);
 
         long ids[] = dao.getDescendentIds(1);
         assertEquals (3, ids.length);
 
-
+        //  Verify we can go from ancestor to descendents.
         ids = dao.getDescendentIds(1, CPathRecordType.PHYSICAL_ENTITY);
         assertEquals (2, ids.length);
         boolean flag1 = false, flag2 = false;
@@ -74,6 +74,11 @@ public class TestDaoInternalFamily extends TestCase {
         }
         assertTrue (flag1);
         assertTrue (flag2);
+
+        //  Verify we can go from descendents to ancenstors
+        ids = dao.getAncestorIds(2, CPathRecordType.PATHWAY);
+        assertEquals (1, ids.length);
+        assertEquals (1, ids[0]);
     }
 
     /**
