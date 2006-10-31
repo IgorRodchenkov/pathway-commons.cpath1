@@ -1,4 +1,4 @@
-// $Id: BioPaxShowFlag.java,v 1.1 2006-03-02 17:41:18 cerami Exp $
+// $Id: BioPaxShowFlag.java,v 1.2 2006-10-31 20:55:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -162,7 +162,9 @@ public class BioPaxShowFlag implements Cloneable {
         html.append(title);
         int end = determineEndIndex(defaultNumRecords, totalNumRecords, showFlag, flagIndex);
 
-        html.append(" (Showing 1 - " + end + " of " + totalNumRecords + ")");
+        if (totalNumRecords > 0) {
+            html.append(" (Showing 1 - " + end + " of " + totalNumRecords + ")");
+        }
         try {
             BioPaxShowFlag clone = (BioPaxShowFlag) showFlag.clone();
             String linkTitle = null;
