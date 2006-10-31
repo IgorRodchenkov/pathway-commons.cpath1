@@ -214,3 +214,10 @@
     padding: 5px 5px 5px 5px;
     border: 1px solid #036;
 }
+
+.action_button {
+    font-size:95%;
+    margin: 1px 1px 1px 1px;
+    padding: 5px 10px 5px 5px;
+    background: #EEDDFF
+}
