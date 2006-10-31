@@ -1,10 +1,12 @@
 <!-- Get User Message -->
-<% String userMessage = (String) request.getAttribute("userMsg"); %>
+<% String userMessage = (String) request.getAttribute("userMsg");
+   if (userMessage == null) {
+       userMessage = (String) request.getParameter("userMsg");
+   }
+%>
 
 <% if (userMessage != null) { %>
-    <div>
-    <img src="jsp/images/icon_infosml.gif"/>
-    <%= userMessage %>
+    <div class="user_message">
+    &gt; <%= userMessage %>
     </div>
-    <hr>
 <% } %>
