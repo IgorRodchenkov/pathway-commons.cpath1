@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.15 2006-10-31 17:05:35 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.16 2006-10-31 20:56:17 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,8 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolConstants;
 
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.HashSet;
 
 /**
  * Custom jsp tag for displaying pathway child node (1 level deep)
@@ -89,6 +91,8 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      */
     private BioPaxRecordSummary biopaxRecordSummary;
 
+    private HashSet reactomeWordHack = new HashSet();
+
     /**
      * Receives Record ID Attribute.
      *
@@ -104,6 +108,14 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     protected void subDoStartTag() throws Exception {
+        reactomeWordHack.add("FUNCTION:");
+        reactomeWordHack.add("ENZYME");
+        reactomeWordHack.add("SUBUNIT:");
+        reactomeWordHack.add("SUBCELLULAR");
+        reactomeWordHack.add("TISSUE");
+        reactomeWordHack.add("SIMILARITY:");
+        reactomeWordHack.add("DOMAIN:");
+        reactomeWordHack.add("ALTERNATIVE");
 
         // get biopax record summary
         biopaxRecordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
@@ -120,7 +132,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
     private void outputRecords() {
         outputHeader();
         append("<TABLE CELLSPACING=5 CELLPADDING=0>");
-        append("<TR VALIGG=TOP><TD>");
+        append("<TR VALIGN=TOP><TD>");
         append("<TABLE CELLSPACING=5 CELLPADDING=0>");
         outputSynonyms();
         outputExternalLinks();
@@ -282,17 +294,38 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      */
     private void outputComment() {
 
-        // get synonym string
+        // get comment string
         String commentString =
                 BioPaxRecordSummaryUtils.getBioPaxRecordCommentString(biopaxRecordSummary);
 
         // do we have something to process ?
         if (commentString != null) {
             commentString = commentString.replaceAll("<BR>", "<P>");
-            append("<TR>");
+            StringTokenizer tokenizer = new StringTokenizer (commentString, " ");
+            append("<TR VALIGN=TOP>");
             append("<TD><B>Comment:</B></TD>");
-            append("<TD COLSPAN=3>" + commentString + "</TD>");
+            append("<TD COLSPAN=3>");
+
+            //  This is a mini hack to parse Reactome comments
+            int tokenNum = 0;
+            while (tokenizer.hasMoreElements()) {
+                String token = (String) tokenizer.nextElement();
+                if (isMagicReactomeWord(token) && tokenNum > 0) {
+                    append ("<P>");
+                }
+                append (token);
+                tokenNum++;
+            }
+            append("</TD>");
             append("</TR>");
+        }
+    }
+
+    private boolean isMagicReactomeWord(String text) {
+        if (reactomeWordHack.contains(text)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
