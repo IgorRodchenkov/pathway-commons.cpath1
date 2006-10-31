@@ -62,6 +62,17 @@
         }
     }
 
+    if (CPathUIConfig.getShowDataSourceDetails()) {
+        tabNames.add("Filter");
+        String filterUrl = "filter.do";
+        tabUrls.add(filterUrl);
+        if (url.startsWith(filterUrl)) {
+            tabActive.add (Boolean.TRUE);
+        } else {
+            tabActive.add (Boolean.FALSE);
+        }
+    }
+
     if (webUIBean.getDisplayBrowseByOrganismTab()) {
     	tabNames.add("Organisms");
 	    String browseUrl = "browse.do";
