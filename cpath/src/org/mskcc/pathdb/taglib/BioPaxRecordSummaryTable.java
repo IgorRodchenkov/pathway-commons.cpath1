@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.14 2006-10-30 21:49:06 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.15 2006-10-31 17:05:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,11 +36,14 @@ package org.mskcc.pathdb.taglib;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
 
 import java.util.List;
 
@@ -115,19 +118,20 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      * Output the Summary Information.
      */
     private void outputRecords() {
-
-        BioPaxConstants biopaxConstants = new BioPaxConstants();
-
         outputHeader();
+        append("<TABLE CELLSPACING=5 CELLPADDING=0>");
+        append("<TR VALIGG=TOP><TD>");
         append("<TABLE CELLSPACING=5 CELLPADDING=0>");
         outputSynonyms();
         outputExternalLinks();
         outputComment();
         outputDataSource(record.getSnapshotId());
         outputAvailability();
-        if (biopaxConstants.isPathway(record.getSpecificType())) {
-            outputCytoscapeLink();
-        }
+        append("</TABLE>");
+        append("</TD>");
+        append("<TD>");
+        outputActionLinks();
+        append("</TD></TR>");
         append("</TABLE>");
     }
 
@@ -293,11 +297,23 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
     }
 
     /**
-     * Output a link to the Cytoscape Tab.
+     * Output Actino Links.
      */
-    private void outputCytoscapeLink() {
-        append("<TR>");
-        append("<TD COLSPAN=3><a href=\"cytoscape.do\">" + CYTOSCAPE_LINK_TEXT + "</a></TD>");
-        append("</TR>");
+    private void outputActionLinks() {
+        if (record.getType().equals(CPathRecordType.PATHWAY)) {
+            append("<div class='action_button'>"
+                    + "<a href=\"cytoscape.do\">" + CYTOSCAPE_LINK_TEXT + "</a></div>");
+        }
+
+        if (record.getType().equals(CPathRecordType.PATHWAY)
+                || record.getType().equals(CPathRecordType.INTERACTION)) {
+            ProtocolRequest request = new ProtocolRequest();
+            request.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
+            request.setQuery(Long.toString(record.getId()));
+            request.setFormat(ProtocolConstants.FORMAT_BIO_PAX);
+            append("<div class='action_button'>"
+                + "<a href=\"" + request.getUri() + "\">"
+                + "Download in BioPAX Format" + "</a></div>");
+        }
     }
 }
