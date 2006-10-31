@@ -1,4 +1,4 @@
-// $Id: TestSummaryListUtil.java,v 1.9 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestSummaryListUtil.java,v 1.10 2006-10-31 20:57:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.test.schemas.biopax.summary;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class TestSummaryListUtil extends TestCase {
      */
     public void testSummaryList() throws Exception {
         SummaryListUtil util = new SummaryListUtil(108,
-                SummaryListUtil.MODE_GET_CHILDREN);
+                SummaryListUtil.MODE_GET_CHILDREN, new GlobalFilterSettings());
         ArrayList list = util.getSummaryList();
         EntitySummary summary = (EntitySummary) list.get(0);
         String currentType = summary.getSpecificType();
