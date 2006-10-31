@@ -45,6 +45,13 @@
 	// debug mode boolean
 	String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
 	boolean debugMode = (queryString.indexOf("debug=1") != -1 || xdebugFlag != null);
+
+    GlobalFilterSettings filterSettings = (GlobalFilterSettings)
+            session.getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+    if (filterSettings == null) {
+        filterSettings = new GlobalFilterSettings();
+        session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS, filterSettings);
+    }
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
@@ -123,7 +130,8 @@
 	// if pathway, show 1st level child nodes
 	if (biopaxConstants.isPathway(record.getSpecificType())){
 		// child nodes
-        SummaryListUtil util = new SummaryListUtil (record.getId(), SummaryListUtil.MODE_GET_CHILDREN);
+        SummaryListUtil util = new SummaryListUtil (record.getId(),
+                SummaryListUtil.MODE_GET_CHILDREN, new GlobalFilterSettings());
         ArrayList summaryList = util.getSummaryList();
 %>
     <cbio:bioPaxParentChildTable
@@ -135,8 +143,9 @@
     }
 %>
 <%
-	// if physical entity, show pathway(s) it belongs to
-	if (biopaxConstants.isPhysicalEntity(record.getSpecificType())){
+	// if physical entity or interaction, show pathway(s) it belongs to
+	if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)
+            || record.getType().equals(CPathRecordType.INTERACTION)) {
 %>
 		<DIV CLASS ='h3'>
 		<H3>Member of the Following Pathways</H3>
@@ -144,16 +153,23 @@
 		<TABLE WIDTH=100%>
 <%
         HashSet pathwaySet;
-        pathwaySet = MemberPathways.getMemberPathways(record);
+        pathwaySet = MemberPathways.getMemberPathways(record, filterSettings);
 		if (pathwaySet != null && pathwaySet.size() > 0){
 %>
 			<cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
 <%
-		}
+		} else {
+            out.println("<TR><TD>");
+            out.println("No records found for your selected data sources.  ");
+            out.println("You may wish to update your ");
+            out.println("<A HREF='filter.do'>global filter settings</A>.");
+            out.println("</TD></TR>");
+        }
 %>
 		</TABLE>
 <%
-        SummaryListUtil util = new SummaryListUtil (record.getId(), SummaryListUtil.MODE_GET_PARENTS);
+        SummaryListUtil util = new SummaryListUtil
+                (record.getId(), SummaryListUtil.MODE_GET_PARENTS, filterSettings);
         ArrayList summaryList = util.getSummaryList();
 %>
     <cbio:bioPaxParentChildTable
