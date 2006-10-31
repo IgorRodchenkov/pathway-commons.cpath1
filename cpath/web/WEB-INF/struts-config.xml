@@ -59,6 +59,20 @@
             <forward name="success" path="/WEB-INF/jsp/pages/DbSnapshotInfo.jsp"/>
         </action>
 
+        <!--  View Filter Info -->
+        <action path="/filter"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/Filter.jsp"/>
+        </action>
+
+        <!--  Strore Filter Info -->
+        <action path="/storeFilters"
+            type="org.mskcc.pathdb.action.StoreGlobalFilterSettings">
+            <forward name="success" path="/WEB-INF/jsp/pages/Home.jsp"/>
+            <forward name="failure" path="/WEB-INF/jsp/pages/Filter.jsp"/>
+        </action>
+
+
         <!--  Database Snapshot Information -->
         <action path="/downloadSource"
             type="org.mskcc.pathdb.action.DownloadSource">
