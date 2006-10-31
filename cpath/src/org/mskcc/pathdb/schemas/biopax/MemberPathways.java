@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.13 2006-10-30 21:51:32 cerami Exp $
+// $Id: MemberPathways.java,v 1.14 2006-10-31 20:56:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import org.jdom.JDOMException;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
@@ -65,14 +66,17 @@ public class MemberPathways {
      * @return HashSet
      * @throws DaoException  Throwable
      */
-    public static HashSet getMemberPathways(CPathRecord record) throws DaoException {
+    public static HashSet getMemberPathways(CPathRecord record, GlobalFilterSettings
+            filterSettings) throws DaoException {
         HashSet pathways = new HashSet();
         DaoCPath daoCPath = DaoCPath.getInstance();
         DaoInternalFamily dao = new DaoInternalFamily();
         long ids[] = dao.getAncestorIds(record.getId(), CPathRecordType.PATHWAY);
         for (int i=0; i<ids.length; i++) {
             CPathRecord pathwayRecord = daoCPath.getRecordById(ids[i]);
-            pathways.add(pathwayRecord);
+            if (filterSettings.isSnapshotSelected(pathwayRecord.getSnapshotId())) {
+                pathways.add(pathwayRecord);
+            }
         }
         return pathways;
     }

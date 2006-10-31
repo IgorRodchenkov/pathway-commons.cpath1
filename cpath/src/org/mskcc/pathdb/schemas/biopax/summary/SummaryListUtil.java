@@ -1,4 +1,4 @@
-// $Id: SummaryListUtil.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
+// $Id: SummaryListUtil.java,v 1.10 2006-10-31 20:56:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,8 +32,12 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +66,7 @@ public class SummaryListUtil {
     private long cPathId;
     private ArrayList summaryList = new ArrayList();
     private int mode;
+    private GlobalFilterSettings filterSettings;
 
     /**
      * Constructor.
@@ -69,9 +74,10 @@ public class SummaryListUtil {
      * @param cPathId cPath ID.
      * @param mode    int.
      */
-    public SummaryListUtil(long cPathId, int mode) {
+    public SummaryListUtil(long cPathId, int mode, GlobalFilterSettings filterSettings) {
         this.cPathId = cPathId;
         this.mode = mode;
+        this.filterSettings = filterSettings;
     }
 
     /**
@@ -83,7 +89,9 @@ public class SummaryListUtil {
      */
     public ArrayList getSummaryList() throws EntitySummaryException,
             DaoException {
+        BioPaxConstants bpConstants = new BioPaxConstants();
         DaoInternalLink daoInternalLinks = new DaoInternalLink();
+        DaoCPath dao = DaoCPath.getInstance();
         ArrayList internalLinks;
         if (mode == MODE_GET_CHILDREN) {
             internalLinks = daoInternalLinks.getTargets(cPathId);
@@ -99,10 +107,22 @@ public class SummaryListUtil {
             } else {
                 targetId = internalLink.getSourceId();
             }
+            CPathRecord record = dao.getRecordById(targetId);
             EntitySummaryParser summaryParser =
                     new EntitySummaryParser(targetId);
             EntitySummary summary = summaryParser.getEntitySummary();
-            summaryList.add(summary);
+            
+            //  Filter out unselected sources
+            if (record.getSnapshotId() == -1
+                || filterSettings.isSnapshotSelected(record.getSnapshotId())) {
+                summaryList.add(summary);
+            }
+
+            //  Remove pathway parents
+            if (mode == MODE_GET_PARENTS
+                    && bpConstants.isPathway(summary.getSpecificType())) {
+                summaryList.remove(summary);
+            }
         }
 
         //  Sort based on Specific Type

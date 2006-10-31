@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.16 2006-10-24 15:32:57 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.17 2006-10-31 20:56:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,15 +33,14 @@ package org.mskcc.pathdb.taglib;
 
 // imports
 
-import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
-import org.mskcc.pathdb.model.BioPaxInteractionDescriptionMap;
-import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,19 +112,18 @@ public class BioPaxParentChildTable extends HtmlTable {
     /**
      * Executes JSP Custom Tag
      */
-    protected void subDoStartTag() {
+    protected void subDoStartTag() throws DaoException {
         currentType = null;
+        int flagIndex = getFlagIndex();
+        String param = request.getParameter(BioPaxShowFlag.SHOW_FLAG);
+        BioPaxShowFlag showFlag = new BioPaxShowFlag(param);
+        int cnt = BioPaxShowFlag.determineEndIndex(DEFAULT_NUM_RECORDS,
+                entitySummaryList.size(), showFlag, flagIndex);
+        String title = getTitle();
+        String htmlHeader = BioPaxShowFlag.createHtmlHeader(DEFAULT_NUM_RECORDS,
+                entitySummaryList.size(), cPathId, title, showFlag, flagIndex);
+        append(htmlHeader);
         if (entitySummaryList.size() > 0) {
-            int flagIndex = getFlagIndex();
-            String param = request.getParameter(BioPaxShowFlag.SHOW_FLAG);
-            BioPaxShowFlag showFlag = new BioPaxShowFlag(param);
-            int cnt = BioPaxShowFlag.determineEndIndex(DEFAULT_NUM_RECORDS,
-                    entitySummaryList.size(), showFlag, flagIndex);
-            String title = getTitle();
-            String htmlHeader = BioPaxShowFlag.createHtmlHeader(DEFAULT_NUM_RECORDS,
-                    entitySummaryList.size(), cPathId, title, showFlag, flagIndex);
-            append(htmlHeader);
-
             // start record output
             startTable();
             for (int lc = 0; lc < cnt; lc++) {
@@ -134,14 +132,27 @@ public class BioPaxParentChildTable extends HtmlTable {
                 endRow();
             }
             endTable();
+        } else {
+            startTable();
+            append("<TR><TD>");
+            append("No records found for your selected data sources.  ");
+            append("You may wish to update your ");
+            append("<A HREF='filter.do'>global filter settings</A>.");
+            append("</TD></TR>");
         }
     }
 
-    private String getTitle() {
+    private String getTitle() throws DaoException {
         if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
             return "Contains the Following Interactions / Pathways ";
         } else {
-            return "Member of the Following Interactions / Complexes";
+            DaoCPath dao = DaoCPath.getInstance();
+            CPathRecord record = dao.getRecordById(this.cPathId);
+            if (record.getType().equals(CPathRecordType.INTERACTION)) {
+                return "This interaction is controlled by:";
+            } else {
+                return "Member of the Following Interactions / Complexes";
+            }
         }
     }
 
