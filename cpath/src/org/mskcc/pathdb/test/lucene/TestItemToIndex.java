@@ -1,4 +1,4 @@
-// $Id: TestItemToIndex.java,v 1.19 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestItemToIndex.java,v 1.20 2006-11-01 17:59:41 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -141,17 +141,21 @@ public class TestItemToIndex extends TestCase {
 
         //  Validate Number of Fields
         int numFields = item.getNumFields();
-        assertEquals(4, numFields);
+        assertEquals(6, numFields);
 
         Field allField = item.getField(0);
         Field idField = item.getField(1);
-        Field nameField = item.getField(2);
-        Field organismField = item.getField(3);
+		Field entityType = item.getField(2);
+		Field dataSource = item.getField(3);
+        Field nameField = item.getField(4);
+        Field organismField = item.getField(5);
 
         //  Validate Individual Fields
         assertTrue(allField.stringValue().startsWith
                 ("This pathway is freely available to all users and may be"));
         assertEquals("5", idField.stringValue());
+		assertEquals("pathway", entityType.stringValue());
+		assertEquals("", dataSource.stringValue());
         assertEquals("glycolysis I", nameField.stringValue().trim());
         assertTrue(organismField.stringValue().startsWith
                 ("Escherichia coli K-12 83333"));
