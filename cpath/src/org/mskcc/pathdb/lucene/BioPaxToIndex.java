@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.10 2006-11-01 17:59:19 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,15 @@ import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.xml.XmlStripper;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoSourceTracker;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
+
+import junit.framework.Assert;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,6 +74,15 @@ import java.util.List;
  * <TD>cPath ID</TD>
  * <TD>FIELD_CPATH_ID</TD>
  * </TR>
+ * </TR>
+ * <TR>
+ * <TD>entity type</TD>
+ * <TD>FIELD_ENTITY_TYPE</TD>
+ * </TR>
+ * <TR>
+ * <TD>data source(s)</TD>
+ * <TD>FIELD_DATA_SOURCE</TD>
+ * </TR>
  * <TR>
  * <TD VALIGN=TOP>Organism Data</TD>
  * <TD VALIGN=TOP>FIELD_ORGANISM</TD>
@@ -90,9 +108,15 @@ public class BioPaxToIndex implements ItemToIndex {
      *
      * @param xmlAssembly XmlAssembly.
      * @throws IOException Input Output Error.
+     * @throws JDOMException.
+	 * @throws DaoException.
      */
     BioPaxToIndex(long cpathId, XmlAssembly xmlAssembly)
-            throws IOException, JDOMException {
+		throws IOException, JDOMException, DaoException {
+
+		// get cpath record
+        DaoCPath cpath = DaoCPath.getInstance();
+		CPathRecord record = cpath.getRecordById(cpathId);
 
         //  Index All Terms -->  FIELD_ALL
         String xml = xmlAssembly.getXmlString();
@@ -107,6 +131,15 @@ public class BioPaxToIndex implements ItemToIndex {
         fields.add(Field.Text(LuceneConfig.FIELD_CPATH_ID,
                 Long.toString(cpathId)));
 
+		// index entity type --> FIELD_ENTITY_TYPE
+		fields.add(Field.Text(LuceneConfig.FIELD_ENTITY_TYPE,
+							  record.getSpecificType()));
+
+		// data source --> FIELD_DATA_SOURCE
+		String dataSource = getDataSources(cpath, record);
+		fields.add(Field.Text(LuceneConfig.FIELD_DATA_SOURCE,
+							  dataSource));
+		
         //  Index Name/Short Name --> FIELD_NAME
         Element rdfRoot = (Element) xmlAssembly.getXmlObject();
         XPath xpath = XPath.newInstance("*/bp:NAME");
@@ -128,7 +161,25 @@ public class BioPaxToIndex implements ItemToIndex {
 
         //  Index Organism Data --> FIELD_ORGANISM
         indexOrganismData(xmlAssembly);
+    }
 
+    /**
+     * Gets Total Number of Fields to Index.
+     *
+     * @return total number of fields to index.
+     */
+    public int getNumFields() {
+        return fields.size();
+    }
+
+    /**
+     * Gets Field at specified index.
+     *
+     * @param index Index value.
+     * @return Lucene Field Object.
+     */
+    public Field getField(int index) {
+        return (Field) fields.get(index);
     }
 
     /**
@@ -142,6 +193,46 @@ public class BioPaxToIndex implements ItemToIndex {
     public static String removecPathIds(String str) {
         return str.replaceAll(" CPATH \\d*", "");
     }
+
+	/**
+	 * Gets the data sources used to create this cpath record
+	 *
+	 * @param cpath DaoCPath
+	 * @param record CPathRecord
+	 * @return String
+	 * @throws DaoException
+	 */
+	private String getDataSources(DaoCPath cpath, CPathRecord record) throws DaoException {
+
+		// to return
+		StringBuffer dataSourceBuffer = new StringBuffer();
+
+		// get list of cpath records with same name as record parameter
+		DaoSourceTracker sourceTracker = new DaoSourceTracker();
+		ArrayList<CPathRecord> recordList = sourceTracker.getSourceRecords(record.getId());
+
+		// interate through record list
+		for (CPathRecord sourceRecord : recordList) {
+		
+			// get the snapshot id
+			long snapShotId = sourceRecord.getSnapshotId();
+
+			// create dao to external db snapshot
+			DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
+
+			// get the snapshot record
+			ExternalDatabaseSnapshotRecord snapShotRecord = daoSnapShot.getDatabaseSnapshot(snapShotId);
+
+			// get external db record from snapshot record
+			ExternalDatabaseRecord externalDatabaseRecord = snapShotRecord.getExternalDatabase();
+
+			// get name of external db from external db record and append to buffer
+			dataSourceBuffer.append(externalDatabaseRecord.getName() + " ");
+		}
+
+		// outta here
+		return dataSourceBuffer.toString();
+	}
 
     /**
      * Indexes All Organism Data --> FIELD_ORGANISM
@@ -188,24 +279,5 @@ public class BioPaxToIndex implements ItemToIndex {
             fields.add(Field.Text(LuceneConfig.FIELD_ORGANISM,
                     organismTokens.toString()));
         }
-    }
-
-    /**
-     * Gets Total Number of Fields to Index.
-     *
-     * @return total number of fields to index.
-     */
-    public int getNumFields() {
-        return fields.size();
-    }
-
-    /**
-     * Gets Field at specified index.
-     *
-     * @param index Index value.
-     * @return Lucene Field Object.
-     */
-    public Field getField(int index) {
-        return (Field) fields.get(index);
     }
 }
