@@ -1,4 +1,4 @@
-// $Id: IndexRules.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
+// $Id: IndexRules.java,v 1.6 2006-11-01 16:14:31 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,8 +67,8 @@ public class IndexRules {
             }
         } else if (record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
             //  Rules for BioPAX
-            if (record.getType().equals(CPathRecordType.PATHWAY)
-                    || record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
+            if ((record.getType().equals(CPathRecordType.PATHWAY)
+				 || record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) && record.isCpathGenerated()) {
                 return XmlAssemblyFactory.XML_ABBREV;
             }
         }
