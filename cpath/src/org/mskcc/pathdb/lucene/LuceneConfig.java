@@ -1,4 +1,4 @@
-// $Id: LuceneConfig.java,v 1.10 2006-02-22 22:47:50 grossb Exp $
+// $Id: LuceneConfig.java,v 1.11 2006-11-01 18:01:08 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,6 +63,16 @@ public class LuceneConfig {
      * Lucene Field for Storing CPath ID.
      */
     public static final String FIELD_CPATH_ID = "cpath_id";
+
+    /**
+     * Lucene Field for Storing Entity Type.
+     */
+    public static final String FIELD_ENTITY_TYPE = "entity_type";
+
+    /**
+     * Lucene Field for Storing Data Sources.
+     */
+    public static final String FIELD_DATA_SOURCE = "data_source";
 
     /**
      * Lucene Field for Organism Information.
