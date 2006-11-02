@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.5 2006-02-22 22:47:50 grossb Exp $
+// $Id: LuceneQuery.java,v 1.6 2006-11-02 20:35:28 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,8 +37,10 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryUtil;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.taglib.Pager;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
 
 import java.io.IOException;
 
@@ -60,11 +62,16 @@ public class LuceneQuery {
      * @param request ProtocolRequest Object.
      * @param xdebug  XDebug Object.
      */
-    public LuceneQuery(ProtocolRequest request,
-            XDebug xdebug) {
+    public LuceneQuery(ProtocolRequest request, GlobalFilterSettings globalFilterSettings,
+            XDebug xdebug) throws DaoException {
         this.request = request;
         this.xdebug = xdebug;
         this.searchTerms = RequestAdapter.getSearchTerms(request);
+        if (globalFilterSettings != null) {
+            this.searchTerms = LuceneAutoFilter.addFiltersToQuery
+                (request.getQuery(), globalFilterSettings);
+        }
+
     }
 
     /**
