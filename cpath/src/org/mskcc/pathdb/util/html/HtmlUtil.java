@@ -1,4 +1,4 @@
-// $Id: HtmlUtil.java,v 1.8 2006-06-09 19:22:04 cerami Exp $
+// $Id: HtmlUtil.java,v 1.9 2006-11-02 15:08:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -69,21 +69,23 @@ public class HtmlUtil {
      */
     public static String truncateLongWords(String str, int maxLength) {
         StringBuffer revisedStr = new StringBuffer(" ");
-        StringTokenizer tokenizer = new StringTokenizer(str);
-        while (tokenizer.hasMoreElements()) {
-            String token = tokenizer.nextToken();
-            if (token.length() > maxLength) {
-                boolean appendEndBoldTag = false;
-                String strippedOut = token.substring(maxLength, token.length());
-                if (strippedOut.toUpperCase().indexOf("</B>") > -1) {
-                    appendEndBoldTag = true;
+        if (str != null) {
+            StringTokenizer tokenizer = new StringTokenizer(str);
+            while (tokenizer.hasMoreElements()) {
+                String token = tokenizer.nextToken();
+                if (token.length() > maxLength) {
+                    boolean appendEndBoldTag = false;
+                    String strippedOut = token.substring(maxLength, token.length());
+                    if (strippedOut.toUpperCase().indexOf("</B>") > -1) {
+                        appendEndBoldTag = true;
+                    }
+                    token = token.substring(0, maxLength) + " [Cont.]";
+                    if (appendEndBoldTag) {
+                        token = token + "</B>";
+                    }
                 }
-                token = token.substring(0, maxLength) + " [Cont.]";
-                if (appendEndBoldTag) {
-                    token = token + "</B>";
-                }
+                revisedStr.append(token + " ");
             }
-            revisedStr.append(token + " ");
         }
         return revisedStr.toString().trim();
     }
