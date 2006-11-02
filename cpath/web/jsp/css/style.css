@@ -229,3 +229,8 @@
     padding: 5px 5px 5px 5px;
     background: #EEEEEE;
 }
+
+#content h1 {
+  font-size:125%;
+  margin: 5px 0px 5px 5px;
+}
