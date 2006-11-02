@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.16 2006-10-31 20:56:17 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.17 2006-11-02 15:09:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -116,6 +116,10 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
         reactomeWordHack.add("SIMILARITY:");
         reactomeWordHack.add("DOMAIN:");
         reactomeWordHack.add("ALTERNATIVE");
+        reactomeWordHack.add("CAUTION:");
+        reactomeWordHack.add("PTM:");
+        reactomeWordHack.add("INDUCTION:");
+        reactomeWordHack.add("DISEASE:");
 
         // get biopax record summary
         biopaxRecordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
@@ -134,6 +138,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
         append("<TABLE CELLSPACING=5 CELLPADDING=0>");
         append("<TR VALIGN=TOP><TD>");
         append("<TABLE CELLSPACING=5 CELLPADDING=0>");
+        outputDescription();
         outputSynonyms();
         outputExternalLinks();
         outputComment();
@@ -160,6 +165,23 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
             append("<div class='entity_header'>");
             append(header);
             append("</div>");
+        }
+    }
+
+    /**
+     * Reactome Hack to output description.
+     */
+    private void outputDescription() {
+        if (biopaxRecordSummary.getName().startsWith("UniProt:")) {
+            append("<TR>");
+            append("<TD VALIGN=TOP><B>Description:</B></TD>");
+            append("<TD VALIGN=TOP>");
+            StringTokenizer tokenizer = new StringTokenizer(biopaxRecordSummary.getName(), " ");
+            tokenizer.nextElement();
+            while (tokenizer.hasMoreElements()) {
+                append ((String) tokenizer.nextElement());
+            }
+            append("</TD></TR>");
         }
     }
 

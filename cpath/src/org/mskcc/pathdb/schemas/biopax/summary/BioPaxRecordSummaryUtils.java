@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.26 2006-08-14 21:00:01 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.27 2006-11-02 15:09:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,6 +40,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * This class contains some utility methods
@@ -382,7 +383,12 @@ public class BioPaxRecordSummaryUtils {
         // try name
         name = biopaxRecordSummary.getName();
         if (name != null && name.length() > 0) {
-            return name;
+            if (name.startsWith("UniProt:")) {
+                StringTokenizer tokenizer = new StringTokenizer(name, " ");
+                return (String) tokenizer.nextElement();
+            } else {
+                return name;
+            }
         }
 
         // get shortest synonym
