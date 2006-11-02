@@ -7,6 +7,9 @@
 <%@ page import="org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord"%>
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
 <%@ page import="org.mskcc.pathdb.model.GlobalFilterSettings"%>
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoOrganism"%>
+<%@ page import="java.util.List"%>
+<%@ page import="org.mskcc.pathdb.model.Organism"%>
 <%@ page errorPage = "JspError.jsp" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 
@@ -23,8 +26,8 @@ request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 <div id="content">
 <h1>Restrict my search results to the following data sources:</h1>
 
-<table CELLPADDING=0 CELLSPACING=5>
 <form action="storeFilters.do">
+    <table CELLPADDING=0 CELLSPACING=5>
     <%
     String referer = request.getHeader("Referer");
     if (referer != null && ! (referer.indexOf("filter.do") > 0)) {
@@ -60,12 +63,39 @@ request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
             out.println("</INPUT>");
             out.println("</TD></TR>");
         }
-        out.println("<TR><TD><BR>");
-        out.println("<INPUT TYPE=SUBMIT VALUE='Set Global Filters'>");
-        out.println("</TD></TR>");
     }
     %>
-</form>
+    </table>
+
+<h1>Restrict my search results to the following organisms:</h1>
+    <table CELLPADDING=0 CELLSPACING=5>
+    <%
+        DaoOrganism daoOrganism = new DaoOrganism();
+        List organismList = daoOrganism.getAllOrganisms();
+        for (int i=0; i<organismList.size(); i++) {
+            Organism organism = (Organism) organismList.get(i);
+            out.println("<TR><TD>");
+            out.println("<INPUT TYPE=CHECKBOX NAME=ORGANISM_TAXONOMY_ID VALUE="
+                + organism.getTaxonomyId());
+            if (settings.isOrganismSelected(organism.getTaxonomyId())) {
+                out.println(" CHECKED");
+            }
+            out.println(">");
+            out.println("&nbsp;&nbsp;" + organism.getSpeciesName());
+            out.println("</INPUT>");
+            out.println("</TD></TR>");
+        }
+    %>
+    </table>
+
+<table CELLPADDING=0 CELLSPACING=5>
+    <TR>
+        <TD><BR>
+            <INPUT TYPE=SUBMIT VALUE='Set Global Filters'>
+        </TD>
+    </TR>
 </table>
+
+</form>
 </div>
 <jsp:include page="../global/footer.jsp" flush="true" />

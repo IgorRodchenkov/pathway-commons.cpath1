@@ -39,31 +39,62 @@ public class StoreGlobalFilterSettings extends BaseAction {
             settings = new GlobalFilterSettings();
             session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS, settings);
         }
+        StringBuffer userMsg = new StringBuffer();
+
+        //  Check for missing snapshot IDs.
         String idStrs[] = request.getParameterValues("SNAPSHOT_ID");
         if (idStrs == null || idStrs.length ==0) {
-            request.setAttribute("userMsg", "Please select at least one data source.");
+            xdebug.logMsg(this, "Error:  No data sources selected.");
+            userMsg.append("Please select at least one data source.");
             settings.setSnapshotsSelected(null);
+        }
+
+        //  Check for missing organism IDs.
+        String organismIdStrs[] = request.getParameterValues("ORGANISM_TAXONOMY_ID");
+        if (organismIdStrs == null || organismIdStrs.length ==0) {
+            xdebug.logMsg(this, "Error:  No organisms selected.");
+            if  (userMsg.toString().length() > 0) {
+                userMsg.append("<P>&gt; ");
+            }
+            userMsg.append("Please select at least one organism.");
+            settings.setOrganismSelected(null);
+        }
+
+        //  Send Error Message to User.
+        if (userMsg.toString().length() > 0) {
+            request.setAttribute("userMsg", userMsg.toString());
             return mapping.findForward(BaseAction.FORWARD_FAILURE);
-        } else {
-            ArrayList idList = new ArrayList();
-            for (int i=0; i < idStrs.length; i++) {
-                Long id = new Long (Long.parseLong(idStrs[i]));
-                idList.add(id);
-            }
-            settings.setSnapshotsSelected(idList);
-            String userMessage = "Global Filters Set";
-            request.setAttribute("userMsg", userMessage);
-            String referalUrl = (String) session.getAttribute("Referer");
-            if (referalUrl != null) {
-                if (referalUrl.indexOf("?") > -1) {
-                    response.sendRedirect(referalUrl + "&userMsg="+ userMessage +"");
-                } else {
-                    response.sendRedirect(referalUrl + "?userMsg="+ userMessage +"");
-                }
-                return null;
+        }
+
+        //  Store selected data sources in session object.
+        ArrayList idList = new ArrayList();
+        for (int i=0; i < idStrs.length; i++) {
+            Long id = new Long (Long.parseLong(idStrs[i]));
+            idList.add(id);
+        }
+        settings.setSnapshotsSelected(idList);
+
+        //  Store selected organisms in session object.
+        idList = new ArrayList();
+        for (int i=0; i < organismIdStrs.length; i++) {
+            Integer id = new Integer (Integer.parseInt(organismIdStrs[i]));
+            idList.add(id);
+        }
+        settings.setOrganismSelected(idList);
+
+        //  Redirect user back to where they originally came from.
+        String userMessage = "Global Filters Set";
+        request.setAttribute("userMsg", userMessage);
+        String referalUrl = (String) session.getAttribute("Referer");
+        if (referalUrl != null) {
+            if (referalUrl.indexOf("?") > -1) {
+                response.sendRedirect(referalUrl + "&userMsg="+ userMessage +"");
             } else {
-                return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+                response.sendRedirect(referalUrl + "?userMsg="+ userMessage +"");
             }
+            return null;
+        } else {
+            return mapping.findForward(BaseAction.FORWARD_SUCCESS);
         }
     }
 }

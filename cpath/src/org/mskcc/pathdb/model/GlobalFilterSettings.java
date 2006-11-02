@@ -2,10 +2,12 @@ package org.mskcc.pathdb.model;
 
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoOrganism;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GlobalFilterSettings {
 
@@ -15,6 +17,7 @@ public class GlobalFilterSettings {
     public final static String GLOBAL_FILTER_SETTINGS = "GLOBAL_FILTER_SETTINGS";
 
     private HashSet snapshotSet = new HashSet();
+    private HashSet organismSet = new HashSet();
 
     public GlobalFilterSettings() throws DaoException {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
@@ -24,14 +27,29 @@ public class GlobalFilterSettings {
                     (ExternalDatabaseSnapshotRecord) list.get(i);
             snapshotSet.add(new Long(snapshotRecord.getId()));
         }
+
+        DaoOrganism daoOrganism = new DaoOrganism();
+        List orgList = daoOrganism.getAllOrganisms();
+        for (int i=0; i<orgList.size(); i++) {
+            Organism organism = (Organism) orgList.get(i);
+            organismSet.add(new Integer(organism.getTaxonomyId()));
+        }
     }
 
     public boolean isSnapshotSelected (long snapshotId) {
-        if (snapshotSet.contains(new Long(snapshotId))) {
-            return true;
-        } else {
-            return false;
-        }
+        return snapshotSet.contains(new Long(snapshotId));
+    }
+
+    public boolean isOrganismSelected (int ncbiTaxonomyId) {
+        return organismSet.contains(new Integer(ncbiTaxonomyId));
+    }
+
+    public Set getSnapshotIdSet() {
+        return snapshotSet;
+    }
+
+    public Set getOrganismTaxonomyIdSet() {
+        return organismSet;
     }
 
     public void setSnapshotsSelected (List snapshotIds) {
@@ -39,6 +57,15 @@ public class GlobalFilterSettings {
         if (snapshotIds != null) {
             for (int i=0; i<snapshotIds.size(); i++) {
                 snapshotSet.add(snapshotIds.get(i));
+            }
+        }
+    }
+
+    public void setOrganismSelected (List organismTaxonomyIds) {
+        organismSet = new HashSet();
+        if (organismTaxonomyIds != null) {
+            for (int i=0; i<organismTaxonomyIds.size(); i++) {
+                organismSet.add(organismTaxonomyIds.get(i));
             }
         }
     }
