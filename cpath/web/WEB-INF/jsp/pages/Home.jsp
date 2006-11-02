@@ -51,7 +51,9 @@
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
     </form>
-    <P>To get started, enter a gene name or identifer in the text box above.</p>
+    <P>To get started, enter a gene name or identifer in the text box above.
+    <P>To restrict your search to specific data sources, update your
+    <a href="filter.do">global filter settings</A>.</p>
     </div>
 <% } %>
 
