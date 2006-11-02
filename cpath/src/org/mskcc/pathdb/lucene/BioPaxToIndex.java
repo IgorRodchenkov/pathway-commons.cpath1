@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.11 2006-11-02 15:34:40 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.12 2006-11-02 15:57:15 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -229,9 +229,11 @@ public class BioPaxToIndex implements ItemToIndex {
 
 			// get the snapshot record
 			ExternalDatabaseSnapshotRecord snapShotRecord = daoSnapShot.getDatabaseSnapshot(snapShotId);
+			if (snapShotRecord == null) continue;
 			
 			// get external db record from snapshot record
 			ExternalDatabaseRecord externalDatabaseRecord = snapShotRecord.getExternalDatabase();
+			if (externalDatabaseRecord == null) continue;
 
 			// get name of external db from external db record and append to buffer
 			dataSourceBuffer.append(externalDatabaseRecord.getName() + " ");
