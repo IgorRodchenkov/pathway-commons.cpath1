@@ -13,15 +13,7 @@
     <!-- Apply the Filter Cache to select Struts actions -->
     <filter-mapping>
         <filter-name>Cache</filter-name>
-        <url-pattern>/record.do</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>Cache</filter-name>
         <url-pattern>/browse.do</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>Cache</filter-name>
-        <url-pattern>/webservice.do</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>Cache</filter-name>
