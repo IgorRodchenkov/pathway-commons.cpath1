@@ -1,4 +1,4 @@
-// $Id: IndexerSuite.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: IndexerSuite.java,v 1.9 2006-11-02 20:35:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,6 +55,7 @@ public class IndexerSuite extends TestCase {
         suite.addTestSuite(TestRequestAdapter.class);
         suite.addTestSuite(TestLuceneUtil.class);
         suite.addTestSuite(TestConfigurableIndexCollector.class);
+        suite.addTestSuite(TestLuceneAutoFilter.class);
         suite.setName("Indexer Tests");
         return suite;
     }
