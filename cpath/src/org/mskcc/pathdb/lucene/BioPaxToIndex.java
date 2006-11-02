@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.10 2006-11-01 17:59:19 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.11 2006-11-02 15:34:40 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.xml.XmlStripper;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
@@ -207,22 +208,28 @@ public class BioPaxToIndex implements ItemToIndex {
 		// to return
 		StringBuffer dataSourceBuffer = new StringBuffer();
 
-		// get list of cpath records with same name as record parameter
-		DaoSourceTracker sourceTracker = new DaoSourceTracker();
-		ArrayList<CPathRecord> recordList = sourceTracker.getSourceRecords(record.getId());
+		// create record list to process
+		ArrayList<CPathRecord> recordList = new ArrayList<CPathRecord>();
+		if (record.getType().equals(CPathRecordType.PATHWAY)) {
+			// we can use the record itself
+			recordList.add(record);
+		}
+		else {
+			// get list of source records
+			DaoSourceTracker sourceTracker = new DaoSourceTracker();
+			recordList = sourceTracker.getSourceRecords(record.getId());
+		}
 
 		// interate through record list
+		DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
 		for (CPathRecord sourceRecord : recordList) {
 		
 			// get the snapshot id
 			long snapShotId = sourceRecord.getSnapshotId();
 
-			// create dao to external db snapshot
-			DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
-
 			// get the snapshot record
 			ExternalDatabaseSnapshotRecord snapShotRecord = daoSnapShot.getDatabaseSnapshot(snapShotId);
-
+			
 			// get external db record from snapshot record
 			ExternalDatabaseRecord externalDatabaseRecord = snapShotRecord.getExternalDatabase();
 
