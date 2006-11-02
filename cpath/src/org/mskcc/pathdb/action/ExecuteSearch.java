@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.8 2006-11-02 20:37:23 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,17 +41,21 @@ import org.mskcc.dataservices.schemas.psi.EntrySet;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.lucene.LuceneQuery;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
+import org.mskcc.pathdb.lucene.LuceneAutoFilter;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryManager;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -199,15 +203,32 @@ public class ExecuteSearch extends BaseAction {
             (XDebug xdebug, ProtocolRequest protocolRequest,
                     HttpServletRequest request, ActionMapping mapping)
             throws QueryException, IOException,
-            AssemblyException, ParseException {
-        LuceneQuery search = new LuceneQuery(protocolRequest, xdebug);
-        long cpathIds[] = search.executeSearch();
-        request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
-        request.setAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS,
-                new Integer(search.getTotalNumHits()));
-        request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
-                search.getTextFragments());
-        return mapping.findForward(CPathUIConfig.BIOPAX);
+            AssemblyException, ParseException, ProtocolException {
+        GlobalFilterSettings filterSettings = null;
+        try {
+            if (CPathUIConfig.getShowDataSourceDetails()) {
+                HttpSession session = request.getSession();
+                filterSettings = (GlobalFilterSettings) session.getAttribute
+                        (GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+                if (filterSettings == null) {
+                    filterSettings = new GlobalFilterSettings();
+                    session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS,
+                            filterSettings);
+                }
+                xdebug.logMsg(this, "User has Global Filter Settings");
+            }
+
+            LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
+            long cpathIds[] = search.executeSearch();
+            request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
+            request.setAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS,
+                    new Integer(search.getTotalNumHits()));
+            request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
+                    search.getTextFragments());
+            return mapping.findForward(CPathUIConfig.BIOPAX);
+        } catch (DaoException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        }
     }
 
     /**
