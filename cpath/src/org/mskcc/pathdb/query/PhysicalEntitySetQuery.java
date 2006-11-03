@@ -1,4 +1,4 @@
-// $Id: PhysicalEntitySetQuery.java,v 1.2 2006-11-03 21:03:26 grossb Exp $
+// $Id: PhysicalEntitySetQuery.java,v 1.3 2006-11-03 21:34:09 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,7 +47,6 @@ import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.io.IOException;
 
 /**
  * Utility class which supports physical entities set queries.
@@ -109,13 +108,12 @@ public class PhysicalEntitySetQuery {
 	 * Returns a set of interactions involving at least two of 
 	 * the physical entities in the given physical entities set.
 	 *
-	 * @param array of physical entity record ids
+	 * @param physicalEntityRecordIDs long[]
 	 * @return Set<PhysicalEntitySetInteractionsQueryResult>
 	 * @throws DaoException
-	 * @throws IOException
 	 */
 	public static Set<PhysicalEntitySetInteractionsQueryResult> getPhysicalEntitySetInteractions(long[] physicalEntityRecordIDs)
-		throws DaoException, IOException {
+		throws DaoException {
 
 		// init some vars
         DaoCPath daoCPath = DaoCPath.getInstance();
@@ -147,7 +145,7 @@ public class PhysicalEntitySetQuery {
 	/**
 	 * Returns a set of pathway record ids (rank by physical entity membership).
 	 *
-     * @param array of physical entity record ids
+     * @param physicalEntityRecordIDs long[]
 	 * @return long[]
 	 * @throws DaoException
 	 */
@@ -161,14 +159,15 @@ public class PhysicalEntitySetQuery {
 
 		// build a list (union) of all pathways that the physical entities are members
 		for (Long physicalEntityRecordID : physicalEntityRecordIDsAsLong) {
-			allPathwayRecordIDs.addAll(getCPathRecordIds(daoCPath, daoInternalLink, physicalEntityRecordID, CPathRecordType.PATHWAY));
+			allPathwayRecordIDs.addAll(getCPathRecordIds(daoCPath, daoInternalLink,
+														 physicalEntityRecordID, CPathRecordType.PATHWAY));
 		}
 
 		// for each pathway, we have to determine number of physical entity participant it contains
 		Map <Long,Long> pathwayMembershipRecordIDsMap = new TreeMap<Long,Long>();
 		for (Long pathwayRecordID : allPathwayRecordIDs) {
-			Set<Long> pathwayMembershipRecordIDs = getPathwayMembershipRecordIDs(daoCPath, daoInternalLink,
-																				 pathwayRecordID, physicalEntityRecordIDsAsLong);
+			Set<Long> pathwayMembershipRecordIDs = getPathwayMembershipRecordIDs(daoInternalLink, pathwayRecordID,
+																				 physicalEntityRecordIDsAsLong);
 			// store the pathway record id and number of physical entity members into map
 			pathwayMembershipRecordIDsMap.put(pathwayRecordID, new Long(pathwayMembershipRecordIDs.size()));
 		}
@@ -180,7 +179,7 @@ public class PhysicalEntitySetQuery {
 	/**
 	 * Creates a Set<Long> given a long[].
 	 *
-	 * @param physicalEntities long[]
+	 * @param physicalEntityRecordIDs long[]
 	 * @return Set<Long>
 	 */
 	private static Set<Long> createPhysicalEntitySet(long[] physicalEntityRecordIDs) {
@@ -270,14 +269,13 @@ public class PhysicalEntitySetQuery {
 	 * Returns list of pathway members.
 	 * Note: pathway members must be a member of given physical entity set.
 	 *
-	 * @param daoCPath DaoCPath
 	 * @param daoInternalLink DaoInternalLink
 	 * @param pathwayRecordID Long
 	 * @param physicalEntityRecordIDs Set<Long>
 	 * @return Set<Long> (interaction ids)
 	 * @throws DaoException
 	 */
-	private static Set<Long> getPathwayMembershipRecordIDs(DaoCPath daoCPath, DaoInternalLink daoInternalLink,
+	private static Set<Long> getPathwayMembershipRecordIDs(DaoInternalLink daoInternalLink,
 														   Long pathwayRecordID, Set<Long> physicalEntityRecordIDs) throws DaoException {
 
 		// set to return
@@ -289,7 +287,6 @@ public class PhysicalEntitySetQuery {
 		ArrayList<InternalLinkRecord> internalLinkRecords = daoInternalLink.getTargets(pathwayRecordID);
 		for (InternalLinkRecord linkRecord : internalLinkRecords) {
 			long targetID = linkRecord.getTargetId();
-			CPathRecord cpathRecord = daoCPath.getRecordById(targetID);
             if (physicalEntityRecordIDs.contains(targetID)) {
 				returnSet.add(targetID);
 			}
