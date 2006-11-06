@@ -52,7 +52,7 @@
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
     </form>
     <P>To get started, enter a gene name or identifer in the text box above.
-    <P>To restrict your search to specific data sources, update your
+    <P>To restrict your search to specific data sources or specific organisms, update your
     <a href="filter.do">global filter settings</A>.</p>
     </div>
 <% } %>
