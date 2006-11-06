@@ -13,6 +13,9 @@
 				 org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoInternalLink"%>
+<%@ page import="org.mskcc.pathdb.taglib.BioPaxParentChildTable"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.EntitySummary"%>
+<%@ page import="java.util.Iterator"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -148,7 +151,7 @@
             || record.getType().equals(CPathRecordType.INTERACTION)) {
 %>
 		<DIV CLASS ='h3'>
-		<H3>Member of the Following Pathways</H3>
+		<H3><A NAME="pathway_list">Member of the Following Pathways</A></H3>
 		</DIV>
 		<TABLE WIDTH=100%>
 <%
@@ -170,13 +173,34 @@
 <%
         SummaryListUtil util = new SummaryListUtil
                 (record.getId(), SummaryListUtil.MODE_GET_PARENTS, filterSettings);
-        ArrayList summaryList = util.getSummaryList();
+        ArrayList allList = util.getSummaryList();
+
+        //  Separate interactions from complexes
+        ArrayList interactionList = new ArrayList();
+        ArrayList complexList = new ArrayList();
+        for (int i=0; i<allList.size(); i++) {
+            EntitySummary entitySummary = (EntitySummary) allList.get(i);
+            if (entitySummary.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
+                complexList.add(entitySummary);
+            } else {
+                interactionList.add(entitySummary);
+            }
+        }
 %>
+    <!-- Show all Interaction Parents of this entity -->
     <cbio:bioPaxParentChildTable
-            entitySummaryList="<%= summaryList %>"
+            entitySummaryList="<%= interactionList %>"
             request="<%= request %>"
             cpathId="<%= record.getId()%>"
-            mode="<%= SummaryListUtil.MODE_GET_PARENTS %>"/>
+            mode="<%= BioPaxParentChildTable.MODE_SHOW_PARENT_INTERACTIONS %>"/>
+
+    <!-- Show all Complex Parents of this entity -->
+    <cbio:bioPaxParentChildTable
+            entitySummaryList="<%= complexList %>"
+            request="<%= request %>"
+            cpathId="<%= record.getId()%>"
+            mode="<%= BioPaxParentChildTable.MODE_SHOW_PARENT_COMPLEXES %>"/>
+
 <%
     }
 %>

@@ -1,4 +1,4 @@
-// $Id: BioPaxShowFlag.java,v 1.2 2006-10-31 20:55:42 cerami Exp $
+// $Id: BioPaxShowFlag.java,v 1.3 2006-11-06 21:21:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -43,8 +43,10 @@ package org.mskcc.pathdb.taglib;
  * 1, show all molecules.
  * <LI>SHOW_ALL_CHILDREN, Index 1:  When set to 0, show only the first X children;  when set to
  * 1, show all children.
- * <LI>SHOW_ALL_PARENTS, Index 2:  When set to 0, show only the first X parents;  when set to
- * 1, show all parents.
+ * <LI>SHOW_ALL_PARENT_INTERACTIONS, Index 2:  When set to 0, show only the first X interaction
+ * parents;  when set to 1, show all interaction parents.
+ * <LI>SHOW_ALL_PARENT_COMPLEXES, Index 3:  When set to 0, show only the first X complex parents;
+ * when set to 1, show all complex parents.
  * </UL>
  *
  * @author Ethan Cerami
@@ -66,9 +68,16 @@ public class BioPaxShowFlag implements Cloneable {
     public static final int SHOW_ALL_CHILDREN = 1;
 
     /**
-     * Index 2.  When set to 0, show only the first X parents;  when set to 1, show all parents.
+     * Index 2.  When set to 0, show only the first X interaction parents;
+     * when set to 1, show all interaction parents.
      */
-    public static final int SHOW_ALL_PARENTS = 2;
+    public static final int SHOW_ALL_PARENT_INTERACTIONS = 2;
+
+    /**
+     * Index 3.  When set to 0, show only the first X complex parents;
+     * when set to 1, show all complex parents.
+     */
+    public static final int SHOW_ALL_PARENT_COMPLEXES = 3;
 
     /**
      * Stores current set of flags.
@@ -79,7 +88,7 @@ public class BioPaxShowFlag implements Cloneable {
      * Empty Argument Constructor.
      */
     public BioPaxShowFlag() {
-        flags = new int[]{0, 0, 0};
+        flags = new int[]{0, 0, 0, 0};
     }
 
     /**
@@ -90,15 +99,16 @@ public class BioPaxShowFlag implements Cloneable {
      * <UL>
      * <LI>SHOW_ALL_MOLECULES = 1
      * <LI>SHOW_ALL_CHILDREN = 0
-     * <LI>SHOW_ALL_PARENTS = 0
+     * <LI>SHOW_ALL_PARENT_INTERACTIONS = 0
+     * <LI>SHOW_ALL_PARENT_COMPLEXES = 0
      * </UL>
      *
-     * @param value String value, e.g. "100".
+     * @param value String value, e.g. "1000".
      */
     public BioPaxShowFlag(String value) {
-        flags = new int[]{0, 0, 0};
+        flags = new int[]{0, 0, 0, 0};
         if (value != null) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 if (value.charAt(i) == '1') {
                     flags[i] = 1;
                 }
@@ -133,7 +143,7 @@ public class BioPaxShowFlag implements Cloneable {
      */
     public String getUrlParameter() {
         StringBuffer param = new StringBuffer(SHOW_FLAG + "=");
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             if (flags[i] == 1) {
                 param.append("1");
             } else {
@@ -155,11 +165,14 @@ public class BioPaxShowFlag implements Cloneable {
      * @return HTML String.
      */
     public static String createHtmlHeader(int defaultNumRecords, int totalNumRecords,
-            long cPathId, String title, BioPaxShowFlag showFlag, int flagIndex) {
+            long cPathId, String title, BioPaxShowFlag showFlag, int flagIndex,
+            String anchorName) {
         StringBuffer html = new StringBuffer();
         html.append("<div class='h3'>");
         html.append("<h3>");
+        html.append ("<A NAME='" + anchorName + "'>");
         html.append(title);
+        html.append ("</A>");
         int end = determineEndIndex(defaultNumRecords, totalNumRecords, showFlag, flagIndex);
 
         if (totalNumRecords > 0) {
@@ -227,7 +240,8 @@ public class BioPaxShowFlag implements Cloneable {
         BioPaxShowFlag clone = new BioPaxShowFlag();
         clone.setFlag(SHOW_ALL_MOLECULES, getFlag(SHOW_ALL_MOLECULES));
         clone.setFlag(SHOW_ALL_CHILDREN, getFlag(SHOW_ALL_CHILDREN));
-        clone.setFlag(SHOW_ALL_PARENTS, getFlag(SHOW_ALL_PARENTS));
+        clone.setFlag(SHOW_ALL_PARENT_INTERACTIONS, getFlag(SHOW_ALL_PARENT_INTERACTIONS));
+        clone.setFlag(SHOW_ALL_PARENT_COMPLEXES, getFlag(SHOW_ALL_PARENT_COMPLEXES));
         return clone;
     }
 }
