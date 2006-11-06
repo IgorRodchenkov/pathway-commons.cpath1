@@ -9,7 +9,7 @@
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary"%>
 <%@ page import="org.mskcc.pathdb.util.biopax.BioPaxRecordUtil"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.model.CPathRecordType"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 
@@ -31,19 +31,19 @@
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
 %>
 
-<div id="content">
 <% if (protocolRequest.getQuery() != null) { %>
-<h1>Searched for:  <%= protocolRequest.getQuery() %></h1>
+<h2>Searched for:  <%= protocolRequest.getQuery() %></h2>
 <% } %>
 <% if (totalNumHits.intValue() ==0) { %>
-    <h1>No Matching Records Found. Please try again.</h1>
+    <h2>No Matching Records Found. Please try again.</h2>
 <% } else {
     Pager pager = new Pager (protocolRequest, totalNumHits.intValue());
-    out.println ("<div CLASS ='h3'><h3>");
+    out.println("<div class='search_bar'>");
     out.println(pager.getHeaderHtml());
-    out.println ("</h3>");
+    out.println ("</div>");
     out.println ("<div>");
 %>
+    <table cellpadding=2 cellspacing=0 width=100%>
     <%
     DaoCPath dao = DaoCPath.getInstance();
     for (int i=0; i<cpathIds.length; i++) {
@@ -52,22 +52,49 @@
         try {
             BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
-            out.println("<div class='search_name'>" +
-                    "<A HREF=\"" + url + "\">" + header + "</A></div>");
+            if (record.getType().equals(CPathRecordType.PATHWAY)) {
+                out.println("<tr valign=center bgcolor='#DDDDDD'>");
+            } else {
+                out.println("<tr valign=center bgcolor='#E1EBF5'>");
+            }
+            out.println("<td><div class='search_name'>" +
+                    "<A HREF=\"" + url + "\">" + header + "</A></div></td>");
+            out.println("<td valign=center align=right>");
+            out.println("<div class='mini_buttons'>");
+            if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
+                out.println("<span class='mini_button_1'><A "
+                 + "title='View all pathways that contain this physical entity' HREF='"
+                 + url + "#pathway_list'>Pathways</A></span>");
+                out.println("<span class='mini_button_2'><A "
+                 + "title='View all interactions that contain this physical entity' HREF='"
+                 + url + "&show_flags=0010#interaction_list'>Interactions</A></span>");
+                out.println("<span class='mini_button_3'><A "
+                 + "title='View all complexes that contain this physical entity' HREF='"
+                 + url + "&show_flags=0001#complex_list'>Complexes</A></span>");
+            } else {
+                out.println("<span class='mini_button_4'><A "
+                 + "title='View all molecules that participate in this pathway' HREF='"
+                 + url + "&show_flags=1000#pe_list'>Molecules</A></span>");
+                out.println("<span class='mini_button_2'><A "
+                 + "title='View all interactions that participate in this pathway' HREF='"
+                 + url + "&show_flags=01000#interaction_list'>Interactions</A></span>");
+            }
+            out.println("</div'>");
+            out.println("</td></tr>");
         } catch (IllegalArgumentException e) {
             out.println("<div class='search_name'>" +
                     "<A HREF=\"" + url + "\">" + record.getName() + "</A></div>");
         }
         if (organismFlag == null) {
-            out.println("<div class='search_blob'>"
+            out.println("<tr><td colspan=2><div class='search_blob'>"
                 + HtmlUtil.truncateLongWords(fragments[i], 40)
-                +"</div>");
+                +"</div></td></tr>");
         }
     }
+    out.println("</table>");
     out.println("<div class='search_bar'>");
     out.println(pager.getHeaderHtml());
     out.println("</div>");
 }
 %>
-</div>
 <jsp:include page="../../global/footer.jsp" flush="true" />
