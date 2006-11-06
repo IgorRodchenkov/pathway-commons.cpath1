@@ -1,4 +1,4 @@
-// $Id: TestBioPaxShowFlag.java,v 1.2 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestBioPaxShowFlag.java,v 1.3 2006-11-06 21:22:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,7 @@ package org.mskcc.pathdb.test.taglib;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.taglib.BioPaxShowFlag;
+import org.mskcc.pathdb.taglib.BioPaxParentChildTable;
 
 /**
  * Tests the BioPaxShowFlag Object.
@@ -49,7 +50,7 @@ public class TestBioPaxShowFlag extends TestCase {
         testName = "Test the core functionality of the BioPaxShowFlag Object";
         BioPaxShowFlag showFlag = new BioPaxShowFlag();
         String urlParam = showFlag.getUrlParameter();
-        assertEquals("show_flags=000", urlParam);
+        assertEquals("show_flags=0000", urlParam);
         int value = showFlag.getFlag(BioPaxShowFlag.SHOW_ALL_MOLECULES);
         assertEquals(0, value);
 
@@ -57,15 +58,15 @@ public class TestBioPaxShowFlag extends TestCase {
         value = showFlag.getFlag(BioPaxShowFlag.SHOW_ALL_MOLECULES);
         assertEquals(1, value);
         urlParam = showFlag.getUrlParameter();
-        assertEquals("show_flags=100", urlParam);
+        assertEquals("show_flags=1000", urlParam);
 
         showFlag.setFlag(BioPaxShowFlag.SHOW_ALL_CHILDREN, 1);
         value = showFlag.getFlag(BioPaxShowFlag.SHOW_ALL_CHILDREN);
         assertEquals(1, value);
         urlParam = showFlag.getUrlParameter();
-        assertEquals("show_flags=110", urlParam);
+        assertEquals("show_flags=1100", urlParam);
 
-        showFlag = new BioPaxShowFlag("100");
+        showFlag = new BioPaxShowFlag("1000");
         value = showFlag.getFlag(BioPaxShowFlag.SHOW_ALL_MOLECULES);
         assertEquals(1, value);
     }
@@ -75,15 +76,17 @@ public class TestBioPaxShowFlag extends TestCase {
      */
     public void testHtmlHeader() {
         testName = "Test the creation of HTML Headers";
-        BioPaxShowFlag showFlag = new BioPaxShowFlag("100");
+        BioPaxShowFlag showFlag = new BioPaxShowFlag("1000");
         String html = BioPaxShowFlag.createHtmlHeader(10, 100, 1234,
-                "Contains the following molecules", showFlag, BioPaxShowFlag.SHOW_ALL_MOLECULES);
-        assertTrue(html.indexOf("show_flags=000\">[display 1-10]") > -1);
+                "Contains the following molecules", showFlag, BioPaxShowFlag.SHOW_ALL_MOLECULES,
+                "pe_list");
+        assertTrue(html.indexOf("show_flags=0000\">[display 1-10]") > -1);
 
-        showFlag = new BioPaxShowFlag("000");
+        showFlag = new BioPaxShowFlag("0000");
         html = BioPaxShowFlag.createHtmlHeader(10, 100, 1234,
-                "Contains the following molecules", showFlag, BioPaxShowFlag.SHOW_ALL_MOLECULES);
-        assertTrue(html.indexOf("show_flags=100\">[display all]") > -1);
+                "Contains the following molecules", showFlag, BioPaxShowFlag.SHOW_ALL_MOLECULES,
+                "pe_list");
+        assertTrue(html.indexOf("show_flags=1000\">[display all]") > -1);
     }
 
     /**
