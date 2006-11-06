@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.15 2006-06-09 19:22:03 cerami Exp $
+// $Id: PathwayMoleculesTable.java,v 1.16 2006-11-06 21:22:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -121,7 +121,7 @@ public class PathwayMoleculesTable extends HtmlTable {
             String title = "Contains the Following Molecules";
             String htmlHeader = BioPaxShowFlag.createHtmlHeader(DEFAULT_NUM_RECORDS,
                     moleculeSet.size(), cPathId, title, showFlag,
-                    BioPaxShowFlag.SHOW_ALL_MOLECULES);
+                    BioPaxShowFlag.SHOW_ALL_MOLECULES, "pe_list");
             append(htmlHeader);
             append("<TABLE>");
             outputRecords();

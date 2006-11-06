@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.17 2006-10-31 20:56:36 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.18 2006-11-06 21:22:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,15 +38,12 @@ import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils;
 import org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil;
-import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 
 /**
  * Custom JSP tag for displaying a list of BioPAX Parent Elements
@@ -62,6 +59,21 @@ public class BioPaxParentChildTable extends HtmlTable {
     private BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
     private int mode;
     private static final int DEFAULT_NUM_RECORDS = 20;
+
+    /**
+     * Mode:  Show Children
+     */
+    public static final int MODE_SHOW_CHILDREN = 1;
+
+    /**
+     * Mode:  Show Parent Interactions
+     */
+    public static final int MODE_SHOW_PARENT_INTERACTIONS = 2;
+
+    /**
+     * Mode:  Show Complex Interactions
+     */
+    public static final int MODE_SHOW_PARENT_COMPLEXES = 3;
 
     /**
      * Alternating Colors for Table Rows:  Color 1.
@@ -120,8 +132,14 @@ public class BioPaxParentChildTable extends HtmlTable {
         int cnt = BioPaxShowFlag.determineEndIndex(DEFAULT_NUM_RECORDS,
                 entitySummaryList.size(), showFlag, flagIndex);
         String title = getTitle();
+        String anchorName = "interaction_list";
+        if (mode == BioPaxParentChildTable.MODE_SHOW_PARENT_INTERACTIONS) {
+            anchorName = "interaction_list";
+        } else if (mode == BioPaxParentChildTable.MODE_SHOW_PARENT_COMPLEXES) {
+            anchorName = "complex_list";
+        }
         String htmlHeader = BioPaxShowFlag.createHtmlHeader(DEFAULT_NUM_RECORDS,
-                entitySummaryList.size(), cPathId, title, showFlag, flagIndex);
+                entitySummaryList.size(), cPathId, title, showFlag, flagIndex, anchorName);
         append(htmlHeader);
         if (entitySummaryList.size() > 0) {
             // start record output
@@ -143,24 +161,28 @@ public class BioPaxParentChildTable extends HtmlTable {
     }
 
     private String getTitle() throws DaoException {
-        if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
+        if (mode == MODE_SHOW_CHILDREN) {
             return "Contains the Following Interactions / Pathways ";
+        } else if (mode == MODE_SHOW_PARENT_COMPLEXES) {
+            return "Member of the Following Complexes";
         } else {
             DaoCPath dao = DaoCPath.getInstance();
             CPathRecord record = dao.getRecordById(this.cPathId);
             if (record.getType().equals(CPathRecordType.INTERACTION)) {
                 return "This interaction is controlled by:";
             } else {
-                return "Member of the Following Interactions / Complexes";
+                return "Member of the Following Interactions";
             }
         }
     }
 
     private int getFlagIndex() {
-        if (mode == SummaryListUtil.MODE_GET_CHILDREN) {
+        if (mode == MODE_SHOW_CHILDREN) {
             return BioPaxShowFlag.SHOW_ALL_CHILDREN;
+        } else if (mode == MODE_SHOW_PARENT_INTERACTIONS) {
+            return BioPaxShowFlag.SHOW_ALL_PARENT_INTERACTIONS;
         } else {
-            return BioPaxShowFlag.SHOW_ALL_PARENTS;
+            return BioPaxShowFlag.SHOW_ALL_PARENT_COMPLEXES;
         }
     }
 
