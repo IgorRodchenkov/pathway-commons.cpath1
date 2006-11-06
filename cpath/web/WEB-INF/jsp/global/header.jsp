@@ -43,7 +43,7 @@
     <script type="text/javascript" src="jsp/javascript/overlib/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>
 </head>
 
-<body class="composite" onload="document.searchbox.q.focus();">
+<body class="composite">
 
 <!-- For OverLib PopUp Boxes -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
