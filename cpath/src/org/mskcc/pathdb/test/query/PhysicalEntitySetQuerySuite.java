@@ -1,4 +1,4 @@
-// $Id: PhysicalEntitySetQuerySuite.java,v 1.1 2006-11-07 21:03:49 grossb Exp $
+// $Id: PhysicalEntitySetQuerySuite.java,v 1.2 2006-11-07 21:24:18 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,6 +51,7 @@ public class PhysicalEntitySetQuerySuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestPhysicalEntitySetInteractionQuery.class);
+        suite.addTestSuite(TestPhysicalEntitySetPathwayQuery.class);
         suite.setName("Physical Entity Set Query Tests");
         return suite;
     }
