@@ -1,4 +1,4 @@
-// $Id: AllTest.java,v 1.42 2006-06-09 19:22:04 cerami Exp $
+// $Id: AllTest.java,v 1.43 2006-11-07 21:03:22 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,7 @@ import org.mskcc.pathdb.test.task.TaskSuite;
 import org.mskcc.pathdb.test.util.UtilSuite;
 import org.mskcc.pathdb.test.web.WebSuite;
 import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
+import org.mskcc.pathdb.test.query.PhysicalEntitySetQuerySuite;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.EhCache;
 
@@ -105,6 +106,7 @@ public class AllTest extends TestCase {
         suite.addTest(WebSuite.suite());
         suite.addTest(XmlRpcSuite.suite());
         suite.addTest(SchemaSuite.suite());
+        suite.addTest(PhysicalEntitySetQuerySuite.suite());
         suite.setName("cPath Tests");
         return suite;
     }
