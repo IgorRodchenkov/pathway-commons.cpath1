@@ -1,4 +1,4 @@
-// $Id: PhysicalEntitySetQuery.java,v 1.3 2006-11-03 21:34:09 grossb Exp $
+// $Id: PhysicalEntitySetQuery.java,v 1.4 2006-11-07 21:02:53 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,12 +32,13 @@
 package org.mskcc.pathdb.query;
 
 // imports
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.util.Map;
 import java.util.Set;
@@ -124,7 +125,8 @@ public class PhysicalEntitySetQuery {
 
 		// build a list (union) of all interactions across the physical entities set
 		for (Long physicalEntityRecordID : physicalEntityRecordIDsAsLong) {
-			allInteractionRecordIDs.addAll(getCPathRecordIds(daoCPath, daoInternalLink, physicalEntityRecordID, CPathRecordType.INTERACTION));
+			allInteractionRecordIDs.addAll(getCPathInteractionRecordIDs(daoCPath, daoInternalLink,
+																		physicalEntityRecordID));
 		}
 
 		// for each interaction, determine interaction intersections
@@ -159,15 +161,14 @@ public class PhysicalEntitySetQuery {
 
 		// build a list (union) of all pathways that the physical entities are members
 		for (Long physicalEntityRecordID : physicalEntityRecordIDsAsLong) {
-			allPathwayRecordIDs.addAll(getCPathRecordIds(daoCPath, daoInternalLink,
-														 physicalEntityRecordID, CPathRecordType.PATHWAY));
+			allPathwayRecordIDs.addAll(getCPathPathwayRecordIDs(daoCPath, daoInternalLink, physicalEntityRecordID));
 		}
 
 		// for each pathway, we have to determine number of physical entity participant it contains
 		Map <Long,Long> pathwayMembershipRecordIDsMap = new TreeMap<Long,Long>();
 		for (Long pathwayRecordID : allPathwayRecordIDs) {
-			Set<Long> pathwayMembershipRecordIDs = getPathwayMembershipRecordIDs(daoInternalLink, pathwayRecordID,
-																				 physicalEntityRecordIDsAsLong);
+			Set<Long> pathwayMembershipRecordIDs = getPathwayMembershipRecordIDs(daoCPath, daoInternalLink,
+																				 pathwayRecordID, physicalEntityRecordIDsAsLong);
 			// store the pathway record id and number of physical entity members into map
 			pathwayMembershipRecordIDsMap.put(pathwayRecordID, new Long(pathwayMembershipRecordIDs.size()));
 		}
@@ -188,8 +189,8 @@ public class PhysicalEntitySetQuery {
 		Set<Long> returnSet = new HashSet<Long>(physicalEntityRecordIDs.length);
 
 		// interate through long[] and populate Set<Long>
-		for (int lc = 0; lc < physicalEntityRecordIDs.length; lc++) {
-			returnSet.add(physicalEntityRecordIDs[lc]);
+		for (long recordID : physicalEntityRecordIDs) {
+			returnSet.add(recordID);
 		}
 
 		// outta here
@@ -202,30 +203,69 @@ public class PhysicalEntitySetQuery {
 	 * @param daoCPath DaoCPath
 	 * @param daoInternalLink DaoInternalLink
 	 * @param physicalEntityRecordID Long
-	 * @param recordType CPathRecordType
 	 * @return Set<Long> (interaction ids)
 	 * @throws DaoException
 	 */
-	private static Set<Long> getCPathRecordIds(DaoCPath daoCPath, DaoInternalLink daoInternalLink,
-											   Long physicalEntityRecordID, CPathRecordType recordType)
-		throws DaoException {
+	private static Set<Long> getCPathInteractionRecordIDs(DaoCPath daoCPath,
+														  DaoInternalLink daoInternalLink,
+														  Long physicalEntityRecordID) throws DaoException {
 
 		// set of cpath record ids to return
-		Set<Long> recordIds = new HashSet<Long>();
+		Set<Long> recordIDs = new HashSet<Long>();
 
 		// interate through all sources of given physical entity
 		// if record is an interaction, add to return set
-		ArrayList<InternalLinkRecord> internalLinkRecords = daoInternalLink.getSources(physicalEntityRecordID);
+		// if record is a complex, check its members
+		ArrayList<InternalLinkRecord> internalLinkRecords =
+			daoInternalLink.getSources(physicalEntityRecordID);
 		for (InternalLinkRecord linkRecord : internalLinkRecords) {
 			long sourceID = linkRecord.getSourceId();
 			CPathRecord cpathRecord = daoCPath.getRecordById(sourceID);
-            if (cpathRecord.getType().equals(recordType)) {
-				recordIds.add(sourceID);
+			// if we have an interaction, add directly
+            if (cpathRecord.getType().equals(CPathRecordType.INTERACTION)) {
+				recordIDs.add(sourceID);
+			}
+			// if we have a complex, look for interactions it participates in
+			else if (cpathRecord.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
+				recordIDs.addAll(getCPathInteractionRecordIDs(daoCPath, daoInternalLink, sourceID));
 			}
 		}
 
 		// outta here
-		return recordIds;
+		return recordIDs;
+	}
+
+	/**
+	 * Returns list of cpath record ids that point to the given physical entity.
+	 *
+	 * @param daoCPath DaoCPath
+	 * @param daoInternalLink DaoInternalLink
+	 * @param physicalEntityRecordID Long
+	 * @return Set<Long> (interaction ids)
+	 * @throws DaoException
+	 */
+	private static Set<Long> getCPathPathwayRecordIDs(DaoCPath daoCPath,
+													  DaoInternalLink daoInternalLink,
+													  Long physicalEntityRecordID) throws DaoException {
+
+		// set of cpath record ids to return
+		Set<Long> recordIDs = new HashSet<Long>();
+
+		// interate through all sources of given physical entity
+		// if record is a pathway, add to return set
+		ArrayList<InternalLinkRecord> internalLinkRecords =
+			daoInternalLink.getSources(physicalEntityRecordID);
+		for (InternalLinkRecord linkRecord : internalLinkRecords) {
+			long sourceID = linkRecord.getSourceId();
+			CPathRecord cpathRecord = daoCPath.getRecordById(sourceID);
+			// if we have an interaction, add directly
+            if (cpathRecord.getType().equals(CPathRecordType.PATHWAY)) {
+				recordIDs.add(sourceID);
+			}
+		}
+
+		// outta here
+		return recordIDs;
 	}
 
 	/**
@@ -247,7 +287,7 @@ public class PhysicalEntitySetQuery {
 
 		// interate through all targets of given interaction
 		// add record directly to return set if it is physical interaction 
-		// ontained in physicalEntityRecordIds or recurse if it is interaction
+		// contained in physicalEntityRecordIds or recurse if it is interaction or complex
 		ArrayList<InternalLinkRecord> internalLinkRecords = daoInternalLink.getTargets(interactionRecordID);
 		for (InternalLinkRecord linkRecord : internalLinkRecords) {
 			long targetID = linkRecord.getTargetId();
@@ -256,6 +296,11 @@ public class PhysicalEntitySetQuery {
 				returnSet.add(targetID);
 			}
             else if (cpathRecord.getType().equals(CPathRecordType.INTERACTION)) {
+				returnSet.addAll(getInteractionParticipantRecordIDs(daoCPath, daoInternalLink,
+																	targetID, physicalEntityRecordIDs));
+			}
+			else if (cpathRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY) &&
+					 cpathRecord.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
 				returnSet.addAll(getInteractionParticipantRecordIDs(daoCPath, daoInternalLink,
 																	targetID, physicalEntityRecordIDs));
 			}
@@ -269,13 +314,14 @@ public class PhysicalEntitySetQuery {
 	 * Returns list of pathway members.
 	 * Note: pathway members must be a member of given physical entity set.
 	 *
+	 * @param daoCPath DaoCPath
 	 * @param daoInternalLink DaoInternalLink
 	 * @param pathwayRecordID Long
 	 * @param physicalEntityRecordIDs Set<Long>
 	 * @return Set<Long> (interaction ids)
 	 * @throws DaoException
 	 */
-	private static Set<Long> getPathwayMembershipRecordIDs(DaoInternalLink daoInternalLink,
+	private static Set<Long> getPathwayMembershipRecordIDs(DaoCPath daoCPath, DaoInternalLink daoInternalLink,
 														   Long pathwayRecordID, Set<Long> physicalEntityRecordIDs) throws DaoException {
 
 		// set to return
@@ -283,12 +329,17 @@ public class PhysicalEntitySetQuery {
 
 		// interate through all targets of given pathway
 		// add record directly to return set if it is physical entity
-		// contained in physicalEntityRecordIds
+		// contained in physicalEntityRecordIds or recurse if it is a pathway
 		ArrayList<InternalLinkRecord> internalLinkRecords = daoInternalLink.getTargets(pathwayRecordID);
 		for (InternalLinkRecord linkRecord : internalLinkRecords) {
 			long targetID = linkRecord.getTargetId();
+			CPathRecord cpathRecord = daoCPath.getRecordById(targetID);
             if (physicalEntityRecordIDs.contains(targetID)) {
 				returnSet.add(targetID);
+			}
+			else if (cpathRecord.getType().equals(CPathRecordType.PATHWAY)) {
+				returnSet.addAll(getPathwayMembershipRecordIDs(daoCPath, daoInternalLink,
+															   targetID, physicalEntityRecordIDs));
 			}
 		}
 		
