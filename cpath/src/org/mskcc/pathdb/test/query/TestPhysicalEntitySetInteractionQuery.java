@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetInteractionQuery.java,v 1.1 2006-11-07 21:04:07 grossb Exp $
+// $Id: TestPhysicalEntitySetInteractionQuery.java,v 1.2 2006-11-07 21:08:28 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,11 +32,11 @@
 package org.mskcc.pathdb.test.query;
 
 // imports
-import java.util.Set;
+import org.mskcc.pathdb.query.PhysicalEntitySetQuery;
 
+import java.util.Set;
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.mskcc.pathdb.query.PhysicalEntitySetQuery;
 
 /**
  * Tests the PhysicalEntitySetQuery.getPhysicalEntitySetInteractions() method.
