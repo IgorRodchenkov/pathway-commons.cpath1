@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.1 2006-11-07 21:24:39 grossb Exp $
+// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.2 2006-11-08 15:21:56 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,9 +32,14 @@
 package org.mskcc.pathdb.test.query;
 
 // imports
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.query.PhysicalEntitySetQuery;
 
-import java.util.Set;
+import java.util.ArrayList;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
@@ -52,9 +57,12 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
      */
     public void testPhysicalEntitySetPathwayQuery() throws Exception {
 
-		//long[] pathwayRecordIDs = { 170, 189 }; // must be decending order of membership
-		//long[] physicalEntityRecordIDs = { 222, 224, 220, 223, 225 };
-		//executeAndCheckQuery(physicalEntityRecordIDs, pathwayRecordIDs);
+		// populate internal family table
+		savePathwayFamilyMembership();
+
+		long[] pathwayRecordIDs = { 108, 298, 5 }; // must be decending order of membership
+		long[] physicalEntityRecordIDs = { 222, 224, 220, 223, 225, 418, 96 };
+		executeAndCheckQuery(physicalEntityRecordIDs, pathwayRecordIDs);
     }
 
     /**
@@ -91,4 +99,29 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 			Assert.assertEquals(queryResult, pathwayRecordIDs[++lc]);
 		}
 	}
+
+    /**
+     * Saves Family Membership information for pathways only.
+     *
+     * @throws Exception (db access error)
+     */
+    private void savePathwayFamilyMembership () throws Exception {
+		
+        DaoInternalLink internalLinker = new DaoInternalLink();
+        DaoInternalFamily daoFamily = new DaoInternalFamily();
+        DaoCPath daoCPath = DaoCPath.getInstance();
+		ArrayList<CPathRecord> cPathRecordList = daoCPath.getAllRecords(CPathRecordType.PATHWAY);
+
+		// iterate over pathway record list
+        for (CPathRecord record : cPathRecordList) {
+
+			//  Store membership info for pathways only.
+			ArrayList<Long> idList = internalLinker.getAllDescendents(record.getId());
+			for (Long descendentID : idList) {
+				CPathRecord descendentRecord = daoCPath.getRecordById(descendentID.longValue());
+				daoFamily.addRecord(record.getId(), CPathRecordType.PATHWAY,
+									descendentRecord.getId(), descendentRecord.getType());
+			}
+        }
+    }
 }
