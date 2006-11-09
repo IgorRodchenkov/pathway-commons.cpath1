@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.49 2006-11-09 18:25:57 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.50 2006-11-09 18:38:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -107,22 +107,7 @@ public class IndexLuceneTask extends Task {
 
         OrganismStats orgStats = new OrganismStats();
         pMonitor.setCurrentMessage("Indexing Complete");
-
-        pMonitor.setCurrentMessage("Storing Pathway Membership Data");
-        savePathwayFamilyMembership(pMonitor);
-        pMonitor.setCurrentMessage("Done");
         xdebug.stopTimer();
-    }
-
-
-    /**
-     * Saves Family Membership information for pathways only.
-     *
-     * @throws DaoException Database access error.
-     */
-    private void savePathwayFamilyMembership (ProgressMonitor pMonitor) throws DaoException {
-        PopulateInternalFamilyLookUpTable populator = new PopulateInternalFamilyLookUpTable(pMonitor);
-        populator.execute();
     }
 
     /**
