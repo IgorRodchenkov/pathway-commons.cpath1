@@ -42,7 +42,7 @@ public class Profile {
 		// Get our runtime
 		checkpoint();
 
-		System.out.println (message +totalTime + " ms");
+		System.out.println (message + totalTime + " ms");
 		this.totalTime = 0;
 	}
 
