@@ -2,6 +2,7 @@ package org.mskcc.pathdb.sql.transfer;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
@@ -54,19 +55,18 @@ public class PopulateInternalFamilyLookUpTable {
         //  Determine # pathways
         int numPathways = daoCPath.getNumEntities(CPathRecordType.PATHWAY);
         pMonitor.setMaxValue(numPathways);
-        DaoInternalLink internalLinker = new DaoInternalLink();
 
         //  Index each pathway
         for (int i = 0; i < numPathways; i++) {
             pMonitor.incrementCurValue();
             ConsoleUtil.showProgress(pMonitor);
             CPathRecord record = getRecordIdAtOffset(CPathRecordType.PATHWAY, i);
-            ArrayList idList = internalLinker.getAllDescendents (record.getId());
+            ArrayList idList = getAllDescendents (record.getId());
             Iterator iterator = idList.iterator();
 
             while (iterator.hasNext()) {
-                Long desendentId = (Long) iterator.next();
-                CPathRecord descendentRecord = getRecordById(desendentId);
+                Long descendentId = (Long) iterator.next();
+                CPathRecord descendentRecord = getRecordById(descendentId);
 
                 //  Only index physical entities
                 if (descendentRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
@@ -159,5 +159,35 @@ public class PopulateInternalFamilyLookUpTable {
             pstmt2 = con.prepareStatement (GET_RECORD_BY_ID);
         }
         return pstmt2;
+    }
+
+    /**
+     * Gets all descendents of the specified cPath record.
+     * <P>This is a potentially very slow query.
+     *
+     * @param cpathId CPath Record ID.
+     * @return arraylist of descendent Ids.
+     * @throws DaoException Database Access Error.
+     */
+    private ArrayList getAllDescendents(long cpathId) throws DaoException {
+        ArrayList masterList = new ArrayList();
+        Stack stack = new Stack();
+        stack.push(cpathId);
+
+        while (stack.size() > 0) {
+            cpathId = (Long) stack.pop();
+            DaoInternalLink internalLinker = new DaoInternalLink();
+            ArrayList childrenList = internalLinker.getTargets(cpathId);
+            if (childrenList != null) {
+                for (int i = 0; i < childrenList.size(); i++) {
+                    InternalLinkRecord link = (InternalLinkRecord) childrenList.get(i);
+                    if (!masterList.contains(link.getTargetId())) {
+                        masterList.add(link.getTargetId());
+                        stack.push(link.getTargetId());
+                    }
+                }
+            }
+        }
+        return masterList;
     }
 }

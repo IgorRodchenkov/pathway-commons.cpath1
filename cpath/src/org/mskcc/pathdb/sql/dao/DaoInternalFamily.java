@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.3 2006-10-30 21:49:46 cerami Exp $
+// $Id: DaoInternalFamily.java,v 1.4 2006-11-09 21:09:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.io.IOException;
 
 /**
  * Data Access Object to the internal family table.
@@ -46,6 +47,11 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class DaoInternalFamily {
+    private static final String INSERT_SQL =
+        "INSERT INTO internal_family (`ANCESTOR_ID`, `ANCESTOR_TYPE`, "
+        + "`DESCENDENT_ID`, `DESCENDENT_TYPE`) VALUES (?,?,?,?)";
+
+    private PreparedStatement insertPstmt;
 
     /**
      * Adds a new record.
@@ -58,30 +64,33 @@ public class DaoInternalFamily {
     public void addRecord (long ancestorId, CPathRecordType ancestorType, long descendentId,
             CPathRecordType descendentType) throws DaoException {
         Connection con = null;
-        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("INSERT INTO internal_family "
-                            + "(`ANCESTOR_ID`, `ANCESTOR_TYPE`, "
-                            + "`DESCENDENT_ID`, `DESCENDENT_TYPE`)"
-                            + " VALUES (?,?,?,?)");
-            pstmt.setLong(1, ancestorId);
-            pstmt.setString(2, ancestorType.toString());
-            pstmt.setLong(3, descendentId);
-            pstmt.setString(4, descendentType.toString());
-            pstmt.executeUpdate();
+            if (insertPstmt == null) {
+                insertPstmt = con.prepareStatement (INSERT_SQL);
+            }
+            insertPstmt.setLong(1, ancestorId);
+            insertPstmt.setString(2, ancestorType.toString());
+            insertPstmt.setLong(3, descendentId);
+            insertPstmt.setString(4, descendentType.toString());
+            insertPstmt.executeUpdate();
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                }
+            }
         }
     }
 
     /**
+    public lon
      * Gets all descendents of this ancestor.
      * @param ancestorId        ID of ancestor.
      * @return array of all descendent IDs.

@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.16 2006-09-05 13:39:44 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.17 2006-11-09 21:09:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,6 +47,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class DaoInternalLink {
+    private PreparedStatement getTargetsPstmt;
 
     /**
      * Creates an Internal Link between A and B.
@@ -155,20 +156,19 @@ public class DaoInternalLink {
     public ArrayList getTargets(long sourceId) throws DaoException {
         ArrayList records = new ArrayList();
         Connection con = null;
-        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("SELECT * FROM internal_link WHERE SOURCE_ID = ?"
-                            + " ORDER BY INTERNAL_LINK_ID");
-            pstmt.setLong(1, sourceId);
-            rs = pstmt.executeQuery();
+            if (getTargetsPstmt == null) {
+                getTargetsPstmt = con.prepareStatement
+                    ("SELECT INTERNAL_LINK_ID, TARGET_ID FROM internal_link WHERE SOURCE_ID = ?");
+            }
+            getTargetsPstmt.setLong(1, sourceId);
+            rs = getTargetsPstmt.executeQuery();
             while (rs.next()) {
                 long targetId = rs.getLong("TARGET_ID");
                 long internalLinkId = rs.getLong("INTERNAL_LINK_ID");
-                InternalLinkRecord link = new InternalLinkRecord
-                        (sourceId, targetId);
+                InternalLinkRecord link = new InternalLinkRecord (sourceId, targetId);
                 link.setId(internalLinkId);
                 records.add(link);
             }
@@ -178,7 +178,12 @@ public class DaoInternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, pstmt, rs);
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                }
+            }
         }
     }
 
