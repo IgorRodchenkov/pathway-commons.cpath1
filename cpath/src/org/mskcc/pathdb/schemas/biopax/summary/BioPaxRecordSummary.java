@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.5 2006-02-27 19:27:28 grossb Exp $
+// $Id: BioPaxRecordSummary.java,v 1.6 2006-11-09 21:09:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 // imports
 
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * This class represents a biopax record summary.
@@ -44,7 +45,7 @@ import java.util.List;
  *
  * @author Benjamin Gross.
  */
-public class BioPaxRecordSummary {
+public class BioPaxRecordSummary implements Serializable {
 
     /**
      * The cpath record id.
