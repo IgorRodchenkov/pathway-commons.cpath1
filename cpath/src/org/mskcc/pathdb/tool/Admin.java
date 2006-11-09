@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.53 2006-10-09 18:17:13 cerami Exp $
+// $Id: Admin.java,v 1.54 2006-11-09 18:37:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -147,6 +147,8 @@ public class Admin {
             if (command.equals(COMMAND_INDEX)) {
                 IndexLuceneTask indexer = new IndexLuceneTask(true, xdebug);
                 indexer.executeTask();
+                PrecomputeTablesTask precomputer = new PrecomputeTablesTask (true, xdebug);
+                precomputer.executeTask();
             } else if (command.equals(COMMAND_IMPORT)) {
                 importData();
             } else if (command.equals(COMMAND_PRE_COMPUTE)) {
