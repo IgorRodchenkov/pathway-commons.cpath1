@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.21 2006-10-30 18:58:21 grossb Exp $
+// $Id: BioPaxUtil.java,v 1.22 2006-11-09 18:27:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,9 +44,11 @@ import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
+import org.exolab.castor.xml.Marshaller;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -414,7 +416,14 @@ public class BioPaxUtil {
         if (resourceAttribute != null) {
             String key = RdfUtil.removeHashMark(resourceAttribute.getValue());
             if (!rdfResources.containsKey(key)) {
-                errorList.add(new String("Element:  " + e
+                List attributeList = e.getAttributes();
+                StringBuffer attributeText = new StringBuffer();
+                for (int i=0; i<attributeList.size(); i++) {
+                    Attribute attrib = (Attribute) attributeList.get(i);
+                    attributeText.append (attrib.getName() + ":" + attrib.getValue());
+                }
+                errorList.add(new String("Element:  " + e.getName()
+                        + " [" + attributeText + "]"
                         + " references:  " + key + ", but no such resource "
                         + "exists in document."));
             }
