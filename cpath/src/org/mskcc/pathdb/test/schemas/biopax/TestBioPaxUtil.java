@@ -1,4 +1,4 @@
-// $Id: TestBioPaxUtil.java,v 1.16 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestBioPaxUtil.java,v 1.17 2006-11-09 19:03:59 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -193,9 +193,8 @@ public class TestBioPaxUtil extends TestCase {
         assertEquals(7, physicalEntityList.size());
         assertEquals(1, errorList.size());
         String error = (String) errorList.get(0);
-        assertEquals("Element:  [Element: <bp:PHYSICAL-ENTITY "
-                + "[Namespace: http://www.biopax.org/release/biopax-level1.owl#"
-                + "]/>] references:  smallMolecule2300, but no such resource "
+        assertEquals("Element:  PHYSICAL-ENTITY [resource:#smallMolecule2300]" +
+                " references:  smallMolecule2300, but no such resource "
                 + "exists in document.", error);
     }
 
