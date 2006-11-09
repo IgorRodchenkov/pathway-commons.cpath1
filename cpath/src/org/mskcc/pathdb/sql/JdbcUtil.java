@@ -1,4 +1,4 @@
-// $Id: JdbcUtil.java,v 1.23 2006-06-09 19:22:03 cerami Exp $
+// $Id: JdbcUtil.java,v 1.24 2006-11-09 18:26:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -74,7 +74,7 @@ public class JdbcUtil {
     /**
      * Gets Connection to the CPath Database.
      * If this is a command line connection, reuse the static
-     * commandLienConnection object.  Otherwise, get a connection from the
+     * commandLineConnection object.  Otherwise, get a connection from the
      * database pool.
      *
      * @return Live Connection to Database.
