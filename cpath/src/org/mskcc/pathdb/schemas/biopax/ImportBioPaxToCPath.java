@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.23 2006-11-02 15:09:49 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.24 2006-11-09 18:27:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -96,7 +96,6 @@ public class ImportBioPaxToCPath {
             massageBioPaxData(new StringReader(xml));
             storeRecords();
             storeLinks();
-            savePathwayFamilyMembership();
         } catch (IOException e) {
             throw new ImportException(e);
         } catch (DaoException e) {
@@ -380,37 +379,6 @@ public class ImportBioPaxToCPath {
                             speciesName.getTextNormalize(), null);
                 }
             }
-        }
-    }
-
-    /**
-     * Saves Family Membership information for pathways only.
-     *
-     * @throws DaoException Database access error.
-     */
-    private void savePathwayFamilyMembership () throws DaoException {
-        DaoInternalLink internalLinker = new DaoInternalLink();
-        DaoInternalFamily daoFamily = new DaoInternalFamily();
-        DaoCPath daoCPath = DaoCPath.getInstance();
-        pMonitor.setCurrentMessage("Storing Membership Links to MySQL:");
-        pMonitor.setMaxValue(cPathRecordList.size());
-        for (int i = 0; i < cPathRecordList.size(); i++) {
-                CPathRecord record = (CPathRecord) cPathRecordList.get(i);
-
-                //  Store membership info for pathways only.
-                if (record.getType().equals(CPathRecordType.PATHWAY)) {
-                    ArrayList idList = internalLinker.getAllDescendents
-                            (record.getId());
-                    for (int j = 0; j < idList.size(); j++) {
-                        Long desendentId = (Long) idList.get(j);
-                        CPathRecord descendentRecord = daoCPath.getRecordById
-                                (desendentId.longValue());
-                        daoFamily.addRecord(record.getId(), CPathRecordType.PATHWAY,
-                                descendentRecord.getId(), descendentRecord.getType());
-                    }
-                }
-            pMonitor.incrementCurValue();
-            ConsoleUtil.showProgress(pMonitor);
         }
     }
 
