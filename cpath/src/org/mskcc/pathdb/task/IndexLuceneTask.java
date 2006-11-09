@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.48 2006-08-25 16:52:29 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.49 2006-11-09 18:25:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,11 +40,10 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoXmlCache;
+import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.transfer.ImportException;
+import org.mskcc.pathdb.sql.transfer.PopulateInternalFamilyLookUpTable;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.IOException;
@@ -107,9 +106,23 @@ public class IndexLuceneTask extends Task {
         indexAllInteractions();
 
         OrganismStats orgStats = new OrganismStats();
-        xdebug.stopTimer();
-
         pMonitor.setCurrentMessage("Indexing Complete");
+
+        pMonitor.setCurrentMessage("Storing Pathway Membership Data");
+        savePathwayFamilyMembership(pMonitor);
+        pMonitor.setCurrentMessage("Done");
+        xdebug.stopTimer();
+    }
+
+
+    /**
+     * Saves Family Membership information for pathways only.
+     *
+     * @throws DaoException Database access error.
+     */
+    private void savePathwayFamilyMembership (ProgressMonitor pMonitor) throws DaoException {
+        PopulateInternalFamilyLookUpTable populator = new PopulateInternalFamilyLookUpTable(pMonitor);
+        populator.execute();
     }
 
     /**
