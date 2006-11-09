@@ -1,4 +1,4 @@
-// $Id: SqlSuite.java,v 1.33 2006-10-30 18:07:55 cerami Exp $
+// $Id: SqlSuite.java,v 1.34 2006-11-09 21:08:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mskcc.pathdb.test.sql.assembly.AssemblySuite;
 import org.mskcc.pathdb.test.sql.references.ReferencesSuite;
+import org.mskcc.pathdb.test.sql.transfer.TransferSuite;
 
 /**
  * Suite of all SQL Unit Tests.
@@ -70,6 +71,7 @@ public class SqlSuite extends TestCase {
         suite.addTestSuite(TestSnapshotReader.class);
         suite.addTest(AssemblySuite.suite());
         suite.addTest(ReferencesSuite.suite());
+        suite.addTest(TransferSuite.suite());
         suite.setName("SQL Database Tests");
         return suite;
     }
