@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.21 2006-06-09 19:22:04 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.22 2006-11-09 21:07:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,6 +53,8 @@ import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
+import org.mskcc.pathdb.util.cache.EhCache;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -62,6 +64,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Cache;
+
 /**
  * This class contains utilities
  * functions to query biopax docs.
@@ -69,6 +74,7 @@ import java.util.List;
  * @author Benjamin Gross.
  */
 public class BioPaxRecordUtil {
+    private static Logger log = Logger.getLogger(BioPaxRecordUtil.class);
 
     /**
      * Creates BioPaxRecordSummary given
@@ -80,6 +86,18 @@ public class BioPaxRecordUtil {
      */
     public static BioPaxRecordSummary createBioPaxRecordSummary(CPathRecord record)
             throws BioPaxRecordSummaryException {
+        //  Obtain Cache Manager
+        CacheManager manager = CacheManager.getInstance();
+
+        //  Obtain Persistent Cache
+        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
+
+        String cacheKey = "BioPaxRecordUtil#" + record.getId();
+        net.sf.ehcache.Element cachedElement = cache.get(cacheKey);
+        if (cachedElement != null) {
+            log.debug("Got cache hit on cPath ID:  " + record.getId());
+            return (BioPaxRecordSummary) cachedElement.getValue();
+        }
 
         // check record for validity
         if (record == null) {
@@ -169,6 +187,10 @@ public class BioPaxRecordUtil {
                     biopaxRecordSummary);
         } catch (Throwable throwable) {
             throw new BioPaxRecordSummaryException(throwable);
+        }
+        if (biopaxRecordSummary != null) {
+            cachedElement= new net.sf.ehcache.Element (cacheKey, biopaxRecordSummary);
+            cache.put(cachedElement);
         }
 
         // outta here
