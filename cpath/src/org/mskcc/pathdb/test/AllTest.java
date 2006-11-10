@@ -1,4 +1,4 @@
-// $Id: AllTest.java,v 1.43 2006-11-07 21:03:22 grossb Exp $
+// $Id: AllTest.java,v 1.44 2006-11-10 14:09:38 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -14,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -49,6 +49,7 @@ import org.mskcc.pathdb.test.xmlrpc.XmlRpcSuite;
 import org.mskcc.pathdb.test.query.PhysicalEntitySetQuerySuite;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.EhCache;
+import org.mskcc.pathdb.sql.JdbcUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -71,6 +72,7 @@ public class AllTest extends TestCase {
      * @throws IOException Throwable
      */
     public static Test suite() throws IOException {
+        JdbcUtil.setCommandLineFlag(true);
         PropertyManager manager = PropertyManager.getInstance();
 
         //  Load build.properties
