@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.22 2006-11-09 21:07:47 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.23 2006-11-10 14:25:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -86,6 +86,16 @@ public class BioPaxRecordUtil {
      */
     public static BioPaxRecordSummary createBioPaxRecordSummary(CPathRecord record)
             throws BioPaxRecordSummaryException {
+
+        // check record for validity
+        if (record == null) {
+            throw new IllegalArgumentException("Record Argument is Null" + record);
+        }
+        if (!record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
+            throw new IllegalArgumentException("Specified cPath record is not of type "
+                    + XmlRecordType.BIO_PAX);
+        }
+
         //  Obtain Cache Manager
         CacheManager manager = CacheManager.getInstance();
 
@@ -97,15 +107,6 @@ public class BioPaxRecordUtil {
         if (cachedElement != null) {
             log.debug("Got cache hit on cPath ID:  " + record.getId());
             return (BioPaxRecordSummary) cachedElement.getValue();
-        }
-
-        // check record for validity
-        if (record == null) {
-            throw new IllegalArgumentException("Record Argument is Null" + record);
-        }
-        if (!record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
-            throw new IllegalArgumentException("Specified cPath record is not of type "
-                    + XmlRecordType.BIO_PAX);
         }
 
         // some flags to determine return
