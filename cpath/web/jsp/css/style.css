@@ -237,31 +237,32 @@
 
 .mini_button_1 a{
   background-color:#BEF9E8;
-  padding: 2px 5px 2px 5px;
+  padding: 0px 5px 0px 5px;
   text-decoration:none;
   border: 1px solid #AAAAAA;
 }
 .mini_button_2 a{
   background-color:#F7D6F7;
-  padding: 2px 5px 2px 5px;
+  padding: 0px 5px 0px 5px;
   text-decoration:none;
   border: 1px solid #AAAAAA;
 }
 .mini_button_3 a{
   background-color:#FBEBAC;
-  padding: 2px 5px 2px 5px;
+  padding: 0px 5px 0px 5px;
   text-decoration:none;
   border: 1px solid #AAAAAA;
 }
 .mini_button_4 a{
   background-color:#9DC8E7;
-  padding: 2px 5px 2px 5px;
+  padding: 0px 5px 0px 5px;
   text-decoration:none;
   border: 1px solid #AAAAAA;
 }
 
 .mini_buttons {
   font-size:85%;
+  font-weight:bold;
   margin: 7px 0px 0px 0px;
 }
 
@@ -270,3 +271,6 @@
 .mini_buttons a:hover {color: black !important;}
 .mini_buttons a:active {color: black !important;}
 
+.small {
+    font-size:85%;
+}
