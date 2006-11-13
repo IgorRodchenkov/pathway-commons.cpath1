@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.22 2006-11-09 18:27:26 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.23 2006-11-13 19:18:28 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -682,27 +682,29 @@ public class BioPaxUtil {
         //  However, the Jaxen API provides an easy way around this via
         //  the addNamespace method.
         XPath xpath = XPath.newInstance("//biopax:XREF/*/biopax:DB");
-        xpath.addNamespace("biopax", bioPaxNamespace.getURI());
-        List xrefs = xpath.selectNodes(root);
-        pMonitor.setMaxValue(xrefs.size());
-        for (int i = 0; i < xrefs.size(); i++) {
-            Element dbElement = (Element) xrefs.get(i);
-            String dbTerm = dbElement.getTextNormalize();
-            if (dbTerm.trim().length() > 0) {
-                ExternalReference refs[] = new ExternalReference[1];
-                refs[0] = new ExternalReference(dbTerm, "BLANK_ID");
-                DaoExternalLink dao = DaoExternalLink.getInstance();
-                try {
-                    dao.validateExternalReferences(refs,
-                            autoAddMissingExternalDbs);
-                } catch (ExternalDatabaseNotFoundException e) {
-                    errorList.add(new String("XREF Element references a "
-                            + "database which does not exist in cPath:  "
-                            + dbTerm + ".  Occurred in:  " + dbElement));
+        if (bioPaxNamespace != null) {
+            xpath.addNamespace("biopax", bioPaxNamespace.getURI());
+            List xrefs = xpath.selectNodes(root);
+            pMonitor.setMaxValue(xrefs.size());
+            for (int i = 0; i < xrefs.size(); i++) {
+                Element dbElement = (Element) xrefs.get(i);
+                String dbTerm = dbElement.getTextNormalize();
+                if (dbTerm.trim().length() > 0) {
+                    ExternalReference refs[] = new ExternalReference[1];
+                    refs[0] = new ExternalReference(dbTerm, "BLANK_ID");
+                    DaoExternalLink dao = DaoExternalLink.getInstance();
+                    try {
+                        dao.validateExternalReferences(refs,
+                                autoAddMissingExternalDbs);
+                    } catch (ExternalDatabaseNotFoundException e) {
+                        errorList.add(new String("XREF Element references a "
+                                + "database which does not exist in cPath:  "
+                                + dbTerm + ".  Occurred in:  " + dbElement));
+                    }
                 }
+                pMonitor.incrementCurValue();
+                ConsoleUtil.showProgress(pMonitor);
             }
-            pMonitor.incrementCurValue();
-            ConsoleUtil.showProgress(pMonitor);
         }
     }
 }
