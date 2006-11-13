@@ -161,7 +161,7 @@
             <TABLE WIDTH=100%>
             <cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
             </TABLE>
-		}
+<%		} %>
 <%
         SummaryListUtil util = new SummaryListUtil
                 (record.getId(), SummaryListUtil.MODE_GET_PARENTS, filterSettings);
