@@ -161,13 +161,7 @@
 %>
 			<cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
 <%
-		} else {
-            out.println("<TR><TD>");
-            out.println("No records found for your selected data sources.  ");
-            out.println("You may wish to update your ");
-            out.println("<A HREF='filter.do'>global filter settings</A>.");
-            out.println("</TD></TR>");
-        }
+		}
 %>
 		</TABLE>
 <%
@@ -188,19 +182,22 @@
         }
 %>
     <!-- Show all Interaction Parents of this entity -->
-    <cbio:bioPaxParentChildTable
+    <% if (interactionList != null && interactionList.size() > 0) { %>
+        <cbio:bioPaxParentChildTable
             entitySummaryList="<%= interactionList %>"
             request="<%= request %>"
             cpathId="<%= record.getId()%>"
             mode="<%= BioPaxParentChildTable.MODE_SHOW_PARENT_INTERACTIONS %>"/>
+    <% } %>
 
     <!-- Show all Complex Parents of this entity -->
+    <% if (complexList != null && complexList.size() > 0) { %>
     <cbio:bioPaxParentChildTable
             entitySummaryList="<%= complexList %>"
             request="<%= request %>"
             cpathId="<%= record.getId()%>"
             mode="<%= BioPaxParentChildTable.MODE_SHOW_PARENT_COMPLEXES %>"/>
-
+    <% } %>
 <%
     }
 %>
