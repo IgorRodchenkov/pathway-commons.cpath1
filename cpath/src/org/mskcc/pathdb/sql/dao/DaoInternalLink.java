@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.18 2006-11-13 16:39:19 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.19 2006-11-13 16:43:07 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,7 +47,6 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class DaoInternalLink {
-    private PreparedStatement getTargetsPstmt;
 
     /**
      * Creates an Internal Link between A and B.
@@ -157,14 +156,13 @@ public class DaoInternalLink {
         ArrayList records = new ArrayList();
         Connection con = null;
         ResultSet rs = null;
+        PreparedStatement pstmt = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            if (getTargetsPstmt == null) {
-                getTargetsPstmt = con.prepareStatement
+            pstmt = con.prepareStatement
                     ("SELECT INTERNAL_LINK_ID, TARGET_ID FROM internal_link WHERE SOURCE_ID = ?");
-            }
-            getTargetsPstmt.setLong(1, sourceId);
-            rs = getTargetsPstmt.executeQuery();
+            pstmt.setLong(1, sourceId);
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 long targetId = rs.getLong("TARGET_ID");
                 long internalLinkId = rs.getLong("INTERNAL_LINK_ID");
@@ -178,7 +176,7 @@ public class DaoInternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            JdbcUtil.closeAll(con, getTargetsPstmt, rs);          
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
