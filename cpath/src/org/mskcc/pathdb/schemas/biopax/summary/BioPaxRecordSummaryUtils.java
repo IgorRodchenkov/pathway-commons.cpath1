@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.29 2006-11-13 16:47:06 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.30 2006-11-13 17:06:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -368,7 +368,7 @@ public class BioPaxRecordSummaryUtils {
      * @param biopaxRecordSummary BioPaxRecordSummary
      * @return String
      */
-    private static String getBioPaxRecordName
+    public static String getBioPaxRecordName
             (BioPaxRecordSummary biopaxRecordSummary) {
 
         // name to return
