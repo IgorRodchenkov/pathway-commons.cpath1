@@ -150,20 +150,18 @@
 	if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)
             || record.getType().equals(CPathRecordType.INTERACTION)) {
 %>
-		<DIV CLASS ='h3'>
-		<H3><A NAME="pathway_list">Member of the Following Pathways</A></H3>
-		</DIV>
-		<TABLE WIDTH=100%>
 <%
         HashSet pathwaySet;
         pathwaySet = MemberPathways.getMemberPathways(record, filterSettings);
 		if (pathwaySet != null && pathwaySet.size() > 0){
 %>
-			<cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
-<%
+            <DIV CLASS ='h3'>
+            <H3><A NAME="pathway_list">Member of the Following Pathways</A></H3>
+            </DIV>
+            <TABLE WIDTH=100%>
+            <cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
+            </TABLE>
 		}
-%>
-		</TABLE>
 <%
         SummaryListUtil util = new SummaryListUtil
                 (record.getId(), SummaryListUtil.MODE_GET_PARENTS, filterSettings);
