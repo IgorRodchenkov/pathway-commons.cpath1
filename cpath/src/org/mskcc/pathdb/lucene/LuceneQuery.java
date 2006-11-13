@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.6 2006-11-02 20:35:28 cerami Exp $
+// $Id: LuceneQuery.java,v 1.7 2006-11-13 16:08:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,6 +50,7 @@ import java.io.IOException;
  * @author Ethan Cerami
  */
 public class LuceneQuery {
+    private String queryFromUser;
     private String searchTerms;
     private ProtocolRequest request;
     private XDebug xdebug;
@@ -68,6 +69,7 @@ public class LuceneQuery {
         this.xdebug = xdebug;
         this.searchTerms = RequestAdapter.getSearchTerms(request);
         if (globalFilterSettings != null) {
+            this.queryFromUser = request.getQuery ();
             this.searchTerms = LuceneAutoFilter.addFiltersToQuery
                 (request.getQuery(), globalFilterSettings);
         }
@@ -93,7 +95,13 @@ public class LuceneQuery {
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
             long[] cpathIds = QueryUtil.extractHits(xdebug, pager, hits);
-            fragments = QueryUtil.exractFragments(searchTerms, pager, hits);
+
+            if (queryFromUser != null) {
+                //  Extract fragments, based on original query from user
+                fragments = QueryUtil.exractFragments(queryFromUser, pager, hits);
+            } else {
+                fragments = QueryUtil.exractFragments(searchTerms, pager, hits);
+            }
             return cpathIds;
         } finally {
             indexer.close();
