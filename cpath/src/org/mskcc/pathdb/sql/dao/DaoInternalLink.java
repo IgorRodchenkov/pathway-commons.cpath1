@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.17 2006-11-09 21:09:29 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.18 2006-11-13 16:39:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -178,12 +178,7 @@ public class DaoInternalLink {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                }
-            }
+            JdbcUtil.closeAll(con, getTargetsPstmt, rs);          
         }
     }
 
