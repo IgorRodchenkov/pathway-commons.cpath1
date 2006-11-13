@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.27 2006-11-02 15:09:32 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.28 2006-11-13 16:17:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -456,7 +456,7 @@ public class BioPaxRecordSummaryUtils {
     private static String truncateLongName(String name) {
         if (name != null) {
             if (name.length() > NAME_LENGTH) {
-                return name.substring(0, NAME_LENGTH - 3) + "...";
+                name = name.substring(0, NAME_LENGTH - 3) + "...";
             }
         }
         return entityFilter(name);
