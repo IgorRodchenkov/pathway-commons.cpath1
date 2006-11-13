@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.28 2006-11-13 16:17:55 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.29 2006-11-13 16:47:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -496,8 +496,8 @@ public class BioPaxRecordSummaryUtils {
             buf.append("Also known as:  <UL>");
             for (int i = 0; i < synList.size(); i++) {
                 String synonym = (String) synList.get(i);
-                synonym = entityFilter(synonym);
-                buf.append("<LI>" + truncateLongName(synonym) + "</LI>");
+                synonym = truncateLongName(synonym);
+                buf.append("<LI>" + synonym + "</LI>");
             }
             buf.append("</UL>");
         }
