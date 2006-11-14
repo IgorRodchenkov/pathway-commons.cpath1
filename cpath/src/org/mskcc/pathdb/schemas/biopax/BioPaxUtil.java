@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.23 2006-11-13 19:18:28 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.24 2006-11-14 17:50:36 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -338,35 +338,24 @@ public class BioPaxUtil {
             return;
         }
 
-        //  Get an RDF ID Attribute, if available
-        Attribute idAttribute = e.getAttribute(RdfConstants.ID_ATTRIBUTE,
-                RdfConstants.RDF_NAMESPACE);
+		// get rdf id (or about attribute)
+		Attribute idAttribute = e.getAttribute(RdfConstants.ID_ATTRIBUTE,
+											   RdfConstants.RDF_NAMESPACE);
+		// if rdf id attribute is null, try about
+		idAttribute = (idAttribute == null) ?
+			e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+						   RdfConstants.RDF_NAMESPACE) : idAttribute;
+		// do we have an attribute to process ?
         if (idAttribute != null) {
             //  Store element to hashmap, keyed by RDF ID
             if (rdfResources.containsKey(idAttribute.getValue())) {
                 errorList.add(new String("Element:  " + e
-                        + " declares RDF ID:  " + idAttribute.getValue()
-                        + ", but a resource with this ID already exists."));
+                        + " declares RDF ID/ABOUT:  " + idAttribute.getValue()
+                        + ", but a resource with this ID/ABOUT already exists."));
             } else {
                 rdfResources.put(idAttribute.getValue(), e);
             }
         }
-		else {
-			// check for about attribute
-			Attribute aboutAttribute = e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
-													  RdfConstants.RDF_NAMESPACE);
-			if (aboutAttribute != null) {
-				//  Store element to hashmap, keyed by RDF ABOUT
-				if (rdfResources.containsKey(aboutAttribute.getValue())) {
-					errorList.add(new String("Element:  " + e
-											 + " declares RDF ABOUT:  " + aboutAttribute.getValue()
-											 + ", but a resource with this ABOUT value already exists."));
-				}
-				else {
-					rdfResources.put(aboutAttribute.getValue(), e);
-				}
-			}
-		}
 
         //  Categorize into separate bins
         String name = e.getName();
@@ -493,9 +482,12 @@ public class BioPaxUtil {
                             RdfConstants.RDF_NAMESPACE);
 
             //  Get an RDF ID Attribute, if there is one
-            Attribute idAttribute = e.getAttribute
-                    (RdfConstants.ID_ATTRIBUTE,
-                            RdfConstants.RDF_NAMESPACE);
+            Attribute idAttribute = e.getAttribute(RdfConstants.ID_ATTRIBUTE,
+												   RdfConstants.RDF_NAMESPACE);
+			// if rdf id attribute is null, try about
+			idAttribute = (idAttribute == null) ?
+				e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+							   RdfConstants.RDF_NAMESPACE) : idAttribute;
 
             if (idAttribute != null) {
                 //  Case 1:  The element has an RDF ID attribute.
@@ -614,6 +606,10 @@ public class BioPaxUtil {
         //  Get the RDF ID
         Attribute rdfId = e.getAttribute(RdfConstants.ID_ATTRIBUTE,
                 RdfConstants.RDF_NAMESPACE);
+		// if rdf id attribute is null, try about
+		rdfId = (rdfId == null) ?
+			e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+						   RdfConstants.RDF_NAMESPACE) : rdfId;
 
         //  Add RDF Resource Attribute to Parent
         Attribute resourceAttribute = new Attribute
@@ -637,13 +633,23 @@ public class BioPaxUtil {
         //  This is a "deep" clone
         Element clone = (Element) e.clone();
 
-        //  Remove Existing RDF ID
-        clone.removeAttribute(RdfConstants.ID_ATTRIBUTE,
-                RdfConstants.RDF_NAMESPACE);
-
-        //  Add New RDF ID, based on locally generated algorithm
-        clone.setAttribute(RdfConstants.ID_ATTRIBUTE, getNextId(),
-                RdfConstants.RDF_NAMESPACE);
+        //  Get the RDF ID
+		String attributeToProcess = RdfConstants.ID_ATTRIBUTE;
+        Attribute rdfId = e.getAttribute(attributeToProcess,
+										 RdfConstants.RDF_NAMESPACE);
+		if (rdfId == null) {
+			attributeToProcess = RdfConstants.ABOUT_ATTRIBUTE;
+			rdfId = e.getAttribute(attributeToProcess,
+								   RdfConstants.RDF_NAMESPACE);
+		}
+		if (rdfId != null) {
+			//  Remove Existing RDF ID
+			clone.removeAttribute(attributeToProcess,
+								  RdfConstants.RDF_NAMESPACE);
+			//  Add New RDF ID, based on locally generated algorithm
+			clone.setAttribute(attributeToProcess, getNextId(),
+							   RdfConstants.RDF_NAMESPACE);
+		}
 
         //  Obtain parent of original element
         Element parent = e.getParentElement();
