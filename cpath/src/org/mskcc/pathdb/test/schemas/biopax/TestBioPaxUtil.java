@@ -1,4 +1,4 @@
-// $Id: TestBioPaxUtil.java,v 1.17 2006-11-09 19:03:59 cerami Exp $
+// $Id: TestBioPaxUtil.java,v 1.18 2006-11-14 19:58:27 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,7 +31,9 @@
  **/
 package org.mskcc.pathdb.test.schemas.biopax;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.output.Format;
@@ -62,6 +64,16 @@ public class TestBioPaxUtil extends TestCase {
     private Set rdfIdSet = new HashSet();
     private ProgressMonitor pMonitor = new ProgressMonitor();
     private String testName;
+
+    public static Test suite() {
+        // Will dynamically add all methods as tests that begin with 'test'
+        // and have no arguments:
+        return new TestSuite(TestBioPaxUtil.class);
+    }
+
+    public static void main(String[] args) {
+        junit.textui.TestRunner.run(suite());
+    }
 
     /**
      * Tests a BioPAX Level 1 File that we know is "legal".
@@ -193,9 +205,8 @@ public class TestBioPaxUtil extends TestCase {
         assertEquals(7, physicalEntityList.size());
         assertEquals(1, errorList.size());
         String error = (String) errorList.get(0);
-        assertEquals("Element:  PHYSICAL-ENTITY [resource:#smallMolecule2300]" +
-                " references:  smallMolecule2300, but no such resource "
-                + "exists in document.", error);
+        assertEquals("Element:  PHYSICAL-ENTITY [resource:#smallMolecule2300] references:  " +
+                "smallMolecule2300, but no such resource exists in document.", error);
     }
 
     /**
@@ -220,10 +231,9 @@ public class TestBioPaxUtil extends TestCase {
         assertEquals(1, errorList.size());
         String error = (String) errorList.get(0);
         assertEquals("Element:  [Element: <bp:smallMolecule "
-                + "[Namespace: http://www.biopax.org/release/biopax-"
-                + "level1.owl#]/>] declares RDF ID:  smallMolecule23, "
-                + "but a resource with this ID already exists.",
-                error);
+                + "[Namespace: http://www.biopax.org/release/biopax-level1.owl#]/>] "
+                + "declares RDF ID/ABOUT:  smallMolecule23, but a resource with this "
+                + "ID/ABOUT already exists.", error);
     }
 
     /**
