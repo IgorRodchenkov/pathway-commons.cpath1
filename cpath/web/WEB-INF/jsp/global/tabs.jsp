@@ -94,22 +94,26 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    tabNames.add("Web Service");
-    String webServiceUrl = "webservice.do?cmd=help";
-    tabUrls.add(webServiceUrl);
-    if (url.equals("webservice.do") && searchResultsPage == null) {
-        tabActive.add (Boolean.TRUE);
-    } else {
-        tabActive.add (Boolean.FALSE);
-    }
+    if (webUIBean.getDisplayWebServiceTab()) {
+	   tabNames.add("Web Service");
+	   String webServiceUrl = "webservice.do?cmd=help";
+		tabUrls.add(webServiceUrl);
+		if (url.equals("webservice.do") && searchResultsPage == null) {
+		    tabActive.add (Boolean.TRUE);
+		} else {
+		    tabActive.add (Boolean.FALSE);
+		}
+	}
 
-    tabNames.add("Cytoscape");
-    String cytoscapeUrl = "cytoscape.do";
-    tabUrls.add(cytoscapeUrl);
-    if (url.equals(cytoscapeUrl)) {
-        tabActive.add (Boolean.TRUE);
-    } else {
-        tabActive.add (Boolean.FALSE);
+    if (webUIBean.getDisplayCytoscapeTab()) {
+        tabNames.add("Cytoscape");
+        String cytoscapeUrl = "cytoscape.do";
+        tabUrls.add(cytoscapeUrl);
+        if (url.equals(cytoscapeUrl)) {
+            tabActive.add (Boolean.TRUE);
+        } else {
+            tabActive.add (Boolean.FALSE);
+        }
     }
 
     tabNames.add("About");

@@ -71,6 +71,18 @@
 				</td>
 			</tr>
 			<tr>
+				<th align="LEFT">Display Web Service Tab</th>
+				<td>
+					<html:checkbox property="displayWebServiceTab"/>
+				</td>
+			</tr>
+			<tr>
+				<th align="LEFT">Display Cytoscape Tab</th>
+				<td>
+					<html:checkbox property="displayCytoscapeTab"/>
+				</td>
+			</tr>
+			<tr>
 				<th align="LEFT">FAQ Page Content</th>
 				<td>
 					<html:textarea property="FAQPageContent" rows="25" cols="70"/>

@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.7 2006-06-09 19:22:03 cerami Exp $
+// $Id: WebUIBean.java,v 1.8 2006-11-15 17:20:31 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,6 +76,16 @@ public class WebUIBean extends ActionForm {
      * Display Browse by Organism Tab.
      */
     private boolean displayBrowseByOrganismTab;
+
+    /**
+     * Display Web Service Tab.
+     */
+    private boolean displayWebServiceTab;
+
+    /**
+     * Display Cytoscape Tab.
+     */
+    private boolean displayCytoscapeTab;
 
     /**
      * FAQ Page Content.
@@ -198,6 +208,42 @@ public class WebUIBean extends ActionForm {
      */
     public boolean getDisplayBrowseByOrganismTab() {
         return displayBrowseByOrganismTab;
+    }
+
+    /**
+     * Sets the Web Service Tab.
+     *
+     * @param displayWebServiceTab boolean.
+     */
+    public void setDisplayWebServiceTab(boolean displayWebServiceTab) {
+        this.displayWebServiceTab = displayWebServiceTab;
+    }
+
+    /**
+     * Gets the Display Web Service Tab.
+     *
+     * @return displayWebServiceTab.
+     */
+    public boolean getDisplayWebServiceTab() {
+        return displayWebServiceTab;
+    }
+
+    /**
+     * Sets the Cytoscape Tab.
+     *
+     * @param displayCytoscapeTab boolean.
+     */
+    public void setDisplayCytoscapeTab(boolean displayCytoscapeTab) {
+        this.displayCytoscapeTab = displayCytoscapeTab;
+    }
+
+    /**
+     * Gets the Display Cytoscape Tab.
+     *
+     * @return displayCytoscapeTab.
+     */
+    public boolean getDisplayCytoscapeTab() {
+        return displayCytoscapeTab;
     }
 
     /**
