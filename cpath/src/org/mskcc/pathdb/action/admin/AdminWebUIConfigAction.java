@@ -1,4 +1,4 @@
-// $Id: AdminWebUIConfigAction.java,v 1.11 2006-10-24 15:13:51 cerami Exp $
+// $Id: AdminWebUIConfigAction.java,v 1.12 2006-11-15 17:20:12 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -99,6 +99,8 @@ public class AdminWebUIConfigAction extends AdminBaseAction {
             webUIBean.setHomePageRightColumnContent(record.getHomePageRightColumnContent());
             webUIBean.setDisplayBrowseByPathwayTab(record.getDisplayBrowseByPathwayTab());
             webUIBean.setDisplayBrowseByOrganismTab(record.getDisplayBrowseByOrganismTab());
+            webUIBean.setDisplayWebServiceTab(record.getDisplayWebServiceTab());
+            webUIBean.setDisplayCytoscapeTab(record.getDisplayCytoscapeTab());
             webUIBean.setFAQPageContent(record.getFAQPageContent());
             webUIBean.setAboutPageContent(record.getAboutPageContent());
             webUIBean.setMaintenanceTagLine(record.getMaintenanceTagLine());
