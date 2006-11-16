@@ -1,4 +1,4 @@
-// $Id: XmlUtil.java,v 1.7 2006-02-22 22:51:58 grossb Exp $
+// $Id: XmlUtil.java,v 1.8 2006-11-16 21:38:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,7 +70,9 @@ public class XmlUtil {
         StringWriter writer = new StringWriter();
         XMLOutputter out = getXmlOutputter();
         out.output(e, writer);
-        return writer.toString();
+        String xml = writer.toString();
+        writer.close();
+        return xml;
     }
 
     /**
