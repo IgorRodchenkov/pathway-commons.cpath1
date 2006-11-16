@@ -1,4 +1,4 @@
-// $Id: CreateSamplePValsFile.java,v 1.2 2006-06-09 19:22:04 cerami Exp $
+// $Id: CreateSamplePValsFile.java,v 1.3 2006-11-16 15:43:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,10 +32,13 @@
 package org.mskcc.pathdb.tool;
 
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.ExternalDatabaseNotFoundException;
 
 import java.io.File;
 import java.io.FileReader;
@@ -84,16 +87,15 @@ public class CreateSamplePValsFile {
 
         //  Create RDF Query Object
         RdfQuery query = new RdfQuery(rdfMap);
-        ArrayList peList = bpUtil.getPhysicalEntityList();
 
         //  Process All Physical Entities
-        processPhysicalEntities(peList, query, generator);
+        processPhysicalEntities(bpUtil, query, generator);
     }
 
-    private static void processPhysicalEntities(ArrayList peList, RdfQuery query,
-            Random generator) {
-        for (int i = 0; i < peList.size(); i++) {
-            Element pe = (Element) peList.get(i);
+    private static void processPhysicalEntities(BioPaxUtil bpUtil, RdfQuery query,
+            Random generator) throws DaoException {
+        for (int i = 0; i < bpUtil.getNumPhysicalEntities(); i++) {
+            Element pe = bpUtil.getPhysicalEntity(i);
 
             //  Get Names and XREFs
             Element shortNameElement = query.getNode(pe, "SHORT-NAME");
