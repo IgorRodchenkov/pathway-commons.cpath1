@@ -1,4 +1,4 @@
-// $Id: TestBioPaxTransformToCPathRecords.java,v 1.8 2006-05-16 16:51:16 cerami Exp $
+// $Id: TestBioPaxTransformToCPathRecords.java,v 1.9 2006-11-16 15:45:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.TransformBioPaxToCPathRecords;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.jdom.Element;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -60,16 +61,13 @@ public class TestBioPaxTransformToCPathRecords extends TestCase {
                 ("testData/biopax/biopax1_sample1.owl");
         ProgressMonitor pMonitor = new ProgressMonitor();
         BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
-        ArrayList pathwayList = util.getPathwayList();
 
         //  Try with a Pathway
-        TransformBioPaxToCPathRecords transformer = new
-                TransformBioPaxToCPathRecords(pathwayList);
-        ArrayList cPathRecordList = transformer.getcPathRecordList();
-        ArrayList idList = transformer.getIdList();
+        TransformBioPaxToCPathRecords transformer = new TransformBioPaxToCPathRecords();
+        Element pathway = util.getPathway(0);
 
         //  Validate the cPath Record
-        CPathRecord record = (CPathRecord) cPathRecordList.get(0);
+        CPathRecord record = transformer.createCPathRecord(pathway);
         assertEquals("glycolysis", record.getName());
         assertEquals("Glycolysis Pathway", record.getDescription());
         assertEquals(562, record.getNcbiTaxonomyId());
@@ -78,7 +76,7 @@ public class TestBioPaxTransformToCPathRecords extends TestCase {
         assertEquals(BioPaxConstants.PATHWAY, record.getSpecificType());
 
         //  Validate the RDF ID
-        String id = (String) idList.get(0);
+        String id = transformer.getRdfId(pathway);
         assertEquals("pathway50", id);
     }
 

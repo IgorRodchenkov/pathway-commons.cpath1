@@ -1,4 +1,4 @@
-// $Id: TestBioPaxElementFilter.java,v 1.7 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestBioPaxElementFilter.java,v 1.8 2006-11-16 15:45:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,10 +59,9 @@ public class TestBioPaxElementFilter extends TestCase {
                 ("testData/biopax/biopax1_sample1.owl");
         BioPaxUtil util = new BioPaxUtil(file, false, new ProgressMonitor());
 
-        ArrayList pathwayList = util.getPathwayList();
-        assertEquals(1, pathwayList.size());
+        assertEquals(1, util.getNumPathways());
 
-        Element pathway = (Element) pathwayList.get(0);
+        Element pathway = util.getPathway(0);
         List children = pathway.getChildren();
         assertEquals(14, children.size());
 

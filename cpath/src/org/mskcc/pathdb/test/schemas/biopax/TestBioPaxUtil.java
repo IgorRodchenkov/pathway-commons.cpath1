@@ -1,4 +1,4 @@
-// $Id: TestBioPaxUtil.java,v 1.18 2006-11-14 19:58:27 grossb Exp $
+// $Id: TestBioPaxUtil.java,v 1.19 2006-11-16 15:45:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.jdom.Attribute;
 import org.jdom.Element;
+import org.jdom.Document;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
@@ -86,18 +87,13 @@ public class TestBioPaxUtil extends TestCase {
                 ("testData/biopax/biopax1_sample1.owl");
         BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
 
-        ArrayList pathwayList = util.getPathwayList();
-        ArrayList interactionList = util.getInteractionList();
-        ArrayList physicalEntityList = util.getPhysicalEntityList();
-        ArrayList errorList = util.getErrorList();
-
-        assertEquals(1, pathwayList.size());
-        assertEquals(4, interactionList.size());
-        assertEquals(7, physicalEntityList.size());
-        assertEquals(0, errorList.size());
+        assertEquals(1, util.getNumPathways());
+        assertEquals(4, util.getNumInteractions());
+        assertEquals(7, util.getNumPhysicalEntities());
+        assertEquals(0, util.getErrorList().size());
 
         StringWriter writer = new StringWriter();
-        Element pathway = (Element) pathwayList.get(0);
+        Element pathway = util.getPathway(0);
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
         out.output(pathway, writer);
@@ -130,9 +126,8 @@ public class TestBioPaxUtil extends TestCase {
         //  After the transformation, we should have something like this:
         //  <bp:ORGANISM/>
         //     <bp:bioSource rdf:ID="bioSource33">
-        Element root = util.getReorganizedXml();
         Element organism = (Element) XPath.selectSingleNode
-                (root, "//bp:pathway/bp:ORGANISM");
+                (pathway, "//bp:pathway/bp:ORGANISM");
         List children = organism.getChildren();
         assertTrue("ORANISM Element should have an RDF Resource child.",
                 children.size() > 0);
@@ -140,15 +135,15 @@ public class TestBioPaxUtil extends TestCase {
         //  Ensure that there are no duplicate RDF IDs.
         //  If we have an duplicate RDF IDs, the file is not valid RDF,
         //  and the unit test will fail.
-        checkForDuplicateRdfIds(root);
-
-        //  Ensure that all RDF links actually point to existing RDF Resources
-        //  in this document.
-        checkAllRdfLinks(root);
+        checkForDuplicateRdfIds(pathway);
 
         //  Validate that the resulting document is valid RDF
         writer = new StringWriter();
-        out.output(root, writer);
+        Document doc = new Document();
+        Element rdfElement = new Element ("RDF", RdfConstants.RDF_NAMESPACE);
+        rdfElement.addContent((Element) pathway.clone());
+        doc.addContent(rdfElement);
+        out.output(doc, writer);
         StringReader reader = new StringReader(writer.toString());
         RdfValidator rdfValidator = new RdfValidator(reader);
         assertTrue("Newly generated XML document contains invalid RDF",
@@ -193,16 +188,13 @@ public class TestBioPaxUtil extends TestCase {
         testName = "Detect Invalid RDF Links";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample2.owl");
-        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, true, pMonitor);
 
-        ArrayList pathwayList = util.getPathwayList();
-        ArrayList interactionList = util.getInteractionList();
-        ArrayList physicalEntityList = util.getPhysicalEntityList();
         ArrayList errorList = util.getErrorList();
 
-        assertEquals(1, pathwayList.size());
-        assertEquals(4, interactionList.size());
-        assertEquals(7, physicalEntityList.size());
+        assertEquals(1, util.getNumPathways());
+        assertEquals(4, util.getNumInteractions());
+        assertEquals(7, util.getNumPhysicalEntities());
         assertEquals(1, errorList.size());
         String error = (String) errorList.get(0);
         assertEquals("Element:  PHYSICAL-ENTITY [resource:#smallMolecule2300] references:  " +
@@ -220,14 +212,11 @@ public class TestBioPaxUtil extends TestCase {
         FileReader file = new FileReader("testData/biopax/biopax1_sample3.owl");
         BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
 
-        ArrayList pathwayList = util.getPathwayList();
-        ArrayList interactionList = util.getInteractionList();
-        ArrayList physicalEntityList = util.getPhysicalEntityList();
         ArrayList errorList = util.getErrorList();
 
-        assertEquals(1, pathwayList.size());
-        assertEquals(4, interactionList.size());
-        assertEquals(7, physicalEntityList.size());
+        assertEquals(1, util.getNumPathways());
+        assertEquals(4, util.getNumInteractions());
+        assertEquals(7, util.getNumPhysicalEntities());
         assertEquals(1, errorList.size());
         String error = (String) errorList.get(0);
         assertEquals("Element:  [Element: <bp:smallMolecule "
@@ -246,7 +235,7 @@ public class TestBioPaxUtil extends TestCase {
         testName = "Detect Invalid Database XRefs";
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample4.owl");
-        BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
+        BioPaxUtil util = new BioPaxUtil(file, true, pMonitor);
         ArrayList errorList = util.getErrorList();
 
         assertTrue(errorList.size() > 0);
@@ -266,51 +255,6 @@ public class TestBioPaxUtil extends TestCase {
         FileReader file = new FileReader
                 ("testData/biopax/circular_example.owl");
         BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
-        Element root = util.getReorganizedXml();
-
-        //  Verify that the embedded rdf:resource points back to
-        //  a local resource defined earlier in the file.
-        XPath xpath = XPath.newInstance("//@rdf:ID");
-        List resourceList = xpath.selectNodes(root);
-        Attribute targetAttribute = (Attribute) resourceList.get(1);
-
-        xpath = XPath.newInstance("//@rdf:resource");
-        resourceList = xpath.selectNodes(root);
-        Attribute attr = (Attribute) resourceList.get(0);
-        assertEquals(targetAttribute.getValue(),
-                RdfUtil.removeHashMark(attr.getValue()));
-    }
-
-    /**
-     * Checks that all RDF Links actually point to RDF Resources present
-     * in the document.  Test will fail if any dangling pointers are found.
-     */
-    private void checkAllRdfLinks(Element e) {
-        //  Ignore any OWL Specific Elements
-        String namespaceUri = e.getNamespaceURI();
-        if (namespaceUri.equals(OwlConstants.OWL_NAMESPACE_URI)) {
-            return;
-        }
-
-        //  Get an RDF Resource Attribute, if there is one
-        Attribute pointerAttribute = e.getAttribute
-                (RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
-
-        if (pointerAttribute != null) {
-            String key = pointerAttribute.getValue().substring(1);
-            if (!rdfIdSet.contains(key)) {
-                fail("Document contains a link to a non-existent "
-                        + "RDF resource:  " + key);
-            }
-            rdfIdSet.add(key);
-        }
-
-        //  Traverse through all children.
-        List children = e.getChildren();
-        for (int i = 0; i < children.size(); i++) {
-            Element child = (Element) children.get(i);
-            checkAllRdfLinks(child);
-        }
     }
 
     /**
