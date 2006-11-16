@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.24 2006-11-14 17:50:36 grossb Exp $
+// $Id: BioPaxUtil.java,v 1.25 2006-11-16 15:39:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,11 +44,9 @@ import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
-import org.exolab.castor.xml.Marshaller;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,31 +61,31 @@ public class BioPaxUtil {
     private ArrayList pathwayList = new ArrayList();
     private ArrayList interactionList = new ArrayList();
     private ArrayList physicalEntityList = new ArrayList();
-    private ArrayList ontologyList = new ArrayList();
     private BioPaxConstants bioPaxConstants = new BioPaxConstants();
     private ArrayList errorList = new ArrayList();
     private Document bioPaxDoc;
-    private Element reorganizedRoot;
     private Namespace bioPaxNamespace;
     private HashMap localIdMap;
     private ProgressMonitor pMonitor;
     private boolean debugFlag = false;
-    private boolean autoAddMissingExternalDbs = false;
+    private boolean strictValidation = false;
+    private int numElements;
 
     /**
      * Constructor.
      *
      * @param reader                    Reader Object.
-     * @param autoAddMissingExternalDbs Automatically Adds Missing External DBs to cPath.
+     * @param strictValidation                    Perform strictValidation validation.
+     *                                  Setting to true will check all RDF Resource Links
+     *                                  and all external reference links.
      * @param pMonitor                  ProgressMonitor Object.
      * @throws IOException   Input/Output Error.
      * @throws JDOMException XML Error.
      * @throws DaoException  Database Access Error.
      */
-    public BioPaxUtil(Reader reader, boolean autoAddMissingExternalDbs,
-            ProgressMonitor pMonitor)
+    public BioPaxUtil(Reader reader, boolean strictValidation, ProgressMonitor pMonitor)
             throws IOException, JDOMException, DaoException {
-        this.autoAddMissingExternalDbs = autoAddMissingExternalDbs;
+        this.strictValidation = strictValidation;
         this.pMonitor = pMonitor;
         //  Read in File via JDOM SAX Builder
         SAXBuilder builder = new SAXBuilder();
@@ -97,55 +95,20 @@ public class BioPaxUtil {
         Element root = bioPaxDoc.getRootElement();
 
         //  First Step:  Inspect Tree to categorize all RDF Resources
-        pMonitor.setCurrentMessage("Categorizing BioPAX Resources");
+        pMonitor.setCurrentMessage("Categorizing BioPAX Resources...");
         categorizeResources(root);
 
         //  Second Step:  Validate that all RDF links point to actual
         //  RDF Resources, defined in the document.
-        pMonitor.setCurrentMessage("Validating RDF Links");
-        validateResourceLinks(root);
-
-        //  Third Step:  Make Hierarchical
-        if (errorList.size() == 0) {
-            pMonitor.setCurrentMessage("Preparing Pathway Elements:  "
-                    + "[" + pathwayList.size() + " Pathways]");
-            pMonitor.setMaxValue(pathwayList.size());
-            for (int i = 0; i < pathwayList.size(); i++) {
-                Element pathway = (Element) pathwayList.get(i);
-                makeHierachical(pathway, BioPaxConstants.PATHWAY, true);
-                pMonitor.incrementCurValue();
-                ConsoleUtil.showProgress(pMonitor);
-            }
-            pMonitor.setCurrentMessage("Preparing Interaction Elements:  "
-                    + "[" + interactionList.size() + " Interactions]");
-            pMonitor.setMaxValue(interactionList.size());
-            for (int i = 0; i < interactionList.size(); i++) {
-                Element interaction = (Element) interactionList.get(i);
-                makeHierachical(interaction, BioPaxConstants.INTERACTION, true);
-                pMonitor.incrementCurValue();
-                ConsoleUtil.showProgress(pMonitor);
-            }
-
-            pMonitor.setCurrentMessage
-                    ("Preparing Physical Entity Elements:  "
-                            + " [" + physicalEntityList.size()
-                            + " Physical Entities]");
-            pMonitor.setMaxValue(physicalEntityList.size());
-            for (int i = 0; i < physicalEntityList.size(); i++) {
-                Element physicalEntity = (Element) physicalEntityList.get(i);
-                makeHierachical(physicalEntity,
-                        BioPaxConstants.PHYSICAL_ENTITY, true);
-                pMonitor.incrementCurValue();
-                ConsoleUtil.showProgress(pMonitor);
-            }
-
-            //  Fourth Step:  Create New Global Document
-            pMonitor.setCurrentMessage("Creating New Global BioPAX Document");
-            this.reorganizedRoot = createdNewGlobalDocument();
-
-            //  Fifth Step:  Validate All External References
-            validateExternalReferences(reorganizedRoot);
+        if (strictValidation) {
+            pMonitor.setCurrentMessage("Validating RDF Links, total number of elements: "
+                + numElements);
+            pMonitor.setMaxValue(numElements);
+            validateResourceLinks(root);
         }
+
+        //  Third Step:  Validate and/or add missing external references to database.
+        validateAndOrAddExternalReferences(root);
     }
 
     /**
@@ -158,43 +121,79 @@ public class BioPaxUtil {
     }
 
     /**
-     * Gets list of Pathway Resources.
+     * Gets Number of Pathways.
      *
-     * @return ArrayList of JDOM Element Objects.
+     * @return Number of Pathways.
      */
-    public ArrayList getPathwayList() {
-        return pathwayList;
+    public int getNumPathways() {
+        return pathwayList.size();
     }
 
     /**
-     * Gets List of Interaction Resources.
-     *
-     * @return ArrayList of JDOM Element Objects.
+     * Gets Pathway at specified index.
+     * <P>Performs lazy processing of pathway element.
+     * @param index Index
+     * @return JDOM Element with Pathway Data
      */
-    public ArrayList getInteractionList() {
-        return interactionList;
+    public Element getPathway (int index) throws DaoException {
+        Element pathway = (Element) pathwayList.get(index);
+        return lazyLoad(pathway);
     }
 
     /**
-     * Gets List of Physical Entity Resources.
+     * Gets Number of Interactions.
      *
-     * @return ArrayList of JDOM Element Objects.
+     * @return Number of Interactions.
      */
-    public ArrayList getPhysicalEntityList() {
-        return physicalEntityList;
+    public int getNumInteractions() {
+        return interactionList.size();
     }
 
     /**
-     * Gets a List of all Pathways, Interactions, and Physical Entities.
+     * Gets Interaction at specified index.
+     * <P>Performs lazy processing of interaction element.
+     * @param index Index
+     * @return JDOM Element with Interaction Data
+     */
+    public Element getInteraction (int index) throws DaoException {
+        Element interaction = (Element) interactionList.get(index);
+        return lazyLoad(interaction);
+    }
+
+    /**
+     * Gets Number of Physical Entities.
      *
      * @return ArrayList of JDOM Element Objects.
      */
-    public ArrayList getTopLevelComponentList() {
-        ArrayList list = new ArrayList();
-        list.addAll(pathwayList);
-        list.addAll(interactionList);
-        list.addAll(physicalEntityList);
-        return list;
+    public int getNumPhysicalEntities() {
+        return physicalEntityList.size();
+    }
+
+    /**
+     * Gets Physical Entity at specified index.
+     * <P>Performs lazy processing of physical entity element.
+     * @param index Index
+     * @return JDOM Element with Physical Entity Data
+     */
+    public Element getPhysicalEntity (int index) throws DaoException {
+        Element pe = (Element) physicalEntityList.get(index);
+        return lazyLoad(pe);
+    }
+
+    /**
+     * Lazy Load Processing.
+     */
+    private Element lazyLoad (Element e) throws DaoException {
+        Element clone = (Element) e.clone();
+
+        //  Make it hierarchical
+        makeHierachical(clone, true);
+
+        //  Add Cloned Element to new document;  otherwise, XPath queries will not work
+        Document doc = new Document();
+        doc.addContent(clone);
+
+        return clone;
     }
 
     /**
@@ -204,15 +203,6 @@ public class BioPaxUtil {
      */
     public ArrayList getErrorList() {
         return errorList;
-    }
-
-    /**
-     * Gets Newly Reorganized BioPax XML Document.
-     *
-     * @return XML Root Element.
-     */
-    public Element getReorganizedXml() {
-        return this.reorganizedRoot;
     }
 
     /**
@@ -268,73 +258,15 @@ public class BioPaxUtil {
     }
 
     /**
-     * Creates New Global Document.
-     *
-     * @return New Root Element.
-     */
-    private Element createdNewGlobalDocument() {
-        //  Get Root Element and Clone It
-        Element root = bioPaxDoc.getRootElement();
-        Element clonedRoot = (Element) root.clone();
-        clonedRoot.removeContent();
-
-        //  Get Root Document and Clone it
-        //  The Root Element must be attached to some Document in order
-        //  for XPath Queries to work.
-        Document clonedDocument = (Document) bioPaxDoc.clone();
-        clonedDocument.removeContent();
-        Document emptyClonedDocument = (Document) clonedDocument.clone();
-        clonedDocument.addContent(clonedRoot);
-
-        //  Add Any OWL Specific Resources
-        for (int i = 0; i < ontologyList.size(); i++) {
-            Element ontologyElement = (Element) ontologyList.get(i);
-            clonedRoot.addContent((Element) ontologyElement.clone());
-        }
-
-        //  Next, add all Pathways
-        for (int i = 0; i < pathwayList.size(); i++) {
-            Element pathway = (Element) pathwayList.get(i);
-            clonedRoot.addContent((Element) pathway.clone());
-            attachToClonedDocument(pathway, emptyClonedDocument);
-        }
-
-        //  Next, add all Interactions
-        for (int i = 0; i < interactionList.size(); i++) {
-            Element interaction = (Element) interactionList.get(i);
-            clonedRoot.addContent((Element) interaction.clone());
-            attachToClonedDocument(interaction, emptyClonedDocument);
-        }
-
-        //  Next, add all Physical Entities
-        for (int i = 0; i < physicalEntityList.size(); i++) {
-            Element physicalEntity = (Element) physicalEntityList.get(i);
-            clonedRoot.addContent((Element) physicalEntity.clone());
-            attachToClonedDocument(physicalEntity, emptyClonedDocument);
-        }
-        return clonedRoot;
-    }
-
-    /**
-     * Attaches Lone Element to an Empty Document, so that local XPath Queries
-     * work.
-     */
-    private void attachToClonedDocument(Element e, Document d) {
-        Document cloneDoc = (Document) d.clone();
-        e.detach();
-        cloneDoc.addContent(e);
-    }
-
-    /**
      * Categorizes the document into top-level components:  pathways,
      * interactions, and physical entities.
      */
     private void categorizeResources(Element e) {
+        numElements++;
 
         //  First, separate out any OWL Specific Elements
         String namespaceUri = e.getNamespaceURI();
         if (namespaceUri.equals(OwlConstants.OWL_NAMESPACE_URI)) {
-            ontologyList.add(e);
             return;
         }
 
@@ -345,6 +277,7 @@ public class BioPaxUtil {
 		idAttribute = (idAttribute == null) ?
 			e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
 						   RdfConstants.RDF_NAMESPACE) : idAttribute;
+
 		// do we have an attribute to process ?
         if (idAttribute != null) {
             //  Store element to hashmap, keyed by RDF ID
@@ -391,16 +324,18 @@ public class BioPaxUtil {
      * Validates that all RDF Links are valid.
      */
     private void validateResourceLinks(Element e) {
-        //  Get an RDF Resource Attribute, if available
-        Attribute resourceAttribute = e.getAttribute
-                (RdfConstants.RESOURCE_ATTRIBUTE,
-                        RdfConstants.RDF_NAMESPACE);
+        pMonitor.incrementCurValue();
+        ConsoleUtil.showProgress(pMonitor);
 
         //  Ignore all OWL Specific Elements
         String namespaceUri = e.getNamespaceURI();
         if (namespaceUri.equals(OwlConstants.OWL_NAMESPACE_URI)) {
             return;
         }
+
+        //  Get an RDF Resource Attribute, if available
+        Attribute resourceAttribute = e.getAttribute (RdfConstants.RESOURCE_ATTRIBUTE,
+                RdfConstants.RDF_NAMESPACE);
 
         if (resourceAttribute != null) {
             String key = RdfUtil.removeHashMark(resourceAttribute.getValue());
@@ -457,8 +392,8 @@ public class BioPaxUtil {
      * replace the RDF resource attribute with an RDF ID attribute.  We
      * then continue walking down the new tree.
      */
-    private void makeHierachical(Element e, String type,
-            boolean isTopLevelResource) throws DaoException {
+    private void makeHierachical(Element e, boolean isTopLevelResource)
+        throws DaoException {
         boolean keepTraversingTree = true;
 
         if (debugFlag) {
@@ -542,7 +477,7 @@ public class BioPaxUtil {
             List children = e.getChildren();
             for (int i = 0; i < children.size(); i++) {
                 Element child = (Element) children.get(i);
-                makeHierachical(child, type, false);
+                makeHierachical(child, false);
             }
         }
     }
@@ -624,7 +559,7 @@ public class BioPaxUtil {
     /**
      * Performs a deep clone of the specified element, and swaps the
      * clone in place of the original element.  The new clone also gets a
-     * new internally  generated local ID.
+     * new internally generated local ID.
      *
      * @param e Element
      */
@@ -635,20 +570,16 @@ public class BioPaxUtil {
 
         //  Get the RDF ID
 		String attributeToProcess = RdfConstants.ID_ATTRIBUTE;
-        Attribute rdfId = e.getAttribute(attributeToProcess,
-										 RdfConstants.RDF_NAMESPACE);
+        Attribute rdfId = e.getAttribute(attributeToProcess, RdfConstants.RDF_NAMESPACE);
 		if (rdfId == null) {
 			attributeToProcess = RdfConstants.ABOUT_ATTRIBUTE;
-			rdfId = e.getAttribute(attributeToProcess,
-								   RdfConstants.RDF_NAMESPACE);
+			rdfId = e.getAttribute(attributeToProcess, RdfConstants.RDF_NAMESPACE);
 		}
 		if (rdfId != null) {
 			//  Remove Existing RDF ID
-			clone.removeAttribute(attributeToProcess,
-								  RdfConstants.RDF_NAMESPACE);
+			clone.removeAttribute(attributeToProcess, RdfConstants.RDF_NAMESPACE);
 			//  Add New RDF ID, based on locally generated algorithm
-			clone.setAttribute(attributeToProcess, getNextId(),
-							   RdfConstants.RDF_NAMESPACE);
+			clone.setAttribute(attributeToProcess, getNextId(), RdfConstants.RDF_NAMESPACE);
 		}
 
         //  Obtain parent of original element
@@ -674,13 +605,9 @@ public class BioPaxUtil {
     /**
      * Validates that All External References point to databases which
      * already exist within cPath.
-     * <p/>
-     * All invalid databases are added to the errorList Object, and can
-     * therefore be presented to the end-user.
      */
-    private void validateExternalReferences(Element root)
+    private void validateAndOrAddExternalReferences (Element element)
             throws JDOMException, DaoException {
-        pMonitor.setCurrentMessage("Validating All External References:");
 
         //  Get DB Children of All XREF Elements
         //  Not all BioPAX documents will use an agreed namespace prefix,
@@ -690,7 +617,7 @@ public class BioPaxUtil {
         XPath xpath = XPath.newInstance("//biopax:XREF/*/biopax:DB");
         if (bioPaxNamespace != null) {
             xpath.addNamespace("biopax", bioPaxNamespace.getURI());
-            List xrefs = xpath.selectNodes(root);
+            List xrefs = xpath.selectNodes(element);
             pMonitor.setMaxValue(xrefs.size());
             for (int i = 0; i < xrefs.size(); i++) {
                 Element dbElement = (Element) xrefs.get(i);
@@ -700,8 +627,7 @@ public class BioPaxUtil {
                     refs[0] = new ExternalReference(dbTerm, "BLANK_ID");
                     DaoExternalLink dao = DaoExternalLink.getInstance();
                     try {
-                        dao.validateExternalReferences(refs,
-                                autoAddMissingExternalDbs);
+                        dao.validateExternalReferences(refs, !strictValidation);
                     } catch (ExternalDatabaseNotFoundException e) {
                         errorList.add(new String("XREF Element references a "
                                 + "database which does not exist in cPath:  "
