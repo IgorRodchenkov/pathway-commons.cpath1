@@ -1,4 +1,4 @@
-// $Id: TransformBioPaxToCPathRecords.java,v 1.9 2006-10-30 18:58:38 grossb Exp $
+// $Id: TransformBioPaxToCPathRecords.java,v 1.10 2006-11-16 15:40:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,34 +49,14 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class TransformBioPaxToCPathRecords {
-    private ArrayList resourceList;
-    private ArrayList cPathRecordList;
-    private ArrayList idList;
     private BioPaxConstants bioPaxConstants;
 
     /**
      * Constructor.
      *
-     * @param resourceList ArrayList of JDOM Element Objects.
-     * @throws JDOMException JDOM/XML Error.
      */
-    public TransformBioPaxToCPathRecords(ArrayList resourceList)
-            throws JDOMException {
-        this.resourceList = resourceList;
+    public TransformBioPaxToCPathRecords () {
         this.bioPaxConstants = new BioPaxConstants();
-        this.cPathRecordList = new ArrayList();
-        this.idList = new ArrayList();
-        createCPathRecords();
-    }
-
-    /**
-     * Gets List of cPath Records. This list appears in the exact same order
-     * as the ID List.
-     *
-     * @return ArrayList of cPath Record Objects.
-     */
-    public ArrayList getcPathRecordList() {
-        return cPathRecordList;
     }
 
     /**
@@ -85,57 +65,47 @@ public class TransformBioPaxToCPathRecords {
      *
      * @return ArrayList of String Objects.
      */
-    public ArrayList getIdList() {
-        return idList;
+    public String getRdfId (Element resource) {
+        //  Extract the current RDF ID
+        Attribute rdfId = resource.getAttribute(RdfConstants.ID_ATTRIBUTE,
+                RdfConstants.RDF_NAMESPACE);
+        // try ABOUT attribute if necessary
+        if (rdfId == null) {
+            rdfId = resource.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+                    RdfConstants.RDF_NAMESPACE);
+        }
+        return rdfId.getValue();
     }
 
     /**
      * Creates cPath Record Objects for all top-level resources.
      */
-    private void createCPathRecords() throws JDOMException {
-        for (int i = 0; i < resourceList.size(); i++) {
-
-            //  Extract Next Resource
-            Element resource = (Element) resourceList.get(i);
-            String bioPaxNamespaceUri = resource.getNamespaceURI();
-            String resourceName = resource.getName();
-            CPathRecordType type = determineCPathRecordType(resourceName);
-            String shortName = extractShortName(resource, bioPaxNamespaceUri);
-            String name = extractName(resource, bioPaxNamespaceUri);
-            if (shortName.equals(CPathRecord.NA_STRING) && name != null) {
-                shortName = name;
-            }
-            int taxonomyId = this.extractNcbiTaxonomyId(resource,
-                    bioPaxNamespaceUri);
-
-            //  Extract the current RDF ID
-            Attribute rdfId = resource.getAttribute(RdfConstants.ID_ATTRIBUTE,
-                    RdfConstants.RDF_NAMESPACE);
-			// try ABOUT attribute if necessary
-			if (rdfId == null) {
-				rdfId = resource.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
-											  RdfConstants.RDF_NAMESPACE);
-			}
-            idList.add(rdfId.getValue());
-
-            //  Create Corresponding cPath Record
-            CPathRecord record = new CPathRecord();
-            record.setName(shortName);
-            record.setDescription(name);
-            record.setNcbiTaxonomyId(taxonomyId);
-            record.setType(type);
-            record.setSpecType(resourceName);
-            record.setXmlType(XmlRecordType.BIO_PAX);
-
-            //  Add to Global List
-            cPathRecordList.add(record);
+    public CPathRecord createCPathRecord (Element resource) throws JDOMException {
+        String bioPaxNamespaceUri = resource.getNamespaceURI();
+        String resourceName = resource.getName();
+        CPathRecordType type = determineCPathRecordType(resourceName);
+        String shortName = extractShortName(resource, bioPaxNamespaceUri);
+        String name = extractName(resource, bioPaxNamespaceUri);
+        if (shortName.equals(CPathRecord.NA_STRING) && name != null) {
+            shortName = name;
         }
+        int taxonomyId = this.extractNcbiTaxonomyId(resource, bioPaxNamespaceUri);
+
+        //  Create Corresponding cPath Record
+        CPathRecord record = new CPathRecord();
+        record.setName(shortName);
+        record.setDescription(name);
+        record.setNcbiTaxonomyId(taxonomyId);
+        record.setType(type);
+        record.setSpecType(resourceName);
+        record.setXmlType(XmlRecordType.BIO_PAX);
+        return record;
     }
 
     /**
      * Extracts the Short Name via XPath.
      */
-    private String extractShortName(Element resource, String bioPaxNamespaceUri)
+    private String extractShortName (Element resource, String bioPaxNamespaceUri)
             throws JDOMException {
         XPath xpath = XPath.newInstance("bp:SHORT-NAME");
         xpath.addNamespace("bp", bioPaxNamespaceUri);
@@ -150,7 +120,7 @@ public class TransformBioPaxToCPathRecords {
     /**
      * Extracts the Name via XPath.
      */
-    private String extractName(Element resource, String bioPaxNamespaceUri)
+    private String extractName (Element resource, String bioPaxNamespaceUri)
             throws JDOMException {
         XPath xpath = XPath.newInstance("bp:NAME");
         xpath.addNamespace("bp", bioPaxNamespaceUri);
@@ -165,7 +135,7 @@ public class TransformBioPaxToCPathRecords {
     /**
      * Extracts the NCBI TaxonomyID via XPath.
      */
-    private int extractNcbiTaxonomyId(Element resource,
+    private int extractNcbiTaxonomyId (Element resource,
             String bioPaxNamespaceUri)
             throws JDOMException {
         XPath xpath = XPath.newInstance
@@ -186,8 +156,8 @@ public class TransformBioPaxToCPathRecords {
     /**
      * Determines type of CPath Record.
      */
-    private CPathRecordType determineCPathRecordType(String resourceName) {
-        CPathRecordType type = null;
+    private CPathRecordType determineCPathRecordType (String resourceName) {
+        CPathRecordType type;
         if (bioPaxConstants.isPathway(resourceName)) {
             type = CPathRecordType.PATHWAY;
         } else if (bioPaxConstants.isInteraction(resourceName)) {

@@ -1,4 +1,4 @@
-// $Id: UpdateRdfLinks.java,v 1.6 2006-06-09 19:22:03 cerami Exp $
+// $Id: UpdateRdfLinks.java,v 1.7 2006-11-16 15:40:30 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,62 +64,55 @@ import java.util.*;
  * @author Ethan Cerami
  */
 public class UpdateRdfLinks {
-    private HashMap globalLinks = new HashMap();
+    private HashMap globalLinks = new HashMap ();
 
     /**
      * Updates all RDF id and resource attributes to use newly updated RDF IDs.
      * See Class Comments for full details.
      *
-     * @param resourceList ArrayList of JDOM Element Objects.
+     * @param e            JDOM Element      
      * @param idMap        HashMap of old IDs (String Objects) to new
      *                     IDs (Long Objects);
      * @param idPrefix     An ID Prefix, e.g.  CPathIdFilter.CPATH_PREFIX.
      * @throws JDOMException Error Processing XML.
      */
-    public void updateInternalLinks(ArrayList resourceList,
-            HashMap idMap, String idPrefix) throws JDOMException {
-        //  Iterate through all RDF resources
-        for (int i = 0; i < resourceList.size(); i++) {
+    public void updateInternalLinks (Element e, HashMap idMap, String idPrefix)
+            throws JDOMException {
+        //  Update the RDF ID
+        Attribute idAttribute = e.getAttribute (RdfConstants.ID_ATTRIBUTE,
+                RdfConstants.RDF_NAMESPACE);
+        Long newId = updateIdAttribute (idAttribute, idMap, idPrefix);
 
-            //  Get next RDF resource
-            Element e = (Element) resourceList.get(i);
+        //  Get all RDF resource attributes
+        XPath xpath = XPath.newInstance ("//@rdf:resource");
+        xpath.addNamespace ("rdf", RdfConstants.RDF_NAMESPACE_URI);
+        List links = xpath.selectNodes (e);
 
-            //  Update the RDF ID
-            Attribute idAttribute = e.getAttribute(RdfConstants.ID_ATTRIBUTE,
-                    RdfConstants.RDF_NAMESPACE);
-            Long newId = updateIdAttribute(idAttribute, idMap, idPrefix);
+        Set internalLinks = new HashSet ();
+        //  Iterate through all RDF Links
+        for (int j = 0; j < links.size (); j++) {
+            Attribute link = (Attribute) links.get (j);
+            String key = RdfUtil.removeHashMark (link.getValue ());
 
-            //  Get all RDF resource attributes
-            XPath xpath = XPath.newInstance("//@rdf:resource");
-            xpath.addNamespace("rdf", RdfConstants.RDF_NAMESPACE_URI);
-            List links = xpath.selectNodes(e);
-
-            Set internalLinks = new HashSet();
-            //  Iterate through all RDF Links
-            for (int j = 0; j < links.size(); j++) {
-                Attribute link = (Attribute) links.get(j);
-                String key = RdfUtil.removeHashMark(link.getValue());
-
-                //  If we are pointing to a resource that now has a new
-                //  ID, update the pointer.
-                Object newLinkId = idMap.get(key);
-                if (newLinkId != null) {
-                    link.setValue(createNewLink(idPrefix, newLinkId));
-                    //  Store the Internal Links for future reference
-                    internalLinks.add(newLinkId);
-                }
+            //  If we are pointing to a resource that now has a new
+            //  ID, update the pointer.
+            Object newLinkId = idMap.get (key);
+            if (newLinkId != null) {
+                link.setValue (createNewLink (idPrefix, newLinkId));
+                //  Store the Internal Links for future reference
+                internalLinks.add (newLinkId);
             }
-            globalLinks.put(newId, convertToLongArray(internalLinks));
         }
+        globalLinks.put (newId, convertToLongArray (internalLinks));
     }
 
-    private long[] convertToLongArray(Set internalLinks) {
-        long ids[] = new long[internalLinks.size()];
-        Iterator iter = internalLinks.iterator();
+    private long[] convertToLongArray (Set internalLinks) {
+        long ids[] = new long[internalLinks.size ()];
+        Iterator iter = internalLinks.iterator ();
         int i = 0;
-        while (iter.hasNext()) {
-            Long id = (Long) iter.next();
-            ids[i++] = id.longValue();
+        while (iter.hasNext ()) {
+            Long id = (Long) iter.next ();
+            ids[i++] = id.longValue ();
         }
         return ids;
     }
@@ -130,27 +123,27 @@ public class UpdateRdfLinks {
      * @param cpathId cPath ID
      * @return Array of longs, representing cPath Ids.
      */
-    public long[] getInternalLinks(long cpathId) {
-        return (long[]) globalLinks.get(new Long(cpathId));
+    public long[] getInternalLinks (long cpathId) {
+        return (long[]) globalLinks.get (new Long (cpathId));
     }
 
     /**
      * Updates an RDF ID Attribute.
      */
-    private Long updateIdAttribute(Attribute idAttribute,
+    private Long updateIdAttribute (Attribute idAttribute,
             HashMap idMap, String idPrefix) {
         if (idAttribute != null) {
-            String key = idAttribute.getValue();
-            Long newId = (Long) idMap.get(key);
+            String key = idAttribute.getValue ();
+            Long newId = (Long) idMap.get (key);
             if (newId != null) {
-                idAttribute.setValue(new String(idPrefix + newId.toString()));
+                idAttribute.setValue (new String (idPrefix + newId.toString ()));
                 return newId;
             }
         }
         return null;
     }
 
-    private String createNewLink(String idPrefix, Object newId) {
-        return new String("#" + idPrefix + newId);
+    private String createNewLink (String idPrefix, Object newId) {
+        return new String ("#" + idPrefix + newId);
     }
 }
