@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.25 2006-11-16 15:39:48 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.26 2006-11-16 19:50:43 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -614,7 +614,7 @@ public class BioPaxUtil {
         //  e.g. biopax, bp, etc.
         //  However, the Jaxen API provides an easy way around this via
         //  the addNamespace method.
-        XPath xpath = XPath.newInstance("//biopax:XREF/*/biopax:DB");
+        XPath xpath = XPath.newInstance("//biopax:DB");
         if (bioPaxNamespace != null) {
             xpath.addNamespace("biopax", bioPaxNamespace.getURI());
             List xrefs = xpath.selectNodes(element);
