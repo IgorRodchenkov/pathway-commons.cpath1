@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.24 2006-11-09 18:27:00 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.25 2006-11-16 15:41:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,8 +31,10 @@
  **/
 package org.mskcc.pathdb.schemas.biopax;
 
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.model.CPathRecord;
@@ -64,13 +66,11 @@ import java.util.HashMap;
  */
 public class ImportBioPaxToCPath {
     private HashMap idMap = new HashMap();
-    private ArrayList resourceList;
-    private ArrayList cPathRecordList;
+    private ArrayList cPathRecordList = new ArrayList();
     private ArrayList newRecordFlags;
-    private ArrayList oldIdList;
     private BioPaxUtil bpUtil;
     private ProgressMonitor pMonitor;
-    private boolean autoAddMissingExternalDbs;
+    private boolean strictValidation;
     private ImportSummary importSummary;
     private long snapshotId;
 
@@ -79,16 +79,16 @@ public class ImportBioPaxToCPath {
      *
      * @param xml                       BioPAX XML String.
      * @param snapshotId                External DB Snapshot ID.
-     * @param autoAddMissingExternalDbs Automatically adds missing XRef Databases.
+     * @param strictValidation          Performs Strict Validation.
      * @param pMonitor                  ProgressMonitor Object.
      * @return ImportSummary Object.
      * @throws ImportException Error Importing BioPAX Data.
      */
-    public ImportSummary addRecord(String xml, long snapshotId, boolean autoAddMissingExternalDbs,
+    public ImportSummary addRecord (String xml, long snapshotId, boolean strictValidation,
             ProgressMonitor pMonitor) throws ImportException {
         this.snapshotId = snapshotId;
         this.pMonitor = pMonitor;
-        this.autoAddMissingExternalDbs = autoAddMissingExternalDbs;
+        this.strictValidation = strictValidation;
         this.importSummary = new ImportSummary();
         this.newRecordFlags = new ArrayList();
         try {
@@ -113,7 +113,7 @@ public class ImportBioPaxToCPath {
     /**
      * Validates RDF Data.
      */
-    private void validateRdf(Reader reader) throws IOException, SAXException,
+    private void validateRdf (Reader reader) throws IOException, SAXException,
             ImportException {
         RdfValidator rdfValidator = new RdfValidator(reader);
         boolean hasErrors = rdfValidator.hasErrorsOrWarnings();
@@ -131,10 +131,10 @@ public class ImportBioPaxToCPath {
      *
      * @param reader Reader Object.
      */
-    private void massageBioPaxData(Reader reader) throws ImportException,
+    private void massageBioPaxData (Reader reader) throws ImportException,
             DaoException, IOException, JDOMException {
 
-        bpUtil = new BioPaxUtil(reader, autoAddMissingExternalDbs, pMonitor);
+        bpUtil = new BioPaxUtil(reader, strictValidation, pMonitor);
 
         //  Check for Errors in BioPAX Transformation
         ArrayList errorList = bpUtil.getErrorList();
@@ -145,139 +145,159 @@ public class ImportBioPaxToCPath {
             }
             throw new ImportException("BioPAX Import Error");
         }
-
-        resourceList = bpUtil.getTopLevelComponentList();
-
-        TransformBioPaxToCPathRecords transformer =
-                new TransformBioPaxToCPathRecords(resourceList);
-        cPathRecordList = transformer.getcPathRecordList();
-        oldIdList = transformer.getIdList();
     }
 
     /**
      * Stores RDF Resource Placeholders (without XML) to MySQL.
      */
-    private void storeRecords() throws DaoException, JDOMException,
-            ExternalDatabaseNotFoundException,IOException {
+    private void storeRecords () throws DaoException, JDOMException,
+            ExternalDatabaseNotFoundException, IOException {
+        pMonitor.setCurrentMessage("Storing Pathway Records to Database:");
+        pMonitor.setMaxValue(bpUtil.getNumPathways());
+        for (int i = 0; i < bpUtil.getNumPathways(); i++) {
+            Element pathway = bpUtil.getPathway(i);
+            storeRecord (pathway);
+            pathway = null;
+        }
+        pMonitor.setCurrentMessage("Storing Interaction Records to Database:");
+        pMonitor.setMaxValue(bpUtil.getNumInteractions());
+        for (int i = 0; i < bpUtil.getNumInteractions(); i++) {
+            Element interaction = bpUtil.getInteraction(i);
+            storeRecord (interaction);
+            interaction = null;
+        }
+        pMonitor.setCurrentMessage("Storing Physical Entity Records to Database:");
+        pMonitor.setMaxValue(bpUtil.getNumPhysicalEntities());
+        for (int i = 0; i < bpUtil.getNumPhysicalEntities(); i++) {
+            Element pe = bpUtil.getPhysicalEntity(i);
+            storeRecord (pe);
+            pe = null;
+        }
+    }
+
+    private void storeRecord (Element resource) throws DaoException, JDOMException, IOException,
+            ExternalDatabaseNotFoundException {
+        TransformBioPaxToCPathRecords transformer = new TransformBioPaxToCPathRecords();
         DaoCPath dao = DaoCPath.getInstance();
         DaoExternalLink externalLinker = DaoExternalLink.getInstance();
-        pMonitor.setCurrentMessage("Storing records to MySQL:");
-        pMonitor.setMaxValue(cPathRecordList.size());
-        for (int i = 0; i < cPathRecordList.size(); i++) {
-            long tempSnapshotId = snapshotId;
-            CPathRecord record = (CPathRecord) cPathRecordList.get(i);
-            String oldId = (String) oldIdList.get(i);
 
-            //  Special case:  if this is a physical entity, but not a complex store
-            //  original XML, untouched.
-            long physicalEntitySourceId = -1;
+        long tempSnapshotId = snapshotId;
+
+        CPathRecord record = transformer.createCPathRecord(resource);
+        String oldId = transformer.getRdfId(resource);
+
+        //  Special case:  if this is a physical entity, but not a complex,
+        //  store original XML, untouched.
+        long physicalEntitySourceId = -1;
+        if (record.getType() == CPathRecordType.PHYSICAL_ENTITY
+                && !record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
+            physicalEntitySourceId = storePhysicalEntityUntouched(record, resource,
+                    tempSnapshotId);
+        }
+
+        //  Before we save a new merged record, check to see if the record
+        //  already exists in the database.  Existing Records can
+        //  be determined via Unification Xrefs.
+        ExternalReference unificationXrefs[] = bpUtil.extractUnificationXrefs(resource);
+        long cPathId = lookUpRecord(unificationXrefs);
+
+        //  If record does not exist, save it.
+        if (cPathId == -1) {
+            boolean autoGenerated = false;
+
+            // Don't store snaphot reference for proteins or small molecules.
             if (record.getType() == CPathRecordType.PHYSICAL_ENTITY
                     && !record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
-                physicalEntitySourceId = storePhysicalEntityUntouched(i, tempSnapshotId);
+                tempSnapshotId = -1;
+                autoGenerated = true;
             }
+            newRecordFlags.add(Boolean.TRUE);
+            cPathId = dao.addRecord(record.getName(),
+                    record.getDescription(),
+                    record.getNcbiTaxonomyId(),
+                    record.getType(),
+                    record.getSpecificType(),
+                    XmlRecordType.BIO_PAX,
+                    "[PLACE_HOLDER]", tempSnapshotId, autoGenerated);
 
-            //  Before we save a new record, check to see if the record
-            //  already exists in the database.  Existing Records can
-            //  be determined via Unification Xrefs.
-            Element resource = (Element) resourceList.get(i);
-            ExternalReference unificationXrefs[] =
-                    bpUtil.extractUnificationXrefs(resource);
-            long cPathId = lookUpRecord(unificationXrefs);
+            //  Find any LinkOut References, such as Affymetrix IDs
+            ExternalReference xrefs[] = bpUtil.extractXrefs(resource);
+            ExternalReference linkOutRefs[] = queryLinkOutService
+                    (unificationXrefs);
+            appendNewXRefs(linkOutRefs, resource);
+            ExternalReference unifiedRefs[] =
+                    ExternalReferenceUtil.createUnifiedList(xrefs,
+                            linkOutRefs);
 
-            //  If record does not exist, save it.
-            if (cPathId == -1) {
-                boolean autoGenerated = false;
+            //  Validate All Refs
+            externalLinker.validateExternalReferences(unifiedRefs, strictValidation);
 
-                // Don't store snaphot reference for proteins or small molecules.
-                if (record.getType() == CPathRecordType.PHYSICAL_ENTITY
-                        && !record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
-                    tempSnapshotId = -1;
-                    autoGenerated = true;
-                }
-                newRecordFlags.add(Boolean.TRUE);
-                cPathId = dao.addRecord(record.getName(),
-                        record.getDescription(),
-                        record.getNcbiTaxonomyId(),
-                        record.getType(),
-                        record.getSpecificType(),
-                        XmlRecordType.BIO_PAX,
-                        "[PLACE_HOLDER]", tempSnapshotId, autoGenerated);
+            //  Store All Refs
+            externalLinker.addMulipleRecords(cPathId, unifiedRefs, false);
 
-                //  Find any LinkOut References, such as Affymetrix IDs
-                ExternalReference xrefs[] = bpUtil.extractXrefs(resource);
-                ExternalReference linkOutRefs[] = queryLinkOutService
-                        (unificationXrefs);
-                appendNewXRefs(linkOutRefs, resource);
-                ExternalReference unifiedRefs[] =
-                        ExternalReferenceUtil.createUnifiedList(xrefs,
-                                linkOutRefs);
+            //  Store the XML Assembly
+            String xml = XmlUtil.serializeToXml(resource);
+            dao.updateXml(cPathId, xml);
 
-                //  Validate All Refs
-                externalLinker.validateExternalReferences(unifiedRefs, autoAddMissingExternalDbs);
+            //  Add to Record List
+            cPathRecordList.add(record);
 
-                //  Store All Refs
-                externalLinker.addMulipleRecords(cPathId, unifiedRefs, false);
-
-                if (record.getType().equals(CPathRecordType.PATHWAY)) {
-                    importSummary.incrementNumPathwaysSaved();
-                } else if (record.getType().equals
-                        (CPathRecordType.INTERACTION)) {
-                    importSummary.incrementNumInteractionsSaved();
-                } else {
-                    importSummary.incrementNumPhysicalEntitiesSaved();
-                }
+            if (record.getType().equals(CPathRecordType.PATHWAY)) {
+                importSummary.incrementNumPathwaysSaved();
+            } else if (record.getType().equals
+                    (CPathRecordType.INTERACTION)) {
+                importSummary.incrementNumInteractionsSaved();
             } else {
-                newRecordFlags.add(Boolean.FALSE);
-                if (record.getType().equals(CPathRecordType.PATHWAY)) {
-                    importSummary.incrementNumPathwaysFound();
-                } else if (record.getType().equals
-                        (CPathRecordType.INTERACTION)) {
-                    importSummary.incrementNumInteractionsFound();
-                } else {
-                    importSummary.incrementNumPhysicalEntitiesFound();
-                }
+                importSummary.incrementNumPhysicalEntitiesSaved();
             }
-
-            //  Special case:  create a link between the untouched, source physical entity
-            //  record and the merged, cPath generated physical entiry record
-            if (physicalEntitySourceId >= 0) {
-                DaoSourceTracker daoSourceTracker = new DaoSourceTracker();
-                daoSourceTracker.addRecord(physicalEntitySourceId, cPathId);
+        } else {
+            newRecordFlags.add(Boolean.FALSE);
+            if (record.getType().equals(CPathRecordType.PATHWAY)) {
+                importSummary.incrementNumPathwaysFound();
+            } else if (record.getType().equals
+                    (CPathRecordType.INTERACTION)) {
+                importSummary.incrementNumInteractionsFound();
+            } else {
+                importSummary.incrementNumPhysicalEntitiesFound();
             }
-
-            //  Store a mapping between the old ID and the new ID
-            idMap.put(oldId, new Long(cPathId));
-
-            //  Store cPath ID directly, for later reference
-            record.setId(cPathId);
-
-            pMonitor.incrementCurValue();
-            ConsoleUtil.showProgress(pMonitor);
         }
+
+        //  Special case:  create a link between the untouched, source physical entity
+        //  record and the merged, cPath generated physical entiry record
+        if (physicalEntitySourceId >= 0) {
+            DaoSourceTracker daoSourceTracker = new DaoSourceTracker();
+            daoSourceTracker.addRecord(physicalEntitySourceId, cPathId);
+        }
+
+        //  Store a mapping between the old ID and the new ID
+        idMap.put(oldId, new Long(cPathId));
+
+        //  Store cPath ID directly, for later reference
+        record.setId(cPathId);
+
+        pMonitor.incrementCurValue();
+        ConsoleUtil.showProgress(pMonitor);
     }
 
     /**
      * Stores Original, Untouched Physical Entity Record.
-     * @param index Index to cPathRecordList.
-     * @return newly created cPath ID.
      */
-    private long storePhysicalEntityUntouched (int index, long snapshotId)
+    private long storePhysicalEntityUntouched (CPathRecord record,
+            Element assembledResource, long snapshotId)
             throws DaoException, IOException {
         DaoCPath dao = DaoCPath.getInstance();
-        CPathRecord record = (CPathRecord) cPathRecordList.get(index);
-        Element resource = (Element) resourceList.get(index);
-        String xml = XmlUtil.serializeToXml(resource);
+        String xml = XmlUtil.serializeToXml(assembledResource);
         long cPathId = dao.addRecord(record.getName(), record.getDescription(),
-            record.getNcbiTaxonomyId(), record.getType(),
-            record.getSpecificType(), XmlRecordType.BIO_PAX,
-            xml, snapshotId, false);
+                record.getNcbiTaxonomyId(), record.getType(),
+                record.getSpecificType(), XmlRecordType.BIO_PAX,
+                xml, snapshotId, false);
         return cPathId;
     }
 
     /**
      * Appends New XRefs to the Existing XML Resource.
      */
-    private void appendNewXRefs(ExternalReference linkOutRefs[], Element e)
+    private void appendNewXRefs (ExternalReference linkOutRefs[], Element e)
             throws DaoException {
         if (linkOutRefs != null && linkOutRefs.length > 0) {
             for (int i = 0; i < linkOutRefs.length; i++) {
@@ -292,7 +312,7 @@ public class ImportBioPaxToCPath {
      * If the record exists, its cPath ID will be returned.  Otherwise,
      * this method returns the value -1.
      */
-    private long lookUpRecord(ExternalReference unificationXrefs[])
+    private long lookUpRecord (ExternalReference unificationXrefs[])
             throws DaoException {
         DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
 
@@ -313,18 +333,11 @@ public class ImportBioPaxToCPath {
      * 3)  Store Internal Links to cPath.
      * 4)  Store New Organisms.
      */
-    private void storeLinks() throws JDOMException, IOException,
-            DaoException {
-        //  Update all JDOM Elements in Resource List to reference new
-        //  cPath IDs.
-        UpdateRdfLinks linker = new UpdateRdfLinks();
-        linker.updateInternalLinks
-                (resourceList, idMap, CPathIdFilter.CPATH_PREFIX);
-
+    private void storeLinks () throws JDOMException, IOException, DaoException {
         DaoCPath daoCPath = DaoCPath.getInstance();
         DaoInternalLink internalLinker = new DaoInternalLink();
 
-        pMonitor.setCurrentMessage("Storing Internal Links to MySQL:");
+        pMonitor.setCurrentMessage("Storing Internal Links to Database:");
         pMonitor.setMaxValue(cPathRecordList.size());
         for (int i = 0; i < cPathRecordList.size(); i++) {
 
@@ -333,9 +346,17 @@ public class ImportBioPaxToCPath {
             //  Only do this for new records;  existing records stay as is.
             if (newRecord.booleanValue()) {
 
-                //  Store the Actual XML
-                CPathRecord record = (CPathRecord) cPathRecordList.get(i);
-                Element resource = (Element) resourceList.get(i);
+                //  Get the Current XML
+                CPathRecord localRecord = (CPathRecord) cPathRecordList.get(i);
+                CPathRecord record = daoCPath.getRecordById(localRecord.getId());
+                String xml = record.getXmlContent();
+                SAXBuilder builder = new SAXBuilder();
+                Document bioPaxDoc = builder.build(new StringReader(xml));
+                Element resource = bioPaxDoc.getRootElement();
+
+                //  Update XML to reference new cPath IDs.
+                UpdateRdfLinks linker = new UpdateRdfLinks();
+                linker.updateInternalLinks (resource, idMap, CPathIdFilter.CPATH_PREFIX);
 
                 //  Append a Unification XREF for cPath
                 ExternalReference cpathRef = new ExternalReference
@@ -343,8 +364,8 @@ public class ImportBioPaxToCPath {
                                 Long.toString(record.getId()));
                 BioPaxGenerator.appendUnificationXref(cpathRef, resource);
 
-                //  Serialize XML
-                String xml = XmlUtil.serializeToXml(resource);
+                //  Serialize XML and store updated XML
+                xml = XmlUtil.serializeToXml(resource);
                 daoCPath.updateXml(record.getId(), xml);
 
                 //  Store Internal Links
@@ -364,7 +385,7 @@ public class ImportBioPaxToCPath {
     /**
      * Saves Organism Data, if it is new.
      */
-    private void conditionallySaveOrganism(CPathRecord record, Element resource)
+    private void conditionallySaveOrganism (CPathRecord record, Element resource)
             throws DaoException, JDOMException {
         if (record.getNcbiTaxonomyId() != CPathRecord.TAXONOMY_NOT_SPECIFIED) {
             DaoOrganism daoOrganism = new DaoOrganism();
@@ -389,7 +410,7 @@ public class ImportBioPaxToCPath {
      * @param unificationRefs Array of External Reference Objects.
      * @return Array of External Reference Objects.
      */
-    private ExternalReference[] queryLinkOutService(ExternalReference[]
+    private ExternalReference[] queryLinkOutService (ExternalReference[]
             unificationRefs) throws DaoException {
 
         //  Only execute query if we have existing references.
