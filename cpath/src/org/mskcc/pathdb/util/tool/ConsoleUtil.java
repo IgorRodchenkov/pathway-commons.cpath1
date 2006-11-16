@@ -1,4 +1,4 @@
-// $Id: ConsoleUtil.java,v 1.5 2006-11-16 15:42:19 cerami Exp $
+// $Id: ConsoleUtil.java,v 1.6 2006-11-16 19:56:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,7 +67,6 @@ public class ConsoleUtil {
                 System.out.println("Mem Allocated:  " + getMegabytes(rt.totalMemory ())
                     + ", Mem used:  " + getMegabytes(used) + ", Mem free:  "
                     + getMegabytes(rt.freeMemory ()));
-                Runtime.getRuntime().gc();
             }
             if (currentValue == pMonitor.getMaxValue()) {
                 System.out.println();
