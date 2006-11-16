@@ -1,4 +1,4 @@
-// $Id: ConsoleUtil.java,v 1.4 2006-02-22 22:51:58 grossb Exp $
+// $Id: ConsoleUtil.java,v 1.5 2006-11-16 15:42:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,10 +62,22 @@ public class ConsoleUtil {
                 msg = new String("Percentage Complete:  "
                         + format.format(percent));
                 System.out.println("\n" + msg);
+                Runtime rt = Runtime.getRuntime();
+                long used = rt.totalMemory () - rt.freeMemory ();
+                System.out.println("Mem Allocated:  " + getMegabytes(rt.totalMemory ())
+                    + ", Mem used:  " + getMegabytes(used) + ", Mem free:  "
+                    + getMegabytes(rt.freeMemory ()));
+                Runtime.getRuntime().gc();
             }
             if (currentValue == pMonitor.getMaxValue()) {
                 System.out.println();
             }
         }
+    }
+
+    private static String getMegabytes (long bytes) {
+        double mBytes = (bytes / 1024.0) / 1024.0;
+        DecimalFormat formatter = new DecimalFormat ("#,###,###.###");
+        return formatter.format (mBytes) + " MB";
     }
 }
