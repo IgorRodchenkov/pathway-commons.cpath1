@@ -1,4 +1,4 @@
-// $Id: TestUpdateRdfLinks.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestUpdateRdfLinks.java,v 1.11 2006-11-16 15:45:02 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,12 +34,14 @@ package org.mskcc.pathdb.test.schemas.biopax;
 import junit.framework.TestCase;
 import org.jdom.Attribute;
 import org.jdom.Element;
+import org.jdom.Document;
 import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.mskcc.pathdb.schemas.biopax.UpdateRdfLinks;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
+import org.mskcc.pathdb.util.xml.XmlUtil;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -63,7 +65,6 @@ public class TestUpdateRdfLinks extends TestCase {
         FileReader file = new FileReader
                 ("testData/biopax/biopax1_sample1.owl");
         BioPaxUtil util = new BioPaxUtil(file, false, pMonitor);
-        ArrayList pathwayList = util.getPathwayList();
 
         //  Create a Sample ID Map
         HashMap idMap = new HashMap();
@@ -73,8 +74,10 @@ public class TestUpdateRdfLinks extends TestCase {
         idMap.put("biochemicalReaction6", new Long(3));
         idMap.put("catalysis5", new Long(4));
 
+        //  Get 0th Pathway
+        Element pathway = (Element) util.getPathway(0);
+
         //  Before:  we have the following RDF ID
-        Element pathway = (Element) pathwayList.get(0);
         String pathwayId = pathway.getAttributeValue(RdfConstants.ID_ATTRIBUTE,
                 RdfConstants.RDF_NAMESPACE);
         assertEquals("pathway50", pathwayId);
@@ -83,6 +86,7 @@ public class TestUpdateRdfLinks extends TestCase {
         XPath xpath = XPath.newInstance("//@rdf:resource");
         xpath.addNamespace("rdf", RdfConstants.RDF_NAMESPACE_URI);
         List links = xpath.selectNodes(pathway);
+
         this.validateLink(links, 0, "#catalysis43");
         this.validateLink(links, 1, "#biochemicalReaction37");
         this.validateLink(links, 2, "#biochemicalReaction6");
@@ -92,8 +96,7 @@ public class TestUpdateRdfLinks extends TestCase {
 
         //  Update the Links
         UpdateRdfLinks linker = new UpdateRdfLinks();
-        linker.updateInternalLinks(pathwayList, idMap,
-                CPathIdFilter.CPATH_PREFIX);
+        linker.updateInternalLinks(pathway, idMap, CPathIdFilter.CPATH_PREFIX);
 
         //  After:  we have the following RDF ID
         pathwayId = pathway.getAttributeValue(RdfConstants.ID_ATTRIBUTE,
