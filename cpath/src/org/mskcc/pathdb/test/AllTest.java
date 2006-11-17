@@ -1,4 +1,4 @@
-// $Id: AllTest.java,v 1.44 2006-11-10 14:09:38 cerami Exp $
+// $Id: AllTest.java,v 1.45 2006-11-17 16:33:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,7 +72,6 @@ public class AllTest extends TestCase {
      * @throws IOException Throwable
      */
     public static Test suite() throws IOException {
-        JdbcUtil.setCommandLineFlag(true);
         PropertyManager manager = PropertyManager.getInstance();
 
         //  Load build.properties

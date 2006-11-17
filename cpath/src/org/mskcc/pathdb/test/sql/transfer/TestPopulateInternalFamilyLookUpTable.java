@@ -21,7 +21,6 @@ public class TestPopulateInternalFamilyLookUpTable extends TestCase {
      * @throws DaoException Database Access Error.
      */
     public void testPopulator() throws DaoException {
-        JdbcUtil.setCommandLineFlag(true);
         ProgressMonitor pMonitor = new ProgressMonitor();
         pMonitor.setConsoleMode(true);
         PopulateInternalFamilyLookUpTable populator = new PopulateInternalFamilyLookUpTable

@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.55 2006-11-16 15:43:37 cerami Exp $
+// $Id: Admin.java,v 1.56 2006-11-17 16:30:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -141,9 +141,6 @@ public class Admin {
             XDebug xdebug = new XDebug();
             xdebug.startTimer();
 
-            //  Turn on Command Line JDBC Connection
-            JdbcUtil.setCommandLineFlag(true);
-
             if (command.equals(COMMAND_INDEX)) {
                 IndexLuceneTask indexer = new IndexLuceneTask(true, xdebug);
                 indexer.executeTask();
@@ -175,6 +172,12 @@ public class Admin {
 
             System.out.println("Total Time:  " + xdebug.getTimeElapsed()
                     + " ms");
+
+            //System.out.println("Press Enter to exit");
+            //InputStreamReader inputStreamReader = new InputStreamReader ( System.in );
+            //BufferedReader stdin = new BufferedReader ( inputStreamReader );
+            //String line = stdin.readLine();
+        System.out.println("Done");
         } catch (SAXParseException e) {
             System.out.println("\n-----------------------------------------");
             System.out.println("XML Validation Error:  " + e.getMessage());
