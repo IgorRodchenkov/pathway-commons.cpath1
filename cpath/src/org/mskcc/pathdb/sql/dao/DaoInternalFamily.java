@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.5 2006-11-17 16:32:15 cerami Exp $
+// $Id: DaoInternalFamily.java,v 1.6 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,8 +72,6 @@ public class DaoInternalFamily {
             pstmt.setLong(3, descendentId);
             pstmt.setString(4, descendentType.toString());
             pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -101,8 +99,6 @@ public class DaoInternalFamily {
                             + "ANCESTOR_ID = ?");
             pstmt.setLong(1, ancestorId);
             return getDescendentIds(pstmt, rs, list);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -132,8 +128,6 @@ public class DaoInternalFamily {
             pstmt.setLong(1, ancestorId);
             pstmt.setString(2, descendentType.toString());
             return getDescendentIds(pstmt, rs, list);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -162,8 +156,6 @@ public class DaoInternalFamily {
             pstmt.setLong(1, cPathId);
             pstmt.setString(2, ancestorType.toString());
             return getAncestorIds(pstmt, rs, list);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -184,8 +176,6 @@ public class DaoInternalFamily {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement("TRUNCATE TABLE internal_family");
             pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

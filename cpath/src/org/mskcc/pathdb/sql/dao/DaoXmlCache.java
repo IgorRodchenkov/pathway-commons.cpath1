@@ -1,4 +1,4 @@
-// $Id: DaoXmlCache.java,v 1.17 2006-10-27 16:48:50 cerami Exp $
+// $Id: DaoXmlCache.java,v 1.18 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -130,8 +130,6 @@ public class DaoXmlCache {
             int rows = pstmt.executeUpdate();
             conditionallyDeleteEldest();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (IOException e) {
@@ -174,8 +172,6 @@ public class DaoXmlCache {
             } else {
                 return null;
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (IOException e) {
@@ -206,8 +202,6 @@ public class DaoXmlCache {
             pstmt.setString(1, hashKey);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -230,8 +224,6 @@ public class DaoXmlCache {
             pstmt = con.prepareStatement("DELETE FROM xml_cache");
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -269,8 +261,6 @@ public class DaoXmlCache {
             pstmt.setString(4, hashKey);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (IOException e) {
@@ -305,8 +295,6 @@ public class DaoXmlCache {
             pstmt.setString(2, hashKey);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -342,8 +330,6 @@ public class DaoXmlCache {
                 records.add(record);
             }
             return records;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -374,8 +360,6 @@ public class DaoXmlCache {
             }
         } catch (SQLException e) {
             throw new DaoException(e);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
@@ -402,8 +386,6 @@ public class DaoXmlCache {
                         + hashKey);
                 deleteRecordByKey(hashKey);
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

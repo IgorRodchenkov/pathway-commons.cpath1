@@ -1,4 +1,4 @@
-// $Id: DaoLog.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoLog.java,v 1.13 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,8 +76,6 @@ public class DaoLog {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement("TRUNCATE TABLE log");
             pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -111,8 +109,6 @@ public class DaoLog {
             pstmt.setString(6, logRecord.getRemoteHost());
             pstmt.setString(7, logRecord.getRemoteIp());
             pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -142,8 +138,6 @@ public class DaoLog {
                 this.deleteAllLogRecords();
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
-        } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
@@ -182,8 +176,6 @@ public class DaoLog {
                 record.setRemoteIp(remoteIp);
                 records.add(record);
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

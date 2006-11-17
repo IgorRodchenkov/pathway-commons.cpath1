@@ -1,4 +1,4 @@
-// $Id: DaoBackgroundReferences.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoBackgroundReferences.java,v 1.10 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -162,8 +162,6 @@ public class DaoBackgroundReferences {
                 pstmt.setInt(6, pair.hashCode());
                 int rows = pstmt.executeUpdate();
                 return (rows > 0) ? true : false;
-            } catch (ClassNotFoundException e) {
-                throw new DaoException(e);
             } catch (SQLException e) {
                 throw new DaoException(e);
             } finally {
@@ -198,8 +196,6 @@ public class DaoBackgroundReferences {
             } else {
                 return null;
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -226,8 +222,6 @@ public class DaoBackgroundReferences {
             pstmt.setInt(1, primaryId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -274,8 +268,6 @@ public class DaoBackgroundReferences {
                     ("TRUNCATE table " + tableName);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -361,8 +353,6 @@ public class DaoBackgroundReferences {
             rs = pstmt.executeQuery();
             processResultSet(rs, xref, neighborList);
             return neighborList;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -418,8 +408,6 @@ public class DaoBackgroundReferences {
             }
 
             return neighborList;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -468,8 +456,6 @@ public class DaoBackgroundReferences {
             } else {
                 return null;
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

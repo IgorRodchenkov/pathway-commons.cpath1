@@ -1,4 +1,4 @@
-// $Id: DaoImport.java,v 1.26 2006-10-27 16:49:10 cerami Exp $
+// $Id: DaoImport.java,v 1.27 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -85,8 +85,6 @@ public class DaoImport {
                 records.add(record);
             }
             return records;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (IOException e) {
@@ -119,8 +117,6 @@ public class DaoImport {
             } else {
                 return null;
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (IOException e) {
@@ -154,8 +150,6 @@ public class DaoImport {
                 list.add(extractRecord(rs, false));
             }
             return list;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (IOException e) {
@@ -235,8 +229,6 @@ public class DaoImport {
                             + "refer to DaoImport.implementJdkWorkAround() for "
                             + "complete details.");
             throw new DaoException(ie);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } catch (IOException e) {
@@ -294,8 +286,6 @@ public class DaoImport {
             pstmt.setInt(1, importID);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -325,8 +315,6 @@ public class DaoImport {
             pstmt.setLong(2, importID);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

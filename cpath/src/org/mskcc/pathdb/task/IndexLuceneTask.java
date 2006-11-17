@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.50 2006-11-09 18:38:00 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.51 2006-11-17 19:25:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -219,8 +219,6 @@ public class IndexLuceneTask extends Task {
                         returnLong = record.getId();
                     }
                 }
-            } catch (ClassNotFoundException e) {
-                throw new DaoException(e);
             } catch (SQLException e) {
                 throw new DaoException(e);
             } finally {

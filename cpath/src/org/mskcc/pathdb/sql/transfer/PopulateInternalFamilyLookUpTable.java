@@ -91,8 +91,6 @@ public class PopulateInternalFamilyLookUpTable {
             if (rs.next()) {
                 return extractRecord(rs);
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -116,8 +114,6 @@ public class PopulateInternalFamilyLookUpTable {
             if (rs.next()) {
                 return extractRecord(rs);
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

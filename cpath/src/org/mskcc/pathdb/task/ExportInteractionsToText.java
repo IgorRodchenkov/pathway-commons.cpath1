@@ -1,4 +1,4 @@
-// $Id: ExportInteractionsToText.java,v 1.8 2006-06-09 19:22:03 cerami Exp $
+// $Id: ExportInteractionsToText.java,v 1.9 2006-11-17 19:25:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -130,8 +130,6 @@ public class ExportInteractionsToText extends Task {
                 fileWriter.flush();
                 JdbcUtil.closeAll(con, pstmt, rs);
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

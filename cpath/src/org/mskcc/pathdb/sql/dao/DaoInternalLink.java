@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.19 2006-11-13 16:43:07 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.20 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -69,8 +69,6 @@ public class DaoInternalLink {
             pstmt.setLong(2, targetId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -121,8 +119,6 @@ public class DaoInternalLink {
                 records.add(record);
             }
             return records;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -171,8 +167,6 @@ public class DaoInternalLink {
                 records.add(link);
             }
             return records;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -208,8 +202,6 @@ public class DaoInternalLink {
                 records.add(link);
             }
             return records;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -241,8 +233,6 @@ public class DaoInternalLink {
                 counter += pstmt.executeUpdate();
             }
             return counter;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

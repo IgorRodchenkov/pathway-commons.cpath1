@@ -1,4 +1,4 @@
-// $Id: DaoSourceTracker.java,v 1.3 2006-10-30 18:06:20 cerami Exp $
+// $Id: DaoSourceTracker.java,v 1.4 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -80,8 +80,6 @@ public class DaoSourceTracker {
             rs = pstmt.executeQuery();
             rs.next();
             sourceTrackerId = rs.getLong(1);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -119,8 +117,6 @@ public class DaoSourceTracker {
                 sourceRecordList.add(sourceRecord);
             }
             return sourceRecordList;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

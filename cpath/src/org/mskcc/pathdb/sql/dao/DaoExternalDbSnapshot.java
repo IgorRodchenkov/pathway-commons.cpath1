@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.3 2006-10-24 15:34:55 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.4 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,8 +67,6 @@ public class DaoExternalDbSnapshot {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement("TRUNCATE TABLE external_db_snapshot");
             pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -120,8 +118,6 @@ public class DaoExternalDbSnapshot {
             rs = pstmt.executeQuery();
             rs.next();
             externalDbSnapshotId = rs.getLong(1);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -166,8 +162,6 @@ public class DaoExternalDbSnapshot {
                 } else {
                     return null;
                 }
-            } catch (ClassNotFoundException e) {
-                throw new DaoException(e);
             } catch (SQLException e) {
                 throw new DaoException(e);
             } finally {
@@ -206,8 +200,6 @@ public class DaoExternalDbSnapshot {
             } else {
                 return null;
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -235,8 +227,6 @@ public class DaoExternalDbSnapshot {
                             + "ORDER BY EXTERNAL_DB_SNAPSHOT_ID");
             pstmt.setLong(1, externalDbId);
             return getMultipleSnapshots(pstmt);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -260,8 +250,6 @@ public class DaoExternalDbSnapshot {
                     ("select * from external_db_snapshot "
                             + "ORDER BY EXTERNAL_DB_SNAPSHOT_ID");
             return getMultipleSnapshots(pstmt);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

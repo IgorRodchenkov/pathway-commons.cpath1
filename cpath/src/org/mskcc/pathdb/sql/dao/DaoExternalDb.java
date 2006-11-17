@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.28 2006-09-05 13:39:44 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.29 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -112,8 +112,6 @@ public class DaoExternalDb {
             rs = pstmt.executeQuery();
             rs.next();
             return rs.getInt(1);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -157,8 +155,6 @@ public class DaoExternalDb {
             pstmt.setInt(3, externalDbId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -198,8 +194,6 @@ public class DaoExternalDb {
             } else {
                 return null;
             }
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -243,8 +237,6 @@ public class DaoExternalDb {
                     cache.put(cachedElement);
                 }
                 return dbRecord;
-            } catch (ClassNotFoundException e) {
-                throw new DaoException(e);
             } catch (SQLException e) {
                 throw new DaoException(e);
             } finally {
@@ -283,8 +275,6 @@ public class DaoExternalDb {
             pstmt.setString(1, name);
             rs = pstmt.executeQuery();
             return extractRecord(rs);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -351,8 +341,6 @@ public class DaoExternalDb {
                 records.add(db);
             }
             return records;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -388,8 +376,6 @@ public class DaoExternalDb {
             String key = this.getClass().getName() + ".getRecordById." + id;
             cache.remove(key);
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -436,8 +422,6 @@ public class DaoExternalDb {
                 dao.addRecord(db.getId(), (String) terms.get(i), false);
             }
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

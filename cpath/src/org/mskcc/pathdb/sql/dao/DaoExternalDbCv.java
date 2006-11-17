@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbCv.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoExternalDbCv.java,v 1.18 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,8 +72,6 @@ public class DaoExternalDbCv {
             pstmt.setInt(3, masterFlag ? 1 : 0);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -126,8 +124,6 @@ public class DaoExternalDbCv {
                 return dbRecord;
             }
             return null;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -166,8 +162,6 @@ public class DaoExternalDbCv {
             }
             cvRecord.setSynonymTerms(synTerms);
             return cvRecord;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -196,8 +190,6 @@ public class DaoExternalDbCv {
                 return rs.getString("CV_TERM");
             }
             return null;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -223,8 +215,6 @@ public class DaoExternalDbCv {
             pstmt.setInt(1, dbId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

@@ -1,4 +1,4 @@
-// $Id: DaoIdGenerator.java,v 1.5 2006-02-22 22:47:51 grossb Exp $
+// $Id: DaoIdGenerator.java,v 1.6 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,8 +72,6 @@ public class DaoIdGenerator {
                 saveFirstId(con, pstmt, id);
             }
             return CPATH_LOCAL_ID_PREFIX + id;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -94,8 +92,6 @@ public class DaoIdGenerator {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement("truncate id_generator");
             pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

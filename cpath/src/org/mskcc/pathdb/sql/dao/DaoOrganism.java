@@ -1,4 +1,4 @@
-// $Id: DaoOrganism.java,v 1.11 2006-06-09 19:22:03 cerami Exp $
+// $Id: DaoOrganism.java,v 1.12 2006-11-17 19:25:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -77,8 +77,6 @@ public class DaoOrganism {
             pstmt.setString(2, speciesName);
             pstmt.setString(3, commonName);
             pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -111,8 +109,6 @@ public class DaoOrganism {
                 organisms.add(organism);
             }
             return organisms;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -140,8 +136,6 @@ public class DaoOrganism {
                 organismCount = rs.getInt(1);
             }
             return organismCount;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -184,8 +178,6 @@ public class DaoOrganism {
             pstmt.setInt(1, taxonomyId);
             rs = pstmt.executeQuery();
             return rs.next();
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -212,8 +204,6 @@ public class DaoOrganism {
             pstmt.setLong(1, taxonomyId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
