@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.4 2006-11-09 21:09:29 cerami Exp $
+// $Id: DaoInternalFamily.java,v 1.5 2006-11-17 16:32:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,8 +51,6 @@ public class DaoInternalFamily {
         "INSERT INTO internal_family (`ANCESTOR_ID`, `ANCESTOR_TYPE`, "
         + "`DESCENDENT_ID`, `DESCENDENT_TYPE`) VALUES (?,?,?,?)";
 
-    private PreparedStatement insertPstmt;
-
     /**
      * Adds a new record.
      * @param ancestorId        ID of Ancestor record.
@@ -65,27 +63,21 @@ public class DaoInternalFamily {
             CPathRecordType descendentType) throws DaoException {
         Connection con = null;
         ResultSet rs = null;
+        PreparedStatement pstmt = null;
         try {
             con = JdbcUtil.getCPathConnection();
-            if (insertPstmt == null) {
-                insertPstmt = con.prepareStatement (INSERT_SQL);
-            }
-            insertPstmt.setLong(1, ancestorId);
-            insertPstmt.setString(2, ancestorType.toString());
-            insertPstmt.setLong(3, descendentId);
-            insertPstmt.setString(4, descendentType.toString());
-            insertPstmt.executeUpdate();
+            pstmt = con.prepareStatement (INSERT_SQL);
+            pstmt.setLong(1, ancestorId);
+            pstmt.setString(2, ancestorType.toString());
+            pstmt.setLong(3, descendentId);
+            pstmt.setString(4, descendentType.toString());
+            pstmt.executeUpdate();
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                }
-            }
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 

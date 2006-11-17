@@ -28,9 +28,6 @@ public class PopulateInternalFamilyLookUpTable {
         "select `CPATH_ID`, `TYPE` from cpath WHERE TYPE = ? LIMIT ?,1";
     private static final String GET_RECORD_BY_ID =
         "select `CPATH_ID`, `TYPE` from cpath WHERE CPATH_ID = ?";
-
-    private PreparedStatement pstmt1;
-    private PreparedStatement pstmt2;
     private ProgressMonitor pMonitor;
 
     /**
@@ -99,7 +96,7 @@ public class PopulateInternalFamilyLookUpTable {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            localCloseAll(rs);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
         return null;
     }
@@ -124,7 +121,7 @@ public class PopulateInternalFamilyLookUpTable {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            localCloseAll(rs);
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
         return null;
     }
@@ -136,29 +133,12 @@ public class PopulateInternalFamilyLookUpTable {
         return record;
     }
 
-    protected void localCloseAll(ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-        }
-    }
-
     private PreparedStatement getPreparedStatement1(Connection con) throws SQLException {
-        //  Re-use prepared statement
-        if (pstmt1 == null) {
-            pstmt1 = con.prepareStatement (GET_RECORD_ITERATOR);
-        }
-        return pstmt1;
+        return con.prepareStatement (GET_RECORD_ITERATOR);
     }
 
     private PreparedStatement getPreparedStatement2(Connection con) throws SQLException {
-        //  Re-use prepared statement
-        if (pstmt2 == null) {
-            pstmt2 = con.prepareStatement (GET_RECORD_BY_ID);
-        }
-        return pstmt2;
+        return con.prepareStatement (GET_RECORD_BY_ID);
     }
 
     /**
