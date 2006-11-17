@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDbSnapshot.java,v 1.2 2006-10-05 19:36:48 cerami Exp $
+// $Id: TestDaoExternalDbSnapshot.java,v 1.3 2006-11-17 19:47:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -89,22 +89,6 @@ public class TestDaoExternalDbSnapshot extends TestCase {
         assertEquals (2, list.size());
         verifySnapshotRecord1 ((ExternalDatabaseSnapshotRecord) list.get(0));
         verifySnapshotRecord2 ((ExternalDatabaseSnapshotRecord) list.get(1));
-
-        // Try adding a snapshot for a non-existent DB
-        // This violates a foreign key constraint and should fail
-        try {
-            dao.addRecord(82813, date, "Version 2.0");
-            fail ("Exception should have been thrown.  Foreign key "
-                + "constraint has been violated.");
-        } catch (DaoException e) {
-        }
-
-        //  Try adding a duplicate record.  This should also fail.
-        try {
-            dao.addRecord(1, date, "Version 2.0");
-            fail ("Exception should have been thrown.  Record already exists");
-        } catch (DaoException e) {
-        }
     }
 
     private void verifySnapshotRecord1(ExternalDatabaseSnapshotRecord record) {
