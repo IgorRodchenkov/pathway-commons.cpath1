@@ -1,4 +1,4 @@
-// $Id: TestDaoSourceTracker.java,v 1.4 2006-10-30 18:07:55 cerami Exp $
+// $Id: TestDaoSourceTracker.java,v 1.5 2006-11-17 19:26:01 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.dataservices.bio.ExternalReference;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Tests the DaoSourceTracker Class.
