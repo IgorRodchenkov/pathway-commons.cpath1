@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDb.java,v 1.25 2006-10-09 14:28:00 cerami Exp $
+// $Id: TestDaoExternalDb.java,v 1.26 2006-11-17 19:26:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -88,17 +88,6 @@ public class TestDaoExternalDb extends TestCase {
         validateRecord(record);
         record = dao.getRecordByTerm(TERM2);
         validateRecord(record);
-
-        //  Try adding the same record again.  This should fail
-        //  as MySQL maintains that database names are unique.
-        try {
-            addSampleRecord();
-            fail("DaoException should have been thrown");
-        } catch (DaoException e) {
-            String msg = e.getMessage();
-            assertEquals("Duplicate entry 'ACME Database' for key 2",
-                    e.getMessage());
-        }
 
         addDuplicateTermRecord();
 
