@@ -1,4 +1,4 @@
-// $Id: JdbcUtil.java,v 1.25 2006-11-17 16:32:36 cerami Exp $
+// $Id: JdbcUtil.java,v 1.26 2006-11-17 17:23:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -93,8 +93,8 @@ public class JdbcUtil {
      *
      * @param con Connection Object.
      */
-    private static void closeConnection(Connection con) {
-        if (con != null) {
+    private static void closeConnection(Connection con) throws SQLException {
+        if (con != null && ! con.isClosed()) {
             try {
                 con.close();
             } catch (SQLException e) {
@@ -112,7 +112,11 @@ public class JdbcUtil {
      */
     public static void closeAll(Connection con, PreparedStatement ps,
             ResultSet rs) {
-        closeConnection(con);
+        try {
+            closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         if (ps != null) {
             try {
                 ps.close();
@@ -171,7 +175,6 @@ public class JdbcUtil {
         // passing in the object pool we created.
         //
         PoolingDataSource dataSource = new PoolingDataSource(connectionPool);
-
         return dataSource;
     }
 
