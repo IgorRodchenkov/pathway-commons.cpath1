@@ -1,4 +1,4 @@
-// $Id: JdbcUtil.java,v 1.26 2006-11-17 17:23:26 cerami Exp $
+// $Id: JdbcUtil.java,v 1.27 2006-11-17 19:23:33 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,29 +46,26 @@ import java.sql.*;
  * @author Ethan Cerami
  */
 public class JdbcUtil {
-    private static DataSource dataSource;
-    private static GenericObjectPool connectionPool;
+    private static BasicDataSource ds;
 
     /**
      * Gets Connection to the CPath Database.
      *
      * @return Live Connection to Database.
      * @throws SQLException           Error Connecting to Database.
-     * @throws ClassNotFoundException Error Locating Correct Database Driver.
      */
-    public static Connection getCPathConnection()
-            throws SQLException, ClassNotFoundException {
-        if (dataSource == null) {
+    public static Connection getCPathConnection() throws SQLException {
+        if (ds == null) {
             initDataSource();
         }
-        Connection con = dataSource.getConnection();
+        Connection con = ds.getConnection();
         return con;
     }
 
     /**
      * Initializes Data Source.
      */
-    private static void initDataSource() throws ClassNotFoundException {
+    private static void initDataSource() {
         PropertyManager manager = PropertyManager.getInstance();
         String host = manager.getProperty(PropertyManager.DB_LOCATION);
         String userName = manager.getProperty(PropertyManager.DB_USER);
@@ -84,8 +81,14 @@ public class JdbcUtil {
                         + "?user=" + userName + "&password=" + password
                         + "&zeroDateTimeBehavior=convertToNull");
 
-        Class.forName("com.mysql.jdbc.Driver");
-        dataSource = setupDataSource(url);
+        //  Set up poolable data source
+        ds = new BasicDataSource();
+        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setUsername(userName);
+        ds.setPassword(password);
+        ds.setUrl(url);
+        ds.setPoolPreparedStatements(false);
+        ds.setMaxActive(10);
     }
 
     /**
@@ -131,51 +134,6 @@ public class JdbcUtil {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * Initializes Database Connection Pool.
-     *
-     * @param connectURI Connection URI.
-     * @return DataSource Object.
-     */
-    public static DataSource setupDataSource(String connectURI) {
-        //
-        // First, we'll need a ObjectPool that serves as the
-        // actual pool of connections.
-        //
-        // We'll use a GenericObjectPool instance, although
-        // any ObjectPool implementation will suffice.
-        //
-        connectionPool = new GenericObjectPool(null);
-        connectionPool.setMaxActive(10);
-
-        //
-        // Next, we'll create a ConnectionFactory that the
-        // pool will use to create Connections.
-        // We'll use the DriverManagerConnectionFactory,
-        // using the connect string passed in the command line
-        // arguments.
-        //
-        ConnectionFactory connectionFactory =
-                new DriverManagerConnectionFactory(connectURI, null);
-
-        //
-        // Now we'll create the PoolableConnectionFactory, which wraps
-        // the "real" Connections created by the ConnectionFactory with
-        // the classes that implement the pooling functionality.
-        //
-        PoolableConnectionFactory poolableConnectionFactory =
-                new PoolableConnectionFactory
-                        (connectionFactory, connectionPool, null,
-                                null, false, true);
-
-        //
-        // Finally, we create the PoolingDriver itself,
-        // passing in the object pool we created.
-        //
-        PoolingDataSource dataSource = new PoolingDataSource(connectionPool);
-        return dataSource;
     }
 
     /**
