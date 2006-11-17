@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.27 2006-11-17 16:33:28 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.28 2006-11-17 19:45:17 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -108,6 +108,7 @@ public class BioPaxUtil {
         }
 
         //  Third Step:  Validate and/or add missing external references to database.
+        pMonitor.setCurrentMessage("Validating All External References");
         validateAndOrAddExternalReferences(root);
     }
 
