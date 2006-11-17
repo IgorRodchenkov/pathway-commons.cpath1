@@ -36,7 +36,7 @@ CREATE TABLE `cpath` (
   `CREATE_TIME` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Timestamp when record was originally created',
   `UPDATE_TIME` datetime default '0000-00-00 00:00:00' COMMENT 'Timestamp when record was last modified',
   PRIMARY KEY  (`CPATH_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains core cPath Entities.' AUTO_INCREMENT=1;
 
 #
 # Table structure for table `external_db`
@@ -57,7 +57,7 @@ CREATE TABLE `external_db` (
   `UPDATE_TIME` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`EXTERNAL_DB_ID`),
   UNIQUE KEY `NAME` (`NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains information about external databases.' AUTO_INCREMENT=1;
 
 #
 # Table structure for table `external_db_cv`
@@ -232,7 +232,7 @@ CREATE TABLE `web_ui` (
 
 Alter table internal_link add INDEX internal_link_source_idx (SOURCE_ID);
 Alter table internal_link add INDEX internal_link_target_idx (TARGET_ID);
-Alter table external_link add INDEX cpath_id_idx (cpath_id); 
+Alter table external_link add INDEX cpath_id_idx (cpath_id);
 
 --
 -- Table structure for table `source_tracker`
@@ -244,7 +244,7 @@ CREATE TABLE `source_tracker` (
   PRIMARY KEY  (`SOURCE_TRACKER_ID`),
   KEY `ID_OF_CPATH_GENERATED_RECORD` (`ID_OF_CPATH_GENERATED_RECORD`),
   KEY `ID_OF_SOURCE_RECORD` (`ID_OF_SOURCE_RECORD`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 COMMENT = 'Links source records with cPath generated records.';
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 COMMENT = 'Links source records with cPath generated records.';
 
 --
 -- Table structure for table `external_db_snapshot`
@@ -257,7 +257,7 @@ CREATE TABLE `external_db_snapshot` (
   `SNAPSHOT_VERSION` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`EXTERNAL_DB_SNAPSHOT_ID`),
   KEY `EXTERNAL_DB_ID` (`EXTERNAL_DB_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains database snapshot information.' AUTO_INCREMENT=1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains database snapshot information.' AUTO_INCREMENT=1;
 
 --
 -- Table structure for table `internal_family`
@@ -269,9 +269,3 @@ CREATE TABLE `internal_family` (
   `DESCENDENT_ID` int(11) NOT NULL default '0',
   `DESCENDENT_TYPE` varchar(255) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Constraints for table `external_db_snapshot`
---
-ALTER TABLE `external_db_snapshot`
-  ADD CONSTRAINT `external_db_snapshot_ibfk_1` FOREIGN KEY (`EXTERNAL_DB_ID`) REFERENCES `external_db` (`EXTERNAL_DB_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
