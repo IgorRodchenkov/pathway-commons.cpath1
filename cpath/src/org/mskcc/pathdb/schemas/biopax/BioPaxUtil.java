@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.26 2006-11-16 19:50:43 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.27 2006-11-17 16:33:28 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -541,7 +541,8 @@ public class BioPaxUtil {
         //  Get the RDF ID
         Attribute rdfId = e.getAttribute(RdfConstants.ID_ATTRIBUTE,
                 RdfConstants.RDF_NAMESPACE);
-		// if rdf id attribute is null, try about
+
+        // if rdf id attribute is null, try about
 		rdfId = (rdfId == null) ?
 			e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
 						   RdfConstants.RDF_NAMESPACE) : rdfId;
