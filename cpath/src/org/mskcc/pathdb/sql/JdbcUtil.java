@@ -1,4 +1,4 @@
-// $Id: JdbcUtil.java,v 1.24 2006-11-09 18:26:11 cerami Exp $
+// $Id: JdbcUtil.java,v 1.25 2006-11-17 16:32:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,7 @@ package org.mskcc.pathdb.sql;
 
 import org.apache.commons.dbcp.*;
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.commons.pool.impl.GenericKeyedObjectPool;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.util.CPathConstants;
 
@@ -47,35 +48,9 @@ import java.sql.*;
 public class JdbcUtil {
     private static DataSource dataSource;
     private static GenericObjectPool connectionPool;
-    private static final String DB_CPATH = "cpath";
-    private static boolean commandLineFlag = false;
-    private static Connection commandLineConnection;
-
-    private static final String PROPERTY_MYSQL_DATABASE = "mysql.database_name";
-
-    /**
-     * Special Setting for Command Line Applications
-     *
-     * @param flag true or false.
-     */
-    public static void setCommandLineFlag(boolean flag) {
-        commandLineFlag = flag;
-    }
-
-    /**
-     * Gets the Command Line Flag.
-     *
-     * @return Command Line Flag.
-     */
-    public static boolean getCommandLineFlag() {
-        return commandLineFlag;
-    }
 
     /**
      * Gets Connection to the CPath Database.
-     * If this is a command line connection, reuse the static
-     * commandLineConnection object.  Otherwise, get a connection from the
-     * database pool.
      *
      * @return Live Connection to Database.
      * @throws SQLException           Error Connecting to Database.
@@ -86,16 +61,8 @@ public class JdbcUtil {
         if (dataSource == null) {
             initDataSource();
         }
-        if (commandLineFlag) {
-            if (commandLineConnection == null
-                    || commandLineConnection.isClosed()) {
-                commandLineConnection = dataSource.getConnection();
-            }
-            return commandLineConnection;
-        } else {
-            Connection con = dataSource.getConnection();
-            return con;
-        }
+        Connection con = dataSource.getConnection();
+        return con;
     }
 
     /**
@@ -123,19 +90,15 @@ public class JdbcUtil {
 
     /**
      * Frees Database Connection.
-     * If this is a command line application, we keep the connection open
-     * (this improves overall performance).
      *
      * @param con Connection Object.
      */
     private static void closeConnection(Connection con) {
-        if (!commandLineFlag) {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        if (con != null) {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }

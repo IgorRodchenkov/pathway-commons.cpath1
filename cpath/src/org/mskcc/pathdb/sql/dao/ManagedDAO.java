@@ -1,4 +1,4 @@
-// $Id: ManagedDAO.java,v 1.5 2006-02-22 22:47:51 grossb Exp $
+// $Id: ManagedDAO.java,v 1.6 2006-11-17 16:32:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,38 +47,16 @@ import java.util.Hashtable;
  */
 public abstract class ManagedDAO {
 
-    // single connection for each DAO
-    protected Connection singeltonConnection = null;
-
-    // map of all prepared statements
-    protected Hashtable preparedSatementHash = null;
-
     //  map of all sql statements
     protected HashMap sqlMap = null;
 
     protected void init() throws DaoException {
         this.sqlMap = new HashMap();
-        this.preparedSatementHash = new Hashtable();
-
-        try {
-            singeltonConnection = JdbcUtil.getCPathConnection();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } catch (ClassNotFoundException e) {
-            throw new DaoException(e);
-        }
     }
 
     protected void addPreparedStatement(String key, String statement)
             throws DaoException {
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = this.singeltonConnection.prepareStatement(statement);
-            this.preparedSatementHash.put(key, pstmt);
-            this.sqlMap.put(key, statement);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        this.sqlMap.put(key, statement);
     }
 
     /**
@@ -95,11 +73,7 @@ public abstract class ManagedDAO {
             String statementKey) throws SQLException, ClassNotFoundException {
         PreparedStatement pstmt;
         String statement = (String) this.sqlMap.get(statementKey);
-        if (JdbcUtil.getCommandLineFlag()) {
-            pstmt = (PreparedStatement) preparedSatementHash.get(statementKey);
-        } else {
-            pstmt = con.prepareStatement(statement);
-        }
+        pstmt = con.prepareStatement(statement);
         return pstmt;
     }
 
@@ -114,13 +88,7 @@ public abstract class ManagedDAO {
      */
     public Connection getConnection() throws SQLException,
             ClassNotFoundException {
-        Connection returnConnection;
-        if (JdbcUtil.getCommandLineFlag()) {
-            returnConnection = singeltonConnection;
-        } else {
-            returnConnection = JdbcUtil.getCPathConnection();
-        }
-        return returnConnection;
+        return JdbcUtil.getCPathConnection();
     }
 
     protected String getStoredSql(String key) {
@@ -137,17 +105,6 @@ public abstract class ManagedDAO {
      */
     protected void localCloseAll(Connection con, PreparedStatement pstmt,
             ResultSet rs) {
-        if (!JdbcUtil.getCommandLineFlag()) {
-            JdbcUtil.closeAll(con, pstmt, rs);
-        } else {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-        }
+        JdbcUtil.closeAll(con, pstmt, rs);
     }
 }
