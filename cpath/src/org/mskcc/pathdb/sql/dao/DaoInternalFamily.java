@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.6 2006-11-17 19:25:10 cerami Exp $
+// $Id: DaoInternalFamily.java,v 1.7 2006-11-20 22:12:28 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -80,6 +80,40 @@ public class DaoInternalFamily {
     }
 
     /**
+     * Adds a new record.
+     * @param ancestorId        ID of Ancestor record.
+     * @param ancestorType      Record type of ancestor.
+     * @param descendentIds     IDs of Descendent record.
+     * @param descendentTypes   Record types of Descendent.
+     * @throws DaoException     Database access error.
+     */
+    public void addRecords (long ancestorId, CPathRecordType ancestorType, ArrayList descendentIds,
+            ArrayList descendentTypes) throws DaoException {
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+
+        //  Use a Batch statement:  results in faster performance.  For details, see:
+        //  http://media.datadirect.com/download/docs/jdbc/jdbcref/jdbcdesign.html
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement (INSERT_SQL);
+            for (int i=0; i<descendentIds.size(); i++) {
+                pstmt.setLong(1, ancestorId);
+                pstmt.setString(2, ancestorType.toString());
+                pstmt.setLong(3, (Long) descendentIds.get(i));
+                pstmt.setString(4, (String) descendentTypes.get(i));
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
     public lon
      * Gets all descendents of this ancestor.
      * @param ancestorId        ID of ancestor.
@@ -95,7 +129,7 @@ public class DaoInternalFamily {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
-                    ("select * from internal_family where "
+                    ("select DESCENDENT_ID from internal_family where "
                             + "ANCESTOR_ID = ?");
             pstmt.setLong(1, ancestorId);
             return getDescendentIds(pstmt, rs, list);
