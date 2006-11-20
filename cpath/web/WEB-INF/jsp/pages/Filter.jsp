@@ -75,7 +75,7 @@ request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
         for (int i=0; i<organismList.size(); i++) {
             Organism organism = (Organism) organismList.get(i);
             out.println("<TR><TD>");
-            out.println("<INPUT TYPE=CHECKBOX NAME=ORGANISM_TAXONOMY_ID VALUE="
+            out.println("<INPUT TYPE=RADIO NAME=ORGANISM_TAXONOMY_ID VALUE="
                 + organism.getTaxonomyId());
             if (settings.isOrganismSelected(organism.getTaxonomyId())) {
                 out.println(" CHECKED");
