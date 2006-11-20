@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.20 2006-11-17 19:25:10 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.21 2006-11-20 22:24:09 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -85,14 +85,28 @@ public class DaoInternalLink {
      * @throws DaoException Error Retrieving Data.
      */
     public int addRecords(long sourceId, long targetIds[]) throws DaoException {
-        int counter = 0;
-        for (int i = 0; i < targetIds.length; i++) {
-            boolean flag = this.addRecord(sourceId, targetIds[i]);
-            if (flag) {
-                counter++;
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+
+            //  Use batch mode for faster performance
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("INSERT INTO internal_link (`SOURCE_ID`,`TARGET_ID`)"
+                            + " VALUES (?,?)");
+            for (int i = 0; i < targetIds.length; i++) {
+                pstmt.setLong(1, sourceId);
+                pstmt.setLong(2, targetIds[i]);
+                pstmt.addBatch();
             }
+            pstmt.executeBatch();
+            return targetIds.length;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
-        return counter;
     }
 
     /**
