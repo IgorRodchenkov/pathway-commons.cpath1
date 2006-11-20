@@ -1,4 +1,4 @@
-// $Id: JdbcUtil.java,v 1.27 2006-11-17 19:23:33 cerami Exp $
+// $Id: JdbcUtil.java,v 1.28 2006-11-20 16:36:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,7 +87,9 @@ public class JdbcUtil {
         ds.setUsername(userName);
         ds.setPassword(password);
         ds.setUrl(url);
-        ds.setPoolPreparedStatements(false);
+
+        //  By pooling/reusing PreparedStatements, we get a major performance gain
+        ds.setPoolPreparedStatements(true);
         ds.setMaxActive(10);
     }
 
@@ -120,13 +122,15 @@ public class JdbcUtil {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (ps != null) {
-            try {
-                ps.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        //  Don't close PreparedStatements, as we have configured DBCP to pool/reuse
+        //  PreparedStatements.
+        //        if (ps != null) {
+        //            try {
+        //                ps.close();
+        //            } catch (SQLException e) {
+        //                e.printStackTrace();
+        //            }
+        //        }
         if (rs != null) {
             try {
                 rs.close();
