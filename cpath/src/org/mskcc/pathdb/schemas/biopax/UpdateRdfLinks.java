@@ -1,4 +1,4 @@
-// $Id: UpdateRdfLinks.java,v 1.7 2006-11-16 15:40:30 cerami Exp $
+// $Id: UpdateRdfLinks.java,v 1.8 2006-11-21 20:34:33 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -81,6 +81,10 @@ public class UpdateRdfLinks {
         //  Update the RDF ID
         Attribute idAttribute = e.getAttribute (RdfConstants.ID_ATTRIBUTE,
                 RdfConstants.RDF_NAMESPACE);
+		idAttribute = (idAttribute == null) ?
+			e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+						   RdfConstants.RDF_NAMESPACE) : idAttribute;
+		
         Long newId = updateIdAttribute (idAttribute, idMap, idPrefix);
 
         //  Get all RDF resource attributes
