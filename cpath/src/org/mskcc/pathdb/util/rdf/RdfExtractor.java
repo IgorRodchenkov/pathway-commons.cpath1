@@ -1,4 +1,4 @@
-// $Id: RdfExtractor.java,v 1.5 2006-02-22 22:51:58 grossb Exp $
+// $Id: RdfExtractor.java,v 1.6 2006-11-21 20:38:09 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -137,6 +137,9 @@ public class RdfExtractor {
         Attribute idAttribute = e.getAttribute
                 (RdfConstants.ID_ATTRIBUTE,
                         RdfConstants.RDF_NAMESPACE);
+		idAttribute = (idAttribute == null) ?
+			e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+						   RdfConstants.RDF_NAMESPACE) : idAttribute;
         if (idAttribute != null) {
             resourceMap.put(idAttribute.getValue(), e);
         }
