@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.35 2006-10-24 15:10:16 cerami Exp $
+// $Id: CPathServlet.java,v 1.36 2006-11-27 18:10:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -151,11 +151,14 @@ public final class CPathServlet extends ActionServlet {
         //  Init the Global Cache
         initGlobalCache();
 
-        //  Start Quartz Scheduler
-        initQuartzScheduler();
-
         // populate the CPathUIConfig
         populateWebUIBean();
+
+        //  Start Quartz Scheduler
+        WebUIBean webBean = CPathUIConfig.getWebUIBean();
+        if (webBean.getDisplayBrowseByPathwayTab()) {
+            initQuartzScheduler();    
+        }
     }
 
     /**

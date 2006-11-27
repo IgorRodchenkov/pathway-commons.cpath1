@@ -1,4 +1,4 @@
-// $Id: HomeAction.java,v 1.10 2006-02-22 22:47:50 grossb Exp $
+// $Id: HomeAction.java,v 1.11 2006-11-27 18:10:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -65,7 +65,8 @@ public class HomeAction extends BaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
 
         // if biopax, get list of pathways
-        if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) {
+        if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX
+                && CPathUIConfig.getWebUIBean().getDisplayBrowseByPathwayTab()) {
 
             // get top level pathways
             GetTopLevelPathwayListCommand getPathwayListCommand =
