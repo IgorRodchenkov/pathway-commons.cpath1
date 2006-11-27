@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.17 2006-11-02 15:09:15 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.18 2006-11-27 20:24:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,6 +44,7 @@ import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import java.util.List;
 import java.util.StringTokenizer;
@@ -356,8 +357,10 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      */
     private void outputActionLinks() {
         if (record.getType().equals(CPathRecordType.PATHWAY)) {
+            if (CPathUIConfig.getWebUIBean().getDisplayCytoscapeTab()) {
             append("<div class='action_button'>"
                     + "<a href=\"cytoscape.do\">" + CYTOSCAPE_LINK_TEXT + "</a></div>");
+            }
         }
 
         if (record.getType().equals(CPathRecordType.PATHWAY)
