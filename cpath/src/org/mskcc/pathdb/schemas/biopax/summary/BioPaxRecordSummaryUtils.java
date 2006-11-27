@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.30 2006-11-13 17:06:44 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.31 2006-11-27 20:31:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -281,7 +281,7 @@ public class BioPaxRecordSummaryUtils {
         //  Create Header for Pop-Up Box
         buf.append("<DIV CLASS=popup>");
         buf.append("<DIV CLASS=popup_caption>");
-        buf.append(truncateLongName(name));
+        buf.append(truncateLongName(name, NAME_LENGTH + 15));
         appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
                 isSumoylated, buf);
         if (participant != null) {
@@ -320,7 +320,7 @@ public class BioPaxRecordSummaryUtils {
         buf.append("); return true;\" onmouseout=\"return nd();\">");
 
         //  Output Component Name and end A Tag.
-        buf.append(truncateLongName(name));
+        buf.append(truncateLongName(name, NAME_LENGTH));
         buf.append("</a>");
 
         //  If this is a transport interaction, show cellular
@@ -354,7 +354,8 @@ public class BioPaxRecordSummaryUtils {
             for (int i = 0; i < componentList.size(); i++) {
                 BioPaxRecordSummary child =
                         (BioPaxRecordSummary) componentList.get(i);
-                buf.append("<LI>" + truncateLongName(child.getName()) + "</LI>");
+                buf.append("<LI>" + truncateLongName(child.getName(), NAME_LENGTH)
+                        + "</LI>");
             }
             buf.append("</UL>");
         }
@@ -453,10 +454,10 @@ public class BioPaxRecordSummaryUtils {
      * @param name Name.
      * @return Truncated name.
      */
-    private static String truncateLongName(String name) {
+    private static String truncateLongName(String name, int nameLength) {
         if (name != null) {
-            if (name.length() > NAME_LENGTH) {
-                name = name.substring(0, NAME_LENGTH - 3) + "...";
+            if (name.length() > nameLength) {
+                name = name.substring(0, nameLength - 3) + "...";
             }
         }
         return entityFilter(name);
@@ -496,7 +497,7 @@ public class BioPaxRecordSummaryUtils {
             buf.append("Also known as:  <UL>");
             for (int i = 0; i < synList.size(); i++) {
                 String synonym = (String) synList.get(i);
-                synonym = truncateLongName(synonym);
+                synonym = truncateLongName(synonym, NAME_LENGTH);
                 buf.append("<LI>" + synonym + "</LI>");
             }
             buf.append("</UL>");
