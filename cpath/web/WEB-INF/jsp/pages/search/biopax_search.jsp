@@ -66,7 +66,7 @@
                 out.println("</div>");
             }
             out.println("</td>");
-            out.println("<td valign=center align=right>");
+            out.println("<td valign=center align=right><nobr>");
             out.println("<span class='mini_buttons'>");
             if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
                 out.println("<span class='mini_button_1'><A "
@@ -87,7 +87,7 @@
                  + url + "&show_flags=01000#interaction_list'>I</A></span>");
             }
             out.println("</span>");
-            out.println("</td></tr>");
+            out.println("</nobr></td></tr>");
         } catch (IllegalArgumentException e) {
             out.println("<div class='search_name'>" +
                     "<A HREF=\"" + url + "\">" + record.getName() + "</A></div>");
