@@ -27,6 +27,9 @@ public class LuceneAutoFilter {
     public static String addFiltersToQuery (String q,
             GlobalFilterSettings filterSettings) throws DaoException {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+        //  surround user query by parentheses
+        q = "(" + q + ")";
+
         List dataSourceList = new ArrayList();
         if (filterSettings != null) {
             Set idSet = filterSettings.getSnapshotIdSet();
