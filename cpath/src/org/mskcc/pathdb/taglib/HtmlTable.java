@@ -1,4 +1,4 @@
-// $Id: HtmlTable.java,v 1.22 2006-02-22 22:47:51 grossb Exp $
+// $Id: HtmlTable.java,v 1.23 2006-11-27 21:50:23 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -109,6 +109,13 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected void append(String text) {
         html.append(text + "\n");
+    }
+
+    /**
+     * Appends to String Buffer.
+     */
+    protected void appendWithoutNewline(String text) {
+        html.append(text);
     }
 
     /**

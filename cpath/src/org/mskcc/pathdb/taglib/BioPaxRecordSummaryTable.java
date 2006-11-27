@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.18 2006-11-27 20:24:54 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.19 2006-11-27 21:50:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -147,7 +147,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
         outputAvailability();
         append("</TABLE>");
         append("</TD>");
-        append("<TD>");
+        append("<TD WIDTH=20%>");
         outputActionLinks();
         append("</TD></TR>");
         append("</TABLE>");
@@ -323,7 +323,21 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 
         // do we have something to process ?
         if (commentString != null) {
-            commentString = commentString.replaceAll("<BR>", "<P>");
+            commentString = commentString.replaceAll("<BR>", "<p>");
+
+            //  Ugly hack to handle Reactome HREF links
+            if (commentString.indexOf("<a href") > -1) {
+                commentString = commentString.replaceAll
+                        ("<a href='/electronic_inference.html' target = 'NEW'>",
+                         "<a href='http://reactome.org/electronic_inference.html' target = 'NEW'>");
+                commentString = commentString.replaceAll("For details on the OrthoMCL system "
+                    + "see also:",
+                    "For details on the OrthoMCL system see also:  "
+                    + "[<A HREF='http://www.ncbi.nlm.nih.gov:80/entrez/query.fcgi?"
+                    + "cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=12952885' target='NEW'>"
+                    + "Li <I>et al"
+                    + "</I> 2003</A>]");
+            }
             StringTokenizer tokenizer = new StringTokenizer (commentString, " ");
             append("<TR VALIGN=TOP>");
             append("<TD><B>Comment:</B></TD>");
@@ -336,7 +350,7 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
                 if (isMagicReactomeWord(token) && tokenNum > 0) {
                     append ("<P>");
                 }
-                append (token);
+                appendWithoutNewline (token + " ");
                 tokenNum++;
             }
             append("</TD>");
