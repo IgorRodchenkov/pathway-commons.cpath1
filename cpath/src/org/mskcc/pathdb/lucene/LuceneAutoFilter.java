@@ -47,12 +47,18 @@ public class LuceneAutoFilter {
         Set organismSet = filterSettings.getOrganismTaxonomyIdSet();
         List organismList = new ArrayList();
         Iterator iterator = organismSet.iterator();
+		boolean allOrganismsFilterSet = false;
         while (iterator.hasNext()) {
             Integer id = (Integer) iterator.next();
             organismList.add(id.toString());
+			if (id == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
+				allOrganismsFilterSet = true;
+			}
         }
-        return addFiltersToQuery (revisedQuery, LuceneConfig.FIELD_ORGANISM,
-            organismList);
+		// skip organism filter if "All organisms" filter option was choosen
+		return (allOrganismsFilterSet) ? revisedQuery :
+			addFiltersToQuery (revisedQuery, LuceneConfig.FIELD_ORGANISM,
+							   organismList);
     }
 
     /**

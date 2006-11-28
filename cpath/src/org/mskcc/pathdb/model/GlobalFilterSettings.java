@@ -15,6 +15,7 @@ public class GlobalFilterSettings {
      * Session Field for GLOBAL_FILTER_SETTINGS.
      */
     public final static String GLOBAL_FILTER_SETTINGS = "GLOBAL_FILTER_SETTINGS";
+	public final static int ALL_ORGANISMS_FILTER_VALUE = Integer.MIN_VALUE;
 
     private HashSet snapshotSet = new HashSet();
     private HashSet organismSet = new HashSet();
@@ -26,13 +27,6 @@ public class GlobalFilterSettings {
             ExternalDatabaseSnapshotRecord snapshotRecord =
                     (ExternalDatabaseSnapshotRecord) list.get(i);
             snapshotSet.add(new Long(snapshotRecord.getId()));
-        }
-
-        DaoOrganism daoOrganism = new DaoOrganism();
-        List orgList = daoOrganism.getAllOrganisms();
-        for (int i=0; i<orgList.size(); i++) {
-            Organism organism = (Organism) orgList.get(i);
-            organismSet.add(new Integer(organism.getTaxonomyId()));
         }
     }
 

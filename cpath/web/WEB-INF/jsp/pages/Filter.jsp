@@ -72,18 +72,35 @@ request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
     <%
         DaoOrganism daoOrganism = new DaoOrganism();
         List organismList = daoOrganism.getAllOrganisms();
+		ArrayList<StringBuffer> organismRadioButtonList = new ArrayList<StringBuffer>();
+		boolean organismSelected = false;
         for (int i=0; i<organismList.size(); i++) {
+			StringBuffer organismRadioButton = new StringBuffer();
             Organism organism = (Organism) organismList.get(i);
-            out.println("<TR><TD>");
-            out.println("<INPUT TYPE=RADIO NAME=ORGANISM_TAXONOMY_ID VALUE="
+            organismRadioButton.append("<TR><TD>\n");
+            organismRadioButton.append("<INPUT TYPE=RADIO NAME=ORGANISM_TAXONOMY_ID VALUE="
                 + organism.getTaxonomyId());
             if (settings.isOrganismSelected(organism.getTaxonomyId())) {
-                out.println(" CHECKED");
+                organismRadioButton.append(" CHECKED");
+				organismSelected = true;
             }
-            out.println(">");
-            out.println("&nbsp;&nbsp;" + organism.getSpeciesName());
-            out.println("</INPUT>");
-            out.println("</TD></TR>");
+            organismRadioButton.append(">\n");
+            organismRadioButton.append("&nbsp;&nbsp;" + organism.getSpeciesName() + "\n");
+            organismRadioButton.append("</INPUT>\n");
+            organismRadioButton.append("</TD></TR>\n");
+            organismRadioButtonList.add(organismRadioButton);
+        }
+		// create the "all organism" radio button
+		String checked = (organismSelected) ? "" : " CHECKED";
+		StringBuffer allOrganismsRadioButton = new StringBuffer();
+		allOrganismsRadioButton.append("<TR><TD>\n<INPUT TYPE=RADIO NAME=ORGANISM_TAXONOMY_ID VALUE=" +
+		String.valueOf(GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) +
+		checked + ">\n&nbsp;&nbsp;All organisms</INPUT>\n</TD></TR>\n");
+		// prepend the "all organism" radio button to the organismRadioButtonList
+        organismRadioButtonList.add(0, allOrganismsRadioButton);
+		// lets output the entire organismRadioButtonList
+		for (StringBuffer strBuffer : organismRadioButtonList) {
+            out.println(strBuffer.toString());
         }
     %>
     </table>
