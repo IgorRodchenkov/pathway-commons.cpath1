@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.13 2006-10-30 21:49:06 cerami Exp $
+// $Id: PathwayMembershipTable.java,v 1.14 2006-11-28 21:41:26 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,9 +32,11 @@
 package org.mskcc.pathdb.taglib;
 
 // imports
-
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.util.*;
 
@@ -62,7 +64,7 @@ public class PathwayMembershipTable extends HtmlTable {
     /**
      * Executes JSP Custom Tag
      */
-    protected void subDoStartTag() throws DaoException {
+    protected void subDoStartTag() throws DaoException, BioPaxRecordSummaryException {
 
         // here we go
         if (pathwaySet != null && pathwaySet.size() > 0) {
@@ -73,7 +75,7 @@ public class PathwayMembershipTable extends HtmlTable {
     /**
      * Output the Pathways.
      */
-    private void outputRecords() throws DaoException {
+    private void outputRecords() throws DaoException, BioPaxRecordSummaryException {
 
         // sort the pathways
         CPathRecord[] pathways = (CPathRecord[]) pathwaySet.toArray(new CPathRecord[0]);
@@ -89,8 +91,13 @@ public class PathwayMembershipTable extends HtmlTable {
             startRow(lc);
             append("<td>");
             CPathRecord pathwayRecord = (CPathRecord) pathwayList.get(lc);
+			BioPaxRecordSummary biopaxRecordSummary =
+				BioPaxRecordUtil.createBioPaxRecordSummary(pathwayRecord);
+			String organism = biopaxRecordSummary.getOrganism();
+			String headerString = (organism != null) ?
+				(pathwayRecord.getName() + " from " + organism) : pathwayRecord.getName();
             append("<A HREF='record.do?id=" + pathwayRecord.getId()
-                + "'>" + pathwayRecord.getName() + "</A>");
+                + "'>" + headerString + "</A>");
             append("</td>");
             append("<td>");
             append(DbSnapshotInfo.getDbSnapshotHtml(pathwayRecord.getSnapshotId()));
