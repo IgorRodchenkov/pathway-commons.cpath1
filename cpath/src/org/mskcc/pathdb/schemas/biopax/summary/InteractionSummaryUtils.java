@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.25 2006-08-15 16:34:53 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.26 2006-11-28 21:57:29 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -118,7 +118,7 @@ public class InteractionSummaryUtils {
                 }
             }
         } else {
-            buf.append("[Could not parse reaction details]");
+            buf.append("[physical interaction participant list is empty]");
         }
     }
 
@@ -200,7 +200,7 @@ public class InteractionSummaryUtils {
                 }
             }
         } else {
-            buf.append ("[Could not parse reaction details]");
+            buf.append ("[conversion interaction participant list is empty]");
         }
     }
 }
