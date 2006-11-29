@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.14 2006-11-28 21:41:26 grossb Exp $
+// $Id: PathwayMembershipTable.java,v 1.15 2006-11-29 16:56:13 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,7 +38,12 @@ import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Comparator;
+import java.util.Collections;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Custom jsp tag to generate a table of pathways that a molecule is a member of.
@@ -53,6 +58,17 @@ public class PathwayMembershipTable extends HtmlTable {
     private HashSet pathwaySet;
 
     /**
+     * HttpServlet Request Object.
+     */
+    private HttpServletRequest request;
+
+    /**
+     * Current cPath Id.
+     */
+    private long cPathId;
+
+
+    /**
      * Receives HashSet Attribute.
      *
      * @param pathwaySet HashSet.
@@ -62,31 +78,55 @@ public class PathwayMembershipTable extends HtmlTable {
     }
 
     /**
+     * Receives the Current Request Object.
+     *
+     * @param request HttpServletRequest Object.
+     */
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
+    }
+
+    /**
+     * Receives the Current cPath ID.
+     *
+     * @param cPathId cPath ID.
+     */
+    public void setcpathId(long cPathId) {
+        this.cPathId = cPathId;
+    }
+
+    /**
      * Executes JSP Custom Tag
      */
     protected void subDoStartTag() throws DaoException, BioPaxRecordSummaryException {
-
-        // here we go
+        String param = request.getParameter(BioPaxShowFlag.SHOW_FLAG);
+        BioPaxShowFlag showFlag = new BioPaxShowFlag(param);
         if (pathwaySet != null && pathwaySet.size() > 0) {
-            outputRecords();
+            String title = "Member of the Following Pathways";
+            String htmlHeader = BioPaxShowFlag.createHtmlHeader(BioPaxShowFlag.DEFAULT_NUM_RECORDS,
+                    pathwaySet.size(), cPathId, title, showFlag,
+                    BioPaxShowFlag.SHOW_ALL_PATHWAYS, "pathway_list");
+            append(htmlHeader);
+            append("<TABLE WIDTH=100%>");
+            outputRecords(showFlag);
+            endTable();
         }
     }
 
     /**
      * Output the Pathways.
      */
-    private void outputRecords() throws DaoException, BioPaxRecordSummaryException {
+    private void outputRecords(BioPaxShowFlag showFlag) throws DaoException, BioPaxRecordSummaryException {
 
         // sort the pathways
         CPathRecord[] pathways = (CPathRecord[]) pathwaySet.toArray(new CPathRecord[0]);
         List pathwayList = Arrays.asList(pathways);
         Collections.sort(pathwayList, new RecordSorter());
 
-        // render the table
-        startRow();
+        int cnt = BioPaxShowFlag.determineEndIndex(BioPaxShowFlag.DEFAULT_NUM_RECORDS, pathwayList.size(),
+                showFlag, BioPaxShowFlag.SHOW_ALL_PATHWAYS);
 
         // interate through list
-        int cnt = pathwayList.size();
         for (int lc = 0; lc < cnt; lc++) {
             startRow(lc);
             append("<td>");
@@ -102,12 +142,11 @@ public class PathwayMembershipTable extends HtmlTable {
             append("<td>");
             append(DbSnapshotInfo.getDbSnapshotHtml(pathwayRecord.getSnapshotId()));
             append("</td>");
+			endRow();
         }
-
-        // end the row
-        endRow();
     }
 }
+
 
 /**
  * Sorts CPathRecords by Name
