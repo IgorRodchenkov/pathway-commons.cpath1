@@ -155,12 +155,9 @@
         pathwaySet = MemberPathways.getMemberPathways(record, filterSettings);
 		if (pathwaySet != null && pathwaySet.size() > 0){
 %>
-            <DIV CLASS ='h3'>
-            <H3><A NAME="pathway_list">Member of the Following Pathways</A></H3>
-            </DIV>
-            <TABLE WIDTH=100%>
-            <cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"/>
-            </TABLE>
+		    <cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"
+						request="<%= request %>"
+						cpathId="<%= record.getId() %>"/>
 <%		} %>
 <%
         SummaryListUtil util = new SummaryListUtil
