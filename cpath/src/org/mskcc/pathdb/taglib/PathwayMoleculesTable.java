@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.17 2006-11-13 17:06:44 cerami Exp $
+// $Id: PathwayMoleculesTable.java,v 1.18 2006-11-29 16:55:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,10 +48,6 @@ import java.util.HashSet;
  * @author Benjamin Gross
  */
 public class PathwayMoleculesTable extends HtmlTable {
-    /**
-     * Default Number of Records to Show
-     */
-    private static final int DEFAULT_NUM_RECORDS = 20;
 
     /**
      * Our assumed number cols/window.
@@ -69,7 +65,7 @@ public class PathwayMoleculesTable extends HtmlTable {
     private HashSet moleculeSet;
 
     /**
-     * HashSet of Molecule links.
+     * ArrayList of Molecule links.
      */
     private ArrayList moleculesLinkList;
 
@@ -119,7 +115,7 @@ public class PathwayMoleculesTable extends HtmlTable {
         if (moleculeSet != null && moleculeSet.size() > 0) {
             processMoleculeSet(showFlag);
             String title = "Contains the Following Molecules";
-            String htmlHeader = BioPaxShowFlag.createHtmlHeader(DEFAULT_NUM_RECORDS,
+            String htmlHeader = BioPaxShowFlag.createHtmlHeader(BioPaxShowFlag.DEFAULT_NUM_RECORDS,
                     moleculeSet.size(), cPathId, title, showFlag,
                     BioPaxShowFlag.SHOW_ALL_MOLECULES, "pe_list");
             append(htmlHeader);
@@ -142,7 +138,7 @@ public class PathwayMoleculesTable extends HtmlTable {
         // setup our link list
         moleculesLinkList = new ArrayList();
 
-        int cnt = BioPaxShowFlag.determineEndIndex(DEFAULT_NUM_RECORDS, molecules.size(),
+        int cnt = BioPaxShowFlag.determineEndIndex(BioPaxShowFlag.DEFAULT_NUM_RECORDS, molecules.size(),
                 showFlag, BioPaxShowFlag.SHOW_ALL_MOLECULES);
 
         int maxMoleculeNameLength = 0;
