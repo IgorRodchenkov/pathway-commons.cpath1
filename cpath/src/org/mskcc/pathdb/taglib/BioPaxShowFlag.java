@@ -1,4 +1,4 @@
-// $Id: BioPaxShowFlag.java,v 1.3 2006-11-06 21:21:58 cerami Exp $
+// $Id: BioPaxShowFlag.java,v 1.4 2006-11-29 16:55:45 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,7 +37,7 @@ package org.mskcc.pathdb.taglib;
  * we show the first X records in a particular set, and a show all mode, where we show
  * all the records in a particular set.
  * <p/>
- * <P>There are currently three flags that can be set:
+ * <P>There are currently five flags that can be set:
  * <UL>
  * <LI>SHOW_ALL_MOLECULES, Index 0:  When set to 0, show only the first X molecules;  when set to
  * 1, show all molecules.
@@ -47,11 +47,19 @@ package org.mskcc.pathdb.taglib;
  * parents;  when set to 1, show all interaction parents.
  * <LI>SHOW_ALL_PARENT_COMPLEXES, Index 3:  When set to 0, show only the first X complex parents;
  * when set to 1, show all complex parents.
+ * <LI>SHOW_ALL_PATHWAYS, Index 4:  When set to 0, show only the first X pathways;  when set to
+ * 1, show all pathways.
  * </UL>
  *
  * @author Ethan Cerami
  */
 public class BioPaxShowFlag implements Cloneable {
+
+    /**
+     * Default Number of Records to Show
+     */
+    public static final int DEFAULT_NUM_RECORDS = 20;
+
     /**
      * Name of URL Parameter that stores the Show/Hide Flags.
      */
@@ -80,6 +88,23 @@ public class BioPaxShowFlag implements Cloneable {
     public static final int SHOW_ALL_PARENT_COMPLEXES = 3;
 
     /**
+     * Index 4.  When set to 0, show only the first X pathways;
+     * when set to 1, show all pathways.
+     */
+    public static final int SHOW_ALL_PATHWAYS = 4;
+
+	///////////////////////////////////////////////////////////////////
+	//
+	// IF A NEW FLAG IS ADDED, MAKE SURE TO INC NUMBER_OF_FLAGS variable
+	//
+	///////////////////////////////////////////////////////////////////
+	/**
+	 * Number of flags
+	 */
+	private static final int NUMBER_OF_FLAGS = 5;
+	
+
+    /**
      * Stores current set of flags.
      */
     private int[] flags;
@@ -88,30 +113,34 @@ public class BioPaxShowFlag implements Cloneable {
      * Empty Argument Constructor.
      */
     public BioPaxShowFlag() {
-        flags = new int[]{0, 0, 0, 0};
+        flags = new int[NUMBER_OF_FLAGS];
     }
 
     /**
      * Constructor with String value.
      * Currently, the value is a three character string, where each character is 0 or 1, and the
      * character position refer to a SHOW flag.
-     * For example, the string:  "100" means:
+     * For example, the string:  "10000" means:
      * <UL>
      * <LI>SHOW_ALL_MOLECULES = 1
      * <LI>SHOW_ALL_CHILDREN = 0
      * <LI>SHOW_ALL_PARENT_INTERACTIONS = 0
      * <LI>SHOW_ALL_PARENT_COMPLEXES = 0
+     * <LI>SHOW_ALL_PATHWAYS = 0
      * </UL>
      *
      * @param value String value, e.g. "1000".
      */
     public BioPaxShowFlag(String value) {
-        flags = new int[]{0, 0, 0, 0};
+        flags = new int[NUMBER_OF_FLAGS];
         if (value != null) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < NUMBER_OF_FLAGS; i++) {
                 if (value.charAt(i) == '1') {
                     flags[i] = 1;
                 }
+				else {
+					flags[i] = 0;
+				}
             }
         }
     }
@@ -143,7 +172,7 @@ public class BioPaxShowFlag implements Cloneable {
      */
     public String getUrlParameter() {
         StringBuffer param = new StringBuffer(SHOW_FLAG + "=");
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < NUMBER_OF_FLAGS; i++) {
             if (flags[i] == 1) {
                 param.append("1");
             } else {
@@ -242,6 +271,7 @@ public class BioPaxShowFlag implements Cloneable {
         clone.setFlag(SHOW_ALL_CHILDREN, getFlag(SHOW_ALL_CHILDREN));
         clone.setFlag(SHOW_ALL_PARENT_INTERACTIONS, getFlag(SHOW_ALL_PARENT_INTERACTIONS));
         clone.setFlag(SHOW_ALL_PARENT_COMPLEXES, getFlag(SHOW_ALL_PARENT_COMPLEXES));
+        clone.setFlag(SHOW_ALL_PATHWAYS, getFlag(SHOW_ALL_PATHWAYS));
         return clone;
     }
 }
