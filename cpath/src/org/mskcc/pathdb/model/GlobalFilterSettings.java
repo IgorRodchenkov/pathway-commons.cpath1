@@ -15,7 +15,7 @@ public class GlobalFilterSettings {
      * Session Field for GLOBAL_FILTER_SETTINGS.
      */
     public final static String GLOBAL_FILTER_SETTINGS = "GLOBAL_FILTER_SETTINGS";
-	public final static int ALL_ORGANISMS_FILTER_VALUE = Integer.MIN_VALUE;
+	public final static int ALL_ORGANISMS_FILTER_VALUE = Integer.MAX_VALUE;
 
     private HashSet snapshotSet = new HashSet();
     private HashSet organismSet = new HashSet();
