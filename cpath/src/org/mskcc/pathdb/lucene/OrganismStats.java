@@ -1,4 +1,4 @@
-// $Id: OrganismStats.java,v 1.18 2006-03-07 17:06:40 cerami Exp $
+// $Id: OrganismStats.java,v 1.19 2006-11-30 19:17:50 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,7 +87,7 @@ public class OrganismStats {
             for (int i = 0; i < listSortedByName.size(); i++) {
                 Organism organism = (Organism) listSortedByName.get(i);
                 String query = new String(LuceneConfig.FIELD_ORGANISM
-                        + ":" + organism.getTaxonomyId());
+                        + ":\"" + organism.getTaxonomyId() + "\"");
                 Hits hits = indexer.executeQuery(query);
                 organism.setNumInteractions(hits.length());
             }
