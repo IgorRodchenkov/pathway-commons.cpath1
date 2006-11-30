@@ -1,4 +1,4 @@
-// $Id: TopLevelPathwayUtil.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
+// $Id: TopLevelPathwayUtil.java,v 1.13 2006-11-30 17:47:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -127,7 +127,14 @@ public class TopLevelPathwayUtil {
                     (CPathRecordType.PATHWAY, taxonomyId);
         } else {
             xdebug.logMsg(this, "Getting All Candidate Pathways");
-            candidateList = dao.getAllRecords(CPathRecordType.PATHWAY);
+            int numPathways = dao.getNumEntities(CPathRecordType.PATHWAY);
+            if (numPathways > 250) {
+                candidateList = new ArrayList();
+                xdebug.logMsg(this, "Too many pathways.  Aborting operation");
+                return candidateList;
+            } else {
+                candidateList = dao.getAllRecords(CPathRecordType.PATHWAY);
+            }
         }
 
         ArrayList topLevelPathwayList = filterCandidateList(candidateList);
