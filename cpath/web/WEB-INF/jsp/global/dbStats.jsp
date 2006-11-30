@@ -38,7 +38,7 @@ try {
         <TD>Number of Organisms:</TD>
         <TD>
             <% try {
-                formatter.format(orgStats.getOrganismsSortedByName().size());
+                out.println(formatter.format(orgStats.getOrganismsSortedByName().size()));
             } catch (Exception e) {
                 out.println("Cannot determine organism data:  " + e.getMessage());
             }
