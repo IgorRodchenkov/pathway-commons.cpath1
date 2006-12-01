@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalFamily.java,v 1.2 2006-10-30 21:50:20 cerami Exp $
+// $Id: TestDaoInternalFamily.java,v 1.3 2006-12-01 22:33:41 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,9 +53,9 @@ public class TestDaoInternalFamily extends TestCase {
         testName = "Test Add, Get, Delete Methods";
         DaoInternalFamily dao = new DaoInternalFamily();
         dao.deleteAllRecords();
-        dao.addRecord(1, CPathRecordType.PATHWAY, 2, CPathRecordType.PHYSICAL_ENTITY);
-        dao.addRecord(1, CPathRecordType.PATHWAY, 3, CPathRecordType.PHYSICAL_ENTITY);
-        dao.addRecord(1, CPathRecordType.PATHWAY, 4, CPathRecordType.INTERACTION);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, 2, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, 3, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, 4, "descendent name", CPathRecordType.INTERACTION);
 
         long ids[] = dao.getDescendentIds(1);
         assertEquals (3, ids.length);
