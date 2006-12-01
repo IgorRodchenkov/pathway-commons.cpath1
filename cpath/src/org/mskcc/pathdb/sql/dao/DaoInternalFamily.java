@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.7 2006-11-20 22:12:28 cerami Exp $
+// $Id: DaoInternalFamily.java,v 1.8 2006-12-01 22:32:28 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,7 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.util.CPathConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,19 +49,23 @@ import java.io.IOException;
  */
 public class DaoInternalFamily {
     private static final String INSERT_SQL =
-        "INSERT INTO internal_family (`ANCESTOR_ID`, `ANCESTOR_TYPE`, "
-        + "`DESCENDENT_ID`, `DESCENDENT_TYPE`) VALUES (?,?,?,?)";
+        "INSERT INTO internal_family (`ANCESTOR_ID`, `ANCESTOR_NAME`, `ANCESTOR_TYPE`, "
+        + "`DESCENDENT_ID`, `DESCENDENT_NAME`, `DESCENDENT_TYPE`) VALUES (?,?,?,?,?,?)";
 
     /**
      * Adds a new record.
      * @param ancestorId        ID of Ancestor record.
+     * @param ancestorName      Name of Ancestor record.
      * @param ancestorType      Record type of ancestor.
      * @param descendentId      ID of Descendent record.
+     * @param descendentName    Name of Descendent record.
      * @param descendentType    Record type of Descendent.
      * @throws DaoException     Database access error.
      */
-    public void addRecord (long ancestorId, CPathRecordType ancestorType, long descendentId,
-            CPathRecordType descendentType) throws DaoException {
+    public void addRecord (long ancestorId, String ancestorName, CPathRecordType ancestorType,
+						   long descendentId, String descendentName, CPathRecordType descendentType)
+		throws DaoException {
+
         Connection con = null;
         ResultSet rs = null;
         PreparedStatement pstmt = null;
@@ -68,9 +73,11 @@ public class DaoInternalFamily {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement (INSERT_SQL);
             pstmt.setLong(1, ancestorId);
-            pstmt.setString(2, ancestorType.toString());
-            pstmt.setLong(3, descendentId);
-            pstmt.setString(4, descendentType.toString());
+            pstmt.setString(2, ancestorName);
+            pstmt.setString(3, ancestorType.toString());
+            pstmt.setLong(4, descendentId);
+            pstmt.setString(5, descendentName);
+            pstmt.setString(6, descendentType.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -87,8 +94,16 @@ public class DaoInternalFamily {
      * @param descendentTypes   Record types of Descendent.
      * @throws DaoException     Database access error.
      */
-    public void addRecords (long ancestorId, CPathRecordType ancestorType, ArrayList descendentIds,
-            ArrayList descendentTypes) throws DaoException {
+    public void addRecords (long ancestorId, String ancestorName, CPathRecordType ancestorType,
+							ArrayList descendentIds, ArrayList descendentNames, ArrayList descendentTypes)
+		throws DaoException {
+
+		if (CPathConstants.CPATH_DO_ASSERT) {
+			assert ( descendentIds.size() == descendentNames.size() &&
+					 descendentNames.size() == descendentTypes.size()) :
+			"DaoInternalFamily: descendentIds[].size() != descendentNames[].size() != descendentTypes[].size()";
+		}
+
         Connection con = null;
         ResultSet rs = null;
         PreparedStatement pstmt = null;
@@ -98,11 +113,13 @@ public class DaoInternalFamily {
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement (INSERT_SQL);
-            for (int i=0; i<descendentIds.size(); i++) {
+            for (int i=0; i <descendentIds.size(); i++) {
                 pstmt.setLong(1, ancestorId);
-                pstmt.setString(2, ancestorType.toString());
-                pstmt.setLong(3, (Long) descendentIds.get(i));
-                pstmt.setString(4, (String) descendentTypes.get(i));
+				pstmt.setString(2, ancestorName);
+                pstmt.setString(3, ancestorType.toString());
+                pstmt.setLong(4, (Long) descendentIds.get(i));
+                pstmt.setString(5, (String) descendentNames.get(i));
+                pstmt.setString(6, (String) descendentTypes.get(i));
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
