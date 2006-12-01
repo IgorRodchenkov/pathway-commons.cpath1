@@ -1,4 +1,4 @@
-// $Id: CPathConstants.java,v 1.21 2006-06-22 13:32:14 cerami Exp $
+// $Id: CPathConstants.java,v 1.22 2006-12-01 22:29:16 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,4 +72,9 @@ public class CPathConstants {
      */
     public static final String CPATH_DB_NAME =
             "CPATH";
+
+	/**
+	 * Flag to control insertion code.
+	 */
+	public static final boolean CPATH_DO_ASSERT = true;
 }
