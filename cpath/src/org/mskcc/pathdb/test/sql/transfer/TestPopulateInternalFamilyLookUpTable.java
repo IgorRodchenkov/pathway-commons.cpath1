@@ -8,6 +8,7 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.util.Profile;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 /**
  * Tests the PopulateInternalFamilyLookUpTable Class.
@@ -19,8 +20,9 @@ public class TestPopulateInternalFamilyLookUpTable extends TestCase {
     /**
      * Tests the Populator
      * @throws DaoException Database Access Error.
+	 * @throws BioPaxRecordSummaryException.
      */
-    public void testPopulator() throws DaoException {
+    public void testPopulator() throws DaoException, BioPaxRecordSummaryException {
         ProgressMonitor pMonitor = new ProgressMonitor();
         pMonitor.setConsoleMode(true);
         PopulateInternalFamilyLookUpTable populator = new PopulateInternalFamilyLookUpTable
