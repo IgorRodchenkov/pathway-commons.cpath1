@@ -335,6 +335,7 @@
         <mkdir  dir="${junit.dir}/reports"/>
 		<junit dir="${basedir}" showoutput="yes" printsummary="yes" fork="yes"
                haltonfailure="no" failureproperty="tests.failed">
+		    <jvmarg value="-ea"/>
             <formatter type="xml"/>
             <sysproperty key="CPATH_HOME" value="${basedir}"/>
             <test name="org.mskcc.pathdb.test.AllTest"
