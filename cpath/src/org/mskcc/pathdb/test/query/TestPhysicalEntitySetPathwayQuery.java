@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.2 2006-11-08 15:21:56 grossb Exp $
+// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.3 2006-12-01 22:35:03 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,9 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.query.PhysicalEntitySetQuery;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.util.ArrayList;
 import junit.framework.Assert;
@@ -115,12 +118,18 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 		// iterate over pathway record list
         for (CPathRecord record : cPathRecordList) {
 
+            BioPaxRecordSummary pathwaySummary =
+                BioPaxRecordUtil.createBioPaxRecordSummary(record);
+
 			//  Store membership info for pathways only.
 			ArrayList<Long> idList = internalLinker.getAllDescendents(record.getId());
 			for (Long descendentID : idList) {
 				CPathRecord descendentRecord = daoCPath.getRecordById(descendentID.longValue());
-				daoFamily.addRecord(record.getId(), CPathRecordType.PATHWAY,
-									descendentRecord.getId(), descendentRecord.getType());
+					BioPaxRecordSummary descendentSummary =
+						BioPaxRecordUtil.createBioPaxRecordSummary(descendentRecord);
+					daoFamily.addRecord(record.getId(), pathwaySummary.getName(),
+										CPathRecordType.PATHWAY, descendentRecord.getId(),
+										descendentSummary.getName(), descendentRecord.getType());
 			}
         }
     }

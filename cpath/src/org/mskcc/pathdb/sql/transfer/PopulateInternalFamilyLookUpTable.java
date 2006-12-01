@@ -1,8 +1,10 @@
 package org.mskcc.pathdb.sql.transfer;
 
+import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -10,6 +12,9 @@ import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,9 +30,9 @@ import java.util.*;
  */
 public class PopulateInternalFamilyLookUpTable {
     private static final String GET_RECORD_ITERATOR =
-            "select `CPATH_ID`, `TYPE` from cpath WHERE TYPE = ? LIMIT ?,1";
+            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT` from cpath WHERE TYPE = ? LIMIT ?,1";
     private static final String GET_RECORD_BY_ID =
-            "select `CPATH_ID`, `TYPE` from cpath WHERE CPATH_ID = ?";
+            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT` from cpath WHERE CPATH_ID = ?";
     private ProgressMonitor pMonitor;
     private HashMap cache = new HashMap();
     private HashSet visitedSet;
@@ -45,8 +50,9 @@ public class PopulateInternalFamilyLookUpTable {
      * Executes task.
      *
      * @throws DaoException Data access error.
+	 * @throws BioPaxRecordSummaryException.
      */
-    public void execute () throws DaoException {
+    public void execute () throws DaoException, BioPaxRecordSummaryException {
         DaoCPath daoCPath = DaoCPath.getInstance();
         DaoInternalFamily daoFamily = new DaoInternalFamily();
 
@@ -62,6 +68,16 @@ public class PopulateInternalFamilyLookUpTable {
         //  Index each pathway
         for (int i = 0; i < numPathways; i++) {
             CPathRecord record = getRecordIdAtOffset(CPathRecordType.PATHWAY, i);
+            BioPaxRecordSummary pathwayRecordSummary =
+                BioPaxRecordUtil.createBioPaxRecordSummary(record);
+			if (pathwayRecordSummary.getName() == null ||
+				pathwayRecordSummary.getName().length() == 0) {
+				if (CPathConstants.CPATH_DO_ASSERT) {
+					assert (record.getType() == CPathRecordType.INTERACTION) :
+					"*** PopulateInternalFamilyLookupTable: Pathway or Physical Entity Record has no name ***";
+				}
+				pathwayRecordSummary.setName(CPathRecord.NA_STRING);
+			}
             if (option == 0) {
                 pMonitor.incrementCurValue();
                 ConsoleUtil.showProgress(pMonitor);
@@ -71,11 +87,21 @@ public class PopulateInternalFamilyLookUpTable {
                 while (iterator.hasNext()) {
                     Long descendentId = (Long) iterator.next();
                     CPathRecord descendentRecord = getRecordById(descendentId);
-
+					BioPaxRecordSummary descendentRecordSummary =
+						BioPaxRecordUtil.createBioPaxRecordSummary(descendentRecord);
+					if (descendentRecordSummary.getName() == null ||
+						descendentRecordSummary.getName().length() == 0) {
+						if (CPathConstants.CPATH_DO_ASSERT) {
+							assert (descendentRecord.getType() == CPathRecordType.INTERACTION) :
+							"*** PopulateInternalFamilyLookupTable: Pathway or Physical Entity Record has no name ***";
+						}
+						descendentRecordSummary.setName(CPathRecord.NA_STRING);
+					}
                     //  Only index descendents, which are of type:  physical entity
                     if (descendentRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
-                        daoFamily.addRecord(record.getId(), record.getType(),
-                                descendentRecord.getId(), descendentRecord.getType());
+                        daoFamily.addRecord(record.getId(), pathwayRecordSummary.getName(),
+											record.getType(), descendentRecord.getId(),
+											descendentRecordSummary.getName(), descendentRecord.getType());
                     }
                 }
 
@@ -138,6 +164,8 @@ public class PopulateInternalFamilyLookUpTable {
         CPathRecord record = new CPathRecord();
         record.setId(rs.getLong(1));
         record.setType(CPathRecordType.getType(rs.getString(2)));
+        record.setXmlType(XmlRecordType.getType(rs.getString(3)));
+        record.setXmlContent(rs.getString(4));
         return record;
     }
 
@@ -166,8 +194,8 @@ public class PopulateInternalFamilyLookUpTable {
             cpathId = (Long) stack.pop();
             DaoInternalLink internalLinker = new DaoInternalLink();
             ArrayList childrenList = internalLinker.getTargets(cpathId);
-            if (childrenList != null) {
-                for (int i = 0; i < childrenList.size(); i++) {
+            if (childrenList != null) { 
+               for (int i = 0; i < childrenList.size(); i++) {
                     InternalLinkRecord link = (InternalLinkRecord) childrenList.get(i);
                     if (!masterList.contains(link.getTargetId())) {
                         masterList.add(link.getTargetId());
@@ -180,7 +208,7 @@ public class PopulateInternalFamilyLookUpTable {
     }
 
     private long[] populateInternalFamilyTable (long cpathId)
-            throws DaoException {
+            throws DaoException, BioPaxRecordSummaryException {
 
         //  Prevent infinite loop on, e.g. circular pathways
         if (visitedSet.contains(cpathId)) {
@@ -235,22 +263,46 @@ public class PopulateInternalFamilyLookUpTable {
     }
 
     private void storeFamilyMembership (HashSet descendentList, CPathRecord parentRecord)
-            throws DaoException {
+            throws DaoException, BioPaxRecordSummaryException {
+		BioPaxRecordSummary parentRecordSummary =
+			BioPaxRecordUtil.createBioPaxRecordSummary(parentRecord);
+		if (parentRecordSummary.getName() == null ||
+			parentRecordSummary.getName().length() == 0) {
+			if (CPathConstants.CPATH_DO_ASSERT) {
+				assert (parentRecord.getType() == CPathRecordType.INTERACTION) :
+				"*** PopulateInternalFamilyLookupTable: Pathway or Physical Entity Record has no name ***";
+			}
+			parentRecordSummary.setName(CPathRecord.NA_STRING);
+		}
         Iterator iterator = descendentList.iterator();
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(pMonitor);
         DaoInternalFamily daoFamily = new DaoInternalFamily();
         ArrayList recordTypes = new ArrayList();
+        ArrayList recordNames = new ArrayList();
         ArrayList recordIds = new ArrayList();
         while (iterator.hasNext()) {
             Long descendentId = (Long) iterator.next();
             CPathRecord descendentRecord = getRecordById(descendentId);
+            BioPaxRecordSummary descendentRecordSummary =
+                BioPaxRecordUtil.createBioPaxRecordSummary(descendentRecord);
+			if (descendentRecordSummary.getName() == null ||
+				descendentRecordSummary.getName().length() == 0) {
+				if (CPathConstants.CPATH_DO_ASSERT) {
+					assert (descendentRecord.getType() == CPathRecordType.INTERACTION) :
+					"*** PopulateInternalFamilyLookupTable: Pathway or Physical Entity Record has no name ***";
+				}
+				descendentRecordSummary.setName(CPathRecord.NA_STRING);
+			}
             recordIds.add(descendentRecord.getId());
+			recordNames.add(descendentRecordSummary.getName());
             recordTypes.add(descendentRecord.getType().toString());
         }
 
-        daoFamily.addRecords(parentRecord.getId(), parentRecord.getType(),
-                recordIds, recordTypes);
+        daoFamily.addRecords(parentRecord.getId(),
+							 parentRecordSummary.getName(),
+							 parentRecord.getType(),
+							 recordIds, recordNames, recordTypes);
 
     }
 }
