@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.18 2006-11-29 16:55:57 grossb Exp $
+// $Id: PathwayMoleculesTable.java,v 1.19 2006-12-04 19:14:53 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,6 +64,11 @@ public class PathwayMoleculesTable extends HtmlTable {
      */
     private HashSet moleculeSet;
 
+	/**
+	 * Total number of molecules in db.
+	 */
+	private Integer totalNumMolecules;
+
     /**
      * ArrayList of Molecule links.
      */
@@ -86,6 +91,15 @@ public class PathwayMoleculesTable extends HtmlTable {
      */
     public void setMoleculeSet(HashSet moleculeSet) {
         this.moleculeSet = moleculeSet;
+    }
+
+    /**
+     * Receives totalNumMolecules Attribute.
+     *
+     * @param totalNumMolecules
+     */
+    public void setTotalNumMolecules(Integer totalNumMolecules) {
+        this.totalNumMolecules = totalNumMolecules;
     }
 
     /**
@@ -116,7 +130,7 @@ public class PathwayMoleculesTable extends HtmlTable {
             processMoleculeSet(showFlag);
             String title = "Contains the Following Molecules";
             String htmlHeader = BioPaxShowFlag.createHtmlHeader(BioPaxShowFlag.DEFAULT_NUM_RECORDS,
-                    moleculeSet.size(), cPathId, title, showFlag,
+                    totalNumMolecules, cPathId, title, showFlag,
                     BioPaxShowFlag.SHOW_ALL_MOLECULES, "pe_list");
             append(htmlHeader);
             append("<TABLE>");

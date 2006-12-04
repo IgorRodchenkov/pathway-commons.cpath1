@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.18 2006-10-30 21:51:21 cerami Exp $
+// $Id: MemberMolecules.java,v 1.19 2006-12-04 19:14:33 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ package org.mskcc.pathdb.schemas.biopax;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.taglib.BioPaxShowFlag;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -59,24 +60,22 @@ public class MemberMolecules {
     /**
      * Finds all member molecules for specified Pathway record.
      *
-     * @param record   CPathRecord
-     * @return HashSet Set of BioPaxRecordSummary Objects.
-     * @throws BioPaxRecordSummaryException Error Creating Summary.
-     * @throws DaoException                 Database Access Error.
+     * @param record CPathRecord
+	 * @param set HashSet<BioPaxRecordSummary> - set gets populated with BioPaxRecordSummary for molecules
+	 * @param flag BioPaxShowFlag (flag indicates show all or top X molecules - controls result set size)
+     * @return Integer - total number of molecules in db - required to render "show 1 - 20 of XXX" header
+     * @throws DaoException Database Access Error.
      */
-    public static HashSet getMoleculesInPathway(CPathRecord record) throws DaoException,
-        BioPaxRecordSummaryException {
+    public static Integer getMoleculesInPathway(CPathRecord record,
+												HashSet<BioPaxRecordSummary> moleculeSet,
+												BioPaxShowFlag flag) throws DaoException {
+
         DaoCPath daoCPath = DaoCPath.getInstance();
-        HashSet molecules = new HashSet();
         DaoInternalFamily dao = new DaoInternalFamily();
-        long ids[] = dao.getDescendentIds(record.getId(), CPathRecordType.PHYSICAL_ENTITY);
-        for (int i=0; i<ids.length; i++) {
-            CPathRecord peRecord = daoCPath.getRecordById(ids[i]);
-            BioPaxRecordSummary moleculeSummary =
-                BioPaxRecordUtil.createBioPaxRecordSummary(peRecord);
-            molecules.add(moleculeSummary);
-        }
-        return molecules;
+        return dao.getDescendentSummaries(record.getId(),
+										  CPathRecordType.PHYSICAL_ENTITY,
+										  moleculeSet,
+										  (flag.getFlag(BioPaxShowFlag.SHOW_ALL_MOLECULES) == 1) ? true : false);
     }
 
     /**

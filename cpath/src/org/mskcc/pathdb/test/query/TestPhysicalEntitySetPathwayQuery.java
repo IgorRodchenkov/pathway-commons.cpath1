@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.3 2006-12-01 22:35:03 grossb Exp $
+// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.4 2006-12-04 19:15:25 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -127,6 +127,10 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 				CPathRecord descendentRecord = daoCPath.getRecordById(descendentID.longValue());
 					BioPaxRecordSummary descendentSummary =
 						BioPaxRecordUtil.createBioPaxRecordSummary(descendentRecord);
+					if (descendentSummary.getName() == null ||
+						descendentSummary.getName().length() == 0) {
+						descendentSummary.setName(CPathRecord.NA_STRING);
+					}
 					daoFamily.addRecord(record.getId(), pathwaySummary.getName(),
 										CPathRecordType.PATHWAY, descendentRecord.getId(),
 										descendentSummary.getName(), descendentRecord.getType());

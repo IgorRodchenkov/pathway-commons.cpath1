@@ -290,9 +290,13 @@ public class PopulateInternalFamilyLookUpTable {
 				descendentRecordSummary.getName().length() == 0) {
 				if (CPathConstants.CPATH_DO_ASSERT) {
 					assert (descendentRecord.getType() == CPathRecordType.INTERACTION) :
-					"*** PopulateInternalFamilyLookupTable: Pathway or Physical Entity Record has no name ***";
+					"assert: record id: " + descendentId;
+					//"*** PopulateInternalFamilyLookupTable: Pathway or Physical Entity Record has no name ***";
 				}
-				descendentRecordSummary.setName(CPathRecord.NA_STRING);
+				descendentRecordSummary.setName(descendentRecord.getName() != null &&
+												descendentRecord.getName().length() > 0 ?
+												descendentRecord.getName() : 
+												CPathRecord.NA_STRING);
 			}
             recordIds.add(descendentRecord.getId());
 			recordNames.add(descendentRecordSummary.getName());

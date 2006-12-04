@@ -10,10 +10,12 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
 				 org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary,
+				 org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary,
 				 org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.SummaryListUtil"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoInternalLink"%>
 <%@ page import="org.mskcc.pathdb.taglib.BioPaxParentChildTable"%>
+<%@ page import="org.mskcc.pathdb.taglib.BioPaxShowFlag"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.EntitySummary"%>
 <%@ page import="java.util.Iterator"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
@@ -113,15 +115,18 @@
 	// if pathway or complex, show member molecules&complex
 	if (biopaxConstants.isPathway(record.getSpecificType()) ||
 		record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
-		HashSet moleculeSet;
+		HashSet<BioPaxRecordSummary> moleculeSet = new HashSet<BioPaxRecordSummary>();
+		Integer totalNumMolecules = 0;
         if (biopaxConstants.isPathway(record.getSpecificType())) {
-            moleculeSet = MemberMolecules.getMoleculesInPathway(record);
+            totalNumMolecules = MemberMolecules.getMoleculesInPathway(record, moleculeSet,
+			new BioPaxShowFlag(request.getParameter(BioPaxShowFlag.SHOW_FLAG)));		
         } else {
             moleculeSet = MemberMolecules.getMoleculesInComplex(record);
         }
 		if (moleculeSet != null && moleculeSet.size() > 0){
 %>
 			<cbio:pathwayMoleculesTable moleculeSet="<%=moleculeSet%>"
+                    totalNumMolecules="<%=totalNumMolecules%>"
                     request="<%= request %>"
                     cpathId="<%= record.getId() %>"/>
     <%
