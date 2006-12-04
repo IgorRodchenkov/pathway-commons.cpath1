@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.23 2006-11-10 14:25:18 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.24 2006-12-04 19:12:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -109,12 +109,6 @@ public class BioPaxRecordUtil {
             return (BioPaxRecordSummary) cachedElement.getValue();
         }
 
-        // some flags to determine return
-        boolean setTypeSuccess, setNameSuccess,
-                setShortNameSuccess, setSynonymSuccess, setOrganismSuccess;
-        boolean setDataSourceSuccess, setAvailabilitySuccess,
-                setExternalLinksSuccess, setCommentSuccess;
-
         // setup for queries
         StringReader reader = new StringReader(record.getXmlContent());
         SAXBuilder builder = new SAXBuilder();
@@ -136,56 +130,50 @@ public class BioPaxRecordUtil {
         String type = record.getSpecificType();
         if (type != null) {
             biopaxRecordSummary.setType(type);
-            setTypeSuccess = true;
-        } else {
-            setTypeSuccess = false;
         }
 
         try {
             // set name
-            setNameSuccess = setBioPaxRecordStringAttribute(root,
-                    "/*/bp:NAME",
-                    "setName",
-                    biopaxRecordSummary);
+			setBioPaxRecordStringAttribute(root,
+										   "/*/bp:NAME",
+										   "setName",
+										   biopaxRecordSummary);
             // set short name
-            setShortNameSuccess = setBioPaxRecordStringAttribute(root,
-                    "/*/bp:SHORT-NAME",
-                    "setShortName",
-                    biopaxRecordSummary);
+            setBioPaxRecordStringAttribute(root,
+										   "/*/bp:SHORT-NAME",
+										   "setShortName",
+										   biopaxRecordSummary);
             // set synonyms
-            setSynonymSuccess = setBioPaxRecordListAttribute(root,
-                    "/*/bp:SYNONYMS",
-                    "setSynonyms",
-                    biopaxRecordSummary);
+            setBioPaxRecordListAttribute(root,
+										 "/*/bp:SYNONYMS",
+										 "setSynonyms",
+										 biopaxRecordSummary);
             // set organsim
-            setOrganismSuccess = setBioPaxRecordStringAttribute(root,
-                    "/*/bp:ORGANISM/*/bp:NAME",
-                    "setOrganism",
-                    biopaxRecordSummary);
+            setBioPaxRecordStringAttribute(root,
+										   "/*/bp:ORGANISM/*/bp:NAME",
+										   "setOrganism",
+										   biopaxRecordSummary);
             // set data source
-            setDataSourceSuccess = setBioPaxRecordStringAttribute(root,
-                    "/*/bp:DATA-SOURCE/*/bp:NAME",
-                    "setDataSource",
-                    biopaxRecordSummary);
+            setBioPaxRecordStringAttribute(root,
+										   "/*/bp:DATA-SOURCE/*/bp:NAME",
+										   "setDataSource",
+										   biopaxRecordSummary);
             // availability
-            setAvailabilitySuccess = setBioPaxRecordStringAttribute(root,
-                    "/*/bp:AVAILABILITY",
-                    "setAvailability",
-                    biopaxRecordSummary);
+            setBioPaxRecordStringAttribute(root,
+										   "/*/bp:AVAILABILITY",
+										   "setAvailability",
+										   biopaxRecordSummary);
             // external links
             DaoExternalLink externalLinker = DaoExternalLink.getInstance();
             ArrayList externalLinks = externalLinker.getRecordsByCPathId(record.getId());
             if (externalLinks.size() > 0) {
                 biopaxRecordSummary.setExternalLinks(externalLinks);
-                setExternalLinksSuccess = true;
-            } else {
-                setExternalLinksSuccess = false;
             }
             // comment
-            setCommentSuccess = setBioPaxRecordStringAttribute(root,
-                    "/*/bp:COMMENT",
-                    "setComment",
-                    biopaxRecordSummary);
+            setBioPaxRecordStringAttribute(root,
+										   "/*/bp:COMMENT",
+										   "setComment",
+										   biopaxRecordSummary);
         } catch (Throwable throwable) {
             throw new BioPaxRecordSummaryException(throwable);
         }
@@ -195,10 +183,7 @@ public class BioPaxRecordUtil {
         }
 
         // outta here
-        return (setTypeSuccess || setNameSuccess || setShortNameSuccess
-                || setSynonymSuccess || setOrganismSuccess || setDataSourceSuccess
-                || setAvailabilitySuccess || setExternalLinksSuccess || setCommentSuccess)
-                ? biopaxRecordSummary : null;
+        return biopaxRecordSummary;
     }
 
     /**
