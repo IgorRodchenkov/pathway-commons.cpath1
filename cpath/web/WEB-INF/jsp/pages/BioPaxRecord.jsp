@@ -1,6 +1,7 @@
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging,
                  org.mskcc.pathdb.action.BaseAction,
                  java.util.ArrayList,
+                 java.util.Set,
                  java.util.HashSet,
 				 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
 				 org.mskcc.pathdb.schemas.biopax.MemberMolecules,
@@ -115,7 +116,7 @@
 	// if pathway or complex, show member molecules&complex
 	if (biopaxConstants.isPathway(record.getSpecificType()) ||
 		record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
-		HashSet<BioPaxRecordSummary> moleculeSet = new HashSet<BioPaxRecordSummary>();
+		Set<BioPaxRecordSummary> moleculeSet = new HashSet<BioPaxRecordSummary>();
 		Integer totalNumMolecules = 0;
         if (biopaxConstants.isPathway(record.getSpecificType())) {
             totalNumMolecules = MemberMolecules.getMoleculesInPathway(record, moleculeSet,
@@ -156,7 +157,7 @@
             || record.getType().equals(CPathRecordType.INTERACTION)) {
 %>
 <%
-        HashSet pathwaySet;
+        Set pathwaySet;
         pathwaySet = MemberPathways.getMemberPathways(record, filterSettings);
 		if (pathwaySet != null && pathwaySet.size() > 0){
 %>

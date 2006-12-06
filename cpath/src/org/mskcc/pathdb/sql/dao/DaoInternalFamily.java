@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.9 2006-12-04 19:14:04 grossb Exp $
+// $Id: DaoInternalFamily.java,v 1.10 2006-12-06 15:04:56 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,7 +41,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.ArrayList;
 import java.io.IOException;
 
@@ -224,14 +224,13 @@ public class DaoInternalFamily {
 	 *
      * @param ancestorId ID of ancestor.
      * @param descendentType CPathRecord Type of descendent.
-	 * @param summarySet HashSet<BioPaxRecordSummary> - this gets populate by reference
+	 * @param summarySet Set<BioPaxRecordSummary> - this gets populate by reference
 	 * @param boolean which controls result set size (all or BioPaxSHowFlag.DEFAULT_NUM_RECORDS)
 	 * @return Integer - total number of molecules in db..required to render "show 1 - 20 of XXX" headers
      * @throws DaoException Database access error.
 	 */
     public Integer getDescendentSummaries (long ancestorId,
-										   CPathRecordType descendentType,											
-										   HashSet<BioPaxRecordSummary> summarySet,
+										   CPathRecordType descendentType,																					   Set<BioPaxRecordSummary> summarySet,
 										   boolean getAllSummaries)
 		throws DaoException {
 
@@ -323,7 +322,7 @@ public class DaoInternalFamily {
 
     private void getDescendentSummaries(PreparedStatement pstmt,
 										ResultSet rs,
-										HashSet<BioPaxRecordSummary> summarySet) throws SQLException {
+										Set<BioPaxRecordSummary> summarySet) throws SQLException {
 
 		// execute the query 
         rs = pstmt.executeQuery();

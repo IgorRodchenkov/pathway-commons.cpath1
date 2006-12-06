@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.14 2006-10-31 20:56:55 cerami Exp $
+// $Id: MemberPathways.java,v 1.15 2006-12-06 15:04:01 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,6 +49,7 @@ import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Set;
 import java.util.HashSet;
 
 /**
@@ -63,10 +64,10 @@ public class MemberPathways {
      * Finds all member pathways given CPathRecord.
      *
      * @param record   CPathRecord
-     * @return HashSet
+     * @return Set
      * @throws DaoException  Throwable
      */
-    public static HashSet getMemberPathways(CPathRecord record, GlobalFilterSettings
+    public static Set getMemberPathways(CPathRecord record, GlobalFilterSettings
             filterSettings) throws DaoException {
         HashSet pathways = new HashSet();
         DaoCPath daoCPath = DaoCPath.getInstance();

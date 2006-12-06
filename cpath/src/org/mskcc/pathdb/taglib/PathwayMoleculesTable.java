@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.19 2006-12-04 19:14:53 grossb Exp $
+// $Id: PathwayMoleculesTable.java,v 1.20 2006-12-06 15:04:37 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Custom jsp tag for displaying the set of molecules contained in a pathway.
@@ -60,9 +60,9 @@ public class PathwayMoleculesTable extends HtmlTable {
     private int moleculesPerRow = 4;
 
     /**
-     * HashSet of BioPaxSummary Molecules.
+     * Set of BioPaxSummary Molecules.
      */
-    private HashSet moleculeSet;
+    private Set moleculeSet;
 
 	/**
 	 * Total number of molecules in db.
@@ -85,11 +85,11 @@ public class PathwayMoleculesTable extends HtmlTable {
     private long cPathId;
 
     /**
-     * Receives HashSet Attribute.
+     * Receives Set Attribute.
      *
-     * @param moleculeSet HashSet.
+     * @param moleculeSet Set.
      */
-    public void setMoleculeSet(HashSet moleculeSet) {
+    public void setMoleculeSet(Set moleculeSet) {
         this.moleculeSet = moleculeSet;
     }
 

@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.15 2006-11-29 16:56:13 grossb Exp $
+// $Id: PathwayMembershipTable.java,v 1.16 2006-12-06 15:03:45 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,7 +40,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.util.List;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.Comparator;
 import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
@@ -53,9 +53,9 @@ import javax.servlet.http.HttpServletRequest;
 public class PathwayMembershipTable extends HtmlTable {
 
     /**
-     * HashSet of Pathways.
+     * Set of Pathways.
      */
-    private HashSet pathwaySet;
+    private Set pathwaySet;
 
     /**
      * HttpServlet Request Object.
@@ -69,11 +69,11 @@ public class PathwayMembershipTable extends HtmlTable {
 
 
     /**
-     * Receives HashSet Attribute.
+     * Receives Set Attribute.
      *
-     * @param pathwaySet HashSet.
+     * @param pathwaySet Set.
      */
-    public void setPathwaySet(HashSet pathwaySet) {
+    public void setPathwaySet(Set pathwaySet) {
         this.pathwaySet = pathwaySet;
     }
 

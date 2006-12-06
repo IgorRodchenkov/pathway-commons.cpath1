@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.19 2006-12-04 19:14:33 grossb Exp $
+// $Id: MemberMolecules.java,v 1.20 2006-12-06 15:04:19 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 
+import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
 
@@ -61,13 +62,13 @@ public class MemberMolecules {
      * Finds all member molecules for specified Pathway record.
      *
      * @param record CPathRecord
-	 * @param set HashSet<BioPaxRecordSummary> - set gets populated with BioPaxRecordSummary for molecules
+	 * @param set Set<BioPaxRecordSummary> - set gets populated with BioPaxRecordSummary for molecules
 	 * @param flag BioPaxShowFlag (flag indicates show all or top X molecules - controls result set size)
      * @return Integer - total number of molecules in db - required to render "show 1 - 20 of XXX" header
      * @throws DaoException Database Access Error.
      */
     public static Integer getMoleculesInPathway(CPathRecord record,
-												HashSet<BioPaxRecordSummary> moleculeSet,
+												Set<BioPaxRecordSummary> moleculeSet,
 												BioPaxShowFlag flag) throws DaoException {
 
         DaoCPath daoCPath = DaoCPath.getInstance();
@@ -86,10 +87,10 @@ public class MemberMolecules {
      * @throws BioPaxRecordSummaryException Error Creating Summary.
      * @throws DaoException                 Database Access Error.
      */
-    public static HashSet getMoleculesInComplex(CPathRecord record) throws DaoException,
+    public static Set getMoleculesInComplex(CPathRecord record) throws DaoException,
         BioPaxRecordSummaryException {
         DaoInternalLink dao = new DaoInternalLink();
-        HashSet molecules = new HashSet();
+        Set molecules = new HashSet();
         ArrayList list = dao.getTargetsWithLookUp(record.getId());
         for (int i=0; i<list.size(); i++) {
             CPathRecord peRecord = (CPathRecord) list.get(i);
