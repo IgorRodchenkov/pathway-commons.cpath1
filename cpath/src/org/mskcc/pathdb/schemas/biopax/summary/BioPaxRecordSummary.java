@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.6 2006-11-09 21:09:52 cerami Exp $
+// $Id: BioPaxRecordSummary.java,v 1.7 2006-12-07 15:44:23 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -81,6 +81,11 @@ public class BioPaxRecordSummary implements Serializable {
      * The record data source.
      */
     protected String dataSource;
+
+    /**
+     * The record data source snapshot id.
+     */
+    protected Long snapshotId;
 
     /**
      * The record availability.
@@ -221,6 +226,24 @@ public class BioPaxRecordSummary implements Serializable {
      */
     public String getDataSource() {
         return dataSource;
+    }
+
+    /**
+     * Set the record data source snapshot id.
+     *
+     * @param dataSource String
+     */
+    public void setDataSourceSnapshotId(Long snapshotId) {
+        this.snapshotId = snapshotId;
+    }
+
+    /**
+     * Returns the record data source snapshot id.
+     *
+     * @return Long
+     */
+    public Long getDataSourceSnapshotId() {
+        return snapshotId;
     }
 
     /**

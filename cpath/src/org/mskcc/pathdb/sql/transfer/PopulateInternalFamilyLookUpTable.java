@@ -1,6 +1,5 @@
 package org.mskcc.pathdb.sql.transfer;
 
-import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
@@ -11,6 +10,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.task.ProgressMonitor;
+import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
@@ -30,9 +30,9 @@ import java.util.*;
  */
 public class PopulateInternalFamilyLookUpTable {
     private static final String GET_RECORD_ITERATOR =
-            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT` from cpath WHERE TYPE = ? LIMIT ?,1";
+            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT`, `EXTERNAL_DB_SNAPSHOT_ID` from cpath WHERE TYPE = ? LIMIT ?,1";
     private static final String GET_RECORD_BY_ID =
-            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT` from cpath WHERE CPATH_ID = ?";
+            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT`, `EXTERNAL_DB_SNAPSHOT_ID` from cpath WHERE CPATH_ID = ?";
     private ProgressMonitor pMonitor;
     private HashMap cache = new HashMap();
     private HashSet visitedSet;
@@ -78,6 +78,10 @@ public class PopulateInternalFamilyLookUpTable {
 				}
 				pathwayRecordSummary.setName(CPathRecord.NA_STRING);
 			}
+			if (pathwayRecordSummary.getOrganism() == null ||
+				pathwayRecordSummary.getOrganism().length() == 0) {
+				pathwayRecordSummary.setOrganism(CPathRecord.NA_STRING);
+			}
             if (option == 0) {
                 pMonitor.incrementCurValue();
                 ConsoleUtil.showProgress(pMonitor);
@@ -100,7 +104,8 @@ public class PopulateInternalFamilyLookUpTable {
                     //  Only index descendents, which are of type:  physical entity
                     if (descendentRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
                         daoFamily.addRecord(record.getId(), pathwayRecordSummary.getName(),
-											record.getType(), descendentRecord.getId(),
+											record.getType(), record.getSnapshotId(),
+											pathwayRecordSummary.getOrganism(), descendentRecord.getId(),
 											descendentRecordSummary.getName(), descendentRecord.getType());
                     }
                 }
@@ -166,6 +171,7 @@ public class PopulateInternalFamilyLookUpTable {
         record.setType(CPathRecordType.getType(rs.getString(2)));
         record.setXmlType(XmlRecordType.getType(rs.getString(3)));
         record.setXmlContent(rs.getString(4));
+        record.setSnapshotId(rs.getLong(5));
         return record;
     }
 
@@ -274,6 +280,10 @@ public class PopulateInternalFamilyLookUpTable {
 			}
 			parentRecordSummary.setName(CPathRecord.NA_STRING);
 		}
+		if (parentRecordSummary.getOrganism() == null ||
+			parentRecordSummary.getOrganism().length() == 0) {
+			parentRecordSummary.setOrganism(CPathRecord.NA_STRING);
+		}
         Iterator iterator = descendentList.iterator();
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(pMonitor);
@@ -306,6 +316,8 @@ public class PopulateInternalFamilyLookUpTable {
         daoFamily.addRecords(parentRecord.getId(),
 							 parentRecordSummary.getName(),
 							 parentRecord.getType(),
+							 parentRecord.getSnapshotId(),
+							 parentRecordSummary.getOrganism(),
 							 recordIds, recordNames, recordTypes);
 
     }

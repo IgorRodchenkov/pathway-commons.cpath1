@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.15 2006-12-06 15:04:01 grossb Exp $
+// $Id: MemberPathways.java,v 1.16 2006-12-07 15:46:38 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ package org.mskcc.pathdb.schemas.biopax;
 // imports
 
 import org.jdom.JDOMException;
+import org.mskcc.pathdb.taglib.BioPaxShowFlag;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
@@ -44,7 +45,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
-import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,22 +64,25 @@ public class MemberPathways {
     /**
      * Finds all member pathways given CPathRecord.
      *
-     * @param record   CPathRecord
-     * @return Set
+     * @param record CPathRecord
+	 * @param set Set<BioPaxRecordSummary> - set gets populated with BioPaxRecordSummary for pathawys
+	 * @param filterSettings GlobalFilterSettings (filters the records by dataset)
+	 * @param flag BioPaxShowFlag (flag indicates show all or top X pathways - controls result set size)
+     * @return Integer - total number of pathways record is a member of -
+	 *         (required to render "show 1 - 20 of XXX" header)
      * @throws DaoException  Throwable
      */
-    public static Set getMemberPathways(CPathRecord record, GlobalFilterSettings
-            filterSettings) throws DaoException {
-        HashSet pathways = new HashSet();
+    public static Integer getMemberPathways(CPathRecord record,
+											Set<BioPaxRecordSummary> pathwaySet,
+											GlobalFilterSettings filterSettings,
+											BioPaxShowFlag flag) throws DaoException {
         DaoCPath daoCPath = DaoCPath.getInstance();
         DaoInternalFamily dao = new DaoInternalFamily();
-        long ids[] = dao.getAncestorIds(record.getId(), CPathRecordType.PATHWAY);
-        for (int i=0; i<ids.length; i++) {
-            CPathRecord pathwayRecord = daoCPath.getRecordById(ids[i]);
-            if (filterSettings.isSnapshotSelected(pathwayRecord.getSnapshotId())) {
-                pathways.add(pathwayRecord);
-            }
-        }
-        return pathways;
+		return dao.getAncestorSummaries(record.getId(),
+										CPathRecordType.PATHWAY,
+										pathwaySet,
+										filterSettings.getSnapshotIdSet(),
+										(flag.getFlag(BioPaxShowFlag.SHOW_ALL_PATHWAYS) == 1) ? true : false);
     }
+
 }

@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.4 2006-12-04 19:15:25 grossb Exp $
+// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.5 2006-12-07 15:45:25 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.query.PhysicalEntitySetQuery;
+import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
@@ -121,6 +122,19 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
             BioPaxRecordSummary pathwaySummary =
                 BioPaxRecordUtil.createBioPaxRecordSummary(record);
 
+			if (pathwaySummary.getName() == null ||
+				pathwaySummary.getName().length() == 0) {
+				if (CPathConstants.CPATH_DO_ASSERT) {
+					assert (record.getType() == CPathRecordType.INTERACTION) :
+					"*** PopulateInternalFamilyLookupTable: Pathway or Physical Entity Record has no name ***";
+				}
+				pathwaySummary.setName(CPathRecord.NA_STRING);
+			}
+			if (pathwaySummary.getOrganism() == null ||
+				pathwaySummary.getOrganism().length() == 0) {
+				pathwaySummary.setOrganism(CPathRecord.NA_STRING);
+			}
+
 			//  Store membership info for pathways only.
 			ArrayList<Long> idList = internalLinker.getAllDescendents(record.getId());
 			for (Long descendentID : idList) {
@@ -132,7 +146,8 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 						descendentSummary.setName(CPathRecord.NA_STRING);
 					}
 					daoFamily.addRecord(record.getId(), pathwaySummary.getName(),
-										CPathRecordType.PATHWAY, descendentRecord.getId(),
+										CPathRecordType.PATHWAY, record.getSnapshotId(),
+										pathwaySummary.getOrganism(), descendentRecord.getId(),
 										descendentSummary.getName(), descendentRecord.getType());
 			}
         }

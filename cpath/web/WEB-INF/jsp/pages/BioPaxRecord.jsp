@@ -157,11 +157,15 @@
             || record.getType().equals(CPathRecordType.INTERACTION)) {
 %>
 <%
-        Set pathwaySet;
-        pathwaySet = MemberPathways.getMemberPathways(record, filterSettings);
+		Set<BioPaxRecordSummary> pathwaySet = new HashSet<BioPaxRecordSummary>();
+        Integer totalNumPathways = MemberPathways.getMemberPathways(record,
+		                                                            pathwaySet,
+                                                                    filterSettings,
+                                                                    new BioPaxShowFlag(request.getParameter(BioPaxShowFlag.SHOW_FLAG)));
 		if (pathwaySet != null && pathwaySet.size() > 0){
 %>
 		    <cbio:pathwayMembershipTable pathwaySet="<%=pathwaySet%>"
+                        totalNumPathways="<%=totalNumPathways%>"	
 						request="<%= request %>"
 						cpathId="<%= record.getId() %>"/>
 <%		} %>

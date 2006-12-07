@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.16 2006-12-06 15:03:45 grossb Exp $
+// $Id: PathwayMembershipTable.java,v 1.17 2006-12-07 15:45:03 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,7 +39,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.util.List;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.Comparator;
 import java.util.Collections;
@@ -56,6 +56,11 @@ public class PathwayMembershipTable extends HtmlTable {
      * Set of Pathways.
      */
     private Set pathwaySet;
+
+	/**
+	 * Total number of pathways in db.
+	 */
+	private Integer totalNumPathways;
 
     /**
      * HttpServlet Request Object.
@@ -75,6 +80,15 @@ public class PathwayMembershipTable extends HtmlTable {
      */
     public void setPathwaySet(Set pathwaySet) {
         this.pathwaySet = pathwaySet;
+    }
+
+    /**
+     * Receives totalNumPathways Attribute.
+     *
+     * @param totalNumPathways
+     */
+    public void setTotalNumPathways(Integer totalNumPathways) {
+        this.totalNumPathways = totalNumPathways;
     }
 
     /**
@@ -104,7 +118,7 @@ public class PathwayMembershipTable extends HtmlTable {
         if (pathwaySet != null && pathwaySet.size() > 0) {
             String title = "Member of the Following Pathways";
             String htmlHeader = BioPaxShowFlag.createHtmlHeader(BioPaxShowFlag.DEFAULT_NUM_RECORDS,
-                    pathwaySet.size(), cPathId, title, showFlag,
+                    totalNumPathways, cPathId, title, showFlag,
                     BioPaxShowFlag.SHOW_ALL_PATHWAYS, "pathway_list");
             append(htmlHeader);
             append("<TABLE WIDTH=100%>");
@@ -119,8 +133,7 @@ public class PathwayMembershipTable extends HtmlTable {
     private void outputRecords(BioPaxShowFlag showFlag) throws DaoException, BioPaxRecordSummaryException {
 
         // sort the pathways
-        CPathRecord[] pathways = (CPathRecord[]) pathwaySet.toArray(new CPathRecord[0]);
-        List pathwayList = Arrays.asList(pathways);
+        List pathwayList = new ArrayList(pathwaySet);
         Collections.sort(pathwayList, new RecordSorter());
 
         int cnt = BioPaxShowFlag.determineEndIndex(BioPaxShowFlag.DEFAULT_NUM_RECORDS, pathwayList.size(),
@@ -130,17 +143,15 @@ public class PathwayMembershipTable extends HtmlTable {
         for (int lc = 0; lc < cnt; lc++) {
             startRow(lc);
             append("<td>");
-            CPathRecord pathwayRecord = (CPathRecord) pathwayList.get(lc);
-			BioPaxRecordSummary biopaxRecordSummary =
-				BioPaxRecordUtil.createBioPaxRecordSummary(pathwayRecord);
+			BioPaxRecordSummary biopaxRecordSummary = (BioPaxRecordSummary)pathwayList.get(lc);
 			String organism = biopaxRecordSummary.getOrganism();
 			String headerString = (organism != null) ?
-				(pathwayRecord.getName() + " from " + organism) : pathwayRecord.getName();
-            append("<A HREF='record.do?id=" + pathwayRecord.getId()
+				(biopaxRecordSummary.getName() + " from " + organism) : biopaxRecordSummary.getName();
+            append("<A HREF='record.do?id=" + biopaxRecordSummary.getRecordID()
                 + "'>" + headerString + "</A>");
             append("</td>");
             append("<td>");
-            append(DbSnapshotInfo.getDbSnapshotHtml(pathwayRecord.getSnapshotId()));
+            append(DbSnapshotInfo.getDbSnapshotHtml(biopaxRecordSummary.getDataSourceSnapshotId()));
             append("</td>");
 			endRow();
         }
@@ -159,8 +170,8 @@ class RecordSorter implements Comparator {
      * Our implementation of compare.
      */
     public int compare(Object o1, Object o2) {
-        CPathRecord record1 = (CPathRecord) o1;
-        CPathRecord record2 = (CPathRecord) o2;
+        BioPaxRecordSummary record1 = (BioPaxRecordSummary) o1;
+        BioPaxRecordSummary record2 = (BioPaxRecordSummary) o2;
 
         return record1.getName().compareToIgnoreCase(record2.getName());
     }

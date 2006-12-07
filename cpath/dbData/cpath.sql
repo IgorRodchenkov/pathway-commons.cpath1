@@ -267,6 +267,8 @@ CREATE TABLE `internal_family` (
   `ANCESTOR_ID` int(11) NOT NULL default '0',
   `ANCESTOR_NAME` varchar(255) NOT NULL default '',
   `ANCESTOR_TYPE` varchar(255) NOT NULL default '',
+  `ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID` int(11) NOT NULL default '0',
+  `ANCESTOR_SPECIES_NAME` varchar(255) NOT NULL default '',
   `DESCENDENT_ID` int(11) NOT NULL default '0',
   `DESCENDENT_TYPE` varchar(255) NOT NULL default '',
   `DESCENDENT_NAME` varchar(255) NOT NULL default ''
