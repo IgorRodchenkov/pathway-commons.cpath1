@@ -9,6 +9,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
@@ -55,6 +56,7 @@ public class PopulateInternalFamilyLookUpTable {
     public void execute () throws DaoException, BioPaxRecordSummaryException {
         DaoCPath daoCPath = DaoCPath.getInstance();
         DaoInternalFamily daoFamily = new DaoInternalFamily();
+		DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
 
         //  Start fresh:  Delete all existing internal family records
         daoFamily.deleteAllRecords();
@@ -103,8 +105,8 @@ public class PopulateInternalFamilyLookUpTable {
 					}
                     //  Only index descendents, which are of type:  physical entity
                     if (descendentRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
-                        daoFamily.addRecord(record.getId(), pathwayRecordSummary.getName(),
-											record.getType(), record.getSnapshotId(),
+                        daoFamily.addRecord(record.getId(), pathwayRecordSummary.getName(), record.getType(),
+											daoSnapshot.getDatabaseSnapshot(record.getSnapshotId()),
 											pathwayRecordSummary.getOrganism(), descendentRecord.getId(),
 											descendentRecordSummary.getName(), descendentRecord.getType());
                     }
@@ -284,6 +286,7 @@ public class PopulateInternalFamilyLookUpTable {
 			parentRecordSummary.getOrganism().length() == 0) {
 			parentRecordSummary.setOrganism(CPathRecord.NA_STRING);
 		}
+		
         Iterator iterator = descendentList.iterator();
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(pMonitor);
@@ -313,10 +316,11 @@ public class PopulateInternalFamilyLookUpTable {
             recordTypes.add(descendentRecord.getType().toString());
         }
 
+		DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
         daoFamily.addRecords(parentRecord.getId(),
 							 parentRecordSummary.getName(),
 							 parentRecord.getType(),
-							 parentRecord.getSnapshotId(),
+							 daoSnapshot.getDatabaseSnapshot(parentRecord.getSnapshotId()),
 							 parentRecordSummary.getOrganism(),
 							 recordIds, recordNames, recordTypes);
 

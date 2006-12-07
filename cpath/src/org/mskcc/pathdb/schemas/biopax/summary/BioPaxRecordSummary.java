@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.7 2006-12-07 15:44:23 grossb Exp $
+// $Id: BioPaxRecordSummary.java,v 1.8 2006-12-07 19:28:19 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 
 import java.util.List;
 import java.io.Serializable;
@@ -85,7 +86,7 @@ public class BioPaxRecordSummary implements Serializable {
     /**
      * The record data source snapshot id.
      */
-    protected Long snapshotId;
+    protected ExternalDatabaseSnapshotRecord snapshotRecord;
 
     /**
      * The record availability.
@@ -229,21 +230,21 @@ public class BioPaxRecordSummary implements Serializable {
     }
 
     /**
-     * Set the record data source snapshot id.
+     * Set the record snapshot.
      *
-     * @param dataSource String
+     * @param snapshotRecord ExternalDatabaseSnapshotRecord
      */
-    public void setDataSourceSnapshotId(Long snapshotId) {
-        this.snapshotId = snapshotId;
+    public void setExternalDatabaseSnapshotRecord(ExternalDatabaseSnapshotRecord snapshotRecord) {
+        this.snapshotRecord = snapshotRecord;
     }
 
     /**
-     * Returns the record data source snapshot id.
+     * Returns the snapshot record.
      *
-     * @return Long
+     * @return ExternalDatabaseSnapshotRecord
      */
-    public Long getDataSourceSnapshotId() {
-        return snapshotId;
+    public ExternalDatabaseSnapshotRecord getExternalDatabaseSnapshotRecord() {
+        return snapshotRecord;
     }
 
     /**

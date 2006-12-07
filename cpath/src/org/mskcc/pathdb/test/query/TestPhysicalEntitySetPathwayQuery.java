@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.5 2006-12-07 15:45:25 grossb Exp $
+// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.6 2006-12-07 19:27:37 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.query.PhysicalEntitySetQuery;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
@@ -114,6 +115,7 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
         DaoInternalLink internalLinker = new DaoInternalLink();
         DaoInternalFamily daoFamily = new DaoInternalFamily();
         DaoCPath daoCPath = DaoCPath.getInstance();
+		DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
 		ArrayList<CPathRecord> cPathRecordList = daoCPath.getAllRecords(CPathRecordType.PATHWAY);
 
 		// iterate over pathway record list
@@ -145,8 +147,8 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 						descendentSummary.getName().length() == 0) {
 						descendentSummary.setName(CPathRecord.NA_STRING);
 					}
-					daoFamily.addRecord(record.getId(), pathwaySummary.getName(),
-										CPathRecordType.PATHWAY, record.getSnapshotId(),
+					daoFamily.addRecord(record.getId(), pathwaySummary.getName(), CPathRecordType.PATHWAY,
+										daoSnapshot.getDatabaseSnapshot(record.getSnapshotId()),
 										pathwaySummary.getOrganism(), descendentRecord.getId(),
 										descendentSummary.getName(), descendentRecord.getType());
 			}

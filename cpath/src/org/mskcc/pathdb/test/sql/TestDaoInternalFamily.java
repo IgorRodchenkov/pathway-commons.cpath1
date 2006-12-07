@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalFamily.java,v 1.4 2006-12-07 15:45:14 grossb Exp $
+// $Id: TestDaoInternalFamily.java,v 1.5 2006-12-07 19:26:49 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,10 +31,13 @@
  **/
 package org.mskcc.pathdb.test.sql;
 
+import java.util.Date;
 import junit.framework.TestCase;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 
 /**
  * Tests the DaoInternalFamily Class.
@@ -51,11 +54,19 @@ public class TestDaoInternalFamily extends TestCase {
      */
     public void testAccess() throws DaoException {
         testName = "Test Add, Get, Delete Methods";
+		
+		ExternalDatabaseRecord databaseRecord = new ExternalDatabaseRecord();
+		databaseRecord.setName("database name");
+		ExternalDatabaseSnapshotRecord snapshotRecord = 
+			new ExternalDatabaseSnapshotRecord
+			(databaseRecord, new Date(System.currentTimeMillis()), "1");
+		snapshotRecord.setId(1);
+
         DaoInternalFamily dao = new DaoInternalFamily();
         dao.deleteAllRecords();
-        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, 1, "organism name", 2, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
-        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, 1, "organism name", 3, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
-        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, 1, "organism name", 4, "descendent name", CPathRecordType.INTERACTION);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, "organism name", 2, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, "organism name", 3, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, "organism name", 4, "descendent name", CPathRecordType.INTERACTION);
 
         long ids[] = dao.getDescendentIds(1);
         assertEquals (3, ids.length);

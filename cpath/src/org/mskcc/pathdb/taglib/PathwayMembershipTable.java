@@ -1,4 +1,4 @@
-// $Id: PathwayMembershipTable.java,v 1.17 2006-12-07 15:45:03 grossb Exp $
+// $Id: PathwayMembershipTable.java,v 1.18 2006-12-07 19:26:41 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -151,7 +151,8 @@ public class PathwayMembershipTable extends HtmlTable {
                 + "'>" + headerString + "</A>");
             append("</td>");
             append("<td>");
-            append(DbSnapshotInfo.getDbSnapshotHtml(biopaxRecordSummary.getDataSourceSnapshotId()));
+            //append(DbSnapshotInfo.getDbSnapshotHtml(biopaxRecordSummary.getDataSourceSnapshotId()));
+			append(DbSnapshotInfo.getDbSnapshotHtml(biopaxRecordSummary.getExternalDatabaseSnapshotRecord()));
             append("</td>");
 			endRow();
         }
