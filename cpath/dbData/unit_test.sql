@@ -2258,6 +2258,7 @@ INSERT INTO `internal_link` VALUES (862, 490, 419);
 -- Dumping data for table `organism`
 -- 
 
+INSERT INTO `organism` VALUES (-9999, 'N/A', '');
 INSERT INTO `organism` VALUES (83333, 'Escherichia coli K-12', '');
 INSERT INTO `organism` VALUES (9606, 'Homo sapiens', '');
 INSERT INTO `organism` VALUES (10116, 'Rattus norvegicus', '');
