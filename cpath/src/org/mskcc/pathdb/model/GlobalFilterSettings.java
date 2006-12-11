@@ -28,6 +28,7 @@ public class GlobalFilterSettings {
                     (ExternalDatabaseSnapshotRecord) list.get(i);
             snapshotSet.add(new Long(snapshotRecord.getId()));
         }
+        organismSet.add(ALL_ORGANISMS_FILTER_VALUE);
     }
 
     public boolean isSnapshotSelected (long snapshotId) {
