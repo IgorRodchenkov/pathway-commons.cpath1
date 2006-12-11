@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.12 2006-12-07 19:28:09 grossb Exp $
+// $Id: DaoInternalFamily.java,v 1.13 2006-12-11 19:25:51 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.taglib.BioPaxShowFlag;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
@@ -56,25 +57,27 @@ import java.io.IOException;
 public class DaoInternalFamily {
     private static final String INSERT_SQL =
         "INSERT INTO internal_family (`ANCESTOR_ID`, `ANCESTOR_NAME`, "
-		+ "`ANCESTOR_TYPE`, `ANCESTOR_SPECIES_NAME`, "
+		+ "`ANCESTOR_TYPE`, `ANCESTOR_SPECIES_ID`, `ANCESTOR_SPECIES_NAME`, "
 		+ "`ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID`, `ANCESTOR_EXTERNAL_DB_NAME`, "
 		+ "`ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE`, `ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION`, "
-        + "`DESCENDENT_ID`, `DESCENDENT_NAME`, `DESCENDENT_TYPE`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        + "`DESCENDENT_ID`, `DESCENDENT_NAME`, `DESCENDENT_TYPE`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
     /**
      * Adds a new record.
-     * @param ancestorId        ID of Ancestor record.
-     * @param ancestorName      Name of Ancestor record.
-     * @param ancestorType      Record type of ancestor.
+     * @param ancestorId         ID of Ancestor record.
+     * @param ancestorName       Name of Ancestor record.
+     * @param ancestorType       Record type of ancestor.
 	 * @param ancestorSnapshotRecord ExternalDatabaseSnapshotRecord.
-	 * @param ancestorOrganism  Ancestor organism (species) name.
-     * @param descendentId      ID of Descendent record.
-     * @param descendentName    Name of Descendent record.
-     * @param descendentType    Record type of Descendent.
-     * @throws DaoException     Database access error.
+	 * @param ancestorOrganismId Ancestor organism (species) Id.
+	 * @param ancestorOrganism   Ancestor organism (species) name.
+     * @param descendentId       ID of Descendent record.
+     * @param descendentName     Name of Descendent record.
+     * @param descendentType     Record type of Descendent.
+     * @throws DaoException      Database access error.
      */
     public void addRecord (long ancestorId, String ancestorName, CPathRecordType ancestorType,
-						   ExternalDatabaseSnapshotRecord ancestorSnapshotRecord, String ancestorOrganism,
+						   ExternalDatabaseSnapshotRecord ancestorSnapshotRecord,
+						   long ancestorOrganismId, String ancestorOrganism,
 						   long descendentId, String descendentName, CPathRecordType descendentType)
 		throws DaoException {
 
@@ -87,16 +90,17 @@ public class DaoInternalFamily {
             pstmt.setLong(1, ancestorId);
             pstmt.setString(2, ancestorName);
             pstmt.setString(3, ancestorType.toString());
-            pstmt.setString(4, ancestorOrganism);
-            pstmt.setLong(5, ancestorSnapshotRecord.getId());
-            pstmt.setString(6, ancestorSnapshotRecord.getExternalDatabase().getName());
+            pstmt.setLong(4, ancestorOrganismId);
+            pstmt.setString(5, ancestorOrganism);
+            pstmt.setLong(6, ancestorSnapshotRecord.getId());
+            pstmt.setString(7, ancestorSnapshotRecord.getExternalDatabase().getName());
 			Date snapshotDate = ancestorSnapshotRecord.getSnapshotDate();
             java.sql.Date date = new java.sql.Date(snapshotDate.getTime());
-            pstmt.setDate(7, date);
-            pstmt.setString(8, ancestorSnapshotRecord.getSnapshotVersion());
-            pstmt.setLong(9, descendentId);
-            pstmt.setString(10, descendentName);
-            pstmt.setString(11, descendentType.toString());
+            pstmt.setDate(8, date);
+            pstmt.setString(9, ancestorSnapshotRecord.getSnapshotVersion());
+            pstmt.setLong(10, descendentId);
+            pstmt.setString(11, descendentName);
+            pstmt.setString(12, descendentType.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -110,13 +114,15 @@ public class DaoInternalFamily {
      * @param ancestorId        ID of Ancestor record.
      * @param ancestorType      Record type of ancestor.
 	 * @param ancestorSnapshotRecord ExternalDatabaseSnapshotRecord.
+	 * @param ancestorOrganismId Ancestor organism (species) Id.
 	 * @param ancestorOrganism  Ancestor organism (species) name.
      * @param descendentIds     IDs of Descendent record.
      * @param descendentTypes   Record types of Descendent.
      * @throws DaoException     Database access error.
      */
     public void addRecords (long ancestorId, String ancestorName, CPathRecordType ancestorType,
-							ExternalDatabaseSnapshotRecord ancestorSnapshotRecord, String ancestorOrganism,
+							ExternalDatabaseSnapshotRecord ancestorSnapshotRecord,
+							long ancestorOrganismId, String ancestorOrganism,
 							ArrayList descendentIds, ArrayList descendentNames, ArrayList descendentTypes)
 		throws DaoException {
 
@@ -139,16 +145,17 @@ public class DaoInternalFamily {
                 pstmt.setLong(1, ancestorId);
 				pstmt.setString(2, ancestorName);
                 pstmt.setString(3, ancestorType.toString());
-				pstmt.setString(4, ancestorOrganism);
-                pstmt.setLong(5, ancestorSnapshotRecord.getId());
-				pstmt.setString(6, ancestorSnapshotRecord.getExternalDatabase().getName());
+				pstmt.setLong(4, ancestorOrganismId);
+				pstmt.setString(5, ancestorOrganism);
+                pstmt.setLong(6, ancestorSnapshotRecord.getId());
+				pstmt.setString(7, ancestorSnapshotRecord.getExternalDatabase().getName());
 				Date snapshotDate = ancestorSnapshotRecord.getSnapshotDate();
 				java.sql.Date date = new java.sql.Date(snapshotDate.getTime());
-				pstmt.setDate(7, date);
-				pstmt.setString(8, ancestorSnapshotRecord.getSnapshotVersion());
-                pstmt.setLong(9, (Long) descendentIds.get(i));
-                pstmt.setString(10, (String) descendentNames.get(i));
-                pstmt.setString(11, (String) descendentTypes.get(i));
+				pstmt.setDate(8, date);
+				pstmt.setString(9, ancestorSnapshotRecord.getSnapshotVersion());
+                pstmt.setLong(10, (Long) descendentIds.get(i));
+                pstmt.setString(11, (String) descendentNames.get(i));
+                pstmt.setString(12, (String) descendentTypes.get(i));
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
@@ -289,33 +296,55 @@ public class DaoInternalFamily {
 										 CPathRecordType ancestorType,											
 										 Set<BioPaxRecordSummary> summarySet,
 										 Set<Long> snapshotIdSet,
+										 Set<Integer> organismIdSet,
 										 boolean getAllSummaries)
 		throws DaoException {
 
+		int lc;
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
 			// perform the query
             con = JdbcUtil.getCPathConnection();
-			// construct db filter string
-			StringBuffer filterBuf = new StringBuffer();;
+			// datasource filter
+			StringBuffer dataSourceFilterBuf = new StringBuffer();;
 			int snapshotIdSetSize = snapshotIdSet.size();
-			for (int lc = 0; lc < snapshotIdSetSize; lc++) {
+			for (lc = 0; lc < snapshotIdSetSize; lc++) {
 				String query = ((lc == 0) ? "AND (" : "OR") + " ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID = ? ";
-				filterBuf.append(query);
+				dataSourceFilterBuf.append(query);
 			}
-			filterBuf.append(")");
+			dataSourceFilterBuf.append(") ");
+			// organism filter
+			StringBuffer organismFilterBuf = new StringBuffer("");
+			int organismIdSetSize = organismIdSet.size();
+			boolean createOrganismFilter = (organismIdSetSize > 0) ? true : false;
+			lc = -1;
+			for (Integer i : organismIdSet) {
+				if (i.intValue() == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
+					createOrganismFilter = false;
+					break;
+				}
+				String query = ((++lc == 0) ? "AND (" : "OR") + " ANCESTOR_SPECIES_ID = ? ";
+				organismFilterBuf.append(query);
+			}
+			if (createOrganismFilter) organismFilterBuf.append(")");
 			// construct query
 			String query = (getAllSummaries) ?
-				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + filterBuf.toString()) :
-				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + filterBuf.toString() + " ORDER BY ANCESTOR_NAME LIMIT 0, " + BioPaxShowFlag.DEFAULT_NUM_RECORDS);
+				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilterBuf.toString() + organismFilterBuf.toString()) :
+				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilterBuf.toString() + organismFilterBuf.toString() + " ORDER BY ANCESTOR_NAME LIMIT 0, " + BioPaxShowFlag.DEFAULT_NUM_RECORDS);
+
             pstmt = con.prepareStatement(query);
             pstmt.setLong(1, descendentId);
             pstmt.setString(2, ancestorType.toString());
-			int lc = 3;
+			lc = 3;
 			for (Long snapshotId : snapshotIdSet) {
 				pstmt.setLong(lc++, snapshotId);
+			}
+			if (createOrganismFilter) {
+				for (Integer organismId : organismIdSet) {
+					pstmt.setInt(lc++, organismId);
+				}
 			}
             getAncestorSummaries(pstmt, rs, summarySet);
 			return getAncestorIdCount(descendentId, ancestorType);
