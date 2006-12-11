@@ -1,4 +1,4 @@
-// $Id: MemberPathways.java,v 1.16 2006-12-07 15:46:38 grossb Exp $
+// $Id: MemberPathways.java,v 1.17 2006-12-11 19:26:54 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -82,6 +82,7 @@ public class MemberPathways {
 										CPathRecordType.PATHWAY,
 										pathwaySet,
 										filterSettings.getSnapshotIdSet(),
+										filterSettings.getOrganismTaxonomyIdSet(),
 										(flag.getFlag(BioPaxShowFlag.SHOW_ALL_PATHWAYS) == 1) ? true : false);
     }
 
