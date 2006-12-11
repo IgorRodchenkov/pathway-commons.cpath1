@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.6 2006-12-07 19:27:37 grossb Exp $
+// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.7 2006-12-11 19:28:14 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -149,8 +149,9 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 					}
 					daoFamily.addRecord(record.getId(), pathwaySummary.getName(), CPathRecordType.PATHWAY,
 										daoSnapshot.getDatabaseSnapshot(record.getSnapshotId()),
-										pathwaySummary.getOrganism(), descendentRecord.getId(),
-										descendentSummary.getName(), descendentRecord.getType());
+										record.getNcbiTaxonomyId(), pathwaySummary.getOrganism(),
+										descendentRecord.getId(), descendentSummary.getName(),
+										descendentRecord.getType());
 			}
         }
     }
