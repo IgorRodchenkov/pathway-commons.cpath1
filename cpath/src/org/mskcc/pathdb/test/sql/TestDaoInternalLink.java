@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalLink.java,v 1.19 2006-10-05 20:09:32 cerami Exp $
+// $Id: TestDaoInternalLink.java,v 1.20 2006-12-11 18:13:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,14 +32,12 @@
 package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.InternalLinkRecord;
-import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.util.ArrayList;
 
@@ -159,6 +157,57 @@ public class TestDaoInternalLink extends TestCase {
         }
         assertTrue (flag2);
         assertTrue (flag3);
+    }
+
+    /**
+     * Test getChildren Functionality.
+     * @throws DaoException Database Access Error.
+     */
+    public void testGetChildren() throws DaoException {
+        testName = "Test get children functionality";
+        DaoInternalLink dao = new DaoInternalLink();
+        long externalDbSnapshots[] = new long[1];
+        externalDbSnapshots[0] = 1;
+        ArrayList children = dao.getChildren(5, -9999, externalDbSnapshots, "biochemicalReaction",
+                0, 100, new XDebug());
+        assertEquals (9, children.size());
+        for (int i=0; i<children.size(); i++) {
+            CPathRecord record = (CPathRecord) children.get(i);
+            assertEquals (CPathRecordType.INTERACTION, record.getType());
+            assertEquals ("biochemicalReaction", record.getSpecificType());
+        }
+        CPathRecord record0 = (CPathRecord) children.get(0);
+        CPathRecord record1 = (CPathRecord) children.get(1);
+        CPathRecord record2 = (CPathRecord) children.get(2);
+        assertEquals (8, record0.getId());
+        assertEquals ("6PFRUCTPHOS-RXN", record0.getName());
+        assertEquals (10, record1.getId());
+        assertEquals ("3PGAREARR-RXN", record1.getName());
+        assertEquals (13, record2.getId());
+        assertEquals ("2-phosphoglycerate dehydration", record2.getName());
+     }
+
+    /**
+     * Test getChildrenTypes Functionality.
+     * @throws DaoException Database Access Error.
+     */
+    public void testGetChildrenTypes() throws DaoException {
+        testName = "Test get children types functionality";
+        DaoInternalLink dao = new DaoInternalLink();
+        long externalDbSnapshots[] = new long[1];
+        externalDbSnapshots[0] = 1;
+        ArrayList typeList = dao.getChildrenTypes(5, -9999, externalDbSnapshots, new XDebug());
+        assertEquals (3, typeList.size());
+
+        TypeCount type0 = (TypeCount) typeList.get(0);
+        TypeCount type1 = (TypeCount) typeList.get(1);
+        TypeCount type2 = (TypeCount) typeList.get(2);
+        assertEquals ("biochemicalReaction", type0.getType());
+        assertEquals (9, type0.getCount());
+        assertEquals ("catalysis", type1.getType());
+        assertEquals (14, type1.getCount());
+        assertEquals ("modulation", type2.getType());
+        assertEquals (24, type2.getCount());
     }
 
     private void createSampleCPathRecords() throws DaoException {
