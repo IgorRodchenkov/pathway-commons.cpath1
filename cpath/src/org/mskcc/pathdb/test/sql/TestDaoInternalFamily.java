@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalFamily.java,v 1.5 2006-12-07 19:26:49 grossb Exp $
+// $Id: TestDaoInternalFamily.java,v 1.6 2006-12-11 19:27:34 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,9 +64,9 @@ public class TestDaoInternalFamily extends TestCase {
 
         DaoInternalFamily dao = new DaoInternalFamily();
         dao.deleteAllRecords();
-        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, "organism name", 2, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
-        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, "organism name", 3, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
-        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, "organism name", 4, "descendent name", CPathRecordType.INTERACTION);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, 1, "organism name", 2, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, 1, "organism name", 3, "descendent name", CPathRecordType.PHYSICAL_ENTITY);
+        dao.addRecord(1, "pathway name", CPathRecordType.PATHWAY, snapshotRecord, 1, "organism name", 4, "descendent name", CPathRecordType.INTERACTION);
 
         long ids[] = dao.getDescendentIds(1);
         assertEquals (3, ids.length);
