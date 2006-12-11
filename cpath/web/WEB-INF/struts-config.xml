@@ -99,6 +99,12 @@
             <forward name="pathways" path="/WEB-INF/jsp/pages/PathwayList.jsp"/>
         </action>
 
+        <!--  BioPAX Parent/Child Component -->
+        <action path="/table"
+            type="org.mskcc.pathdb.action.BioPaxParentChild">
+            <forward name="success" path="/WEB-INF/jsp/pages/BioPaxParentChild.jsp"/>
+        </action>
+
         <!--  FAQ Page -->
         <action path="/faq"
             type="org.mskcc.pathdb.action.HomeAction">
