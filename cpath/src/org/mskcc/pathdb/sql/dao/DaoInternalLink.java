@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.21 2006-11-20 22:24:09 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.22 2006-12-11 18:12:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,7 +33,10 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.TypeCount;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -156,7 +159,9 @@ public class DaoInternalLink {
     }
 
     /**
-     * Gets all Target Links from the specified source cPath ID.
+     * Gets all Target Links from the specified source cPath ID.  For example, get all children
+     * of a pathway element.
+     *
      *
      * @param sourceId CPath ID of Source.
      * @return ArrayList of InternalLinkRecords.
@@ -189,7 +194,287 @@ public class DaoInternalLink {
     }
 
     /**
-     * Gets All Source Links that point to the specified cPath ID.
+     * Gets all children;  filters by taxonomy ID, external db source, and specific type.
+     * Uses cursor to limit result set.  Used primarily to build paginated web pages.
+     * @param cPathId cPath ID
+     * @param ncbiTaxonomyId Organism filter. Set to -1 if there is no organism filter.
+     * @param externalDbSnapshots Data source filter.
+     * @param specificType specific type filter.
+     * @param startIndex startIndex.
+     * @param numRecords numRecords to retrieve.
+     * @param xdebug XDebug object.
+     * @return ArrayList of CPathRecord Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getChildren (long cPathId, int ncbiTaxonomyId, long externalDbSnapshots[],
+        String specificType, int startIndex, int numRecords, XDebug xdebug) throws DaoException {
+        //SELECT cpath.CPATH_ID, cpath.TYPE, cpath.SPECIFIC_TYPE FROM cpath, internal_link
+        //WHERE cpath.NCBI_TAX_ID = 9606
+        //AND (EXTERNAL_DB_SNAPSHOT_ID =1 OR EXTERNAL_DB_SNAPSHOT_ID=2)
+        //AND cpath.SPECIFIC_TYPE='biochemicalReaction'
+        //AND cpath.CPATH_ID = internal_link.TARGET_ID
+        //AND internal_link.SOURCE_ID = 1
+        //ORDER BY cpath.SPECIFIC_TYPE
+        //LIMIT 0,20;
+        ArrayList records = new ArrayList();
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+
+            //  Set up SQL
+            StringBuffer buf = new StringBuffer(
+                "SELECT cpath.CPATH_ID, cpath.NAME, cpath.TYPE, cpath.SPECIFIC_TYPE"
+                + " FROM cpath, internal_link\n");
+            if (ncbiTaxonomyId >0) {
+                buf.append ("WHERE cpath.NCBI_TAX_ID = " + ncbiTaxonomyId + "\n");
+                buf.append ("AND (");
+            } else {
+                buf.append ("WHERE (");
+            }
+            for (int i=0; i<externalDbSnapshots.length; i++) {
+                buf.append ("EXTERNAL_DB_SNAPSHOT_ID = " + externalDbSnapshots[i]);
+                if (i < externalDbSnapshots.length - 1) {
+                    buf.append (" OR ");
+                }
+            }
+            buf.append (")\n");
+            buf.append ("AND cpath.SPECIFIC_TYPE = '" + specificType + "'\n");
+            buf.append ("AND cpath.CPATH_ID = internal_link.TARGET_ID\n");
+            buf.append ("AND internal_link.SOURCE_ID = " + cPathId +"\n");
+            buf.append ("ORDER BY cpath.CPATH_ID\n");
+            buf.append ("LIMIT "+ startIndex + "," + numRecords);
+
+            //  Create Prepared Statement
+            pstmt = con.prepareStatement (buf.toString());
+            xdebug.logMsg(this, "Using SQL Statement:  " + buf.toString());
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                long childId = rs.getLong("cpath.CPATH_ID");
+                String childName = rs.getString("cpath.NAME");
+                String childType = rs.getString("cpath.TYPE");
+                String childSpecificType = rs.getString("cpath.SPECIFIC_TYPE");
+                CPathRecord record = new CPathRecord();
+                record.setId(childId);
+                record.setName(childName);
+                record.setType(CPathRecordType.getType(childType));
+                record.setSpecType(childSpecificType);
+                records.add(record);
+            }
+            return records;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets all parents;  filters by taxonomy ID, external db source, and specific type.
+     * Uses cursor to limit result set.  Used primarily to build paginated web pages.
+     * @param cPathId cPath ID
+     * @param ncbiTaxonomyId Organism filter. Set to -1 if there is no organism filter.
+     * @param externalDbSnapshots Data source filter.
+     * @param specificType specific type filter.
+     * @param startIndex startIndex.
+     * @param numRecords numRecords to retrieve.
+     * @param xdebug XDebug object.
+     * @return ArrayList of CPathRecord Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getParents (long cPathId, int ncbiTaxonomyId, long externalDbSnapshots[],
+        String specificType, int startIndex, int numRecords, XDebug xdebug) throws DaoException {
+        ArrayList records = new ArrayList();
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+
+            //  Set up SQL
+            StringBuffer buf = new StringBuffer(
+                "SELECT cpath.CPATH_ID, cpath.NAME, cpath.TYPE, cpath.SPECIFIC_TYPE"
+                + " FROM cpath, internal_link\n");
+            if (ncbiTaxonomyId >0) {
+                buf.append ("WHERE cpath.NCBI_TAX_ID = " + ncbiTaxonomyId + "\n");
+                buf.append ("AND (");
+            } else {
+                buf.append ("WHERE (");
+            }
+            for (int i=0; i<externalDbSnapshots.length; i++) {
+                buf.append ("EXTERNAL_DB_SNAPSHOT_ID = " + externalDbSnapshots[i]);
+                if (i < externalDbSnapshots.length - 1) {
+                    buf.append (" OR ");
+                }
+            }
+            buf.append (")\n");
+            buf.append ("AND cpath.SPECIFIC_TYPE = '" + specificType + "'\n");
+            buf.append ("AND cpath.CPATH_ID = internal_link.SOURCE_ID\n");
+            buf.append ("AND internal_link.TARGET_ID = " + cPathId +"\n");
+            buf.append ("ORDER BY cpath.CPATH_ID\n");
+            buf.append ("LIMIT "+ startIndex + "," + numRecords);
+
+            //  Create Prepared Statement
+            pstmt = con.prepareStatement (buf.toString());
+            xdebug.logMsg(this, "Using SQL Statement:  " + buf.toString());
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                long childId = rs.getLong("cpath.CPATH_ID");
+                String childName = rs.getString("cpath.NAME");
+                String childType = rs.getString("cpath.TYPE");
+                String childSpecificType = rs.getString("cpath.SPECIFIC_TYPE");
+                CPathRecord record = new CPathRecord();
+                record.setId(childId);
+                record.setName(childName);
+                record.setType(CPathRecordType.getType(childType));
+                record.setSpecType(childSpecificType);
+                records.add(record);
+            }
+            return records;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets specific types (with counts) for all children elements.
+     * @param cPathId   cPath ID.
+     * @param ncbiTaxonomyId Organism filter. Set to -1 if there is no organism filter.
+     * @param externalDbSnapshots data source filter.
+     * @param xdebug  XDebug.
+     * @return ArrayList of TypeCount Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getChildrenTypes (long cPathId, int ncbiTaxonomyId, long externalDbSnapshots[],
+        XDebug xdebug) throws DaoException {
+        //SELECT cpath.SPECIFIC_TYPE, count(*) FROM cpath, internal_link
+        //WHERE cpath.NCBI_TAX_ID = -9999
+        //AND (EXTERNAL_DB_SNAPSHOT_ID = 1)
+        //AND cpath.CPATH_ID = internal_link.TARGET_ID
+        //AND internal_link.SOURCE_ID = 5
+        //GROUP BY cpath.SPECIFIC_TYPE
+        //ORDER BY cpath.SPECIFIC_TYPE
+        ArrayList records = new ArrayList();
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+
+            //  Set up SQL
+            StringBuffer buf = new StringBuffer(
+                "SELECT cpath.SPECIFIC_TYPE, count(*) as COUNT FROM cpath, internal_link\n");
+
+            if (ncbiTaxonomyId >0) {
+                buf.append ("WHERE cpath.NCBI_TAX_ID = " + ncbiTaxonomyId + "\n");
+                buf.append ("AND (");
+            } else {
+                buf.append ("WHERE (");
+            }
+            for (int i=0; i<externalDbSnapshots.length; i++) {
+                buf.append ("EXTERNAL_DB_SNAPSHOT_ID = " + externalDbSnapshots[i]);
+                if (i < externalDbSnapshots.length - 1) {
+                    buf.append (" OR ");
+                }
+            }
+            buf.append (")\n");
+            buf.append ("AND cpath.CPATH_ID = internal_link.TARGET_ID\n");
+            buf.append ("AND internal_link.SOURCE_ID = " + cPathId +"\n");
+            buf.append ("GROUP BY cpath.SPECIFIC_TYPE\n");
+            buf.append ("ORDER BY cpath.SPECIFIC_TYPE\n");
+
+            //  Create Prepared Statement
+            pstmt = con.prepareStatement (buf.toString());
+            xdebug.logMsg(this, "Using SQL Statement:  " + buf.toString());
+            System.out.println(buf.toString());
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String childSpecificType = rs.getString("cpath.SPECIFIC_TYPE");
+                int childCount = rs.getInt("COUNT");
+                TypeCount typeCount = new TypeCount();
+                typeCount.setType(childSpecificType);
+                typeCount.setCount(childCount);
+                records.add(typeCount);
+            }
+            return records;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets specific types (with counts) for all parent elements.
+     * @param cPathId   cPath ID.
+     * @param ncbiTaxonomyId Organism filter. Set to -1 if there is no organism filter.
+     * @param externalDbSnapshots data source filter.
+     * @param xdebug  XDebug.
+     * @return ArrayList of TypeCount Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getParentTypes (long cPathId, int ncbiTaxonomyId, long externalDbSnapshots[],
+        XDebug xdebug) throws DaoException {
+        ArrayList records = new ArrayList();
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+
+            //  Set up SQL
+            StringBuffer buf = new StringBuffer(
+                "SELECT cpath.SPECIFIC_TYPE, count(*) as COUNT FROM cpath, internal_link\n");
+
+            if (ncbiTaxonomyId >0) {
+                buf.append ("WHERE cpath.NCBI_TAX_ID = " + ncbiTaxonomyId + "\n");
+                buf.append ("AND (");
+            } else {
+                buf.append ("WHERE (");
+            }
+            for (int i=0; i<externalDbSnapshots.length; i++) {
+                buf.append ("EXTERNAL_DB_SNAPSHOT_ID = " + externalDbSnapshots[i]);
+                if (i < externalDbSnapshots.length - 1) {
+                    buf.append (" OR ");
+                }
+            }
+            buf.append (")\n");
+            buf.append ("AND cpath.CPATH_ID = internal_link.SOURCE_ID\n");
+            buf.append ("AND internal_link.TARGET_ID = " + cPathId +"\n");
+            buf.append ("GROUP BY cpath.SPECIFIC_TYPE\n");
+            buf.append ("ORDER BY cpath.SPECIFIC_TYPE\n");
+
+            //  Create Prepared Statement
+            pstmt = con.prepareStatement (buf.toString());
+            xdebug.logMsg(this, "Using SQL Statement:  " + buf.toString());
+            System.out.println(buf.toString());
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String childSpecificType = rs.getString("cpath.SPECIFIC_TYPE");
+                int childCount = rs.getInt("COUNT");
+                TypeCount typeCount = new TypeCount();
+                typeCount.setType(childSpecificType);
+                typeCount.setCount(childCount);
+                records.add(typeCount);
+            }
+            return records;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets All Source Links that point to the specified cPath ID.  For example, get all parents
+     * of a physical entity element.
      *
      * @param targetId CPath ID.
      * @return ArrayList of InternalLinkRecords.
