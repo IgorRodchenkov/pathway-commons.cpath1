@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.13 2006-12-11 19:25:51 grossb Exp $
+// $Id: DaoInternalFamily.java,v 1.14 2006-12-12 14:19:33 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -227,20 +227,40 @@ public class DaoInternalFamily {
      * CPathRecordType.
      * @param descendentId ID of descendent.
      * @param ancestorType CPathRecord Type of ancestor.
+	 * @param snapshotIdSet Set<Long> - used to filter result set based on db sources
+	 * @param organismIdSet Set<Integer> used to filter result set based on orgainism id
      * @return long number of ancestor records
      * @throws DaoException Database access error.
      */
-    public Integer getAncestorIdCount (long descendentId, CPathRecordType ancestorType) throws DaoException {
+    public Integer getAncestorIdCount (long descendentId, CPathRecordType ancestorType,
+										 Set<Long> snapshotIdSet, Set<Integer> organismIdSet) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("select count(*) from internal_family where "
-                            + "DESCENDENT_ID = ? AND ANCESTOR_TYPE = ?");
+
+			// datasource filter
+			String dataSourceFilter = getDataSourceFilterString(snapshotIdSet);
+			// organism filter
+			String organismFilter = getOrganismFilterString(organismIdSet);
+			// prepare the statement
+            pstmt = con.prepareStatement 
+                    ("select count(*) from internal_family where " +
+                     "DESCENDENT_ID = ? AND ANCESTOR_TYPE = ?" + dataSourceFilter + organismFilter);
             pstmt.setLong(1, descendentId);
             pstmt.setString(2, ancestorType.toString());
+			int lc = 3;
+			for (Long snapshotId : snapshotIdSet) {
+				pstmt.setLong(lc++, snapshotId);
+			}
+			if (organismFilter.length() > 0) {
+				for (Integer organismId : organismIdSet) {
+					pstmt.setInt(lc++, organismId);
+				}
+			}
+			// excute the query
 			rs = pstmt.executeQuery();
 			rs.next();
 			return rs.getInt(1);
@@ -287,7 +307,8 @@ public class DaoInternalFamily {
      * @param descendentId ID of descendent.
      * @param ancestorType CPathRecord Type of ancestor.
 	 * @param summarySet Set<BioPaxRecordSummary> - this gets populate by reference
-	 * @param snapshotIdSet Set<> - used to filter result set based on db sources
+	 * @param snapshotIdSet Set<Long> - used to filter result set based on db sources
+	 * @param organismIdSet Set<Integer> used to filter result set based on orgainism id
 	 * @param boolean which controls result set size (all or BioPaxSHowFlag.DEFAULT_NUM_RECORDS)
 	 * @return Integer - total number of molecules in db..required to render "show 1 - 20 of XXX" headers
      * @throws DaoException Database access error.
@@ -297,8 +318,7 @@ public class DaoInternalFamily {
 										 Set<BioPaxRecordSummary> summarySet,
 										 Set<Long> snapshotIdSet,
 										 Set<Integer> organismIdSet,
-										 boolean getAllSummaries)
-		throws DaoException {
+										 boolean getAllSummaries) throws DaoException {
 
 		int lc;
         Connection con = null;
@@ -308,32 +328,19 @@ public class DaoInternalFamily {
 			// perform the query
             con = JdbcUtil.getCPathConnection();
 			// datasource filter
-			StringBuffer dataSourceFilterBuf = new StringBuffer();;
-			int snapshotIdSetSize = snapshotIdSet.size();
-			for (lc = 0; lc < snapshotIdSetSize; lc++) {
-				String query = ((lc == 0) ? "AND (" : "OR") + " ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID = ? ";
-				dataSourceFilterBuf.append(query);
-			}
-			dataSourceFilterBuf.append(") ");
+			String dataSourceFilter = getDataSourceFilterString(snapshotIdSet);
 			// organism filter
-			StringBuffer organismFilterBuf = new StringBuffer("");
-			int organismIdSetSize = organismIdSet.size();
-			boolean createOrganismFilter = (organismIdSetSize > 0) ? true : false;
-			lc = -1;
-			for (Integer i : organismIdSet) {
-				if (i.intValue() == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
-					createOrganismFilter = false;
-					break;
-				}
-				String query = ((++lc == 0) ? "AND (" : "OR") + " ANCESTOR_SPECIES_ID = ? ";
-				organismFilterBuf.append(query);
-			}
-			if (createOrganismFilter) organismFilterBuf.append(")");
+			String organismFilter = getOrganismFilterString(organismIdSet);
 			// construct query
 			String query = (getAllSummaries) ?
-				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilterBuf.toString() + organismFilterBuf.toString()) :
-				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilterBuf.toString() + organismFilterBuf.toString() + " ORDER BY ANCESTOR_NAME LIMIT 0, " + BioPaxShowFlag.DEFAULT_NUM_RECORDS);
-
+				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, " +
+				 "ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION " + 
+				 "from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilter + organismFilter) :
+				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, " + 
+				 "ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION " +
+				 "from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilter + organismFilter +
+				 " ORDER BY ANCESTOR_NAME LIMIT 0, " + BioPaxShowFlag.DEFAULT_NUM_RECORDS);
+			// prepare the statement
             pstmt = con.prepareStatement(query);
             pstmt.setLong(1, descendentId);
             pstmt.setString(2, ancestorType.toString());
@@ -341,13 +348,14 @@ public class DaoInternalFamily {
 			for (Long snapshotId : snapshotIdSet) {
 				pstmt.setLong(lc++, snapshotId);
 			}
-			if (createOrganismFilter) {
+			if (organismFilter.length() > 0) {
 				for (Integer organismId : organismIdSet) {
 					pstmt.setInt(lc++, organismId);
 				}
 			}
+			// excute the query
             getAncestorSummaries(pstmt, rs, summarySet);
-			return getAncestorIdCount(descendentId, ancestorType);
+			return getAncestorIdCount(descendentId, ancestorType, snapshotIdSet, organismIdSet);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -369,9 +377,7 @@ public class DaoInternalFamily {
     public Integer getDescendentSummaries (long ancestorId,
 										   CPathRecordType descendentType,											
 										   Set<BioPaxRecordSummary> summarySet,
-										   boolean getAllSummaries)
-
-		throws DaoException {
+										   boolean getAllSummaries) throws DaoException {
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -381,8 +387,10 @@ public class DaoInternalFamily {
             con = JdbcUtil.getCPathConnection();
 			// get count
 			String query = (getAllSummaries) ?
-				("select `DESCENDENT_ID`, `DESCENDENT_NAME` from internal_family where ANCESTOR_ID = ? AND DESCENDENT_TYPE = ?") :
-				("select `DESCENDENT_ID`, `DESCENDENT_NAME` from internal_family where ANCESTOR_ID = ? AND DESCENDENT_TYPE = ? ORDER BY DESCENDENT_NAME LIMIT 0, " + 
+				("select `DESCENDENT_ID`, `DESCENDENT_NAME` from internal_family " +
+				 "where ANCESTOR_ID = ? AND DESCENDENT_TYPE = ?") :
+				("select `DESCENDENT_ID`, `DESCENDENT_NAME` from internal_family " +
+				 "where ANCESTOR_ID = ? AND DESCENDENT_TYPE = ? ORDER BY DESCENDENT_NAME LIMIT 0, " + 
 				 BioPaxShowFlag.DEFAULT_NUM_RECORDS);
             pstmt = con.prepareStatement(query);
             pstmt.setLong(1, ancestorId);
@@ -513,4 +521,38 @@ public class DaoInternalFamily {
         return ids;
     }
 
+	private String getDataSourceFilterString(Set<Long> snapshotIdSet) {
+
+		StringBuffer dataSourceFilterBuf = new StringBuffer();;
+		int snapshotIdSetSize = snapshotIdSet.size();
+		for (int lc = 0; lc < snapshotIdSetSize; lc++) {
+			String query = ((lc == 0) ? "AND (" : "OR") + " ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID = ? ";
+			dataSourceFilterBuf.append(query);
+		}
+		if (snapshotIdSetSize > 0) dataSourceFilterBuf.append(") ");
+
+		// outta here
+		return dataSourceFilterBuf.toString();
+	}
+
+	private String getOrganismFilterString(Set<Integer> organismIdSet) {
+
+		StringBuffer organismFilterBuf = new StringBuffer("");
+		int organismIdSetSize = organismIdSet.size();
+		boolean createOrganismFilter = (organismIdSetSize > 0) ? true : false;
+
+		int lc = -1;
+		for (Integer i : organismIdSet) {
+			if (i.intValue() == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
+				createOrganismFilter = false;
+				break;
+			}
+			String query = ((++lc == 0) ? "AND (" : "OR") + " ANCESTOR_SPECIES_ID = ? ";
+			organismFilterBuf.append(query);
+		}
+		if (createOrganismFilter) organismFilterBuf.append(")");
+
+		// outta here
+		return organismFilterBuf.toString();
+	}
 }
