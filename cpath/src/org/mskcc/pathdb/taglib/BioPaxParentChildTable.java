@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.18 2006-11-06 21:22:26 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.19 2006-12-12 16:55:49 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -58,7 +58,7 @@ public class BioPaxParentChildTable extends HtmlTable {
     private String currentType;
     private BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
     private int mode;
-    private static final int DEFAULT_NUM_RECORDS = 20;
+    private static final int DEFAULT_NUM_RECORDS = 10;
 
     /**
      * Mode:  Show Children
