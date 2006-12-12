@@ -74,17 +74,17 @@
                  + url + "#pathway_list'>P</A></span>");
                 out.println("<span class='mini_button_2'><A "
                  + "title='View all interactions that contain this physical entity' HREF='"
-                 + url + "&show_flags=0010#interaction_list'>I</A></span>");
+                 + url + "&show_flags=00100#interaction_list'>I</A></span>");
                 out.println("<span class='mini_button_3'><A "
                  + "title='View all complexes that contain this physical entity' HREF='"
-                 + url + "&show_flags=0001#complex_list'>C</A></span>");
+                 + url + "&show_flags=01000#complex_list'>C</A></span>");
             } else {
                 out.println("<span class='mini_button_4'><A "
                  + "title='View all molecules that participate in this pathway' HREF='"
-                 + url + "&show_flags=1000#pe_list'>M</A></span>");
+                 + url + "&show_flags=00001#pe_list'>M</A></span>");
                 out.println("<span class='mini_button_2'><A "
                  + "title='View all interactions that participate in this pathway' HREF='"
-                 + url + "&show_flags=01000#interaction_list'>I</A></span>");
+                 + url + "&show_flags=00100#interaction_list'>I</A></span>");
             }
             out.println("</span>");
             out.println("</nobr></td></tr>");
