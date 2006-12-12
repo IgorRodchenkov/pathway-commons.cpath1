@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.15 2006-12-12 14:39:07 grossb Exp $
+// $Id: DaoInternalFamily.java,v 1.16 2006-12-12 19:40:04 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -308,7 +308,8 @@ public class DaoInternalFamily {
 	 * @param summarySet Set<BioPaxRecordSummary> - this gets populate by reference
 	 * @param snapshotIdSet Set<Long> - used to filter result set based on db sources
 	 * @param organismIdSet Set<Integer> used to filter result set based on orgainism id
-	 * @param getAllSummaries boolean which controls result set size (all or BioPaxSHowFlag.DEFAULT_NUM_RECORDS)
+	 * @param offset integer - arg 1 to sql select, limit attribute (starts at 0)
+	 * @param rowCount integer - arg 2 to sql select, limit attribute
 	 * @return Integer - total number of molecules in db..required to render "show 1 - 20 of XXX" headers
      * @throws DaoException Database access error.
 	 */
@@ -317,7 +318,7 @@ public class DaoInternalFamily {
 										 Set<BioPaxRecordSummary> summarySet,
 										 Set<Long> snapshotIdSet,
 										 Set<Integer> organismIdSet,
-										 boolean getAllSummaries) throws DaoException {
+										 int offset, int rowCount) throws DaoException {
 
 		int lc;
         Connection con = null;
@@ -331,14 +332,11 @@ public class DaoInternalFamily {
 			// organism filter
 			String organismFilter = getOrganismFilterString(organismIdSet);
 			// construct query
-			String query = (getAllSummaries) ?
-				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, " +
-				 "ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION " + 
-				 "from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilter + organismFilter) :
-				("select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, " + 
-				 "ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION " +
-				 "from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilter + organismFilter +
-				 " ORDER BY ANCESTOR_NAME LIMIT 0, " + BioPaxShowFlag.DEFAULT_NUM_RECORDS);
+			String query = 
+				"select ANCESTOR_ID, ANCESTOR_NAME, ANCESTOR_SPECIES_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID, " + 
+				"ANCESTOR_EXTERNAL_DB_NAME, ANCESTOR_EXTERNAL_DB_SNAPSHOT_DATE, ANCESTOR_EXTERNAL_DB_SNAPSHOT_VERSION " +
+				"from internal_family where DESCENDENT_ID = ? AND ANCESTOR_TYPE = ? " + dataSourceFilter + organismFilter +
+				" ORDER BY ANCESTOR_NAME LIMIT " + offset + ", " + rowCount;
 			// prepare the statement
             pstmt = con.prepareStatement(query);
             pstmt.setLong(1, descendentId);
@@ -369,14 +367,15 @@ public class DaoInternalFamily {
      * @param ancestorId ID of ancestor.
      * @param descendentType CPathRecord Type of descendent.
 	 * @param summarySet Set<BioPaxRecordSummary> - this gets populate by reference
-	 * @param getAllSummaries boolean which controls result set size (all or BioPaxSHowFlag.DEFAULT_NUM_RECORDS)
+	 * @param offset integer - arg 1 to sql select, limit attribute (starts at 0)
+	 * @param rowCount integer - arg 2 to sql select, limit attribute
 	 * @return Integer - total number of molecules in db..required to render "show 1 - 20 of XXX" headers
      * @throws DaoException Database access error.
 	 */
     public Integer getDescendentSummaries (long ancestorId,
 										   CPathRecordType descendentType,											
 										   Set<BioPaxRecordSummary> summarySet,
-										   boolean getAllSummaries) throws DaoException {
+										   int offset, int rowCount) throws DaoException {
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -385,12 +384,10 @@ public class DaoInternalFamily {
 			// perform the query
             con = JdbcUtil.getCPathConnection();
 			// get count
-			String query = (getAllSummaries) ?
-				("select `DESCENDENT_ID`, `DESCENDENT_NAME` from internal_family " +
-				 "where ANCESTOR_ID = ? AND DESCENDENT_TYPE = ?") :
-				("select `DESCENDENT_ID`, `DESCENDENT_NAME` from internal_family " +
-				 "where ANCESTOR_ID = ? AND DESCENDENT_TYPE = ? ORDER BY DESCENDENT_NAME LIMIT 0, " + 
-				 BioPaxShowFlag.DEFAULT_NUM_RECORDS);
+			String query =
+				"select `DESCENDENT_ID`, `DESCENDENT_NAME` from internal_family " +
+				"where ANCESTOR_ID = ? AND DESCENDENT_TYPE = ? ORDER BY DESCENDENT_NAME LIMIT " +
+				offset + ", " + rowCount;
             pstmt = con.prepareStatement(query);
             pstmt.setLong(1, ancestorId);
             pstmt.setString(2, descendentType.toString());
