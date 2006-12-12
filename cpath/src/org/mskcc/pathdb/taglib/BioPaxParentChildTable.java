@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.19 2006-12-12 16:55:49 cerami Exp $
+// $Id: BioPaxParentChildTable.java,v 1.20 2006-12-12 19:06:13 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -202,10 +202,10 @@ public class BioPaxParentChildTable extends HtmlTable {
             append("<td colspan=3 class='table_head2'>");
             String interactionTypePopupCode =
                     getInteractionTypePopupCode(type);
-            append("<a href=\"javascript:void(0);\""
+            append("<span class='record_page_category'><a href=\"javascript:void(0);\""
                     + interactionTypePopupCode + ">");
             append(typeInPlainEnglish + "(s)");
-            append("</a>");
+            append("</a></span>");
             append("</td>");
             append("</tr>");
             append("<tr>");
