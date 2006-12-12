@@ -160,6 +160,15 @@ YAHOO.example.init();
             var content = document.getElementById("content_" + currentType);
             content.innerHTML = o.responseText;
 
+            //  Conditionally show/hide previous button
+            if (start > 1) {
+                YAHOO.log("Enabling previous button", "info");
+                YAHOO.util.Dom.setStyle("prev_"+currentType, 'display', "inline");
+            } else {
+                YAHOO.log("Disabling previous button", "info");
+                YAHOO.util.Dom.setStyle("prev_"+currentType, 'display', "none");
+            }
+
             //  Conditionally show/hide next button
             if (stop == totalsArray[currentType]) {
                 YAHOO.log("Disabling next button", "info");
@@ -186,6 +195,14 @@ YAHOO.example.init();
         indexArray[type] = indexArray[type] + hitsPerPage;
         currentType = type;
         YAHOO.log ("Clicked next on tab:  " + type + ", index is set to:  " + indexArray[type],
+                "info");
+        getData(type);
+    }
+
+    function getPreviousData(type) {
+        indexArray[type] = indexArray[type] - hitsPerPage;
+        currentType = type;
+        YAHOO.log ("Clicked previous on tab:  " + type + ", index is set to:  " + indexArray[type],
                 "info");
         getData(type);
     }

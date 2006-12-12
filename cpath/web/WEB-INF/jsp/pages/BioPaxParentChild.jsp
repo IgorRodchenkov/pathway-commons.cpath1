@@ -8,6 +8,7 @@
 
 <style type="text/css">
     .button {
+        font-size:85%;
         color:blue;
         text-decoration:underline;
         cursor:pointer;
@@ -68,7 +69,13 @@ if (stop > total) {
             if (stop < total) {
                 nextStyle = "inline";
             }
+            String prevStyle = "none";
+            if (start > 1) {
+                prevStyle = "inline";
+            }
         %>
+        <span style="display:<%= prevStyle %>" class="button" id="prev_<%= type %>" onClick="getPreviousData('<%= type %>')">&lt; Previous</span>
+        &nbsp;
         <span style="display:<%= nextStyle %>" class="button" id="next_<%= type %>" onClick="getNextData('<%= type %>')">Next &gt;</span>
         </td>
     </tr>
