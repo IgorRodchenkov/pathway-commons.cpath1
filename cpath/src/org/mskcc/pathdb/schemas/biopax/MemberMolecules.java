@@ -1,4 +1,4 @@
-// $Id: MemberMolecules.java,v 1.20 2006-12-06 15:04:19 grossb Exp $
+// $Id: MemberMolecules.java,v 1.21 2006-12-12 19:40:26 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,7 +76,9 @@ public class MemberMolecules {
         return dao.getDescendentSummaries(record.getId(),
 										  CPathRecordType.PHYSICAL_ENTITY,
 										  moleculeSet,
-										  (flag.getFlag(BioPaxShowFlag.SHOW_ALL_MOLECULES) == 1) ? true : false);
+										  0,
+										  (flag.getFlag(BioPaxShowFlag.SHOW_ALL_MOLECULES) == 1) ?
+										  Integer.MAX_VALUE : BioPaxShowFlag.DEFAULT_NUM_RECORDS);
     }
 
     /**
