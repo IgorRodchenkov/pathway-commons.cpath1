@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.14 2006-12-12 14:19:33 grossb Exp $
+// $Id: DaoInternalFamily.java,v 1.15 2006-12-12 14:39:07 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,7 +47,6 @@ import java.sql.SQLException;
 import java.util.Set;
 import java.util.Date;
 import java.util.ArrayList;
-import java.io.IOException;
 
 /**
  * Data Access Object to the internal family table.
@@ -309,7 +308,7 @@ public class DaoInternalFamily {
 	 * @param summarySet Set<BioPaxRecordSummary> - this gets populate by reference
 	 * @param snapshotIdSet Set<Long> - used to filter result set based on db sources
 	 * @param organismIdSet Set<Integer> used to filter result set based on orgainism id
-	 * @param boolean which controls result set size (all or BioPaxSHowFlag.DEFAULT_NUM_RECORDS)
+	 * @param getAllSummaries boolean which controls result set size (all or BioPaxSHowFlag.DEFAULT_NUM_RECORDS)
 	 * @return Integer - total number of molecules in db..required to render "show 1 - 20 of XXX" headers
      * @throws DaoException Database access error.
 	 */
@@ -370,7 +369,7 @@ public class DaoInternalFamily {
      * @param ancestorId ID of ancestor.
      * @param descendentType CPathRecord Type of descendent.
 	 * @param summarySet Set<BioPaxRecordSummary> - this gets populate by reference
-	 * @param boolean which controls result set size (all or BioPaxSHowFlag.DEFAULT_NUM_RECORDS)
+	 * @param getAllSummaries boolean which controls result set size (all or BioPaxSHowFlag.DEFAULT_NUM_RECORDS)
 	 * @return Integer - total number of molecules in db..required to render "show 1 - 20 of XXX" headers
      * @throws DaoException Database access error.
 	 */
@@ -478,11 +477,11 @@ public class DaoInternalFamily {
 			summary.setRecordID(rs.getLong(1));
 			summary.setName(rs.getString(2));
 			summary.setOrganism(rs.getString(3));
-			Long snapshotId = new Long(rs.getLong(4));
+			Long snapshotId = rs.getLong(4);
 			ExternalDatabaseRecord databaseRecord = new ExternalDatabaseRecord();
 			databaseRecord.setName(rs.getString(5));
 			java.sql.Date date = rs.getDate(6);
-			String snapshotVersion = new String(rs.getString(7));
+			String snapshotVersion = rs.getString(7);
 			ExternalDatabaseSnapshotRecord snapshotRecord =
 				new ExternalDatabaseSnapshotRecord
 				(databaseRecord, new Date(date.getTime()), snapshotVersion);
@@ -523,7 +522,7 @@ public class DaoInternalFamily {
 
 	private String getDataSourceFilterString(Set<Long> snapshotIdSet) {
 
-		StringBuffer dataSourceFilterBuf = new StringBuffer();;
+		StringBuffer dataSourceFilterBuf = new StringBuffer();
 		int snapshotIdSetSize = snapshotIdSet.size();
 		for (int lc = 0; lc < snapshotIdSetSize; lc++) {
 			String query = ((lc == 0) ? "AND (" : "OR") + " ANCESTOR_EXTERNAL_DB_SNAPSHOT_ID = ? ";
@@ -539,11 +538,11 @@ public class DaoInternalFamily {
 
 		StringBuffer organismFilterBuf = new StringBuffer("");
 		int organismIdSetSize = organismIdSet.size();
-		boolean createOrganismFilter = (organismIdSetSize > 0) ? true : false;
+		boolean createOrganismFilter = (organismIdSetSize > 0);
 
 		int lc = -1;
 		for (Integer i : organismIdSet) {
-			if (i.intValue() == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
+			if (i == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
 				createOrganismFilter = false;
 				break;
 			}
