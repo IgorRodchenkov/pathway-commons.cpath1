@@ -105,6 +105,12 @@
             <forward name="success" path="/WEB-INF/jsp/pages/BioPaxParentChild.jsp"/>
         </action>
 
+        <!--  BioPAX Record Page, Take 2 -->
+        <action path="/record2"
+            type="org.mskcc.pathdb.action.ShowBioPaxRecord2">
+            <forward name="success" path="/WEB-INF/jsp/pages/BioPaxRecord2.jsp"/>
+        </action>
+
         <!--  FAQ Page -->
         <action path="/faq"
             type="org.mskcc.pathdb.action.HomeAction">
