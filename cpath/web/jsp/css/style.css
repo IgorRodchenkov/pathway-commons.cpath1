@@ -271,6 +271,9 @@
 .mini_buttons a:hover {color: black !important;}
 .mini_buttons a:active {color: black !important;}
 
+.record_page_category a:hover {color: black !important;}
+.record_page_category a:active {color: black !important;}
+
 .small {
     font-size:85%;
 }
