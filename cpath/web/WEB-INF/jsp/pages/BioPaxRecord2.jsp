@@ -127,6 +127,9 @@ YAHOO.example.init();
     //  Set up Pagination within Tabs
     /////////////////////////////
 
+    //  indicates connection in progress
+    var connectionInProgress = false;
+
     //  page size
     var hitsPerPage = 10;
 
@@ -194,6 +197,8 @@ YAHOO.example.init();
 
             //  Conditionally show/hide data source details
             showHideDataSourceDetails();
+
+            connectionInProgress = false;
         },
         failure: function(o) {
             YAHOO.log("Connection Failure:  " + o.statusText, "error");
@@ -209,19 +214,31 @@ YAHOO.example.init();
     }
 
     function getNextData(type) {
-        indexArray[type] = indexArray[type] + hitsPerPage;
-        currentType = type;
-        YAHOO.log ("Clicked next on tab:  " + type + ", index is set to:  " + indexArray[type],
-                "info");
-        getData(type);
+        if (connectionInProgress) {
+            YAHOO.log("Ignoring request for next data.  Connection currenting in progress",
+                    "warn");
+        } else {
+            connectionInProgress = true;
+            indexArray[type] = indexArray[type] + hitsPerPage;
+            currentType = type;
+            YAHOO.log ("Clicked next on tab:  " + type + ", index is set to:  " + indexArray[type],
+                    "info");
+            getData(type);
+        }
     }
 
     function getPreviousData(type) {
-        indexArray[type] = indexArray[type] - hitsPerPage;
-        currentType = type;
-        YAHOO.log ("Clicked previous on tab:  " + type + ", index is set to:  " + indexArray[type],
-                "info");
-        getData(type);
+        if (connectionInProgress) {
+            YAHOO.log("Ignoring request for previous data.  Connection currenting in progress",
+                    "warn");
+        } else {
+            connectionInProgress = true;
+            indexArray[type] = indexArray[type] - hitsPerPage;
+            currentType = type;
+            YAHOO.log ("Clicked previous on tab:  " + type + ", index is set to:  " + indexArray[type],
+                    "info");
+            getData(type);
+        }
     }
 
     var showDataSources = false;
