@@ -69,6 +69,20 @@ String name = (String) request.getAttribute("NAME");
 }
 </style>
 
+<style type="text/css">
+    .button {
+        font-size:85%;
+        color:blue;
+        text-decoration:underline;
+        cursor:pointer;
+    }
+
+    .data_source {
+        display:none;
+
+    }
+</style>
+
 <script type="text/javascript">
 
 /////////////////////////////
@@ -177,6 +191,9 @@ YAHOO.example.init();
                 YAHOO.log("Enabling next button", "info");
                 YAHOO.util.Dom.setStyle("next_"+currentType, 'display', "inline");
             }
+
+            //  Conditionally show/hide data source details
+            showHideDataSourceDetails();
         },
         failure: function(o) {
             YAHOO.log("Connection Failure:  " + o.statusText, "error");
@@ -206,6 +223,36 @@ YAHOO.example.init();
                 "info");
         getData(type);
     }
+
+    var showDataSources = false;
+
+    /**
+        Dynamically shows/hides data source details.
+    */
+    function showHideDataSourceDetails() {
+        var elements = YAHOO.util.Dom.getElementsByClassName('data_source', 'div');
+        if (showDataSources == false ) {
+            YAHOO.util.Dom.setStyle(elements, 'display', 'none');
+        } else {
+            YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
+        }
+    }
+
+    /**
+        Toggles the showing/hiding of data source details
+    */
+    function toggleDataSourceDetails() {
+        var buttonContent = document.getElementById("data_source_button");
+        showDataSources = !showDataSources;
+        YAHOO.log ("User toggled showing of data source details to:  " + showDataSources,
+                "info");
+        if (showDataSources == true ) {
+            buttonContent.innerHTML = "Hide Data Source Details";
+        } else {
+            buttonContent.innerHTML = "Show Data Source Details";
+        }
+        showHideDataSourceDetails();
+    }
 </script>
 </head>
 <body>
@@ -214,6 +261,8 @@ YAHOO.example.init();
 <h1><%= name %></h1>
 <div id="doc">
 </div>
+
+<a class="button" id="data_source_button" onClick='toggleDataSourceDetails()'>Show Data Source Details</a>
 
 <script type="text/javascript">
 var myLogReader = new YAHOO.widget.LogReader();

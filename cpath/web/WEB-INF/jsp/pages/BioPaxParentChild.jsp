@@ -3,17 +3,9 @@
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils"%>
 <%@ page import="org.mskcc.pathdb.action.BioPaxParentChild"%>
+<%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
-
-<style type="text/css">
-    .button {
-        font-size:85%;
-        color:blue;
-        text-decoration:underline;
-        cursor:pointer;
-    }
-</style>
 
 <%
 int start = 0;
@@ -116,6 +108,10 @@ for (int i = 0; i < summaryList.size(); i++) {
             out.println(entitySummary.getName() + "</td>");
         }
     }
+    out.println("<td><div class='data_source'>");
+    out.println(DbSnapshotInfo.getDbSnapshotHtml(entitySummary.getSnapshotId()));
+    out.println("</div>");
+    out.println("</td>");
     out.println("</tr>");
     index++;
 }
