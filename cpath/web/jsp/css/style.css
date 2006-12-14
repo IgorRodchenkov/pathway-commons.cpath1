@@ -277,3 +277,13 @@
 .small {
     font-size:85%;
 }
+
+/* Data Source Details */
+.data_source {
+  font-size:90%;
+}
+
+/* Entity Summary, e.g. summary of interaction details */
+.entity_summary {
+    font-size:90%;    
+}

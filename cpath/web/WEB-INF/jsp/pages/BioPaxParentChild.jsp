@@ -100,12 +100,12 @@ for (int i = 0; i < summaryList.size(); i++) {
                 InteractionSummaryUtils.createInteractionSummaryString
                         (interactionSummary);
         if (interactionString != null) {
-            out.println("<td>"+ interactionString + "</td>");
+            out.println("<td><div class='entity_summary'>"+ interactionString + "</div></td>");
         }
     } else {
-        out.println("<td>");
+        out.println("<td><div class='entity_summary'>");
         if (entitySummary != null) {
-            out.println(entitySummary.getName() + "</td>");
+            out.println(entitySummary.getName() + "</div></td>");
         }
     }
     out.println("<td><div class='data_source'>");
