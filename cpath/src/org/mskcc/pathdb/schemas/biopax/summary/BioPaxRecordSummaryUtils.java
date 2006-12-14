@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.31 2006-11-27 20:31:16 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.32 2006-12-14 15:19:23 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -92,7 +92,7 @@ public class BioPaxRecordSummaryUtils {
     /**
      * Names longer than this will be truncated.
      */
-    public static final int NAME_LENGTH = 20;
+    public static final int NAME_LENGTH = 30;
 
     /**
      * No name available.
@@ -281,20 +281,28 @@ public class BioPaxRecordSummaryUtils {
         //  Create Header for Pop-Up Box
         buf.append("<DIV CLASS=popup>");
         buf.append("<DIV CLASS=popup_caption>");
-        buf.append(truncateLongName(name, NAME_LENGTH + 15));
-        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
-                isSumoylated, buf);
+        String truncatedName = truncateLongName(name, NAME_LENGTH);
+        buf.append(truncatedName);
+        String features = getFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
+                isSumoylated);
+        buf.append (features);
+        String celluarLocation = "";
         if (participant != null) {
             if (participant.getCellularLocation() != null) {
+                celluarLocation = participant.getCellularLocation();
                 buf.append(" in <SPAN CLASS=popup_organism>" + participant.getCellularLocation()
                         + "</SPAN>");
             }
+        }
+        int lengthOfHeader = truncatedName.length() + features.length() + celluarLocation.length();
+        if (lengthOfHeader < NAME_LENGTH) {
+            lengthOfHeader = NAME_LENGTH;
         }
         buf.append("</DIV>");
         buf.append("<DIV CLASS=popup_text>");
 
         //  Add Synonyms to Pop-Up Box
-        addSynonmys(component, buf);
+        addSynonmys(component, lengthOfHeader, buf);
 
         //  Add Features to Pop-Up Box
         if (participant != null) {
@@ -306,7 +314,7 @@ public class BioPaxRecordSummaryUtils {
                     || participant.getFeatureList().size() == 0)) {
                 buf.append("No synonyms or features specified");
             }
-            addComponents(participant, buf);
+            addComponents(participant, lengthOfHeader, buf);
         }
 
         if (participant == null && (component.getSynonyms() == null
@@ -332,8 +340,9 @@ public class BioPaxRecordSummaryUtils {
         }
 
         //  If component is phosphorylated, show explicitly
-        appendFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
-                isSumoylated, buf);
+        String featuresStr = getFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
+                isSumoylated);
+        buf.append  (featuresStr);
         return buf.toString();
     }
 
@@ -346,7 +355,7 @@ public class BioPaxRecordSummaryUtils {
      * @param buf         StringBuffer Object.
      */
     private static void addComponents(ParticipantSummaryComponent participant,
-            StringBuffer buf) {
+            int lengthOfHeader, StringBuffer buf) {
         ArrayList componentList = participant.getComponentList();
         if (componentList != null && componentList.size() > 0) {
             buf.append("<P>Complex contains the following molecules:");
@@ -354,7 +363,7 @@ public class BioPaxRecordSummaryUtils {
             for (int i = 0; i < componentList.size(); i++) {
                 BioPaxRecordSummary child =
                         (BioPaxRecordSummary) componentList.get(i);
-                buf.append("<LI>" + truncateLongName(child.getName(), NAME_LENGTH)
+                buf.append("<LI>" + truncateLongName(child.getName(), lengthOfHeader)
                         + "</LI>");
             }
             buf.append("</UL>");
@@ -427,13 +436,12 @@ public class BioPaxRecordSummaryUtils {
      * @param phosphorylated isPhosphorylated.
      * @param ubiquitinated
      * @param acetylated
-     * @param buf
      */
-    private static void appendFeatures(boolean phosphorylated,
+    private static String getFeatures(boolean phosphorylated,
             boolean ubiquitinated,
             boolean acetylated,
-            boolean sumoylated,
-            StringBuffer buf) {
+            boolean sumoylated) {
+        StringBuffer buf = new StringBuffer();
         if (phosphorylated) {
             buf.append(PHOSPHORYLATED);
         }
@@ -446,6 +454,7 @@ public class BioPaxRecordSummaryUtils {
         if (sumoylated) {
             buf.append(SUMOYLATED);
         }
+        return buf.toString();
     }
 
     /**
@@ -490,14 +499,14 @@ public class BioPaxRecordSummaryUtils {
      * @param component ParticipantSummaryComponent Object.
      * @param buf       HTML StringBuffer Object.
      */
-    private static void addSynonmys(BioPaxRecordSummary component,
+    private static void addSynonmys(BioPaxRecordSummary component, int lengthOfHeader,
             StringBuffer buf) {
         List synList = component.getSynonyms();
         if (synList != null && synList.size() > 0) {
             buf.append("Also known as:  <UL>");
             for (int i = 0; i < synList.size(); i++) {
                 String synonym = (String) synList.get(i);
-                synonym = truncateLongName(synonym, NAME_LENGTH);
+                synonym = truncateLongName(synonym, lengthOfHeader);
                 buf.append("<LI>" + synonym + "</LI>");
             }
             buf.append("</UL>");
