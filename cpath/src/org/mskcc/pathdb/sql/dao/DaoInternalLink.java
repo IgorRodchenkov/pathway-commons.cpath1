@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.22 2006-12-11 18:12:56 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.23 2006-12-14 16:06:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -391,7 +391,6 @@ public class DaoInternalLink {
             //  Create Prepared Statement
             pstmt = con.prepareStatement (buf.toString());
             xdebug.logMsg(this, "Using SQL Statement:  " + buf.toString());
-            System.out.println(buf.toString());
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
