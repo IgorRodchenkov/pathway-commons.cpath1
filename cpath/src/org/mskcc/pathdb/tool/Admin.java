@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.56 2006-11-17 16:30:58 cerami Exp $
+// $Id: Admin.java,v 1.57 2006-12-15 19:38:32 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,6 +63,7 @@ public class Admin {
     //  Command Constants
     private static final String COMMAND_INDEX = "index";
     private static final String COMMAND_IMPORT = "import";
+	private static final String COMMAND_POPULATE_REFERENCE_TABLE = "pop_ref";
     private static final String COMMAND_PRE_COMPUTE = "precompute";
     private static final String COMMAND_COUNT_AFFYMETRIX = "count_affy";
     private static final String COMMAND_VALIDATE = "validate";
@@ -148,6 +149,9 @@ public class Admin {
                 precomputer.executeTask();
             } else if (command.equals(COMMAND_IMPORT)) {
                 importData();
+			} else if (command.equals(COMMAND_POPULATE_REFERENCE_TABLE)) {
+				PopulateReferenceTableTask referenceTableTask = new PopulateReferenceTableTask(true, xdebug);
+				referenceTableTask.executeTask();
             } else if (command.equals(COMMAND_PRE_COMPUTE)) {
                 LoadPreComputedQueries preCompute =
                         new LoadPreComputedQueries();
