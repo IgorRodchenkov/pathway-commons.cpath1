@@ -1,4 +1,4 @@
-// $Id: BioPaxEntityTypeMap.java,v 1.5 2006-06-09 19:22:03 cerami Exp $
+// $Id: BioPaxEntityTypeMap.java,v 1.6 2006-12-15 18:59:02 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,6 +31,8 @@
  **/
 package org.mskcc.pathdb.model;
 
+import org.mskcc.pathdb.action.BioPaxParentChild;
+
 import java.util.HashMap;
 
 /**
@@ -44,23 +46,25 @@ public class BioPaxEntityTypeMap extends HashMap {
      * Constructor.
      */
     public BioPaxEntityTypeMap() {
-        put("complex", "Complex");
-        put("pathway", "Pathway");
-        put("protein", "Protein");
+        put("complex", "Complexes");
+        put("pathway", "Pathways");
+        put("protein", "Proteins");
         put("rna", "RNA");
         put("dna", "DNA");
-        put("smallMolecule", "Small Molecule");
-        put("physicalEntity", "Physical Entity");
+        put("smallMolecule", "Small Molecules");
+        put("physicalEntity", "Physical Entities");
         put("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
-        put("transport", "Transport Reaction");
-        put("complexAssembly", "Complex Assembly");
-        put("biochemicalReaction", "Biochemical Reaction");
-        put("conversion", "Conversion Reaction");
-        put("modulation", "Modulation Reaction");
-        put("catalysis", "Catalysis Reaction");
-        put("control", "Control Reaction");
-        put("physicalInteraction", "Physical Interaction");
-        put("interaction", "Interaction");
+        put("transport", "Transport Reactions");
+        put("complexAssembly", "Complex Assemblies");
+        put("biochemicalReaction", "Biochemical Reactions");
+        put("conversion", "Conversion Reactions");
+        put("modulation", "Modulation Reactions");
+        put("catalysis", "Catalysis Reactions");
+        put("control", "Control Reactions");
+        put("physicalInteraction", "Physical Interactions");
+        put("interaction", "Interactions");
+        put(BioPaxParentChild.GET_PATHWAY_ROOTS, "Pathways");
+        put(BioPaxParentChild.GET_PE_LEAVES, "Molecules");
     }
 
 }
