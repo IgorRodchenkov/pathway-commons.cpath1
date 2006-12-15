@@ -60,6 +60,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
             int count = daoFamily.getAncestorIdCount(Long.parseLong(id), CPathRecordType.PATHWAY,
                     filterSettings.getSnapshotIdSet(), filterSettings.getOrganismTaxonomyIdSet());
             TypeCount typeCount = new TypeCount();
+            xdebug.logMsg(this, "Number of Pathway Roots:  " + count);
             typeCount.setType(BioPaxParentChild.GET_PATHWAY_ROOTS);
             typeCount.setCount(count);
             typeList.add(typeCount);
@@ -69,6 +70,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
             int count = daoFamily.getDescendentIdCount(Long.parseLong(id),
                     CPathRecordType.PHYSICAL_ENTITY);
             TypeCount typeCount = new TypeCount();
+            xdebug.logMsg(this, "Number of Molecule Leaves:  " + count);
             typeCount.setType(BioPaxParentChild.GET_PE_LEAVES);
             typeCount.setCount(count);
             typeList.add(typeCount);
