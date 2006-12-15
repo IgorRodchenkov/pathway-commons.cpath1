@@ -1,4 +1,4 @@
-// $Id: BioPaxEntityTypeMap.java,v 1.6 2006-12-15 18:59:02 cerami Exp $
+// $Id: BioPaxEntityTypeMap.java,v 1.7 2006-12-15 20:03:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,23 +46,23 @@ public class BioPaxEntityTypeMap extends HashMap {
      * Constructor.
      */
     public BioPaxEntityTypeMap() {
-        put("complex", "Complexes");
-        put("pathway", "Pathways");
-        put("protein", "Proteins");
+        put("complex", "Complex");
+        put("pathway", "Pathway");
+        put("protein", "Protein");
         put("rna", "RNA");
         put("dna", "DNA");
-        put("smallMolecule", "Small Molecules");
-        put("physicalEntity", "Physical Entities");
+        put("smallMolecule", "Small Molecule");
+        put("physicalEntity", "Physical Entity");
         put("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
-        put("transport", "Transport Reactions");
-        put("complexAssembly", "Complex Assemblies");
-        put("biochemicalReaction", "Biochemical Reactions");
-        put("conversion", "Conversion Reactions");
-        put("modulation", "Modulation Reactions");
-        put("catalysis", "Catalysis Reactions");
-        put("control", "Control Reactions");
-        put("physicalInteraction", "Physical Interactions");
-        put("interaction", "Interactions");
+        put("transport", "Transport Reaction");
+        put("complexAssembly", "Complex Assembly");
+        put("biochemicalReaction", "Biochemical Reaction");
+        put("conversion", "Conversion Reaction");
+        put("modulation", "Modulation Reaction");
+        put("catalysis", "Catalysis Reaction");
+        put("control", "Control Reaction");
+        put("physicalInteraction", "Physical Interaction");
+        put("interaction", "Interaction");
         put(BioPaxParentChild.GET_PATHWAY_ROOTS, "Pathways");
         put(BioPaxParentChild.GET_PE_LEAVES, "Molecules");
     }
