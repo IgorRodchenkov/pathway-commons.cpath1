@@ -38,4 +38,18 @@ public class TestPopulateInternalFamilyLookUpTable extends TestCase {
         ids = dao.getDescendentIds(298, CPathRecordType.PHYSICAL_ENTITY);
         assertEquals (95, ids.length);
     }
+
+    //  Keep this here for possible future reference
+    private void testReactome() throws Exception {
+        ProgressMonitor pMonitor = new ProgressMonitor();
+        PopulateInternalFamilyLookUpTable populator = new PopulateInternalFamilyLookUpTable
+                (pMonitor);
+        DaoInternalFamily dao = new DaoInternalFamily();
+        dao.deleteAllRecords();
+        long[] ids = populator.getDescendents(9);
+        for (int i=0; i<ids.length; i++) {
+            System.out.println("Child:  " + ids[i]);
+        }
+        System.out.println("Num children:  " + ids.length);
+    }
 }
