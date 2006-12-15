@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.33 2006-12-14 18:28:35 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.34 2006-12-15 18:58:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -93,6 +93,8 @@ public class BioPaxRecordSummaryUtils {
      * Names longer than this will be truncated.
      */
     public static final int NAME_LENGTH = 30;
+
+    private static int maxLength = NAME_LENGTH;
 
     /**
      * No name available.
@@ -240,6 +242,20 @@ public class BioPaxRecordSummaryUtils {
     }
 
     /**
+     * Creates an HTML Link to the Specified BioPaxRecordSummary Object.
+     *
+     * @param entitySummary ParticipantSummaryComponent Object.
+     * @param max max length of name
+     * @return HTML String.
+     */
+    public static String createEntityLink(BioPaxRecordSummary entitySummary, int max) {
+        maxLength = max;
+        String html = createComponentLink(entitySummary, null);
+        maxLength = NAME_LENGTH;
+        return html;
+    }
+
+    /**
      * Creates an HTML Link to the Specified Component Object.
      *
      * @param component          ParticipantSummaryComponent Object.
@@ -281,7 +297,7 @@ public class BioPaxRecordSummaryUtils {
         //  Create Header for Pop-Up Box
         buf.append("<DIV CLASS=popup>");
         buf.append("<DIV CLASS=popup_caption>");
-        String truncatedName = truncateLongName(name, NAME_LENGTH);
+        String truncatedName = truncateLongName(name, maxLength);
         buf.append(truncatedName);
         String features = getFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
                 isSumoylated);
@@ -328,7 +344,7 @@ public class BioPaxRecordSummaryUtils {
         buf.append("); return true;\" onmouseout=\"return nd();\">");
 
         //  Output Component Name and end A Tag.
-        buf.append(truncateLongName(name, NAME_LENGTH));
+        buf.append(truncateLongName(name, maxLength));
         buf.append("</a>");
 
         //  If this is a transport interaction, show cellular
