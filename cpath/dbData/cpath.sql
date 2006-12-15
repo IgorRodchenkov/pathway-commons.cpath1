@@ -278,3 +278,16 @@ CREATE TABLE `internal_family` (
   `DESCENDENT_TYPE` varchar(255) NOT NULL default '',
   `DESCENDENT_NAME` varchar(255) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+#
+# Table structure for table `reference`
+#
+CREATE TABLE `reference` (
+	`REFERENCE_ID` int(11) NOT NULL default '-9999',
+	`YEAR` varchar(255) NOT NULL default '',
+	`TITLE` varchar(255) NOT NULL default '',
+	`AUTHORS` varchar(255) NOT NULL default '',
+	`SOURCE` varchar(255) NOT NULL default '',
+	`EXTERNAL_DB_ID` int(11) NOT NULL default '0',
+	PRIMARY KEY (`REFERENCE_ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
