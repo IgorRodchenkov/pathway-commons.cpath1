@@ -82,6 +82,7 @@ public class BioPaxParentChild extends BaseAction {
 
         ArrayList records = null;
         ArrayList summaryList = null;
+        ArrayList bpSummaryList = null;
         int start = 0;
         if (startIndex != null) {
             start = Integer.parseInt(startIndex);
@@ -112,9 +113,11 @@ public class BioPaxParentChild extends BaseAction {
         //  Get entity summaries
         if (records != null && summaryList == null) {
             summaryList = getEntitySummaries(records, xdebug);
+            bpSummaryList = getBioPaxSummaries(records, xdebug);
         }
 
         request.setAttribute("SUMMARY_LIST", summaryList);
+        request.setAttribute("BP_SUMMARY_LIST", bpSummaryList);
         request.setAttribute("START", start);
         request.setAttribute("MAX", max);
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
@@ -133,6 +136,22 @@ public class BioPaxParentChild extends BaseAction {
                 + "] --> " + summary.getName());
         }
         return summaryList;
+    }
+
+    private ArrayList getBioPaxSummaries (ArrayList records, XDebug xdebug)
+            throws BioPaxRecordSummaryException, DaoException {
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        ArrayList bpSummaryList = new ArrayList();
+        for (int i=0; i<records.size(); i++) {
+            CPathRecord record = (CPathRecord) records.get(i);
+            CPathRecord recordFull = daoCPath.getRecordById(record.getId());
+            BioPaxRecordSummary bpSummary =
+                    BioPaxRecordUtil.createBioPaxRecordSummary(recordFull);
+            bpSummaryList.add(bpSummary);
+            xdebug.logMsg(this, "Got summary for:  [cPath ID: " + bpSummary.getRecordID()
+                + "] --> " + bpSummary.getName());
+        }
+        return bpSummaryList;
     }
 
     private ArrayList getChildren (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
