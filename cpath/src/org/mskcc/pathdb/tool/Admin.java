@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.57 2006-12-15 19:38:32 grossb Exp $
+// $Id: Admin.java,v 1.58 2006-12-15 23:27:17 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -150,8 +150,11 @@ public class Admin {
             } else if (command.equals(COMMAND_IMPORT)) {
                 importData();
 			} else if (command.equals(COMMAND_POPULATE_REFERENCE_TABLE)) {
+				// populate the reference table
 				PopulateReferenceTableTask referenceTableTask = new PopulateReferenceTableTask(true, xdebug);
 				referenceTableTask.executeTask();
+				// dump it to to file system for next go around
+				dumpMySQLTable("reference", cpathHome + separator + "dbData/reference.sql");
             } else if (command.equals(COMMAND_PRE_COMPUTE)) {
                 LoadPreComputedQueries preCompute =
                         new LoadPreComputedQueries();
@@ -491,4 +494,44 @@ public class Admin {
                 + "buggy HRPD PSI-MI Files.");
         System.exit(1);
     }
+
+	/**
+	 * Dumps mysql to file system (text file)
+	 *
+	 * @param tableName String
+	 * @param fileName String
+	 */
+	private static void dumpMySQLTable(String tableName, String fileName) {
+
+		// setup command to run mysqldump
+		String cmd = ("mysqldump -u" + dbUser + " -p" + dbPwd + " " + dbName + " " + tableName);
+
+		try {
+			// execute the command
+			Process child = Runtime.getRuntime().exec(cmd);
+
+			// grab command output
+			BufferedReader bufferedReader =
+				new BufferedReader(new InputStreamReader(child.getInputStream()));
+
+			// process the output
+			String line;
+			PrintWriter printWriter = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				printWriter = (printWriter == null) ?
+					new PrintWriter(new BufferedWriter(new FileWriter(fileName))) : printWriter;
+				printWriter.println(line);
+			}
+			// close readers/writers
+			if (printWriter != null) printWriter.flush();
+			if (printWriter != null) printWriter.close();
+			if (bufferedReader != null) bufferedReader.close();
+		}
+		catch (IOException e) {
+            System.out.println("\n-----------------------------------------");
+			System.out.println("Error while attempting to dump mysql table '" + tableName + "':");
+			System.out.println("'" + e.getMessage() + "'");
+            System.out.println("-----------------------------------------");
+		}		
+	}
 }
