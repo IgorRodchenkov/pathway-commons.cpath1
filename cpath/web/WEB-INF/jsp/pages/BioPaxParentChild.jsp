@@ -96,13 +96,10 @@ if (summaryList != null && summaryList.size() > 0) {
             }
             EntitySummary entitySummary = (EntitySummary) summaryList.get(i);
             BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) bpSummaryList.get(i);
-            if (entitySummary != null) {
-                String uri = "record2.do?id=" + entitySummary.getRecordID();
-                out.println("<td width='20%'>" + index + ". <a href=\""
-                        + uri + "\">View Details</a></td>");
-            }
-
+            String uri = "record2.do?id=" + entitySummary.getRecordID();
             if (entitySummary instanceof InteractionSummary) {
+                out.println("<td width='20%'>" + index + ". <a href=\""
+                            + uri + "\">View Details</a></td>");
                 InteractionSummary interactionSummary =
                         (InteractionSummary) entitySummary;
                 String interactionString =
@@ -117,9 +114,11 @@ if (summaryList != null && summaryList.size() > 0) {
                     out.println("</td>");
                 }
             } else {
-                out.println("<td><div class='entity_summary'>");
+                out.println("<td>");
                 if (entitySummary != null) {
-                    out.println(entitySummary.getName() + "</div>");
+                    out.println(index + ". <a href=\"" + uri + "\">");
+                    out.println(entitySummary.getName());
+                    out.println("</a>");
                 }
                 if (bpSummary.getComment() != null) {
                     out.println("<P><div class='data_source'>"
