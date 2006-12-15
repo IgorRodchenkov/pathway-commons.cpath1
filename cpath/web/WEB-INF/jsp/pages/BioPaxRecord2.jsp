@@ -13,6 +13,7 @@ if (command == null) {
     command = "getChildren";
 }
 String name = (String) request.getAttribute("NAME");
+boolean showTabs = false;
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -106,13 +107,16 @@ YAHOO.example.init = function() {
         }
         String dataUrl = "table.do?id=" + id + "&command="+command+"&type="
             + typeCount.getType() + "&totalNumRecords=" + typeCount.getCount();
-    %>
-        tabView.addTab(new YAHOO.widget.Tab({
-            label: '<%= tabLabel %>',
-            dataSrc: '<%= dataUrl %>',
-            active: <%= tabActive %>,
-            cacheData: true /* only load once */
-        }));
+        if (typeCount.getCount() > 0) {
+            showTabs = true;
+            %>
+                tabView.addTab(new YAHOO.widget.Tab({
+                    label: '<%= tabLabel %>',
+                    dataSrc: '<%= dataUrl %>',
+                    active: <%= tabActive %>,
+                    cacheData: true /* only load once */
+                }));
+            <% } %>
     <% } %>
 
     //  When ready, create tabs within div=doc
@@ -267,9 +271,9 @@ YAHOO.example.init();
         YAHOO.log ("User toggled showing of data source details to:  " + showDataSources,
                 "info");
         if (showDataSources == true ) {
-            buttonContent.innerHTML = "Hide Data Source Details";
+            buttonContent.innerHTML = "Hide Details";
         } else {
-            buttonContent.innerHTML = "Show Data Source Details";
+            buttonContent.innerHTML = "Show Details";
         }
         showHideDataSourceDetails();
     }
@@ -279,10 +283,12 @@ YAHOO.example.init();
 
 
 <h1><%= name %></h1>
+<% if (showTabs) { %>
 <div id="doc">
 </div>
+<a class="button" id="data_source_button" onClick='toggleDataSourceDetails()'>Show Details</a>
+<% } %>
 
-<a class="button" id="data_source_button" onClick='toggleDataSourceDetails()'>Show Data Source Details</a>
 
 <script type="text/javascript">
 var myLogReader = new YAHOO.widget.LogReader();

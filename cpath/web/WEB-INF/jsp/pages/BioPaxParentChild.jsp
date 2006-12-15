@@ -46,7 +46,7 @@ if (stop > total) {
 }
 
 boolean showPathwayRoots = false;
-if (type.equals(BioPaxParentChild.GET_PATHWAY_ROOTS)) {
+if (type != null && type.equals(BioPaxParentChild.GET_PATHWAY_ROOTS)) {
     showPathwayRoots = true;
 }
 %>
@@ -81,6 +81,7 @@ if (type.equals(BioPaxParentChild.GET_PATHWAY_ROOTS)) {
 <table width=100%>
 <%
 ArrayList summaryList = (ArrayList) request.getAttribute("SUMMARY_LIST");
+ArrayList bpSummaryList = (ArrayList) request.getAttribute("BP_SUMMARY_LIST");
 if (summaryList != null && summaryList.size() > 0) {
     Object object = summaryList.get(0);
     int index = start;
@@ -94,6 +95,7 @@ if (summaryList != null && summaryList.size() > 0) {
                 out.println("<tr bgcolor=#EEEEEE>");
             }
             EntitySummary entitySummary = (EntitySummary) summaryList.get(i);
+            BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) bpSummaryList.get(i);
             if (entitySummary != null) {
                 String uri = "record2.do?id=" + entitySummary.getRecordID();
                 out.println("<td width='20%'>" + index + ". <a href=\""
@@ -107,13 +109,23 @@ if (summaryList != null && summaryList.size() > 0) {
                         InteractionSummaryUtils.createInteractionSummaryString
                                 (interactionSummary);
                 if (interactionString != null) {
-                    out.println("<td><div class='entity_summary'>"+ interactionString + "</div></td>");
+                    out.println("<td><div class='entity_summary'>"+ interactionString + "</div>");
+                    if (bpSummary.getComment() != null) {
+                        out.println("<P><div class='data_source'>"
+                                + bpSummary.getComment() + "</div>");
+                    }
+                    out.println("</td>");
                 }
             } else {
                 out.println("<td><div class='entity_summary'>");
                 if (entitySummary != null) {
-                    out.println(entitySummary.getName() + "</div></td>");
+                    out.println(entitySummary.getName() + "</div>");
                 }
+                if (bpSummary.getComment() != null) {
+                    out.println("<P><div class='data_source'>"
+                            + bpSummary.getComment() + "</div>");
+                }
+                out.println("</td>");
             }
             out.println("<td><div class='data_source'>");
             out.println(DbSnapshotInfo.getDbSnapshotHtml(entitySummary.getSnapshotId()));
