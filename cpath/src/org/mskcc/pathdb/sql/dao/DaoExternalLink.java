@@ -1,4 +1,4 @@
-// $Id: DaoExternalLink.java,v 1.34 2006-08-25 16:47:31 cerami Exp $
+// $Id: DaoExternalLink.java,v 1.35 2006-12-15 19:42:16 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -387,7 +387,7 @@ public class DaoExternalLink extends ManagedDAO {
      * @return Array List of External Link Objects.
      * @throws DaoException Error Retrieving Data.
      */
-    private ArrayList getRecordByDbAndLinkedToId(long externalDbId,
+    public ArrayList getRecordByDbAndLinkedToId(long externalDbId,
             String linkedToId) throws DaoException {
         ArrayList externalLinks = new ArrayList();
         Connection con = null;
