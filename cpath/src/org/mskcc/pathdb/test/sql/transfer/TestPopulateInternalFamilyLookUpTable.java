@@ -40,7 +40,7 @@ public class TestPopulateInternalFamilyLookUpTable extends TestCase {
     }
 
     //  Keep this here for possible future reference
-    private void testReactome() throws Exception {
+    public void reactomeTest() throws Exception {
         ProgressMonitor pMonitor = new ProgressMonitor();
         PopulateInternalFamilyLookUpTable populator = new PopulateInternalFamilyLookUpTable
                 (pMonitor);
