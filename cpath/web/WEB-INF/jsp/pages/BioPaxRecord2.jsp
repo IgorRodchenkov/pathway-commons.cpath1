@@ -95,8 +95,11 @@ YAHOO.example.init = function() {
     //  Create one tab per type
     <% for (int i=0; i<typesList.size(); i++) {
         TypeCount typeCount = (TypeCount) typesList.get(i);
-        String tabLabel = bpPlainEnglish.get(typeCount.getType())
-            + " (" + typeCount.getCount() + ")";
+        String plain = (String) bpPlainEnglish.get(typeCount.getType());
+        if (plain == null) {
+            plain = typeCount.getType();
+        }
+        String tabLabel = plain + " (" + typeCount.getCount() + ")";
         String tabActive = "false";
         if (i==0) {
             tabActive = "true";

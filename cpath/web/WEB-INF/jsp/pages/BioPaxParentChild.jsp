@@ -1,9 +1,7 @@
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.EntitySummary"%>
-<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary"%>
-<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.InteractionSummaryUtils"%>
 <%@ page import="org.mskcc.pathdb.action.BioPaxParentChild"%>
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -46,10 +44,15 @@ int stop = start + max -1;
 if (stop > total) {
     stop = total;
 }
+
+boolean showPathwayRoots = false;
+if (type.equals(BioPaxParentChild.GET_PATHWAY_ROOTS)) {
+    showPathwayRoots = true;
+}
 %>
 
 <% if (headerFlag) { %>
-<table width=100% CELLSPACING=0 CELLPADDING=4>
+<table WIDTH=100% CELLSPACING=0 CELLPADDING=4>
     <tr bgcolor=#DDDDDD>
         <td>Showing
         <span id="<%= "start_"+type%>"><%= start %></span>-<span id="<%= "stop_"+type%>"><%= stop %></span> of
@@ -75,45 +78,92 @@ if (stop > total) {
 <% } %>
 
 <div id="content_<%= type%>">
-<table width="100%">
+<table width=100%>
 <%
 ArrayList summaryList = (ArrayList) request.getAttribute("SUMMARY_LIST");
+if (summaryList != null && summaryList.size() > 0) {
+    Object object = summaryList.get(0);
+    int index = start;
 
-int index = start;
-for (int i = 0; i < summaryList.size(); i++) {
-    if (i%2 ==0) {
-        out.println("<tr>");
-    } else {
-        out.println("<tr bgcolor=#EEEEEE>");
-    }
-    EntitySummary entitySummary = (EntitySummary) summaryList.get(i);
-    if (entitySummary != null) {
-        String uri = "record.do?id=" + entitySummary.getRecordID();
-        out.println("<td width='20%'>" + index + ". <a href=\""
-                + uri + "\">View Details</a></td>");
-    }
+    if (object != null && object instanceof EntitySummary) {
 
-    if (entitySummary instanceof InteractionSummary) {
-        InteractionSummary interactionSummary =
-                (InteractionSummary) entitySummary;
-        String interactionString =
-                InteractionSummaryUtils.createInteractionSummaryString
-                        (interactionSummary);
-        if (interactionString != null) {
-            out.println("<td><div class='entity_summary'>"+ interactionString + "</div></td>");
+        for (int i = 0; i < summaryList.size(); i++) {
+            if (i%2 ==0) {
+                out.println("<tr>");
+            } else {
+                out.println("<tr bgcolor=#EEEEEE>");
+            }
+            EntitySummary entitySummary = (EntitySummary) summaryList.get(i);
+            if (entitySummary != null) {
+                String uri = "record2.do?id=" + entitySummary.getRecordID();
+                out.println("<td width='20%'>" + index + ". <a href=\""
+                        + uri + "\">View Details</a></td>");
+            }
+
+            if (entitySummary instanceof InteractionSummary) {
+                InteractionSummary interactionSummary =
+                        (InteractionSummary) entitySummary;
+                String interactionString =
+                        InteractionSummaryUtils.createInteractionSummaryString
+                                (interactionSummary);
+                if (interactionString != null) {
+                    out.println("<td><div class='entity_summary'>"+ interactionString + "</div></td>");
+                }
+            } else {
+                out.println("<td><div class='entity_summary'>");
+                if (entitySummary != null) {
+                    out.println(entitySummary.getName() + "</div></td>");
+                }
+            }
+            out.println("<td><div class='data_source'>");
+            out.println(DbSnapshotInfo.getDbSnapshotHtml(entitySummary.getSnapshotId()));
+            out.println("</div>");
+            out.println("</td>");
+            out.println("</tr>");
+            index++;
         }
-    } else {
-        out.println("<td><div class='entity_summary'>");
-        if (entitySummary != null) {
-            out.println(entitySummary.getName() + "</div></td>");
+    } else if (object instanceof BioPaxRecordSummary) {
+        if (showPathwayRoots) {
+            for (int i = 0; i < summaryList.size(); i++) {
+                if (i%2 ==0) {
+                    out.println("<tr>");
+                } else {
+                    out.println("<tr bgcolor=#EEEEEE>");
+                }
+                BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) summaryList.get(i);
+                out.println("<td>" + index + ".  ");
+                String organism = bpSummary.getOrganism();
+                out.println("<A HREF='record2.do?id=" + bpSummary.getRecordID()
+                    + "'>" + bpSummary.getName() + "</A>");
+                out.println("</td><td>");
+                if (organism != null) {
+                    out.println(organism);
+                }
+                out.println("</td>");
+                out.println("<td><div class='data_source'>");
+                out.println(DbSnapshotInfo.getDbSnapshotHtml
+                        (bpSummary.getExternalDatabaseSnapshotRecord().getId()));
+                out.println("</div>");
+                out.println("</td>");
+                out.println("</tr>");
+                index++;
+            }
+        } else {
+            for (int i = 0; i < summaryList.size(); i++) {
+                if (i%2 ==0) {
+                    out.println("<tr>");
+                } else {
+                    out.println("<tr bgcolor=#EEEEEE>");
+                }
+                BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) summaryList.get(i);
+                out.println("<td>" + index + ".  ");
+                String moleculeLink = BioPaxRecordSummaryUtils.createEntityLink(bpSummary, 200);
+                out.println(moleculeLink);
+                out.println("</td>");
+                index++;
+            }
         }
     }
-    out.println("<td><div class='data_source'>");
-    out.println(DbSnapshotInfo.getDbSnapshotHtml(entitySummary.getSnapshotId()));
-    out.println("</div>");
-    out.println("</td>");
-    out.println("</tr>");
-    index++;
 }
 %>
 </table>

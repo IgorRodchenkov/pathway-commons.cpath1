@@ -7,18 +7,15 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.TypeCount;
-import org.mskcc.pathdb.model.GlobalFilterSettings;
-import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser;
-import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
+import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
+import org.mskcc.pathdb.model.*;
+import org.mskcc.pathdb.schemas.biopax.summary.*;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Shows BioPAX Parent Child Data.
@@ -26,7 +23,30 @@ import java.util.Iterator;
  * @author Ethan Cerami.
  */
 public class BioPaxParentChild extends BaseAction {
+    /**
+     * Default Max Number of Records in each view.
+     */
     public static int MAX_RECORDS = 10;
+
+    /**
+     * Get Children.
+     */
+    public static String GET_CHILDREN = "getChildren";
+
+    /**
+     * Get Parents
+     */
+    public static String GET_PARENTS = "getParents";
+
+    /**
+     * Get Pathway Roots.
+     */
+    public static String GET_PATHWAY_ROOTS = "pathwayRoot";
+
+    /**
+     * Get Physical Entity Leaves.
+     */
+    public static String GET_PE_LEAVES = "peLeaf";
 
     public ActionForward subExecute (ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response, XDebug xdebug)
@@ -37,7 +57,7 @@ public class BioPaxParentChild extends BaseAction {
         String type = request.getParameter("type");
         String startIndex = request.getParameter("startIndex");
         String maxRecords = request.getParameter("maxRecords");
-        CPathRecord record = null;
+        CPathRecord record;
         if (id != null) {
             xdebug.logMsg(this, "Using cPath ID:  " + id);
             record = dao.getRecordById(Long.parseLong(id));
@@ -60,7 +80,8 @@ public class BioPaxParentChild extends BaseAction {
         int taxId = getTaxonomyIdFilter(filterSettings, xdebug);
         long snapshotIds[] = getSnapshotFilter(filterSettings, xdebug);
 
-        ArrayList records;
+        ArrayList records = null;
+        ArrayList summaryList = null;
         int start = 0;
         if (startIndex != null) {
             start = Integer.parseInt(startIndex);
@@ -71,31 +92,47 @@ public class BioPaxParentChild extends BaseAction {
         }
 
         //  Get parent or child elements.
-        if (command != null && command.equals("getParents")) {
-            records = getParents(xdebug, daoLinker, id, taxId, snapshotIds, type,
+        if (command != null && command.equals(GET_PARENTS)) {
+            if (type != null && type.equals(GET_PATHWAY_ROOTS)) {
+                summaryList = getPathwayRoots(xdebug, id, filterSettings.getSnapshotIdSet(),
+                        filterSettings.getOrganismTaxonomyIdSet(), start, max);
+            } else {
+                records = getParents(xdebug, daoLinker, id, taxId, snapshotIds, type,
                     start, max);
+            }
         } else {
-            records = getChildren(xdebug, daoLinker, id, taxId, snapshotIds, type,
+            if (type != null && type.equals(GET_PE_LEAVES)) {
+                summaryList = getPeLeaves(xdebug, id, start, max);
+            } else {
+                records = getChildren(xdebug, daoLinker, id, taxId, snapshotIds, type,
                     start, max);
+            }
         }
 
         //  Get entity summaries
-        if (records != null) {
-            request.setAttribute("RECORD_LIST", records);
-            ArrayList summaryList = new ArrayList();
-            for (int i=0; i<records.size(); i++) {
-                CPathRecord record0 = (CPathRecord) records.get(i);
-                EntitySummaryParser parser = new EntitySummaryParser(record0.getId());
-                EntitySummary summary = parser.getEntitySummary();
-                summaryList.add(summary);
-                xdebug.logMsg(this, "Got summary for:  [cPath ID: " + summary.getRecordID()
-                    + "] --> " + summary.getName());
-            }
-            request.setAttribute("SUMMARY_LIST", summaryList);
-            request.setAttribute("START", start);
-            request.setAttribute("MAX", max);
+        if (records != null && summaryList == null) {
+            summaryList = getEntitySummaries(records, xdebug);
         }
+
+        request.setAttribute("SUMMARY_LIST", summaryList);
+        request.setAttribute("START", start);
+        request.setAttribute("MAX", max);
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+    }
+
+    private ArrayList getEntitySummaries (ArrayList records, XDebug xdebug)
+            throws DaoException, EntitySummaryException {
+        ArrayList summaryList;
+        summaryList = new ArrayList();
+        for (int i=0; i<records.size(); i++) {
+            CPathRecord record0 = (CPathRecord) records.get(i);
+            EntitySummaryParser parser = new EntitySummaryParser(record0.getId());
+            EntitySummary summary = parser.getEntitySummary();
+            summaryList.add(summary);
+            xdebug.logMsg(this, "Got summary for:  [cPath ID: " + summary.getRecordID()
+                + "] --> " + summary.getName());
+        }
+        return summaryList;
     }
 
     private ArrayList getChildren (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
@@ -190,9 +227,6 @@ public class BioPaxParentChild extends BaseAction {
         return taxId;
     }
 
-    /**
-     * Determine Data Source Filter.
-     */
     private long[] getSnapshotFilter (GlobalFilterSettings filterSettings, XDebug xdebug) {
         Set snapshotSet = filterSettings.getSnapshotIdSet();
         long snapshotIds [] = new long[snapshotSet.size()];
@@ -205,5 +239,43 @@ public class BioPaxParentChild extends BaseAction {
         }
         return snapshotIds;
 
+    }
+
+    private ArrayList getPathwayRoots(XDebug xdebug, String id, Set snapshotIdSet,
+            Set organismIdSet, int start, int max) throws DaoException {
+        xdebug.logMsg(this, "Getting Pathway Root Elements");
+        DaoInternalFamily dao = new DaoInternalFamily();
+        LinkedHashSet<BioPaxRecordSummary> summarySet = new LinkedHashSet<BioPaxRecordSummary>();
+        int count = dao.getAncestorSummaries(Long.parseLong(id), CPathRecordType.PATHWAY, summarySet,
+                snapshotIdSet, organismIdSet, start, max);
+
+        xdebug.logMsg(this, "Total number of pathway root elements:  " + count);
+        ArrayList list = new ArrayList();
+        list.addAll(summarySet);
+        return list;
+    }
+
+    private ArrayList getPeLeaves (XDebug xdebug, String id, int start, int max)
+            throws DaoException, BioPaxRecordSummaryException {
+        xdebug.logMsg(this, "Getting Physical Entity Leaf Elements");
+        DaoInternalFamily dao = new DaoInternalFamily();
+        LinkedHashSet<BioPaxRecordSummary> summarySet = new LinkedHashSet<BioPaxRecordSummary>();
+        int count = dao.getDescendentSummaries(Long.parseLong(id), CPathRecordType.PHYSICAL_ENTITY,
+                summarySet, start, max);
+        xdebug.logMsg(this, "Total number of physical entity leaf elements:  " + count);
+
+        Iterator iterator = summarySet.iterator();
+
+        ArrayList peList = new ArrayList();
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        while (iterator.hasNext()) {
+            BioPaxRecordSummary bpSummaryBrief = (BioPaxRecordSummary) iterator.next();
+            CPathRecord record = daoCPath.getRecordById(bpSummaryBrief.getRecordID());
+            xdebug.logMsg(this, "Getting Full Details for Record:  " + record.getName());
+            BioPaxRecordSummary bpSummaryComplete =
+                    BioPaxRecordUtil.createBioPaxRecordSummary(record);
+            peList.add(bpSummaryComplete);
+        }
+        return peList;
     }
 }

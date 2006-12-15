@@ -7,9 +7,11 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.TypeCount;
+import org.mskcc.pathdb.model.CPathRecordType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,8 +56,22 @@ public class ShowBioPaxRecord2 extends BaseAction {
         ArrayList typeList;
         if (command != null && command.equals("getParents")) {
             typeList = getParentTypes(xdebug, daoLinker, id, taxId, snapshotIds);
+            DaoInternalFamily daoFamily = new DaoInternalFamily();
+            int count = daoFamily.getAncestorIdCount(Long.parseLong(id), CPathRecordType.PATHWAY,
+                    filterSettings.getSnapshotIdSet(), filterSettings.getOrganismTaxonomyIdSet());
+            TypeCount typeCount = new TypeCount();
+            typeCount.setType(BioPaxParentChild.GET_PATHWAY_ROOTS);
+            typeCount.setCount(count);
+            typeList.add(typeCount);
         } else {
             typeList = getChildTypes(xdebug, daoLinker, id, taxId, snapshotIds);
+            DaoInternalFamily daoFamily = new DaoInternalFamily();
+            int count = daoFamily.getDescendentIdCount(Long.parseLong(id),
+                    CPathRecordType.PHYSICAL_ENTITY);
+            TypeCount typeCount = new TypeCount();
+            typeCount.setType(BioPaxParentChild.GET_PE_LEAVES);
+            typeCount.setCount(count);
+            typeList.add(typeCount);
         }
         request.setAttribute("TYPES_LIST", typeList);
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
