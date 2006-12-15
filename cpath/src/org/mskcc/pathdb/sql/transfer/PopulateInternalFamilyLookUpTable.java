@@ -68,7 +68,7 @@ public class PopulateInternalFamilyLookUpTable {
         int numPathways = daoCPath.getNumEntities(CPathRecordType.PATHWAY);
         pMonitor.setMaxValue(numPathways);
 
-        int option = 1;
+        int option = 0;
 
         //  Index each pathway
         for (int i = 0; i < numPathways; i++) {
@@ -108,6 +108,11 @@ public class PopulateInternalFamilyLookUpTable {
                 populateInternalFamilyTable(pathwayRecord.getId());
             }
         }
+    }
+
+    public long[] getDescendents(int id) throws DaoException, BioPaxRecordSummaryException {
+        visitedSet = new HashSet();
+        return populateInternalFamilyTable(id);
     }
 
     /**
@@ -208,62 +213,63 @@ public class PopulateInternalFamilyLookUpTable {
 
     private long[] populateInternalFamilyTable (long cpathId)
             throws DaoException, BioPaxRecordSummaryException {
+        long descendentIds[];
 
-        //  Prevent infinite loop on, e.g. circular pathways
+        //  Prevent infinite loop on, e.g. circular pathways; and re-use cached data
         if (visitedSet.contains(cpathId)) {
-            return new long[0];
+            //  if we have already been here, check to see if we stored previous results
+            descendentIds = (long[]) cache.get(cpathId);
+            if (descendentIds != null) {
+                return descendentIds;
+            } else {
+                //  this case only happens during circular loops
+                return new long[0];
+            }
         } else {
             visitedSet.add(cpathId);
         }
 
-        //  First, check to see if we have already visited this record
-        long descendentIds[] = (long[]) cache.get(cpathId);
-        if (descendentIds != null) {
-            //  If we have been here before, use data from family table and immediately return
-            return descendentIds;
-        } else {
+        //  Otherwise, recursively walk through children list
+        HashSet descendentList = new HashSet();
+        DaoInternalLink internalLinker = new DaoInternalLink();
+        ArrayList childrenList = internalLinker.getTargets(cpathId);
 
-            //  Otherwise, recursively walk through children list
-            HashSet descendentList = new HashSet();
-            DaoInternalLink internalLinker = new DaoInternalLink();
-            ArrayList childrenList = internalLinker.getTargets(cpathId);
-
-            //  Recurse through all children
-            if (childrenList != null) {
-                for (int i = 0; i < childrenList.size(); i++) {
-                    InternalLinkRecord link = (InternalLinkRecord) childrenList.get(i);
-                    descendentList.add(link.getTargetId());
-                    long childDescendents[] = populateInternalFamilyTable(link.getTargetId());
-                    for (int j = 0; j < childDescendents.length; j++) {
-                        descendentList.add(childDescendents[j]);
-                    }
+        //  Recurse through all children
+        if (childrenList != null) {
+            for (int i = 0; i < childrenList.size(); i++) {
+                InternalLinkRecord link = (InternalLinkRecord) childrenList.get(i);
+                descendentList.add(link.getTargetId());
+                long childDescendents[] = populateInternalFamilyTable(link.getTargetId());
+                for (int j = 0; j < childDescendents.length; j++) {
+                    descendentList.add(childDescendents[j]);
                 }
             }
-
-            //  Store pathway descendents to family table
-            CPathRecord parentRecord = getRecordById(cpathId);
-            if (parentRecord.getType().equals(CPathRecordType.PATHWAY)) {
-                storeFamilyMembership(descendentList, parentRecord);
-            }
-
-            int index = 0;
-            descendentIds = new long[descendentList.size()];
-            Iterator iterator = descendentList.iterator();
-            while (iterator.hasNext()) {
-                Long descendentId = (Long) iterator.next();
-                descendentIds[index] = descendentId;
-                index++;
-            }
-
-            //  Store descendents to cache
-            cache.put(cpathId, descendentIds);
-            return descendentIds;
         }
+
+        //  Store pathway descendents to family table
+        CPathRecord parentRecord = getRecordById(cpathId);
+        if (parentRecord.getType().equals(CPathRecordType.PATHWAY)) {
+            storeFamilyMembership(descendentList, parentRecord);
+        }
+
+        int index = 0;
+        descendentIds = new long[descendentList.size()];
+        Iterator iterator = descendentList.iterator();
+        while (iterator.hasNext()) {
+            Long descendentId = (Long) iterator.next();
+            descendentIds[index] = descendentId;
+            index++;
+        }
+
+        //  Store descendents to cache
+        cache.put(cpathId, descendentIds);
+        return descendentIds;
     }
 
     private void storeFamilyMembership (HashSet descendentList, CPathRecord parentRecord)
             throws DaoException, BioPaxRecordSummaryException {
-		// get the record summary
+        System.out.println("Storing:  " + parentRecord.getId() + ":  " + descendentList.size());
+        // get the record summary
 		BioPaxRecordSummary parentRecordSummary =
 			BioPaxRecordUtil.createBioPaxRecordSummary(parentRecord);
 		validateBioPaxRecordSummary(parentRecord, parentRecordSummary);
