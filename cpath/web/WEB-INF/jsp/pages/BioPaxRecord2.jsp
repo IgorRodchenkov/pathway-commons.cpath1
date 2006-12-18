@@ -77,11 +77,6 @@ boolean showTabs = false;
         text-decoration:underline;
         cursor:pointer;
     }
-
-    .data_source {
-        display:none;
-
-    }
 </style>
 
 <script type="text/javascript">
@@ -202,8 +197,8 @@ YAHOO.example.init();
                 YAHOO.util.Dom.setStyle("next_"+currentType, 'display', "inline");
             }
 
-            //  Conditionally show/hide data source details
-            showHideDataSourceDetails();
+            //  Conditionally show/hide all details
+            showHideAllDetails();
 
             connectionInProgress = false;
         },
@@ -248,34 +243,47 @@ YAHOO.example.init();
         }
     }
 
-    var showDataSources = false;
+    var showAllDetails = false;
+    var detailsMap = new Array();
 
-    /**
-        Dynamically shows/hides data source details.
-    */
-    function showHideDataSourceDetails() {
-        var elements = YAHOO.util.Dom.getElementsByClassName('data_source', 'div');
-        if (showDataSources == false ) {
+    //  Dynamically shows/hides all details.
+    function showHideAllDetails() {
+        var elements = YAHOO.util.Dom.getElementsByClassName('details', 'div');
+        if (showAllDetails == false ) {
             YAHOO.util.Dom.setStyle(elements, 'display', 'none');
         } else {
             YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
         }
     }
 
-    /**
-        Toggles the showing/hiding of data source details
-    */
-    function toggleDataSourceDetails() {
-        var buttonContent = document.getElementById("data_source_button");
-        showDataSources = !showDataSources;
-        YAHOO.log ("User toggled showing of data source details to:  " + showDataSources,
+    //  Toggles the showing/hiding of all details
+    function toggleAllDetails() {
+        var buttonContent = document.getElementById("toggle_all_details_button");
+        showAllDetails = !showAllDetails;
+        YAHOO.log ("User toggled showing of all details:  " + showAllDetails,
                 "info");
-        if (showDataSources == true ) {
-            buttonContent.innerHTML = "Hide Details";
+        if (showAllDetails == true ) {
+            buttonContent.innerHTML = "Hide All Details";
         } else {
-            buttonContent.innerHTML = "Show Details";
+            buttonContent.innerHTML = "Show All Details";
         }
-        showHideDataSourceDetails();
+        showHideAllDetails();
+    }
+
+    //  Toggles details on single row
+    function toggleDetails (id) {
+        YAHOO.log ("Toggling row with cPathID:  " + id);
+        var elements = new Array();
+        elements[0] = document.getElementById(id + "_comment");
+        elements[1] = document.getElementById(id + "_organism");
+        elements[2] = document.getElementById(id + "_source");
+        var current = YAHOO.util.Dom.getStyle(elements[0], 'display');
+        YAHOO.log ("Current Display Style is set to:  " + current);
+        if (current == false || current == "none") {
+            YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
+        } else {
+            YAHOO.util.Dom.setStyle(elements, 'display', 'none');
+        }
     }
 </script>
 </head>
@@ -286,7 +294,7 @@ YAHOO.example.init();
 <% if (showTabs) { %>
 <div id="doc">
 </div>
-<a class="button" id="data_source_button" onClick='toggleDataSourceDetails()'>Show Details</a>
+<a class="button" id="toggle_all_details_button" onClick='toggleAllDetails()'>Show All Details</a>
 <% } %>
 
 

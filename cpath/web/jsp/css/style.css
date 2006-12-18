@@ -279,13 +279,14 @@
 }
 
 /* Data Source Details */
-.data_source {
+.details {
   font-size:85%;
+  display:none;
 }
 
 /* Entity Summary, e.g. summary of interaction details */
 .entity_summary {
-    font-size:90%;
+    font-size:95%;
 }
 
 .entity_summary a {

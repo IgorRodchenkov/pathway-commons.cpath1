@@ -2,6 +2,11 @@
 <%@ page import="org.mskcc.pathdb.action.BioPaxParentChild"%>
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoException"%>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="org.mskcc.pathdb.model.CPathRecord"%>
+<%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
+<%@ page import="org.mskcc.pathdb.model.CPathRecordType"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -40,14 +45,8 @@ if (totalNumRecords != null) {
 }
 
 int stop = start + max -1;
-
 if (stop > total) {
     stop = total;
-}
-
-boolean showPathwayRoots = false;
-if (type != null && type.equals(BioPaxParentChild.GET_PATHWAY_ROOTS)) {
-    showPathwayRoots = true;
 }
 %>
 
@@ -78,103 +77,103 @@ if (type != null && type.equals(BioPaxParentChild.GET_PATHWAY_ROOTS)) {
 <% } %>
 
 <div id="content_<%= type%>">
-<table width=100%>
+<table width=100% CELLSPACING=0 CELLPADDING=4>
 <%
-ArrayList summaryList = (ArrayList) request.getAttribute("SUMMARY_LIST");
-ArrayList bpSummaryList = (ArrayList) request.getAttribute("BP_SUMMARY_LIST");
-if (summaryList != null && summaryList.size() > 0) {
-    Object object = summaryList.get(0);
-    int index = start;
+ArrayList <BioPaxRecordSummary>  bpSummaryList = (ArrayList<BioPaxRecordSummary>)
+        request.getAttribute(BioPaxParentChild.KEY_BP_SUMMARY_LIST);
+HashMap <Long, EntitySummary> interactionSummaryMap = (HashMap <Long, EntitySummary>)
+        request.getAttribute(BioPaxParentChild.KEY_INTERACTION_SUMMARY_MAP);
 
-    if (object != null && object instanceof EntitySummary) {
-
-        for (int i = 0; i < summaryList.size(); i++) {
-            if (i%2 ==0) {
-                out.println("<tr>");
-            } else {
-                out.println("<tr bgcolor=#EEEEEE>");
+int index = start;
+for (int i = 0; i < bpSummaryList.size(); i++) {
+    out.println(getStartRow(i));
+    BioPaxRecordSummary bpSummary = bpSummaryList.get(i);
+    out.println("<td>");
+    out.println(index + ". ");
+    if (interactionSummaryMap.containsKey(bpSummary.getRecordID())) {
+        EntitySummary entitySummary = interactionSummaryMap.get(bpSummary.getRecordID());
+        if (entitySummary instanceof InteractionSummary) {
+            InteractionSummary interactionSummary = (InteractionSummary) entitySummary;
+            String interactionString = InteractionSummaryUtils.createInteractionSummaryString
+                (interactionSummary);
+            if (interactionString != null) {
+                out.println("<span class='entity_summary'>" + interactionString + "</span>");
             }
-            EntitySummary entitySummary = (EntitySummary) summaryList.get(i);
-            BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) bpSummaryList.get(i);
-            String uri = "record2.do?id=" + entitySummary.getRecordID();
-            if (entitySummary instanceof InteractionSummary) {
-                out.println("<td width='20%'>" + index + ". <a href=\""
-                            + uri + "\">View Details</a></td>");
-                InteractionSummary interactionSummary =
-                        (InteractionSummary) entitySummary;
-                String interactionString =
-                        InteractionSummaryUtils.createInteractionSummaryString
-                                (interactionSummary);
-                if (interactionString != null) {
-                    out.println("<td><div class='entity_summary'>"+ interactionString + "</div>");
-                    if (bpSummary.getComment() != null) {
-                        out.println("<P><div class='data_source'>"
-                                + bpSummary.getComment() + "</div>");
-                    }
-                    out.println("</td>");
-                }
-            } else {
-                out.println("<td>");
-                if (entitySummary != null) {
-                    out.println(index + ". <a href=\"" + uri + "\">");
-                    out.println(entitySummary.getName());
-                    out.println("</a>");
-                }
-                if (bpSummary.getComment() != null) {
-                    out.println("<P><div class='data_source'>"
-                            + bpSummary.getComment() + "</div>");
-                }
-                out.println("</td>");
-            }
-            out.println("<td><div class='data_source'>");
-            out.println(DbSnapshotInfo.getDbSnapshotHtml(entitySummary.getSnapshotId()));
-            out.println("</div>");
-            out.println("</td>");
-            out.println("</tr>");
-            index++;
+            out.println(getBioPaxDetailsHtml(bpSummary));
         }
-    } else if (object instanceof BioPaxRecordSummary) {
-        if (showPathwayRoots) {
-            for (int i = 0; i < summaryList.size(); i++) {
-                if (i%2 ==0) {
-                    out.println("<tr>");
-                } else {
-                    out.println("<tr bgcolor=#EEEEEE>");
-                }
-                BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) summaryList.get(i);
-                out.println("<td>" + index + ".  ");
-                String organism = bpSummary.getOrganism();
-                out.println("<A HREF='record2.do?id=" + bpSummary.getRecordID()
-                    + "'>" + bpSummary.getName() + "</A>");
-                out.println("</td><td>");
-                if (organism != null) {
-                    out.println(organism);
-                }
-                out.println("</td>");
-                out.println("<td><div class='data_source'>");
-                out.println(DbSnapshotInfo.getDbSnapshotHtml
-                        (bpSummary.getExternalDatabaseSnapshotRecord().getId()));
-                out.println("</div>");
-                out.println("</td>");
-                out.println("</tr>");
-                index++;
-            }
+    } else {
+        out.println(getBioPaxRecordHtml(bpSummary));
+    }
+    out.println("</tr>");
+    index++;
+}
+%>
+
+<%!
+private String getInspectorButtonHtml (long cPathId) {
+    return "<td align=right><a style='cursor:pointer' "
+        + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
+        + "')\"><img src='jsp/images/inspect_small.png'></a></td>";
+}
+
+private String getDetailsHtml (long cPathId, String label, String html) {
+    return ("<div id='cpath_" + cPathId + "_" + label +"' class='details'>"
+        + html + "</div>");
+}
+
+private String getStartRow (int i) {
+    if (i%2 ==0) {
+        return ("<tr valign=top>");
+    } else {
+        return("<tr valign=top bgcolor=#EEEEEE>");
+    }
+}
+
+private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary) throws DaoException {
+    StringBuffer buf = new StringBuffer();
+    if (bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
+        String entityLink = BioPaxRecordSummaryUtils.createEntityLink(bpSummary, 200);
+        buf.append(entityLink);
+    } else {
+        buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
+            + bpSummary.getName() + "</a>");
+    }
+    buf.append(getBioPaxDetailsHtml (bpSummary));
+    return buf.toString();
+}
+
+private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary) throws DaoException {
+    StringBuffer buf = new StringBuffer();
+    boolean hasDetails = false;
+    if (bpSummary.getComment() != null) {
+        String comment = ReactomeCommentUtil.massageComment(bpSummary.getComment());
+        buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", "<P><B>Summary:</B>&nbsp;" + comment));
+        hasDetails = true;
+    } else {
+        buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", ""));
+    }
+    String organism = bpSummary.getOrganism();
+    if (organism != null) {
+        buf.append(getDetailsHtml (bpSummary.getRecordID(), "organism", "<P><B>Organism:</B>&nbsp;" + organism));
+        hasDetails = true;
+    } else {
+        buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism", ""));
+    }
+    if (bpSummary.getCPathRecord() != null) {
+        CPathRecord record = bpSummary.getCPathRecord();
+        if (record.getSnapshotId() > 0) {
+            buf.append(getDetailsHtml (bpSummary.getRecordID(), "source",
+                "<P><B>Data Source:</B>&nbsp;" + DbSnapshotInfo.getDbSnapshotHtml (record.getSnapshotId())));
+            hasDetails = true;
         } else {
-            for (int i = 0; i < summaryList.size(); i++) {
-                if (i%2 ==0) {
-                    out.println("<tr>");
-                } else {
-                    out.println("<tr bgcolor=#EEEEEE>");
-                }
-                BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) summaryList.get(i);
-                out.println("<td>" + index + ".  ");
-                String moleculeLink = BioPaxRecordSummaryUtils.createEntityLink(bpSummary, 200);
-                out.println(moleculeLink);
-                out.println("</td>");
-                index++;
-            }
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "source", ""));
         }
     }
+    buf.append("</td>");
+    if (hasDetails) {
+        buf.append(getInspectorButtonHtml(bpSummary.getRecordID()));
+    }
+    return buf.toString();
 }
 %>
 </table>
