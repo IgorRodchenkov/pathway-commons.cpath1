@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryTable.java,v 1.19 2006-11-27 21:50:22 cerami Exp $
+// $Id: BioPaxRecordSummaryTable.java,v 1.20 2006-12-18 17:32:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -92,8 +92,6 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      */
     private BioPaxRecordSummary biopaxRecordSummary;
 
-    private HashSet reactomeWordHack = new HashSet();
-
     /**
      * Receives Record ID Attribute.
      *
@@ -109,18 +107,6 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     protected void subDoStartTag() throws Exception {
-        reactomeWordHack.add("FUNCTION:");
-        reactomeWordHack.add("ENZYME");
-        reactomeWordHack.add("SUBUNIT:");
-        reactomeWordHack.add("SUBCELLULAR");
-        reactomeWordHack.add("TISSUE");
-        reactomeWordHack.add("SIMILARITY:");
-        reactomeWordHack.add("DOMAIN:");
-        reactomeWordHack.add("ALTERNATIVE");
-        reactomeWordHack.add("CAUTION:");
-        reactomeWordHack.add("PTM:");
-        reactomeWordHack.add("INDUCTION:");
-        reactomeWordHack.add("DISEASE:");
 
         // get biopax record summary
         biopaxRecordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
@@ -323,46 +309,12 @@ public class BioPaxRecordSummaryTable extends HtmlTable {
 
         // do we have something to process ?
         if (commentString != null) {
-            commentString = commentString.replaceAll("<BR>", "<p>");
-
-            //  Ugly hack to handle Reactome HREF links
-            if (commentString.indexOf("<a href") > -1) {
-                commentString = commentString.replaceAll
-                        ("<a href='/electronic_inference.html' target = 'NEW'>",
-                         "<a href='http://reactome.org/electronic_inference.html' target = 'NEW'>");
-                commentString = commentString.replaceAll("For details on the OrthoMCL system "
-                    + "see also:",
-                    "For details on the OrthoMCL system see also:  "
-                    + "[<A HREF='http://www.ncbi.nlm.nih.gov:80/entrez/query.fcgi?"
-                    + "cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=12952885' target='NEW'>"
-                    + "Li <I>et al"
-                    + "</I> 2003</A>]");
-            }
-            StringTokenizer tokenizer = new StringTokenizer (commentString, " ");
             append("<TR VALIGN=TOP>");
             append("<TD><B>Comment:</B></TD>");
             append("<TD COLSPAN=3>");
-
-            //  This is a mini hack to parse Reactome comments
-            int tokenNum = 0;
-            while (tokenizer.hasMoreElements()) {
-                String token = (String) tokenizer.nextElement();
-                if (isMagicReactomeWord(token) && tokenNum > 0) {
-                    append ("<P>");
-                }
-                appendWithoutNewline (token + " ");
-                tokenNum++;
-            }
+            append (ReactomeCommentUtil.massageComment(commentString));
             append("</TD>");
             append("</TR>");
-        }
-    }
-
-    private boolean isMagicReactomeWord(String text) {
-        if (reactomeWordHack.contains(text)) {
-            return true;
-        } else {
-            return false;
         }
     }
 
