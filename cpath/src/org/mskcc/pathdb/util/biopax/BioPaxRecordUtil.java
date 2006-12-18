@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.24 2006-12-04 19:12:57 grossb Exp $
+// $Id: BioPaxRecordUtil.java,v 1.25 2006-12-18 17:33:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -122,6 +122,7 @@ public class BioPaxRecordUtil {
 
         // this is object to return
         BioPaxRecordSummary biopaxRecordSummary = new BioPaxRecordSummary();
+        biopaxRecordSummary.setCPathRecord(record);
 
         // set id
         biopaxRecordSummary.setRecordID(record.getId());

@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.8 2006-12-07 19:28:19 grossb Exp $
+// $Id: BioPaxRecordSummary.java,v 1.9 2006-12-18 17:32:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.model.CPathRecord;
 
 import java.util.List;
 import java.io.Serializable;
@@ -97,6 +98,11 @@ public class BioPaxRecordSummary implements Serializable {
      * The record external links.
      */
     protected List externalLinks;
+
+    /**
+     * Embedded cPath Record
+     */
+    protected CPathRecord cPathRecord;
 
     /**
      * The record comment.
@@ -299,5 +305,21 @@ public class BioPaxRecordSummary implements Serializable {
      */
     public String getComment() {
         return comment;
+    }
+
+    /**
+     * Sets the Embedded cPath Record.
+     * @param record cPath Record.
+     */
+    public void setCPathRecord (CPathRecord record) {
+        this.cPathRecord = record;
+    }
+
+    /**
+     * Gets the Embedded cPath Record.
+     * @return Embedded cPath Record.
+     */
+    public CPathRecord getCPathRecord () {
+        return this.cPathRecord;
     }
 }
