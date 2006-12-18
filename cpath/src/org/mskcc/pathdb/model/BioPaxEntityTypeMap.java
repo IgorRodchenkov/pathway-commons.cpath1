@@ -1,4 +1,4 @@
-// $Id: BioPaxEntityTypeMap.java,v 1.7 2006-12-15 20:03:24 cerami Exp $
+// $Id: BioPaxEntityTypeMap.java,v 1.8 2006-12-18 21:44:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,8 +63,6 @@ public class BioPaxEntityTypeMap extends HashMap {
         put("control", "Control Reaction");
         put("physicalInteraction", "Physical Interaction");
         put("interaction", "Interaction");
-        put(BioPaxParentChild.GET_PATHWAY_ROOTS, "Pathways");
-        put(BioPaxParentChild.GET_PE_LEAVES, "Molecules");
     }
 
 }

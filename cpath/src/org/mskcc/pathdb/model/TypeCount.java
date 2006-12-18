@@ -8,6 +8,23 @@ package org.mskcc.pathdb.model;
 public class TypeCount {
     private String type;
     private int count;
+    private String command;
+
+    /**
+     * Constructor.
+     * @param command Command String.
+     */
+    public TypeCount(String command) {
+        this.command = command;
+    }
+
+    /**
+     * Gets Command String.
+     * @return command string.
+     */
+    public String getCommand() {
+        return this.command;
+    }
 
     /**
      * Gets the type name.
