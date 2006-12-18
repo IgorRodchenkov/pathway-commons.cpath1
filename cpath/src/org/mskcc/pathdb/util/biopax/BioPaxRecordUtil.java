@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.25 2006-12-18 17:33:11 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.26 2006-12-18 22:02:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -175,6 +175,11 @@ public class BioPaxRecordUtil {
 										   "/*/bp:COMMENT",
 										   "setComment",
 										   biopaxRecordSummary);
+
+            // if physical entity record is a complex, lets get its members
+            if (record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
+                BioPaxRecordUtil.setComplexMembers(biopaxRecordSummary, record);
+            }
         } catch (Throwable throwable) {
             throw new BioPaxRecordSummaryException(throwable);
         }
@@ -231,19 +236,12 @@ public class BioPaxRecordUtil {
                     BioPaxRecordUtil.setFeatureList(participantSummaryComponent,
                             interactionRecord, e);
 
-            // if physical entity record is a complex, lets get its members
-            setComplexMembersSuccess = false;
-            if (physicalEntityRecord.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
-                setComplexMembersSuccess =
-                        BioPaxRecordUtil.setComplexMembers(participantSummaryComponent,
-                                physicalEntityRecord);
-            }
         } catch (Throwable throwable) {
             throw new BioPaxRecordSummaryException(throwable);
         }
 
         // made it this far
-        return (setCellularLocationSuccess || setFeatureListSuccess || setComplexMembersSuccess)
+        return (setCellularLocationSuccess || setFeatureListSuccess)
                 ? participantSummaryComponent : null;
     }
 
@@ -525,7 +523,7 @@ public class BioPaxRecordUtil {
     /**
      * Sets the member list of a complex.
      *
-     * @param participantSummaryComponent ParticipantSummaryComponent
+     * @param bpSummaryComponent BioPaxRecordSummary
      * @param record                      CPathRecord
      * @return boolean
      * @throws JDOMException                Throwable
@@ -535,7 +533,7 @@ public class BioPaxRecordUtil {
      * @throws RuntimeException             Throwable
      */
     private static boolean setComplexMembers
-            (ParticipantSummaryComponent participantSummaryComponent,
+            (BioPaxRecordSummary bpSummaryComponent,
             CPathRecord record) throws JDOMException, IOException, DaoException,
             BioPaxRecordSummaryException, RuntimeException {
 
@@ -561,7 +559,7 @@ public class BioPaxRecordUtil {
                 }
             }
             if (complexMemberList.size() > 0) {
-                participantSummaryComponent.setComponentList(complexMemberList);
+                bpSummaryComponent.setComponentList(complexMemberList);
             }
         }
 
