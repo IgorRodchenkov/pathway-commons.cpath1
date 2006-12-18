@@ -48,6 +48,16 @@ public class BioPaxParentChild extends BaseAction {
      */
     public static String GET_PE_LEAVES = "peLeaf";
 
+    /**
+     * Attribute Key:  BP Summary List.
+     */
+    public static String KEY_BP_SUMMARY_LIST = "BP_SUMMARY_LIST";
+
+    /**
+     * Attribute Key:  Interaction Summary Map.
+     */
+    public static String KEY_INTERACTION_SUMMARY_MAP = "INTERACTION_SUMARY_MAP";
+
     public ActionForward subExecute (ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response, XDebug xdebug)
             throws Exception {
@@ -81,8 +91,8 @@ public class BioPaxParentChild extends BaseAction {
         long snapshotIds[] = getSnapshotFilter(filterSettings, xdebug);
 
         ArrayList records = null;
-        ArrayList summaryList = null;
-        ArrayList bpSummaryList = null;
+        ArrayList <BioPaxRecordSummary> bpSummaryList = null;
+        HashMap interactionSummaryMap = new HashMap();
         int start = 0;
         if (startIndex != null) {
             start = Integer.parseInt(startIndex);
@@ -95,7 +105,7 @@ public class BioPaxParentChild extends BaseAction {
         //  Get parent or child elements.
         if (command != null && command.equals(GET_PARENTS)) {
             if (type != null && type.equals(GET_PATHWAY_ROOTS)) {
-                summaryList = getPathwayRoots(xdebug, id, filterSettings.getSnapshotIdSet(),
+                bpSummaryList = getPathwayRoots(xdebug, id, filterSettings.getSnapshotIdSet(),
                         filterSettings.getOrganismTaxonomyIdSet(), start, max);
             } else {
                 records = getParents(xdebug, daoLinker, id, taxId, snapshotIds, type,
@@ -103,42 +113,43 @@ public class BioPaxParentChild extends BaseAction {
             }
         } else {
             if (type != null && type.equals(GET_PE_LEAVES)) {
-                summaryList = getPeLeaves(xdebug, id, start, max);
+                bpSummaryList = getPeLeaves(xdebug, id, start, max);
             } else {
                 records = getChildren(xdebug, daoLinker, id, taxId, snapshotIds, type,
                     start, max);
             }
         }
 
-        //  Get entity summaries
-        if (records != null && summaryList == null) {
-            summaryList = getEntitySummaries(records, xdebug);
+        //  Get BioPax Summaries
+        if (records != null) {
+            interactionSummaryMap = getInteractionSummaryMap(records, xdebug);
             bpSummaryList = getBioPaxSummaries(records, xdebug);
         }
 
-        request.setAttribute("SUMMARY_LIST", summaryList);
-        request.setAttribute("BP_SUMMARY_LIST", bpSummaryList);
-        request.setAttribute("START", start);
-        request.setAttribute("MAX", max);
+        request.setAttribute(KEY_INTERACTION_SUMMARY_MAP, interactionSummaryMap);
+        request.setAttribute(KEY_BP_SUMMARY_LIST, bpSummaryList);
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 
-    private ArrayList getEntitySummaries (ArrayList records, XDebug xdebug)
+    private HashMap <Long, EntitySummary> getInteractionSummaryMap
+            (ArrayList records, XDebug xdebug)
             throws DaoException, EntitySummaryException {
-        ArrayList summaryList;
-        summaryList = new ArrayList();
+        HashMap <Long, EntitySummary> map = new HashMap<Long, EntitySummary>();
         for (int i=0; i<records.size(); i++) {
             CPathRecord record0 = (CPathRecord) records.get(i);
-            EntitySummaryParser parser = new EntitySummaryParser(record0.getId());
-            EntitySummary summary = parser.getEntitySummary();
-            summaryList.add(summary);
-            xdebug.logMsg(this, "Got summary for:  [cPath ID: " + summary.getRecordID()
-                + "] --> " + summary.getName());
+            if (record0.getType().equals(CPathRecordType.INTERACTION)) {
+                EntitySummaryParser parser = new EntitySummaryParser(record0.getId());
+                EntitySummary summary = parser.getEntitySummary();
+                map.put(record0.getId(), summary);
+                xdebug.logMsg(this, "Got summary for interaction:  [cPath ID: "
+                    + summary.getRecordID()
+                    + "] --> " + summary.getName());
+            }
         }
-        return summaryList;
+        return map;
     }
 
-    private ArrayList getBioPaxSummaries (ArrayList records, XDebug xdebug)
+    private ArrayList <BioPaxRecordSummary> getBioPaxSummaries (ArrayList records, XDebug xdebug)
             throws BioPaxRecordSummaryException, DaoException {
         DaoCPath daoCPath = DaoCPath.getInstance();
         ArrayList bpSummaryList = new ArrayList();
@@ -260,21 +271,22 @@ public class BioPaxParentChild extends BaseAction {
 
     }
 
-    private ArrayList getPathwayRoots(XDebug xdebug, String id, Set snapshotIdSet,
-            Set organismIdSet, int start, int max) throws DaoException {
+    private ArrayList <BioPaxRecordSummary> getPathwayRoots(XDebug xdebug, String id,
+            Set snapshotIdSet, Set organismIdSet, int start, int max) throws DaoException {
         xdebug.logMsg(this, "Getting Pathway Root Elements");
         DaoInternalFamily dao = new DaoInternalFamily();
         LinkedHashSet<BioPaxRecordSummary> summarySet = new LinkedHashSet<BioPaxRecordSummary>();
-        int count = dao.getAncestorSummaries(Long.parseLong(id), CPathRecordType.PATHWAY, summarySet,
-                snapshotIdSet, organismIdSet, start, max);
+        int count = dao.getAncestorSummaries(Long.parseLong(id), CPathRecordType.PATHWAY,
+                summarySet, snapshotIdSet, organismIdSet, start, max);
 
         xdebug.logMsg(this, "Total number of pathway root elements:  " + count);
-        ArrayList list = new ArrayList();
+        ArrayList <BioPaxRecordSummary> list = new ArrayList <BioPaxRecordSummary>();
         list.addAll(summarySet);
         return list;
     }
 
-    private ArrayList getPeLeaves (XDebug xdebug, String id, int start, int max)
+    private ArrayList <BioPaxRecordSummary> getPeLeaves
+            (XDebug xdebug, String id, int start, int max)
             throws DaoException, BioPaxRecordSummaryException {
         xdebug.logMsg(this, "Getting Physical Entity Leaf Elements");
         DaoInternalFamily dao = new DaoInternalFamily();
@@ -285,7 +297,7 @@ public class BioPaxParentChild extends BaseAction {
 
         Iterator iterator = summarySet.iterator();
 
-        ArrayList peList = new ArrayList();
+        ArrayList <BioPaxRecordSummary> peList = new ArrayList <BioPaxRecordSummary>();
         DaoCPath daoCPath = DaoCPath.getInstance();
         while (iterator.hasNext()) {
             BioPaxRecordSummary bpSummaryBrief = (BioPaxRecordSummary) iterator.next();
