@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.23 2006-12-14 16:06:16 cerami Exp $
+// $Id: DaoInternalLink.java,v 1.24 2006-12-18 21:44:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.TypeCount;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.action.BioPaxParentChild;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -272,6 +273,59 @@ public class DaoInternalLink {
     }
 
     /**
+     * Gets all children
+     * Uses cursor to limit result set.  Used primarily to build paginated web pages.
+     * @param cPathId cPath ID
+     * @param startIndex startIndex.
+     * @param numRecords numRecords to retrieve.
+     * @param xdebug XDebug object.
+     * @return ArrayList of CPathRecord Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getChildren (long cPathId, int startIndex,
+            int numRecords, XDebug xdebug) throws DaoException {
+        ArrayList records = new ArrayList();
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+
+            //  Set up SQL
+            StringBuffer buf = new StringBuffer(
+                "SELECT cpath.CPATH_ID, cpath.NAME, cpath.TYPE, cpath.SPECIFIC_TYPE"
+                + " FROM cpath, internal_link\n");
+            buf.append ("WHERE cpath.CPATH_ID = internal_link.TARGET_ID\n");
+            buf.append ("AND internal_link.SOURCE_ID = " + cPathId +"\n");
+            buf.append ("ORDER BY cpath.CPATH_ID\n");
+            buf.append ("LIMIT "+ startIndex + "," + numRecords);
+
+            //  Create Prepared Statement
+            pstmt = con.prepareStatement (buf.toString());
+            xdebug.logMsg(this, "Using SQL Statement:  " + buf.toString());
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                long childId = rs.getLong("cpath.CPATH_ID");
+                String childName = rs.getString("cpath.NAME");
+                String childType = rs.getString("cpath.TYPE");
+                String childSpecificType = rs.getString("cpath.SPECIFIC_TYPE");
+                CPathRecord record = new CPathRecord();
+                record.setId(childId);
+                record.setName(childName);
+                record.setType(CPathRecordType.getType(childType));
+                record.setSpecType(childSpecificType);
+                records.add(record);
+            }
+            return records;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
      * Gets all parents;  filters by taxonomy ID, external db source, and specific type.
      * Uses cursor to limit result set.  Used primarily to build paginated web pages.
      * @param cPathId cPath ID
@@ -345,7 +399,7 @@ public class DaoInternalLink {
      * Gets specific types (with counts) for all children elements.
      * @param cPathId   cPath ID.
      * @param ncbiTaxonomyId Organism filter. Set to -1 if there is no organism filter.
-     * @param externalDbSnapshots data source filter.
+     * @param externalDbSnapshots data source filter.  Set to null if there is no data source filter
      * @param xdebug  XDebug.
      * @return ArrayList of TypeCount Objects.
      * @throws DaoException Error Retrieving Data.
@@ -396,7 +450,51 @@ public class DaoInternalLink {
             while (rs.next()) {
                 String childSpecificType = rs.getString("cpath.SPECIFIC_TYPE");
                 int childCount = rs.getInt("COUNT");
-                TypeCount typeCount = new TypeCount();
+                TypeCount typeCount = new TypeCount(BioPaxParentChild.GET_CHILDREN);
+                typeCount.setType(childSpecificType);
+                typeCount.setCount(childCount);
+                records.add(typeCount);
+            }
+            return records;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets specific types (with counts) for all children elements.
+     * @param cPathId   cPath ID.
+     * @param xdebug  XDebug.
+     * @return ArrayList of TypeCount Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getChildrenTypes (long cPathId, XDebug xdebug) throws DaoException {
+        ArrayList records = new ArrayList();
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+
+            //  Set up SQL
+            StringBuffer buf = new StringBuffer(
+                "SELECT cpath.SPECIFIC_TYPE, count(*) as COUNT FROM cpath, internal_link\n");
+            buf.append ("WHERE cpath.CPATH_ID = internal_link.TARGET_ID\n");
+            buf.append ("AND internal_link.SOURCE_ID = " + cPathId +"\n");
+            buf.append ("GROUP BY cpath.SPECIFIC_TYPE\n");
+            buf.append ("ORDER BY cpath.SPECIFIC_TYPE\n");
+
+            //  Create Prepared Statement
+            pstmt = con.prepareStatement (buf.toString());
+            xdebug.logMsg(this, "Using SQL Statement:  " + buf.toString());
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String childSpecificType = rs.getString("cpath.SPECIFIC_TYPE");
+                int childCount = rs.getInt("COUNT");
+                TypeCount typeCount = new TypeCount(BioPaxParentChild.GET_CHILDREN);
                 typeCount.setType(childSpecificType);
                 typeCount.setCount(childCount);
                 records.add(typeCount);
@@ -458,7 +556,7 @@ public class DaoInternalLink {
             while (rs.next()) {
                 String childSpecificType = rs.getString("cpath.SPECIFIC_TYPE");
                 int childCount = rs.getInt("COUNT");
-                TypeCount typeCount = new TypeCount();
+                TypeCount typeCount = new TypeCount(BioPaxParentChild.GET_PARENTS);
                 typeCount.setType(childSpecificType);
                 typeCount.setCount(childCount);
                 records.add(typeCount);

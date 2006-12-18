@@ -1,17 +1,13 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="org.mskcc.pathdb.model.TypeCount"%>
-<%@ page import="org.mskcc.pathdb.model.BioPaxEntityTypeMap"%>
+<%@ page import="org.mskcc.pathdb.model.BioPaxTabs"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
 ArrayList typesList = (ArrayList) request.getAttribute("TYPES_LIST");
-BioPaxEntityTypeMap bpPlainEnglish = new BioPaxEntityTypeMap();
+BioPaxTabs bpPlainEnglish = new BioPaxTabs();
 String id = request.getParameter("id");
-String command = request.getParameter("command");
-if (command == null) {
-    command = "getChildren";
-}
 String name = (String) request.getAttribute("NAME");
 boolean showTabs = false;
 %>
@@ -91,7 +87,8 @@ YAHOO.example.init = function() {
     //  Create one tab per type
     <% for (int i=0; i<typesList.size(); i++) {
         TypeCount typeCount = (TypeCount) typesList.get(i);
-        String plain = (String) bpPlainEnglish.get(typeCount.getType());
+        String plain = (String) bpPlainEnglish.getTabLabel(typeCount.getCommand(),
+        typeCount.getType());
         if (plain == null) {
             plain = typeCount.getType();
         }
@@ -100,7 +97,7 @@ YAHOO.example.init = function() {
         if (i==0) {
             tabActive = "true";
         }
-        String dataUrl = "table.do?id=" + id + "&command="+command+"&type="
+        String dataUrl = "table.do?id=" + id + "&command=" + typeCount.getCommand() + "&type="
             + typeCount.getType() + "&totalNumRecords=" + typeCount.getCount();
         if (typeCount.getCount() > 0) {
             showTabs = true;
@@ -149,7 +146,7 @@ YAHOO.example.init();
     <%
     for (int i=0; i<typesList.size(); i++) {
         TypeCount typeCount = (TypeCount) typesList.get(i);
-        String url = "table.do?id=" + id + "&command="+command+"&type="
+        String url = "table.do?id=" + id + "&command="+typeCount.getCommand()+"&type="
                 + typeCount.getType() + "&totalNumRecords=" + typeCount.getCount()
                 + "&showHeader=false&startIndex=";
     %>

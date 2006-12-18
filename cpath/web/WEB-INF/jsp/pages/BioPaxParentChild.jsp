@@ -131,9 +131,10 @@ private String getStartRow (int i) {
 
 private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary) throws DaoException {
     StringBuffer buf = new StringBuffer();
-    if (bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
-        String entityLink = BioPaxRecordSummaryUtils.createEntityLink(bpSummary, 200);
-        buf.append(entityLink);
+    if (bpSummary.getCPathRecord() != null
+        && bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
+            String entityLink = BioPaxRecordSummaryUtils.createEntityLink(bpSummary, 200);
+            buf.append(entityLink);
     } else {
         buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
             + bpSummary.getName() + "</a>");
@@ -147,7 +148,7 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary) throws DaoEx
     boolean hasDetails = false;
     if (bpSummary.getComment() != null) {
         String comment = ReactomeCommentUtil.massageComment(bpSummary.getComment());
-        buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", "<P><B>Summary:</B>&nbsp;" + comment));
+        buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", "<P>" + comment));
         hasDetails = true;
     } else {
         buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", ""));
@@ -172,6 +173,8 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary) throws DaoEx
     buf.append("</td>");
     if (hasDetails) {
         buf.append(getInspectorButtonHtml(bpSummary.getRecordID()));
+    } else {
+        buf.append("<td></td>");
     }
     return buf.toString();
 }

@@ -27,7 +27,6 @@ public class ShowBioPaxRecord2 extends BaseAction {
             throws Exception {
         DaoCPath dao = DaoCPath.getInstance();
         String id = request.getParameter("id");
-        String command = request.getParameter("command");
         CPathRecord record = null;
         if (id != null) {
             xdebug.logMsg(this, "Using cPath ID:  " + id);
@@ -53,37 +52,103 @@ public class ShowBioPaxRecord2 extends BaseAction {
         long snapshotIds[] = getSnapshotFilter(filterSettings, xdebug);
 
         //  Get parent or child types.
-        ArrayList typeList;
-        if (command != null && command.equals("getParents")) {
-            typeList = getParentTypes(xdebug, daoLinker, id, taxId, snapshotIds);
-            DaoInternalFamily daoFamily = new DaoInternalFamily();
-            int count = daoFamily.getAncestorIdCount(Long.parseLong(id), CPathRecordType.PATHWAY,
-                    filterSettings.getSnapshotIdSet(), filterSettings.getOrganismTaxonomyIdSet());
-            TypeCount typeCount = new TypeCount();
-            xdebug.logMsg(this, "Number of Pathway Roots:  " + count);
-            typeCount.setType(BioPaxParentChild.GET_PATHWAY_ROOTS);
-            typeCount.setCount(count);
-            typeList.add(typeCount);
-        } else {
-            typeList = getChildTypes(xdebug, daoLinker, id, taxId, snapshotIds);
-            DaoInternalFamily daoFamily = new DaoInternalFamily();
-            int count = daoFamily.getDescendentIdCount(Long.parseLong(id),
-                    CPathRecordType.PHYSICAL_ENTITY);
-            TypeCount typeCount = new TypeCount();
-            xdebug.logMsg(this, "Number of Molecule Leaves:  " + count);
-            typeCount.setType(BioPaxParentChild.GET_PE_LEAVES);
-            typeCount.setCount(count);
+        ArrayList typeList = new ArrayList();
+        boolean getChildren = false;
+        boolean getParents = false;
+        boolean getPathwayRoots = false;
+        boolean getPeLeaves = false;
+        boolean isComplex = false;
+
+        //  Get different elements, depending on type
+        if (record != null) {
+            xdebug.logMsg (this, "Record type:  " + record.getType());
+            if (record.getType() == CPathRecordType.PATHWAY) {
+                getChildren = true;
+                getPeLeaves = true;
+            } else if (record.getType() == CPathRecordType.INTERACTION) {
+                getPeLeaves = true;
+                getPathwayRoots = true;
+            } else {
+                xdebug.logMsg (this, "Record specific type:  " + record.getSpecificType());
+                getParents = true;
+                getPathwayRoots = true;
+                if (record.getSpecificType().toLowerCase().equals("complex")) {
+                    isComplex = true;
+                    getChildren = true;
+                }
+            }
+        }
+
+        if (getChildren) {
+            xdebug.logMsg (this, "Getting all children");
+            ArrayList childList = getChildTypes(xdebug, daoLinker, id, taxId, snapshotIds,
+                    isComplex);
+            typeList.addAll(childList);
+        }
+        if (getParents) {
+            xdebug.logMsg (this, "Getting all parents");
+            ArrayList parentList = getParentTypes(xdebug, daoLinker, id, taxId, snapshotIds);
+            typeList.addAll(parentList);
+        }
+        if (getPathwayRoots) {
+            xdebug.logMsg (this, "Getting all pathway roots");
+            TypeCount typeCount = getPathwayRoots(id, filterSettings, xdebug);
             typeList.add(typeCount);
         }
+        if (getPeLeaves) {
+            xdebug.logMsg (this, "Getting all physical entity leaves");
+            TypeCount typeCount = getPeLeaves(id, xdebug);
+            typeList.add(typeCount);
+        }
+        xdebug.logMsg(this, "Total number of tabs:  " + typeList.size());
         request.setAttribute("TYPES_LIST", typeList);
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 
+    private TypeCount getPeLeaves (String id, XDebug xdebug) throws DaoException {
+        DaoInternalFamily daoFamily = new DaoInternalFamily();
+        int count = daoFamily.getDescendentIdCount(Long.parseLong(id),
+                CPathRecordType.PHYSICAL_ENTITY);
+        TypeCount typeCount = new TypeCount(BioPaxParentChild.GET_CHILDREN);
+        xdebug.logMsg(this, "Number of Molecule Leaves:  " + count);
+        typeCount.setType(BioPaxParentChild.GET_PE_LEAVES);
+        typeCount.setCount(count);
+        return typeCount;
+    }
+
+    private TypeCount getPathwayRoots (String id, GlobalFilterSettings filterSettings,
+            XDebug xdebug) throws DaoException {
+        DaoInternalFamily daoFamily = new DaoInternalFamily();
+        int count = daoFamily.getAncestorIdCount(Long.parseLong(id), CPathRecordType.PATHWAY,
+                filterSettings.getSnapshotIdSet(), filterSettings.getOrganismTaxonomyIdSet());
+        TypeCount typeCount = new TypeCount(BioPaxParentChild.GET_PARENTS);
+        xdebug.logMsg(this, "Number of Pathway Roots:  " + count);
+        typeCount.setType(BioPaxParentChild.GET_PATHWAY_ROOTS);
+        typeCount.setCount(count);
+        return typeCount;
+    }
+
     private ArrayList getChildTypes (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
-            long[] snapshotIds) throws DaoException {
+            long[] snapshotIds, boolean isComplex) throws DaoException {
         xdebug.logMsg(this, "Determing types of all child elements");
-        ArrayList childTypes = daoLinker.getChildrenTypes(Long.parseLong(id),
+        ArrayList childTypes;
+        if (isComplex) {
+            childTypes = daoLinker.getChildrenTypes(Long.parseLong(id), xdebug);
+            int counter = 0;
+            //  Merge all into one category.
+            for (int i=0; i<childTypes.size(); i++) {
+                TypeCount typeCount = (TypeCount) childTypes.get(i);
+                counter+= typeCount.getCount();
+            }
+            TypeCount typeCount = new TypeCount(BioPaxParentChild.GET_CHILDREN);
+            typeCount.setCount(counter);
+            typeCount.setType(BioPaxParentChild.GET_SUB_UNITS);
+            childTypes = new ArrayList();
+            childTypes.add(typeCount);
+        } else {
+            childTypes = daoLinker.getChildrenTypes(Long.parseLong(id),
                 taxId, snapshotIds, xdebug);
+        }
 
         if (childTypes.size() ==0) {
                 xdebug.logMsg(this, "No child types found");

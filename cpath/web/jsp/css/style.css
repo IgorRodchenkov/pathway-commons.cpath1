@@ -294,3 +294,13 @@
    border-bottom-width: thin;
    text-decoration: none;
 }
+
+
+.yui-navset {
+  #font-size:80%;
+}
+
+/*  Selected Tab */
+.selected {
+  font-weight:bold;
+}

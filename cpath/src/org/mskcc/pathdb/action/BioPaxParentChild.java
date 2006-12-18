@@ -44,6 +44,11 @@ public class BioPaxParentChild extends BaseAction {
     public static String GET_PATHWAY_ROOTS = "pathwayRoot";
 
     /**
+     * Get Subunits.
+     */
+    public static String GET_SUB_UNITS = "subUnits";
+
+    /**
      * Get Physical Entity Leaves.
      */
     public static String GET_PE_LEAVES = "peLeaf";
@@ -67,7 +72,7 @@ public class BioPaxParentChild extends BaseAction {
         String type = request.getParameter("type");
         String startIndex = request.getParameter("startIndex");
         String maxRecords = request.getParameter("maxRecords");
-        CPathRecord record;
+        CPathRecord record = null;
         if (id != null) {
             xdebug.logMsg(this, "Using cPath ID:  " + id);
             record = dao.getRecordById(Long.parseLong(id));
@@ -115,7 +120,7 @@ public class BioPaxParentChild extends BaseAction {
             if (type != null && type.equals(GET_PE_LEAVES)) {
                 bpSummaryList = getPeLeaves(xdebug, id, start, max);
             } else {
-                records = getChildren(xdebug, daoLinker, id, taxId, snapshotIds, type,
+                records = getChildren(xdebug, record, daoLinker, id, taxId, snapshotIds, type,
                     start, max);
             }
         }
@@ -165,29 +170,21 @@ public class BioPaxParentChild extends BaseAction {
         return bpSummaryList;
     }
 
-    private ArrayList getChildren (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
-            long[] snapshotIds, String type, int start, int max)
+    private ArrayList getChildren (XDebug xdebug, CPathRecord record, DaoInternalLink daoLinker,
+            String id, int taxId, long[] snapshotIds, String type, int start, int max)
             throws DaoException {
-        xdebug.logMsg(this, "Determing types of all child elements");
-        ArrayList childTypes = daoLinker.getChildrenTypes(Long.parseLong(id),
-                taxId, snapshotIds, xdebug);
-
-        if (childTypes.size() ==0) {
-                xdebug.logMsg(this, "No child types found");
-        }
-        for (int i=0; i<childTypes.size(); i++) {
-            TypeCount typeCount = (TypeCount) childTypes.get(i);
-            xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
-                + " -->  " + typeCount.getCount() + " records");
-        }
-
         if (type != null) {
             xdebug.logMsg(this, "Getting children.  Restricting results to records of type:  "
                     + type);
             xdebug.logMsg (this, "Start Index is set to:  " + start);
             xdebug.logMsg (this, "Max Records is set to:  " + max);
-            ArrayList records = daoLinker.getChildren(Long.parseLong(id), taxId, snapshotIds,
+            ArrayList records;
+            if (record.getSpecificType().equalsIgnoreCase("complex")) {
+                records = daoLinker.getChildren(Long.parseLong(id), start, max, xdebug);
+            } else {
+                records = daoLinker.getChildren(Long.parseLong(id), taxId, snapshotIds,
                     type, start, max, xdebug);
+            }
             if (records.size() ==0) {
                 xdebug.logMsg(this, "No children found");
             }
@@ -204,20 +201,6 @@ public class BioPaxParentChild extends BaseAction {
     private ArrayList getParents (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
             long[] snapshotIds, String type, int start, int max)
             throws DaoException {
-        xdebug.logMsg(this, "Determing types of all parent elements");
-        ArrayList parentTypes = daoLinker.getParentTypes(Long.parseLong(id),
-                taxId, snapshotIds, xdebug);
-
-
-        if (parentTypes.size() ==0) {
-            xdebug.logMsg (this, "No parent types found");
-        }
-        for (int i=0; i<parentTypes.size(); i++) {
-            TypeCount typeCount = (TypeCount) parentTypes.get(i);
-            xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
-                + " -->  " + typeCount.getCount() + " records");
-        }
-
         if (type != null) {
             xdebug.logMsg(this, "Getting parents.  Restricting results to records of type:  "
                 + type);
@@ -272,7 +255,8 @@ public class BioPaxParentChild extends BaseAction {
     }
 
     private ArrayList <BioPaxRecordSummary> getPathwayRoots(XDebug xdebug, String id,
-            Set snapshotIdSet, Set organismIdSet, int start, int max) throws DaoException {
+            Set snapshotIdSet, Set organismIdSet, int start, int max) throws DaoException,
+            BioPaxRecordSummaryException {
         xdebug.logMsg(this, "Getting Pathway Root Elements");
         DaoInternalFamily dao = new DaoInternalFamily();
         LinkedHashSet<BioPaxRecordSummary> summarySet = new LinkedHashSet<BioPaxRecordSummary>();
@@ -280,9 +264,18 @@ public class BioPaxParentChild extends BaseAction {
                 summarySet, snapshotIdSet, organismIdSet, start, max);
 
         xdebug.logMsg(this, "Total number of pathway root elements:  " + count);
-        ArrayList <BioPaxRecordSummary> list = new ArrayList <BioPaxRecordSummary>();
-        list.addAll(summarySet);
-        return list;
+        ArrayList <BioPaxRecordSummary> rootList = new ArrayList <BioPaxRecordSummary>();
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        Iterator iterator = summarySet.iterator();
+        while (iterator.hasNext()) {
+            BioPaxRecordSummary bpSummaryBrief = (BioPaxRecordSummary) iterator.next();
+            CPathRecord record = daoCPath.getRecordById(bpSummaryBrief.getRecordID());
+            xdebug.logMsg(this, "Getting Full Details for Record:  " + record.getName());
+            BioPaxRecordSummary bpSummaryComplete =
+                    BioPaxRecordUtil.createBioPaxRecordSummary(record);
+            rootList.add(bpSummaryComplete);
+        }
+        return rootList;
     }
 
     private ArrayList <BioPaxRecordSummary> getPeLeaves
