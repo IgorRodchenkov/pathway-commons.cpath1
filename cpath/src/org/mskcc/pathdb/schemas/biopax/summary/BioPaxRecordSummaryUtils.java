@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.35 2006-12-18 21:44:39 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.36 2006-12-18 22:03:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -330,11 +330,11 @@ public class BioPaxRecordSummaryUtils {
                     || participant.getFeatureList().size() == 0)) {
                 buf.append("No synonyms or features specified");
             }
-            addComponents(participant, lengthOfHeader, buf);
         }
+        addComponents(component, lengthOfHeader, buf);
 
-        if (participant == null && (component.getSynonyms() == null
-                || component.getSynonyms().size() == 0)) {
+        if (component.getSynonyms() == null
+                || component.getSynonyms().size() == 0) {
             buf.append("No synonyms specified");
         }
 
@@ -370,7 +370,7 @@ public class BioPaxRecordSummaryUtils {
      * @param participant ParticipantSummaryComponent Object.
      * @param buf         StringBuffer Object.
      */
-    private static void addComponents(ParticipantSummaryComponent participant,
+    private static void addComponents(BioPaxRecordSummary participant,
             int lengthOfHeader, StringBuffer buf) {
         ArrayList componentList = participant.getComponentList();
         if (componentList != null && componentList.size() > 0) {

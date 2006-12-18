@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.9 2006-12-18 17:32:50 cerami Exp $
+// $Id: BioPaxRecordSummary.java,v 1.10 2006-12-18 22:03:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,7 @@ import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.model.CPathRecord;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.io.Serializable;
 
 /**
@@ -108,6 +109,11 @@ public class BioPaxRecordSummary implements Serializable {
      * The record comment.
      */
     protected String comment;
+    /**
+     * In the case of a Complex, this is a list of
+     * BioPaxRecordSummary that make up the complex.
+     */
+    private ArrayList complexMemberList;
 
     /**
      * Sets the cpath record id.
@@ -321,5 +327,23 @@ public class BioPaxRecordSummary implements Serializable {
      */
     public CPathRecord getCPathRecord () {
         return this.cPathRecord;
+    }
+
+    /**
+     * Sets the member list of a complex.
+     *
+     * @param complexMemberList ArrayList of BioPaxRecordSummary
+     */
+    public void setComponentList(ArrayList complexMemberList) {
+        this.complexMemberList = complexMemberList;
+    }
+
+    /**
+     * Gets the member list of a complex.
+     *
+     * @return ArrayList of BioPaxRecordSummary
+     */
+    public ArrayList getComponentList() {
+        return complexMemberList;
     }
 }
