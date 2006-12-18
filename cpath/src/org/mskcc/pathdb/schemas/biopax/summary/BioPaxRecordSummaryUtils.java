@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.34 2006-12-15 18:58:35 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.35 2006-12-18 21:44:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -288,7 +288,7 @@ public class BioPaxRecordSummaryUtils {
         }
 
         //  Start HTML A Link Tag.
-        StringBuffer buf = new StringBuffer("<a href=\"record.do?id="
+        StringBuffer buf = new StringBuffer("<a href=\"record2.do?id="
                 + component.getRecordID());
 
         //  Create JavaScript for MouseOver Pop-Up Box
