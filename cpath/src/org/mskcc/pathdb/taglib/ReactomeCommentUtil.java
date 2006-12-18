@@ -22,6 +22,7 @@ public class ReactomeCommentUtil {
         }
 
         originalComment = originalComment.replaceAll("<BR>", "<p>");
+        originalComment = originalComment.replaceAll("<br>", "<p>");
 
         //  Ugly hack to handle Reactome HREF links
         if (originalComment.indexOf("<a href") > -1) {
