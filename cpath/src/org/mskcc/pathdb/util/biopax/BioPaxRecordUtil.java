@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.26 2006-12-18 22:02:39 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.27 2006-12-19 15:50:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -177,7 +177,8 @@ public class BioPaxRecordUtil {
 										   biopaxRecordSummary);
 
             // if physical entity record is a complex, lets get its members
-            if (record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
+            if (record.getSpecificType() != null
+                    && record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
                 BioPaxRecordUtil.setComplexMembers(biopaxRecordSummary, record);
             }
         } catch (Throwable throwable) {
