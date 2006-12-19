@@ -249,7 +249,7 @@ public class PopulateReferenceTableTask extends Task {
 				reference.setDatabase("PubMed");
 				// year
 				reference.setYear(xpathQuery(medlineCitationElement, "Article/Journal/JournalIssue/PubDate/Year", false));
-				// title
+				// article title
 				reference.setTitle(xpathQuery(medlineCitationElement, "Article/ArticleTitle", false));
 				// authors
 				Element authorListRootElement = xpathElement(medlineCitationElement, "Article/AuthorList");
@@ -261,7 +261,7 @@ public class PopulateReferenceTableTask extends Task {
 															 (completeYN != null) ? completeYN.getValue() : "N"));
 				}
 				// source
-				reference.setSource("PubMed");
+				reference.setSource(constructSourceString(medlineCitationElement));
 				// add object to db
 				daoReference.addReference(reference);
 			}
@@ -363,5 +363,30 @@ public class PopulateReferenceTableTask extends Task {
 		
 		// outta here
 		return null;
+	}
+
+	/**
+	 * Constructs source string
+	 *
+	 * @param medlineCitationElement Element
+	 * @return String
+	 * @throws JDOMException
+	 */
+	private String constructSourceString(Element medlineCitationElement) throws JDOMException {
+
+		String returnString = "";
+
+		String sourceTitle = xpathQuery(medlineCitationElement, "Article/Journal/Title", false);
+		String sourceVolume = xpathQuery(medlineCitationElement, "Article/Journal/JournalIssue/Volume", false);
+		String sourceIssue = xpathQuery(medlineCitationElement, "Article/Journal/JournalIssue/Issue", false);
+		String sourcePages = xpathQuery(medlineCitationElement, "Article/Pagination/MedlinePgn", false);
+
+		returnString += (sourceTitle != null && sourceTitle.length() > 0) ? (sourceTitle + " ") : "";
+		returnString += (sourceVolume != null && sourceVolume.length() > 0) ? (sourceVolume) : "";
+		returnString += (sourceIssue != null && sourceIssue.length() > 0) ? ("(" + sourceIssue + ")") : "";
+		returnString += (sourcePages != null && sourcePages.length() > 0) ? (":" + sourcePages) : "";
+
+		// outta here
+		return returnString;
 	}
 }
