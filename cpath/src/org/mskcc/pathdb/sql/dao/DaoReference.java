@@ -1,4 +1,4 @@
-// $Id: DaoReference.java,v 1.1 2006-12-15 19:35:54 grossb Exp $
+// $Id: DaoReference.java,v 1.2 2006-12-19 21:36:24 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -148,4 +148,27 @@ public class DaoReference {
         return ref;
     }
 
+    /**
+     * Deletes Record specified by Reference ID.
+     *
+     * @param long referenceId
+     * @return true if deletion is successful.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public boolean deleteRecordById(long referenceId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement("delete from reference where REFERENCE_ID = ?");
+            pstmt.setLong(1, referenceId);
+            int rows = pstmt.executeUpdate();
+            return (rows > 0) ? true : false;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
 }
