@@ -231,13 +231,10 @@
              token="admin_password__value" value="${web.admin.password}"
              summary="yes"/>
         <replace file="${build.dir}/WEB-INF/web.xml"
-             token="web_mode__value" value="${web.mode}"
-             summary="yes"/>
-        <replace file="${build.dir}/WEB-INF/web.xml"
              token="admin_mode_active__value" value="${web.admin.active}"
              summary="yes"/>
         <replace file="${build.dir}/WEB-INF/web.xml"
-             token="web_show_data_source__value" value="${web_show_data_source_details}"
+             token="web_skin__value" value="${web.skin}"
              summary="yes"/>
 
         <!-- Copy log4J Config -->
