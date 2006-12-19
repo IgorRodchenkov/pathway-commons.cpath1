@@ -1,4 +1,4 @@
-// $Id: TestPopulateReferenceTableTask.java,v 1.1 2006-12-15 19:35:35 grossb Exp $
+// $Id: TestPopulateReferenceTableTask.java,v 1.2 2006-12-19 18:50:50 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -58,11 +58,11 @@ public class TestPopulateReferenceTableTask extends TestCase {
 													  "Is cryopreservation a homogeneous process? " +
 													  "Ultrastructure and motility of untreated, prefreezing, " +
 													  "and postthawed spermatozoa of Diplodus puntazzo (Cetti).",
-													  new Integer(8), "Abelli, L", "PubMed" };
+													  new Integer(8), "Abelli, L", "Cryobiology 42(4):244-55" };
 	private final Object[] PUBMED_TEST_RECORD_TWO = { "11700088", new Long(11700088),
 													  "PubMed", "2001", "Proton MRI of (13)C distribution by J " +
 													  "and chemical shift editing.",
-													  new Integer(6), "Carpinelli, G", "PubMed" };
+													  new Integer(6), "Carpinelli, G", "Journal of magnetic resonance (San Diego, Calif. : 1997) 153(1):117-23" };
 
     public static Test suite() {
         // Will dynamically add all methods as tests that begin with 'test'
