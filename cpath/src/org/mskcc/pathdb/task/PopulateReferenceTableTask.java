@@ -162,9 +162,13 @@ public class PopulateReferenceTableTask extends Task {
 			// get the pubmed id
 			String linkedToId = externalLink.getLinkedToId();
 
-			// is this already in reference table, if so, next record
+			// is this already in reference table ?
+			// if so, check for completeness (no N/A strings)
+			// if complete, skip it, if not complete, fetch data from ncbi
 			Reference reference = daoReference.getRecord(new Long(linkedToId));
-			if (reference != null) continue;
+			if (completeReference(reference)) continue;
+			// if the reference is not null, but not complete, delete it from table
+			if (reference != null) daoReference.deleteRecordById(reference.getId());
 
 			// ok, batch this record and fetch from ncbi if 
 			recordsToFetch.add(linkedToId);
@@ -389,5 +393,27 @@ public class PopulateReferenceTableTask extends Task {
 
 		// outta here
 		return returnString;
+	}
+
+	/**
+	 * Checks a reference object for missing resources
+	 *
+	 * @param reference Reference
+	 * @return boolean
+	 */
+	private boolean completeReference(Reference reference) {
+
+		// check for null ref
+		if (reference == null) return false;
+
+		if (reference.getDatabase().equals(CPathRecord.NA_STRING)) return false;
+		if (reference.getYear().equals(CPathRecord.NA_STRING)) return false;
+		if (reference.getTitle().equals(CPathRecord.NA_STRING)) return false;
+		if (reference.getSource().equals(CPathRecord.NA_STRING)) return false;
+		String[] authors = reference.getAuthors();
+		if (authors.length == 1 && authors[0].equals(CPathRecord.NA_STRING)) return false;
+
+		// outta here
+		return true;
 	}
 }
