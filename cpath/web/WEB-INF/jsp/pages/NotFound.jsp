@@ -1,12 +1,5 @@
-<%@ page import="java.util.Enumeration,
-                 org.mskcc.pathdb.form.WebUIBean,
-                 org.mskcc.pathdb.servlet.CPathUIConfig,
-                 org.mskcc.pathdb.action.BaseAction"%>
-<%
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String title = webUIBean.getApplicationName() + "::404 Not Found";
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
-%>
+<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
+<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "404 Not Found"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 

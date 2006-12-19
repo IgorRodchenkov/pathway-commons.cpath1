@@ -1,41 +1,31 @@
-<%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging,
-                 org.mskcc.pathdb.action.HomeAction,
-                 org.mskcc.pathdb.action.BaseAction,
+<%@ page import="org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
-<%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot"%>
-<%@ page import="java.util.ArrayList"%>
-<%@ page import="org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord"%>
-<%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
-	// get bean
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-
 	// title
-	String title = webUIBean.getApplicationName() + "::Home";
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
-
-	// get right column content
-	String tagLine = webUIBean.getHomePageTagLine();
-	String homePageRightColumnContent = webUIBean.getHomePageRightColumnContent();
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Home");
 
 	// referer string used in tabs
 	request.setAttribute(BaseAction.REFERER, BaseAction.FORWARD_HOME);
 %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
-
+<%
+WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+String tagLineFile = CPathUIConfig.getPath("tagLine.jsp");
+String homePageRightFile = CPathUIConfig.getPath("homePageRight.jsp");
+%>
 
 <table>
 <tr VALIGN=TOP>
 <td width="60%">
 <div class="tagline">
-<B><% out.print(tagLine);%></B>
+<jsp:include page="<%=tagLineFile%>" flush="true"/>
 </div>
 
 <% if (CPathUIConfig.getShowDataSourceDetails() == true) { %>
@@ -80,7 +70,7 @@
     <div class="home_page_box">
     <jsp:include page="../global/dbStatsMini.jsp" flush="true" />
     </div>
-    <% out.println(homePageRightColumnContent); %>
+    <jsp:include page="<%=homePageRightFile %>" flush="true"/>
 </td>
 </tr>
 </table>

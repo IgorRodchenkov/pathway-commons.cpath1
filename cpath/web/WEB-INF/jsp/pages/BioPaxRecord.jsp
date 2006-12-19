@@ -23,29 +23,30 @@
 <%@ page errorPage = "JspError.jsp" %>
 
 <%
+    // get the cpath record
+    CPathRecord record = null;
+    Object possibleRecord = request.getAttribute("RECORD");
+    if (possibleRecord instanceof CPathRecord){
+        record = (CPathRecord)possibleRecord;
+    }
+
+    // create our biopaxConstants "helper" class
+    BioPaxConstants biopaxConstants = new BioPaxConstants();
+
+    // set request title attribute
+    if (record != null){
+        request.setAttribute(BaseAction.ATTRIBUTE_TITLE, record.getName());
+    }
+
+%>
+
+<jsp:include page="../global/header.jsp" flush="true" />
+
+<%
 	// query string
 	String queryString = request.getQueryString();
 	if (queryString == null){
 		queryString = "";
-	}
-
-	// ui bean
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-
-	// get the cpath record
-	CPathRecord record = null;
-    Object possibleRecord = request.getAttribute("RECORD");
-	if (possibleRecord instanceof CPathRecord){
-		record = (CPathRecord)possibleRecord;
-	}
-
-	// create our biopaxConstants "helper" class
-	BioPaxConstants biopaxConstants = new BioPaxConstants();
-
-	// set request title attribute
-	if (record != null){
-	    String title = webUIBean.getApplicationName() + "::" + record.getName();
-	    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
 	}
 
 	// debug mode boolean
@@ -59,8 +60,6 @@
         session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS, filterSettings);
     }
 %>
-
-<jsp:include page="../global/header.jsp" flush="true" />
 
 
 <% if (record != null) { %>

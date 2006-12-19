@@ -10,12 +10,7 @@
                  org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
-<%
-	// set title
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String title = webUIBean.getApplicationName() + "::Browse Pathway(s)";
-    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
-%>
+<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Browse Pathway(s)"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 

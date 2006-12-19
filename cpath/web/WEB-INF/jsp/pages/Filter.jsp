@@ -13,14 +13,7 @@
 <%@ page errorPage = "JspError.jsp" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 
-<%
-// get tag line
-WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-
-// title
-String title = webUIBean.getApplicationName() + "::Filter";
-request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
-%>
+<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Filter"); %>
 
 <jsp:include page="../global/header.jsp" flush="true" />
 <div id="content">

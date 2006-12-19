@@ -6,17 +6,25 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
 <%
-	// get WebUIBean
+    String initFile = CPathUIConfig.getPath("init.jsp");
+    String headerFile = CPathUIConfig.getPath("header.jsp");
+%>
+
+<jsp:include page="<%=initFile%>" flush="true"/>
+
+<%
+    // get WebUIBean
 	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 
 	// title
     String title = (String) request.getAttribute(BaseAction.ATTRIBUTE_TITLE);
     if (title == null) {
         title = webUIBean.getApplicationName();
+    } else {
+        title = webUIBean.getApplicationName() + "::" + title;
     }
 
 	// setup some other configurable UI elements
-	String homePageHeader = webUIBean.getHomePageHeader();
     String isAdminPage = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
 %>
 <head>
@@ -54,7 +62,7 @@
     <tr>
         <td valign="top" width="60%">
         <div id="page_title">
-            <%= homePageHeader %>
+            <jsp:include page="<%=headerFile%>" flush="true"/>
         </div>
         </td>
 

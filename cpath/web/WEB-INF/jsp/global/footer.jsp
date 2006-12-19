@@ -6,8 +6,7 @@
     String title = (String) request.getAttribute(BaseAction.ATTRIBUTE_TITLE);
 
 	// get tag line
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String maintenanceTagLine = webUIBean.getMaintenanceTagLine();
+	String footerFile = CPathUIConfig.getPath("footer.jsp");
 %>
                 </div>
                 <!-- End Div:  app -->
@@ -18,7 +17,9 @@
 </table>
 
 <div id="footer">
-  <p><% out.print(maintenanceTagLine); %></p>
+  <p>
+  <jsp:include page="<%=footerFile%>" flush="true"/>    
+  </p>
 </div>
 
 <jsp:include page="../global/xdebug.jsp" flush="true" />

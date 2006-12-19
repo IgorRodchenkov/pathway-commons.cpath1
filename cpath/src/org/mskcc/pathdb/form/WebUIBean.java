@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.8 2006-11-15 17:20:31 grossb Exp $
+// $Id: WebUIBean.java,v 1.9 2006-12-19 19:17:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,21 +53,6 @@ public class WebUIBean extends ActionForm {
     private String applicationName;
 
     /**
-     * Home Page Header.
-     */
-    private String homePageHeader;
-
-    /**
-     * Home Page Tag Line.
-     */
-    private String homePageTagLine;
-
-    /**
-     * Home Page Right Column Content.
-     */
-    private String homePageRightColumnContent;
-
-    /**
      * Display Browse by Pathway Tab.
      */
     private boolean displayBrowseByPathwayTab;
@@ -88,21 +73,6 @@ public class WebUIBean extends ActionForm {
     private boolean displayCytoscapeTab;
 
     /**
-     * FAQ Page Content.
-     */
-    private String faqPageContent;
-
-    /**
-     * About Page Content.
-     */
-    private String aboutPageContent;
-
-    /**
-     * Maintenance Tag Line.
-     */
-    private String maintenanceTagLine;
-
-    /**
      * Sets the Application Name.
      *
      * @param applicationName String.
@@ -118,60 +88,6 @@ public class WebUIBean extends ActionForm {
      */
     public String getApplicationName() {
         return applicationName;
-    }
-
-    /**
-     * Sets the Home Page Header.
-     *
-     * @param homePageHeader String.
-     */
-    public void setHomePageHeader(String homePageHeader) {
-        this.homePageHeader = homePageHeader;
-    }
-
-    /**
-     * Gets the Home Page Header.
-     *
-     * @return homePageHeader.
-     */
-    public String getHomePageHeader() {
-        return homePageHeader;
-    }
-
-    /**
-     * Sets the Home Page Tag Line.
-     *
-     * @param homePageTagLine String.
-     */
-    public void setHomePageTagLine(String homePageTagLine) {
-        this.homePageTagLine = homePageTagLine;
-    }
-
-    /**
-     * Gets the Home Page Tag Line.
-     *
-     * @return homePageTagLine.
-     */
-    public String getHomePageTagLine() {
-        return homePageTagLine;
-    }
-
-    /**
-     * Sets the Home Page Right Column Content.
-     *
-     * @param homePageRightColumnContent String.
-     */
-    public void setHomePageRightColumnContent(String homePageRightColumnContent) {
-        this.homePageRightColumnContent = homePageRightColumnContent;
-    }
-
-    /**
-     * Gets the Home Page Right Column Content.
-     *
-     * @return homePageRightColumnContent.
-     */
-    public String getHomePageRightColumnContent() {
-        return homePageRightColumnContent;
     }
 
     /**
@@ -244,100 +160,5 @@ public class WebUIBean extends ActionForm {
      */
     public boolean getDisplayCytoscapeTab() {
         return displayCytoscapeTab;
-    }
-
-    /**
-     * Sets the FAQ Page Content.
-     *
-     * @param faqPageContent String.
-     */
-    public void setFAQPageContent(String faqPageContent) {
-        this.faqPageContent = faqPageContent;
-    }
-
-    /**
-     * Gets the FAQ Page Content.
-     *
-     * @return faqPageContent.
-     */
-    public String getFAQPageContent() {
-        return faqPageContent;
-    }
-
-    /**
-     * Sets the About Page Content.
-     *
-     * @param aboutPageContent String.
-     */
-    public void setAboutPageContent(String aboutPageContent) {
-        this.aboutPageContent = aboutPageContent;
-    }
-
-    /**
-     * Gets the About Page Content.
-     *
-     * @return aboutPageContent.
-     */
-    public String getAboutPageContent() {
-        return aboutPageContent;
-    }
-
-    /**
-     * Sets the Maintenance Tag Line.
-     *
-     * @param maintenanceTagLine String.
-     */
-    public void setMaintenanceTagLine(String maintenanceTagLine) {
-        this.maintenanceTagLine = maintenanceTagLine;
-    }
-
-    /**
-     * Gets the Maintenance Tag Line.
-     *
-     * @return maintenanceTagLine.
-     */
-    public String getMaintenanceTagLine() {
-        return maintenanceTagLine;
-    }
-
-    /**
-     * Our implementation of validate.
-     *
-     * @param mapping ActionMapping reference.
-     * @param request HttpServletRequest.
-     * @return ActionErrors reference.
-     */
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-
-        // create errors object to return
-        ActionErrors errors = new ActionErrors();
-
-        // homePageHeader
-        if (homePageHeader == null || homePageHeader.equals("")) {
-            errors.add("homePageHeader", new ActionError("error.missing.homePageHeader"));
-        }
-
-        // homePageTagLine
-        if (homePageTagLine == null || homePageTagLine.equals("")) {
-            errors.add("homePageTagLine", new ActionError("error.missing.homePageTagLine"));
-        }
-
-        // FAQ Page Content
-        if (faqPageContent == null || faqPageContent.equals("")) {
-            errors.add("faqPageContent", new ActionError("error.missing.faqPageContent"));
-        }
-
-        // About Page Content
-        if (aboutPageContent == null || aboutPageContent.equals("")) {
-            errors.add("aboutPageContent", new ActionError("error.missing.aboutPageContent"));
-        }
-
-        // MaintenanceTagLine
-        if (maintenanceTagLine == null || maintenanceTagLine.equals("")) {
-            errors.add("maintenanceTagLine", new ActionError("error.missing.maintenanceTagLine"));
-        }
-
-        // outta here
-        return errors;
     }
 }

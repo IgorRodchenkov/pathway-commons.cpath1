@@ -133,15 +133,6 @@
 			    <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
-        <action path="/adminWebUIConfig"
-            type="org.mskcc.pathdb.action.admin.AdminWebUIConfigAction"
-            name="webUIForm"
-			input="/WEB-INF/jsp/pages/AdminWebUIConfig.jsp"
-			scope="request"
-			validate="false">
-			    <forward name="success" path="/WEB-INF/jsp/pages/AdminWebUIConfig.jsp"/>
-        </action>
-
         <action path="/adminRemoveTask"
             type="org.mskcc.pathdb.action.admin.AdminRemoveTask">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
@@ -205,15 +196,6 @@
             type="org.mskcc.pathdb.action.admin.AdminImportData"
             name="importDataForm"
             scope="request">
-            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
-        </action>
-
-        <action path="/adminUpdateWebUI"
-            type="org.mskcc.pathdb.action.admin.AdminUpdateWebUI"
-            name="webUIForm"
-			input="/WEB-INF/jsp/pages/Admin.jsp"
-            scope="request"
-			validate="true">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
     </action-mappings>

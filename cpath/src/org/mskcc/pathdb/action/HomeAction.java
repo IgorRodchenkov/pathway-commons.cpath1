@@ -1,4 +1,4 @@
-// $Id: HomeAction.java,v 1.11 2006-11-27 18:10:15 cerami Exp $
+// $Id: HomeAction.java,v 1.12 2006-12-19 19:17:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -65,15 +65,17 @@ public class HomeAction extends BaseAction {
             HttpServletResponse response, XDebug xdebug) throws Exception {
 
         // if biopax, get list of pathways
-        if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX
-                && CPathUIConfig.getWebUIBean().getDisplayBrowseByPathwayTab()) {
+        if (CPathUIConfig.getWebUIBean() != null) {
+            if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX
+                    && CPathUIConfig.getWebUIBean().getDisplayBrowseByPathwayTab()) {
 
-            // get top level pathways
-            GetTopLevelPathwayListCommand getPathwayListCommand =
-                    new GetTopLevelPathwayListCommand(xdebug);
-            ArrayList pathwayList =
-                    getPathwayListCommand.getTopLevelPathwayList();
-            request.setAttribute("RECORDS", pathwayList);
+                // get top level pathways
+                GetTopLevelPathwayListCommand getPathwayListCommand =
+                        new GetTopLevelPathwayListCommand(xdebug);
+                ArrayList pathwayList =
+                        getPathwayListCommand.getTopLevelPathwayList();
+                request.setAttribute("RECORDS", pathwayList);
+            }
         }
 
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);

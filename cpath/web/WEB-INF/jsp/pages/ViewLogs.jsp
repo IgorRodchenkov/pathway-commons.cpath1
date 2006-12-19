@@ -1,14 +1,7 @@
-<%@ page import="org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.form.WebUIBean,
-                 org.mskcc.pathdb.servlet.CPathUIConfig,
-                 org.mskcc.pathdb.sql.dao.DaoXmlCache"%>
+<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
-<%
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String title = webUIBean.getApplicationName() + "::Administration::View Logs";
-	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
-%>
+<% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Administration::View Logs"); %>
 <jsp:include page="../global/header.jsp" flush="true" />
 
 <cbio:logTable />

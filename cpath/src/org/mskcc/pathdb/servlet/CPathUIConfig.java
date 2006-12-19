@@ -1,4 +1,4 @@
-// $Id: CPathUIConfig.java,v 1.9 2006-10-24 15:10:16 cerami Exp $
+// $Id: CPathUIConfig.java,v 1.10 2006-12-19 19:17:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -92,6 +92,11 @@ public class CPathUIConfig {
     private static WebUIBean webUIBean;
 
     /**
+     * Web Skin.
+     */
+    private static String webSkin;
+
+    /**
      * Sets the Web Mode.
      *
      * @param mode WEB_MODE_BIOPAX or WEB_MODE_PSI_MI.
@@ -168,5 +173,25 @@ public class CPathUIConfig {
      */
     public static WebUIBean getWebUIBean() {
         return webUIBean;
+    }
+
+    /**
+     * Gets Web Skin Value.
+     * @return web skin value.
+     */
+    public static String getWebSkin () {
+        return webSkin;
+    }
+
+    /**
+     * Sets Web Skin Value.
+     * @param webSkin web skin value.
+     */
+    public static void setWebSkin (String webSkin) {
+        CPathUIConfig.webSkin = webSkin;
+    }
+
+    public static String getPath (String fileName) {
+        return "../skins/" + webSkin + "/" + fileName;
     }
 }

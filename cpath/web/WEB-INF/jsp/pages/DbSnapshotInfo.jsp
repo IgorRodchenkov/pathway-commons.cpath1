@@ -23,12 +23,7 @@
     if (snapshotId >= 0) {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
         snapshotRecord = dao.getDatabaseSnapshot(snapshotId);
-        WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-
-        // title
-        String title = webUIBean.getApplicationName() + "::"
-                + snapshotRecord.getExternalDatabase().getName() + "Data Source Details";
-        request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
+        request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Data Source Details");
     }
 
 %>

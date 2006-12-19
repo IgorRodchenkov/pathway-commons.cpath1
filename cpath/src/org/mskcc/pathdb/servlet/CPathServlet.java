@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.36 2006-11-27 18:10:15 cerami Exp $
+// $Id: CPathServlet.java,v 1.37 2006-12-19 19:17:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,12 +35,10 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoLog;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
-import org.mskcc.pathdb.sql.dao.DaoWebUI;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.cache.AutoPopulateCache;
 import org.mskcc.pathdb.util.cache.EhCache;
@@ -94,9 +92,7 @@ public final class CPathServlet extends ActionServlet {
         String dbPassword = config.getInitParameter("db_password");
         String adminUser = config.getInitParameter("admin_user");
         String adminPassword = config.getInitParameter("admin_password");
-        String webMode = config.getInitParameter(BaseAction.PROPERTY_WEB_MODE);
-        String showDataSourceDetails = config.getInitParameter
-                (BaseAction.WEB_SHOW_DATA_SOURCE_DETAILS);
+        String webSkin = config.getInitParameter("web_skin");
         String adminModeActive = config.getInitParameter(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE);
         String psiSchemaUrl = config.getInitParameter
                 (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
@@ -110,15 +106,11 @@ public final class CPathServlet extends ActionServlet {
                 + adminPassword + " [OK]");
         log.info("web.xml param:  psi_schema_location --> "
                 + psiSchemaUrl + " [OK]");
-        log.info("web.xml param:  "
-                + BaseAction.PROPERTY_WEB_MODE + "--> "
-                + webMode + " [OK]");
+        log.info("web.xml param:  web_skin --> "
+                + webSkin + " [OK]");
         log.info("web.xml param:  "
                 + BaseAction.PROPERTY_ADMIN_MODE_ACTIVE + "--> "
                 + adminModeActive + " [OK]");
-        log.info("web.xml param:  "
-                + BaseAction.WEB_SHOW_DATA_SOURCE_DETAILS + "-->"
-                + showDataSourceDetails + " [OK]");
 
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
@@ -127,14 +119,10 @@ public final class CPathServlet extends ActionServlet {
         manager.setProperty(BaseAction.PROPERTY_ADMIN_PASSWORD, adminPassword);
         manager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 psiSchemaUrl);
-        manager.setProperty(BaseAction.PROPERTY_WEB_MODE, webMode);
-        manager.setProperty(BaseAction.WEB_SHOW_DATA_SOURCE_DETAILS, showDataSourceDetails);
         manager.setProperty(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE, adminModeActive);
 
-        storeWebMode(webMode);
-        storeShowDataSourceDetails(showDataSourceDetails);
+        CPathUIConfig.setWebSkin(webSkin);
         storeAdminModeActive(adminModeActive);
-
         String dbName = config.getInitParameter("db_name");
         manager.setProperty(PropertyManager.DB_LOCATION, dbHost);
         manager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE, dbName);
@@ -151,33 +139,9 @@ public final class CPathServlet extends ActionServlet {
         //  Init the Global Cache
         initGlobalCache();
 
-        // populate the CPathUIConfig
-        populateWebUIBean();
-
         //  Start Quartz Scheduler
-        WebUIBean webBean = CPathUIConfig.getWebUIBean();
-        if (webBean.getDisplayBrowseByPathwayTab()) {
-            initQuartzScheduler();    
-        }
-    }
-
-    /**
-     * Stores the Web Mode in CPathUIConfig.
-     *
-     * @param webMode web mode String.
-     */
-    private void storeWebMode(String webMode) {
-        int mode;
-        if (webMode.equals(CPathUIConfig.PSI_MI)) {
-            mode = CPathUIConfig.WEB_MODE_PSI_MI;
-        } else if (webMode.equals(CPathUIConfig.BIOPAX)) {
-            mode = CPathUIConfig.WEB_MODE_BIOPAX;
-        } else {
-            log.error("Web mode not recognized:  " + webMode
-                    + ".  Defaulting to:  " + CPathUIConfig.BIOPAX);
-            mode = CPathUIConfig.WEB_MODE_BIOPAX;
-        }
-        CPathUIConfig.setWebMode(mode);
+        //  initQuartzScheduler();
+        //  initQuartzScheduler();
     }
 
     /**
@@ -196,19 +160,6 @@ public final class CPathServlet extends ActionServlet {
             activeMode = CPathUIConfig.INACTIVE;
         }
         CPathUIConfig.setAdminModeActive(activeMode);
-    }
-
-    /**
-     * Stores the Flag for Showing Data Sources in CPathUIConfig.
-     *
-     * @param flagStr "0" or "1".
-     */
-    private void storeShowDataSourceDetails (String flagStr) {
-        boolean flag = false;
-        if (flagStr.equals("1")) {
-            flag = true;
-        }
-        CPathUIConfig.setShowDataSourceDetails(flag);
     }
 
     /**
@@ -262,29 +213,5 @@ public final class CPathServlet extends ActionServlet {
             log.fatal("****  Fatal Error.  Could not connect to "
                     + "database", e);
         }
-    }
-
-    /**
-     * Populates WebUIBean within CPathUIConfig.
-     */
-    private void populateWebUIBean() {
-
-        // bean we retrieve
-        WebUIBean record = null;
-
-        log.info("Attempting to populate WebUIBean...");
-        // create dao object
-        try {
-            DaoWebUI dbWebUI = new DaoWebUI();
-            record = dbWebUI.getRecord();
-        } catch (DaoException e) {
-            log.fatal("****  Fatal Error.  Could not connect to " + "database", e);
-        }
-
-        // set the bean
-        if (record != null) {
-            CPathUIConfig.setWebUIBean(record);
-        }
-        log.info("WebUIBean [OK]");
     }
 }

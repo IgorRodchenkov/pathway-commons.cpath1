@@ -1,6 +1,5 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest,
-                 org.mskcc.pathdb.sql.assembly.XmlAssembly,
                  org.mskcc.pathdb.action.BaseAction,
                  java.util.ArrayList"%>
 <%

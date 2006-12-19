@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.8 2006-11-02 20:37:23 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.9 2006-12-19 19:17:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -172,15 +172,13 @@ public class ExecuteSearch extends BaseAction {
                 new ProtocolValidator(protocolRequest);
         validator.validate();
 
-        PropertyManager pManager = PropertyManager.getInstance();
-        String webMode = pManager.getProperty(BaseAction.PROPERTY_WEB_MODE);
-        xdebug.logMsg(this, "Branching based on web mode:  " + webMode);
-
         try {
             if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
+                xdebug.logMsg(this, "Branching based on web mode:  WEB_MODE_PSI_MI");
                 return processHtmlRequestPsiMode(xdebug, protocolRequest,
                         request, mapping);
             } else {
+                xdebug.logMsg(this, "Branching based on web mode:  WEB_MODE_BIOPAX");
                 return processHtmlRequestBioPaxMode(xdebug, protocolRequest,
                         request, mapping);
             }
