@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.10 2006-12-18 22:03:12 cerami Exp $
+// $Id: BioPaxRecordSummary.java,v 1.11 2006-12-19 15:47:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -113,7 +113,7 @@ public class BioPaxRecordSummary implements Serializable {
      * In the case of a Complex, this is a list of
      * BioPaxRecordSummary that make up the complex.
      */
-    private ArrayList complexMemberList;
+    protected ArrayList complexMemberList;
 
     /**
      * Sets the cpath record id.
