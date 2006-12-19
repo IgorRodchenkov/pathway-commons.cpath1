@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.28 2006-11-17 19:45:17 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.29 2006-12-19 21:13:42 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,6 +44,8 @@ import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
+import org.mskcc.pathdb.model.Reference;
+import org.mskcc.pathdb.model.CPathRecord;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -256,6 +258,58 @@ public class BioPaxUtil {
         }
         return (ExternalReference[])
                 refs.toArray(new ExternalReference[refs.size()]);
+    }
+
+    /**
+     * Extracts All Publication XREF Data within the specified Element.
+     *
+     * @param e JDOM Element.
+     * @return Array of Reference Objects.
+     * @throws JDOMException JDOM Error.
+     */
+    public Reference[] extractPublicationXrefs(Element e)
+            throws JDOMException {
+        XPath xpath = XPath.newInstance("biopax:XREF/biopax:publicationXref");
+        xpath.addNamespace("biopax", e.getNamespaceURI());
+        List xrefs = xpath.selectNodes(e);
+        ArrayList refs = new ArrayList();
+        for (int i = 0; i < xrefs.size(); i++) {
+            Element xref = (Element) xrefs.get(i);
+            String dbId = xref.getChildText("ID", e.getNamespace());
+            String dbName = xref.getChildText("DB", e.getNamespace());
+			String year = xref.getChildText("YEAR", e.getNamespace());
+			String title = xref.getChildText("TITLE", e.getNamespace());
+			xpath = XPath.newInstance("biopax:AUTHORS");
+			xpath.addNamespace("biopax", e.getNamespaceURI());
+			List<Element> authorsList = xpath.selectNodes(xref);
+			String[] authors;
+			if (authorsList.size() > 0) {
+				int lc = -1;
+				authors = new String[authorsList.size()];
+				for (Element author : authorsList) {
+					if (author != null && author.getTextNormalize().length() > 0) {
+						authors[++lc]  = author.getTextNormalize();
+					}
+				}
+			}
+			else {
+				authors = new String[1]; authors[0] = CPathRecord.NA_STRING;
+			}
+			String source = xref.getChildText("SOURCE", e.getNamespace());
+			// create reference object to store - if we have an id
+            if (dbId != null  && dbId.trim().length() > 0) {
+				Reference reference = new Reference();
+				reference.setId(Long.valueOf(dbId));
+				reference.setDatabase((dbName != null && dbName.trim().length() > 0) ? dbName : CPathRecord.NA_STRING);
+				reference.setYear((year != null && year.trim().length() > 0) ? year : CPathRecord.NA_STRING);
+				reference.setTitle((title != null && title.trim().length() > 0) ? title : CPathRecord.NA_STRING);
+				reference.setAuthors(authors);
+				reference.setSource((source != null && source.trim().length() > 0) ? source : CPathRecord.NA_STRING);
+                refs.add(reference);
+            }
+        }
+        return (Reference[])
+                refs.toArray(new Reference[refs.size()]);
     }
 
     /**
