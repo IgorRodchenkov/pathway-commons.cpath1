@@ -39,6 +39,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.model.Reference;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
@@ -317,7 +318,7 @@ public class PopulateReferenceTableTask extends Task {
 				}
 			}
 			else {
-				return "N/A";
+				return CPathRecord.NA_STRING;
 			}
 		}
 		return null;
