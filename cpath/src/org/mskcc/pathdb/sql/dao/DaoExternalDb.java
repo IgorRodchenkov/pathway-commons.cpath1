@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.29 2006-11-17 19:25:10 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.30 2006-12-20 18:38:43 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -188,6 +188,41 @@ public class DaoExternalDb {
                 Blob blob = rs.getBlob("ICON_BLOB");
                 if (blob != null) {
                     return new ImageIcon(blob.getBytes(1, (int) blob.length()));
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets Icon for the specified external database.
+     * @param externalDbId External DB ID.
+     * @return InputStream
+     * @throws DaoException Database access error.
+     */
+    public InputStream getIconBinaryStream (int externalDbId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("SELECT ICON_BLOB FROM external_db "
+                            + "WHERE `EXTERNAL_DB_ID` = ?");
+            pstmt.setInt(1, externalDbId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Blob blob = rs.getBlob("ICON_BLOB");
+                if (blob != null) {
+                    return blob.getBinaryStream();
                 } else {
                     return null;
                 }
