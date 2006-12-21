@@ -12,6 +12,8 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.TypeCount;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +34,9 @@ public class ShowBioPaxRecord2 extends BaseAction {
             xdebug.logMsg(this, "Using cPath ID:  " + id);
             record = dao.getRecordById(Long.parseLong(id));
             xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
-            request.setAttribute("NAME", record.getName());
+            BioPaxRecordSummary bpSummary =
+                    BioPaxRecordUtil.createBioPaxRecordSummary(record);
+            request.setAttribute("BP_SUMMARY", bpSummary);
         }
 
         DaoInternalLink daoLinker = new DaoInternalLink();
