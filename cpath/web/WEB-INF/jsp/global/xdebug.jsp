@@ -2,12 +2,12 @@
                  org.mskcc.pathdb.xdebug.XDebugMessage,
                  org.mskcc.pathdb.xdebug.XDebugParameter,
                  java.util.Date,
-                 java.util.Vector,
                  java.util.Enumeration,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
                  java.util.ArrayList" %>
 <%@ page import="org.mskcc.pathdb.util.CPathConstants"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="java.util.StringTokenizer"%>
 <%
 XDebug xdebug= (XDebug) request.getAttribute("xdebug");
 if (xdebug != null) {
@@ -26,52 +26,45 @@ if (xdebug != null) {
     String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
     if (xdebugSession != null || xdebugParameter != null) {
 %>
-
-<div id="bodycol">
-<div id="projecthome" class="app">
-<div class="h3">
-    <h3>cPath Web Diagnostics</h3>
-</div>
-
-<TABLE width="100%">
-    <TR>
-		<TH ALIGN=LEFT>
+<table width="100%">
+    <tr>
+		<td align="left">
             cPath Version
-        </TH>
-		<TD COLSPAN=2>
+        </td>
+		<td colspan="2">
             <%= CPathConstants.VERSION %>
-        </TD>
-    </TR>
-    <TR>
-		<TH ALIGN=LEFT>
+        </td>
+    </tr>
+    <tr>
+		<td align="left">
             Total Time to Generate Page
-        </TH>
-		<TD COLSPAN=2>
+        </td>
+		<td colspan="2">
             <%= xdebug.getTimeElapsed() %> ms
-        </TD>
-    </TR>
-    <TR>
-		<TH ALIGN=LEFT>
+        </td>
+    </tr>
+    <tr>
+		<td align="left">
             Current Time
-        </TH>
-		<TD COLSPAN=2>
+        </td>
+		<td colspan="2">
             <%= new Date() %> ms
-        </TD>
-	</TR>
-    <TR>
-        <th ALIGN=LEFT>Web Mode:  Show Data Source Details</th>
-        <td colspan=2>
+        </td>
+	</tr>
+    <tr>
+        <td align="left">Web Mode:  Show Data Source Details</td>
+        <td colspan="2">
             <%= CPathUIConfig.getShowDataSourceDetails() %>
         </td>
-    </TR>
-    <TR>
-		<TH ALIGN=LEFT>
+    </tr>
+    <tr bgcolor="#DDDDDD">
+		<td align="left">
             Class Name
-        </TH>
-		<TH ALIGN=LEFT COLSPAN=2>
+        </td>
+		<td align="left" colspan="2">
             Message
-        </TH>
-	</TR>
+        </td>
+	</tr>
 
 	<%--
 				***********************************
@@ -83,27 +76,27 @@ if (xdebug != null) {
 		for (int msgIndex=0; msgIndex<messages.size(); msgIndex++) {
 			XDebugMessage msg = (XDebugMessage) messages.get(msgIndex);
 	%>
-		<TR BGCOLOR="#ccccff" VALIGN=TOP>
-			<TD WIDTH=30%>
-                <%= msg.getClassName() %>
-            </TD>
-			<TD COLSPAN=2 WIDTH=70%>
-				<FONT COLOR="<%= msg.getColor() %>">
-				<%= msg.getMessage() %>
-				</FONT>
-            </TD>
-		</TR>
+		<tr bgcolor="#ccccff" valign="top">
+			<td>
+                <%= wrapText(msg.getClassName()) %>
+            </td>
+			<td colspan="2">
+				<font color="<%= msg.getColor() %>">
+				<%= wrapText(msg.getMessage()) %>
+				</font>
+            </td>
+		</tr>
     <% } %>
 	<%--
 				***********************************
 				Output Parameter Values
 				***********************************
 	--%>
-	<TR>
-		<TH ALIGN=LEFT>Parameter Type</TH>
-		<TH ALIGN=LEFT>Name</TH>
-		<TH ALIGN=LEFT>Value</TH>
-	</TR>
+	<tr bgcolor="#DDDDDD">
+		<td align="left">Parameter Type</td>
+		<td align="left">Name</td>
+		<td align="left">Value</td>
+	</tr>
 	<%
 		ArrayList parameters = xdebug.getParameters();
 		String bgcolor;
@@ -129,35 +122,23 @@ if (xdebug != null) {
 			else bgcolor = "WHITE";
 	%>
 
-		<TR BGCOLOR="<%= bgcolor %>">
-			<TD VALIGN=TOP><SMALL><%= param.getTypeName() %></SMALL></TD>
-			<TD VALIGN=TOP><SMALL><%= param.getName() %></SMALL></TD>
-			<TD VALIGN=TOP><SMALL><%= wrapText(param.getValue()) %></SMALL></TD>
-		</TR>
+		<tr bgcolor="<%= bgcolor %>">
+			<td valign="top"><%= wrapText(param.getTypeName()) %></td>
+			<td valign="top"><%= wrapText(param.getName()) %></td>
+			<td valign="top"><%= wrapText(param.getValue()) %></td>
+		</tr>
 		<% } %>
-</TABLE>
-<P>&nbsp;
-<P>&nbsp;
-</div>
-</div>
+</table>
 <% } %>
 <% } %>
 
 <%!
+
+//  This is a little hack to replace .'s with .'s followed by a zero-width spacer.
+//  Enables browsers to wrap long words within tables
 private String wrapText (String text) {
     if (text != null) {
-        if (text.length() > 200) {
-            text = text.substring(0, 200) + " [data string truncated]...";
-        }
-        if (text.length() < 60) {
-            return text;
-        } else  {
-            StringBuffer newText = new StringBuffer(text);
-            for (int i=60; i<text.length(); i+=60) {
-                newText.insert(i, "<BR>");
-            }
-            return newText.toString();
-        }
+        return text.replaceAll("\\.", "\\.&#x200b;");
     } else {
         return new String ("Not Available");
     }
