@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.36 2006-12-18 22:03:12 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.37 2006-12-21 17:17:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -562,16 +562,18 @@ public class BioPaxRecordSummaryUtils {
                     summary;
             List leftSide = conversionSummary.getLeftSideComponents();
             List rightSide = conversionSummary.getRightSideComponents();
-            if (leftSide.size() == 1 && rightSide.size() ==1) {
-                ParticipantSummaryComponent leftComponent = (ParticipantSummaryComponent)
-                        leftSide.get(0);
-                ParticipantSummaryComponent rightComponent = (ParticipantSummaryComponent)
-                        rightSide.get(0);
-                String leftLocation = leftComponent.getCellularLocation();
-                String rightLocation = rightComponent.getCellularLocation();
-                if (leftLocation != null && rightLocation != null) {
-                    if (!leftLocation.toLowerCase().equals(rightLocation.toLowerCase())) {
-                        return true;
+            if (leftSide != null && rightSide != null) {
+                if (leftSide.size() == 1 && rightSide.size() ==1) {
+                    ParticipantSummaryComponent leftComponent = (ParticipantSummaryComponent)
+                            leftSide.get(0);
+                    ParticipantSummaryComponent rightComponent = (ParticipantSummaryComponent)
+                            rightSide.get(0);
+                    String leftLocation = leftComponent.getCellularLocation();
+                    String rightLocation = rightComponent.getCellularLocation();
+                    if (leftLocation != null && rightLocation != null) {
+                        if (!leftLocation.toLowerCase().equals(rightLocation.toLowerCase())) {
+                            return true;
+                        }
                     }
                 }
             }
