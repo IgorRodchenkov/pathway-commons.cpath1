@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.26 2006-11-28 21:57:29 grossb Exp $
+// $Id: InteractionSummaryUtils.java,v 1.27 2006-12-21 15:42:02 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -118,7 +118,7 @@ public class InteractionSummaryUtils {
                 }
             }
         } else {
-            buf.append("[physical interaction participant list is empty]");
+            buf.append("[&empty;]");
         }
     }
 
@@ -200,7 +200,7 @@ public class InteractionSummaryUtils {
                 }
             }
         } else {
-            buf.append ("[conversion interaction participant list is empty]");
+            buf.append ("[&empty;]");
         }
     }
 }
