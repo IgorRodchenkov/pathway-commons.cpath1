@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.28 2006-12-19 19:17:20 cerami Exp $
+// $Id: BaseAction.java,v 1.29 2006-12-21 15:02:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -218,7 +218,6 @@ public abstract class BaseAction extends Action {
         try {
             xdebug = new XDebug();
             xdebug.startTimer();
-            xdebug.logMsg(this, "===========================");
             xdebug.logMsg(this, "Request:  " + request.getRequestURI());
             SnoopHttp snoop = new SnoopHttp(xdebug,
                     getServlet().getServletContext());
