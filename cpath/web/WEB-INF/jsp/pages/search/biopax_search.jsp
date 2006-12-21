@@ -14,11 +14,7 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 
-<%
-	WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-	String title = webUIBean.getApplicationName() + "::Search Results";
-	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, title);
-%>
+<%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
 <jsp:include page="../../global/header.jsp" flush="true" />
 <%
     ProtocolRequest protocolRequest = (ProtocolRequest)
@@ -49,7 +45,7 @@
     DaoCPath dao = DaoCPath.getInstance();
     for (int i=0; i<cpathIds.length; i++) {
         CPathRecord record = dao.getRecordById(cpathIds[i]);
-        String url = "record.do?id=" + record.getId();
+        String url = "record2.do?id=" + record.getId();
         try {
             BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
@@ -60,34 +56,15 @@
             }
             out.println("<td>"
                     + "<A HREF=\"" + url + "\">" + header + "</A>");
+            out.println("</td>");
+            out.println("<td>");
             if (record.getSnapshotId () > -1) {
                 out.println("<div class=small>&gt; ");
                 out.println(DbSnapshotInfo.getDbSnapshotHtml (record.getSnapshotId ()));
                 out.println("</div>");
             }
             out.println("</td>");
-            out.println("<td valign=center align=right><nobr>");
-            out.println("<span class='mini_buttons'>");
-            if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
-                out.println("<span class='mini_button_1'><A "
-                 + "title='View all pathways that contain this physical entity' HREF='"
-                 + url + "#pathway_list'>P</A></span>");
-                out.println("<span class='mini_button_2'><A "
-                 + "title='View all interactions that contain this physical entity' HREF='"
-                 + url + "&show_flags=00100#interaction_list'>I</A></span>");
-                out.println("<span class='mini_button_3'><A "
-                 + "title='View all complexes that contain this physical entity' HREF='"
-                 + url + "&show_flags=01000#complex_list'>C</A></span>");
-            } else {
-                out.println("<span class='mini_button_4'><A "
-                 + "title='View all molecules that participate in this pathway' HREF='"
-                 + url + "&show_flags=00001#pe_list'>M</A></span>");
-                out.println("<span class='mini_button_2'><A "
-                 + "title='View all interactions that participate in this pathway' HREF='"
-                 + url + "&show_flags=00100#interaction_list'>I</A></span>");
-            }
-            out.println("</span>");
-            out.println("</nobr></td></tr>");
+            out.println("</tr>");
         } catch (IllegalArgumentException e) {
             out.println("<div class='search_name'>" +
                     "<A HREF=\"" + url + "\">" + record.getName() + "</A></div>");

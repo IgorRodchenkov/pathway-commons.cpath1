@@ -29,9 +29,7 @@
 %>
 <head>
     <title><%= title %></title>
-    <link rel="stylesheet" href="jsp/css/style.css" type="text/css"/>
-    <link rel="stylesheet" href="jsp/css/tigris.css" type="text/css"/>
-    <link rel="stylesheet" href="jsp/css/inst.css" type="text/css"/>
+    <jsp:include page="../global/stylesAndScripts.jsp" flush="true" />
 
     <%--  Set Auto-Update for Admin Page --%>
     <%
@@ -47,8 +45,6 @@
     See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
     --%>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-
-    <script type="text/javascript" src="jsp/javascript/overlib/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>
 </head>
 
 <body class="composite">

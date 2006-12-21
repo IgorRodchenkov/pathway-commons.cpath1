@@ -1,54 +1,38 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="org.mskcc.pathdb.model.TypeCount"%>
 <%@ page import="org.mskcc.pathdb.model.BioPaxTabs"%>
+<%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
+<%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary"%>
+<%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
+<%@ page import="java.util.StringTokenizer"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
+
+<%
+    String initFile = CPathUIConfig.getPath("init.jsp");
+    String headerFile = CPathUIConfig.getPath("header.jsp");
+%>
+
+<jsp:include page="<%=initFile%>" flush="true"/>
 
 <%
 ArrayList typesList = (ArrayList) request.getAttribute("TYPES_LIST");
 BioPaxTabs bpPlainEnglish = new BioPaxTabs();
 String id = request.getParameter("id");
-String name = (String) request.getAttribute("NAME");
+BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute("BP_SUMMARY");
 boolean showTabs = false;
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-
-<link rel="stylesheet" href="jsp/css/style.css" type="text/css"/>
-<link rel="stylesheet" href="jsp/css/tigris.css" type="text/css"/>
-<link rel="stylesheet" href="jsp/css/inst.css" type="text/css"/>
-
-<!-- Yahoo  UI Dependencies -->
-<!-- core CSS -->
-<link rel="stylesheet" type="text/css" href="jsp/yui/build/tabview/assets/tabs.css">
-<link type="text/css" rel="stylesheet" href="jsp/yui/build/logger/assets/logger.css">
-
-<!-- optional skin for border tabs -->
-<link rel="stylesheet" type="text/css" href="jsp/yui/build/tabview/assets/border_tabs.css">
-
-<script type="text/javascript" src="jsp/yui/build/yahoo/yahoo.js"></script>
-<script type="text/javascript" src="jsp/yui/build/dom/dom.js"></script>
-<script type="text/javascript" src="jsp/yui/build/event/event.js"></script>
-<script type="text/javascript" src="jsp/yui/build/logger/logger.js"></script>
-
-<script type="text/javascript" src="jsp/yui/build/animation/animation.js" ></script>
-<script type="text/javascript" src="jsp/yui/build/connection/connection.js" ></script>
-<script type="text/javascript" src="jsp/yui/build/container/container.js"></script>
-<link type="text/css" rel="stylesheet" href="jsp/yui/build/container/assets/container.css">
-
-<!-- OPTIONAL: Connection (required for dynamic loading of data) -->
-<script type="text/javascript" src="jsp/yui/build/connection/connection.js"></script>
-
-<!-- Source file -->
-<script type="text/javascript" src="jsp/yui/build/tabview/tabview.js"></script>
-
-<script type="text/javascript" src="jsp/javascript/overlib/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>
+<jsp:include page="../global/stylesAndScripts.jsp" flush="true" />
 
 <style type="text/css">
 #demo {
-    width:710px; /* arbitrary width */
+    width:100%; /* arbitrary width */
 }
 
 #demo .yui-content {
@@ -286,19 +270,137 @@ YAHOO.example.init();
 </head>
 <body>
 
+<body class="composite">
 
-<h1><%= name %></h1>
+<!-- For OverLib PopUp Boxes -->
+<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
+
+<!-- Header/Banner -->
+<div id="page_header">
+<table width="100%">
+    <tr>
+        <td valign="top" width="60%">
+        <div id="page_title">
+            <jsp:include page="<%=headerFile%>" flush="true"/>
+        </div>
+        </td>
+
+        <td align="right" valign="top">
+        <!-- Search Box -->
+        <div id="search">
+            <jsp:include page="../global/searchBox.jsp" flush="true" />
+        </div>
+        </td>
+    </tr>
+</table>
+</div>
+
+<!-- Navigation Tabs -->
+<jsp:include page="../global/tabs.jsp" flush="true" />
+
+<!-- Start Main Table -->
+<table border="0" cellspacing="0" cellpadding="4" width="100%" id="main">
+    <tr valign="top">
+
+        <!-- Start Left Column -->
+        <td id="leftcol" width="200">
+            <div id="navcolumn">
+                <div id="docs" class="toolgroup">
+                    <div class="label">
+                        <strong>Data Source</strong>
+                    </div>
+
+                    <div class="body">
+                        <div>
+                            Data source logo goes here...
+                        </div>
+                    </div>
+                </div>
+                <% if (bpSummary.getOrganism() != null) { %>
+                <div id="docs" class="toolgroup">
+                    <div class="label">
+                        <strong>Organism</strong>
+                    </div>
+
+                    <div class="body">
+                        <div>
+                            <%= bpSummary.getOrganism() %>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+                <div id="docs" class="toolgroup">
+                    <div class="label">
+                        <strong>Synonyms</strong>
+                    </div>
+
+                    <div class="body">
+                        <div>
+                            Synonyms go here...
+                        </div>
+                    </div>
+                </div>
+                <div id="docs" class="toolgroup">
+                    <div class="label">
+                        <strong>Links</strong>
+                    </div>
+
+                    <div class="body">
+                        <div>
+                            External links go here...
+                        </div>
+                    </div>
+                </div>
+                <div id="docs" class="toolgroup">
+                    <div class="label">
+                        <strong>Filter Settings</strong>
+                    </div>
+
+                    <div class="body">
+                        <div>
+                            Current filter settings go here...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+
+        <!-- Start Body Column -->
+        <td valign="top">
+            <!-- Start Div:  bodycol/projecthome -->
+            <div id="bodycol">
+                <!-- Start Div:  app -->
+                <div id="projecthome" class="app">
+                    <jsp:include page="../global/userMessage.jsp" flush="true" />
+
+<%
+String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
+%>
+<h2><%= header %></h2>
+<p>
+<% if (bpSummary.getComment() != null) {
+    out.println(ReactomeCommentUtil.massageComment(bpSummary.getComment()));
+}%>
+</p>
+<p>
+<i>References will go here...</i>
+</p>
+<p/>
 <% if (showTabs) { %>
 <div id="doc">
 </div>
 <a class="button" id="toggle_all_details_button" onClick='toggleAllDetails()'>Show All Details</a>
 <% } %>
 
+<%
+    String xdebugSession = (String) session.getAttribute
+            (AdminWebLogging.WEB_LOGGING);
+    String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
+    if (xdebugSession != null || xdebugParameter != null) {
+%>
+    <script type="text/javascript">
+    var myLogReader = new YAHOO.widget.LogReader();
+    </script>
+<% } %>
 
-<script type="text/javascript">
-var myLogReader = new YAHOO.widget.LogReader();
-</script>
-
-<jsp:include page="../global/xdebug.jsp" flush="true" />
-</body>
-</html>
+<jsp:include page="../global/footer.jsp" flush="true" />

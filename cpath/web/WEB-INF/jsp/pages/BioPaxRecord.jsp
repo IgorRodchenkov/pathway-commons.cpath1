@@ -7,8 +7,6 @@
 				 org.mskcc.pathdb.schemas.biopax.MemberMolecules,
 				 org.mskcc.pathdb.schemas.biopax.MemberPathways,
                  org.mskcc.pathdb.model.*,
-                 org.mskcc.pathdb.form.WebUIBean,
-                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.action.admin.AdminWebLogging,
 				 org.mskcc.pathdb.schemas.biopax.summary.InteractionSummary,
 				 org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary,
