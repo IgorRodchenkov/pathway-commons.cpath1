@@ -415,7 +415,7 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
 		}
 		if (externalLinkRecords.size() > 0) {
             out.println("</ul>");
-			out.println("<p></p>");
+			out.println("<br>");
         }
 %>
 <% if (showTabs) { %>
