@@ -1,8 +1,5 @@
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.model.CPathRecordType,
-                 org.mskcc.pathdb.util.security.XssFilter,
-                 org.mskcc.pathdb.lucene.OrganismStats,
-                 org.mskcc.pathdb.xdebug.XDebug,
                  java.text.DecimalFormat,
                  java.text.NumberFormat"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
@@ -19,19 +16,20 @@ try {
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 
 %>
-<b><%= webUIBean.getApplicationName()%> Quick Stats:</b>
-<TABLE>
-    <TR>
-        <TD>Number of Pathways:</TD>
-        <TD><%= formatter.format(numPathways) %></TD>
-    <TR>
-        <TD>Number of Interactions:</TD>
-        <TD><%= formatter.format(numInteractions) %></TD>
-    </TR>
-    <TR>
-        <TD>Number of Physical Entities:</TD>
-        <TD><%= formatter.format(numPhysicalEntities) %></TD>
-    </TR>
-</TABLE>
+<%= webUIBean.getApplicationName()%> Quick Stats:
+<table>
+    <tr>
+        <td>Number of Pathways:</td>
+        <td><%= formatter.format(numPathways) %></td>
+    </tr>        
+    <tr>
+        <td>Number of Interactions:</td>
+        <td><%= formatter.format(numInteractions) %></td>
+    </tr>
+    <tr>
+        <td>Number of Physical Entities:</td>
+        <td><%= formatter.format(numPhysicalEntities) %></td>
+    </tr>
+</table>
 <% } catch (Exception e) {
 } %>

@@ -14,7 +14,7 @@
 	request.setAttribute(BaseAction.REFERER, BaseAction.FORWARD_HOME);
 %>
 
-<jsp:include page="../global/header.jsp" flush="true" />
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 String tagLineFile = CPathUIConfig.getPath("tagLine.jsp");
@@ -22,9 +22,9 @@ String homePageRightFile = CPathUIConfig.getPath("homePageRight.jsp");
 %>
 
 <table>
-<tr VALIGN=TOP>
+<tr valign="top">
 <td width="60%">
-<div class="tagline">
+<div>
 <jsp:include page="<%=tagLineFile%>" flush="true"/>
 </div>
 
@@ -32,7 +32,6 @@ String homePageRightFile = CPathUIConfig.getPath("homePageRight.jsp");
 
     <div class="large_search_box">
     <h1>Search <%= webUIBean.getApplicationName() %>:</h1>
-    <P>
     <form name="searchbox" action="webservice.do" method="get">
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
     <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15"/>
@@ -41,9 +40,9 @@ String homePageRightFile = CPathUIConfig.getPath("homePageRight.jsp");
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
     </form>
-    <P>To get started, enter a gene name or identifier in the text box above.
-    <P>To restrict your search to specific data sources or specific organisms, update your
-    <a href="filter.do">global filter settings</A>.</p>
+    <p>To get started, enter a gene name or identifier in the text box above.</p>
+    <p>To restrict your search to specific data sources or specific organisms, update your
+    <a href="filter.do">global filter settings</a>.</p>
     </div>
 <% } %>
 
@@ -51,8 +50,8 @@ String homePageRightFile = CPathUIConfig.getPath("homePageRight.jsp");
 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX){
     if (CPathUIConfig.getShowDataSourceDetails() == true) { %>
         <div class="home_page_box">
-        <P/>
-        <B><%= webUIBean.getApplicationName() %> currently contains the following data sources:</B>
+        <p>
+        <%= webUIBean.getApplicationName() %> currently contains the following data sources:</p>
         <cbio:dataSourceListTable/>
         </div>
     <% } else { %>
@@ -66,7 +65,7 @@ String homePageRightFile = CPathUIConfig.getPath("homePageRight.jsp");
     <cbio:organismTable referer="HOME" />
 <% } %>
 </td>
-<td VALIGN=TOP>
+<td valign="top">
     <div class="home_page_box">
     <jsp:include page="../global/dbStatsMini.jsp" flush="true" />
     </div>
@@ -75,4 +74,4 @@ String homePageRightFile = CPathUIConfig.getPath("homePageRight.jsp");
 </tr>
 </table>
 
-<jsp:include page="../global/footer.jsp" flush="true" />
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />

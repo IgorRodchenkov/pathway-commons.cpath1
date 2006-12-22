@@ -391,7 +391,7 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
 <%
 		// iterate over list of ExternalLinkRecord
 		List<ExternalLinkRecord> externalLinkRecords = bpSummary.getExternalLinks();
-		if (externalLinkRecords.size() > 0) {
+		if (externalLinks.size() > 0) {
 		    out.println("<p><b>References</b></p>");
             out.println("<ul>");
         }

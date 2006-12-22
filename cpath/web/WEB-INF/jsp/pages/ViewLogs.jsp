@@ -2,8 +2,10 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Administration::View Logs"); %>
-<jsp:include page="../global/header.jsp" flush="true" />
 
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
+<jsp:include page="../global/redesign/adminLeft.jsp" flush="true" />
+<div class="splitcontentright">
 <cbio:logTable />
-
-<jsp:include page="../global/footer.jsp" flush="true" />
+</div>
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />

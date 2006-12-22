@@ -50,11 +50,30 @@
 <!-- For OverLib PopUp Boxes -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
+<%
+String url = "";
+String baseAction = (String) request.getAttribute
+        (BaseAction.ATTRIBUTE_SERVLET_NAME);
+if (baseAction != null) {
+    StringBuffer uri = new StringBuffer (
+        (String) request.getAttribute
+        (BaseAction.ATTRIBUTE_SERVLET_NAME));
+    uri = new StringBuffer(uri.substring(1));
+    url = uri.toString();
+}
+%>
+
 <div id="container" >
 
 	<div id="header">
         <div id="header_content">
+        <% if (!url.endsWith("home.do")) {
+            out.println("<a href='home.do'>");
+        } %>
         <jsp:include page="<%=headerFile%>" flush="true"/>
+        <% if (!url.endsWith("home.do")) {
+            out.println("</a>");
+        }%>
         </div>
         <jsp:include page="searchBox.jsp" flush="true" />
     </div>

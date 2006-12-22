@@ -1,8 +1,7 @@
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolException,
-                 org.mskcc.pathdb.action.BaseAction"%>
+<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
 <%@ page isErrorPage = "true" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
-<jsp:include page="../global/header.jsp" flush="true" />
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
 
 <% if (exception != null)  { %>
     <cbio:errorMessage throwable="<%= exception %>"/>
@@ -12,5 +11,10 @@
 %>
     <cbio:errorMessage throwable="<%= throwable %>"/>
 <% }%>
-
-<jsp:include page="../global/footer.jsp" flush="true" />
+<P>&nbsp;
+<P>&nbsp;
+<P>&nbsp;
+<P>&nbsp;
+<P>&nbsp;
+<P>&nbsp;
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />
