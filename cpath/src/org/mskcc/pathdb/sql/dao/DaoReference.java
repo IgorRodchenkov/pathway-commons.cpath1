@@ -1,4 +1,4 @@
-// $Id: DaoReference.java,v 1.3 2006-12-22 13:41:43 grossb Exp $
+// $Id: DaoReference.java,v 1.4 2006-12-22 18:02:45 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -100,10 +100,11 @@ public class DaoReference {
      * Given an id, returns a Reference object.
      *
 	 * @param referenceId String
+	 * @param databaseId int
      * @return Reference
      * @throws DaoException
      */
-    public Reference getRecord(String referenceId) throws DaoException {
+    public Reference getRecord(String referenceId, int databaseId) throws DaoException {
 
         // init some local vars
         Connection con = null;
@@ -114,8 +115,10 @@ public class DaoReference {
         try {
             // perform the query
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement("select * from reference where REFERENCE_ID = ?");
+            pstmt = con.prepareStatement("select * from reference where " +
+										 "REFERENCE_ID = ? AND EXTERNAL_DB_ID = ?");
             pstmt.setString(1, referenceId);
+			pstmt.setInt(2, databaseId);
             rs = pstmt.executeQuery();
 
             // set the form object
