@@ -1,4 +1,4 @@
-// $Id: ImportTable.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
+// $Id: ImportTable.java,v 1.18 2006-12-22 18:30:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -68,12 +68,12 @@ public class ImportTable extends HtmlTable {
     private void outputRecords(ArrayList records) {
         for (int i = 0; i < records.size(); i++) {
             ImportRecord record = (ImportRecord) records.get(i);
-            append("<TR>");
+            append("<tr>");
             outputDataField(record.getStatus());
             outputDataField(record.getDescription());
             outputDataField(record.getXmlType().toString());
             outputDataField(record.getCreateTime());
-            append("</TR>");
+            append("</tr>");
         }
     }
 }

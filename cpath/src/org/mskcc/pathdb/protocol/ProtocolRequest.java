@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.12 2006-02-22 22:47:50 grossb Exp $
+// $Id: ProtocolRequest.java,v 1.13 2006-12-22 18:31:30 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -379,6 +379,7 @@ public class ProtocolRequest implements PagedResult {
         method.setQueryString(nvps);
         try {
             uri = method.getURI().getEscapedURI();
+            uri = uri.replaceAll("&", "&amp;");
         } catch (URIException e) {
             uri = null;
         }

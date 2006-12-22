@@ -1,4 +1,4 @@
-// $Id: OrganismTable.java,v 1.22 2006-06-09 19:22:03 cerami Exp $
+// $Id: OrganismTable.java,v 1.23 2006-12-22 18:30:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -124,6 +124,7 @@ public class OrganismTable extends HtmlTable {
         createColumnHeader("Species Name", SORT_BY_NAME, sortBy, sortOrder);
         createColumnHeader("Number of Records*",
                 SORT_BY_NUM_INTERACTIONS, sortBy, sortOrder);
+        endRow();
         outputRecords(sortBy, sortOrder);
         endTable();
     }
@@ -131,13 +132,13 @@ public class OrganismTable extends HtmlTable {
     private void createColumnHeader(String columnHeading, String targetSortBy,
             String userSortBy, String userSortOrder) {
         StringBuffer url = new StringBuffer
-                ("browse.do?" + BaseAction.REFERER + "=" + referer + "&"
+                ("browse.do?" + BaseAction.REFERER + "=" + referer + "&amp;"
                         + SORT_BY_PARAMETER + "="
-                        + targetSortBy + "&" + SORT_ORDER_PARAMETER + "=");
+                        + targetSortBy + "&amp;" + SORT_ORDER_PARAMETER + "=");
         String title = "Sort Organisms by " + columnHeading;
         if (userSortBy.equals(targetSortBy)) {
             String iconUrl, iconGif;
-            append("<td width=50% bgcolor=#aaaaaa>");
+            append("<th width=\"50%\">");
             if (userSortOrder.equals(SORT_ASC)) {
                 iconUrl = new String(url.toString() + SORT_DESC);
                 iconGif = "icon_sortup.gif";
@@ -145,18 +146,18 @@ public class OrganismTable extends HtmlTable {
                 iconUrl = new String(url.toString() + SORT_ASC);
                 iconGif = "icon_sortdown.gif";
             }
-            append("<A TITLE = '" + title + " 'HREF='" + iconUrl
-                    + "'><B>" + columnHeading + "</B></A>");
+            append("<a title = '" + title + " 'href='" + iconUrl
+                    + "'><b>" + columnHeading + "</b></a>");
             append("&nbsp;&nbsp;&nbsp;");
-            append("<a TITLE = '" + title + " 'HREF='" + iconUrl + "'>"
-                    + "<IMG SRC='jsp/images/" + iconGif + "' border=0></A>");
+            append("<a title = '" + title + " 'href='" + iconUrl + "'>"
+                    + "<img src='jsp/images/" + iconGif + "' border=\"0\" alt=\"Sort\" /></a>");
         } else {
             String colUrl = new String(url.toString() + SORT_DESC);
-            append("<td bgcolor=#cccccc>");
-            append("<A TITLE = '" + title + "' HREF='" + colUrl
-                    + "'><B>" + columnHeading + "</B></A>");
+            append("<th>");
+            append("<a title = '" + title + "' href='" + colUrl
+                    + "'><b>" + columnHeading + "</b></a>");
         }
-        append("</td>");
+        append("</th>");
     }
 
     /**
@@ -184,7 +185,7 @@ public class OrganismTable extends HtmlTable {
 
         if (records.size() == 0) {
             startRow();
-            append("<TD COLSPAN=5>No Organism Data Available</TD>");
+            append("<td colspan=\"5\">No Organism Data Available</td>");
             endRow();
         } else {
             NumberFormat formatter = new DecimalFormat("#,###,###");
@@ -197,10 +198,10 @@ public class OrganismTable extends HtmlTable {
                 request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
                 request.setFormat(ProtocolConstants.FORMAT_HTML);
                 String url = request.getUri();
-                outputDataField("<A HREF='" + url + "' TITLE='"
+                outputDataField("<a href='" + url + "' title='"
                         + "View All Records for Organism:  "
                         + organism.getSpeciesName() + "'>"
-                        + organism.getSpeciesName() + "</A>");
+                        + organism.getSpeciesName() + "</a>");
                 outputDataField(formatter.format
                         (organism.getNumInteractions()));
                 endRow();

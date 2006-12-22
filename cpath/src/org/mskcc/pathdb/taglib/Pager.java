@@ -1,4 +1,4 @@
-// $Id: Pager.java,v 1.14 2006-02-22 22:47:51 grossb Exp $
+// $Id: Pager.java,v 1.15 2006-12-22 18:30:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -172,8 +172,8 @@ public class Pager {
     }
 
     private String createLink(String linkName, String url) {
-        String html = new String("<A HREF=\""
-                + url + "\">" + linkName + "</A>");
+        String html = new String("<a href=\""
+                + url + "\">" + linkName + "</a>");
         return html;
     }
 }

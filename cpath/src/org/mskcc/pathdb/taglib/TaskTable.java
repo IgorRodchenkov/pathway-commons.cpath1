@@ -1,4 +1,4 @@
-// $Id: TaskTable.java,v 1.12 2006-02-22 22:47:51 grossb Exp $
+// $Id: TaskTable.java,v 1.13 2006-12-22 18:30:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -69,8 +69,8 @@ public class TaskTable extends HtmlTable {
         ArrayList taskList = globalTaskList.getTaskList();
         if (taskList.size() == 0) {
             startRow(0);
-            append("<TD COLSPAN=2><span class='small'>"
-                    + "No Active Tasks" + "</span></TD>");
+            append("<td colspan=\"2\">"
+                    + "No Active Tasks" + "</td>");
             endRow();
         }
         for (int i = 0; i < taskList.size(); i++) {
@@ -81,7 +81,7 @@ public class TaskTable extends HtmlTable {
             ProgressMonitor pMonitor = task.getProgressMonitor();
             String currentMessage = pMonitor.getCurrentMessage();
             double percentComplete = pMonitor.getPercentComplete();
-            outputDataField("<span class='small'>" + name + "</span>");
+            outputDataField(name);
             NumberFormat format = DecimalFormat.getPercentInstance();
 
             boolean isAlive = task.isAlive();
@@ -102,19 +102,19 @@ public class TaskTable extends HtmlTable {
                     StringWriter writer = new StringWriter();
                     PrintWriter pWriter = new PrintWriter(writer);
                     t.printStackTrace(pWriter);
-                    stackTrace = "<P>Stack:Trace:<P> "
-                            + "<PRE>"
+                    stackTrace = "<p>Stack:Trace:<P> "
+                            + "<pre>"
                             + HtmlUtil.convertToHtml(writer.toString())
-                            + "</PRE>";
+                            + "</pre>";
                 } else {
                     status = pMonitor.getCurrentMessage();
                     img = "icon_success_sml.gif";
                 }
                 log = pMonitor.getLog();
                 if (log != null && log.length() > 0) {
-                    log = new String("<P>Log Messages:<PRE>"
+                    log = new String("<p>Log Messages:<pre>"
                             + HtmlUtil.convertToHtml(log)
-                            + "</PRE>");
+                            + "</pre>");
                 } else {
                     log = "";
                 }
@@ -123,12 +123,12 @@ public class TaskTable extends HtmlTable {
                 status = "<img src='jsp/images/" + img + "'/>&nbsp;" + status
                         + log + stackTrace;
             }
-            outputDataField("<small>" + status + "</small>");
+            outputDataField(status);
             if (!isAlive) {
                 outputDataField("<small>"
-                        + "<IMG SRC='jsp/images/icon_waste_sml.gif'/>"
-                        + "&nbsp;<A HREF='adminRemoveTask.do?index="
-                        + i + "'>Clear Task</A>"
+                        + "<img src='jsp/images/icon_waste_sml.gif'/>"
+                        + "&nbsp;<a href='adminRemoveTask.do?index="
+                        + i + "'>Clear Task</a>"
                         + "</small>");
             } else {
                 outputDataField("");

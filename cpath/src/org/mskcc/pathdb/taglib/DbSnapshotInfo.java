@@ -29,18 +29,18 @@ public class DbSnapshotInfo {
 
     /**
      * Gets Database Snapshot HTML Summary.
-     * @param snapShot ExternalDatabaseSnapshotRecord.
+     * @param snapshot ExternalDatabaseSnapshotRecord.
      * @return HTML Blurb.
      */
     public static String getDbSnapshotHtml(ExternalDatabaseSnapshotRecord snapshot) {
 
         StringBuffer html = new StringBuffer();
-		html.append ("<A HREF='dbSnapshot.do?snapshot_id=" + snapshot.getId() + "'>");
+		html.append ("<a href='dbSnapshot.do?snapshot_id=" + snapshot.getId() + "'>");
 		html.append(snapshot.getExternalDatabase().getName() + ", ");
 		if (snapshot.getSnapshotVersion() != null) {
 			html.append("Release:  " + snapshot.getSnapshotVersion());
 		}
-		html.append ("</A>");
+		html.append ("</a>");
 		Format formatter = new SimpleDateFormat("dd-MMM-yy");
 		String s = formatter.format(snapshot.getSnapshotDate());
 		html.append(" [" + s + "]");

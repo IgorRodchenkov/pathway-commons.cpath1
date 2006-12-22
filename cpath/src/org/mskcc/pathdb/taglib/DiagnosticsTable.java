@@ -1,4 +1,4 @@
-// $Id: DiagnosticsTable.java,v 1.23 2006-06-09 19:22:03 cerami Exp $
+// $Id: DiagnosticsTable.java,v 1.24 2006-12-22 18:30:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -60,14 +60,14 @@ public class DiagnosticsTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     public void subDoStartTag() throws Exception {
-        String headers[] = {"Result", "DiagnosticTestResults", "Error"};
+        String headers[] = {"Result", "Test", "Error"};
         createHeader("cPath Diagnostics");
         PropertyManager pManager = PropertyManager.getInstance();
-        append("<TABLE><TR><TD>Using Database Host:  "
+        append("<table><tr><td><p>Using Database Host:  "
                 + pManager.getProperty(PropertyManager.DB_LOCATION));
-        append("<P>Using Database Name:  "
+        append("</p><p>Using Database Name:  "
                 + pManager.getProperty(CPathConstants.PROPERTY_MYSQL_DATABASE));
-        append("</TD></TR></TABLE>");
+        append("</p></td></tr></table>");
         startTable();
         createTableHeaders(headers);
         testList = new ArrayList();
@@ -188,7 +188,7 @@ public class DiagnosticsTable extends HtmlTable {
         LuceneReader indexer = new LuceneReader();
         try {
             DiagnosticTestResults test = new DiagnosticTestResults
-                    ("Testing access to Lucene Full Text Index<BR>"
+                    ("Testing access to Lucene Full Text Index<br/>"
                             + "Lucene Directory:  "
                             + LuceneConfig.getLuceneDirectory());
             try {
@@ -228,9 +228,9 @@ public class DiagnosticsTable extends HtmlTable {
                     testList.get(i);
             Throwable e = test.getException();
             if (e == null) {
-                outputDataField("<IMG SRC='jsp/images/icon_success_sml.gif'>");
+                outputDataField("<img src='jsp/images/icon_success_sml.gif' alt='Success'/>");
             } else {
-                outputDataField("<IMG SRC='jsp/images/icon_error_sml.gif'>");
+                outputDataField("<img src='jsp/images/icon_error_sml.gif' alt='Failure'/>");
             }
             outputDataField(test.getName());
             if (e != null) {

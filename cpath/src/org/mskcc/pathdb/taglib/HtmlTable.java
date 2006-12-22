@@ -1,4 +1,4 @@
-// $Id: HtmlTable.java,v 1.23 2006-11-27 21:50:23 cerami Exp $
+// $Id: HtmlTable.java,v 1.24 2006-12-22 18:30:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -83,9 +83,7 @@ public abstract class HtmlTable extends TagSupport {
     protected abstract void subDoStartTag() throws Exception;
 
     protected void createHeader(String title) {
-        append("<div id='axial' class='h3'>");
-        append("<h3>" + title + "</h3>");
-        append("</div>");
+        append("<h2>" + title + "</h2>");
     }
 
     /**
@@ -170,7 +168,7 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected void outputDataField(Object data, String url) {
         if (data != null && data.toString().length() > 0) {
-            append("<td valign='TOP'>");
+            append("<td valign='top'>");
             if (url == null) {
                 html.append(data);
             } else {
@@ -186,18 +184,18 @@ public abstract class HtmlTable extends TagSupport {
      * Outputs Link.
      */
     protected void outputLink(String name, String url) {
-        append("<A HREF=\"" + url + "\">");
+        append("<a href=\"" + url + "\">");
         append(name);
-        append("</A>");
+        append("</a>");
     }
 
     /**
      * Outputs Link with Alt Tag
      */
     protected void outputLink(String name, String url, String alt) {
-        append("<A TITLE=\"" + alt + "\" HREF=\"" + url + "\">");
+        append("<a title=\"" + alt + "\" href=\"" + url + "\">");
         append(name);
-        append("</A>");
+        append("</a>");
     }
 
     /**

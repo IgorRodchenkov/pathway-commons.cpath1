@@ -1,4 +1,4 @@
-// $Id: HtmlUtil.java,v 1.9 2006-11-02 15:08:44 cerami Exp $
+// $Id: HtmlUtil.java,v 1.10 2006-12-22 18:31:05 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,7 +48,7 @@ public class HtmlUtil {
      * @return HTML Text
      */
     public static String convertToHtml(String str) {
-        String html = str.replaceAll("[\\n\\r]", "<BR>");
+        String html = str.replaceAll("[\\n\\r]", "<br/>");
         html = html.replaceAll(" ", "&nbsp;");
         html = html.replaceAll("\\t", "&nbsp;.....");
         return html;
@@ -81,7 +81,7 @@ public class HtmlUtil {
                     }
                     token = token.substring(0, maxLength) + " [Cont.]";
                     if (appendEndBoldTag) {
-                        token = token + "</B>";
+                        token = token + "</b>";
                     }
                 }
                 revisedStr.append(token + " ");

@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.5 2006-02-22 22:47:51 grossb Exp $
+// $Id: QueryUtil.java,v 1.6 2006-12-22 18:31:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,8 +53,8 @@ import java.io.IOException;
  * @author Ethan Cerami
  */
 public class QueryUtil {
-    private static final String START_TAG = "<B>";
-    private static final String END_TAG = "</B>";
+    private static final String START_TAG = "<b>";
+    private static final String END_TAG = "</b>";
 
 
     /**
