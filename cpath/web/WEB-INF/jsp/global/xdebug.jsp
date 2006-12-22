@@ -26,8 +26,8 @@ if (xdebug != null) {
     String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
     if (xdebugSession != null || xdebugParameter != null) {
 %>
-<table width="100%">
-    <tr>
+<table class="xdebug" width="100%">
+    <tr bgcolor="#DDDDDD" valign="top">
 		<td align="left">
             cPath Version
         </td>
@@ -35,7 +35,7 @@ if (xdebug != null) {
             <%= CPathConstants.VERSION %>
         </td>
     </tr>
-    <tr>
+    <tr bgcolor="#DDDDDD" valign="top">
 		<td align="left">
             Total Time to Generate Page
         </td>
@@ -43,7 +43,7 @@ if (xdebug != null) {
             <%= xdebug.getTimeElapsed() %> ms
         </td>
     </tr>
-    <tr>
+    <tr bgcolor="#DDDDDD" valign="top">
 		<td align="left">
             Current Time
         </td>
@@ -51,13 +51,13 @@ if (xdebug != null) {
             <%= new Date() %> ms
         </td>
 	</tr>
-    <tr>
-        <td align="left">Web Mode:  Show Data Source Details</td>
+    <tr bgcolor="#DDDDDD" valign="top">
+        <td align="left">Web Skin</td>
         <td colspan="2">
-            <%= CPathUIConfig.getShowDataSourceDetails() %>
+            <%= CPathUIConfig.getWebSkin() %>
         </td>
     </tr>
-    <tr bgcolor="#DDDDDD">
+    <tr bgcolor="#DDDDDD" valign="top">
 		<td align="left">
             Class Name
         </td>
@@ -138,7 +138,9 @@ if (xdebug != null) {
 //  Enables browsers to wrap long words within tables
 private String wrapText (String text) {
     if (text != null) {
-        return text.replaceAll("\\.", "\\.&#x200b;");
+        text = text.replaceAll("\\.", "\\. ");
+        text = text.replaceAll("&", "&amp;");
+        return text;
     } else {
         return new String ("Not Available");
     }

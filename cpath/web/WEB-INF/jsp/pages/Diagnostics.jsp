@@ -5,8 +5,11 @@
 <%@ page errorPage = "JspError.jsp" %>
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Diagnostics"); %>
 
-<jsp:include page="../global/header.jsp" flush="true" />
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
 
+<jsp:include page="../global/redesign/adminLeft.jsp" flush="true" />
+<div class="splitcontentright">
 <cbio:diagnosticsTable />
+</div>
 
-<jsp:include page="../global/footer.jsp" flush="true" />
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />

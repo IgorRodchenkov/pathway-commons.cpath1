@@ -15,12 +15,12 @@ request.setAttribute("advancedSearch", "true");
 request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "About");
 %>
 
-<jsp:include page="../global/header.jsp" flush="true" />
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
 
 <%
 String aboutFile = CPathUIConfig.getPath("about.jsp");
 %>
-<div id="content">
-<jsp:include page="<%=aboutFile%>" flush="true"/> 
+<div>
+<jsp:include page="<%=aboutFile%>" flush="true"/>
 </div>
-<jsp:include page="../global/footer.jsp" flush="true" />
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />

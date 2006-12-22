@@ -49,4 +49,4 @@ from the cPath database.  </p>
 <h1>How can I programmatically access cPath? How do I use the Web Services API?</h1>
 <p>cPath provides a complete <a href="webservice.do?cmd=help">Web Services API</a> for programmatically
 accessing cPath data. Complete details are available at the
-<a href="webservice.do?cmd=help">Web Services API Help Page</a>.
+<a href="webservice.do?cmd=help">Web Services API Help Page</a>.</p>

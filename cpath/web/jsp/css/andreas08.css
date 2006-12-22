@@ -5,7 +5,7 @@
 *{margin:0; padding:0;}
 
 body{
-font:76% Verdana,Tahoma,Arial,sans-serif;
+font:95% Verdana,Tahoma,Arial,sans-serif;
 line-height:1.4em;
 text-align:center;
 color:#303030;
@@ -14,15 +14,13 @@ background:#e8eaec;
 
 a{
 color:#467aa7;
-font-weight:bold;
-text-decoration:none;
 background-color:inherit;
 }
 
 a:hover{color:#2a5a8a; text-decoration:none; background-color:inherit;}
 a img{border:none;}
 
-p{padding:0 0 1.6em 0;}
+p{padding:0 0 0.8em 0;}
 p form{margin-top:0; margin-bottom:20px;}
 
 img.left,img.center,img.right{padding:4px; border:1px solid #a0a0a0;}
@@ -50,9 +48,13 @@ background:#467aa7;
 color:#ffffff;
 }
 
+#header_content{
+float:left;
+}
+
 #header h1{
 padding:35px 0 0 20px;
-font-size:2.4em;
+font-size:1.8em;
 background-color:inherit;
 color:#ffffff;
 letter-spacing:-2px;
@@ -60,8 +62,8 @@ font-weight:normal;
 }
 
 #header h2{
-margin:10px 0 0 40px;
-font-size:1.4em;
+margin:10px 0 0 20px;
+font-size:1.2em;
 background-color:inherit;
 color:#f0f2f4;
 letter-spacing:-1px;
@@ -69,13 +71,14 @@ font-weight:normal;
 }
 
 #navigation{
-height:2.2em;
-line-height:2.2em;
+height:1.7em;
+line-height:1.7em;
 width:758px;
 margin:0 1px;
 background:#578bb8;
 color:#ffffff;
 }
+
 
 #navigation li{
 float:left;
@@ -89,7 +92,7 @@ display:block;
 padding:0 10px;
 font-size:0.8em;
 font-weight:normal;
-text-transform:uppercase;
+#text-transform:uppercase;
 text-decoration:none;
 background-color:inherit;
 color: #ffffff;
@@ -109,21 +112,40 @@ text-decoration:none;
 float:left;
 width:700px;
 font-size:0.9em;
-padding:20px 0 0 20px;
+padding:10px 0 0 20px;
 }
 
-#content h2{
+#content h1{
 display:block;
-margin:0 0 16px 0;
-font-size:1.7em;
-font-weight:normal;
+margin:5px 0 5px 0;
+font-size:1.1em;
+font-weight:bold;
 letter-spacing:-1px;
 color:#505050;
 background-color:inherit;
 }
 
-#content h2 a{font-weight:normal;}
-#content h3{margin:0 0 5px 0; font-size:1.4em; letter-spacing:-1px;}
+#content h2{
+display:block;
+margin:5px 0 5px 0;
+font-size:0.9em;
+font-weight:bold;
+color:#505050;
+background-color:#DDDDDD;
+}
+
+#content h3{
+font-size:0.9em;
+font-weight:normal;
+display:block;
+margin:5px 0 5px 0;
+padding-left:5px;
+height:1.7em;
+line-height:1.7em;
+background-color:#578bb8;
+color:#ffffff;
+}
+
 #content a:hover,#subcontent a:hover{text-decoration:underline;}
 #content ul,#content ol{margin:0 5px 16px 35px;}
 #content dl{margin:0 5px 10px 25px;}
@@ -140,10 +162,10 @@ font-size:110%;
 line-height:1.4em;
 }
 
-#subcontent h2{
+#subcontent h1{
 display:block;
-margin:0 0 15px 0;
-font-size:1.6em;
+margin:0 0 0 0;
+font-size:0.9em;
 font-weight:normal;
 text-align:left;
 letter-spacing:-1px;
@@ -155,13 +177,13 @@ background-color:inherit;
 
 /**************** Menublock styles ****************/
 
-.menublock{margin:0 0 20px 8px; font-size:0.9em;}
-.menublock li{list-style:none; display:block; padding:2px; margin-bottom:2px;}
-.menublock li a{font-weight:bold; text-decoration:none;}
+.menublock ul {margin:0px; padding:0px; font-size:0.7em;line-height:1.3em;}
+.menublock li a{list-style-type:square;font-weight:bold; text-decoration:none;}
 .menublock li a:hover{text-decoration:none;}
 .menublock li ul{margin:3px 0 3px 15px; font-size:1em; font-weight:normal;}
 .menublock li ul li{margin-bottom:0;}
 .menublock li ul a{font-weight:normal;}
+
 
 /**************** Searchbar styles ****************/
 
@@ -195,7 +217,7 @@ clear:both;
 width:758px;
 padding:5px 0;
 margin:0 1px;
-font-size:0.9em;
+font-size:0.7em;
 color:#f0f0f0;
 background:#467aa7;
 }
@@ -206,8 +228,8 @@ background:#467aa7;
 
 /**************** Misc classes and styles ****************/
 
-.splitcontentleft{float:left; width:48%;}
-.splitcontentright{float:right; width:48%;}
+.splitcontentleft{float:left; width:20%;}
+.splitcontentright{float:right; width:79%;}
 .clear{clear:both;}
 .small{font-size:0.8em;}
 .hide{display:none;}
@@ -241,7 +263,6 @@ font-weight:bold;
 /********** Styles added by Ethan **********/
 #logo {
 	padding:15px 5px 5px 5px;
-	float:left;
 }
 
 .section a{
@@ -254,6 +275,24 @@ color: #ffffff;
 }
 
 table td {
- 	font-size:95%;
 }
 
+table th {
+background-color:#DDDDDD;
+padding: 2px 2px 2px 2px;
+font-size:90%;
+}
+
+.xdebug td{
+    font-size:80%;
+}
+
+.splitcontentleft ul {list-style-type:square; margin-left:0px; font-size:85%; line-height:1.2em}
+.splitcontentleft li {margin-left:-20px;padding-left:0px}
+
+.user_message {
+    color:#880000;
+    font-weight:bold;
+    padding: 3px 3px 3px 3px;
+    background: #EEEEEE;
+}

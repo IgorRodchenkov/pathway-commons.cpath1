@@ -17,36 +17,35 @@ try {
     NumberFormat formatter = new DecimalFormat("#,###,###");
 
 %>
-<div class="h3">
-        <h3>Database Stats</h3>
-</div>
+<h2>Database Stats</h2>
 
-<TABLE>
+<table>
 
-    <TR>
-        <TD>Number of Pathways:</TD>
-        <TD><%= formatter.format(numPathways) %></TD>
-    <TR>
-        <TD>Number of Interactions:</TD>
-        <TD><%= formatter.format(numInteractions) %></TD>
-    </TR>
-    <TR>
-        <TD>Number of Physical Entities:</TD>
-        <TD><%= formatter.format(numPhysicalEntities) %></TD>
-    </TR>
-    <TR>
-        <TD>Number of Organisms:</TD>
-        <TD>
+    <tr>
+        <td>Number of Pathways:</td>
+        <td><%= formatter.format(numPathways) %></td>
+    </tr>
+    <tr>
+        <td>Number of Interactions:</td>
+        <td><%= formatter.format(numInteractions) %></td>
+    </tr>
+    <tr>
+        <td>Number of Physical Entities:</td>
+        <td><%= formatter.format(numPhysicalEntities) %></td>
+    </tr>
+    <tr>
+        <td>Number of Organisms:</td>
+        <td>
             <% try {
                 out.println(formatter.format(orgStats.getOrganismsSortedByName().size()));
             } catch (Exception e) {
                 out.println("Cannot determine organism data:  " + e.getMessage());
             }
             %>
-        </TD>
-    </TR>
+        </td>
+    </tr>
 
-</TABLE>
+</table>
 <% } catch (Exception e) {
     out.println(e.toString());
 } %>

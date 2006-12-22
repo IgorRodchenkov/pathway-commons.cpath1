@@ -4,7 +4,6 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 
-<div id="content">
 <h1>For Computational Biologists and Software Developers:</h1>
 <p>
 If you wish to programmatically access our data, you can do so via our
@@ -26,7 +25,11 @@ URL parameters.  Parameters are as follows:
             this is used to indicate one or more search terms or a unique ID.
             For example, "dna repair" or "P09097".
             </li>
- 		    <li><b><%= ProtocolRequest.ARG_FORMAT %></b>:  Indicates the
+            <li><b><%= ProtocolRequest.ARG_VERSION %></b>:  Indicates the
+            version of the web service API.
+            Must be specified.  The only supported version is "1.0".
+            </li>
+             <li><b><%= ProtocolRequest.ARG_FORMAT %></b>:  Indicates the
             format of returned results.
             Current valid formats are as follows:
                 <ul>
@@ -46,6 +49,7 @@ URL parameters.  Parameters are as follows:
                     single integer value, representing the total number of matches
                     for your query.  This is useful for using paged scroll results
                     (see <a href="#large">Retrieving Large Sets of Data</A> below).
+                    </li>
                 <% } else { %>
                      <li><%= ProtocolConstants.FORMAT_BIO_PAX %>:  Data will be
                         formatted in the <a href="http://www.biopax.org">BioPAX</a>
@@ -53,10 +57,6 @@ URL parameters.  Parameters are as follows:
                      </li>
                 <% } %>
                 </ul>
-                </li>
-                <li><b><%= ProtocolRequest.ARG_VERSION %></b>:  Indicates the
-                version of the web service API.
-                Must be specified.  The only supported version is "1.0".
                 </li>
                 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
                     <li><b><%= ProtocolRequest.ARG_ORGANISM %></b>:  an optional
@@ -86,7 +86,6 @@ URL parameters.  Parameters are as follows:
 	    </ul>
 
 <h1>Commands </h1>
-        <div id="box">
         <table>
             <tr>
                 <th>Command</th>
@@ -164,7 +163,6 @@ URL parameters.  Parameters are as follows:
             </tr>
             <% } %>
             </table>
-        </div>
 
 <h1>Error Codes</h1>
 <p>
@@ -183,7 +181,7 @@ the error.  Error documents have the following format:
 The table below provides a list of error codes, with their
         descriptions.
 </p>
-<div class="box">
+<div>
     <table>
             <tr>
                 <th>Error Code</th>
@@ -211,19 +209,20 @@ The table below provides a list of error codes, with their
     ProtocolRequest pRequest = new ProtocolRequest();
 %>
 <h1>Examples of Usage</h1>
-<p>
+
         <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             pRequest.setQuery("DNA");
             pRequest.setFormat(ProtocolConstants.FORMAT_PSI_MI);  %>
-		The following example searches for the keyword "DNA".
+		<p>The following example searches for the keyword "DNA".
         Data will be formatted in the PSI-MI XML format.
+        </p>
         <ul>
             <li><small><a HREF="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></a>
             </small>
             </li>
         </ul>
-</p>
+
 <p>The following query searches for the keyword "DNA".
         Data will be formatted in HTML.
         <% pRequest.setFormat(ProtocolConstants.FORMAT_HTML); %>
@@ -240,17 +239,16 @@ The table below provides a list of error codes, with their
 <p>
     The following requests a summary of all top-level pathways
     in the database:
+</p>
         <ul>
             <li><small><a href="<%=  pRequest.getUri() %>"><%= pRequest.getUri() %></a>.</small></li>
         </ul>
+<p>The following requests the full BioPAX record for local ID 1:
 </p>
-<p>
-    The following requests the full BioPAX record for local ID 1:
         <%
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery("1");
         %>
-</p>
         <ul>
             <li><small><a href="<%=  pRequest.getUri() %>"><%= pRequest.getUri() %></a>.</small></li>
         </ul>
