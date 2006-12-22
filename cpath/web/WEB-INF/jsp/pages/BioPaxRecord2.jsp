@@ -1,6 +1,11 @@
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="org.mskcc.pathdb.model.TypeCount"%>
 <%@ page import="org.mskcc.pathdb.model.BioPaxTabs"%>
+<%@ page import="org.mskcc.pathdb.model.Reference"%>
+<%@ page import="org.mskcc.pathdb.model.ExternalLinkRecord"%>
+<%@ page import="org.mskcc.pathdb.model.ExternalDatabaseRecord"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary"%>
@@ -22,6 +27,7 @@ ArrayList typesList = (ArrayList) request.getAttribute("TYPES_LIST");
 BioPaxTabs bpPlainEnglish = new BioPaxTabs();
 String id = request.getParameter("id");
 BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute("BP_SUMMARY");
+HashMap<String,Reference> externalLinks = (HashMap<String,Reference>)request.getAttribute("EXTERNAL_LINKS");
 boolean showTabs = false;
 %>
 
@@ -382,10 +388,36 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
     out.println(ReactomeCommentUtil.massageComment(bpSummary.getComment()));
 }%>
 </p>
-<p>
-<i>References will go here...</i>
-</p>
-<p/>
+<%
+		// iterate over list of ExternalLinkRecord
+		List<ExternalLinkRecord> externalLinkRecords = bpSummary.getExternalLinks();
+		if (externalLinkRecords.size() > 0) {
+		    out.println("<p><b>References</b></p>");
+            out.println("<ul>");
+        }
+		for (ExternalLinkRecord externalLinkRecord : externalLinkRecords) {
+
+			Reference reference = externalLinks.get(externalLinkRecord.getLinkedToId());
+			if (reference == null) continue;
+
+			if (reference.getDatabase().equalsIgnoreCase("PubMed")) {
+			    ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();	
+			    out.println("<li>");
+				String uri = (externalLinkRecord.getWebLink() == null) ? "" :
+				    externalLinkRecord.getWebLink();
+                String database = (reference.getDatabase() == null) ? "" :
+				    reference.getDatabase();
+				uri = (uri == null) ? "" : uri;
+				out.println(reference.getReferenceString() + " " +
+				            "[<A HREF=\"" + uri + "\">" + database + "</A>]");
+                out.println("</li>");
+			}
+		}
+		if (externalLinkRecords.size() > 0) {
+            out.println("</ul>");
+			out.println("<p></p>");
+        }
+%>
 <% if (showTabs) { %>
 <div id="doc">
 </div>
