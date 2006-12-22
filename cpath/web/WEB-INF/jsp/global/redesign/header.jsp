@@ -29,7 +29,7 @@
 %>
 <head>
     <title><%= title %></title>
-    <link rel="stylesheet" href="jsp/css/andreas08.css" type="text/css" media="screen,projection" />
+    <jsp:include page="../../global/stylesAndScripts.jsp" flush="true" />
     <%--  Set Auto-Update for Admin Page --%>
     <%
         String autoUpdate = (String) request.getAttribute

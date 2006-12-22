@@ -275,10 +275,12 @@ background-color:inherit;
 color: #ffffff;
 }
 
-table td {
+table td{
+line-height:1.7em;
 }
 
 table th {
+line-height:1.7em;
 background-color:#DDDDDD;
 padding: 2px 2px 2px 2px;
 font-size:90%;
@@ -318,4 +320,96 @@ font-size:90%;
     margin: 0px 5px 5px 0px;
 	border: 1px solid #DDDDDD;
 	padding: 5px 5px 5px 5px;
+}
+
+#demo {
+width:100%; /* arbitrary width */
+}
+
+#demo .yui-content {
+padding:1em;
+}
+
+#demo .loading {
+background-image:url("jsp/images/loading.gif");
+background-position:center center;
+background-repeat:no-repeat;
+}
+
+#demo .loading * {
+display:none;
+}
+
+.button {
+font-size:85%;
+color:blue;
+text-decoration:underline;
+cursor:pointer;
+}
+
+.record_page_category a:hover {color: black !important;}
+.record_page_category a:active {color: black !important;}
+
+.small {
+    font-size:85%;
+}
+
+/* Data Source Details */
+.details {
+  font-size:85%;
+  display:none;
+}
+
+/* Entity Summary, e.g. summary of interaction details */
+.entity_summary {
+    font-size:95%;
+}
+
+.entity_summary a {
+   border-bottom-style: dotted;
+   border-bottom-width: thin;
+   text-decoration: none;
+}
+
+.yui-nav {
+  font-size:85%;
+  margin-left:0px !important;
+  margin-bottom:0px !important;
+}
+
+/*  Selected Tab */
+.selected {
+  font-weight:bold;
+}
+
+/* Customized Pop up Boxes for Overlib */
+/* Customized Pop up Boxes for Overlib */
+.popup {
+     background:  #ccccff;
+     font-size:70%;
+     padding: 0px 0px 0px 0px;
+     border: 1px solid #036;
+     text-align:left;
+     line-height:1.5em;
+}
+
+.popup_caption {
+    background-color: #036;
+    color:  #FFFFFF;
+    margin: 0px 0px 5px 0px;
+    padding: 2px 5px 2px 5px;
+    font-weight:bold
+}
+
+.popup_text {
+ 	margin: 0px 5px 5px 5px;
+}
+
+.popup_text ul {
+     padding-left: 20px;
+     list-style-type:square;
+}
+
+.popup_organism {
+    color:  lightgreen;
 }
