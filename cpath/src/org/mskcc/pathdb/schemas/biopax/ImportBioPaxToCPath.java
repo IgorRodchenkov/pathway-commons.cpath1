@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.27 2006-12-19 21:14:14 grossb Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.28 2006-12-22 18:02:52 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,7 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.Reference;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.sql.references.BackgroundReferenceService;
@@ -239,8 +240,10 @@ public class ImportBioPaxToCPath {
 			Reference[] references = bpUtil.extractPublicationXrefs(resource);
 			if (references.length > 0) {
 				DaoReference daoReference = new DaoReference();
+				DaoExternalDb daoExternalDb = new DaoExternalDb();
 				for (Reference ref : references) {
-					if (daoReference.getRecord(ref.getId()) == null) {
+					ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByName(ref.getDatabase());
+					if (daoReference.getRecord(ref.getId(), dbRecord.getId()) == null) {
 						daoReference.addReference(ref);
 					}
 				}

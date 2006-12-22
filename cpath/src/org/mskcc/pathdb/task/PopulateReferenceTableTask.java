@@ -135,7 +135,7 @@ public class PopulateReferenceTableTask extends Task {
 	 * Process the pubmed records.
 	 *
 	 * @param daoExternalDb DaoExternalDb
-	 * @param daoExternalLink DaoExternalLikn
+	 * @param daoExternalLink DaoExternalLink
 	 * @throws DaoException
 	 * @throws InterruptedException
 	 * @throws IOException
@@ -162,7 +162,7 @@ public class PopulateReferenceTableTask extends Task {
 			// is this already in reference table ?
 			// if so, check for completeness (no N/A strings)
 			// if complete, skip it, if not complete, fetch data from ncbi
-			Reference reference = daoReference.getRecord(linkedToId);
+			Reference reference = daoReference.getRecord(linkedToId, dbRecord.getId());
 			if (completeReference(reference)) continue;
 			// if the reference is not null, but not complete, delete it from table
 			if (reference != null) daoReference.deleteRecordById(reference.getId());

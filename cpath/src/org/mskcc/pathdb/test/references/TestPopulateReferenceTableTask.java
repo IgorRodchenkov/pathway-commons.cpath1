@@ -1,4 +1,4 @@
-// $Id: TestPopulateReferenceTableTask.java,v 1.3 2006-12-22 13:42:22 grossb Exp $
+// $Id: TestPopulateReferenceTableTask.java,v 1.4 2006-12-22 18:02:34 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,8 @@ package org.mskcc.pathdb.test.references;
 // imports
 import org.mskcc.pathdb.model.Reference;
 import org.mskcc.pathdb.sql.dao.DaoReference;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.task.PopulateReferenceTableTask;
@@ -102,9 +104,11 @@ public class TestPopulateReferenceTableTask extends TestCase {
 		// verify the fetched/data
 		Reference ref;
 		DaoReference daoReference = new DaoReference();
-		ref = daoReference.getRecord((String)PUBMED_TEST_RECORD_ONE[0]);
+		DaoExternalDb daoExternalDb = new DaoExternalDb();
+		ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByName("PubMed");
+		ref = daoReference.getRecord((String)PUBMED_TEST_RECORD_ONE[0], dbRecord.getId());
 		verifyPubMed(ref, PUBMED_TEST_RECORD_ONE);
-		ref = daoReference.getRecord((String)PUBMED_TEST_RECORD_TWO[0]);
+		ref = daoReference.getRecord((String)PUBMED_TEST_RECORD_TWO[0], dbRecord.getId());
 		verifyPubMed(ref, PUBMED_TEST_RECORD_TWO);
 	}
 
