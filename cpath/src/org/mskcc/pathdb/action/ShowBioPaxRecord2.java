@@ -90,7 +90,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
             }
 			// set external links
 			if (bpSummary != null) {
-				request.setAttribute("EXTERNAL_LINKS", getExternalLinks(bpSummary));
+				request.setAttribute("EXTERNAL_LINKS", getExternalLinks(bpSummary, xdebug));
 			}
         }
 
@@ -236,7 +236,8 @@ public class ShowBioPaxRecord2 extends BaseAction {
 	 * @return HashMap<String,Reference>
 	 * @throws DaoException
 	 */
-	private HashMap<String,Reference> getExternalLinks(BioPaxRecordSummary bpSummary) 
+	private HashMap<String,Reference> getExternalLinks(BioPaxRecordSummary bpSummary,
+            XDebug xdebug)
 		throws DaoException {
 
 		// hashset to return
@@ -254,12 +255,19 @@ public class ShowBioPaxRecord2 extends BaseAction {
 			ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();
 
 			// get the reference object
-			Reference reference = daoReference.getRecord(linkedToId, dbRecord.getId());
+            xdebug.logMsg (this, "Getting Reference for:  " + linkedToId);
+            Reference reference = daoReference.getRecord(linkedToId, dbRecord.getId());
 			if (CPathConstants.CPATH_DO_ASSERT) {
 				assert (reference != null) :
 				"ShowBioPaxRecord2.setExternalLinks(), reference object is null";
 			}
-			if (reference == null) continue;
+            if (reference == null) {
+                xdebug.logMsg(this, "Could not find any reference info.");
+            } else {
+                xdebug.logMsg (this, "Found reference info:  " + reference.getTitle());
+            }
+
+            if (reference == null) continue;
 
 			// add reference string to proper list
 			externalLinkSet.put(linkedToId, reference);
