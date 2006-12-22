@@ -1,4 +1,4 @@
-// $Id: CacheTable.java,v 1.14 2006-06-09 19:22:03 cerami Exp $
+// $Id: CacheTable.java,v 1.15 2006-12-22 19:08:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -74,7 +74,7 @@ public class CacheTable extends HtmlTable {
         ArrayList records = dao.getAllRecords();
         if (records.size() == 0) {
             startRow();
-            append("<TD COLSPAN=5>No Records in Cache</TD>");
+            append("<td colspan='5'>No Records in Cache</TD>");
             endRow();
         } else {
             for (int i = 0; i < records.size(); i++) {
@@ -93,14 +93,14 @@ public class CacheTable extends HtmlTable {
             Hashtable params1 = HttpUtils.parseQueryString(record.getUrl());
             HashMap params2 = XssFilter.filterAllParameters(params1);
             ProtocolRequest request = new ProtocolRequest(params2);
-            outputDataField("<A HREF='" + request.getUri() + "'>URL Link</A>");
+            outputDataField("<a href='" + request.getUri() + "'>URL Link</a>");
             outputDataField(request.getCommand());
             outputDataField(request.getQuery());
             outputDataField(request.getFormat());
             outputDataField(request.getOrganism());
         } catch (Exception e) {
-            append("<TD>" + record.getUrl() + "</TD>");
-            append("<TD>N/A</TD>");
+            append("<td>" + record.getUrl() + "</td>");
+            append("<td>N/A</td>");
         }
     }
 }
