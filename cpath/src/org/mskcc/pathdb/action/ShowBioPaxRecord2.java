@@ -15,6 +15,7 @@ import org.mskcc.pathdb.model.TypeCount;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.Reference;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.util.CPathConstants;
@@ -249,8 +250,11 @@ public class ShowBioPaxRecord2 extends BaseAction {
 			// get the linked to id
 			String linkedToId = externalLinkRecord.getLinkedToId();
 
+			// get external database record
+			ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();
+
 			// get the reference object
-			Reference reference = daoReference.getRecord(linkedToId);
+			Reference reference = daoReference.getRecord(linkedToId, dbRecord.getId());
 			if (CPathConstants.CPATH_DO_ASSERT) {
 				assert (reference != null) :
 				"ShowBioPaxRecord2.setExternalLinks(), reference object is null";
