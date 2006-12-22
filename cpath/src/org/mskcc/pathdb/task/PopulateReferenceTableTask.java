@@ -126,9 +126,6 @@ public class PopulateReferenceTableTask extends Task {
         pMonitor.setCurrentMessage("Processing PubMed records");
 		processPubMed(daoExternalDb, daoExternalLink);
 
-		// dump the table back out to fs
-        pMonitor.setCurrentMessage("Dumping reference table out to file system");
-
 		// outta here
         pMonitor.setCurrentMessage("Done");
         xdebug.stopTimer();
