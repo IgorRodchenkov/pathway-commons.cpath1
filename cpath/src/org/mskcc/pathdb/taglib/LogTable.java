@@ -1,4 +1,4 @@
-// $Id: LogTable.java,v 1.12 2006-02-22 22:47:51 grossb Exp $
+// $Id: LogTable.java,v 1.13 2006-12-22 21:03:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -66,23 +66,21 @@ public class LogTable extends HtmlTable {
         DaoLog adminLogger = new DaoLog();
         ArrayList logRecords = adminLogger.getLogRecords();
         if (logRecords.size() == 0) {
-            append("<TR>");
-            append("<TD COLSPAN=4>No Log Records in Database.");
-            append("</TR>");
+            append("<tr>");
+            append("<td colspan='4'>No Log Records in Database.</td>");
+            append("</tr>");
         }
         for (int i = 0; i < logRecords.size(); i++) {
             startRow(i - 1);
             LogRecord record = (LogRecord) logRecords.get(i);
-            append("<TD>");
-            append("<B>Error Logged at:  " + record.getDate()
-                    + "</B>");
-            append("<P>Web URL:  <A HREF='" + record.getWebUrl()
-                    + "'>" + record.getWebUrl() + "</A>");
-            append("<P>Remote Host:  " + record.getRemoteHost());
-            append("<P>Remote IP:  " + record.getRemoteIp());
-            append("<P>Error Message:  " + record.getMessage());
-            String html = HtmlUtil.convertToHtml(record.getStackTrace());
-            append("<P>Stack Trace:  " + html);
+            append("<td>");
+            append("<b>Error Logged at:  " + record.getDate()
+                    + "</b>");
+            append("<p>Web URL:  <a href='" + record.getWebUrl()
+                    + "'>" + record.getWebUrl() + "</a>");
+            append("<p>Remote Host:  " + record.getRemoteHost() + "</p>");
+            append("<p>Remote IP:  " + record.getRemoteIp() + "</p>");
+            append("<p>Error Message:  " + record.getMessage() +"</p>");
             endRow();
         }
     }

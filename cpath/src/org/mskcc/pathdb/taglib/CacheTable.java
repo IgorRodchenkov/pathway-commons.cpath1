@@ -1,4 +1,4 @@
-// $Id: CacheTable.java,v 1.15 2006-12-22 19:08:47 cerami Exp $
+// $Id: CacheTable.java,v 1.16 2006-12-22 21:03:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -74,7 +74,7 @@ public class CacheTable extends HtmlTable {
         ArrayList records = dao.getAllRecords();
         if (records.size() == 0) {
             startRow();
-            append("<td colspan='5'>No Records in Cache</TD>");
+            append("<td colspan='5'>No Records in Cache</td>");
             endRow();
         } else {
             for (int i = 0; i < records.size(); i++) {

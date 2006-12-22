@@ -1,4 +1,4 @@
-// $Id: PathwayListTable.java,v 1.10 2006-06-09 19:22:03 cerami Exp $
+// $Id: PathwayListTable.java,v 1.11 2006-12-22 21:03:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -65,17 +65,19 @@ public class PathwayListTable extends HtmlTable {
         records = (ArrayList) pageContext.getRequest().getAttribute("RECORDS");
 
         // process records
-        if (records.size() == 0) {
-            startRow();
-            append("<TD COLSPAN=5>No Pathway Records Exist</TD>");
-            endRow();
-        } else {
-            for (int lc = 0; lc < records.size(); lc++) {
-                CPathRecord rec = (CPathRecord) records.get(lc);
-                startRow(1);
-                String uri = "record.do?id=" + rec.getId();
-                outputDataField("<a href=\"" + uri + "\">" + rec.getName() + "</a>");
+        if (records != null) {
+            if (records.size() == 0) {
+                startRow();
+                append("<td colspan='5'>No Pathway Records Exist</td>");
                 endRow();
+            } else {
+                for (int lc = 0; lc < records.size(); lc++) {
+                    CPathRecord rec = (CPathRecord) records.get(lc);
+                    startRow(1);
+                    String uri = "record2.do?id=" + rec.getId();
+                    outputDataField("<a href=\"" + uri + "\">" + rec.getName() + "</a>");
+                    endRow();
+                }
             }
         }
     }

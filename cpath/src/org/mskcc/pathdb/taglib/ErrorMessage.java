@@ -1,4 +1,4 @@
-// $Id: ErrorMessage.java,v 1.17 2006-06-09 19:22:03 cerami Exp $
+// $Id: ErrorMessage.java,v 1.18 2006-12-22 21:03:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,8 +87,8 @@ public class ErrorMessage extends HtmlTable {
                         (STRUTS_MESSAGE_RESOURCE);
 
         String header = resource.getMessage(MSG_ERROR_HEADER);
-        this.append("<div class=\"errormessage\">");
-        this.append("<p><strong>" + header + "</strong></p>");
+        this.append("<div>");
+        this.append("<h1>" + header + "</h1>");
         Throwable rootCause = getRootCause(throwable);
         outputUserMessage(rootCause, resource);
         logErrorMessage(rootCause);
@@ -150,15 +150,15 @@ public class ErrorMessage extends HtmlTable {
         } else if (rootCause instanceof SAXParseException) {
             SAXParseException sexc = (SAXParseException) rootCause;
             userMsg = "Your XML document contains the "
-                    + "following error:<P>" + rootCause.getMessage()
-                    + "<P>Error occurred at line number:   "
+                    + "following error:<p>" + rootCause.getMessage()
+                    + "<p>Error occurred at line number:   "
                     + sexc.getLineNumber()
-                    + "<P>Please correct the error and try again.";
+                    + "<p>Please correct the error and try again.";
         } else if (rootCause instanceof MarshalException) {
             MarshalException mexc = (MarshalException) rootCause;
             userMsg = "Your XML document contains the "
-                    + "following error:<P>" + rootCause.getMessage()
-                    + "<P>Please correct the error and try again.";
+                    + "following error:<p>" + rootCause.getMessage()
+                    + "<p>Please correct the error and try again.";
         }
         this.append(userMsg);
     }
@@ -167,15 +167,15 @@ public class ErrorMessage extends HtmlTable {
      * Outputs Full Diagnostics.
      */
     private void outputDiagnostics(Throwable throwable, Throwable rootCause) {
-        append("<P>Root Cause Message:  "
+        append("<p>Root Cause Message:  "
                 + rootCause.getMessage());
-        append("<P>Root Cause Class:  "
-                + rootCause.getClass().getName());
+        append("</p><p>Root Cause Class:  "
+                + rootCause.getClass().getName() +"</p>");
         StringWriter writer = new StringWriter();
         PrintWriter pWriter = new PrintWriter(writer);
         throwable.printStackTrace(pWriter);
-        append("<FONT SIZE=-1><PRE>\n"
-                + writer.toString() + "\n</PRE></FONT>");
+        append("<pre>\n"
+                + writer.toString() + "\n</pre>");
     }
 
     /**
