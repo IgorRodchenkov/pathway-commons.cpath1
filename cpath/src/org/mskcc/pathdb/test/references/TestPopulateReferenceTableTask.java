@@ -1,4 +1,4 @@
-// $Id: TestPopulateReferenceTableTask.java,v 1.2 2006-12-19 18:50:50 grossb Exp $
+// $Id: TestPopulateReferenceTableTask.java,v 1.3 2006-12-22 13:42:22 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,13 +53,13 @@ import java.util.ArrayList;
 public class TestPopulateReferenceTableTask extends TestCase {
 
 	// some statics for testing
-	private final Object[] PUBMED_TEST_RECORD_ONE = { "11748933", new Long(11748933),
+	private final Object[] PUBMED_TEST_RECORD_ONE = { "11748933",
 													  "PubMed", "2001",
 													  "Is cryopreservation a homogeneous process? " +
 													  "Ultrastructure and motility of untreated, prefreezing, " +
 													  "and postthawed spermatozoa of Diplodus puntazzo (Cetti).",
 													  new Integer(8), "Abelli, L", "Cryobiology 42(4):244-55" };
-	private final Object[] PUBMED_TEST_RECORD_TWO = { "11700088", new Long(11700088),
+	private final Object[] PUBMED_TEST_RECORD_TWO = { "11700088",
 													  "PubMed", "2001", "Proton MRI of (13)C distribution by J " +
 													  "and chemical shift editing.",
 													  new Integer(6), "Carpinelli, G", "Journal of magnetic resonance (San Diego, Calif. : 1997) 153(1):117-23" };
@@ -102,9 +102,9 @@ public class TestPopulateReferenceTableTask extends TestCase {
 		// verify the fetched/data
 		Reference ref;
 		DaoReference daoReference = new DaoReference();
-		ref = daoReference.getRecord((Long)PUBMED_TEST_RECORD_ONE[1]);
+		ref = daoReference.getRecord((String)PUBMED_TEST_RECORD_ONE[0]);
 		verifyPubMed(ref, PUBMED_TEST_RECORD_ONE);
-		ref = daoReference.getRecord((Long)PUBMED_TEST_RECORD_TWO[1]);
+		ref = daoReference.getRecord((String)PUBMED_TEST_RECORD_TWO[0]);
 		verifyPubMed(ref, PUBMED_TEST_RECORD_TWO);
 	}
 
@@ -114,19 +114,19 @@ public class TestPopulateReferenceTableTask extends TestCase {
 	private void verifyPubMed(Reference ref, Object[] pubMedRecord) {
 
 		// id
-		Assert.assertEquals(ref.getId(), ((Long)pubMedRecord[1]).longValue());
+		Assert.assertEquals(ref.getId(), ((String)pubMedRecord[0]));
 		// database
-		Assert.assertEquals(ref.getDatabase(), (String)pubMedRecord[2]);
+		Assert.assertEquals(ref.getDatabase(), (String)pubMedRecord[1]);
 		// year
-		Assert.assertEquals(ref.getYear(), (String)pubMedRecord[3]);
+		Assert.assertEquals(ref.getYear(), (String)pubMedRecord[2]);
 		// title
-		Assert.assertEquals(ref.getTitle(), (String)pubMedRecord[4]);
+		Assert.assertEquals(ref.getTitle(), (String)pubMedRecord[3]);
 
 		// authors
 		String[] authors = ref.getAuthors();
-		Assert.assertEquals(authors.length, ((Integer)pubMedRecord[5]).intValue());
-		Assert.assertEquals(authors[2], (String)pubMedRecord[6]);
+		Assert.assertEquals(authors.length, ((Integer)pubMedRecord[4]).intValue());
+		Assert.assertEquals(authors[2], (String)pubMedRecord[5]);
 		// source
-		Assert.assertEquals(ref.getSource(), (String)pubMedRecord[7]);
+		Assert.assertEquals(ref.getSource(), (String)pubMedRecord[6]);
     }
 }

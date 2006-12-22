@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.29 2006-12-19 21:13:42 grossb Exp $
+// $Id: BioPaxUtil.java,v 1.30 2006-12-22 13:41:59 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -299,7 +299,7 @@ public class BioPaxUtil {
 			// create reference object to store - if we have an id
             if (dbId != null  && dbId.trim().length() > 0) {
 				Reference reference = new Reference();
-				reference.setId(Long.valueOf(dbId));
+				reference.setId(dbId);
 				reference.setDatabase((dbName != null && dbName.trim().length() > 0) ? dbName : CPathRecord.NA_STRING);
 				reference.setYear((year != null && year.trim().length() > 0) ? year : CPathRecord.NA_STRING);
 				reference.setTitle((title != null && title.trim().length() > 0) ? title : CPathRecord.NA_STRING);

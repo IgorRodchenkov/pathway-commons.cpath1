@@ -157,15 +157,15 @@ public class PopulateReferenceTableTask extends Task {
 		DaoReference daoReference = new DaoReference();
 
 		// interate over the records
-		for (ExternalLinkRecord externalLink : externalLinks) {
+		for (ExternalLinkRecord externalLinkRecord : externalLinks) {
 
-			// get the pubmed id
-			String linkedToId = externalLink.getLinkedToId();
+			// get the linked to id
+			String linkedToId = externalLinkRecord.getLinkedToId();
 
 			// is this already in reference table ?
 			// if so, check for completeness (no N/A strings)
 			// if complete, skip it, if not complete, fetch data from ncbi
-			Reference reference = daoReference.getRecord(new Long(linkedToId));
+			Reference reference = daoReference.getRecord(linkedToId);
 			if (completeReference(reference)) continue;
 			// if the reference is not null, but not complete, delete it from table
 			if (reference != null) daoReference.deleteRecordById(reference.getId());
@@ -249,7 +249,7 @@ public class PopulateReferenceTableTask extends Task {
 				// get pointer to medline citation element
 				Element medlineCitationElement = xpathElement(article,"MedlineCitation");
 				// id
-				reference.setId(new Long(xpathQuery(medlineCitationElement, "PMID", true)));
+				reference.setId(xpathQuery(medlineCitationElement, "PMID", true));
 				// database
 				reference.setDatabase("PubMed");
 				// year

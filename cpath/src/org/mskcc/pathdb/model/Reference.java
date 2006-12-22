@@ -1,4 +1,4 @@
-// $Id: Reference.java,v 1.1 2006-12-15 19:37:07 grossb Exp $
+// $Id: Reference.java,v 1.2 2006-12-22 13:42:15 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,7 +39,7 @@ package org.mskcc.pathdb.model;
 public class Reference {
 
 	// reference id
-    private long id;
+    private String id;
 	
 	// database
 	private String database;
@@ -59,18 +59,18 @@ public class Reference {
     /**
      * Sets the ref id.
      *
-     * @param id long
+     * @param id String
      */
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     /**
      * Gets the ref id.
      *
-     * @return long
+     * @return String
      */
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -164,4 +164,16 @@ public class Reference {
     public String getSource() {
         return source;
     }
+
+	/**
+	 * Returns a "reference" string for display purposes.
+	 * 
+	 * @return String
+	 */
+	public String getReferenceString() {
+
+		return (database.equalsIgnoreCase("PubMed")) ?
+			(title + " " + source) : 
+			(database + ":" + id);
+	}
 }

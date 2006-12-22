@@ -262,7 +262,7 @@ CREATE TABLE `internal_family` (
 # Table structure for table `reference`
 #
 CREATE TABLE `reference` (
-	`REFERENCE_ID` int(11) NOT NULL default '-9999',
+	`REFERENCE_ID` varchar(255) NOT NULL default '',
 	`YEAR` varchar(255) NOT NULL default '',
 	`TITLE` varchar(255) NOT NULL default '',
 	`AUTHORS` varchar(255) NOT NULL default '',

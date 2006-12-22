@@ -1,4 +1,4 @@
-// $Id: DaoReference.java,v 1.2 2006-12-19 21:36:24 grossb Exp $
+// $Id: DaoReference.java,v 1.3 2006-12-22 13:41:43 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,7 +70,7 @@ public class DaoReference {
 										  "`AUTHORS`, `SOURCE`, `EXTERNAL_DB_ID`) " +
 										  "VALUES (?,?,?,?,?,?)");
 			// id
-			pstmt.setLong(1, ref.getId());
+			pstmt.setString(1, ref.getId());
 			// year
 			pstmt.setString(2, ref.getYear());
 			// title
@@ -99,11 +99,11 @@ public class DaoReference {
     /**
      * Given an id, returns a Reference object.
      *
-	 * @param id long
+	 * @param referenceId String
      * @return Reference
      * @throws DaoException
      */
-    public Reference getRecord(long id) throws DaoException {
+    public Reference getRecord(String referenceId) throws DaoException {
 
         // init some local vars
         Connection con = null;
@@ -115,7 +115,7 @@ public class DaoReference {
             // perform the query
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement("select * from reference where REFERENCE_ID = ?");
-            pstmt.setLong(1, id);
+            pstmt.setString(1, referenceId);
             rs = pstmt.executeQuery();
 
             // set the form object
@@ -123,7 +123,7 @@ public class DaoReference {
 				// create new object
                 ref = new Reference();
 				// id
-				ref.setId(rs.getLong(1));
+				ref.setId(rs.getString(1));
 				// year
 				ref.setYear(rs.getString(2));
 				// title
@@ -151,18 +151,18 @@ public class DaoReference {
     /**
      * Deletes Record specified by Reference ID.
      *
-     * @param long referenceId
+     * @param referenceId String
      * @return true if deletion is successful.
      * @throws DaoException Error Retrieving Data.
      */
-    public boolean deleteRecordById(long referenceId) throws DaoException {
+    public boolean deleteRecordById(String referenceId) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement("delete from reference where REFERENCE_ID = ?");
-            pstmt.setLong(1, referenceId);
+            pstmt.setString(1, referenceId);
             int rows = pstmt.executeUpdate();
             return (rows > 0) ? true : false;
         } catch (SQLException e) {
