@@ -31,7 +31,7 @@ img.right{float:right; margin:0 0 5px 12px;}
 /**************** Header and navigation styles ****************/
 
 #container{
-width:760px;
+width:90%;
 margin:20px auto;
 padding:1px 0;
 text-align:left;
@@ -42,7 +42,8 @@ border:2px solid #a0a0a0;
 
 #header{
 height:110px;
-width:758px;
+width:100%;
+/* margin:  top, right, bottom, left */
 margin:0 1px 1px 1px;
 background:#467aa7;
 color:#ffffff;
@@ -73,7 +74,7 @@ font-weight:normal;
 #navigation{
 height:1.7em;
 line-height:1.7em;
-width:758px;
+width:100%;
 margin:0 1px;
 background:#578bb8;
 color:#ffffff;
@@ -110,7 +111,7 @@ text-decoration:none;
 
 #content{
 float:left;
-width:700px;
+width:90%;
 font-size:0.9em;
 padding:10px 0 0 20px;
 }
@@ -214,7 +215,7 @@ text-align:center;
 
 #footer{
 clear:both;
-width:758px;
+width:100%;
 padding:5px 0;
 margin:0 1px;
 font-size:0.7em;
@@ -250,7 +251,7 @@ line-height:1.5em;
 
 .section{
 clear:both;
-width:700px;
+width:100%;
 padding:5px 5px 5px 5px;
 font-size:0.9em;
 color:#f0f0f0;
@@ -295,4 +296,26 @@ font-size:90%;
     font-weight:bold;
     padding: 3px 3px 3px 3px;
     background: #EEEEEE;
+}
+
+.large_search_box {
+	margin: 10px 5px 5px 0px;
+	border: 1px solid #000000;
+	padding: 5px 5px 5px 5px;
+    background: #CCCCFF;
+}
+
+.large_search_box h1 {
+   font-size:130%;
+}
+
+.large_search_box input {
+   font-size:90%;
+}
+
+.home_page_box {
+	/* margin:  top, right, bottom, left */
+    margin: 0px 5px 5px 0px;
+	border: 1px solid #DDDDDD;
+	padding: 5px 5px 5px 5px;
 }
