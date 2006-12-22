@@ -1,4 +1,4 @@
-// $Id: TestQueryFileReader.java,v 1.15 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestQueryFileReader.java,v 1.16 2006-12-22 18:46:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,8 +59,8 @@ public class TestQueryFileReader extends TestCase {
         assertEquals("1.0", request.getVersion());
         assertEquals(null, request.getQuery());
         assertEquals("psi", request.getFormat());
-        assertEquals("webservice.do?version=1.0&cmd=get_by_keyword"
-                + "&format=psi&organism=562&maxHits=10",
+        assertEquals("webservice.do?version=1.0&amp;cmd=get_by_keyword"
+                + "&amp;format=psi&amp;organism=562&amp;maxHits=10",
                 request.getUri());
     }
 

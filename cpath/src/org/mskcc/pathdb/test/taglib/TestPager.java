@@ -1,4 +1,4 @@
-// $Id: TestPager.java,v 1.17 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestPager.java,v 1.18 2006-12-22 18:46:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,8 +63,8 @@ public class TestPager extends TestCase {
         String prevUrl = pager.getPreviousUrl();
         assertEquals(0, start);
         assertEquals(20, end);
-        assertEquals("webservice.do?version=1.0&q=ABC123"
-                + "&startIndex=20&maxHits=20", nextUrl);
+        assertEquals("webservice.do?version=1.0&amp;q=ABC123"
+                + "&amp;startIndex=20&amp;maxHits=20", nextUrl);
         assertEquals(null, firstUrl);
         assertEquals(null, prevUrl);
     }
@@ -88,12 +88,12 @@ public class TestPager extends TestCase {
         String prevUrl = pager.getPreviousUrl();
         assertEquals(20, start);
         assertEquals(40, end);
-        assertEquals("webservice.do?version=1.0&q=ABC123"
-                + "&maxHits=20", firstUrl);
-        assertEquals("webservice.do?version=1.0&q=ABC123"
-                + "&startIndex=40&maxHits=20", nextUrl);
-        assertEquals("webservice.do?version=1.0&q=ABC123"
-                + "&maxHits=20", prevUrl);
+        assertEquals("webservice.do?version=1.0&amp;q=ABC123"
+                + "&amp;maxHits=20", firstUrl);
+        assertEquals("webservice.do?version=1.0&amp;q=ABC123"
+                + "&amp;startIndex=40&amp;maxHits=20", nextUrl);
+        assertEquals("webservice.do?version=1.0&amp;q=ABC123"
+                + "&amp;maxHits=20", prevUrl);
     }
 
     /**
@@ -116,11 +116,11 @@ public class TestPager extends TestCase {
         String prevUrl = pager.getPreviousUrl();
         assertEquals(240, start);
         assertEquals(255, end);
-        assertEquals("webservice.do?version=1.0&q=ABC123"
-                + "&maxHits=20", firstUrl);
+        assertEquals("webservice.do?version=1.0&amp;q=ABC123"
+                + "&amp;maxHits=20", firstUrl);
         assertEquals(null, nextUrl);
-        assertEquals("webservice.do?version=1.0&q=ABC123"
-                + "&startIndex=220&maxHits=20", prevUrl);
+        assertEquals("webservice.do?version=1.0&amp;q=ABC123"
+                + "&amp;startIndex=220&amp;maxHits=20", prevUrl);
     }
 
     /**

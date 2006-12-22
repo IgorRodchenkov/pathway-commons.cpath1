@@ -1,4 +1,4 @@
-// $Id: TestHtmlUtil.java,v 1.7 2006-02-27 21:56:15 cerami Exp $
+// $Id: TestHtmlUtil.java,v 1.8 2006-12-22 18:46:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,8 +59,8 @@ public class TestHtmlUtil extends TestCase {
     public void testTruncationMetho10() {
         testName = "Simulation truncation of HTML string.";
         String truncated = HtmlUtil.truncateLongWords
-                ("<B>here is a sequence: AAAAAAAAAAAAAAAAAA</B> more stuff", 10);
-        assertEquals("<B>here is a sequence: AAAAAAAAAA [Cont.]</B> more stuff",
+                ("<b>here is a sequence: AAAAAAAAAAAAAAAAAA</b> more stuff", 10);
+        assertEquals("<b>here is a sequence: AAAAAAAAAA [Cont.]</b> more stuff",
                 truncated);
     }
 
