@@ -1,4 +1,4 @@
-// $Id: OrganismTable.java,v 1.23 2006-12-22 18:30:53 cerami Exp $
+// $Id: OrganismTable.java,v 1.24 2006-12-23 04:29:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -125,7 +125,13 @@ public class OrganismTable extends HtmlTable {
         createColumnHeader("Number of Records*",
                 SORT_BY_NUM_INTERACTIONS, sortBy, sortOrder);
         endRow();
-        outputRecords(sortBy, sortOrder);
+        try {
+            outputRecords(sortBy, sortOrder);
+        } catch (QueryException e) {
+            startRow();
+            append("<td>No organism data currrently available</td>");
+            endRow();
+        }
         endTable();
     }
 
