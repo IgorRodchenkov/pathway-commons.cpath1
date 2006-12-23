@@ -55,7 +55,7 @@
 
         <!--  Database Snapshot Information -->
         <action path="/dbSnapshot"
-            type="org.mskcc.pathdb.action.HomeAction">
+            type="org.mskcc.pathdb.action.ShowDataSourceDetails">
             <forward name="success" path="/WEB-INF/jsp/pages/DbSnapshotInfo.jsp"/>
         </action>
 
