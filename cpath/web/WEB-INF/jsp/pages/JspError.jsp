@@ -8,4 +8,8 @@
 %>
     <cbio:errorMessage throwable="<%= throwable %>"/>
 <% }%>
-<jsp:include page="../global/footer.jsp" flush="true" />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />
