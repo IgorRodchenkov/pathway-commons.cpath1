@@ -1,8 +1,11 @@
-<%@ page import="java.util.Enumeration"%>
-<jsp:include page="../global/header.jsp" flush="true" />
+<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
+<%
+request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Unauthorized access");
+%>
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
 
-<div class="errormessage">
-<p><strong>Unauthorized Access</strong></p>
+<div>
+<h1>Unauthorized Access</h1>
 This page is only available to authorized users.
 </div>
 
@@ -12,4 +15,4 @@ This page is only available to authorized users.
 <P>&nbsp;
 <P>&nbsp;
 <P>&nbsp;
-<jsp:include page="../global/footer.jsp" flush="true" />
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />
