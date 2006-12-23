@@ -67,17 +67,72 @@ public class BioPaxParentChild extends BaseAction {
             HttpServletRequest request, HttpServletResponse response, XDebug xdebug)
             throws Exception {
         DaoCPath dao = DaoCPath.getInstance();
+
+        //  required parameters
         String id = request.getParameter("id");
         String command = request.getParameter("command");
         String type = request.getParameter("type");
+
+        //  optional parameters
         String startIndex = request.getParameter("startIndex");
         String maxRecords = request.getParameter("maxRecords");
-        CPathRecord record = null;
-        if (id != null) {
-            xdebug.logMsg(this, "Using cPath ID:  " + id);
-            record = dao.getRecordById(Long.parseLong(id));
-            xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
+        String totalNumRecords = request.getParameter("totalNumRecords");
+
+        if (id == null) {
+            throw new IllegalArgumentException ("id parameter must be specified.");
         }
+        if (command == null) {
+            throw new IllegalArgumentException ("command parameter must be specified.");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException ("type parameter must be specified.");
+        }
+        if (!command.equals(BioPaxParentChild.GET_CHILDREN)
+                && !command.equals(BioPaxParentChild.GET_PARENTS)) {
+            throw new IllegalArgumentException ("command parameter not recognized --> "
+                + command);
+        }
+
+        int start = 0;
+        if (startIndex != null) {
+            try {
+                start = Integer.parseInt(startIndex);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException
+                        ("startIndex parameter must be an integer value.");
+            }
+        }
+        int max = MAX_RECORDS;
+        if (maxRecords != null) {
+            try {
+                max = Integer.parseInt(maxRecords);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException
+                        ("maxRecords parameter must be an integer value.");
+            }
+        }
+
+        if (totalNumRecords != null) {
+            try {
+                int total = Integer.parseInt(totalNumRecords);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException
+                        ("totalNumRecords parameter must be an integer value.");
+            }
+        }
+
+        CPathRecord record = null;
+        xdebug.logMsg(this, "Using cPath ID:  " + id);
+        try {
+            record = dao.getRecordById(Long.parseLong(id));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException ("id parameter must be an integer value.");
+        }
+        if (record == null) {
+            throw new IllegalArgumentException ("record id " + id
+                + " does not exist in database.");
+        }
+        xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
 
         DaoInternalLink daoLinker = new DaoInternalLink();
 
@@ -98,14 +153,6 @@ public class BioPaxParentChild extends BaseAction {
         ArrayList records = null;
         ArrayList <BioPaxRecordSummary> bpSummaryList = null;
         HashMap interactionSummaryMap = new HashMap();
-        int start = 0;
-        if (startIndex != null) {
-            start = Integer.parseInt(startIndex);
-        }
-        int max = MAX_RECORDS;
-        if (maxRecords != null) {
-            max = Integer.parseInt(maxRecords);
-        }
 
         //  Get parent or child elements.
         if (command != null && command.equals(GET_PARENTS)) {

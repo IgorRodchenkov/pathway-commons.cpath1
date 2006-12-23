@@ -38,9 +38,19 @@ public class ShowBioPaxRecord2 extends BaseAction {
         String id = request.getParameter("id");
         CPathRecord record = null;
 		BioPaxRecordSummary bpSummary = null;
-        if (id != null) {
+        if (id == null) {
+            throw new IllegalArgumentException ("id parameter must be specified.");
+        } else {
             xdebug.logMsg(this, "Using cPath ID:  " + id);
-            record = dao.getRecordById(Long.parseLong(id));
+            try {
+                record = dao.getRecordById(Long.parseLong(id));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException ("id parameter must be an integer value.");
+            }
+            if (record == null) {
+                throw new IllegalArgumentException ("record id " + id
+                    + " does not exist in database.");
+            }
             xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
             bpSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             request.setAttribute("BP_SUMMARY", bpSummary);
@@ -71,27 +81,25 @@ public class ShowBioPaxRecord2 extends BaseAction {
         boolean isComplex = false;
 
         //  Get different elements, depending on type
-        if (record != null) {
-            xdebug.logMsg (this, "Record type:  " + record.getType());
-            if (record.getType() == CPathRecordType.PATHWAY) {
+        xdebug.logMsg (this, "Record type:  " + record.getType());
+        if (record.getType() == CPathRecordType.PATHWAY) {
+            getChildren = true;
+            getPeLeaves = true;
+        } else if (record.getType() == CPathRecordType.INTERACTION) {
+            getPeLeaves = true;
+            getPathwayRoots = true;
+        } else {
+            xdebug.logMsg (this, "Record specific type:  " + record.getSpecificType());
+            getParents = true;
+            getPathwayRoots = true;
+            if (record.getSpecificType().toLowerCase().equals("complex")) {
+                isComplex = true;
                 getChildren = true;
-                getPeLeaves = true;
-            } else if (record.getType() == CPathRecordType.INTERACTION) {
-                getPeLeaves = true;
-                getPathwayRoots = true;
-            } else {
-                xdebug.logMsg (this, "Record specific type:  " + record.getSpecificType());
-                getParents = true;
-                getPathwayRoots = true;
-                if (record.getSpecificType().toLowerCase().equals("complex")) {
-                    isComplex = true;
-                    getChildren = true;
-                }
             }
-			// set external links
-			if (bpSummary != null) {
-				request.setAttribute("EXTERNAL_LINKS", getExternalLinks(bpSummary, xdebug));
-			}
+        }
+        // set external links
+        if (bpSummary != null) {
+            request.setAttribute("EXTERNAL_LINKS", getExternalLinks(bpSummary, xdebug));
         }
 
         if (getChildren) {
