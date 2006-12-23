@@ -1,4 +1,4 @@
-// $Id: ErrorMessage.java,v 1.18 2006-12-22 21:03:48 cerami Exp $
+// $Id: ErrorMessage.java,v 1.19 2006-12-23 04:19:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -159,6 +159,8 @@ public class ErrorMessage extends HtmlTable {
             userMsg = "Your XML document contains the "
                     + "following error:<p>" + rootCause.getMessage()
                     + "<p>Please correct the error and try again.";
+        } else if (rootCause instanceof IllegalArgumentException) {
+            userMsg = "Illegal or missing argument:  " + rootCause.getMessage();
         }
         this.append(userMsg);
     }
