@@ -67,13 +67,7 @@ if (baseAction != null) {
 
 	<div id="header">
         <div id="header_content">
-        <% if (!url.endsWith("home.do")) {
-            out.println("<a href='home.do'>");
-        } %>
         <jsp:include page="<%=headerFile%>" flush="true"/>
-        <% if (!url.endsWith("home.do")) {
-            out.println("</a>");
-        }%>
         </div>
         <jsp:include page="searchBox.jsp" flush="true" />
     </div>

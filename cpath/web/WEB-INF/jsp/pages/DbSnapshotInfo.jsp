@@ -1,7 +1,4 @@
-<%@ page import="org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.form.WebUIBean,
-                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
-<%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot"%>
+<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
 <%@ page import="org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord"%>
 <%@ page import="java.text.Format"%>
 <%@ page import="java.text.SimpleDateFormat"%>
@@ -13,30 +10,16 @@
 
 <%
 	// get bean
-    String snapshotIdStr = request.getParameter("snapshot_id");
-    long snapshotId = -1;
-    try {
-        snapshotId = Long.parseLong(snapshotIdStr);
-    } catch (NumberFormatException e) {
-    }
-    ExternalDatabaseSnapshotRecord snapshotRecord = null;
-    if (snapshotId >= 0) {
-        DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-        snapshotRecord = dao.getDatabaseSnapshot(snapshotId);
-        request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Data Source Details");
-    }
-
+    ExternalDatabaseSnapshotRecord snapshotRecord = (ExternalDatabaseSnapshotRecord)
+            request.getAttribute("SNAPSHOT_RECORD");
+    request.setAttribute(BaseAction.ATTRIBUTE_TITLE, snapshotRecord.getExternalDatabase().getName());
 %>
 
-<jsp:include page="../global/header.jsp" flush="true" />
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
 
-<% if (snapshotId >= 0) { %>
-
-<div id="content">
 <h1>Data Source Details</h1>
-</div>
 
-<TABLE CELLSPACING=5 CELLPADDING=0>
+<table>
     <tr>
         <td><b>Name:</b></td>
         <td><%= snapshotRecord.getExternalDatabase().getName() %></td>
@@ -76,44 +59,42 @@
 
 <%
     DaoImport daoImport = new DaoImport();
-    ArrayList list = daoImport.getImportRecordsBySnapshotId(snapshotId);
+    ArrayList list = daoImport.getImportRecordsBySnapshotId(snapshotRecord.getId());
 %>
-
-
-<div id="content">
+<p>&nbsp;</p>
 <h1>Original Data Files from <%= snapshotRecord.getExternalDatabase().getName()%></h1>
-</div>
-<TABLE CELLSPACING=5 CELLPADDING=5>
-    <tr BGCOLOR=#CCCCCC>
-        <td>File Name</td>
-        <td>Record Type</td>
-        <td>Date imported</td>
-        <td>Download</td>
+<table>
+    <tr>
+        <th>File Name</th>
+        <th>Record Type</th>
+        <th>Date imported</th>
+        <th>Download</th>
     </tr>
     <% for (int i=0; i<list.size(); i++) {
-        out.println("<TR>");
+        out.println("<tr>");
         ImportRecord importRecord = (ImportRecord) list.get(i);
-        out.println("<TD>");
+        out.println("<td>");
         out.println(importRecord.getDescription());
-        out.println("</TD>");
-        out.println("<TD>");
+        out.println("</td>");
+        out.println("<td>");
         out.println(importRecord.getXmlType());
-        out.println("</TD>");
-        out.println("<TD>");
+        out.println("</td>");
+        out.println("<td>");
         date = formatter.format(importRecord.getCreateTime());
         out.println(date);
-        out.println("</TD>");
-        out.println("<TD ALIGN=RIGHT>");
-        out.println("<FORM ACTION=downloadSource.do>");
-        out.println("<INPUT TYPE=HIDDEN NAME='source_id' VALUE='"
+        out.println("</td>");
+        out.println("<td align='right'>");
+        out.println("<form action='downloadSource.do'>");
+        out.println("<input type='hidden' name='source_id' value='"
                 + importRecord.getImportId() + "'>");
-        out.println("<INPUT TYPE=SUBMIT VALUE='Download BioPAX'>");
-        out.println("</FORM>");
-        out.println("</TD>");
-        out.println("</TR>");
+        out.println("<input type='submit' value='Download BioPAX'>");
+        out.println("</form>");
+        out.println("</td>");
+        out.println("</tr>");
     }
     %>
 </table>
-<% } %>
-
-<jsp:include page="../global/footer.jsp" flush="true" />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />

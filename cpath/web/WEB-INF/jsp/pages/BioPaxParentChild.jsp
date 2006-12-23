@@ -17,19 +17,7 @@ if (startIndex != null) {
     start = Integer.parseInt(startIndex);
 }
 start++;
-
-String id = request.getParameter("id");
-if (id == null) {
-    out.println("param id is null");
-}
-String command = request.getParameter("command");
-if (command == null) {
-    out.println("param command is null");
-}
 String type = request.getParameter("type");
-if (type == null) {
-    out.println("param type is null");
-}
 String showHeader = request.getParameter("showHeader");
 boolean headerFlag = true;
 if (showHeader != null && showHeader.equals("false")) {
