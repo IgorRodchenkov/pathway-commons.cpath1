@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE external_database_list SYSTEM "external_db.dtd">
+<external_database_list>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>Reactome</name>
+        <description>Reactome: a knowledgebase of biological processes</description>
+        <home_page_url>http://reactome.org</home_page_url>
+        <entity_url>
+            <url_pattern>http://reactome.org/cgi-bin/eventbrowser?DB=gk_current&amp;ID=%ID%</url_pattern>
+            <sample_id>12345</sample_id>
+        </entity_url>
+        <icon_path>Reactome.png</icon_path>
+        <controlled_terms>
+            <master_term>REACTOME</master_term>
+        </controlled_terms>
+    </external_database>
+</external_database_list>
