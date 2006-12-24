@@ -2,6 +2,7 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
 
@@ -42,6 +43,14 @@ public class DataSourceListTable extends HtmlTable {
                 ExternalDatabaseSnapshotRecord snapshotRecord =
                         (ExternalDatabaseSnapshotRecord) list.get(i);
                 startRow(1);
+                append("<td width=50>");
+                if (snapshotRecord.getExternalDatabase() != null) {
+                    ExternalDatabaseRecord dbRecord = snapshotRecord.getExternalDatabase();
+                    if (dbRecord.getIconFileExtension() != null) {
+                        append("<img height='40' width='44' src='icon.do?id=" + dbRecord.getId() + "'/>");
+                    }
+                }
+                append ("</td>");
                 outputDataField(DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId()));
                 endRow();
             }
