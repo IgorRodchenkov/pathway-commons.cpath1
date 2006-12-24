@@ -1,4 +1,4 @@
-// $Id: ImportExternalDbTask.java,v 1.8 2006-09-05 13:39:44 cerami Exp $
+// $Id: ImportExternalDbTask.java,v 1.9 2006-12-24 01:44:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -100,10 +100,24 @@ public class ImportExternalDbTask extends Task {
                     checkUrl(dbRecord, pMonitor);
                 }
             }
-            int externalDbId = daoExternalDb.addRecord(dbRecord);
+
+            //  First, check to see if record already exists
+            ExternalDatabaseRecord existingRecord = daoExternalDb.getRecordByTerm
+                    (dbRecord.getMasterTerm().toUpperCase());
+            int externalDbId;
+            if (existingRecord != null) {
+                externalDbId = existingRecord.getId();
+                dbRecord.setId(existingRecord.getId());
+                daoExternalDb.updateRecord(dbRecord);
+                pMonitor.setCurrentMessage("Record exists --> Updating");
+            } else {
+                externalDbId = daoExternalDb.addRecord(dbRecord);
+                pMonitor.setCurrentMessage("New Record --> Inserting");
+            }
             if (dbRecord.getIconPath() != null) {
                 File iconFile = getIconFile(dbRecord);
                 daoExternalDb.addIcon(iconFile, externalDbId);
+                pMonitor.setCurrentMessage("Adding icon:  " + iconFile.getAbsolutePath());
             }
         }
         return dbList.size();
