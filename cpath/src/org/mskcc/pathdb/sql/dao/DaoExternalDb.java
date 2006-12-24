@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.30 2006-12-20 18:38:43 grossb Exp $
+// $Id: DaoExternalDb.java,v 1.31 2006-12-24 01:43:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -422,8 +422,8 @@ public class DaoExternalDb {
      * Update External Database Record with the Specified ID.
      *
      * @param db External Database Record.
-     * @return true indicates record was successfully update.
-     * @throws DaoException Error Retrieving Data.
+     * @return true indicates record was successfully updated.
+     * @throws DaoException Error Updating Data.
      */
     public boolean updateRecord(ExternalDatabaseRecord db) throws DaoException {
         Connection con = null;
@@ -434,7 +434,8 @@ public class DaoExternalDb {
             pstmt = con.prepareStatement
                     ("UPDATE external_db SET `NAME` = ?, "
                             + "`DESC` = ?, `URL_PATTERN` = ?, `SAMPLE_ID` = ?, "
-                            + "`UPDATE_TIME` = ? "
+                            + "`UPDATE_TIME` = ?, `DB_TYPE` = ?, `HOME_PAGE_URL` = ?, "
+                            + "`PATH_GUIDE_ID` = ? "
                             + "WHERE `EXTERNAL_DB_ID` = ?");
             pstmt.setString(1, db.getName());
             pstmt.setString(2, db.getDescription());
@@ -443,7 +444,10 @@ public class DaoExternalDb {
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
             pstmt.setDate(5, sqlDate);
-            pstmt.setInt(6, db.getId());
+            pstmt.setString(6, db.getDbType().toString());
+            pstmt.setString(7, db.getHomePageUrl());
+            pstmt.setString(8, db.getPathGuideId());
+            pstmt.setInt(9, db.getId());
             int rows = pstmt.executeUpdate();
 
             //  Delete all associated terms.
@@ -452,9 +456,13 @@ public class DaoExternalDb {
 
             // Save CV Terms.
             ArrayList terms = db.getSynonymTerms();
-            db = getRecordByName(db.getName());
             for (int i = 0; i < terms.size(); i++) {
                 dao.addRecord(db.getId(), (String) terms.get(i), false);
+            }
+
+            //  Save the Master Term
+            if (db.getMasterTerm() != null) {
+                dao.addRecord(db.getId(), db.getMasterTerm(), true);
             }
             return (rows > 0) ? true : false;
         } catch (SQLException e) {
