@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDb.java,v 1.26 2006-11-17 19:26:24 cerami Exp $
+// $Id: TestDaoExternalDb.java,v 1.27 2006-12-24 01:44:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -60,6 +60,7 @@ public class TestDaoExternalDb extends TestCase {
     private static final String PATH_GUIDE_ID = "xyz";
     private static final String SAMPLE_ID = "123XYZ";
     private static final String NEW_NAME = "ACME Improved Database";
+    private static final String NEW_MASTER_TERM = "ACME_INC";
     private String testName;
 
     /**
@@ -93,11 +94,16 @@ public class TestDaoExternalDb extends TestCase {
 
         //  Update Record;  test updateRecord() Method.
         record.setName(NEW_NAME);
+        record.setMasterTerm(NEW_MASTER_TERM);
         boolean flag = dao.updateRecord(record);
         assertEquals(true, flag);
 
         //  Verify Record was updated.
         record = dao.getRecordById(record.getId());
+        assertEquals(NEW_NAME, record.getName());
+
+        //  Verify we can still retrieve record, based on master term
+        record = dao.getRecordByTerm(NEW_MASTER_TERM);
         assertEquals(NEW_NAME, record.getName());
 
         //  Try adding an icon
