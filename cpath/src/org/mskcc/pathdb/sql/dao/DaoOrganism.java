@@ -1,4 +1,4 @@
-// $Id: DaoOrganism.java,v 1.12 2006-11-17 19:25:10 cerami Exp $
+// $Id: DaoOrganism.java,v 1.13 2007-01-02 16:56:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -77,6 +77,38 @@ public class DaoOrganism {
             pstmt.setString(2, speciesName);
             pstmt.setString(3, commonName);
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets Organism by TaxonomyID
+     *
+     * @return Organism Object.
+     * @throws DaoException Error Connecting to Database.
+     */
+    public Organism getOrganismByTaxonomyId(int ncbiTaxonomyId) throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("select * from organism where ncbi_taxonomy_id = ?");
+            pstmt.setInt(1, ncbiTaxonomyId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int taxonomyId = rs.getInt("ncbi_taxonomy_id");
+                String speciesName = rs.getString("species_name");
+                String commonName = rs.getString("common_name");
+                Organism organism = new Organism(taxonomyId,
+                        speciesName, commonName);
+                return organism;
+            }
+            return null;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
