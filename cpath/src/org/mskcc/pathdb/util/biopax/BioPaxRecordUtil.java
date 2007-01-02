@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.27 2006-12-19 15:50:32 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.28 2007-01-02 16:18:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,6 +50,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
@@ -180,6 +181,12 @@ public class BioPaxRecordUtil {
             if (record.getSpecificType() != null
                     && record.getSpecificType().equals(BioPaxConstants.COMPLEX)) {
                 BioPaxRecordUtil.setComplexMembers(biopaxRecordSummary, record);
+            }
+
+            DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+            if (record.getSnapshotId() >=0) {
+                biopaxRecordSummary.setExternalDatabaseSnapshotRecord(dao.getDatabaseSnapshot
+                        (record.getSnapshotId()));
             }
         } catch (Throwable throwable) {
             throw new BioPaxRecordSummaryException(throwable);
