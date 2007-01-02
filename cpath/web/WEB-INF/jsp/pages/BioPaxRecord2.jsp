@@ -1,16 +1,15 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="org.mskcc.pathdb.model.TypeCount"%>
-<%@ page import="org.mskcc.pathdb.model.BioPaxTabs"%>
-<%@ page import="org.mskcc.pathdb.model.Reference"%>
-<%@ page import="org.mskcc.pathdb.model.ExternalLinkRecord"%>
-<%@ page import="org.mskcc.pathdb.model.ExternalDatabaseRecord"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils"%>
 <%@ page import="org.mskcc.pathdb.action.BaseAction"%>
+<%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
+<%@ page import="org.mskcc.pathdb.model.*"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
@@ -21,6 +20,21 @@ BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute("BP_S
 HashMap<String,Reference> externalLinks = (HashMap<String,Reference>)request.getAttribute("EXTERNAL_LINKS");
 boolean showTabs = false;
 request.setAttribute(BaseAction.ATTRIBUTE_TITLE, bpSummary.getName());
+
+// Separate reference links from link-outs
+ArrayList<ExternalLinkRecord> referenceLinks = new ArrayList<ExternalLinkRecord>();
+ArrayList<ExternalLinkRecord> nonReferenceLinks = new ArrayList<ExternalLinkRecord>();
+if (bpSummary.getExternalLinks() != null) {
+    for (int i=0; i<bpSummary.getExternalLinks().size(); i++) {
+        ExternalLinkRecord link = (ExternalLinkRecord) bpSummary.getExternalLinks().get(i);
+        String dbName = link.getExternalDatabase().getName();
+        if (dbName.equalsIgnoreCase("PUBMED")) {
+            referenceLinks.add(link);
+        } else {
+            nonReferenceLinks.add(link);
+        }
+    }
+}
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
@@ -233,7 +247,7 @@ YAHOO.example.init();
         }
     }
 </script>
-
+<div class="splitcontentright">
 <%
 String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
 %>
@@ -245,30 +259,23 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
 </p>
 <%
 		// iterate over list of ExternalLinkRecord
-		List<ExternalLinkRecord> externalLinkRecords = bpSummary.getExternalLinks();
-		if (externalLinks.size() > 0) {
-		    out.println("<p><b>References</b></p>");
+		if (referenceLinks.size() > 0) {
+		    out.println("<p><b>References:</b></p>");
             out.println("<ul>");
-        }
-		for (ExternalLinkRecord externalLinkRecord : externalLinkRecords) {
+            for (ExternalLinkRecord externalLinkRecord : referenceLinks) {
 
-			Reference reference = externalLinks.get(externalLinkRecord.getLinkedToId());
-			if (reference == null) continue;
-
-			if (reference.getDatabase().equalsIgnoreCase("PubMed")) {
-			    ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();	
-			    out.println("<li>");
-				String uri = (externalLinkRecord.getWebLink() == null) ? "" :
-				    externalLinkRecord.getWebLink();
+                Reference reference = externalLinks.get(externalLinkRecord.getLinkedToId());
+                ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();
+                out.println("<li>");
+                String uri = (externalLinkRecord.getWebLink() == null) ? "" :
+                    externalLinkRecord.getWebLink();
                 String database = (reference.getDatabase() == null) ? "" :
-				    reference.getDatabase();
-				uri = (uri == null) ? "" : uri;
-				out.println(reference.getReferenceString() + " " +
-				            "[<A HREF=\"" + uri + "\">" + database + "</A>]");
+                    reference.getDatabase();
+                uri = (uri == null) ? "" : uri;
+                out.println(reference.getReferenceString() + " " +
+                            "[<a href=\"" + uri + "\">" + database + "</a>]");
                 out.println("</li>");
-			}
-		}
-		if (externalLinkRecords.size() > 0) {
+            }
             out.println("</ul>");
         }
 %>
@@ -289,4 +296,64 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
     </script>
 <% } %>
 <p>&nbsp;</p>
+</div>
+<div class="splitcontentleft">
+<%
+    if (bpSummary.getExternalDatabaseSnapshotRecord() != null) {
+        out.println("<h3>Data Source:</h3>");
+        ExternalDatabaseRecord dbRecord =
+                bpSummary.getExternalDatabaseSnapshotRecord().getExternalDatabase();
+        out.println("<ul><li>");
+        out.println(DbSnapshotInfo.getDbSnapshotHtml
+                (bpSummary.getExternalDatabaseSnapshotRecord().getId()));
+        out.println("</li></ul>");
+        if (dbRecord.getIconFileExtension() != null) {
+            out.println("<div class='data_source_logo'><img height='80' width='87' src='icon.do?id="
+                    + dbRecord.getId() + "'/></div>");
+        }
+    }
+    if (bpSummary.getOrganism() != null) {
+        out.println("<h3>Organism:</h3>");
+        out.println("<ul><li>" + bpSummary.getOrganism() + "</li></ul>");
+    }
+    if (bpSummary.getSynonyms() != null && bpSummary.getSynonyms().size() > 0) {
+        out.println("<h3>Synonyms:</h3>");
+        out.println("<ul>");
+        for (int i=0; i<bpSummary.getSynonyms().size(); i++) {
+            String synonym = (String) bpSummary.getSynonyms().get(i);
+            out.println("<li>" + synonym + "</li>");
+        }
+        out.println("</ul>");
+    }
+    if (nonReferenceLinks.size() > 0) {
+        out.println("<h3>Links:</h3>");
+        out.println("<ul>");
+        for (int i=0; i<nonReferenceLinks.size(); i++) {
+            ExternalLinkRecord link = nonReferenceLinks.get(i);
+            ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
+            String dbId = link.getLinkedToId();
+            String linkStr = dbRecord.getName() + ":" + dbId;
+            String uri = link.getWebLink();
+            out.println("<li>");
+            if (uri != null && uri.length() > 0) {
+                out.println("<a href=\"" + uri + "\">" + linkStr + "</a>");
+            } else {
+                out.println(linkStr);
+            }
+            out.println("</li>");
+        }
+        out.println("</ul>");
+    }
+    if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
+            (CPathRecordType.PATHWAY.toString())) {
+            ProtocolRequest pRequest = new ProtocolRequest();
+            pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
+            pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
+            pRequest.setFormat(ProtocolConstants.FORMAT_BIO_PAX);
+            out.println("<h3>Download:</h3>");
+            out.println("<ul><li><a href=\"" + pRequest.getUri() + "\">"
+                + "Download in BioPAX Format" + "</a></li></ul>");
+    }
+%>
+</div>
 <jsp:include page="../global/redesign/footer.jsp" flush="true" />
