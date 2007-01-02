@@ -1,4 +1,4 @@
-// $Id: TestImportExternalDbTask.java,v 1.9 2006-10-09 14:28:07 cerami Exp $
+// $Id: TestImportExternalDbTask.java,v 1.10 2007-01-02 16:56:14 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,15 +73,6 @@ public class TestImportExternalDbTask extends TestCase {
         //  Verify icon file extension was set correctly
         dbRecord = dao.getRecordByTerm("YHO");
         assertEquals ("png", dbRecord.getIconFileExtension());
-
-        //  Try adding again.  This should fail, as MySQL maintains that
-        //  database names are unique.
-        try {
-            task.importFile();
-            fail("DaoException should have been thrown.");
-        } catch (DaoException e) {
-            String msg = e.getMessage();
-        }
     }
 
     /**

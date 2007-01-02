@@ -1,4 +1,4 @@
-// $Id: TestBioPaxSummary.java,v 1.8 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestBioPaxSummary.java,v 1.9 2007-01-02 16:56:14 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -83,7 +83,7 @@ public class TestBioPaxSummary extends TestCase {
 
         // header
         String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(biopaxRecordSummary);
-        assertEquals("AR (Protein) from Homo sapiens", header);
+        assertEquals("Protein:  AR", header);
         // synonyms
         List synonymList = biopaxRecordSummary.getSynonyms();
         assertTrue(synonymList != null);

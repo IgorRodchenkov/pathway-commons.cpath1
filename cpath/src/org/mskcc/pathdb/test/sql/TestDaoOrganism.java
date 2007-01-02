@@ -1,4 +1,4 @@
-// $Id: TestDaoOrganism.java,v 1.14 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestDaoOrganism.java,v 1.15 2007-01-02 16:56:14 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,6 +70,10 @@ public class TestDaoOrganism extends TestCase {
         assertEquals(taxId, organism.getTaxonomyId());
         assertEquals(speciesName, organism.getSpeciesName());
         assertEquals(commonName, organism.getCommonName());
+
+        //  Test get by TaxonomyId
+        Organism organism2 = dao.getOrganismByTaxonomyId(taxId);
+        assertEquals (speciesName, organism2.getSpeciesName());
 
         // count the organisms
         int afterCount = dao.countAllOrganisms();
