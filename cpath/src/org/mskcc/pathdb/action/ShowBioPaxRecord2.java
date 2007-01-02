@@ -253,35 +253,37 @@ public class ShowBioPaxRecord2 extends BaseAction {
 
 		// iterate over ExternalLinkRecord from bpSummary
 		DaoReference daoReference = new DaoReference();
-		List<ExternalLinkRecord> externalLinkRecords = bpSummary.getExternalLinks();
-		for (ExternalLinkRecord externalLinkRecord : externalLinkRecords) {
+        if (bpSummary != null && bpSummary.getExternalLinks() != null) {
+            List<ExternalLinkRecord> externalLinkRecords = bpSummary.getExternalLinks();
+            for (ExternalLinkRecord externalLinkRecord : externalLinkRecords) {
 
-			// get the linked to id
-			String linkedToId = externalLinkRecord.getLinkedToId();
+                // get the linked to id
+                String linkedToId = externalLinkRecord.getLinkedToId();
 
-			// get external database record
-			ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();
+                // get external database record
+                ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();
 
-			// get the reference object
-            xdebug.logMsg (this, "Getting Reference for:  " + linkedToId);
-            Reference reference = daoReference.getRecord(linkedToId, dbRecord.getId());
-			if (CPathConstants.CPATH_DO_ASSERT) {
-				assert (reference != null) :
-				"ShowBioPaxRecord2.setExternalLinks(), reference object is null";
-			}
-            if (reference == null) {
-                xdebug.logMsg(this, "Could not find any reference info.");
-            } else {
-                xdebug.logMsg (this, "Found reference info:  " + reference.getTitle());
+                // get the reference object
+                xdebug.logMsg (this, "Getting Reference for:  " + linkedToId);
+                Reference reference = daoReference.getRecord(linkedToId, dbRecord.getId());
+                if (CPathConstants.CPATH_DO_ASSERT) {
+                    assert (reference != null) :
+                    "ShowBioPaxRecord2.setExternalLinks(), reference object is null";
+                }
+                if (reference == null) {
+                    xdebug.logMsg(this, "Could not find any reference info.");
+                } else {
+                    xdebug.logMsg (this, "Found reference info:  " + reference.getTitle());
+                }
+
+                if (reference == null) continue;
+
+                // add reference string to proper list
+                externalLinkSet.put(linkedToId, reference);
             }
+        }
 
-            if (reference == null) continue;
-
-			// add reference string to proper list
-			externalLinkSet.put(linkedToId, reference);
-		}
-
-		// outta here
+        // outta here
 		return externalLinkSet;
 	}
 }
