@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.39 2007-01-02 16:18:35 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.40 2007-01-02 16:57:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -129,7 +129,7 @@ public class BioPaxRecordSummaryUtils {
         String name = getBioPaxRecordName(biopaxRecordSummary);
         if (name != null) {
             if (type != null) {
-                name = entityTypeMap.get(type) + ": " + name;
+                name = entityTypeMap.get(type) + ":  " + name;
             }
         } else {
             // cannot do anything without a name
