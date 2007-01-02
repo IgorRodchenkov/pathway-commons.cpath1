@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.38 2006-12-21 17:33:49 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.39 2007-01-02 16:18:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -128,18 +128,16 @@ public class BioPaxRecordSummaryUtils {
         // build up name
         String name = getBioPaxRecordName(biopaxRecordSummary);
         if (name != null) {
-            name += (type != null) ? (" ("
-                    + entityTypeMap.get(type) + ")") : "";
+            if (type != null) {
+                name = entityTypeMap.get(type) + ": " + name;
+            }
         } else {
             // cannot do anything without a name
             return null;
         }
 
-        // get organism
-        String organism = biopaxRecordSummary.getOrganism();
-
         // outta here
-        return (organism != null) ? (name + " from " + organism) : name;
+        return name;
     }
 
     /**
@@ -328,15 +326,13 @@ public class BioPaxRecordSummaryUtils {
                     || participant.getSynonyms().size() == 0)
                     && (participant.getFeatureList() == null
                     || participant.getFeatureList().size() == 0)) {
-                buf.append("No synonyms or features specified");
+                buf.append("No synonyms or features specified.");
+            } else if (component.getSynonyms() == null
+                || component.getSynonyms().size() == 0) {
+            buf.append("No synonyms specified.");
             }
         }
         addComponents(component, lengthOfHeader, buf);
-
-        if (component.getSynonyms() == null
-                || component.getSynonyms().size() == 0) {
-            buf.append("No synonyms specified");
-        }
 
         buf.append("</DIV>");
         buf.append("</DIV>");
