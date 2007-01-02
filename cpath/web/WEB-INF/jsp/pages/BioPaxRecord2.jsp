@@ -354,6 +354,8 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
             out.println("<ul><li><a href=\"" + pRequest.getUri() + "\">"
                 + "Download in BioPAX Format" + "</a></li></ul>");
     }
+
 %>
+<jsp:include page="../global/currentFilterSettings.jsp" flush="true" />    
 </div>
 <jsp:include page="../global/redesign/footer.jsp" flush="true" />

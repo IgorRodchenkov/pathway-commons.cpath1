@@ -292,6 +292,10 @@ font-size:90%;
 
 .splitcontentleft ul {list-style-type:square; margin-left:0px; font-size:85%; line-height:1.2em}
 .splitcontentleft li {margin-left:-20px;padding-left:0px}
+.splitcontentleft p {font-size:85%;line-height:1.0em}
+.splitcontentleft h3 a {color:#ffffff !important; font-size:90%;}
+.splitcontentleft h3 a:visited {color:#ffffff !important;}
+.splitcontentleft h3 a:hover{color:#ffffff}
 
 .user_message {
     color:#880000;
