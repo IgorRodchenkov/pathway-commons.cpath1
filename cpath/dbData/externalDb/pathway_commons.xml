@@ -14,4 +14,13 @@
             <master_term>REACTOME</master_term>
         </controlled_terms>
     </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>HumanCyc</name>
+        <description>Encyclopedia of Human Genes and Metabolism</description>
+        <home_page_url>http://humancyc.org/</home_page_url>
+        <icon_path>HumanCyc.png</icon_path>
+        <controlled_terms>
+            <master_term>HUMANCYC</master_term>
+        </controlled_terms>
+    </external_database>
 </external_database_list>
