@@ -2,6 +2,7 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
+<%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 %>
@@ -38,10 +39,6 @@ cPath is a database and software suite for storing, visualizing, and analyzing b
     <div class="home_page_box">
     <jsp:include page="../../global/dbStatsMini.jsp" flush="true" />
     </div>
-    <p>
-    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-    Proin ultrices, odio eu elementum placerat, risus tellus iaculis enim, nec auctor mauris lacus eget leo.
-    </p>
     <img src="jsp/images/ismb_poster_2005.png" alt="Image of cPath ISMB 2005 Poster"/>
     <br/>Download cPath Poster from
     <a href="http://www.iscb.org/ismb2005/">ISMB 2005</a>.
