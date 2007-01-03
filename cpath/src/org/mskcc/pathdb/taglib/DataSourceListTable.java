@@ -47,11 +47,13 @@ public class DataSourceListTable extends HtmlTable {
                 if (snapshotRecord.getExternalDatabase() != null) {
                     ExternalDatabaseRecord dbRecord = snapshotRecord.getExternalDatabase();
                     if (dbRecord.getIconFileExtension() != null) {
-                        append("<img height='40' width='44' src='icon.do?id=" + dbRecord.getId() + "'/>");
+                        append("<img src='icon.do?id=" + dbRecord.getId() + "'/>");
                     }
                 }
                 append ("</td>");
-                outputDataField(DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId()));
+                append ("<td valign=center>"
+                        + DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId())
+                        + "</td>");
                 endRow();
             }
         }

@@ -308,7 +308,7 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
                 (bpSummary.getExternalDatabaseSnapshotRecord().getId()));
         out.println("</li></ul>");
         if (dbRecord.getIconFileExtension() != null) {
-            out.println("<div class='data_source_logo'><img height='80' width='87' src='icon.do?id="
+            out.println("<div class='data_source_logo'><img src='icon.do?id="
                     + dbRecord.getId() + "'/></div>");
         }
     }
