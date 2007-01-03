@@ -4,6 +4,7 @@
                  java.text.NumberFormat"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoOrganism"%>
 
 <%
 try {
@@ -14,9 +15,11 @@ try {
             (CPathRecordType.PHYSICAL_ENTITY);
     NumberFormat formatter = new DecimalFormat("#,###,###");
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+    DaoOrganism daoOrganism = new DaoOrganism();
+    int numOrganisms = daoOrganism.getAllOrganisms().size();
 
 %>
-<%= webUIBean.getApplicationName()%> Quick Stats:
+<b><%= webUIBean.getApplicationName()%> Quick Stats:</b>
 <table>
     <tr>
         <td>Number of Pathways:</td>
@@ -29,6 +32,10 @@ try {
     <tr>
         <td>Number of Physical Entities:</td>
         <td><%= formatter.format(numPhysicalEntities) %></td>
+    </tr>
+    <tr>
+        <td>Number of Organisms:</td>
+        <td><%= formatter.format(numOrganisms) %></td>
     </tr>
 </table>
 <% } catch (Exception e) {
