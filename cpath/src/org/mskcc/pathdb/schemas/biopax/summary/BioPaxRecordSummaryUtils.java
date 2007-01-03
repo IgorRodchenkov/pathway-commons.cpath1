@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.40 2007-01-02 16:57:50 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.41 2007-01-03 16:37:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,7 +40,6 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * This class contains some utility methods
@@ -97,11 +96,6 @@ public class BioPaxRecordSummaryUtils {
     private static int maxLength = NAME_LENGTH;
 
     /**
-     * No name available.
-     */
-    private static final String NO_NAME_AVAILABLE = "[No Name Available]";
-
-    /**
      * Gets the BioPax Header String to render.
      *
      * @param biopaxRecordSummary BioPaxRecordSummary Object.
@@ -125,19 +119,19 @@ public class BioPaxRecordSummaryUtils {
         // get type
         String type = biopaxRecordSummary.getType();
 
-        // build up name
-        String name = getBioPaxRecordName(biopaxRecordSummary);
-        if (name != null) {
+        // build up label
+        String label = biopaxRecordSummary.getLabel();
+        if (label != null) {
             if (type != null) {
-                name = entityTypeMap.get(type) + ":  " + name;
+                label = entityTypeMap.get(type) + ":  " + label;
             }
         } else {
-            // cannot do anything without a name
+            // cannot do anything without a label
             return null;
         }
 
         // outta here
-        return name;
+        return label;
     }
 
     /**
@@ -262,7 +256,7 @@ public class BioPaxRecordSummaryUtils {
      */
     private static String createComponentLink(BioPaxRecordSummary component,
             InteractionSummary interactionSummary) {
-        String name = getBioPaxRecordName(component);
+        String label = component.getLabel();
         boolean isPhosphorylated = false;
         boolean isUbiquitinated = false;
         boolean isAcetylated = false;
@@ -295,7 +289,7 @@ public class BioPaxRecordSummaryUtils {
         //  Create Header for Pop-Up Box
         buf.append("<DIV CLASS=popup>");
         buf.append("<DIV CLASS=popup_caption>");
-        String truncatedName = truncateLongName(name, maxLength);
+        String truncatedName = truncateLongName(label, maxLength);
         buf.append(truncatedName);
         String features = getFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
                 isSumoylated);
@@ -340,7 +334,7 @@ public class BioPaxRecordSummaryUtils {
         buf.append("); return true;\" onmouseout=\"return nd();\">");
 
         //  Output Component Name and end A Tag.
-        buf.append(truncateLongName(name, maxLength));
+        buf.append(truncateLongName(label, maxLength));
         buf.append("</a>");
 
         //  If this is a transport interaction, show cellular
@@ -380,66 +374,6 @@ public class BioPaxRecordSummaryUtils {
             }
             buf.append("</UL>");
         }
-    }
-
-    /**
-     * Gets the BioPax Record Name.
-     * <p/>
-     * (use short name or name or shortest synonyms)
-     *
-     * @param biopaxRecordSummary BioPaxRecordSummary
-     * @return String
-     */
-    public static String getBioPaxRecordName
-            (BioPaxRecordSummary biopaxRecordSummary) {
-
-        // name to return
-        String name;
-
-        // try short name
-        name = biopaxRecordSummary.getShortName();
-        if (name != null && name.length() > 0) {
-            return name;
-        }
-
-        // try name
-        name = biopaxRecordSummary.getName();
-        if (name != null && name.length() > 0) {
-            if (name.startsWith("UniProt:")) {
-                StringTokenizer tokenizer = new StringTokenizer(name, " ");
-                return (String) tokenizer.nextElement();
-            } else {
-                return name;
-            }
-        }
-
-        // get shortest synonym
-        int shortestSynonymIndex = -1;
-        List list = biopaxRecordSummary.getSynonyms();
-        if (list != null && list.size() > 0) {
-            int minLength = -1;
-            for (int lc = 0; lc < list.size(); lc++) {
-                String synonym = (String) list.get(lc);
-                if (minLength == -1 || synonym.length() < minLength) {
-                    minLength = synonym.length();
-                    shortestSynonymIndex = lc;
-                }
-            }
-        } else {
-            return NO_NAME_AVAILABLE;
-        }
-
-        // set name to return
-        if (shortestSynonymIndex > -1) {
-            name = (String) list.get(shortestSynonymIndex);
-
-            // we are using synonym as name, remove synonym from list
-            list.remove(shortestSynonymIndex);
-            biopaxRecordSummary.setSynonyms(list);
-        }
-
-        // outta here
-        return name;
     }
 
     /**

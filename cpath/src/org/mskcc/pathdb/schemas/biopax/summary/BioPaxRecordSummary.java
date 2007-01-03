@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.11 2006-12-19 15:47:56 cerami Exp $
+// $Id: BioPaxRecordSummary.java,v 1.12 2007-01-03 16:37:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,7 +49,6 @@ import java.io.Serializable;
  * @author Benjamin Gross.
  */
 public class BioPaxRecordSummary implements Serializable {
-
     /**
      * The cpath record id.
      */
@@ -69,6 +68,11 @@ public class BioPaxRecordSummary implements Serializable {
      * The record short name.
      */
     protected String shortName;
+
+    /**
+     * The record label.
+     */
+    protected String label;
 
     /**
      * The record synonyms.
@@ -185,6 +189,22 @@ public class BioPaxRecordSummary implements Serializable {
      */
     public String getShortName() {
         return shortName;
+    }
+
+    /**
+     * Returns the record label.
+     * @return label.
+     */
+    public String getLabel () {
+        return label;
+    }
+
+    /**
+     * Sets the record label.
+     * @param label Label.
+     */
+    public void setLabel (String label) {
+        this.label = label;
     }
 
     /**

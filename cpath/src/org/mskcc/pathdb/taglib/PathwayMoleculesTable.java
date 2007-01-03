@@ -1,4 +1,4 @@
-// $Id: PathwayMoleculesTable.java,v 1.20 2006-12-06 15:04:37 grossb Exp $
+// $Id: PathwayMoleculesTable.java,v 1.21 2007-01-03 16:37:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -243,10 +243,10 @@ class MoleculeComparator implements Comparator {
         if (object0 != null && object1 != null) {
             BioPaxRecordSummary summary0 = (BioPaxRecordSummary) object0;
             BioPaxRecordSummary summary1 = (BioPaxRecordSummary) object1;
-            String name0 = BioPaxRecordSummaryUtils.getBioPaxRecordName (summary0);
-            String name1 = BioPaxRecordSummaryUtils.getBioPaxRecordName (summary1);
-            if (name0 != null && name1 != null) {
-                return name0.compareTo(name1);
+            String label0 = summary0.getLabel();
+            String label1 = summary1.getLabel();
+            if (label0 != null && label1 != null) {
+                return label0.compareTo(label1);
             }
         }
         return -1;

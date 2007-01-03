@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.28 2007-01-02 16:18:00 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.29 2007-01-03 16:37:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -97,19 +97,6 @@ public class BioPaxRecordUtil {
                     + XmlRecordType.BIO_PAX);
         }
 
-        //  Obtain Cache Manager
-        CacheManager manager = CacheManager.getInstance();
-
-        //  Obtain Persistent Cache
-        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
-
-        String cacheKey = "BioPaxRecordUtil#" + record.getId();
-        net.sf.ehcache.Element cachedElement = cache.get(cacheKey);
-        if (cachedElement != null) {
-            log.debug("Got cache hit on cPath ID:  " + record.getId());
-            return (BioPaxRecordSummary) cachedElement.getValue();
-        }
-
         // setup for queries
         StringReader reader = new StringReader(record.getXmlContent());
         SAXBuilder builder = new SAXBuilder();
@@ -134,6 +121,8 @@ public class BioPaxRecordUtil {
             biopaxRecordSummary.setType(type);
         }
 
+        //  set label
+        biopaxRecordSummary.setLabel(record.getName());
         try {
             // set name
 			setBioPaxRecordStringAttribute(root,
@@ -190,10 +179,6 @@ public class BioPaxRecordUtil {
             }
         } catch (Throwable throwable) {
             throw new BioPaxRecordSummaryException(throwable);
-        }
-        if (biopaxRecordSummary != null) {
-            cachedElement= new net.sf.ehcache.Element (cacheKey, biopaxRecordSummary);
-            cache.put(cachedElement);
         }
 
         // outta here

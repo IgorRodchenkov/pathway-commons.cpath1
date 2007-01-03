@@ -1,4 +1,4 @@
-// $Id: TransformBioPaxToCPathRecords.java,v 1.10 2006-11-16 15:40:45 cerami Exp $
+// $Id: TransformBioPaxToCPathRecords.java,v 1.11 2007-01-03 16:37:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,8 +39,11 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Transforms BioPAX RDF Elements into CPathRecord Objects, in preparation
@@ -84,17 +87,18 @@ public class TransformBioPaxToCPathRecords {
         String bioPaxNamespaceUri = resource.getNamespaceURI();
         String resourceName = resource.getName();
         CPathRecordType type = determineCPathRecordType(resourceName);
-        String shortName = extractShortName(resource, bioPaxNamespaceUri);
-        String name = extractName(resource, bioPaxNamespaceUri);
-        if (shortName.equals(CPathRecord.NA_STRING) && name != null) {
-            shortName = name;
-        }
+        String label = getLabel (resource, bioPaxNamespaceUri);
+        String description = extractName(resource, bioPaxNamespaceUri);
         int taxonomyId = this.extractNcbiTaxonomyId(resource, bioPaxNamespaceUri);
 
         //  Create Corresponding cPath Record
         CPathRecord record = new CPathRecord();
-        record.setName(shortName);
-        record.setDescription(name);
+        record.setName(label);
+        if (description != null) {
+            record.setDescription(description);
+        } else {
+            record.setDescription(CPathRecord.NA_STRING);
+        }
         record.setNcbiTaxonomyId(taxonomyId);
         record.setType(type);
         record.setSpecType(resourceName);
@@ -113,7 +117,7 @@ public class TransformBioPaxToCPathRecords {
         if (e != null) {
             return e.getTextNormalize();
         } else {
-            return CPathRecord.NA_STRING;
+            return null;
         }
     }
 
@@ -128,8 +132,75 @@ public class TransformBioPaxToCPathRecords {
         if (e != null) {
             return e.getTextNormalize();
         } else {
+            return null;
+        }
+    }
+
+    private ArrayList extractSynonyms(Element resource, String bioPaxNamespaceUri)
+        throws JDOMException {
+        ArrayList synList = new ArrayList();
+        XPath xpath = XPath.newInstance("/*/bp:SYNONYMS");
+        xpath.addNamespace("bp", bioPaxNamespaceUri);
+        List eList = xpath.selectNodes(resource);
+        if (eList != null) {
+            for (int i=0; i<eList.size(); i++) {
+                Element e = (Element) eList.get(i);
+                synList.add(e.getTextNormalize());
+            }
+        }
+        return synList;
+    }
+
+    private String getLabel (Element resource, String bioPaxNamespaceUri)
+        throws JDOMException {
+
+        List synList = extractSynonyms(resource, bioPaxNamespaceUri);
+        String name;
+
+        // precedence 1: short name
+        name = extractShortName(resource, bioPaxNamespaceUri);
+        if (name != null && name.length() > 0) {
+            return name;
+        }
+
+        // precedence 2:  name
+        name = extractName(resource, bioPaxNamespaceUri);
+        if (name != null && name.length() > 0) {
+            //  Mini-Hack for Reactome names
+            if (name.startsWith("UniProt:")) {
+                if (synList.size() > 0) {
+                    return (String) synList.get(0);
+                } else {
+                    StringTokenizer tokenizer = new StringTokenizer(name, " ");
+                    return (String) tokenizer.nextElement();
+                }
+            } else {
+                return name;
+            }
+        }
+
+        // precedence 3:  shortest synonym
+        int shortestSynonymIndex = -1;
+        if (synList != null && synList.size() > 0) {
+            int minLength = -1;
+            for (int lc = 0; lc < synList.size(); lc++) {
+                String synonym = (String) synList.get(lc);
+                if (minLength == -1 || synonym.length() < minLength) {
+                    minLength = synonym.length();
+                    shortestSynonymIndex = lc;
+                }
+            }
+        } else {
             return CPathRecord.NA_STRING;
         }
+
+        // set name to return
+        if (shortestSynonymIndex > -1) {
+            name = (String) synList.get(shortestSynonymIndex);
+        }
+
+        // outta here
+        return name;
     }
 
     /**
