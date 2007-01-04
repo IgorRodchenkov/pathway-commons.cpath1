@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.58 2006-12-15 23:27:17 grossb Exp $
+// $Id: Admin.java,v 1.59 2007-01-04 15:06:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -479,6 +479,8 @@ public class Admin {
         System.out.println("                  ID Mapping Files, or External "
                 + "Database files");
         System.out.println("  index           Indexes All Items in cPath");
+        System.out.println("  index           Indexes All Items in cPath");
+        System.out.println("  pop_ref         Populate PubMed References");        
         System.out.println("  precompute      Precomputes all queries in "
                 + "specified config file.");
         System.out.println("  count_affy      Counts Records with Affymetrix "
