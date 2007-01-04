@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.41 2007-01-03 16:37:15 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.42 2007-01-04 15:38:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -309,24 +309,21 @@ public class BioPaxRecordSummaryUtils {
         buf.append("</DIV>");
         buf.append("<DIV CLASS=popup_text>");
 
+        StringBuffer detailsBuf = new StringBuffer();
         //  Add Synonyms to Pop-Up Box
-        addSynonmys(component, lengthOfHeader, buf);
+        addSynonyms(component, lengthOfHeader, detailsBuf);
 
         //  Add Features to Pop-Up Box
         if (participant != null) {
-            addFeatures(participant, buf);
-
-            if ((participant.getSynonyms() == null
-                    || participant.getSynonyms().size() == 0)
-                    && (participant.getFeatureList() == null
-                    || participant.getFeatureList().size() == 0)) {
-                buf.append("No synonyms or features specified.");
-            } else if (component.getSynonyms() == null
-                || component.getSynonyms().size() == 0) {
-            buf.append("No synonyms specified.");
-            }
+            addFeatures(participant, detailsBuf);
         }
-        addComponents(component, lengthOfHeader, buf);
+        addComponents(component, lengthOfHeader, detailsBuf);
+
+        if (detailsBuf.length() == 0) {
+            buf.append("No synonyms or features specified");
+        } else {
+            buf.append(detailsBuf.toString());
+        }
 
         buf.append("</DIV>");
         buf.append("</DIV>");
@@ -445,17 +442,17 @@ public class BioPaxRecordSummaryUtils {
      * @param component ParticipantSummaryComponent Object.
      * @param buf       HTML StringBuffer Object.
      */
-    private static void addSynonmys(BioPaxRecordSummary component, int lengthOfHeader,
+    private static void addSynonyms (BioPaxRecordSummary component, int lengthOfHeader,
             StringBuffer buf) {
         List synList = component.getSynonyms();
         if (synList != null && synList.size() > 0) {
-            buf.append("Also known as:  <UL>");
+            buf.append("Also known as:  <ul>");
             for (int i = 0; i < synList.size(); i++) {
                 String synonym = (String) synList.get(i);
                 synonym = truncateLongName(synonym, lengthOfHeader);
-                buf.append("<LI>" + synonym + "</LI>");
+                buf.append("<li>" + synonym + "</li>");
             }
-            buf.append("</UL>");
+            buf.append("</ul>");
         }
     }
 
