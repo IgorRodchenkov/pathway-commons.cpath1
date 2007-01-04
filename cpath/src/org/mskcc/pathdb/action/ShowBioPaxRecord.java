@@ -1,4 +1,4 @@
-// $Id: ShowBioPaxRecord.java,v 1.3 2006-02-22 22:47:50 grossb Exp $
+// $Id: ShowBioPaxRecord.java,v 1.4 2007-01-04 20:11:01 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -74,10 +74,15 @@ public class ShowBioPaxRecord extends BaseAction {
         if (id != null) {
             xdebug.logMsg(this, "Using cPath ID:  " + id);
             record = dao.getRecordById(Long.parseLong(id));
+            if (record == null) {
+                throw new IllegalArgumentException ("record id " + id
+                    + " does not exist in database.");
+            }
             xdebug.logMsg(this, "Got cPath Record:  " + record.getName());
             request.setAttribute("RECORD", record);
         } else {
             getTopLevelPathways(xdebug, dao, request);
+            return mapping.findForward("pathways");
         }
 
         String format = request.getParameter("format");
@@ -87,13 +92,10 @@ public class ShowBioPaxRecord extends BaseAction {
             stream.println(record.getXmlContent());
             stream.flush();
             stream.close();
-        }
-
-        if (id == null) {
-            return mapping.findForward("pathways");
         } else {
-            return mapping.findForward("record");
+            throw new IllegalArgumentException ("format must be set to 'xml_abbrev'.");
         }
+        return null;
     }
 
     /**
