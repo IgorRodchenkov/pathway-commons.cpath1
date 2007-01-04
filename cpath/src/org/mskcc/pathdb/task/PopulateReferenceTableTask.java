@@ -124,7 +124,7 @@ public class PopulateReferenceTableTask extends Task {
 
 		// process pubmed
         pMonitor.setCurrentMessage("Processing PubMed records");
-		processPubMed(daoExternalDb, daoExternalLink);
+		processPubMed(daoExternalDb, daoExternalLink, pMonitor);
 
 		// outta here
         pMonitor.setCurrentMessage("Done");
@@ -141,7 +141,8 @@ public class PopulateReferenceTableTask extends Task {
 	 * @throws IOException
 	 * @throws JDOMException
 	 */
-	public void processPubMed(DaoExternalDb daoExternalDb, DaoExternalLink daoExternalLink)
+	public void processPubMed(DaoExternalDb daoExternalDb, DaoExternalLink daoExternalLink,
+            ProgressMonitor pMonitor)
 		throws DaoException, InterruptedException, IOException, JDOMException {
 		
 		// grab all pubmed records
@@ -170,14 +171,14 @@ public class PopulateReferenceTableTask extends Task {
 			// ok, batch this record and fetch from ncbi if 
 			recordsToFetch.add(linkedToId);
 			if (recordsToFetch.size() == NCBI_BATCH_SIZE) {
-				processPubMedBatch(recordsToFetch);
+				processPubMedBatch(recordsToFetch, pMonitor);
 				recordsToFetch = new ArrayList<String>();
 			}
 		}
 
 		// any records left to process ?
 		if (recordsToFetch.isEmpty()) return;
-		processPubMedBatch(recordsToFetch);
+		processPubMedBatch(recordsToFetch, pMonitor);
 	}
 
 	/**
@@ -189,7 +190,7 @@ public class PopulateReferenceTableTask extends Task {
 	 * @throws IOException
 	 * @throws JDOMException
 	 */
-	public void processPubMedBatch(List<String> recordsToFetch)
+	public void processPubMedBatch(List<String> recordsToFetch, ProgressMonitor pMonitor)
 		throws DaoException, InterruptedException, IOException, JDOMException {
 
 		// construct query
@@ -197,7 +198,9 @@ public class PopulateReferenceTableTask extends Task {
 		for (String id : recordsToFetch) {
 			urlString += id + ",";
 		}
-		urlString = urlString.substring(0, urlString.length()-1);  // remove last ","
+        pMonitor.setCurrentMessage("Retrieving PubMed records from NCBI.  Num records:  "
+                + recordsToFetch.size());
+        urlString = urlString.substring(0, urlString.length()-1);  // remove last ","
 				
 		// if necessary, delay before fetch
 		while (System.currentTimeMillis() - startTimeOfFetch < NCBI_DELAY) {
@@ -212,7 +215,7 @@ public class PopulateReferenceTableTask extends Task {
 			new BufferedReader( new InputStreamReader(urlConnection.getInputStream()));
 
 		// parse data
-		parsePubMedData(reader);
+		parsePubMedData(reader, pMonitor);
 	}
 
 	/**
@@ -223,7 +226,8 @@ public class PopulateReferenceTableTask extends Task {
 	 * @throws IOException
 	 * @throws JDOMException
 	 */
-	private void parsePubMedData(Reader xml) throws DaoException, IOException, JDOMException {
+	private void parsePubMedData(Reader xml, ProgressMonitor pMonitor)
+            throws DaoException, IOException, JDOMException {
 
         //  setup jdom
         SAXBuilder builder = new SAXBuilder();
@@ -247,7 +251,8 @@ public class PopulateReferenceTableTask extends Task {
 				Element medlineCitationElement = xpathElement(article,"MedlineCitation");
 				// id
 				reference.setId(xpathQuery(medlineCitationElement, "PMID", true));
-				// database
+                pMonitor.setCurrentMessage("Processing PMID:  " + reference.getId());
+                // database
 				reference.setDatabase("PubMed");
 				// year
 				reference.setYear(xpathQuery(medlineCitationElement, "Article/Journal/JournalIssue/PubDate/Year", false));
@@ -255,44 +260,55 @@ public class PopulateReferenceTableTask extends Task {
 				reference.setTitle(xpathQuery(medlineCitationElement, "Article/ArticleTitle", false));
 				// authors
 				Element authorListRootElement = xpathElement(medlineCitationElement, "Article/AuthorList");
-				Attribute completeYN = authorListRootElement.getAttribute("CompleteYN");
-				xpath = XPath.newInstance("Article/AuthorList/*");
-				List<Element> authorElementList = xpath.selectNodes(medlineCitationElement);
-				if (authorElementList != null && authorElementList.size() > 0) {
-					reference.setAuthors(constructAuthorList(authorElementList,
-															 (completeYN != null) ? completeYN.getValue() : "N"));
-				}
-				// source
+                if (authorListRootElement != null) {
+                    Attribute completeYN = authorListRootElement.getAttribute("CompleteYN");
+                    xpath = XPath.newInstance("Article/AuthorList/*");
+                    List<Element> authorElementList = xpath.selectNodes(medlineCitationElement);
+                    if (authorElementList != null && authorElementList.size() > 0) {
+                        reference.setAuthors(constructAuthorList(authorElementList,
+                             (completeYN != null) ? completeYN.getValue() : "N"));
+                    } else {
+                        setNoAuthorsListed(reference);
+                    }
+                } else {
+                    setNoAuthorsListed(reference);
+                }
+                // source
 				reference.setSource(constructSourceString(medlineCitationElement));
 				// add object to db
 				daoReference.addReference(reference);
-			}
+                String title = reference.getTitle();
+                if (title.length() > 70) {
+                    title = title.substring(0, 70) + "...";
+                }
+                pMonitor.setCurrentMessage("-->  Title:  " + title);
+            }
 		}
 	}
 
-	/**
-	 * Assists with xml/xpath query
-	 *
-	 * @param root Element
-	 * @param query String
-	 * @return Element
-	 * @throws JDOMException
-	 */
-	private Element xpathElement(Element root, String query) throws JDOMException {
+    private void setNoAuthorsListed (Reference reference) {
+        String authors[] = new String[1];
+        authors[0] = "[No authors listed]";
+        reference.setAuthors(authors);
+    }
 
-		XPath xpath = XPath.newInstance(query);
-		Element e = (Element)xpath.selectSingleNode(root);
-		if (e != null) {
-			return e;
-		}
-		else {
-			if (CPathConstants.CPATH_DO_ASSERT) {
-				assert false :
-				"PopulateReferenceTableTask.parsePubMedData(), missing Element: " + query;
-			}
-		}
-		return null;
-	}
+    /**
+     * Assists with xml/xpath query
+     *
+     * @param root Element
+     * @param query String
+     * @return Element
+     * @throws JDOMException
+     */
+    private Element xpathElement(Element root, String query) throws JDOMException {
+
+        XPath xpath = XPath.newInstance(query);
+        Element e = (Element)xpath.selectSingleNode(root);
+        if (e != null) {
+            return e;
+        }
+        return null;
+    }
 
 	/**
 	 * Assists with xml/xpath query
