@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.59 2007-01-04 15:06:50 cerami Exp $
+// $Id: Admin.java,v 1.60 2007-01-04 16:17:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -507,16 +507,19 @@ public class Admin {
 
 		// setup command to run mysqldump
 		String cmd = ("mysqldump -u" + dbUser + " -p" + dbPwd + " " + dbName + " " + tableName);
+        System.out.println("Dumping reference data to:  " + fileName);
 
-		try {
+        try {
 			// execute the command
 			Process child = Runtime.getRuntime().exec(cmd);
 
 			// grab command output
 			BufferedReader bufferedReader =
 				new BufferedReader(new InputStreamReader(child.getInputStream()));
+            BufferedReader errorReader =
+                new BufferedReader(new InputStreamReader(child.getErrorStream()));
 
-			// process the output
+            // process the output
 			String line;
 			PrintWriter printWriter = null;
 			while ((line = bufferedReader.readLine()) != null) {
@@ -524,11 +527,17 @@ public class Admin {
 					new PrintWriter(new BufferedWriter(new FileWriter(fileName))) : printWriter;
 				printWriter.println(line);
 			}
-			// close readers/writers
+
+            while ((line = errorReader.readLine()) != null) {
+                System.out.println("Error:  " + line);
+            }
+
+            // close readers/writers
 			if (printWriter != null) printWriter.flush();
 			if (printWriter != null) printWriter.close();
-			if (bufferedReader != null) bufferedReader.close();
-		}
+            if (bufferedReader != null) bufferedReader.close();
+            if (errorReader != null) errorReader.close();
+        }
 		catch (IOException e) {
             System.out.println("\n-----------------------------------------");
 			System.out.println("Error while attempting to dump mysql table '" + tableName + "':");
