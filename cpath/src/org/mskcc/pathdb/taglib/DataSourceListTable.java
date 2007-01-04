@@ -47,7 +47,8 @@ public class DataSourceListTable extends HtmlTable {
                 if (snapshotRecord.getExternalDatabase() != null) {
                     ExternalDatabaseRecord dbRecord = snapshotRecord.getExternalDatabase();
                     if (dbRecord.getIconFileExtension() != null) {
-                        append("<img src='icon.do?id=" + dbRecord.getId() + "'/>");
+                        append("<img class='data_source_logo' src='icon.do?id="
+                                + dbRecord.getId() + "'/>");
                     }
                 }
                 append ("</td>");
