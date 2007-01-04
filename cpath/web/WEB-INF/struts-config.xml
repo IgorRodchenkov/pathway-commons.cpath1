@@ -95,7 +95,6 @@
         <!--  BioPAX Record Page -->
         <action path="/record"
             type="org.mskcc.pathdb.action.ShowBioPaxRecord">
-            <forward name="record" path="/WEB-INF/jsp/pages/BioPaxRecord.jsp"/>
             <forward name="pathways" path="/WEB-INF/jsp/pages/PathwayList.jsp"/>
         </action>
 
