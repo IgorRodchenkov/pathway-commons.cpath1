@@ -332,7 +332,7 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
             ExternalLinkRecord link = nonReferenceLinks.get(i);
             ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
             String dbId = link.getLinkedToId();
-            String linkStr = dbRecord.getName() + ":" + dbId;
+            String linkStr = dbRecord.getName() + ": " + dbId;
             String uri = link.getWebLink();
             out.println("<li>");
             if (uri != null && uri.length() > 0) {
