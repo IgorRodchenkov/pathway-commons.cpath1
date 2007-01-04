@@ -79,8 +79,7 @@ public class PopulateInternalFamilyLookUpTable {
                 BioPaxRecordUtil.createBioPaxRecordSummary(pathwayRecord);
 			validateBioPaxRecordSummary(pathwayRecord, pathwayRecordSummary);
 			// determine organism id
-			int pathwayRecordOrganismId = getOrganismId(daoOrganism, 
-														pathwayRecordSummary.getOrganism());
+            int pathwayRecordOrganismId = pathwayRecord.getNcbiTaxonomyId();
             if (option == 0) {
                 pMonitor.incrementCurValue();
                 ConsoleUtil.showProgress(pMonitor);
@@ -274,8 +273,7 @@ public class PopulateInternalFamilyLookUpTable {
 			BioPaxRecordUtil.createBioPaxRecordSummary(parentRecord);
 		validateBioPaxRecordSummary(parentRecord, parentRecordSummary);
 		// determine organism id
-		int parentRecordOrganismId = getOrganismId(new DaoOrganism(),
-												   parentRecordSummary.getOrganism());
+		int parentRecordOrganismId = parentRecord.getNcbiTaxonomyId();
         Iterator iterator = descendentList.iterator();
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(pMonitor);
@@ -316,26 +314,5 @@ public class PopulateInternalFamilyLookUpTable {
 			summary.getOrganism().length() == 0) {
 			summary.setOrganism(CPathRecord.NA_STRING);
 		}
-	}
-
-	private int getOrganismId(DaoOrganism daoOrganism, String organismName)
-		throws DaoException {
-
-		int organismId = Integer.MAX_VALUE;
-		HashMap organismMap = daoOrganism.getAllOrganismsMap();
-		Set<String> keys = organismMap.keySet();
-		for(String key : keys) {
-			Organism organism = (Organism)organismMap.get(key);
-			if (organism.getSpeciesName().equals(organismName)) {
-				organismId = organism.getTaxonomyId();
-				break;
-			}
-		}
-		if (CPathConstants.CPATH_DO_ASSERT) {
-			assert (organismId != Integer.MAX_VALUE) :
-			"*** PopulateInternalFamilyLookupTable: Organism Id not found for: " + organismName;
-		}
-		// outta here
-		return organismId;
 	}
 }
