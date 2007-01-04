@@ -23,12 +23,12 @@ public class BioPaxTabs {
         childMap.put ("smallMolecule", "Small Molecules");
         childMap.put ("physicalEntity", "Physical Entities");
         childMap.put ("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
-        childMap.put ("transport", "Transport Reactions");
+        childMap.put ("transport", "Transport");
         childMap.put ("complexAssembly", "Complex Assemblies");
         childMap.put ("biochemicalReaction", "Biochemical Reactions");
-        childMap.put ("conversion", "Conversion Reactions");
-        childMap.put ("modulation", "Modulation Reactions");
-        childMap.put ("catalysis", "Catalysis Reactions");
+        childMap.put ("conversion", "Conversion");
+        childMap.put ("modulation", "Modulation");
+        childMap.put ("catalysis", "Catalysis");
         childMap.put ("control", "Control Reactions");
         childMap.put ("physicalInteraction", "Physical Interactions");
         childMap.put ("interaction", "Interactions");
