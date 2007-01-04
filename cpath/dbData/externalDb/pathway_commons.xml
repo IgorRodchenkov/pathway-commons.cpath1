@@ -18,9 +18,22 @@
         <name>HumanCyc</name>
         <description>Encyclopedia of Human Genes and Metabolism</description>
         <home_page_url>http://humancyc.org/</home_page_url>
+        <entity_url>
+            <url_pattern>http://biocyc.org/HUMAN/NEW-IMAGE?type=NIL&amp;object=%ID%</url_pattern>
+            <sample_id>ARGININE-SYN4-PWY</sample_id>
+        </entity_url>
         <icon_path>HumanCyc.png</icon_path>
         <controlled_terms>
             <master_term>HUMANCYC</master_term>
         </controlled_terms>
     </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>Cancer Cell Map</name>
+        <description>The Cancer Cell Map:  Memorial Sloan-Kettering Cancer Center</description>
+        <home_page_url>http://cancer.cellmap.org/cellmap/</home_page_url>
+        <icon_path>MSKCC.png</icon_path>
+        <controlled_terms>
+            <master_term>CELL_MAP</master_term>
+        </controlled_terms>
+    </external_database>    
 </external_database_list>
