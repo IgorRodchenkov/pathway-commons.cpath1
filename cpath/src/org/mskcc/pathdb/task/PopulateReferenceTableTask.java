@@ -160,7 +160,14 @@ public class PopulateReferenceTableTask extends Task {
 			// get the linked to id
 			String linkedToId = externalLinkRecord.getLinkedToId();
 
-			// is this already in reference table ?
+            // if this is not a number, continue
+            try {
+                Integer.parseInt(linkedToId);
+            } catch (NumberFormatException e) {
+                continue;                            
+            }
+
+            // is this already in reference table ?
 			// if so, check for completeness (no N/A strings)
 			// if complete, skip it, if not complete, fetch data from ncbi
 			Reference reference = daoReference.getRecord(linkedToId, dbRecord.getId());
@@ -215,7 +222,7 @@ public class PopulateReferenceTableTask extends Task {
 			new BufferedReader( new InputStreamReader(urlConnection.getInputStream()));
 
 		// parse data
-		parsePubMedData(reader, pMonitor);
+		parsePubMedData(reader, ncbiURL, pMonitor);
 	}
 
 	/**
@@ -226,7 +233,7 @@ public class PopulateReferenceTableTask extends Task {
 	 * @throws IOException
 	 * @throws JDOMException
 	 */
-	private void parsePubMedData(Reader xml, ProgressMonitor pMonitor)
+	private void parsePubMedData(Reader xml, URL ncbiURL, ProgressMonitor pMonitor)
             throws DaoException, IOException, JDOMException {
 
         //  setup jdom
@@ -293,7 +300,9 @@ public class PopulateReferenceTableTask extends Task {
                 }
                 pMonitor.setCurrentMessage("-->  Title:  " + title);
             }
-		}
+		} else {
+            pMonitor.setCurrentMessage("No data available for:  " + ncbiURL.toString());
+        }
 	}
 
     private void setNoAuthorsListed (Reference reference) {
