@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.42 2007-01-04 15:38:19 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.43 2007-01-04 20:11:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -425,14 +425,14 @@ public class BioPaxRecordSummaryUtils {
             StringBuffer buf) {
         if (component.getFeatureList() != null
                 && component.getFeatureList().size() > 0) {
-            buf.append("<P>Features:<UL>");
+            buf.append("Features:  <ul>");
             ArrayList featureList = component.getFeatureList();
             for (int i = 0; i < featureList.size(); i++) {
                 String feature = (String) featureList.get(i);
                 feature = entityFilter(feature);
-                buf.append("<LI>" + feature + "</LI>");
+                buf.append("<li>" + feature + "</li>");
             }
-            buf.append("</UL>");
+            buf.append("</ul>");
         }
     }
 
