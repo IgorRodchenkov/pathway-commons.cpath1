@@ -51,9 +51,7 @@ if ($forceFlag == 0) {
 if ($answer eq 'YES' || $forceFlag == 1) {
     &importSql ("cpath.sql");
     &importSql ("seed.sql");
-	if ( -e "reference.sql" ) {
-	  &importSql ("reference.sql");
-	}
+    &importSql ("reference.sql");
 
     if ($unitTestFlag ==1) {
         &importSql ("unit_test.sql");
