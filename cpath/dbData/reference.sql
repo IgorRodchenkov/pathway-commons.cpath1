@@ -1,4 +1,6 @@
--- MySQL dump 10.9
+use db_name__value;
+-- MySQL dump 10:q!
+
 --
 -- Host: localhost    Database: cpath
 -- ------------------------------------------------------
