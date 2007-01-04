@@ -13,6 +13,13 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
+// debug mode boolean
+String queryString = request.getQueryString();
+if (queryString == null){
+    queryString = "";
+}
+String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
+boolean debugMode = (queryString.indexOf("debug=1") != -1 || xdebugFlag != null);
 ArrayList typesList = (ArrayList) request.getAttribute("TYPES_LIST");
 BioPaxTabs bpPlainEnglish = new BioPaxTabs();
 String id = request.getParameter("id");
@@ -278,6 +285,10 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
             }
             out.println("</ul>");
         }
+        if (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0) {
+            out.println("<p><b>Availability:</b></p>");
+            out.println("<p>" + bpSummary.getAvailability() + "</p>");
+        }
 %>
 <% if (showTabs) { %>
 <div id="doc">
@@ -354,7 +365,13 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
             out.println("<ul><li><a href=\"" + pRequest.getUri() + "\">"
                 + "Download in BioPAX Format" + "</a></li></ul>");
     }
-
+    if (debugMode) {
+        out.println("<h3>Debug:</h3>");
+        String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + bpSummary.getRecordID();
+        out.println("<ul>");
+        out.println("<li><a href=\"" + xmlAbbrevUrl + "\">XML Content (Abbrev)</a></li>");
+        out.println("</ul>");
+    }
 %>
 <jsp:include page="../global/currentFilterSettings.jsp" flush="true" />    
 </div>
