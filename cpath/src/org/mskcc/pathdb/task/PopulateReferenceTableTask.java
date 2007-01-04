@@ -255,8 +255,18 @@ public class PopulateReferenceTableTask extends Task {
                 // database
 				reference.setDatabase("PubMed");
 				// year
-				reference.setYear(xpathQuery(medlineCitationElement, "Article/Journal/JournalIssue/PubDate/Year", false));
-				// article title
+				String year = xpathQuery(medlineCitationElement,
+                    "Article/Journal/JournalIssue/PubDate/Year", false);
+                if (!year.equals(CPathRecord.NA_STRING)) {
+                    reference.setYear(year);
+                } else {
+                    String date = xpathQuery(medlineCitationElement,
+                        "Article/Journal/JournalIssue/PubDate/MedlineDate", false);
+                    if (date != null) {
+                        reference.setYear(date);
+                    }
+                }
+                // article title
 				reference.setTitle(xpathQuery(medlineCitationElement, "Article/ArticleTitle", false));
 				// authors
 				Element authorListRootElement = xpathElement(medlineCitationElement, "Article/AuthorList");
