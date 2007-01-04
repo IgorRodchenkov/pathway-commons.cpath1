@@ -75,7 +75,7 @@ public class PopulateReferenceTableTask extends Task {
 	private static final int NCBI_BATCH_SIZE = 100;
 
 	// number of milliseconds between calls to ncbi
-	private static final int NCBI_DELAY = 3000;
+	private static final int NCBI_DELAY = 4000;
 
 	// url to ncbi service
 	private static final String NCBI_URL = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&retmode=xml&email=grossb%40cbio.mskcc.org&tool=cpath&id=";
