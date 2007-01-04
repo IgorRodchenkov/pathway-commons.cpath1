@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.60 2007-01-04 16:17:20 cerami Exp $
+// $Id: Admin.java,v 1.61 2007-01-04 17:45:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -510,7 +510,12 @@ public class Admin {
         System.out.println("Dumping reference data to:  " + fileName);
 
         try {
-			// execute the command
+            PrintWriter printWriter = null;
+            printWriter = (printWriter == null) ?
+                new PrintWriter(new BufferedWriter(new FileWriter(fileName))) : printWriter;
+            printWriter.println("use db_name__value;");
+
+            // execute the command
 			Process child = Runtime.getRuntime().exec(cmd);
 
 			// grab command output
@@ -521,10 +526,7 @@ public class Admin {
 
             // process the output
 			String line;
-			PrintWriter printWriter = null;
 			while ((line = bufferedReader.readLine()) != null) {
-				printWriter = (printWriter == null) ?
-					new PrintWriter(new BufferedWriter(new FileWriter(fileName))) : printWriter;
 				printWriter.println(line);
 			}
 
