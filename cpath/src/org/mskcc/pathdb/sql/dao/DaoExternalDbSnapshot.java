@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.5 2007-01-04 18:03:54 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.6 2007-01-04 19:29:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -253,7 +253,8 @@ public class DaoExternalDbSnapshot {
                         + "external_db_snapshot.SNAPSHOT_VERSION from external_db_snapshot, "
                         + "external_db "
                         + "where external_db_snapshot.EXTERNAL_DB_ID = external_db.EXTERNAL_DB_ID "
-                        + "ORDER BY external_db.NAME");
+                        + "ORDER BY external_db.NAME, "
+                        + "external_db_snapshot.EXTERNAL_DB_SNAPSHOT_ID");
             return getMultipleSnapshots(pstmt);
         } catch (SQLException e) {
             throw new DaoException(e);
