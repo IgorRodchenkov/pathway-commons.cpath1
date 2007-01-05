@@ -19,10 +19,23 @@ public class DbSnapshotInfo {
      * @throws DaoException Database Error.
      */
     public static String getDbSnapshotHtml(long snapShotId) throws DaoException {
-        StringBuffer html = new StringBuffer();
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
         if (snapShotId > 0) {
-			return getDbSnapshotHtml(dao.getDatabaseSnapshot(snapShotId));
+			return getDbSnapshotHtml(dao.getDatabaseSnapshot(snapShotId), true);
+        }
+        return "";
+    }
+
+    /**
+     * Gets Database Snapshot HTML Summary.
+     * @param snapShotId Snapshot ID.
+     * @return HTML Blurb.
+     * @throws DaoException Database Error.
+     */
+    public static String getDbSnapshotHtmlAbbrev(long snapShotId) throws DaoException {
+        DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+        if (snapShotId > 0) {
+			return getDbSnapshotHtml(dao.getDatabaseSnapshot(snapShotId), false);
         }
         return "";
     }
@@ -32,18 +45,25 @@ public class DbSnapshotInfo {
      * @param snapshot ExternalDatabaseSnapshotRecord.
      * @return HTML Blurb.
      */
-    public static String getDbSnapshotHtml(ExternalDatabaseSnapshotRecord snapshot) {
+    public static String getDbSnapshotHtml(ExternalDatabaseSnapshotRecord snapshot,
+            boolean showAllDetails) {
 
         StringBuffer html = new StringBuffer();
 		html.append ("<a href='dbSnapshot.do?snapshot_id=" + snapshot.getId() + "'>");
-		html.append(snapshot.getExternalDatabase().getName() + ", ");
-		if (snapshot.getSnapshotVersion() != null) {
-			html.append("Release:  " + snapshot.getSnapshotVersion());
-		}
-		html.append ("</a>");
-		Format formatter = new SimpleDateFormat("dd-MMM-yy");
-		String s = formatter.format(snapshot.getSnapshotDate());
-		html.append(" [" + s + "]");
-		return html.toString();
+		html.append(snapshot.getExternalDatabase().getName());
+
+        if (showAllDetails) {
+            html.append (", ");
+            if (snapshot.getSnapshotVersion() != null) {
+                html.append("Release:  " + snapshot.getSnapshotVersion());
+            }
+        }
+        html.append ("</a>");
+        if (showAllDetails) {
+            Format formatter = new SimpleDateFormat("dd-MMM-yy");
+            String s = formatter.format(snapshot.getSnapshotDate());
+            html.append(" [" + s + "]");
+        }
+        return html.toString();
 	}
 }
