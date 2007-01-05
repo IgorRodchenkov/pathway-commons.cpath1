@@ -1,4 +1,4 @@
-// $Id: BackgroundReferenceService.java,v 1.8 2006-06-09 19:22:03 cerami Exp $
+// $Id: BackgroundReferenceService.java,v 1.9 2007-01-05 22:19:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -222,7 +222,7 @@ public class BackgroundReferenceService {
      * Implementation Note:  dao.getRecordByTerm() uses an internal cache.
      * In most cases, this method will therefore be extremely fast.
      */
-    private HashSet createNormalizedXRefSet(ExternalReference[] xrefs)
+    public HashSet createNormalizedXRefSet(ExternalReference[] xrefs)
             throws DaoException {
         HashSet set = new HashSet();
         for (int i = 0; i < xrefs.length; i++) {
