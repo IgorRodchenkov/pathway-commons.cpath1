@@ -1,6 +1,5 @@
 use db_name__value;
--- MySQL dump 10:q!
-
+-- MySQL dump 10.9
 --
 -- Host: localhost    Database: cpath
 -- ------------------------------------------------------
