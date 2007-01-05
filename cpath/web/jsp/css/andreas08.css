@@ -307,7 +307,7 @@ font-size:90%;
 .large_search_box {
 	margin: 10px 5px 5px 0px;
 	border: 1px solid #000000;
-	padding: 5px 5px 5px 5px;
+    padding: 5px 20px 5px 20px;
     background: #CCCCFF;
 }
 
