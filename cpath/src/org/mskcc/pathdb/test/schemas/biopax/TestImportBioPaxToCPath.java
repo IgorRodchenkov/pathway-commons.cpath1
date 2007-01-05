@@ -1,4 +1,4 @@
-// $Id: TestImportBioPaxToCPath.java,v 1.16 2006-10-30 18:03:20 cerami Exp $
+// $Id: TestImportBioPaxToCPath.java,v 1.17 2007-01-05 22:22:34 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,6 +73,11 @@ public class TestImportBioPaxToCPath extends TestCase {
                 (file, false);
         task.parseAndStoreToDb();
 
+        //  Store some dummy UniProt to RefSeq Ids to the Database
+        file = new File("testData/references/uniprot2refseq.txt");
+        task = new ParseBackgroundReferencesTask (file, false);
+        task.parseAndStoreToDb();
+
         DaoOrganism daoOrganism = new DaoOrganism();
         ArrayList organismList = daoOrganism.getAllOrganisms();
 
@@ -103,7 +108,7 @@ public class TestImportBioPaxToCPath extends TestCase {
 
         //  After import, protein GLK (SWP:  P46880) should have an external
         //  link to Affymetrix ID:  1919_at.
-        //  This verifies that the connection with the background reference
+        //  This verifies that the connection with the background link-out
         //  service is working.
         DaoExternalLink externalLinker = DaoExternalLink.getInstance();
         ArrayList recordList = externalLinker.lookUpByExternalRef
@@ -119,6 +124,21 @@ public class TestImportBioPaxToCPath extends TestCase {
         //  Verify that the BioPAX XML now contains an XREF for cPath
         index = record.getXmlContent().indexOf
                 ("XMLSchema#string\">CPATH</bp:DB>");
+        assertTrue(index > 0);
+
+        //  After import, protein GLK (SWP:  P46880) should have an external
+        //  link to Unification XREF:  Ref Seq ID:  NP_051067.
+        //  This verifies that the connection with the background unification
+        //  service is working.
+        externalLinker = DaoExternalLink.getInstance();
+        recordList = externalLinker.lookUpByExternalRef
+                (new ExternalReference("RefSeq", "NP_051067"));
+        assertEquals(1, recordList.size());
+        record = (CPathRecord) recordList.get(0);
+        assertEquals("GLK", record.getName());
+
+        //  Verify that the BioPAX XML now contains an XREF for RefSeq
+        index = record.getXmlContent().indexOf("REF_SEQ");
         assertTrue(index > 0);
 
         //  Verify that record is not linked to any snapshot

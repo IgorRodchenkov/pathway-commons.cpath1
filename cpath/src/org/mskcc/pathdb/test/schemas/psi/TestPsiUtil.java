@@ -1,4 +1,4 @@
-// $Id: TestPsiUtil.java,v 1.6 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestPsiUtil.java,v 1.7 2007-01-05 22:22:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -153,7 +153,7 @@ public class TestPsiUtil extends TestCase {
 
         primaryRef = xref.getPrimaryRef();
         assertEquals("NP_000680", primaryRef.getId());
-        assertEquals("REF_SEQ PROTEIN", primaryRef.getDb());
+        assertEquals("REF_SEQ", primaryRef.getDb());
     }
 
     /**
