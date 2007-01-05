@@ -1,60 +1,37 @@
-<h1> Lorem ipsum dolor sit amet</h1>
-<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus
-purus. Phasellus interdum sollicitudin pede. Mauris aliquet sapien eu
-enim. Donec neque odio, pulvinar eget, tempus eget, iaculis varius,
-elit. Proin dui velit, nonummy vitae, condimentum vel, tristique at,
-ipsum. Curabitur malesuada facilisis lectus. Etiam suscipit accumsan
-nisi. Ut a mi. Integer placerat. Donec lobortis tempus massa. Duis
-pellentesque diam in tellus. Nulla vel enim. Mauris nonummy, ante in
-bibendum bibendum, lorem arcu cursus justo, quis vehicula massa dolor
-vitae mauris. Morbi ante ante, lacinia nec, condimentum at, molestie eu,
-nisi. Integer faucibus. Aenean ante quam, ornare eu, cursus non, sodales
-ac, elit. </p>
-
-<h1> Lorem ipsum dolor sit amet</h1>
-<p>Phasellus eros. Donec dignissim massa id sapien. Vestibulum urna quam,
-interdum at, facilisis ac, adipiscing ac, arcu. Vestibulum ante ipsum
-primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam
-accumsan ligula in massa. Aliquam ante arcu, porttitor eget, pulvinar
-quis, vulputate eget, velit. Mauris mauris lectus, tempor in, imperdiet
-ac, vulputate id, dui. Curabitur dolor. Nam blandit. Pellentesque
-posuere, enim sit amet mattis sodales, erat eros aliquet nulla, interdum
-volutpat nibh mi id nisi. Suspendisse gravida elit sit amet leo. Nam
-nibh ipsum, placerat id, tempus nec, dictum at, tellus. Donec euismod,
-justo non blandit molestie, velit metus congue augue, non euismod arcu
-arcu vitae erat. </p>
-
-<h1> Lorem ipsum dolor sit amet</h1>
-<p>Suspendisse eu odio a diam commodo lobortis.
-Nam erat nibh, semper at, vulputate id, interdum sit amet, tortor. Cras
-vulputate, massa quis pharetra bibendum, nisi risus viverra enim, sit
-amet ornare turpis turpis sodales odio. Integer aliquet massa ac purus.
-Nulla facilisi. Duis vel erat sit amet nisl lacinia adipiscing. Integer
-sed dui. Phasellus laoreet auctor massa. Class aptent taciti sociosqu ad
-litora torquent per conubia nostra, per inceptos hymenaeos. Proin at
-sapien scelerisque ante adipiscing adipiscing. Nulla facilisi. Praesent
-iaculis ultrices eros. Etiam tempor dignissim augue. Etiam egestas enim
-in libero. Proin condimentum est id metus sagittis consectetuer. Donec
-enim. In hac habitasse platea dictumst. Ut nisi pede, pretium a, auctor
-in, congue dignissim, libero. </p>
-
-<h1> Lorem ipsum dolor sit amet</h1>
-<p> Fusce condimentum ante quis enim.
-Etiam mollis, sapien quis porta facilisis, dui nunc suscipit diam, id
-auctor augue neque eget quam. Nam at augue. Curabitur enim orci,
-adipiscing vel, tristique nec, aliquam vitae, lacus. Etiam eros arcu,
-nonummy nec, sollicitudin sit amet, tempus et, risus. Vivamus convallis
-pharetra nulla. Phasellus iaculis, neque at posuere eleifend, urna elit
-aliquet felis, a tristique nisl felis nec purus. Vestibulum venenatis
-pulvinar nunc. Mauris sit amet nibh. Nullam sem. In dignissim.
-Pellentesque quis orci. </p>
-
-<h1> Lorem ipsum dolor sit amet</h1>
-<p>Class aptent taciti sociosqu ad litora
-torquent per conubia nostra, per inceptos hymenaeos. Sed urna. Morbi
-blandit augue a neque. Pellentesque sit amet lorem vel turpis vehicula
-vehicula. Aenean molestie eros at massa. Mauris imperdiet sapien quis
-enim. Cras vel velit. Etiam mi ante, scelerisque at, facilisis sed,
-condimentum laoreet, arcu. Proin id massa. Ut hendrerit urna vel felis.
-Aliquam ut dui.
+<h1>About Pathway Commons</h1>
+<p>Pathway Commons is a convenient point of access to biological pathway information
+collected from public pathway databases, which you can browse or search.
 </p>
+<ul>
+    <li><b>Biologists</b> can browse and search Pathway Commons pathways.</li>
+    <li><b>Computational biologists</b> can download all pathways in BioPAX format for global analysis.</li>
+    <li><b>Software developers</b> can build software on top of Pathway Commons using
+        our soon-to-be released web service API. Download and install the cPath pathway database software to create a local mirror of Pathway Commons.
+    </li>
+</ul>
+<p>
+All data is freely available, under the license terms of each contributing database.
+</p>
+
+<h1>About cBio @ MSKCC</h1>
+<p>The Computational Biology Center at Memorial Sloan-Kettering Cancer Center
+(<a href="http://www.mskcc.org">MSKCC</a>) pursues computational biology research projects
+and the development of bioinformatics resources in the areas of:
+</p>
+<ul>
+   <li> sequence-structure analysis </li>
+   <li> gene regulation </li>
+   <li> molecular pathways and networks </li>
+   <li> diagnostic and prognostic indicators </li>
+</ul>
+<p>
+The mission of cBio is to move the theoretical methods and genome-scale data resources of
+computational biology into everyday laboratory practice and use, and is reflected in the
+organization of cBio into research and service components &#126; the intention being that
+new computational methods created through the process of scientific inquiry should be
+generalized and supported as open-source and shared community resources.
+</p>
+
+<h1>About the University of Toronto</h1>
+<p>The University of Toronto is Canada's largest university, with a strong focus on research.
+Pathway Commons work is done in the <a href="http://baderlab.org">Bader Lab</a>.</p>
