@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.28 2006-12-22 18:02:52 grossb Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.29 2007-01-05 22:21:07 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -60,6 +60,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Imports BioPAX Data into cPath.
@@ -225,10 +226,19 @@ public class ImportBioPaxToCPath {
             ExternalReference xrefs[] = bpUtil.extractXrefs(resource);
             ExternalReference linkOutRefs[] = queryLinkOutService
                     (unificationXrefs);
-            appendNewXRefs(linkOutRefs, resource);
+            appendNewRelationshipXRefs(linkOutRefs, resource);
+
+            //  Find any Unification References, such as other Protein IDs.
+            ExternalReference newUnificationRefs[] = queryUnificationService
+                    (unificationXrefs);
+            appendNewUnificationsXRefs(newUnificationRefs, resource);
+
+            //  Merge all references into unified reference list
             ExternalReference unifiedRefs[] =
                     ExternalReferenceUtil.createUnifiedList(xrefs,
                             linkOutRefs);
+            unifiedRefs = ExternalReferenceUtil.createUnifiedList(unifiedRefs,
+                newUnificationRefs);
 
             //  Validate All Refs
             externalLinker.validateExternalReferences(unifiedRefs, strictValidation);
@@ -236,18 +246,18 @@ public class ImportBioPaxToCPath {
             //  Store All Refs
             externalLinker.addMulipleRecords(cPathId, unifiedRefs, false);
 
-			// store publication xrefs
-			Reference[] references = bpUtil.extractPublicationXrefs(resource);
-			if (references.length > 0) {
-				DaoReference daoReference = new DaoReference();
-				DaoExternalDb daoExternalDb = new DaoExternalDb();
-				for (Reference ref : references) {
-					ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByName(ref.getDatabase());
-					if (daoReference.getRecord(ref.getId(), dbRecord.getId()) == null) {
-						daoReference.addReference(ref);
-					}
-				}
-			}
+            // store publication xrefs
+            Reference[] references = bpUtil.extractPublicationXrefs(resource);
+            if (references.length > 0) {
+                DaoReference daoReference = new DaoReference();
+                DaoExternalDb daoExternalDb = new DaoExternalDb();
+                for (Reference ref : references) {
+                    ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByName(ref.getDatabase());
+                    if (daoReference.getRecord(ref.getId(), dbRecord.getId()) == null) {
+                        daoReference.addReference(ref);
+                    }
+                }
+            }
 
             //  Store the XML Assembly
             String xml = XmlUtil.serializeToXml(resource);
@@ -313,9 +323,9 @@ public class ImportBioPaxToCPath {
     }
 
     /**
-     * Appends New XRefs to the Existing XML Resource.
+     * Appends New Relationship XRefs to the Existing XML Resource.
      */
-    private void appendNewXRefs (ExternalReference linkOutRefs[], Element e)
+    private void appendNewRelationshipXRefs (ExternalReference linkOutRefs[], Element e)
             throws DaoException {
         if (linkOutRefs != null && linkOutRefs.length > 0) {
             for (int i = 0; i < linkOutRefs.length; i++) {
@@ -324,6 +334,19 @@ public class ImportBioPaxToCPath {
             }
         }
     }
+
+    /**
+     * Appends New Unifications XRefs to the Existing XML Resource.
+     */
+    private void appendNewUnificationsXRefs (ExternalReference linkOutRefs[], Element e)
+            throws DaoException {
+        if (linkOutRefs != null && linkOutRefs.length > 0) {
+            for (int i = 0; i < linkOutRefs.length; i++) {
+                BioPaxGenerator.appendUnificationXref (linkOutRefs[i], e);
+            }
+        }
+    }
+
 
     /**
      * Based on Unification XRefs, determine if this record already exists.
@@ -441,6 +464,34 @@ public class ImportBioPaxToCPath {
             //  Return the complete unification list.
             return (ExternalReference[]) linkOutRefs.toArray
                     (new ExternalReference[linkOutRefs.size()]);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Queries the Background Reference Service for a list of UNIFICATION
+     * References.
+     *
+     * @param unificationRefs Array of External Reference Objects.
+     * @return Array of External Reference Objects.
+     */
+    private ExternalReference[] queryUnificationService (ExternalReference[]
+            unificationRefs) throws DaoException {
+
+        //  Only execute query if we have existing references.
+        if (unificationRefs != null && unificationRefs.length > 0) {
+            BackgroundReferenceService refService =
+                    new BackgroundReferenceService();
+            HashSet normalizedUnificationRefs =
+                    refService.createNormalizedXRefSet(unificationRefs);
+            ArrayList newUnificationRefs =
+                    refService.getUnificationReferences(unificationRefs);
+
+            //  Return the new unification xrefs only
+            newUnificationRefs.removeAll(normalizedUnificationRefs);
+            return (ExternalReference[]) newUnificationRefs.toArray
+                    (new ExternalReference[newUnificationRefs.size()]);
         } else {
             return null;
         }
