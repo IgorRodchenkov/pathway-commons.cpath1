@@ -1,12 +1,12 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.action.ToggleSearchOptions,
                  org.mskcc.pathdb.protocol.ProtocolConstants,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.lucene.OrganismStats,
                  java.util.ArrayList,
                  org.mskcc.pathdb.model.Organism"%>
 <%
+    String uri = (String) request.getAttribute("javax.servlet.forward.servlet_path");
     String searchTerm = new String("");
     String taxId = new String("");
     ProtocolRequest pRequest = (ProtocolRequest) request.getAttribute
@@ -18,6 +18,7 @@
         taxId = pRequest.getOrganism();
     }
 %>
+<% if (uri != null  && !uri.endsWith("home.do")) { %>
 <div id="searchbar">
 <form name="searchbox" action="webservice.do" method="get">
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
@@ -60,3 +61,4 @@
     <% } %>
 </form>
 </div>
+<% } %>
