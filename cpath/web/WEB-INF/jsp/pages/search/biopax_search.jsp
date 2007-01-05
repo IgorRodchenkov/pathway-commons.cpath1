@@ -35,7 +35,7 @@
     <p>No Matching Records Found. Please try again.</p>
 <% } else {
     Pager pager = new Pager (protocolRequest, totalNumHits.intValue());
-    out.println("<div>");
+    out.println("<div class='search_buttons'>");
     out.println(pager.getHeaderHtml());
     out.println ("</div>");
 %>
@@ -65,9 +65,9 @@
                     "<a href=\"" + url + "\">" + record.getName() + "</a></div>");
         }
         if (organismFlag == null) {
-            out.println("<tr><td colspan=\"2\"><div><small>"
+            out.println("<tr><td colspan=\"2\"><div class='search_fragment'>"
                 + HtmlUtil.truncateLongWords(fragments[i], 40)
-                +"</small></div></td></tr>");
+                +"</div></td></tr>");
         }
     }
     out.println("</table>");

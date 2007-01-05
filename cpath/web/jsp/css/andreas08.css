@@ -438,3 +438,15 @@ cursor:pointer;
     margin-left:5px;
     margin-top:3px;
 }
+
+.search_buttons {
+    margin-bottom: 10px;
+}
+
+.search_fragment {
+    font-size:85%;
+    color:#999999;
+    line-height:1.2em;
+    margin-top:5px;
+    margin-bottom:10px;
+}
