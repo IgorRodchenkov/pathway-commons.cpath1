@@ -23,7 +23,8 @@ public class TestLuceneAutoFilter extends TestCase {
         list.add("INTACT");
         String q = LuceneAutoFilter.addFiltersToQuery("p53", LuceneConfig.FIELD_DATA_SOURCE,
                 list);
-        assertEquals ("p53 AND (data_source:Reactome OR data_source:KEGG OR data_source:INTACT)",
+        assertEquals ("p53 AND (data_source:\"Reactome\" OR data_source:\"KEGG\" " +
+                "OR data_source:\"INTACT\")",
                 q);
     }
 
