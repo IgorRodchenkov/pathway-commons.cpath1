@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.22 2006-10-24 15:33:59 cerami Exp $
+// $Id: EntitySummaryParser.java,v 1.23 2007-01-05 17:12:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -149,6 +149,12 @@ public class EntitySummaryParser {
                 ArrayList participants = getInteractionInformation("/*/bp:PARTICIPANTS/*");
                 String interactionType = getInteractionType("/*/bp:INTERACTION-TYPE/*/bp:TERM");
                 entitySummary = new PhysicalInteractionSummary(interactionType, participants);
+            } else {
+                // get conversion info
+                ArrayList leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
+                ArrayList rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
+                entitySummary =
+                        new ConversionInteractionSummary(leftParticipants, rightParticipants);
             }
         } catch (Throwable throwable) {
             throw new EntitySummaryException(throwable);
