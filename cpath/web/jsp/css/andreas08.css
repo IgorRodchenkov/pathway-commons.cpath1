@@ -361,12 +361,17 @@ cursor:pointer;
 /* Data Source Details */
 .details {
   font-size:85%;
+  line-height:1.2em;
   display:none;
 }
 
+.details ul {list-style-type:square; margin-left:0px;}
+.details li {margin-left:-20px;padding-left:0px}
+.details p {margin-top: 7px;}
+
 /* Entity Summary, e.g. summary of interaction details */
 .entity_summary {
-    font-size:95%;
+    font-size:100%;
 }
 
 .entity_summary a {
@@ -422,4 +427,14 @@ cursor:pointer;
     margin-top: 5px;
     margin-left: 10px;
     margin-right:  5px;
+}
+
+.data_source {
+    font-size:85%;
+}
+
+.toggle_details {
+    cursor:pointer;
+    margin-left:5px;
+    margin-top:3px;
 }
