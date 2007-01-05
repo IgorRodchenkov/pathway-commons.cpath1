@@ -35,5 +35,15 @@
         <controlled_terms>
             <master_term>CELL_MAP</master_term>
         </controlled_terms>
-    </external_database>    
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>NCI / Nature Pathway Interaction Database</name>
+        <description>The Pathway Interaction Database is a collaborative project between the
+        US National Cancer Institute (NCI) and Nature Publishing Group (NPG).</description>
+        <home_page_url>http://pid.nci.nih.gov/PID/index.shtml</home_page_url>
+        <icon_path>NCI.png</icon_path>
+        <controlled_terms>
+            <master_term>CELL_MAP</master_term>
+        </controlled_terms>
+    </external_database>
 </external_database_list>
