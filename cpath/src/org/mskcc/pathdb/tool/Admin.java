@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.61 2007-01-04 17:45:46 cerami Exp $
+// $Id: Admin.java,v 1.62 2007-01-05 20:30:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -268,6 +268,8 @@ public class Admin {
             } else {
                 System.out.println(" --> OK");
             }
+        } else {
+            System.out.println (" --> Not RDF");
         }
         return true;
     }
