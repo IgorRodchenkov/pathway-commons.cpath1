@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.27 2006-12-21 15:42:02 grossb Exp $
+// $Id: InteractionSummaryUtils.java,v 1.28 2007-01-05 17:12:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -68,7 +68,7 @@ public class InteractionSummaryUtils {
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
             createPhysicalInteractionSummary(interactionSummary, buf);
         } else {
-            buf.append("Interaction Type Not yet supported!");
+            buf.append(interactionSummary.getName());
         }
         return buf.toString();
     }
@@ -84,14 +84,17 @@ public class InteractionSummaryUtils {
         ConversionInteractionSummary summary =
                 (ConversionInteractionSummary) interactionSummary;
 
-        //  Create left side
         ArrayList left = summary.getLeftSideComponents();
-        createSide(left, interactionSummary, buf);
-
-        //  Create rigth side
         ArrayList right = summary.getRightSideComponents();
-        buf.append(" &rarr; ");
-        createSide(right, interactionSummary, buf);
+
+        if ((left == null || left.size() == 0)
+                && (right == null || right.size() ==0)) {
+            buf.append (interactionSummary.getName());
+        } else {
+            createSide(left, interactionSummary, buf);
+            buf.append(" &rarr; ");
+            createSide(right, interactionSummary, buf);
+        }
     }
 
     /**
