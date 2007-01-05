@@ -5,6 +5,7 @@
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoImport"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="org.mskcc.pathdb.model.ImportRecord"%>
+<%@ page import="org.mskcc.pathdb.model.CPathRecord"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -39,7 +40,8 @@
     </tr>
     <% } %>
 
-    <% if (snapshotRecord.getSnapshotVersion() != null) { %>
+    <% if (snapshotRecord.getSnapshotVersion() != null
+            && ! snapshotRecord.getSnapshotVersion().equals(CPathRecord.NA_STRING)) { %>
     <tr>
         <td><b>Release Version:</b></td>
         <td><%= snapshotRecord.getSnapshotVersion()%></td>

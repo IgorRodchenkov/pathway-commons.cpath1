@@ -1,6 +1,7 @@
 package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 
@@ -53,8 +54,9 @@ public class DbSnapshotInfo {
 		html.append(snapshot.getExternalDatabase().getName());
 
         if (showAllDetails) {
-            html.append (", ");
-            if (snapshot.getSnapshotVersion() != null) {
+            if (snapshot.getSnapshotVersion() != null
+                    && ! snapshot.getSnapshotVersion().equals(CPathRecord.NA_STRING)) {
+                html.append (", ");
                 html.append("Release:  " + snapshot.getSnapshotVersion());
             }
         }

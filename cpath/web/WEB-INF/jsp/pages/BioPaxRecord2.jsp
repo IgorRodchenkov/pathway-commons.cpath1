@@ -269,8 +269,9 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
 <div id="doc">
 </div>
 <a class="button" id="toggle_all_details_button" onClick='toggleAllDetails()'>Show All Details</a>
+<% } else { %>
+    <p>No additional details available for this record.</p>    
 <% } %>
-
 <%
     String xdebugSession = (String) session.getAttribute
             (AdminWebLogging.WEB_LOGGING);
