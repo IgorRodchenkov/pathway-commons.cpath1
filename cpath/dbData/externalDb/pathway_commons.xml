@@ -43,7 +43,7 @@
         <home_page_url>http://pid.nci.nih.gov/PID/index.shtml</home_page_url>
         <icon_path>NCI.png</icon_path>
         <controlled_terms>
-            <master_term>CELL_MAP</master_term>
+		<master_term>NCI_NATURE</master_term>
         </controlled_terms>
     </external_database>
 </external_database_list>
