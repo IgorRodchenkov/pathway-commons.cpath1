@@ -7,6 +7,9 @@
 <%@ page import="org.mskcc.pathdb.model.CPathRecord"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
 <%@ page import="org.mskcc.pathdb.model.CPathRecordType"%>
+<%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
+<%@ page import="org.mskcc.pathdb.model.ExternalLinkRecord"%>
+<%@ page import="org.mskcc.pathdb.model.Reference"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -36,6 +39,8 @@ int stop = start + max -1;
 if (stop > total) {
     stop = total;
 }
+HashMap<String, Reference> referenceMap =
+        (HashMap<String,Reference>)request.getAttribute(BioPaxParentChild.KEY_PMID_MAP);
 %>
 
 <% if (headerFlag) { %>
@@ -87,10 +92,12 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
             if (interactionString != null) {
                 out.println("<span class='entity_summary'>" + interactionString + "</span>");
             }
-            out.println(getBioPaxDetailsHtml(bpSummary));
+            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap));
+        } else {
+            out.println(getBioPaxRecordHtml(bpSummary, referenceMap));
         }
     } else {
-        out.println(getBioPaxRecordHtml(bpSummary));
+        out.println(getBioPaxRecordHtml(bpSummary, referenceMap));
     }
     out.println("</tr>");
     index++;
@@ -117,7 +124,8 @@ private String getStartRow (int i) {
     }
 }
 
-private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary) throws DaoException {
+private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
+        HashMap<String, Reference> referenceMap) throws DaoException {
     StringBuffer buf = new StringBuffer();
     if (bpSummary.getCPathRecord() != null
         && bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
@@ -127,11 +135,17 @@ private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary) throws DaoExce
         buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
             + bpSummary.getName() + "</a>");
     }
-    buf.append(getBioPaxDetailsHtml (bpSummary));
+    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap));
     return buf.toString();
 }
 
-private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary) throws DaoException {
+private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
+        HashMap<String, Reference> referenceMap) throws DaoException {
+    ReferenceUtil refUtil = new ReferenceUtil();
+    ArrayList masterList = refUtil.categorize(bpSummary);
+    ArrayList<ExternalLinkRecord> referenceLinks =
+            (ArrayList<ExternalLinkRecord>) masterList.get(0);
+
     StringBuffer buf = new StringBuffer();
     boolean hasDetails = false;
     if (bpSummary.getComment() != null) {
@@ -147,6 +161,12 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary) throws DaoEx
         hasDetails = true;
     } else {
         buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism", ""));
+    }
+    if (referenceLinks.size() > 0) {
+        buf.append(getDetailsHtml (bpSummary.getRecordID(), "refs",
+                refUtil.getReferenceHtml(referenceLinks, referenceMap)));
+    } else {
+        buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs", ""));
     }
     if (bpSummary.getCPathRecord() != null) {
         CPathRecord record = bpSummary.getCPathRecord();
