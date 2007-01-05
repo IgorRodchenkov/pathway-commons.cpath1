@@ -92,9 +92,9 @@ INSERT INTO `external_db_cv` VALUES (23, 2, 'LOCUSLINK', 0);
 INSERT INTO `external_db_cv` VALUES (47, 2, 'LOCUS-LINK', 0);
 
 #  Terms Associated with RefSeq
-INSERT INTO `external_db_cv` VALUES (24, 24, 'REFSEQ',  0);
-INSERT INTO `external_db_cv` VALUES (25, 24, 'REF_SEQ', 1);
-INSERT INTO `external_db_cv` VALUES (49, 24, 'REF-SEQ', 0);
+INSERT INTO `external_db_cv` VALUES (24, 25, 'REFSEQ',  0);
+INSERT INTO `external_db_cv` VALUES (25, 25, 'REF_SEQ', 1);
+INSERT INTO `external_db_cv` VALUES (49, 25, 'REF-SEQ', 0);
 INSERT INTO `external_db_cv` VALUES (48, 25, 'REF_SEQ PROTEIN', 1);
 
 #  Terms Associated with GenBank and GI
