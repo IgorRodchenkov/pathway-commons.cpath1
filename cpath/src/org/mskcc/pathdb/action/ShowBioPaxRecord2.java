@@ -7,27 +7,21 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoReference;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.TypeCount;
 import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.Reference;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.taglib.ReferenceUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.List;
 import java.util.Iterator;
-import java.util.HashMap;
 
 public class ShowBioPaxRecord2 extends BaseAction {
 
@@ -37,7 +31,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
         DaoCPath dao = DaoCPath.getInstance();
         String id = request.getParameter("id");
         CPathRecord record = null;
-		BioPaxRecordSummary bpSummary = null;
+        BioPaxRecordSummary bpSummary = null;
         if (id == null) {
             throw new IllegalArgumentException ("id parameter must be specified.");
         } else {
@@ -99,7 +93,10 @@ public class ShowBioPaxRecord2 extends BaseAction {
         }
         // set external links
         if (bpSummary != null) {
-            request.setAttribute("EXTERNAL_LINKS", getExternalLinks(bpSummary, xdebug));
+            ReferenceUtil refUtil = new ReferenceUtil();
+            ArrayList bpSummaryList = new ArrayList ();
+            bpSummaryList.add(bpSummary);
+            request.setAttribute("EXTERNAL_LINKS", refUtil.getReferenceMap(bpSummaryList, xdebug));
         }
 
         if (getChildren) {
@@ -236,54 +233,4 @@ public class ShowBioPaxRecord2 extends BaseAction {
         }
         return snapshotIds;
     }
-
-	/**
-	 * Creates external link list(s) and adds them to request object.
-	 *
-	 * @param bpSummary BioPaxRecordSummary
-	 * @return HashMap<String,Reference>
-	 * @throws DaoException
-	 */
-	private HashMap<String,Reference> getExternalLinks(BioPaxRecordSummary bpSummary,
-            XDebug xdebug)
-		throws DaoException {
-
-		// hashset to return
-		HashMap<String,Reference> externalLinkSet = new HashMap<String,Reference>();
-
-		// iterate over ExternalLinkRecord from bpSummary
-		DaoReference daoReference = new DaoReference();
-        if (bpSummary != null && bpSummary.getExternalLinks() != null) {
-            List<ExternalLinkRecord> externalLinkRecords = bpSummary.getExternalLinks();
-            for (ExternalLinkRecord externalLinkRecord : externalLinkRecords) {
-
-                // get the linked to id
-                String linkedToId = externalLinkRecord.getLinkedToId();
-
-                // get external database record
-                ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();
-
-                // get the reference object
-                xdebug.logMsg (this, "Getting Reference for:  " + linkedToId);
-                Reference reference = daoReference.getRecord(linkedToId, dbRecord.getId());
-                if (CPathConstants.CPATH_DO_ASSERT) {
-                    assert (reference != null) :
-                    "ShowBioPaxRecord2.setExternalLinks(), reference object is null";
-                }
-                if (reference == null) {
-                    xdebug.logMsg(this, "Could not find any reference info.");
-                } else {
-                    xdebug.logMsg (this, "Found reference info:  " + reference.getTitle());
-                }
-
-                if (reference == null) continue;
-
-                // add reference string to proper list
-                externalLinkSet.put(linkedToId, reference);
-            }
-        }
-
-        // outta here
-		return externalLinkSet;
-	}
 }

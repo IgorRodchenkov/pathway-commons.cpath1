@@ -1,4 +1,3 @@
-<%@ page import="java.util.List"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
@@ -10,6 +9,7 @@
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
@@ -24,24 +24,15 @@ ArrayList typesList = (ArrayList) request.getAttribute("TYPES_LIST");
 BioPaxTabs bpPlainEnglish = new BioPaxTabs();
 String id = request.getParameter("id");
 BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute("BP_SUMMARY");
-HashMap<String,Reference> externalLinks = (HashMap<String,Reference>)request.getAttribute("EXTERNAL_LINKS");
+HashMap<String,Reference> referenceMap = (HashMap<String,Reference>)request.getAttribute("EXTERNAL_LINKS");
 boolean showTabs = false;
 request.setAttribute(BaseAction.ATTRIBUTE_TITLE, bpSummary.getName());
 
-// Separate reference links from link-outs
-ArrayList<ExternalLinkRecord> referenceLinks = new ArrayList<ExternalLinkRecord>();
-ArrayList<ExternalLinkRecord> nonReferenceLinks = new ArrayList<ExternalLinkRecord>();
-if (bpSummary.getExternalLinks() != null) {
-    for (int i=0; i<bpSummary.getExternalLinks().size(); i++) {
-        ExternalLinkRecord link = (ExternalLinkRecord) bpSummary.getExternalLinks().get(i);
-        String dbName = link.getExternalDatabase().getName();
-        if (dbName.equalsIgnoreCase("PUBMED")) {
-            referenceLinks.add(link);
-        } else {
-            nonReferenceLinks.add(link);
-        }
-    }
-}
+// Separate PubMed links from other links
+ReferenceUtil refUtil = new ReferenceUtil();
+ArrayList masterList = refUtil.categorize(bpSummary);
+ArrayList<ExternalLinkRecord> referenceLinks = (ArrayList<ExternalLinkRecord>) masterList.get(0);
+ArrayList<ExternalLinkRecord> nonReferenceLinks = (ArrayList<ExternalLinkRecord>) masterList.get(1);
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
@@ -244,7 +235,8 @@ YAHOO.example.init();
         var elements = new Array();
         elements[0] = document.getElementById(id + "_comment");
         elements[1] = document.getElementById(id + "_organism");
-        elements[2] = document.getElementById(id + "_source");
+        elements[2] = document.getElementById(id + "_refs");
+        elements[3] = document.getElementById(id + "_source");
         var current = YAHOO.util.Dom.getStyle(elements[0], 'display');
         YAHOO.log ("Current Display Style is set to:  " + current);
         if (current == false || current == "none") {
@@ -265,28 +257,11 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
 }%>
 </p>
 <%
-		// iterate over list of ExternalLinkRecord
-		if (referenceLinks.size() > 0) {
-		    out.println("<p><b>References:</b></p>");
-            out.println("<ul>");
-            for (ExternalLinkRecord externalLinkRecord : referenceLinks) {
-
-                Reference reference = externalLinks.get(externalLinkRecord.getLinkedToId());
-                ExternalDatabaseRecord dbRecord = externalLinkRecord.getExternalDatabase();
-                out.println("<li>");
-                String uri = (externalLinkRecord.getWebLink() == null) ? "" :
-                    externalLinkRecord.getWebLink();
-                String database = (reference.getDatabase() == null) ? "" :
-                    reference.getDatabase();
-                uri = (uri == null) ? "" : uri;
-                out.println(reference.getReferenceString() + " " +
-                            "[<a href=\"" + uri + "\">" + database + "</a>]");
-                out.println("</li>");
-            }
-            out.println("</ul>");
+        if (referenceLinks.size() > 0) {
+            out.println(refUtil.getReferenceHtml(referenceLinks, referenceMap));
         }
         if (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0) {
-            out.println("<p><b>Availability:</b></p>");
+            out.println("<p><b>Availability:</b></p>\n");
             out.println("<p>" + bpSummary.getAvailability() + "</p>");
         }
 %>

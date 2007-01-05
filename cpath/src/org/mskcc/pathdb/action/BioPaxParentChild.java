@@ -11,6 +11,7 @@ import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.schemas.biopax.summary.*;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.taglib.ReferenceUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,6 +63,11 @@ public class BioPaxParentChild extends BaseAction {
      * Attribute Key:  Interaction Summary Map.
      */
     public static String KEY_INTERACTION_SUMMARY_MAP = "INTERACTION_SUMARY_MAP";
+
+    /**
+     * Attribute Key:  PMID Map.
+     */
+    public static String KEY_PMID_MAP = "KEY_PMID_MAP";
 
     public ActionForward subExecute (ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response, XDebug xdebug)
@@ -178,6 +184,11 @@ public class BioPaxParentChild extends BaseAction {
             bpSummaryList = getBioPaxSummaries(records, xdebug);
         }
 
+        //  Get PubMed References
+        ReferenceUtil refUtil = new ReferenceUtil();
+        HashMap refMap = refUtil.getReferenceMap(bpSummaryList, xdebug);
+
+        request.setAttribute(KEY_PMID_MAP, refMap);
         request.setAttribute(KEY_INTERACTION_SUMMARY_MAP, interactionSummaryMap);
         request.setAttribute(KEY_BP_SUMMARY_LIST, bpSummaryList);
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
