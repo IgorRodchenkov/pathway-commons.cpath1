@@ -73,7 +73,7 @@ public class LuceneAutoFilter {
             revisedQuery.append(" AND (");
             for (int i=0; i<list.size(); i++) {
                     String value = (String) list.get(i);
-                    revisedQuery.append(field + ":" + value);
+                    revisedQuery.append(field + ":" + "\"" + value + "\"");
                     if (i < list.size() -1) {
                         revisedQuery.append(" OR ");
                     }
