@@ -1,4 +1,4 @@
-// $Id: ImportUnificationRefs.java,v 1.9 2006-06-09 19:22:03 cerami Exp $
+// $Id: ImportUnificationRefs.java,v 1.10 2007-01-05 20:30:59 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -140,13 +140,18 @@ public class ImportUnificationRefs {
                     dbList.get(indexedToken.getColumnNumber());
             String id1 = indexedToken.getToken();
 
+            //  remove any extraneous version info in ID
+            id1 = id1.split("-")[0];
+
             //  Iterate through all remaining records.
             while (tokenizer.hasMoreElements()) {
-                pMonitor.incrementCurValue();
                 indexedToken = (IndexedToken) tokenizer.nextElement();
                 ExternalDatabaseRecord dbRecord2 = (ExternalDatabaseRecord)
                         dbList.get(indexedToken.getColumnNumber());
                 String id2 = indexedToken.getToken();
+
+                //  remove any extraneous version info in ID
+                id2 = id2.split("-")[0];
 
                 //  Create Link between record1 and record2
                 BackgroundReferencePair idPair = new BackgroundReferencePair
