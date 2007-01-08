@@ -49,10 +49,10 @@
             BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
             out.println("<tr valign=\"top\">");
-            out.println("<th width=\"60%\">"
+            out.println("<th align=left width=\"60%\">"
                     + "<a href=\"" + url + "\">" + header + "</a>");
             out.println("</th>");
-            out.println("<th>");
+            out.println("<th align=left>");
             if (record.getSnapshotId () > -1) {
                 out.println("<div><small>&gt; ");
                 out.println(DbSnapshotInfo.getDbSnapshotHtml (record.getSnapshotId ()));
