@@ -1,4 +1,4 @@
-// $Id: ExternalDatabaseRecord.java,v 1.20 2006-12-13 15:16:41 grossb Exp $
+// $Id: ExternalDatabaseRecord.java,v 1.21 2007-01-09 20:47:38 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -362,8 +362,8 @@ public class ExternalDatabaseRecord implements Serializable {
 	 * that link to #2 are easily identifiable: REACT_XXXX, where XXXX is an arbitrary
 	 * string of chars.  We use this fact to replace URL #1 with URL #2 if necessary.
 	 *
-	 * @param primaryID String
-	 * @param urlPattern String
+     * @param urlPattern String
+	 * @param primaryId String
 	 * @return String
 	 */
 	private String cookReactome(String urlPattern, String primaryId) {
