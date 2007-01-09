@@ -265,10 +265,27 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
             out.println("<p>" + bpSummary.getAvailability() + "</p>");
         }
 %>
+
+
 <% if (showTabs) { %>
+
 <div id="doc">
 </div>
-<a class="button" id="toggle_all_details_button" onClick='toggleAllDetails()'>Show All Details</a>
+
+<div id="toggle_div">
+</div>
+
+<script type="text/javascript">
+        var toggleDiv = document.getElementById("toggle_div");
+        toggleDiv.innerHTML = "<a class='button' id='toggle_all_details_button' onClick='toggleAllDetails()'>Show All Details</a>";
+</script>
+<noscript>
+<div class="user_message">
+In order to view complete details regarding this record, please
+enable Javascript support within your web browser.
+</div>
+</noscript>
+
 <% } else { %>
     <p>No additional details available for this record.</p>    
 <% } %>
