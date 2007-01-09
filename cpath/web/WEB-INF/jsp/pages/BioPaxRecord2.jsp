@@ -69,14 +69,22 @@ YAHOO.example.init = function() {
         if (typeCount.getCount() > 0) {
             showTabs = true;
             %>
-                tabView.addTab(new YAHOO.widget.Tab({
+                var tab<%= i%> = new YAHOO.widget.Tab({
                     label: '<%= tabLabel %>',
                     dataSrc: '<%= dataUrl.toString() %>',
                     active: <%= tabActive %>,
                     cacheData: true /* only load once */
-                }));
+                });
+                tab<%= i%>.addListener('contentChange', handleContentChange);
+                tabView.addTab (tab<%= i%>);
             <% } %>
     <% } %>
+
+    //  Explicitly handle content changes
+    function handleContentChange(e) {
+        YAHOO.log("Tab content has been updated", "info");
+        showHideAllDetails();
+    }
 
     //  When ready, create tabs within div=doc
     YAHOO.util.Event.onContentReady('doc', function() {
