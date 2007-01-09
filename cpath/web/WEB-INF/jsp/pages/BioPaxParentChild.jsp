@@ -124,7 +124,7 @@ private String getInspectorButtonHtml (long cPathId) {
     return "<td align=right><div class='toggle_details'><a "
         + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
         + "')\"><div id='cpath_" + cPathId + "_image' class='toggleImage'>"
-        + "<img src='jsp/images/open.gif'></div></a></td>";
+        + "<img src='jsp/images/open.gif'/></div></a></td>";
 }
 
 private String getDetailsHtml (long cPathId, String label, String html) {

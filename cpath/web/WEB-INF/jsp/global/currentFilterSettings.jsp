@@ -24,7 +24,8 @@
     while (iterator.hasNext()) {
         Long snapshotId = (Long) iterator.next();
         ExternalDatabaseSnapshotRecord snapshotRecord = dao.getDatabaseSnapshot(snapshotId);
-        out.println("<li>" + snapshotRecord.getExternalDatabase().getName());
+        out.println("<li>" + snapshotRecord.getExternalDatabase().getName()
+            +"</li>");
     }
     Iterator organismIterator = settings.getOrganismTaxonomyIdSet().iterator();
     if (organismIterator.hasNext()) {

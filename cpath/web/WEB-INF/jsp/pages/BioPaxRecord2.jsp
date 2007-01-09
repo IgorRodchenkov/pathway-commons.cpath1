@@ -225,10 +225,10 @@ YAHOO.example.init();
         var html;
         if (showAllDetails == false ) {
             YAHOO.util.Dom.setStyle(elements, 'display', 'none');
-            html = innerHTML = "<img src='jsp/images/open.gif'>";
+            html = innerHTML = "<img src='jsp/images/open.gif'/>";
         } else {
             YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
-            html = "<img src='jsp/images/close.gif'>"
+            html = "<img src='jsp/images/close.gif'/>"
         }
         for (i=0 ; i < images.length; i++) {
             images[i].innerHTML = html;
@@ -262,12 +262,12 @@ YAHOO.example.init();
         if (current == false || current == "none" || current == null) {
             YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
             if (toggleImage != null) {
-                toggleImage.innerHTML = "<img src='jsp/images/close.gif'>";
+                toggleImage.innerHTML = "<img src='jsp/images/close.gif'/>";
             }
         } else {
             YAHOO.util.Dom.setStyle(elements, 'display', 'none');
             if (toggleImage != null) {
-                toggleImage.innerHTML = "<img src='jsp/images/open.gif'>";
+                toggleImage.innerHTML = "<img src='jsp/images/open.gif'/>";
             }
         }
     }
