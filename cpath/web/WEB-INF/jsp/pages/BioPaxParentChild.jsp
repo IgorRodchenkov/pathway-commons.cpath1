@@ -10,6 +10,7 @@
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ page import="org.mskcc.pathdb.model.ExternalLinkRecord"%>
 <%@ page import="org.mskcc.pathdb.model.Reference"%>
+<%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -41,6 +42,14 @@ if (stop > total) {
 }
 HashMap<String, Reference> referenceMap =
         (HashMap<String,Reference>)request.getAttribute(BioPaxParentChild.KEY_PMID_MAP);
+
+boolean debugMode = false;
+String xdebugSession = (String) session.getAttribute
+        (AdminWebLogging.WEB_LOGGING);
+String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
+if (xdebugSession != null || xdebugParameter != null) {
+    debugMode = true;
+}
 %>
 
 <% if (headerFlag) { %>
@@ -83,6 +92,12 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
     BioPaxRecordSummary bpSummary = bpSummaryList.get(i);
     out.println("<td>");
     out.println(index + ". ");
+    if (debugMode) {
+        out.println("[<a href='record2.do?debug=1&id=" + bpSummary.getRecordID()
+            + "'>" + bpSummary.getRecordID() + "</a>]");
+        out.println("[<a href='record.do?format=xml_abbrev&id=" + bpSummary.getRecordID()
+            + "'>BP Abbrev</a>]");
+    }
     if (interactionSummaryMap.containsKey(bpSummary.getRecordID())) {
         EntitySummary entitySummary = interactionSummaryMap.get(bpSummary.getRecordID());
         if (entitySummary instanceof InteractionSummary) {

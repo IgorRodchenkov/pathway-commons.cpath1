@@ -59,14 +59,19 @@ YAHOO.example.init = function() {
         if (i==0) {
             tabActive = "true";
         }
-        String dataUrl = "table.do?id=" + id + "&command=" + typeCount.getCommand() + "&type="
-            + typeCount.getType() + "&totalNumRecords=" + typeCount.getCount();
+        StringBuffer dataUrl = new StringBuffer("table.do?id=" + id + "&command=" + typeCount.getCommand() + "&type="
+            + typeCount.getType() + "&totalNumRecords=" + typeCount.getCount());
+        String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
+        if (xdebugParameter != null) {
+            dataUrl.append("&" + AdminWebLogging.WEB_LOGGING + "="
+                + xdebugParameter);
+        }
         if (typeCount.getCount() > 0) {
             showTabs = true;
             %>
                 tabView.addTab(new YAHOO.widget.Tab({
                     label: '<%= tabLabel %>',
-                    dataSrc: '<%= dataUrl %>',
+                    dataSrc: '<%= dataUrl.toString() %>',
                     active: <%= tabActive %>,
                     cacheData: true /* only load once */
                 }));
