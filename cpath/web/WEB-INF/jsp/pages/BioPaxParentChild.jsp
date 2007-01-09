@@ -121,9 +121,10 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
 
 <%!
 private String getInspectorButtonHtml (long cPathId) {
-    return "<td align=right><a style='cursor:pointer' "
+    return "<td align=right><div class='toggle_details'><a "
         + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
-        + "')\"><img src='jsp/images/inspect_small.png'></a></td>";
+        + "')\"><div id='cpath_" + cPathId + "_image' class='toggleImage'>"
+        + "<img src='jsp/images/open.gif'></div></a></td>";
 }
 
 private String getDetailsHtml (long cPathId, String label, String html) {
@@ -163,6 +164,27 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
 
     StringBuffer buf = new StringBuffer();
     boolean hasDetails = false;
+    if (bpSummary.getComments() != null
+            || bpSummary.getOrganism() != null
+            || referenceLinks.size() > 0) {
+        hasDetails = true;
+    }
+    buf.append("<td>");
+    if (bpSummary.getCPathRecord() != null) {
+        CPathRecord record = bpSummary.getCPathRecord();
+        if (record.getSnapshotId() > 0) {
+            buf.append("<div class='data_source'> "
+                + DbSnapshotInfo.getDbSnapshotHtmlAbbrev (record.getSnapshotId())
+                + "</div>");
+        }
+    }
+    buf.append("</td>");
+    if (hasDetails) {
+        buf.append(getInspectorButtonHtml(bpSummary.getRecordID()));
+    } else {
+        buf.append("<td></td>");
+    }
+    buf.append ("</tr><tr><td colspan=3>");
     if (bpSummary.getComments() != null) {
         String comments[] = bpSummary.getComments();
         StringBuffer commentHtml = new StringBuffer();
@@ -178,7 +200,8 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     }
     String organism = bpSummary.getOrganism();
     if (organism != null) {
-        buf.append(getDetailsHtml (bpSummary.getRecordID(), "organism", "<P><B>Organism:</B>&nbsp;" + organism));
+        buf.append(getDetailsHtml (bpSummary.getRecordID(), "organism",
+                "<p><b>Organism:</b>&nbsp;" + organism));
         hasDetails = true;
     } else {
         buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism", ""));
@@ -186,25 +209,11 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     if (referenceLinks.size() > 0) {
         buf.append(getDetailsHtml (bpSummary.getRecordID(), "refs",
                 refUtil.getReferenceHtml(referenceLinks, referenceMap)));
+        hasDetails = true;
     } else {
         buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs", ""));
     }
-    if (bpSummary.getCPathRecord() != null) {
-        CPathRecord record = bpSummary.getCPathRecord();
-        if (record.getSnapshotId() > 0) {
-            buf.append(getDetailsHtml (bpSummary.getRecordID(), "source",
-                "<P><B>Data Source:</B>&nbsp;" + DbSnapshotInfo.getDbSnapshotHtml (record.getSnapshotId())));
-            hasDetails = true;
-        } else {
-            buf.append(getDetailsHtml(bpSummary.getRecordID(), "source", ""));
-        }
-    }
-    buf.append("</td>");
-    if (hasDetails) {
-        buf.append(getInspectorButtonHtml(bpSummary.getRecordID()));
-    } else {
-        buf.append("<td></td>");
-    }
+    buf.append("</td></tr>");
     return buf.toString();
 }
 %>

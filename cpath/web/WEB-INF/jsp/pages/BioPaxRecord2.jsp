@@ -221,10 +221,17 @@ YAHOO.example.init();
     //  Dynamically shows/hides all details.
     function showHideAllDetails() {
         var elements = YAHOO.util.Dom.getElementsByClassName('details', 'div');
+        var images = YAHOO.util.Dom.getElementsByClassName('toggleImage', 'div');
+        var html;
         if (showAllDetails == false ) {
             YAHOO.util.Dom.setStyle(elements, 'display', 'none');
+            html = innerHTML = "<img src='jsp/images/open.gif'>";
         } else {
             YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
+            html = "<img src='jsp/images/close.gif'>"
+        }
+        for (i=0 ; i < images.length; i++) {
+            images[i].innerHTML = html;
         }
     }
 
@@ -249,13 +256,19 @@ YAHOO.example.init();
         elements[0] = document.getElementById(id + "_comment");
         elements[1] = document.getElementById(id + "_organism");
         elements[2] = document.getElementById(id + "_refs");
-        elements[3] = document.getElementById(id + "_source");
         var current = YAHOO.util.Dom.getStyle(elements[0], 'display');
         YAHOO.log ("Current Display Style is set to:  " + current);
+        var toggleImage = document.getElementById (id + "_image");
         if (current == false || current == "none" || current == null) {
             YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
+            if (toggleImage != null) {
+                toggleImage.innerHTML = "<img src='jsp/images/close.gif'>";
+            }
         } else {
             YAHOO.util.Dom.setStyle(elements, 'display', 'none');
+            if (toggleImage != null) {
+                toggleImage.innerHTML = "<img src='jsp/images/open.gif'>";
+            }
         }
     }
 </script>
