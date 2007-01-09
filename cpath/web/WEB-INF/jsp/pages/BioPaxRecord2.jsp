@@ -244,7 +244,7 @@ YAHOO.example.init();
         elements[3] = document.getElementById(id + "_source");
         var current = YAHOO.util.Dom.getStyle(elements[0], 'display');
         YAHOO.log ("Current Display Style is set to:  " + current);
-        if (current == false || current == "none") {
+        if (current == false || current == "none" || current == null) {
             YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
         } else {
             YAHOO.util.Dom.setStyle(elements, 'display', 'none');
