@@ -32,7 +32,16 @@ ensure they can keep performing their valuable work.
 pathway data from database groups, with clear author attribution; store, validate, index and
 maintain the information to enable efficient, maximum quality access; distribute pathway
 information to the scientific public; and, provide a basic set of end user software for
-browsing and analysis.</p>
+browsing and analysis.  We will be adding more databases over time and will add an
+advanced query tool and web service. Pathway Commons will also support additional types
+of pathway data, such as gene regulation, molecular states and genetic interactions as
+these features are added to BioPAX.</p>
+<h3>What will Pathway Commons not do?</h3>
+<p>Pathway Commons will not duplicate advanced features of source databases that are
+often optimized for the type of data and users specific to a source database. Examples
+include pathway visualization, certain advanced queries and all types of analysis tools.
+Users are encouraged to explore these features by following hyperlinks from Pathway
+Commons.</p>
 <h3>What pathway databases exist?</h3>
 <p>We have compiled a comprehensive list of pathway databases at
 <a href="http://www.pathguide.org">Pathguide</a>.</p>
