@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.9 2006-12-19 19:17:20 cerami Exp $
+// $Id: WebUIBean.java,v 1.10 2007-01-09 17:25:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,12 +33,7 @@ package org.mskcc.pathdb.form;
 
 // imports
 
-import org.apache.struts.action.ActionError;
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Struts ActionForm for updating/retrieving web ui elements.

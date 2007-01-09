@@ -6,6 +6,7 @@
 <%@ page import="net.sf.ehcache.CacheManager"%>
 <%@ page import="net.sf.ehcache.Cache"%>
 <%@ page import="org.mskcc.pathdb.util.cache.EhCache"%>
+<%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ taglib uri="/WEB-INF/taglib/struts-html.tld" prefix="html" %>
 <%@ page errorPage = "JspError.jsp" %>
@@ -46,8 +47,20 @@
         <% }
     %>
 
-    <jsp:include page="../global/dbStats.jsp" flush="true" />
-    <cbio:importTable />
+<h2>Web Site Status</h2>
+
+<%
+    // get WebUIBean
+    out.println("<p>Web site is currently:  ");
+    if (CPathUIConfig.isOnline()) {
+        out.println("online");
+        out.println(" [<a href='adminHome.do?action=toggleWebStatus'>Take Site Offline</a>]");
+    } else {
+        out.println("offline");
+        out.println(" [<a href='adminHome.do?action=toggleWebStatus'>Take Site Online</a>]");
+    }
+    out.println("</p>");
+%>
 
 <h2>Global Cache Stats</h2>
     <%

@@ -1,4 +1,4 @@
-// $Id: CPathUIConfig.java,v 1.10 2006-12-19 19:17:20 cerami Exp $
+// $Id: CPathUIConfig.java,v 1.11 2007-01-09 17:25:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -97,6 +97,11 @@ public class CPathUIConfig {
     private static String webSkin;
 
     /**
+     * Indicates web site is curently online.
+     */
+    private static boolean isOnline = true;
+
+    /**
      * Sets the Web Mode.
      *
      * @param mode WEB_MODE_BIOPAX or WEB_MODE_PSI_MI.
@@ -193,5 +198,21 @@ public class CPathUIConfig {
 
     public static String getPath (String fileName) {
         return "../skins/" + webSkin + "/" + fileName;
+    }
+
+    /**
+     * Indicates that web site is currently online.
+     * @return offline flag;
+     */
+    public static boolean isOnline () {
+        return isOnline;
+    }
+
+    /**
+     * Sets that web site is currently online.
+     * @param online online flag.
+     */
+    public static void setOnline (boolean online) {
+        isOnline = online;
     }
 }

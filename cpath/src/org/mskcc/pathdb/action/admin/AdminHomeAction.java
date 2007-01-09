@@ -1,4 +1,4 @@
-// $Id: AdminHomeAction.java,v 1.6 2006-02-22 22:47:50 grossb Exp $
+// $Id: AdminHomeAction.java,v 1.7 2007-01-09 17:25:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,9 @@ import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.task.GlobalTaskList;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.form.WebUIBean;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,6 +69,18 @@ public class AdminHomeAction extends AdminBaseAction {
         if (list.oneOrMoreTasksAreActive()) {
             request.setAttribute(BaseAction.PAGE_AUTO_UPDATE,
                     BaseAction.YES);
+        }
+        String command = request.getParameter("action");
+        if (command != null && command.equals("toggleWebStatus")) {
+            if (CPathUIConfig.isOnline()) {
+                this.setUserMessage(request, "Web Site is now offline");
+                CPathUIConfig.setOnline(false);
+            } else {
+                this.setUserMessage(request, "Web Site is now online");
+                CPathUIConfig.setOnline(true);
+            }
+            xdebug.logMsg(this, "Web site is online:  " + CPathUIConfig.isOnline());
+            EhCache.resetAllCaches();
         }
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
