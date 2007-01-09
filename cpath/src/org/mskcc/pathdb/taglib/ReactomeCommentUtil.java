@@ -21,8 +21,14 @@ public class ReactomeCommentUtil {
             initReactomeWordHack();
         }
 
+        //  Ugly hack to handle Reactome <P>'s and <BR>'s
         originalComment = originalComment.replaceAll("<BR>", "<p>");
         originalComment = originalComment.replaceAll("<br>", "<p>");
+        originalComment = originalComment.replaceAll("<p><p><p>", "");
+        originalComment = originalComment.replaceAll("<p><p>", "<p>");
+        if (originalComment.endsWith("<p>")) {
+            originalComment = originalComment.substring(0, originalComment.length() - 3);
+        }
 
         //  Ugly hack to handle Reactome HREF links
         if (originalComment.indexOf("<a href") > -1) {
