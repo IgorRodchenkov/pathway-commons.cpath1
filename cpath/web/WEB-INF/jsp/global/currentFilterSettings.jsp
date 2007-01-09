@@ -18,7 +18,7 @@
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
     Iterator iterator = settings.getSnapshotIdSet().iterator();
 %>
-<h3>Filter Settings: [<a href='filter.do'>Update</a>]</h3>
+<h3>Filter Settings:</h3>
 <%
     out.println("<ul>");
     while (iterator.hasNext()) {
@@ -38,4 +38,5 @@
         }
     }
     out.println("</ul>");
+    out.println("<p>[<a href='filter.do'>Update Filter Settings</a>]</p>");
 %>
