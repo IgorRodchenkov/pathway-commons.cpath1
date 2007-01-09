@@ -174,18 +174,6 @@
   </tag>
 
   <tag>
-    <name>biopaxRecordSummaryTable</name>
-    <tag-class>org.mskcc.pathdb.taglib.BioPaxRecordSummaryTable</tag-class>
-    <body-content>empty</body-content>
-    <description>Displays General BioPax Record Information</description>
-	<attribute>
-		<name>record</name>
-		<required>true</required>
-		<rtexprvalue>true</rtexprvalue>
-	</attribute>
-  </tag>
-
-  <tag>
     <name>logTable</name>
     <tag-class>org.mskcc.pathdb.taglib.LogTable</tag-class>
     <body-content>empty</body-content>

@@ -1,4 +1,4 @@
-// $Id: TestBioPaxSummary.java,v 1.9 2007-01-02 16:56:14 cerami Exp $
+// $Id: TestBioPaxSummary.java,v 1.10 2007-01-09 15:40:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -109,9 +109,6 @@ public class TestBioPaxSummary extends TestCase {
         // external links
         List links = biopaxRecordSummary.getExternalLinks();
         assertTrue(links.size() == 4);
-        // comment
-        String comment = BioPaxRecordSummaryUtils.getBioPaxRecordCommentString(biopaxRecordSummary);
-        assertEquals("Description of AR", comment);
     }
 
     /**

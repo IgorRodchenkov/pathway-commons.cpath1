@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.29 2007-01-03 16:37:15 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.30 2007-01-09 15:40:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -54,7 +54,6 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
-import org.mskcc.pathdb.util.cache.EhCache;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -64,9 +63,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Cache;
 
 /**
  * This class contains utilities
@@ -125,35 +121,35 @@ public class BioPaxRecordUtil {
         biopaxRecordSummary.setLabel(record.getName());
         try {
             // set name
-			setBioPaxRecordStringAttribute(root,
-										   "/*/bp:NAME",
-										   "setName",
-										   biopaxRecordSummary);
+            setBioPaxRecordStringAttribute(root,
+                                           "/*/bp:NAME",
+                                           "setName",
+                                           biopaxRecordSummary);
             // set short name
             setBioPaxRecordStringAttribute(root,
-										   "/*/bp:SHORT-NAME",
-										   "setShortName",
-										   biopaxRecordSummary);
+                                           "/*/bp:SHORT-NAME",
+                                           "setShortName",
+                                           biopaxRecordSummary);
             // set synonyms
             setBioPaxRecordListAttribute(root,
-										 "/*/bp:SYNONYMS",
-										 "setSynonyms",
-										 biopaxRecordSummary);
+                                         "/*/bp:SYNONYMS",
+                                         "setSynonyms",
+                                         biopaxRecordSummary);
             // set organsim
             setBioPaxRecordStringAttribute(root,
-										   "/*/bp:ORGANISM/*/bp:NAME",
-										   "setOrganism",
-										   biopaxRecordSummary);
+                                           "/*/bp:ORGANISM/*/bp:NAME",
+                                           "setOrganism",
+                                           biopaxRecordSummary);
             // set data source
             setBioPaxRecordStringAttribute(root,
-										   "/*/bp:DATA-SOURCE/*/bp:NAME",
-										   "setDataSource",
-										   biopaxRecordSummary);
+                                           "/*/bp:DATA-SOURCE/*/bp:NAME",
+                                           "setDataSource",
+                                           biopaxRecordSummary);
             // availability
             setBioPaxRecordStringAttribute(root,
-										   "/*/bp:AVAILABILITY",
-										   "setAvailability",
-										   biopaxRecordSummary);
+                                           "/*/bp:AVAILABILITY",
+                                           "setAvailability",
+                                           biopaxRecordSummary);
             // external links
             DaoExternalLink externalLinker = DaoExternalLink.getInstance();
             ArrayList externalLinks = externalLinker.getRecordsByCPathId(record.getId());
@@ -161,10 +157,7 @@ public class BioPaxRecordUtil {
                 biopaxRecordSummary.setExternalLinks(externalLinks);
             }
             // comment
-            setBioPaxRecordStringAttribute(root,
-										   "/*/bp:COMMENT",
-										   "setComment",
-										   biopaxRecordSummary);
+            setComments(root, biopaxRecordSummary);            
 
             // if physical entity record is a complex, lets get its members
             if (record.getSpecificType() != null
@@ -601,6 +594,28 @@ public class BioPaxRecordUtil {
 
         // made it here
         return false;
+    }
+
+    /**
+     * Sets BioPAX Comments.
+     * @param root Root element.
+     * @param biopaxRecordSummary BioPAX Record Summary Object.
+     * @throws JDOMException JDOM/XPath Error.
+     */
+    private static void setComments (Element root, BioPaxRecordSummary
+            biopaxRecordSummary) throws JDOMException {
+        // setup for query
+        XPath xpath = XPath.newInstance("/*/bp:COMMENT");
+        xpath.addNamespace("bp", root.getNamespaceURI());
+        List list = xpath.selectNodes(root);
+        if (list != null && list.size() > 0) {
+            String comments[] = new String[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                Element element = (Element) list.get(i);
+                comments[i] = element.getTextNormalize();
+            }
+            biopaxRecordSummary.setComments(comments);
+        }
     }
 
     /**

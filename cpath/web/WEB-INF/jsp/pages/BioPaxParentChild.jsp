@@ -148,9 +148,15 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
 
     StringBuffer buf = new StringBuffer();
     boolean hasDetails = false;
-    if (bpSummary.getComment() != null) {
-        String comment = ReactomeCommentUtil.massageComment(bpSummary.getComment());
-        buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", "<P>" + comment));
+    if (bpSummary.getComments() != null) {
+        String comments[] = bpSummary.getComments();
+        StringBuffer commentHtml = new StringBuffer();
+        for (int i=0; i<comments.length; i++) {
+            commentHtml.append("<p>" + ReactomeCommentUtil.massageComment(comments[i])
+                + "</p>");
+        }
+        buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment",
+                commentHtml.toString()));
         hasDetails = true;
     } else {
         buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", ""));

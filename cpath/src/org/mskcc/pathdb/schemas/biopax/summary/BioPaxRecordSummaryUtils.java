@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.43 2007-01-04 20:11:26 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.44 2007-01-09 15:40:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -184,31 +184,6 @@ public class BioPaxRecordSummaryUtils {
         // outta here
         return (availability != null && availability.length() > 0)
                 ? availability : null;
-    }
-
-    /**
-     * Gets the BioPax Comment String to render.
-     *
-     * @param biopaxRecordSummary BioPaxRecordSummary Object.
-     * @return String HTML String.
-     * @throws IllegalArgumentException Illegal Argument Specified.
-     */
-    public static String getBioPaxRecordCommentString
-            (BioPaxRecordSummary biopaxRecordSummary)
-            throws IllegalArgumentException {
-
-        // check args
-        if (biopaxRecordSummary == null) {
-            throw new IllegalArgumentException
-                    ("BioPaxRecordSummaryUtils.getBioPaxRecordComment"
-                            + "String() argument is null");
-        }
-
-        // string to return
-        String comment = biopaxRecordSummary.getComment();
-
-        // outta here
-        return (comment != null && comment.length() > 0) ? comment : null;
     }
 
     /**

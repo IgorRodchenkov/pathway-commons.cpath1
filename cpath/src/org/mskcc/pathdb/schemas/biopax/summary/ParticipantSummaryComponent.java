@@ -1,4 +1,4 @@
-// $Id: ParticipantSummaryComponent.java,v 1.11 2007-01-03 16:37:15 cerami Exp $
+// $Id: ParticipantSummaryComponent.java,v 1.12 2007-01-09 15:40:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,7 +73,7 @@ public class ParticipantSummaryComponent extends BioPaxRecordSummary {
         dataSource = biopaxRecordSummary.getDataSource();
         availability = biopaxRecordSummary.getAvailability();
         externalLinks = biopaxRecordSummary.getExternalLinks();
-        comment = biopaxRecordSummary.getComment();
+        comments = biopaxRecordSummary.getComments();
         complexMemberList = biopaxRecordSummary.getComponentList();
         label = biopaxRecordSummary.getLabel();
     }

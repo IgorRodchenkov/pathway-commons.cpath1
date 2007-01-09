@@ -252,8 +252,14 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
 %>
 <h1><%= header %></h1>
 <p>
-<% if (bpSummary.getComment() != null) {
-    out.println(ReactomeCommentUtil.massageComment(bpSummary.getComment()));
+<% if (bpSummary.getComments() != null) {
+    String comments[] = bpSummary.getComments();
+    StringBuffer commentHtml = new StringBuffer();
+    for (int i=0; i<comments.length; i++) {
+        commentHtml.append("<p>" + ReactomeCommentUtil.massageComment(comments[i])
+            + "</p>");
+    }
+    out.println(commentHtml.toString());
 }%>
 </p>
 <%

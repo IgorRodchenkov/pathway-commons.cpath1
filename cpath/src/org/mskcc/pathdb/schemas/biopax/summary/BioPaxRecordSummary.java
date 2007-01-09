@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.12 2007-01-03 16:37:15 cerami Exp $
+// $Id: BioPaxRecordSummary.java,v 1.13 2007-01-09 15:40:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -110,9 +110,9 @@ public class BioPaxRecordSummary implements Serializable {
     protected CPathRecord cPathRecord;
 
     /**
-     * The record comment.
+     * The record comment(s).
      */
-    protected String comment;
+    protected String[] comments;
     /**
      * In the case of a Complex, this is a list of
      * BioPaxRecordSummary that make up the complex.
@@ -316,21 +316,21 @@ public class BioPaxRecordSummary implements Serializable {
     }
 
     /**
-     * Set the record comment.
+     * Set the record comments.
      *
-     * @param comment String
+     * @param comments Array of Strings
      */
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComments (String comments[]) {
+        this.comments = comments;
     }
 
     /**
      * Returns the record comment.
      *
-     * @return String
+     * @return Array of Strings
      */
-    public String getComment() {
-        return comment;
+    public String[] getComments () {
+        return comments;
     }
 
     /**
