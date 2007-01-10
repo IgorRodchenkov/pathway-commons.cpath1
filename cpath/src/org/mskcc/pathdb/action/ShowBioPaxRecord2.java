@@ -66,6 +66,11 @@ public class ShowBioPaxRecord2 extends BaseAction {
         int taxId = getTaxonomyIdFilter(filterSettings, xdebug);
         long snapshotIds[] = getSnapshotFilter(filterSettings, xdebug);
 
+        Set snapshotIdSet = filterSettings.getSnapshotIdSet();
+        if (!snapshotIdSet.contains(record.getSnapshotId())) {
+            return mapping.findForward("out_of_scope");
+        }
+
         //  Get parent or child types.
         ArrayList typeList = new ArrayList();
         boolean getChildren = false;

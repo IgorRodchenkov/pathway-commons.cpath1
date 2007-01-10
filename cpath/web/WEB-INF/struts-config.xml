@@ -108,6 +108,7 @@
         <action path="/record2"
             type="org.mskcc.pathdb.action.ShowBioPaxRecord2">
             <forward name="success" path="/WEB-INF/jsp/pages/BioPaxRecord2.jsp"/>
+            <forward name="out_of_scope" path="/WEB-INF/jsp/pages/OutOfScope.jsp"/>
         </action>
 
         <!--  FAQ Page -->
