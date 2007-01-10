@@ -1,4 +1,4 @@
-// $Id: ExternalDatabaseRecord.java,v 1.21 2007-01-09 20:47:38 cerami Exp $
+// $Id: ExternalDatabaseRecord.java,v 1.22 2007-01-10 15:22:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -30,6 +30,8 @@
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
 package org.mskcc.pathdb.model;
+
+import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -151,12 +153,13 @@ public class ExternalDatabaseRecord implements Serializable {
      * @return URL String.
      */
     public String getUrlWithId(String primaryId) {
+        String tempUrl;
         if (primaryId != null) {
             //  Hard-Coded Fix for HPRD Ids.
             primaryId = primaryId.replaceAll("HPRD_", "");
             if (urlPattern != null && urlPattern.trim().length() > 0) {
-				urlPattern = cookURLPattern(urlPattern, primaryId);
-                return urlPattern.replaceAll("%ID%", primaryId);
+				tempUrl = cookURLPattern(urlPattern, primaryId);
+                return tempUrl.replaceAll("%ID%", primaryId);
             } else {
                 return null;
             }
@@ -339,8 +342,8 @@ public class ExternalDatabaseRecord implements Serializable {
 	 *
 	 * Currently, (12/13) only Reactome has multiple URL patterns (see cookReactome).
 	 *
-	 * @param primaryID String
 	 * @param urlPattern String
+     * @param primaryId String
 	 * @return String
 	 */
 	private String cookURLPattern(String urlPattern, String primaryId) {
