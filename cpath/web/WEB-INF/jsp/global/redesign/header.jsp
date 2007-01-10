@@ -44,6 +44,19 @@
     See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
     --%>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+
+    <style type="text/css" xml:space="preserve">
+        #demo .loading {
+        background-image:url("jsp/images/loading.gif");
+        background-position:center center;
+        background-repeat:no-repeat;
+        min-height:200px;
+        }
+        #demo .yui-content {
+        padding:1em;
+        min-height:200px;
+        }
+    </style>
 </head>
 
 <body>
