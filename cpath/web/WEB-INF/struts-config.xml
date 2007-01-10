@@ -122,6 +122,12 @@
             <forward name="success" path="/WEB-INF/jsp/pages/About.jsp"/>
         </action>
 
+        <!--  Credits Page -->
+        <action path="/credits"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/Credits.jsp"/>
+        </action>
+
         <!-- Admin Actions -->
         <action path="/adminHome"
             type="org.mskcc.pathdb.action.admin.AdminHomeAction"

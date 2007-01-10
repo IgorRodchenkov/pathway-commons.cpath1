@@ -125,6 +125,15 @@
         tabActive.add (Boolean.FALSE);
     }
 
+    tabNames.add("Credits");
+    String creditUrl = "credits.do";
+    tabUrls.add(creditUrl);
+    if (url.equals(creditUrl)) {
+        tabActive.add (Boolean.TRUE);
+    } else {
+        tabActive.add (Boolean.FALSE);
+    }    
+
     String isAdmin = (String) request.getAttribute(BaseAction.PAGE_IS_ADMIN);
     String host = request.getRemoteHost();
     if (isAdmin != null
