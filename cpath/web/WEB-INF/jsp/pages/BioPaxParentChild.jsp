@@ -145,7 +145,7 @@ private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
     StringBuffer buf = new StringBuffer();
     if (bpSummary.getCPathRecord() != null
         && bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
-            String entityLink = BioPaxRecordSummaryUtils.createEntityLink(bpSummary, 200);
+            String entityLink = BioPaxRecordSummaryUtils.createEntityLink(bpSummary, 50);
             buf.append(entityLink);
     } else {
         buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
