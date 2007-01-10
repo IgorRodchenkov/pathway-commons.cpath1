@@ -14,9 +14,10 @@ All data is freely available, under the license terms of each contributing datab
 </p>
 
 <h1>About cBio @ MSKCC</h1>
-<p>The Computational Biology Center at Memorial Sloan-Kettering Cancer Center
-(<a href="http://www.mskcc.org">MSKCC</a>) pursues computational biology research projects
-and the development of bioinformatics resources in the areas of:
+<p>The <a href="http://cbio.mkscc.org">Computational Biology Center</a> at
+<a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
+pursues computational biology research projects and the development of bioinformatics
+resources in the areas of:
 </p>
 <ul>
    <li> sequence-structure analysis </li>
@@ -27,7 +28,7 @@ and the development of bioinformatics resources in the areas of:
 <p>
 The mission of cBio is to move the theoretical methods and genome-scale data resources of
 computational biology into everyday laboratory practice and use, and is reflected in the
-organization of cBio into research and service components &#126; the intention being that
+organization of cBio into research and service components -- the intention being that
 new computational methods created through the process of scientific inquiry should be
 generalized and supported as open-source and shared community resources.
 </p>
