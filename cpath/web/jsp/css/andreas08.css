@@ -330,16 +330,6 @@ font-size:90%;
 width:100%; /* arbitrary width */
 }
 
-#demo .yui-content {
-padding:1em;
-}
-
-#demo .loading {
-background-image:url("jsp/images/loading.gif");
-background-position:center center;
-background-repeat:no-repeat;
-}
-
 #demo .loading * {
 display:none;
 }
