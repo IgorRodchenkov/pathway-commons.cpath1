@@ -67,7 +67,8 @@ public class ShowBioPaxRecord2 extends BaseAction {
         long snapshotIds[] = getSnapshotFilter(filterSettings, xdebug);
 
         Set snapshotIdSet = filterSettings.getSnapshotIdSet();
-        if (!snapshotIdSet.contains(record.getSnapshotId())) {
+        if (record.getSnapshotId() >= 0 &&
+                !snapshotIdSet.contains(record.getSnapshotId())) {
             return mapping.findForward("out_of_scope");
         }
 
