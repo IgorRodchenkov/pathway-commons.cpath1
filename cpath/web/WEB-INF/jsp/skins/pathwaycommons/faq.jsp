@@ -36,6 +36,21 @@ browsing and analysis.  We will be adding more databases over time and will add 
 advanced query tool and web service. Pathway Commons will also support additional types
 of pathway data, such as gene regulation, molecular states and genetic interactions as
 these features are added to BioPAX.</p>
+<h3>What is BioPAX?</h3>
+<p>BioPAX, or Biological Pathway Exchange, is a standard exchange format for biological pathways.
+Pathway databases that make their data available in this format can be imported into Pathway Commons.
+BioPAX is developed through a collaborative effort by many pathway databases.
+More information is available at <a href="http://biopax.org">http://biopax.org</a>.
+</p>
+<h3>What other standard pathway exchange formats are there?</h3>
+<p>
+Other pathway related standard exchange formats exist, each geared towards a unique type of pathway
+information. Pathway Commons also currently supports the Proteomics Standards Initiative Molecular
+Interaction (PSI-MI) format, which stores molecular interactions, such as protein-protein interactions.
+The Systems Biology Markup Language (SBML) and the Cell Markup Language (Cell-ML), which represent
+mathematical models of pathways, will be supported through a conversion to BioPAX format by the
+<a href="http://biomodels.net/">BioModels</a> database group.
+</p>
 <h3>What will Pathway Commons not do?</h3>
 <p>Pathway Commons will not duplicate advanced features of source databases that are
 often optimized for the type of data and users specific to a source database. Examples
@@ -106,3 +121,5 @@ local install</a>.  Easy to install and administer.</li>
 Informatics Grid (<a href="https://cabig.nci.nih.gov/">caBIG</a>), and aims to meet
 "silver-level" requirements for software interoperability and data exchange.</li>
 </ul>
+<h3>Can I access Pathway Commosn data via a web service?</h3>
+<p>A web service is planned for a future release.</p>
