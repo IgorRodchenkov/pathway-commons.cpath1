@@ -56,6 +56,30 @@
         padding:1em;
         min-height:200px;
         }
+        #demo .yui-nav li {
+        margin-top:0px;
+        margin-bottom:5px;
+        background-color:#F3F3F3;
+        }
+        #demo .yui-nav .selected {
+            font-weight:bold;
+        }
+        #demo .yui-nav .selected a{
+
+        }
+        #demo .yui-nav {
+        background-color:#FFFFFF;
+        padding-top:4px;
+        padding-left:4px;
+        border:1px solid #467aa7;
+        margin-right:0px;
+        }
+        #demo .yui-nav li a {
+          border:1px solid #467aa7;
+        }
+        #demo .yui-content {
+           border:1px solid #467aa7;
+        }
     </style>
 </head>
 
