@@ -47,7 +47,9 @@ YAHOO.example.init = function() {
     var tabView = new YAHOO.widget.TabView({id: 'demo'});
 
     //  Create one tab per type
-    <% for (int i=0; i<typesList.size(); i++) {
+    <%
+    boolean activeTab = true;
+    for (int i=0; i<typesList.size(); i++) {
         TypeCount typeCount = (TypeCount) typesList.get(i);
         String plain = (String) bpPlainEnglish.getTabLabel(typeCount.getCommand(),
         typeCount.getType());
@@ -55,10 +57,6 @@ YAHOO.example.init = function() {
             plain = typeCount.getType();
         }
         String tabLabel = plain + " (" + typeCount.getCount() + ")";
-        String tabActive = "false";
-        if (i==0) {
-            tabActive = "true";
-        }
         StringBuffer dataUrl = new StringBuffer("table.do?id=" + id + "&command=" + typeCount.getCommand() + "&type="
             + typeCount.getType() + "&totalNumRecords=" + typeCount.getCount());
         String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
@@ -67,6 +65,13 @@ YAHOO.example.init = function() {
                 + xdebugParameter);
         }
         if (typeCount.getCount() > 0) {
+            String tabActive;
+            if (activeTab) {
+                tabActive = "true";
+                activeTab = false;
+            } else {
+                tabActive = "false";
+            }
             showTabs = true;
             %>
                 var tab<%= i%> = new YAHOO.widget.Tab({
