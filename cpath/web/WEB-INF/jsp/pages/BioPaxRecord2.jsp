@@ -380,6 +380,21 @@ enable Javascript support within your web browser.
         }
         out.println("</ul>");
     }
+    if (typesList.size() > 0) {
+        out.println("<h3>Summary:</h3>");
+        out.println("<ul>");
+        for (int i=0; i<typesList.size(); i++) {
+            TypeCount typeCount = (TypeCount) typesList.get(i);
+            String plain = (String) bpPlainEnglish.getTabLabel(typeCount.getCommand(),
+            typeCount.getType());
+            if (plain == null) {
+                plain = typeCount.getType();
+            }
+            String tabLabel = plain + " (" + typeCount.getCount() + ")";
+            out.println("<li> " + tabLabel);
+        }
+        out.println("</ul>");
+    }
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
             ProtocolRequest pRequest = new ProtocolRequest();
