@@ -436,7 +436,9 @@ enable Javascript support within your web browser.
                 plain = typeCount.getType();
             }
             String tabLabel = plain + " (" + typeCount.getCount() + ")";
-            out.println("<li> " + tabLabel);
+            if (typeCount.getCount() > 0) {
+                out.println("<li> " + tabLabel);
+            }
         }
         out.println("</ul>");
     }
