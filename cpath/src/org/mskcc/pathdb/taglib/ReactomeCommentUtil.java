@@ -52,7 +52,7 @@ public class ReactomeCommentUtil {
         while (tokenizer.hasMoreElements()) {
             String token = (String) tokenizer.nextElement();
             if (isMagicReactomeWord(token) && tokenNum > 0) {
-                buf.append ("<P>");
+                buf.append ("<p>");
             }
             buf.append (token + " ");
             tokenNum++;
