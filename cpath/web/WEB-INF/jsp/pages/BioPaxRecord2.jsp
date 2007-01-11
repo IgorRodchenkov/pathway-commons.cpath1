@@ -271,6 +271,23 @@ YAHOO.example.init();
             }
         }
     }
+
+    var showAllComments = false;
+
+    //  Toggles Comments
+    function toggleComments() {
+        var commentRemainder = document.getElementById("comment_remainder");
+        var toggleImage = document.getElementById("toggleCommentImage");
+        showAllComments = ! showAllComments;
+        YAHOO.log ("Toggling comments, show all comments:  " + showAllComments);;
+        if (showAllComments) {
+            YAHOO.util.Dom.setStyle(commentRemainder, 'display', 'inline');
+            toggleImage.innerHTML = "<img align=right src='jsp/images/close.gif'>";
+        } else {
+            YAHOO.util.Dom.setStyle(commentRemainder, 'display', 'none');
+            toggleImage.innerHTML = "<img align=right src='jsp/images/open.gif'>";
+        }
+    }
 </script>
 <div class="splitcontentright">
 <%
@@ -278,26 +295,49 @@ String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
 %>
 <h1><%= header %></h1>
 <p>
-<% if (bpSummary.getComments() != null) {
+<%
+    boolean firstParagraph = false;
+    if (bpSummary.getComments() != null) {
     String comments[] = bpSummary.getComments();
     StringBuffer commentHtml = new StringBuffer();
     for (int i=0; i<comments.length; i++) {
-        commentHtml.append("<p>" + ReactomeCommentUtil.massageComment(comments[i])
-            + "</p>");
+        String comment = ReactomeCommentUtil.massageComment(comments[i]);
+        String paragraphs[] = comment.split("<p>");
+        for (int j=0; j<paragraphs.length; j++) {
+            if (firstParagraph == false) {
+                commentHtml.append("<div class='comment_first'>");
+                if (paragraphs.length > 1 || comments.length > 1
+                    || referenceLinks.size() > 0
+                    || (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0)) {
+                    commentHtml.append("<a title='Toggle Comments / References' onClick='toggleComments()'>");
+                    commentHtml.append("<span id='toggleCommentImage' class='toggle_details'>");
+                    commentHtml.append("<img align=right src='jsp/images/open.gif'/></span></a>");
+                }
+                commentHtml.append("<p>");
+                commentHtml.append(paragraphs[j] + "</p>\n\r");
+                commentHtml.append("</div>\n\r");
+                commentHtml.append("<div id='comment_remainder'>\n\r");
+                firstParagraph = true;
+            } else {
+                commentHtml.append("<p>" + paragraphs[j] + "</p>\n\r");
+            }
+        }
     }
     out.println(commentHtml.toString());
 }%>
 </p>
 <%
-        if (referenceLinks.size() > 0) {
-            out.println(refUtil.getReferenceHtml(referenceLinks, referenceMap));
-        }
-        if (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0) {
-            out.println("<p><b>Availability:</b></p>\n");
-            out.println("<p>" + bpSummary.getAvailability() + "</p>");
-        }
+    if (referenceLinks.size() > 0) {
+        out.println(refUtil.getReferenceHtml(referenceLinks, referenceMap));
+    }
+    if (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0) {
+        out.println("<p><b>Availability:</b></p>\n");
+        out.println("<p>" + bpSummary.getAvailability() + "</p>");
+    }
+    if (firstParagraph == true) {
+        out.println("</div>");
+    }
 %>
-
 
 <% if (showTabs) { %>
 
