@@ -53,8 +53,14 @@ public class DataSourceListTable extends HtmlTable {
                 }
                 append ("</td>");
                 append ("<td valign=center>"
-                        + DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId())
-                        + "</td>");
+                        + DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId()));
+                if (snapshotRecord.getExternalDatabase() != null) {
+                    ExternalDatabaseRecord dbRecord = snapshotRecord.getExternalDatabase();
+                    append ("<br><a href=\"webservice.do?version=1.0&format=html&cmd=get_by_keyword");
+                    append ("&q=data_source%3A%22" + dbRecord.getName() + "%22+AND+entity_type%3Apathway\">");
+                    append ("Browse</a>");
+                }
+                append ("</td>");
                 endRow();
             }
         }
