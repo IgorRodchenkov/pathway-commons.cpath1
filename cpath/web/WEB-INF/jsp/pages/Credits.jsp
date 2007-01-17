@@ -11,8 +11,16 @@ request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Credits");
 
 <% String appName = CPathUIConfig.getWebUIBean().getApplicationName(); %>
 <div>
-<h1>Credit where much credit is due...</h1>
-<p><%= appName %> is build entirely on open source software.  We gratefully
+<h1>Credits</h1>
+<p><%= appName %> runs on <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a>,
+and was created by:  <a href="http://baderlab.org/">Gary Bader</a>,
+<a href="http://cbio.mskcc.org/people/info/ethan_cerami.html">Ethan Cerami</a>,
+<a href="http://cbio.mskcc.org/people/info/emek_demir.html">Emek Demir</a>,
+<a href="http://cbio.mskcc.org/people/info/benjamin_gross.html">Benjamin Gross</a>, and
+<a href="http://cbio.mskcc.org/people/info/chris_sander.html">Chris Sander</a>.
+</p>
+
+<p><%= appName %> is built entirely on open source software.  We gratefully
 acknowledge the following open source projects.</p>
 
 <table>
