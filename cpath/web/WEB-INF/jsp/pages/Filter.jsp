@@ -96,6 +96,12 @@
 <table cellpadding="0" cellspacing="5">
     <tr>
         <td>
+            <b>Once set, your filter settings will remain in effect,
+            and persistent for all subsequent searches.</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <input type="submit" value="Set Global Filters"/>
         </td>
     </tr>

@@ -39,6 +39,8 @@ or  <a href="webservice.do?version=1.0&q=mtor&format=html&cmd=get_by_keyword">mT
 <p>
 <%= webUIBean.getApplicationName() %> currently contains the following data sources:</p>
 <cbio:dataSourceListTable/>
+<p>Integration of additional data sources is planned in the near future.  For a comprehensive directory
+of interaction and pathway databases, please refer to <a href="http://www.pathguide.org">Pathguide</a>.</p>
 </td>
 <td valign="top">
     <div class="home_page_box">
