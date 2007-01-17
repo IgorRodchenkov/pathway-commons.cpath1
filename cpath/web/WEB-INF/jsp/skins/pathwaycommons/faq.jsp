@@ -18,7 +18,7 @@ can increase efficiency by sharing software components.
 property restrictions of the source database.  However, only databases that are freely available
 or free to academics are included.
 </p>
-<h3>Doesn't Pathway Commons compete with other pathway databases?</h3>
+<h3>Does Pathway Commons compete with other pathway databases?</h3>
 <p>No. Pathway Commons does not compete with or duplicate efforts of pathway databases or
 software tool providers. Pathway Commons will add value to these existing efforts by providing
 a shared resource for publishing, distributing and querying pathway information. Existing
