@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch2.java,v 1.1 2007-01-25 21:15:10 grossb Exp $
+// $Id: ExecuteSearch2.java,v 1.2 2007-01-25 22:00:10 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,32 +35,21 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
-import org.mskcc.dataservices.schemas.psi.EntrySet;
-import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.lucene.LuceneQuery;
-import org.mskcc.pathdb.lucene.LuceneConfig;
-import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
-import org.mskcc.pathdb.lucene.LuceneAutoFilter;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
-import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
-import org.mskcc.pathdb.model.LocalFilterSettings;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -187,7 +176,7 @@ public class ExecuteSearch2 extends BaseAction {
 				if (totalNumberHits > 0) hitByTypeMap.put(type, totalNumberHits);
 			}
 			// add hits by record type map to request object
-			if (hitByTypeMap != null) {
+			if (hitByTypeMap.size() > 0) {
 				request.setAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP, hitByTypeMap);
 			}
             return mapping.findForward(CPathUIConfig.BIOPAX);
