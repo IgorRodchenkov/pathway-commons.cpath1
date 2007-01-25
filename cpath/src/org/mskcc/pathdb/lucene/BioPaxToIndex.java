@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.12 2006-11-02 15:57:15 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.13 2007-01-25 21:17:39 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -96,6 +96,11 @@ import java.util.List;
  * @author Ethan Cerami
  */
 public class BioPaxToIndex implements ItemToIndex {
+
+    /**
+     * Page Attribute:  Data Sources.
+     */
+    public static final String DATA_SOURCE_DELIMITER = ":::::";
 
     /**
      * Internal List of all Fields scheduled for Indexing.
@@ -236,7 +241,7 @@ public class BioPaxToIndex implements ItemToIndex {
 			if (externalDatabaseRecord == null) continue;
 
 			// get name of external db from external db record and append to buffer
-			dataSourceBuffer.append(externalDatabaseRecord.getName() + " ");
+			dataSourceBuffer.append(externalDatabaseRecord.getName() + DATA_SOURCE_DELIMITER);
 		}
 
 		// outta here

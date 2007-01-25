@@ -1,4 +1,4 @@
-// $Id: Pager.java,v 1.15 2006-12-22 18:30:53 cerami Exp $
+// $Id: Pager.java,v 1.16 2007-01-25 21:15:26 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -166,6 +166,43 @@ public class Pager {
         }
         if (firstUrl != null) {
             String link = createLink("First Page", firstUrl);
+            text.append(bar + link);
+        }
+        return text.toString();
+    }
+
+    /**
+     * Gets HTML Header with Next/Previous Links.
+     *
+     * @return HTML Text.
+     */
+    public String getHeaderHtmlForSearchPage(String color, String entityTypeParameter) {
+        NumberFormat formatter = new DecimalFormat("#,###,###");
+        String bar = "&nbsp;|&nbsp;";
+        StringBuffer text = new StringBuffer();
+		text.append("Showing Results ");
+        text.append((startIndex + 1) + " - " + endIndex);
+        text.append(" of " + formatter.format(totalNumHits));
+        text.append("&nbsp;");
+        String firstUrl = this.getFirstUrl();
+        String previousUrl = this.getPreviousUrl();
+        String nextUrl = this.getNextUrl();
+        if (nextUrl != null) {
+			nextUrl += ("&" + entityTypeParameter);
+			nextUrl = nextUrl.replace("webservice.do", "webservice2.do");
+            String link = createLink("<font color=\"" + color + "\"> Next " + hitsPerPage + "</font>", nextUrl);
+            text.append(bar + link);
+        }
+        if (previousUrl != null) {
+			previousUrl += ("&" + entityTypeParameter);
+			previousUrl = previousUrl.replace("webservice.do", "webservice2.do");
+            String link = createLink("<font color=\"" + color + "\"> Previous " + hitsPerPage + "</font>", previousUrl);
+            text.append(bar + link);
+        }
+        if (firstUrl != null) {
+			firstUrl += ("&" + entityTypeParameter);
+			firstUrl = firstUrl.replace("webservice.do", "webservice2.do");
+            String link = createLink("<font color=\"" + color + "\"> First Page</font>", firstUrl);
             text.append(bar + link);
         }
         return text.toString();

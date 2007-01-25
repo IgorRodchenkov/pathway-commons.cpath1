@@ -26,10 +26,37 @@ public class LuceneAutoFilter {
      */
     public static String addFiltersToQuery (String q,
             GlobalFilterSettings filterSettings) throws DaoException {
-        DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+
         //  surround user query by parentheses
         q = "(" + q + ")";
 
+		// data source filter
+        String revisedQuery = processDataSourceFilter(q, filterSettings);
+
+		// organism filter
+		revisedQuery = processOrganismFilter(revisedQuery, filterSettings);
+
+		// entity type
+		revisedQuery = processEntityTypeFilter(revisedQuery, filterSettings);
+
+		// outta here
+		return revisedQuery;
+    }
+
+	/**
+	 * Process data source filter
+	 *
+	 * @param q String
+	 * @param filterSettings GlobalFilterSettings
+	 *
+	 * @return String
+	 */
+	private static String processDataSourceFilter(String q, GlobalFilterSettings filterSettings)
+		throws DaoException {
+
+        DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+
+		// data source filter
         List dataSourceList = new ArrayList();
         if (filterSettings != null) {
             Set idSet = filterSettings.getSnapshotIdSet();
@@ -42,24 +69,60 @@ public class LuceneAutoFilter {
                 }
             }
         }
-        String revisedQuery = addFiltersToQuery(q, LuceneConfig.FIELD_DATA_SOURCE,
-                dataSourceList);
-        Set organismSet = filterSettings.getOrganismTaxonomyIdSet();
+        return addFiltersToQuery(q, LuceneConfig.FIELD_DATA_SOURCE, dataSourceList);
+	}
+
+	/**
+	 * Process organism source filter
+	 *
+	 * @param q String
+	 * @param filterSettings GlobalFilterSettings
+	 *
+	 * @return String
+	 */
+	private static String processOrganismFilter(String q, GlobalFilterSettings filterSettings) {
+
+        Set<Integer> organismSet = filterSettings.getOrganismTaxonomyIdSet();
         List organismList = new ArrayList();
-        Iterator iterator = organismSet.iterator();
 		boolean allOrganismsFilterSet = false;
-        while (iterator.hasNext()) {
-            Integer id = (Integer) iterator.next();
-            organismList.add(id.toString());
+        for (Integer id : organismSet) {
 			if (id == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
 				allOrganismsFilterSet = true;
+				break;
 			}
+            organismList.add(id.toString());
         }
+
 		// skip organism filter if "All organisms" filter option was choosen
-		return (allOrganismsFilterSet) ? revisedQuery :
-			addFiltersToQuery (revisedQuery, LuceneConfig.FIELD_ORGANISM,
-							   organismList);
-    }
+		return (!allOrganismsFilterSet) ?
+			addFiltersToQuery (q, LuceneConfig.FIELD_ORGANISM, organismList) : q;
+	}
+
+	/**
+	 * Process entity type filter
+	 *
+	 * @param q String
+	 * @param filterSettings GlobalFilterSettings
+	 *
+	 * @return String
+	 */
+	private static String processEntityTypeFilter(String q, GlobalFilterSettings filterSettings) {
+
+		Set<String>  entityTypeSet = filterSettings.getEntityTypeSet();
+		List entityTypeList = new ArrayList();
+		boolean allEntityTypeFilterSet = false;
+		for (String type : entityTypeSet) {
+			if (type == GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE) {
+				allEntityTypeFilterSet = true;
+				break;
+			}
+			entityTypeList.add(type);
+		}
+
+		// skip entity type filter if "All types" filter option was choosen
+		return (!allEntityTypeFilterSet) ?
+			addFiltersToQuery (q, LuceneConfig.FIELD_ENTITY_TYPE, entityTypeList) : q;
+	}
 
     /**
      * Massages Lucene Query to take into account specified data sources.

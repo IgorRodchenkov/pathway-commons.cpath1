@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.29 2006-12-21 15:02:29 cerami Exp $
+// $Id: BaseAction.java,v 1.30 2007-01-25 21:17:05 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -126,9 +126,24 @@ public abstract class BaseAction extends Action {
     public static final String ATTRIBUTE_TOTAL_NUM_HITS = "total_num_hits";
 
     /**
+     * Page Attribute:  Hits by record type map.
+     */
+    public static final String ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP = "hits_by_record_type";
+
+    /**
      * Page Attribute:  Text Fragments.
      */
     public static final String ATTRIBUTE_TEXT_FRAGMENTS = "text_fragments";
+
+    /**
+     * Page Attribute:  Data Sources.
+     */
+    public static final String ATTRIBUTE_DATA_SOURCES = "data_sources";
+
+    /**
+     * Page Attribute:  Scores.
+     */
+    public static final String ATTRIBUTE_SCORES = "scores";
 
     /**
      * Page Attribute:  INTERACTOR Set.

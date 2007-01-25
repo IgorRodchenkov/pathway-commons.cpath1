@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.7 2006-11-13 16:08:36 cerami Exp $
+// $Id: LuceneQuery.java,v 1.8 2007-01-25 21:14:40 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,8 @@ import org.mskcc.pathdb.taglib.Pager;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 
+import java.util.Set;
+import java.util.Map;
 import java.io.IOException;
 
 /**
@@ -56,6 +58,8 @@ public class LuceneQuery {
     private XDebug xdebug;
     private int totalNumHits;
     private String fragments[];
+	private Set<String> dataSources;
+	private Map<Long,Float> scores;
 
     /**
      * Constructor.
@@ -98,9 +102,15 @@ public class LuceneQuery {
 
             if (queryFromUser != null) {
                 //  Extract fragments, based on original query from user
-                fragments = QueryUtil.exractFragments(queryFromUser, pager, hits);
+                fragments = QueryUtil.extractFragments(queryFromUser, pager, hits);
+				// Extract data sources
+				dataSources = QueryUtil.extractDataSources(queryFromUser, pager, hits);
+				// Extract scores
+				scores = QueryUtil.extractScores(queryFromUser, pager, hits);
             } else {
-                fragments = QueryUtil.exractFragments(searchTerms, pager, hits);
+				fragments = QueryUtil.extractFragments(searchTerms, pager, hits);
+                dataSources = QueryUtil.extractDataSources(searchTerms, pager, hits);
+				scores = QueryUtil.extractScores(searchTerms, pager, hits);
             }
             return cpathIds;
         } finally {
@@ -124,6 +134,27 @@ public class LuceneQuery {
      */
     public String[] getTextFragments() {
         return this.fragments;
+    }
+
+    /**
+     * Gets Data Sources.
+     *
+     * @return Set
+     */
+    public Set<String> getDataSources() {
+        return this.dataSources;
+    }
+
+    /**
+     * Gets query score map.
+	 *
+	 * The map key is cpath id.
+	 * The map value is lucene score (0-1)
+     *
+     * @return Map<Long,Float>
+     */
+    public Map<Long,Float> getScores() {
+        return this.scores;
     }
 
     /**

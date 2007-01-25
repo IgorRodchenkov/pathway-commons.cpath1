@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.6 2006-12-22 18:31:18 cerami Exp $
+// $Id: QueryUtil.java,v 1.7 2007-01-25 21:14:16 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,11 +41,16 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.highlight.QueryHighlightExtractor;
 import org.mskcc.pathdb.lucene.LuceneConfig;
+import org.mskcc.pathdb.lucene.BioPaxToIndex;
 import org.mskcc.pathdb.taglib.Pager;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Query Utility Class.
@@ -94,7 +99,7 @@ public class QueryUtil {
      * @throws IOException    Input/Output Error
      * @throws ParseException Parsing Exception
      */
-    public static String[] exractFragments(String term, Pager pager, Hits hits)
+    public static String[] extractFragments(String term, Pager pager, Hits hits)
             throws IOException, ParseException {
         int size = pager.getEndIndex() - pager.getStartIndex();
         String fragments[] = new String[size];
@@ -121,5 +126,59 @@ public class QueryUtil {
         }
         reader.close();
         return fragments;
+    }
+
+    /**
+     * Extracts Data Sources associated with the specified range of
+     * Lucene Hits.
+     *
+     * @param term  Query Term String
+     * @param pager Pager Object for Next/Previous Pages
+     * @param hits  Lucene Hits Object
+     * @return Set of data sources.
+     * @throws IOException    Input/Output Error
+     * @throws ParseException Parsing Exception
+     */
+    public static Set<String> extractDataSources(String term, Pager pager, Hits hits)
+            throws IOException, ParseException {
+        int size = pager.getEndIndex() - pager.getStartIndex();
+        Set<String> dataSources = new HashSet<String>();
+
+        int index = 0;
+        //for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
+		for (int i = 0; i < hits.length(); i++) {
+            Document doc = hits.doc(i);
+            Field field = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
+			String[] sources = field.stringValue().split(BioPaxToIndex.DATA_SOURCE_DELIMITER);
+			for (int lc = 0; lc < sources.length; lc++) {
+				dataSources.add(sources[lc]);
+			}
+        }
+        return dataSources;
+    }
+
+    /**
+     * Extracts Scoress associated with the specified range of
+     * Lucene Hits.
+     *
+     * @param term  Query Term String
+     * @param pager Pager Object for Next/Previous Pages
+     * @param hits  Lucene Hits Object
+     * @return Map of cpath ids to lucene scores (0-1). Map<Long,Float>
+     * @throws IOException    Input/Output Error
+     * @throws ParseException Parsing Exception
+     */
+    public static Map<Long,Float> extractScores(String term, Pager pager, Hits hits)
+            throws IOException, ParseException {
+        int size = pager.getEndIndex() - pager.getStartIndex();
+        Map<Long,Float> scores = new HashMap<Long,Float>();
+
+        int index = 0;
+        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
+            Document doc = hits.doc(i);
+			Field cpathIdField = doc.getField(LuceneConfig.FIELD_CPATH_ID);
+			scores.put(Long.parseLong(cpathIdField.stringValue()), new Float(hits.score(i)));
+        }
+        return scores;
     }
 }

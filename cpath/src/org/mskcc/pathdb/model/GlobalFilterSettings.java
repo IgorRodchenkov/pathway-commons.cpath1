@@ -16,9 +16,12 @@ public class GlobalFilterSettings {
      */
     public final static String GLOBAL_FILTER_SETTINGS = "GLOBAL_FILTER_SETTINGS";
 	public final static int ALL_ORGANISMS_FILTER_VALUE = Integer.MAX_VALUE;
+	public final static String ENTITY_TYPES_FILTER_NAME = "ENTITY_TYPE";
+	public final static String ALL_ENTITY_TYPES_FILTER_VALUE = "ALL";
 
     private HashSet snapshotSet = new HashSet();
     private HashSet organismSet = new HashSet();
+	private HashSet entityTypeSet = new HashSet();
 
     public GlobalFilterSettings() throws DaoException {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
@@ -29,6 +32,7 @@ public class GlobalFilterSettings {
             snapshotSet.add(new Long(snapshotRecord.getId()));
         }
         organismSet.add(ALL_ORGANISMS_FILTER_VALUE);
+        entityTypeSet.add(ALL_ENTITY_TYPES_FILTER_VALUE);
     }
 
     public boolean isSnapshotSelected (long snapshotId) {
@@ -39,12 +43,20 @@ public class GlobalFilterSettings {
         return organismSet.contains(new Integer(ncbiTaxonomyId));
     }
 
+    public boolean isEntityTypeSelected (String entityType) {
+        return entityTypeSet.contains(entityType);
+    }
+
     public Set getSnapshotIdSet() {
         return snapshotSet;
     }
 
     public Set getOrganismTaxonomyIdSet() {
         return organismSet;
+    }
+
+    public Set<String> getEntityTypeSet() {
+        return entityTypeSet;
     }
 
     public void setSnapshotsSelected (List snapshotIds) {
@@ -61,6 +73,15 @@ public class GlobalFilterSettings {
         if (organismTaxonomyIds != null) {
             for (int i=0; i<organismTaxonomyIds.size(); i++) {
                 organismSet.add(organismTaxonomyIds.get(i));
+            }
+        }
+    }
+
+    public void setEntityTypeSelected (List<String> entityTypes) {
+        entityTypeSet = new HashSet();
+        if (entityTypes != null) {
+			for (String type : entityTypes) {
+                entityTypeSet.add(type);
             }
         }
     }
