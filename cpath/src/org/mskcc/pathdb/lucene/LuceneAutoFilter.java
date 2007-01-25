@@ -112,7 +112,7 @@ public class LuceneAutoFilter {
 		List entityTypeList = new ArrayList();
 		boolean allEntityTypeFilterSet = false;
 		for (String type : entityTypeSet) {
-			if (type == GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE) {
+			if (type.equals(GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE)) {
 				allEntityTypeFilterSet = true;
 				break;
 			}
