@@ -2,20 +2,15 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.taglib.Pager,
                  org.mskcc.pathdb.sql.dao.DaoCPath,
-                 org.mskcc.pathdb.form.WebUIBean,
-                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.model.CPathRecord,
-                 org.mskcc.pathdb.model.BioPaxEntityTypeMap,
                  org.mskcc.pathdb.model.GlobalFilterSettings,
                  org.mskcc.pathdb.util.html.HtmlUtil,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary,
                  org.mskcc.pathdb.util.biopax.BioPaxRecordUtil,
-                 org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.taglib.DbSnapshotInfo,
                  java.util.Set,
-                 java.util.Map,
-                 java.util.TreeMap"%>
+                 java.util.Map"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
@@ -38,12 +33,6 @@
             (BaseAction.ATTRIBUTE_SCORES);
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
     String keyType = (String)request.getParameter(GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME);
-    Map<String, Integer> hitByTypeMap =
-        (Map<String, Integer>)request.getAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP);
-	Map sortedHitByTypeMap = new TreeMap(hitByTypeMap);
-    BioPaxEntityTypeMap typesMap = new BioPaxEntityTypeMap();
-    typesMap.put(GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE,
-    GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE);
 %>
 <%
 if (protocolRequest.getQuery() != null) {
@@ -66,41 +55,15 @@ else {
                 "relevant records in:<br>");
     out.println("<ul>");
 	for (String dataSource : dataSources) {
-	  out.println("<li>" + dataSource + "</li>");
+	    out.println("<li>" + dataSource + "</li>");
 	}
 	out.println("</ul>");
 	out.println("</p>");
 %>
 	<div class="splitcontentleft">
-<%
-    if (totalNumHits.intValue() > 0) {
-        if (hitByTypeMap != null && hitByTypeMap.size() > 0) {
-            out.println("<h3>Narrow Results by Type:</h3>");
-            out.println("<ul>");
-            for (String type : (Set<String>)sortedHitByTypeMap.keySet()) {
-			    // label
-			    String plain = (type.equals(GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE)) ? "All Types" :
-			        (String)typesMap.get(type);
-			    String label = plain + " (" + hitByTypeMap.get(type) + ")";
-			    // output an ahref or text string for each type 
-			    if (type.equals(keyType)) {
-                    out.println("<font size=\"2\"><li>" + label + "</li></font>");
-			    }
-			    else {
-			        out.println("<li>" +
-				                "<a href='webservice2.do?version=1.0&q=" + protocolRequest.getQuery() +
-				                "&format=html&cmd=get_by_keyword&"
-					            + GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME + "=" + type +
-				                "'>" + label +
-				                "</a>" +
-				                "</li>");
-			    }
-			}
-	        out.println("</ul>");
-        }
-    }
-%>
-    </div>
+    <jsp:include page="./narrow-by-type.jsp" flush="true" />
+    <jsp:include page="../../global/currentFilterSettings.jsp" flush="true" />
+	</div>
 	<div class="splitcontentright">
 <%
 	Pager pager = new Pager (protocolRequest, totalNumHits.intValue());
