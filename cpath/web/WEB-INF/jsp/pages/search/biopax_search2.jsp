@@ -81,6 +81,7 @@ else {
 	    Float score = (Float)scores.get(cpathIds[i]);
 	    int scoreboardWidth = (int)(score * MAX_SCOREBOARD_WIDTH);
 	    int percentage = (int)(score * 100);
+	    // some massaging to handle scores very close to zero, but not zero
 	    scoreboardWidth = (percentage == 1 && scoreboardWidth == 0) ? 1 : scoreboardWidth;
 	    scoreboardWidth = (score > 0.0 && scoreboardWidth == 0) ? 1 :  scoreboardWidth;
 	    String spacerString = (scoreboardWidth < MAX_SCOREBOARD_WIDTH) ?
