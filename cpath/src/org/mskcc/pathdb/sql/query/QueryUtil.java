@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.7 2007-01-25 21:14:16 grossb Exp $
+// $Id: QueryUtil.java,v 1.8 2007-01-26 17:31:17 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,8 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.highlight.QueryHighlightExtractor;
 import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.lucene.BioPaxToIndex;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.taglib.Pager;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -130,7 +132,7 @@ public class QueryUtil {
 
     /**
      * Extracts Data Sources associated with the specified range of
-     * Lucene Hits.
+     * Lucene Hits for the entire result set.
      *
      * @param term  Query Term String
      * @param pager Pager Object for Next/Previous Pages
@@ -138,27 +140,53 @@ public class QueryUtil {
      * @return Set of data sources.
      * @throws IOException    Input/Output Error
      * @throws ParseException Parsing Exception
+     * @throws DaoException   Data Access Exception
      */
-    public static Set<String> extractDataSources(String term, Pager pager, Hits hits)
-            throws IOException, ParseException {
+    public static Set<String> extractDataSourceSet(String term, Pager pager, Hits hits)
+		throws IOException, ParseException, DaoException {
         int size = pager.getEndIndex() - pager.getStartIndex();
         Set<String> dataSources = new HashSet<String>();
+        DaoExternalDb dao = new DaoExternalDb();
 
-        int index = 0;
         //for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
 		for (int i = 0; i < hits.length(); i++) {
             Document doc = hits.doc(i);
             Field field = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
-			String[] sources = field.stringValue().split(BioPaxToIndex.DATA_SOURCE_DELIMITER);
-			for (int lc = 0; lc < sources.length; lc++) {
-				dataSources.add(sources[lc]);
-			}
+			dataSources.add(dao.getRecordByTerm(field.stringValue()).getName());
         }
         return dataSources;
     }
 
     /**
-     * Extracts Scoress associated with the specified range of
+     * Extracts Datasources associated with the specified range of
+     * Lucene Hits for each record.
+     *
+     * @param term  Query Term String
+     * @param pager Pager Object for Next/Previous Pages
+     * @param hits  Lucene Hits Object
+     * @return Map of cpath ids to data source name. Map<Long,String>
+     * @throws IOException    Input/Output Error
+     * @throws ParseException Parsing Exception
+     */
+    public static Map<Long,String> extractDataSources(String term, Pager pager, Hits hits)
+		throws IOException, ParseException, DaoException {
+        int size = pager.getEndIndex() - pager.getStartIndex();
+        Map<Long,String> dataSources = new HashMap<Long,String>();
+        DaoExternalDb dao = new DaoExternalDb();
+
+        int index = 0;
+        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
+            Document doc = hits.doc(i);
+			Field cpathIdField = doc.getField(LuceneConfig.FIELD_CPATH_ID);
+            Field dataSourceField = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
+			dataSources.put(Long.parseLong(cpathIdField.stringValue()),
+                            dao.getRecordByTerm(dataSourceField.stringValue()).getName());
+        }
+        return dataSources;
+    }
+
+    /**
+     * Extracts Scores associated with the specified range of
      * Lucene Hits.
      *
      * @param term  Query Term String

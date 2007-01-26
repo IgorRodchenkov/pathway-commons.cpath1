@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.30 2007-01-25 21:17:05 grossb Exp $
+// $Id: BaseAction.java,v 1.31 2007-01-26 17:30:58 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -134,6 +134,11 @@ public abstract class BaseAction extends Action {
      * Page Attribute:  Text Fragments.
      */
     public static final String ATTRIBUTE_TEXT_FRAGMENTS = "text_fragments";
+
+    /**
+     * Page Attribute:  Data Source Set.
+     */
+    public static final String ATTRIBUTE_DATA_SOURCE_SET = "data_source_set";
 
     /**
      * Page Attribute:  Data Sources.

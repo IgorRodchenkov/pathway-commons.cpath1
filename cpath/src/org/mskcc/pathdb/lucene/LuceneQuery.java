@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.8 2007-01-25 21:14:40 grossb Exp $
+// $Id: LuceneQuery.java,v 1.9 2007-01-26 17:31:29 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -58,7 +58,8 @@ public class LuceneQuery {
     private XDebug xdebug;
     private int totalNumHits;
     private String fragments[];
-	private Set<String> dataSources;
+	private Set<String> dataSourceSet;
+	private Map<Long,String> dataSources;
 	private Map<Long,Float> scores;
 
     /**
@@ -89,9 +90,10 @@ public class LuceneQuery {
      * @throws IOException       I/O Error.
      * @throws AssemblyException XML Assembly Error.
      * @throws ParseException    Lucene Parsing Error.
+     * @throws DaoException      Data Access Exception.
      */
     public long[] executeSearch() throws QueryException,
-            IOException, AssemblyException, ParseException {
+		IOException, AssemblyException, ParseException, DaoException {
         xdebug.logMsg(this, "Searching Full Text Index, "
                 + "Using search term(s):  " + searchTerms);
         LuceneReader indexer = new LuceneReader();
@@ -103,12 +105,15 @@ public class LuceneQuery {
             if (queryFromUser != null) {
                 //  Extract fragments, based on original query from user
                 fragments = QueryUtil.extractFragments(queryFromUser, pager, hits);
+				// Extract data source set 
+				dataSourceSet = QueryUtil.extractDataSourceSet(queryFromUser, pager, hits);
 				// Extract data sources
 				dataSources = QueryUtil.extractDataSources(queryFromUser, pager, hits);
 				// Extract scores
 				scores = QueryUtil.extractScores(queryFromUser, pager, hits);
             } else {
 				fragments = QueryUtil.extractFragments(searchTerms, pager, hits);
+                dataSourceSet = QueryUtil.extractDataSourceSet(searchTerms, pager, hits);
                 dataSources = QueryUtil.extractDataSources(searchTerms, pager, hits);
 				scores = QueryUtil.extractScores(searchTerms, pager, hits);
             }
@@ -137,11 +142,22 @@ public class LuceneQuery {
     }
 
     /**
-     * Gets Data Sources.
+     * Gets Data Source Set.
+	 * (set of data sources across entire result set).
      *
      * @return Set
      */
-    public Set<String> getDataSources() {
+    public Set<String> getDataSourceSet() {
+        return this.dataSourceSet;
+    }
+
+    /**
+     * Gets Data Sources.
+     * (map of cpath id to data source name)
+     *
+     * @return Map<Long,String>
+     */
+    public Map<Long,String> getDataSources() {
         return this.dataSources;
     }
 

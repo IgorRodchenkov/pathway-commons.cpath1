@@ -27,7 +27,9 @@
             request.getAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS);
     String fragments[] = (String []) request.getAttribute
             (BaseAction.ATTRIBUTE_TEXT_FRAGMENTS);
-    Set<String> dataSources = (Set<String>) request.getAttribute
+    Set<String> dataSourceSet = (Set<String>) request.getAttribute
+            (BaseAction.ATTRIBUTE_DATA_SOURCE_SET);
+    Map<Long,String> dataSources = (Map<Long,String>) request.getAttribute
             (BaseAction.ATTRIBUTE_DATA_SOURCES);
     Map<Long,Float> scores = (Map<Long,Float>) request.getAttribute
             (BaseAction.ATTRIBUTE_SCORES);
@@ -54,7 +56,7 @@ else {
                 "and found <b>" + totalNumHits.intValue() + "</b> " +
                 "relevant records in:<br>");
     out.println("<ul>");
-	for (String dataSource : dataSources) {
+	for (String dataSource : dataSourceSet) {
 	    out.println("<li>" + dataSource + "</li>");
 	}
 	out.println("</ul>");
@@ -107,14 +109,12 @@ else {
             out.println("<th align=left width=\"60%\">");
 			out.println("<a href=\"" + url + "\">" + header + "</a>");
             out.println("</th>");
-			// datasource snapshot info
-            out.println("<th align=left>");
-            if (record.getSnapshotId () > -1) {
-                out.println("<div><small>&gt; ");
-                out.println(DbSnapshotInfo.getDbSnapshotHtml (record.getSnapshotId ()));
-                out.println("</small></div>");
-            }
-            out.println("</th>");
+			// datasources
+			out.println("<th align=left>");
+			out.println("<div><small>&gt; ");
+            out.print(dataSources.get(record.getId()) + "&nbsp");
+			out.println("</small></div>");
+	        out.println("</th>");
             out.println("</tr>");
         } catch (IllegalArgumentException e) {
             out.println("<div>" +

@@ -65,7 +65,7 @@ public class LuceneAutoFilter {
                 while (iterator.hasNext()) {
                     Long idLong = (Long) iterator.next();
                     ExternalDatabaseSnapshotRecord record = dao.getDatabaseSnapshot(idLong);
-                    dataSourceList.add(record.getExternalDatabase().getName());
+                    dataSourceList.add(record.getExternalDatabase().getMasterTerm());
                 }
             }
         }

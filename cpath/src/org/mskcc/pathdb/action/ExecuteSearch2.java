@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch2.java,v 1.2 2007-01-25 22:00:10 grossb Exp $
+// $Id: ExecuteSearch2.java,v 1.3 2007-01-26 17:31:50 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -167,6 +167,8 @@ public class ExecuteSearch2 extends BaseAction {
 										 new Integer(search.getTotalNumHits()));
 					request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
 										 search.getTextFragments());
+					request.setAttribute(BaseAction.ATTRIBUTE_DATA_SOURCE_SET,
+										 search.getDataSourceSet());
 					request.setAttribute(BaseAction.ATTRIBUTE_DATA_SOURCES,
 										 search.getDataSources());
 					request.setAttribute(BaseAction.ATTRIBUTE_SCORES,
