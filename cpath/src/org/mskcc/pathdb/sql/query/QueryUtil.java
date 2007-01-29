@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.8 2007-01-26 17:31:17 grossb Exp $
+// $Id: QueryUtil.java,v 1.9 2007-01-29 19:35:02 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.taglib.Pager;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
 import java.io.File;
 import java.io.IOException;
@@ -152,7 +153,10 @@ public class QueryUtil {
 		for (int i = 0; i < hits.length(); i++) {
             Document doc = hits.doc(i);
             Field field = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
-			dataSources.add(dao.getRecordByTerm(field.stringValue()).getName());
+			for (String fieldValue : field.stringValue().split(" ")) {
+				ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(fieldValue);
+				dataSources.add(dbRecord.getName());
+			}
         }
         return dataSources;
     }
@@ -179,8 +183,11 @@ public class QueryUtil {
             Document doc = hits.doc(i);
 			Field cpathIdField = doc.getField(LuceneConfig.FIELD_CPATH_ID);
             Field dataSourceField = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
-			dataSources.put(Long.parseLong(cpathIdField.stringValue()),
-                            dao.getRecordByTerm(dataSourceField.stringValue()).getName());
+			StringBuffer dataSourcesBuf = new StringBuffer();
+			for (String fieldValue : dataSourceField.stringValue().split(" ")) {
+				dataSourcesBuf.append(dao.getRecordByTerm(fieldValue).getName() + " ");
+			}
+			dataSources.put(Long.parseLong(cpathIdField.stringValue()), dataSourcesBuf.toString());
         }
         return dataSources;
     }
