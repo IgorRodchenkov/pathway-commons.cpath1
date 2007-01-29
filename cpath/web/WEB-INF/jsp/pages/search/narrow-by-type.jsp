@@ -23,9 +23,8 @@
 	    // label
 		String plain = (type.equals(GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE)) ? "All Types" : (String)typesMap.get(type);
 	    String label = plain + " (" + hitByTypeMap.get(type) + ")";
-	    // output an ahref or text string for each type 
 	    if (type.equals(keyType)) {
-		   out.println("<font size=\"2\"><li>" + label + "</li></font>");
+		   out.println("<li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"5\"><img src=\"jsp/images/arrow.gif\"></li>");
 	    }
 	    else {
 	        out.println("<li>" +
@@ -35,7 +34,8 @@
 				        "'>" + label +
 				        "</a>" +
 				        "</li>");
-			}
-        }
+	    }
+        //out.println("</td></tr>");
+    }
 	out.println("</ul>");
 %>
