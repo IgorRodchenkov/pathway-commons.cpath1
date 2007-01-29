@@ -24,7 +24,7 @@
 		String plain = (type.equals(GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE)) ? "All Types" : (String)typesMap.get(type);
 	    String label = plain + " (" + hitByTypeMap.get(type) + ")";
 	    if (type.equals(keyType)) {
-		   out.println("<li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"5\"><img src=\"jsp/images/arrow.gif\"></li>");
+		   out.println("<li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"10\"><img src=\"jsp/images/arrow.gif\"></li>");
 	    }
 	    else {
 	        out.println("<li>" +
