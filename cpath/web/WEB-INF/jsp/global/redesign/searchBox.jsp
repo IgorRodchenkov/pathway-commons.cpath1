@@ -4,7 +4,8 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.lucene.OrganismStats,
                  java.util.ArrayList,
-                 org.mskcc.pathdb.model.Organism"%>
+                 org.mskcc.pathdb.model.Organism,
+				 org.mskcc.pathdb.model.GlobalFilterSettings"%>
 <%
     String uri = (String) request.getAttribute("javax.servlet.forward.servlet_path");
     String searchTerm = new String("");
@@ -17,16 +18,19 @@
         }
         taxId = pRequest.getOrganism();
     }
+    String entityValue = "pathway";
+    String entityName = GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME;
 %>
 <% if (uri != null  && !uri.endsWith("home.do")) { %>
 <div id="searchbar">
-<form name="searchbox" action="webservice.do" method="get">
+<form name="searchbox" action="webservice2.do" method="get">
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
     <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15" value='<%= searchTerm %>'/>
     <input type="submit" id="searchbutton" value="Search"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
+    <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
 
     <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
         <% try { %>
