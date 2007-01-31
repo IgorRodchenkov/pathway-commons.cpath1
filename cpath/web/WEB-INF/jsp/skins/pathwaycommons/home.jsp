@@ -6,6 +6,8 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+String entityValue =  "pathway";
+String entityName = GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME;
 %>
 
 <table cellspacing=20>
@@ -22,7 +24,7 @@ RNA, small molecules and complexes. <a href="about.do">more...</a>
 <p>
 <form name="searchbox" action="webservice2.do" method="get">
 <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
-<input type="hidden" name="<%= GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME %>" value="<%= GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE %>"/>
+<input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
 <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15"/>
 <input type="submit" value="Search"/>
 <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
@@ -30,10 +32,6 @@ RNA, small molecules and complexes. <a href="about.do">more...</a>
     size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
 </form>
 </p>
-<%
-String entityName = GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME;
-String entityValue =  "pathway";
-%>
 <p>To get started, enter a gene name, gene identifier or pathway name in the text box above.
 For example: <a href="webservice2.do?version=1.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>">p53</a>,
 <a href="webservice2.do?version=1.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>">P38398</a>
