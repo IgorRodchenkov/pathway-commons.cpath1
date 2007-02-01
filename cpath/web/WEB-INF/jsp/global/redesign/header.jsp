@@ -111,6 +111,10 @@ if (baseAction != null) {
 
 <!-- Navigation Tabs -->
 <jsp:include page="tabs.jsp" flush="true" />
+<br>
+<div class="wip">
+<center><img src="jsp/images/emailimage-pw.jpg"></center>
+</div>
 
 <div id="content">
 
