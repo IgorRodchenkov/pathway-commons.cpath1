@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.10 2006-06-09 19:22:03 cerami Exp $
+// $Id: LuceneReader.java,v 1.11 2007-02-07 17:48:24 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,13 +33,16 @@ package org.mskcc.pathdb.lucene;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.IndexSearcher;
 import org.mskcc.pathdb.sql.query.QueryException;
 
+import java.util.List;
 import java.io.IOException;
 
 /**
@@ -84,16 +87,24 @@ public class LuceneReader {
             reader = new IndexSearcher(dir);
             Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
 
-            //  Create a Multi-Term Query.
-            //  By using a multi-term query, hits within FIELD_NAME
-            //  have more weight than hits within FIELD_ALL.  This results
-            //  in more relevant search results percolating to the top.
-            String fields[] = new String[2];
+			// create query on FIELD_NAME, FIELD_ALL, FIELD_SYNONYMS, FIELD_EXTERNAL_REFS
+			String fields[] = new String[4];
             fields[0] = LuceneConfig.FIELD_NAME;
             fields[1] = LuceneConfig.FIELD_ALL;
-            Query query = MultiFieldQueryParser.parse(term, fields, analyzer);
-            Hits hits = reader.search(query);
-            return hits;
+            fields[2] = LuceneConfig.FIELD_SYNONYMS;
+            fields[3] = LuceneConfig.FIELD_EXTERNAL_REFS;
+			BooleanQuery queryToSearch = 
+				(BooleanQuery)MultiFieldQueryParser.parse(term, fields, analyzer);
+
+			// create query on FIELD_DESCENDENTS and boost it
+			Query descQuery = QueryParser.parse(term, LuceneConfig.FIELD_DESCENDENTS, analyzer);
+			descQuery.setBoost(100);
+
+			// add query on FIELD_DESCENDENT to search query
+			queryToSearch.add(descQuery, false, false);
+
+			// outta here
+            return reader.search(queryToSearch);
         } catch (IOException e) {
             e.printStackTrace();
             throw new QueryException("IOException:  " + e.getMessage(), e);
