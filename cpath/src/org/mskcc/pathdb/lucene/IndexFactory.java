@@ -1,4 +1,4 @@
-// $Id: IndexFactory.java,v 1.11 2006-11-01 18:00:27 grossb Exp $
+// $Id: IndexFactory.java,v 1.12 2007-02-07 17:47:36 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import org.jdom.JDOMException;
 import org.mskcc.pathdb.sql.assembly.PsiAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.io.IOException;
 
@@ -54,9 +55,10 @@ public class IndexFactory {
      * @throws IOException   Input Output Exception.
      * @throws JDOMException JDOM XML Error.
 	 * @throws DaoException.
+	 * @throws BioPaxRecordSummaryException
      */
-    public static ItemToIndex createItemToIndex(long cpathId,
-												XmlAssembly xmlAssembly) throws IOException, JDOMException, DaoException {
+    public static ItemToIndex createItemToIndex(long cpathId, XmlAssembly xmlAssembly)
+		throws IOException, JDOMException, DaoException, BioPaxRecordSummaryException {
         if (xmlAssembly instanceof PsiAssembly) {
             return new PsiInteractionToIndex(cpathId, xmlAssembly);
         } else {

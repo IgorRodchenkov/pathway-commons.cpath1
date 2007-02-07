@@ -1,4 +1,4 @@
-// $Id: RecordIndexer.java,v 1.8 2006-11-01 18:00:18 grossb Exp $
+// $Id: RecordIndexer.java,v 1.9 2007-02-07 17:49:18 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,7 +33,7 @@
  * Created 04-Jul-2005
  * @author Iain Keddie
  * @author <BR>$Author: grossb $ (last revision)
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 package org.mskcc.pathdb.lucene;
 
@@ -48,6 +48,7 @@ import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -147,9 +148,10 @@ public class RecordIndexer extends Thread {
      * @throws AssemblyException Assembly Error
      * @throws JDOMException     JDOM Error
 	 * @throws DaoException
+	 * @throws BioPaxRecordSummaryException
      */
-    public void indexRecord(CPathRecord record) throws SQLException,
-													   IOException, ImportException, AssemblyException, JDOMException, DaoException {
+    public void indexRecord(CPathRecord record)
+		throws SQLException, IOException, ImportException, AssemblyException, JDOMException, DaoException, BioPaxRecordSummaryException {
 
         pMonitor.incrementCurValue();
         ConsoleUtil.showProgress(pMonitor);
