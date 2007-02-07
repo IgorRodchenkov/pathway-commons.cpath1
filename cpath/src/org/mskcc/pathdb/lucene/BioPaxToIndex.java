@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.15 2007-02-07 17:46:57 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.16 2007-02-07 18:51:12 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -260,11 +260,9 @@ public class BioPaxToIndex implements ItemToIndex {
 			// get name of external db from external db record and append to buffer
 			dataSourceBuffer.append(externalDatabaseRecord.getMasterTerm() + " ");
 		}
-		// zap off last " "
-		dataSourceBuffer.setLength(dataSourceBuffer.length()-1);
 
 		// outta here
-		return dataSourceBuffer.toString();
+		return dataSourceBuffer.toString().trim();
 	}
 
     /**
