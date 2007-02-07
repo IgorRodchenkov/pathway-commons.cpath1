@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.9 2006-12-19 19:17:20 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.10 2007-02-07 18:43:35 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,6 +52,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
+import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +61,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.List;
 
 /**
  * Executes Search.
@@ -198,10 +201,10 @@ public class ExecuteSearch extends BaseAction {
     }
 
     private ActionForward processHtmlRequestBioPaxMode
-            (XDebug xdebug, ProtocolRequest protocolRequest,
-                    HttpServletRequest request, ActionMapping mapping)
-            throws QueryException, IOException,
-            AssemblyException, ParseException, ProtocolException {
+		(XDebug xdebug, ProtocolRequest protocolRequest,
+		 HttpServletRequest request, ActionMapping mapping)
+		throws QueryException, IOException,
+			   AssemblyException, ParseException, ProtocolException {
         GlobalFilterSettings filterSettings = null;
         try {
             if (CPathUIConfig.getShowDataSourceDetails()) {
@@ -215,14 +218,45 @@ public class ExecuteSearch extends BaseAction {
                 }
                 xdebug.logMsg(this, "User has Global Filter Settings");
             }
-
-            LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
-            long cpathIds[] = search.executeSearch();
-            request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
-            request.setAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS,
-                    new Integer(search.getTotalNumHits()));
-            request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
-                    search.getTextFragments());
+			// grab user selected entity type
+			String userSelectedEntityType =
+				request.getParameter(GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME);
+			// interate through all types, and store query hits by type
+			// also set request attributes as appropriate
+			HashMap<String, Integer> hitByTypeMap = new HashMap<String, Integer>();
+			BioPaxEntityTypeMap typesMap = new BioPaxEntityTypeMap();
+			typesMap.put(GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE,
+						 GlobalFilterSettings.ALL_ENTITY_TYPES_FILTER_VALUE);
+			for (String type : (Set<String>)typesMap.keySet()) {
+				// set the type
+				List<String> typeList = new ArrayList();
+				typeList.add(type);
+				GlobalFilterSettings globalFilterSettings = (filterSettings == null) ?
+					new GlobalFilterSettings() : filterSettings;
+				globalFilterSettings.setEntityTypeSelected(typeList);
+				// perform the query
+				LuceneQuery search = new LuceneQuery(protocolRequest, globalFilterSettings, xdebug);
+				long cpathIds[] = search.executeSearch();
+				if (userSelectedEntityType.equals(type)) {
+					request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
+					request.setAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS,
+										 new Integer(search.getTotalNumHits()));
+					request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
+										 search.getTextFragments());
+					request.setAttribute(BaseAction.ATTRIBUTE_DATA_SOURCE_SET,
+										 search.getDataSourceSet());
+					request.setAttribute(BaseAction.ATTRIBUTE_DATA_SOURCES,
+										 search.getDataSources());
+					request.setAttribute(BaseAction.ATTRIBUTE_SCORES,
+										 search.getScores());
+				}
+				int totalNumberHits = search.getTotalNumHits();
+				if (totalNumberHits > 0) hitByTypeMap.put(type, totalNumberHits);
+			}
+			// add hits by record type map to request object
+			if (hitByTypeMap.size() > 0) {
+				request.setAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP, hitByTypeMap);
+			}
             return mapping.findForward(CPathUIConfig.BIOPAX);
         } catch (DaoException e) {
             throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
