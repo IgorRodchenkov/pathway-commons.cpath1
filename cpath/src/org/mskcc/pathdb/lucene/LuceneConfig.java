@@ -1,4 +1,4 @@
-// $Id: LuceneConfig.java,v 1.11 2006-11-01 18:01:08 grossb Exp $
+// $Id: LuceneConfig.java,v 1.12 2007-02-07 17:47:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -78,6 +78,21 @@ public class LuceneConfig {
      * Lucene Field for Organism Information.
      */
     public static final String FIELD_ORGANISM = "organism";
+
+    /**
+     * Lucene Field for Synonyms.
+     */
+    public static final String FIELD_SYNONYMS = "SYNONYMS";
+
+    /**
+     * Lucene Field for External Links.
+     */
+    public static final String FIELD_EXTERNAL_REFS = "EXTERNAL_REFS";
+
+    /**
+     * Lucene Field for Descendent Information
+     */
+    public static final String FIELD_DESCENDENTS = "descendents";
 
     /**
      * Text Index Directory.
