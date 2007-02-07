@@ -49,8 +49,7 @@
         tabActive.add (Boolean.FALSE);
     }
 
-    if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX &&
-	    webUIBean.getDisplayBrowseByPathwayTab()) {
+    if (webUIBean.getDisplayBrowseByPathwayTab()) {
         tabNames.add("Pathways");
         String browsePathwayUrl = "record.do";
         tabUrls.add(browsePathwayUrl);
@@ -62,7 +61,7 @@
         }
     }
 
-    if (CPathUIConfig.getShowDataSourceDetails()) {
+    if (webUIBean.getDisplayFilterTab()) {
         tabNames.add("Filter");
         String filterUrl = "filter.do";
         tabUrls.add(filterUrl);

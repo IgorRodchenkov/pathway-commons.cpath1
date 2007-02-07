@@ -21,7 +21,11 @@
     String entityValue = "pathway";
     String entityName = GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME;
 %>
-<% if (uri != null  && !uri.endsWith("home.do")) { %>
+<%  boolean showSearchBox = true;
+    if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX && uri != null  && uri.endsWith("home.do")) {
+        showSearchBox = false;
+    }
+    if (showSearchBox) { %>
 <div id="searchbar">
 <form name="searchbox" action="webservice2.do" method="get">
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
