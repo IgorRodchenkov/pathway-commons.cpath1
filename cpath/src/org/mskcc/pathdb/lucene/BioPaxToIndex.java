@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.16 2007-02-07 18:51:12 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.17 2007-02-07 19:56:31 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -151,36 +151,16 @@ public class BioPaxToIndex implements ItemToIndex {
 			BioPaxRecordUtil.createBioPaxRecordSummary(record);
 
         //  Index Name/Short Name --> FIELD_NAME
-		if (false) {
-        Element rdfRoot = (Element) xmlAssembly.getXmlObject();
-        XPath xpath = XPath.newInstance("*/bp:NAME");
-        xpath.addNamespace("bp", BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
-        Element nameElement = (Element) xpath.selectSingleNode(rdfRoot);
-
-        xpath = XPath.newInstance("*/bp:SHORT-NAME");
-        xpath.addNamespace("bp", BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
-        Element shortNameElement = (Element) xpath.selectSingleNode(rdfRoot);
-
-        StringBuffer nameBuf = new StringBuffer();
-        if (nameElement != null) {
-            nameBuf.append(nameElement.getTextNormalize() + " ");
-        }
-        if (shortNameElement != null) {
-            nameBuf.append(shortNameElement.getTextNormalize());
-        }
-		}
-
-		// name (name, shortname, label)
         fields.add(Field.Text(LuceneConfig.FIELD_NAME, getNamesForField(summary)));
-
-		// synonyms
-		fields.add(Field.Text(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary)));
-
-		// external refs
-		fields.add(Field.Text(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary)));
 
         //  Index Organism Data --> FIELD_ORGANISM
         indexOrganismData(xmlAssembly);
+
+		// Index Synonyms --> FIELD_SYNONMYS
+		fields.add(Field.Text(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary)));
+
+		// Index Ext Refs --> FIELD_EXTERNAL_REFS
+		fields.add(Field.Text(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary)));
 
 		// Index Descendents --> FIELD_DESCENDENTS
 		String descendents = getDescendents(cpath, record);
