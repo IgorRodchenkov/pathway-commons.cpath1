@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.10 2007-01-09 17:25:57 cerami Exp $
+// $Id: WebUIBean.java,v 1.11 2007-02-07 17:56:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -66,6 +66,11 @@ public class WebUIBean extends ActionForm {
      * Display Cytoscape Tab.
      */
     private boolean displayCytoscapeTab;
+
+    /**
+     * Display Filter Tab.
+     */
+    private boolean displayFilterTab;
 
     /**
      * Sets the Application Name.
@@ -155,5 +160,21 @@ public class WebUIBean extends ActionForm {
      */
     public boolean getDisplayCytoscapeTab() {
         return displayCytoscapeTab;
+    }
+
+    /**
+     * Gets the Display Filer Tab.
+     * @return displayFilterTab.
+     */
+    public boolean getDisplayFilterTab () {
+        return displayFilterTab;
+    }
+
+    /**
+     * Sets the Display Filter Tab.
+     * @param displayFilterTab Display Filter Tab.
+     */
+    public void setDisplayFilterTab (boolean displayFilterTab) {
+        this.displayFilterTab = displayFilterTab;
     }
 }
