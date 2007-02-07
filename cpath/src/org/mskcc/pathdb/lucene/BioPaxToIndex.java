@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.14 2007-01-26 17:32:52 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.15 2007-02-07 17:46:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,18 +36,22 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.xml.XmlStripper;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoSourceTracker;
+import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
-
-import junit.framework.Assert;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -109,11 +113,12 @@ public class BioPaxToIndex implements ItemToIndex {
      *
      * @param xmlAssembly XmlAssembly.
      * @throws IOException Input Output Error.
-     * @throws JDOMException.
-	 * @throws DaoException.
+     * @throws JDOMException
+	 * @throws DaoException
+	 * @throws BioPaxRecordSummaryException
      */
     BioPaxToIndex(long cpathId, XmlAssembly xmlAssembly)
-		throws IOException, JDOMException, DaoException {
+		throws IOException, JDOMException, DaoException, BioPaxRecordSummaryException {
 
 		// get cpath record
         DaoCPath cpath = DaoCPath.getInstance();
@@ -137,11 +142,16 @@ public class BioPaxToIndex implements ItemToIndex {
 							  record.getSpecificType()));
 
 		// data source --> FIELD_DATA_SOURCE
-		String dataSource = getDataSources(cpath, record);
+		String dataSource = getDataSources(record);
 		fields.add(Field.Text(LuceneConfig.FIELD_DATA_SOURCE,
 							  dataSource));
-		
+
+		// create the summary
+		BioPaxRecordSummary summary =
+			BioPaxRecordUtil.createBioPaxRecordSummary(record);
+
         //  Index Name/Short Name --> FIELD_NAME
+		if (false) {
         Element rdfRoot = (Element) xmlAssembly.getXmlObject();
         XPath xpath = XPath.newInstance("*/bp:NAME");
         xpath.addNamespace("bp", BioPaxConstants.BIOPAX_LEVEL_2_NAMESPACE_URI);
@@ -158,10 +168,23 @@ public class BioPaxToIndex implements ItemToIndex {
         if (shortNameElement != null) {
             nameBuf.append(shortNameElement.getTextNormalize());
         }
-        fields.add(Field.Text(LuceneConfig.FIELD_NAME, nameBuf.toString()));
+		}
+
+		// name (name, shortname, label)
+        fields.add(Field.Text(LuceneConfig.FIELD_NAME, getNamesForField(summary)));
+
+		// synonyms
+		fields.add(Field.Text(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary)));
+
+		// external refs
+		fields.add(Field.Text(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary)));
 
         //  Index Organism Data --> FIELD_ORGANISM
         indexOrganismData(xmlAssembly);
+
+		// Index Descendents --> FIELD_DESCENDENTS
+		String descendents = getDescendents(cpath, record);
+		fields.add(Field.Text(LuceneConfig.FIELD_DESCENDENTS, descendents));
     }
 
     /**
@@ -198,12 +221,11 @@ public class BioPaxToIndex implements ItemToIndex {
 	/**
 	 * Gets the data sources used to create this cpath record
 	 *
-	 * @param cpath DaoCPath
 	 * @param record CPathRecord
 	 * @return String
 	 * @throws DaoException
 	 */
-	private String getDataSources(DaoCPath cpath, CPathRecord record) throws DaoException {
+	private String getDataSources(CPathRecord record) throws DaoException {
 
 		// to return
 		StringBuffer dataSourceBuffer = new StringBuffer();
@@ -236,8 +258,10 @@ public class BioPaxToIndex implements ItemToIndex {
 			if (externalDatabaseRecord == null) continue;
 
 			// get name of external db from external db record and append to buffer
-			dataSourceBuffer.append(externalDatabaseRecord.getMasterTerm());
+			dataSourceBuffer.append(externalDatabaseRecord.getMasterTerm() + " ");
 		}
+		// zap off last " "
+		dataSourceBuffer.setLength(dataSourceBuffer.length()-1);
 
 		// outta here
 		return dataSourceBuffer.toString();
@@ -289,4 +313,129 @@ public class BioPaxToIndex implements ItemToIndex {
                     organismTokens.toString()));
         }
     }
+
+	/**
+	 * Gets the descendents of this cpath record
+	 *
+	 * @param daoCPath DaoCPath
+	 * @param pathwayRecord CPathRecord
+	 * @return String
+	 * @throws DaoException
+	 * @throws BioPaxRecordSummaryException
+	 */
+	private String getDescendents(DaoCPath daoCPath, CPathRecord pathwayRecord)
+		throws DaoException, BioPaxRecordSummaryException {
+
+		// to return
+		StringBuffer bufferToReturn = new StringBuffer();
+
+		// get descendent ids
+		ArrayList<Long> descendentIds = getAllDescendents(pathwayRecord.getId());
+
+		// add self to list
+		descendentIds.add(pathwayRecord.getId());
+
+		for (Long descendentId : descendentIds) {
+
+			// get cpath record
+			CPathRecord descendentRecord = daoCPath.getRecordById(descendentId);
+
+			// create the summary
+			BioPaxRecordSummary summary =
+				BioPaxRecordUtil.createBioPaxRecordSummary(descendentRecord);
+
+			// names
+			bufferToReturn.append(" " + getNamesForField(summary));
+
+			// synonyms
+			bufferToReturn.append(" " + getSynonymsForField(summary));
+
+			// external refs
+			bufferToReturn.append(" " + getExternalRefsForField(summary));
+		}
+
+		// outta here
+		return bufferToReturn.toString().trim();
+	}
+
+    /**
+     * Gets all descendents of the specified cPath record.
+     * <P>This is a potentially very slow query.
+     *
+     * @param cpathId CPath Record ID.
+     * @return arraylist of descendent Ids.
+     * @throws DaoException Database Access Error.
+     */
+    public ArrayList getAllDescendents (long cpathId) throws DaoException {
+        ArrayList masterList = new ArrayList();
+		DaoInternalFamily internalFamily = new DaoInternalFamily();
+
+		long[] descendentIds = internalFamily.getDescendentIds(cpathId, CPathRecordType.PHYSICAL_ENTITY);
+		for (long descendentId : descendentIds) {
+            masterList.add(descendentId);
+		}
+
+		// outta here
+        return masterList;
+    }
+
+	private String getNamesForField(BioPaxRecordSummary summary) {
+
+		StringBuffer bufferToReturn = new StringBuffer();
+
+		// name
+		String name = summary.getName();
+		if (name != null && name.length() > 0) {
+			bufferToReturn.append(name);
+		}
+
+		// label
+		String label = summary.getLabel();
+		if (label != null && label.length() > 0) {
+			bufferToReturn.append(" " + label);
+		}
+
+		// short name
+		String shortName = summary.getShortName();
+		if (shortName != null && shortName.length() > 0) {
+			bufferToReturn.append(" " + shortName);
+		}
+
+		// outta here
+		return bufferToReturn.toString();
+	}
+
+	private String getSynonymsForField(BioPaxRecordSummary summary) {
+
+		StringBuffer bufferToReturn = new StringBuffer();
+
+		List<String> synonyms = (List<String>)summary.getSynonyms();
+		if (synonyms != null) {
+			for (String synonym : synonyms) {
+				if (synonym != null && synonym.length() > 0) {
+					bufferToReturn.append(" " + synonym);
+				}
+			}
+		}
+
+		// outta here
+		return bufferToReturn.toString().trim();
+	}
+
+	private String getExternalRefsForField(BioPaxRecordSummary summary) {
+
+		StringBuffer bufferToReturn = new StringBuffer();
+
+		if (summary.getExternalLinks() != null) {
+			for (ExternalLinkRecord link : (List<ExternalLinkRecord>)summary.getExternalLinks()) {
+				String dbName = link.getExternalDatabase().getName();
+				if (! dbName.equalsIgnoreCase("PUBMED")) {
+					bufferToReturn.append(" " + link.getLinkedToId());
+				}
+			}
+		}
+
+		// outta here
+		return bufferToReturn.toString().trim();
+	}
 }
