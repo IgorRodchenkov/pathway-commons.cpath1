@@ -55,7 +55,7 @@ INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`,
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (26, 'aMAZE', '', NULL, 'aMAZE Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (27, 'KEGG', '', NULL, 'Kyoto Encyclopedia of Genes and Genomes (KEGG)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (28, 'CAS', '', NULL, 'CAS Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (29, 'KEGG Ligand Database', '', NULL, 'KEGG Ligand Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (29, 'KEGG Ligand', 'http://www.genome.jp/dbget-bin/www_bget?cpd:%ID%', NULL, 'KEGG Ligand Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (30, 'EcoCyc', '', NULL, 'EcoCyc Encyclopedia of Escherichia coli K12 Genes and Metabolism', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (31, 'UM-BBD', '', NULL, 'University of Minnesota Biocatalysis/Biodegradation Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (32, 'SWISS-MODEL', '', NULL,  'SWISS-MODEL Automated Comparative Protein Modelling Server', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
@@ -67,6 +67,9 @@ INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`,
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (38, 'WORMBASE', 'http://wormbase.org/db/seq/gbrowse/wormbase/?name=%ID%', NULL, 'WormBase:  The Biology and Genome of C. elegans', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (39, 'UNIPARC', 'http://www.ebi.ac.uk/cgi-bin/dbfetch?db=uniparc&id=%ID%', NULL, 'UniProt Archive (UniParc) is part of UniProt project. It is a non-redundant archive of protein sequences extracted from public databases UniProtKB/Swiss-Prot, UniProtKB/TrEMBL, PIR-PSD, EMBL, EMBL WGS, Ensembl, IPI, PDB, PIR-PSD, RefSeq, FlyBase, WormBase, H-Invitational Database, TROME database, European Patent Office proteins, United States Patent and Trademark Office proteins (USPTO) and Japan Patent Office proteins.', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (40, 'ENCODE', 'http://genome.ucsc.edu/ENCODE/', NULL, 'Encyclopedia Of DNA Elements', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (41, 'KEGG Pathway', 'http://www.genome.jp/dbget-bin/www_bget?path:%ID%', NULL, 'Kyoto Encyclopedia of Genes and Genomes (KEGG)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (42, 'KEGG Genomes', 'http://www.genome.jp/dbget-bin/www_bget?bja:%ID%', NULL, 'Kyoto Encyclopedia of Genes and Genomes (KEGG)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (43, 'NCBI PubChem', 'http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%ID%', NULL, 'NCBI PubChem provides information on the biological activities of small molecules. ', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
@@ -142,7 +145,13 @@ INSERT INTO `external_db_cv` VALUES (77, 35, 'EMBL', 1);
 INSERT INTO `external_db_cv` VALUES (78, 36, 'COMPOUND', 1);
 INSERT INTO `external_db_cv` VALUES (79, 37, 'GLYCAN', 1);
 INSERT INTO `external_db_cv` VALUES (80, 38, 'WORMBASE', 1);
-INSERT INTO `external_db_cv` VALUES (81, 27, 'KEGG PATHWAY', 1);
+INSERT INTO `external_db_cv` VALUES (81, 41, 'KEGG PATHWAY', 1);
 INSERT INTO `external_db_cv` VALUES (82, 39, 'UNIPARC', 1);
 INSERT INTO `external_db_cv` VALUES (83, 40, 'ENCODE', 1);
 INSERT INTO `external_db_cv` VALUES (84, 30, 'ECOCYC', 1);
+INSERT INTO `external_db_cv` VALUES (85, 2, 'ENTREZ GENE', 1);
+INSERT INTO `external_db_cv` VALUES (86, 29, 'KEGG LIGAND', 1);
+INSERT INTO `external_db_cv` VALUES (87, 42, 'KEGG GENOME', 1);
+INSERT INTO `external_db_cv` VALUES (88, 42, 'KEGG GENOMES', 1);
+INSERT INTO `external_db_cv` VALUES (89, 43, 'PUBCHEM COMPOUND', 1);
+INSERT INTO `external_db_cv` VALUES (90, 43, 'PUBCHEM', 1);
