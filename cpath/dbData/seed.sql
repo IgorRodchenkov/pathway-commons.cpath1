@@ -149,7 +149,7 @@ INSERT INTO `external_db_cv` VALUES (81, 41, 'KEGG PATHWAY', 1);
 INSERT INTO `external_db_cv` VALUES (82, 39, 'UNIPARC', 1);
 INSERT INTO `external_db_cv` VALUES (83, 40, 'ENCODE', 1);
 INSERT INTO `external_db_cv` VALUES (84, 30, 'ECOCYC', 1);
-INSERT INTO `external_db_cv` VALUES (85, 2, 'ENTREZ GENE', 1);
+INSERT INTO `external_db_cv` VALUES (85, 2, 'ENTREZ GENE', 0);
 INSERT INTO `external_db_cv` VALUES (86, 29, 'KEGG LIGAND', 1);
 INSERT INTO `external_db_cv` VALUES (87, 42, 'KEGG GENOME', 1);
 INSERT INTO `external_db_cv` VALUES (88, 42, 'KEGG GENOMES', 1);
