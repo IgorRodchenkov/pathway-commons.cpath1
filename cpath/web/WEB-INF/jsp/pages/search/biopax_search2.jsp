@@ -29,7 +29,7 @@
             (BaseAction.ATTRIBUTE_TEXT_FRAGMENTS);
     Set<String> dataSourceSet = (Set<String>) request.getAttribute
             (BaseAction.ATTRIBUTE_DATA_SOURCE_SET);
-    Map<Long,String> dataSources = (Map<Long,String>) request.getAttribute
+    Map<Long,Set<String>> dataSources = (Map<Long,Set<String>>) request.getAttribute
             (BaseAction.ATTRIBUTE_DATA_SOURCES);
     Map<Long,Float> scores = (Map<Long,Float>) request.getAttribute
             (BaseAction.ATTRIBUTE_SCORES);
@@ -69,14 +69,16 @@ private String getDetailsHtml (long cPathId, String label, String html) {
     return ("<div id='cpath_" + cPathId + "_" + label +"' class='details'>"
         + html + "</div>");
 }
-private String getDataSourceHtml(long cPathId, Map<Long,String> dataSources) {
+private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> dataSources) {
 		StringBuffer html = new StringBuffer();
 		html.append("<p><b>Data Sources:</b></p>\n\r");
 		html.append("<ul>\n\r");
 		// loop here
-		html.append("<li>");
-		html.append(dataSources.get(cPathId));
-		html.append("</li>\n\r");
+		for (String dataSource : (Set<String>)dataSources.get(cPathId)) {
+     		html.append("<li>");
+		    html.append(dataSource);
+		    html.append("</li>\n\r");
+		}
 		html.append("</ul>\n\r");
 		return html.toString();
 }
@@ -161,11 +163,14 @@ else {
 			out.println("</th>");
 			out.println("</tr>");
 			// data sources
-			out.println("<tr><td colspan=3>");
-			out.println(getDetailsHtml(record.getId(),
-			            "datasources",
-			            getDataSourceHtml(record.getId(), dataSources)));
-			out.println("</td></tr>");
+			//if (record.getSnapshotId () > -1) {
+			    out.println("<tr><td colspan=3>");
+			    out.println(getDetailsHtml(record.getId(),
+			                "datasources",
+                            getDataSourceHtml(record.getId(), dataSources)));
+			                //DbSnapshotInfo.getDbSnapshotHtml(record.getSnapshotId())));
+			    out.println("</td></tr>");
+		    //}
         } catch (IllegalArgumentException e) {
             out.println("<div>" +
                     "<a href=\"" + url + "\">" + record.getName() + "</a></div>");
