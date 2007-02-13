@@ -50,11 +50,20 @@
   	<property name="manager.url"   value="http://localhost:8080/manager"/>
 
 	<!-- ============= Custom Ant Task Definitions ======================= -->
-  	<taskdef name="install" classname="org.apache.catalina.ant.InstallTask"/>
-  	<taskdef name="list"    classname="org.apache.catalina.ant.ListTask"/>
-  	<taskdef name="reload"  classname="org.apache.catalina.ant.ReloadTask"/>
-  	<taskdef name="remove"  classname="org.apache.catalina.ant.RemoveTask"/>
-  	<taskdef resource="checkstyletask.properties"/>
+    <taskdef name="install"
+        classname="org.apache.catalina.ant.InstallTask"
+        classpath="lib/ant/catalina-ant.jar"/>
+    <taskdef name="list"
+        classname="org.apache.catalina.ant.ListTask"
+        classpath="lib/ant/catalina-ant.jar"/>
+    <taskdef name="reload"
+        classname="org.apache.catalina.ant.ReloadTask"
+        classpath="lib/ant/catalina-ant.jar"/>
+    <taskdef name="remove"
+        classname="org.apache.catalina.ant.RemoveTask"
+        classpath="lib/ant/catalina-ant.jar"/>
+    <taskdef resource="checkstyletask.properties"
+        classpath="lib/ant/checkstyle-all-3.0.jar"/>
 
 	<!--  ============ Compilation Control Options ======================= -->
   	<property name="compile.debug"       value="true"/>
