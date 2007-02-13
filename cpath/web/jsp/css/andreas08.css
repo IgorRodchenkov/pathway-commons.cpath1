@@ -445,3 +445,8 @@ cursor:pointer;
 #toggleCommentImage img {
     padding-left:10px;
 }
+
+#scoreboard {
+    background-color:#dddddd;
+    padding-top:7px;
+}
