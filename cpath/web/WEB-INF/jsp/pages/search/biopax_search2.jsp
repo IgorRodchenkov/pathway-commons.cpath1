@@ -36,6 +36,51 @@
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
     String keyType = (String)request.getParameter(GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME);
 %>
+<script type="text/javascript">
+    //  Toggles details on single row
+    function toggleDetails (id) {
+        YAHOO.log ("Toggling row with cPathID:  " + id);
+        var elements = new Array();
+        elements[0] = document.getElementById(id + "_datasources");
+        var current = YAHOO.util.Dom.getStyle(elements[0], 'display');
+        YAHOO.log ("Current Display Style is set to:  " + current);
+        var toggleImage = document.getElementById (id + "_image");
+        if (current == false || current == "none" || current == null) {
+            YAHOO.util.Dom.setStyle(elements, 'display', 'inline');
+            if (toggleImage != null) {
+                toggleImage.innerHTML = "<img src='jsp/images/close.gif'>";
+            }
+        } else {
+            YAHOO.util.Dom.setStyle(elements, 'display', 'none');
+            if (toggleImage != null) {
+                toggleImage.innerHTML = "<img src='jsp/images/open.gif'>";
+            }
+        }
+    }
+</script>
+<%!
+private String getInspectorButtonHtml (long cPathId) {
+	return "<div class='toggle_details'><a "
+        + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
+        + "')\"><div id='cpath_" + cPathId + "_image' class='toggleImage'>"
+        + "<img src='jsp/images/open.gif'/></div></a>";
+}
+private String getDetailsHtml (long cPathId, String label, String html) {
+    return ("<div id='cpath_" + cPathId + "_" + label +"' class='details'>"
+        + html + "</div>");
+}
+private String getDataSourceHtml(long cPathId, Map<Long,String> dataSources) {
+		StringBuffer html = new StringBuffer();
+		html.append("<p><b>Data Sources:</b></p>\n\r");
+		html.append("<ul>\n\r");
+		// loop here
+		html.append("<li>");
+		html.append(dataSources.get(cPathId));
+		html.append("</li>\n\r");
+		html.append("</ul>\n\r");
+		return html.toString();
+}
+%>
 <%
 if (protocolRequest.getQuery() != null) {
 %>
@@ -93,6 +138,7 @@ else {
             String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
             out.println("<tr valign=\"top\">");
 			// score bar
+			//out.println("<th align=left>" + String.valueOf(score) + "</th>");
 			out.println("<th align=left width=\"" + MAX_SCOREBOARD_WIDTH + "\">");
 			out.println("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#ffffff\">");
 			out.println("<tr><td valign=\"top\" align=\"left\">");
@@ -109,13 +155,17 @@ else {
             out.println("<th align=left width=\"60%\">");
 			out.println("<a href=\"" + url + "\">" + header + "</a>");
             out.println("</th>");
-			// datasources
-			out.println("<th align=left>");
-			out.println("<div><small>&gt; ");
-            out.print(dataSources.get(record.getId()) + "&nbsp");
-			out.println("</small></div>");
-	        out.println("</th>");
-            out.println("</tr>");
+			// inspection button
+			out.println("<th align=right>");
+			out.println(getInspectorButtonHtml(record.getId()));
+			out.println("</th>");
+			out.println("</tr>");
+			// data sources
+			out.println("<tr><td colspan=3>");
+			out.println(getDetailsHtml(record.getId(),
+			            "datasources",
+			            getDataSourceHtml(record.getId(), dataSources)));
+			out.println("</td></tr>");
         } catch (IllegalArgumentException e) {
             out.println("<div>" +
                     "<a href=\"" + url + "\">" + record.getName() + "</a></div>");
