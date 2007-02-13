@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.9 2007-01-29 19:35:02 grossb Exp $
+// $Id: QueryUtil.java,v 1.10 2007-02-13 17:22:11 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -168,14 +168,14 @@ public class QueryUtil {
      * @param term  Query Term String
      * @param pager Pager Object for Next/Previous Pages
      * @param hits  Lucene Hits Object
-     * @return Map of cpath ids to data source name. Map<Long,String>
+     * @return Map of cpath ids to data source names. Map<Long,Set<String>>
      * @throws IOException    Input/Output Error
      * @throws ParseException Parsing Exception
      */
-    public static Map<Long,String> extractDataSources(String term, Pager pager, Hits hits)
+    public static Map<Long,Set<String>> extractDataSources(String term, Pager pager, Hits hits)
 		throws IOException, ParseException, DaoException {
         int size = pager.getEndIndex() - pager.getStartIndex();
-        Map<Long,String> dataSources = new HashMap<Long,String>();
+        Map<Long,Set<String>> dataSources = new HashMap<Long,Set<String>>();
         DaoExternalDb dao = new DaoExternalDb();
 
         int index = 0;
@@ -183,11 +183,11 @@ public class QueryUtil {
             Document doc = hits.doc(i);
 			Field cpathIdField = doc.getField(LuceneConfig.FIELD_CPATH_ID);
             Field dataSourceField = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
-			StringBuffer dataSourcesBuf = new StringBuffer();
+			HashSet<String> dataSourcesSet = new HashSet<String>();
 			for (String fieldValue : dataSourceField.stringValue().split(" ")) {
-				dataSourcesBuf.append(dao.getRecordByTerm(fieldValue).getName() + " ");
+				dataSourcesSet.add(dao.getRecordByTerm(fieldValue).getName());
 			}
-			dataSources.put(Long.parseLong(cpathIdField.stringValue()), dataSourcesBuf.toString());
+			dataSources.put(Long.parseLong(cpathIdField.stringValue()), dataSourcesSet);
         }
         return dataSources;
     }

@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.9 2007-01-26 17:31:29 grossb Exp $
+// $Id: LuceneQuery.java,v 1.10 2007-02-13 17:22:24 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,7 +59,7 @@ public class LuceneQuery {
     private int totalNumHits;
     private String fragments[];
 	private Set<String> dataSourceSet;
-	private Map<Long,String> dataSources;
+	private Map<Long,Set<String>> dataSources;
 	private Map<Long,Float> scores;
 
     /**
@@ -155,9 +155,9 @@ public class LuceneQuery {
      * Gets Data Sources.
      * (map of cpath id to data source name)
      *
-     * @return Map<Long,String>
+     * @return Map<Long,Set<String>>
      */
-    public Map<Long,String> getDataSources() {
+    public Map<Long,Set<String>> getDataSources() {
         return this.dataSources;
     }
 
