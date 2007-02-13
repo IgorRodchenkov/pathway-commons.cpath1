@@ -134,7 +134,7 @@ else {
 	    scoreboardWidth = (percentage == 1 && scoreboardWidth == 0) ? 1 : scoreboardWidth;
 	    scoreboardWidth = (score > 0.0 && scoreboardWidth == 0) ? 1 :  scoreboardWidth;
 	    String spacerString = (scoreboardWidth < MAX_SCOREBOARD_WIDTH) ?
-		    ("<img src=\"jsp/images/spacer.gif\" width=\"" + String.valueOf(MAX_SCOREBOARD_WIDTH-scoreboardWidth) + "\" height=\"" + SCOREBOARD_HEIGHT + "\" alt=\"" + String.valueOf(percentage) + "%\">") : "";
+		    ("<td><img src=\"jsp/images/spacer.gif\" width=\"" + String.valueOf(MAX_SCOREBOARD_WIDTH-scoreboardWidth) + "\" height=\"" + SCOREBOARD_HEIGHT + "\" alt=\"" + String.valueOf(percentage) + "%\"></td>") : "";
         try {
             BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
@@ -143,14 +143,13 @@ else {
 			//out.println("<th align=left>" + String.valueOf(score) + "</th>");
 			out.println("<th align=left width=\"" + MAX_SCOREBOARD_WIDTH + "\">");
 			out.println("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#ffffff\">");
-			out.println("<tr><td valign=\"top\" align=\"left\">");
-			out.println("<div class='scoreboard'>");
-			out.println("<img src=\"jsp/images/relevance.gif\" width=\"" +
+			out.println("<div id='scoreboard'><tr>");
+			out.println("<tr><td><img src=\"jsp/images/relevance.gif\" width=\"" +
 			            String.valueOf(scoreboardWidth) +
 			            "\" height=\"" + SCOREBOARD_HEIGHT + "\" alt=\"" +
 			            String.valueOf(percentage) +
-			            "%\">" + spacerString);
-			out.println("</div>");
+			            "%\">" + "</td>" + spacerString);
+			out.println("</tr></div>");
 		    out.println("</table>");
 			out.println("</th>");
 			// record header
