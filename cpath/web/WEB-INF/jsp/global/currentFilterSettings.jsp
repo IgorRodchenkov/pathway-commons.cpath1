@@ -18,7 +18,7 @@
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
     Iterator iterator = settings.getSnapshotIdSet().iterator();
 %>
-<h3>Filter Settings:</h3>
+<h3>Current Filter Settings:</h3>
 <%
     out.println("<ul>");
     while (iterator.hasNext()) {
