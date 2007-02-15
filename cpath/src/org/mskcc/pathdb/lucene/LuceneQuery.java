@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.10 2007-02-13 17:22:24 grossb Exp $
+// $Id: LuceneQuery.java,v 1.11 2007-02-15 17:11:06 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -105,8 +105,6 @@ public class LuceneQuery {
             if (queryFromUser != null) {
                 //  Extract fragments, based on original query from user
                 fragments = QueryUtil.extractFragments(queryFromUser, pager, hits);
-				// Extract data source set 
-				dataSourceSet = QueryUtil.extractDataSourceSet(queryFromUser, pager, hits);
 				// Extract data sources
 				dataSources = QueryUtil.extractDataSources(queryFromUser, pager, hits);
 				// Extract scores
