@@ -19,7 +19,9 @@
         taxId = pRequest.getOrganism();
     }
     String entityValue = "pathway";
-    String entityName = GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME;
+    String entityName = GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME;
+    String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
+    String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
 %>
 <%  boolean showSearchBox = true;
     if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX && uri != null  && uri.endsWith("home.do")) {
@@ -34,6 +36,7 @@
     <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
+    <input type="hidden" name="<%= dataSourceName %>" value="<%= dataSourceValue %>"/>
     <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
 
     <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
