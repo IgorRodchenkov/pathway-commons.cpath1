@@ -7,7 +7,10 @@
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 String entityValue =  "pathway";
-String entityName = GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME;
+String entityName = GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME;
+String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
+String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
+
 %>
 <table cellspacing=20>
 <tr valign="top">
@@ -23,6 +26,7 @@ RNA, small molecules and complexes. <a href="about.do">more...</a>
 <p>
 <form name="searchbox" action="webservice2.do" method="get">
 <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
+<input type="hidden" name="<%= dataSourceName %>" value="<%= dataSourceValue %>"/>
 <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
 <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15"/>
 <input type="submit" value="Search"/>
@@ -32,9 +36,9 @@ RNA, small molecules and complexes. <a href="about.do">more...</a>
 </form>
 </p>
 <p>To get started, enter a gene name, gene identifier or pathway name in the text box above.
-For example: <a href="webservice2.do?version=1.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>">p53</a>,
-<a href="webservice2.do?version=1.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>">P38398</a>
-or  <a href="webservice2.do?version=1.0&q=mtor&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>">mTOR</a>.
+For example: <a href="webservice2.do?version=1.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">p53</a>,
+<a href="webservice2.do?version=1.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">P38398</a>
+or  <a href="webservice2.do?version=1.0&q=mtor&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">mTOR</a>.
 </p>
 <p>To restrict your search to specific data sources or specific organisms, update your
 <a href="filter.do">global filter settings</a>.</p>
