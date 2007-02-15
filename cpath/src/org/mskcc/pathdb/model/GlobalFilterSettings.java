@@ -9,15 +9,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class GlobalFilterSettings {
+public class GlobalFilterSettings implements Cloneable {
 
     /**
      * Session Field for GLOBAL_FILTER_SETTINGS.
      */
     public final static String GLOBAL_FILTER_SETTINGS = "GLOBAL_FILTER_SETTINGS";
 	public final static int ALL_ORGANISMS_FILTER_VALUE = Integer.MAX_VALUE;
-	public final static String ENTITY_TYPES_FILTER_NAME = "ENTITY_TYPE";
-	public final static String ALL_ENTITY_TYPES_FILTER_VALUE = "ALL";
+	public final static String NARROW_BY_ENTITY_TYPES_FILTER_NAME = "ENTITY_TYPE";
+	public final static String NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL = "ALL_ENTITY_TYPE";
+	public final static String NARROW_BY_DATA_SOURCES_FILTER_NAME = "NARROW_BY_DATA_SOURCE";
+	public final static String NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL = "GLOBAL_FILTER_SETTINGS";
 
     private HashSet snapshotSet = new HashSet();
     private HashSet organismSet = new HashSet();
@@ -32,7 +34,7 @@ public class GlobalFilterSettings {
             snapshotSet.add(new Long(snapshotRecord.getId()));
         }
         organismSet.add(ALL_ORGANISMS_FILTER_VALUE);
-        entityTypeSet.add(ALL_ENTITY_TYPES_FILTER_VALUE);
+        entityTypeSet.add(NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
     }
 
     public boolean isSnapshotSelected (long snapshotId) {
@@ -85,4 +87,8 @@ public class GlobalFilterSettings {
             }
         }
     }
+
+	public GlobalFilterSettings clone() throws CloneNotSupportedException {
+		return (GlobalFilterSettings)super.clone();
+	}
 }
