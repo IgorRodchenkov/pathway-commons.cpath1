@@ -27,14 +27,15 @@
             request.getAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS);
     String fragments[] = (String []) request.getAttribute
             (BaseAction.ATTRIBUTE_TEXT_FRAGMENTS);
-    Set<String> dataSourceSet = (Set<String>) request.getAttribute
-            (BaseAction.ATTRIBUTE_DATA_SOURCE_SET);
-    Map<Long,Set<String>> dataSources = (Map<Long,Set<String>>) request.getAttribute
+    //Set<String> dataSourceSet = (Set<String>) request.getAttribute
+    //        (BaseAction.ATTRIBUTE_DATA_SOURCE_SET);
+    Map<Long,Set<String>> recordDataSources = (Map<Long,Set<String>>) request.getAttribute
             (BaseAction.ATTRIBUTE_DATA_SOURCES);
     Map<Long,Float> scores = (Map<Long,Float>) request.getAttribute
             (BaseAction.ATTRIBUTE_SCORES);
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
-    String keyType = (String)request.getParameter(GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME);
+    String keyType = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME);
+    String keyDataSource = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
 %>
 <script type="text/javascript">
     //  Toggles details on single row
@@ -69,12 +70,12 @@ private String getDetailsHtml (long cPathId, String label, String html) {
     return ("<div id='cpath_" + cPathId + "_" + label +"' class='details'>"
         + html + "</div>");
 }
-private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> dataSources) {
+private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> recordDataSources) {
 		StringBuffer html = new StringBuffer();
 		html.append("<p><b>Data Sources:</b></p>\n\r");
 		html.append("<ul>\n\r");
 		// loop here
-		for (String dataSource : (Set<String>)dataSources.get(cPathId)) {
+		for (String dataSource : (Set<String>)recordDataSources.get(cPathId)) {
      		html.append("<li>");
 		    html.append(dataSource);
 		    html.append("</li>\n\r");
@@ -102,22 +103,23 @@ else {
                 protocolRequest.getQuery() + "</i>\" " +
                 "and found <b>" + totalNumHits.intValue() + "</b> " +
                 "relevant records in:<br>");
-    out.println("<ul>");
-	for (String dataSource : dataSourceSet) {
-	    out.println("<li>" + dataSource + "</li>");
-	}
-	out.println("</ul>");
-	out.println("</p>");
+    //out.println("<ul>");
+	//for (String dataSource : dataSourceSet) {
+	//    out.println("<li>" + dataSource + "</li>");
+	//}
+	//out.println("</ul>");
+	//out.println("</p>");
 %>
 	<div class="splitcontentleft">
     <jsp:include page="./narrow-by-type.jsp" flush="true" />
+    <jsp:include page="./narrow-by-datasource.jsp" flush="true" />
     <jsp:include page="../../global/currentFilterSettings.jsp" flush="true" />
 	</div>
 	<div class="splitcontentright">
 <%
 	Pager pager = new Pager (protocolRequest, totalNumHits.intValue());
 	out.println("<div class='search_buttons'>");
-	out.println("<h3>" + pager.getHeaderHtmlForSearchPage("white", GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME + "=" + keyType) + "</h3>");
+	out.println("<h3>" + pager.getHeaderHtmlForSearchPage("white", GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME + "=" + keyType + "&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource) + "</h3>");
 	out.println ("</div>");
 %>
     <table cellpadding="2" cellspacing="0" border="0" width="100%">
@@ -166,7 +168,7 @@ else {
 			    out.println("<tr><td colspan=3>");
 			    out.println(getDetailsHtml(record.getId(),
 			                "datasources",
-                            getDataSourceHtml(record.getId(), dataSources)));
+                            getDataSourceHtml(record.getId(), recordDataSources)));
 			                //DbSnapshotInfo.getDbSnapshotHtml(record.getSnapshotId())));
 			    out.println("</td></tr>");
 		    //}
