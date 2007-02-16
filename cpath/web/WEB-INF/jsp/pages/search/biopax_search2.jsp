@@ -102,7 +102,7 @@ else {
     out.println("Pathway Commons completed your search for \"<i>" +
                 protocolRequest.getQuery() + "</i>\" " +
                 "and found <b>" + totalNumHits.intValue() + "</b> " +
-                "relevant records in:<br>");
+                "relevant records:<br>");
     //out.println("<ul>");
 	//for (String dataSource : dataSourceSet) {
 	//    out.println("<li>" + dataSource + "</li>");
