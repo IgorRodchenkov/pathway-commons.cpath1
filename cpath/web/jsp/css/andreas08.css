@@ -450,3 +450,16 @@ cursor:pointer;
     background-color:#dddddd;
     padding-top:7px;
 }
+
+#content srp{
+font-size:0.9em;
+font-weight:normal;
+display:block;
+margin:5px 0 5px 0;
+padding-left:5px;
+height:1.7em;
+line-height:1.7em;
+background-color:#578bb8;
+color:#ffffff;
+}
+#content srp a:hover,#subcontent a:hover{color:white;text-decoration:underline;}
