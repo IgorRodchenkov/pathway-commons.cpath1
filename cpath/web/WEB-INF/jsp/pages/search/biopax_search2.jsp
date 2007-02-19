@@ -3,6 +3,7 @@
                  org.mskcc.pathdb.taglib.Pager,
                  org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.model.CPathRecord,
+                 org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.model.GlobalFilterSettings,
                  org.mskcc.pathdb.util.html.HtmlUtil,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
@@ -113,7 +114,7 @@ else {
 	<div class="splitcontentleft">
     <jsp:include page="./narrow-by-type.jsp" flush="true" />
     <jsp:include page="./narrow-by-datasource.jsp" flush="true" />
-    <jsp:include page="../../global/currentFilterSettings.jsp" flush="true" />
+    <%out.println("<p>[<a href='filter.do'>Update Filter Settings</a>]</p>");%>
 	</div>
 	<div class="splitcontentright">
 <%
@@ -140,6 +141,13 @@ else {
         try {
             BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
+			// if protein, add organism information
+			if (record.getType() == CPathRecordType.PHYSICAL_ENTITY) {
+			    String organism = summary.getOrganism();
+			    if (organism != null && organism.length() > 0) {
+				    header += (" [" + organism + "]");
+                }
+            }
             out.println("<tr valign=\"top\">");
 			// score bar
 			//out.println("<th align=left>" + String.valueOf(score) + "</th>");
