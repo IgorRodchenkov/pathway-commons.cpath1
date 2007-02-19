@@ -43,7 +43,7 @@
     out.println("<ul>");
     for (String dataSource : (Set<String>)sortedDataSourceNameMap.keySet()) {
 	    String label = (dataSource.equals(DATA_SOURCE_FILTER_VALUE_GLOBAL_LABEL)) ?
-            "Current Filter Settings" : dataSource;
+            "All" : dataSource;
 			label += " (" + hitByDataSourceMap.get(dataSourceNameMap.get(dataSource)) + ")";
         if (keyDataSource.equals(dataSource)) {
 		    out.println("<li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"10\"><img src=\"jsp/images/arrow.gif\"></li>");
