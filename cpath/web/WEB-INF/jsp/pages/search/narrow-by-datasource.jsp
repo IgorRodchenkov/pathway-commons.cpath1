@@ -8,7 +8,7 @@
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.TreeMap"%>
 <%
-    final String DATA_SOURCE_FILTER_VALUE_GLOBAL_LABEL = "All";
+    final String DATA_SOURCE_FILTER_VALUE_GLOBAL_LABEL = "All Data Sources";
     // grab required objects from request object
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
