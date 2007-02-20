@@ -10,6 +10,7 @@
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary,
                  org.mskcc.pathdb.util.biopax.BioPaxRecordUtil,
                  org.mskcc.pathdb.taglib.DbSnapshotInfo,
+                 org.mskcc.pathdb.taglib.ReactomeCommentUtil,
                  java.util.Set,
                  java.util.Map"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
@@ -43,7 +44,7 @@
     function toggleDetails (id) {
         YAHOO.log ("Toggling row with cPathID:  " + id);
         var elements = new Array();
-        elements[0] = document.getElementById(id + "_datasources");
+        elements[0] = document.getElementById(id + "_details");
         var current = YAHOO.util.Dom.getStyle(elements[0], 'display');
         YAHOO.log ("Current Display Style is set to:  " + current);
         var toggleImage = document.getElementById (id + "_image");
@@ -83,6 +84,24 @@ private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> recordDataS
 		}
 		html.append("</ul>\n\r");
 		return html.toString();
+}
+private String getPathwaySummaryHtml(CPathRecord record, BioPaxRecordSummary summary) {
+    // only show pathway summary info
+    //if (record.getType() != CPathRecordType.PATHWAY) return "";
+    StringBuffer html = new StringBuffer();
+    if (summary.getComments() != null) {
+        String comments[] = summary.getComments();
+	    if (comments.length > 0) {
+            String comment = ReactomeCommentUtil.massageComment(comments[0]);
+            String paragraphs[] = comment.split("<p>");
+		    if (paragraphs.length > 0) {
+				html.append("<p><b>Summary:</b></p>\n\r");
+                html.append("<p>");
+                html.append(paragraphs[0] + "</p>\n\r");
+            }
+        }
+    }
+    return html.toString();
 }
 %>
 <%
@@ -171,15 +190,13 @@ else {
 			out.println(getInspectorButtonHtml(record.getId()));
 			out.println("</th>");
 			out.println("</tr>");
-			// data sources
-			//if (record.getSnapshotId () > -1) {
-			    out.println("<tr><td colspan=3>");
-			    out.println(getDetailsHtml(record.getId(),
-			                "datasources",
-                            getDataSourceHtml(record.getId(), recordDataSources)));
-			                //DbSnapshotInfo.getDbSnapshotHtml(record.getSnapshotId())));
-			    out.println("</td></tr>");
-		    //}
+			// details
+			out.println("<tr><td colspan=3>");
+			out.println("<div id='cpath_" + record.getId() + "_details' class='details'>");
+			out.println(getPathwaySummaryHtml(record, summary));
+			out.println(getDataSourceHtml(record.getId(), recordDataSources));
+			out.println("</div>");
+			out.println("</td></tr>");
         } catch (IllegalArgumentException e) {
             out.println("<div>" +
                     "<a href=\"" + url + "\">" + record.getName() + "</a></div>");
