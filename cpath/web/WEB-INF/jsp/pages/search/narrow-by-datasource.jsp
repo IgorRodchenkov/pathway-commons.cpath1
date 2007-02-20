@@ -42,9 +42,7 @@
     out.println("<h3>Narrow Results by Data Source:</h3>");
     out.println("<ul>");
     for (String dataSource : (Set<String>)sortedDataSourceNameMap.keySet()) {
-	    String label = (dataSource.equals(DATA_SOURCE_FILTER_VALUE_GLOBAL_LABEL)) ?
-            "All" : dataSource;
-			label += " (" + hitByDataSourceMap.get(dataSourceNameMap.get(dataSource)) + ")";
+	    String label = dataSource + " (" + hitByDataSourceMap.get(dataSourceNameMap.get(dataSource)) + ")";
         if (keyDataSource.equals(dataSource)) {
 		    out.println("<li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"10\"><img src=\"jsp/images/arrow.gif\"></li>");
 	    }
