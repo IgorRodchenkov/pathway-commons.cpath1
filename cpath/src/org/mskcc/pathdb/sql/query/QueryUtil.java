@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.10 2007-02-13 17:22:11 grossb Exp $
+// $Id: QueryUtil.java,v 1.11 2007-02-26 18:21:22 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,6 +47,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.taglib.Pager;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.util.xml.XmlStripper;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +55,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Query Utility Class.
@@ -63,6 +66,7 @@ import java.util.HashMap;
 public class QueryUtil {
     private static final String START_TAG = "<b>";
     private static final String END_TAG = "</b>";
+    public static final String MEMBER_OF = "is a member of";
 
 
     /**
@@ -98,14 +102,14 @@ public class QueryUtil {
      * @param term  Query Term String
      * @param pager Pager Object for Next/Previous Pages
      * @param hits  Lucene Hits Object
-     * @return array of String fragments
+     * @return List<List<String>> for each document, return list of String fragments
      * @throws IOException    Input/Output Error
      * @throws ParseException Parsing Exception
      */
-    public static String[] extractFragments(String term, Pager pager, Hits hits)
+    public static List<List<String>> extractFragments(String term, Pager pager, Hits hits)
             throws IOException, ParseException {
         int size = pager.getEndIndex() - pager.getStartIndex();
-        String fragments[] = new String[size];
+        List<List<String>> fragments = new ArrayList<List<String>>();
 
         QueryParser parser = new QueryParser(LuceneConfig.FIELD_ALL,
                 new StandardAnalyzer());
@@ -120,12 +124,20 @@ public class QueryUtil {
                 new QueryHighlightExtractor(luceneQuery,
                         new StandardAnalyzer(), START_TAG, END_TAG);
 
-        int index = 0;
         for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
             Document doc = hits.doc(i);
-            Field field = doc.getField(LuceneConfig.FIELD_ALL);
-            String value = field.stringValue();
-            fragments[index++] = highLighter.getBestFragment(value, 125);
+			String fragment = getFragment(doc, highLighter);
+			// if fragment is null, assume descendent ?
+			if (fragment == null || fragment.length() == 0) {
+				String value = doc.getField(LuceneConfig.FIELD_NAME).stringValue();
+				if (value != null && value.length() > 0) {
+					List<String> listToReturn = new ArrayList<String>();
+					listToReturn.add("\"" + term + "\" " + MEMBER_OF);
+					fragments.add(listToReturn);
+					continue;
+                }
+			}
+			fragments.add(cookFragment(term, fragment));
         }
         reader.close();
         return fragments;
@@ -216,4 +228,85 @@ public class QueryUtil {
         }
         return scores;
     }
+
+	/**
+	 * Grabs fragment of lucene field that matches query term & highlights term.
+	 * Method traverses the lucene fields indexed for match.  If match is not found
+	 * null is returned.
+	 * 
+	 * @param doc Lucene Document
+	 * @param highLighter QueryHighlightExtractor
+	 * @return String
+	 * @throws IOException
+	 */
+	private static String getFragment(Document doc, QueryHighlightExtractor highLighter)
+		throws IOException {
+
+		String[] fields = {LuceneConfig.FIELD_ALL,
+						   LuceneConfig.FIELD_SYNONYMS,
+						   LuceneConfig.FIELD_EXTERNAL_REFS};
+
+		for (String fieldName : fields) {
+			Field field = doc.getField(fieldName);
+			String value = field.stringValue();
+			String fragment = highLighter.getBestFragment(value, 500);
+			if (fragment != null && fragment.length() > 0) return fragment;
+		}
+
+		// made it here, assume descendent ?
+		return null;
+	}
+
+	/**
+	 * Removes XML element delimiter placed in fragment by XmlStripper.
+	 *  Also removes subset(s) of fragments that do not contain query terms.
+	 * 
+	 * @param term String
+	 * @param fragments String
+	 * @return List<String>
+	 */
+	private static List<String> cookFragment(String terms, String fragments) {
+
+		// check fragment args
+		if (fragments == null || fragments.length() == 0) return null;
+
+		// to return
+		List<String> toReturn = null;
+
+		// create terms regex
+		String termRegex = "^.*(?i)(";
+		for (String term : terms.split(" ")) {
+			termRegex += term + "|";
+		}
+		termRegex = termRegex.replaceAll("\\|$", "");
+		termRegex += ").*$";
+
+		Map<String, String> fragmentMap = new HashMap<String,String>();
+		for (String fragment : fragments.split(XmlStripper.ELEMENT_DELIMITER)) {
+			if (fragment.matches(termRegex)) {
+				// don't process duplicate fragments
+				if (!fragmentMap.containsKey(fragment)) {
+					toReturn = (toReturn == null) ? new ArrayList<String>() : toReturn;
+					// lets remove sentences that are part of fragment but don't contain any terms
+					String subFragmentsToReturn = "";
+					for (String subFragment : fragment.split("\\.")) {
+						if (subFragment.matches(termRegex)) {
+							// do we append a '.' after subFragment ?
+							int indexOfPeriod = fragment.indexOf(subFragment) + subFragment.length();
+							boolean appendPeriod = ((indexOfPeriod <= fragment.length()-1) &&
+													(fragment.charAt(indexOfPeriod) == '.'));
+							subFragmentsToReturn += subFragment + ((appendPeriod) ? "." : "");
+						}
+					}
+					// fragment may not have contained periods
+					subFragmentsToReturn = (subFragmentsToReturn.length() == 0) ? fragment : subFragmentsToReturn;
+					toReturn.add(subFragmentsToReturn);
+					fragmentMap.put(fragment,"");
+				}
+			}
+		}
+
+		// outta here
+		return toReturn;
+	}
 }
