@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.17 2007-02-07 19:56:31 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.18 2007-02-26 18:21:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -391,13 +391,14 @@ public class BioPaxToIndex implements ItemToIndex {
 		if (synonyms != null) {
 			for (String synonym : synonyms) {
 				if (synonym != null && synonym.length() > 0) {
-					bufferToReturn.append(" " + synonym);
+					bufferToReturn.append(synonym + XmlStripper.ELEMENT_DELIMITER);
 				}
 			}
 		}
 
 		// outta here
-		return bufferToReturn.toString().trim();
+		String toReturn = bufferToReturn.toString();
+		return toReturn.replaceAll(XmlStripper.ELEMENT_DELIMITER + "$", "");
 	}
 
 	private String getExternalRefsForField(BioPaxRecordSummary summary) {
@@ -408,12 +409,13 @@ public class BioPaxToIndex implements ItemToIndex {
 			for (ExternalLinkRecord link : (List<ExternalLinkRecord>)summary.getExternalLinks()) {
 				String dbName = link.getExternalDatabase().getName();
 				if (! dbName.equalsIgnoreCase("PUBMED")) {
-					bufferToReturn.append(" " + link.getLinkedToId());
+					bufferToReturn.append(link.getLinkedToId() + XmlStripper.ELEMENT_DELIMITER);
 				}
 			}
 		}
 
 		// outta here
-		return bufferToReturn.toString().trim();
+		String toReturn = bufferToReturn.toString();
+		return toReturn.replaceAll(XmlStripper.ELEMENT_DELIMITER + "$", "");
 	}
 }
