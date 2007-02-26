@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.11 2007-02-15 17:11:06 grossb Exp $
+// $Id: LuceneQuery.java,v 1.12 2007-02-26 18:22:11 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,6 +44,7 @@ import org.mskcc.pathdb.model.GlobalFilterSettings;
 
 import java.util.Set;
 import java.util.Map;
+import java.util.List;
 import java.io.IOException;
 
 /**
@@ -57,7 +58,7 @@ public class LuceneQuery {
     private ProtocolRequest request;
     private XDebug xdebug;
     private int totalNumHits;
-    private String fragments[];
+    private List<List<String>> fragments;
 	private Set<String> dataSourceSet;
 	private Map<Long,Set<String>> dataSources;
 	private Map<Long,Float> scores;
@@ -133,9 +134,9 @@ public class LuceneQuery {
     /**
      * Gets Text Fragments.
      *
-     * @return text fragments, string array.
+     * @return text fragments, list of list of strings.
      */
-    public String[] getTextFragments() {
+    public List<List<String>> getTextFragments() {
         return this.fragments;
     }
 
