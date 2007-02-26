@@ -2,6 +2,7 @@
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.taglib.Pager,
                  org.mskcc.pathdb.sql.dao.DaoCPath,
+                 org.mskcc.pathdb.sql.query.QueryUtil,
                  org.mskcc.pathdb.model.CPathRecord,
                  org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.model.GlobalFilterSettings,
@@ -12,7 +13,8 @@
                  org.mskcc.pathdb.taglib.DbSnapshotInfo,
                  org.mskcc.pathdb.taglib.ReactomeCommentUtil,
                  java.util.Set,
-                 java.util.Map"%>
+                 java.util.Map,
+                 java.util.List"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
@@ -27,7 +29,7 @@
             request.getAttribute(BaseAction.ATTRIBUTE_CPATH_IDS);
     Integer totalNumHits = (Integer)
             request.getAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS);
-    String fragments[] = (String []) request.getAttribute
+    List<List<String>> fragments = (List<List<String>>) request.getAttribute
             (BaseAction.ATTRIBUTE_TEXT_FRAGMENTS);
     //Set<String> dataSourceSet = (Set<String>) request.getAttribute
     //        (BaseAction.ATTRIBUTE_DATA_SOURCE_SET);
@@ -103,6 +105,41 @@ private String getPathwaySummaryHtml(CPathRecord record, BioPaxRecordSummary sum
     }
     return html.toString();
 }
+private String getFragmentsHtml(List<String> fragments, String summaryLabel, String header, int maxLength) {
+
+    // check args
+	if (fragments == null || fragments.size() == 0) return "";
+
+	Character period = new Character('.');
+    StringBuffer html = new StringBuffer();
+	for (String fragment : fragments) {
+	    // create copy of fragment with html stripped out for comparision purposes
+		String fragmentCopy = new String (fragment);
+		fragmentCopy = fragmentCopy.replaceAll("<b>", "");
+		fragmentCopy = fragmentCopy.replaceAll("</b>", "");
+		boolean appendPrefix = (Character.isLowerCase(fragmentCopy.charAt(0)) ||
+		                        !Character.isLetter(fragmentCopy.charAt(0)));
+		boolean appendSuffix = period.compareTo(fragment.charAt(fragment.length()-1)) != 0;
+		// if the fragment equals the summaryLabel (header) skip
+	    if (fragmentCopy.indexOf(summaryLabel) != -1 && fragmentCopy.length() <= summaryLabel.length()) continue;
+		if (fragment.indexOf(QueryUtil.MEMBER_OF) != -1) {
+		    fragment += " " + header + ".";
+			appendPrefix = appendSuffix = false;
+        }
+		// write out the html, add "..." in front and back of fragment as needed
+     	html.append("<li>");
+		if (appendPrefix) html.append("... ");
+		fragment = HtmlUtil.truncateLongWords(fragment, maxLength);
+		fragment = fragment.replaceAll("\\.", ". ...");
+		if (fragment.matches("^.*\\. \\.\\.\\.$")) {
+		    fragment = fragment.replaceAll("\\. \\.\\.\\.$", ".");
+        }
+		html.append(fragment);
+		if (appendSuffix) html.append(" ...");
+	    html.append("</li>\n\r");
+    }
+    return html.toString();
+}
 %>
 <%
 if (protocolRequest.getQuery() != null) {
@@ -157,9 +194,12 @@ else {
 	    scoreboardWidth = (score > 0.0 && scoreboardWidth == 0) ? 1 :  scoreboardWidth;
 	    String spacerString = (scoreboardWidth < MAX_SCOREBOARD_WIDTH) ?
 		    ("<td><img src=\"jsp/images/spacer.gif\" width=\"" + String.valueOf(MAX_SCOREBOARD_WIDTH-scoreboardWidth) + "\" height=\"" + SCOREBOARD_HEIGHT + "\" alt=\"" + String.valueOf(percentage) + "%\"></td>") : "";
+		String summaryLabel = "";
+		String header = "";
         try {
             BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
-            String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
+			summaryLabel = summary.getLabel();
+            header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
 			// if protein, add organism information
 			if (record.getType() == CPathRecordType.PHYSICAL_ENTITY) {
 			    String organism = summary.getOrganism();
@@ -191,7 +231,7 @@ else {
 			out.println("</th>");
 			out.println("</tr>");
 			// details
-			out.println("<tr><td colspan=3>");
+			out.println("<tr><td colspan=\"3\">");
 			out.println("<div id='cpath_" + record.getId() + "_details' class='details'>");
 			out.println(getPathwaySummaryHtml(record, summary));
 			out.println(getDataSourceHtml(record.getId(), recordDataSources));
@@ -202,9 +242,11 @@ else {
                     "<a href=\"" + url + "\">" + record.getName() + "</a></div>");
         }
         if (organismFlag == null) {
-            out.println("<tr><td colspan=\"3\"><div class='search_fragment'>"
-                + HtmlUtil.truncateLongWords(fragments[i], 40)
-                +"</div></td></tr>");
+            out.println("<tr><td colspan=\"3\">");
+			out.println("<div class='search_fragment'>");
+            out.println(getFragmentsHtml(fragments.get(i), summaryLabel, header, 40));
+			out.println("</div>");
+			out.println("</td></tr>");
         }
     }
     out.println("</table>");
