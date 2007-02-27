@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.13 2007-02-27 20:05:55 grossb Exp $
+// $Id: QueryUtil.java,v 1.14 2007-02-27 20:08:54 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,8 +64,8 @@ import java.util.ArrayList;
  * @author Ethan Cerami
  */
 public class QueryUtil {
-    private static final String START_TAG = "<b>";
-    private static final String END_TAG = "</b>";
+    public static final String START_TAG = "<b>";
+    public static final String END_TAG = "</b>";
     public static final String MEMBER_OF = "is a member of";
 
 
