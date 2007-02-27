@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.12 2007-02-27 20:04:02 grossb Exp $
+// $Id: QueryUtil.java,v 1.13 2007-02-27 20:05:55 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -299,7 +299,6 @@ public class QueryUtil {
 							// QueryHighlightExtractor misses terms at the beginning of sentence - lets fix
 							for (String term : terms.split(" ")) {
 								if (subFragment.indexOf(term) == 0) {
-									System.out.println("replacing using term");
 									subFragment = subFragment.replaceFirst(term, START_TAG + term + END_TAG);
 								}
 							}
