@@ -87,7 +87,9 @@ private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> recordDataS
 		html.append("</ul>\n\r");
 		return html.toString();
 }
-private String getPathwaySummaryHtml(CPathRecord record, BioPaxRecordSummary summary) {
+private String getPathwaySummaryHtml(CPathRecord record,
+                                     BioPaxRecordSummary summary,
+                                     ProtocolRequest request) {
     // only show pathway summary info
     //if (record.getType() != CPathRecordType.PATHWAY) return "";
     StringBuffer html = new StringBuffer();
@@ -99,6 +101,12 @@ private String getPathwaySummaryHtml(CPathRecord record, BioPaxRecordSummary sum
 		    if (paragraphs.length > 0) {
 				html.append("<p><b>Summary:</b></p>\n\r");
                 html.append("<p>");
+		        for (String term : request.getQuery().split(" ")) {
+			        paragraphs[0] = paragraphs[0].replaceAll(term,
+				                                             QueryUtil.START_TAG +
+                                                             term +
+                                                             QueryUtil.END_TAG);
+                }
                 html.append(paragraphs[0] + "</p>\n\r");
             }
         }
@@ -233,7 +241,7 @@ else {
 			// details
 			out.println("<tr><td colspan=\"3\">");
 			out.println("<div id='cpath_" + record.getId() + "_details' class='details'>");
-			out.println(getPathwaySummaryHtml(record, summary));
+			out.println(getPathwaySummaryHtml(record, summary, protocolRequest));
 			out.println(getDataSourceHtml(record.getId(), recordDataSources));
 			out.println("</div>");
 			out.println("</td></tr>");
