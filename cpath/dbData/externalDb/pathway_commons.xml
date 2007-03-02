@@ -46,4 +46,20 @@
 		<master_term>NCI_NATURE</master_term>
         </controlled_terms>
     </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>BioCarta</name>
+        <description>Charting Pathways of Life</description>
+        <home_page_url>http://www.biocarta.com/</home_page_url>
+        <controlled_terms>
+		<master_term>BIOCARTA</master_term>
+        </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>KEGG</name>
+        <description>Kyoto Encyclopedia of Genes and Genomes</description>
+        <home_page_url>http://www.genome.jp/kegg/pathway.html</home_page_url>
+        <controlled_terms>
+		<master_term>KEGG</master_term>
+        </controlled_terms>
+    </external_database>
 </external_database_list>
