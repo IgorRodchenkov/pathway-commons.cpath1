@@ -44,7 +44,7 @@ border:2px solid #a0a0a0;
 height:120px;
 width:100%;
 /* margin:  top, right, bottom, left */
-margin:0 1px 1px 1px;
+margin:0 1px 0px 1px;
 background:#467aa7;
 color:#ffffff;
 }
@@ -263,7 +263,7 @@ font-weight:bold;
 
 /********** Styles added by Ethan **********/
 #logo {
-	padding:10px 5px 5px 5px;
+	padding:20px 5px 5px 5px;
 }
 
 .section a{
@@ -463,3 +463,10 @@ background-color:#578bb8;
 color:#ffffff;
 }
 #content srp a:hover,#subcontent a:hover{color:white;text-decoration:underline;}
+
+#wip {
+	background:#467aa7;
+	margin:0 0px 1px 1px;
+    text-align:center;
+    display:block;
+}
