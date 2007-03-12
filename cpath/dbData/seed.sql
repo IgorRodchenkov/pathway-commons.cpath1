@@ -27,7 +27,7 @@ truncate table external_db_snapshot;
 #
 
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (1, 'UniProt', 'http://www.pir.uniprot.org/cgi-bin/upEntry?id=%ID%', NULL, 'Universal Protein Resource (UniProt)', 'PROTEIN_UNIFICATION', NULL, NULL, 20031002162924, 20031002102704);
-INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (2, 'Entrez Gene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=search&term=%ID%', NULL, 'NCBI Entrez Gene', 'LINK_OUT', NULL, NULL, 20031002163800, 20031002103655);
+INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (2, 'Entrez Gene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=search&term=%ID%', NULL, 'NCBI Entrez Gene', 'PROTEIN_UNIFICATION', NULL, NULL, 20031002163800, 20031002103655);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (3, 'PubMed', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%ID%&dopt=Abstract', NULL, 'NCBI PubMed', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (4, 'UniGene', 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unigene&cmd=search&term=%ID%', NULL, 'NCBI UniGene Database', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (5, 'OMIM', 'http://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%ID%', NULL, 'Online Mendelian Inheritance in Man (OMIM)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
@@ -93,6 +93,8 @@ INSERT INTO `external_db_cv` VALUES (21, 2, 'ENTREZ_GENE', 1);
 INSERT INTO `external_db_cv` VALUES (22, 2, 'LOCUS_LINK', 0);
 INSERT INTO `external_db_cv` VALUES (23, 2, 'LOCUSLINK', 0);
 INSERT INTO `external_db_cv` VALUES (47, 2, 'LOCUS-LINK', 0);
+INSERT INTO `external_db_cv` VALUES (91, 2, 'ENTREZGENE', 0);
+
 
 #  Terms Associated with RefSeq
 INSERT INTO `external_db_cv` VALUES (24, 25, 'REFSEQ',  0);
