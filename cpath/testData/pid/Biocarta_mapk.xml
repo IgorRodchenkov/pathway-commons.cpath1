@@ -1,0 +1,2125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NCI_PID_XML>
+  <Created>2006_12_20 13:25::42</Created>
+  <Ontology>
+    <LabelType name="edge-type" id="3">
+      <LabelValueList>
+        <LabelValue name="agent" id="22" parent_idref="19" />
+        <LabelValue name="edge-type" id="18" parent_idref="18" />
+        <LabelValue name="incoming-edge" id="19" parent_idref="18" />
+        <LabelValue name="input" id="21" parent_idref="19" />
+        <LabelValue name="outgoing-edge" id="20" parent_idref="18" />
+        <LabelValue name="output" id="24" parent_idref="20" />
+      </LabelValueList>
+    </LabelType>
+    <LabelType name="process-type" id="2">
+      <LabelValueList>
+        <LabelValue name="modification" id="7" parent_idref="6" />
+        <LabelValue name="process-type" id="6" parent_idref="6" />
+      </LabelValueList>
+    </LabelType>
+    <LabelType name="molecule-type" id="1">
+      <LabelValueList>
+        <LabelValue name="complex" id="5" parent_idref="1" />
+        <LabelValue name="compound" id="4" parent_idref="1" />
+        <LabelValue name="molecule-type" id="1" parent_idref="1" />
+        <LabelValue name="protein" id="2" parent_idref="1" />
+      </LabelValueList>
+    </LabelType>
+    <LabelType name="activity-state" id="4">
+      <LabelValueList>
+        <LabelValue name="active" id="26" parent_idref="25" />
+        <LabelValue name="activity-state" id="25" parent_idref="25" />
+      </LabelValueList>
+    </LabelType>
+  </Ontology>
+  <Model>
+    <MoleculeList>
+      <Molecule molecule_type="protein" id="100077">
+        <Name name_type="AS" value="JNK1/MAPK9/MAPK10" />
+        <Family family_molecule_idref="100077" member_molecule_idref="26554" />
+        <Family family_molecule_idref="100077" member_molecule_idref="26557" />
+        <Family family_molecule_idref="100077" member_molecule_idref="26556" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26557">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5602" />
+        <Name name_type="OF" value="MAPK10" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26554">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5599" />
+        <Name name_type="AS" value="JNK" />
+        <Name name_type="AS" value="JNK1" />
+        <Name name_type="OF" value="MAPK8" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26556">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5601" />
+        <Name name_type="OF" value="MAPK9" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100230">
+        <Name name_type="LL" value="6772" />
+        <Name name_type="OF" value="STAT1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100055">
+        <Name name_type="AS" value="MAP3K4/MAP3K12" />
+        <Family family_molecule_idref="100055" member_molecule_idref="26585" />
+        <Family family_molecule_idref="100055" member_molecule_idref="100056" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100056">
+        <Name name_type="LL" value="4216" />
+        <Name name_type="OF" value="MAP3K4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26585">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="7786" />
+        <Name name_type="OF" value="MAP3K12" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100043">
+        <Name name_type="LL" value="9448" />
+        <Name name_type="AS" value="NIK" />
+        <Name name_type="OF" value="MAP4K4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="101630">
+        <Name name_type="LL" value="5607" />
+        <Name name_type="AS" value="MEK5" />
+        <Name name_type="OF" value="MAP2K5" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100060">
+        <Name name_type="AS" value="MEK1/MEK2" />
+        <Family family_molecule_idref="100060" member_molecule_idref="100062" />
+        <Family family_molecule_idref="100060" member_molecule_idref="100061" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100062">
+        <Name name_type="LL" value="5605" />
+        <Name name_type="AS" value="MEK2" />
+        <Name name_type="OF" value="MAP2K2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100061">
+        <Name name_type="LL" value="5604" />
+        <Name name_type="AS" value="MEK1" />
+        <Name name_type="OF" value="MAP2K1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100193">
+        <Name name_type="LL" value="4205" />
+        <Name name_type="AS" value="MEF2 polypeptide A" />
+        <Name name_type="OF" value="MEF2A" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26549">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5594" />
+        <Name name_type="AS" value="ERK2" />
+        <Name name_type="OF" value="MAPK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100175">
+        <Name name_type="LL" value="1147" />
+        <Name name_type="AS" value="IKK-alpha" />
+        <Name name_type="AS" value="IKK" />
+        <Name name_type="OF" value="CHUK" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100042">
+        <Name name_type="LL" value="8491" />
+        <Name name_type="OF" value="MAP4K3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100057">
+        <Name name_type="AS" value="ASK1/TAK1/MAP3K11" />
+        <Family family_molecule_idref="100057" member_molecule_idref="100058" />
+        <Family family_molecule_idref="100057" member_molecule_idref="26764" />
+        <Family family_molecule_idref="100057" member_molecule_idref="100059" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100058">
+        <Name name_type="LL" value="4217" />
+        <Name name_type="AS" value="ASK1" />
+        <Name name_type="OF" value="MAP3K5" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26764">
+        <Name name_type="EC" value="2.7.1.112" />
+        <Name name_type="LL" value="4296" />
+        <Name name_type="OF" value="MAP3K11" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100059">
+        <Name name_type="LL" value="6885" />
+        <Name name_type="AS" value="TAK1" />
+        <Name name_type="OF" value="MAP3K7" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100073">
+        <Name name_type="AS" value="MEK3/MEK6" />
+        <Family family_molecule_idref="100073" member_molecule_idref="100074" />
+        <Family family_molecule_idref="100073" member_molecule_idref="100075" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100074">
+        <Name name_type="LL" value="5606" />
+        <Name name_type="AS" value="MEK3" />
+        <Name name_type="OF" value="MAP2K3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100075">
+        <Name name_type="LL" value="5608" />
+        <Name name_type="AS" value="MEK6" />
+        <Name name_type="OF" value="MAP2K6" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100328">
+        <Name name_type="AS" value="PAKs" />
+        <Family family_molecule_idref="100328" member_molecule_idref="100331" />
+        <Family family_molecule_idref="100328" member_molecule_idref="26528" />
+        <Family family_molecule_idref="100328" member_molecule_idref="100329" />
+        <Family family_molecule_idref="100328" member_molecule_idref="100330" />
+        <Family family_molecule_idref="100328" member_molecule_idref="100124" />
+        <Family family_molecule_idref="100328" member_molecule_idref="26487" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26528">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5063" />
+        <Name name_type="OF" value="PAK3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100331">
+        <Name name_type="LL" value="57144" />
+        <Name name_type="OF" value="PAK7" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100329">
+        <Name name_type="LL" value="5058" />
+        <Name name_type="OF" value="PAK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100124">
+        <Name name_type="LL" value="5062" />
+        <Name name_type="OF" value="PAK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100330">
+        <Name name_type="LL" value="56924" />
+        <Name name_type="OF" value="PAK6" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26487">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="10298" />
+        <Name name_type="OF" value="PAK4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26411">
+        <Name name_type="EC" value="2.7.1.1" />
+        <Name name_type="LL" value="2645" />
+        <Name name_type="AS" value="hexokinase type iv glucokinase" />
+        <Name name_type="AS" value="hexokinase" />
+        <Name name_type="AS" value="atp-dependent hexokinase" />
+        <Name name_type="AS" value="hexokinase d" />
+        <Name name_type="AS" value="hexokinase type iv" />
+        <Name name_type="AS" value="glucose atp phosphotransferase" />
+        <Name name_type="OF" value="GCK" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100195">
+        <Name name_type="LL" value="4208" />
+        <Name name_type="AS" value="MEF2 polypeptide C" />
+        <Name name_type="OF" value="MEF2C" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100049">
+        <Name name_type="AS" value="B-RAF" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100044">
+        <Name name_type="AS" value="MAP4K5/MAP4K1" />
+        <Family family_molecule_idref="100044" member_molecule_idref="100045" />
+        <Family family_molecule_idref="100044" member_molecule_idref="100046" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100045">
+        <Name name_type="LL" value="11183" />
+        <Name name_type="OF" value="MAP4K5" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100046">
+        <Name name_type="LL" value="11184" />
+        <Name name_type="OF" value="MAP4K1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100006">
+        <Name name_type="AS" value="Memberless Families" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100018" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100020" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100023" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100011" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100025" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100010" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100022" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100024" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100027" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100012" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100008" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100026" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100015" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100029" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100019" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100007" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100009" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100021" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100014" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100028" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100017" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100030" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100013" />
+        <Family family_molecule_idref="100006" member_molecule_idref="100016" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100018">
+        <Name name_type="AS" value="Cellular receptor" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100020">
+        <Name name_type="AS" value="CNR receptors" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100023">
+        <Name name_type="AS" value="External Antigen" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100025">
+        <Name name_type="AS" value="dehydrogenase" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100011">
+        <Name name_type="AS" value="GPCR" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100010">
+        <Name name_type="AS" value="ERBB ligand" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100022">
+        <Name name_type="AS" value="SUMO target protein" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100027">
+        <Name name_type="AS" value="Estrogen receptor inhibitors" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100024">
+        <Name name_type="AS" value="peptide" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100012">
+        <Name name_type="AS" value="glycolytic enzymes" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100026">
+        <Name name_type="AS" value="Estrogen receptor activators" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100008">
+        <Name name_type="AS" value="Exportin" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100015">
+        <Name name_type="AS" value="GF R" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100029">
+        <Name name_type="AS" value="p38 Target Kinases" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100019">
+        <Name name_type="AS" value="Stat3 activating cytokines" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100007">
+        <Name name_type="AS" value="Cargo" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100009">
+        <Name name_type="GO" value="0042563" />
+        <Name name_type="AS" value="Importin" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100021">
+        <Name name_type="AS" value="Steroid receptor activated factors" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100014">
+        <Name name_type="AS" value="Substrate" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100028">
+        <Name name_type="AS" value="ERK Target Kinases" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100017">
+        <Name name_type="AS" value="Cytokine receptor" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100013">
+        <Name name_type="AS" value="glucose transporters" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100030">
+        <Name name_type="AS" value="NF-kappa-B activators" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100016">
+        <Name name_type="AS" value="GF" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100196">
+        <Name name_type="LL" value="4209" />
+        <Name name_type="AS" value="MEF2 polypeptide D" />
+        <Name name_type="OF" value="MEF2D" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100756">
+        <Name name_type="LL" value="2002" />
+        <Name name_type="AS" value="ELK-1" />
+        <Name name_type="OF" value="ELK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100050">
+        <Name name_type="AS" value="MAP3K2/MEKK1/MAP3K3/MAP3K8" />
+        <Family family_molecule_idref="100050" member_molecule_idref="100053" />
+        <Family family_molecule_idref="100050" member_molecule_idref="100054" />
+        <Family family_molecule_idref="100050" member_molecule_idref="100051" />
+        <Family family_molecule_idref="100050" member_molecule_idref="100052" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100051">
+        <Name name_type="LL" value="10746" />
+        <Name name_type="OF" value="MAP3K2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100053">
+        <Name name_type="LL" value="4215" />
+        <Name name_type="OF" value="MAP3K3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100052">
+        <Name name_type="LL" value="4214" />
+        <Name name_type="AS" value="MEKK1" />
+        <Name name_type="OF" value="MAP3K1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100054">
+        <Name name_type="LL" value="1326" />
+        <Name name_type="OF" value="MAP3K8" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100409">
+        <Name name_type="GO" value="0005667" />
+        <Name name_type="AS" value="Transcription factors" />
+        <Family family_molecule_idref="100409" member_molecule_idref="100203" />
+        <Family family_molecule_idref="100409" member_molecule_idref="100410" />
+        <Family family_molecule_idref="100409" member_molecule_idref="100411" />
+        <Family family_molecule_idref="100409" member_molecule_idref="100226" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100203">
+        <Name name_type="LL" value="3725" />
+        <Name name_type="AS" value="c-JUN" />
+        <Name name_type="OF" value="JUN" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100226">
+        <Name name_type="AS" value="STAT5" />
+        <Family family_molecule_idref="100226" member_molecule_idref="100227" />
+        <Family family_molecule_idref="100226" member_molecule_idref="100228" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100227">
+        <Name name_type="LL" value="6776" />
+        <Name name_type="AS" value="Stat5a" />
+        <Name name_type="OF" value="STAT5A" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100228">
+        <Name name_type="LL" value="6777" />
+        <Name name_type="AS" value="Stat5b" />
+        <Name name_type="OF" value="STAT5B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100411">
+        <Name name_type="LL" value="6667" />
+        <Name name_type="OF" value="SP1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100410">
+        <Name name_type="LL" value="5970" />
+        <Name name_type="OF" value="RELA" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26518">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="369" />
+        <Name name_type="AS" value="A-RAF" />
+        <Name name_type="OF" value="ARAF" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="101632">
+        <Name name_type="LL" value="1050" />
+        <Name name_type="AS" value="c/EBP-alpha" />
+        <Name name_type="OF" value="CEBPA" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100579">
+        <Name name_type="AS" value="PAK2 (cleaved)" />
+        <Part whole_molecule_idref="100124" part_molecule_idref="100579" start="" end="" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26550">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5595" />
+        <Name name_type="AS" value="ERK1" />
+        <Name name_type="OF" value="MAPK3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100078">
+        <Name name_type="AS" value="MAPK11/ERK6/MAPK13/p38" />
+        <Family family_molecule_idref="100078" member_molecule_idref="26500" />
+        <Family family_molecule_idref="100078" member_molecule_idref="26558" />
+        <Family family_molecule_idref="100078" member_molecule_idref="26567" />
+        <Family family_molecule_idref="100078" member_molecule_idref="26555" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26500">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1432" />
+        <Name name_type="AS" value="p38" />
+        <Name name_type="OF" value="MAPK14" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26567">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6300" />
+        <Name name_type="AS" value="ERK6" />
+        <Name name_type="OF" value="MAPK12" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26558">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5603" />
+        <Name name_type="OF" value="MAPK13" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26555">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5600" />
+        <Name name_type="OF" value="MAPK11" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26564">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6195" />
+        <Name name_type="AS" value="p90RSK" />
+        <Name name_type="OF" value="RPS6KA1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100041">
+        <Name name_type="AS" value="GCK/MAP4K3/MAP4K4" />
+        <Family family_molecule_idref="100041" member_molecule_idref="100043" />
+        <Family family_molecule_idref="100041" member_molecule_idref="100042" />
+        <Family family_molecule_idref="100041" member_molecule_idref="26411" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100438">
+        <Name name_type="AS" value="Non-PPRE-Regulated proteins" />
+        <Family family_molecule_idref="100438" member_molecule_idref="25115" />
+        <Family family_molecule_idref="100438" member_molecule_idref="100440" />
+        <Family family_molecule_idref="100438" member_molecule_idref="100400" />
+        <Family family_molecule_idref="100438" member_molecule_idref="24884" />
+        <Family family_molecule_idref="100438" member_molecule_idref="100439" />
+        <Family family_molecule_idref="100438" member_molecule_idref="100441" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100441">
+        <Name name_type="LL" value="4792" />
+        <Name name_type="AS" value="I-kappa-B-alpha" />
+        <Name name_type="OF" value="NFKBIA" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="24884">
+        <Name name_type="EC" value="1.9.3.1" />
+        <Name name_type="LL" value="4513" />
+        <Name name_type="OF" value="COX2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="25115">
+        <Name name_type="EC" value="1.14.13.39" />
+        <Name name_type="LL" value="4843" />
+        <Name name_type="AS" value="NOSII" />
+        <Name name_type="AS" value="NOS II" />
+        <Name name_type="OF" value="NOS2A" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100400">
+        <Name name_type="LL" value="7124" />
+        <Name name_type="AS" value="TNF-alpha" />
+        <Name name_type="OF" value="TNF" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100440">
+        <Name name_type="LL" value="4609" />
+        <Name name_type="AS" value="c-MYC" />
+        <Name name_type="OF" value="MYC" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100439">
+        <Name name_type="LL" value="2195" />
+        <Name name_type="OF" value="FAT" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100580">
+        <Name name_type="AS" value="MAP3K1 (cleaved)" />
+        <Part whole_molecule_idref="100052" part_molecule_idref="100580" start="" end="" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26553">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5598" />
+        <Name name_type="AS" value="ERK5" />
+        <Name name_type="OF" value="MAPK7" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100200">
+        <Name name_type="LL" value="1385" />
+        <Name name_type="AS" value="CREB" />
+        <Name name_type="OF" value="CREB1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100202">
+        <Name name_type="LL" value="2353" />
+        <Name name_type="AS" value="c-FOS" />
+        <Name name_type="OF" value="FOS" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100578">
+        <Name name_type="AS" value="PAK1 (cleaved)" />
+        <Part whole_molecule_idref="100329" part_molecule_idref="100578" start="" end="" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100063">
+        <Name name_type="AS" value="MKK7/MEK4" />
+        <Family family_molecule_idref="100063" member_molecule_idref="100064" />
+        <Family family_molecule_idref="100063" member_molecule_idref="100065" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100064">
+        <Name name_type="LL" value="5609" />
+        <Name name_type="AS" value="MKK7" />
+        <Name name_type="OF" value="MAP2K7" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100065">
+        <Name name_type="LL" value="6416" />
+        <Name name_type="AS" value="MKK4" />
+        <Name name_type="AS" value="MEK4" />
+        <Name name_type="AS" value="JNKK1" />
+        <Name name_type="OF" value="MAP2K4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100191">
+        <Name name_type="AS" value="MAPK" />
+        <Family family_molecule_idref="100191" member_molecule_idref="26554" />
+        <Family family_molecule_idref="100191" member_molecule_idref="26550" />
+        <Family family_molecule_idref="100191" member_molecule_idref="26500" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26598">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="9020" />
+        <Name name_type="OF" value="MAP3K14" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100174">
+        <Name name_type="AS" value="IKKs" />
+        <Family family_molecule_idref="100174" member_molecule_idref="100176" />
+        <Family family_molecule_idref="100174" member_molecule_idref="100175" />
+        <Family family_molecule_idref="100174" member_molecule_idref="100177" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100176">
+        <Name name_type="LL" value="3551" />
+        <Name name_type="AS" value="IKK-beta" />
+        <Name name_type="OF" value="IKBKB" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100177">
+        <Name name_type="LL" value="8517" />
+        <Name name_type="AS" value="IKK3/IKK-gamma" />
+        <Name name_type="AS" value="IKK3" />
+        <Name name_type="OF" value="IKBKG" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100199">
+        <Name name_type="AS" value="bZip" />
+        <Family family_molecule_idref="100199" member_molecule_idref="100203" />
+        <Family family_molecule_idref="100199" member_molecule_idref="100202" />
+        <Family family_molecule_idref="100199" member_molecule_idref="100201" />
+        <Family family_molecule_idref="100199" member_molecule_idref="100200" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100201">
+        <Name name_type="LL" value="486" />
+        <Name name_type="AS" value="ATF4" />
+        <Name name_type="OF" value="FXYD2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100048">
+        <Name name_type="LL" value="5894" />
+        <Name name_type="OF" value="RAF1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26475">
+        <Name name_type="AS" value="EC_2.7.1.37" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26548" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26477" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26590" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26593" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26501" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26602" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26577" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26559" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26507" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26505" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26552" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26495" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26574" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26563" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26599" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26588" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26503" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26562" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26581" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26512" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26592" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26595" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26535" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26517" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26550" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26544" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26541" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26489" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26584" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26600" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26597" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26555" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26497" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26514" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26533" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26524" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26561" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26576" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26487" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26545" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26601" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26510" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26556" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26519" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26607" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26598" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26530" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26479" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26480" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26528" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26605" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26567" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26578" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26493" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26526" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26565" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26596" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26543" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26585" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26539" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26573" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26521" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26580" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26591" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26569" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26571" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26500" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26508" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26554" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26483" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26484" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26558" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26603" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26496" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26494" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26547" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26594" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26499" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26572" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26583" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26520" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26534" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26506" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26476" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26516" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26589" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26504" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26498" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26542" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26549" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26606" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26560" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26570" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26492" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26502" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26536" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26532" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26488" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26518" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26564" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26582" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26537" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26587" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26486" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26515" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26568" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26586" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26540" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26523" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26553" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26511" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26551" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26538" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26608" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26482" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26481" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26485" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26527" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26575" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26546" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26531" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26513" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26490" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26509" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26522" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26579" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26478" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26525" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26604" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26557" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26529" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26491" />
+        <Family family_molecule_idref="26475" member_molecule_idref="26566" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26494">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1195" />
+        <Name name_type="OF" value="CLK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26496">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1198" />
+        <Name name_type="OF" value="CLK3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26547">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5592" />
+        <Name name_type="AS" value="PKG type I" />
+        <Name name_type="OF" value="PRKG1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26594">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8859" />
+        <Name name_type="OF" value="STK19" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26548">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5593" />
+        <Name name_type="AS" value="PKG type II" />
+        <Name name_type="OF" value="PRKG2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26477">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="10087" />
+        <Name name_type="OF" value="COL4A3BP" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26499">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="140901" />
+        <Name name_type="OF" value="STK35" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26593">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8814" />
+        <Name name_type="OF" value="CDKL1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26590">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8576" />
+        <Name name_type="OF" value="STK16" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26572">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="659" />
+        <Name name_type="AS" value="BMPR-II" />
+        <Name name_type="OF" value="BMPR2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26583">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="7046" />
+        <Name name_type="AS" value="TGF-beta-RI" />
+        <Name name_type="AS" value="TGF-beta-R1" />
+        <Name name_type="OF" value="TGFBR1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26520">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="4117" />
+        <Name name_type="OF" value="MAK" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26501">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1457" />
+        <Name name_type="AS" value="CK-II" />
+        <Name name_type="OF" value="CSNK2A1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26534">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5292" />
+        <Name name_type="OF" value="PIM1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26506">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="208" />
+        <Name name_type="OF" value="AKT2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26476">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="10000" />
+        <Name name_type="AS" value="calcium/phospholipid-dependent protein kinase" />
+        <Name name_type="AS" value="serine(threonine) protein kinase" />
+        <Name name_type="AS" value="raf kinase" />
+        <Name name_type="AS" value="protein kinase ck2" />
+        <Name name_type="AS" value="m phase-specific cdc2 kinase" />
+        <Name name_type="AS" value="serine protein kinase" />
+        <Name name_type="AS" value="protein kinase a" />
+        <Name name_type="AS" value="calcium-dependent protein kinase c" />
+        <Name name_type="AS" value="protein kinase p58" />
+        <Name name_type="AS" value="threonine-specific protein kinase" />
+        <Name name_type="AS" value="ribosomal protein s6 kinase ii" />
+        <Name name_type="AS" value="camp-dependent protein kinase" />
+        <Name name_type="AS" value="glycogen synthase kinase" />
+        <Name name_type="AS" value="casein kinase ii" />
+        <Name name_type="AS" value="cyclic monophosphate-dependent protein kinase" />
+        <Name name_type="AS" value="protein-aspartyl kinase" />
+        <Name name_type="AS" value="betaiipkc" />
+        <Name name_type="AS" value="hpr kinase" />
+        <Name name_type="AS" value="phosphorylase b kinase kinase" />
+        <Name name_type="AS" value="camp-dependent protein kinase a" />
+        <Name name_type="AS" value="ck-2" />
+        <Name name_type="AS" value="serine/threonine protein kinase" />
+        <Name name_type="AS" value="serine kinase" />
+        <Name name_type="AS" value="type-2 casein kinase" />
+        <Name name_type="AS" value="ap50 kinase" />
+        <Name name_type="AS" value="protein-serine kinase" />
+        <Name name_type="AS" value="cyclic nucleotide-dependent protein kinase" />
+        <Name name_type="AS" value="casein kinase" />
+        <Name name_type="AS" value="casein kinase i" />
+        <Name name_type="AS" value="raf-1" />
+        <Name name_type="AS" value="protein serine kinase" />
+        <Name name_type="AS" value="twitchin kinase" />
+        <Name name_type="AS" value="pka" />
+        <Name name_type="AS" value="protein serine-threonine kinase" />
+        <Name name_type="AS" value="atp-protein transphosphorylase" />
+        <Name name_type="AS" value="pkc" />
+        <Name name_type="AS" value="cgmp-dependent protein kinase" />
+        <Name name_type="AS" value="a-kinase" />
+        <Name name_type="AS" value="cyclic amp-dependent protein kinase" />
+        <Name name_type="AS" value="ckii" />
+        <Name name_type="AS" value="mitogen-activated s6 kinase" />
+        <Name name_type="AS" value="protein glutamyl kinase" />
+        <Name name_type="AS" value="glycogen synthase a kinase" />
+        <Name name_type="AS" value="mitogen-activated protein kinase" />
+        <Name name_type="AS" value="hydroxyalkyl-protein kinase" />
+        <Name name_type="AS" value="protein kinase" />
+        <Name name_type="AS" value="ribosomal s6 protein kinase" />
+        <Name name_type="AS" value="cki" />
+        <Name name_type="AS" value="cytidine 3&#x27;,5&#x27;-cyclic monophosphate-responsive protein kinase" />
+        <Name name_type="AS" value="protein phosphokinase" />
+        <Name name_type="AS" value="protein-cysteine kinase" />
+        <Name name_type="AS" value="cyclic amp-dependent protein kinase a" />
+        <Name name_type="AS" value="p82 kinase" />
+        <Name name_type="AS" value="casein kinase 2" />
+        <Name name_type="AS" value="serine-specific protein kinase" />
+        <Name name_type="AS" value="cyclin-dependent kinase" />
+        <Name name_type="AS" value="t-antigen kinase" />
+        <Name name_type="AS" value="beta-andrenergic receptor kinase" />
+        <Name name_type="AS" value="epsilon pkc" />
+        <Name name_type="AS" value="mapk" />
+        <Name name_type="OF" value="AKT3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26516">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="30811" />
+        <Name name_type="OF" value="HUNK" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26589">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8558" />
+        <Name name_type="OF" value="CDK10" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26504">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1612" />
+        <Name name_type="OF" value="DAPK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26498">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="130399" />
+        <Name name_type="OF" value="ACVR1C" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26602">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="9212" />
+        <Name name_type="OF" value="AURKB" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26542">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5584" />
+        <Name name_type="OF" value="PRKCI" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26559">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5613" />
+        <Name name_type="OF" value="PRKX" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26577">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6792" />
+        <Name name_type="OF" value="CDKL5" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26505">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="207" />
+        <Name name_type="AS" value="AKT" />
+        <Name name_type="OF" value="AKT1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26507">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="23678" />
+        <Name name_type="OF" value="SGKL" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26606">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="94" />
+        <Name name_type="OF" value="ACVRL1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26552">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5597" />
+        <Name name_type="OF" value="MAPK6" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26495">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1196" />
+        <Name name_type="OF" value="CLK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26560">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="56164" />
+        <Name name_type="OF" value="STK31" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26574">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6788" />
+        <Name name_type="OF" value="STK3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26570">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="657" />
+        <Name name_type="AS" value="ALK3" />
+        <Name name_type="OF" value="BMPR1A" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26492">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1111" />
+        <Name name_type="AS" value="CHK1" />
+        <Name name_type="OF" value="CHEK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26502">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1459" />
+        <Name name_type="OF" value="CSNK2A2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26563">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5871" />
+        <Name name_type="OF" value="MAP4K2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26599">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="91" />
+        <Name name_type="OF" value="ACVR1B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26588">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8445" />
+        <Name name_type="OF" value="DYRK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26536">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5566" />
+        <Name name_type="OF" value="PRKACA" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26503">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1460" />
+        <Name name_type="OF" value="CSNK2B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26562">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="57396" />
+        <Name name_type="OF" value="CLK4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26532">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="51755" />
+        <Name name_type="OF" value="CRK7" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26581">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="699" />
+        <Name name_type="OF" value="BUB1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26512">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="27330" />
+        <Name name_type="OF" value="RPS6KA6" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26488">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="10494" />
+        <Name name_type="OF" value="STK25" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26592">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8767" />
+        <Name name_type="AS" value="RIP2" />
+        <Name name_type="OF" value="RIPK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26595">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8899" />
+        <Name name_type="OF" value="PRPF4B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26535">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5347" />
+        <Name name_type="OF" value="PLK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26517">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="3611" />
+        <Name name_type="OF" value="ILK" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26544">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5589" />
+        <Name name_type="OF" value="PRKCSH" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26582">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="701" />
+        <Name name_type="OF" value="BUB1B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26541">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5582" />
+        <Name name_type="AS" value="PKC-gamma" />
+        <Name name_type="OF" value="PRKCG" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26489">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="10769" />
+        <Name name_type="OF" value="PLK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26537">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5567" />
+        <Name name_type="AS" value="PKA catalytic beta" />
+        <Name name_type="OF" value="PRKACB" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26584">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="7048" />
+        <Name name_type="AS" value="T-beta-R-II" />
+        <Name name_type="AS" value="TGF-beta-R2" />
+        <Name name_type="OF" value="TGFBR2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26600">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="9149" />
+        <Name name_type="OF" value="DYRK1B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26597">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="90" />
+        <Name name_type="OF" value="ACVR1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26497">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1263" />
+        <Name name_type="OF" value="PLK3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26514">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="2931" />
+        <Name name_type="AS" value="GSK3-alpha" />
+        <Name name_type="OF" value="GSK3A" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26533">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5218" />
+        <Name name_type="OF" value="PFTK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26524">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="472" />
+        <Name name_type="OF" value="ATM" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26486">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1025" />
+        <Name name_type="OF" value="CDK9" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26587">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8428" />
+        <Name name_type="OF" value="STK24" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26568">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6446" />
+        <Name name_type="OF" value="SGK" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26515">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="2932" />
+        <Name name_type="AS" value="GSK3-beta" />
+        <Name name_type="OF" value="GSK3B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26586">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8408" />
+        <Name name_type="OF" value="ULK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26561">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5681" />
+        <Name name_type="OF" value="PSKH1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26523">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="4342" />
+        <Name name_type="OF" value="MOS" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26540">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5579" />
+        <Name name_type="AS" value="PKC-beta1" />
+        <Name name_type="AS" value="PKC-beta" />
+        <Name name_type="OF" value="PRKCB1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26576">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6790" />
+        <Name name_type="AS" value="Aurora A" />
+        <Name name_type="OF" value="STK6" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26511">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="27102" />
+        <Name name_type="AS" value="HRI" />
+        <Name name_type="OF" value="EIF2AK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26551">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5596" />
+        <Name name_type="OF" value="MAPK4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26545">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5590" />
+        <Name name_type="AS" value="PKC-zeta" />
+        <Name name_type="OF" value="PRKCZ" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26538">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5568" />
+        <Name name_type="AS" value="PKA catalytic gamma" />
+        <Name name_type="OF" value="PRKACG" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26601">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="92" />
+        <Name name_type="AS" value="ACVR2" />
+        <Name name_type="OF" value="ACVR2A" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26510">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="269" />
+        <Name name_type="OF" value="AMHR2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26608">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="9891" />
+        <Name name_type="AS" value="ARK5" />
+        <Name name_type="OF" value="NUAK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26482">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1020" />
+        <Name name_type="OF" value="CDK5" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26519">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="3984" />
+        <Name name_type="AS" value="LIM KINASE" />
+        <Name name_type="OF" value="LIMK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26481">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1019" />
+        <Name name_type="OF" value="CDK4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26607">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="983" />
+        <Name name_type="AS" value="CDK1" />
+        <Name name_type="OF" value="CDC2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26527">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="4752" />
+        <Name name_type="OF" value="NEK3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26485">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1024" />
+        <Name name_type="OF" value="CDK8" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26530">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5128" />
+        <Name name_type="OF" value="PCTK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26479">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1017" />
+        <Name name_type="OF" value="CDK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26575">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6789" />
+        <Name name_type="OF" value="STK4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26480">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1018" />
+        <Name name_type="OF" value="CDK3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26531">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5170" />
+        <Name name_type="AS" value="PDK-1" />
+        <Name name_type="OF" value="PDPK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26546">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5591" />
+        <Name name_type="AS" value="DNA-PK" />
+        <Name name_type="OF" value="PRKDC" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26605">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="93" />
+        <Name name_type="OF" value="ACVR2B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26578">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6793" />
+        <Name name_type="OF" value="STK10" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26493">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="11200" />
+        <Name name_type="AS" value="CHK2" />
+        <Name name_type="OF" value="CHEK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26526">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="4751" />
+        <Name name_type="OF" value="NEK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26565">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6196" />
+        <Name name_type="OF" value="RPS6KA2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26596">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8999" />
+        <Name name_type="OF" value="CDKL2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26513">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="27347" />
+        <Name name_type="OF" value="STK39" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26490">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="11035" />
+        <Name name_type="OF" value="RIPK3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26543">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5587" />
+        <Name name_type="OF" value="PRKD1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26539">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5578" />
+        <Name name_type="AS" value="PKC-alpha" />
+        <Name name_type="OF" value="PRKCA" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26573">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6787" />
+        <Name name_type="OF" value="NEK4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26521">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="415116" />
+        <Name name_type="OF" value="PIM3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26580">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6795" />
+        <Name name_type="OF" value="AURKC" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26509">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="26576" />
+        <Name name_type="OF" value="STK23" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26522">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="4294" />
+        <Name name_type="OF" value="MAP3K10" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26579">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6794" />
+        <Name name_type="OF" value="STK11" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26591">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="8737" />
+        <Name name_type="AS" value="RIP" />
+        <Name name_type="OF" value="RIPK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26569">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="65266" />
+        <Name name_type="OF" value="WNK4" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26525">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="4750" />
+        <Name name_type="OF" value="NEK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26478">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="10110" />
+        <Name name_type="OF" value="SGK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26604">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="9263" />
+        <Name name_type="OF" value="STK17A" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26571">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="658" />
+        <Name name_type="OF" value="BMPR1B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26529">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="5127" />
+        <Name name_type="OF" value="PCTK1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26491">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="11040" />
+        <Name name_type="OF" value="PIM2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26508">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="26524" />
+        <Name name_type="OF" value="LATS2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26483">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1021" />
+        <Name name_type="OF" value="CDK6" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26484">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="1022" />
+        <Name name_type="OF" value="CDK7" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26566">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="6197" />
+        <Name name_type="OF" value="RPS6KA3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26603">
+        <Name name_type="EC" value="2.7.1.37" />
+        <Name name_type="LL" value="9262" />
+        <Name name_type="OF" value="STK17B" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100735">
+        <Name name_type="LL" value="5879" />
+        <Name name_type="OF" value="RAC1" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100229">
+        <Name name_type="AS" value="STATs" />
+        <Family family_molecule_idref="100229" member_molecule_idref="100231" />
+        <Family family_molecule_idref="100229" member_molecule_idref="100227" />
+        <Family family_molecule_idref="100229" member_molecule_idref="100230" />
+        <Family family_molecule_idref="100229" member_molecule_idref="100226" />
+        <Family family_molecule_idref="100229" member_molecule_idref="100228" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100231">
+        <Name name_type="LL" value="6774" />
+        <Name name_type="OF" value="STAT3" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="101348">
+        <Name name_type="LL" value="1386" />
+        <Name name_type="AS" value="ATF-2" />
+        <Name name_type="OF" value="ATF2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="101631">
+        <Name name_type="LL" value="9175" />
+        <Name name_type="OF" value="MAP3K13" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100123">
+        <Name name_type="AS" value="Caspase 3/6 inactivated kinases" />
+        <Family family_molecule_idref="100123" member_molecule_idref="26775" />
+        <Family family_molecule_idref="100123" member_molecule_idref="26591" />
+        <Family family_molecule_idref="100123" member_molecule_idref="100052" />
+        <Family family_molecule_idref="100123" member_molecule_idref="100125" />
+        <Family family_molecule_idref="100123" member_molecule_idref="100124" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="26775">
+        <Name name_type="EC" value="2.7.1.112" />
+        <Name name_type="LL" value="5747" />
+        <Name name_type="AS" value="FAK" />
+        <Name name_type="OF" value="PTK2" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100125">
+        <Name name_type="LL" value="5580" />
+        <Name name_type="AS" value="PKC-delta" />
+        <Name name_type="OF" value="PRKCD" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100697">
+        <Name name_type="LL" value="3265" />
+        <Name name_type="AS" value="RAS" />
+        <Name name_type="OF" value="HRAS" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100076">
+        <Name name_type="AS" value="ERK1/ERK2" />
+        <Family family_molecule_idref="100076" member_molecule_idref="26550" />
+        <Family family_molecule_idref="100076" member_molecule_idref="26549" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100870">
+        <Name name_type="LL" value="4149" />
+        <Name name_type="AS" value="Max" />
+        <Name name_type="OF" value="MAX" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100047">
+        <Name name_type="AS" value="RAF1/A-RAF/B-RAF" />
+        <Family family_molecule_idref="100047" member_molecule_idref="100048" />
+        <Family family_molecule_idref="100047" member_molecule_idref="100049" />
+        <Family family_molecule_idref="100047" member_molecule_idref="26518" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100192">
+        <Name name_type="AS" value="MEF2" />
+        <Family family_molecule_idref="100192" member_molecule_idref="100195" />
+        <Family family_molecule_idref="100192" member_molecule_idref="100194" />
+        <Family family_molecule_idref="100192" member_molecule_idref="100196" />
+        <Family family_molecule_idref="100192" member_molecule_idref="100193" />
+      </Molecule>
+      <Molecule molecule_type="protein" id="100194">
+        <Name name_type="LL" value="4207" />
+        <Name name_type="AS" value="MEF2 polypeptide B" />
+        <Name name_type="OF" value="MEF2B" />
+      </Molecule>
+    </MoleculeList>
+    <InteractionList>
+      <Interaction interaction_type="modification" id="101614">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100064">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="101631">
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100064">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101609">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100073">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100057">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100073">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101608">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100063">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100057">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100063">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101591">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100060">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100047">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100060">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101598">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="26553">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="101630">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="26553">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101610">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100078">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100063">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101620">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100175">
+          </InteractionComponent>
+          <InteractionComponent role_type="input" molecule_idref="100176">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="26598">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100175">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100176">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101599">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="26564">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="26553">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="26564">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101607">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100057">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100044">
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100057">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101629">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100230">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100230">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101633">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100203">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100076">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100203">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101630">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="101348">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100077">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="101348">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101604">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100063">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100055">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100063">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101615">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100061">
+          </InteractionComponent>
+          <InteractionComponent role_type="input" molecule_idref="100062">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100052">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100061">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100062">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101613">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100192">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100192">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101617">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100074">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100052">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100074">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101603">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100055">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100329">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100124">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100055">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101623">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100440">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100440">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101600">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100192">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="26553">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100192">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101595">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100050">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100041">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100050">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101593">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100028">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100076">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100028">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101602">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100329">
+          </InteractionComponent>
+          <InteractionComponent role_type="input" molecule_idref="100124">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100735">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100329">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100124">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101611">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100078">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100073">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101616">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100064">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100052">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100064">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101605">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100077">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100063">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100077">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101619">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100064">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100059">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100064">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101621">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="26500">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100064">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="26500">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101590">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100047">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100697">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100047">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101624">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100200">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100200">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101596">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="101630">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100050">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="101630">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101628">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="101632">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="101632">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101631">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100411">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100077">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100411">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101606">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100203">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100077">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100203">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101632">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100202">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100076">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100202">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101625">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="101348">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="101348">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101597">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100063">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100050">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100063">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101622">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="26553">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100075">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="26553">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101592">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100076">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100060">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100076">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101627">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100411">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100411">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101612">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100029">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100029">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="100341">
+        <Source id="3">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100065">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100052">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100065">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101594">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100756">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100076">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100756">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101626">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100870">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="100078">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100870">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+      <Interaction interaction_type="modification" id="101601">
+        <Source id="2">BioCarta</Source>
+        <InteractionComponentList>
+          <InteractionComponent role_type="input" molecule_idref="100175">
+          </InteractionComponent>
+          <InteractionComponent role_type="input" molecule_idref="100176">
+          </InteractionComponent>
+          <InteractionComponent role_type="agent" molecule_idref="26564">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100175">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+          <InteractionComponent role_type="output" molecule_idref="100176">
+            <Label label_type="activity-state" value="active" />
+          </InteractionComponent>
+        </InteractionComponentList>
+      </Interaction>
+    </InteractionList>
+    <PathwayList>
+      <Pathway id="100113" subnet="false">
+        <Organism>Hs</Organism>
+        <LongName>mapkinase signaling pathway</LongName>
+        <ShortName>mapkpathway</ShortName>
+        <Source id="2">BioCarta</Source>
+        <PathwayComponentList>
+          <PathwayComponent interaction_idref="101614" />
+          <PathwayComponent interaction_idref="101609" />
+          <PathwayComponent interaction_idref="101608" />
+          <PathwayComponent interaction_idref="101591" />
+          <PathwayComponent interaction_idref="101598" />
+          <PathwayComponent interaction_idref="101610" />
+          <PathwayComponent interaction_idref="101620" />
+          <PathwayComponent interaction_idref="101599" />
+          <PathwayComponent interaction_idref="101607" />
+          <PathwayComponent interaction_idref="101629" />
+          <PathwayComponent interaction_idref="101633" />
+          <PathwayComponent interaction_idref="101630" />
+          <PathwayComponent interaction_idref="101604" />
+          <PathwayComponent interaction_idref="101615" />
+          <PathwayComponent interaction_idref="101613" />
+          <PathwayComponent interaction_idref="101617" />
+          <PathwayComponent interaction_idref="101623" />
+          <PathwayComponent interaction_idref="101603" />
+          <PathwayComponent interaction_idref="101600" />
+          <PathwayComponent interaction_idref="101595" />
+          <PathwayComponent interaction_idref="101593" />
+          <PathwayComponent interaction_idref="101602" />
+          <PathwayComponent interaction_idref="101611" />
+          <PathwayComponent interaction_idref="101616" />
+          <PathwayComponent interaction_idref="101605" />
+          <PathwayComponent interaction_idref="101619" />
+          <PathwayComponent interaction_idref="101621" />
+          <PathwayComponent interaction_idref="101590" />
+          <PathwayComponent interaction_idref="101624" />
+          <PathwayComponent interaction_idref="101596" />
+          <PathwayComponent interaction_idref="101628" />
+          <PathwayComponent interaction_idref="101631" />
+          <PathwayComponent interaction_idref="101606" />
+          <PathwayComponent interaction_idref="101632" />
+          <PathwayComponent interaction_idref="101625" />
+          <PathwayComponent interaction_idref="101597" />
+          <PathwayComponent interaction_idref="101622" />
+          <PathwayComponent interaction_idref="101592" />
+          <PathwayComponent interaction_idref="101627" />
+          <PathwayComponent interaction_idref="101612" />
+          <PathwayComponent interaction_idref="101594" />
+          <PathwayComponent interaction_idref="100341" />
+          <PathwayComponent interaction_idref="101601" />
+          <PathwayComponent interaction_idref="101626" />
+        </PathwayComponentList>
+      </Pathway>
+    </PathwayList>
+  </Model>
+</NCI_PID_XML>
