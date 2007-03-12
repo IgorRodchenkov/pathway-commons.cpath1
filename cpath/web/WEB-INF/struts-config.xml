@@ -217,6 +217,14 @@
 		  <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
         </action>
 
+        <!--  Experimental Bare Bones Work -->
+		<action path="/bb/web_service" type="org.mskcc.pathdb.action.bb.WebService">
+		  <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
+        </action>
+        <action path="/bb/home" type="org.mskcc.pathdb.action.bb.HomeAction">
+          <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
+        </action>
+
     </action-mappings>
     <message-resources parameter="cpathResources"/>
 </struts-config>
