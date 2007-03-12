@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.44 2007-01-09 15:40:19 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.45 2007-03-12 16:12:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -71,7 +71,7 @@ public class BioPaxRecordSummaryUtils {
     /**
      * Phosphorylation Feature; start pattern.
      */
-    private static final String PHOSPHORYLATION_FEATURE = "phosphorylat";
+    private static final String PHOSPHORYLATION_FEATURE = "phosph";
 
     /**
      * Ubiquitination Feature; start pattern.
