@@ -32,14 +32,14 @@ print ("Using Database Password:  $db_password\n");
 &importSql ("bb.sql");
 
 # create seed file
-my $seed_file = "seedBB.sql";
-open(my $fh, ">" . "$cpathHome/dbData/$seed_file") or die "Unable to create {$seed_file}: $!\n";
+my $seed_file = "$cpathHome/dbData/seedBB.sql";
+open(my $fh, ">" . "$seed_file") or die "Unable to create {$seed_file}: $!\n";
 gen_kegg_seed($fh);
-close $fh || die "Unable to close {$seed_file}: $!\n";
+close $fh or die "Unable to close {$seed_file}: $!\n";
 # import the seed table
-&importSql ("$seed_file");
+&importSql (substr($seed_file, rindex($seed_file, "\/")+1));
 # no need to close seed file, import sql does this for us.
-unlink $seed_file || die "Unable to remove {$seed_file}: $!\n";
+unlink "$seed_file" or die "Unable to remove {$seed_file}: $!\n";
 
 print "Done.  cPath is now ready to go...\n";
 
