@@ -5,6 +5,7 @@ CREATE TABLE `bb_pathway` (
 	`EXTERNAL_PATHWAY_ID` varchar(255) NOT NULL default '',
     `PATHWAY_NAME` varchar(255) NOT NULL default '',
     `SOURCE` varchar(255) NOT NULL default '',
+	`URL` varchar(255) NOT NULL default '',
     PRIMARY KEY  (`EXTERNAL_PATHWAY_ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
