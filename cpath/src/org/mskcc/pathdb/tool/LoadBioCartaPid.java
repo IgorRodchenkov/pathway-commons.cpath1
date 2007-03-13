@@ -51,12 +51,15 @@ public class LoadBioCartaPid {
             Element pathway = (Element) pathwayList.get(0);
             Attribute id = pathway.getAttribute("id");
             String pathwayName = pathway.getChildTextNormalize("LongName");
+			String pathwayShortName = pathway.getChildTextNormalize("ShortName");
             pathwayId = id.getValue();
             //  Add Pathway Info to BB_Pathway table
             if (pathwayName != null) {
                 DaoBBPathway daoBbPathway = new DaoBBPathway();
                 BBPathwayRecord pathwayRecord = new BBPathwayRecord("BioCarta:" + pathwayId,
-																	pathwayName, "BioCarta", "url");
+																	pathwayName,
+																	"BioCarta",
+																	"http://www.biocarta.com/pathfiles/h_" + pathwayShortName + ".asp");
                 daoBbPathway.addRecord(pathwayRecord);
             }
             System.out.println("Got Pathway:  " + pathwayName + " [" + pathwayId + "]");
