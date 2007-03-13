@@ -1,4 +1,4 @@
-package org.mskcc.pathdb.action.bb;
+package org.mskcc.pathdb.bb.action;
 
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.xdebug.XDebug;
