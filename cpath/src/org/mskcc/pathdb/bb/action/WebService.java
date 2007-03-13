@@ -90,9 +90,11 @@ public class WebService extends BaseAction {
 				DaoBBPathway daoBBPathway = new DaoBBPathway();
                 for (BBInternalLinkRecord linkRecord : links) {
 					BBPathwayRecord pathwayRecord = daoBBPathway.getBBPathway(linkRecord.getPathwayID());
-                    writer.println(pathwayRecord.getPathwayName() + "\t" +
-								   pathwayRecord.getSource() + "\t" +
-								   pathwayRecord.getURL());
+					if (pathwayRecord != null) {
+						writer.println(pathwayRecord.getPathwayName() + "\t" +
+									   pathwayRecord.getSource() + "\t" +
+									   pathwayRecord.getURL());
+					}
                 }
             }
         }
