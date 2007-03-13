@@ -1,4 +1,4 @@
-// $Id: BBPathwayRecord.java,v 1.1 2007-03-13 14:44:04 grossb Exp $
+// $Id: BBPathwayRecord.java,v 1.2 2007-03-13 15:23:53 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -29,7 +29,7 @@
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
-package org.mskcc.pathdb.model.bb;
+package org.mskcc.pathdb.bb.model;
 
 // imports
 import java.io.Serializable;
