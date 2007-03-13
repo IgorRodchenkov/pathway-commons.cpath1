@@ -1,4 +1,4 @@
-// $Id: BBPathwayRecord.java,v 1.2 2007-03-13 15:23:53 grossb Exp $
+// $Id: BBPathwayRecord.java,v 1.3 2007-03-13 15:29:43 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -56,19 +56,26 @@ public class BBPathwayRecord implements Serializable {
 	 */
     private String source;
 
+	/**
+	 * url
+	 */
+    private String url;
+
     /**
      * Constructor.
      *
 	 * @param pathwayID  
 	 * @param pathwayName
 	 * @param source
+	 * @param url
      */
-    public BBPathwayRecord(String pathwayID, String pathwayName, String source) {
+    public BBPathwayRecord(String pathwayID, String pathwayName, String source, String url) {
 
 		// init members
 		this.pathwayID = pathwayID;
 		this.pathwayName = pathwayName;
 		this.source = source;
+		this.url = url;
     }
 
     /**
@@ -101,7 +108,7 @@ public class BBPathwayRecord implements Serializable {
     /**
      * Sets pathway name.
      *
-     * @param pathwayName String.
+     * @param pathwayName String
      */
     public void setPathwayName(String pathwayName) {
         this.pathwayName = pathwayName;
@@ -110,7 +117,7 @@ public class BBPathwayRecord implements Serializable {
     /**
      * Gets pathway source.
      *
-     * @return String.
+     * @return String
      */
     public String getSource() {
         return source;
@@ -119,9 +126,27 @@ public class BBPathwayRecord implements Serializable {
     /**
      * Sets pathway source.
      *
-     * @param source String.
+     * @param source String
      */
     public void setSource(String source) {
         this.source = source;
+    }
+
+    /**
+     * Gets pathway url.
+     *
+     * @return String
+     */
+    public String getURL() {
+        return url;
+    }
+
+    /**
+     * Sets pathway url.
+     *
+     * @param source String
+     */
+    public void setURL(String url) {
+        this.url = url;
     }
 }

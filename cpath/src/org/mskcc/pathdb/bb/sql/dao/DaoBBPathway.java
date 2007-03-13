@@ -33,6 +33,7 @@ package org.mskcc.pathdb.bb.sql.dao;
 
 import org.mskcc.pathdb.model.BBPathwayRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -73,11 +74,13 @@ public class DaoBBPathway {
                     ("INSERT INTO bb_pathway "
                             + "(`external_pathway_id`, "
                             + "`pathway_name`,"
-                            + "`source`)"
-                            + " VALUES (?,?,?)");
+                            + "`source`,"
+                            + "`url`)"
+                            + " VALUES (?,?,?,?)");
             pstmt.setString(1, bbPathwayRecord.getPathwayID());
             pstmt.setString(2, bbPathwayRecord.getPathwayName());
             pstmt.setString(3, bbPathwayRecord.getSource());
+            pstmt.setString(4, bbPathwayRecord.getURL());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -111,7 +114,8 @@ public class DaoBBPathway {
                 String pathwayID = rs.getString(1);
                 String pathwayName = rs.getString(2);
                 String source = rs.getString(3);
-                return new BBPathwayRecord(pathwayID, pathwayName, source);
+                String url = rs.getString(4);
+                return new BBPathwayRecord(pathwayID, pathwayName, source, url);
             }
             return null;
         } catch (SQLException e) {
