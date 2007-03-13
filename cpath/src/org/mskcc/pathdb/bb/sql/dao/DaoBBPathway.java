@@ -31,7 +31,7 @@
  **/
 package org.mskcc.pathdb.bb.sql.dao;
 
-import org.mskcc.pathdb.model.BBPathwayRecord;
+import org.mskcc.pathdb.bb.model.BBPathwayRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 

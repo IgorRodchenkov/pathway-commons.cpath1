@@ -31,7 +31,7 @@
  **/
 package org.mskcc.pathdb.bb.sql.dao;
 
-import org.mskcc.pathdb.model.BBInternalLinkRecord;
+import org.mskcc.pathdb.bb.model.BBInternalLinkRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 
