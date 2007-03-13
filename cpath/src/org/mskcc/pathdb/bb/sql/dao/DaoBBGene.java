@@ -33,6 +33,7 @@ package org.mskcc.pathdb.bb.sql.dao;
 
 import org.mskcc.pathdb.model.BBGeneRecord;
 import org.mskcc.pathdb.sql.JdbcUtil;
+import org.mskcc.pathdb.sql.dao.DaoException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
