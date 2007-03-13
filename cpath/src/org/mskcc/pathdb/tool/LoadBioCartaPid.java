@@ -56,7 +56,7 @@ public class LoadBioCartaPid {
             //  Add Pathway Info to BB_Pathway table
             if (pathwayName != null) {
                 DaoBBPathway daoBbPathway = new DaoBBPathway();
-                BBPathwayRecord pathwayRecord = new BBPathwayRecord("BioCarta:" + pathwayId,
+                BBPathwayRecord pathwayRecord = new BBPathwayRecord(pathwayId,
 																	pathwayName,
 																	"BioCarta",
 																	"http://www.biocarta.com/pathfiles/h_" + pathwayShortName + ".asp");
