@@ -1,3 +1,5 @@
+USE db_name__value;
+
 #
 # Table structure for table `bb_pathway`
 #
