@@ -218,10 +218,10 @@
         </action>
 
         <!--  Experimental Bare Bones Work -->
-		<action path="/bb/web_service" type="org.mskcc.pathdb.action.bb.WebService">
+		<action path="/bb/web_service" type="org.mskcc.pathdb.bb.action.WebService">
 		  <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
         </action>
-        <action path="/bb/home" type="org.mskcc.pathdb.action.bb.HomeAction">
+        <action path="/bb/home" type="org.mskcc.pathdb.bb.action.HomeAction">
           <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
         </action>
 
