@@ -6,13 +6,13 @@ import org.jdom.JDOMException;
 import org.jdom.Attribute;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
-import org.mskcc.pathdb.sql.dao.DaoBBGene;
+import org.mskcc.pathdb.bb.sql.dao.DaoBBGene;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoBBPathway;
-import org.mskcc.pathdb.sql.dao.DaoBBInternalLink;
-import org.mskcc.pathdb.model.BBGeneRecord;
-import org.mskcc.pathdb.model.BBPathwayRecord;
-import org.mskcc.pathdb.model.BBInternalLinkRecord;
+import org.mskcc.pathdb.bb.sql.dao.DaoBBPathway;
+import org.mskcc.pathdb.bb.sql.dao.DaoBBInternalLink;
+import org.mskcc.pathdb.bb.model.BBGeneRecord;
+import org.mskcc.pathdb.bb.model.BBPathwayRecord;
+import org.mskcc.pathdb.bb.model.BBInternalLinkRecord;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class LoadBioCartaPid {
             if (pathwayName != null) {
                 DaoBBPathway daoBbPathway = new DaoBBPathway();
                 BBPathwayRecord pathwayRecord = new BBPathwayRecord("BioCarta:" + pathwayId,
-                        pathwayName, "BioCarta");
+																	pathwayName, "BioCarta", "url");
                 daoBbPathway.addRecord(pathwayRecord);
             }
             System.out.println("Got Pathway:  " + pathwayName + " [" + pathwayId + "]");
