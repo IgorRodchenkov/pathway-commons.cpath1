@@ -89,7 +89,7 @@ public class DaoBBInternalLink {
      * @return ArrayList<BBInternalLinkRecord>
      * @throws DaoException
      */
-    public ArrayList<BBInternalLinkRecord> getBBPathwayByPathwayID(String bbPathwayRecordID)
+    public ArrayList<BBInternalLinkRecord> getLinksByPathwayID(String bbPathwayRecordID)
 		throws DaoException {
 
         Connection con = null;
@@ -116,7 +116,7 @@ public class DaoBBInternalLink {
      * @return ArrayList<BBInternalLinkRecord>
      * @throws DaoException
      */
-    public ArrayList<BBInternalLinkRecord> getBBPathwayByGeneID(String bbGeneRecordID)
+    public ArrayList<BBInternalLinkRecord> getLinksByGeneID(String bbGeneRecordID)
 		throws DaoException {
 
         Connection con = null;
