@@ -40,6 +40,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.util.ArrayList;
+
 /**
  * Data Access Object to the bb_pathway table.
  *
@@ -87,6 +89,42 @@ public class DaoBBPathway {
         } finally {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
+    }
+
+    /**
+     * Gets all bbPathwayRecords.
+     *
+     * @return ArrayList<BBPathwayRecord>
+     * @throws DaoException
+     */
+    public ArrayList<BBPathwayRecord> getAllBBPathway() throws DaoException {
+
+		// some used vars
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+		ArrayList<BBPathwayRecord> pathwayRecords = new ArrayList<BBPathwayRecord>();
+		// do the query
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement("select * from bb_pathway order by pathway_name");
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String pathwayID = rs.getString(1);
+                String pathwayName = rs.getString(2);
+                String source = rs.getString(3);
+                String url = rs.getString(4);
+				pathwayRecords.add(new BBPathwayRecord(pathwayID, pathwayName, source, url));
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+
+		// outta here
+		return pathwayRecords;
     }
 
     /**
