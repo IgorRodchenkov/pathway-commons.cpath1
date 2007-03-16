@@ -6,10 +6,12 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.bb.sql.dao.DaoBBPathway;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.bb.model.BBPathwayRecord;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForm;
@@ -19,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.TreeMap;
+import java.util.Map;
+import java.util.Set;
 
 public class HomeAction extends BaseAction {
 
@@ -71,17 +76,34 @@ public class HomeAction extends BaseAction {
         writer.write("<FORM>");
         writer.write("<h3>Bare Bones Web Service #2:</h3>");
         writer.write("What genes are involved in Pathway X?");
+		// map to contain pathway records from all tables (cpath & bb) - use bb pathway record type
+		Map<String,BBPathwayRecord> pathwayMap = new TreeMap();
+		// get records from cpath table
         DaoCPath dao = DaoCPath.getInstance();
         DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
         ArrayList list = dao.getAllRecords(CPathRecordType.PATHWAY);
-        writer.write("<ul>");
-        for (int i=0; i<list.size(); i++) {
+		for (int i=0; i<list.size(); i++) {
             CPathRecord record = (CPathRecord) list.get(i);
-            writer.write("<li><a href='web_service.do?action=getMembers&q="
-                + record.getId() +"'> " + record.getName() + "</a>");
             ExternalDatabaseSnapshotRecord snapshot =
                     daoSnapshot.getDatabaseSnapshot(record.getSnapshotId());
-            writer.write(" [" + snapshot.getExternalDatabase().getMasterTerm() + "]</li>");
+			BBPathwayRecord bbRecord = new BBPathwayRecord(new Long(record.getId()).toString(), record.getName(), 
+														   snapshot.getExternalDatabase().getMasterTerm(),
+														   "url");
+			pathwayMap.put(record.getName(), bbRecord);
+		}
+		// get records from bbtable
+		DaoBBPathway daoBBPathway = new DaoBBPathway();
+		ArrayList<BBPathwayRecord> bbPathways = daoBBPathway.getAllBBPathway();
+		for (BBPathwayRecord record : bbPathways) {
+			pathwayMap.put(record.getPathwayName(), record);
+		}
+		// write out the pathway list
+        writer.write("<ul>");
+        for (String pathwayName : (Set<String>)pathwayMap.keySet()) {
+            BBPathwayRecord record = pathwayMap.get(pathwayName);
+            writer.write("<li><a href='web_service.do?action=getMembers&q="
+						 + record.getPathwayID() +"'> " + record.getPathwayName() + "</a>" +
+						 " [" + record.getSource() + "]</li>");
         }
         writer.write("</ul>");
         writer.write("<h3>Other stuff:</h3>");
