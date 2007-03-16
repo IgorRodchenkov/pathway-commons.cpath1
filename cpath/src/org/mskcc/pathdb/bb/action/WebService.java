@@ -72,13 +72,13 @@ public class WebService extends BaseAction {
 		if (links.size() > 0) {
 			buffer.append("#Pathway Name: " + pathwayRecord.getPathwayName() + "\n");
 			buffer.append("#Data Source: " + pathwayRecord.getSource() + "\n");
-			buffer.append("#Name[TAB]ENTREZ_GENE_ID\n");
+			buffer.append("#Name[TAB][ENTREZ GENE ID || ChEBI ID || NO_IDS]\n");
 			DaoBBGene daoBBGene = new DaoBBGene();
 			for (BBInternalLinkRecord linkRecord : links) {
 				BBGeneRecord geneRecord = daoBBGene.getBBGene(linkRecord.getEntrezGeneID());
 				if (geneRecord != null) {
 					buffer.append(geneRecord.getGeneName() + "\t" +
-								  geneRecord.getEntrezGeneID() + "\n");
+								  "ENTREZ_GENE:" + geneRecord.getEntrezGeneID() + "\n");
 				}
 			}
 		}
@@ -89,11 +89,11 @@ public class WebService extends BaseAction {
 		DaoCPath dao = DaoCPath.getInstance();
 		DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
 		CPathRecord record = dao.getRecordById(Integer.parseInt(pathwayID));
-		buffer.append("#Pathway Name:  " + record.getName() + "\n");
+		buffer.append("#Pathway Name: " + record.getName() + "\n");
 		ExternalDatabaseSnapshotRecord snapshot =
 			daoSnapshot.getDatabaseSnapshot(record.getSnapshotId());
-		buffer.append("#Data Source:  " + snapshot.getExternalDatabase().getMasterTerm() + "\n");
-		buffer.append("#Name   [TAB] [ENTREZ GENE ID || ChEBI ID || NO_IDS]\n");
+		buffer.append("#Data Source: " + snapshot.getExternalDatabase().getMasterTerm() + "\n");
+		buffer.append("#Name[TAB][ENTREZ GENE ID || ChEBI ID || NO_IDS]\n");
 		DaoInternalFamily daoFamily = new DaoInternalFamily();
 		long peIds[] = daoFamily.getDescendentIds(Integer.parseInt(pathwayID),
 												  CPathRecordType.PHYSICAL_ENTITY);
