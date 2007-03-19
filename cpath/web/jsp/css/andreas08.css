@@ -41,7 +41,7 @@ border:2px solid #a0a0a0;
 }
 
 #header{
-height:120px;
+height:160px;
 width:100%;
 /* margin:  top, right, bottom, left */
 margin:0 1px 0px 1px;
@@ -72,6 +72,7 @@ font-weight:normal;
 }
 
 #navigation{
+float:left;
 height:1.7em;
 line-height:1.7em;
 width:100%;
@@ -463,10 +464,3 @@ background-color:#578bb8;
 color:#ffffff;
 }
 #content srp a:hover,#subcontent a:hover{color:white;text-decoration:underline;}
-
-#wip {
-	background:#467aa7;
-	margin:0 0px 1px 1px;
-    text-align:center;
-    display:block;
-}

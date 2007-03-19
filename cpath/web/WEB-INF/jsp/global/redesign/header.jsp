@@ -108,10 +108,6 @@ if (baseAction != null) {
         </div>
         <jsp:include page="searchBox.jsp" flush="true" />
     </div>
-
-<div id="wip">
-    <img src="jsp/images/emailimage-pw1.jpg"><img src="jsp/images/emailimage-pw2.jpg"><img src="jsp/images/emailimage-pw3.jpg">
-</div>
 	
 <!-- Navigation Tabs -->
 <jsp:include page="tabs.jsp" flush="true" />
