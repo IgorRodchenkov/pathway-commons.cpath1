@@ -6,7 +6,7 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
 String entityValue =  "pathway";
-String entityName = GlobalFilterSettings.ENTITY_TYPES_FILTER_NAME;
+String entityName = GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME;
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 %>
 

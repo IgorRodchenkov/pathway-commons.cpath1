@@ -9,18 +9,10 @@
     WebUIBean webUIBean = new WebUIBean();
     webUIBean.setApplicationName("cPath");
 
-    if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
-        webUIBean.setDisplayBrowseByOrganismTab(true);
-        webUIBean.setDisplayBrowseByPathwayTab(false);
-        webUIBean.setDisplayCytoscapeTab(false);
-        webUIBean.setDisplayWebServiceTab(true);
-        webUIBean.setDisplayFilterTab(false);
-    } else {
-        webUIBean.setDisplayBrowseByOrganismTab(false);
-        webUIBean.setDisplayBrowseByPathwayTab(true);
-        webUIBean.setDisplayCytoscapeTab(false);
-        webUIBean.setDisplayWebServiceTab(true);
-        webUIBean.setDisplayFilterTab(true);
-    }
+    webUIBean.setDisplayBrowseByOrganismTab(true);
+    webUIBean.setDisplayBrowseByPathwayTab(false);
+    webUIBean.setDisplayCytoscapeTab(false);
+    webUIBean.setDisplayWebServiceTab(true);
+    webUIBean.setDisplayFilterTab(false);
     CPathUIConfig.setWebUIBean(webUIBean);
 %>
