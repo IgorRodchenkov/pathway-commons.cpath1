@@ -1,4 +1,4 @@
-// $Id: TestItemToIndex.java,v 1.22 2007-02-08 19:36:55 grossb Exp $
+// $Id: TestItemToIndex.java,v 1.23 2007-03-20 16:02:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,8 +114,10 @@ public class TestItemToIndex extends TestCase {
             Field field = item.getField(i);
             String name = field.name();
             String value = field.stringValue();
-            assertEquals(name, fieldNames[i]);
-            assertTrue(value.startsWith(fieldValues[i]));
+            assertEquals("was expecting field name:  [" + name + "], but "
+                + "got field name:  [" + fieldNames[i] +"]", name, fieldNames[i]);
+            assertTrue("was expecting:  " + fieldValues[i] + ", \nbut got:  " +
+                    value, value.startsWith(fieldValues[i]));
         }
     }
 
