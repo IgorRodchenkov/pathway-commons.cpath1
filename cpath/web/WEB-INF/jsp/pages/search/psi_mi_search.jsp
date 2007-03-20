@@ -17,7 +17,7 @@
 %>
 
 
-<jsp:include page="../../global/redesign/psiMiLeftColumn.jsp" flush="true" />
+<jsp:include page="../../global/redesign/psi-mi/psiMiLeftColumn.jsp" flush="true" />
 <div class="splitcontentright">
 <cbio:interactionTable xmlAssembly="<%= xmlAssembly %>"
     interactorList="<%= interactorList %>"
