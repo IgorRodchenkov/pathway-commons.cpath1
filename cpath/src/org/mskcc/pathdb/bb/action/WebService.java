@@ -9,9 +9,11 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.bb.sql.dao.DaoBBPathway;
 import org.mskcc.pathdb.bb.sql.dao.DaoBBInternalLink;
+import org.mskcc.pathdb.bb.sql.dao.DaoBBGene;
 import org.mskcc.pathdb.bb.model.BBPathwayRecord;
 import org.mskcc.pathdb.bb.model.BBInternalLinkRecord;
 import org.mskcc.pathdb.bb.model.BBPathwayRecord;
+import org.mskcc.pathdb.bb.model.BBGeneRecord;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
