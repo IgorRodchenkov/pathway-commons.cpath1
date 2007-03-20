@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.31 2006-12-24 01:43:52 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.32 2007-03-20 16:08:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.sql.dao;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import net.sf.ehcache.CacheException;
 import org.mskcc.pathdb.model.CvRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ReferenceType;
@@ -140,7 +141,10 @@ public class DaoExternalDb {
         CacheManager manager = CacheManager.getInstance();
         Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
         if (cache.get(key) != null) {
-            cache.remove(key);
+            try {
+                cache.remove(key);
+            } catch (CacheException e) {
+            }
         }
 
         try {
