@@ -1,4 +1,4 @@
-// $Id: TestIndexer.java,v 1.20 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestIndexer.java,v 1.21 2007-03-20 16:02:33 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -118,7 +118,7 @@ public class TestIndexer extends TestCase {
         String xml = reader.retrieveContent(file);
 
         //  Test the XML Stripper.
-        String text = XmlStripper.stripTags(xml, true);
+        String text = XmlStripper.stripTags(xml, true, false);
         int index = text.indexOf("classical two hybrid");
         assertTrue(index > 0);
     }
