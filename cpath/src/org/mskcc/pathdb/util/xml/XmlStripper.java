@@ -1,4 +1,4 @@
-// $Id: XmlStripper.java,v 1.8 2007-02-26 18:20:51 grossb Exp $
+// $Id: XmlStripper.java,v 1.9 2007-03-20 16:01:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,10 +62,11 @@ public class XmlStripper {
      *
      * @param xml      XML Document.
      * @param skipRoot Skips Processing of Root Node.
+     * @param addElementDelimiter Flag to add element delimeter.
      * @return String of Tokens.
      * @throws IOException Error in JDOM.
      */
-    public static String stripTags(String xml, boolean skipRoot)
+    public static String stripTags(String xml, boolean skipRoot, boolean addElementDelimiter)
             throws IOException {
         StringBuffer textBuffer = new StringBuffer();
         try {
@@ -77,10 +78,10 @@ public class XmlStripper {
                 List children = element.getChildren();
                 for (int i = 0; i < children.size(); i++) {
                     Element child = (Element) children.get(i);
-                    processElement(child, textBuffer);
+                    processElement(child, textBuffer, addElementDelimiter);
                 }
             } else {
-                processElement(element, textBuffer);
+                processElement(element, textBuffer, addElementDelimiter);
             }
         } catch (JDOMException e) {
             e.printStackTrace();
@@ -95,7 +96,7 @@ public class XmlStripper {
      * @param textBuffer StringBuffer.
      */
     private static void processElement(Element element,
-            StringBuffer textBuffer) {
+            StringBuffer textBuffer, boolean addElementDelimiter) {
 
         //  Skip Over all OWL Elements
         if (element.getNamespace().equals(OwlConstants.OWL_NAMESPACE)) {
@@ -109,7 +110,7 @@ public class XmlStripper {
         text = text.replaceAll("<", "");
         text = text.replaceAll(">", "");
         if (text.length() > 0) {
-            appendText(textBuffer, text);
+            appendText(textBuffer, text, addElementDelimiter);
         }
 
         //  Extract Attribute Values
@@ -127,7 +128,7 @@ public class XmlStripper {
                 //  Skip over CPATH_LOCAL_PREFIX
             } else {
                 String value = attribute.getValue().trim();
-                appendText(textBuffer, value);
+                appendText(textBuffer, value, addElementDelimiter);
             }
         }
 
@@ -135,14 +136,19 @@ public class XmlStripper {
         List children = element.getChildren();
         for (int i = 0; i < children.size(); i++) {
             Element child = (Element) children.get(i);
-            processElement(child, textBuffer);
+            processElement(child, textBuffer, addElementDelimiter);
         }
     }
 
-    private static void appendText(StringBuffer textBuffer, String text) {
+    private static void appendText(StringBuffer textBuffer, String text, boolean
+            addElementDelimeter) {
         if (textBuffer.length() > 0) {
 			// separate element values with delimeter
-			textBuffer.append(ELEMENT_DELIMITER);
+            if (addElementDelimeter) {
+                textBuffer.append(ELEMENT_DELIMITER);
+            } else {
+                textBuffer.append(" ");
+            }
         }
         textBuffer.append(text);
     }
