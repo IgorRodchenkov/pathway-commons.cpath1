@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.11 2007-02-15 17:08:55 grossb Exp $
+// $Id: ExecuteSearch.java,v 1.12 2007-03-20 19:34:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -219,11 +219,11 @@ public class ExecuteSearch extends BaseAction {
                             filterSettings);
                 }
                 xdebug.logMsg(this, "User has Global Filter Settings");
+                // query by type(s)
+                queryByType(xdebug, request, protocolRequest, filterSettings);
+                // query by data source
+                queryByDataSource(xdebug, request, protocolRequest, filterSettings);
             }
-			// query by type(s)
-			queryByType(xdebug, request, protocolRequest, filterSettings);
-			// query by data source
-			queryByDataSource(xdebug, request, protocolRequest, filterSettings);
 			// outta here
             return mapping.findForward(CPathUIConfig.BIOPAX);
         } catch (DaoException e) {
@@ -303,7 +303,7 @@ public class ExecuteSearch extends BaseAction {
 		// we are going to be modifying global filter settings, lets make a clone
 		GlobalFilterSettings filterSettings = globalFilterSettings.clone();
 
-		// setup global filters setting - data source filter
+        // setup global filters setting - data source filter
 		if (!userSelectedDataSource.equals(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL)) {
 			// user selected is not equal to global, therefore it is equal to a snapshot id
 			List<Long> dataSourceList = new ArrayList();
