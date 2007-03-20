@@ -1,4 +1,4 @@
-// $Id: DaoExternalDb.java,v 1.32 2007-03-20 16:08:57 cerami Exp $
+// $Id: DaoExternalDb.java,v 1.33 2007-03-20 16:11:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -413,7 +413,10 @@ public class DaoExternalDb {
             CacheManager manager = CacheManager.getInstance();
             Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
             String key = this.getClass().getName() + ".getRecordById." + id;
-            cache.remove(key);
+            try {
+                cache.remove(key);
+            } catch (CacheException e) {
+            }
             return (rows > 0) ? true : false;
         } catch (SQLException e) {
             throw new DaoException(e);
