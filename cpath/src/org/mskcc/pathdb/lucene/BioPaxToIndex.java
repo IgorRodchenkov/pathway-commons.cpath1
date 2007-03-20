@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.18 2007-02-26 18:21:57 grossb Exp $
+// $Id: BioPaxToIndex.java,v 1.19 2007-03-20 16:04:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -126,7 +126,7 @@ public class BioPaxToIndex implements ItemToIndex {
 
         //  Index All Terms -->  FIELD_ALL
         String xml = xmlAssembly.getXmlString();
-        String terms = XmlStripper.stripTags(xml, true);
+        String terms = XmlStripper.stripTags(xml, true, true);
 
         //  Remove cPath IDs, part of bug:  #798
         terms = removecPathIds(terms);

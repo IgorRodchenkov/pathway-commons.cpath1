@@ -1,4 +1,4 @@
-// $Id: PsiInteractionToIndex.java,v 1.19 2006-06-09 19:22:03 cerami Exp $
+// $Id: PsiInteractionToIndex.java,v 1.20 2007-03-20 16:04:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -135,8 +135,6 @@ public class PsiInteractionToIndex implements ItemToIndex {
         boolean furtherIndexing = false;
         ConfigurableIndexCollector configurableIndexCollector =
                 new ConfigurableIndexCollector();
-        ;
-
         furtherIndexing = configurableIndexCollector.enabled();
 
         //  Index All Interactors and Interactions.
@@ -154,7 +152,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
 
         //  Index All Terms -->  Default Field.
         String xml = xmlAssembly.getXmlString();
-        String terms = XmlStripper.stripTags(xml, true);
+        String terms = XmlStripper.stripTags(xml, true, false);
         fields.add(Field.Text(LuceneConfig.FIELD_ALL, terms));
 
         //  Index cPath ID

@@ -1,4 +1,4 @@
-// $Id: PsiInteractorExtractor.java,v 1.11 2006-02-22 22:47:50 grossb Exp $
+// $Id: PsiInteractorExtractor.java,v 1.12 2007-03-20 16:04:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -135,7 +135,7 @@ public class PsiInteractorExtractor {
         StringWriter writer = new StringWriter();
         protein.marshal(writer);
         String interactorText = XmlStripper.stripTags(writer.toString(),
-                false);
+                false, false);
         xdebug.logMsg(this, "Checking interactor:  " + interactorText);
 
         if (interactorText != null) {
