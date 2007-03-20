@@ -20,13 +20,8 @@
     Collections.reverse(orgList);
 %>
 
-<div id="dbstats" class="toolgroup">
-    <div class="label">
-        <strong>Quick Browse</strong>
-    </div>
-
-    <div class="body">
-
+<h3>Quick Browse</h3>
+<ul>
         <%
         int endIndex = Math.min(orgList.size(), 10);
         for (int i=0; i < endIndex; i++) {
@@ -34,17 +29,16 @@
             pRequest.setOrganism(Integer.toString(organism.getTaxonomyId()));
             String uri = pRequest.getUri();
         %>
-        <div>
-            <A
+        <li>
+            <a
                 TITLE='View All Records for Organism: <%= organism.getSpeciesName().trim() %>'
-                HREF='<%= uri %>'><%= organism.getSpeciesName()%></A>
-        </div>
+                HREF='<%= uri %>'><%= organism.getSpeciesName()%></a>
+        </li>
         <% } %>
-        <div>
+        <li>
         <A HREF="browse.do">View All Organisms...</A>
-        </div>
-    </div>
-</div>
+        </li>
+</ul>
 <% } catch (Exception e) {
     //  Ignore Exception here;  it probably indicates that the database is down.
 } %>

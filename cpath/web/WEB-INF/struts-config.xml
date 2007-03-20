@@ -9,7 +9,7 @@
         <form-bean name="webUIForm"
                     type="org.mskcc.pathdb.form.WebUIBean"/>
     </form-beans>
-    
+
     <global-forwards>
         <forward name="go_home" path="home.do"/>
         <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
@@ -86,13 +86,6 @@
 
         <!--  Query / Web Service API -->
         <action path="/webservice"
-            type="org.mskcc.pathdb.action.ExecuteSearch">
-            <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
-            <forward name="biopax" path="/WEB-INF/jsp/pages/search/biopax_search.jsp"/>
-            <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
-        </action>
-
-        <action path="/webservice2"
             type="org.mskcc.pathdb.action.ExecuteSearch">
             <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
             <forward name="biopax" path="/WEB-INF/jsp/pages/search/biopax_search2.jsp"/>

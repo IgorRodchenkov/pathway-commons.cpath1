@@ -1,17 +1,11 @@
-<%@ page import="org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.form.WebUIBean,
-                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Legal Disclaimer / Privacy Notice"); %>
 
-<jsp:include page="../global/header.jsp" flush="true" />
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
 
-<div id="apphead">
-    <h2>Legal Disclaimer / Privacy Notice</h2>
-</div>
+<h1>Legal Disclaimer / Privacy Notice</h1>
 
-<div class="h3">
-    <h3>Legal Disclaimer</h3>
-</div>
+<h3>Legal Disclaimer</h3>
 
 <P>
 The information in Memorial Sloan-Kettering Cancer Center's website is not
@@ -23,9 +17,7 @@ information located herein. Our website provides links to other organizations
 as a service to our users; Memorial Sloan-Kettering Cancer Center is not
 responsible for the information provided in other websites.
 
-<div class="h3">
-    <h3>Privacy Notice</h3>
-</div>
+<h3>Privacy Notice</h3>
 <P>
 Memorial Sloan-Kettering Cancer Center collects certain forms of information
 through standard Web logs for the purpose of site management. Of the
@@ -53,4 +45,4 @@ responsible for answering questions. Be aware that email is not secure against
 interception. Therefore, if your communication contains sensitive or personal
 information, you should send it by postal mail.
 
-<jsp:include page="../global/footer.jsp" flush="true" />
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />

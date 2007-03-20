@@ -1,8 +1,6 @@
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.model.CPathRecordType,
-                 org.mskcc.pathdb.util.security.XssFilter,
                  org.mskcc.pathdb.lucene.OrganismStats,
-                 org.mskcc.pathdb.xdebug.XDebug,
                  java.text.DecimalFormat,
                  java.text.NumberFormat"%>
 
@@ -17,7 +15,7 @@ try {
     NumberFormat formatter = new DecimalFormat("#,###,###");
 
 %>
-<h2>Database Stats</h2>
+<h1>Database Stats</h1>
 
 <table>
 

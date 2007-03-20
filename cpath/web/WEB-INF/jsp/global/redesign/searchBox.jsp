@@ -29,7 +29,7 @@
     }
     if (showSearchBox) { %>
 <div id="searchbar">
-<form name="searchbox" action="webservice2.do" method="get">
+<form name="searchbox" action="webservice.do" method="get">
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
     <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15" value='<%= searchTerm %>'/>
     <input type="submit" id="searchbutton" value="Search"/>

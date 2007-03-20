@@ -6,7 +6,7 @@
 <%@ page errorPage = "../JspError.jsp" %>
 
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
-<jsp:include page="../../global/header.jsp" flush="true" />
+<jsp:include page="../../global/redesign/header.jsp" flush="true" />
 <%
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
@@ -16,7 +16,12 @@
             request.getAttribute(BaseAction.ATTRIBUTE_INTERACTOR_SET);
 %>
 
+
+<jsp:include page="../../global/redesign/psiMiLeftColumn.jsp" flush="true" />
+<div class="splitcontentright">
 <cbio:interactionTable xmlAssembly="<%= xmlAssembly %>"
     interactorList="<%= interactorList %>"
     protocolRequest="<%= protocolRequest %>"/>
-<jsp:include page="../../global/footer.jsp" flush="true" />
+</div>
+<jsp:include page="../../global/redesign/footer.jsp" flush="true" />
+

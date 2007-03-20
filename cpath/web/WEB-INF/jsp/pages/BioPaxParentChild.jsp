@@ -219,4 +219,4 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
 %>
 </table>
 </div>
-<jsp:include page="../global/xdebug.jsp" flush="true" />
+<jsp:include page="../global/redesign/xdebug.jsp" flush="true" />

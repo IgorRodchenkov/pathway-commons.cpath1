@@ -51,7 +51,7 @@ cPath is a database and software suite for storing, visualizing, and analyzing b
 </td>
 <td valign="top">
     <div class="home_page_box">
-    <jsp:include page="../../global/dbStatsMini.jsp" flush="true" />
+    <jsp:include page="../../global/redesign/dbStatsMini.jsp" flush="true" />
     </div>
 
     <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) { %>

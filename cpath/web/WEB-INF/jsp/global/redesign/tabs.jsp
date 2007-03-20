@@ -42,7 +42,6 @@
     String homeUrl = "home.do";
     tabUrls.add(homeUrl);
     if (url.equals(homeUrl) || url.equals("toggleSearchOptions.do")
-        || url.equals("disclaimer.do")
 		|| referer.equals(BaseAction.FORWARD_HOME)) {
         tabActive.add (Boolean.TRUE);
     } else {
@@ -83,6 +82,16 @@
     	    tabActive.add (Boolean.FALSE);
 	    }
 	}
+
+    tabNames.add("Stats");
+    String browseUrl = "dbStats.do";
+    tabUrls.add(browseUrl);
+    if (url.equals(browseUrl) &&
+        !referer.equals(BaseAction.FORWARD_HOME)) {
+        tabActive.add (Boolean.TRUE);
+    } else {
+        tabActive.add (Boolean.FALSE);
+    }
 
     tabNames.add("FAQ");
     String advancedSearchUrl = "faq.do";

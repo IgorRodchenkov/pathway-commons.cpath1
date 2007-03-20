@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="jsp/css/andreas08.css" type="text/css" media="screen,projection" />
+<link rel="stylesheet" href="jsp/css/cpath.css" type="text/css" media="screen,projection" />
 
 <%-- Explicitly Set Character Encoding
 Helps prevent against Cross-site scripting attacks:

@@ -6,7 +6,7 @@
 <p/>
 <p><jsp:include page="<%=footerFile%>" flush="true"/></p>
 </div>
-<jsp:include page="../../global/xdebug.jsp" flush="true" />
+<jsp:include page="xdebug.jsp" flush="true" />
 
 </div>
 </body>

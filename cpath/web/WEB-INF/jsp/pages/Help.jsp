@@ -5,6 +5,6 @@
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Web Service API"); %>
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
 <div>
-<jsp:include page="../global/help.jsp" flush="true" />
+<jsp:include page="../global/redesign/help.jsp" flush="true" />
 </div>    
 <jsp:include page="../global/redesign/footer.jsp" flush="true" />

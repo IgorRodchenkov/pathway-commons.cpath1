@@ -460,6 +460,6 @@ enable Javascript support within your web browser.
         out.println("</ul>");
     }
 %>
-<jsp:include page="../global/currentFilterSettings.jsp" flush="true" />    
+<jsp:include page="../global/redesign/currentFilterSettings.jsp" flush="true" />
 </div>
 <jsp:include page="../global/redesign/footer.jsp" flush="true" />

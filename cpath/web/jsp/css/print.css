@@ -1,9 +1,0 @@
-/* $Id: print.css,v 1.2 2005-11-14 18:10:39 cerami Exp $ */
-
-#banner, #leftcol, #breadcrumbs, .docs #toc, .docs .courtesylinks	{
-	display: none;
-	}
-body.docs div.docs	{
-	margin: 0 !important;
-	border: none !important
-	}

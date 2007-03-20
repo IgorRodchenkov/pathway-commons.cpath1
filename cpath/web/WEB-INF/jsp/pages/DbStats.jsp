@@ -1,14 +1,9 @@
-<%@ page import="org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.form.WebUIBean,
-                 org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="org.mskcc.pathdb.action.BaseAction"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <% request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Database Stats and Information"); %>
 
-<jsp:include page="../global/header.jsp" flush="true" />
-<div id="content">
-<jsp:include page="../global/dbStats.jsp" flush="true" />
+<jsp:include page="../global/redesign/header.jsp" flush="true" />
+<jsp:include page="../global/redesign/dbStats.jsp" flush="true" />
 <cbio:importTable />
-</div>
-
-<jsp:include page="../global/footer.jsp" flush="true" />
+<jsp:include page="../global/redesign/footer.jsp" flush="true" />

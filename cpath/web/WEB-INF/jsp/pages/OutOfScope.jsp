@@ -28,6 +28,6 @@ However, your filter settings (shown on the left) currently exclude data from th
 </p>
 </div>
 <div class="splitcontentleft">
-<jsp:include page="../global/currentFilterSettings.jsp" flush="true" />
+<jsp:include page="../global/redesign/currentFilterSettings.jsp" flush="true" />
 </div>
 <jsp:include page="../global/redesign/footer.jsp" flush="true" />

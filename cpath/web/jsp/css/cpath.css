@@ -1,0 +1,211 @@
+/********** Extra Styles that extend andreas08.css **********/
+#logo {
+	padding:20px 5px 5px 5px;
+}
+
+.section a{
+font-size:0.8em;
+font-weight:normal;
+text-transform:uppercase;
+text-decoration:underline;
+background-color:inherit;
+color: #ffffff;
+}
+
+table td{
+line-height:1.7em;
+}
+
+table th {
+line-height:1.7em;
+background-color:#DDDDDD;
+padding: 2px 2px 2px 2px;
+font-size:90%;
+}
+
+.xdebug td{
+    font-size:80%;
+}
+
+.splitcontentleft ul {list-style-type:square; margin-left:0px; font-size:85%; line-height:1.2em}
+.splitcontentleft li {margin-left:-20px;padding-left:0px}
+.splitcontentleft p {font-size:85%;line-height:1.0em}
+.splitcontentleft h3 a {color:#ffffff !important; font-size:90%;}
+.splitcontentleft h3 a:visited {color:#ffffff !important;}
+.splitcontentleft h3 a:hover{color:#ffffff}
+
+.user_message {
+    color:#880000;
+    font-weight:bold;
+    padding: 3px 3px 3px 3px;
+    background: #EEEEEE;
+}
+
+.large_search_box {
+	margin: 10px 5px 5px 0px;
+	border: 1px solid #000000;
+    padding: 5px 20px 5px 20px;
+    background: #CCCCFF;
+}
+
+.large_search_box h1 {
+   font-size:130%;
+}
+
+.large_search_box input {
+   font-size:90%;
+}
+
+.home_page_box {
+	/* margin:  top, right, bottom, left */
+    margin: 10px 5px 5px 0px;
+	border: 1px solid #DDDDDD;
+	padding: 5px 5px 5px 5px;
+}
+
+#demo {
+width:100%; /* arbitrary width */
+}
+
+#demo .loading * {
+display:none;
+}
+
+.button {
+font-size:85%;
+color:blue;
+text-decoration:underline;
+cursor:pointer;
+}
+
+.record_page_category a:hover {color: black !important;}
+.record_page_category a:active {color: black !important;}
+
+.small {
+    font-size:85%;
+}
+
+/* Data Source Details */
+.details {
+  font-size:85%;
+  line-height:1.2em;
+  display:none;
+}
+
+.details ul {list-style-type:square; margin-left:0px;}
+.details li {margin-left:-20px;padding-left:0px}
+.details p {margin-top: 7px;}
+
+/* Entity Summary, e.g. summary of interaction details */
+.entity_summary {
+    font-size:100%;
+}
+
+.entity_summary a {
+   border-bottom-style: dotted;
+   border-bottom-width: thin;
+   text-decoration: none;
+}
+
+.yui-nav {
+  font-size:85%;
+  margin-left:0px !important;
+  margin-bottom:0px !important;
+}
+
+/* Customized Pop up Boxes for Overlib */
+/* Customized Pop up Boxes for Overlib */
+.popup {
+     background:  #ccccff;
+     font-size:70%;
+     padding: 0px 0px 0px 0px;
+     border: 1px solid #036;
+     text-align:left;
+     line-height:1.5em;
+}
+
+.popup_caption {
+    background-color: #036;
+    color:  #FFFFFF;
+    margin: 0px 0px 5px 0px;
+    padding: 2px 5px 2px 5px;
+    font-weight:bold
+}
+
+.popup_text {
+ 	margin: 0px 5px 5px 5px;
+}
+
+.popup_text ul {
+     padding-left: 20px;
+     list-style-type:square;
+}
+
+.popup_organism {
+    color:  lightgreen;
+}
+
+.data_source_logo {
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right:  5px;
+}
+
+.data_source {
+    font-size:85%;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+.toggle_details {
+    cursor:pointer;
+    margin-left:5px;
+    margin-top:6px;
+}
+
+.search_buttons {
+    margin-bottom: 10px;
+}
+
+.search_fragment {
+    font-size:85%;
+    color:black;
+    line-height:1.2em;
+    margin-top:5px;
+    margin-bottom:10px;
+}
+
+#comment_remainder {
+    display:none;
+}
+
+#toggleCommentImage img {
+    padding-left:10px;
+}
+
+#scoreboard {
+    background-color:#dddddd;
+    padding-top:7px;
+}
+
+#content srp{
+font-size:0.9em;
+font-weight:normal;
+display:block;
+margin:5px 0 5px 0;
+padding-left:5px;
+height:1.7em;
+line-height:1.7em;
+background-color:#578bb8;
+color:#ffffff;
+}
+
+#content srp a:hover,#subcontent a:hover{color:white;text-decoration:underline;}
+
+.a td {
+	background: #ddd;
+}
+
+.b td {
+	background: #efefef;
+}

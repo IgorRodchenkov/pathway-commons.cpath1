@@ -29,7 +29,7 @@
 %>
 <head>
     <title><%= title %></title>
-    <jsp:include page="../../global/stylesAndScripts.jsp" flush="true" />
+    <jsp:include page="stylesAndScripts.jsp" flush="true" />
     <%--  Set Auto-Update for Admin Page --%>
     <%
         String autoUpdate = (String) request.getAttribute
@@ -114,4 +114,4 @@ if (baseAction != null) {
 
 <div id="content">
 
-<jsp:include page="../../global/userMessage.jsp" flush="true" />    
+<jsp:include page="userMessage.jsp" flush="true" />

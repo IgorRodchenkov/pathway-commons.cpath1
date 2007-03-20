@@ -57,7 +57,7 @@ create a local mirror.</p>
 <%= webUIBean.getApplicationName() %> currently contains the following data sources:</p>
 <cbio:dataSourceListTable/>
 <div class="home_page_box">
-<jsp:include page="../../global/dbStatsMini.jsp" flush="true" />
+<jsp:include page="../../global/redesign/dbStatsMini.jsp" flush="true" />
 </div>
 <p>Integration of additional data sources is planned in the near future.  For a comprehensive directory
 of interaction and pathway databases, please refer to <a href="http://www.pathguide.org">Pathguide</a>.</p>
