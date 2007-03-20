@@ -1,4 +1,4 @@
-// $Id: HtmlTable.java,v 1.24 2006-12-22 18:30:53 cerami Exp $
+// $Id: HtmlTable.java,v 1.25 2007-03-20 18:08:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -83,7 +83,7 @@ public abstract class HtmlTable extends TagSupport {
     protected abstract void subDoStartTag() throws Exception;
 
     protected void createHeader(String title) {
-        append("<h2>" + title + "</h2>");
+        append("<h1>" + title + "</h1>");
     }
 
     /**

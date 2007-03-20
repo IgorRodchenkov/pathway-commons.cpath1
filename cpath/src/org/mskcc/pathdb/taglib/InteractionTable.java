@@ -1,4 +1,4 @@
-// $Id: InteractionTable.java,v 1.57 2006-02-22 22:47:51 grossb Exp $
+// $Id: InteractionTable.java,v 1.58 2007-03-20 18:08:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -189,10 +189,9 @@ public class InteractionTable extends HtmlTable {
         String pagerLinks = pager.getHeaderHtml();
 
         startRow();
-        this.append("<td colspan=3>" + pagerLinks + "</td>");
-        this.append("<td colspan=1 align=right>");
-        this.append("<IMG SRC=\"jsp/images/xml_doc.gif\">&nbsp;");
-        outputLink("View PSI-MI XML Format", psiUrl,
+        this.append("<td colspan=2>" + pagerLinks + "</td>");
+        this.append("<td colspan=2 align=right>");
+        outputLink("Export to PSI-MI", psiUrl,
                 "View Data in PSI-MI XML Format");
         this.append("</td>");
         this.endRow();

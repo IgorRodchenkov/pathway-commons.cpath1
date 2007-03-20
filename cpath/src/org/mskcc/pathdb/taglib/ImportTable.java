@@ -1,4 +1,4 @@
-// $Id: ImportTable.java,v 1.18 2006-12-22 18:30:53 cerami Exp $
+// $Id: ImportTable.java,v 1.19 2007-03-20 18:08:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,7 +51,7 @@ public class ImportTable extends HtmlTable {
     public void subDoStartTag() throws Exception {
         DaoImport dbImport = new DaoImport();
         ArrayList records = dbImport.getAllRecords();
-        createHeader("cPath currently contains the following imported "
+        createHeader("Database currently contains the following imported "
                 + "records:");
         this.startTable();
         String headers[] = {

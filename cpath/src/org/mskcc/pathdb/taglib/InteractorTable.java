@@ -1,4 +1,4 @@
-// $Id: InteractorTable.java,v 1.19 2006-02-22 22:47:51 grossb Exp $
+// $Id: InteractorTable.java,v 1.20 2007-03-20 18:08:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -81,13 +81,10 @@ public class InteractorTable extends HtmlTable {
                 && (query.indexOf(LuceneConfig.FIELD_INTERACTOR_ID) == -1)
                 && interactorList != null
                 && interactorList.size() > 0) {
-            append("<div id=\"highlight\" class=\"toolgroup\">\n"
-                    + "<div class=\"label\">\n"
-                    + "<strong>Matching Proteins</strong>\n"
-                    + "</div>"
-                    + "<div class=\"body\">");
+            append ("<h3>Matching Proteins</h3>");
+            append ("<ul>");
             outputInteractors();
-            append("</div>\n</div>");
+            append("</ul>");
         }
     }
 
@@ -102,14 +99,14 @@ public class InteractorTable extends HtmlTable {
             ProteinInteractorType protein = proteinWithWeight.getProtein();
             NamesType names = protein.getNames();
             String proteinId = protein.getId();
-            append("<div>");
+            append("<li>");
             String href = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
                     + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
             String toolTip = TagUtil.getLabel(names);
             String label = TagUtil.truncateLabel(toolTip);
             String link = TagUtil.createLink(toolTip, href, label);
             append(link);
-            append("</div>");
+            append("</li>");
         }
     }
 }
