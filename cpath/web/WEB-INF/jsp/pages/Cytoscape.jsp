@@ -11,43 +11,30 @@
 <div>
 
 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI){ %>
-
-<h1>About the cPath PlugIn</h1>
-
-Cytoscape includes a built-in PlugIn framework for adding new features and
-functionality.  The cPath PlugIn enables Cytoscape users to directly query,
-retrieve and visualize interactions retrieved from the cPath database.
-
-<p><b>Note:</b>  The cPath PlugIn currently only works with
-Cytoscape 2.1, or later. It will not work with earlier versions of Cytoscape.
-
-<p>A sample screenshot of the cPath PlugIn Beta2 in action is shown below:
-
+<a href="jsp/images/plugin/cpath/cpath_plugin.png">
+<img align=right title="Click to View Full Image"
+    src="jsp/images/plugin/cpath/cpath_plugin_thumb.png" alt="Screenshot of Cytoscape cPath PlugIn" border="0"/>
+</a>
+<h1>Cytoscape cPath PlugIn</h1>
 <p>
-<a href="jsp/images/plugin/plugin_beta2.png">
-<img title="Click to View Full Image"
-    src="jsp/images/plugin/plugin_beta2_thumb.png" alt="Screenshot of Cytoscape PlugIn" border="0"/>
-</A>
+<a href="http://cytoscape.org/">Cytoscape</a>
+is an open source bioinformatics software platform for visualizing molecular interaction networks
+and integrating these interactions with gene expression profiles and other state data.
+</p>
+<p>
+The cPath PlugIn (which is automatically bundled with Cytoscape 2.4) enables Cytoscape
+users to directly query, retrieve and visualize interactions retrieved from the cPath database.
 
-<h1>Download cPath PlugIn Beta 2</h1>
+<h1>How to use the Cytoscape cPath PlugIn</h1>
 <ul>
-    <li>View the
-    <a href="http://cbio.mskcc.org/cytoscape/cpath/beta2/README.txt">README.txt</a>
-    File (includes Installation Instructions and Release Notes).</li>
-    <li><a href="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath-beta2.tar.gz">
-    Download Beta2 Version tar.gz</a> [2.7 MB]</li>
-    <li><a href="http://cbio.mskcc.org/cytoscape/cpath/beta2/cpath-beta2.zip">
-    Download Beta2 Version .zip</a> [2.7 MB]</li>
+    <li>Download and install the latest version of Cytoscape from the main <a href="http://cytoscape.org/">Cytoscape web site</a>.</li>
+    <li>From the main Cytoscape menu, select:  File &rarr; New &rarr; Network &rarr; Construct network using cPath.
+    <img title="Click to View Full Image"
+    src="jsp/images/plugin/cpath/cpath_howto.png" alt="Creating a network from cPath" border="0"/></li>
+    <li>Enter your search criteria, e.g. "p53".  Then, click the "Search" button.</li>
 </ul>
 
-<h1>About Cytoscape</h1>
-
-Cytoscape is an open source bioinformatics software platform for
-visualizing molecular interaction networks and integrating these
-interactions with gene expression profiles and other state data.
-(Find out more at:  <a href="http://cytoscape.org/">cytoscape.org</a>).
-
-<% // render the following content if we are in psi mode %>
+<% // render the following content if we are in cellmap mode %>
 <%} else { %>
 <h1>View Human Affymetrix gene expression data on Cancer Cell Map 
 pathways</h1>
@@ -105,14 +92,14 @@ If you log a bug, we will automatically email you when the bug is resolved.
 
 <h1>Contacts</h1>
 <p>
-Sander Group, Computational Biology Center<br/>
-Memorial Sloan-Kettering Cancer Center, New York City<br/>
+<a href="http://cbio.mskcc.org/people/info/ethan_cerami.html">Ethan Cerami</a><br/>
+<a href="http://cbio.mskcc.org/people/info/benjamin_gross.html">Benjamin Gross</a>
+<br>
+Computational Biology Center
+<br/>Memorial Sloan-Kettering Cancer Center, New York City<br/>
 </p>
 <p>
-For any questions concerning this PlugIn, please contact:
-</p>
-<img src="jsp/images/emailimage.jpg" alt="Email image" border="0"/>
-<p>
+<h1>License / Credits</h1>
 This software is made available under the LGPL (Lesser General Public License).
 </p>
 <p>This product includes software developed by the

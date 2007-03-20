@@ -11,7 +11,7 @@
 
     webUIBean.setDisplayBrowseByOrganismTab(true);
     webUIBean.setDisplayBrowseByPathwayTab(false);
-    webUIBean.setDisplayCytoscapeTab(false);
+    webUIBean.setDisplayCytoscapeTab(true);
     webUIBean.setDisplayWebServiceTab(true);
     webUIBean.setDisplayFilterTab(false);
     CPathUIConfig.setWebUIBean(webUIBean);
