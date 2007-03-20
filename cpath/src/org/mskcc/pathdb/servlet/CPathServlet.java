@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.37 2006-12-19 19:17:20 cerami Exp $
+// $Id: CPathServlet.java,v 1.38 2007-03-20 19:33:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -122,6 +122,10 @@ public final class CPathServlet extends ActionServlet {
         manager.setProperty(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE, adminModeActive);
 
         CPathUIConfig.setWebSkin(webSkin);
+        if (webSkin.equals("default_psi_mi")) {
+            CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_PSI_MI);
+        }
+        
         storeAdminModeActive(adminModeActive);
         String dbName = config.getInitParameter("db_name");
         manager.setProperty(PropertyManager.DB_LOCATION, dbHost);
