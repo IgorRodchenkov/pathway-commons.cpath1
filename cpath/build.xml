@@ -100,6 +100,13 @@
         <delete>
             <fileset dir="bin" includes="cpath_log.*"/>
         </delete>
+        <delete>
+            <fileset dir="xdocs/originals/admin" includes="*.aux, *.bbl, *.blg, *.log, *.pdf, *.toc"/>
+        </delete>
+        <delete>
+            <fileset dir="xdocs" includes="*.log"/>
+        </delete>
+        <delete dir="xdocs/target"/>        
     </target>
 
     <!-- ==================== Compile Target ==============================-->
