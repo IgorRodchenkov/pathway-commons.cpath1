@@ -14,8 +14,8 @@
             <cbio:interactorTable interactorList="<%= interactorList1 %>"
                    protocolRequest="<%= protocolRequest1 %>"/>
         <% } %>
-        <jsp:include page="psi-mi/browse.jsp" flush="true" />
-        <jsp:include page="psi-mi/community.jsp" flush="true" />
-        <jsp:include page="psi-mi/docs.jsp" flush="true" />
-        <jsp:include page="psi-mi/howto.jsp" flush="true" />
+        <jsp:include page="browse.jsp" flush="true" />
+        <jsp:include page="community.jsp" flush="true" />
+        <jsp:include page="docs.jsp" flush="true" />
+        <jsp:include page="howto.jsp" flush="true" />
 </div>
