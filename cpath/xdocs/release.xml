@@ -7,6 +7,22 @@
 
   <body>
 
+<section name="Release 0.7 Beta (April, 2007)">
+<P>
+<UL>
+    <LI>New web look and feel, plus added support for web skins.</LI>
+    <LI>New dynamic web elements, via AJAX (Asynchronous JAvaScript and XML).</LI>
+    <LI>New, improved search for pathways and physical entities.</LI>
+    <LI>Stable support for PSI-MI and BioPAX modes.</LI>
+    <LI>Updated Administrator Guide.</LI>
+    <LI>New support for source meta data, including data source descriptions, and icons.</LI>
+    <LI>Tested extensively with BioPAX data from Reactome, MSKCC Cancer Cell Map,
+    HumanCyc, and the NCI/Nature Pathway Interaction Database (PID).</LI>
+    <LI>Numerous bug fixes.</LI>
+</UL>
+</P>
+</section>
+
 <section name="Release 0.6 Beta (March, 2006)">
 <P>
 <UL>
