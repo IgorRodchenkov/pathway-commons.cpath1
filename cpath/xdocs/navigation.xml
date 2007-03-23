@@ -7,34 +7,16 @@
     <links>
       <item name="cPath"  href="http://cbio.mskcc.org/cpath"/>
       <item name="cBio"  href="http://cbio.mskcc.org/"/>
-      <item name="PDF Documentation" href="/cpath.pdf"   img="/images/pdf.gif"/>
     </links>
     <menu name="Project Status">
         <item name="Release Notes"          href="/release.html"/>
-	<item name="Automated Tests"	    href="reports/noframes/junit-noframes.html"/>
-
-      <item name="Phased Development" href="/phases/index.html" collapse="true">
-        <item name="Phase 1"      href="/phases/phase1.html"/>
-        <item name="Phase 2"      href="/phases/phase2.html"/>
-        <item name="Phase 3"      href="/phases/phase3.html"/>
-        <item name="Phase 4"      href="/phases/phase4.html"/>
-        <item name="Phase 5"      href="/phases/phase5.html"/>
-        <item name="Phase 6"      href="/phases/phase6.html"/>
-        <item name="Phase 7"      href="/phases/phase7.html"/>
-        <item name="Phase 8"      href="/phases/phase8.html"/>
-        <item name="Phase 9"      href="/phases/phase9.html"/>
-        <item name="Phase 10"     href="/phases/phase10.html"/>
-        <item name="Phase 11"     href="/phases/phase11.html"/>
-        <item name="Phase 12-"     href="/phases/phase12.html"/>
-        </item>
+	    <item name="Automated Tests"	    href="reports/noframes/junit-noframes.html"/>
     </menu>
-    <menu name="Tech Docs">
-          <item name="Tech Docs Index"      href="tech_docs.html"/>
-	      <item name="Architecture Guide"   href="/architecture.pdf"/>
-	      <item name="Administrator Guide"   href="/cpath_admin_guide.pdf"/>
+    <menu name="Documents">
+	      <item name="Administrator Guide"   href="/cpath_admin.pdf"/>
     </menu>
     <menu name="Downloads">
-          <item name="Source Downloads" href="source.html"/>
+          <item name="Download cPath" href="source.html"/>
     </menu>
   </body>
 </project>

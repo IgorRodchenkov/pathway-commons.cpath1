@@ -27,16 +27,6 @@
         at <A HREF="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</A>.
         </p>
     </section>
-    <section name="About the Developer Site">
-    <p>
-    The goal of this site is to provide timely information for cPath developers.
-    The site is automatically updated every 24 hours, and provides a snapshot
-    of all publicly available development work, currently checked into CVS.  Here, you can browse
-    the latest JavaDocs, source code, and automatically generated reports.
-    You can also browse the latest release notes, installation instructions,
-    and technical architecture documents.
-    </p>
-    </section>
 
     <section name="cPath Developer Mailing List">
     <p>

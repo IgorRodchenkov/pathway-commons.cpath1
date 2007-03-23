@@ -11,6 +11,8 @@
 
 \tableofcontents
 
+% Todo:  Add details re:  the PSI-MI to BioPAX Converter.  Pending release by Ben.
+
 \section{About this Document}
 
 This document describes how to build a local installation of cPath, administer cPath via the command line, import BioPAX and PSI-MI files, and deploy the cPath web application.  This document refers only to the latest version of cPath (Version 0.7 Beta, from April, 2007).  For questions regarding this document or questions regarding cPath installation in general, please send email to Ethan Cerami (cerami AT cbio.mskcc.org).
@@ -183,7 +185,13 @@ Copying your war file here will cause Tomcat to automatically load and start cPa
 
 \subsubsection{Verify installation}
 
-Open a web browser, and go to: http://localhost:8080/cpath/. Verify that you can see the cPath Home Page.
+Open a web browser, and go to: http://localhost:8080/cpath/. Verify that you can see the cPath Home Page.  See Figure \ref{default-installation}.
+
+\begin{figure}
+  \includegraphics[scale=0.3]{figures/default_installation.png}
+  \caption{Screenshot of the default cPath installation.}
+\label{default-installation}
+\end{figure}
 
 \section{cPath Mode Options:  BioPAX v. PSI-MI}
 
@@ -193,13 +201,13 @@ cPath currently supports two mutually exclusive modes:
 
 \begin{itemize}
 
-\item BioPAX mode: supports BioPAX files only.  However, as detailed below, it is possible to convert PSI-MI files to BioPAX, and therefore integrate data from both formats.  Note that the web service API for the BioPAX mode is not as extensive as in the PSI-MI mode, and there is no Cytoscape PlugIn for the BioPAX mode.  Both of these features represent active areas of development.  Future cPath development will focus on the BioPAX mode, but we plan to continue support for the PSI-MI mode for the forseeable future.
+\item BioPAX mode: supports BioPAX files only.  However, in the near future, we will be releasing a command line tool for converting PSI-MI files to BioPAX, and this will enable users to integrate data from both formats into a single instance of cPath.  Note that the web service API for the BioPAX mode is not as extensive as in the PSI-MI mode, and there is no Cytoscape PlugIn for the BioPAX mode.  Both of these features represent active areas of development.  Future cPath development will focus on the BioPAX mode, but we plan to continue support for the PSI-MI mode for the foreseeable future.
 
 \item PSI-MI mode: supports PSI-MI files only.  Provides an extensive web service API, and a Cytoscape cPath PlugIn for visualizing protein-protein interactions.
 
 \end{itemize}
 
-The most important decision regarding configuration will be your choice of mode.  If you want to import only PSI-MI protein-protein interactions, and query this data via a web service API or via the Cytoscape cPath plugin, you are best off choosing the PSI-MI mode.  If, on the other hand, you want to import BioPAX pathway records, or a combination of BioPAX and PSI-MI records, you must choose the BioPAX mode.  The default cPath configuration is currently set to BioPAX mode.  If you wish to switch to PSI-MI mode, see section \ref{import-psi} below.
+The most important decision regarding configuration will be your choice of mode.  If you want to import only PSI-MI protein-protein interactions, and query this data via a web service API or via the Cytoscape cPath plugin, you are best off choosing the PSI-MI mode.  If, on the other hand, you want to import BioPAX pathway records (or, in the future, a combination of BioPAX and PSI-MI records), you must choose the BioPAX mode.  The default cPath configuration is currently set to BioPAX mode.  If you wish to switch to PSI-MI mode, see section \ref{import-psi} below.
 
 \section{Importing and Indexing BioPAX Data}
 
@@ -363,6 +371,43 @@ web.skin=default_psi_mi
 
 Once you have configured build.properties, and all your data has been imported and indexed, you must re-generate the WAR file and redeploy to Tomcat.  See \ref{generate-war} above.
 
+\section{Importing Identifier Mapping Files}
+
+A recurring problem in bioinformatics is linking related or identical data described by different databases when multiple database identifiers (primary keys) are used to refer
+to the same biological entity. Interaction databases may use different identifiers for their proteins, RNA, DNA or small molecules (for example, a protein may be identified with a UniProt accession number, RefSeq accession number or an NCBI GI number). This use of multiple
+identifiers can significantly hinder the ability to seamlessly use data from diverse sources, such as to retrieve all interactions involving a protein from numerous data sources. Recognizing when protein records that use different database identifiers actually represent the same protein allows a query for the protein to correctly retrieve both original records. To address this specific issue, cPath provides an identifier mapping system capable of
+storing equivalence between two or more identifiers. 
+
+For example, a single protein unification mapping may map UniProt accession numbers to equivalent RefSeq accession numbers. Identifier mapping files are simple tab-delimited text files that must be loaded into cPath prior to import of any interaction or pathway data sets. With some scripting ability, cPath identifier mapping files can be created from external database resources, such as Alias Server, the EBI International Protein Index (IPI), or Ensembl BioMart. Sample protein unification files, derived from the IPI Protein Cross-References dataset, are available in \verb+CPATH_HOME/scripts+.
+
+For example, below is an excerpt from the \verb+cpath_unification_sp2refseq.txt+ file.  This file maps UniProt IDs to RefSeq IDs:
+
+\begin{verbatim}
+UNIPROT REF_SEQ Protein
+O03042  NP_051067
+O03983  NP_171654
+O04005  NP_175247
+O04027  NP_172377
+O04036  NP_001031006
+O04036  NP_001031006
+O04046  NP_179960
+O04090  NP_172565
+O04093  NP_172561
+\end{verbatim}
+
+To import an ID mapping file, use the admin.pl command line tool.  For example:
+
+\begin{verbatim}
+./admin.pl -f ../scripts/cpath_unification_sp2refseq.txt import
+\end{verbatim}
+
+A script for automatically downloading the latest IPI data and creating ID mapping files is available in \verb+CPATH_HOME/scripts/parse_ipi-2.pl+.  For question regarding the IPI script, please contact Ruth Isserlin at the University of Toronto (ruth.isserlin AT utoronto.ca).
+
+Importantly, cPath also provides a similar service for storing relationships between non-equivalent, but related biological entities. For example, a researcher can import a
+UniProt to Affymetrix mapping file.  When a new protein with a matching UniProt identifier is subsequently imported into cPath, it is annotated with all known Affymetrix probe set identifiers. This is useful for tools that link gene expression data to pathways.
+
+A sample link-out ID mapping file that maps Affymetrix \verb+HG_U95+ probeset IDs to UniProt/SwissProt IDs to is provided in \verb+CPATH_HOME/testData/affymetrix/HG_U95Av2.txt+.  
+
 \section{Troubleshooting cPath}
 
 If you experience problems with the cPath web application, here are a few things to try out.
@@ -381,7 +426,13 @@ In the event of an error, the first place to check is the cPath Diagnostics page
 
 \end{itemize}
 
-This page tests access to all the cPath tables and to the cPath full-text indexer.  If everything is set-up correctly, you should see a series of green check arrows.  Failures are noted in red.
+This page tests access to all the cPath tables and to the cPath full-text indexer.  If everything is set-up correctly, you should see a series of green check arrows (See Figure \ref{cpath-diagnostics}). Failures are noted in red.  
+
+\begin{figure}
+  \includegraphics[scale=0.3]{figures/cpath_diagnostics.png}
+  \caption{Screenshot of the cPath diagnostics page.}
+\label{cpath-diagnostics}
+\end{figure}
 
 \subsection{Clearing the In-memory / Persistent cache}
 \label{purge-cache}
@@ -422,11 +473,17 @@ As a rule, you should purge the cache every time you either 1) import or index n
 
 Occasionally, you will receive a web page error.  If you want to view live web diagnostic information, simply append a debug=1 parameter at the end of any cPath URL.
 
-For example, this URL activates web diagnostics for the cPath home page. 
+For example, this URL activates web diagnostics for the cPath home page (See \ref{web_diagnostics}). 
 
 \begin{verbatim}
 http://localhost:8080/cpath/adminHome.do?debug=1
 \end{verbatim}
+
+\begin{figure}
+  \includegraphics[scale=0.3]{figures/web_diagnostics.png}
+  \caption{Screenshot of the cPath web diagnostics in action.}
+\label{web_diagnostics}
+\end{figure}
 
 You can try this on any cPath page, and you will immediately view many details, including:
 
