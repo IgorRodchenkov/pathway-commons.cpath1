@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.30 2006-10-10 14:48:22 cerami Exp $
+// $Id: DaoCPath.java,v 1.31 2007-03-26 15:59:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,8 +55,14 @@ public class DaoCPath extends ManagedDAO {
 
     //  Get Num Entities SQL
     private static final String GET_NUM_ENTITIES_KEY = "GET_NUM_ENTITIES_KEY";
+
+    //  Note added by Ethan (March 26, 2007)
+    //  Previously, this SQL query was set to:
+    //  "select count(CPATH_ID) from cpath where type = ?";
+    //  By changing to: "select count(*) from cpath where type = ?";
+    //  the performance improved dramatically.
     private static final String GET_NUM_ENTITIES =
-            "select count(CPATH_ID) from cpath where type = ?";
+            "select count(*) from cpath where type = ?";
 
     //  Insert SQL
     private static final String INSERT_KEY = "INSERT_KEY";
