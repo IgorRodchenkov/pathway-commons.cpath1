@@ -27,7 +27,7 @@ system "tar -cvf cpath.tar *";
 &debug ("Gzip everything...");
 system "gzip cpath.tar";
 &debug ("Deploy to web site...");
-system "cp -v cpath.tar.gz /var/www/dev_site/cpath";
+system "cp -v cpath.tar.gz /var/www/software/cpath";
 
 # Run Maven
 &debug ("Run maven site:generate...");
@@ -45,12 +45,12 @@ system "anteater -f ant_eater/tests.xml";
 
 # Move Ant Eater Reports
 &debug ("Move to existing ant eater report directory...");
-chdir "/var/www/dev_site/cpath/reports" or die;
+chdir "/var/www/software/cpath/reports" or die;
 &debug ("Delete all existing ant eater reports...");
 system "rm -rvf *";
 &debug ("Copy over new ant eater reports...");
 chdir "/home/cerami/temp/sander/cpath" or die;
-system "mv -v ant_eater/reports/* /var/www/dev_site/cpath/reports/";
+system "mv -v ant_eater/reports/* /var/www/software/cpath/reports/";
 
 sub debug {
 	print "-----------------------------------------\n";
