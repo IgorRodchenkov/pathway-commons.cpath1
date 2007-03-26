@@ -21,10 +21,12 @@ try {
 %>
 <b><%= webUIBean.getApplicationName()%> Quick Stats:</b>
 <table>
+    <% if (numPathways > 0)  { %>
     <tr>
         <td>Number of Pathways:</td>
         <td><%= formatter.format(numPathways) %></td>
-    </tr>        
+    </tr>
+    <% } %>
     <tr>
         <td>Number of Interactions:</td>
         <td><%= formatter.format(numInteractions) %></td>
