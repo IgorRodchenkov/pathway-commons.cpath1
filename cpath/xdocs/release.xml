@@ -17,7 +17,8 @@
     <LI>Updated Administrator Guide.</LI>
     <LI>New support for source meta data, including data source descriptions, and icons.</LI>
     <LI>Tested extensively with BioPAX data from Reactome, MSKCC Cancer Cell Map,
-    HumanCyc, and the NCI/Nature Pathway Interaction Database (PID).</LI>
+    HumanCyc, and the NCI/Nature Pathway Interaction Database (PID)
+    and PSI-MI Level 1 Data from IntAct and MINT.</LI>
     <LI>Numerous bug fixes.</LI>
 </UL>
 </P>
