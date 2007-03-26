@@ -1,4 +1,4 @@
-// $Id: ImportPsiToCPath.java,v 1.13 2007-02-07 17:07:47 cerami Exp $
+// $Id: ImportPsiToCPath.java,v 1.14 2007-03-26 19:39:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -559,11 +559,11 @@ public class ImportPsiToCPath {
                         + refList.toString());
             } else {
                 String refStr = getReferencesAsText(refs);
-                throw new ImportException("Interaction contains the "
+                pMonitor.setCurrentMessage("Interaction contains the "
                         + "following xrefs:  " + refStr + ".  However, one of "
                         + "these xrefs is already used by an interactor. "
                         + "The interaction xrefs therefore cannot be trusted.  "
-                        + "Please double check them.  Aborting import.");
+                        + "Please double check them.");
             }
         }
     }
