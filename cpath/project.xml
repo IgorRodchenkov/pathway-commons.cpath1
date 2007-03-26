@@ -11,7 +11,7 @@
 	<currentVersion>0.6_Beta</currentVersion>
 	<organization>
 		<name>Memorial Sloan-Kettering Cancer Center</name>
-		<url>http://cbio.mskcc.org/dev_site/cpath</url>
+		<url>http://cbio.mskcc.org/software/cpath</url>
 		<logo>/images/logo.jpg</logo>
 	</organization>
 	<inceptionYear>2003</inceptionYear>
@@ -31,7 +31,7 @@
 
 	<issueTrackingUrl>http://www.cbio.mskcc.org/cytoscape/bugs/set_project.php?project_id=4</issueTrackingUrl>
     <siteAddress>cbio.mskcc.org</siteAddress>
-    <siteDirectory>/var/www/dev_site/cpath</siteDirectory>
+    <siteDirectory>/var/www/software/cpath</siteDirectory>
 
     <!--  Specifies the CVS Server Connect String -->
     <!--  This must be set properly in order to generate
