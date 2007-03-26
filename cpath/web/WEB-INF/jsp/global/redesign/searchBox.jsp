@@ -42,7 +42,7 @@
     <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
         <% try { %>
             <select name="<%= ProtocolRequest.ARG_ORGANISM %>">
-            <option value="">All Organisms</option>
+            <option value="">All Organisms&nbsp;&nbsp;</option>
         <%
             OrganismStats orgStats = new OrganismStats();
             ArrayList organisms = orgStats.getOrganismsSortedByName();
