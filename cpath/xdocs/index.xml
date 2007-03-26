@@ -26,6 +26,27 @@
         <A HREF="http://cbio.mskcc.org">Computational Biology Center</A>
         at <A HREF="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</A>.
         </p>
+        <p>For additional details regarding cPath, please refer to our recent paper:</p>
+        <p>
+        <UL>
+        <LI>Ethan G Cerami, Gary D Bader, Benjamin E Gross, and Chris Sander,
+        <b>cPath: open source software for collecting, storing, and querying biological
+        pathways</b> BMC Bioinformatics 2006, 7:497 [doi:10.1186/1471-2105-7-497]
+        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=pubmed&amp;cmd=Retrieve&amp;dopt=AbstractPlus&amp;list_uids=17101041&amp;query_hl=2&amp;itool=pubmed_docsum">[Pub Med]</a> <a href="http://www.biomedcentral.com/1471-2105/7/497/abstract.">[Full Text]</a>
+        </LI>
+        </UL>
+        </p>
+    </section>
+
+    <section name="About the cPath Demo Site">
+    <p>
+    A demo version of cPath is currently available at:
+    <a href="http://cbio.mskcc.org/cpath">http://cbio.mskcc.org/cpath</a>.
+    This site is currently running in PSI-MI mode, and contains PSI-MI Level 1 data
+    from:
+    <A href="http://www.ebi.ac.uk/intact/site/index.jsf">IntAct</A> and
+    <A href="http://mint.bio.uniroma2.it/mint/Welcome.do">MINT</A>.
+    </p>
     </section>
 
     <section name="cPath Developer Mailing List">
