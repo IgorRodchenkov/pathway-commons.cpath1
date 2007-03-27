@@ -1,4 +1,4 @@
-// $Id: BioPaxPhysicalEntitySetQueryUtil.java,v 1.1 2007-03-27 19:01:39 grossb Exp $
+// $Id: BioPaxPhysicalEntitySetQueryUtil.java,v 1.2 2007-03-27 19:13:01 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 20076 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,5 +48,9 @@ public class BioPaxPhysicalEntitySetQueryUtil {
 	 * @return String (biopax snippet)
 	 */
 	public static String getNeighborhoodMap(long cpathID) {
+
+
+		// outta here
+		return null;
 	}
 }
