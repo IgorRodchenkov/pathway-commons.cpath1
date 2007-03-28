@@ -60,7 +60,7 @@ public class DataSourceListTable extends HtmlTable {
                     append ("<br><a href=\"webservice.do?version=1.0&format=html&cmd=get_by_keyword");
 					append ("&" + GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME + "=pathway");
 					append ("&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL);
-                    append ("&q=data_source%3A%22" + dbRecord.getName() + "%22+AND+entity_type%3Apathway\">");
+                    append ("&q=data_source%3A%22" + dbRecord.getMasterTerm() + "%22+AND+entity_type%3Apathway\">");
                     append ("Browse</a>");
                 }
                 append ("</td>");
