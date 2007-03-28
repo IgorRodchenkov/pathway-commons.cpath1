@@ -30,7 +30,7 @@
 	    else {
 		    if (hitByTypeMap.get(type) > 0) {
 	            out.println("<li>" +
-			                "<a href='webservice2.do?version=1.0&q=" + protocolRequest.getQuery() +
+			                "<a href='webservice.do?version=1.0&q=" + protocolRequest.getQuery() +
 			                "&format=html&cmd=get_by_keyword&" +
 			                GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME + "=" + type + "&" +
 						    GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource +

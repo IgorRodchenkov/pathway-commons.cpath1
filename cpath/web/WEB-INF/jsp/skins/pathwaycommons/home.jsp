@@ -24,7 +24,7 @@ RNA, small molecules and complexes. <a href="about.do">more...</a>
 <div class="large_search_box">
 <h1>Search <%= webUIBean.getApplicationName() %>:</h1>
 <p>
-<form name="searchbox" action="webservice2.do" method="get">
+<form name="searchbox" action="webservice.do" method="get">
 <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
 <input type="hidden" name="<%= dataSourceName %>" value="<%= dataSourceValue %>"/>
 <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
@@ -36,9 +36,9 @@ RNA, small molecules and complexes. <a href="about.do">more...</a>
 </form>
 </p>
 <p>To get started, enter a gene name, gene identifier or pathway name in the text box above.
-For example: <a href="webservice2.do?version=1.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">p53</a>,
-<a href="webservice2.do?version=1.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">P38398</a>
-or  <a href="webservice2.do?version=1.0&q=mtor&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">mTOR</a>.
+For example: <a href="webservice.do?version=1.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">p53</a>,
+<a href="webservice.do?version=1.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">P38398</a>
+or  <a href="webservice.do?version=1.0&q=mtor&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">mTOR</a>.
 </p>
 <p>To restrict your search to specific data sources or specific organisms, update your
 <a href="filter.do">global filter settings</a>.</p>

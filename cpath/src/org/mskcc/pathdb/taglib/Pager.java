@@ -1,4 +1,4 @@
-// $Id: Pager.java,v 1.16 2007-01-25 21:15:26 grossb Exp $
+// $Id: Pager.java,v 1.17 2007-03-28 14:28:02 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -189,19 +189,16 @@ public class Pager {
         String nextUrl = this.getNextUrl();
         if (nextUrl != null) {
 			nextUrl += ("&" + entityTypeParameter);
-			nextUrl = nextUrl.replace("webservice.do", "webservice2.do");
             String link = createLink("<font color=\"" + color + "\"> Next " + hitsPerPage + "</font>", nextUrl);
             text.append(bar + link);
         }
         if (previousUrl != null) {
 			previousUrl += ("&" + entityTypeParameter);
-			previousUrl = previousUrl.replace("webservice.do", "webservice2.do");
             String link = createLink("<font color=\"" + color + "\"> Previous " + hitsPerPage + "</font>", previousUrl);
             text.append(bar + link);
         }
         if (firstUrl != null) {
 			firstUrl += ("&" + entityTypeParameter);
-			firstUrl = firstUrl.replace("webservice.do", "webservice2.do");
             String link = createLink("<font color=\"" + color + "\"> First Page</font>", firstUrl);
             text.append(bar + link);
         }
