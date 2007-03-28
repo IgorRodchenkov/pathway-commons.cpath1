@@ -120,6 +120,7 @@ private String getFragmentsHtml(List<String> fragments, String summaryLabel, Str
 
 	Character period = new Character('.');
     StringBuffer html = new StringBuffer();
+	boolean ulAppended = false;
 	for (String fragment : fragments) {
 	    // create copy of fragment with html stripped out for comparision purposes
 		String fragmentCopy = new String (fragment);
@@ -135,6 +136,10 @@ private String getFragmentsHtml(List<String> fragments, String summaryLabel, Str
 			appendPrefix = appendSuffix = false;
         }
 		// write out the html, add "..." in front and back of fragment as needed
+		if (!ulAppended) {
+		   html.append("<ul>");
+		   ulAppended = true;
+		}
      	html.append("<li>");
 		if (appendPrefix) html.append("... ");
 		fragment = HtmlUtil.truncateLongWords(fragment, maxLength);
@@ -146,6 +151,9 @@ private String getFragmentsHtml(List<String> fragments, String summaryLabel, Str
 		if (appendSuffix) html.append(" ...");
 	    html.append("</li>\n\r");
     }
+	if (ulAppended) {
+	   html.append("</ul>");
+	}
     return html.toString();
 }
 %>
