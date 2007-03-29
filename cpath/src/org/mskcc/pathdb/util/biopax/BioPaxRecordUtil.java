@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.30 2007-01-09 15:40:19 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.31 2007-03-29 18:54:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -157,7 +157,7 @@ public class BioPaxRecordUtil {
                 biopaxRecordSummary.setExternalLinks(externalLinks);
             }
             // comment
-            setComments(root, biopaxRecordSummary);            
+            setComments(root, biopaxRecordSummary);
 
             // if physical entity record is a complex, lets get its members
             if (record.getSpecificType() != null
@@ -171,6 +171,7 @@ public class BioPaxRecordUtil {
                         (record.getSnapshotId()));
             }
         } catch (Throwable throwable) {
+            System.err.println("Error occured in record:  " + record.getId());
             throw new BioPaxRecordSummaryException(throwable);
         }
 
@@ -538,10 +539,14 @@ public class BioPaxRecordUtil {
             for (int lc = 0; lc < complexMembers.size(); lc++) {
                 Element e = (Element) complexMembers.get(lc);
                 CPathRecord memberRecord = getCPathRecord(e);
-                if (memberRecord != null) {
-                    BioPaxRecordSummary bioPaxRecordSummary =
-                            BioPaxRecordUtil.createBioPaxRecordSummary(memberRecord);
-                    complexMemberList.add(bioPaxRecordSummary);
+                //  Deal with special case:  if the component is the same as the parent,
+                //  ignore it;  otherwise we get an infinite loop.
+                if (memberRecord.getId() != record.getId()) {
+                    if (memberRecord != null) {
+                        BioPaxRecordSummary bioPaxRecordSummary =
+                                BioPaxRecordUtil.createBioPaxRecordSummary(memberRecord);
+                        complexMemberList.add(bioPaxRecordSummary);
+                    }
                 }
             }
             if (complexMemberList.size() > 0) {
