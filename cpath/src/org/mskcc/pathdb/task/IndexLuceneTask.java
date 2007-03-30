@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.51 2006-11-17 19:25:31 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.52 2007-03-30 17:13:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -140,12 +140,13 @@ public class IndexLuceneTask extends Task {
         pMonitor.setMaxValue(totalNumEntities);
 
         //Divide the indexing job up into sections.
-        int iterationSize = 20000; //chose 20000 because there are 4 threads and
+        int iterationSize = 1000; //changed to 1000 to handle memory issues
         //each thread can have a max of 5000 in the queue.
         long maxIterId = cpath.getMaxCpathID();
 
 
         for (int id = 0; id <= maxIterId; id = id + iterationSize + 1) {
+            System.out.println("Starting batch, starting at cPath id= " + id);
 
             //First time through initialize the index writer to create directories
             //and delete any existing indexes.
