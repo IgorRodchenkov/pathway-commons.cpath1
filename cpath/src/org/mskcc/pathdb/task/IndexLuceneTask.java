@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.52 2007-03-30 17:13:04 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.53 2007-03-30 18:56:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -210,11 +210,23 @@ public class IndexLuceneTask extends Task {
 
                 if (indexedRecordCount > 0) {
                     // tell the indexers to wind down
-                    pMonitor.setCurrentMessage("\nOptimizing Indexes");
+                    pMonitor.setCurrentMessage("\nMerging all indexes...");
+
                     // merge the indexes, this also optimises
                     Directory[] dirs = indexManager.getLuceneDirs();
                     indexWriter.addIndexes(dirs);
                     indexWriter.closeWriter();
+
+                    //  Delete individual thread index files
+                    //  Once merged into the master index, we no longer need these
+                    //  index files.
+                    for (int i=0; i<dirs.length; i++) {
+                        pMonitor.setCurrentMessage("Deleting indexes for thread #" + i);
+                        String files[] = dirs[i].list();
+                        for (int j=0; j<files.length; j++) {
+                            dirs[i].deleteFile(files[j]);
+                        }
+                    }
 
                     if (record != null) {
                         returnLong = record.getId();
