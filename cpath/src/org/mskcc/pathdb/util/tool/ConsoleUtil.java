@@ -1,4 +1,4 @@
-// $Id: ConsoleUtil.java,v 1.6 2006-11-16 19:56:20 cerami Exp $
+// $Id: ConsoleUtil.java,v 1.7 2007-03-30 17:10:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,7 +52,7 @@ public class ConsoleUtil {
      *
      * @param pMonitor ProgressMonitor Object.
      */
-    public static void showProgress(ProgressMonitor pMonitor) {
+    public synchronized static void showProgress(ProgressMonitor pMonitor) {
         if (pMonitor.isConsoleMode()) {
             int currentValue = pMonitor.getCurValue();
             System.out.print(".");
