@@ -1,6 +1,4 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.model.GlobalFilterSettings"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
@@ -24,16 +22,7 @@ RNA, small molecules and complexes. <a href="about.do">more...</a>
 <div class="large_search_box">
 <h1>Search <%= webUIBean.getApplicationName() %>:</h1>
 <p>
-<form name="searchbox" action="webservice.do" method="get">
-<input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
-<input type="hidden" name="<%= dataSourceName %>" value="<%= dataSourceValue %>"/>
-<input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
-<input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15"/>
-<input type="submit" value="Search"/>
-<input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
-<input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
-    size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
-</form>
+<jsp:include page="../../global/redesign/homePageSearchBox.jsp" flush="true" />
 </p>
 <p>To get started, enter a gene name, gene identifier or pathway name in the text box above.
 For example: <a href="webservice.do?version=1.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">p53</a>,
