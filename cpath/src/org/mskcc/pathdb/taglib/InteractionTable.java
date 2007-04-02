@@ -1,4 +1,4 @@
-// $Id: InteractionTable.java,v 1.58 2007-03-20 18:08:13 cerami Exp $
+// $Id: InteractionTable.java,v 1.59 2007-04-02 16:57:09 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -368,9 +368,9 @@ public class InteractionTable extends HtmlTable {
                 getProteinParticipantCount();
         if (targetProtein == null) {
 
-            append("<td rowspan='" + count + "' class='cpath2'>");
+            append("<td rowspan='" + count + "' class='psi_td'>");
         } else {
-            append("<td rowspan=1 class='cpath2'>");
+            append("<td rowspan=1 class='psi_td'>");
         }
         append("<table>");
         for (int i = 0; i < expList.getExperimentListItemCount(); i++) {
@@ -378,8 +378,11 @@ public class InteractionTable extends HtmlTable {
             ExperimentListItem expItem = expList.getExperimentListItem(i);
             ExperimentType expType = expItem.getExperimentDescription();
             if (expType != null) {
+                append("<td>");
                 outputCvType(expType.getInteractionDetection());
+                append("<br>");
                 outputBibRef(expType.getBibref());
+                append("</td>");
             }
             append("</tr>");
         }
@@ -393,9 +396,9 @@ public class InteractionTable extends HtmlTable {
         int count = interaction.getParticipantList().
                 getProteinParticipantCount();
         if (targetProtein == null) {
-            append("<td rowspan='" + count + "' class='cpath2'>");
+            append("<td rowspan='" + count + "' class='psi_td'>");
         } else {
-            append("<td rowspan=1 class='cpath2'>");
+            append("<td rowspan=1 class='psi_td'>");
         }
         XrefType xref = interaction.getXref();
         if (xref != null) {
@@ -445,7 +448,13 @@ public class InteractionTable extends HtmlTable {
         if (cvType != null) {
             NamesType names = cvType.getNames();
             if (names != null) {
-                append("<TD>" + names.getShortLabel() + "</TD>");
+                String fullName = names.getFullName();
+                String shortLabel = names.getShortLabel();
+                if (fullName != null) {
+                    append(fullName);
+                } else if (shortLabel != null) {
+                    append(shortLabel);
+                }
             }
         }
     }
@@ -456,7 +465,6 @@ public class InteractionTable extends HtmlTable {
      * are outputted correctly.
      */
     private void outputBibRef(BibrefType bibRef) {
-        append("<TD>");
         if (bibRef != null) {
             XrefType xref = bibRef.getXref();
             DbReferenceType primaryRef = xref.getPrimaryRef();
@@ -469,13 +477,12 @@ public class InteractionTable extends HtmlTable {
                 outputPmid(secondaryRef);
             }
         }
-        append("</TD>");
     }
 
     private void outputPmid(DbReferenceType primaryRef) {
         String pmid = primaryRef.getId();
         String url = this.getPubMedLink(pmid);
-        append("PMID:  <A TITLE='External Link to PubMed Reference'"
+        append("&nbsp;&rarr;&nbsp;PubMed:  <A TITLE='External Link to PubMed Reference'"
                 + " HREF='" + url + "'>" + pmid + "</A>");
     }
 
@@ -571,7 +578,7 @@ public class InteractionTable extends HtmlTable {
     private void outputExternalReferences(String id) throws DaoException {
         ArrayList affyList = new ArrayList();
         startRow();
-        this.append("<td class='cpath1'>External References:</th>");
+        this.append("<td class='cpath1' valign=top>External References:</th>");
         DaoExternalLink dao = DaoExternalLink.getInstance();
         ArrayList links = dao.getRecordsByCPathId(Long.parseLong(id));
         Collections.sort(links);
