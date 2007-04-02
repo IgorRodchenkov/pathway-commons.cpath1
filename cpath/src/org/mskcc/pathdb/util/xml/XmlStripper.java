@@ -1,4 +1,4 @@
-// $Id: XmlStripper.java,v 1.9 2007-03-20 16:01:44 cerami Exp $
+// $Id: XmlStripper.java,v 1.10 2007-04-02 14:54:57 grossb Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,7 +55,7 @@ public class XmlStripper {
 	/**
 	 * DELIMETER
 	 */
-	public static final String ELEMENT_DELIMITER = "2718281828459";
+	public static final String ELEMENT_DELIMITER = " 271828 ";
 
     /**
      * Strips all XML Markup from Document.
