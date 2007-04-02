@@ -1,4 +1,4 @@
-// $Id: Organism.java,v 1.8 2006-02-22 22:47:50 grossb Exp $
+// $Id: Organism.java,v 1.9 2007-04-02 17:04:02 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,12 +31,14 @@
  **/
 package org.mskcc.pathdb.model;
 
+import java.io.Serializable;
+
 /**
  * JavaBean to Encapsulate an Organism Record.
  *
  * @author Ethan Cerami
  */
-public class Organism {
+public class Organism implements Serializable {
     private int taxonomyId;
     private String speciesName;
     private String commonName;
