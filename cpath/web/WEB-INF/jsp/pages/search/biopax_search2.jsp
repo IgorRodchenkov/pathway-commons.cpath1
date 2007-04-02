@@ -20,6 +20,7 @@
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
 <jsp:include page="../../global/redesign/header.jsp" flush="true" />
 <%
+    final String CYTOSCAPE_HTTP_SERVER = "127.0.0.1:27182";
     final int MAX_SCOREBOARD_WIDTH = 62;
     final int SCOREBOARD_HEIGHT = 6;
 
@@ -40,6 +41,12 @@
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
     String keyType = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME);
     String keyDataSource = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
+    // server name
+    String serverName = (String)request.getServerName();
+    serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverName + ":8080";
+    // cytoscape link
+    String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
+    urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
 %>
 <script type="text/javascript">
     //  Toggles details on single row
@@ -258,9 +265,16 @@ else {
                     "<a href=\"" + url + "\">" + record.getName() + "</a></div>");
         }
         if (organismFlag == null) {
+			// fragments
             out.println("<tr><td colspan=\"3\">");
 			out.println("<div class='search_fragment'>");
             out.println(getFragmentsHtml(fragments.get(i), summaryLabel, header, 40));
+			// add link to cytoscape
+			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+			            urlForCytoscapeLink + 
+			            "?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
+			            String.valueOf(cpathIds[i]) +
+			            "\">open in cytoscape</a>");
 			out.println("</div>");
 			out.println("</td></tr>");
         }
