@@ -93,7 +93,7 @@
     <!-- Cache:  long_term_cache. This cache overflows to disk. The disk store is persistent
          between cache and VM restarts. -->
     <cache name="persistent_cache"
-        maxElementsInMemory="250"
+        maxElementsInMemory="1000"
         eternal="true"
         overflowToDisk="true"
         timeToIdleSeconds="0"
