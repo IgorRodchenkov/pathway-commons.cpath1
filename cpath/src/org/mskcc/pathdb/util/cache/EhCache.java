@@ -1,4 +1,4 @@
-// $Id: EhCache.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
+// $Id: EhCache.java,v 1.11 2007-04-02 15:24:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,6 +52,18 @@ public class EhCache {
      * Key for Pathway List.
      */
     public static final String KEY_PATHWAY_LIST = "KEY_PATHWAY_LIST";
+
+    /**
+     * Key for Organism List, sorted by Name.
+     */
+    public static final String KEY_ORGANISM_LIST_SORTED_BY_NAME
+            = "KEY_ORGANISM_LIST_SORTED_BY_NAME";
+
+    /**
+     * Key for Organism List, sorted by number of interactions/pathways.
+     */
+    public static final String KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES
+            = "KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES";
 
     /**
      * Initializes the EhCache with ehcache.xml.

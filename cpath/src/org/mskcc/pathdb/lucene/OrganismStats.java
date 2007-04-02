@@ -1,4 +1,4 @@
-// $Id: OrganismStats.java,v 1.19 2006-11-30 19:17:50 grossb Exp $
+// $Id: OrganismStats.java,v 1.20 2007-04-02 15:24:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,11 +32,15 @@
 package org.mskcc.pathdb.lucene;
 
 import net.sf.ehcache.CacheException;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
 import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.model.Organism;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.util.cache.EhCache;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +65,17 @@ public class OrganismStats {
      */
     public ArrayList getOrganismsSortedByName() throws DaoException,
             QueryException, IOException, CacheException {
-        return lookUpOrganisms(0);
+        CacheManager manager = CacheManager.create();
+        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
+        Element element = cache.get
+                (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME);
+        if (element != null) {
+            return (ArrayList) element.getValue();
+        } else {
+            ArrayList list = lookUpOrganisms(cache, 0);
+            return list;
+
+        }
     }
 
     /**
@@ -75,10 +89,19 @@ public class OrganismStats {
      */
     public ArrayList getOrganismsSortedByNumInteractions() throws DaoException,
             QueryException, IOException, CacheException {
-        return lookUpOrganisms(1);
+        CacheManager manager = CacheManager.create();
+        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
+        Element element = cache.get
+                (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES);
+        if (element != null) {
+            return (ArrayList) element.getValue();
+        } else {
+            ArrayList list = lookUpOrganisms(cache, 1);
+            return list;
+        }
     }
 
-    private ArrayList lookUpOrganisms(int type)
+    private ArrayList lookUpOrganisms(Cache cache, int type)
             throws DaoException, QueryException {
         LuceneReader indexer = new LuceneReader();
         try {
@@ -97,6 +120,15 @@ public class OrganismStats {
                     listSortedByName.clone();
             Collections.sort(listSortedByNumEntities,
                     new SortByInteractionCount());
+
+            Element e0 = new Element
+                    (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME,
+                            listSortedByName);
+            Element e1 = new Element
+                    (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES,
+                            listSortedByNumEntities);
+            cache.put(e0);
+            cache.put(e1);            
 
             if (type == 0) {
                 return listSortedByName;
