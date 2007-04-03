@@ -2,17 +2,40 @@
 
 <document>
   <properties>
-    <title>Source Downloads</title>
+    <title>Downloads</title>
   </properties>
 
   <body>
 
-    <section name="CVS Access">
+    <section name="Anonoymous CVS Access">
         <p>
-        We do not (yet) provide anonymous access to our CVS server.  We plan
-        to address this issue in the short-term.  In the meantime, if
-        you are looking for the source code to cPath, download a nightly
-        snapshot from the section below.
+        For anonoymous CVS access:
+        <ul>
+        <li>export CVS_RSH=ssh</li>
+        <li>cvs -d :ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cpath checkout cpath</li>
+        </ul>
+        When prompted, enter password: anonymous.
+        </p>
+    </section>
+
+    <section name="Developer CVS Access">
+        <p>
+        For developer CVS access:
+        <ul>
+        <li>First, go to the
+        <a href="http://gforge.nci.nih.gov/projects/cpath/">cPath site @ NCI</a>, and click
+        the 'Request to Join' link.  You will receive a response in under 24 hours.</li>
+        <li>(optional) Upload your public SSH key.  To do so, login to the
+        <a href="http://gforge.nci.nih.gov/projects/cpath/">cPath site @ NCI</a> and click
+        the link for 'Account Maintenance'.  At the bottom of the page, there is an option
+        to upload your public SSH key.  Once your key has been uploaded, send email to
+        Ethan Cerami, cerami AT cbio.mskcc.org, and tell me that you
+        have uploaded your SSH key (unfortunately, this manual step is currently required).</li>
+        </ul>
+        <ul>
+        <li>export CVS_RSH=ssh</li>
+        <li>cvs -d :ext:developername@cbiocvs2.nci.nih.gov:/share/content/gforge/cpath checkout cpath</li>
+        </ul>
         </p>
      </section>
 
@@ -30,20 +53,10 @@
         </p>
         <p>
         <UL>
-        <LI><A HREF="stable/cpath_beta_07.tar.gz">Download Version 0.7</A> [tar.gz format]</LI>
+        <LI><A HREF="stable/cpath_beta_07_rc1.tar.gz">Download Version 0.7, Release Candidate 1</A> [tar.gz format]</LI>
         </UL>
         </p>
      </section>
 
-    <section name="Automated Nightly Snapshots">
-        <p>
-        Automated Nightly Snapshots are created every 24 hours directly from
-        the active CVS repository.  The snapshot includes all source code,
-        the Ant build file, all configuration files, and sample data files.
-        </p>
-        <p>
-        <A HREF="cpath.tar.gz">Download Nightly Snapshot</A> [tar.gz format]
-        </p>
-     </section>
   </body>
 </document>
