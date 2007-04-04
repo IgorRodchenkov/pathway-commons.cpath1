@@ -6,17 +6,41 @@
   </properties>
 
   <body>
-    <section name="Web Access to the Repository">
+    <section name="Web Access to the CVS Repository">
       <p>
-      We are planning to offer Web Access to our CVS repository
-      via CVS Web.  Check back soon.
+      Browse the <a href="http://gforge.nci.nih.gov/plugins/scmcvs/cvsweb.php/cpath/?cvsroot=cpath">cPath Code</a>.
       </p>
      </section>
-    <section name="Download via Anonymous CVS">
-      <p>
-      We are planning to offer Anonymous CVS access soon.  Please
-      check back soon.
-      </p>
-     </section>
+    <section name="Anonoymous CVS Access">
+        <p>
+        For anonoymous CVS access:
+        <ul>
+        <li>export CVS_RSH=ssh</li>
+        <li>cvs -d :ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cpath checkout cpath</li>
+        </ul>
+        When prompted, enter password: anonymous.
+        </p>
+    </section>
+
+    <section name="Developer CVS Access">
+        <p>
+        For developer CVS access:
+        <ul>
+        <li>First, go to the
+        <a href="http://gforge.nci.nih.gov/projects/cpath/">cPath site @ NCI</a>, and click
+        the 'Request to Join' link.  You will receive a response in under 24 hours.</li>
+        <li>(optional) Upload your public SSH key.  To do so, login to the
+        <a href="http://gforge.nci.nih.gov/projects/cpath/">cPath site @ NCI</a> and click
+        the link for 'Account Maintenance'.  At the bottom of the page, there is an option
+        to upload your public SSH key.  Once your key has been uploaded, send email to
+        Ethan Cerami, cerami AT cbio.mskcc.org, and tell me that you
+        have uploaded your SSH key (unfortunately, this manual step is currently required).</li>
+        </ul>
+        <ul>
+        <li>export CVS_RSH=ssh</li>
+        <li>cvs -d :ext:developername@cbiocvs2.nci.nih.gov:/share/content/gforge/cpath checkout cpath</li>
+        </ul>
+        </p>
+     </section>      
   </body>
 </document>
