@@ -16,7 +16,7 @@
 	      <item name="Administrator Guide"   href="/cpath_admin.pdf"/>
     </menu>
     <menu name="Downloads">
-          <item name="Download cPath" href="source.html"/>
+          <item name="Download/Source" href="source.html"/>
     </menu>
   </body>
 </project>
