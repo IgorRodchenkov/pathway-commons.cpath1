@@ -34,7 +34,7 @@
     <httpRequest group="cpath_pages" path="/cpath/index.jsp"
         description="Validate Home Page">
            <match>
-            <regexp>cancer pathway database</regexp>
+            <regexp>which illustrates the use of cPath software</regexp>
           </match>
     </httpRequest>
 
@@ -77,7 +77,7 @@
         description="Validate Interaction View, Browse By Organism">
       <match>
           <regexp>Homo sapiens</regexp>
-          <regexp>PMID</regexp>
+          <regexp>PubMed</regexp>
       </match>
     </httpRequest>
 
