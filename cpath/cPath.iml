@@ -5,343 +5,51 @@
     <output url="file://$MODULE_DIR$/build/WEB-INF/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/bin/tinymonitor" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/animation" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/autocomplete" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/calendar" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/connection" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/container" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/dom" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/dragdrop" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/event" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/fonts" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/grids" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/logger" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/menu" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/reset" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/reset-fonts-grids" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/slider" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/tabview" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/treeview" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/utilities" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/yahoo" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/jsp/yui/build/yahoo-dom-event" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/animation" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/autocomplete" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/calendar" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/connection" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/container" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/dom" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/dragdrop" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/event" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/fonts" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/grids" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/logger" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/menu" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/reset" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/reset-fonts-grids" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/slider" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/tabview" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/treeview" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/utilities" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/yahoo" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/jsp/yui/build/yahoo-dom-event" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jaxen-jdom.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/biojava-1.3pre2-jdk14.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/quartz.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jakarta-oro.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/highlighter.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-lang.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-fileupload.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/servlet.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jaxen-core.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-digester.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-beanutils.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/xmlParserAPIs.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jdom_result.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/xmlrpc-1.2-b1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-collections.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/arp2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/dataservices.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/log4j.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/struts.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/getopt.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/saxpath.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/xercesImpl.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/junit.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-jxpath-1.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jdom.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-validator.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/rdf-api-2001-01-19.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-httpclient-2.0.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/lucene-1.4.3.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/icu4j.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-dbcp-1.2.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/castor-0.9.4.3.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/natural-order-comparator.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-pool-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/ehcache-1.2beta4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/commons-logging-1.0.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/mysql-connector-java-3.1.10-bin.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntryProperties />
   </component>
 </module>
