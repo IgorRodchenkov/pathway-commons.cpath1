@@ -3,7 +3,6 @@
 	CPath Ant Build Script.
 	Author:  Ethan Cerami
 -->
-
 <project name="CPath" default="compile" basedir=".">
     <!--  Environment Variables -->
     <property environment="env"/>
