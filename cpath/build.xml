@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 	CPath Ant Build Script.
-	Author:  Ethan Cerami
+	Author:  Ethan Cerami, MSKCC
 -->
 <project name="CPath" default="compile" basedir=".">
     <!--  Environment Variables -->
