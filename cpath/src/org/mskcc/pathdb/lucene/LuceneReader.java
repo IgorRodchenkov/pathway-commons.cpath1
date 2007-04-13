@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.11 2007-02-07 17:48:24 grossb Exp $
+// $Id: LuceneReader.java,v 1.12 2007-04-13 14:51:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -43,6 +43,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.mskcc.pathdb.sql.query.QueryException;
 
 import java.util.List;
+import java.util.Date;
 import java.io.IOException;
 
 /**
@@ -83,6 +84,7 @@ public class LuceneReader {
      */
     public Hits executeQuery(String term) throws QueryException {
         try {
+            Date start = new Date();
             String dir = LuceneConfig.getLuceneDirectory();
             reader = new IndexSearcher(dir);
             Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
@@ -104,7 +106,12 @@ public class LuceneReader {
 			queryToSearch.add(descQuery, false, false);
 
 			// outta here
-            return reader.search(queryToSearch);
+            Hits hits = reader.search(queryToSearch);
+            Date stop = new Date();
+            long timeInterval = stop.getTime() - start.getTime();
+            log.info("Total time to execute lucene query:  " + timeInterval
+                + " ms");            
+            return hits;
         } catch (IOException e) {
             e.printStackTrace();
             throw new QueryException("IOException:  " + e.getMessage(), e);

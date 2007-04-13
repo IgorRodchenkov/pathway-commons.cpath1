@@ -1,4 +1,4 @@
-// $Id: PsiAssembly.java,v 1.16 2006-02-22 22:47:51 grossb Exp $
+// $Id: PsiAssembly.java,v 1.17 2007-04-13 14:51:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -53,6 +54,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Date;
 
 /**
  * Encapsulates a Complete PSI-MI XML Assembly Document.
@@ -67,6 +69,7 @@ public class PsiAssembly implements XmlAssembly {
     private EntrySet entrySet;
     private int numHits = 0;
     private ArrayList interactions = null;
+    private static Logger log = Logger.getLogger(PsiAssembly.class);
 
     /**
      * Package Only Constructor.  Class must be instantiated via the
@@ -81,6 +84,8 @@ public class PsiAssembly implements XmlAssembly {
             throws AssemblyException {
         this.interactions = interactions;
         this.xdebug = xdebug;
+        log.info("Building PSI-MI XML Assembly");
+        Date start = new Date();
         try {
             if (interactions == null || interactions.size() == 0) {
                 entrySet = null;
@@ -96,6 +101,11 @@ public class PsiAssembly implements XmlAssembly {
             throw new AssemblyException(e);
         } catch (ValidationException e) {
             throw new AssemblyException(e);
+        } finally {
+            Date stop = new Date();
+            long timeInterval = stop.getTime() - start.getTime();
+            log.info("Total time to create PSI-MI XML assembly:  " + timeInterval
+                + " ms");
         }
     }
 

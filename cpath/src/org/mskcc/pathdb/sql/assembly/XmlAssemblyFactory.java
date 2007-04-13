@@ -1,4 +1,4 @@
-// $Id: XmlAssemblyFactory.java,v 1.14 2006-02-22 22:47:51 grossb Exp $
+// $Id: XmlAssemblyFactory.java,v 1.15 2007-04-13 14:51:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,8 +36,10 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Factory for instantiating XmlAssembly objects.
@@ -45,6 +47,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class XmlAssemblyFactory {
+    private static Logger log = Logger.getLogger(XmlAssemblyFactory.class);
 
     /**
      * In XML_ABBREV mode, the root XML document is retrieved, but linked
@@ -101,13 +104,19 @@ public class XmlAssemblyFactory {
             xmlType, int numHits, int mode, XDebug xdebug)
             throws AssemblyException {
         validateModeParameter(mode);
+        Date start = new Date();
         try {
+            log.info("Retrieving a total of " + cpathIds.length + " matching cPath records");
             ArrayList records = new ArrayList();
             DaoCPath dao = DaoCPath.getInstance();
             for (int i = 0; i < cpathIds.length; i++) {
                 CPathRecord record = dao.getRecordById(cpathIds[i]);
                 records.add(record);
             }
+            Date stop = new Date();
+            long timeInterval = stop.getTime() - start.getTime();
+            log.info("Total time to retrieve all matching cPath records:  " + timeInterval
+                + " ms");
             return createAssemblyInstance(records, xmlType, numHits, mode,
                     xdebug);
         } catch (DaoException e) {

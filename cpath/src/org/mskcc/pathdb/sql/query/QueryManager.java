@@ -1,4 +1,4 @@
-// $Id: QueryManager.java,v 1.6 2006-02-22 22:47:51 grossb Exp $
+// $Id: QueryManager.java,v 1.7 2007-04-13 14:51:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.util.security.Md5Util;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.apache.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -51,6 +52,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class QueryManager {
     private XDebug xdebug;
+    private Logger log = Logger.getLogger(QueryManager.class);
 
     /**
      * Constructor.
@@ -77,27 +79,27 @@ public class QueryManager {
         XmlAssembly cachedXml = null;
         try {
             String hashKey = getHashKey(request);
-            xdebug.logMsg(this, "Checking cache for pre-computed XML");
-            xdebug.logMsg(this, "Using HashKey:  " + hashKey);
+            log.info("Checking cache for pre-computed XML");
+            log.info("Using HashKey:  " + hashKey);
             cachedXml = dao.getXmlAssemblyByKey(hashKey);
             if (cachedXml == null) {
-                xdebug.logMsg(this, "No Match Found");
+                log.info("No Match Found");
             } else {
-                xdebug.logMsg(this, "Match Found");
+                log.info("Match Found");
             }
             if (checkCache && cachedXml != null) {
-                xdebug.logMsg(this, "Using Cached XML Document");
+                log.info("Using Cached XML Document");
                 xmlAssembly = cachedXml;
             } else {
-                xdebug.logMsg(this, "Executing New Interaction/Pathway Query");
+                log.info("Executing New Interaction/Pathway Query");
                 xmlAssembly = executeQuery(request);
                 if (!xmlAssembly.isEmpty()) {
                     if (cachedXml == null) {
-                        xdebug.logMsg(this, "Storing XML to Database Cache");
+                        log.info("Storing XML to Database Cache");
                         dao.addRecord(hashKey, request.getUrlParameterString(),
                                 xmlAssembly);
                     } else {
-                        xdebug.logMsg(this, "Updating XML in Database Cache");
+                        log.info("Updating XML in Database Cache");
                         dao.updateXmlAssemblyByKey(hashKey, xmlAssembly);
                     }
                 }

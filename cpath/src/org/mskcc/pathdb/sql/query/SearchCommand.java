@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.4 2006-02-22 22:47:51 grossb Exp $
+// $Id: SearchCommand.java,v 1.5 2007-04-13 14:51:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.sql.query;
 
 import org.apache.lucene.search.Hits;
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.lucene.RequestAdapter;
 import org.mskcc.pathdb.model.XmlRecordType;
@@ -52,6 +53,8 @@ import java.io.IOException;
 class SearchCommand extends Query {
     private String searchTerms;
     private ProtocolRequest request;
+    private Logger log = Logger.getLogger(SearchCommand.class);
+
 
     /**
      * Constructor.
@@ -70,6 +73,8 @@ class SearchCommand extends Query {
     protected XmlAssembly executeSub() throws QueryException,
             IOException, AssemblyException {
         xdebug.logMsg(this, "Searching Lucene full text index. "
+                + "Using search term(s):  " + searchTerms);
+        log.info("Searching Lucene full text index. "
                 + "Using search term(s):  " + searchTerms);
         LuceneReader indexer = new LuceneReader();
         try {

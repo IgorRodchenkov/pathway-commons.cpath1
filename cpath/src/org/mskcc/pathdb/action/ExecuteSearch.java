@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.12 2007-03-20 19:34:12 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.13 2007-04-13 14:51:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.log4j.Logger;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
@@ -61,10 +62,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.List;
+import java.util.*;
 
 /**
  * Executes Search.
@@ -72,6 +70,7 @@ import java.util.List;
  * @author Ethan Cerami
  */
 public class ExecuteSearch extends BaseAction {
+    private Logger log = Logger.getLogger(ExecuteSearch.class);
 
     /**
      * Executes cPath Query.
@@ -128,6 +127,9 @@ public class ExecuteSearch extends BaseAction {
     private ActionForward processXmlRequest(ProtocolRequest protocolRequest,
             HttpServletResponse response,
             XDebug xdebug) throws NeedsHelpException {
+        //  Start timer here
+        log.info("Received web service request:  " + protocolRequest.getUri());
+        Date start = new Date();
         String xml = null;
         XmlAssembly xmlAssembly = null;
         try {
@@ -164,6 +166,10 @@ public class ExecuteSearch extends BaseAction {
         }
         //  Return null here, because we do not want Struts to do any
         //  forwarding.
+        Date stop = new Date();
+        long timeInterval = stop.getTime() - start.getTime();
+        log.info("Total time to execute web service request:  " + timeInterval
+            + " ms");
         return null;
     }
 
