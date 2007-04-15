@@ -1,4 +1,4 @@
-// $Id: QueryManager.java,v 1.7 2007-04-13 14:51:10 cerami Exp $
+// $Id: QueryManager.java,v 1.8 2007-04-15 01:50:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,13 +79,17 @@ public class QueryManager {
         XmlAssembly cachedXml = null;
         try {
             String hashKey = getHashKey(request);
-            log.info("Checking cache for pre-computed XML");
-            log.info("Using HashKey:  " + hashKey);
-            cachedXml = dao.getXmlAssemblyByKey(hashKey);
-            if (cachedXml == null) {
-                log.info("No Match Found");
+            if (checkCache) {
+                log.info("Checking XML cache for pre-computed XML");
+                log.info("Using HashKey:  " + hashKey);
+                cachedXml = dao.getXmlAssemblyByKey(hashKey);
+                if (cachedXml == null) {
+                    log.info("No Match Found");
+                } else {
+                    log.info("Match Found");
+                }
             } else {
-                log.info("Match Found");
+                log.info("Bypassing XML Cache");
             }
             if (checkCache && cachedXml != null) {
                 log.info("Using Cached XML Document");
