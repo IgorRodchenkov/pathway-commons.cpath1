@@ -1,4 +1,4 @@
-// $Id: PsiAssembly.java,v 1.18 2007-04-15 00:56:12 cerami Exp $
+// $Id: PsiAssembly.java,v 1.19 2007-04-15 20:27:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -84,12 +84,12 @@ public class PsiAssembly implements XmlAssembly {
             throws AssemblyException {
         this.interactions = interactions;
         this.xdebug = xdebug;
-        log.info("Building PSI-MI XML Assembly");
+        log.info("Building PSI-MI XML Assembly, Mode:  Use Castor");
         try {
             if (interactions == null || interactions.size() == 0) {
                 entrySet = null;
             } else {
-                HashMap interactors = extractInteractors(interactions);
+                HashMap interactors = PsiAssemblyUtil.extractInteractors(interactions);
                 Date start = new Date();
                 buildPsi(interactors.values(), interactions);
                 Date stop = new Date();
@@ -243,43 +243,7 @@ public class PsiAssembly implements XmlAssembly {
         this.numHits = numRecords;
     }
 
-    /**
-     * Given a List of Interaction Records, retrieve all associated
-     * interactors.
-     *
-     * @param interactions ArrayList of CPathRecord Objects containing
-     *                     Interactions.
-     * @return HashMap of All Interactors, indexed by cpath ID.
-     * @throws DaoException Data Access Error.
-     */
-    protected HashMap extractInteractors(ArrayList interactions)
-            throws DaoException {
-        log.info("Retreiving links and interactors");
-        Date start = new Date();
-        HashMap interactorMap = new HashMap();
-        DaoInternalLink linker = new DaoInternalLink();
-        DaoCPath cpath = DaoCPath.getInstance();
-        for (int i = 0; i < interactions.size(); i++) {
-            CPathRecord record = (CPathRecord) interactions.get(i);
-            ArrayList list = linker.getTargets(record.getId());
-            for (int j = 0; j < list.size(); j++) {
-                InternalLinkRecord link = (InternalLinkRecord) list.get(j);
-                Long key = new Long(link.getTargetId());
-                if (!interactorMap.containsKey(key)) {
-                    CPathRecord interactor = cpath.getRecordById
-                            (link.getTargetId());
-                    interactorMap.put(key, interactor);
-                }
-            }
-        }
-        Date stop = new Date();
-        long timeInterval = stop.getTime() - start.getTime();
-        log.info("Total time to retrieve internal links and interactors:  "
-                + timeInterval + " ms");
-        log.info("Total number of linked interactors found:  "
-                + interactorMap.size());
-        return interactorMap;
-    }
+
 
     /**
      * Builds PSI XML Document.
