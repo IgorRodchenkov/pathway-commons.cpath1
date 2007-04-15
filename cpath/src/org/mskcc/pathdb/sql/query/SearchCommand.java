@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.5 2007-04-13 14:51:10 cerami Exp $
+// $Id: SearchCommand.java,v 1.6 2007-04-15 03:15:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -96,6 +96,7 @@ class SearchCommand extends Query {
     private XmlAssembly createXmlAssembly(long[] cpathIds, Hits hits)
             throws AssemblyException {
         XmlAssembly xmlAssembly;
+        //  Branch here, based on request.getFormat() and protocol
         if (cpathIds != null && cpathIds.length > 0) {
             if (request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,

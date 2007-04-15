@@ -1,4 +1,4 @@
-// $Id: XmlAssemblyFactory.java,v 1.15 2007-04-13 14:51:10 cerami Exp $
+// $Id: XmlAssemblyFactory.java,v 1.16 2007-04-15 03:15:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -228,6 +228,8 @@ public class XmlAssemblyFactory {
 
         //  Instantiate Correct XML Assembly based on XML Type
         XmlAssembly xmlAssembly = null;
+
+        //  Branch here, based on mode
         if (xmlType.equals(XmlRecordType.PSI_MI)) {
             xmlAssembly = new PsiAssembly(recordList, xdebug);
         } else {
