@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.13 2006-12-22 18:31:30 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.14 2007-04-15 01:49:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.protocol;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.model.PagedResult;
 
 import java.util.ArrayList;
@@ -83,6 +84,11 @@ public class ProtocolRequest implements PagedResult {
     public static final String ARG_ORGANISM = "organism";
 
     /**
+     * Check cache (undocumented argument)
+     */
+    public static final String ARG_CHECK_XML_CACHE = "checkXmlCache";
+
+    /**
      * Command.
      */
     private String command;
@@ -118,6 +124,11 @@ public class ProtocolRequest implements PagedResult {
     private String organism;
 
     /**
+     * Check XML Cache Paramter.
+     */
+    private boolean checkXmlCache;
+
+    /**
      * EmptyParameterSet.
      */
     private boolean emptyParameterSet;
@@ -133,6 +144,7 @@ public class ProtocolRequest implements PagedResult {
         this.startIndex = 0;
         this.organism = null;
         this.maxHits = null;
+        this.checkXmlCache = true;
     }
 
     /**
@@ -158,6 +170,13 @@ public class ProtocolRequest implements PagedResult {
             this.startIndex = Integer.parseInt(startStr);
         } else {
             this.startIndex = 0;
+        }
+        String checkXmlCacheStr = (String) parameterMap.get
+                (ProtocolRequest.ARG_CHECK_XML_CACHE);
+        if (checkXmlCacheStr != null && checkXmlCacheStr.equals("0")) {
+            checkXmlCache = false;
+        } else {
+            checkXmlCache = true;
         }
         if (parameterMap.size() == 0) {
             emptyParameterSet = true;
@@ -320,6 +339,22 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
+     * Gets the Check XML Cache Flag.
+     * @return true or false.
+     */
+    public boolean getCheckXmlCache () {
+        return this.checkXmlCache;
+    }
+
+    /**
+     * Sets the Check XML Cache Flag.
+     * @param flag true or false.
+     */
+    public void setCheckXmlCache(boolean flag){
+        this.checkXmlCache = flag;
+    }
+
+    /**
      * Is this an empty request?
      *
      * @return true or false.
@@ -372,6 +407,9 @@ public class ProtocolRequest implements PagedResult {
         }
         if (maxHits != null) {
             list.add(new NameValuePair(ARG_MAX_HITS, maxHits));
+        }
+        if (checkXmlCache ==  false) {
+            list.add(new NameValuePair(ARG_CHECK_XML_CACHE, "0"));
         }
 
         NameValuePair nvps[] = (NameValuePair[])
