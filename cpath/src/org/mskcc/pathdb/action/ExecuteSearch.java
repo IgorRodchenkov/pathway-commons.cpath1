@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.13 2007-04-13 14:51:10 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.14 2007-04-15 01:49:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -389,7 +389,10 @@ public class ExecuteSearch extends BaseAction {
         XmlAssembly xmlAssembly;
         try {
             QueryManager queryManager = new QueryManager(xdebug);
-            xmlAssembly = queryManager.executeQuery(protocolRequest, true);
+            log.info("Check XML cache flag is set to:  "
+                    + protocolRequest.getCheckXmlCache());
+            xmlAssembly = queryManager.executeQuery(protocolRequest,
+                    protocolRequest.getCheckXmlCache());
         } catch (QueryException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
