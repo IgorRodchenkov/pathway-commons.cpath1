@@ -1,4 +1,4 @@
-// $Id: XmlAssemblyFactory.java,v 1.16 2007-04-15 03:15:25 cerami Exp $
+// $Id: XmlAssemblyFactory.java,v 1.17 2007-04-15 20:26:43 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,6 +64,12 @@ public class XmlAssemblyFactory {
      * participants.
      */
     public static final int XML_FULL = 1;
+
+    /**
+     * Same as XML_FULL mode, except only the XML document string is generated.
+     * No JDOM elements or Castor elements are created.
+     */
+    public static final int XML_FULL_STRING_ONLY = 2;
 
 
     /**
@@ -229,9 +235,13 @@ public class XmlAssemblyFactory {
         //  Instantiate Correct XML Assembly based on XML Type
         XmlAssembly xmlAssembly = null;
 
-        //  Branch here, based on mode
+        //  Branch here, based on XML type and mode
         if (xmlType.equals(XmlRecordType.PSI_MI)) {
-            xmlAssembly = new PsiAssembly(recordList, xdebug);
+            if (mode == XmlAssemblyFactory.XML_FULL) {
+                xmlAssembly = new PsiAssembly(recordList, xdebug);
+            } else {
+                xmlAssembly = new PsiAssemblyStringOnly(recordList, xdebug);
+            }
         } else {
             xmlAssembly = new BioPaxAssembly(recordList, mode, xdebug);
         }
@@ -256,7 +266,8 @@ public class XmlAssemblyFactory {
     }
 
     private static void validateModeParameter(int mode) {
-        if (mode != XML_ABBREV && mode != XML_FULL) {
+        if (mode != XML_ABBREV && mode != XML_FULL
+                && mode != XML_FULL_STRING_ONLY) {
             throw new IllegalArgumentException("mode parameter must be set"
                     + "to XML_ABBREV or XML_FULL.");
         }
