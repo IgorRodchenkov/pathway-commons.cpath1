@@ -1,4 +1,4 @@
-// $Id: TestXmlAssembly.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestXmlAssembly.java,v 1.11 2007-04-15 20:29:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,18 +44,19 @@ import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.xml.XmlValidator;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.StringReader;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Tests the XML Assembly Functionality.
  * <p/>
- * <B>Note:</B>  In order for this test to succeed, the dbData/bootstrap.sql
- * file must already be loaded into the database.  To do so, simply type:
- * "ant boot" at the command line.
+ * <B>Note:</B>  In order for this test to succeed, you must first type
+ * "ant test_prepare" at the command line.
  *
  * @author Ethan Cerami
  */
@@ -68,7 +69,7 @@ public class TestXmlAssembly extends TestCase {
      * @throws Exception All Exceptions
      */
     public void testPsiAssembly() throws Exception {
-        testName = "Test PSI-MI Assembly";
+        testName = "Test PSI-MI Assembly (Castor Mode)";
         PropertyManager pManager = PropertyManager.getInstance();
         pManager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 "http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
@@ -109,6 +110,50 @@ public class TestXmlAssembly extends TestCase {
         assertTrue(interactor1 >= 1);
         assertTrue(interactorRef1 >= 1);
         assertTrue(interactorRef2 >= 1);
+    }
+
+    /**
+     * Tests the PSI-MI Assembly, String Only Functionality.
+     *
+     * @throws Exception All Exceptions
+     */
+    public void testPsiAssemblyStringOnly() throws Exception {
+        testName = "Test BioPAX Assembly (XML String Only)";
+        PropertyManager pManager = PropertyManager.getInstance();
+        pManager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
+                "http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
+
+        //  Assemble Interaction with specified cPath ID (hard-coded value)
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        CPathRecord record = daoCPath.getRecordById(4);
+        XDebug xdebug = new XDebug();
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
+                (record, 1, XmlAssemblyFactory.XML_FULL_STRING_ONLY, xdebug);
+        String xmlAssembly = assembly.getXmlString();
+
+        //  Verify that Assembled XML Record contains both interactors
+        //  and references to those interactors.
+        int interactor1 = xmlAssembly.indexOf("<fullName>60 kDa chaperonin");
+        int interactor2 = xmlAssembly.indexOf("<fullName>major prion");
+        int interactorRef1 = xmlAssembly.indexOf
+                ("<proteinInteractorRef ref=\"2\"/>");
+        int interactorRef2 = xmlAssembly.indexOf
+                ("<proteinInteractorRef ref=\"3\"/>");
+        assertTrue(interactor1 >= 1);
+        assertTrue(interactor2 >= 1);
+        assertTrue(interactorRef1 >= 1);
+        assertTrue(interactorRef2 >= 1);
+
+        //  Verify Schema Location
+        int index = xmlAssembly.indexOf
+                ("http://psidev.sourceforge.net/mi/xml/src/MIF.xsd");
+        assertTrue(index > 0);
+
+        //  Validate the returned XML document against the PSI-MI Level 1 XML Schema
+        //  This is an important test!
+        XmlValidator validator = new XmlValidator();
+        ArrayList errorList = validator.validatePsiMiLevel1(xmlAssembly);
+        assertEquals (0, errorList.size());
     }
 
     /**
