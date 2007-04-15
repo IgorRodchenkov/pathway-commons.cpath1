@@ -1,4 +1,4 @@
-// $Id: PsiAssembly.java,v 1.17 2007-04-13 14:51:10 cerami Exp $
+// $Id: PsiAssembly.java,v 1.18 2007-04-15 00:56:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -85,13 +85,17 @@ public class PsiAssembly implements XmlAssembly {
         this.interactions = interactions;
         this.xdebug = xdebug;
         log.info("Building PSI-MI XML Assembly");
-        Date start = new Date();
         try {
             if (interactions == null || interactions.size() == 0) {
                 entrySet = null;
             } else {
                 HashMap interactors = extractInteractors(interactions);
+                Date start = new Date();
                 buildPsi(interactors.values(), interactions);
+                Date stop = new Date();
+                long timeInterval = stop.getTime() - start.getTime();
+                log.info("Total time to create PSI-MI XML assembly:  " + timeInterval
+                    + " ms");
             }
         } catch (IOException e) {
             throw new AssemblyException(e);
@@ -101,11 +105,6 @@ public class PsiAssembly implements XmlAssembly {
             throw new AssemblyException(e);
         } catch (ValidationException e) {
             throw new AssemblyException(e);
-        } finally {
-            Date stop = new Date();
-            long timeInterval = stop.getTime() - start.getTime();
-            log.info("Total time to create PSI-MI XML assembly:  " + timeInterval
-                + " ms");
         }
     }
 
@@ -255,6 +254,8 @@ public class PsiAssembly implements XmlAssembly {
      */
     protected HashMap extractInteractors(ArrayList interactions)
             throws DaoException {
+        log.info("Retreiving links and interactors");
+        Date start = new Date();
         HashMap interactorMap = new HashMap();
         DaoInternalLink linker = new DaoInternalLink();
         DaoCPath cpath = DaoCPath.getInstance();
@@ -271,7 +272,11 @@ public class PsiAssembly implements XmlAssembly {
                 }
             }
         }
-        xdebug.logMsg(this, "Total number of Linked Interactors found:  "
+        Date stop = new Date();
+        long timeInterval = stop.getTime() - start.getTime();
+        log.info("Total time to retrieve internal links and interactors:  "
+                + timeInterval + " ms");
+        log.info("Total number of linked interactors found:  "
                 + interactorMap.size());
         return interactorMap;
     }
