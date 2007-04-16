@@ -1,4 +1,4 @@
-// $Id: QueryManager.java,v 1.8 2007-04-15 01:50:20 cerami Exp $
+// $Id: QueryManager.java,v 1.9 2007-04-16 20:17:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.apache.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 /**
  * Query Manager/Executor.
@@ -77,6 +78,7 @@ public class QueryManager {
         DaoXmlCache dao = new DaoXmlCache(xdebug);
         XmlAssembly xmlAssembly = null;
         XmlAssembly cachedXml = null;
+        log.info("Query is:  " + request.getUrlParameterString());
         try {
             String hashKey = getHashKey(request);
             if (checkCache) {
@@ -97,16 +99,22 @@ public class QueryManager {
             } else {
                 log.info("Executing New Interaction/Pathway Query");
                 xmlAssembly = executeQuery(request);
+                Date start = new Date();
                 if (!xmlAssembly.isEmpty()) {
                     if (cachedXml == null) {
-                        log.info("Storing XML to Database Cache");
-                        dao.addRecord(hashKey, request.getUrlParameterString(),
+                        log.info("Storing XML to Database Cache:  "
+                            + request.getUrlParameterString());
+                        boolean response = dao.addRecord(hashKey, request.getUrlParameterString(),
                                 xmlAssembly);
                     } else {
                         log.info("Updating XML in Database Cache");
                         dao.updateXmlAssemblyByKey(hashKey, xmlAssembly);
                     }
                 }
+                Date stop = new Date();
+                long timeInterval = stop.getTime() - start.getTime();
+                log.info("Total time to store / update XML Cache:  " + timeInterval
+                    + " ms");
             }
         } catch (NoSuchAlgorithmException e) {
             throw new QueryException(e.getMessage(), e);
