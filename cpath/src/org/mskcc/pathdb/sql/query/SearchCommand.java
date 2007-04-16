@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.6 2007-04-15 03:15:25 cerami Exp $
+// $Id: SearchCommand.java,v 1.7 2007-04-16 16:32:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -14,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -102,10 +102,22 @@ class SearchCommand extends Query {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                         XmlRecordType.BIO_PAX, hits.length(),
                         XmlAssemblyFactory.XML_FULL, xdebug);
-            } else {
-                xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
+            } else if (request.getFormat().equals(ProtocolConstants.FORMAT_PSI_MI)
+                    || request.getFormat().equals(ProtocolConstants.FORMAT_XML)) {
+                log.info("Use optimized code flag:  " + request.getUseOptimizedCode());
+                if (request.getUseOptimizedCode()) {
+                    xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
+                        XmlRecordType.PSI_MI, hits.length(),
+                        XmlAssemblyFactory.XML_FULL_STRING_ONLY, xdebug);
+                } else {
+                    xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                         XmlRecordType.PSI_MI, hits.length(),
                         XmlAssemblyFactory.XML_FULL, xdebug);
+                }
+            } else {
+                xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
+                    XmlRecordType.PSI_MI, hits.length(),
+                    XmlAssemblyFactory.XML_FULL, xdebug);
             }
         } else {
             xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
