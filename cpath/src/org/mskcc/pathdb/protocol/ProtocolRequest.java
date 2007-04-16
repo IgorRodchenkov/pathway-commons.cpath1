@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.14 2007-04-15 01:49:15 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.15 2007-04-16 16:31:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -84,9 +84,16 @@ public class ProtocolRequest implements PagedResult {
     public static final String ARG_ORGANISM = "organism";
 
     /**
-     * Check cache (undocumented argument)
+     * Check cache (undocumented argument, used for debugging purposes only)
+     * Default is set to true.
      */
     public static final String ARG_CHECK_XML_CACHE = "checkXmlCache";
+
+    /**
+     * Use optimized code (undocument argument, used for debugging purposes only)
+     * Default is set to true.
+     */
+    public static final String ARG_USE_OPTIMIZED_CODE = "useOptimizedCode";
 
     /**
      * Command.
@@ -124,9 +131,14 @@ public class ProtocolRequest implements PagedResult {
     private String organism;
 
     /**
-     * Check XML Cache Paramter.
+     * Check XML cache parameter.
      */
     private boolean checkXmlCache;
+
+    /**
+     * Use optimized code parameter.
+     */
+    private boolean useOptimizedCode;
 
     /**
      * EmptyParameterSet.
@@ -145,6 +157,7 @@ public class ProtocolRequest implements PagedResult {
         this.organism = null;
         this.maxHits = null;
         this.checkXmlCache = true;
+        this.useOptimizedCode = true;
     }
 
     /**
@@ -177,6 +190,14 @@ public class ProtocolRequest implements PagedResult {
             checkXmlCache = false;
         } else {
             checkXmlCache = true;
+        }
+
+        String useOptimizedCodeStr = (String) parameterMap.get
+                (ProtocolRequest.ARG_USE_OPTIMIZED_CODE);
+        if (useOptimizedCodeStr != null && useOptimizedCodeStr.equals("0")) {
+            useOptimizedCode = false;
+        } else {
+            useOptimizedCode = true;
         }
         if (parameterMap.size() == 0) {
             emptyParameterSet = true;
@@ -355,6 +376,22 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
+     * Gets the use optimized code flag.
+     * @return flag true or false.
+     */
+    public boolean getUseOptimizedCode() {
+        return this.useOptimizedCode;
+    }
+
+    /**
+     * Sets the use optimized code flag.
+     * @param flag true or false.
+     */
+    public void setUseOptimizedCode (boolean flag) {
+        this.useOptimizedCode = flag;
+    }
+
+    /**
      * Is this an empty request?
      *
      * @return true or false.
@@ -408,8 +445,15 @@ public class ProtocolRequest implements PagedResult {
         if (maxHits != null) {
             list.add(new NameValuePair(ARG_MAX_HITS, maxHits));
         }
-        if (checkXmlCache ==  false) {
+        if (checkXmlCache == false) {
             list.add(new NameValuePair(ARG_CHECK_XML_CACHE, "0"));
+        } else {
+            list.add(new NameValuePair(ARG_CHECK_XML_CACHE, "1"));
+        }
+        if (useOptimizedCode == false) {
+            list.add(new NameValuePair(ARG_USE_OPTIMIZED_CODE, "0"));
+        } else {
+            list.add(new NameValuePair(ARG_USE_OPTIMIZED_CODE, "1"));
         }
 
         NameValuePair nvps[] = (NameValuePair[])
