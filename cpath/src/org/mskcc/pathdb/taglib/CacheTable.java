@@ -1,4 +1,4 @@
-// $Id: CacheTable.java,v 1.16 2006-12-22 21:03:48 cerami Exp $
+// $Id: CacheTable.java,v 1.17 2007-04-16 20:18:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,11 +37,13 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 /**
  * Custom JSP Tag for Displaying the Cache Contents.
@@ -49,13 +51,14 @@ import java.util.Hashtable;
  * @author Ethan Cerami
  */
 public class CacheTable extends HtmlTable {
+    private static Logger log = Logger.getLogger(CacheTable.class);
 
     /**
      * Executes JSP Custom Tag
      *
      * @throws Exception Exception in writing to JspWriter.
      */
-    public void subDoStartTag() throws Exception {
+    public void subDoStartTag () throws Exception {
         String headers[] = {"#", "URL", "Command",
                 "Query", "Format", "Organism",
                 "Last Used"};
@@ -69,7 +72,7 @@ public class CacheTable extends HtmlTable {
     /**
      * Output Cached Records.
      */
-    private void outputRecords() throws DaoException {
+    private void outputRecords () throws DaoException {
         DaoXmlCache dao = new DaoXmlCache(new XDebug());
         ArrayList records = dao.getAllRecords();
         if (records.size() == 0) {
@@ -88,9 +91,11 @@ public class CacheTable extends HtmlTable {
         }
     }
 
-    private void outputProtocolRequest(XmlCacheRecord record) {
+    private void outputProtocolRequest (XmlCacheRecord record) {
         try {
-            Hashtable params1 = HttpUtils.parseQueryString(record.getUrl());
+            String url = record.getUrl();
+            url = url.replaceAll("&amp;", "&");
+            Hashtable params1 = HttpUtils.parseQueryString(url);
             HashMap params2 = XssFilter.filterAllParameters(params1);
             ProtocolRequest request = new ProtocolRequest(params2);
             outputDataField("<a href='" + request.getUri() + "'>URL Link</a>");
@@ -99,7 +104,7 @@ public class CacheTable extends HtmlTable {
             outputDataField(request.getFormat());
             outputDataField(request.getOrganism());
         } catch (Exception e) {
-            append("<td>" + record.getUrl() + "</td>");
+            append("<td>" + e.getMessage() + "</td>");
             append("<td>N/A</td>");
         }
     }
