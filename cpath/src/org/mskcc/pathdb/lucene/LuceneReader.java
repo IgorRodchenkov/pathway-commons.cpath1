@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.12 2007-04-13 14:51:10 cerami Exp $
+// $Id: LuceneReader.java,v 1.13 2007-04-16 15:38:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -84,6 +84,7 @@ public class LuceneReader {
      */
     public Hits executeQuery(String term) throws QueryException {
         try {
+            log.info("Executing lucene query, using term:  " + term);
             Date start = new Date();
             String dir = LuceneConfig.getLuceneDirectory();
             reader = new IndexSearcher(dir);
@@ -110,7 +111,7 @@ public class LuceneReader {
             Date stop = new Date();
             long timeInterval = stop.getTime() - start.getTime();
             log.info("Total time to execute lucene query:  " + timeInterval
-                + " ms");            
+                + " ms");
             return hits;
         } catch (IOException e) {
             e.printStackTrace();
