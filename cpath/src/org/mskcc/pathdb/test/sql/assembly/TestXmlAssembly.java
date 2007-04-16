@@ -1,4 +1,4 @@
-// $Id: TestXmlAssembly.java,v 1.11 2007-04-15 20:29:04 cerami Exp $
+// $Id: TestXmlAssembly.java,v 1.12 2007-04-16 19:21:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -216,7 +216,7 @@ public class TestXmlAssembly extends TestCase {
         cpathIds[0] = 7;
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                 XmlRecordType.BIO_PAX, 1, XmlAssemblyFactory.XML_ABBREV,
-                xdebug);
+                true, xdebug);
         String xmlAssembly = assembly.getXmlString();
 
         Element rootElement = (Element) assembly.getXmlObject();
@@ -254,7 +254,7 @@ public class TestXmlAssembly extends TestCase {
         cpathIds[0] = 90;
         XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                 XmlRecordType.BIO_PAX, 1, XmlAssemblyFactory.XML_ABBREV,
-                xdebug);
+                true, xdebug);
         String xmlAssembly = assembly.getXmlString();
         int index = xmlAssembly.indexOf("bp:SYNONYMS");
         assertTrue(index > 0);
