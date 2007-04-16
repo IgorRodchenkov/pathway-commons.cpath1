@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.7 2007-04-16 16:32:24 cerami Exp $
+// $Id: SearchCommand.java,v 1.8 2007-04-16 19:20:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -101,23 +101,23 @@ class SearchCommand extends Query {
             if (request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                         XmlRecordType.BIO_PAX, hits.length(),
-                        XmlAssemblyFactory.XML_FULL, xdebug);
+                        XmlAssemblyFactory.XML_FULL, true, xdebug);
             } else if (request.getFormat().equals(ProtocolConstants.FORMAT_PSI_MI)
                     || request.getFormat().equals(ProtocolConstants.FORMAT_XML)) {
                 log.info("Use optimized code flag:  " + request.getUseOptimizedCode());
                 if (request.getUseOptimizedCode()) {
                     xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                         XmlRecordType.PSI_MI, hits.length(),
-                        XmlAssemblyFactory.XML_FULL_STRING_ONLY, xdebug);
+                        XmlAssemblyFactory.XML_FULL_STRING_ONLY, true, xdebug);
                 } else {
                     xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                         XmlRecordType.PSI_MI, hits.length(),
-                        XmlAssemblyFactory.XML_FULL, xdebug);
+                        XmlAssemblyFactory.XML_FULL, false, xdebug);
                 }
             } else {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                     XmlRecordType.PSI_MI, hits.length(),
-                    XmlAssemblyFactory.XML_FULL, xdebug);
+                    XmlAssemblyFactory.XML_FULL, true, xdebug);
             }
         } else {
             xmlAssembly = XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);

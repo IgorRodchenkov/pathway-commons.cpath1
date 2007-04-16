@@ -1,4 +1,4 @@
-// $Id: XmlAssemblyFactory.java,v 1.17 2007-04-15 20:26:43 cerami Exp $
+// $Id: XmlAssemblyFactory.java,v 1.18 2007-04-16 19:19:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -14,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -71,7 +71,6 @@ public class XmlAssemblyFactory {
      */
     public static final int XML_FULL_STRING_ONLY = 2;
 
-
     /**
      * Creates an XmlAssembly based on specified cPathId.
      *
@@ -102,12 +101,13 @@ public class XmlAssemblyFactory {
      * @param xmlType  XmlRecordType Object.
      * @param numHits  Total Number of Hits.
      * @param mode     XML_ABBREV or XML_FULL.
+     * @param useOptimizedCode Flag to use optimized code.
      * @param xdebug   XDebug Object.
      * @return XmlAssembly object.
      * @throws AssemblyException Error in Assembly.
      */
     public static XmlAssembly createXmlAssembly(long cpathIds[], XmlRecordType
-            xmlType, int numHits, int mode, XDebug xdebug)
+            xmlType, int numHits, int mode, boolean useOptimizedCode, XDebug xdebug)
             throws AssemblyException {
         validateModeParameter(mode);
         Date start = new Date();
@@ -115,16 +115,22 @@ public class XmlAssemblyFactory {
             log.info("Retrieving a total of " + cpathIds.length + " matching cPath records");
             ArrayList records = new ArrayList();
             DaoCPath dao = DaoCPath.getInstance();
-            for (int i = 0; i < cpathIds.length; i++) {
-                CPathRecord record = dao.getRecordById(cpathIds[i]);
-                records.add(record);
+            if (useOptimizedCode) {
+                log.info("Retrieving all interaction records in one large query");
+                records = dao.getRecordsById(cpathIds);
+            } else {
+                log.info("Retrieving all interaction records individually");
+                for (int i = 0; i < cpathIds.length; i++) {
+                    CPathRecord record = dao.getRecordById(cpathIds[i]);
+                    records.add(record);
+                }
             }
             Date stop = new Date();
             long timeInterval = stop.getTime() - start.getTime();
             log.info("Total time to retrieve all matching cPath records:  " + timeInterval
                 + " ms");
             return createAssemblyInstance(records, xmlType, numHits, mode,
-                    xdebug);
+                    useOptimizedCode, xdebug);
         } catch (DaoException e) {
             throw new AssemblyException(e);
         }
@@ -171,7 +177,7 @@ public class XmlAssemblyFactory {
             }
         }
         return createAssemblyInstance(recordList, xmlType, numHits, mode,
-                xdebug);
+                true, xdebug);
     }
 
     /**
@@ -216,15 +222,15 @@ public class XmlAssemblyFactory {
             throws AssemblyException {
         ArrayList records = new ArrayList();
         records.add(record);
-        return createAssemblyInstance(records, xmlType, numHits, mode, xdebug);
+        return createAssemblyInstance(records, xmlType, numHits, mode, true, xdebug);
     }
 
     /**
      * Creates an Instance of the XmlAssembly interface.
      */
     private static XmlAssembly createAssemblyInstance(ArrayList recordList,
-            XmlRecordType xmlType, int numHits, int mode, XDebug xdebug)
-            throws AssemblyException {
+            XmlRecordType xmlType, int numHits, int mode, boolean useOptimizedCode,
+            XDebug xdebug) throws AssemblyException {
         xdebug.logMsg(XmlAssemblyFactory.class,
                 "Creating XML Assembly of Type:  " + xmlType);
 
@@ -238,9 +244,9 @@ public class XmlAssemblyFactory {
         //  Branch here, based on XML type and mode
         if (xmlType.equals(XmlRecordType.PSI_MI)) {
             if (mode == XmlAssemblyFactory.XML_FULL) {
-                xmlAssembly = new PsiAssembly(recordList, xdebug);
+                xmlAssembly = new PsiAssembly(recordList, useOptimizedCode, xdebug);
             } else {
-                xmlAssembly = new PsiAssemblyStringOnly(recordList, xdebug);
+                xmlAssembly = new PsiAssemblyStringOnly(recordList, useOptimizedCode, xdebug);
             }
         } else {
             xmlAssembly = new BioPaxAssembly(recordList, mode, xdebug);

@@ -1,4 +1,4 @@
-// $Id: PsiAssembly.java,v 1.19 2007-04-15 20:27:48 cerami Exp $
+// $Id: PsiAssembly.java,v 1.20 2007-04-16 19:20:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -14,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -70,6 +70,7 @@ public class PsiAssembly implements XmlAssembly {
     private int numHits = 0;
     private ArrayList interactions = null;
     private static Logger log = Logger.getLogger(PsiAssembly.class);
+    private boolean useOptimizedCode;
 
     /**
      * Package Only Constructor.  Class must be instantiated via the
@@ -77,19 +78,23 @@ public class PsiAssembly implements XmlAssembly {
      *
      * @param interactions ArrayList of CPathRecord objects.  Each CPathRecord
      *                     contains an Interaction.
+     * @param useOptimizedCode use optimized code flag.
      * @param xdebug       XDebug Object.
      * @throws AssemblyException Error In Assembly.
      */
-    PsiAssembly(ArrayList interactions, XDebug xdebug)
+    PsiAssembly(ArrayList interactions, boolean useOptimizedCode,
+            XDebug xdebug)
             throws AssemblyException {
         this.interactions = interactions;
         this.xdebug = xdebug;
+        this.useOptimizedCode = useOptimizedCode;
         log.info("Building PSI-MI XML Assembly, Mode:  Use Castor");
         try {
             if (interactions == null || interactions.size() == 0) {
                 entrySet = null;
             } else {
-                HashMap interactors = PsiAssemblyUtil.extractInteractors(interactions);
+                HashMap interactors = PsiAssemblyUtil.extractInteractors
+                        (interactions, useOptimizedCode);
                 Date start = new Date();
                 buildPsi(interactors.values(), interactions);
                 Date stop = new Date();

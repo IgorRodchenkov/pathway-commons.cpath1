@@ -27,6 +27,7 @@ public class PsiAssemblyStringOnly implements XmlAssembly {
     private String xml;
     private int numHits = 0;
     private static Logger log = Logger.getLogger(PsiAssemblyStringOnly.class);
+    private boolean useOptimizedCode;
 
     /**
      * Package Only Constructor.  Class must be instantiated via the
@@ -34,19 +35,23 @@ public class PsiAssemblyStringOnly implements XmlAssembly {
      *
      * @param interactions ArrayList of CPathRecord objects.  Each CPathRecord
      *                     contains an Interaction.
+     * @param useOptimizedCode use optimized code flag.
      * @param xdebug       XDebug Object.
      * @throws org.mskcc.pathdb.sql.assembly.AssemblyException Error In Assembly.
      */
-    PsiAssemblyStringOnly(ArrayList interactions, XDebug xdebug)
+    PsiAssemblyStringOnly(ArrayList interactions, boolean useOptimizedCode,
+            XDebug xdebug)
             throws AssemblyException {
         this.interactions = interactions;
         this.xdebug = xdebug;
+        this.useOptimizedCode = useOptimizedCode;
         PsiAssemblyStringOnly.log.info("Building PSI-MI XML Assembly, Mode:  XML String Only");
         try {
             if (interactions == null || interactions.size() == 0) {
                 xml = null;
             } else {
-                HashMap interactors = PsiAssemblyUtil.extractInteractors(interactions);
+                HashMap interactors = PsiAssemblyUtil.extractInteractors
+                        (interactions, useOptimizedCode);
                 Date start = new Date();
                 buildPsi(interactors.values(), interactions);
                 Date stop = new Date();
