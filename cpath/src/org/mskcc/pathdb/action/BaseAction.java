@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.32 2007-02-15 17:08:24 grossb Exp $
+// $Id: BaseAction.java,v 1.33 2007-04-16 20:37:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,12 +35,15 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.xdebug.SnoopHttp;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Base Struts Action Class.
@@ -225,6 +228,8 @@ public abstract class BaseAction extends Action {
      */
     public static final String YES = "yes";
 
+    private Logger log = Logger.getLogger(BaseAction.class);
+
     /**
      * Executes Action.
      *
@@ -244,6 +249,8 @@ public abstract class BaseAction extends Action {
             xdebug = new XDebug();
             xdebug.startTimer();
             xdebug.logMsg(this, "Request:  " + request.getRequestURI());
+            log.info("Request:  " + request.getRequestURI());
+            logMemoryStats();
             SnoopHttp snoop = new SnoopHttp(xdebug,
                     getServlet().getServletContext());
             snoop.process(request, response);
@@ -318,4 +325,25 @@ public abstract class BaseAction extends Action {
     public abstract ActionForward subExecute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response, XDebug xdebug) throws Exception;
+
+    /**
+     * Logs memory stats;  helps track down performance issues.
+     */
+    private void logMemoryStats() {
+        NumberFormat format = DecimalFormat.getPercentInstance();
+        Runtime rt = Runtime.getRuntime();
+        long used = rt.totalMemory () - rt.freeMemory ();
+        log.info("Mem Allocated:  " + getMegabytes(rt.totalMemory ())
+            + ", Mem used:  " + getMegabytes(used) + ", Mem free:  "
+            + getMegabytes(rt.freeMemory ()));
+    }
+
+    /**
+     * Converts from bytes to megabytes.
+     */
+    private static String getMegabytes (long bytes) {
+        double mBytes = (bytes / 1024.0) / 1024.0;
+        DecimalFormat formatter = new DecimalFormat ("#,###,###.###");
+        return formatter.format (mBytes) + " MB";
+    }
 }
