@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.31 2007-03-26 15:59:29 cerami Exp $
+// $Id: DaoCPath.java,v 1.32 2007-04-16 19:19:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -50,7 +51,7 @@ import java.util.ArrayList;
  * @author Ethan Cerami.
  */
 public class DaoCPath extends ManagedDAO {
-
+    private static Logger log = Logger.getLogger(DaoCPath.class);
     private static DaoCPath daoCPath = null;
 
     //  Get Num Entities SQL
@@ -429,6 +430,47 @@ public class DaoCPath extends ManagedDAO {
             } else {
                 return null;
             }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            localCloseAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets multiple records specified by CPath IDs.
+     * This method is faster than calling getRecordById() repeatedly.
+     * @param cpathIds array of cPath Ids.
+     * @return ArrayList of CPathRecord Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList<CPathRecord> getRecordsById (long cpathIds[])
+        throws DaoException {
+        StringBuffer sqlBuffer = new StringBuffer
+                ("SELECT * FROM cpath WHERE CPATH_ID IN (");
+        ArrayList<CPathRecord> recordList = new ArrayList<CPathRecord>();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            for (int i=0; i<cpathIds.length; i++) {
+                sqlBuffer.append(Long.toString(cpathIds[i]));
+                if (i < cpathIds.length -1) {
+                    sqlBuffer.append(",");
+                }
+            }
+            sqlBuffer.append(")");
+            log.info("Getting cPath records:  " + sqlBuffer.toString());
+            con = getConnection();
+            pstmt = con.prepareStatement(sqlBuffer.toString());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                CPathRecord record = extractRecord(rs);
+                recordList.add(record);
+            }
+            return recordList;
         } catch (ClassNotFoundException e) {
             throw new DaoException(e);
         } catch (SQLException e) {
