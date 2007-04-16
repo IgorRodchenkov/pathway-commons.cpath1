@@ -1,4 +1,4 @@
-// $Id: TestDaoCPath.java,v 1.21 2006-10-05 20:09:04 cerami Exp $
+// $Id: TestDaoCPath.java,v 1.22 2007-04-16 19:21:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -96,6 +96,12 @@ public class TestDaoCPath extends TestCase {
         //  Test getRecordById()
         CPathRecord record = dao.getRecordById(cpathId);
         validateRecord(record);
+
+        //  Test getRecordsById()
+        long cpathIds[] = new long[1];
+        cpathIds[0] = cpathId;
+        ArrayList<CPathRecord> list = dao.getRecordsById(cpathIds);
+        validateRecord(list.get(0));
 
         //  Test getRecordByName()
         record = dao.getRecordByName(NAME);
