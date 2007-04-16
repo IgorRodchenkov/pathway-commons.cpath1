@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.14 2007-04-15 01:49:57 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.15 2007-04-16 16:31:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -14,14 +14,14 @@
  ** WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF
  ** MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  The software and
  ** documentation provided hereunder is on an "as is" basis, and
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has no obligations to provide maintenance, support,
  ** updates, enhancements or modifications.  In no event shall
  ** Memorial Sloan-Kettering Cancer Center
  ** be liable to any party for direct, indirect, special,
  ** incidental or consequential damages, including lost profits, arising
  ** out of the use of this software and its documentation, even if
- ** Memorial Sloan-Kettering Cancer Center 
+ ** Memorial Sloan-Kettering Cancer Center
  ** has been advised of the possibility of such damage.  See
  ** the GNU Lesser General Public License for more details.
  **
@@ -148,7 +148,7 @@ public class ExecuteSearch extends BaseAction {
                         (ProtocolStatusCode.NO_RESULTS_FOUND,
                                 "No Results Found for:  " + q);
             }
-            xml = xmlAssembly.getXmlStringWithCPathIdPrefix();
+            xml = xmlAssembly.getXmlString();
 
             //  Return Number of Hits Only or Complete XML.
             if (protocolRequest.getFormat().
@@ -160,10 +160,8 @@ public class ExecuteSearch extends BaseAction {
         } catch (ProtocolException e) {
             xml = e.toXml();
             returnXml(response, xml);
-        } catch (AssemblyException e) {
-            xml = e.getMessage();
-            returnXml(response, xml);
         }
+        
         //  Return null here, because we do not want Struts to do any
         //  forwarding.
         Date stop = new Date();
