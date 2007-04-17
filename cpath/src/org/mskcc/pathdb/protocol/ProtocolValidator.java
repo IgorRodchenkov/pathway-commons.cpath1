@@ -1,4 +1,4 @@
-// $Id: ProtocolValidator.java,v 1.17 2006-02-22 22:47:50 grossb Exp $
+// $Id: ProtocolValidator.java,v 1.18 2007-04-17 13:45:49 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.protocol;
 
 import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.apache.log4j.Logger;
 
 import java.util.HashSet;
 
@@ -41,6 +42,8 @@ import java.util.HashSet;
  * @author Ethan Cerami
  */
 public class ProtocolValidator {
+    private Logger log = Logger.getLogger(ProtocolValidator.class);
+
     /**
      * Protocol Request.
      */
@@ -77,12 +80,18 @@ public class ProtocolValidator {
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
     public void validate() throws ProtocolException, NeedsHelpException {
-        validateEmptySet();
-        validateCommand();
-        validateMaxHits();
-        validateVersion();
-        validateFormat();
-        validateQuery();
+        try {
+            validateEmptySet();
+            validateCommand();
+            validateMaxHits();
+            validateVersion();
+            validateFormat();
+            validateQuery();
+        } catch (ProtocolException e) {
+            log.info("Protocol Exception:  " + e.getStatusCode()
+                + " --> " + e.getMessage());
+            throw e;
+        }
     }
 
     /**
