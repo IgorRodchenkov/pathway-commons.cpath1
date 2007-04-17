@@ -1,4 +1,4 @@
-// $Id: ProtocolConstants.java,v 1.15 2007-04-17 13:32:36 cerami Exp $
+// $Id: ProtocolConstants.java,v 1.16 2007-04-17 13:56:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -161,7 +161,7 @@ public class ProtocolConstants {
     /**
      * Maximum Number of Hits you can Request at Once.
      */
-    public static final int MAX_NUM_HITS = 500;
+    public static final int MAX_NUM_HITS = 1000;
 
     /**
      * Gets HashSet of Valid PSI-MI Commands.
