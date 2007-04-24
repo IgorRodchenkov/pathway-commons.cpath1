@@ -1,4 +1,4 @@
-// $Id: webstart.js,v 1.1 2007-04-24 12:17:28 grossben Exp $
+// $Id: webstart.js,v 1.2 2007-04-24 19:38:39 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -150,4 +150,6 @@ function appRequest(url, linkID) {
 
     // set timeout - handler for when cytoscape is not running
     timeoutVar = setTimeout("timeoutHandler()", 1000);
+
+	alert ('Now loading the Pathway Commons record into Cytoscape (this can take up to a minute or two).');
 }
