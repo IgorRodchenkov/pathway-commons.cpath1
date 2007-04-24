@@ -33,6 +33,14 @@ ReferenceUtil refUtil = new ReferenceUtil();
 ArrayList masterList = refUtil.categorize(bpSummary);
 ArrayList<ExternalLinkRecord> referenceLinks = (ArrayList<ExternalLinkRecord>) masterList.get(0);
 ArrayList<ExternalLinkRecord> nonReferenceLinks = (ArrayList<ExternalLinkRecord>) masterList.get(1);
+
+// server name
+final String CYTOSCAPE_HTTP_SERVER = "127.0.0.1:27182";
+String serverName = (String)request.getServerName();
+serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverName + ":8080";
+// cytoscape link
+String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
+urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
@@ -442,6 +450,22 @@ enable Javascript support within your web browser.
         }
         out.println("</ul>");
     }
+    out.println("<h3>Cytoscape:</h3>");
+	out.println("<ul><li>");
+    if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
+            (CPathRecordType.PATHWAY.toString())) {
+		out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+    	             urlForCytoscapeLink +
+                     "?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
+                     id + "\"" + " id=\"" +
+                     id +"\"" +
+                     " onclick=\"appRequest(this.href, this.id); return false;\"" +
+                     ">View this Pathway in Cytoscape</a>");
+    }
+	else {
+	    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View Network Neighborhood Map in Cytoscape</span>");
+    }
+	out.println("</li></ul>");
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
             ProtocolRequest pRequest = new ProtocolRequest();
