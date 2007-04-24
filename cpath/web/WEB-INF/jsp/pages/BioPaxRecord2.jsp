@@ -41,6 +41,7 @@ serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverN
 // cytoscape link
 String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
 urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
+urlForCytoscapeLink = urlForCytoscapeLink.replace("record2.do", "webservice.do");
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
@@ -460,10 +461,10 @@ enable Javascript support within your web browser.
                      id + "\"" + " id=\"" +
                      id +"\"" +
                      " onclick=\"appRequest(this.href, this.id); return false;\"" +
-                     ">View this Pathway in Cytoscape</a>");
+                     ">View this pathway in Cytoscape</a>");
     }
 	else {
-	    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View Network Neighborhood Map in Cytoscape</span>");
+	    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
     }
 	out.println("</li></ul>");
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
