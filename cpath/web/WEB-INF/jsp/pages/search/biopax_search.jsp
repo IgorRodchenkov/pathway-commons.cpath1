@@ -277,10 +277,10 @@ else {
                              String.valueOf(cpathIds[i]) + "\"" + " id=\"" +
                              String.valueOf(cpathIds[i]) +"\"" +
                              " onclick=\"appRequest(this.href, this.id); return false;\"" +
-                             ">View this Pathway in Cytoscape</a>");
+                             ">View this pathway in Cytoscape</a>");
             }
 			else {
-			    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View Network Neighborhood Map in Cytoscape</span>");
+			    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
             }
 			out.println("</div>");
 			out.println("</td></tr>");
