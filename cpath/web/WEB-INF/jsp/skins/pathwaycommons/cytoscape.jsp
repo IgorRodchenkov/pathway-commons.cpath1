@@ -1,10 +1,13 @@
-<h1>View Pathways and Network Neighborhoods within Cytoscape</h1>(requires <a href="http://java.sun.com/docs/books/tutorial/information/javawebstart.html">Java Web Start</a>)
-<ol>
-<li>Select one of many 'View this Pathway in Cytoscape' or 'View Network Neighborhood Map in Cytoscape' links found throughout Pathway Commons.</li>
-<li>Within Cytoscape, choose to merge or create a new network</li>
-<li><a href="/jsp/cytoscape/README.html">More details...</a></li>
-</ol>
+<h1>View Pathways and Network Neighborhood Maps within Cytoscape</h1>
 
+Pathway Commons allows you to view pathways and network neighborhood maps within Cytoscape.  To do this, simply click on any of the following links found throughout Pathway Commons (requires <a href="http://java.sun.com/docs/books/tutorial/information/javawebstart.html">Java Web Start</a>):
+<ul>
+<li>'View this pathway in Cytoscape'</li>
+<li>'View network neighborhood map in Cytoscape'</li>
+</ul>
+<a href="jsp/cytoscape/README.html">More details...</a>
+<br/>
+<h1>Screenshot</h1>
 <table width="576">
 <tr><td>
 <a href="jsp/images/plugin/pc_plugin_merge.png">
@@ -14,7 +17,7 @@
 </td></tr>
 <tr><td>
 <small>(screenshot depicts Cytoscape running with the Pathway Commons Plugin.
-  A new network is about to be loaded into Cytoscape.  The Merge Dialog allows the user to choose between creating a new network within Cytoscape or merging the network about to be loaded into an existing Cytoscape network)</small>
+  A new network is about to be loaded into Cytoscape.  The merge dialog window allows the user to choose between creating a new network within Cytoscape or merging the network about to be loaded into an existing Cytoscape network)</small>
 </td></tr>
 </table>
 <br/>
@@ -26,12 +29,12 @@ interactions with gene expression profiles and other state data.
 (Find out more at:  <a href="http://cytoscape.org/">cytoscape.org</a>).
 </p>
 <p>Cytoscape includes a built-in plugin framework for adding new features
-and functionality.  The Pathway Commons plugin enables Cytoscape users
-to visualize networks and network neighborhood maps provide by Pathway Commons.
+and functionality.  The Pathway Commons Plugin enables Cytoscape users
+to visualize pathways and network neighborhood maps provide by Pathway Commons.
 </p>
 <h1>Bugs / Feature Requests</h1>
 <p>
-If you encounter a bug with this PlugIn, or have a feature suggestion, we
+If you encounter a bug with this Plugin, or have a feature suggestion, we
 encourage you to use the
 <a href="http://www.cbio.mskcc.org/cytoscape/bugs">Cytoscape Bug Tracker</a>.
 </p>
