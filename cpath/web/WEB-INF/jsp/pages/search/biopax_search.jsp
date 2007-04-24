@@ -270,11 +270,18 @@ else {
 			out.println("<div class='search_fragment'>");
             out.println(getFragmentsHtml(fragments.get(i), summaryLabel, header, 40));
 			// add link to cytoscape
-			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
-			            urlForCytoscapeLink + 
-			            "?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
-			            String.valueOf(cpathIds[i]) +
-			            "\">open in cytoscape</a>");
+			if (record.getType() == CPathRecordType.PATHWAY) {
+				out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+                             urlForCytoscapeLink +
+                             "?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
+                             String.valueOf(cpathIds[i]) + "\"" + " id=\"" +
+                             String.valueOf(cpathIds[i]) +"\"" +
+                             " onclick=\"appRequest(this.href, this.id); return false;\"" +
+                             ">View this Pathway in Cytoscape</a>");
+            }
+			else {
+			    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View Network Neighborhood Map in Cytoscape</span>");
+            }
 			out.println("</div>");
 			out.println("</td></tr>");
         }
