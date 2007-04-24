@@ -34,10 +34,6 @@
 
 
     <!-- Struts cPath Action Servlet Configuration -->
-	<servlet>
-	    <servlet-name>JnlpDownloadServlet</servlet-name>
-        <servlet-class>com.sun.javaws.servlet.JnlpDownloadServlet</servlet-class>
-    </servlet>
     <servlet>
         <servlet-name>action</servlet-name>
         <servlet-class>org.mskcc.pathdb.servlet.CPathServlet</servlet-class>
@@ -94,15 +90,20 @@
         </init-param>
         <load-on-startup/>
     </servlet>
-    
+	<servlet>
+	  <servlet-name>CytoscapeJnlpServlet</servlet-name>
+	  <servlet-class>org.mskcc.pathdb.servlet.CytoscapeJnlpServlet</servlet-class>
+	</servlet>
+
     <!-- Servlet Mappings -->
-	<servlet-mapping>
-        <servlet-name>JnlpDownloadServlet</servlet-name>
-        <url-pattern>*.jnlp</url-pattern>
-    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CytoscapeJnlpServlet</servlet-name>
+        <url-pattern>/cytoscape.jnlp</url-pattern>
     </servlet-mapping>
 
     <!-- Error Codes -->
