@@ -1,4 +1,4 @@
-// $Id: webstart.js,v 1.2 2007-04-24 19:38:39 grossben Exp $
+// $Id: webstart.js,v 1.3 2007-04-25 17:28:55 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,7 @@
 var SCRIPT_ELEMENT_ID = "cytoscape";
 var timoutVar; // used to set/unset timeout handlers
 var requestedID; // used to store url of link pressed
+//var toolTip = "'<DIV CLASS=popup><DIV CLASS=popup_caption>Cytoscape</DIV><DIV CLASS=popup_text>To view this record in Cytoscape, click on this link.  If Cytoscape is already running, the network will be loaded into Cytoscape straightaway.  If Cytoscape is not running, Pathway Commons will attempt to load Cytoscape via Java Webstart.  Click on the 'help' link for more information.</DIV>";
 
 /*
  * Function to determine webstart version - taken from sun site
@@ -62,6 +63,8 @@ function webstartVersionCheck(versionString) {
  * Called when we haven't heard back webstart application
  */
 function timeoutHandler() {
+
+	alert ('Could not detect Cytoscape, press the "ok" button to attempt to launch Cytoscape (this can take up to a minute or two).');
 
     // construct webstart url
     var hostname = window.location.hostname;
@@ -150,6 +153,4 @@ function appRequest(url, linkID) {
 
     // set timeout - handler for when cytoscape is not running
     timeoutVar = setTimeout("timeoutHandler()", 1000);
-
-	alert ('Now loading the Pathway Commons record into Cytoscape (this can take up to a minute or two).');
 }
