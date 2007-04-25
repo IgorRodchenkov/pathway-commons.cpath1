@@ -466,7 +466,7 @@ enable Javascript support within your web browser.
 	else {
 	    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
     }
-	out.println("<a href=\"cytoscape.do\">(more information)</a>");	
+	out.println("<a href=\"cytoscape.do\">(help)</a>");	
 	out.println("</li></ul>");
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
