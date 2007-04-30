@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.31 2007-03-29 18:54:54 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.32 2007-04-30 19:57:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,6 +47,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxFeature;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
@@ -61,7 +62,6 @@ import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -465,7 +465,7 @@ public class BioPaxRecordUtil {
                     CPathRecord record, Element e) throws JDOMException, IOException {
 
         // vector of features
-        HashSet featureSet = new HashSet();
+        ArrayList<BioPaxFeature> featureList = new ArrayList<BioPaxFeature>();
 
         // setup/perform query
         XPath xpath = XPath.newInstance("bp:SEQUENCE-FEATURE-LIST/*");
@@ -479,28 +479,47 @@ public class BioPaxRecordUtil {
             RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
             // loop through feature list
             for (int lc = 0; lc < list.size(); lc++) {
+                BioPaxFeature bpFeature = new BioPaxFeature();
                 // reset the list element
                 e = (Element) list.get(lc);
                 // try to get term
                 Element feature = rdfQuery.getNode(e, "FEATURE-TYPE/*/TERM");
                 if (feature != null && feature.getTextNormalize().length() > 0) {
-                    featureSet.add(feature.getTextNormalize());
+                    bpFeature.setTerm(feature.getTextNormalize());
                 } else {
                     // no term, try to get xref id
                     feature = rdfQuery.getNode(e, "FEATURE-TYPE/*/XREF/*/ID");
                     if (feature != null && feature.getTextNormalize().length() > 0) {
-                        featureSet.add(feature.getTextNormalize());
-                    } else {
-                        // we should have found something, made it here, return false
-                        return false;
+                        bpFeature.setTerm(feature.getTextNormalize());
                     }
                 }
+                //  try to get location
+                Element sequencePosition = rdfQuery.getNode
+                        (e, "FEATURE-LOCATION/sequenceSite/SEQUENCE-POSITION");
+                if (sequencePosition != null) {
+                    bpFeature.setPosition(sequencePosition.getTextNormalize());
+                }
+
+                //  try to get interval begin
+                Element intervalBegin = rdfQuery.getNode
+                        (e, "FEATURE-LOCATION/sequenceInterval/SEQUENCE-INTERVAL-BEGIN");
+                if (intervalBegin != null) {
+                    bpFeature.setIntervalBegin(intervalBegin.getTextNormalize());
+                }
+
+                //  try to get interval end
+                Element intervalEnd = rdfQuery.getNode
+                        (e, "FEATURE-LOCATION/sequenceInterval/SEQUENCE-INTERVAL-END");
+                if (intervalEnd != null) {
+                    bpFeature.setIntervalEnd(intervalEnd.getTextNormalize());
+                }
+                featureList.add(bpFeature);
             }
         }
 
         // add list to component - if we have stuff to add
-        if (featureSet.size() > 0) {
-            participantSummaryComponent.setFeatureList(new ArrayList(featureSet));
+        if (featureList.size() > 0) {
+            participantSummaryComponent.setFeatureList(featureList);
         }
 
         // made it here
