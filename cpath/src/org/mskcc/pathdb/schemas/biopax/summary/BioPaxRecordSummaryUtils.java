@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.47 2007-04-30 19:51:34 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.48 2007-04-30 21:03:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -53,7 +54,7 @@ public class BioPaxRecordSummaryUtils {
     public static final int NAME_LENGTH = 30;
 
     private static int maxLength = NAME_LENGTH;
-    private static HashMap featureMap;
+    private static Logger log = Logger.getLogger(BioPaxRecordSummaryUtils.class);
 
     /**
      * Gets the BioPax Header String to render.
@@ -239,12 +240,13 @@ public class BioPaxRecordSummaryUtils {
 
         //  Add Features to Pop-Up Box
         if (participant != null) {
-            addFeatures(participant, detailsBuf);
+            // commented out for now;  sequence features are no longer shown in pop-up box
+            // addFeatures(participant, detailsBuf);
         }
         addComponents(component, lengthOfHeader, detailsBuf);
 
         if (detailsBuf.length() == 0) {
-            buf.append("No synonyms or sequence features specified");
+            buf.append("No synonyms specified");
         } else {
             buf.append(detailsBuf.toString());
         }
@@ -318,32 +320,70 @@ public class BioPaxRecordSummaryUtils {
      */
     private static String getFeatures(ParticipantSummaryComponent component) {
         StringBuffer buf = new StringBuffer();
-        ArrayList uniqueFeatureList = new ArrayList();
         if (component.getFeatureList() != null
                 && component.getFeatureList().size() > 0) {
             buf.append (" (");
             ArrayList<BioPaxFeature> featureList = component.getFeatureList();
 
-            //  First, remove duplicate feature terms
-            for (int i = 0; i < featureList.size(); i++) {
-                BioPaxFeature feature = featureList.get(i);
-                String featureTerm = feature.getTerm();
-                if (!uniqueFeatureList.contains(featureTerm)) {
-                    uniqueFeatureList.add(featureTerm);
-                }
-            }
+            //  First categorize all features, based on feature term
+            HashMap featureMap = categorizeFeatures(featureList);
 
-            //  Then, output the unique feature term list
-            for (int i = 0; i < uniqueFeatureList.size(); i++) {
-                String featureTerm = (String) uniqueFeatureList.get(i);
-                buf.append(featureTerm);
-                if (i < uniqueFeatureList.size() -1) {
+            //  Then, output all features w/ location(s)
+            Set termSet = featureMap.keySet();
+            Iterator iterator = termSet.iterator();
+            int i = 0;
+            while (iterator.hasNext()) {
+                String term = (String) iterator.next();
+                ArrayList tempList = (ArrayList) featureMap.get(term);
+
+                if (tempList.size() > 1) {
+                    buf.append(tempList.size()+"-");
+                }
+                buf.append(term);
+
+                //  output location(s) in superscript.
+                StringBuffer locBuffer = new StringBuffer();
+                for (int j=0; j<tempList.size(); j++) {
+                    BioPaxFeature feature = (BioPaxFeature) tempList.get(j);
+                    if (feature.getIntervalBegin() != null
+                            && feature.getIntervalEnd() != null) {
+                        locBuffer.append (" " + feature.getIntervalBegin()
+                            + " - " + feature.getIntervalEnd());
+                    } else if (feature.getPosition() != null) {
+                        locBuffer.append(" " + feature.getPosition());
+                    }
+                }
+                if (locBuffer.length() > 0) {
+                    buf.append("<sup>");
+                    buf.append(locBuffer.toString());
+                    buf.append("</sup>");
+                }
+                if (i < featureMap.size() -1) {
                     buf.append (", ");
                 }
+                i++;
             }
             buf.append (")");
         }
         return buf.toString();
+    }
+
+    private static HashMap categorizeFeatures (ArrayList<BioPaxFeature> featureList) {
+        HashMap featureMap = new HashMap();
+        //  Categorize list by feature terms
+        for (int i = 0; i < featureList.size(); i++) {
+            BioPaxFeature feature = featureList.get(i);
+            String term = feature.getTerm();
+            if (featureMap.containsKey(term)) {
+                ArrayList tempList = (ArrayList) featureMap.get(term);
+                tempList.add(feature);
+            } else {
+                ArrayList tempList = new ArrayList();
+                tempList.add(feature);
+                featureMap.put(term, tempList);
+            }
+        }
+        return featureMap;
     }
 
     /**
