@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.30 2006-12-22 13:41:59 grossb Exp $
+// $Id: BioPaxUtil.java,v 1.31 2007-04-30 15:29:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -497,32 +497,36 @@ public class BioPaxUtil {
                 String uri = RdfUtil.removeHashMark
                         (pointerAttribute.getValue());
 
-                Element referencedResource = (Element) rdfResources.get(uri);
-                if (localIdMap.containsKey(uri)) {
-                    //  If we have already been here, stop traversing.
-                    //  Prevents Circular References.
-                    logMsg("Preventing Circular Reference:  " + uri);
+                if (uri.length() > 0) {
+                    Element referencedResource = (Element) rdfResources.get(uri);
+                    if (localIdMap.containsKey(uri)) {
+                        //  If we have already been here, stop traversing.
+                        //  Prevents Circular References.
+                        logMsg("Preventing Circular Reference:  " + uri);
 
-                    //  Remove the Existing RDF Pointer
-                    e.removeAttribute(RdfConstants.RESOURCE_ATTRIBUTE,
-                            RdfConstants.RDF_NAMESPACE);
+                        //  Remove the Existing RDF Pointer
+                        e.removeAttribute(RdfConstants.RESOURCE_ATTRIBUTE,
+                                RdfConstants.RDF_NAMESPACE);
 
-                    //  Replace with locally generated ID
-                    String newId = "#" + (String) localIdMap.get(uri);
-                    e.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE, newId,
-                            RdfConstants.RDF_NAMESPACE);
-                    keepTraversingTree = false;
-                } else if (bioPaxConstants.isBioPaxEntity
-                        (referencedResource.getName())) {
-                    //  Case 2A:  We are pointing at a Hinge Element
-                    logMsg("Branching:  Subcase 2A");
-                    keepTraversingTree = false;
+                        //  Replace with locally generated ID
+                        String newId = "#" + (String) localIdMap.get(uri);
+                        e.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE, newId,
+                                RdfConstants.RDF_NAMESPACE);
+                        keepTraversingTree = false;
+                    } else if (bioPaxConstants.isBioPaxEntity
+                            (referencedResource.getName())) {
+                        //  Case 2A:  We are pointing at a Hinge Element
+                        logMsg("Branching:  Subcase 2A");
+                        keepTraversingTree = false;
+                    } else {
+                        //  Case 2B:  We are not pointing at a Hinge Element
+                        //  Clone the resource, and keep walking down the
+                        //  new subtree.
+                        logMsg("Branching:  Subcase 2B");
+                        e = replaceReferenceWithResource(pointerAttribute, e);
+                    }
                 } else {
-                    //  Case 2B:  We are not pointing at a Hinge Element
-                    //  Clone the resource, and keep walking down the
-                    //  new subtree.
-                    logMsg("Branching:  Subcase 2B");
-                    e = replaceReferenceWithResource(pointerAttribute, e);
+                    System.err.println("Warning.  Null reference found #.  Check BioPAX source");
                 }
             }
         }
