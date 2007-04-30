@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.63 2007-01-26 17:33:51 grossb Exp $
+// $Id: Admin.java,v 1.64 2007-04-30 15:52:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -128,7 +128,7 @@ public class Admin {
 
             System.out.println("cPath Admin.  cPath Version:  "
                     + CPathConstants.VERSION);
-            System.out.println("Copyright (c) 2005-2006 Memorial Sloan-Kettering "
+            System.out.println("Copyright (c) 2005-2007 Memorial Sloan-Kettering "
                     + "Cancer Center.\n");
 
             System.out.println("----------------------------------");
@@ -456,7 +456,7 @@ public class Admin {
     private static void displayHelp() {
         System.out.println("cPath Admin.  cPath Version:  "
                 + CPathConstants.VERSION);
-        System.out.println("Copyright (c) 2005-2006 Memorial Sloan-Kettering "
+        System.out.println("Copyright (c) 2005-2007 Memorial Sloan-Kettering "
                 + "Cancer Center.");
         System.out.println("\nAdministration Program for the cPath Database");
         System.out.println("Usage:  admin.pl [CPATH_HOME=XXX] [OPTIONS] command");
