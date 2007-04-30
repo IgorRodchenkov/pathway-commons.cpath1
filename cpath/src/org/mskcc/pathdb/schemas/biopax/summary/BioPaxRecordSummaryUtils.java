@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.45 2007-03-12 16:12:03 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.46 2007-04-30 18:37:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,6 +40,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 /**
  * This class contains some utility methods
@@ -51,22 +52,22 @@ public class BioPaxRecordSummaryUtils {
     /**
      * Phosphorylated Keyword.
      */
-    private static final String PHOSPHORYLATED = " (Phosphorylated)";
+    private static final String PHOSPHORYLATED = "phosphorylated";
 
     /**
      * Ubiquitinated Keyword.
      */
-    private static final String UBIQUITINATED = " (Ubiquitinated)";
+    private static final String UBIQUITINATED = "ubiquitinated";
 
     /**
      * Acetylated Keyword.
      */
-    private static final String ACETYLATED = " (Acetylated)";
+    private static final String ACETYLATED = "acetylated";
 
     /**
      * Sumoylated Keyword.
      */
-    private static final String SUMOYLATED = " (Sumoylated)";
+    private static final String SUMOYLATED = "sumoylated";
 
     /**
      * Phosphorylation Feature; start pattern.
@@ -94,6 +95,7 @@ public class BioPaxRecordSummaryUtils {
     public static final int NAME_LENGTH = 30;
 
     private static int maxLength = NAME_LENGTH;
+    private static HashMap featureMap;
 
     /**
      * Gets the BioPax Header String to render.
@@ -232,10 +234,6 @@ public class BioPaxRecordSummaryUtils {
     private static String createComponentLink(BioPaxRecordSummary component,
             InteractionSummary interactionSummary) {
         String label = component.getLabel();
-        boolean isPhosphorylated = false;
-        boolean isUbiquitinated = false;
-        boolean isAcetylated = false;
-        boolean isSumoylated = false;
         boolean isTransport = false;
         ParticipantSummaryComponent participant = null;
 
@@ -245,10 +243,6 @@ public class BioPaxRecordSummaryUtils {
         }
 
         if (participant != null) {
-            isPhosphorylated = hasFeature(participant, PHOSPHORYLATION_FEATURE);
-            isUbiquitinated = hasFeature(participant, UBIQUITINATION_FEATURE);
-            isAcetylated = hasFeature(participant, ACETYLATION_FEATURE);
-            isSumoylated = hasFeature(participant, SUMOYLATION_FEATURE);
             if (interactionSummary != null) {
                 isTransport = isTransport(interactionSummary);
             }
@@ -266,9 +260,6 @@ public class BioPaxRecordSummaryUtils {
         buf.append("<DIV CLASS=popup_caption>");
         String truncatedName = truncateLongName(label, maxLength);
         buf.append(truncatedName);
-        String features = getFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
-                isSumoylated);
-        buf.append (features);
         String celluarLocation = "";
         if (participant != null) {
             if (participant.getCellularLocation() != null) {
@@ -277,7 +268,7 @@ public class BioPaxRecordSummaryUtils {
                         + "</SPAN>");
             }
         }
-        int lengthOfHeader = truncatedName.length() + features.length() + celluarLocation.length();
+        int lengthOfHeader = truncatedName.length() + celluarLocation.length();
         if (lengthOfHeader < NAME_LENGTH) {
             lengthOfHeader = NAME_LENGTH;
         }
@@ -317,9 +308,8 @@ public class BioPaxRecordSummaryUtils {
             }
         }
 
-        //  If component is phosphorylated, show explicitly
-        String featuresStr = getFeatures(isPhosphorylated, isUbiquitinated, isAcetylated,
-                isSumoylated);
+        //  Output features next to component name
+        String featuresStr = getFeatures(participant);
         buf.append  (featuresStr);
         return buf.toString();
     }
@@ -349,33 +339,6 @@ public class BioPaxRecordSummaryUtils {
     }
 
     /**
-     * Appends Features, such as Phosphorylated, Ubiquitinated or Acetylated.
-     *
-     * @param phosphorylated isPhosphorylated.
-     * @param ubiquitinated
-     * @param acetylated
-     */
-    private static String getFeatures(boolean phosphorylated,
-            boolean ubiquitinated,
-            boolean acetylated,
-            boolean sumoylated) {
-        StringBuffer buf = new StringBuffer();
-        if (phosphorylated) {
-            buf.append(PHOSPHORYLATED);
-        }
-        if (ubiquitinated) {
-            buf.append(UBIQUITINATED);
-        }
-        if (acetylated) {
-            buf.append(ACETYLATED);
-        }
-        if (sumoylated) {
-            buf.append(SUMOYLATED);
-        }
-        return buf.toString();
-    }
-
-    /**
      * Automatically Truncates Long Names.
      *
      * @param name Name.
@@ -394,6 +357,31 @@ public class BioPaxRecordSummaryUtils {
      * Adds Feature List.
      *
      * @param component ParticipantSummaryComponent Object.
+     */
+    private static String getFeatures(ParticipantSummaryComponent component) {
+        StringBuffer buf = new StringBuffer();
+        if (component.getFeatureList() != null
+                && component.getFeatureList().size() > 0) {
+            buf.append (" (");
+            ArrayList featureList = component.getFeatureList();
+            for (int i = 0; i < featureList.size(); i++) {
+                String feature = (String) featureList.get(i);
+                feature = entityFilter(feature);
+                feature = getFeatureNormalized (feature);
+                buf.append(feature);
+                if (i < featureList.size() -1) {
+                    buf.append (", ");
+                }
+            }
+            buf.append (")");
+        }
+        return buf.toString();
+    }
+
+    /**
+     * Adds Feature List.
+     *
+     * @param component ParticipantSummaryComponent Object.
      * @param buf       HTML StringBuffer Object.
      */
     private static void addFeatures(ParticipantSummaryComponent component,
@@ -405,6 +393,7 @@ public class BioPaxRecordSummaryUtils {
             for (int i = 0; i < featureList.size(); i++) {
                 String feature = (String) featureList.get(i);
                 feature = entityFilter(feature);
+                feature = getFeatureNormalized (feature);
                 buf.append("<li>" + feature + "</li>");
             }
             buf.append("</ul>");
@@ -488,22 +477,19 @@ public class BioPaxRecordSummaryUtils {
     /**
      * Determines if the specified component has the specified target feature.
      *
-     * @param component ParticipantSummaryComponent Object.
-     * @return boolean value.
      */
-    private static boolean hasFeature(ParticipantSummaryComponent component,
-            String featureTarget) {
-        if (component.getFeatureList() != null
-                && component.getFeatureList().size() > 0) {
-            ArrayList featureList = component.getFeatureList();
-            for (int i = 0; i < featureList.size(); i++) {
-                String feature = (String) featureList.get(i);
-                feature = feature.toLowerCase();
-                if (feature.indexOf(featureTarget) > -1) {
-                    return true;
-                }
-            }
+    private static String getFeatureNormalized (String feature) {
+        feature = feature.toLowerCase();
+        if (feature.indexOf(BioPaxRecordSummaryUtils.PHOSPHORYLATION_FEATURE) > -1) {
+            return BioPaxRecordSummaryUtils.PHOSPHORYLATED;
+        } else if (feature.indexOf(BioPaxRecordSummaryUtils.ACETYLATION_FEATURE) > -1) {
+            return BioPaxRecordSummaryUtils.ACETYLATED;
+        } else if (feature.indexOf(BioPaxRecordSummaryUtils.SUMOYLATION_FEATURE) > -1) {
+            return BioPaxRecordSummaryUtils.SUMOYLATED;
+        } else if (feature.indexOf(BioPaxRecordSummaryUtils.UBIQUITINATION_FEATURE) > -1) {
+            return BioPaxRecordSummaryUtils.UBIQUITINATED;
+        } else {
+            return feature;
         }
-        return false;
     }
 }
