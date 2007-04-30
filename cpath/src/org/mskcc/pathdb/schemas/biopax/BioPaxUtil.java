@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.31 2007-04-30 15:29:35 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.32 2007-04-30 15:35:09 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -526,7 +526,7 @@ public class BioPaxUtil {
                         e = replaceReferenceWithResource(pointerAttribute, e);
                     }
                 } else {
-                    System.err.println("Warning.  Null reference found #.  Check BioPAX source");
+                    System.err.println("\n*** Warning.  Null reference found #.  Check BioPAX source");
                 }
             }
         }
