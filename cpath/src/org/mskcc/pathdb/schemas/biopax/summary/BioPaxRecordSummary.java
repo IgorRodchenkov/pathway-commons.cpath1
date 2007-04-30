@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummary.java,v 1.13 2007-01-09 15:40:19 cerami Exp $
+// $Id: BioPaxRecordSummary.java,v 1.14 2007-04-30 16:33:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -204,7 +204,18 @@ public class BioPaxRecordSummary implements Serializable {
      * @param label Label.
      */
     public void setLabel (String label) {
-        this.label = label;
+        //  A temporary hack to deal with use of Nature / NCI PID IDs within the NAME
+        //  element.
+        if (label != null && label.startsWith("pid")) {
+            String parts[] = label.split("_");
+            if (parts != null) {
+                this.label = parts[parts.length-1];
+            } else {
+                this.label = label;
+            }
+        } else {
+            this.label = label;
+        }
     }
 
     /**
