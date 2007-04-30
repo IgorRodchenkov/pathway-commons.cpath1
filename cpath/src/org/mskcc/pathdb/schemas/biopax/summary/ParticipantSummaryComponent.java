@@ -1,4 +1,4 @@
-// $Id: ParticipantSummaryComponent.java,v 1.12 2007-01-09 15:40:19 cerami Exp $
+// $Id: ParticipantSummaryComponent.java,v 1.13 2007-04-30 19:51:34 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -54,7 +54,7 @@ public class ParticipantSummaryComponent extends BioPaxRecordSummary {
     /**
      * The feature list.
      */
-    private ArrayList featureList;
+    private ArrayList<BioPaxFeature> featureList;
 
     /**
      * Constructor.
@@ -101,7 +101,7 @@ public class ParticipantSummaryComponent extends BioPaxRecordSummary {
      *
      * @param featureList ArrayList
      */
-    public void setFeatureList(ArrayList featureList) {
+    public void setFeatureList(ArrayList<BioPaxFeature> featureList) {
         this.featureList = featureList;
     }
 
@@ -110,7 +110,7 @@ public class ParticipantSummaryComponent extends BioPaxRecordSummary {
      *
      * @return ArrayList
      */
-    public ArrayList getFeatureList() {
+    public ArrayList<BioPaxFeature> getFeatureList() {
         return featureList;
     }
 

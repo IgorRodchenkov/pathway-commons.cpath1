@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.46 2007-04-30 18:37:46 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.47 2007-04-30 19:51:34 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,9 +38,7 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * This class contains some utility methods
@@ -49,46 +47,6 @@ import java.util.HashMap;
  * @author Benjamin Gross, Ethan Cerami.
  */
 public class BioPaxRecordSummaryUtils {
-    /**
-     * Phosphorylated Keyword.
-     */
-    private static final String PHOSPHORYLATED = "phosphorylated";
-
-    /**
-     * Ubiquitinated Keyword.
-     */
-    private static final String UBIQUITINATED = "ubiquitinated";
-
-    /**
-     * Acetylated Keyword.
-     */
-    private static final String ACETYLATED = "acetylated";
-
-    /**
-     * Sumoylated Keyword.
-     */
-    private static final String SUMOYLATED = "sumoylated";
-
-    /**
-     * Phosphorylation Feature; start pattern.
-     */
-    private static final String PHOSPHORYLATION_FEATURE = "phosph";
-
-    /**
-     * Ubiquitination Feature; start pattern.
-     */
-    private static final String UBIQUITINATION_FEATURE = "ubiquitinat";
-
-    /**
-     * Acetylation Feature; start pattern.
-     */
-    private static final String ACETYLATION_FEATURE = "acetylat";
-
-    /**
-     * Sumoylation Feature; start pattern.
-     */
-    private static final String SUMOYLATION_FEATURE = "sumoylat";
-
     /**
      * Names longer than this will be truncated.
      */
@@ -286,7 +244,7 @@ public class BioPaxRecordSummaryUtils {
         addComponents(component, lengthOfHeader, detailsBuf);
 
         if (detailsBuf.length() == 0) {
-            buf.append("No synonyms or features specified");
+            buf.append("No synonyms or sequence features specified");
         } else {
             buf.append(detailsBuf.toString());
         }
@@ -360,16 +318,26 @@ public class BioPaxRecordSummaryUtils {
      */
     private static String getFeatures(ParticipantSummaryComponent component) {
         StringBuffer buf = new StringBuffer();
+        ArrayList uniqueFeatureList = new ArrayList();
         if (component.getFeatureList() != null
                 && component.getFeatureList().size() > 0) {
             buf.append (" (");
-            ArrayList featureList = component.getFeatureList();
+            ArrayList<BioPaxFeature> featureList = component.getFeatureList();
+
+            //  First, remove duplicate feature terms
             for (int i = 0; i < featureList.size(); i++) {
-                String feature = (String) featureList.get(i);
-                feature = entityFilter(feature);
-                feature = getFeatureNormalized (feature);
-                buf.append(feature);
-                if (i < featureList.size() -1) {
+                BioPaxFeature feature = featureList.get(i);
+                String featureTerm = feature.getTerm();
+                if (!uniqueFeatureList.contains(featureTerm)) {
+                    uniqueFeatureList.add(featureTerm);
+                }
+            }
+
+            //  Then, output the unique feature term list
+            for (int i = 0; i < uniqueFeatureList.size(); i++) {
+                String featureTerm = (String) uniqueFeatureList.get(i);
+                buf.append(featureTerm);
+                if (i < uniqueFeatureList.size() -1) {
                     buf.append (", ");
                 }
             }
@@ -388,13 +356,20 @@ public class BioPaxRecordSummaryUtils {
             StringBuffer buf) {
         if (component.getFeatureList() != null
                 && component.getFeatureList().size() > 0) {
-            buf.append("Features:  <ul>");
-            ArrayList featureList = component.getFeatureList();
+            buf.append("Sequence Features:  <ul>");
+            ArrayList<BioPaxFeature> featureList = component.getFeatureList();
             for (int i = 0; i < featureList.size(); i++) {
-                String feature = (String) featureList.get(i);
-                feature = entityFilter(feature);
-                feature = getFeatureNormalized (feature);
-                buf.append("<li>" + feature + "</li>");
+                BioPaxFeature feature = featureList.get(i);
+                String featureTerm = feature.getTerm();
+                buf.append("<li>" + featureTerm);
+                if (feature.getIntervalBegin() != null
+                        && feature.getIntervalEnd() != null) {
+                    buf.append (" @location:  " + feature.getIntervalBegin()
+                        + " - " + feature.getIntervalEnd());
+                }
+                else if (feature.getPosition() != null) {
+                    buf.append(" @location:  " + feature.getPosition() + "</li>");
+                }
             }
             buf.append("</ul>");
         }
@@ -420,16 +395,7 @@ public class BioPaxRecordSummaryUtils {
         }
     }
 
-    /**
-     * Replaces Various Characters with their HTML Entities.
-     */
-    private static String entityFilter(String str) {
-        if (str != null) {
-            str = str.replaceAll("\'", "&rsquo;");
-            str = str.replaceAll("\"", "&quot;");
-        }
-        return str;
-    }
+
 
     /**
      * Determines if the specified interaction is of type:  TRANSPORT.
@@ -475,21 +441,13 @@ public class BioPaxRecordSummaryUtils {
     }
 
     /**
-     * Determines if the specified component has the specified target feature.
-     *
+     * Replaces Various Characters with their HTML Entities.
      */
-    private static String getFeatureNormalized (String feature) {
-        feature = feature.toLowerCase();
-        if (feature.indexOf(BioPaxRecordSummaryUtils.PHOSPHORYLATION_FEATURE) > -1) {
-            return BioPaxRecordSummaryUtils.PHOSPHORYLATED;
-        } else if (feature.indexOf(BioPaxRecordSummaryUtils.ACETYLATION_FEATURE) > -1) {
-            return BioPaxRecordSummaryUtils.ACETYLATED;
-        } else if (feature.indexOf(BioPaxRecordSummaryUtils.SUMOYLATION_FEATURE) > -1) {
-            return BioPaxRecordSummaryUtils.SUMOYLATED;
-        } else if (feature.indexOf(BioPaxRecordSummaryUtils.UBIQUITINATION_FEATURE) > -1) {
-            return BioPaxRecordSummaryUtils.UBIQUITINATED;
-        } else {
-            return feature;
+    private static String entityFilter(String str) {
+        if (str != null) {
+            str = str.replaceAll("\'", "&rsquo;");
+            str = str.replaceAll("\"", "&quot;");
         }
+        return str;
     }
 }
