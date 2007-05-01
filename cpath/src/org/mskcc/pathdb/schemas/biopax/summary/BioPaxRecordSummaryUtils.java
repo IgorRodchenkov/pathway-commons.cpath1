@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.48 2007-04-30 21:03:57 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.49 2007-05-01 15:29:59 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -269,8 +269,10 @@ public class BioPaxRecordSummaryUtils {
         }
 
         //  Output features next to component name
-        String featuresStr = getFeatures(participant);
-        buf.append  (featuresStr);
+        if (participant != null) {
+            String featuresStr = getFeatures(participant);
+            buf.append  (featuresStr);
+        }
         return buf.toString();
     }
 
@@ -291,7 +293,7 @@ public class BioPaxRecordSummaryUtils {
             for (int i = 0; i < componentList.size(); i++) {
                 BioPaxRecordSummary child =
                         (BioPaxRecordSummary) componentList.get(i);
-                buf.append("<LI>" + truncateLongName(child.getName(), lengthOfHeader)
+                buf.append("<LI>" + truncateLongName(child.getLabel(), lengthOfHeader)
                         + "</LI>");
             }
             buf.append("</UL>");
