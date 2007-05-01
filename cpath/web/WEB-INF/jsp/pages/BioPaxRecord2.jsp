@@ -1,5 +1,7 @@
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
+<%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
@@ -18,6 +20,7 @@ String queryString = request.getQueryString();
 if (queryString == null){
     queryString = "";
 }
+WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
 boolean debugMode = (queryString.indexOf("debug=1") != -1 || xdebugFlag != null);
 ArrayList typesList = (ArrayList) request.getAttribute("TYPES_LIST");
@@ -451,23 +454,25 @@ enable Javascript support within your web browser.
         }
         out.println("</ul>");
     }
-    out.println("<h3>Cytoscape:</h3>");
-	out.println("<ul><li>");
-    if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
+    if (webUIBean.getWantCytoscape()) {
+		out.println("<h3>Cytoscape:</h3>");
+		out.println("<ul><li>");
+		if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
-		out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
-    	             urlForCytoscapeLink +
-                     "?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
-                     id + "\"" + " id=\"" +
-                     id +"\"" +
-                     " onclick=\"appRequest(this.href, this.id); return false;\"" +
-                     ">View this pathway in Cytoscape</a>");
-    }
-	else {
-	    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
-    }
-	out.println("<a href=\"cytoscape.do\">(help)</a>");	
-	out.println("</li></ul>");
+			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+						urlForCytoscapeLink +
+						"?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
+						id + "\"" + " id=\"" +
+						id +"\"" +
+						" onclick=\"appRequest(this.href, this.id); return false;\"" +
+						">View this pathway in Cytoscape</a>");
+		}
+		else {
+			out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
+		}
+		out.println("<a href=\"cytoscape.do\">(help)</a>");	
+		out.println("</li></ul>");
+	}
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
             ProtocolRequest pRequest = new ProtocolRequest();

@@ -8,7 +8,7 @@
     webUIBean.setApplicationName("Pathway Commons");
     webUIBean.setDisplayBrowseByOrganismTab(false);
     webUIBean.setDisplayBrowseByPathwayTab(false);
-    webUIBean.setDisplayCytoscapeTab(true);
+    webUIBean.setWantCytoscape(true);
     webUIBean.setDisplayWebServiceTab(false);
     webUIBean.setDisplayFilterTab(true);
     CPathUIConfig.setWebUIBean(webUIBean);

@@ -1,5 +1,7 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
+                 org.mskcc.pathdb.form.WebUIBean,
+                 org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.taglib.Pager,
                  org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.sql.query.QueryUtil,
@@ -24,6 +26,7 @@
     final int MAX_SCOREBOARD_WIDTH = 62;
     final int SCOREBOARD_HEIGHT = 6;
 
+    WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
     long cpathIds[] = (long[])
@@ -269,23 +272,25 @@ else {
             out.println("<tr><td colspan=\"3\">");
 			out.println("<div class='search_fragment'>");
             out.println(getFragmentsHtml(fragments.get(i), summaryLabel, header, 40));
-			// add link to cytoscape
-			if (record.getType() == CPathRecordType.PATHWAY) {
-				out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
-                             urlForCytoscapeLink +
-                             "?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
-                             String.valueOf(cpathIds[i]) + "\"" + " id=\"" +
-                             String.valueOf(cpathIds[i]) +"\"" +
-							 //" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
-							 //" onmouseout=\"return nd();\"" +
-                             " onclick=\"appRequest(this.href, this.id); return false;\"" +
-                             ">View this pathway in Cytoscape</a>");
-            }
-			else {
-			    out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
-            }
-			// add link to cytoscape help page
-			out.println("<a href=\"cytoscape.do\">(help)</a>");
+			if (webUIBean.getWantCytoscape()) {
+				// add link to cytoscape
+				if (record.getType() == CPathRecordType.PATHWAY) {
+					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+								urlForCytoscapeLink +
+								"?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
+								String.valueOf(cpathIds[i]) + "\"" + " id=\"" +
+								String.valueOf(cpathIds[i]) +"\"" +
+								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
+								//" onmouseout=\"return nd();\"" +
+								" onclick=\"appRequest(this.href, this.id); return false;\"" +
+								">View this pathway in Cytoscape</a>");
+				}
+				else {
+					out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
+				}
+				// add link to cytoscape help page
+				out.println("<a href=\"cytoscape.do\">(help)</a>");
+			}
 			out.println("</div>");
 			out.println("</td></tr>");
         }

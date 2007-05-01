@@ -113,7 +113,7 @@
 		}
 	}
 
-    if (webUIBean.getDisplayCytoscapeTab()) {
+    if (webUIBean.getWantCytoscape()) {
         tabNames.add("Cytoscape");
         String cytoscapeUrl = "cytoscape.do";
         tabUrls.add(cytoscapeUrl);
