@@ -4,13 +4,13 @@
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoException"%>
 <%@ page import="java.util.HashMap"%>
-<%@ page import="org.mskcc.pathdb.model.CPathRecord"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
-<%@ page import="org.mskcc.pathdb.model.CPathRecordType"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
-<%@ page import="org.mskcc.pathdb.model.ExternalLinkRecord"%>
-<%@ page import="org.mskcc.pathdb.model.Reference"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoInternalLink"%>
+<%@ page import="org.mskcc.pathdb.model.*"%>
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoCPath"%>
+<%@ page import="java.io.IOException"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -105,8 +105,10 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
             String interactionString = InteractionSummaryUtils.createInteractionSummaryString
                 (interactionSummary);
             if (interactionString != null) {
-                out.println("<span class='entity_summary'>" + interactionString + "</span>");
+                out.println("<span class='entity_summary'>" + interactionString);
             }
+            outputParentInteractions(interactionSummary, out, debugMode);
+            out.println("</span>");
             out.println(getBioPaxDetailsHtml(bpSummary, referenceMap));
         } else {
             out.println(getBioPaxRecordHtml(bpSummary, referenceMap));
@@ -120,6 +122,45 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
 %>
 
 <%!
+/**
+ * Outputs parent interactions, e.g. controllers.
+ */
+private ArrayList outputParentInteractions (InteractionSummary interactionSummary,
+        JspWriter out, boolean debugMode) throws DaoException, IOException, EntitySummaryException {
+    long cpathId = interactionSummary.getRecordID();
+
+    //  First, get parents of this interaction
+    DaoInternalLink daoInternalLink = new DaoInternalLink();
+    DaoCPath daoCPath = DaoCPath.getInstance();
+    ArrayList sources = daoInternalLink.getSources(cpathId);
+    ArrayList parentInteractionSummaries = new ArrayList();
+    out.println("<UL>");
+    for (int j=0; j<sources.size(); j++) {
+
+        //  Only display parent interactions
+        InternalLinkRecord internalLinkRecord = (InternalLinkRecord) sources.get(j);
+        CPathRecord record = daoCPath.getRecordById(internalLinkRecord.getSourceId());
+        if (record.getType() == CPathRecordType.INTERACTION) {
+            EntitySummaryParser parser = new EntitySummaryParser
+                    (internalLinkRecord.getSourceId());
+            EntitySummary summary = parser.getEntitySummary();
+            if (summary instanceof InteractionSummary) {
+                String summaryStr = InteractionSummaryUtils.createInteractionSummaryStringTruncated
+                    ((InteractionSummary) summary);
+                out.println("<LI>");
+                if (debugMode) {
+                    out.println ("[<a href='record2.do?id=" + summary.getRecordID()
+                        + "&debug=1'>" + summary.getRecordID() + "</a>]");
+                }
+                out.println (summaryStr + "</LI>");
+                parentInteractionSummaries.add(summary);
+            }
+        }
+    }
+    out.println("</UL>");
+    return parentInteractionSummaries;
+}
+
 private String getInspectorButtonHtml (long cPathId) {
     return "<td align=right><div class='toggle_details'><a "
         + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
