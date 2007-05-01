@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.28 2007-01-05 17:12:26 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.29 2007-05-01 15:44:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -150,6 +150,9 @@ public class InteractionSummaryUtils {
                 }
             }
         }
+        if (controllerList == null || controllerList.size() ==0) {
+            buf.append("<I>" + summary.getName() + "</I>");
+        }
 
         //  Output control type in Plain English
         String controlType = summary.getControlType();
@@ -177,7 +180,7 @@ public class InteractionSummaryUtils {
                             createInteractionSummaryString(intxnSummary));
                     buf.append("]");
                 } else {
-                    buf.append(entitySummary.getName());
+                    buf.append("<I>" + entitySummary.getName() + "</I>");
                 }
             }
         }
