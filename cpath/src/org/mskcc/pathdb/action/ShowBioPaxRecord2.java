@@ -13,6 +13,8 @@ import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.TypeCount;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.schemas.biopax.summary.EntitySummaryParser;
+import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.taglib.ReferenceUtil;
@@ -49,6 +51,12 @@ public class ShowBioPaxRecord2 extends BaseAction {
             xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
             bpSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             request.setAttribute("BP_SUMMARY", bpSummary);
+
+            if (record.getType() == CPathRecordType.INTERACTION) {
+                EntitySummaryParser parser = new EntitySummaryParser(Long.parseLong(id));
+                EntitySummary entitySummary = parser.getEntitySummary();
+                request.setAttribute("ENTITY_SUMMARY", entitySummary);
+            }
         }
 
         DaoInternalLink daoLinker = new DaoInternalLink();
