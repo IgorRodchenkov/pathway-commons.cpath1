@@ -13,6 +13,7 @@ import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.TypeCount;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.taglib.ReferenceUtil;
 
@@ -186,6 +187,9 @@ public class ShowBioPaxRecord2 extends BaseAction {
             xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
                 + " -->  " + typeCount.getCount() + " records");
         }
+        //  remove control interactions, since these are now shown as the
+        //  parents of biochemical reactions.
+        removeControlInteractions (childTypes, xdebug);
         return childTypes;
     }
 
@@ -204,7 +208,26 @@ public class ShowBioPaxRecord2 extends BaseAction {
             xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
                 + " -->  " + typeCount.getCount() + " records");
         }
+        //  remove control interactions, since these are now shown as the
+        //  parents of biochemical reactions.
+        removeControlInteractions (parentTypes, xdebug);
         return parentTypes;
+    }
+
+    private void removeControlInteractions (ArrayList typeList, XDebug xdebug) {
+        int controlIndex = -1;
+        for (int i=0; i<typeList.size(); i++) {
+            TypeCount typeCount = (TypeCount) typeList.get(i);
+            xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
+                + " -->  " + typeCount.getCount() + " records");
+            if (typeCount.getType().equals(BioPaxConstants.CONTROL)) {
+                controlIndex = i;
+            }
+        }
+       if (controlIndex > 0) {
+            typeList.remove(controlIndex);
+            xdebug.logMsg(this, "Removing control interactions");
+        }
     }
 
     /**
