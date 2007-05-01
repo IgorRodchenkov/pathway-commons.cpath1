@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.30 2007-05-01 20:36:29 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.31 2007-05-01 21:18:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -172,15 +172,19 @@ public class InteractionSummaryUtils {
         String controlType = summary.getControlType();
 
         if (!verbose) {
+            buf.append ("<a href='record2.do?id=" + interactionSummary.getRecordID()
+                + "'>");
             if (controlType != null) {
                 HashMap map = BioPaxControlTypeMap.getPastTenseMap();
                 String controlTypeInEnglish = (String) map.get(controlType);
                 if (controlTypeInEnglish != null) {
-                    buf.append(controlTypeInEnglish + SPACE + "by" + SPACE);
+                    buf.append(controlTypeInEnglish);
                 }
             } else {
-                buf.append ("controlled by" + SPACE);
+                buf.append ("controlled by");
             }
+            buf.append ("</a>");
+            buf.append (SPACE + "by" + SPACE);
         }
 
         //  Iterate through all controllers.
