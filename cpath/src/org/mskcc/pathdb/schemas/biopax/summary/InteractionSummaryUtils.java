@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.29 2007-05-01 15:44:41 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.30 2007-05-01 20:36:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 /**
  * This class generates Summary Strings of BioPAX Interaction Objects.
@@ -64,7 +65,30 @@ public class InteractionSummaryUtils {
         if (interactionSummary instanceof ConversionInteractionSummary) {
             createConversionInteractionSummary(interactionSummary, buf);
         } else if (interactionSummary instanceof ControlInteractionSummary) {
-            createControlSummary(interactionSummary, buf);
+            createControlSummary(interactionSummary, true, buf);
+        } else if (interactionSummary instanceof PhysicalInteractionSummary) {
+            createPhysicalInteractionSummary(interactionSummary, buf);
+        } else {
+            buf.append(interactionSummary.getName());
+        }
+        return buf.toString();
+    }
+
+    /**
+     * Creates the interaction summary string (truncated).
+     *
+     * @param interactionSummary PhysicalInteractiong
+     * @return HTML String
+     */
+    public static String createInteractionSummaryStringTruncated
+            (InteractionSummary interactionSummary) {
+        StringBuffer buf = new StringBuffer();
+
+        //  Branch, depending on interaction type.
+        if (interactionSummary instanceof ConversionInteractionSummary) {
+            createConversionInteractionSummary(interactionSummary, buf);
+        } else if (interactionSummary instanceof ControlInteractionSummary) {
+            createControlSummary(interactionSummary, false, buf);
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
             createPhysicalInteractionSummary(interactionSummary, buf);
         } else {
@@ -128,15 +152,36 @@ public class InteractionSummaryUtils {
     /**
      * Creates a Control Interaction Summary.
      *
+     * <P>
+     * When verbose is set to true, you get a summary like this:
+     * Rapamycin activates [ASK1 ? ASK1 (active)].  This includes the controller
+     * and all particpants in the controlled interaction.
+     * <P>
+     * When verbose is set to false, you get a summary like this:
+     * activated by Rapamycin.  This includes the controller only.
+     *
      * @param interactionSummary InteractionSummary.
+     * @param verbose            Verbose flag.
      * @param buf                HTML String Buffer.
      */
     private static void createControlSummary(InteractionSummary
-            interactionSummary, StringBuffer buf) {
-        BioPaxControlTypeMap map = new BioPaxControlTypeMap();
+            interactionSummary, boolean verbose, StringBuffer buf) {
         ControlInteractionSummary summary =
                 (ControlInteractionSummary) interactionSummary;
         List controllerList = summary.getControllers();
+        String controlType = summary.getControlType();
+
+        if (!verbose) {
+            if (controlType != null) {
+                HashMap map = BioPaxControlTypeMap.getPastTenseMap();
+                String controlTypeInEnglish = (String) map.get(controlType);
+                if (controlTypeInEnglish != null) {
+                    buf.append(controlTypeInEnglish + SPACE + "by" + SPACE);
+                }
+            } else {
+                buf.append ("controlled by" + SPACE);
+            }
+        }
 
         //  Iterate through all controllers.
         if (controllerList != null) {
@@ -154,33 +199,36 @@ public class InteractionSummaryUtils {
             buf.append("<I>" + summary.getName() + "</I>");
         }
 
-        //  Output control type in Plain English
-        String controlType = summary.getControlType();
-        if (controlType != null) {
-            String controlTypeInEnglish = (String) map.get(controlType);
-            if (controlTypeInEnglish != null) {
-                buf.append(SPACE + controlTypeInEnglish + SPACE);
+        if (verbose) {
+            if (controlType != null) {
+                HashMap map = BioPaxControlTypeMap.getPresentTenseMap();
+                String controlTypeInEnglish = (String) map.get(controlType);
+                if (controlTypeInEnglish != null) {
+                    buf.append(SPACE + controlTypeInEnglish + SPACE);
+                }
+            } else {
+                buf.append (SPACE + "controls" + SPACE);
             }
-        } else {
-            buf.append (SPACE + "controls" + SPACE);
         }
 
         //  Iterate through all controlled elements.
-        List controlledList = summary.getControlled();
+        if (verbose) {
+            List controlledList = summary.getControlled();
 
-        if (controlledList != null) {
-            if (controlledList.size() == 1) {
-                EntitySummary entitySummary =
-                        (EntitySummary) controlledList.get(0);
-                if (entitySummary instanceof InteractionSummary) {
-                    InteractionSummary intxnSummary =
-                            (InteractionSummary) entitySummary;
-                    buf.append("[");
-                    buf.append(InteractionSummaryUtils.
-                            createInteractionSummaryString(intxnSummary));
-                    buf.append("]");
-                } else {
-                    buf.append("<I>" + entitySummary.getName() + "</I>");
+            if (controlledList != null) {
+                if (controlledList.size() == 1) {
+                    EntitySummary entitySummary =
+                            (EntitySummary) controlledList.get(0);
+                    if (entitySummary instanceof InteractionSummary) {
+                        InteractionSummary intxnSummary =
+                                (InteractionSummary) entitySummary;
+                        buf.append("[");
+                        buf.append(InteractionSummaryUtils.
+                                createInteractionSummaryString(intxnSummary));
+                        buf.append("]");
+                    } else {
+                        buf.append("<I>" + entitySummary.getName() + "</I>");
+                    }
                 }
             }
         }
