@@ -3,15 +3,14 @@
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
-<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
-<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils"%>
 <%@ page import="org.mskcc.pathdb.action.BaseAction"%>
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
@@ -27,6 +26,7 @@ ArrayList typesList = (ArrayList) request.getAttribute("TYPES_LIST");
 BioPaxTabs bpPlainEnglish = new BioPaxTabs();
 String id = request.getParameter("id");
 BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute("BP_SUMMARY");
+EntitySummary entitySummary = (EntitySummary) request.getAttribute("ENTITY_SUMMARY");
 HashMap<String,Reference> referenceMap = (HashMap<String,Reference>)request.getAttribute("EXTERNAL_LINKS");
 boolean showTabs = false;
 request.setAttribute(BaseAction.ATTRIBUTE_TITLE, bpSummary.getName());
@@ -309,8 +309,16 @@ YAHOO.example.init();
 <div class="splitcontentright">
 <%
 String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
+header = header.replaceAll("N/A", "");
 %>
 <h1><%= header %></h1>
+<%
+    if (entitySummary != null && entitySummary instanceof InteractionSummary) {
+        String entitySummaryStr = InteractionSummaryUtils.createInteractionSummaryString
+                ((InteractionSummary) entitySummary);
+        out.println("<h2>" + entitySummaryStr + "</h2>");
+    }
+%>
 <p>
 <%
     boolean firstParagraph = false;
@@ -376,7 +384,7 @@ enable Javascript support within your web browser.
 </noscript>
 
 <% } else { %>
-    <p>No additional details available for this record.</p>    
+    <p>No additional details specified for this record.</p>
 <% } %>
 <%
     String xdebugSession = (String) session.getAttribute
@@ -470,7 +478,7 @@ enable Javascript support within your web browser.
 		else {
 			out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
 		}
-		out.println("<a href=\"cytoscape.do\">(help)</a>");	
+		out.println("<a href=\"cytoscape.do\">(help)</a>");
 		out.println("</li></ul>");
 	}
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
