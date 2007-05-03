@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.32 2007-05-03 15:03:24 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.33 2007-05-03 15:11:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -113,7 +113,9 @@ public class InteractionSummaryUtils {
 
         if ((left == null || left.size() == 0)
                 && (right == null || right.size() ==0)) {
-            buf.append (interactionSummary.getName());
+            buf.append ("<a href='record2.do?id="
+                + interactionSummary.getRecordID()
+                + "'>" + interactionSummary.getName() + "</a>");
         } else {
             createSide(left, interactionSummary, buf);
             buf.append(" &rarr; ");
