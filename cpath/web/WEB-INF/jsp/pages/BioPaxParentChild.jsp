@@ -109,12 +109,13 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
             }
             outputParentInteractions(interactionSummary, out, debugMode);
             out.println("</span>");
-            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap));
+            out.println("</td>");
+            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap, i));
         } else {
-            out.println(getBioPaxRecordHtml(bpSummary, referenceMap));
+            out.println(getBioPaxRecordHtml(bpSummary, referenceMap, i));
         }
     } else {
-        out.println(getBioPaxRecordHtml(bpSummary, referenceMap));
+        out.println(getBioPaxRecordHtml(bpSummary, referenceMap, i));
     }
     out.println("</tr>");
     index++;
@@ -182,7 +183,7 @@ private String getStartRow (int i) {
 }
 
 private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
-        HashMap<String, Reference> referenceMap) throws DaoException {
+        HashMap<String, Reference> referenceMap, int index) throws DaoException {
     StringBuffer buf = new StringBuffer();
     if (bpSummary.getCPathRecord() != null
         && bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
@@ -192,12 +193,12 @@ private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
         buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
             + bpSummary.getName() + "</a>");
     }
-    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap));
+    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index));
     return buf.toString();
 }
 
 private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
-        HashMap<String, Reference> referenceMap) throws DaoException {
+        HashMap<String, Reference> referenceMap, int index) throws DaoException {
     ReferenceUtil refUtil = new ReferenceUtil();
     ArrayList masterList = refUtil.categorize(bpSummary);
     ArrayList<ExternalLinkRecord> referenceLinks =
@@ -225,7 +226,9 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     } else {
         buf.append("<td></td>");
     }
-    buf.append ("</tr><tr><td colspan=3>");
+    buf.append ("</tr>");
+    buf.append(getStartRow(index));
+    buf.append("<td colspan=3>");
     if (bpSummary.getComments() != null) {
         String comments[] = bpSummary.getComments();
         StringBuffer commentHtml = new StringBuffer();
