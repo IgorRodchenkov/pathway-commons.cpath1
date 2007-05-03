@@ -445,23 +445,6 @@ enable Javascript support within your web browser.
         }
         out.println("</ul>");
     }
-    if (typesList.size() > 0) {
-        out.println("<h3>Summary:</h3>");
-        out.println("<ul>");
-        for (int i=0; i<typesList.size(); i++) {
-            TypeCount typeCount = (TypeCount) typesList.get(i);
-            String plain = (String) bpPlainEnglish.getTabLabel(typeCount.getCommand(),
-            typeCount.getType());
-            if (plain == null) {
-                plain = typeCount.getType();
-            }
-            String tabLabel = plain + " (" + typeCount.getCount() + ")";
-            if (typeCount.getCount() > 0) {
-                out.println("<li> " + tabLabel);
-            }
-        }
-        out.println("</ul>");
-    }
     if (webUIBean.getWantCytoscape()) {
 		out.println("<h3>Cytoscape:</h3>");
 		out.println("<ul><li>");
