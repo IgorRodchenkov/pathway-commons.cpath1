@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.14 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestEntitySummaryParser.java,v 1.15 2007-05-03 15:50:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -202,7 +202,8 @@ public class TestEntitySummaryParser extends TestCase {
         assertEquals("cytoplasm", summaryComponent.getCellularLocation());
         ArrayList featureList = summaryComponent.getFeatureList();
         assertTrue(featureList.size() == 1);
-        assertEquals("phosphorylation site", (String) featureList.get(0));
+        BioPaxFeature feature = (BioPaxFeature) featureList.get(0);
+        assertEquals("phosphorylated", feature.getTerm());
     }
 
 
@@ -250,8 +251,9 @@ public class TestEntitySummaryParser extends TestCase {
 
         // feature list
         ArrayList featureList = summaryComponent.getFeatureList();
-        assertTrue(featureList.size() == 1);
-        assertEquals("phosphorylation site", (String) featureList.get(0));
+        assertTrue(featureList.size() == 6);
+        BioPaxFeature feature = (BioPaxFeature) featureList.get(0);
+        assertEquals("phosphorylated", feature.getTerm());
     }
 
     /**
