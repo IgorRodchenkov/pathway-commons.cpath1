@@ -1,4 +1,4 @@
-// $Id: TestInteractionSummaryUtils.java,v 1.15 2007-05-03 15:50:24 cerami Exp $
+// $Id: TestInteractionSummaryUtils.java,v 1.16 2007-05-03 15:51:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,7 +79,6 @@ public class TestInteractionSummaryUtils extends TestCase {
                 entityParser.getEntitySummary();
         String summary = InteractionSummaryUtils.
                 createInteractionSummaryString(interactionSummary);
-        System.out.println(summary);
         assertTrue(summary.indexOf("SMAD3</a> (phosphorylated)") > 0);
     }
 
