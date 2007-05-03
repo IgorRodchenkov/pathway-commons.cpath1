@@ -1,9 +1,9 @@
 import urllib
 import timeit
 
-baseUrl = "http://toro.cbio.mskcc.org:8080/cpath/"
+#baseUrl = "http://toro.cbio.mskcc.org:8080/cpath/"
 #baseUrl = "http://localhost:8080/cpath/"
-#baseUrl = "http://cbio.mskcc.org/cpath/"
+baseUrl = "http://cbio.mskcc.org/cpath/"
 
 # Hit the home page to init the web app
 def hitHomePage():
@@ -29,6 +29,7 @@ def batchDownload (useOptimizedCode, numInteractions, maxHits):
 	    url += "&useOptimizedCode=0"
 	url += "&startIndex=" + str(startIndex)
 	print "Getting interactions:  [%d, %d]" % (startIndex, (startIndex+maxHits))
+	#print "Url:  ", url
 	f = urllib.urlopen(url)
 	s = f.read()
 	f.close
@@ -48,7 +49,7 @@ throughputOldCode = numInteractions / timeOldCode
 print "Throughput:  %2.4f interactions / sec" % throughputOldCode 
 
 print "\nTest performance of web API (execute new code). "
-maxHits = 100
+maxHits = 500
 timeNewCode = 0.0
 t = timeit.Timer("batchDownload(1,"+ str(numInteractions) + "," + str(maxHits) +")", "from __main__ import batchDownload")
 newCodetrials = t.repeat(numTrials, 1)
