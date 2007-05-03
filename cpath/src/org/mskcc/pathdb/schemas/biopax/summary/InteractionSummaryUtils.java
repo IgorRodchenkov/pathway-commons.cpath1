@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.31 2007-05-01 21:18:56 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.32 2007-05-03 15:03:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -172,6 +172,7 @@ public class InteractionSummaryUtils {
         String controlType = summary.getControlType();
 
         if (!verbose) {
+            buf.append("<span class='control_verb'>");
             buf.append ("<a href='record2.do?id=" + interactionSummary.getRecordID()
                 + "'>");
             if (controlType != null) {
@@ -184,6 +185,7 @@ public class InteractionSummaryUtils {
                 buf.append ("controlled by");
             }
             buf.append ("</a>");
+            buf.append("</span>");
             buf.append (SPACE + "by" + SPACE);
         }
 

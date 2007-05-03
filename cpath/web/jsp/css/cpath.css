@@ -102,7 +102,11 @@ cursor:pointer;
     font-size:100%;
 }
 
-.entity_summary a {
+.component {
+    font-size:100%;
+}
+
+.component a {
    border-bottom-style: dotted;
    border-bottom-width: thin;
    text-decoration: none;
@@ -219,4 +223,9 @@ color:#ffffff;
 .psi_td {
 	background: #EEEEEE;
     font-size:85%;
+}
+
+.control_verb {
+    font-size:80%;
+    text-transform:uppercase;
 }
