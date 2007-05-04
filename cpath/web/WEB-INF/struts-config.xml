@@ -8,6 +8,8 @@
             type="org.mskcc.pathdb.form.FileUploadForm"/>
         <form-bean name="webUIForm"
                     type="org.mskcc.pathdb.form.WebUIBean"/>
+        <form-bean name="FeedbackForm"
+                    type="org.mskcc.pathdb.form.FeedbackForm"/>
     </form-beans>
 
     <global-forwards>
@@ -131,6 +133,22 @@
         <action path="/credits"
             type="org.mskcc.pathdb.action.HomeAction">
             <forward name="success" path="/WEB-INF/jsp/pages/Credits.jsp"/>
+        </action>
+
+        <!-- Feedback Page(s) -->
+        <action path="/get_feedback"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/feedback/FeedbackInput.jsp"/>
+        </action>
+
+        <action path="/send_feedback"
+            type="org.mskcc.pathdb.action.FeedbackAction"
+            name="FeedbackForm"
+            scope="request"
+            validate="true"
+            input="/WEB-INF/jsp/pages/feedback/FeedbackInput.jsp">
+            <forward name="success" path="/WEB-INF/jsp/pages/Home.jsp"/>
+            <forward name="failure" path="/WEB-INF/jsp/pages/feedback/FeedbackInput.jsp"/>
         </action>
 
         <!-- Admin Actions -->
