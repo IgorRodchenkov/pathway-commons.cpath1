@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.12 2007-05-01 18:13:21 grossben Exp $
+// $Id: WebUIBean.java,v 1.13 2007-05-04 21:18:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -71,6 +71,16 @@ public class WebUIBean extends ActionForm {
      * Display Filter Tab.
      */
     private boolean displayFilterTab;
+
+    /**
+     * A Default user message.
+     */
+    private String defaultUserMessage;
+
+    /**
+     * Base URL
+     */
+    private String baseURL;
 
     /**
      * Sets the Application Name.
@@ -176,5 +186,37 @@ public class WebUIBean extends ActionForm {
      */
     public void setDisplayFilterTab (boolean displayFilterTab) {
         this.displayFilterTab = displayFilterTab;
+    }
+
+    /**
+     * Sets a default user message.
+     * @return Default user message.
+     */
+    public String getDefaultUserMessage () {
+        return defaultUserMessage;
+    }
+
+    /**
+     * Gets a default user message.
+     * @param defaultUserMessage Default user message.
+     */
+    public void setDefaultUserMessage (String defaultUserMessage) {
+        this.defaultUserMessage = defaultUserMessage;
+    }
+
+    /**
+     * Gets the current base URL.
+     * @return base URL.
+     */
+    public String getBaseURL () {
+        return baseURL;
+    }
+
+    /**
+     * Sets the current base URL.
+     * @param baseURL base URL.
+     */
+    public void setBaseURL (String baseURL) {
+        this.baseURL = baseURL;
     }
 }
