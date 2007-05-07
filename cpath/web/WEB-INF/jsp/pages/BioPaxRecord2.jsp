@@ -11,25 +11,36 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
+<%@ page import="org.mskcc.pathdb.xdebug.XDebugUtil"%>
+<%@ page import="org.mskcc.pathdb.action.ShowBioPaxRecord2"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
-// debug mode boolean
-String queryString = request.getQueryString();
-if (queryString == null){
-    queryString = "";
-}
-WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-String xdebugFlag = (String)session.getAttribute(AdminWebLogging.WEB_LOGGING);
-boolean debugMode = (queryString.indexOf("debug=1") != -1 || xdebugFlag != null);
-ArrayList typesList = (ArrayList) request.getAttribute("TYPES_LIST");
-BioPaxTabs bpPlainEnglish = new BioPaxTabs();
-String id = request.getParameter("id");
-BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute("BP_SUMMARY");
-EntitySummary entitySummary = (EntitySummary) request.getAttribute("ENTITY_SUMMARY");
-HashMap<String,Reference> referenceMap = (HashMap<String,Reference>)request.getAttribute("EXTERNAL_LINKS");
-boolean showTabs = false;
+//  Extract data from user request
+String id = request.getParameter(ShowBioPaxRecord2.ID_PARAMETER);
+
+//  Extract data from attributes
+
+//  The BioPAX Record Summary
+BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute(ShowBioPaxRecord2.BP_SUMMARY);
+
+//  The Entity Summary (applies to interaction records only)
+EntitySummary entitySummary = (EntitySummary) request.getAttribute(ShowBioPaxRecord2.ENTITY_SUMMARY);
+
+//  External References
+HashMap<String,Reference> referenceMap = (HashMap<String,Reference>)
+	request.getAttribute(ShowBioPaxRecord2.EXTERNAL_LINKS);
+	
+//  Children / Parent Types (for creation of tabs)
+ArrayList typesList = (ArrayList) request.getAttribute(ShowBioPaxRecord2.TYPES_LIST);
+
+//  Set page title
 request.setAttribute(BaseAction.ATTRIBUTE_TITLE, bpSummary.getName());
+
+boolean showTabs = false;
+WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+BioPaxTabs bpPlainEnglish = new BioPaxTabs();
 
 // Separate PubMed links from other links
 ReferenceUtil refUtil = new ReferenceUtil();
@@ -41,6 +52,7 @@ ArrayList<ExternalLinkRecord> nonReferenceLinks = (ArrayList<ExternalLinkRecord>
 final String CYTOSCAPE_HTTP_SERVER = "127.0.0.1:27182";
 String serverName = (String)request.getServerName();
 serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverName + ":8080";
+
 // cytoscape link
 String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
 urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
@@ -321,6 +333,7 @@ header = header.replaceAll("N/A", "");
 %>
 <p>
 <%
+	//  Output comments
     boolean firstParagraph = false;
     if (bpSummary.getComments() != null) {
     String comments[] = bpSummary.getComments();
@@ -352,9 +365,12 @@ header = header.replaceAll("N/A", "");
 }%>
 </p>
 <%
+	//  Output Pub Med References
     if (referenceLinks.size() > 0) {
         out.println(refUtil.getReferenceHtml(referenceLinks, referenceMap));
     }
+    
+    //  Output Availability Info
     if (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0) {
         out.println("<p><b>Availability:</b></p>\n");
         out.println("<p>" + bpSummary.getAvailability() + "</p>");
@@ -387,10 +403,7 @@ enable Javascript support within your web browser.
     <p>No additional details specified for this record.</p>
 <% } %>
 <%
-    String xdebugSession = (String) session.getAttribute
-            (AdminWebLogging.WEB_LOGGING);
-    String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
-    if (xdebugSession != null || xdebugParameter != null) {
+    if (debugMode) {
 %>
     <script type="text/javascript">
     var myLogReader = new YAHOO.widget.LogReader();
@@ -400,6 +413,7 @@ enable Javascript support within your web browser.
 </div>
 <div class="splitcontentleft">
 <%
+	//  Output data source details
     if (bpSummary.getExternalDatabaseSnapshotRecord() != null) {
         out.println("<h3>Data Source:</h3>");
         ExternalDatabaseRecord dbRecord =
@@ -413,10 +427,14 @@ enable Javascript support within your web browser.
                     + dbRecord.getId() + "'/></div>");
         }
     }
+    
+    //  Output organism details
     if (bpSummary.getOrganism() != null) {
         out.println("<h3>Organism:</h3>");
         out.println("<ul><li>" + bpSummary.getOrganism() + "</li></ul>");
     }
+    
+    //  Output synonyms
     if (bpSummary.getSynonyms() != null && bpSummary.getSynonyms().size() > 0) {
         out.println("<h3>Synonyms:</h3>");
         out.println("<ul>");
@@ -426,6 +444,8 @@ enable Javascript support within your web browser.
         }
         out.println("</ul>");
     }
+    
+    //  Output external links
     if (nonReferenceLinks.size() > 0) {
         out.println("<h3>Links:</h3>");
         out.println("<ul>");
@@ -445,6 +465,8 @@ enable Javascript support within your web browser.
         }
         out.println("</ul>");
     }
+    
+    //  Output Cytoscape Links
     if (webUIBean.getWantCytoscape()) {
 		out.println("<h3>Cytoscape:</h3>");
 		out.println("<ul><li>");
@@ -459,11 +481,14 @@ enable Javascript support within your web browser.
 						">View this pathway in Cytoscape</a>");
 		}
 		else {
-			out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
+			out.println("<span style=\"color:#467aa7;text-decoration:underline;\"" +
+				">View network neighborhood map in Cytoscape</span>");
 		}
 		out.println("<a href=\"cytoscape.do\">(help)</a>");
 		out.println("</li></ul>");
 	}
+	
+	//  Output BioPAX Links
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
             ProtocolRequest pRequest = new ProtocolRequest();
@@ -474,6 +499,8 @@ enable Javascript support within your web browser.
             out.println("<ul><li><a href=\"" + pRequest.getUri() + "\">"
                 + "Download in BioPAX Format" + "</a></li></ul>");
     }
+
+	//  Output XML_ABBREV Link (Debug Mode)
     if (debugMode) {
         out.println("<h3>Debug:</h3>");
         String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + bpSummary.getRecordID();

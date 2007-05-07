@@ -26,15 +26,63 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.Iterator;
 
+/**
+ * Action to show one specific BioPAX Record.
+ *
+ * @author Ethan Cerami
+ */
 public class ShowBioPaxRecord2 extends BaseAction {
+    /**
+     * BioPAX Summary Attribute name.
+     */
+    public static String BP_SUMMARY = "BP_SUMMARY";
 
+    /**
+     * Entity Summary Attribute name.
+     */
+    public static String ENTITY_SUMMARY = "ENTITY_SUMMARY";
+
+    /**
+     * External Links Attribute name.
+     */
+    public static String EXTERNAL_LINKS = "EXTERNAL_LINKS";
+
+    /**
+     * Types List Attributes name;  used to create the tabs on the JSP.
+     */
+    public static String TYPES_LIST = "TYPES_LIST";
+
+    /**
+     * Out of Scope Error.
+     */
+    public static String OUT_OF_SCOPE = "out_of_scope";
+
+    /**
+     * Incoming ID Parameter.
+     */
+    public static String ID_PARAMETER = "id";
+
+    /**
+     * Executes Action.
+     * @param mapping       ActionMapping Object.
+     * @param form          ActionForm Object.
+     * @param request       Http Servlet Request.
+     * @param response      Http Servlet Response.
+     * @param xdebug        XDebug Object.
+     * @return              Action Forward Object.
+     * @throws Exception    All Errors.
+     */
     public ActionForward subExecute (ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response, XDebug xdebug)
             throws Exception {
         DaoCPath dao = DaoCPath.getInstance();
-        String id = request.getParameter("id");
+
+        //  Get the "id" parameter (required)
+        String id = request.getParameter(ID_PARAMETER);
         CPathRecord record = null;
         BioPaxRecordSummary bpSummary = null;
+
+        //  Basic "id" parameter validation
         if (id == null) {
             throw new IllegalArgumentException ("id parameter must be specified.");
         } else {
@@ -49,33 +97,29 @@ public class ShowBioPaxRecord2 extends BaseAction {
                     + " does not exist in database.");
             }
             xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
-            bpSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
-            request.setAttribute("BP_SUMMARY", bpSummary);
 
+            //  Get BioPAX record summary, and pass along to JSP
+            bpSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
+            request.setAttribute(BP_SUMMARY, bpSummary);
+
+            //  If this is an interaction record, get its entity summary.
+            //  The entity summary provides a short summary of the interaction.
+            //  For example A + B --> C
             if (record.getType() == CPathRecordType.INTERACTION) {
                 EntitySummaryParser parser = new EntitySummaryParser(Long.parseLong(id));
                 EntitySummary entitySummary = parser.getEntitySummary();
-                request.setAttribute("ENTITY_SUMMARY", entitySummary);
+                request.setAttribute(ENTITY_SUMMARY, entitySummary);
             }
         }
 
-        DaoInternalLink daoLinker = new DaoInternalLink();
-
-        //  Determine Filter Settings
-        HttpSession session = request.getSession();
-        GlobalFilterSettings filterSettings = (GlobalFilterSettings) session.getAttribute
-                (GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
-        if (filterSettings == null) {
-            filterSettings = new GlobalFilterSettings();
-            session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS,
-                    filterSettings);
-        }
-        xdebug.logMsg(this, "Determining Global Filter Settings");
-
+        //  Get user's current filter settings
+        GlobalFilterSettings filterSettings = getCurrentFilterSettings(request, xdebug);
         int taxId = getTaxonomyIdFilter(filterSettings, xdebug);
         long snapshotIds[] = getSnapshotFilter(filterSettings, xdebug);
-
         Set snapshotIdSet = filterSettings.getSnapshotIdSet();
+
+        //  If the requested record is not in the user's set of selected data sources,
+        //  we have an "out of scope" error.
         xdebug.logMsg(this, "Snapshot ID is:  "  + record.getSnapshotId());
         if (record.getSnapshotId() > 0 &&
                 !snapshotIdSet.contains(record.getSnapshotId())) {
@@ -94,54 +138,99 @@ public class ShowBioPaxRecord2 extends BaseAction {
         //  Get different elements, depending on type
         xdebug.logMsg (this, "Record type:  " + record.getType());
         if (record.getType() == CPathRecordType.PATHWAY) {
+            //  If a pathway, get direct children and physical entity "leaves"
             getChildren = true;
             getPeLeaves = true;
         } else if (record.getType() == CPathRecordType.INTERACTION) {
+            //  If an interaction, get pathway "roots" and physical entity "leaves"
             getPeLeaves = true;
             getPathwayRoots = true;
         } else {
+            //  If a physical entity, get direct parents, and pathway "roots"
             xdebug.logMsg (this, "Record specific type:  " + record.getSpecificType());
             getParents = true;
             getPathwayRoots = true;
             if (record.getSpecificType().toLowerCase().equals("complex")) {
+                //  If a complex, this is a special case;  also got children.
                 isComplex = true;
                 getChildren = true;
             }
         }
+
+        DaoInternalLink daoLinker = new DaoInternalLink();
+
         // set external links
         if (bpSummary != null) {
             ReferenceUtil refUtil = new ReferenceUtil();
             ArrayList bpSummaryList = new ArrayList ();
             bpSummaryList.add(bpSummary);
-            request.setAttribute("EXTERNAL_LINKS", refUtil.getReferenceMap(bpSummaryList, xdebug));
+            request.setAttribute(EXTERNAL_LINKS, refUtil.getReferenceMap(bpSummaryList, xdebug));
         }
 
+        //  Get count information, required to create the tabs for e.g. children, parents,
+        //  pathway roots, etc.
+
+        //  get children count
         if (getChildren) {
             xdebug.logMsg (this, "Getting all children");
             ArrayList childList = getChildTypes(xdebug, daoLinker, id, taxId, snapshotIds,
                     isComplex);
             typeList.addAll(childList);
         }
+
+        //  get parents count
         if (getParents) {
             xdebug.logMsg (this, "Getting all parents");
             ArrayList parentList = getParentTypes(xdebug, daoLinker, id, taxId, snapshotIds);
             typeList.addAll(parentList);
         }
+
+        //  get pathway roots count
         if (getPathwayRoots) {
             xdebug.logMsg (this, "Getting all pathway roots");
             TypeCount typeCount = getPathwayRoots(id, filterSettings, xdebug);
             typeList.add(typeCount);
         }
+
+        //  get physical entity leaf count
         if (getPeLeaves) {
             xdebug.logMsg (this, "Getting all physical entity leaves");
             TypeCount typeCount = getPeLeaves(id, xdebug);
             typeList.add(typeCount);
         }
+
+
         xdebug.logMsg(this, "Total number of tabs:  " + typeList.size());
-        request.setAttribute("TYPES_LIST", typeList);
+        request.setAttribute(TYPES_LIST, typeList);
+
+        //  Forward to JSP page for HTML creation.
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 
+    /**
+     * Determine users's current filter settings.
+     * Create user's filter settings, if none exist.
+     */
+    private GlobalFilterSettings getCurrentFilterSettings (HttpServletRequest request,
+            XDebug xdebug) throws DaoException {
+        //  Determine User's Current Filter Settings
+        HttpSession session = request.getSession();
+        GlobalFilterSettings filterSettings = (GlobalFilterSettings) session.getAttribute
+                (GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+
+        //  Create user's filter settings, if none exist
+        if (filterSettings == null) {
+            filterSettings = new GlobalFilterSettings();
+            session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS,
+                    filterSettings);
+        }
+        xdebug.logMsg(this, "Determining Global Filter Settings");
+        return filterSettings;
+    }
+
+    /**
+     * Gets number of physical entity leaves.
+     */
     private TypeCount getPeLeaves (String id, XDebug xdebug) throws DaoException {
         DaoInternalFamily daoFamily = new DaoInternalFamily();
         int count = daoFamily.getDescendentIdCount(Long.parseLong(id),
@@ -153,6 +242,9 @@ public class ShowBioPaxRecord2 extends BaseAction {
         return typeCount;
     }
 
+    /**
+     * Gets number of pathway roots.
+     */
     private TypeCount getPathwayRoots (String id, GlobalFilterSettings filterSettings,
             XDebug xdebug) throws DaoException {
         DaoInternalFamily daoFamily = new DaoInternalFamily();
@@ -165,6 +257,9 @@ public class ShowBioPaxRecord2 extends BaseAction {
         return typeCount;
     }
 
+    /**
+     * Gets type/number of children.
+     */
     private ArrayList getChildTypes (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
             long[] snapshotIds, boolean isComplex) throws DaoException {
         xdebug.logMsg(this, "Determing types of all child elements");
@@ -201,8 +296,11 @@ public class ShowBioPaxRecord2 extends BaseAction {
         return childTypes;
     }
 
-    private ArrayList getParentTypes (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
-            long[] snapshotIds)
+    /**
+     * Gets type/number of parents.
+     */
+    private ArrayList getParentTypes (XDebug xdebug, DaoInternalLink daoLinker, String id,
+            int taxId, long[] snapshotIds)
             throws DaoException {
         xdebug.logMsg(this, "Determing types of all parent elements");
         ArrayList parentTypes = daoLinker.getParentTypes(Long.parseLong(id),
@@ -222,13 +320,18 @@ public class ShowBioPaxRecord2 extends BaseAction {
         return parentTypes;
     }
 
+    /**
+     *  Removes control interactions, since these are now shown as the
+     *  parents of biochemical reactions.
+     */
     private void removeControlInteractions (ArrayList typeList, XDebug xdebug) {
         int controlIndex = -1;
         for (int i=0; i<typeList.size(); i++) {
             TypeCount typeCount = (TypeCount) typeList.get(i);
             xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
                 + " -->  " + typeCount.getCount() + " records");
-            if (typeCount.getType().equals(BioPaxConstants.CONTROL)) {
+            if (typeCount.getType().equals(BioPaxConstants.CONTROL)
+                    || typeCount.getType().equals(BioPaxConstants.CATALYSIS)) {
                 controlIndex = i;
             }
         }
