@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.13 2007-05-04 21:18:19 cerami Exp $
+// $Id: WebUIBean.java,v 1.14 2007-05-07 15:56:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -81,6 +81,16 @@ public class WebUIBean extends ActionForm {
      * Base URL
      */
     private String baseURL;
+
+    /**
+     * SMTP Host, used to send email.
+     */
+    private String smtpHost;
+
+    /**
+     * To address, where feedback is submitted.
+     */
+    private String feedbackEmailTo;
 
     /**
      * Sets the Application Name.
@@ -218,5 +228,37 @@ public class WebUIBean extends ActionForm {
      */
     public void setBaseURL (String baseURL) {
         this.baseURL = baseURL;
+    }
+
+    /**
+     * Gets SMTP Host.
+     * @return  SMTP Host.
+     */
+    public String getSmtpHost () {
+        return smtpHost;
+    }
+
+    /**
+     * Sets SMTP Host.
+     * @param smtpHost
+     */
+    public void setSmtpHost (String smtpHost) {
+        this.smtpHost = smtpHost;
+    }
+
+    /**
+     * Gets Email Address where feedback will be sent.
+     * @return email address.
+     */
+    public String getFeedbackEmailTo () {
+        return feedbackEmailTo;
+    }
+
+    /**
+     * Sets Email Address where feedback will be set.
+     * @param feedbackEmailTo email address.
+     */
+    public void setFeedbackEmailTo (String feedbackEmailTo) {
+        this.feedbackEmailTo = feedbackEmailTo;
     }
 }
