@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.14 2007-05-07 15:56:06 cerami Exp $
+// $Id: WebUIBean.java,v 1.15 2007-05-07 16:10:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -200,6 +200,10 @@ public class WebUIBean extends ActionForm {
 
     /**
      * Sets a default user message.
+     * <P>If set, the default user message appears at the top of every cPath page.
+     * Currently used to display a message that solicits feedback, but could also be
+     * used to set routine maintenace messaages, etc.
+     *
      * @return Default user message.
      */
     public String getDefaultUserMessage () {
@@ -208,6 +212,9 @@ public class WebUIBean extends ActionForm {
 
     /**
      * Gets a default user message.
+     * <P>If set, the default user message appears at the top of every cPath page.
+     * Currently used to display a message that solicits feedback, but could also be
+     * used to set routine maintenace messaages, etc.
      * @param defaultUserMessage Default user message.
      */
     public void setDefaultUserMessage (String defaultUserMessage) {
@@ -216,6 +223,12 @@ public class WebUIBean extends ActionForm {
 
     /**
      * Gets the current base URL.
+     * <P>The base URL is currently used to prevent SPAM-bots from spamming the feedback
+     * form.  For pathway commons, the base URL is currently set to pathwaycommons.org.
+     * If a user submits a feedback message with lots of URLs pointing to the base URL,
+     * we consider that OK.  However, if a user submits a message with lots of URLs pointing
+     * to *other* sites, it's probably a SPAM-bot, and we reject the form submission.
+     *
      * @return base URL.
      */
     public String getBaseURL () {
@@ -224,6 +237,11 @@ public class WebUIBean extends ActionForm {
 
     /**
      * Sets the current base URL.
+     * <P>The base URL is currently used to prevent SPAM-bots from spamming the feedback
+     * form.  For pathway commons, the base URL is currently set to pathwaycommons.org.
+     * If a user submits a feedback message with lots of URLs pointing to the base URL,
+     * we consider that OK.  However, if a user submits a message with lots of URLs pointing
+     * to *other* sites, it's probably a SPAM-bot, and we reject the form submission.
      * @param baseURL base URL.
      */
     public void setBaseURL (String baseURL) {
@@ -232,6 +250,9 @@ public class WebUIBean extends ActionForm {
 
     /**
      * Gets SMTP Host.
+     * <P>This property must be set, in order for cPath to send email messages.  Currently
+     * required for the feedback form feature.
+     *
      * @return  SMTP Host.
      */
     public String getSmtpHost () {
@@ -240,6 +261,8 @@ public class WebUIBean extends ActionForm {
 
     /**
      * Sets SMTP Host.
+     * <P>This property must be set, in order for cPath to send email messages.  Currently
+     * required for the feedback form feature.
      * @param smtpHost
      */
     public void setSmtpHost (String smtpHost) {
@@ -247,7 +270,8 @@ public class WebUIBean extends ActionForm {
     }
 
     /**
-     * Gets Email Address where feedback will be sent.
+     * Gets Email Address where feedback will be sent.  Currently required for the feedback
+     * form feature.
      * @return email address.
      */
     public String getFeedbackEmailTo () {
@@ -255,7 +279,8 @@ public class WebUIBean extends ActionForm {
     }
 
     /**
-     * Sets Email Address where feedback will be set.
+     * Sets Email Address where feedback will be set.  Currently required for the feedback
+     * form feature.
      * @param feedbackEmailTo email address.
      */
     public void setFeedbackEmailTo (String feedbackEmailTo) {
