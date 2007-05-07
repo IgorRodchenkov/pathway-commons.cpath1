@@ -16,12 +16,12 @@
 
 <%
 int start = 0;
-String startIndex = request.getParameter("startIndex");
+String startIndex = request.getParameter(BioPaxParentChild.START_INDEX_PARAMETER);
 if (startIndex != null) {
     start = Integer.parseInt(startIndex);
 }
 start++;
-String type = request.getParameter("type");
+String type = request.getParameter(BioPaxParentChild.TYPE_PARAMETER);
 String showHeader = request.getParameter("showHeader");
 boolean headerFlag = true;
 if (showHeader != null && showHeader.equals("false")) {
@@ -31,7 +31,7 @@ if (showHeader != null && showHeader.equals("false")) {
 int max = BioPaxParentChild.MAX_RECORDS;
 
 int total = 9999;
-String totalNumRecords = request.getParameter("totalNumRecords");
+String totalNumRecords = request.getParameter(BioPaxParentChild.TOTAL_NUM_RECORDS_PARAMETER);
 if (totalNumRecords != null) {
     total = Integer.parseInt(totalNumRecords);
 }

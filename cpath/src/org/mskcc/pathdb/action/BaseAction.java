@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.33 2007-04-16 20:37:52 cerami Exp $
+// $Id: BaseAction.java,v 1.34 2007-05-07 20:02:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,12 +38,17 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.log4j.Logger;
 import org.mskcc.pathdb.xdebug.SnoopHttp;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
+import org.mskcc.pathdb.sql.dao.DaoException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Set;
+import java.util.Iterator;
 
 /**
  * Base Struts Action Class.
@@ -308,6 +313,73 @@ public abstract class BaseAction extends Action {
         xdebug.logMsg(this, "Page is not protected.  "
                 + "User is authorized");
         return true;
+    }
+
+    /**
+     * Determine users's current filter settings.
+     * Create user's filter settings, if none exist.
+     * @param request   HttpServletRequest Object.
+     * @param xdebug    XDebug Object.
+     * @return          GlobalFilterSettings Object.
+     * @throws DaoException Database Error.
+     */
+    protected GlobalFilterSettings getCurrentFilterSettings (HttpServletRequest request,
+            XDebug xdebug) throws DaoException {
+        //  Determine User's Current Filter Settings
+        HttpSession session = request.getSession();
+        GlobalFilterSettings filterSettings = (GlobalFilterSettings) session.getAttribute
+                (GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+
+        //  Create user's filter settings, if none exist
+        if (filterSettings == null) {
+            filterSettings = new GlobalFilterSettings();
+            session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS,
+                    filterSettings);
+        }
+        xdebug.logMsg(this, "Determining Global Filter Settings");
+        return filterSettings;
+    }
+
+
+    /**
+     * Determines Organism Filter.
+     * @param filterSettings    GlobalFilterSettings Object.
+     * @param xdebug            XDebug Object.
+     * @return  taxonomy ID.
+     */
+    protected int getTaxonomyIdFilter (GlobalFilterSettings filterSettings, XDebug xdebug) {
+        int taxId = -1;
+        Set organismSet = filterSettings.getOrganismTaxonomyIdSet();
+        Iterator organismIterator = organismSet.iterator();
+        while (organismIterator.hasNext()) {
+            Integer ncbiTaxonomyId = (Integer) organismIterator.next();
+            if (ncbiTaxonomyId == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
+                xdebug.logMsg (this, "Organism Filter set to:  ALL ORGANISMS");
+            } else {
+                xdebug.logMsg (this, "Organism Filter set to:  " + ncbiTaxonomyId);
+                taxId = ncbiTaxonomyId;
+            }
+        }
+        return taxId;
+    }
+
+    /**
+     * Determines the current data source filter.
+     * @param filterSettings        GlobalFilterSettings Object.
+     * @param xdebug                XDebug Object.
+     * @return array of snapshot IDs.
+     */
+    protected long[] getSnapshotFilter (GlobalFilterSettings filterSettings, XDebug xdebug) {
+        Set snapshotSet = filterSettings.getSnapshotIdSet();
+        long snapshotIds [] = new long[snapshotSet.size()];
+        Iterator snapshotIterator = snapshotSet.iterator();
+        int index = 0;
+        while (snapshotIterator.hasNext()) {
+            Long snapshotId = (Long) snapshotIterator.next();
+            xdebug.logMsg (this, "Snapshot Filter set to:  " + snapshotId);
+            snapshotIds[index++] = snapshotId;
+        }
+        return snapshotIds;
     }
 
     /**

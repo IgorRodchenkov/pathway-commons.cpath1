@@ -208,27 +208,6 @@ public class ShowBioPaxRecord2 extends BaseAction {
     }
 
     /**
-     * Determine users's current filter settings.
-     * Create user's filter settings, if none exist.
-     */
-    private GlobalFilterSettings getCurrentFilterSettings (HttpServletRequest request,
-            XDebug xdebug) throws DaoException {
-        //  Determine User's Current Filter Settings
-        HttpSession session = request.getSession();
-        GlobalFilterSettings filterSettings = (GlobalFilterSettings) session.getAttribute
-                (GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
-
-        //  Create user's filter settings, if none exist
-        if (filterSettings == null) {
-            filterSettings = new GlobalFilterSettings();
-            session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS,
-                    filterSettings);
-        }
-        xdebug.logMsg(this, "Determining Global Filter Settings");
-        return filterSettings;
-    }
-
-    /**
      * Gets number of physical entity leaves.
      */
     private TypeCount getPeLeaves (String id, XDebug xdebug) throws DaoException {
@@ -339,40 +318,5 @@ public class ShowBioPaxRecord2 extends BaseAction {
             typeList.remove(controlIndex);
             xdebug.logMsg(this, "Removing control interactions");
         }
-    }
-
-    /**
-     * Determine Organism Filter.
-     */
-    private int getTaxonomyIdFilter (GlobalFilterSettings filterSettings, XDebug xdebug) {
-        int taxId = -1;
-        Set organismSet = filterSettings.getOrganismTaxonomyIdSet();
-        Iterator organismIterator = organismSet.iterator();
-        while (organismIterator.hasNext()) {
-            Integer ncbiTaxonomyId = (Integer) organismIterator.next();
-            if (ncbiTaxonomyId == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
-                xdebug.logMsg (this, "Organism Filter set to:  ALL ORGANISMS");
-            } else {
-                xdebug.logMsg (this, "Organism Filter set to:  " + ncbiTaxonomyId);
-                taxId = ncbiTaxonomyId;
-            }
-        }
-        return taxId;
-    }
-
-    /**
-     * Determine Data Source Filter.
-     */
-    private long[] getSnapshotFilter (GlobalFilterSettings filterSettings, XDebug xdebug) {
-        Set snapshotSet = filterSettings.getSnapshotIdSet();
-        long snapshotIds [] = new long[snapshotSet.size()];
-        Iterator snapshotIterator = snapshotSet.iterator();
-        int index = 0;
-        while (snapshotIterator.hasNext()) {
-            Long snapshotId = (Long) snapshotIterator.next();
-            xdebug.logMsg (this, "Snapshot Filter set to:  " + snapshotId);
-            snapshotIds[index++] = snapshotId;
-        }
-        return snapshotIds;
     }
 }

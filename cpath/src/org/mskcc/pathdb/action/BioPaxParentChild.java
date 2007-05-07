@@ -69,21 +69,57 @@ public class BioPaxParentChild extends BaseAction {
      */
     public static String KEY_PMID_MAP = "KEY_PMID_MAP";
 
+    /**
+     * Command Parameter.
+     */
+    public static String COMMAND_PARAMETER = "command";
+
+    /**
+     * Tyoe Parameter.
+     */
+    public static String TYPE_PARAMETER = "type";
+
+    /**
+     * Start Index Parameter.
+     */
+    public static String START_INDEX_PARAMETER = "startIndex";
+
+    /**
+     * Max Records Parameter.
+     */
+    public static String MAX_RECORDS_PARAMETER = "maxRecords";
+
+    /**
+     * Total Num Records Parameter.
+     */
+    public static String TOTAL_NUM_RECORDS_PARAMETER = "maxRecords";
+
+    /**
+     * Executes Action.
+     * @param mapping       ActionMapping Object.
+     * @param form          ActionForm Object.
+     * @param request       Http Servlet Request.
+     * @param response      Http Servlet Response.
+     * @param xdebug        XDebug Object.
+     * @return              Action Forward Object.
+     * @throws Exception    All Errors.
+     */
     public ActionForward subExecute (ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response, XDebug xdebug)
             throws Exception {
         DaoCPath dao = DaoCPath.getInstance();
 
         //  required parameters
-        String id = request.getParameter("id");
-        String command = request.getParameter("command");
-        String type = request.getParameter("type");
+        String id = request.getParameter(ShowBioPaxRecord2.ID_PARAMETER);
+        String command = request.getParameter(COMMAND_PARAMETER);
+        String type = request.getParameter(TYPE_PARAMETER);
 
         //  optional parameters
-        String startIndex = request.getParameter("startIndex");
-        String maxRecords = request.getParameter("maxRecords");
-        String totalNumRecords = request.getParameter("totalNumRecords");
+        String startIndex = request.getParameter(START_INDEX_PARAMETER);
+        String maxRecords = request.getParameter(MAX_RECORDS_PARAMETER);
+        String totalNumRecords = request.getParameter(TOTAL_NUM_RECORDS_PARAMETER);
 
+        //  Basic Input Validation of Required Paramters
         if (id == null) {
             throw new IllegalArgumentException ("id parameter must be specified.");
         }
@@ -99,6 +135,7 @@ public class BioPaxParentChild extends BaseAction {
                 + command);
         }
 
+        //  Parse the startIndex parameter
         int start = 0;
         if (startIndex != null) {
             try {
@@ -108,6 +145,8 @@ public class BioPaxParentChild extends BaseAction {
                         ("startIndex parameter must be an integer value.");
             }
         }
+
+        //  Parse the max number of records parameter
         int max = MAX_RECORDS;
         if (maxRecords != null) {
             try {
@@ -118,6 +157,7 @@ public class BioPaxParentChild extends BaseAction {
             }
         }
 
+        //  Parse the total number of records parameter
         if (totalNumRecords != null) {
             try {
                 int total = Integer.parseInt(totalNumRecords);
@@ -127,6 +167,7 @@ public class BioPaxParentChild extends BaseAction {
             }
         }
 
+        //  Look up CPath Record
         CPathRecord record = null;
         xdebug.logMsg(this, "Using cPath ID:  " + id);
         try {
@@ -140,19 +181,8 @@ public class BioPaxParentChild extends BaseAction {
         }
         xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
 
-        DaoInternalLink daoLinker = new DaoInternalLink();
-
-        //  Determine Filter Settings
-        HttpSession session = request.getSession();
-        GlobalFilterSettings filterSettings = (GlobalFilterSettings) session.getAttribute
-                (GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
-        if (filterSettings == null) {
-            filterSettings = new GlobalFilterSettings();
-            session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS,
-                    filterSettings);
-        }
-        xdebug.logMsg(this, "Determining Global Filter Settings");
-
+        //  Determine Current Filter Settings
+        GlobalFilterSettings filterSettings = this.getCurrentFilterSettings(request, xdebug);
         int taxId = getTaxonomyIdFilter(filterSettings, xdebug);
         long snapshotIds[] = getSnapshotFilter(filterSettings, xdebug);
 
@@ -161,6 +191,7 @@ public class BioPaxParentChild extends BaseAction {
         HashMap interactionSummaryMap = new HashMap();
 
         //  Get parent or child elements.
+        DaoInternalLink daoLinker = new DaoInternalLink();
         if (command != null && command.equals(GET_PARENTS)) {
             if (type != null && type.equals(GET_PATHWAY_ROOTS)) {
                 bpSummaryList = getPathwayRoots(xdebug, id, filterSettings.getSnapshotIdSet(),
@@ -178,7 +209,7 @@ public class BioPaxParentChild extends BaseAction {
             }
         }
 
-        //  Get BioPax Summaries
+        //  Get BioPax Summaries;  Get Interaction Summaries.
         if (records != null) {
             interactionSummaryMap = getInteractionSummaryMap(records, xdebug);
             bpSummaryList = getBioPaxSummaries(records, xdebug);
@@ -188,12 +219,18 @@ public class BioPaxParentChild extends BaseAction {
         ReferenceUtil refUtil = new ReferenceUtil();
         HashMap refMap = refUtil.getReferenceMap(bpSummaryList, xdebug);
 
+        //  Store data in attributes
         request.setAttribute(KEY_PMID_MAP, refMap);
         request.setAttribute(KEY_INTERACTION_SUMMARY_MAP, interactionSummaryMap);
         request.setAttribute(KEY_BP_SUMMARY_LIST, bpSummaryList);
+
+        //  Forward to JSP for rendering
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 
+    /**
+     * Gets EntitySummary Objects (Applies to Interaction Records only)
+     */
     private HashMap <Long, EntitySummary> getInteractionSummaryMap
             (ArrayList records, XDebug xdebug)
             throws DaoException, EntitySummaryException {
@@ -212,6 +249,9 @@ public class BioPaxParentChild extends BaseAction {
         return map;
     }
 
+    /**
+     * Gets BioPAX Summary Objects.
+     */
     private ArrayList <BioPaxRecordSummary> getBioPaxSummaries (ArrayList records, XDebug xdebug)
             throws BioPaxRecordSummaryException, DaoException {
         DaoCPath daoCPath = DaoCPath.getInstance();
@@ -228,6 +268,9 @@ public class BioPaxParentChild extends BaseAction {
         return bpSummaryList;
     }
 
+    /**
+     * Gets all Children.
+     */
     private ArrayList getChildren (XDebug xdebug, CPathRecord record, DaoInternalLink daoLinker,
             String id, int taxId, long[] snapshotIds, String type, int start, int max)
             throws DaoException {
@@ -256,6 +299,9 @@ public class BioPaxParentChild extends BaseAction {
         return null;
     }
 
+    /**
+     * Gets all Parents.
+     */
     private ArrayList getParents (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
             long[] snapshotIds, String type, int start, int max)
             throws DaoException {
@@ -280,38 +326,8 @@ public class BioPaxParentChild extends BaseAction {
     }
 
     /**
-     * Determine Organism Filter.
+     * Gets all Pathway Roots.
      */
-    private int getTaxonomyIdFilter (GlobalFilterSettings filterSettings, XDebug xdebug) {
-        int taxId = -1;
-        Set organismSet = filterSettings.getOrganismTaxonomyIdSet();
-        Iterator organismIterator = organismSet.iterator();
-        while (organismIterator.hasNext()) {
-            Integer ncbiTaxonomyId = (Integer) organismIterator.next();
-            if (ncbiTaxonomyId == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
-                xdebug.logMsg (this, "Organism Filter set to:  ALL ORGANISMS");
-            } else {
-                xdebug.logMsg (this, "Organism Filter set to:  " + ncbiTaxonomyId);
-                taxId = ncbiTaxonomyId;
-            }
-        }
-        return taxId;
-    }
-
-    private long[] getSnapshotFilter (GlobalFilterSettings filterSettings, XDebug xdebug) {
-        Set snapshotSet = filterSettings.getSnapshotIdSet();
-        long snapshotIds [] = new long[snapshotSet.size()];
-        Iterator snapshotIterator = snapshotSet.iterator();
-        int index = 0;
-        while (snapshotIterator.hasNext()) {
-            Long snapshotId = (Long) snapshotIterator.next();
-            xdebug.logMsg (this, "Snapshot Filter set to:  " + snapshotId);
-            snapshotIds[index++] = snapshotId;
-        }
-        return snapshotIds;
-
-    }
-
     private ArrayList <BioPaxRecordSummary> getPathwayRoots(XDebug xdebug, String id,
             Set snapshotIdSet, Set organismIdSet, int start, int max) throws DaoException,
             BioPaxRecordSummaryException {
@@ -336,6 +352,9 @@ public class BioPaxParentChild extends BaseAction {
         return rootList;
     }
 
+    /**
+     * Gets all Physical Entity Leaves.
+     */
     private ArrayList <BioPaxRecordSummary> getPeLeaves
             (XDebug xdebug, String id, int start, int max)
             throws DaoException, BioPaxRecordSummaryException {
