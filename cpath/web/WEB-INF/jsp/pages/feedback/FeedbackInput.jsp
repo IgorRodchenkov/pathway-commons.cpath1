@@ -28,7 +28,7 @@ request.setAttribute(BaseAction.ATTRIBUTE_USER_MSG, "We welcome your comments...
         <td><html:text property="subject" size="30" maxlength="100"/></td>
     </tr>
     <tr>
-        <td valign="top">Subject:</td>
+        <td valign="top">Message:</td>
         <td><html:textarea property="message" rows="10" cols="50"/></td>
     </tr>
    <tr>
