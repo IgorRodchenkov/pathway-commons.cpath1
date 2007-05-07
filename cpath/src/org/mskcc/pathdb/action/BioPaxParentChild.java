@@ -1,21 +1,23 @@
 package org.mskcc.pathdb.action;
 
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionForm;
-import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
+import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.schemas.biopax.summary.*;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
-import org.mskcc.pathdb.model.*;
-import org.mskcc.pathdb.schemas.biopax.summary.*;
-import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.taglib.ReferenceUtil;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -65,6 +67,11 @@ public class BioPaxParentChild extends BaseAction {
     public static String KEY_INTERACTION_SUMMARY_MAP = "INTERACTION_SUMARY_MAP";
 
     /**
+     * Attribute Key:  Interaction Parents HashMap.
+     */
+    public static String KEY_INTERACTION_PARENTS_SUMMARY_MAP = "INTERACTION_PARENTS_SUMMARY_MAP";
+
+    /**
      * Attribute Key:  PMID Map.
      */
     public static String KEY_PMID_MAP = "KEY_PMID_MAP";
@@ -96,13 +103,14 @@ public class BioPaxParentChild extends BaseAction {
 
     /**
      * Executes Action.
-     * @param mapping       ActionMapping Object.
-     * @param form          ActionForm Object.
-     * @param request       Http Servlet Request.
-     * @param response      Http Servlet Response.
-     * @param xdebug        XDebug Object.
-     * @return              Action Forward Object.
-     * @throws Exception    All Errors.
+     *
+     * @param mapping  ActionMapping Object.
+     * @param form     ActionForm Object.
+     * @param request  Http Servlet Request.
+     * @param response Http Servlet Response.
+     * @param xdebug   XDebug Object.
+     * @return Action Forward Object.
+     * @throws Exception All Errors.
      */
     public ActionForward subExecute (ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response, XDebug xdebug)
@@ -121,18 +129,18 @@ public class BioPaxParentChild extends BaseAction {
 
         //  Basic Input Validation of Required Paramters
         if (id == null) {
-            throw new IllegalArgumentException ("id parameter must be specified.");
+            throw new IllegalArgumentException("id parameter must be specified.");
         }
         if (command == null) {
-            throw new IllegalArgumentException ("command parameter must be specified.");
+            throw new IllegalArgumentException("command parameter must be specified.");
         }
         if (type == null) {
-            throw new IllegalArgumentException ("type parameter must be specified.");
+            throw new IllegalArgumentException("type parameter must be specified.");
         }
         if (!command.equals(BioPaxParentChild.GET_CHILDREN)
                 && !command.equals(BioPaxParentChild.GET_PARENTS)) {
-            throw new IllegalArgumentException ("command parameter not recognized --> "
-                + command);
+            throw new IllegalArgumentException("command parameter not recognized --> "
+                    + command);
         }
 
         //  Parse the startIndex parameter
@@ -173,11 +181,11 @@ public class BioPaxParentChild extends BaseAction {
         try {
             record = dao.getRecordById(Long.parseLong(id));
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException ("id parameter must be an integer value.");
+            throw new IllegalArgumentException("id parameter must be an integer value.");
         }
         if (record == null) {
-            throw new IllegalArgumentException ("record id " + id
-                + " does not exist in database.");
+            throw new IllegalArgumentException("record id " + id
+                    + " does not exist in database.");
         }
         xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
 
@@ -187,7 +195,7 @@ public class BioPaxParentChild extends BaseAction {
         long snapshotIds[] = getSnapshotFilter(filterSettings, xdebug);
 
         ArrayList records = null;
-        ArrayList <BioPaxRecordSummary> bpSummaryList = null;
+        ArrayList<BioPaxRecordSummary> bpSummaryList = null;
         HashMap interactionSummaryMap = new HashMap();
 
         //  Get parent or child elements.
@@ -198,20 +206,24 @@ public class BioPaxParentChild extends BaseAction {
                         filterSettings.getOrganismTaxonomyIdSet(), start, max);
             } else {
                 records = getParents(xdebug, daoLinker, id, taxId, snapshotIds, type,
-                    start, max);
+                        start, max);
             }
         } else {
             if (type != null && type.equals(GET_PE_LEAVES)) {
                 bpSummaryList = getPeLeaves(xdebug, id, start, max);
             } else {
                 records = getChildren(xdebug, record, daoLinker, id, taxId, snapshotIds, type,
-                    start, max);
+                        start, max);
             }
         }
 
         //  Get BioPax Summaries;  Get Interaction Summaries.
+        HashMap <Long, ArrayList>interactionParentMap = null;
         if (records != null) {
+            interactionParentMap = getInteractionParents(records, xdebug);
             interactionSummaryMap = getInteractionSummaryMap(records, xdebug);
+            getParentInteractionSummaries(interactionParentMap, interactionSummaryMap,
+                    xdebug);
             bpSummaryList = getBioPaxSummaries(records, xdebug);
         }
 
@@ -224,26 +236,41 @@ public class BioPaxParentChild extends BaseAction {
         request.setAttribute(KEY_INTERACTION_SUMMARY_MAP, interactionSummaryMap);
         request.setAttribute(KEY_BP_SUMMARY_LIST, bpSummaryList);
 
+        if (interactionParentMap != null) {
+            request.setAttribute(KEY_INTERACTION_PARENTS_SUMMARY_MAP, interactionParentMap);
+        }
+
         //  Forward to JSP for rendering
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
+    }
+
+    private void getParentInteractionSummaries (HashMap interactionParentMap,
+            HashMap interactionSummaryMap, XDebug xdebug)
+            throws DaoException, EntitySummaryException {
+        Iterator iterator = interactionParentMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            Long interactionId = (Long) iterator.next();
+            ArrayList parentRecords = (ArrayList) interactionParentMap.get(interactionId);
+            interactionSummaryMap.putAll(getInteractionSummaryMap(parentRecords, xdebug));
+        }
     }
 
     /**
      * Gets EntitySummary Objects (Applies to Interaction Records only)
      */
-    private HashMap <Long, EntitySummary> getInteractionSummaryMap
+    private HashMap<Long, EntitySummary> getInteractionSummaryMap
             (ArrayList records, XDebug xdebug)
             throws DaoException, EntitySummaryException {
-        HashMap <Long, EntitySummary> map = new HashMap<Long, EntitySummary>();
-        for (int i=0; i<records.size(); i++) {
+        HashMap<Long, EntitySummary> map = new HashMap<Long, EntitySummary>();
+        for (int i = 0; i < records.size(); i++) {
             CPathRecord record0 = (CPathRecord) records.get(i);
             if (record0.getType().equals(CPathRecordType.INTERACTION)) {
                 EntitySummaryParser parser = new EntitySummaryParser(record0.getId());
                 EntitySummary summary = parser.getEntitySummary();
                 map.put(record0.getId(), summary);
                 xdebug.logMsg(this, "Got summary for interaction:  [cPath ID: "
-                    + summary.getRecordID()
-                    + "] --> " + summary.getName());
+                        + summary.getRecordID()
+                        + "] --> " + summary.getName());
             }
         }
         return map;
@@ -252,18 +279,18 @@ public class BioPaxParentChild extends BaseAction {
     /**
      * Gets BioPAX Summary Objects.
      */
-    private ArrayList <BioPaxRecordSummary> getBioPaxSummaries (ArrayList records, XDebug xdebug)
+    private ArrayList<BioPaxRecordSummary> getBioPaxSummaries (ArrayList records, XDebug xdebug)
             throws BioPaxRecordSummaryException, DaoException {
         DaoCPath daoCPath = DaoCPath.getInstance();
         ArrayList bpSummaryList = new ArrayList();
-        for (int i=0; i<records.size(); i++) {
+        for (int i = 0; i < records.size(); i++) {
             CPathRecord record = (CPathRecord) records.get(i);
             CPathRecord recordFull = daoCPath.getRecordById(record.getId());
             BioPaxRecordSummary bpSummary =
                     BioPaxRecordUtil.createBioPaxRecordSummary(recordFull);
             bpSummaryList.add(bpSummary);
             xdebug.logMsg(this, "Got summary for:  [cPath ID: " + bpSummary.getRecordID()
-                + "] --> " + bpSummary.getName());
+                    + "] --> " + bpSummary.getName());
         }
         return bpSummaryList;
     }
@@ -277,22 +304,22 @@ public class BioPaxParentChild extends BaseAction {
         if (type != null) {
             xdebug.logMsg(this, "Getting children.  Restricting results to records of type:  "
                     + type);
-            xdebug.logMsg (this, "Start Index is set to:  " + start);
-            xdebug.logMsg (this, "Max Records is set to:  " + max);
+            xdebug.logMsg(this, "Start Index is set to:  " + start);
+            xdebug.logMsg(this, "Max Records is set to:  " + max);
             ArrayList records;
             if (record.getSpecificType().equalsIgnoreCase("complex")) {
                 records = daoLinker.getChildren(Long.parseLong(id), start, max, xdebug);
             } else {
                 records = daoLinker.getChildren(Long.parseLong(id), taxId, snapshotIds,
-                    type, start, max, xdebug);
+                        type, start, max, xdebug);
             }
-            if (records.size() ==0) {
+            if (records.size() == 0) {
                 xdebug.logMsg(this, "No children found");
             }
-            for (int j=0; j<records.size(); j++) {
+            for (int j = 0; j < records.size(); j++) {
                 CPathRecord childRecord = (CPathRecord) records.get(j);
                 xdebug.logMsg(this, "[cPathID:  " + childRecord.getId() + "]  "
-                    + childRecord.getSpecificType() + ":  " + childRecord.getName());
+                        + childRecord.getSpecificType() + ":  " + childRecord.getName());
             }
             return records;
         }
@@ -307,18 +334,18 @@ public class BioPaxParentChild extends BaseAction {
             throws DaoException {
         if (type != null) {
             xdebug.logMsg(this, "Getting parents.  Restricting results to records of type:  "
-                + type);
-            xdebug.logMsg (this, "Start Index is set to:  " + start);
-            xdebug.logMsg (this, "Max Records is set to:  " + max);
+                    + type);
+            xdebug.logMsg(this, "Start Index is set to:  " + start);
+            xdebug.logMsg(this, "Max Records is set to:  " + max);
             ArrayList records = daoLinker.getParents(Long.parseLong(id), taxId, snapshotIds,
                     type, start, max, xdebug);
-            if (records.size() ==0) {
+            if (records.size() == 0) {
                 xdebug.logMsg(this, "No parents found");
             }
-            for (int j=0; j<records.size(); j++) {
+            for (int j = 0; j < records.size(); j++) {
                 CPathRecord childRecord = (CPathRecord) records.get(j);
                 xdebug.logMsg(this, "[cPathID:  " + childRecord.getId() + "]  "
-                    + childRecord.getSpecificType() + ":  " + childRecord.getName());
+                        + childRecord.getSpecificType() + ":  " + childRecord.getName());
             }
             return records;
         }
@@ -328,7 +355,7 @@ public class BioPaxParentChild extends BaseAction {
     /**
      * Gets all Pathway Roots.
      */
-    private ArrayList <BioPaxRecordSummary> getPathwayRoots(XDebug xdebug, String id,
+    private ArrayList<BioPaxRecordSummary> getPathwayRoots (XDebug xdebug, String id,
             Set snapshotIdSet, Set organismIdSet, int start, int max) throws DaoException,
             BioPaxRecordSummaryException {
         xdebug.logMsg(this, "Getting Pathway Root Elements");
@@ -338,7 +365,7 @@ public class BioPaxParentChild extends BaseAction {
                 summarySet, snapshotIdSet, organismIdSet, start, max);
 
         xdebug.logMsg(this, "Total number of pathway root elements:  " + count);
-        ArrayList <BioPaxRecordSummary> rootList = new ArrayList <BioPaxRecordSummary>();
+        ArrayList<BioPaxRecordSummary> rootList = new ArrayList<BioPaxRecordSummary>();
         DaoCPath daoCPath = DaoCPath.getInstance();
         Iterator iterator = summarySet.iterator();
         while (iterator.hasNext()) {
@@ -355,7 +382,7 @@ public class BioPaxParentChild extends BaseAction {
     /**
      * Gets all Physical Entity Leaves.
      */
-    private ArrayList <BioPaxRecordSummary> getPeLeaves
+    private ArrayList<BioPaxRecordSummary> getPeLeaves
             (XDebug xdebug, String id, int start, int max)
             throws DaoException, BioPaxRecordSummaryException {
         xdebug.logMsg(this, "Getting Physical Entity Leaf Elements");
@@ -367,7 +394,7 @@ public class BioPaxParentChild extends BaseAction {
 
         Iterator iterator = summarySet.iterator();
 
-        ArrayList <BioPaxRecordSummary> peList = new ArrayList <BioPaxRecordSummary>();
+        ArrayList<BioPaxRecordSummary> peList = new ArrayList<BioPaxRecordSummary>();
         DaoCPath daoCPath = DaoCPath.getInstance();
         while (iterator.hasNext()) {
             BioPaxRecordSummary bpSummaryBrief = (BioPaxRecordSummary) iterator.next();
@@ -378,5 +405,44 @@ public class BioPaxParentChild extends BaseAction {
             peList.add(bpSummaryComplete);
         }
         return peList;
+    }
+
+    /**
+     * Gets parent interactions, e.g. controllers.
+     */
+    private HashMap <Long, ArrayList> getInteractionParents(ArrayList records, XDebug xdebug)
+        throws DaoException {
+        HashMap <Long, ArrayList> interactionParentMap = new HashMap<Long, ArrayList>();
+
+        for (int i = 0; i < records.size(); i++) {
+            CPathRecord record = (CPathRecord) records.get(i);
+            if (record.getType().equals(CPathRecordType.INTERACTION)) {
+                ArrayList parentInteractions = getInteractionParents(record.getId(), xdebug);
+                interactionParentMap.put(record.getId(), parentInteractions);
+            }
+        }
+        return interactionParentMap;
+    }
+
+    /**
+     * Gets parent interactions, e.g. controllers.
+     */
+    private ArrayList getInteractionParents (long cpathId, XDebug xdebug) throws DaoException {
+        ArrayList parentRecords = new ArrayList();
+
+        //  First, get parents of this interaction
+        DaoInternalLink daoInternalLink = new DaoInternalLink();
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        ArrayList sources = daoInternalLink.getSources(cpathId);
+
+        xdebug.logMsg(this, "Getting parents of interaction:  " + cpathId);
+        for (int i = 0; i < sources.size(); i++) {
+            InternalLinkRecord internalLinkRecord = (InternalLinkRecord) sources.get(i);
+            CPathRecord parentRecord = daoCPath.getRecordById(internalLinkRecord.getSourceId());
+            if (parentRecord.getType() == CPathRecordType.INTERACTION) {
+                parentRecords.add(parentRecord);
+            }
+        }
+        return parentRecords;
     }
 }

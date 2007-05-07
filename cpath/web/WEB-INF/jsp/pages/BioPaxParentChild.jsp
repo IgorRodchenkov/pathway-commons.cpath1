@@ -7,9 +7,7 @@
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
-<%@ page import="org.mskcc.pathdb.sql.dao.DaoInternalLink"%>
 <%@ page import="org.mskcc.pathdb.model.*"%>
-<%@ page import="org.mskcc.pathdb.sql.dao.DaoCPath"%>
 <%@ page import="java.io.IOException"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
@@ -85,6 +83,8 @@ ArrayList <BioPaxRecordSummary>  bpSummaryList = (ArrayList<BioPaxRecordSummary>
         request.getAttribute(BioPaxParentChild.KEY_BP_SUMMARY_LIST);
 HashMap <Long, EntitySummary> interactionSummaryMap = (HashMap <Long, EntitySummary>)
         request.getAttribute(BioPaxParentChild.KEY_INTERACTION_SUMMARY_MAP);
+HashMap <Long, ArrayList> parentInteractionMap = (HashMap <Long, ArrayList>)
+        request.getAttribute(BioPaxParentChild.KEY_INTERACTION_PARENTS_SUMMARY_MAP);
 
 int index = start;
 for (int i = 0; i < bpSummaryList.size(); i++) {
@@ -107,7 +107,8 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
             if (interactionString != null) {
                 out.println("<span class='entity_summary'>" + interactionString);
             }
-            outputParentInteractions(interactionSummary, out, debugMode);
+            outputParentInteractions(interactionSummary, parentInteractionMap,
+                    interactionSummaryMap, out, debugMode);
             out.println("</span>");
             out.println("</td>");
             out.println(getBioPaxDetailsHtml(bpSummary, referenceMap, i));
@@ -126,25 +127,19 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
 /**
  * Outputs parent interactions, e.g. controllers.
  */
-private ArrayList outputParentInteractions (InteractionSummary interactionSummary,
-        JspWriter out, boolean debugMode) throws DaoException, IOException, EntitySummaryException {
+private void outputParentInteractions (InteractionSummary interactionSummary,
+        HashMap <Long, ArrayList> parentInteractionMap,
+        HashMap <Long, EntitySummary> interactionSummaryMap,
+        JspWriter out, boolean debugMode) throws IOException {
     long cpathId = interactionSummary.getRecordID();
 
-    //  First, get parents of this interaction
-    DaoInternalLink daoInternalLink = new DaoInternalLink();
-    DaoCPath daoCPath = DaoCPath.getInstance();
-    ArrayList sources = daoInternalLink.getSources(cpathId);
-    ArrayList parentInteractionSummaries = new ArrayList();
-    out.println("<UL>");
-    for (int j=0; j<sources.size(); j++) {
-
-        //  Only display parent interactions
-        InternalLinkRecord internalLinkRecord = (InternalLinkRecord) sources.get(j);
-        CPathRecord record = daoCPath.getRecordById(internalLinkRecord.getSourceId());
-        if (record.getType() == CPathRecordType.INTERACTION) {
-            EntitySummaryParser parser = new EntitySummaryParser
-                    (internalLinkRecord.getSourceId());
-            EntitySummary summary = parser.getEntitySummary();
+    //  First, get all parents of this interaction
+    ArrayList parentRecords = parentInteractionMap.get(cpathId);
+    if (parentRecords != null) {
+        out.println("<UL>");
+        for (int i=0; i<parentRecords.size(); i++) {
+            CPathRecord parentRecord = (CPathRecord) parentRecords.get(i);
+            EntitySummary summary = interactionSummaryMap.get(parentRecord.getId());
             if (summary instanceof InteractionSummary) {
                 String summaryStr = InteractionSummaryUtils.createInteractionSummaryStringTruncated
                     ((InteractionSummary) summary);
@@ -154,12 +149,10 @@ private ArrayList outputParentInteractions (InteractionSummary interactionSummar
                         + "&debug=1'>" + summary.getRecordID() + "</a>]");
                 }
                 out.println (summaryStr + "</LI>");
-                parentInteractionSummaries.add(summary);
             }
         }
+        out.println("</UL>");
     }
-    out.println("</UL>");
-    return parentInteractionSummaries;
 }
 
 private String getInspectorButtonHtml (long cPathId) {
