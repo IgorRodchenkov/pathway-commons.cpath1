@@ -5,6 +5,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForm;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.form.FeedbackForm;
+import org.mskcc.pathdb.form.WebUIBean;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.mskcc.pathdb.util.email.SendMail;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,8 +38,23 @@ public class FeedbackAction extends BaseAction {
         xdebug.logMsg(this, "Email address:  " + feedbackForm.getEmail());
         xdebug.logMsg(this, "Subject:  " + feedbackForm.getSubject());
 
-        setUserMessage(request, "Thanks for your feedback!  Your message has been sent.");
-        //  TODO:  Send out email here...
+
+        //  Send email address
+        WebUIBean webBean = CPathUIConfig.getWebUIBean();
+        String smtpHost = webBean.getSmtpHost();
+        String toAddress = webBean.getFeedbackEmailTo();
+        String subject = webBean.getApplicationName() + " Feedback:  " + feedbackForm.getSubject();
+        if (smtpHost != null && toAddress != null) {
+            xdebug.logMsg(this, "Sending email...");
+            SendMail.sendMail(smtpHost, feedbackForm.getEmail(),
+                toAddress, subject, feedbackForm.getMessage());
+            setUserMessage(request, "Thanks for your feedback!  Your message has been sent.");
+        } else {
+            xdebug.logMsg(this, "Could not send email.  WebUIBean does " +
+                "not have the required data.");
+            setUserMessage(request, "Sorry.  Your message could not be sent.  "
+                + "Please try again later");
+        }
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
 }
