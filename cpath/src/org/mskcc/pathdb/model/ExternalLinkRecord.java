@@ -1,4 +1,4 @@
-// $Id: ExternalLinkRecord.java,v 1.12 2006-02-22 22:47:50 grossb Exp $
+// $Id: ExternalLinkRecord.java,v 1.13 2007-05-08 20:24:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,12 +33,14 @@ package org.mskcc.pathdb.model;
 
 import paour.NaturalOrderComparator;
 
+import java.io.Serializable;
+
 /**
  * JavaBean to Encapsulate an External Link Record.
  *
  * @author Ethan Cerami
  */
-public class ExternalLinkRecord implements Comparable {
+public class ExternalLinkRecord implements Comparable, Serializable {
     private long id;
     private long cpathId;
     private int externalDbId;
