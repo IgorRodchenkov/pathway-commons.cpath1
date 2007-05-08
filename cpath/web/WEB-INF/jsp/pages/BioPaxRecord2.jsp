@@ -30,17 +30,12 @@ EntitySummary entitySummary = (EntitySummary) request.getAttribute(ShowBioPaxRec
 //  External References
 HashMap<String,Reference> referenceMap = (HashMap<String,Reference>)
 	request.getAttribute(ShowBioPaxRecord2.EXTERNAL_LINKS);
-	
+
 //  Children / Parent Types (for creation of tabs)
 ArrayList typesList = (ArrayList) request.getAttribute(ShowBioPaxRecord2.TYPES_LIST);
 
 //  Set page title
 request.setAttribute(BaseAction.ATTRIBUTE_TITLE, bpSummary.getName());
-
-boolean showTabs = false;
-WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
-BioPaxTabs bpPlainEnglish = new BioPaxTabs();
 
 // Separate PubMed links from other links
 ReferenceUtil refUtil = new ReferenceUtil();
@@ -60,7 +55,12 @@ urlForCytoscapeLink = urlForCytoscapeLink.replace("record2.do", "webservice.do")
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
-
+<%
+boolean showTabs = false;
+WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+BioPaxTabs bpPlainEnglish = new BioPaxTabs();
+%>
 <script type="text/javascript">
 
 /////////////////////////////
@@ -369,7 +369,7 @@ header = header.replaceAll("N/A", "");
     if (referenceLinks.size() > 0) {
         out.println(refUtil.getReferenceHtml(referenceLinks, referenceMap));
     }
-    
+
     //  Output Availability Info
     if (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0) {
         out.println("<p><b>Availability:</b></p>\n");
@@ -427,13 +427,13 @@ enable Javascript support within your web browser.
                     + dbRecord.getId() + "'/></div>");
         }
     }
-    
+
     //  Output organism details
     if (bpSummary.getOrganism() != null) {
         out.println("<h3>Organism:</h3>");
         out.println("<ul><li>" + bpSummary.getOrganism() + "</li></ul>");
     }
-    
+
     //  Output synonyms
     if (bpSummary.getSynonyms() != null && bpSummary.getSynonyms().size() > 0) {
         out.println("<h3>Synonyms:</h3>");
@@ -444,7 +444,7 @@ enable Javascript support within your web browser.
         }
         out.println("</ul>");
     }
-    
+
     //  Output external links
     if (nonReferenceLinks.size() > 0) {
         out.println("<h3>Links:</h3>");
@@ -465,7 +465,7 @@ enable Javascript support within your web browser.
         }
         out.println("</ul>");
     }
-    
+
     //  Output Cytoscape Links
     if (webUIBean.getWantCytoscape()) {
 		out.println("<h3>Cytoscape:</h3>");
@@ -487,7 +487,7 @@ enable Javascript support within your web browser.
 		out.println("<a href=\"cytoscape.do\">(help)</a>");
 		out.println("</li></ul>");
 	}
-	
+
 	//  Output BioPAX Links
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
