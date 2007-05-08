@@ -1,11 +1,13 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
+import java.io.Serializable;
+
 /**
  * Encapsulate a BioPAX Feature.
  *
  * @author Ethan Cerami.
  */
-public class BioPaxFeature {
+public class BioPaxFeature implements Serializable {
     /**
      * Phosphorylated Keyword.
      */

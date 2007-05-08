@@ -1,4 +1,4 @@
-// $Id: EntitySummary.java,v 1.6 2006-10-24 15:33:59 cerami Exp $
+// $Id: EntitySummary.java,v 1.7 2007-05-08 20:23:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,8 @@
 // package
 package org.mskcc.pathdb.schemas.biopax.summary;
 
+import java.io.Serializable;
+
 // imports
 
 /**
@@ -40,7 +42,7 @@ package org.mskcc.pathdb.schemas.biopax.summary;
  *
  * @author Benjamin Gross.
  */
-public class EntitySummary {
+public class EntitySummary implements Serializable {
 
     /**
      * CPath record ID of the record that this class summarizes.
