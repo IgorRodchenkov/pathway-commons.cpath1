@@ -1,4 +1,4 @@
-// $Id: EhCache.java,v 1.11 2007-04-02 15:24:35 cerami Exp $
+// $Id: EhCache.java,v 1.12 2007-05-08 20:24:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -64,6 +64,11 @@ public class EhCache {
      */
     public static final String KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES
             = "KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES";
+
+    /**
+     * Key for Entity Summaries.
+     */
+    public static final String KEY_ENTITY_SUMMARIES = "KEY_ENTITY_SUMMARIES";    
 
     /**
      * Initializes the EhCache with ehcache.xml.
