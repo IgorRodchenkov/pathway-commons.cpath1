@@ -99,7 +99,7 @@ public class BioPaxParentChild extends BaseAction {
     /**
      * Total Num Records Parameter.
      */
-    public static String TOTAL_NUM_RECORDS_PARAMETER = "maxRecords";
+    public static String TOTAL_NUM_RECORDS_PARAMETER = "totalNumRecords";
 
     /**
      * Executes Action.
