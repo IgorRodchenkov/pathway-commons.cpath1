@@ -5,7 +5,7 @@ Pathway Commons allows you to view pathways and network neighborhood maps within
 <li>'View this pathway in Cytoscape'</li>
 <li>'View network neighborhood map in Cytoscape'</li>
 </ul>
-<a href="jsp/cytoscape/README.html">More details...</a>
+<a href="cytoscape_readme.do">More details...</a>
 <br/>
 <h1>Screenshot</h1>
 <table width="576">
