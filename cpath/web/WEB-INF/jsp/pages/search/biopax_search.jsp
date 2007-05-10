@@ -284,12 +284,12 @@ else {
 								//" onmouseout=\"return nd();\"" +
 								" onclick=\"appRequest(this.href, this.id); return false;\"" +
 								">View this pathway in Cytoscape</a>");
+					out.println("<a href=\"cytoscape.do\">(help)</a>");
 				}
-				else {
-					out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
-				}
+				//else {
+				//	out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
+				//}
 				// add link to cytoscape help page
-				out.println("<a href=\"cytoscape.do\">(help)</a>");
 			}
 			out.println("</div>");
 			out.println("</td></tr>");
