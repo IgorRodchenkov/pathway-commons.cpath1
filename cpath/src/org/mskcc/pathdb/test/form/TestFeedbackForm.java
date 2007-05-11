@@ -77,6 +77,15 @@ public class TestFeedbackForm extends TestCase {
                 + " http://www.yahoo.com");
         errorList = form.validate(null, null);
         assertEquals (1, errorList.size());
+
+        //  Validate against valid message w/ invalid URL use.
+        form.setEmail("joe@yahoo.com");
+        form.setSubject("Great");
+        form.setMessage("http://www.nytimes.com/\n" +
+                "http://www.nytimes.com/\n" +
+                "http://www.nytimes.com/");
+        errorList = form.validate(null, null);
+        assertEquals (1, errorList.size());
     }
 
     /**
