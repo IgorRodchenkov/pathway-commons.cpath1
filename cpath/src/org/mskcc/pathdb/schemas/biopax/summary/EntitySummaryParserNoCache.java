@@ -123,11 +123,10 @@ class EntitySummaryParserNoCache {
                 entitySummary = new PhysicalInteractionSummary(interactionType,
                         participants);
             } else {
-                // get conversion info
-                ArrayList leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
-                ArrayList rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
-                entitySummary =
-                        new ConversionInteractionSummary(leftParticipants, rightParticipants);
+                // get basic interaction info.
+                ArrayList participants = getInteractionInformation
+                        ("/*/bp:PARTICIPANTS/*");
+                entitySummary = new InteractionSummary(participants);
             }
         } catch (Throwable throwable) {
             throw new EntitySummaryException(throwable);

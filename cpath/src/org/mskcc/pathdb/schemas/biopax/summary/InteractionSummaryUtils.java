@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.33 2007-05-03 15:11:29 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.34 2007-05-11 21:19:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -69,7 +69,7 @@ public class InteractionSummaryUtils {
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
             createPhysicalInteractionSummary(interactionSummary, buf);
         } else {
-            buf.append(interactionSummary.getName());
+            createInteractionSummary(interactionSummary, buf);
         }
         return buf.toString();
     }
@@ -92,7 +92,7 @@ public class InteractionSummaryUtils {
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
             createPhysicalInteractionSummary(interactionSummary, buf);
         } else {
-            buf.append(interactionSummary.getName());
+            createInteractionSummary(interactionSummary, buf);
         }
         return buf.toString();
     }
@@ -148,6 +148,32 @@ public class InteractionSummaryUtils {
             }
         } else {
             buf.append("[&empty;]");
+        }
+    }
+
+    /**
+     * Creates an Interaction Summary.
+     *
+     * @param interactionSummary InteractionSummary Object.
+     * @param buf                HTML String Buffer.
+     */
+    private static void createInteractionSummary(InteractionSummary
+            interactionSummary, StringBuffer buf) {
+        buf.append(interactionSummary.getName());
+        //  Iterate through all participants
+        ArrayList participantList = interactionSummary.getParticipants();
+        if (participantList != null) {
+            buf.append(" [");
+            for (int i = 0; i < participantList.size(); i++) {
+                ParticipantSummaryComponent component =
+                        (ParticipantSummaryComponent) participantList.get(i);
+                buf.append(BioPaxRecordSummaryUtils.createEntityLink
+                        (component, interactionSummary));
+                if (i < participantList.size() - 1) {
+                    buf.append(", ");
+                }
+            }
+            buf.append("]");
         }
     }
 

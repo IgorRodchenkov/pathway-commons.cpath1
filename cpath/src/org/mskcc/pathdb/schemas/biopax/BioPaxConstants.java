@@ -1,4 +1,4 @@
-// $Id: BioPaxConstants.java,v 1.21 2007-05-11 17:09:32 cerami Exp $
+// $Id: BioPaxConstants.java,v 1.22 2007-05-11 21:19:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,7 +51,7 @@ public class BioPaxConstants {
     /**
      * BioPAX Class:  activation.
      */
-    public static final String ACTIVATION_CATALYSIS = "ACTIVATION_CATALYSIS";    
+    public static final String ACTIVATION_CATALYSIS = "ACTIVATION_CATALYSIS";
 
     /**
      * BioPAX Class:  physicalEntity.
@@ -310,8 +310,12 @@ public class BioPaxConstants {
      * @return boolean value.
      */
     public boolean isPhysicalInteraction(String elementName) {
-        return (interactionSet.contains(elementName.trim())
-                && !elementName.trim().equals(INTERACTION));
+        if (elementName != null) {
+            if (elementName.trim().equals(PHYSICAL_INTERACTION)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
