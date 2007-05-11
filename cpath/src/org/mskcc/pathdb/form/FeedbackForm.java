@@ -100,7 +100,7 @@ public class FeedbackForm extends ActionForm {
             //  If there is more than one URL that does not point to baseURL,
             //  flag it as invalid.
             int numNonBaseUrls = 0;
-            String words[] = message.split(" ");
+            String words[] = message.split("\\s");
             for (int i=0; i<words.length; i++) {
                 String word = words[i];
                 if (word.startsWith("http://")) {
