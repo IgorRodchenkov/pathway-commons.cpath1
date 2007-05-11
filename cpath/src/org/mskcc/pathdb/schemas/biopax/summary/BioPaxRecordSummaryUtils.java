@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.50 2007-05-03 15:03:24 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.51 2007-05-11 17:57:11 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -219,15 +219,16 @@ public class BioPaxRecordSummaryUtils {
         buf.append("<DIV CLASS=popup_caption>");
         String truncatedName = truncateLongName(label, maxLength);
         buf.append(truncatedName);
-        String celluarLocation = "";
+        String cellularLocation = "";
         if (participant != null) {
-            if (participant.getCellularLocation() != null) {
-                celluarLocation = participant.getCellularLocation();
+            if (participant.getCellularLocation() != null &&
+				!participant.getCellularLocation().equals("cellular_component unknown")) {
+                cellularLocation = participant.getCellularLocation();
                 buf.append(" in <SPAN CLASS=popup_organism>" + participant.getCellularLocation()
                         + "</SPAN>");
             }
         }
-        int lengthOfHeader = truncatedName.length() + celluarLocation.length();
+        int lengthOfHeader = truncatedName.length() + cellularLocation.length();
         if (lengthOfHeader < NAME_LENGTH) {
             lengthOfHeader = NAME_LENGTH;
         }
