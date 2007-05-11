@@ -48,10 +48,6 @@
             type="org.mskcc.pathdb.action.HomeAction">
             <forward name="success" path="/WEB-INF/jsp/pages/Cytoscape.jsp"/>
         </action>
-        <action path="/cytoscape_readme"
-            type="org.mskcc.pathdb.action.HomeAction">
-            <forward name="success" path="/WEB-INF/jsp/pages/CytoscapeReadme.jsp"/>
-        </action>
 
         <!--  Database Stats / Information -->
         <action path="/dbStats"
