@@ -328,7 +328,7 @@ header = header.replaceAll("N/A", "");
     if (entitySummary != null && entitySummary instanceof InteractionSummary) {
         String entitySummaryStr = InteractionSummaryUtils.createInteractionSummaryString
                 ((InteractionSummary) entitySummary);
-        out.println("<h2>" + entitySummaryStr + "</h2>");
+        out.println("<p><b>Summary:</b>&nbsp;&nbsp;" + entitySummaryStr + "</p>");
     }
 %>
 <p>
@@ -399,8 +399,6 @@ enable Javascript support within your web browser.
 </div>
 </noscript>
 
-<% } else { %>
-    <p>No additional details specified for this record.</p>
 <% } %>
 <%
     if (debugMode) {
