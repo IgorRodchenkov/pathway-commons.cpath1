@@ -113,17 +113,6 @@
 		}
 	}
 
-    if (webUIBean.getWantCytoscape()) {
-        tabNames.add("Cytoscape");
-        String cytoscapeUrl = "cytoscape.do";
-        tabUrls.add(cytoscapeUrl);
-        if (url.equals(cytoscapeUrl)) {
-            tabActive.add (Boolean.TRUE);
-        } else {
-            tabActive.add (Boolean.FALSE);
-        }
-    }
-
     tabNames.add("About");
     String aboutUrl = "about.do";
     tabUrls.add(aboutUrl);
