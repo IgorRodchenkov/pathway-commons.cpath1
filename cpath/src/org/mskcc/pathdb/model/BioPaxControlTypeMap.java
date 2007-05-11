@@ -1,4 +1,4 @@
-// $Id: BioPaxControlTypeMap.java,v 1.8 2007-05-01 20:37:04 cerami Exp $
+// $Id: BioPaxControlTypeMap.java,v 1.9 2007-05-11 17:09:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,6 +31,8 @@
  **/
 package org.mskcc.pathdb.model;
 
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
+
 import java.util.HashMap;
 
 /**
@@ -52,6 +54,7 @@ public class BioPaxControlTypeMap {
         if (presentTenseMap == null) {
             presentTenseMap = new HashMap();
             presentTenseMap.put("INHIBITION", "inhibits");
+            presentTenseMap.put(BioPaxConstants.ACTIVATION_CATALYSIS, "catalyzes");
             presentTenseMap.put("ACTIVATION", "activates");
             presentTenseMap.put("INHIBITION-ALLOSTERIC", "allosterically inhibits");
             presentTenseMap.put("INHIBITION-COMPETITIVE", "competitively inhibits");
@@ -77,6 +80,7 @@ public class BioPaxControlTypeMap {
         if (pastTenseMap == null) {
             pastTenseMap = new HashMap();
             pastTenseMap.put("INHIBITION", "inhibited");
+            pastTenseMap.put(BioPaxConstants.ACTIVATION_CATALYSIS, "catalyzed");
             pastTenseMap.put("ACTIVATION", "activated");
             pastTenseMap.put("INHIBITION-ALLOSTERIC", "allosterically inhibited");
             pastTenseMap.put("INHIBITION-COMPETITIVE", "competitively inhibited");

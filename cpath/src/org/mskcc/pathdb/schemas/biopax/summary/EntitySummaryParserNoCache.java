@@ -264,7 +264,7 @@ class EntitySummaryParserNoCache {
 
         // if record type is catalysis, the control type is operator
         if (record.getSpecificType().equalsIgnoreCase(BioPaxConstants.CATALYSIS)) {
-            controlType = BioPaxConstants.ACTIVATION.toUpperCase();
+            controlType = BioPaxConstants.ACTIVATION_CATALYSIS;
         } else {
             // lookup control type in xml blob
             XPath xpath = XPath.newInstance(query);

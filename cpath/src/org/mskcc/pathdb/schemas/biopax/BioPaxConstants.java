@@ -1,4 +1,4 @@
-// $Id: BioPaxConstants.java,v 1.20 2006-08-15 16:35:19 cerami Exp $
+// $Id: BioPaxConstants.java,v 1.21 2007-05-11 17:09:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,6 +47,11 @@ public class BioPaxConstants {
      * BioPAX Class:  activation.
      */
     public static final String ACTIVATION = "activation";
+
+    /**
+     * BioPAX Class:  activation.
+     */
+    public static final String ACTIVATION_CATALYSIS = "ACTIVATION_CATALYSIS";    
 
     /**
      * BioPAX Class:  physicalEntity.
