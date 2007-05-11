@@ -481,7 +481,7 @@ enable Javascript support within your web browser.
 						id +"\"" +
 						" onclick=\"appRequest(this.href, this.id); return false;\"" +
 						">View this pathway in Cytoscape</a>");
-			out.println("<a href=\"cytoscape.do\">(help)</a>");
+			out.println("<a href=\"cytoscape_readme.do\">(help)</a>");
 		    out.println("</li></ul>");
 		}
 		//else {
