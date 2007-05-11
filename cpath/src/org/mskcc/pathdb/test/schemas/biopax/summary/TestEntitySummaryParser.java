@@ -1,4 +1,4 @@
-// $Id: TestEntitySummaryParser.java,v 1.15 2007-05-03 15:50:24 cerami Exp $
+// $Id: TestEntitySummaryParser.java,v 1.16 2007-05-11 18:37:17 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -151,7 +151,7 @@ public class TestEntitySummaryParser extends TestCase {
                 (ControlInteractionSummary) entitySummary;
 
         // assert control type
-        assertEquals("ACTIVATION", controlInteractionSummary.getControlType());
+        assertEquals("ACTIVATION_CATALYSIS", controlInteractionSummary.getControlType());
 
         // get controllers
         components = controlInteractionSummary.getControllers();
