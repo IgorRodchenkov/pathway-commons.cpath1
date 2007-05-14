@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.16 2007-05-14 18:48:35 grossben Exp $
+// $Id: QueryUtil.java,v 1.17 2007-05-14 19:02:19 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -120,9 +120,12 @@ public class QueryUtil {
                 (new File(LuceneConfig.getLuceneDirectory()));
         luceneQuery = luceneQuery.rewrite(reader);
 
+		// we do our own highlighting since this one will highlight meta-data,
+		// like 'NCI_NATURE' or 'AND' or 'pathway' in a query like the following:
+		// 'data_source:"NCI_NATURE" AND entity_type:pathway'
         QueryHighlightExtractor highLighter =
                 new QueryHighlightExtractor(luceneQuery,
-                        new StandardAnalyzer(), START_TAG, END_TAG);
+											new StandardAnalyzer(), "","");
 
         for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
             Document doc = hits.doc(i);
@@ -294,6 +297,11 @@ public class QueryUtil {
 				// don't process duplicate fragments
 				if (!fragmentMap.containsKey(fragment)) {
 					toReturn = (toReturn == null) ? new ArrayList<String>() : toReturn;
+					// do our own highlighting - see note in extractFragments(..)
+					String origFragment = fragment;
+					for (String term : terms.split(" ")) {
+						fragment = fragment.replaceAll("(?i)" + "(" + term + ")", START_TAG + "$1" + END_TAG);
+					}
 					// lets remove sentences that are part of fragment but don't contain any terms
 					String subFragmentsToReturn = "";
 					for (String subFragment : fragment.split("\\.")) {
@@ -304,19 +312,13 @@ public class QueryUtil {
 							boolean appendPeriod = ((indexOfPeriod <= fragment.length()-1) &&
 													(fragment.charAt(indexOfPeriod) == '.'));
 							subFragment = subFragment + ((appendPeriod) ? "." : "");
-							// QueryHighlightExtractor misses terms at the beginning of sentence - lets fix
-							for (String term : terms.split(" ")) {
-								if (subFragment.indexOf(term) == 0) {
-									subFragment = subFragment.replaceFirst(term, START_TAG + term + END_TAG);
-								}
-							}
 							subFragmentsToReturn += subFragment;
 						}
 					}
 					// fragment may not have contained periods
 					subFragmentsToReturn = (subFragmentsToReturn.length() == 0) ? fragment : subFragmentsToReturn;
 					toReturn.add(subFragmentsToReturn);
-					fragmentMap.put(fragment,"");
+					fragmentMap.put(origFragment,"");
 				}
 			}
 		}
@@ -349,6 +351,6 @@ public class QueryUtil {
 				term.contains(LuceneConfig.FIELD_EXTERNAL_REFS + ":") ||
 				term.contains(LuceneConfig.FIELD_DESCENDENTS + ":") ||
 				// lucene boolean operators must be capitalized
-				term.equals("AND") || term.equals("OR") || term.equals("NOT")) ? false : true;
+				term.equalsIgnoreCase("AND") || term.equalsIgnoreCase("OR") || term.equalsIgnoreCase("NOT")) ? false : true;
 	}
 }
