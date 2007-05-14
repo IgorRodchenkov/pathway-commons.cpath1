@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.19 2007-03-20 16:04:26 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.20 2007-05-14 17:28:06 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -110,6 +110,8 @@ public class BioPaxToIndex implements ItemToIndex {
      * Constructor.
      * Only available within the Lucene package.
      * The only way to construct the object is via the Factory class.
+	 *
+	 * NOTE: IF MORE FIELDS ARE INDEXED, QueryUtil.addTerm SHOULD BE UPDATES
      *
      * @param xmlAssembly XmlAssembly.
      * @throws IOException Input Output Error.
@@ -156,7 +158,7 @@ public class BioPaxToIndex implements ItemToIndex {
         //  Index Organism Data --> FIELD_ORGANISM
         indexOrganismData(xmlAssembly);
 
-		// Index Synonyms --> FIELD_SYNONMYS
+		// Index Synonyms --> FIELD_SYNONYMS
 		fields.add(Field.Text(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary)));
 
 		// Index Ext Refs --> FIELD_EXTERNAL_REFS
@@ -165,6 +167,8 @@ public class BioPaxToIndex implements ItemToIndex {
 		// Index Descendents --> FIELD_DESCENDENTS
 		String descendents = getDescendents(cpath, record);
 		fields.add(Field.Text(LuceneConfig.FIELD_DESCENDENTS, descendents));
+
+		// * NOTE: IF MORE FIELDS ARE INDEXED, QueryUtil.addTerm SHOULD BE UPDATES *
     }
 
     /**
