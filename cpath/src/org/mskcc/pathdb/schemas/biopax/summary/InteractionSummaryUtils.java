@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.34 2007-05-11 21:19:53 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.35 2007-05-14 14:45:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 // imports
 
 import org.mskcc.pathdb.model.BioPaxControlTypeMap;
+import org.mskcc.pathdb.model.CPathRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class InteractionSummaryUtils {
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
             createPhysicalInteractionSummary(interactionSummary, buf);
         } else {
-            createInteractionSummary(interactionSummary, buf);
+            createInteractionSummary(interactionSummary, true, buf);
         }
         return buf.toString();
     }
@@ -92,7 +93,7 @@ public class InteractionSummaryUtils {
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
             createPhysicalInteractionSummary(interactionSummary, buf);
         } else {
-            createInteractionSummary(interactionSummary, buf);
+            createInteractionSummary(interactionSummary, false, buf);
         }
         return buf.toString();
     }
@@ -155,11 +156,22 @@ public class InteractionSummaryUtils {
      * Creates an Interaction Summary.
      *
      * @param interactionSummary InteractionSummary Object.
+     * @param linkInteractionName     Flag to hyperlink interaction name.
      * @param buf                HTML String Buffer.
      */
     private static void createInteractionSummary(InteractionSummary
-            interactionSummary, StringBuffer buf) {
-        buf.append(interactionSummary.getName());
+            interactionSummary, boolean linkInteractionName, StringBuffer buf) {
+        if (linkInteractionName) {
+            buf.append("<a href='record2.do?id=" + interactionSummary.getRecordID()
+                + "'>");
+            if (interactionSummary.getName() != null
+                    && interactionSummary.getName().equals(CPathRecord.NA_STRING)) {
+                buf.append ("Interaction");
+            } else {
+                buf.append(interactionSummary.getName());
+            }
+            buf.append("</a>");
+        }
         //  Iterate through all participants
         ArrayList participantList = interactionSummary.getParticipants();
         if (participantList != null) {
