@@ -328,7 +328,9 @@ header = header.replaceAll("N/A", "");
     if (entitySummary != null && entitySummary instanceof InteractionSummary) {
         String entitySummaryStr = InteractionSummaryUtils.createInteractionSummaryStringTruncated
                 ((InteractionSummary) entitySummary);
-        out.println("<p><b>Summary:</b>&nbsp;&nbsp;" + entitySummaryStr + "</p>");
+        if (entitySummaryStr != null && entitySummaryStr.length() > 0) {
+            out.println("<p><b>Summary:</b>&nbsp;&nbsp;" + entitySummaryStr + "</p>");
+        }
     }
 %>
 <p>
