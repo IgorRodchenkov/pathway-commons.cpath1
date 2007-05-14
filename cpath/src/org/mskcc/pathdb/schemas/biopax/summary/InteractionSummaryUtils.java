@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.35 2007-05-14 14:45:56 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.36 2007-05-14 20:24:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,8 @@ package org.mskcc.pathdb.schemas.biopax.summary;
 
 import org.mskcc.pathdb.model.BioPaxControlTypeMap;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -300,7 +302,23 @@ public class InteractionSummaryUtils {
                 }
             }
         } else {
-            buf.append ("[&empty;]");
+            List externalLinks = summary.getExternalLinks();
+
+            //  The code below is required, at least until BioPAX Level 3 supports
+            //  a description of transcriptional regulation.
+            boolean empty = true;
+            for (int i=0; i<externalLinks.size(); i++) {
+                ExternalLinkRecord externalLink = (ExternalLinkRecord) externalLinks.get(i);
+                ExternalDatabaseRecord externalDb = externalLink.getExternalDatabase();
+                if(externalDb.getMasterTerm().equals("GENE ONTOLOGY")
+                        && externalLink.getLinkedToId().equals("0006350")) {
+                    buf.append ("transcription");
+                    empty = false;
+                }
+            }
+            if (empty) {
+                buf.append ("[&empty;]");
+            }
         }
     }
 }
