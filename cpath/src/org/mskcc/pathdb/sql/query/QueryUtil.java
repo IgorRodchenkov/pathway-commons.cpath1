@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.14 2007-02-27 20:08:54 grossb Exp $
+// $Id: QueryUtil.java,v 1.15 2007-05-14 17:27:26 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -273,13 +273,20 @@ public class QueryUtil {
 		// to return
 		List<String> toReturn = null;
 
-		// create terms regex
-		String termRegex = "^.*(?i)("; // used to match terms anywhere in fragment
+		// create terms regex - used to match terms anywhere in fragment
+		boolean haveTerms = false; 
+		String termRegex = "^.*(?i)("; // note: (?i) specifies case-insensitive matching
 		for (String term : terms.split(" ")) {
-			termRegex += term + "|";
+			if (addTerm(term)) {
+				termRegex += term + "|";
+				haveTerms = true;
+			}
 		}
-		termRegex = termRegex.replaceAll("\\|$", "");
+		termRegex = termRegex.replaceAll("\\|$", ""); // remove trailing '|'
 		termRegex += ").*$";
+
+		// to we have valid terms ?  - see addTerm(..) method for more information
+		if (!haveTerms) return null;
 
 		Map<String, String> fragmentMap = new HashMap<String,String>();
 		for (String fragment : fragments.split(XmlStripper.ELEMENT_DELIMITER)) {
@@ -315,5 +322,32 @@ public class QueryUtil {
 
 		// outta here
 		return toReturn;
+	}
+
+	/**
+	 * The idea behind this method is that we only should
+	 * add terms to the termRegex in cookFragments if the term 
+	 * contains "free text" entered by the user, ie 'p53'
+	 * If the term is a canned lucene query, like
+	 * 'data_source:"NCI_NATURE"' or 'entity_type:pathway',
+	 * the term should not be added to the regex.
+	 *
+	 * @param term String
+	 * @return boolean
+	 */
+	private static boolean addTerm(String term) {
+
+		// see BioPaxToIndex for fields to check here...
+		return (term.contains(LuceneConfig.FIELD_ALL + ":") ||
+				term.contains(LuceneConfig.FIELD_CPATH_ID + ":") ||
+				term.contains(LuceneConfig.FIELD_ENTITY_TYPE + ":") ||
+				term.contains(LuceneConfig.FIELD_DATA_SOURCE + ":") ||
+				term.contains(LuceneConfig.FIELD_NAME + ":") ||
+				term.contains(LuceneConfig.FIELD_ORGANISM + ":") ||
+				term.contains(LuceneConfig.FIELD_SYNONYMS + ":") ||
+				term.contains(LuceneConfig.FIELD_EXTERNAL_REFS + ":") ||
+				term.contains(LuceneConfig.FIELD_DESCENDENTS + ":") ||
+				// lucene boolean operators must be capitalized
+				term.equals("AND") || term.equals("OR") || term.equals("NOT")) ? false : true;
 	}
 }
