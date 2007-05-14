@@ -153,7 +153,9 @@ private String getFragmentsHtml(List<String> fragments, String summaryLabel, Str
      	html.append("<li>");
 		if (appendPrefix) html.append("... ");
 		fragment = HtmlUtil.truncateLongWords(fragment, maxLength);
+		fragment = fragment.replaceAll("(?i)(dr)\\.", "$1\\*"); // to prevent Dr. being replade with Dr. ...
 		fragment = fragment.replaceAll("\\.", ". ...");
+		fragment = fragment.replaceAll("(?i)(dr)\\*", "$1\\."); // to prevent Dr. being replade with Dr. ...
 		if (fragment.matches("^.*\\. \\.\\.\\.$")) {
 		    fragment = fragment.replaceAll("\\. \\.\\.\\.$", ".");
         }

@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.15 2007-05-14 17:27:26 grossben Exp $
+// $Id: QueryUtil.java,v 1.16 2007-05-14 18:48:35 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -297,7 +297,8 @@ public class QueryUtil {
 					// lets remove sentences that are part of fragment but don't contain any terms
 					String subFragmentsToReturn = "";
 					for (String subFragment : fragment.split("\\.")) {
-						if (subFragment.matches(termRegex)) {
+						// try to determine if '.' is not part of title, like Dr.
+						if (!subFragment.matches("^.*(?i)dr$") && subFragment.matches(termRegex)) {
 							// do we append a '.' after subFragment ?
 							int indexOfPeriod = fragment.indexOf(subFragment) + subFragment.length();
 							boolean appendPeriod = ((indexOfPeriod <= fragment.length()-1) &&
