@@ -48,6 +48,8 @@ String xdebugParameter = request.getParameter(AdminWebLogging.WEB_LOGGING);
 if (xdebugSession != null || xdebugParameter != null) {
     debugMode = true;
 }
+
+DetailsTracker detailsTracker = new DetailsTracker();
 %>
 
 <% if (headerFlag) { %>
@@ -111,12 +113,12 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
                     interactionSummaryMap, out, debugMode);
             out.println("</span>");
             out.println("</td>");
-            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap, i));
+            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap, i, detailsTracker));
         } else {
-            out.println(getBioPaxRecordHtml(bpSummary, referenceMap, i));
+            out.println(getBioPaxRecordHtml(bpSummary, referenceMap, i, detailsTracker));
         }
     } else {
-        out.println(getBioPaxRecordHtml(bpSummary, referenceMap, i));
+        out.println(getBioPaxRecordHtml(bpSummary, referenceMap, i, detailsTracker));
     }
     out.println("</tr>");
     index++;
@@ -176,7 +178,8 @@ private String getStartRow (int i) {
 }
 
 private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
-        HashMap<String, Reference> referenceMap, int index) throws DaoException {
+        HashMap<String, Reference> referenceMap, int index, DetailsTracker detailsTracker)
+        throws DaoException {
     StringBuffer buf = new StringBuffer();
     if (bpSummary.getCPathRecord() != null
         && bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
@@ -186,12 +189,13 @@ private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
         buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
             + bpSummary.getName() + "</a>");
     }
-    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index));
+    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index, detailsTracker));
     return buf.toString();
 }
 
 private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
-        HashMap<String, Reference> referenceMap, int index) throws DaoException {
+        HashMap<String, Reference> referenceMap, int index, DetailsTracker detailsTracker)
+        throws DaoException {
     ReferenceUtil refUtil = new ReferenceUtil();
     ArrayList masterList = refUtil.categorize(bpSummary);
     ArrayList<ExternalLinkRecord> referenceLinks =
@@ -216,6 +220,7 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     buf.append("</td>");
     if (hasDetails) {
         buf.append(getInspectorButtonHtml(bpSummary.getRecordID()));
+        detailsTracker.incrementNumRecordsWithDetails();
     } else {
         buf.append("<td></td>");
     }
@@ -257,3 +262,18 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
 </table>
 </div>
 <jsp:include page="../global/redesign/xdebug.jsp" flush="true" />
+
+<%! class DetailsTracker {
+    private int numRecordsWithDetails = 0;
+    public void incrementNumRecordsWithDetails() {
+        numRecordsWithDetails++;
+    }
+    public boolean detailsExist() {
+        if (numRecordsWithDetails > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+%>
