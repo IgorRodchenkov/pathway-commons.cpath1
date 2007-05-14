@@ -385,13 +385,6 @@ header = header.replaceAll("N/A", "");
 <div id="doc">
 </div>
 
-<div id="toggle_div">
-</div>
-
-<script type="text/javascript">
-        var toggleDiv = document.getElementById("toggle_div");
-        toggleDiv.innerHTML = "<a class='button' id='toggle_all_details_button' onClick='toggleAllDetails()'>Show All Details</a>";
-</script>
 <noscript>
 <div class="user_message">
 In order to view complete details regarding this record, please
