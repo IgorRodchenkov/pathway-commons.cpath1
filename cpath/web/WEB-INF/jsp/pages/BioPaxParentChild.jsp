@@ -187,7 +187,7 @@ private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
             buf.append(entityLink);
     } else {
         buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
-            + bpSummary.getName() + "</a>");
+            + bpSummary.getLabel() + "</a>");
     }
     buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index, detailsTracker));
     return buf.toString();
