@@ -174,14 +174,15 @@ public class ShowBioPaxRecord2 extends BaseAction {
         if (getChildren) {
             xdebug.logMsg (this, "Getting all children");
             ArrayList childList = getChildTypes(xdebug, daoLinker, id, taxId, snapshotIds,
-                    isComplex);
+                    isComplex, record.getType());
             typeList.addAll(childList);
         }
 
         //  get parents count
         if (getParents) {
             xdebug.logMsg (this, "Getting all parents");
-            ArrayList parentList = getParentTypes(xdebug, daoLinker, id, taxId, snapshotIds);
+            ArrayList parentList = getParentTypes(xdebug, daoLinker, id, taxId, snapshotIds,
+                    record.getType());
             typeList.addAll(parentList);
         }
 
@@ -240,7 +241,8 @@ public class ShowBioPaxRecord2 extends BaseAction {
      * Gets type/number of children.
      */
     private ArrayList getChildTypes (XDebug xdebug, DaoInternalLink daoLinker, String id, int taxId,
-            long[] snapshotIds, boolean isComplex) throws DaoException {
+            long[] snapshotIds, boolean isComplex, CPathRecordType recordType)
+            throws DaoException {
         xdebug.logMsg(this, "Determing types of all child elements");
         ArrayList childTypes;
         if (isComplex) {
@@ -271,7 +273,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
         }
         //  remove control interactions, since these are now shown as the
         //  parents of biochemical reactions.
-        removeControlInteractions (childTypes, xdebug);
+        removeControlInteractions (recordType, childTypes, xdebug);
         return childTypes;
     }
 
@@ -279,7 +281,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
      * Gets type/number of parents.
      */
     private ArrayList getParentTypes (XDebug xdebug, DaoInternalLink daoLinker, String id,
-            int taxId, long[] snapshotIds)
+            int taxId, long[] snapshotIds, CPathRecordType recordType)
             throws DaoException {
         xdebug.logMsg(this, "Determing types of all parent elements");
         ArrayList parentTypes = daoLinker.getParentTypes(Long.parseLong(id),
@@ -295,7 +297,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
         }
         //  remove control interactions, since these are now shown as the
         //  parents of biochemical reactions.
-        removeControlInteractions (parentTypes, xdebug);
+        removeControlInteractions (recordType, parentTypes, xdebug);
         return parentTypes;
     }
 
@@ -303,20 +305,23 @@ public class ShowBioPaxRecord2 extends BaseAction {
      *  Removes control interactions, since these are now shown as the
      *  parents of biochemical reactions.
      */
-    private void removeControlInteractions (ArrayList typeList, XDebug xdebug) {
-        int controlIndex = -1;
-        for (int i=0; i<typeList.size(); i++) {
-            TypeCount typeCount = (TypeCount) typeList.get(i);
-            xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
-                + " -->  " + typeCount.getCount() + " records");
-            if (typeCount.getType().equals(BioPaxConstants.CONTROL)
-                    || typeCount.getType().equals(BioPaxConstants.CATALYSIS)) {
-                controlIndex = i;
+    private void removeControlInteractions (CPathRecordType recordType,
+            ArrayList typeList, XDebug xdebug) {
+        if (recordType.equals(CPathRecordType.PATHWAY)) {
+            int controlIndex = -1;
+            for (int i=0; i<typeList.size(); i++) {
+                TypeCount typeCount = (TypeCount) typeList.get(i);
+                xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
+                    + " -->  " + typeCount.getCount() + " records");
+                if (typeCount.getType().equals(BioPaxConstants.CONTROL)
+                        || typeCount.getType().equals(BioPaxConstants.CATALYSIS)) {
+                    controlIndex = i;
+                }
             }
-        }
-       if (controlIndex > 0) {
-            typeList.remove(controlIndex);
-            xdebug.logMsg(this, "Removing control interactions");
+            if (controlIndex > 0) {
+                typeList.remove(controlIndex);
+                xdebug.logMsg(this, "Removing control interactions");
+            }
         }
     }
 }
