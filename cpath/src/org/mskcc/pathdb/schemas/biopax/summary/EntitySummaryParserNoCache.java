@@ -234,7 +234,7 @@ class EntitySummaryParserNoCache {
 
         if (record != null) {
             // is it an interaction ? if so, we go through the process again
-            if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())) {
+            if (biopaxConstants.isInteraction(record.getSpecificType())) {
                 EntitySummaryParser entitySummaryParser = new EntitySummaryParser(record.getId());
                 objectToReturn = entitySummaryParser.getEntitySummary();
             } else {
