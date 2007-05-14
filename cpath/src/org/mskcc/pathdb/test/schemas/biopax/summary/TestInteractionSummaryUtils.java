@@ -1,4 +1,4 @@
-// $Id: TestInteractionSummaryUtils.java,v 1.17 2007-05-11 18:37:17 cerami Exp $
+// $Id: TestInteractionSummaryUtils.java,v 1.18 2007-05-14 13:40:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -94,7 +94,7 @@ public class TestInteractionSummaryUtils extends TestCase {
                 entityParser.getEntitySummary();
         String summary = InteractionSummaryUtils.
                 createInteractionSummaryString(interactionSummary);
-        assertTrue(summary.indexOf("catalyzes [") > 0);
+        assertTrue(summary.indexOf("catalyzes") > 0);
     }
 
     /**
