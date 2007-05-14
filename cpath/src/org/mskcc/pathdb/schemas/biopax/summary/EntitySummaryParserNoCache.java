@@ -10,6 +10,7 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 
 import java.io.StringReader;
@@ -128,6 +129,13 @@ class EntitySummaryParserNoCache {
                         ("/*/bp:PARTICIPANTS/*");
                 entitySummary = new InteractionSummary(participants);
             }
+
+            //  Get external links
+            DaoExternalLink externalLinker = DaoExternalLink.getInstance();
+            ArrayList externalLinks = externalLinker.getRecordsByCPathId(record.getId());
+            if (externalLinks.size() > 0) {
+                entitySummary.setExternalLinks(externalLinks);
+            }
         } catch (Throwable throwable) {
             throw new EntitySummaryException(throwable);
         }
@@ -140,6 +148,7 @@ class EntitySummaryParserNoCache {
         entitySummary.setId(record.getId());
         entitySummary.setName(record.getName());
         entitySummary.setSnapshotId(record.getSnapshotId());
+
         return entitySummary;
     }
 

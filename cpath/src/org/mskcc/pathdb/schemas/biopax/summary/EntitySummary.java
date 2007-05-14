@@ -1,4 +1,4 @@
-// $Id: EntitySummary.java,v 1.7 2007-05-08 20:23:35 cerami Exp $
+// $Id: EntitySummary.java,v 1.8 2007-05-14 20:23:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 import java.io.Serializable;
+import java.util.List;
 
 // imports
 
@@ -63,6 +64,11 @@ public class EntitySummary implements Serializable {
      * Snapshot ID.
      */
     private long snapshotId;
+
+    /**
+     * External Links.
+     */
+    private List externalLinks;
 
     /**
      * Constructor.
@@ -153,5 +159,23 @@ public class EntitySummary implements Serializable {
      */
     public void setSnapshotId(long snapshotId) {
         this.snapshotId = snapshotId;
+    }
+
+    /**
+     * Set the record external links list.
+     *
+     * @param externalLinks List
+     */
+    public void setExternalLinks(List externalLinks) {
+        this.externalLinks = externalLinks;
+    }
+
+    /**
+     * Returns the record external links list.
+     *
+     * @return List
+     */
+    public List getExternalLinks() {
+        return externalLinks;
     }
 }
