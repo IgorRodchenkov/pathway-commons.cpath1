@@ -326,7 +326,7 @@ header = header.replaceAll("N/A", "");
 <h1><%= header %></h1>
 <%
     if (entitySummary != null && entitySummary instanceof InteractionSummary) {
-        String entitySummaryStr = InteractionSummaryUtils.createInteractionSummaryString
+        String entitySummaryStr = InteractionSummaryUtils.createInteractionSummaryStringTruncated
                 ((InteractionSummary) entitySummary);
         out.println("<p><b>Summary:</b>&nbsp;&nbsp;" + entitySummaryStr + "</p>");
     }
