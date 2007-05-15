@@ -40,11 +40,9 @@ public class SendMail {
     public static void sendMail (String smtpHost, String from, String to,
             String subject, String message) throws MessagingException {
         Properties props = new Properties();
-        props.setProperty("mail.transport.protocol", "smtp");
         props.setProperty("mail.host", smtpHost);
 
         Session mailSession = Session.getDefaultInstance(props, null);
-        Transport transport = mailSession.getTransport();
 
         MimeMessage mimeMessage = new MimeMessage(mailSession);
         mimeMessage.setSubject(subject);
@@ -52,9 +50,6 @@ public class SendMail {
         mimeMessage.addRecipient(javax.mail.Message.RecipientType.TO,
              new InternetAddress(to));
         mimeMessage.setFrom(new InternetAddress(from));
-        transport.connect();
-        transport.sendMessage(mimeMessage,
-            mimeMessage.getRecipients(javax.mail.Message.RecipientType.TO));
-        transport.close();
+		Transport.send(mimeMessage);
     }
 }
