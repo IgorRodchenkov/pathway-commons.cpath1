@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.17 2007-05-14 19:02:19 grossben Exp $
+// $Id: QueryUtil.java,v 1.18 2007-05-15 02:19:18 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -280,7 +280,7 @@ public class QueryUtil {
 		boolean haveTerms = false; 
 		String termRegex = "^.*(?i)("; // note: (?i) specifies case-insensitive matching
 		for (String term : terms.split(" ")) {
-			if (addTerm(term)) {
+			if (validTerm(term)) {
 				termRegex += term + "|";
 				haveTerms = true;
 			}
@@ -300,7 +300,9 @@ public class QueryUtil {
 					// do our own highlighting - see note in extractFragments(..)
 					String origFragment = fragment;
 					for (String term : terms.split(" ")) {
+					    if (validTerm(term)) {
 						fragment = fragment.replaceAll("(?i)" + "(" + term + ")", START_TAG + "$1" + END_TAG);
+					    }
 					}
 					// lets remove sentences that are part of fragment but don't contain any terms
 					String subFragmentsToReturn = "";
@@ -329,16 +331,16 @@ public class QueryUtil {
 
 	/**
 	 * The idea behind this method is that we only should
-	 * add terms to the termRegex in cookFragments if the term 
+	 * consider terms in cookFragment(..) to be valid if the term 
 	 * contains "free text" entered by the user, ie 'p53'
 	 * If the term is a canned lucene query, like
-	 * 'data_source:"NCI_NATURE"' or 'entity_type:pathway',
-	 * the term should not be added to the regex.
+	 * 'data_source:"NCI_NATURE"' or 'entity_type:pathway'
+         * or 'AND', the term should not be considered valid.
 	 *
 	 * @param term String
 	 * @return boolean
 	 */
-	private static boolean addTerm(String term) {
+	private static boolean validTerm(String term) {
 
 		// see BioPaxToIndex for fields to check here...
 		return (term.contains(LuceneConfig.FIELD_ALL + ":") ||
