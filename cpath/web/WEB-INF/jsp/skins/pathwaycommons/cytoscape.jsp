@@ -1,11 +1,11 @@
-<h1>View Pathways and Network Neighborhood Maps within Cytoscape</h1>
-<h3>Introduction</h3>
+<h1>Viewing Pathways and Networks</h1>
 <p>
-The Pathway Commons plugin enables users to visualize pathways and
-network neighborhood maps in <a href="http://www.cytoscape.org">Cytoscape</a>,
-an open source bioinformatics software platform for visualizing molecular interaction networks.
-In this context, pathways include biochemical reactions, complex assembly, transport
-and catalysis events, and physical interactions involving proteins, DNA, RNA, small
+You can view pathways and network neighborhood maps that you find in Pathway
+  Commons using the <a href="http://www.cytoscape.org">Cytoscape</a> software.
+  In this context, pathways include biochemical reactions, complex assembly,
+transport
+and catalysis events, and physical interactions involving proteins, DNA, RNA,
+small
 molecules and complexes.
 </p>
 <!--
@@ -21,7 +21,7 @@ To do this, simply click on any of the following link(s) found throughout Pathwa
 <!--<li>'View network neighborhood map in Cytoscape'</li>-->
 </ul>
 
-<h3>1. Using the Pathway Commons Plugin</h3>
+<h3>1. Using Cytoscape on Pathway Commons</h3>
 <ul>
 	<li>
 	    Load a pathway by clicking on the "View this pathway in Cytoscape" link found on
@@ -49,16 +49,18 @@ To do this, simply click on any of the following link(s) found throughout Pathwa
     -->
     <li>
     The first time you click on a Cytoscape link, a
-    <a href="http://java.sun.com/products/javawebstart/">Java Web Start</a> version of Cytoscape will
-    be launched.  Loading the Web Start version of Cytoscape will take a few moments.  Once launched,
-    Cytoscape will automatically download and visualize your chosen pathway.
+    <a href="http://java.sun.com/products/javawebstart/">Java Web Start</a> version
+    of Cytoscape will be launched, which takes  a few moments. Once launched,
+    your chosen pathway will be displayed in Cytoscape.
     </li>
 
-    <li>Once Cytoscape is running, you can load additional data from Pathway Commons
-        by clicking on the Cytoscape links in your web browser.
-        If one or more networks are already loaded in Cytoscape, you will be given the
-        option to merge your new network with an existing network or create a new network.
-	    Below is a sample screenshot of the merge dialog window displayed within Cytoscape:
+    <li>Once Cytoscape is running, you can load additional data from Pathway
+      Commons by clicking on the Cytoscape links on the Pathway Commons web site
+      from your web browser. If one or more networks are already loaded in Cytoscape,
+      you will be given the option to merge your new network with an existing
+      network
+      or
+      create a new network (see  sample screenshot below):
         <p>&nbsp;</p>
         <p>
 	    <a href="jsp/images/plugin/pc_plugin_merge.png"><img alt="Sample Screenshot of the Pathway Commons Plugin Merge Dialog Window" src="jsp/images/plugin/pc_plugin_merge_thumb.png" border="0"></a>
@@ -71,12 +73,16 @@ To do this, simply click on any of the following link(s) found throughout Pathwa
 <h3>2. Understanding and Using Cytoscape</h3>
 
 <p>
-For further details on using Cytoscape, please refer to the <a href="http://cytoscape.org/">Cytoscape</a>
-web site.  The Cytoscape user manual is available in HTML and PDF formats.
+You can click on molecules and their interactions in the Cytoscape view to get
+  more details about them. Molecules can be moved around by clicking and dragging
+  on them. You can zoom in and out using buttons on the toolbar and pan around
+  the network view using the small overview window in the bottom left hand panel
+  of Cytoscape. For further details, please refer to the <a href="http://cytoscape.org/">Cytoscape</a>
+web site and user manual (available in HTML and PDF formats).
 </p>
 
-<h3>3. Understanding Visual Rendering Clues</h3>
-By default, nodes and edges are rendered as follows:
+<h3>3. The Meaning of the Symbols in a Network View</h3>
+By default, nodes and edges are displayed as follows:
 <p>
 </p>
 <table cellpadding="3" cellspacing="3" width=100%>
@@ -215,7 +221,7 @@ By default, nodes and edges are rendered as follows:
 		     [All others]
 		</td>
 		<td VALIGN=TOP>
-			 No Abbreviation will be provided.
+			 No Abbreviation  Provided.
 		</td>
 	</tr>
 	<tr bgcolor="#DDDDDD">
@@ -316,7 +322,7 @@ By default, nodes and edges are rendered as follows:
 		     [All others]
 		</td>
 		<td VALIGN=TOP>
-			 No Abbreviation will be provided.
+			 No Abbreviation Provided.
 		</td>
 	</tr>
 </tbody></table>
