@@ -1,4 +1,4 @@
-// $Id: PhysicalEntitySetUtil.java,v 1.1 2007-05-16 15:04:51 grossben Exp $
+// $Id: PhysicalEntitySetUtil.java,v 1.2 2007-05-16 16:29:53 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -388,8 +388,8 @@ public class PhysicalEntitySetUtil {
 		}
 
 		// outta here
-		return new PhysicalEntitySetQuery.PhysicalEntitySetInteractionsQueryResult(interactionRecordID,
-																				   intersectionSet);
+		return new PhysicalEntitySetUtil.PhysicalEntitySetInteractionsQueryResult(interactionRecordID,
+																				  intersectionSet);
 	}
 
 	/*
