@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.7 2006-12-11 19:28:14 grossb Exp $
+// $Id: TestPhysicalEntitySetPathwayQuery.java,v 1.8 2007-05-16 14:04:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,7 +38,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
-import org.mskcc.pathdb.query.PhysicalEntitySetQuery;
+import org.mskcc.pathdb.sql.util.PhysicalEntitySetUtil;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
@@ -49,14 +49,14 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 /**
- * Tests the PhysicalEntitySetQuery.getPhysicalEntitySetPathways() method.
+ * Tests the PhysicalEntitySetUtil.getPhysicalEntitySetPathways() method.
  *
  * @author Benjamin Gross
  */
 public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 
     /**
-	 * Tests the PhysicalEntitySetQuery.getPhysicalEntitySetPathways() method.
+	 * Tests the PhysicalEntitySetUtil.getPhysicalEntitySetPathways() method.
      *
      * @throws Exception All Exceptions.
      */
@@ -81,7 +81,7 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 
 	/**
 	 * Given gene set and pathway set,
-	 * calls PhysicalEntitySetQuery.getPhysicalEntitySetPathways()
+	 * calls PhysicalEntitySetUtil.getPhysicalEntitySetPathways()
 	 * and checks result
 	 *
 	 * @param physicalEntityRecordIDs long[]
@@ -92,7 +92,7 @@ public class TestPhysicalEntitySetPathwayQuery extends TestCase {
 
 		// perform query
 		long[] queryResults =
-			PhysicalEntitySetQuery.getPhysicalEntitySetPathways(physicalEntityRecordIDs);
+			PhysicalEntitySetUtil.getPhysicalEntitySetPathways(physicalEntityRecordIDs);
 
 		// check pathwayRecordIDs size against queryResults size
 		Assert.assertEquals(pathwayRecordIDs.length, queryResults.length);

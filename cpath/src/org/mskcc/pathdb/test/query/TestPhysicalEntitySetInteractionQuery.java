@@ -1,4 +1,4 @@
-// $Id: TestPhysicalEntitySetInteractionQuery.java,v 1.2 2006-11-07 21:08:28 grossb Exp $
+// $Id: TestPhysicalEntitySetInteractionQuery.java,v 1.3 2007-05-16 14:04:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,21 +32,21 @@
 package org.mskcc.pathdb.test.query;
 
 // imports
-import org.mskcc.pathdb.query.PhysicalEntitySetQuery;
+import org.mskcc.pathdb.sql.util.PhysicalEntitySetUtil;
 
 import java.util.Set;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
 /**
- * Tests the PhysicalEntitySetQuery.getPhysicalEntitySetInteractions() method.
+ * Tests the PhysicalEntitySetUtil.getPhysicalEntitySetInteractions() method.
  *
  * @author Benjamin Gross
  */
 public class TestPhysicalEntitySetInteractionQuery extends TestCase {
 
     /**
-	 * Tests the PhysicalEntitySetQuery.getPhysicalEntitySetInteractions() method.
+	 * Tests the PhysicalEntitySetUtil.getPhysicalEntitySetInteractions() method.
      *
      * @throws Exception All Exceptions.
      */
@@ -68,7 +68,7 @@ public class TestPhysicalEntitySetInteractionQuery extends TestCase {
 
 	/**
 	 * Given gene set and interaction set,
-	 * calls PhysicalEntitySetQuery.getPhysicalEntitySetInteractions()
+	 * calls PhysicalEntitySetUtil.getPhysicalEntitySetInteractions()
 	 * and checks result
 	 *
 	 * @param physicalEntityRecordIDs long[]
@@ -78,14 +78,14 @@ public class TestPhysicalEntitySetInteractionQuery extends TestCase {
 		throws Exception {
 
 		// perform query
-		Set<PhysicalEntitySetQuery.PhysicalEntitySetInteractionsQueryResult> queryResults =
-			PhysicalEntitySetQuery.getPhysicalEntitySetInteractions(physicalEntityRecordIDs);
+		Set<PhysicalEntitySetUtil.PhysicalEntitySetInteractionsQueryResult> queryResults =
+			PhysicalEntitySetUtil.getPhysicalEntitySetInteractions(physicalEntityRecordIDs);
 
 		// check interactionRecordIDs size against queryResults size
 		Assert.assertEquals(interactionRecordIDs.length, queryResults.size());
 
 		// check interactionRecordIDs values against queryResult values
-		for (PhysicalEntitySetQuery.PhysicalEntitySetInteractionsQueryResult queryResult : queryResults) {
+		for (PhysicalEntitySetUtil.PhysicalEntitySetInteractionsQueryResult queryResult : queryResults) {
 			boolean resultFound = false;
 			long queryResultID = queryResult.getInteractionRecordID();
 			//for (int lc = 0; lc < interactionRecordIDs.length; lc++) {
