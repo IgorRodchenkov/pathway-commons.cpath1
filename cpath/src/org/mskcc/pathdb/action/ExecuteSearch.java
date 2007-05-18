@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.15 2007-04-16 16:31:48 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.16 2007-05-18 18:50:21 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,6 +49,7 @@ import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryManager;
+import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -114,6 +115,13 @@ public class ExecuteSearch extends BaseAction {
             (ActionMapping mapping, ProtocolRequest protocolRequest,
                     HttpServletRequest request, HttpServletResponse response,
                     XDebug xdebug) throws ProtocolException, NeedsHelpException {
+		// valid query
+		ProtocolValidator validator = new ProtocolValidator(protocolRequest);
+        validator.validate();
+		// short circuit if necessary
+		if (isSpecialCaseCommand(protocolRequest)) {
+			return specialCaseCommandHandler(mapping, protocolRequest, request, xdebug);
+		}
         if (protocolRequest.getFormat() == null
                 || protocolRequest.getFormat()
                 .equals(ProtocolConstants.FORMAT_HTML)) {
@@ -133,9 +141,6 @@ public class ExecuteSearch extends BaseAction {
         String xml = null;
         XmlAssembly xmlAssembly = null;
         try {
-            ProtocolValidator validator =
-                    new ProtocolValidator(protocolRequest);
-            validator.validate();
             xmlAssembly = executeQuery(xdebug, protocolRequest);
             if (xmlAssembly.isEmpty()) {
                 String q = protocolRequest.getQuery();
@@ -177,9 +182,6 @@ public class ExecuteSearch extends BaseAction {
             throws ProtocolException, NeedsHelpException {
         request.setAttribute(ATTRIBUTE_PROTOCOL_REQUEST, protocolRequest);
         request.setAttribute(BaseAction.PAGE_IS_SEARCH_RESULT, BaseAction.YES);
-        ProtocolValidator validator =
-                new ProtocolValidator(protocolRequest);
-        validator.validate();
 
         try {
             if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
@@ -427,4 +429,81 @@ public class ExecuteSearch extends BaseAction {
             e.printStackTrace();
         }
     }
+
+	/**
+	 * Routine which checks if web service command needs special case 
+	 * handling.  This routine was motivated by additions to the
+	 * pathway commons api which do not conform to the current
+	 * execution path of processQuery, like get_neighbors & getPathwayList.
+	 *
+	 * Note, it is assumed that the ProtocolRequest object has already
+	 * been validated.
+	 *
+	 * @param protocolRequest ProtocolRequest
+	 * @return boolean
+	 */
+	private boolean isSpecialCaseCommand(ProtocolRequest protocolRequest) {
+
+		return (protocolRequest.getCommand().equals(ProtocolConstants.COMMAND_GET_NEIGHBORS) &&
+				protocolRequest.getOutput().equals(ProtocolRequest.ID_LIST));
+	}
+
+	/**
+	 * Routine which handles select web service api calls.
+	 * This routine was motivated by additions to the pathway commons api
+	 * which do not conform to the current execution path of processQuery,
+	 * like get_neighbors & getPathwayList.
+	 *
+	 * @param mapping ActionMapping
+	 * @param protocolRequest ProtocolRequest
+	 * @param request HttpServletRequest
+	 * @param xdebug XDebug
+	 * @return ActionForward
+	 * @throws ProtocolException
+	 */
+	private ActionForward specialCaseCommandHandler(ActionMapping mapping,
+													ProtocolRequest protocolRequest,
+													HttpServletRequest request,
+													XDebug xdebug) throws ProtocolException {
+
+		if (protocolRequest.getCommand().equals(ProtocolConstants.COMMAND_GET_NEIGHBORS)) {
+			return getNeighborsHandler(mapping, protocolRequest,
+									   request, xdebug);
+		}
+
+		// outta here
+		return null;
+	}
+
+	/**
+	 * Special-Case handler for getNeighbors Command.
+	 *
+	 * @param mapping ActionMapping
+	 * @param protocolRequest ProtocolRequest
+	 * @param request HttpServletRequest
+	 * @param xdebug XDebug
+	 * @return ActionForward
+	 * @throws ProtocolException
+	 */
+	private ActionForward getNeighborsHandler(ActionMapping mapping,
+											  ProtocolRequest protocolRequest,
+											  HttpServletRequest request,
+											  XDebug xdebug) throws ProtocolException {
+		try {
+			GetNeighborsCommand cmd = new GetNeighborsCommand(protocolRequest, xdebug);
+			long[] neighbors = cmd.getNeighbors();
+			Set<Long> neighborsSet = new HashSet<Long>();
+			for (long neighbor : neighbors) {
+				neighborsSet.add(neighbor);
+			}
+			request.setAttribute(ATTRIBUTE_NEIGHBORS, neighborsSet);
+			return mapping.findForward(ProtocolConstants.COMMAND_GET_NEIGHBORS);
+		}
+		catch (DaoException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+		}
+		catch (NumberFormatException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+		}
+	}
 }
