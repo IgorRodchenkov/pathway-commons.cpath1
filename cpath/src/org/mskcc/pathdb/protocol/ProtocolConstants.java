@@ -1,4 +1,4 @@
-// $Id: ProtocolConstants.java,v 1.16 2007-04-17 13:56:13 cerami Exp $
+// $Id: ProtocolConstants.java,v 1.17 2007-05-18 18:51:21 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -154,6 +154,12 @@ public class ProtocolConstants {
     public static final String COMMAND_HELP = "help";
 
     /**
+     * Get Neighbors Command.
+     */
+    public static final String COMMAND_GET_NEIGHBORS =
+            "get_neighbors";
+
+    /**
      * Default Max Number of Hits.
      */
     public static final int DEFAULT_MAX_HITS = 10;
@@ -195,6 +201,7 @@ public class ProtocolConstants {
             validBioPaxCommands.add(COMMAND_GET_BY_KEYWORD);
             validBioPaxCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
             validBioPaxCommands.add(COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
+            validBioPaxCommands.add(COMMAND_GET_NEIGHBORS);
         }
         return validBioPaxCommands;
     }
