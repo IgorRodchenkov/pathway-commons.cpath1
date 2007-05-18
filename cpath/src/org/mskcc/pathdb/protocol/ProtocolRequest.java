@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.15 2007-04-16 16:31:08 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.16 2007-05-18 18:53:55 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -95,6 +95,64 @@ public class ProtocolRequest implements PagedResult {
      */
     public static final String ARG_USE_OPTIMIZED_CODE = "useOptimizedCode";
 
+	/**
+	 * Internal ID Type - used in some newer web service api calls,
+	 * like get_neighbors & get_pathway_list.
+	 */
+	public static final String INTERNAL_ID = "internal_id";
+
+	/**
+	 * ID List Type - used in some newer web service api calls,
+	 * like get_neighbors.
+	 */
+	public static final String ID_LIST = "id_list";
+
+	/**
+	 * Input ID Type.
+	 *
+	 * An optional parameter to get_neighbors command which
+	 * specifies the database identifier used for input. If
+	 * this is not set, cPath internal id is assumed.
+	 */
+	public static final String ARG_INPUT_ID_TYPE = "input_id_type";
+
+	/**
+	 * Fully Connected.
+	 *
+	 * An optional parameter to get_neighbors.  When set to no (default),
+	 * the physical entity and connections to its nearest neighbors
+	 * are returned; when set to yes, all connections between all
+	 * physical entities are returned.
+	 */
+	public static final String ARG_FULLY_CONNECTED = "fully_connected";
+
+	/**
+	 * Output.
+	 *
+	 * An optional parameter to get_neighbors command which
+	 * specifies the output format.  When set to biopax (default), the output
+	 * is a biopax representation of the nearest neighbor "pathway".
+	 * When the output is set to id_list, a set of id's in plain text is returned.
+	 */
+	public static final String ARG_OUTPUT = "output";
+
+	/**
+	 * Output ID Type.
+	 *
+	 * An optional parameter to get_neighbors command which
+	 * specifies the database identifiers used in the output output.
+	 * This argument is only relevant when output=id_list.
+	 */
+	public static final String ARG_OUTPUT_ID_TYPE = "output_id_type";
+	
+	/**
+	 * Data Source.
+	 *
+	 * An optional parameter to get_neighbors command which
+	 * filters the output by data source.
+	 */
+	public static final String ARG_DATA_SOURCE = "data_source";
+
     /**
      * Command.
      */
@@ -140,6 +198,36 @@ public class ProtocolRequest implements PagedResult {
      */
     private boolean useOptimizedCode;
 
+	/**
+	 * Input ID Type Parameter.
+	 * (see ProtocolRequest.ARG_INPUT_ID_TYPE)
+	 */
+	private String inputIDType;
+
+	/**
+	 * Fully Connected Parameter.
+	 * (see ProtocolRequest.ARG_FULLY_CONNECTED)
+	 */
+	private boolean fullyConnected;
+
+	/**
+	 * Output Parameter.
+	 * (see ProtocolRequest.ARG_OUTPUT)
+	 */
+	private String output;
+
+	/**
+	 * Output ID Type Parameter.
+	 * (see ProtocolRequest.ARG_OUTPUT_ID_TYPE)
+	 */
+	private String outputIDType;
+
+	/**
+	 * Data Source Parameter.
+	 * (see ProtocolRequest.ARG_DATA_SOURCE)
+	 */
+	private String dataSource;
+
     /**
      * EmptyParameterSet.
      */
@@ -158,7 +246,15 @@ public class ProtocolRequest implements PagedResult {
         this.maxHits = null;
         this.checkXmlCache = true;
         this.useOptimizedCode = true;
+		// start get_neighbors parameters
+		this.inputIDType = INTERNAL_ID;
+		this.fullyConnected = false;
+		this.output = "biopax";
+		this.outputIDType = null;
+		this.dataSource = null;
+		// end get_neighbors parameters
     }
+
 
     /**
      * Constructor.
@@ -199,6 +295,29 @@ public class ProtocolRequest implements PagedResult {
         } else {
             useOptimizedCode = true;
         }
+
+		// start get_neighbors parameters
+		this.inputIDType =
+			(String)parameterMap.get(ProtocolRequest.ARG_INPUT_ID_TYPE);
+		this.inputIDType = (this.inputIDType == null || this.inputIDType.length() == 0)
+			? INTERNAL_ID : this.inputIDType;
+
+		String fullyConnected =
+			(String)parameterMap.get(ProtocolRequest.ARG_FULLY_CONNECTED);
+		this.fullyConnected = (fullyConnected != null && fullyConnected.equals("yes"));
+
+		this.output = 
+			(String)parameterMap.get(ProtocolRequest.ARG_OUTPUT);
+		this.output = (this.output == null || this.output.length() == 0)
+			? "biopax" : this.output;
+
+		this.outputIDType = 
+			(String)parameterMap.get(ProtocolRequest.ARG_OUTPUT_ID_TYPE);
+
+		this.dataSource = 
+			(String)parameterMap.get(ProtocolRequest.ARG_DATA_SOURCE);
+		// end get_neighbors parameters
+
         if (parameterMap.size() == 0) {
             emptyParameterSet = true;
         } else {
@@ -392,6 +511,96 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
+     * Gets Input ID Type.
+     *
+     * @return String
+     */
+    public String getInputIDType() {
+        return this.inputIDType;
+    }
+
+    /**
+     * Sets Input ID Type.
+     *
+     * @param inputIDType String
+     */
+    public void setInputIDType(String inputIDType) {
+        this.inputIDType = inputIDType;
+    }
+
+    /**
+     * Gets fully connected flag.
+	 *
+     * @return boolean
+     */
+    public boolean getFullyConnected() {
+        return this.fullyConnected;
+    }
+
+    /**
+     * Sets fully connected flag.
+	 *
+     * @param boolean
+     */
+    public void setFullyConnected(boolean fullyConnected) {
+        this.fullyConnected = fullyConnected;
+    }
+
+    /**
+     * Gets Output.
+     *
+     * @return String
+     */
+    public String getOutput() {
+        return this.output;
+    }
+
+    /**
+     * Sets Output.
+     *
+     * @param output String
+     */
+    public void setOutput(String output) {
+        this.output = output;
+    }
+
+    /**
+     * Gets Output ID Type.
+     *
+     * @return String
+     */
+    public String getOutputIDType() {
+        return this.outputIDType;
+    }
+
+    /**
+     * Sets Output ID Type.
+     *
+     * @param outputIDType String
+     */
+    public void setOutputIDType(String outputIDType) {
+        this.outputIDType = outputIDType;
+    }
+
+    /**
+     * Gets Data Source.
+     *
+     * @return String
+     */
+    public String getDataSource() {
+        return this.dataSource;
+    }
+
+    /**
+     * Sets Data Source.
+     *
+     * @param dataSource String
+     */
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    /**
      * Is this an empty request?
      *
      * @return true or false.
@@ -455,6 +664,22 @@ public class ProtocolRequest implements PagedResult {
         } else {
             list.add(new NameValuePair(ARG_USE_OPTIMIZED_CODE, "1"));
         }
+		// start get_neighbors parameters
+		if (inputIDType != null) {
+            list.add(new NameValuePair(ARG_INPUT_ID_TYPE, inputIDType));
+		}
+		String fullyConnectedStr = (fullyConnected) ? "yes" : "no";
+		list.add(new NameValuePair(ARG_FULLY_CONNECTED, fullyConnectedStr));
+		if (output != null) {
+            list.add(new NameValuePair(ARG_OUTPUT, output));
+		}
+		if (outputIDType != null) {
+            list.add(new NameValuePair(ARG_OUTPUT_ID_TYPE, outputIDType));
+		}
+		if (dataSource != null) {
+            list.add(new NameValuePair(ARG_DATA_SOURCE, dataSource));
+		}
+		// end get_neighbors parameters
 
         NameValuePair nvps[] = (NameValuePair[])
                 list.toArray(new NameValuePair[list.size()]);
