@@ -461,12 +461,10 @@ enable Javascript support within your web browser.
 
     //  Output Cytoscape Links
     if (webUIBean.getWantCytoscape()) {
+		out.println("<h3>Cytoscape:</h3>");
+		out.println("<ul><li>");
 		if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
-					out.println("<h3>Cytoscape:</h3>");
-				out.println("<ul><li>");
-		//if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
-        //    (CPathRecordType.PATHWAY.toString())) {
 			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
 						"?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
@@ -477,10 +475,17 @@ enable Javascript support within your web browser.
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");
 		}
-		//else {
-		//	out.println("<span style=\"color:#467aa7;text-decoration:underline;\"" +
-		//		">View network neighborhood map in Cytoscape</span>");
-		//}
+		else {
+			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+						urlForCytoscapeLink +
+						"?version=1.0&cmd=get_neighbors&format=biopax&q=" +
+						id + "\"" + " id=\"" +
+						id +"\"" +
+						" onclick=\"appRequest(this.href, this.id); return false;\"" +
+						">View network neighborhood map in Cytoscape</a>");
+			out.println("<a href=\"cytoscape.do\">(help)</a>");
+		    out.println("</li></ul>");
+		}
 	}
 
 	//  Output BioPAX Links

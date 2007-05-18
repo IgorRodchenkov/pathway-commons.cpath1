@@ -288,9 +288,15 @@ else {
 								">View this pathway in Cytoscape</a>");
 					out.println("<a href=\"cytoscape.do\">(help)</a>");
 				}
-				//else {
-				//	out.println("<span style=\"color:#467aa7;text-decoration:underline;\">View network neighborhood map in Cytoscape</span>");
-				//}
+				else {
+					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+								urlForCytoscapeLink +
+								"?version=1.0&cmd=get_neighbors&format=biopax&q=" +
+								String.valueOf(cpathIds[i]) + "\"" + " id=\"" +
+								String.valueOf(cpathIds[i]) +"\"" +
+								" onclick=\"appRequest(this.href, this.id); return false;\"" +
+								">View network neighborhood map in Cytoscape</a>");
+				}
 			}
 			out.println("</div>");
 			out.println("</td></tr>");
