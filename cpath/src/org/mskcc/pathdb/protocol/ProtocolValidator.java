@@ -1,4 +1,4 @@
-// $Id: ProtocolValidator.java,v 1.18 2007-04-17 13:45:49 cerami Exp $
+// $Id: ProtocolValidator.java,v 1.19 2007-05-18 18:54:24 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -217,7 +217,14 @@ public class ProtocolValidator {
             // ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST can appear
             // without a query parameter or an organism parameter.
             return;
-        } else {
+		}
+		else if (command.equals(ProtocolConstants.COMMAND_GET_NEIGHBORS)) {
+			// ust have a query parameter
+            if (!qExists) {
+                errorFlag = true;
+            }
+        }
+		else {
             if (!qExists && !organismExists) {
                 errorFlag = true;
             }
