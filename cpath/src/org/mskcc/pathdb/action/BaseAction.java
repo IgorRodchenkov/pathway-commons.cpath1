@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.34 2007-05-07 20:02:45 cerami Exp $
+// $Id: BaseAction.java,v 1.35 2007-05-18 18:49:23 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -169,9 +169,14 @@ public abstract class BaseAction extends Action {
     public static final String ATTRIBUTE_INTERACTOR_SET = "interactor_set";
 
     /**
-     * Page Attribtue:  TITLE of HTML Page.
+     * Page Attribute:  TITLE of HTML Page.
      */
     public static final String ATTRIBUTE_TITLE = "title";
+
+    /**
+     * Page Attribute:  Neighbors.
+     */
+    public static final String ATTRIBUTE_NEIGHBORS = "neighbors";
 
     /**
      * Global Property:  Admin User Name.
