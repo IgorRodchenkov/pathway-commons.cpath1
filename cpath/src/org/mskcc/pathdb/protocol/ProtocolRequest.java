@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.16 2007-05-18 18:53:55 grossben Exp $
+// $Id: ProtocolRequest.java,v 1.17 2007-05-18 21:40:22 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -247,9 +247,9 @@ public class ProtocolRequest implements PagedResult {
         this.checkXmlCache = true;
         this.useOptimizedCode = true;
 		// start get_neighbors parameters
-		this.inputIDType = INTERNAL_ID;
+		this.inputIDType = null;
 		this.fullyConnected = false;
-		this.output = "biopax";
+		this.output = null;
 		this.outputIDType = null;
 		this.dataSource = null;
 		// end get_neighbors parameters
@@ -297,25 +297,16 @@ public class ProtocolRequest implements PagedResult {
         }
 
 		// start get_neighbors parameters
-		this.inputIDType =
-			(String)parameterMap.get(ProtocolRequest.ARG_INPUT_ID_TYPE);
-		this.inputIDType = (this.inputIDType == null || this.inputIDType.length() == 0)
-			? INTERNAL_ID : this.inputIDType;
+		this.inputIDType = (String)parameterMap.get(ProtocolRequest.ARG_INPUT_ID_TYPE);
 
-		String fullyConnected =
-			(String)parameterMap.get(ProtocolRequest.ARG_FULLY_CONNECTED);
+		String fullyConnected = (String)parameterMap.get(ProtocolRequest.ARG_FULLY_CONNECTED);
 		this.fullyConnected = (fullyConnected != null && fullyConnected.equals("yes"));
 
-		this.output = 
-			(String)parameterMap.get(ProtocolRequest.ARG_OUTPUT);
-		this.output = (this.output == null || this.output.length() == 0)
-			? "biopax" : this.output;
+		this.output = (String)parameterMap.get(ProtocolRequest.ARG_OUTPUT);
 
-		this.outputIDType = 
-			(String)parameterMap.get(ProtocolRequest.ARG_OUTPUT_ID_TYPE);
+		this.outputIDType = (String)parameterMap.get(ProtocolRequest.ARG_OUTPUT_ID_TYPE);
 
-		this.dataSource = 
-			(String)parameterMap.get(ProtocolRequest.ARG_DATA_SOURCE);
+		this.dataSource = (String)parameterMap.get(ProtocolRequest.ARG_DATA_SOURCE);
 		// end get_neighbors parameters
 
         if (parameterMap.size() == 0) {
