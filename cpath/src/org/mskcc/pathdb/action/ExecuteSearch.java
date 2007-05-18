@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.17 2007-05-18 21:43:23 grossben Exp $
+// $Id: ExecuteSearch.java,v 1.18 2007-05-18 21:47:31 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -449,7 +449,7 @@ public class ExecuteSearch extends BaseAction {
 		if (command != null) {
 			if (command.equals(ProtocolConstants.COMMAND_GET_NEIGHBORS)) {
 				return (protocolRequest.getOutput() != null &&
-						protocolRequest.getOutput.equals(ProtocolRequest.ID_LIST));
+						protocolRequest.getOutput().equals(ProtocolRequest.ID_LIST));
 			}
 		}
 
