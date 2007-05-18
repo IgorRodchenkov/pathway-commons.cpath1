@@ -1,4 +1,4 @@
-// $Id: QueryManager.java,v 1.9 2007-04-16 20:17:56 cerami Exp $
+// $Id: QueryManager.java,v 1.10 2007-05-18 18:48:04 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -116,6 +116,8 @@ public class QueryManager {
                 log.info("Total time to store / update XML Cache:  " + timeInterval
                     + " ms");
             }
+        } catch (NumberFormatException e) {
+            throw new QueryException(e.getMessage(), e);
         } catch (NoSuchAlgorithmException e) {
             throw new QueryException(e.getMessage(), e);
         } catch (DaoException e) {
@@ -154,13 +156,16 @@ public class QueryManager {
         //  We currently have two types of queries:
         //  1.  get BioPaxRecord
         //  2.  get top level pathway list
-        //  2.  search via Lucene
+		//  3.  get Neighbors
+        //  4.  search via Lucene
         if (request.getCommand().equals
                 (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
             query = new GetBioPaxCommand(request);
         } else if (request.getCommand().equals
                 (ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST)) {
             query = new GetTopLevelPathwayListCommand(request, xdebug);
+        } else if (request.getCommand().equals(ProtocolConstants.COMMAND_GET_NEIGHBORS)) {
+            query = new GetNeighborsCommand(request, xdebug);
         } else {
             query = new SearchCommand(request);
         }
