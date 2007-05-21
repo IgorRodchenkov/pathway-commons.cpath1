@@ -470,7 +470,7 @@ enable Javascript support within your web browser.
 						"?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
 						id + "\"" + " id=\"" +
 						id +"\"" +
-						" onclick=\"appRequest(this.href, this.id); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, \"get_record_by_cpath_id\"); return false;\"" +
 						">View this pathway in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");
@@ -481,7 +481,7 @@ enable Javascript support within your web browser.
 						"?version=1.0&cmd=get_neighbors&format=biopax&q=" +
 						id + "\"" + " id=\"" +
 						id +"\"" +
-						" onclick=\"appRequest(this.href, this.id); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, \"get_neighbors\"); return false;\"" +
 						">View network neighborhood map in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");

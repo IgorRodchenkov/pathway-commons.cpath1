@@ -1,4 +1,4 @@
-// $Id: webstart.js,v 1.3 2007-04-25 17:28:55 grossben Exp $
+// $Id: webstart.js,v 1.4 2007-05-21 14:00:38 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,7 +37,8 @@
 // globals
 var SCRIPT_ELEMENT_ID = "cytoscape";
 var timoutVar; // used to set/unset timeout handlers
-var requestedID; // used to store url of link pressed
+var requestedID; // used to store record id link pressed
+var requestedCommand; // used to store web services command of link pressed
 //var toolTip = "'<DIV CLASS=popup><DIV CLASS=popup_caption>Cytoscape</DIV><DIV CLASS=popup_text>To view this record in Cytoscape, click on this link.  If Cytoscape is already running, the network will be loaded into Cytoscape straightaway.  If Cytoscape is not running, Pathway Commons will attempt to load Cytoscape via Java Webstart.  Click on the 'help' link for more information.</DIV>";
 
 /*
@@ -72,7 +73,7 @@ function timeoutHandler() {
     if (port) {
         hostname += (":" + port);
     }
-	var webstart_url = "http://" + hostname + "/pc/cytoscape.jnlp?id=" + requestedID; 
+	var webstart_url = "http://" + hostname + "/pc/cytoscape.jnlp?id=" + requestedID + "&command=" + requestedCommand;
 
     // determine if webstart is available - code taken from sun site
     var userAgent = navigator.userAgent.toLowerCase();
@@ -124,7 +125,7 @@ function disableLink(linkID) {
 /**
  * Called to make a webstart app request
  */
-function appRequest(url, linkID) {
+function appRequest(url, linkID, command) {
 
     // be good and remove the previous cytoscape script element
     // although, based on debugging, i'm not sure this really does anything
@@ -148,8 +149,11 @@ function appRequest(url, linkID) {
     // will not fetch data if the url has been fetched in the past
     disableLink(linkID);
 
-    // save url in case we have to pass to webstart
+    // save record id in case we have to pass to webstart
     requestedID = linkID;
+
+	// save command in case we have to pass to webstart
+	requestedCommand = command;
 
     // set timeout - handler for when cytoscape is not running
     timeoutVar = setTimeout("timeoutHandler()", 1000);

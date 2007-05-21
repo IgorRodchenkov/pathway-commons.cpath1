@@ -284,7 +284,7 @@ else {
 								String.valueOf(cpathIds[i]) +"\"" +
 								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
 								//" onmouseout=\"return nd();\"" +
-								" onclick=\"appRequest(this.href, this.id); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, 'get_record_by_cpath_id'); return false;\"" +
 								">View this pathway in Cytoscape</a>");
 				}
 				else {
@@ -293,7 +293,7 @@ else {
 								"?version=1.0&cmd=get_neighbors&format=biopax&q=" +
 								String.valueOf(cpathIds[i]) + "\"" + " id=\"" +
 								String.valueOf(cpathIds[i]) +"\"" +
-								" onclick=\"appRequest(this.href, this.id); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, 'get_neighbors'); return false;\"" +
 								">View network neighborhood map in Cytoscape</a>");
 				}
 				out.println("<a href=\"cytoscape.do\">(help)</a>");

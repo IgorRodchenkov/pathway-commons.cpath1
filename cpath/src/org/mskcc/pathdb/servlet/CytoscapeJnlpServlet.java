@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.2 2007-04-27 19:28:28 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.3 2007-05-21 14:01:56 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,6 +79,10 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
         String recordID = request.getParameter("id");
 		if (recordID == null) return;
 
+		// get command
+		String command = request.getParameter("command");
+		if (command == null) return;
+
 		// set content type on response object
 		response.setContentType("application/x-java-jnlp-file");
 
@@ -88,7 +92,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 
 		// contruct url to retrieve record, ie include web services api call
 		String urlToRetrieveRecord = urlToPathwayCommons +
-			"/webservice.do?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" + recordID;
+			"/webservice.do?version=1.0&cmd=" + command + "&format=biopax&q=" + recordID;
 
 		// write out the data
 		writeJNLPData(urlToPathwayCommons, urlToRetrieveRecord,
