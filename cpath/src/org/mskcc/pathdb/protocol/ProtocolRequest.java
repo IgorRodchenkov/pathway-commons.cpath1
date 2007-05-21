@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.17 2007-05-18 21:40:22 grossben Exp $
+// $Id: ProtocolRequest.java,v 1.18 2007-05-21 11:35:47 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -659,8 +659,10 @@ public class ProtocolRequest implements PagedResult {
 		if (inputIDType != null) {
             list.add(new NameValuePair(ARG_INPUT_ID_TYPE, inputIDType));
 		}
-		String fullyConnectedStr = (fullyConnected) ? "yes" : "no";
-		list.add(new NameValuePair(ARG_FULLY_CONNECTED, fullyConnectedStr));
+		if (fullyConnected != null) {
+			String fullyConnectedStr = (fullyConnected) ? "yes" : "no";
+			list.add(new NameValuePair(ARG_FULLY_CONNECTED, fullyConnectedStr));
+		}
 		if (output != null) {
             list.add(new NameValuePair(ARG_OUTPUT, output));
 		}
