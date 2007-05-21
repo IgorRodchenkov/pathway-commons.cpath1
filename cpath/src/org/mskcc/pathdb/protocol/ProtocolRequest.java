@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.18 2007-05-21 11:35:47 grossben Exp $
+// $Id: ProtocolRequest.java,v 1.19 2007-05-21 12:29:37 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -208,7 +208,7 @@ public class ProtocolRequest implements PagedResult {
 	 * Fully Connected Parameter.
 	 * (see ProtocolRequest.ARG_FULLY_CONNECTED)
 	 */
-	private boolean fullyConnected;
+	private String fullyConnected;
 
 	/**
 	 * Output Parameter.
@@ -248,7 +248,7 @@ public class ProtocolRequest implements PagedResult {
         this.useOptimizedCode = true;
 		// start get_neighbors parameters
 		this.inputIDType = null;
-		this.fullyConnected = false;
+		this.fullyConnected = null;
 		this.output = null;
 		this.outputIDType = null;
 		this.dataSource = null;
@@ -298,14 +298,9 @@ public class ProtocolRequest implements PagedResult {
 
 		// start get_neighbors parameters
 		this.inputIDType = (String)parameterMap.get(ProtocolRequest.ARG_INPUT_ID_TYPE);
-
-		String fullyConnected = (String)parameterMap.get(ProtocolRequest.ARG_FULLY_CONNECTED);
-		this.fullyConnected = (fullyConnected != null && fullyConnected.equals("yes"));
-
+		this.fullyConnected = (String)parameterMap.get(ProtocolRequest.ARG_FULLY_CONNECTED);
 		this.output = (String)parameterMap.get(ProtocolRequest.ARG_OUTPUT);
-
 		this.outputIDType = (String)parameterMap.get(ProtocolRequest.ARG_OUTPUT_ID_TYPE);
-
 		this.dataSource = (String)parameterMap.get(ProtocolRequest.ARG_DATA_SOURCE);
 		// end get_neighbors parameters
 
@@ -520,20 +515,20 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
-     * Gets fully connected flag.
+     * Gets fully connected.
 	 *
-     * @return boolean
+     * @return String
      */
-    public boolean getFullyConnected() {
+    public String getFullyConnected() {
         return this.fullyConnected;
     }
 
     /**
-     * Sets fully connected flag.
+     * Sets fully connected.
 	 *
-     * @param boolean
+     * @param String
      */
-    public void setFullyConnected(boolean fullyConnected) {
+    public void setFullyConnected(String fullyConnected) {
         this.fullyConnected = fullyConnected;
     }
 
@@ -660,8 +655,7 @@ public class ProtocolRequest implements PagedResult {
             list.add(new NameValuePair(ARG_INPUT_ID_TYPE, inputIDType));
 		}
 		if (fullyConnected != null) {
-			String fullyConnectedStr = (fullyConnected) ? "yes" : "no";
-			list.add(new NameValuePair(ARG_FULLY_CONNECTED, fullyConnectedStr));
+			list.add(new NameValuePair(ARG_FULLY_CONNECTED, fullyConnected));
 		}
 		if (output != null) {
             list.add(new NameValuePair(ARG_OUTPUT, output));

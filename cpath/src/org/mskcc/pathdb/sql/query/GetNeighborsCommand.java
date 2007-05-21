@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.1 2007-05-18 18:47:06 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.2 2007-05-21 12:30:08 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -159,7 +159,8 @@ public class GetNeighborsCommand extends Query {
 					   !inputIDType.equals(ProtocolRequest.INTERNAL_ID));
 
 		// fully connected ?
-		fullyConnected = request.getFullyConnected();
+		String fullyConnectedStr = request.getFullyConnected();
+		fullyConnected = (fullyConnectedStr != null && fullyConnectedStr.equalsIgnoreCase("yes"));
 
 		// output id list ?
 		String output = request.getOutput();
