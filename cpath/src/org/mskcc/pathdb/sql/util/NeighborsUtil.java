@@ -1,4 +1,4 @@
-// $Id: NeighborsUtil.java,v 1.2 2007-05-23 14:14:13 grossben Exp $
+// $Id: NeighborsUtil.java,v 1.3 2007-05-23 14:46:05 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -68,6 +68,11 @@ public class NeighborsUtil {
 	private DaoInternalLink daoInternalLink;
 
 	/**
+	 * ref to set which contains neighbor record ids
+	 */
+	private Set<Long> neighborRecordIDs;
+
+	/**
 	 * Constructor.
 	 *
      * @param xdebug XDebug Object.
@@ -76,7 +81,6 @@ public class NeighborsUtil {
 
 		// init members
         this.xdebug = xdebug;
-
     }
 
 	/**
@@ -100,11 +104,10 @@ public class NeighborsUtil {
 		daoCPath = (daoCPath == null) ? DaoCPath.getInstance() : daoCPath;
 		daoInternalLink = (daoInternalLink == null) ? new DaoInternalLink() : daoInternalLink;
 
-		// get neighbors
-		Set<Long> neighborRecordIDs = getNeighborRecordIDs(physicalEntityRecordID);
-		//Set<Long> neighborRecordIDs = getInteractionParticipants(physicalEntityRecordID,
-		//														 physicalEntityRecordID,
-		//														 true);
+		// get physical entity neighbors
+		// (we use global hashset which must be initialized before call to getNeighbors(..))
+		neighborRecordIDs = new HashSet<Long>();
+		getNeighborRecordIDs(physicalEntityRecordID, true);
 
 		// convert Set<Long> into long[]
 		int lc = -1;
@@ -117,12 +120,15 @@ public class NeighborsUtil {
 		return toReturn;
 	}
 
-
 	/**
-	 * Returns list of cpath record ids that interact
-	 * with the given physical entity (source or targets
-	 * within the internal link table), following rules
-	 * described below.	
+	 * Recursive method kicked off in getNeighbors(..)
+	 * which populates _global_ hashset, neighborRecordIDs,
+	 * with "neighbors" of physicalEntityRecordID passed
+	 * into getNeighbors(..), following rules described
+	 * below.	
+	 *
+	 * The use of te global hashset prevents infinite loops
+	 * while reducing overhead of function calls.
 	 *
 	 * Rules:
 	 *
@@ -142,84 +148,40 @@ public class NeighborsUtil {
 	 * for more info, see http://cbiowiki.org/cgi-bin/moin.cgi/Network_Neighborhood
 	 *
 	 * @param physicalEntityRecordID long
-	 * @return Set<Long> (interaction ids)
+	 * @param getParents boolean
 	 * @throws DaoException
 	 */
-	private Set<Long> getNeighborRecordIDs(long physicalEntityRecordID) throws DaoException {
+	private void getNeighborRecordIDs(long recordID,
+									  boolean getParents) throws DaoException {
 
-		// init some vars
-		Set<Long> returnRecordIDs = new HashSet<Long>();
-		Set<Long> neighborRecordIDs = getInternalLinkIDs(physicalEntityRecordID, true);
-
-		// interate over "neighbor" record id
-		for (Long recordID : neighborRecordIDs) {
-
-			// avoid infinite loop
-			if (recordID == physicalEntityRecordID) continue;
-
-			// get the cpath record
-			CPathRecord cpathRecord = daoCPath.getRecordById(recordID);
-
-			// add physical entity records - 
-			if (cpathRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
-				returnRecordIDs.add(recordID);
-			}
-			// we also want to grab all participants of parent interaction
-			else if (cpathRecord.getType().equals(CPathRecordType.INTERACTION)) {
-				// add the interaction
-				returnRecordIDs.add(recordID);
-				// add the interaction participants
-				returnRecordIDs.addAll(getInteractionParticipants(recordID, recordID, false));
-				// if biochemical reaction, get our parents
-				if (cpathRecord.getSpecificType().equals(BioPaxConstants.BIOCHEMICAL_REACTION)) {
-					returnRecordIDs.addAll(getInteractionParticipants(recordID, recordID, true));
-				}
-			}
-		}
-
-		// outta here
-		return returnRecordIDs;
-	}
-
-	private Set<Long> getInteractionParticipants(long startingInteractionRecordID,
-												 long interactionRecordID,
-												 boolean getParents) throws DaoException {
-
-		// to return
-		Set<Long> returnRecordIDs = new HashSet<Long>();
-		
 		// get participants
-		Set<Long> participants = getInternalLinkIDs(interactionRecordID, getParents);
+		Set<Long> neighbors = getInternalLinkIDs(recordID, getParents);
 
 		// interate over physical entity link records
-		for (Long recordID : participants) {
+		for (Long neighborRecordID : neighbors) {
 
 			// avoid infinite loop
-			//if (recordID == startingInteractionRecordID) continue;
+			if (neighborRecordIDs.contains(neighborRecordID)) continue;
 
 			// get the cpath record
-			CPathRecord cpathRecord = daoCPath.getRecordById(recordID);
+			CPathRecord cpathRecord = daoCPath.getRecordById(neighborRecordID);
 
-			// add physical entity records - 
+			// add physical entity records
 			if (cpathRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
-				returnRecordIDs.add(recordID);
+				neighborRecordIDs.add(neighborRecordID);
 			}
 			// if we have an interaction, get its participants
-			else if (cpathRecord.getType().equals(CPathRecordType.INTERACTION) &&
-					 recordID != startingInteractionRecordID) {
+			else if (cpathRecord.getType().equals(CPathRecordType.INTERACTION)) {
 				// add the interaction
-				returnRecordIDs.add(recordID);
+				neighborRecordIDs.add(neighborRecordID);
 				// add the interaction participants
-				returnRecordIDs.addAll(getInteractionParticipants(startingInteractionRecordID, recordID, false));
+				getNeighborRecordIDs(neighborRecordID, false);
 				// if biochemical reaction, get our parents
 				if (cpathRecord.getSpecificType().equals(BioPaxConstants.BIOCHEMICAL_REACTION)) {
-					returnRecordIDs.addAll(getInteractionParticipants(startingInteractionRecordID, recordID, true));
+					getNeighborRecordIDs(neighborRecordID, true);
 				}
 			}
 		}
-
-		// outta here
-		return returnRecordIDs;
 	}
 
 	/**
