@@ -1,4 +1,4 @@
-// $Id: NeighborsUtil.java,v 1.1 2007-05-18 18:46:45 grossben Exp $
+// $Id: NeighborsUtil.java,v 1.2 2007-05-23 14:14:13 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -96,25 +96,15 @@ public class NeighborsUtil {
 	public long[] getNeighbors(long physicalEntityRecordID, boolean fullyConnected)
 		throws DaoException {
 
-		xdebug.logMsg(this, "entering NeighborsUtil.getNeighbors()");
-
 		// init these here to reduce arguments to getInteractionRecordIDs
 		daoCPath = (daoCPath == null) ? DaoCPath.getInstance() : daoCPath;
 		daoInternalLink = (daoInternalLink == null) ? new DaoInternalLink() : daoInternalLink;
 
-		// get this physical entities interaction records
-		xdebug.logMsg(this, "getting interaction records for physical entity '" +
-					  Long.toString(physicalEntityRecordID) + "'.");
-		Set<Long> neighborRecordIDs = getInteractionRecordIDs(physicalEntityRecordID,
-															  null,
-															  physicalEntityRecordID,
-															  fullyConnected,
-															  true);
-		neighborRecordIDs.addAll(getInteractionRecordIDs(physicalEntityRecordID,
-														 null,
-														 physicalEntityRecordID,
-														 fullyConnected,
-														 false));
+		// get neighbors
+		Set<Long> neighborRecordIDs = getNeighborRecordIDs(physicalEntityRecordID);
+		//Set<Long> neighborRecordIDs = getInteractionParticipants(physicalEntityRecordID,
+		//														 physicalEntityRecordID,
+		//														 true);
 
 		// convert Set<Long> into long[]
 		int lc = -1;
@@ -124,8 +114,6 @@ public class NeighborsUtil {
 		}
 
 		// outta here
-		System.out.println("exiting NeighborsUtil.getNeighbors()");
-		xdebug.logMsg(this, "exiting NeighborsUtil.getNeighbors()");
 		return toReturn;
 	}
 
@@ -151,71 +139,81 @@ public class NeighborsUtil {
 	 * the [control] interaction (plus its [CONTROLLER]) are
 	 * included in the neighborhood.
 	 *
-	 * fullyConnected parameter:
-	 *
-	 * when set all connections between all physical entities are returned,
-	 * else the physical entity and connections to its nearest neighbors are returned.
-	 *
 	 * for more info, see http://cbiowiki.org/cgi-bin/moin.cgi/Network_Neighborhood
 	 *
-	 * @param startingPhysicalEntityRecordID: record id passed in from getNeighbors - prevent infinite loop
 	 * @param physicalEntityRecordID long
-	 * @param fullyConnected boolean 
-	 * @param getSources boolean (if set, get sources, else get targets)
 	 * @return Set<Long> (interaction ids)
 	 * @throws DaoException
 	 */
-	private Set<Long> getInteractionRecordIDs(long startingPhysicalEntityRecordID,
-											  Set<Long> startingPhysicalEntityTargets,
-											  long physicalEntityRecordID,
-											  boolean fullyConnected,
-											  boolean getSources) throws DaoException {
+	private Set<Long> getNeighborRecordIDs(long physicalEntityRecordID) throws DaoException {
 
 		// init some vars
 		Set<Long> returnRecordIDs = new HashSet<Long>();
-		CPathRecord physicalEntityRecord = daoCPath.getRecordById(physicalEntityRecordID);
-		Set<Long> physicalEntityLinkIDs = getInternalLinkIDs(physicalEntityRecordID, getSources);
-		boolean firstLevel = (startingPhysicalEntityRecordID == physicalEntityRecordID);
-		startingPhysicalEntityTargets = (startingPhysicalEntityTargets == null) ?
-			getInternalLinkIDs(startingPhysicalEntityRecordID, false) : startingPhysicalEntityTargets;
+		Set<Long> neighborRecordIDs = getInternalLinkIDs(physicalEntityRecordID, true);
 
-		// interate over physical entity link records
-		for (Long recordID : physicalEntityLinkIDs) {
-			// if this is the starting record, skip it
-			if (recordID == startingPhysicalEntityRecordID) continue;
-			// add this record to return set if:
-			// - we are at first level, in which case all records directly connect to physical entity are added
-			// - we are fully connected, and this record connects to a record directly connected to physical entity
-			// - we are a participant of a control or conversion interaction
-			if (firstLevel ||
-				(fullyConnected && startingPhysicalEntityTargets.contains(recordID)) ||
-				(physicalEntityRecord.getType().equals(CPathRecordType.INTERACTION) &&
-				 (physicalEntityRecord.getSpecificType().equals(BioPaxConstants.CONTROL) ||
-				  physicalEntityRecord.getSpecificType().equals(BioPaxConstants.CONVERSION)))) {
-				returnRecordIDs.add(recordID);
-			}
+		// interate over "neighbor" record id
+		for (Long recordID : neighborRecordIDs) {
+
+			// avoid infinite loop
+			if (recordID == physicalEntityRecordID) continue;
+
 			// get the cpath record
 			CPathRecord cpathRecord = daoCPath.getRecordById(recordID);
-			// we only want to get links to/from the starting physical entity
-			if (firstLevel) {
-				// we are only concerned with interactions
-				if (cpathRecord.getType().equals(CPathRecordType.INTERACTION)) {
-					// if we are a controller for a control interaction,
-					// get participants of interaction
-					if (cpathRecord.getSpecificType().equals(BioPaxConstants.CONTROL)) {
-						returnRecordIDs.addAll(getInteractionRecordIDs(startingPhysicalEntityRecordID,
-																	   startingPhysicalEntityTargets,
-																	   recordID,
-																	   fullyConnected, false));
-					}
-					// if we participate in a conversion,
-					// get interaction that controls us
-					if (cpathRecord.getSpecificType().equals(BioPaxConstants.CONVERSION)) {
-						returnRecordIDs.addAll(getInteractionRecordIDs(startingPhysicalEntityRecordID,
-																	   startingPhysicalEntityTargets,
-																	   recordID,
-																	   fullyConnected, false));
-					}
+
+			// add physical entity records - 
+			if (cpathRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
+				returnRecordIDs.add(recordID);
+			}
+			// we also want to grab all participants of parent interaction
+			else if (cpathRecord.getType().equals(CPathRecordType.INTERACTION)) {
+				// add the interaction
+				returnRecordIDs.add(recordID);
+				// add the interaction participants
+				returnRecordIDs.addAll(getInteractionParticipants(recordID, recordID, false));
+				// if biochemical reaction, get our parents
+				if (cpathRecord.getSpecificType().equals(BioPaxConstants.BIOCHEMICAL_REACTION)) {
+					returnRecordIDs.addAll(getInteractionParticipants(recordID, recordID, true));
+				}
+			}
+		}
+
+		// outta here
+		return returnRecordIDs;
+	}
+
+	private Set<Long> getInteractionParticipants(long startingInteractionRecordID,
+												 long interactionRecordID,
+												 boolean getParents) throws DaoException {
+
+		// to return
+		Set<Long> returnRecordIDs = new HashSet<Long>();
+		
+		// get participants
+		Set<Long> participants = getInternalLinkIDs(interactionRecordID, getParents);
+
+		// interate over physical entity link records
+		for (Long recordID : participants) {
+
+			// avoid infinite loop
+			//if (recordID == startingInteractionRecordID) continue;
+
+			// get the cpath record
+			CPathRecord cpathRecord = daoCPath.getRecordById(recordID);
+
+			// add physical entity records - 
+			if (cpathRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY)) {
+				returnRecordIDs.add(recordID);
+			}
+			// if we have an interaction, get its participants
+			else if (cpathRecord.getType().equals(CPathRecordType.INTERACTION) &&
+					 recordID != startingInteractionRecordID) {
+				// add the interaction
+				returnRecordIDs.add(recordID);
+				// add the interaction participants
+				returnRecordIDs.addAll(getInteractionParticipants(startingInteractionRecordID, recordID, false));
+				// if biochemical reaction, get our parents
+				if (cpathRecord.getSpecificType().equals(BioPaxConstants.BIOCHEMICAL_REACTION)) {
+					returnRecordIDs.addAll(getInteractionParticipants(startingInteractionRecordID, recordID, true));
 				}
 			}
 		}
@@ -228,23 +226,24 @@ public class NeighborsUtil {
 	 * Given a cPath id, returns list of targets or sources.
 	 *
 	 * @param physicalEntityID long
+	 * @param getParents boolean (if false, gets children)
 	 * @return Set<Long>
 	 * @throws DaoException
 	 */
-	private Set<Long> getInternalLinkIDs(long physicalEntityRecordID, boolean getSources) 
+	private Set<Long> getInternalLinkIDs(long physicalEntityRecordID, boolean getParents) 
 		throws DaoException {
 
 		// set to return
 		Set<Long> physicalEntityTargets = new HashSet<Long>();
 
 		// get link records
-		ArrayList<InternalLinkRecord> internalLinkRecords = (getSources) ?
+		ArrayList<InternalLinkRecord> internalLinkRecords = (getParents) ?
 			daoInternalLink.getSources(physicalEntityRecordID) :
 			daoInternalLink.getTargets(physicalEntityRecordID);
-		
+
 		// extract ids
 		for (InternalLinkRecord linkRecord : internalLinkRecords) {
-			physicalEntityTargets.add((getSources) ?
+			physicalEntityTargets.add((getParents) ?
 									  linkRecord.getSourceId() : linkRecord.getTargetId());
 		}
 
