@@ -1,4 +1,4 @@
-// $Id: NeighborsUtil.java,v 1.3 2007-05-23 14:46:05 grossben Exp $
+// $Id: NeighborsUtil.java,v 1.4 2007-05-23 16:51:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -109,6 +109,11 @@ public class NeighborsUtil {
 		neighborRecordIDs = new HashSet<Long>();
 		getNeighborRecordIDs(physicalEntityRecordID, true);
 
+		// process fully connected
+		if (fullyConnected) {
+			fullyConnect(physicalEntityRecordID);
+		}
+
 		// convert Set<Long> into long[]
 		int lc = -1;
 		long[] toReturn = new long[neighborRecordIDs.size()];
@@ -187,29 +192,65 @@ public class NeighborsUtil {
 	/**
 	 * Given a cPath id, returns list of targets or sources.
 	 *
-	 * @param physicalEntityID long
+	 * @param recordID long
 	 * @param getParents boolean (if false, gets children)
 	 * @return Set<Long>
 	 * @throws DaoException
 	 */
-	private Set<Long> getInternalLinkIDs(long physicalEntityRecordID, boolean getParents) 
+	private Set<Long> getInternalLinkIDs(long recordID, boolean getParents) 
 		throws DaoException {
 
 		// set to return
-		Set<Long> physicalEntityTargets = new HashSet<Long>();
+		Set<Long> returnSet = new HashSet<Long>();
 
 		// get link records
 		ArrayList<InternalLinkRecord> internalLinkRecords = (getParents) ?
-			daoInternalLink.getSources(physicalEntityRecordID) :
-			daoInternalLink.getTargets(physicalEntityRecordID);
+			daoInternalLink.getSources(recordID) :
+			daoInternalLink.getTargets(recordID);
 
 		// extract ids
 		for (InternalLinkRecord linkRecord : internalLinkRecords) {
-			physicalEntityTargets.add((getParents) ?
-									  linkRecord.getSourceId() : linkRecord.getTargetId());
+			returnSet.add((getParents) ?
+						  linkRecord.getSourceId() : linkRecord.getTargetId());
 		}
 
 		// outta here
-		return physicalEntityTargets;
+		return returnSet;
+	}
+
+	/**
+	 * Adds records to neighborhood map to "fully connect" it.
+	 *
+	 * @param physicalEntityRecordID long
+	 * @throws DaoException
+	 */
+	private void fullyConnect(long recordID) throws DaoException {
+
+		// get all physical entities in map
+		Set<Long> physicalEntityRecordIDs = new HashSet<Long>();
+		for (Long neighborRecordID : neighborRecordIDs) {
+			CPathRecord cpathRecord = daoCPath.getRecordById(neighborRecordID);
+			// only add physical entity records and not the recordID parameter
+			if (cpathRecord.getType().equals(CPathRecordType.PHYSICAL_ENTITY) &&
+				neighborRecordID != recordID) {
+				physicalEntityRecordIDs.add(neighborRecordID);
+			}
+		}
+
+		// for each physical entity, get its interactions
+		for (Long physicalEntityRecordID : physicalEntityRecordIDs) {
+			Set<Long> parentRecordIDs = getInternalLinkIDs(physicalEntityRecordID, true);
+			// for each interaction, get its participants
+			for (Long parentRecordID : parentRecordIDs) {
+				Set<Long> childrenRecordIDs = getInternalLinkIDs(parentRecordID, false);
+				// if child of parent is in the original physical entity map, add the interaction
+				for (Long childRecordID : childrenRecordIDs) {
+					if (childRecordID != physicalEntityRecordID &&
+						physicalEntityRecordIDs.contains(childRecordID)) {
+						neighborRecordIDs.add(parentRecordID);
+					}
+				}
+			}
+		}
 	}
 }
