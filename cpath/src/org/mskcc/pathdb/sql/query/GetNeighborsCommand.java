@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.2 2007-05-21 12:30:08 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.3 2007-05-29 12:45:55 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,13 +33,23 @@ package org.mskcc.pathdb.sql.query;
 
 // imports
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.util.NeighborsUtil;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
+import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+
+import java.util.Set;
+import java.util.HashSet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Gets Neighbors of given physical entity.
@@ -54,9 +64,14 @@ public class GetNeighborsCommand extends Query {
     private XDebug xdebug;
 
 	/**
+	 * ref to httpservlet request
+	 */
+    private HttpServletRequest httpRequest;
+
+	/**
 	 * ref to protocol request
 	 */
-    private ProtocolRequest request;
+    private ProtocolRequest protocolRequest;
 
 	/**
 	 * cook input id ?
@@ -79,22 +94,30 @@ public class GetNeighborsCommand extends Query {
 	private boolean outputIDList;
 
 	/**
-	 * filter by data source ?
-	 */
-	private boolean filterByDataSource;
+	 * Constructor.
+	 *
+	 * @param protocolRequest ProtocolRequest
+	 * @param xdebug XDebug
+     */
+    public GetNeighborsCommand(ProtocolRequest protocolRequest, XDebug xdebug) {
+
+		this(null, protocolRequest, xdebug);
+    }
 
 	/**
 	 * Constructor.
 	 *
-	 * @param request ProtocolRequest
+	 * @param httpRequest HttpServletRequest
+	 * @param protocolRequest ProtocolRequest
 	 * @param xdebug XDebug
      */
-    public GetNeighborsCommand(ProtocolRequest request, XDebug xdebug) {
+    public GetNeighborsCommand(HttpServletRequest httpRequest, ProtocolRequest protocolRequest, XDebug xdebug) {
 
 		// init members
-        this.request = request;
+        this.httpRequest = httpRequest;
+        this.protocolRequest = protocolRequest;
         this.xdebug = xdebug;
-		setFlags(request);
+		setFlags();
     }
 
     /**
@@ -113,7 +136,7 @@ public class GetNeighborsCommand extends Query {
 													XmlRecordType.BIO_PAX,
 													neighbors.length,
 													XmlAssemblyFactory.XML_FULL,
-													request.getUseOptimizedCode(),
+													protocolRequest.getUseOptimizedCode(),
 													xdebug);
     }
 
@@ -130,50 +153,44 @@ public class GetNeighborsCommand extends Query {
 
 		// get neighbors - easy!
         NeighborsUtil util = new NeighborsUtil(xdebug);
-		long neighbors[] = util.getNeighbors(physicalEntityRecordID, fullyConnected);
+		long neighborRecordIDs[] = util.getNeighbors(physicalEntityRecordID, fullyConnected);
 
 		// filter by data sources
-		neighbors = (filterByDataSource) ? filterByDataSource(neighbors) : neighbors;
+		//neighborRecordIDs = filterByDataSource(neighborRecordIDs);
 
 		// cook output ids
-		neighbors = (cookOutputIDs) ? cookOutputIDs(neighbors) : neighbors;
+		neighborRecordIDs = (cookOutputIDs) ? cookOutputIDs(neighborRecordIDs) : neighborRecordIDs;
 
 		// outta here
-		return neighbors;
+		return neighborRecordIDs;
 	}
 
 	/**
 	 * Method to set member bools base on
 	 * relevant parameters from request object.
-	 *
-	 * @param request ProtocolRequest
 	 */
-	private void setFlags(ProtocolRequest request) {
+	private void setFlags() {
 
 		// check args
-		if (request == null) return;
+		if (protocolRequest == null) return;
 
 		// cook input id ?
-		String inputIDType = request.getInputIDType();
+		String inputIDType = protocolRequest.getInputIDType();
 		cookInputID = (inputIDType != null &&
 					   !inputIDType.equals(ProtocolRequest.INTERNAL_ID));
 
 		// fully connected ?
-		String fullyConnectedStr = request.getFullyConnected();
+		String fullyConnectedStr = protocolRequest.getFullyConnected();
 		fullyConnected = (fullyConnectedStr != null && fullyConnectedStr.equalsIgnoreCase("yes"));
 
 		// output id list ?
-		String output = request.getOutput();
+		String output = protocolRequest.getOutput();
 		outputIDList = (output != null && output.equals(ProtocolRequest.ID_LIST));
 
 		// cook id on the way out ?
-		String outputIDType = request.getOutputIDType();
+		String outputIDType = protocolRequest.getOutputIDType();
 		cookOutputIDs = (outputIDType != null &&
 						 !outputIDType.equals(ProtocolRequest.INTERNAL_ID));
-
-		// data source
-		String dataSource = request.getDataSource();
-		filterByDataSource = (dataSource != null && dataSource.length() > 0);
 	}
 
 	/**
@@ -188,10 +205,10 @@ public class GetNeighborsCommand extends Query {
 		long physicalEntityRecordID;
 		if (cookInputID) {
 			// some cooking here
-			physicalEntityRecordID = Long.parseLong(request.getQuery());
+			physicalEntityRecordID = Long.parseLong(protocolRequest.getQuery());
 		}
 		else {
-			physicalEntityRecordID = Long.parseLong(request.getQuery());
+			physicalEntityRecordID = Long.parseLong(protocolRequest.getQuery());
 		}
 
 		// outta here
@@ -201,18 +218,87 @@ public class GetNeighborsCommand extends Query {
 	/**
 	 * Method to filter neighbor list by data source.
 	 *
-	 * @param neighbors long[]
+	 * @param neighborRecordIDs long[]
 	 * @return long[]
+	 * @throws DaoException
 	 */
-	private long[] filterByDataSource(long[] neighbors) {
+	private long[] filterByDataSource(long[] neighborRecordIDs) throws DaoException {
 
-		// get datasource
-		String dataSource = request.getDataSource();
+		// get datasource filter list
+		Set<String> dataSourceFilterSet = getDataSourceFilters();
 
+		// if we have a filter set (which we should),
 		// interate through neighbors, remove neighbors with differing datasource
+		Set<Long> filteredNeighborIDs = new HashSet<Long>();
+		if (dataSourceFilterSet.size() > 0) {
+			// create ref to dao cpath
+			DaoCPath daoCPath = DaoCPath.getInstance();
+			DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
+			// interate over records
+			for (long neighborRecordID : neighborRecordIDs) {
+				// get the cpath record
+				CPathRecord cpathRecord = daoCPath.getRecordById(neighborRecordID);
+				ExternalDatabaseSnapshotRecord snapshotRecord = daoSnapshot.getDatabaseSnapshot(cpathRecord.getSnapshotId());
+				if (snapshotRecord == null) continue;
+				if (dataSourceFilterSet.contains(snapshotRecord.getExternalDatabase().getMasterTerm())) {
+					filteredNeighborIDs.add(neighborRecordID);
+				}
+			}
+		}
+		else {
+			return neighborRecordIDs;
+		}
+
+		// convert array list to long[]
+		int lc = -1;
+		long[] toReturn = new long[filteredNeighborIDs.size()];
+		for (Long filterNeighborID : filteredNeighborIDs) {
+			toReturn[++lc] = filterNeighborID;
+		}
 
 		// outta here
-		return neighbors;
+		return toReturn;
+	}
+
+	/**
+	 * Method used to construct list of datasource filters
+	 *
+	 * @return Set<String>
+	 * @throws DaoException
+	 */
+	private Set<String> getDataSourceFilters() throws DaoException {
+
+		// list to return
+		Set<String> dataSourceFilterSet = new HashSet();
+
+		// get datasource from protocol request object
+		String dataSource = protocolRequest.getDataSource();
+		if (dataSource != null && dataSource.length() > 0) {
+			dataSourceFilterSet.add(dataSource);
+			return dataSourceFilterSet;
+		}
+
+		// get filter settings from global filter settings
+		HttpSession session = httpRequest.getSession();
+		GlobalFilterSettings filterSettings = (GlobalFilterSettings) session.getAttribute
+			(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+		if (filterSettings == null) {
+			filterSettings = new GlobalFilterSettings();
+			session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS,
+								 filterSettings);
+			//return dataSourceFilterSet;
+		}
+
+		//  create list of external db master terms
+		DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
+		Set<Long> filterIDs = filterSettings.getSnapshotIdSet();
+		for (Long id : filterIDs) {
+			ExternalDatabaseSnapshotRecord record = daoSnapshot.getDatabaseSnapshot(id);
+			dataSourceFilterSet.add(record.getExternalDatabase().getMasterTerm());
+		}
+
+		// outta here
+		return dataSourceFilterSet;
 	}
 
 	/**
