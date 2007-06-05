@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.18 2007-05-18 21:47:31 grossben Exp $
+// $Id: ExecuteSearch.java,v 1.19 2007-06-05 20:53:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -117,7 +117,7 @@ public class ExecuteSearch extends BaseAction {
                     XDebug xdebug) throws ProtocolException, NeedsHelpException {
 		// valid query
 		ProtocolValidator validator = new ProtocolValidator(protocolRequest);
-        validator.validate();
+        validator.validate(ProtocolConstants.VERSION_1);
 		// short circuit if necessary
 		if (isSpecialCaseCommand(protocolRequest)) {
 			return specialCaseCommandHandler(mapping, protocolRequest, request, xdebug);

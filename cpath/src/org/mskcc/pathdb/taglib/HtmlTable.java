@@ -1,4 +1,4 @@
-// $Id: HtmlTable.java,v 1.25 2007-03-20 18:08:13 cerami Exp $
+// $Id: HtmlTable.java,v 1.26 2007-06-05 20:53:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -217,7 +217,7 @@ public abstract class HtmlTable extends TagSupport {
     protected String getInteractionLink(String id, String format) {
         ProtocolRequest request = new ProtocolRequest();
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-        request.setVersion(ProtocolConstants.CURRENT_VERSION);
+        request.setVersion(ProtocolConstants.VERSION_1);
         request.setFormat(format);
         request.setQuery(id);
         return request.getUri();
@@ -232,7 +232,7 @@ public abstract class HtmlTable extends TagSupport {
     protected String getOrganismLink(int taxonomyId) {
         ProtocolRequest request = new ProtocolRequest();
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-        request.setVersion(ProtocolConstants.CURRENT_VERSION);
+        request.setVersion(ProtocolConstants.VERSION_1);
         request.setFormat(ProtocolConstants.FORMAT_HTML);
         request.setOrganism(Integer.toString(taxonomyId));
         return request.getUri();

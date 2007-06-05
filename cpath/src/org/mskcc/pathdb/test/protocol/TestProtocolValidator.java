@@ -1,4 +1,4 @@
-// $Id: TestProtocolValidator.java,v 1.17 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestProtocolValidator.java,v 1.18 2007-06-05 20:53:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -65,7 +65,7 @@ public class TestProtocolValidator extends TestCase {
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             ProtocolStatusCode statusCode = e.getStatusCode();
@@ -78,7 +78,7 @@ public class TestProtocolValidator extends TestCase {
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             ProtocolStatusCode statusCode = e.getStatusCode();
@@ -102,13 +102,13 @@ public class TestProtocolValidator extends TestCase {
         HashMap map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
                 ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
-        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.CURRENT_VERSION);
+        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.VERSION_1);
         map.put(ProtocolRequest.ARG_QUERY, "1235");
         map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
         } catch (ProtocolException e) {
             e.printStackTrace();
             fail("ProtocolException should not have been thrown");
@@ -120,7 +120,7 @@ public class TestProtocolValidator extends TestCase {
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             assertEquals(ProtocolStatusCode.INVALID_ARGUMENT,
@@ -135,7 +135,7 @@ public class TestProtocolValidator extends TestCase {
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             assertEquals(ProtocolStatusCode.BAD_FORMAT,
@@ -147,12 +147,12 @@ public class TestProtocolValidator extends TestCase {
         map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
                 ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
-        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.CURRENT_VERSION);
+        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.VERSION_1);
         map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
         } catch (ProtocolException e) {
             fail("ProtocolException should not have been thrown");
         }
@@ -170,7 +170,7 @@ public class TestProtocolValidator extends TestCase {
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (NeedsHelpException e) {
             request.getCommand();  // Do Nothing.
@@ -197,7 +197,7 @@ public class TestProtocolValidator extends TestCase {
         request.setMaxHits(Integer.toString(maxHits));
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             ProtocolStatusCode code = e.getStatusCode();

@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.19 2007-05-21 12:29:37 grossben Exp $
+// $Id: ProtocolRequest.java,v 1.20 2007-06-05 20:53:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,7 +34,6 @@ package org.mskcc.pathdb.protocol;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.log4j.Logger;
 import org.mskcc.pathdb.model.PagedResult;
 
 import java.util.ArrayList;
@@ -240,7 +239,7 @@ public class ProtocolRequest implements PagedResult {
      * Constructor.
      */
     public ProtocolRequest() {
-        this.version = ProtocolConstants.CURRENT_VERSION;
+        this.version = ProtocolConstants.VERSION_1;
         this.startIndex = 0;
         this.organism = null;
         this.maxHits = null;

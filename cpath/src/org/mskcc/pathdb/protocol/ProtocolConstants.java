@@ -1,4 +1,4 @@
-// $Id: ProtocolConstants.java,v 1.17 2007-05-18 18:51:21 grossben Exp $
+// $Id: ProtocolConstants.java,v 1.18 2007-06-05 20:53:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -86,9 +86,14 @@ public class ProtocolConstants {
     public static final String FORMAT_COUNT_ONLY = "count_only";
 
     /**
-     * Currently Supported Version.
+     * Protocol Version:  1.0
      */
-    public static final String CURRENT_VERSION = "1.0";
+    public static final String VERSION_1 = "1.0";
+
+    /**
+     * Protocol Version:  2.0
+     */
+    public static final String VERSION_2 = "2.0";
 
     /**
      * Get By Interactor Name.

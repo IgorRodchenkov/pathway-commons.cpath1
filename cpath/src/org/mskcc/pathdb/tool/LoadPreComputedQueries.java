@@ -1,4 +1,4 @@
-// $Id: LoadPreComputedQueries.java,v 1.15 2006-02-22 22:47:51 grossb Exp $
+// $Id: LoadPreComputedQueries.java,v 1.16 2007-06-05 20:53:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,10 +31,7 @@
  **/
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.pathdb.protocol.NeedsHelpException;
-import org.mskcc.pathdb.protocol.ProtocolException;
-import org.mskcc.pathdb.protocol.ProtocolRequest;
-import org.mskcc.pathdb.protocol.ProtocolValidator;
+import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
 import org.mskcc.pathdb.sql.query.QueryException;
@@ -74,7 +71,7 @@ public class LoadPreComputedQueries {
         for (int i = 0; i < list.size(); i++) {
             ProtocolRequest request = (ProtocolRequest) list.get(i);
             ProtocolValidator validator = new ProtocolValidator(request);
-            validator.validate();
+            validator.validate(ProtocolConstants.VERSION_1);
             System.out.print("Running Query:  " + request.getUri());
             QueryManager executeQueryManager = new QueryManager(xdebug);
             executeQueryManager.executeQuery(request, false);
