@@ -1,4 +1,4 @@
-// $Id: QueryManager.java,v 1.11 2007-06-05 21:00:36 cerami Exp $
+// $Id: QueryManager.java,v 1.12 2007-06-05 21:22:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,7 @@ package org.mskcc.pathdb.sql.query;
 
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
@@ -164,7 +165,7 @@ public class QueryManager {
         } else if (request.getCommand().equals
                 (ProtocolConstantsVersion1.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST)) {
             query = new GetTopLevelPathwayListCommand(request, xdebug);
-        } else if (request.getCommand().equals(ProtocolConstantsVersion1.COMMAND_GET_NEIGHBORS)) {
+        } else if (request.getCommand().equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
             query = new GetNeighborsCommand(request, xdebug);
         } else {
             query = new SearchCommand(request);

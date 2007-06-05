@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.21 2007-06-05 21:00:36 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.22 2007-06-05 21:22:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -128,18 +128,17 @@ public class ProtocolRequest implements PagedResult {
 	/**
 	 * Output.
 	 *
-	 * An optional parameter to get_neighbors command which
-	 * specifies the output format.  When set to biopax (default), the output
-	 * is a biopax representation of the nearest neighbor "pathway".
-	 * When the output is set to id_list, a set of id's in plain text is returned.
+	 * An optional parameter to specify the output format.
+     * When set to biopax (default), the output is a biopax representation of the nearest
+     * neighbor "pathway".  When the output is set to id_list, a set of id's in plain text is
+     * returned.
 	 */
 	public static final String ARG_OUTPUT = "output";
 
 	/**
 	 * Output ID Type.
 	 *
-	 * An optional parameter to get_neighbors command which
-	 * specifies the database identifiers used in the output output.
+	 * An optional parameter which specifies the database identifiers used in the output.
 	 * This argument is only relevant when output=id_list.
 	 */
 	public static final String ARG_OUTPUT_ID_TYPE = "output_id_type";
@@ -147,8 +146,7 @@ public class ProtocolRequest implements PagedResult {
 	/**
 	 * Data Source.
 	 *
-	 * An optional parameter to get_neighbors command which
-	 * filters the output by data source.
+	 * An optional parameter which filters the output by data source.
 	 */
 	public static final String ARG_DATA_SOURCE = "data_source";
 
@@ -525,7 +523,7 @@ public class ProtocolRequest implements PagedResult {
     /**
      * Sets fully connected.
 	 *
-     * @param String
+     * @param fullyConnected fully connected string.
      */
     public void setFullyConnected(String fullyConnected) {
         this.fullyConnected = fullyConnected;

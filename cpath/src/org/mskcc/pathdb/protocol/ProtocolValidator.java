@@ -1,4 +1,4 @@
-// $Id: ProtocolValidator.java,v 1.21 2007-06-05 21:00:36 cerami Exp $
+// $Id: ProtocolValidator.java,v 1.22 2007-06-05 21:22:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,10 @@ package org.mskcc.pathdb.protocol;
  * @author Ethan Cerami
  */
 public class ProtocolValidator {
+    /**
+     * Help Message
+     */
+    public static final String HELP_MESSAGE = "  Please try again.";
 
     /**
      * Protocol Request.

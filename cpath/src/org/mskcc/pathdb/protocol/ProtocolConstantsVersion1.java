@@ -1,4 +1,4 @@
-// $Id: ProtocolConstantsVersion1.java,v 1.1 2007-06-05 21:00:36 cerami Exp $
+// $Id: ProtocolConstantsVersion1.java,v 1.2 2007-06-05 21:22:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,9 +34,9 @@ package org.mskcc.pathdb.protocol;
 import java.util.HashSet;
 
 /**
- * Protocol Constants.
+ * Protocol Constants, Version 1.0.
  *
- * @author Ethan Cerami
+ * @author cPath Dev Team.
  */
 public class ProtocolConstantsVersion1 {
     /**
@@ -148,17 +148,6 @@ public class ProtocolConstantsVersion1 {
             "get_organism_list";
 
     /**
-     * Help Command.
-     */
-    public static final String COMMAND_HELP = "help";
-
-    /**
-     * Get Neighbors Command.
-     */
-    public static final String COMMAND_GET_NEIGHBORS =
-            "get_neighbors";
-
-    /**
      * Default Max Number of Hits.
      */
     public static final int DEFAULT_MAX_HITS = 10;
@@ -183,7 +172,7 @@ public class ProtocolConstantsVersion1 {
             validPsiMiCommands.add(COMMAND_GET_BY_DATABASE);
             validPsiMiCommands.add(COMMAND_GET_BY_PMID);
             validPsiMiCommands.add(COMMAND_GET_BY_EXPERIMENT_TYPE);
-            validPsiMiCommands.add(COMMAND_HELP);
+            validPsiMiCommands.add(ProtocolConstants.COMMAND_HELP);
         }
         return validPsiMiCommands;
     }
@@ -196,11 +185,10 @@ public class ProtocolConstantsVersion1 {
     public HashSet getValidBioPaxCommands() {
         if (validBioPaxCommands == null) {
             validBioPaxCommands = new HashSet();
-            validBioPaxCommands.add(COMMAND_HELP);
+            validBioPaxCommands.add(ProtocolConstants.COMMAND_HELP);
             validBioPaxCommands.add(COMMAND_GET_BY_KEYWORD);
             validBioPaxCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
             validBioPaxCommands.add(COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
-            validBioPaxCommands.add(COMMAND_GET_NEIGHBORS);
         }
         return validBioPaxCommands;
     }

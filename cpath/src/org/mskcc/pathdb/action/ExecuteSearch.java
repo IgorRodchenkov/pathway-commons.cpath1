@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.20 2007-06-05 21:00:36 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.21 2007-06-05 21:22:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -443,7 +443,7 @@ public class ExecuteSearch extends BaseAction {
 		String command = protocolRequest.getCommand();
 
 		if (command != null) {
-			if (command.equals(ProtocolConstantsVersion1.COMMAND_GET_NEIGHBORS)) {
+			if (command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
 				return (protocolRequest.getOutput() != null &&
 						protocolRequest.getOutput().equals(ProtocolRequest.ID_LIST));
 			}
@@ -471,7 +471,7 @@ public class ExecuteSearch extends BaseAction {
 													HttpServletRequest request,
 													XDebug xdebug) throws ProtocolException {
 
-		if (protocolRequest.getCommand().equals(ProtocolConstantsVersion1.COMMAND_GET_NEIGHBORS)) {
+		if (protocolRequest.getCommand().equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
 			return getNeighborsHandler(mapping, protocolRequest,
 									   request, xdebug);
 		}
@@ -502,7 +502,7 @@ public class ExecuteSearch extends BaseAction {
 				neighborsSet.add(neighbor);
 			}
 			request.setAttribute(ATTRIBUTE_NEIGHBORS, neighborsSet);
-			return mapping.findForward(ProtocolConstantsVersion1.COMMAND_GET_NEIGHBORS);
+			return mapping.findForward(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS);
 		}
 		catch (DaoException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
