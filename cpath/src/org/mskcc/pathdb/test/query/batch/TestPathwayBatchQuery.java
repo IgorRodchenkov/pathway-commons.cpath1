@@ -8,10 +8,13 @@ import org.mskcc.pathdb.query.batch.PhysicalEntityWithPathwayList;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * Tests the PathwayBatchQuery Class.
@@ -29,6 +32,14 @@ public class TestPathwayBatchQuery extends TestCase {
         //  Start cache with clean slate
         EhCache.initCache();
         EhCache.resetAllCaches();
+
+        //  Set up snapshot records
+        DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+        dao.deleteAllRecords();
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        Date date = format.parse("01/01/1970");
+        long id = dao.addRecord(19, date, "FICTIONAL_RELEASE");
+        assertTrue (id > 0);
 
         //  Populate internal family tables
         PrecomputeTablesTask precomputer = new PrecomputeTablesTask (true, new XDebug());
@@ -58,7 +69,24 @@ public class TestPathwayBatchQuery extends TestCase {
         assertEquals ("AndrogenReceptor", pathway1.getName());
         String output = batchQuery.outputTabDelimitedText(list);
         String lines[] = output.split("\n");
-        assertEquals ("REF_SEQ:NP_001871\tTGFR\tUNIPROT\t108", lines[1]);
+        assertEquals ("REF_SEQ:NP_001871\tTGFR\tREACTOME\t108", lines[1]);
+
+        //  Now try to filter by data source;  by Reactome --> 2 hits
+        String dataSources[] = new String[1];
+        dataSources[0] = "REACTOME";
+        list = batchQuery.executeBatchQuery(ids, ExternalDatabaseConstants.REF_SEQ,
+                dataSources);
+        peWithPathwayList = list.get(0);
+        pathwayList = peWithPathwayList.getPathwayList();
+        assertEquals (2, pathwayList.size());
+
+        //  Now try to filter by data source;  by UniProt --> 0 hits
+        dataSources[0] = "UNIPROT";
+        list = batchQuery.executeBatchQuery(ids, ExternalDatabaseConstants.REF_SEQ,
+                dataSources);
+        peWithPathwayList = list.get(0);
+        pathwayList = peWithPathwayList.getPathwayList();
+        assertEquals (0, pathwayList.size());
     }
 
     /**
