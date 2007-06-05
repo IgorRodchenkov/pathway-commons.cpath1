@@ -12,4 +12,9 @@ public class ExternalDatabaseConstants {
      */
     public static String REF_SEQ = "REF_SEQ";
 
+    /**
+     * Internal Database ID. 
+     */
+    public static String INTERNAL_DATABASE = "INTERNAL_ID";
+
 }
