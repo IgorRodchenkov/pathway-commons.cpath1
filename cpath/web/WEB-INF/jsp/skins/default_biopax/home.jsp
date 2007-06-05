@@ -1,5 +1,5 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.model.GlobalFilterSettings"%>

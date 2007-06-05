@@ -1,4 +1,4 @@
-// $Id: OrganismTable.java,v 1.24 2006-12-23 04:29:26 cerami Exp $
+// $Id: OrganismTable.java,v 1.25 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,7 +35,7 @@ import net.sf.ehcache.CacheException;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.lucene.OrganismStats;
 import org.mskcc.pathdb.model.Organism;
-import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.QueryException;
@@ -201,8 +201,8 @@ public class OrganismTable extends HtmlTable {
 
                 ProtocolRequest request = new ProtocolRequest();
                 request.setOrganism(Integer.toString(organism.getTaxonomyId()));
-                request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-                request.setFormat(ProtocolConstants.FORMAT_HTML);
+                request.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+                request.setFormat(ProtocolConstantsVersion1.FORMAT_HTML);
                 String url = request.getUri();
                 outputDataField("<a href='" + url + "' title='"
                         + "View All Records for Organism:  "

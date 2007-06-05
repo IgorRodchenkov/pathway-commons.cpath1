@@ -1,4 +1,4 @@
-// $Id: HtmlTable.java,v 1.26 2007-06-05 20:53:11 cerami Exp $
+// $Id: HtmlTable.java,v 1.27 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,7 +31,7 @@
  **/
 package org.mskcc.pathdb.taglib;
 
-import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 
 import javax.servlet.jsp.JspException;
@@ -216,8 +216,8 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected String getInteractionLink(String id, String format) {
         ProtocolRequest request = new ProtocolRequest();
-        request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-        request.setVersion(ProtocolConstants.VERSION_1);
+        request.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+        request.setVersion(ProtocolConstantsVersion1.VERSION_1);
         request.setFormat(format);
         request.setQuery(id);
         return request.getUri();
@@ -231,9 +231,9 @@ public abstract class HtmlTable extends TagSupport {
      */
     protected String getOrganismLink(int taxonomyId) {
         ProtocolRequest request = new ProtocolRequest();
-        request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-        request.setVersion(ProtocolConstants.VERSION_1);
-        request.setFormat(ProtocolConstants.FORMAT_HTML);
+        request.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+        request.setVersion(ProtocolConstantsVersion1.VERSION_1);
+        request.setFormat(ProtocolConstantsVersion1.FORMAT_HTML);
         request.setOrganism(Integer.toString(taxonomyId));
         return request.getUri();
     }

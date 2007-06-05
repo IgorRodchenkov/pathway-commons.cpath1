@@ -1,4 +1,4 @@
-// $Id: TestProtocolValidator.java,v 1.18 2007-06-05 20:53:11 cerami Exp $
+// $Id: TestProtocolValidator.java,v 1.19 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -61,11 +61,11 @@ public class TestProtocolValidator extends TestCase {
         //  without any other parameters.  This should result in a protocol
         //  error.
         map.put(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF);
+                ProtocolConstantsVersion1.COMMAND_GET_BY_INTERACTOR_NAME_XREF);
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             ProtocolStatusCode statusCode = e.getStatusCode();
@@ -74,11 +74,11 @@ public class TestProtocolValidator extends TestCase {
 
         //  Try getting all pathways;  this is invalid in PSI-MI Mode
         map.put(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
+                ProtocolConstantsVersion1.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             ProtocolStatusCode statusCode = e.getStatusCode();
@@ -101,14 +101,14 @@ public class TestProtocolValidator extends TestCase {
         //  w/o any validation errors.
         HashMap map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
-        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.VERSION_1);
+                ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID);
+        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstantsVersion1.VERSION_1);
         map.put(ProtocolRequest.ARG_QUERY, "1235");
-        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
+        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstantsVersion1.FORMAT_BIO_PAX);
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
         } catch (ProtocolException e) {
             e.printStackTrace();
             fail("ProtocolException should not have been thrown");
@@ -120,7 +120,7 @@ public class TestProtocolValidator extends TestCase {
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             assertEquals(ProtocolStatusCode.INVALID_ARGUMENT,
@@ -131,11 +131,11 @@ public class TestProtocolValidator extends TestCase {
         //  PSI-MI.  This should result in a validation error, because
         //  BioPAX is the only valid format.
         map.put(ProtocolRequest.ARG_QUERY, "12345");
-        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_PSI_MI);
+        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstantsVersion1.FORMAT_PSI_MI);
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             assertEquals(ProtocolStatusCode.BAD_FORMAT,
@@ -146,13 +146,13 @@ public class TestProtocolValidator extends TestCase {
         //  errors.
         map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
-        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstants.VERSION_1);
-        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_BIO_PAX);
+                ProtocolConstantsVersion1.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
+        map.put(ProtocolRequest.ARG_VERSION, ProtocolConstantsVersion1.VERSION_1);
+        map.put(ProtocolRequest.ARG_FORMAT, ProtocolConstantsVersion1.FORMAT_BIO_PAX);
         request = new ProtocolRequest(map);
         validator = new ProtocolValidator(request);
         try {
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
         } catch (ProtocolException e) {
             fail("ProtocolException should not have been thrown");
         }
@@ -170,7 +170,7 @@ public class TestProtocolValidator extends TestCase {
         ProtocolRequest request = new ProtocolRequest(map);
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (NeedsHelpException e) {
             request.getCommand();  // Do Nothing.
@@ -190,14 +190,14 @@ public class TestProtocolValidator extends TestCase {
 
         HashMap map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+                ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
         ProtocolRequest request = new ProtocolRequest(map);
-        request.setFormat(ProtocolConstants.FORMAT_XML);
-        int maxHits = ProtocolConstants.MAX_NUM_HITS + 1;
+        request.setFormat(ProtocolConstantsVersion1.FORMAT_XML);
+        int maxHits = ProtocolConstantsVersion1.MAX_NUM_HITS + 1;
         request.setMaxHits(Integer.toString(maxHits));
         ProtocolValidator validator = new ProtocolValidator(request);
         try {
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
             fail("ProtocolException should have been thrown");
         } catch (ProtocolException e) {
             ProtocolStatusCode code = e.getStatusCode();

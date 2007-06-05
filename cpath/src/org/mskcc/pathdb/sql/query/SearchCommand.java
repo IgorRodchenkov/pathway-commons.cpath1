@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.8 2007-04-16 19:20:36 cerami Exp $
+// $Id: SearchCommand.java,v 1.9 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
 import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.lucene.RequestAdapter;
 import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
@@ -98,12 +98,12 @@ class SearchCommand extends Query {
         XmlAssembly xmlAssembly;
         //  Branch here, based on request.getFormat() and protocol
         if (cpathIds != null && cpathIds.length > 0) {
-            if (request.getFormat().equals(ProtocolConstants.FORMAT_BIO_PAX)) {
+            if (request.getFormat().equals(ProtocolConstantsVersion1.FORMAT_BIO_PAX)) {
                 xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,
                         XmlRecordType.BIO_PAX, hits.length(),
                         XmlAssemblyFactory.XML_FULL, true, xdebug);
-            } else if (request.getFormat().equals(ProtocolConstants.FORMAT_PSI_MI)
-                    || request.getFormat().equals(ProtocolConstants.FORMAT_XML)) {
+            } else if (request.getFormat().equals(ProtocolConstantsVersion1.FORMAT_PSI_MI)
+                    || request.getFormat().equals(ProtocolConstantsVersion1.FORMAT_XML)) {
                 log.info("Use optimized code flag:  " + request.getUseOptimizedCode());
                 if (request.getUseOptimizedCode()) {
                     xmlAssembly = XmlAssemblyFactory.createXmlAssembly(cpathIds,

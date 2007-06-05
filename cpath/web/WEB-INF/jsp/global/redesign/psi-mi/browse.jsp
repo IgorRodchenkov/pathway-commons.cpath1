@@ -1,7 +1,7 @@
 <%@ page import="org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.util.security.XssFilter,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
-                 org.mskcc.pathdb.protocol.ProtocolConstants,
+                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
                  java.util.ArrayList,
                  org.mskcc.pathdb.model.Organism,
                  org.mskcc.pathdb.lucene.OrganismStats,
@@ -10,8 +10,8 @@
 <%
     try {
     ProtocolRequest pRequest = new ProtocolRequest();
-    pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-    pRequest.setFormat(ProtocolConstants.FORMAT_HTML);
+    pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+    pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_HTML);
     OrganismStats orgStats = new OrganismStats();
     ArrayList orgList = orgStats.getOrganismsSortedByNumInteractions();
 

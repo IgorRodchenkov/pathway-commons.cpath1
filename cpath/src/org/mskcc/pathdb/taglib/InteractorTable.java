@@ -1,4 +1,4 @@
-// $Id: InteractorTable.java,v 1.20 2007-03-20 18:08:13 cerami Exp $
+// $Id: InteractorTable.java,v 1.21 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,7 +35,7 @@ import org.mskcc.dataservices.schemas.psi.NamesType;
 import org.mskcc.dataservices.schemas.psi.ProteinInteractorType;
 import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.model.ProteinWithWeight;
-import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 
 import java.util.Iterator;
@@ -75,7 +75,7 @@ public class InteractorTable extends HtmlTable {
      *          Database Access Error.
      */
     protected void subDoStartTag() throws Exception {
-        protocolRequest.setFormat(ProtocolConstants.FORMAT_XML);
+        protocolRequest.setFormat(ProtocolConstantsVersion1.FORMAT_XML);
         String query = protocolRequest.getQuery();
         if (query != null
                 && (query.indexOf(LuceneConfig.FIELD_INTERACTOR_ID) == -1)
@@ -101,7 +101,7 @@ public class InteractorTable extends HtmlTable {
             String proteinId = protein.getId();
             append("<li>");
             String href = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
-                    + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
+                    + ":" + proteinId, ProtocolConstantsVersion1.FORMAT_HTML);
             String toolTip = TagUtil.getLabel(names);
             String label = TagUtil.truncateLabel(toolTip);
             String link = TagUtil.createLink(toolTip, href, label);

@@ -1,4 +1,4 @@
-// $Id: RequestAdapter.java,v 1.13 2006-02-22 22:47:50 grossb Exp $
+// $Id: RequestAdapter.java,v 1.14 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,7 +31,7 @@
  **/
 package org.mskcc.pathdb.lucene;
 
-import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 
 /**
@@ -58,22 +58,22 @@ public class RequestAdapter {
         String query = request.getQuery();
         String command = request.getCommand();
         if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID)) {
+                (ProtocolConstantsVersion1.COMMAND_GET_BY_INTERACTOR_ID)) {
             query = addField(LuceneConfig.FIELD_INTERACTOR_ID, query);
         } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF)) {
+                (ProtocolConstantsVersion1.COMMAND_GET_BY_INTERACTOR_NAME_XREF)) {
             query = addField(PsiInteractionToIndex.FIELD_INTERACTOR, query);
         } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_ORGANISM)) {
+                (ProtocolConstantsVersion1.COMMAND_GET_BY_ORGANISM)) {
             query = addField(LuceneConfig.FIELD_ORGANISM, query);
         } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_DATABASE)) {
+                (ProtocolConstantsVersion1.COMMAND_GET_BY_DATABASE)) {
             query = addField(PsiInteractionToIndex.FIELD_DATABASE, query);
         } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_PMID)) {
+                (ProtocolConstantsVersion1.COMMAND_GET_BY_PMID)) {
             query = addField(PsiInteractionToIndex.FIELD_PMID, query);
         } else if (command.equals
-                (ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE)) {
+                (ProtocolConstantsVersion1.COMMAND_GET_BY_EXPERIMENT_TYPE)) {
             query = addField(PsiInteractionToIndex.FIELD_EXPERIMENT_TYPE,
                     query);
         }

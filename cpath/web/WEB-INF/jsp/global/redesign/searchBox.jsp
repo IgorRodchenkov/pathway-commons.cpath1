@@ -1,6 +1,6 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.action.BaseAction,
-                 org.mskcc.pathdb.protocol.ProtocolConstants,
+                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.lucene.OrganismStats,
                  java.util.ArrayList,
@@ -33,9 +33,9 @@
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
     <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15" value='<%= searchTerm %>'/>
     <input type="submit" id="searchbutton" value="Search"/>
-    <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
+    <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstantsVersion1.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
-        size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
+        size="25" value='<%= ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD %>'/>
     <input type="hidden" name="<%= dataSourceName %>" value="<%= dataSourceValue %>"/>
     <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
 

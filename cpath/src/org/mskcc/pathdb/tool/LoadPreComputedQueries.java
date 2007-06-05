@@ -1,4 +1,4 @@
-// $Id: LoadPreComputedQueries.java,v 1.16 2007-06-05 20:53:11 cerami Exp $
+// $Id: LoadPreComputedQueries.java,v 1.17 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -71,7 +71,7 @@ public class LoadPreComputedQueries {
         for (int i = 0; i < list.size(); i++) {
             ProtocolRequest request = (ProtocolRequest) list.get(i);
             ProtocolValidator validator = new ProtocolValidator(request);
-            validator.validate(ProtocolConstants.VERSION_1);
+            validator.validate(ProtocolConstantsVersion1.VERSION_1);
             System.out.print("Running Query:  " + request.getUri());
             QueryManager executeQueryManager = new QueryManager(xdebug);
             executeQueryManager.executeQuery(request, false);

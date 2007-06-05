@@ -8,7 +8,7 @@
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
 <%@ page import="org.mskcc.pathdb.xdebug.XDebugUtil"%>
@@ -492,9 +492,9 @@ enable Javascript support within your web browser.
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
             ProtocolRequest pRequest = new ProtocolRequest();
-            pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
+            pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
-            pRequest.setFormat(ProtocolConstants.FORMAT_BIO_PAX);
+            pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
             out.println("<h3>Download:</h3>");
             out.println("<ul><li><a href=\"" + pRequest.getUri() + "\">"
                 + "Download in BioPAX Format" + "</a></li></ul>");

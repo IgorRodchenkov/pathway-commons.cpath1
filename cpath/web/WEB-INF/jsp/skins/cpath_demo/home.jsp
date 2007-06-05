@@ -1,5 +1,5 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.model.GlobalFilterSettings"%>
@@ -26,9 +26,9 @@ analyzing biological pathways.
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
     <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15"/>
     <input type="submit" value="Search"/>
-    <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
+    <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstantsVersion1.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
-        size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
+        size="25" value='<%= ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD %>'/>
     <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
     </form>
     <p>To get started, enter a gene name or identifier in the text box above.</p>

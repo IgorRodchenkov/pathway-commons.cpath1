@@ -1,4 +1,4 @@
-// $Id: ProtocolConstants.java,v 1.18 2007-06-05 20:53:11 cerami Exp $
+// $Id: ProtocolConstantsVersion1.java,v 1.1 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,7 +38,7 @@ import java.util.HashSet;
  *
  * @author Ethan Cerami
  */
-public class ProtocolConstants {
+public class ProtocolConstantsVersion1 {
     /**
      * HashSet of Valid PSI-MI Commands.
      */
@@ -58,7 +58,6 @@ public class ProtocolConstants {
      * HashMap of Valid BioPax Formats.
      */
     private static HashSet validBioPaxFormats;
-
 
     /**
      * XML Format.
@@ -89,11 +88,6 @@ public class ProtocolConstants {
      * Protocol Version:  1.0
      */
     public static final String VERSION_1 = "1.0";
-
-    /**
-     * Protocol Version:  2.0
-     */
-    public static final String VERSION_2 = "2.0";
 
     /**
      * Get By Interactor Name.

@@ -8,7 +8,7 @@
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>

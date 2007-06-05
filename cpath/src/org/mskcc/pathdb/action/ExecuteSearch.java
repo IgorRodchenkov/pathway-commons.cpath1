@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.19 2007-06-05 20:53:11 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.20 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,10 +39,8 @@ import org.apache.log4j.Logger;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.EntrySet;
-import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.lucene.LuceneQuery;
 import org.mskcc.pathdb.lucene.PsiInteractorExtractor;
-import org.mskcc.pathdb.lucene.LuceneAutoFilter;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
@@ -55,8 +53,6 @@ import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
-import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
-import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -117,14 +113,14 @@ public class ExecuteSearch extends BaseAction {
                     XDebug xdebug) throws ProtocolException, NeedsHelpException {
 		// valid query
 		ProtocolValidator validator = new ProtocolValidator(protocolRequest);
-        validator.validate(ProtocolConstants.VERSION_1);
+        validator.validate(ProtocolConstantsVersion1.VERSION_1);
 		// short circuit if necessary
 		if (isSpecialCaseCommand(protocolRequest)) {
 			return specialCaseCommandHandler(mapping, protocolRequest, request, xdebug);
 		}
         if (protocolRequest.getFormat() == null
                 || protocolRequest.getFormat()
-                .equals(ProtocolConstants.FORMAT_HTML)) {
+                .equals(ProtocolConstantsVersion1.FORMAT_HTML)) {
             return processHtmlRequest(mapping, protocolRequest,
                     request, xdebug);
         } else {
@@ -157,7 +153,7 @@ public class ExecuteSearch extends BaseAction {
 
             //  Return Number of Hits Only or Complete XML.
             if (protocolRequest.getFormat().
-                    equals(ProtocolConstants.FORMAT_COUNT_ONLY)) {
+                    equals(ProtocolConstantsVersion1.FORMAT_COUNT_ONLY)) {
                 returnCountOnly(response, xmlAssembly);
             } else {
                 returnXml(response, xml);
@@ -447,7 +443,7 @@ public class ExecuteSearch extends BaseAction {
 		String command = protocolRequest.getCommand();
 
 		if (command != null) {
-			if (command.equals(ProtocolConstants.COMMAND_GET_NEIGHBORS)) {
+			if (command.equals(ProtocolConstantsVersion1.COMMAND_GET_NEIGHBORS)) {
 				return (protocolRequest.getOutput() != null &&
 						protocolRequest.getOutput().equals(ProtocolRequest.ID_LIST));
 			}
@@ -475,7 +471,7 @@ public class ExecuteSearch extends BaseAction {
 													HttpServletRequest request,
 													XDebug xdebug) throws ProtocolException {
 
-		if (protocolRequest.getCommand().equals(ProtocolConstants.COMMAND_GET_NEIGHBORS)) {
+		if (protocolRequest.getCommand().equals(ProtocolConstantsVersion1.COMMAND_GET_NEIGHBORS)) {
 			return getNeighborsHandler(mapping, protocolRequest,
 									   request, xdebug);
 		}
@@ -506,7 +502,7 @@ public class ExecuteSearch extends BaseAction {
 				neighborsSet.add(neighbor);
 			}
 			request.setAttribute(ATTRIBUTE_NEIGHBORS, neighborsSet);
-			return mapping.findForward(ProtocolConstants.COMMAND_GET_NEIGHBORS);
+			return mapping.findForward(ProtocolConstantsVersion1.COMMAND_GET_NEIGHBORS);
 		}
 		catch (DaoException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);

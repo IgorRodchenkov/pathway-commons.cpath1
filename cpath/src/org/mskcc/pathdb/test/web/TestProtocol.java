@@ -1,4 +1,4 @@
-// $Id: TestProtocol.java,v 1.16 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestProtocol.java,v 1.17 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,7 +35,7 @@ import junit.framework.TestCase;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.mskcc.pathdb.protocol.ProtocolConstants;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.test.TestConstants;
 
@@ -58,7 +58,7 @@ public class TestProtocol extends TestCase {
         nvps[0] = new NameValuePair(ProtocolRequest.ARG_COMMAND,
                 "get_invalid");
         nvps[1] = new NameValuePair(ProtocolRequest.ARG_FORMAT,
-                ProtocolConstants.FORMAT_XML);
+                ProtocolConstantsVersion1.FORMAT_XML);
         method.setQueryString(nvps);
         int statusCode = client.executeMethod(method);
         String response = method.getResponseBodyAsString();

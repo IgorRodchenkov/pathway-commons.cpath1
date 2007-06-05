@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.20 2007-06-05 20:53:11 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.21 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -239,7 +239,7 @@ public class ProtocolRequest implements PagedResult {
      * Constructor.
      */
     public ProtocolRequest() {
-        this.version = ProtocolConstants.VERSION_1;
+        this.version = ProtocolConstantsVersion1.VERSION_1;
         this.startIndex = 0;
         this.organism = null;
         this.maxHits = null;
@@ -270,7 +270,7 @@ public class ProtocolRequest implements PagedResult {
         this.organism = (String) parameterMap.get
                 (ProtocolRequest.ARG_ORGANISM);
         if (maxHits == null) {
-            maxHits = Integer.toString(ProtocolConstants.DEFAULT_MAX_HITS);
+            maxHits = Integer.toString(ProtocolConstantsVersion1.DEFAULT_MAX_HITS);
         }
         String startStr =
                 (String) parameterMap.get(ProtocolRequest.ARG_START_INDEX);

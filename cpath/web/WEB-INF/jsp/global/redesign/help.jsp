@@ -1,6 +1,6 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolStatusCode,
                  java.util.ArrayList,
-                 org.mskcc.pathdb.protocol.ProtocolConstants,
+                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 
@@ -34,24 +34,24 @@ URL parameters.  Parameters are as follows:
             Current valid formats are as follows:
                 <ul>
                 <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
-                    <li><%= ProtocolConstants.FORMAT_PSI_MI %>:  Data will be
+                    <li><%= ProtocolConstantsVersion1.FORMAT_PSI_MI %>:  Data will be
                     formatted in the
                     <a href="http://psidev.sourceforge.net/">Proteomics
                     Standards Initiative Molecular Interaction (PSI-MI)</a>
                     Standards Initiative Molecular Interaction (PSI-MI)</a>
                     XML format.
                     </li>
-                    <li><%= ProtocolConstants.FORMAT_HTML %>:  Data will be
+                    <li><%= ProtocolConstantsVersion1.FORMAT_HTML %>:  Data will be
                     formatted in HTML.  This is useful for creating link outs to
                     specific web pages.
                     </li>
-                    <li><%= ProtocolConstants.FORMAT_COUNT_ONLY %>:  Returns a
+                    <li><%= ProtocolConstantsVersion1.FORMAT_COUNT_ONLY %>:  Returns a
                     single integer value, representing the total number of matches
                     for your query.  This is useful for using paged scroll results
                     (see <a href="#large">Retrieving Large Sets of Data</A> below).
                     </li>
                 <% } else { %>
-                     <li><%= ProtocolConstants.FORMAT_BIO_PAX %>:  Data will be
+                     <li><%= ProtocolConstantsVersion1.FORMAT_BIO_PAX %>:  Data will be
                         formatted in the <a href="http://www.biopax.org">BioPAX</a>
                         XML format.
                      </li>
@@ -70,9 +70,9 @@ URL parameters.  Parameters are as follows:
                     Indicates the maximum number of interactions
                     returned in the response.  If maxHits is not specified, it will
                     default to:
-                    <%= ProtocolConstants.DEFAULT_MAX_HITS %>.  To prevent overloading
+                    <%= ProtocolConstantsVersion1.DEFAULT_MAX_HITS %>.  To prevent overloading
                     of the system, clients are restricted to a maximum of
-                    <%= ProtocolConstants.MAX_NUM_HITS %> hits at a time.
+                    <%= ProtocolConstantsVersion1.MAX_NUM_HITS %> hits at a time.
                     However, it is still possible to retrieve larger sets of data by
                     using paged scroll results (see
                     <a HREF="#large">Retrieving Large Sets of Data</A> below).
@@ -92,18 +92,18 @@ URL parameters.  Parameters are as follows:
                 <th>Description</th>
             </tr>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_HELP %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_HELP %></td>
                 <td>Requests the current help page that you are now reading.</td>
             </tr>
             <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_BY_KEYWORD  %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD  %></td>
                 <td>Finds all interactions that contain
                 the specified keyword(s) and / or boolean search phrases.
                 </td>
             </tr>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_NAME_XREF %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_BY_INTERACTOR_NAME_XREF %></td>
                 <td>Finds all interactions that reference the specified
                 interactor.  Interactors can be referenced by name, description
                 or external database reference.  For example, if you want to
@@ -112,7 +112,7 @@ URL parameters.  Parameters are as follows:
                 </td>
             </tr>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_BY_ORGANISM %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_BY_ORGANISM %></td>
                 <td>Finds all interactions for the specified organism.
                 The organism value must be specified with an <a href=
                 "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=Taxonomy">NCBI
@@ -122,7 +122,7 @@ URL parameters.  Parameters are as follows:
                 </td>
             </tr>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_BY_EXPERIMENT_TYPE %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_BY_EXPERIMENT_TYPE %></td>
                 <td>
                 Finds all interactions that were discovered by
                 the specified Experiment Type.  For example, if you want to
@@ -131,25 +131,25 @@ URL parameters.  Parameters are as follows:
                 </td>
             </tr>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_BY_PMID %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_BY_PMID %></td>
                 <td>Finds all interactions that are associated with
                 the specified PubMed ID.</td>
             </tr>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_BY_DATABASE %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_BY_DATABASE %></td>
                 <td>Finds all interactions that originate from the specified
                 database.  For example, to find all interactions from "DIP"
                 (Database of Interacting Proteins), use this command.</td>
             </tr>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_BY_INTERACTOR_ID %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_BY_INTERACTOR_ID %></td>
                 <td>Finds all interactions that are associated with
                 the specified interactor.  To use this option, you must know the
                 internal ID for the interactor.</td>
             </tr>
             <% } else { %>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST %></td>
                 <td>Returns a summary of all "top-level" pathways in the database.
                 In the BioPAX ontology, pathways can contain sub-pathways.
                 This command returns top-level pathways only, and filters
@@ -157,7 +157,7 @@ URL parameters.  Parameters are as follows:
                 </td>
             </tr>
             <tr>
-                <td><%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></td>
+                <td><%= ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID %></td>
                 <td>Retrieves the complete contents of the specified record.
                 The response is a BioPAX XML document.</td>
             </tr>
@@ -211,9 +211,9 @@ The table below provides a list of error codes, with their
 <h1>Examples of Usage</h1>
 
         <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
-            pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+            pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
             pRequest.setQuery("DNA");
-            pRequest.setFormat(ProtocolConstants.FORMAT_PSI_MI);  %>
+            pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_PSI_MI);  %>
 		<p>The following example searches for the keyword "DNA".
         Data will be formatted in the PSI-MI XML format.
         </p>
@@ -225,7 +225,7 @@ The table below provides a list of error codes, with their
 
 <p>The following query searches for the keyword "DNA".
         Data will be formatted in HTML.
-        <% pRequest.setFormat(ProtocolConstants.FORMAT_HTML); %>
+        <% pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_HTML); %>
 </p>
         <ul>
             <li><small><a href="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></a>
@@ -233,8 +233,8 @@ The table below provides a list of error codes, with their
             </li>
         </ul>
         <% } else {
-            pRequest.setCommand(ProtocolConstants.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
-            pRequest.setFormat(ProtocolConstants.FORMAT_BIO_PAX);
+            pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
+            pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
         %>
 <p>
     The following requests a summary of all top-level pathways
@@ -246,7 +246,7 @@ The table below provides a list of error codes, with their
 <p>The following requests the full BioPAX record for local ID 1:
 </p>
         <%
-            pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
+            pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery("1");
         %>
         <ul>
@@ -270,7 +270,7 @@ The table below provides a list of error codes, with their
 <h1><a name="large">Retrieving Large Sets of Data</a></h1>
 <p>
     To prevent overloading of the system, clients are restricted to a maximum of
-    <%= ProtocolConstants.MAX_NUM_HITS %> hits at a time.
+    <%= ProtocolConstantsVersion1.MAX_NUM_HITS %> hits at a time.
     However, it is still possible to retrieve larger sets of data
     (or even complete sets of data) by using an index value into a
     complete data set.  This functionality is identical to that provided
@@ -283,9 +283,9 @@ The table below provides a list of error codes, with their
 </p>
 <%
     pRequest = new ProtocolRequest();
-    pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_ORGANISM);
+    pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_ORGANISM);
     pRequest.setQuery("562");
-    pRequest.setFormat(ProtocolConstants.FORMAT_COUNT_ONLY);
+    pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_COUNT_ONLY);
 %>
 <p>For example, assume a client wishes to download the full set
     of interactions for E. coli.  Here's how such client processing would work:
@@ -293,7 +293,7 @@ The table below provides a list of error codes, with their
     <ul>
     <li>First, find out how many interactions for E. coli exist.  To do so,
     issue a query with <%= ProtocolRequest.ARG_FORMAT %>
-    set to "<%= ProtocolConstants.FORMAT_COUNT_ONLY %>".
+    set to "<%= ProtocolConstantsVersion1.FORMAT_COUNT_ONLY %>".
     For example:
         <ul>
             <li><small><a href="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></a>
@@ -317,7 +317,7 @@ The table below provides a list of error codes, with their
 <p>Complete psuedocode of the entire process looks like this:
 </p>
 <pre>
-totalNumInteractions = [Issue search resuest with <%= ProtocolRequest.ARG_FORMAT %> set to <%= ProtocolConstants.FORMAT_COUNT_ONLY %>.]
+totalNumInteractions = [Issue search resuest with <%= ProtocolRequest.ARG_FORMAT %> set to <%= ProtocolConstantsVersion1.FORMAT_COUNT_ONLY %>.]
 index = 0;
 while (index < totalNumInteractions) {
     [Issue request with <%= ProtocolRequest.ARG_START_INDEX %> = index; and <%= ProtocolRequest.ARG_MAX_HITS %> = 50.]

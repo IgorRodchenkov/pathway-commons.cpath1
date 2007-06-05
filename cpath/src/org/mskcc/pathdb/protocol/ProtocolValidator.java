@@ -1,4 +1,4 @@
-// $Id: ProtocolValidator.java,v 1.20 2007-06-05 20:53:11 cerami Exp $
+// $Id: ProtocolValidator.java,v 1.21 2007-06-05 21:00:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,11 +31,6 @@
  **/
 package org.mskcc.pathdb.protocol;
 
-import org.mskcc.pathdb.servlet.CPathUIConfig;
-import org.apache.log4j.Logger;
-
-import java.util.HashSet;
-
 /**
  * Validates Client/Browser Request.
  *
@@ -66,10 +61,10 @@ public class ProtocolValidator {
      */
     public void validate(String version) throws ProtocolException, NeedsHelpException {
         try {
-            if (version.equals(ProtocolConstants.VERSION_1)) {
+            if (version.equals(ProtocolConstantsVersion1.VERSION_1)) {
                 ProtocolValidatorVersion1 validator1 = new ProtocolValidatorVersion1(request);
                 validator1.validate();
-            } else if (version.equals(ProtocolConstants.VERSION_2)) {
+            } else if (version.equals(ProtocolConstantsVersion2.VERSION_2)) {
                 ProtocolValidatorVersion2 validator2 = new ProtocolValidatorVersion2(request);
                 validator2.validate();
             } else {

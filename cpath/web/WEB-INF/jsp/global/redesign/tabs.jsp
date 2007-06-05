@@ -5,7 +5,7 @@
                  java.io.StringWriter,
                  org.mskcc.dataservices.util.PropertyManager,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
-                 org.mskcc.pathdb.protocol.ProtocolConstants,
+                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
                  org.mskcc.pathdb.action.ToggleSearchOptions,
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
