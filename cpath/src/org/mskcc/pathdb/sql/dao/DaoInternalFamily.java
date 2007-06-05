@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.16 2006-12-12 19:40:04 grossb Exp $
+// $Id: DaoInternalFamily.java,v 1.17 2007-06-05 20:32:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -91,12 +91,20 @@ public class DaoInternalFamily {
             pstmt.setString(3, ancestorType.toString());
             pstmt.setLong(4, ancestorOrganismId);
             pstmt.setString(5, ancestorOrganism);
-            pstmt.setLong(6, ancestorSnapshotRecord.getId());
-            pstmt.setString(7, ancestorSnapshotRecord.getExternalDatabase().getName());
-			Date snapshotDate = ancestorSnapshotRecord.getSnapshotDate();
-            java.sql.Date date = new java.sql.Date(snapshotDate.getTime());
-            pstmt.setDate(8, date);
-            pstmt.setString(9, ancestorSnapshotRecord.getSnapshotVersion());
+            if (ancestorSnapshotRecord == null) {
+                pstmt.setLong(6, -1);
+                pstmt.setString(7, "N/A");
+                java.sql.Date date = new java.sql.Date(new Date().getTime());
+                pstmt.setDate(8, date);
+                pstmt.setString(9, "N/A");
+            } else {
+                pstmt.setLong(6, ancestorSnapshotRecord.getId());
+                pstmt.setString(7, ancestorSnapshotRecord.getExternalDatabase().getName());
+                Date snapshotDate = ancestorSnapshotRecord.getSnapshotDate();
+                java.sql.Date date = new java.sql.Date(snapshotDate.getTime());
+                pstmt.setDate(8, date);
+                pstmt.setString(9, ancestorSnapshotRecord.getSnapshotVersion());
+            }
             pstmt.setLong(10, descendentId);
             pstmt.setString(11, descendentName);
             pstmt.setString(12, descendentType.toString());
