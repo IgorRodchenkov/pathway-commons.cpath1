@@ -1,4 +1,4 @@
-// $Id: PhysicalEntitySetQuerySuite.java,v 1.2 2006-11-07 21:24:18 grossb Exp $
+// $Id: QuerySuite.java,v 1.1 2007-06-05 17:00:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,13 +35,14 @@ package org.mskcc.pathdb.test.query;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.mskcc.pathdb.test.query.batch.BatchQuerySuite;
 
 /**
  * Suite of all Physical Entity Set Query Unit Tests.
  *
  * @author Benjamin Gross
  */
-public class PhysicalEntitySetQuerySuite extends TestCase {
+public class QuerySuite extends TestCase {
 
     /**
      * The suite method runs all the tests.
@@ -52,13 +53,14 @@ public class PhysicalEntitySetQuerySuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestPhysicalEntitySetInteractionQuery.class);
         suite.addTestSuite(TestPhysicalEntitySetPathwayQuery.class);
-        suite.setName("Physical Entity Set Query Tests");
+        suite.addTest(BatchQuerySuite.suite());
+        suite.setName("Query Tests");
         return suite;
     }
 
-	/**
-	 * If we want to run this test suite directly.
-	 */
+    /**
+     * If we want to run this test suite directly.
+     */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
