@@ -291,8 +291,9 @@ else {
 					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
 								"?version=1.0&cmd=get_neighbors&format=biopax&q=" +
-								String.valueOf(cpathIds[i]) + "\"" + " id=\"" +
-								String.valueOf(cpathIds[i]) +"\"" +
+								String.valueOf(cpathIds[i]) + 
+								"&neighborhood_title=Neighborhood:" + summaryLabel + "\"" +
+								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								" onclick=\"appRequest(this.href, this.id, 'get_neighbors'); return false;\"" +
 								">View network neighborhood map in Cytoscape</a>");
 				}

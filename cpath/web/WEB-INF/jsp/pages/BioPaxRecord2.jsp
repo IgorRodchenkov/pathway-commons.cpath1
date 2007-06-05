@@ -479,8 +479,9 @@ enable Javascript support within your web browser.
 			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
 						"?version=1.0&cmd=get_neighbors&format=biopax&q=" +
-						id + "\"" + " id=\"" +
-						id +"\"" +
+						id + 
+						"&neighborhood_title=Neighborhood:" + bpSummary.getLabel() + "\"" +
+						" id=\"" + id +"\"" +
 						" onclick=\"appRequest(this.href, this.id, 'get_neighbors'); return false;\"" +
 						">View network neighborhood map in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
