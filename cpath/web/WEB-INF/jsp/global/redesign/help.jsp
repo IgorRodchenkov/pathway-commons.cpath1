@@ -3,6 +3,7 @@
                  org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 
 <h1>For Computational Biologists and Software Developers:</h1>
 <p>
@@ -92,7 +93,7 @@ URL parameters.  Parameters are as follows:
                 <th>Description</th>
             </tr>
             <tr>
-                <td><%= ProtocolConstantsVersion1.COMMAND_HELP %></td>
+                <td><%= ProtocolConstants.COMMAND_HELP %></td>
                 <td>Requests the current help page that you are now reading.</td>
             </tr>
             <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
