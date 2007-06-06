@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.22 2007-06-06 13:41:42 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.23 2007-06-06 18:55:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,10 +50,14 @@ import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.security.XssFilter;
+import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.form.WebUIBean;
+import org.mskcc.pathdb.query.batch.PathwayBatchQuery;
+import org.mskcc.pathdb.query.batch.PhysicalEntityWithPathwayList;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -118,7 +122,8 @@ public class ExecuteSearch extends BaseAction {
         validator.validate(webUiBean.getWebApiVersion());
 		// short circuit if necessary
 		if (isSpecialCaseCommand(protocolRequest)) {
-			return specialCaseCommandHandler(mapping, protocolRequest, request, xdebug);
+			return specialCaseCommandHandler(mapping, protocolRequest, request, response,
+                    xdebug);
 		}
         if (protocolRequest.getFormat() == null
                 || protocolRequest.getFormat()
@@ -448,7 +453,9 @@ public class ExecuteSearch extends BaseAction {
 			if (command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
 				return (protocolRequest.getOutput() != null &&
 						protocolRequest.getOutput().equals(ProtocolRequest.ID_LIST));
-			}
+			} else if (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
+                return true;
+            }
 		}
 
 		// outta here
@@ -471,12 +478,16 @@ public class ExecuteSearch extends BaseAction {
 	private ActionForward specialCaseCommandHandler(ActionMapping mapping,
 													ProtocolRequest protocolRequest,
 													HttpServletRequest request,
-													XDebug xdebug) throws ProtocolException {
+                                                    HttpServletResponse response,
+                                                    XDebug xdebug) throws ProtocolException {
 
 		if (protocolRequest.getCommand().equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
 			return getNeighborsHandler(mapping, protocolRequest,
 									   request, xdebug);
-		}
+		} else if (protocolRequest.getCommand().equals
+                (ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
+            return getPathwayListHandler(mapping, protocolRequest, request, response, xdebug);
+        }
 
 		// outta here
 		return null;
@@ -512,5 +523,44 @@ public class ExecuteSearch extends BaseAction {
 		catch (NumberFormatException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
 		}
+	}
+
+	/**
+	 * Special-Case handler for getPathwayList Command.
+	 *
+	 * @param mapping ActionMapping
+	 * @param protocolRequest ProtocolRequest
+	 * @param request HttpServletRequest
+	 * @param xdebug XDebug
+	 * @return ActionForward
+	 * @throws ProtocolException
+	 */
+	private ActionForward getPathwayListHandler(ActionMapping mapping,
+        ProtocolRequest protocolRequest, HttpServletRequest request, HttpServletResponse response,
+        XDebug xdebug) throws ProtocolException {
+		try {
+            PathwayBatchQuery batchQuery = new PathwayBatchQuery();
+            String ids[] = new String[1];
+            ids[0] = protocolRequest.getQuery();
+            String dbTerm = protocolRequest.getInputIDType();
+            if (dbTerm == null) {
+                dbTerm = ExternalDatabaseConstants.INTERNAL_DATABASE;
+            }
+            ArrayList<PhysicalEntityWithPathwayList> list = batchQuery.executeBatchQuery
+                    (ids, dbTerm);
+            String table = batchQuery.outputTabDelimitedText(list);
+            response.setContentType("text/plain");
+            PrintWriter writer = response.getWriter();
+            writer.println(table);
+            writer.flush();
+            writer.close();
+            return null;
+        } catch (DaoException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+		} catch (BioPaxRecordSummaryException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+		} catch (IOException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+        }
 	}
 }
