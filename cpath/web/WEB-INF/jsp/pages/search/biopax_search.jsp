@@ -19,6 +19,7 @@
                  java.util.Set,
                  java.util.Map,
                  java.util.List"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
@@ -282,13 +283,13 @@ else {
 					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
-								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_RECORD_BY_CPATH_ID +
+								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
 								"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + "\"" +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
 								//" onmouseout=\"return nd();\"" +
-								" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID + "'); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "'); return false;\"" +
 								">View this pathway in Cytoscape</a>");
 				}
 				else {
