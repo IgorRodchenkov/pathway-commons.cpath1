@@ -9,6 +9,7 @@
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion2"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
 <%@ page import="org.mskcc.pathdb.xdebug.XDebugUtil"%>
@@ -467,10 +468,12 @@ enable Javascript support within your web browser.
             (CPathRecordType.PATHWAY.toString())) {
 			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
-						"?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
-						id + "\"" + " id=\"" +
-						id +"\"" +
-						" onclick=\"appRequest(this.href, this.id, 'get_record_by_cpath_id'); return false;\"" +
+						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion1.VERSION_1 +
+						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID +
+						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
+						"&" + ProtocolRequest.ARG_QUERY + "=" + id + "\"" +
+						" id=\"" + id +"\"" +
+						" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID + "'); return false;\"" +
 						">View this pathway in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");
@@ -478,11 +481,13 @@ enable Javascript support within your web browser.
 		else {
 			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
-						"?version=1.0&cmd=get_neighbors&format=biopax&q=" +
-						id + 
-						"&neighborhood_title=Neighborhood:" + bpSummary.getLabel() + "\"" +
+						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
+						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
+						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
+						"&" + ProtocolRequest.ARG_QUERY + "=" + id + 
+						"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=Neighborhood: " + bpSummary.getLabel() + "\"" +
 						" id=\"" + id +"\"" +
-						" onclick=\"appRequest(this.href, this.id, 'get_neighbors'); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "'); return false;\"" +
 						">View network neighborhood map in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");

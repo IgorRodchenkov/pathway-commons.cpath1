@@ -1,5 +1,7 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
+                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
+                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion2,
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.taglib.Pager,
@@ -279,22 +281,26 @@ else {
 				if (record.getType() == CPathRecordType.PATHWAY) {
 					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
-								"?version=1.0&cmd=get_record_by_cpath_id&format=biopax&q=" +
-								String.valueOf(cpathIds[i]) + "\"" + " id=\"" +
-								String.valueOf(cpathIds[i]) +"\"" +
+								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion1.VERSION_1 +
+								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID +
+								"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
+								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + "\"" +
+								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
 								//" onmouseout=\"return nd();\"" +
-								" onclick=\"appRequest(this.href, this.id, 'get_record_by_cpath_id'); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID + "'); return false;\"" +
 								">View this pathway in Cytoscape</a>");
 				}
 				else {
 					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
-								"?version=1.0&cmd=get_neighbors&format=biopax&q=" +
-								String.valueOf(cpathIds[i]) + 
-								"&neighborhood_title=Neighborhood:" + summaryLabel + "\"" +
+								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
+								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
+								"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
+								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + 
+								"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=Neighborhood: " + summaryLabel + "\"" +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
-								" onclick=\"appRequest(this.href, this.id, 'get_neighbors'); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "'); return false;\"" +
 								">View network neighborhood map in Cytoscape</a>");
 				}
 				out.println("<a href=\"cytoscape.do\">(help)</a>");
