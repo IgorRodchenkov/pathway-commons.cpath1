@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.16 2007-06-06 13:24:29 cerami Exp $
+// $Id: WebUIBean.java,v 1.17 2007-06-06 20:20:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,8 @@ package org.mskcc.pathdb.form;
 
 import org.apache.struts.action.ActionForm;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
+
+import java.util.ArrayList;
 
 /**
  * Struts ActionForm for updating/retrieving web ui elements.
@@ -97,6 +99,11 @@ public class WebUIBean extends ActionForm {
      * Currently Supported Web API Version #.  Defaults to Version 2.0.
      */
     private String webApiVersion = ProtocolConstantsVersion2.VERSION_2;
+
+    /**
+     * List of Supported Input ID Types.
+     */
+    private ArrayList<String> supportedInputIdTypes = new ArrayList();
 
     /**
      * Sets the Application Name.
@@ -307,5 +314,21 @@ public class WebUIBean extends ActionForm {
      */
     public void setWebApiVersion (String webApiVersion) {
         this.webApiVersion = webApiVersion;
+    }
+
+    /**
+     * Add to list of supported input ID types.
+     * @param inputIdType Must correspond to a Master CV Term.
+     */
+    public void addSupportedInputIdType(String inputIdType) {
+        supportedInputIdTypes.add(inputIdType);
+    }
+
+    /**
+     * A list of supported input ID types.
+     * @return ArrayLit of supported input ID types.
+     */
+    public ArrayList <String> getSupportedInputIdTypes() {
+        return supportedInputIdTypes;
     }
 }
