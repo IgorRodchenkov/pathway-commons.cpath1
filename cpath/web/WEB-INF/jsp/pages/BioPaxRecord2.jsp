@@ -468,8 +468,8 @@ enable Javascript support within your web browser.
             (CPathRecordType.PATHWAY.toString())) {
 			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
-						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion1.VERSION_1 +
-						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID +
+						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
+						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_RECORD_BY_CPATH_ID +
 						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + "\"" +
 						" id=\"" + id +"\"" +
