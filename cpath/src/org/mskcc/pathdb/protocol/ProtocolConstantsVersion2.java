@@ -24,13 +24,14 @@ public class ProtocolConstantsVersion2 {
     public static final String VERSION_2 = "2.0";
 
     /**
-     * Gets HashSet of Valid BioPAX Commands.
+     * Gets HashSet of Valid Commands.
      *
      * @return HashMap of Valid Commands.
      */
     public HashSet getValidCommands() {
         if (validCommands == null) {
             validCommands = new HashSet();
+            validCommands.add(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             validCommands.add(COMMAND_GET_NEIGHBORS);
         }
         return validCommands;

@@ -11,4 +11,9 @@ public class ProtocolConstants {
      * Help Command.
      */
     public static final String COMMAND_HELP = "help";
+
+    /**
+     * Get By Keyword.
+     */
+    public static final String COMMAND_GET_BY_KEYWORD = "get_by_keyword";    
 }

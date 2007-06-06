@@ -1,4 +1,4 @@
-// $Id: TestProtocolValidator.java,v 1.19 2007-06-05 21:00:36 cerami Exp $
+// $Id: TestProtocolValidator.java,v 1.20 2007-06-06 13:47:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -190,7 +190,7 @@ public class TestProtocolValidator extends TestCase {
 
         HashMap map = new HashMap();
         map.put(ProtocolRequest.ARG_COMMAND,
-                ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+                ProtocolConstants.COMMAND_GET_BY_KEYWORD);
         ProtocolRequest request = new ProtocolRequest(map);
         request.setFormat(ProtocolConstantsVersion1.FORMAT_XML);
         int maxHits = ProtocolConstantsVersion1.MAX_NUM_HITS + 1;

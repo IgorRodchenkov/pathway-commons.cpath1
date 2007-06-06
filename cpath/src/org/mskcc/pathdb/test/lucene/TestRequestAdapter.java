@@ -1,4 +1,4 @@
-// $Id: TestRequestAdapter.java,v 1.9 2007-06-05 21:00:36 cerami Exp $
+// $Id: TestRequestAdapter.java,v 1.10 2007-06-06 13:47:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import junit.framework.TestCase;
 import org.mskcc.pathdb.lucene.RequestAdapter;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
 
 /**
  * Tests the Request Adapter.
@@ -48,26 +49,26 @@ public class TestRequestAdapter extends TestCase {
      */
     public void testAdapter() {
         ProtocolRequest request = new ProtocolRequest();
-        request.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
         request.setOrganism("562");
         request.setQuery("dna repair");
         String terms = RequestAdapter.getSearchTerms(request);
         assertEquals("+(dna repair) +organism:562", terms);
 
         request = new ProtocolRequest();
-        request.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
         request.setOrganism("562");
         terms = RequestAdapter.getSearchTerms(request);
         assertEquals("+organism:562", terms);
 
         request = new ProtocolRequest();
-        request.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
         request.setQuery("dna repair");
         terms = RequestAdapter.getSearchTerms(request);
         assertEquals("dna repair", terms);
 
         request = new ProtocolRequest();
-        request.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+        request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
         request.setQuery("dna repair");
         terms = RequestAdapter.getSearchTerms(request);
         assertEquals("dna repair", terms);

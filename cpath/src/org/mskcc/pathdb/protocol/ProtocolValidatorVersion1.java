@@ -73,7 +73,7 @@ class ProtocolValidatorVersion1 {
             //  Special Case
             set = constants.getValidBioPaxCommands();
             if (request.getCommand().equals
-                    (ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD)) {
+                    (ProtocolConstants.COMMAND_GET_BY_KEYWORD)) {
                 if (request.getFormat() != null && request.getFormat().equals
                         (ProtocolConstantsVersion1.FORMAT_BIO_PAX)) {
                     throw new ProtocolException(ProtocolStatusCode.BAD_FORMAT,

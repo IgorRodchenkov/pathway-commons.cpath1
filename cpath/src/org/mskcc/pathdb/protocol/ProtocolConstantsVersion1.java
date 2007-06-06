@@ -1,4 +1,4 @@
-// $Id: ProtocolConstantsVersion1.java,v 1.2 2007-06-05 21:22:21 cerami Exp $
+// $Id: ProtocolConstantsVersion1.java,v 1.3 2007-06-06 13:47:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -118,10 +118,6 @@ public class ProtocolConstantsVersion1 {
      */
     public static final String COMMAND_GET_BY_ORGANISM = "get_by_organism";
 
-    /**
-     * Get By Keyword.
-     */
-    public static final String COMMAND_GET_BY_KEYWORD = "get_by_keyword";
 
     /**
      * Get By Interaction Database.
@@ -168,7 +164,7 @@ public class ProtocolConstantsVersion1 {
             validPsiMiCommands.add(COMMAND_GET_BY_INTERACTOR_NAME_XREF);
             validPsiMiCommands.add(COMMAND_GET_BY_INTERACTOR_ID);
             validPsiMiCommands.add(COMMAND_GET_BY_ORGANISM);
-            validPsiMiCommands.add(COMMAND_GET_BY_KEYWORD);
+            validPsiMiCommands.add(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             validPsiMiCommands.add(COMMAND_GET_BY_DATABASE);
             validPsiMiCommands.add(COMMAND_GET_BY_PMID);
             validPsiMiCommands.add(COMMAND_GET_BY_EXPERIMENT_TYPE);
@@ -186,7 +182,7 @@ public class ProtocolConstantsVersion1 {
         if (validBioPaxCommands == null) {
             validBioPaxCommands = new HashSet();
             validBioPaxCommands.add(ProtocolConstants.COMMAND_HELP);
-            validBioPaxCommands.add(COMMAND_GET_BY_KEYWORD);
+            validBioPaxCommands.add(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             validBioPaxCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
             validBioPaxCommands.add(COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
         }
