@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.22 2007-06-05 21:22:21 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.23 2007-06-06 13:11:11 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,6 +114,15 @@ public class ProtocolRequest implements PagedResult {
 	 * this is not set, cPath internal id is assumed.
 	 */
 	public static final String ARG_INPUT_ID_TYPE = "input_id_type";
+
+	/**
+	 * Neighborhood Title.
+	 *
+	 * An optional/undocumented parameter to get_neighbors.  When set,
+	 * this string will be used as a title to the respective CyNetworkView
+	 * used in Cytoscape.
+	 */
+	private static final String ARG_NEIGHBORHOOD_TITLE = "neighborhood_title";
 
 	/**
 	 * Fully Connected.
