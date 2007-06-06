@@ -34,8 +34,8 @@ class ProtocolValidatorVersion2 {
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
     public void validate() throws ProtocolException, NeedsHelpException {
-        validateVersion();        
         validateCommand();
+        validateVersion();
         validateQuery();
     }
 
@@ -61,6 +61,9 @@ class ProtocolValidatorVersion2 {
         if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
             throw new NeedsHelpException();
         }
+        if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
+            throw new NeedsHelpException();
+        }        
     }
 
     /**
