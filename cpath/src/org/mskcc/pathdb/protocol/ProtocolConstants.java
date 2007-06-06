@@ -15,5 +15,11 @@ public class ProtocolConstants {
     /**
      * Get By Keyword.
      */
-    public static final String COMMAND_GET_BY_KEYWORD = "get_by_keyword";    
+    public static final String COMMAND_GET_BY_KEYWORD = "get_by_keyword";
+
+    /**
+     * Get Record by cPath ID
+     */
+    public static final String COMMAND_GET_RECORD_BY_CPATH_ID =
+            "get_record_by_cpath_id";    
 }

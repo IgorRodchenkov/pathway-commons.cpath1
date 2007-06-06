@@ -31,6 +31,7 @@ public class ProtocolConstantsVersion2 {
     public HashSet getValidCommands() {
         if (validCommands == null) {
             validCommands = new HashSet();
+            validCommands.add(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             validCommands.add(ProtocolConstants.COMMAND_HELP);
             validCommands.add(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             validCommands.add(COMMAND_GET_NEIGHBORS);

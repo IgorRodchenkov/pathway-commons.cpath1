@@ -1,4 +1,4 @@
-// $Id: ProtocolConstantsVersion1.java,v 1.3 2007-06-06 13:47:56 cerami Exp $
+// $Id: ProtocolConstantsVersion1.java,v 1.4 2007-06-06 18:13:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -102,11 +102,6 @@ public class ProtocolConstantsVersion1 {
             "get_by_interactor_id";
 
     /**
-     * Get Record by cPath ID
-     */
-    public static final String COMMAND_GET_RECORD_BY_CPATH_ID =
-            "get_record_by_cpath_id";
-
     /**
      * Get Top-Level Pathway List.
      */
@@ -183,7 +178,7 @@ public class ProtocolConstantsVersion1 {
             validBioPaxCommands = new HashSet();
             validBioPaxCommands.add(ProtocolConstants.COMMAND_HELP);
             validBioPaxCommands.add(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-            validBioPaxCommands.add(COMMAND_GET_RECORD_BY_CPATH_ID);
+            validBioPaxCommands.add(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             validBioPaxCommands.add(COMMAND_GET_TOP_LEVEL_PATHWAY_LIST);
         }
         return validBioPaxCommands;

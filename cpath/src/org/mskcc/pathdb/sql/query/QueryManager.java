@@ -1,4 +1,4 @@
-// $Id: QueryManager.java,v 1.12 2007-06-05 21:22:47 cerami Exp $
+// $Id: QueryManager.java,v 1.13 2007-06-06 18:13:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.sql.query;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoXmlCache;
@@ -160,7 +161,7 @@ public class QueryManager {
 		//  3.  get Neighbors
         //  4.  search via Lucene
         if (request.getCommand().equals
-                (ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+                (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
             query = new GetBioPaxCommand(request);
         } else if (request.getCommand().equals
                 (ProtocolConstantsVersion1.COMMAND_GET_TOP_LEVEL_PATHWAY_LIST)) {
