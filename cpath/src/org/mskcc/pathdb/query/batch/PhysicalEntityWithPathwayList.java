@@ -17,6 +17,7 @@ public class PhysicalEntityWithPathwayList {
     private String externalId;
     private String officialName;
     private ExternalDatabaseRecord externalDb;
+    private boolean peFoundFlag = false;
 
     /**
      * Gets a BioPaxRecord summary of the physical entity object.
@@ -99,5 +100,21 @@ public class PhysicalEntityWithPathwayList {
      */
     public void setOfficialName (String officialName) {
         this.officialName = officialName;
+    }
+
+    /**
+     * Gets whether physical entity was found in the database.
+     * @return true or false.
+     */
+    public boolean isPeFoundFlag () {
+        return peFoundFlag;
+    }
+
+    /**
+     * Sets whether physical entity was found in the database.
+     * @param peFoundFlag true or false.
+     */
+    public void setPeFoundFlag (boolean peFoundFlag) {
+        this.peFoundFlag = peFoundFlag;
     }
 }

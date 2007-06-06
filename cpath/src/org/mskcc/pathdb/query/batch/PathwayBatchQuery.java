@@ -22,6 +22,17 @@ import java.util.HashSet;
 public class PathwayBatchQuery {
 
     /**
+     * Error Message:  No Pathway Data.
+     */
+    public static String ERROR_MSG_NO_PATHWAY_DATA = "NO_PATHWAY_DATA";
+
+    /**
+     * Error Messaage:  No Match to Physical Entity.
+     */
+    public static String ERROR_MSG_NO_MATCH_TO_PHYSICAL_ENTITY =
+            "NO_MATCH_FOUND_TO_PHYSICAL_ENTITY";
+
+    /**
      * Given a list of Physical Entity IDs, get the complete set of all linked pathways.
      *
      * @param ids       Array of External Ids.
@@ -66,7 +77,11 @@ public class PathwayBatchQuery {
             if (pathwayList.size() == 0) {
                 out.append(peData.getExternalDb().getMasterTerm());
                 out.append(":" + peData.getExternalId());
-                out.append("\tNO_DATA\n");
+                if (peData.isPeFoundFlag()) {
+                    out.append("\t" + ERROR_MSG_NO_PATHWAY_DATA + "\n");
+                } else {
+                    out.append("\t" + ERROR_MSG_NO_MATCH_TO_PHYSICAL_ENTITY + "\n");
+                }
             } else {
                 for (int j=0; j < pathwayList.size(); j++) {
                     BioPaxRecordSummary pathwaySummary = pathwayList.get(j);
@@ -124,6 +139,7 @@ public class PathwayBatchQuery {
         //  Iterate through all external IDs
         for (int i=0; i<ids.length; i++) {
             ArrayList <BioPaxRecordSummary> pathwayList = new ArrayList <BioPaxRecordSummary>();
+            PhysicalEntityWithPathwayList peData = new PhysicalEntityWithPathwayList();
             if (dbTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
                 getPathways(Long.parseLong(ids[i]), pathwayList, dataSourceSet);
             } else {
@@ -135,7 +151,7 @@ public class PathwayBatchQuery {
 
                 //  Iterate through all physical entities
                 for (int j=0; j<externalLinkList.size(); j++) {
-
+                    peData.setPeFoundFlag(true);
                     //  Retrieve physical entity
                     ExternalLinkRecord externalLinkRecord =
                             (ExternalLinkRecord) externalLinkList.get(j);
@@ -144,7 +160,6 @@ public class PathwayBatchQuery {
             }
 
             //  Store the response data
-            PhysicalEntityWithPathwayList peData = new PhysicalEntityWithPathwayList();
             peData.setExternalId(ids[i]);
             peData.setExternalDb(dbRecord);
             peData.setPathwayList(pathwayList);
