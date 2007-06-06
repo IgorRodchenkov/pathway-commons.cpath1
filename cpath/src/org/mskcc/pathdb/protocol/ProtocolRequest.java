@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.23 2007-06-06 13:11:11 grossben Exp $
+// $Id: ProtocolRequest.java,v 1.24 2007-06-06 13:27:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -122,7 +122,7 @@ public class ProtocolRequest implements PagedResult {
 	 * this string will be used as a title to the respective CyNetworkView
 	 * used in Cytoscape.
 	 */
-	private static final String ARG_NEIGHBORHOOD_TITLE = "neighborhood_title";
+	public static final String ARG_NEIGHBORHOOD_TITLE = "neighborhood_title";
 
 	/**
 	 * Fully Connected.
