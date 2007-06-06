@@ -10,13 +10,13 @@
     webUIBean.setDisplayBrowseByOrganismTab(false);
     webUIBean.setDisplayBrowseByPathwayTab(false);
     webUIBean.setWantCytoscape(true);
-    webUIBean.setDisplayWebServiceTab(false);
+    webUIBean.setDisplayWebServiceTab(true);
     webUIBean.setDisplayFilterTab(true);
     webUIBean.setDefaultUserMessage("Pathway Commons serves the scientific community.  "
         + "We welcome your <a href='get_feedback.do'>feedback</a>.");
     webUIBean.setBaseURL("pathwaycommons.org");
     webUIBean.setSmtpHost("cbio.mskcc.org");
     webUIBean.setFeedbackEmailTo("pc-info@pathwaycommons.org");
-    webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);    
+    webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);
     CPathUIConfig.setWebUIBean(webUIBean);
 %>
