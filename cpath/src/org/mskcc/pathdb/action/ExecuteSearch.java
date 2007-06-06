@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.23 2007-06-06 18:55:42 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.24 2007-06-06 20:20:33 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -546,8 +546,13 @@ public class ExecuteSearch extends BaseAction {
             if (dbTerm == null) {
                 dbTerm = ExternalDatabaseConstants.INTERNAL_DATABASE;
             }
-            ArrayList<PhysicalEntityWithPathwayList> list = batchQuery.executeBatchQuery
-                    (ids, dbTerm);
+            String dataSources[] = protocolRequest.getDataSources();
+            ArrayList<PhysicalEntityWithPathwayList> list;
+            if (dataSources != null) {
+                list = batchQuery.executeBatchQuery (ids, dbTerm, dataSources);
+            } else {
+                list = batchQuery.executeBatchQuery (ids, dbTerm);
+            }
             String table = batchQuery.outputTabDelimitedText(list);
             response.setContentType("text/plain");
             PrintWriter writer = response.getWriter();
