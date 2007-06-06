@@ -6,6 +6,7 @@
 <%@ page import="org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="org.mskcc.pathdb.query.batch.PathwayBatchQuery"%>
 <h1>Introduction to Web Service API:</h1>
 <p>
 If you wish to programmatically access pathway data, you can do so via the Web Service API.
@@ -46,6 +47,20 @@ Output of this command is a tab-delimited text file with four columns of data:
 <li>Pathway_Database_Name:  Pathway database name.  For example, <%=ExternalDatabaseConstants.REACTOME %>.</li>
 <li>Internal_ID:  Internal ID, used to uniquely identify the pathway.  Please note that these internal
 IDs are <b>not</b> stable, and may change after each new release of data.
+</li>
+</ul>
+
+<h2>Error Messages:</h2>
+
+<ul>
+<li>If we are unable to find a match for the specified external identifier, the second column
+of the tab-delimited text file will contain the keyword:
+<%= PathwayBatchQuery.ERROR_MSG_NO_MATCH_TO_PHYSICAL_ENTITY%>.</li>
+<li>On the other hand, if we are able to find a match for the specified external
+identifier, but this physical entity is not involved in any known pathways
+(or in any of the specific pathway databases you have requested), the second
+column of the tab-delimited text file will contain the keyword:
+<%= PathwayBatchQuery.ERROR_MSG_NO_PATHWAY_DATA%>.
 </li>
 </ul>
 
