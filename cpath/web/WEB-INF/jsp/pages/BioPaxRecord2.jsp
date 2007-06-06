@@ -14,6 +14,7 @@
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
 <%@ page import="org.mskcc.pathdb.xdebug.XDebugUtil"%>
 <%@ page import="org.mskcc.pathdb.action.ShowBioPaxRecord2"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
@@ -469,11 +470,11 @@ enable Javascript support within your web browser.
 			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
 						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
-						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_RECORD_BY_CPATH_ID +
+						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
 						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + "\"" +
 						" id=\"" + id +"\"" +
-						" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID + "'); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "'); return false;\"" +
 						">View this pathway in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");
@@ -498,7 +499,7 @@ enable Javascript support within your web browser.
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
             ProtocolRequest pRequest = new ProtocolRequest();
-            pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID);
+            pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
             pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
             out.println("<h3>Download:</h3>");
