@@ -70,7 +70,11 @@ public class PathwayBatchQuery {
             } else {
                 for (int j=0; j < pathwayList.size(); j++) {
                     BioPaxRecordSummary pathwaySummary = pathwayList.get(j);
-                    out.append(peData.getExternalDb().getMasterTerm());
+                    if (peData.getExternalDb() != null) {
+                        out.append(peData.getExternalDb().getMasterTerm());
+                    } else {
+                        out.append(ExternalDatabaseConstants.INTERNAL_DATABASE);
+                    }
                     out.append(":" + peData.getExternalId());
                     out.append("\t" + pathwaySummary.getName());
                     out.append("\t" +
