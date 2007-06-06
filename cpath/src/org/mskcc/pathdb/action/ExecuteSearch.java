@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.21 2007-06-05 21:22:47 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.22 2007-06-06 13:41:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,6 +53,7 @@ import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
+import org.mskcc.pathdb.form.WebUIBean;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -111,9 +112,10 @@ public class ExecuteSearch extends BaseAction {
             (ActionMapping mapping, ProtocolRequest protocolRequest,
                     HttpServletRequest request, HttpServletResponse response,
                     XDebug xdebug) throws ProtocolException, NeedsHelpException {
-		// valid query
+        WebUIBean webUiBean = CPathUIConfig.getWebUIBean();
+        // valid query
 		ProtocolValidator validator = new ProtocolValidator(protocolRequest);
-        validator.validate(ProtocolConstantsVersion1.VERSION_1);
+        validator.validate(webUiBean.getWebApiVersion());
 		// short circuit if necessary
 		if (isSpecialCaseCommand(protocolRequest)) {
 			return specialCaseCommandHandler(mapping, protocolRequest, request, xdebug);
