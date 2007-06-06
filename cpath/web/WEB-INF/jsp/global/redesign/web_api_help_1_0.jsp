@@ -27,7 +27,7 @@ URL parameters.  Parameters are as follows:
             </li>
             <li><b><%= ProtocolRequest.ARG_VERSION %></b>:  Indicates the
             version of the web service API.
-            Must be specified.  The only supported version is "1.0".
+            Must be specified.  The only supported version is "<%= CPathUIConfig.getWebUIBean().getWebApiVersion() %>".
             </li>
              <li><b><%= ProtocolRequest.ARG_FORMAT %></b>:  Indicates the
             format of returned results.

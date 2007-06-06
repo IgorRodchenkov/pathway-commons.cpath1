@@ -3,6 +3,7 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.model.GlobalFilterSettings"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
 String entityValue =  "pathway";
@@ -21,12 +22,12 @@ cPath is a database and software suite for storing, visualizing, and analyzing b
     <div class="large_search_box">
     <h1>Search <%= webUIBean.getApplicationName() %>:</h1>
     <form name="searchbox" action="webservice2.do" method="get">
-    <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="1.0"/>
+    <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="<%= CPathUIConfig.getWebUIBean().getWebApiVersion() %>"/>
     <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15"/>
     <input type="submit" value="Search"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstantsVersion1.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
-        size="25" value='<%= ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD %>'/>
+        size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
     <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
     </form>
     <p>To get started, enter a gene name or identifier in the text box above.</p>

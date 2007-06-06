@@ -7,7 +7,10 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.TreeMap"%>
+<%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
+<%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%
+    WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     final String DATA_SOURCE_FILTER_VALUE_GLOBAL_LABEL = "All Data Sources";
     // grab required objects from request object
     ProtocolRequest protocolRequest = (ProtocolRequest)
@@ -49,7 +52,8 @@
 	    else {
 			if (hitByDataSourceMap.get(dataSourceNameMap.get(dataSource)) > 0) {
 	            out.println("<li>" +
-			                "<a href='webservice.do?version=1.0&q=" + protocolRequest.getQuery() +
+			                "<a href='webservice.do?version=" + webUIBean.getWebApiVersion() +
+                            "&q=" + protocolRequest.getQuery() +
 			                "&format=html&cmd=get_by_keyword&" +
 			                GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME + "=" + keyType + "&" +
 		   				    GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + dataSourceNameMap.get(dataSource) +

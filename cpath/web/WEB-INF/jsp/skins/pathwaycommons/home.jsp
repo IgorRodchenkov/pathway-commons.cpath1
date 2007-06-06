@@ -25,9 +25,9 @@ RNA, small molecules and complexes. <a href="about.do">more...</a>
 <jsp:include page="../../global/redesign/homePageSearchBox.jsp" flush="true" />
 </p>
 <p>To get started, enter a gene name, gene identifier or pathway name in the text box above.
-For example: <a href="webservice.do?version=1.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">p53</a>,
-<a href="webservice.do?version=1.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">P38398</a>
-or  <a href="webservice.do?version=1.0&q=mtor&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">mTOR</a>.
+For example: <a href="webservice.do?version=2.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">p53</a>,
+<a href="webservice.do?version=2.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">P38398</a>
+or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">mTOR</a>.
 </p>
 <p>To restrict your search to specific data sources or specific organisms, update your
 <a href="filter.do">global filter settings</a>.</p>
