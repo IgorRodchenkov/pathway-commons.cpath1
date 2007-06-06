@@ -1,5 +1,6 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
 <%
     CPathUIConfig.setShowDataSourceDetails(true);
 
@@ -11,8 +12,9 @@
 
     webUIBean.setDisplayBrowseByOrganismTab(true);
     webUIBean.setDisplayBrowseByPathwayTab(false);
-    webUIBean.setDisplayCytoscapeTab(true);
+    webUIBean.setWantCytoscape(true);
     webUIBean.setDisplayWebServiceTab(true);
     webUIBean.setDisplayFilterTab(false);
+    webUIBean.setWebApiVersion(ProtocolConstantsVersion1.VERSION_1);
     CPathUIConfig.setWebUIBean(webUIBean);
 %>

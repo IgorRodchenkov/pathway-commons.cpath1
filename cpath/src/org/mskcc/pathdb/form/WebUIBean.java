@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.15 2007-05-07 16:10:55 cerami Exp $
+// $Id: WebUIBean.java,v 1.16 2007-06-06 13:24:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.form;
 // imports
 
 import org.apache.struts.action.ActionForm;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
 
 /**
  * Struts ActionForm for updating/retrieving web ui elements.
@@ -91,6 +92,11 @@ public class WebUIBean extends ActionForm {
      * To address, where feedback is submitted.
      */
     private String feedbackEmailTo;
+
+    /**
+     * Currently Supported Web API Version #.  Defaults to Version 2.0.
+     */
+    private String webApiVersion = ProtocolConstantsVersion2.VERSION_2;
 
     /**
      * Sets the Application Name.
@@ -285,5 +291,21 @@ public class WebUIBean extends ActionForm {
      */
     public void setFeedbackEmailTo (String feedbackEmailTo) {
         this.feedbackEmailTo = feedbackEmailTo;
+    }
+
+    /**
+     * Gets the currently supported Web API version.
+     * @return currently supported Web API version.
+     */
+    public String getWebApiVersion () {
+        return webApiVersion;
+    }
+
+    /**
+     * Sets the currently supported Web API version.
+     * @param webApiVersion currently supported Web API version.
+     */
+    public void setWebApiVersion (String webApiVersion) {
+        this.webApiVersion = webApiVersion;
     }
 }

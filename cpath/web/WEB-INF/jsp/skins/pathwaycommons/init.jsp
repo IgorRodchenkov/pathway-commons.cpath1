@@ -1,5 +1,6 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion2"%>
 <%
 
     CPathUIConfig.setShowDataSourceDetails(true);
@@ -16,5 +17,6 @@
     webUIBean.setBaseURL("pathwaycommons.org");
     webUIBean.setSmtpHost("cbio.mskcc.org");
     webUIBean.setFeedbackEmailTo("pc-info@pathwaycommons.org");
+    webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);    
     CPathUIConfig.setWebUIBean(webUIBean);
 %>
