@@ -84,11 +84,8 @@ class ProtocolValidatorVersion2 {
         if (org == null || org.length() == 0) {
             organismExists = false;
         }
-        if (command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
-            // ust have a query parameter
-            if (!qExists) {
-                errorFlag = true;
-            }
+        if (!qExists) {
+            errorFlag = true;
         }
         if (errorFlag) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,

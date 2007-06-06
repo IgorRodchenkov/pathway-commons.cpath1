@@ -19,6 +19,11 @@ public class ProtocolConstantsVersion2 {
     public static final String COMMAND_GET_NEIGHBORS = "get_neighbors";
 
     /**
+     * Get Pathway List Command.
+     */
+    public static final String COMMAND_GET_PATHWAY_LIST = "get_pathway_list";
+
+    /**
      * Protocol Version:  2.0
      */
     public static final String VERSION_2 = "2.0";
@@ -35,6 +40,7 @@ public class ProtocolConstantsVersion2 {
             validCommands.add(ProtocolConstants.COMMAND_HELP);
             validCommands.add(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             validCommands.add(COMMAND_GET_NEIGHBORS);
+            validCommands.add(COMMAND_GET_PATHWAY_LIST);
         }
         return validCommands;
     }
