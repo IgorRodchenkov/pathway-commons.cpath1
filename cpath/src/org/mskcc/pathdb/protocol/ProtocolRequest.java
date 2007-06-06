@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.24 2007-06-06 13:27:28 grossben Exp $
+// $Id: ProtocolRequest.java,v 1.25 2007-06-06 20:20:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -581,6 +581,22 @@ public class ProtocolRequest implements PagedResult {
      */
     public String getDataSource() {
         return this.dataSource;
+    }
+
+    /**
+     * Get list of all data sources.
+     * @return array of all data sources.
+     */
+    public String[] getDataSources() {
+        if (dataSource != null && dataSource.trim().length() > 0) {
+            String dataSources[] = dataSource.split(",");
+            for (int i=0; i<dataSources.length; i++) {
+                dataSources[i] = dataSources[i].trim();
+            }
+            return dataSources;
+        } else {
+            return null;
+        }
     }
 
     /**
