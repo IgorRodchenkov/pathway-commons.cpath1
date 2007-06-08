@@ -474,7 +474,7 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + "\"" +
 						" id=\"" + id +"\"" +
-						" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "'); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title'); return false;\"" +
 						">View this pathway in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");
@@ -488,7 +488,7 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + 
 						"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=Neighborhood: " + bpSummary.getLabel() + "\"" +
 						" id=\"" + id +"\"" +
-						" onclick=\"appRequest(this.href, this.id, '" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "'); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', " + "'Neighborhood: " + summaryLabel + "'); return false;\"" +
 						">View network neighborhood map in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");
