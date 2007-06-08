@@ -1,4 +1,4 @@
-// $Id: webstart.js,v 1.4 2007-05-21 14:00:38 grossben Exp $
+// $Id: webstart.js,v 1.5 2007-06-08 20:24:16 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ var SCRIPT_ELEMENT_ID = "cytoscape";
 var timoutVar; // used to set/unset timeout handlers
 var requestedID; // used to store record id link pressed
 var requestedCommand; // used to store web services command of link pressed
+var requestedNetworkViewTitle; // used to store web services title of link pressed
 //var toolTip = "'<DIV CLASS=popup><DIV CLASS=popup_caption>Cytoscape</DIV><DIV CLASS=popup_text>To view this record in Cytoscape, click on this link.  If Cytoscape is already running, the network will be loaded into Cytoscape straightaway.  If Cytoscape is not running, Pathway Commons will attempt to load Cytoscape via Java Webstart.  Click on the 'help' link for more information.</DIV>";
 
 /*
@@ -74,6 +75,9 @@ function timeoutHandler() {
         hostname += (":" + port);
     }
 	var webstart_url = "http://" + hostname + "/pc/cytoscape.jnlp?id=" + requestedID + "&command=" + requestedCommand;
+	if (networkViewTitle != "empty_title") {
+	  webstart_url += "&network_view_title=" + requestedNetworkViewTitle;
+	}
 
     // determine if webstart is available - code taken from sun site
     var userAgent = navigator.userAgent.toLowerCase();
@@ -125,7 +129,7 @@ function disableLink(linkID) {
 /**
  * Called to make a webstart app request
  */
-function appRequest(url, linkID, command) {
+function appRequest(url, linkID, command, networkViewTitle) {
 
     // be good and remove the previous cytoscape script element
     // although, based on debugging, i'm not sure this really does anything
@@ -154,6 +158,9 @@ function appRequest(url, linkID, command) {
 
 	// save command in case we have to pass to webstart
 	requestedCommand = command;
+
+	// save title in case we have to pass to webstart
+	requestedNetworkViewTitle = networkViewTitle;
 
     // set timeout - handler for when cytoscape is not running
     timeoutVar = setTimeout("timeoutHandler()", 1000);
