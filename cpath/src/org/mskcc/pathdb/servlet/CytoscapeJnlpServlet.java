@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.3 2007-05-21 14:01:56 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.4 2007-06-08 20:25:17 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,6 +31,10 @@
  **/
 package org.mskcc.pathdb.servlet;
 
+import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,8 +42,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import java.net.URLEncoder;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * JNLP Servlet.
@@ -83,6 +89,9 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 		String command = request.getParameter("command");
 		if (command == null) return;
 
+		// get neighborhood title
+		String networkViewTitle = request.getParameter("network_view_title");
+
 		// set content type on response object
 		response.setContentType("application/x-java-jnlp-file");
 
@@ -91,13 +100,29 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 		urlToPathwayCommons = urlToPathwayCommons.substring(0, urlToPathwayCommons.lastIndexOf("/"));
 
 		// contruct url to retrieve record, ie include web services api call
-		String urlToRetrieveRecord = urlToPathwayCommons +
-			"/webservice.do?version=1.0&cmd=" + command + "&format=biopax&q=" + recordID;
+		String urlToRetrieveRecord = (urlToPathwayCommons +
+									  "/webservice.do?" +
+									  ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
+									  "&" + ProtocolRequest.ARG_COMMAND + "=" + command +
+									  "&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
+									  "&" + ProtocolRequest.ARG_QUERY + "=" + recordID);
+
+		// process networkViewTitle
+		//if (networkViewTitle != null) {
+		//	try {
+		//		neighborhoodTitle = URLEncoder.encode(neighborhoodTitle, "UTF-8");
+		//	}
+		//	catch (UnsupportedEncodingException e) {
+				// if exception occurs leave encoded string, but cmon, utf-8 not supported ??
+				// anyway, at least encode spaces
+		//		neighborhoodTitle = neighborhoodTitle.replaceAll(" ", "%20");
+		//	}
+		//	urlToRetrieveRecord += "&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + neighborhoodTitle;
+		//}
 
 		// write out the data
-		writeJNLPData(urlToPathwayCommons, urlToRetrieveRecord,
+		writeJNLPData(urlToPathwayCommons, urlToRetrieveRecord, networkViewTitle,
 					  new PrintStream(response.getOutputStream()));
-
     }
 
 	/**
@@ -105,15 +130,17 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 	 *
 	 * @param urltoPathwayCommons String
 	 * @param urlToRetrieveRecord String
+	 * @param networkViewTitle String
      * @param out PrintStream
 	 * @throws IOException
 	 */
 	private void writeJNLPData(String urlToPathwayCommons,
 							   String urlToRetrieveRecord,
+							   String networkViewTitle,
 							   PrintStream out) throws IOException {
 
         out.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                   "<jnlp codebase=\"" + urlToPathwayCommons + "/jsp/cytoscape\">\n" + // href=\"cy1.jnlp\">\n" +
+                   "<jnlp codebase=\"" + urlToPathwayCommons + "/jsp/cytoscape\">\n" +
                      "<security>\n" +
                        "<all-permissions />\n" +
                      "</security>\n" +
@@ -125,6 +152,8 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
                      "</information>\n" +
                      "<resources>\n" +
                        "<j2se version=\"1.5+\" max-heap-size=\"1024M\" />\n" +
+				       "<property name=\"biopax.network_view_title\" value=\"" + networkViewTitle + "\"/>\n" +
+				       "<property name=\"biopax.web_services_url\" value=\"" + urlToPathwayCommons + "\"/>\n" +
                        "<!--All lib jars that cytoscape requires to run should be in this list-->\n" +
                        "<jar href=\"cytoscape.jar\" />\n" +
                        "<jar href=\"lib/activation.jar\" />\n" +
