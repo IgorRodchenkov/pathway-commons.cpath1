@@ -6,10 +6,12 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.taglib.Pager,
                  org.mskcc.pathdb.sql.dao.DaoCPath,
+                 org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot,
                  org.mskcc.pathdb.sql.query.QueryUtil,
                  org.mskcc.pathdb.model.CPathRecord,
                  org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.model.GlobalFilterSettings,
+                 org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord,
                  org.mskcc.pathdb.util.html.HtmlUtil,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary,
@@ -18,7 +20,8 @@
                  org.mskcc.pathdb.taglib.ReactomeCommentUtil,
                  java.util.Set,
                  java.util.Map,
-                 java.util.List"%>
+                 java.util.List,
+                 java.net.URLEncoder"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
@@ -53,6 +56,21 @@
     // cytoscape link
     String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
     urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
+    // data source parameter string  to network neighborhood map
+    String dataSourceParameter = "";
+    GlobalFilterSettings filterSettings =
+	    (GlobalFilterSettings)request.getSession().getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+    DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
+    if (filterSettings != null) {
+	    for (Long snapshotID : (Set<Long>)filterSettings.getSnapshotIdSet()) {
+		    ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
+		    dataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
+	    }
+	    // snip off last ','
+	    dataSourceParameter = dataSourceParameter.replaceAll(",$", "");
+		// encode
+		dataSourceParameter = URLEncoder.encode(dataSourceParameter, "UTF-8");
+    }
 %>
 <script type="text/javascript">
     //  Toggles details on single row
@@ -299,6 +317,7 @@ else {
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 								"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + 
+								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + dataSourceParameter +
 								"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=Neighborhood: " + summaryLabel + "\"" +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								" onclick=\"appRequest(this.href, this.id," + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', " + "'Neighborhood: " + summaryLabel + "'); return false;\"" +

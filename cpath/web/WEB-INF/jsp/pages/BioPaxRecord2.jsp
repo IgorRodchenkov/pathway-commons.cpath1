@@ -15,6 +15,9 @@
 <%@ page import="org.mskcc.pathdb.xdebug.XDebugUtil"%>
 <%@ page import="org.mskcc.pathdb.action.ShowBioPaxRecord2"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot"%>
+<%@ page import="java.net.URLEncoder"%>
+<%@ page import="java.util.Set"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
@@ -54,6 +57,23 @@ serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverN
 String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
 urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
 urlForCytoscapeLink = urlForCytoscapeLink.replace("record2.do", "webservice.do");
+
+// data source parameter string  to network neighborhood map
+String dataSourceParameter = "";
+GlobalFilterSettings filterSettings =
+	(GlobalFilterSettings)request.getSession().getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
+if (filterSettings != null) {
+	for (Long snapshotID : (Set<Long>)filterSettings.getSnapshotIdSet()) {
+		 ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
+		 dataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
+	}
+	// snip off last ','
+	dataSourceParameter = dataSourceParameter.replaceAll(",$", "");
+	// encode
+	dataSourceParameter = URLEncoder.encode(dataSourceParameter, "UTF-8");
+}
+
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
@@ -486,9 +506,10 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + 
+						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + dataSourceParameter +
 						"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=Neighborhood: " + bpSummary.getLabel() + "\"" +
 						" id=\"" + id +"\"" +
-						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', " + "'Neighborhood: " + summaryLabel + "'); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', " + "'Neighborhood: " + bpSummary.getLabel() + "'); return false;\"" +
 						">View network neighborhood map in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");
