@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.4 2007-06-08 20:25:17 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.5 2007-06-11 12:41:06 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -106,19 +106,6 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 									  "&" + ProtocolRequest.ARG_COMMAND + "=" + command +
 									  "&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 									  "&" + ProtocolRequest.ARG_QUERY + "=" + recordID);
-
-		// process networkViewTitle
-		//if (networkViewTitle != null) {
-		//	try {
-		//		neighborhoodTitle = URLEncoder.encode(neighborhoodTitle, "UTF-8");
-		//	}
-		//	catch (UnsupportedEncodingException e) {
-				// if exception occurs leave encoded string, but cmon, utf-8 not supported ??
-				// anyway, at least encode spaces
-		//		neighborhoodTitle = neighborhoodTitle.replaceAll(" ", "%20");
-		//	}
-		//	urlToRetrieveRecord += "&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + neighborhoodTitle;
-		//}
 
 		// write out the data
 		writeJNLPData(urlToPathwayCommons, urlToRetrieveRecord, networkViewTitle,
