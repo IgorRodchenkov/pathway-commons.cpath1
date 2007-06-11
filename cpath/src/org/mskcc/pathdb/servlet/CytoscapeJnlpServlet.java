@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.6 2007-06-11 14:07:08 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.7 2007-06-11 19:00:59 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,10 +42,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import java.net.URLEncoder;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 
 /**
  * JNLP Servlet.
@@ -93,6 +91,10 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 		String networkViewTitle = request.getParameter("network_view_title");
 		networkViewTitle = (networkViewTitle == null) ? "" : networkViewTitle;
 
+		// data sources - should never be null
+		String dataSources = request.getParameter("data_source");
+		dataSources = (dataSources == null) ? "" : dataSources;
+
 		// set content type on response object
 		response.setContentType("application/x-java-jnlp-file");
 
@@ -106,10 +108,11 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 									  ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 									  "&" + ProtocolRequest.ARG_COMMAND + "=" + command +
 									  "&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
-									  "&" + ProtocolRequest.ARG_QUERY + "=" + recordID);
+									  "&" + ProtocolRequest.ARG_QUERY + "=" + recordID +
+									  "&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + dataSources);
 
 		// write out the data
-		writeJNLPData(urlToPathwayCommons, urlToRetrieveRecord, networkViewTitle,
+		writeJNLPData(urlToPathwayCommons, urlToRetrieveRecord, networkViewTitle, dataSources,
 					  new PrintStream(response.getOutputStream()));
     }
 
@@ -119,12 +122,14 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 	 * @param urltoPathwayCommons String
 	 * @param urlToRetrieveRecord String
 	 * @param networkViewTitle String
+	 * @param dataSources String
      * @param out PrintStream
 	 * @throws IOException
 	 */
 	private void writeJNLPData(String urlToPathwayCommons,
 							   String urlToRetrieveRecord,
 							   String networkViewTitle,
+							   String dataSources,
 							   PrintStream out) throws IOException {
 
         out.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -142,6 +147,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
                        "<j2se version=\"1.5+\" max-heap-size=\"1024M\" />\n" +
 				       "<property name=\"biopax.network_view_title\" value=\"" + networkViewTitle + "\"/>\n" +
 				       "<property name=\"biopax.web_services_url\" value=\"" + urlToPathwayCommons + "\"/>\n" +
+				       "<property name=\"biopax.data_sources\" value=\"" + dataSources + "\"/>\n" +
                        "<!--All lib jars that cytoscape requires to run should be in this list-->\n" +
                        "<jar href=\"cytoscape.jar\" />\n" +
                        "<jar href=\"lib/activation.jar\" />\n" +
