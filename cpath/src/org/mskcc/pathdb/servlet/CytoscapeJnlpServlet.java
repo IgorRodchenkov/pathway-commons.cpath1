@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.5 2007-06-11 12:41:06 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.6 2007-06-11 14:07:08 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -91,6 +91,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 
 		// get neighborhood title
 		String networkViewTitle = request.getParameter("network_view_title");
+		networkViewTitle = (networkViewTitle == null) ? "" : networkViewTitle;
 
 		// set content type on response object
 		response.setContentType("application/x-java-jnlp-file");
