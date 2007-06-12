@@ -25,6 +25,14 @@ class ProtocolValidatorVersion2 {
      */
     private ProtocolConstantsVersion2 constants = new ProtocolConstantsVersion2();
 
+	/**
+	 * IdType
+	 */
+	public enum ID_Type {
+		INPUT_ID_TYPE,
+		OUTPUT_ID_TYPE;
+	}
+
     /**
      * Constructor.
      *
@@ -43,9 +51,13 @@ class ProtocolValidatorVersion2 {
     public void validate () throws ProtocolException, NeedsHelpException {
         validateCommand();
         validateVersion();
-        validateInputIdType();
+        validateIdType(ID_Type.INPUT_ID_TYPE);
+        validateIdType(ID_Type.OUTPUT_ID_TYPE);
         validateDataSources();
         validateQuery();
+		validateOutput();
+		// used to validate misc arguments based on given command
+		validateMisc();
     }
 
     /**
@@ -134,33 +146,50 @@ class ProtocolValidatorVersion2 {
         }
     }
 
-    private void validateInputIdType () throws ProtocolException {
+    private void validateIdType (ID_Type idType) throws ProtocolException {
         String command = request.getCommand();
-        if (command != null && command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
-            String inputIdType = request.getInputIDType();
-            if (inputIdType == null || inputIdType.trim().length() == 0) {
-                throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
-                        "Argument:  '" + ProtocolRequest.ARG_INPUT_ID_TYPE
-                                + "' is not specified." + ProtocolValidator.HELP_MESSAGE);
-            } else {
-                WebUIBean webBean = CPathUIConfig.getWebUIBean();
-                ArrayList supportedIdList = webBean.getSupportedInputIdTypes();
-                if (!supportedIdList.contains(inputIdType)) {
-                    StringBuffer buf = new StringBuffer();
-                    for (int i = 0; i < supportedIdList.size(); i++) {
-                        buf.append(supportedIdList.get(i));
-                        if (i < supportedIdList.size() - 1) {
-                            buf.append(", ");
-                        }
-                    }
-                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-                            ProtocolRequest.ARG_INPUT_ID_TYPE
-                                    + " must be set to one of the following: "
-                                    + buf.toString() + ".");
-                }
-            }
+        if (command != null &&
+			(command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST) ||
+			 command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS))) {
+            String type = (idType == ID_Type.INPUT_ID_TYPE) ?
+				request.getInputIDType() : request.getOutputIDType();
+			if (type != null) {
+				WebUIBean webBean = CPathUIConfig.getWebUIBean();
+				ArrayList supportedIdList = webBean.getSupportedInputIdTypes();
+				if (!supportedIdList.contains(type)) {
+					StringBuffer buf = new StringBuffer();
+					for (int i = 0; i < supportedIdList.size(); i++) {
+						buf.append(supportedIdList.get(i));
+						if (i < supportedIdList.size() - 1) {
+							buf.append(", ");
+						}
+					}
+					throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+												ProtocolRequest.ARG_INPUT_ID_TYPE
+												+ " must be set to one of the following: "
+												+ buf.toString() + ".");
+				}
+			}
         }
     }
+
+    private void validateOutput () throws ProtocolException {
+        String command = request.getCommand();
+
+        if (command != null &&
+			command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
+			String output = request.getOutput();
+			if (output != null &&
+				(!output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX) ||
+				 !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_ID_LIST))) {
+				throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+											ProtocolRequest.ARG_OUTPUT + 
+											" must be set to one of the following: " +
+											ProtocolConstantsVersion1.FORMAT_BIO_PAX + " " +
+											ProtocolConstantsVersion2.FORMAT_ID_LIST + ".");
+			}
+		}
+	}
 
     private void validateDataSources () throws ProtocolException {
         String command = request.getCommand();
@@ -196,4 +225,22 @@ class ProtocolValidatorVersion2 {
         }
         return masterTermList;
     }
+
+    private void validateMisc() throws ProtocolException {
+        String command = request.getCommand();
+
+		// get neighbors misc args
+        if (command != null &&
+			command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
+			// validate fully connected
+			String fullyConnected = request.getFullyConnected();
+			if (fullyConnected != null &&
+				(!fullyConnected.equalsIgnoreCase("yes") ||
+				 !fullyConnected.equalsIgnoreCase("no"))) {
+				throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+											ProtocolRequest.ARG_FULLY_CONNECTED +
+											" must be set to one of the following: yes no.");
+			}
+		}
+	}
 }
