@@ -8,13 +8,13 @@
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
 
     // get the ids
-    Set<Long> neighbors = (Set<Long>)request.getAttribute(BaseAction.ATTRIBUTE_NEIGHBORS);
+    Set<String> neighborRecordIDs = (Set<String>)request.getAttribute(BaseAction.ATTRIBUTE_NEIGHBORS);
 
     // set content type
     res.setContentType("text/plain");
 
     // write out the content
-    for(Long neighbor : neighbors) {
-	    out.println(neighbor);
+    for(String neighborRecordID : neighborRecordIDs) {
+	    out.println(neighborRecordID);
     }
 %>
