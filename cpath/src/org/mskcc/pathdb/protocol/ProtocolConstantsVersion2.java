@@ -24,6 +24,11 @@ public class ProtocolConstantsVersion2 {
     public static final String COMMAND_GET_PATHWAY_LIST = "get_pathway_list";
 
     /**
+     * ID_LIST Format / Output.
+     */
+    public static final String FORMAT_ID_LIST = "id_list";
+
+    /**
      * Protocol Version:  2.0
      */
     public static final String VERSION_2 = "2.0";
