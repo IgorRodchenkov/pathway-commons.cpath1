@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.7 2007-06-11 19:00:59 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.8 2007-06-12 12:12:51 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,11 +87,11 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 		String command = request.getParameter("command");
 		if (command == null) return;
 
-		// get neighborhood title
+		// get neighborhood title - already encoded
 		String networkViewTitle = request.getParameter("network_view_title");
 		networkViewTitle = (networkViewTitle == null) ? "" : networkViewTitle;
 
-		// data sources - should never be null
+		// data sources - already encoded
 		String dataSources = request.getParameter("data_source");
 		dataSources = (dataSources == null) ? "" : dataSources;
 

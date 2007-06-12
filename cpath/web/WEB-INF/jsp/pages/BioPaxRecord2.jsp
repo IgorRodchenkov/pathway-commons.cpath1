@@ -59,19 +59,19 @@ urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from
 urlForCytoscapeLink = urlForCytoscapeLink.replace("record2.do", "webservice.do");
 
 // data source parameter string  to network neighborhood map
-String dataSourceParameter = "";
+String encodedDataSourceParameter = "";
 GlobalFilterSettings filterSettings =
 	(GlobalFilterSettings)request.getSession().getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
 DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
 if (filterSettings != null) {
 	for (Long snapshotID : (Set<Long>)filterSettings.getSnapshotIdSet()) {
 		 ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
-		 dataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
+		 encodedDataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
 	}
 	// snip off last ','
-	dataSourceParameter = dataSourceParameter.replaceAll(",$", "");
+	encodedDataSourceParameter = encodedDataSourceParameter.replaceAll(",$", "");
 	// encode
-	dataSourceParameter = URLEncoder.encode(dataSourceParameter, "UTF-8");
+	encodedDataSourceParameter = URLEncoder.encode(encodedDataSourceParameter, "UTF-8");
 }
 
 %>
@@ -493,9 +493,9 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
 						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + "\"" +
-						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + dataSourceParameter +
+						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 						" id=\"" + id +"\"" +
-						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + dataSourceParameter + "'); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
 						">View this pathway in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");
@@ -508,10 +508,10 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + 
-						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + dataSourceParameter +
+						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 						"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + encodedNeighborhoodTitle + "\"" +
 						" id=\"" + id +"\"" +
-						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + dataSourceParameter + "'); return false;\"" +
+						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
 						">View network neighborhood map in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
 		    out.println("</li></ul>");

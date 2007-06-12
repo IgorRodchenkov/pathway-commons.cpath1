@@ -1,4 +1,4 @@
-// $Id: webstart.js,v 1.7 2007-06-11 19:01:11 grossben Exp $
+// $Id: webstart.js,v 1.8 2007-06-12 12:13:15 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,8 +39,8 @@ var SCRIPT_ELEMENT_ID = "cytoscape";
 var timoutVar; // used to set/unset timeout handlers
 var requestedID; // used to store record id link pressed
 var requestedCommand; // used to store web services command of link pressed
-var requestedNetworkViewTitle; // used to store web services title of link pressed
-var requestedDataSources; // used to store web services data source filter
+var requestedNetworkViewTitle; // used to store web services title of link pressed - encoded from pc
+var requestedDataSources; // used to store web services data source filter - encoded from pc
 //var toolTip = "'<DIV CLASS=popup><DIV CLASS=popup_caption>Cytoscape</DIV><DIV CLASS=popup_text>To view this record in Cytoscape, click on this link.  If Cytoscape is already running, the network will be loaded into Cytoscape straightaway.  If Cytoscape is not running, Pathway Commons will attempt to load Cytoscape via Java Webstart.  Click on the 'help' link for more information.</DIV>";
 
 /*

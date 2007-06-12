@@ -57,19 +57,19 @@
     String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
     urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
     // data source parameter string  to network neighborhood map
-    String dataSourceParameter = "";
+    String encodedDataSourceParameter = "";
     GlobalFilterSettings filterSettings =
 	    (GlobalFilterSettings)request.getSession().getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
     DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
     if (filterSettings != null) {
 	    for (Long snapshotID : (Set<Long>)filterSettings.getSnapshotIdSet()) {
 		    ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
-		    dataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
+		    encodedDataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
 	    }
 	    // snip off last ','
-	    dataSourceParameter = dataSourceParameter.replaceAll(",$", "");
+	    encodedDataSourceParameter = encodedDataSourceParameter.replaceAll(",$", "");
 		// encode
-		dataSourceParameter = URLEncoder.encode(dataSourceParameter, "UTF-8");
+		encodedDataSourceParameter = URLEncoder.encode(encodedDataSourceParameter, "UTF-8");
     }
 %>
 <script type="text/javascript">
@@ -304,11 +304,11 @@ else {
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
 								"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + "\"" +
-								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + dataSourceParameter +
+								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
 								//" onmouseout=\"return nd();\"" +
-								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + dataSourceParameter + "'); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
 								">View this pathway in Cytoscape</a>");
 				}
 				else {
@@ -319,10 +319,10 @@ else {
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 								"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + 
-								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + dataSourceParameter +
+								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 								"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + encodedNeighborhoodTitle + "\"" +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
-								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + dataSourceParameter + "'); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
 								">View network neighborhood map in Cytoscape</a>");
 				}
 				out.println("<a href=\"cytoscape.do\">(help)</a>");
