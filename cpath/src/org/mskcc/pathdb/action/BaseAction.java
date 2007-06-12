@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.35 2007-05-18 18:49:23 grossben Exp $
+// $Id: BaseAction.java,v 1.36 2007-06-12 19:21:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,10 +40,12 @@ import org.mskcc.pathdb.xdebug.SnoopHttp;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -257,6 +259,14 @@ public abstract class BaseAction extends Action {
         XDebug xdebug = null;
         try {
             xdebug = new XDebug();
+
+            //  Include the Skin init.jsp now
+            String skin = CPathUIConfig.getWebSkin();
+            String initUrl = "/WEB-INF/jsp/skins/" + skin + "/init.jsp";
+            RequestDispatcher rd = request.getRequestDispatcher(initUrl);
+            xdebug.logMsg(this, "Initializing skin:  " + initUrl);
+            rd.include(request, response);
+
             xdebug.startTimer();
             xdebug.logMsg(this, "Request:  " + request.getRequestURI());
             log.info("Request:  " + request.getRequestURI());
