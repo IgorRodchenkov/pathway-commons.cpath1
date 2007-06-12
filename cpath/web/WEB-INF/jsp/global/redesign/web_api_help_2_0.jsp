@@ -49,8 +49,10 @@ Output of this command is a tab-delimited text file with four columns of data:
 <li>Database:ID:  External database identifier.  For example, <%= ExternalDatabaseConstants.UNIPROT %>:O14763.</li>
 <li>Pathway_Name:  Pathway name.</li>
 <li>Pathway_Database_Name:  Pathway database name.  For example, <%=ExternalDatabaseConstants.REACTOME %>.</li>
-<li>Internal_ID:  Internal ID, used to uniquely identify the pathway.  Please note that these internal
-IDs are <b>not</b> stable, and may change after each new release of data.
+<li>Internal_ID:  Internal ID, used to uniquely identify the pathway.  These IDs can be used to
+create links to each pathway.  For example:  <a href="record2.do?id=1">record2.do?id=1</a>.
+However, please note that these internal IDs (and any links created with them) are
+<b>not</b> stable, and may change after each new release of data.
 </li>
 </ul>
 
