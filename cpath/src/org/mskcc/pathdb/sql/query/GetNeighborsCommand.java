@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.4 2007-06-12 16:56:18 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.5 2007-06-12 17:20:56 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -160,8 +160,12 @@ public class GetNeighborsCommand extends Query {
 	 */
 	public Set<String> getNeighbors() throws DaoException, NumberFormatException {
 
+		// to return
+		Set<String> toReturn = new HashSet<String>();
+
 		// get the physical entity id used in query
 		long physicalEntityRecordID = getPhysicalEntityRecordID();
+		if (physicalEntityRecordID == Long.MAX_VALUE) return toReturn;
 
 		// get neighbors - easy!
         NeighborsUtil util = new NeighborsUtil(xdebug);
@@ -171,7 +175,6 @@ public class GetNeighborsCommand extends Query {
 		neighborRecordIDs = filterByDataSource(neighborRecordIDs);
 
 		// cook output ids
-		Set<String> toReturn = null;
 		if (cookOutputIDs) {
 			toReturn = cookOutputIDs(neighborRecordIDs);
 		}
@@ -223,7 +226,7 @@ public class GetNeighborsCommand extends Query {
 	 */
 	private long getPhysicalEntityRecordID() throws NumberFormatException, DaoException {
 
-		long physicalEntityRecordID = -1;
+		long physicalEntityRecordID = Long.MAX_VALUE;
 		if (cookInputID) {
 			//  get all cPath Records that match external ID
 			DaoExternalDb daoExternalDb = new DaoExternalDb();
