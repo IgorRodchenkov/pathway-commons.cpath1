@@ -1,6 +1,10 @@
 package org.mskcc.pathdb.protocol;
 
+import org.mskcc.pathdb.form.WebUIBean;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
+
 import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Validates Client/Browser Request, Version 1.0.
@@ -36,6 +40,7 @@ class ProtocolValidatorVersion2 {
     public void validate() throws ProtocolException, NeedsHelpException {
         validateCommand();
         validateVersion();
+        validateInputIdType();
         validateQuery();
     }
 
@@ -63,7 +68,7 @@ class ProtocolValidatorVersion2 {
         }
         if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
             throw new NeedsHelpException();
-        }        
+        }
     }
 
     /**
@@ -119,8 +124,36 @@ class ProtocolValidatorVersion2 {
         if (!request.getVersion().equals(ProtocolConstantsVersion2.VERSION_2)) {
             throw new ProtocolException
                     (ProtocolStatusCode.VERSION_NOT_SUPPORTED,
-                            "This data service currently only supports "
+                            "The web service API currently only supports "
                                     + "version 2.0." + ProtocolValidator.HELP_MESSAGE);
+        }
+    }
+
+    private void validateInputIdType() throws ProtocolException {
+        String command = request.getCommand();
+        if (command != null && command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
+            String inputIdType = request.getInputIDType();
+            if (inputIdType == null || inputIdType.trim().length() == 0) {
+                throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
+                    "Argument:  '" + ProtocolRequest.ARG_INPUT_ID_TYPE
+                            + "' is not specified." + ProtocolValidator.HELP_MESSAGE);
+            } else {
+                WebUIBean webBean = CPathUIConfig.getWebUIBean();
+                ArrayList supportedIdList = webBean.getSupportedInputIdTypes();
+                if (!supportedIdList.contains(inputIdType)) {
+                    StringBuffer buf = new StringBuffer();
+                    for (int i=0; i<supportedIdList.size(); i++) {
+                        buf.append(supportedIdList.get(i));
+                        if (i < supportedIdList.size() -1) {
+                            buf.append(", ");
+                        }
+                    }
+                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                            ProtocolRequest.ARG_INPUT_ID_TYPE
+                            + " must be set to one of the following: "
+                            + buf.toString() + ".");
+                }
+            }
         }
     }
 }
