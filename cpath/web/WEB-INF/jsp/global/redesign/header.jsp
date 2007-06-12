@@ -6,11 +6,8 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
 <%
-    String initFile = "../" + CPathUIConfig.getPath("init.jsp");
     String headerFile = "../" + CPathUIConfig.getPath("header.jsp");
 %>
-
-<jsp:include page="<%=initFile%>" flush="true"/>
 
 <%
     // get WebUIBean
