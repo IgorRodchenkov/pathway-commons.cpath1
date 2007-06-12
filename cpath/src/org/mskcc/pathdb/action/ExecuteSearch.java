@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.24 2007-06-06 20:20:33 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.25 2007-06-12 16:55:34 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -501,7 +501,7 @@ public class ExecuteSearch extends BaseAction {
 	 * @param request HttpServletRequest
 	 * @param xdebug XDebug
 	 * @return ActionForward
-	 * @throws ProtocolException
+	 * @throws ProtocolException,
 	 */
 	private ActionForward getNeighborsHandler(ActionMapping mapping,
 											  ProtocolRequest protocolRequest,
@@ -509,12 +509,8 @@ public class ExecuteSearch extends BaseAction {
 											  XDebug xdebug) throws ProtocolException {
 		try {
 			GetNeighborsCommand cmd = new GetNeighborsCommand(protocolRequest, xdebug);
-			long[] neighbors = cmd.getNeighbors();
-			Set<Long> neighborsSet = new HashSet<Long>();
-			for (long neighbor : neighbors) {
-				neighborsSet.add(neighbor);
-			}
-			request.setAttribute(ATTRIBUTE_NEIGHBORS, neighborsSet);
+			Set<String> neighbors = cmd.getNeighbors();
+			request.setAttribute(ATTRIBUTE_NEIGHBORS, neighbors);
 			return mapping.findForward(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS);
 		}
 		catch (DaoException e) {
