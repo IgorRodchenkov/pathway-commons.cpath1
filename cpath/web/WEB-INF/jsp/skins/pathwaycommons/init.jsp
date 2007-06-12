@@ -19,7 +19,7 @@
     webUIBean.setSmtpHost("cbio.mskcc.org");
     webUIBean.setFeedbackEmailTo("pc-info@pathwaycommons.org");
     webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);
-    webUIBean.addSupportedInputIdType(ExternalDatabaseConstants.UNIPROT);
-    webUIBean.addSupportedInputIdType(ExternalDatabaseConstants.INTERNAL_DATABASE);
+    webUIBean.addSupportedIdType(ExternalDatabaseConstants.UNIPROT);
+    webUIBean.addSupportedIdType(ExternalDatabaseConstants.INTERNAL_DATABASE);
     CPathUIConfig.setWebUIBean(webUIBean);
 %>
