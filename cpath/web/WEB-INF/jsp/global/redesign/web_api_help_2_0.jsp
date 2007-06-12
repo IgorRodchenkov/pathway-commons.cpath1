@@ -25,13 +25,16 @@ Output of this command is a tab-delimited text file.
 <ul>
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></li>
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
-<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= external identifier, used to identify the physical entity of interest.
-For example, O14763.</li>
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a white-space separated list of external identifiers,
+used to identify the physical entities of interest. For example, the following query
+is used to look-up two distinct proteins: O14763 P55957.  To prevent over-loading of
+the system, clients are currently restricted to a maxium of <%= ProtocolConstantsVersion2.MAX_NUM_IDS %>
+IDs.</li>
 <li>[Required] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= external database name.  For example:
 <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_input_id_type>valid values for
 <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.</li>
-<li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a comma separated list of pathway data sources that you want
-to search.  For example, the following restricts your results to Reactome pathways only.
+<li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a white-space separated list of pathway data sources that you want
+to search.  For example, the following restricts your results to Reactome pathways only:
 <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>.
 See the <a href=#valid_data_source>valid values for <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter</a> below.
 If not specified, all pathway data sources will be searched.</li>
@@ -50,13 +53,13 @@ IDs are <b>not</b> stable, and may change after each new release of data.
 </li>
 </ul>
 
-<h2>Error Messages:</h2>
+<h2>Detecting matches:</h2>
 
 <ul>
-<li>If we are unable to find a match for the specified external identifier, the second column
+<li>If we are unable to find a match for a specified external identifier, the second column
 of the tab-delimited text file will contain the keyword:
 <%= PathwayBatchQuery.ERROR_MSG_NO_MATCH_TO_PHYSICAL_ENTITY%>.</li>
-<li>On the other hand, if we are able to find a match for the specified external
+<li>On the other hand, if we are able to find a match for a specified external
 identifier, but this physical entity is not involved in any known pathways
 (or in any of the specific pathway databases you have requested), the second
 column of the tab-delimited text file will contain the keyword:
