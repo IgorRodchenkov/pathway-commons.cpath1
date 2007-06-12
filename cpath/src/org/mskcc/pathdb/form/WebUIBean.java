@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.17 2007-06-06 20:20:16 cerami Exp $
+// $Id: WebUIBean.java,v 1.18 2007-06-12 19:32:53 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -101,9 +101,9 @@ public class WebUIBean extends ActionForm {
     private String webApiVersion = ProtocolConstantsVersion2.VERSION_2;
 
     /**
-     * List of Supported Input ID Types.
+     * List of Supported ID Types.
      */
-    private ArrayList<String> supportedInputIdTypes = new ArrayList();
+    private ArrayList<String> supportedIdTypes = new ArrayList();
 
     /**
      * Sets the Application Name.
@@ -317,18 +317,18 @@ public class WebUIBean extends ActionForm {
     }
 
     /**
-     * Add to list of supported input ID types.
-     * @param inputIdType Must correspond to a Master CV Term.
+     * Add to list of supported ID types.
+     * @param idType Must correspond to a Master CV Term.
      */
-    public void addSupportedInputIdType(String inputIdType) {
-        supportedInputIdTypes.add(inputIdType);
+    public void addSupportedIdType(String idType) {
+        supportedIdTypes.add(idType);
     }
 
     /**
-     * A list of supported input ID types.
-     * @return ArrayLit of supported input ID types.
+     * A list of supported ID types.
+     * @return ArrayLit of supported ID types.
      */
-    public ArrayList <String> getSupportedInputIdTypes() {
-        return supportedInputIdTypes;
+    public ArrayList <String> getSupportedIdTypes() {
+        return supportedIdTypes;
     }
 }
