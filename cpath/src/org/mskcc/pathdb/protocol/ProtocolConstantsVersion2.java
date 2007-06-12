@@ -29,6 +29,11 @@ public class ProtocolConstantsVersion2 {
     public static final String VERSION_2 = "2.0";
 
     /**
+     * Max Number of Input IDs that can be specified.
+     */
+    public static final int MAX_NUM_IDS = 25;
+
+    /**
      * Gets HashSet of Valid Commands.
      *
      * @return HashMap of Valid Commands.

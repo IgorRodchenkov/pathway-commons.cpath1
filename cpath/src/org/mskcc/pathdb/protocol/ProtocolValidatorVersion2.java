@@ -8,7 +8,7 @@ import java.util.HashSet;
  * @author cPath Dev Team.
  */
 class ProtocolValidatorVersion2 {
-    /**
+   /**
      * Protocol Request.
      */
     private ProtocolRequest request;
@@ -86,6 +86,16 @@ class ProtocolValidatorVersion2 {
         }
         if (!qExists) {
             errorFlag = true;
+        }
+        if (command != null && command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
+            if (q != null) {
+                String ids[] = q.split("[\\s]");
+                if (ids.length > ProtocolConstantsVersion2.MAX_NUM_IDS) {
+                throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                        "To prevent overloading of the system, clients are "
+                                + "restricted to a maximum of "
+                                + ProtocolConstantsVersion2.MAX_NUM_IDS + " IDs at a time.");                }
+            }
         }
         if (errorFlag) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
