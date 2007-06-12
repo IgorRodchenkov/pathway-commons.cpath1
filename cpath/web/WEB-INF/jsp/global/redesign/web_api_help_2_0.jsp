@@ -29,7 +29,7 @@ Output of this command is a tab-delimited text file.
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a white-space separated list of external identifiers,
 used to identify the physical entities of interest. For example, the following query
 is used to look-up two distinct proteins: O14763 P55957.  To prevent over-loading of
-the system, clients are currently restricted to a maxium of <%= ProtocolConstantsVersion2.MAX_NUM_IDS %>
+the system, clients are currently restricted to a maximum of <%= ProtocolConstantsVersion2.MAX_NUM_IDS %>
 IDs.</li>
 <li>[Required] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= external database name.  For example:
 <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_input_id_type>valid values for
