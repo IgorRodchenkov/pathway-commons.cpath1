@@ -38,7 +38,6 @@ URL parameters.  Parameters are as follows:
                     formatted in the
                     <a href="http://psidev.sourceforge.net/">Proteomics
                     Standards Initiative Molecular Interaction (PSI-MI)</a>
-                    Standards Initiative Molecular Interaction (PSI-MI)</a>
                     XML format.
                     </li>
                     <li><%= ProtocolConstantsVersion1.FORMAT_HTML %>:  Data will be
@@ -97,7 +96,7 @@ URL parameters.  Parameters are as follows:
             </tr>
             <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
             <tr>
-                <td><%= ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD  %></td>
+                <td><%= ProtocolConstants.COMMAND_GET_BY_KEYWORD  %></td>
                 <td>Finds all interactions that contain
                 the specified keyword(s) and / or boolean search phrases.
                 </td>
@@ -157,14 +156,14 @@ URL parameters.  Parameters are as follows:
                 </td>
             </tr>
             <tr>
-                <td><%= ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID %></td>
+                <td><%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></td>
                 <td>Retrieves the complete contents of the specified record.
                 The response is a BioPAX XML document.</td>
             </tr>
             <% } %>
             </table>
 
-<h1>Error Codes</h1>
+<h1>Error Codes:</h1>
 <p>
 If an error occurs while processing your request, you will
 receive an XML document with detailed information about the cause of
@@ -211,7 +210,7 @@ The table below provides a list of error codes, with their
 <h1>Examples of Usage</h1>
 
         <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
-            pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
+            pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             pRequest.setQuery("DNA");
             pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_PSI_MI);  %>
 		<p>The following example searches for the keyword "DNA".
@@ -246,7 +245,7 @@ The table below provides a list of error codes, with their
 <p>The following requests the full BioPAX record for local ID 1:
 </p>
         <%
-            pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_RECORD_BY_CPATH_ID);
+            pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery("1");
         %>
         <ul>

@@ -7,20 +7,21 @@
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.query.batch.PathwayBatchQuery"%>
-<h1>Introduction to Web Service API:</h1>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolStatusCode"%>
+<h1>Web Service API:</h1>
 <p>
 If you wish to programmatically access pathway data, you can do so via the Web Service API.
 This page provides a quick reference guide to help you get started.
 </p>
 
-<h1>Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h1>
+<h2>Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h2>
 
-<h2>Summary:</h2>
+<h3>Summary:</h3>
 
 Retrieves all pathways involving a specified physical entity (e.g. gene, protein or small molecule).
 Output of this command is a tab-delimited text file.
 
-<h2>Parameters:</h2>
+<h3>Parameters:</h3>
 
 <ul>
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></li>
@@ -40,7 +41,7 @@ See the <a href=#valid_data_source>valid values for <%= ProtocolRequest.ARG_DATA
 If not specified, all pathway data sources will be searched.</li>
 </ul>
 
-<h2>Output:</h2>
+<h3>Output:</h3>
 
 Output of this command is a tab-delimited text file with four columns of data:
 
@@ -53,7 +54,7 @@ IDs are <b>not</b> stable, and may change after each new release of data.
 </li>
 </ul>
 
-<h2>Detecting matches:</h2>
+<h3>Detecting matches:</h3>
 
 <ul>
 <li>If we are unable to find a match for a specified external identifier, the second column
@@ -67,7 +68,7 @@ column of the tab-delimited text file will contain the keyword:
 </li>
 </ul>
 
-<h2>Example Query:</h2>
+<h3>Example Query:</h3>
 
 Below is an example query.  Note that this query is not guaranteed to return results.
 
@@ -75,9 +76,9 @@ Below is an example query.  Note that this query is not guaranteed to return res
 webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT %>
 </a>
 
-<h1>Additional Parameter Details:</h1>
+<h2>Additional Parameter Details:</h2>
 
-<h2><a name='valid_input_id_type'></a>Valid values for the <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter:</h2>
+<h3><a name='valid_input_id_type'></a>Valid values for the <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter:</h3>
 <ul>
 <%
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
@@ -92,7 +93,7 @@ webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= Extern
 %>
 </ul>
 
-<h2><a name='valid_data_source'></a>Valid values for the <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter:</h2>
+<h3><a name='valid_data_source'></a>Valid values for the <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter:</h3>
 <ul>
 <%
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
@@ -105,4 +106,48 @@ webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= Extern
     }
 %>
 </ul>
+
+<h2>Error Codes:</h2>
+<p>
+If an error occurs while processing your request, you will
+receive an XML document with detailed information about the cause of
+the error.  Error documents have the following format:
+</p>
+<pre>
+&lt;error&gt;
+    &lt;error_code&gt;[ERROR_CODE]&lt;/error_code&gt;
+    &lt;error_msg&gt;[ERROR_DESCRIPTION]&lt;/error_msg&gt;
+    &lt;error_details&gt;[ADDITIONAL_ERROR _DETAILS]&lt;/error_details&gt;
+&lt;/error&gt;
+</pre>
+<p>
+The table below provides a list of error codes, with their
+        descriptions.
+</p>
+<div>
+    <table>
+            <tr>
+                <th>Error Code</th>
+                <th>Error Description</th>
+            </tr>
+            <%
+                ArrayList statusCodes = ProtocolStatusCode.getAllStatusCodes();
+            %>
+            <%
+                for (int i=0; i<statusCodes.size(); i++) {
+                    ProtocolStatusCode code =
+                            (ProtocolStatusCode) statusCodes.get(i);
+                    int errorCode = code.getErrorCode();
+                    String errorMsg = code.getErrorMsg();
+                    if (errorCode == 450 || errorCode == 452 || errorCode == 453
+                        || errorCode == 470 || errorCode == 500) {
+                    %>
+                    <tr>
+                        <td><%= errorCode %></td>
+                        <td><%= errorMsg %></td>
+                    </tr>
+                    <% } %>
+            <% } %>
+        </table>
+</div>
 
