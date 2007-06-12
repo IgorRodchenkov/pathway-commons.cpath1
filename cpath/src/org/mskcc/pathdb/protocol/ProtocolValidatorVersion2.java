@@ -155,7 +155,7 @@ class ProtocolValidatorVersion2 {
 				request.getInputIDType() : request.getOutputIDType();
 			if (type != null) {
 				WebUIBean webBean = CPathUIConfig.getWebUIBean();
-				ArrayList supportedIdList = webBean.getSupportedInputIdTypes();
+				ArrayList supportedIdList = webBean.getSupportedIdTypes();
 				if (!supportedIdList.contains(type)) {
 					StringBuffer buf = new StringBuffer();
 					for (int i = 0; i < supportedIdList.size(); i++) {

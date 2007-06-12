@@ -84,7 +84,7 @@ webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= Extern
 <ul>
 <%
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-    ArrayList <String> supportedIdTypes = webUIBean.getSupportedInputIdTypes();
+    ArrayList <String> supportedIdTypes = webUIBean.getSupportedIdTypes();
     if (supportedIdTypes != null && supportedIdTypes.size() > 0) {
         for (int i=0; i<supportedIdTypes.size(); i++) {
             out.println("<LI>" + supportedIdTypes.get(i) + "</LI>");
