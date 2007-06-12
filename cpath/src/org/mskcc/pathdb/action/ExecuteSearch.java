@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.25 2007-06-12 16:55:34 grossben Exp $
+// $Id: ExecuteSearch.java,v 1.26 2007-06-12 17:01:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -119,19 +119,27 @@ public class ExecuteSearch extends BaseAction {
         WebUIBean webUiBean = CPathUIConfig.getWebUIBean();
         // valid query
 		ProtocolValidator validator = new ProtocolValidator(protocolRequest);
-        validator.validate(webUiBean.getWebApiVersion());
 		// short circuit if necessary
 		if (isSpecialCaseCommand(protocolRequest)) {
-			return specialCaseCommandHandler(mapping, protocolRequest, request, response,
-                    xdebug);
-		}
-        if (protocolRequest.getFormat() == null
-                || protocolRequest.getFormat()
-                .equals(ProtocolConstantsVersion1.FORMAT_HTML)) {
-            return processHtmlRequest(mapping, protocolRequest,
-                    request, xdebug);
+            try {
+                validator.validate(webUiBean.getWebApiVersion());
+                return specialCaseCommandHandler(mapping, protocolRequest, request, response,
+                        xdebug);
+            } catch (ProtocolException e) {
+                String xml = e.toXml();
+                returnXml(response, xml);
+                return null;
+            }
         } else {
-            return processXmlRequest(protocolRequest, response, xdebug);
+            validator.validate(webUiBean.getWebApiVersion());
+            if (protocolRequest.getFormat() == null
+                    || protocolRequest.getFormat()
+                    .equals(ProtocolConstantsVersion1.FORMAT_HTML)) {
+                return processHtmlRequest(mapping, protocolRequest,
+                        request, xdebug);
+            } else {
+                return processXmlRequest(protocolRequest, response, xdebug);
+            }
         }
     }
 
@@ -169,7 +177,7 @@ public class ExecuteSearch extends BaseAction {
             xml = e.toXml();
             returnXml(response, xml);
         }
-        
+
         //  Return null here, because we do not want Struts to do any
         //  forwarding.
         Date stop = new Date();
@@ -434,7 +442,7 @@ public class ExecuteSearch extends BaseAction {
     }
 
 	/**
-	 * Routine which checks if web service command needs special case 
+	 * Routine which checks if web service command needs special case
 	 * handling.  This routine was motivated by additions to the
 	 * pathway commons api which do not conform to the current
 	 * execution path of processQuery, like get_neighbors & getPathwayList.
