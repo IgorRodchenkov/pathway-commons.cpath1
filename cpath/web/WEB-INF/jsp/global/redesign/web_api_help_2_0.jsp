@@ -1,3 +1,4 @@
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion2"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.util.ExternalDatabaseConstants"%>
@@ -8,6 +9,14 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.query.batch.PathwayBatchQuery"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolStatusCode"%>
+<%@ page import="org.mskcc.pathdb.sql.query.GetNeighborsCommand"%>
+<%
+	// setup some globals
+    WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+    ArrayList <String> supportedIdTypes = webUIBean.getSupportedIdTypes();
+    DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+    ArrayList snapshotList = dao.getAllDatabaseSnapshots();
+%>
 <h1>Web Service API:</h1>
 <p>
 If you wish to programmatically access pathway data, you can do so via the Web Service API.
@@ -31,9 +40,9 @@ used to identify the physical entities of interest. For example, the following q
 is used to look-up two distinct proteins: O14763 P55957.  To prevent over-loading of
 the system, clients are currently restricted to a maximum of <%= ProtocolConstantsVersion2.MAX_NUM_IDS %>
 IDs.</li>
-<li>[Required] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= external database name.  For example:
+<li>[Optional] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= external database name.  For example:
 <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_input_id_type>valid values for
-<%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.</li>
+<%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.  By default, INTERNAL_ID is assumed.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a white-space separated list of pathway data sources that you want
 to search.  For example, the following restricts your results to Reactome pathways only:
 <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>.
@@ -83,8 +92,6 @@ webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= Extern
 <h3><a name='valid_input_id_type'></a>Valid values for the <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter:</h3>
 <ul>
 <%
-    WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-    ArrayList <String> supportedIdTypes = webUIBean.getSupportedIdTypes();
     if (supportedIdTypes != null && supportedIdTypes.size() > 0) {
         for (int i=0; i<supportedIdTypes.size(); i++) {
             out.println("<LI>" + supportedIdTypes.get(i) + "</LI>");
@@ -98,11 +105,78 @@ webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= Extern
 <h3><a name='valid_data_source'></a>Valid values for the <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter:</h3>
 <ul>
 <%
-    DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-    ArrayList list = dao.getAllDatabaseSnapshots();
-    for (int i=0; i<list.size(); i++) {
+
+    for (int i=0; i < snapshotList.size(); i++) {
         ExternalDatabaseSnapshotRecord snapshotRecord = (ExternalDatabaseSnapshotRecord)
-                list.get(i);
+                snapshotList.get(i);
+        String masterTerm = snapshotRecord.getExternalDatabase().getMasterTerm();
+        out.println("<li>" + masterTerm + "</li>");
+    }
+%>
+</ul>
+
+<h2>Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></h2>
+
+<h3>Summary:</h3>
+
+Retrieves the nearest neighbors of a given physical entity (e.g. gene, protein or small molecule).
+
+<h3><a name='get_neighbors_parameters'></a>Parameters:</h3>
+
+<ul>
+<li>[Required] <%= ProtocolRequest.ARG_COMMAND%> = <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></li>
+<li>[Required] <%= ProtocolRequest.ARG_VERSION%> = <%= ProtocolConstantsVersion2.VERSION_2 %></li>
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%> = an external identifiers, used to identify the physical entity of interest. For example, the following query is used to look-up one distinct protein: O14763.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_INPUT_ID_TYPE%> = database name.  For example: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_input_id_type>valid values for <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below. By default, INTERNAL_ID is assumed.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> (default) or <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX representation of the neighborhood.  When set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>, the client will receive a simple text file that lists all the physical entities in the neighborhood.
+<li>[Optional] <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> = database name.  For example: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below. By default, INTERNAL_ID is assumed.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a white-space separated list of pathway data sources that you want to search.  For example, the following restricts your results to Reactome pathways only: <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>. See the <a href=#valid_data_source>valid values for <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter</a> below. If not specified, all pathway data sources will be searched.</li>
+</ul>
+
+<h3>Output:</h3>
+
+A complete BioPAX representation of the network neighborhood for the given physical entity (default) or a simple text file that lists all the physical entities in the neighborhood.  The output can specified by setting the <%= ProtocolRequest.ARG_OUTPUT%> parameter.  See the <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %> command <a href=#get_neighbors_parameters> parameter list for more information</a>.
+
+<h3>Example Query:</h3>
+
+Below is an example query.  Note that this query is not guaranteed to return results.
+
+<a href="webservice.do?version=2.0&cmd=get_neighbors&format=biopax&q=9854">webservice.do?version=2.0&cmd=get_neighbors&format=biopax&q=9854</a>
+
+<h2>Additional Parameter Details:</h2>
+
+<h3><a name='valid_input_id_type'></a>Valid values for the <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter:</h3>
+<ul>
+<%
+    if (supportedIdTypes != null && supportedIdTypes.size() > 0) {
+        for (int i=0; i<supportedIdTypes.size(); i++) {
+            out.println("<LI>" + supportedIdTypes.get(i) + "</LI>");
+        }
+    } else {
+        out.println("<LI>None specified.</LI>");
+    }
+%>
+</ul>
+
+<h3><a name='valid_output_id_type'></a>Valid values for the <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE %> parameter:</h3>
+<ul>
+<%
+    if (supportedIdTypes != null && supportedIdTypes.size() > 0) {
+        for (int i=0; i<supportedIdTypes.size(); i++) {
+            out.println("<LI>" + supportedIdTypes.get(i) + "</LI>");
+        }
+    } else {
+        out.println("<LI>None specified.</LI>");
+    }
+%>
+</ul>
+
+<h3>Valid values for the <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter:</h3>
+<ul>
+<%
+    for (int i=0; i < snapshotList.size(); i++) {
+        ExternalDatabaseSnapshotRecord snapshotRecord = (ExternalDatabaseSnapshotRecord)
+                snapshotList.get(i);
         String masterTerm = snapshotRecord.getExternalDatabase().getMasterTerm();
         out.println("<li>" + masterTerm + "</li>");
     }
