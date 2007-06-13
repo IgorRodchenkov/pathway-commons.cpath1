@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.7 2007-06-13 13:12:19 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.8 2007-06-13 15:21:44 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,16 +62,6 @@ import javax.servlet.http.HttpSession;
  * @author Benjamin Gross
  */
 public class GetNeighborsCommand extends Query {
-
-	/**
-	 * ref to phyical entity not found
-	 */
-	public static String PHYSICAL_ENTITY_NOT_FOUND = "NO_MATCH_FOUND_TO_PHYSICAL_ENTITY";
-
-	/**
-	 * ref to no neighborhood data
-	 */
-	public static String NO_NEIGHBORHOOD_DATA = "NO_NEIGHBORHOOD_DATA";
 
 	/**
 	 * ref to XDebug
@@ -150,11 +140,6 @@ public class GetNeighborsCommand extends Query {
 		int lc = -1;
 		long[] neighborsLong = new long[neighborRecordIDs.size()];
 		for (String neighborRecordID : neighborRecordIDs) {
-			if (neighborRecordID.equals(PHYSICAL_ENTITY_NOT_FOUND) ||
-				neighborRecordID.equals(NO_NEIGHBORHOOD_DATA)) {
-				neighborsLong = new long[0];
-				break;
-			}
 			neighborsLong[++lc] = Long.parseLong(neighborRecordID);
 		}
 
@@ -178,20 +163,8 @@ public class GetNeighborsCommand extends Query {
 		// to return
 		Set<String> toReturn = new HashSet<String>();
 
-		// get the physical entity id used in query & check for its existence
+		// get the physical entity id used in query
 		long physicalEntityRecordID = getPhysicalEntityRecordID();
-		if (physicalEntityRecordID == Long.MAX_VALUE) {
-			toReturn.add(PHYSICAL_ENTITY_NOT_FOUND);
-			return toReturn;
-		}
-		else {
-			DaoCPath daoCPath = DaoCPath.getInstance();
-			CPathRecord record = daoCPath.getRecordById(physicalEntityRecordID);
-			if (record == null) {
-				toReturn.add(NO_NEIGHBORHOOD_DATA);
-				return toReturn;
-			}
-		}
 
 		// get neighbors - easy!
         NeighborsUtil util = new NeighborsUtil(xdebug);
