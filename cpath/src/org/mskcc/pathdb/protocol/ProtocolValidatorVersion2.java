@@ -1,10 +1,16 @@
 package org.mskcc.pathdb.protocol;
 
 import org.mskcc.pathdb.form.WebUIBean;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -228,20 +234,66 @@ class ProtocolValidatorVersion2 {
     }
 
     private void validateMisc() throws ProtocolException {
+
         String command = request.getCommand();
 
 		// get neighbors misc args
         if (command != null &&
 			command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
-			// validate fully connected
-			String fullyConnected = request.getFullyConnected();
-			if (fullyConnected != null &&
-				(!fullyConnected.equalsIgnoreCase("yes") ||
-				 !fullyConnected.equalsIgnoreCase("no"))) {
-				throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-											ProtocolRequest.ARG_FULLY_CONNECTED +
-											" must be set to one of the following: yes no.");
+			validateMiscGetNeighborArgs();
+		}
+	}
+
+	private void validateMiscGetNeighborArgs() throws ProtocolException {
+
+		// validate fully connected
+		String fullyConnected = request.getFullyConnected();
+		if (fullyConnected != null &&
+			(!fullyConnected.equalsIgnoreCase("yes") ||
+			 !fullyConnected.equalsIgnoreCase("no"))) {
+			throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+										ProtocolRequest.ARG_FULLY_CONNECTED +
+										" must be set to one of the following: yes no.");
+		}
+
+		// validate query
+		String inputIDTerm = request.getInputIDType();
+		String query = request.getQuery();
+		try {
+			if (inputIDTerm == null ||
+				inputIDTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
+				long recordID = Long.parseLong(query);
+				DaoCPath daoCPath = DaoCPath.getInstance();
+				CPathRecord record = daoCPath.getRecordById(recordID);
+				if (record == null) {
+					throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
+												ProtocolRequest.ARG_QUERY + 
+												" an internal record with id: " +
+												query + " cannot be found.");
+				}
 			}
+			else if (inputIDTerm != null &&
+					 !inputIDTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
+				DaoExternalDb daoExternalDb = new DaoExternalDb();
+				DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
+				ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByTerm(inputIDTerm);
+				ArrayList externalLinkRecords =
+					daoExternalLinker.getRecordByDbAndLinkedToId(dbRecord.getId(),
+																 query);
+				if (externalLinkRecords == null || externalLinkRecords.size() == 0) {
+					throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
+												ProtocolRequest.ARG_QUERY + ": " +
+												" an internal record with the " + inputIDTerm +
+												" external database id: " + query +
+												" cannot be found.");
+				}
+			}
+		}
+		catch (DaoException e) {
+			throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+		}
+		catch (NumberFormatException e) {
+			throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
 		}
 	}
 }
