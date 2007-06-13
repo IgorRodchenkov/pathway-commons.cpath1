@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.6 2007-06-13 12:22:57 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.7 2007-06-13 13:12:19 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -150,6 +150,11 @@ public class GetNeighborsCommand extends Query {
 		int lc = -1;
 		long[] neighborsLong = new long[neighborRecordIDs.size()];
 		for (String neighborRecordID : neighborRecordIDs) {
+			if (neighborRecordID.equals(PHYSICAL_ENTITY_NOT_FOUND) ||
+				neighborRecordID.equals(NO_NEIGHBORHOOD_DATA)) {
+				neighborsLong = new long[0];
+				break;
+			}
 			neighborsLong[++lc] = Long.parseLong(neighborRecordID);
 		}
 
