@@ -194,8 +194,9 @@ class ProtocolValidatorVersion2 {
     private void validateDataSources () throws ProtocolException {
         String command = request.getCommand();
         try {
-            if (command != null && command.equals
-                    (ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
+        if (command != null &&
+			(command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST) ||
+			 command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS))) {
                 String dataSources[] = request.getDataSources();
                 if (dataSources != null) {
                     ArrayList masterTermList = getMasterTermList();
