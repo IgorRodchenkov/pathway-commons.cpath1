@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.36 2007-06-12 19:21:25 cerami Exp $
+// $Id: BaseAction.java,v 1.37 2007-06-14 14:30:54 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.mskcc.pathdb.servlet.CPathServletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -265,7 +266,7 @@ public abstract class BaseAction extends Action {
             String initUrl = "/WEB-INF/jsp/skins/" + skin + "/init.jsp";
             RequestDispatcher rd = request.getRequestDispatcher(initUrl);
             xdebug.logMsg(this, "Initializing skin:  " + initUrl);
-            rd.include(request, response);
+			rd.include(request, new CPathServletResponse(response));
 
             xdebug.startTimer();
             xdebug.logMsg(this, "Request:  " + request.getRequestURI());
@@ -299,6 +300,7 @@ public abstract class BaseAction extends Action {
             xdebug.logMsg(this, "Forwarding to Struts:  " + forward.getName());
             xdebug.logMsg(this, "Forwarding to Path:  " + forward.getPath());
         }
+
         return forward;
     }
 
