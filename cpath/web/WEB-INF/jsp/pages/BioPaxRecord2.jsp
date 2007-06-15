@@ -491,7 +491,7 @@ enable Javascript support within your web browser.
 						urlForCytoscapeLink +
 						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
-						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
+						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + "\"" +
 						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 						" id=\"" + id +"\"" +
@@ -506,7 +506,7 @@ enable Javascript support within your web browser.
 						urlForCytoscapeLink +
 						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
-						"&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
+						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + 
 						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 						"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + encodedNeighborhoodTitle + "\"" +
@@ -522,9 +522,10 @@ enable Javascript support within your web browser.
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
             ProtocolRequest pRequest = new ProtocolRequest();
+            pRequest.setVersion(ProtocolConstantsVersion2.VERSION_2);
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
-            pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
+            pRequest.setOutput(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
             out.println("<h3>Download:</h3>");
             out.println("<ul><li><a href=\"" + pRequest.getUri() + "\">"
                 + "Download in BioPAX Format" + "</a></li></ul>");

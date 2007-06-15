@@ -3,13 +3,11 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
 <%
     CPathUIConfig.setShowDataSourceDetails(true);
-
     // Set to CPathUIConfig.WEB_MODE_PSI_MI or
     // CPathUIConfig.WEB_MODE_BIO_PAX.
     CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_PSI_MI);
     WebUIBean webUIBean = new WebUIBean();
     webUIBean.setApplicationName("cPath Demo");
-
     webUIBean.setDisplayBrowseByOrganismTab(true);
     webUIBean.setDisplayBrowseByPathwayTab(false);
     webUIBean.setWantCytoscape(true);

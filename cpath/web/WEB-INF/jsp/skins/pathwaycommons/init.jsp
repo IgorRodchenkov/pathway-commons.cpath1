@@ -3,7 +3,6 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion2"%>
 <%@ page import="org.mskcc.pathdb.util.ExternalDatabaseConstants"%>
 <%
-
     CPathUIConfig.setShowDataSourceDetails(true);
     CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_BIOPAX);
     WebUIBean webUIBean = new WebUIBean();
