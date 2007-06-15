@@ -108,7 +108,7 @@ For example, get all the neighbors of BRCA2.
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%> = <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></li>
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%> = <%= ProtocolConstantsVersion2.VERSION_2 %></li>
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%> = a internal or external identifier, used to identify
-the physical entity of interest. For example, the following query uses a UniProt identifer: O14763.</li>
+the physical entity of interest. For example, the following query uses a UniProt identifier: O14763.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= internal or external database.  For example,
     to use UniProt IDs, set <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>=<%= ExternalDatabaseConstants.UNIPROT %>.
     See the <a href=#valid_input_id_type>valid values for
@@ -119,7 +119,7 @@ the physical entity of interest. For example, the following query uses a UniProt
 <li>[Optional] <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> = internal or external database.
 This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>,
 and is used to specify which external identifiers should be used to identify the physical entities in the
-neighbrohood.  For example, to output UniProt IDs, use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.
+neighborhood.  For example, to output UniProt IDs, use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.
 If not specified, the internal <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li></li>
 <li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a white-space separated list of pathway data
 sources that you want to search.  For example, the following restricts your results to Reactome pathways
@@ -155,7 +155,7 @@ For example, get the complete contents of the Apoptosis pathway from Reactome.
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></li>
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%>= an internal identifier, used to identify the pathway, interaction
-or phsyical entity of interest.</li>
+or physical entity of interest.</li>
 <li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>
 </ul>
 
