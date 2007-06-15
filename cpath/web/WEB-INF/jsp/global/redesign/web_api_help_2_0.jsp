@@ -42,7 +42,8 @@ the system, clients are currently restricted to a maximum of <%= ProtocolConstan
 IDs.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= external database name.  For example:
 <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_input_id_type>valid values for
-<%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.  By default, INTERNAL_ID is assumed.</li>
+<%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.  By default,
+<%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a white-space separated list of pathway data sources that you want
 to search.  For example, the following restricts your results to Reactome pathways only:
 <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>.
