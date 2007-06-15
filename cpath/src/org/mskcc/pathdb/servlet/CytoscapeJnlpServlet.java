@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.9 2007-06-15 14:25:48 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.10 2007-06-15 19:17:09 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -120,7 +120,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 									  "/webservice.do?" +
 									  ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 									  "&" + ProtocolRequest.ARG_COMMAND + "=" + command +
-									  "&" + ProtocolRequest.ARG_FORMAT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
+									  "&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 									  "&" + ProtocolRequest.ARG_QUERY + "=" + recordID +
 									  "&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + dataSources);
 
