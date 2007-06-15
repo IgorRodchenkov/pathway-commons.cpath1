@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.26 2007-06-12 17:01:10 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.27 2007-06-15 17:10:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -132,7 +132,10 @@ public class ExecuteSearch extends BaseAction {
             }
         } else {
             validator.validate(webUiBean.getWebApiVersion());
-            if (protocolRequest.getFormat() == null
+            if (protocolRequest.getOutput() != null && protocolRequest.getOutput().equals
+                    (ProtocolConstantsVersion1.FORMAT_BIO_PAX)) {
+                return processXmlRequest(protocolRequest, response, xdebug);
+            } else if (protocolRequest.getFormat() == null
                     || protocolRequest.getFormat()
                     .equals(ProtocolConstantsVersion1.FORMAT_HTML)) {
                 return processHtmlRequest(mapping, protocolRequest,
@@ -167,7 +170,7 @@ public class ExecuteSearch extends BaseAction {
             xml = xmlAssembly.getXmlString();
 
             //  Return Number of Hits Only or Complete XML.
-            if (protocolRequest.getFormat().
+            if (protocolRequest.getFormat() != null && protocolRequest.getFormat().
                     equals(ProtocolConstantsVersion1.FORMAT_COUNT_ONLY)) {
                 returnCountOnly(response, xmlAssembly);
             } else {
