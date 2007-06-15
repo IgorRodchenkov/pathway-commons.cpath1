@@ -28,7 +28,7 @@ This page provides a quick reference guide to help you get started.
 
 </p>
 
-<h2><a NAME="#get_pathway_list"></a>[1]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h2>
+<h2><a NAME="get_pathway_list"></a>[1]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h2>
 
 <h3>Summary:</h3>
 
@@ -95,7 +95,7 @@ Below is an example query.  Note that this query is not guaranteed to return res
 webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT %>
 </a>
 
-<h2><a NAME="#get_neighbors"></a>[2]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></h2>
+<h2><a NAME="get_neighbors"></a>[2]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></h2>
 
 <h3>Summary:</h3>
 
@@ -142,7 +142,7 @@ Below is an example query.  Note that this query is not guaranteed to return res
 
 <a href="webservice.do?version=2.0&cmd=get_neighbors&format=biopax&q=9854">webservice.do?version=2.0&cmd=get_neighbors&format=biopax&q=9854</a>
 
-<h2><a NAME="#get_by_cpath_id"></a>[3]  Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></h2>
+<h2><a NAME="get_by_cpath_id"></a>[3]  Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></h2>
 
 <h3>Summary:</h3>
 
@@ -171,7 +171,7 @@ Below is an example query.  Note that this query is not guaranteed to return res
 webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 </a>
 
-<h2><a NAME="#additional_params"></a>[4]  Additional Parameter Details:</h2>
+<h2><a NAME="additional_params"></a>[4]  Additional Parameter Details:</h2>
 
 <h3><a name='valid_input_id_type'></a>Valid values for the <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter:</h3>
 <ul>
@@ -211,7 +211,7 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 %>
 </ul>
 
-<h2><a NAME="#errors"></a>[5]  Error Codes:</h2>
+<h2><a NAME="errors"></a>[5]  Error Codes:</h2>
 <p>
 If an error occurs while processing your request, you will
 receive an XML document with detailed information about the cause of
