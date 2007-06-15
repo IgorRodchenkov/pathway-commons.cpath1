@@ -25,6 +25,6 @@ public class ExternalDatabaseConstants {
     /**
      * Internal Database ID. 
      */
-    public static String INTERNAL_DATABASE = "INTERNAL_ID";
+    public static String INTERNAL_DATABASE = "CPATH_ID";
 
 }

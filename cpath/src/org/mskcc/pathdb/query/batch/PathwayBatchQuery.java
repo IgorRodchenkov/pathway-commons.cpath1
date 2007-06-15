@@ -205,6 +205,6 @@ public class PathwayBatchQuery {
         out.append ("Database:ID\t");
         out.append ("Pathway_Name\t");
         out.append ("Pathway_Database_Name\t");
-        out.append ("Internal_ID\n");
+        out.append (ExternalDatabaseConstants.INTERNAL_DATABASE + "\n");
     }
 }
