@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.8 2007-06-12 12:12:51 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.9 2007-06-15 14:25:48 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,8 +42,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import java.net.URLEncoder;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * JNLP Servlet.
@@ -87,13 +89,24 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 		String command = request.getParameter("command");
 		if (command == null) return;
 
-		// get neighborhood title - already encoded
+		// get neighborhood title
 		String networkViewTitle = request.getParameter("network_view_title");
 		networkViewTitle = (networkViewTitle == null) ? "" : networkViewTitle;
 
-		// data sources - already encoded
+		// data sources
 		String dataSources = request.getParameter("data_source");
 		dataSources = (dataSources == null) ? "" : dataSources;
+
+		// encode some parameters
+		try {
+			networkViewTitle = URLEncoder.encode(networkViewTitle, "UTF-8");
+			dataSources = URLEncoder.encode(dataSources, "UTF-8");
+		}
+		catch (UnsupportedEncodingException e) {
+			// can't see this happening, but lets at least encoded the spaces
+			networkViewTitle = networkViewTitle.replaceAll(" ", "%20");
+			dataSources = dataSources.replaceAll(" ", "%20");
+		}
 
 		// set content type on response object
 		response.setContentType("application/x-java-jnlp-file");
