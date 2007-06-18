@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.8 2007-06-13 15:21:44 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.9 2007-06-18 16:45:35 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,6 +49,7 @@ import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -62,6 +63,11 @@ import javax.servlet.http.HttpSession;
  * @author Benjamin Gross
  */
 public class GetNeighborsCommand extends Query {
+
+	/**
+	 * ref to no matching external id string
+	 */
+	public static String NO_MATCHING_EXTERNAL_ID_FOUND = "NO_MATCHING_EXTERNAL_ID_FOUND";
 
 	/**
 	 * ref to XDebug
@@ -99,6 +105,72 @@ public class GetNeighborsCommand extends Query {
 	private boolean outputIDList;
 
 	/**
+	 * Inner class - Neighbor object - set of 
+	 * these returned from getNeighbors query.
+	 */
+	public static class Neighbor {
+
+		/**
+		 * CPath Record name
+		 */
+		private String name;
+		
+		/**
+		 * internal (cpath id)
+		 */
+		private long cpathID;
+
+		/**
+		 * external id - 
+		 * requested external db id is parameter to get neighbor call
+		 * - may be internal id
+		 */
+		private String externalID;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param name String
+		 * @param cpathID long
+		 * @param externalID String
+		 */
+		public Neighbor(String name, long cpathID, String externalID) {
+
+			// init members
+			this.name = name;
+			this.cpathID = cpathID;
+			this.externalID = externalID;
+		}
+
+		/**
+		 * Gets the record name (cpath record name).
+		 *
+		 * @return String
+		 */
+		public String getName() {
+			return name;
+		}
+
+		/**
+		 * Gets the cpathRecord id.
+		 *
+		 * @return long
+		 */
+		public long getCPathID() {
+			return cpathID;
+		}
+
+		/**
+		 * Gets the external id.
+		 *
+		 * @return String
+		 */
+		public String getExternalID() {
+			return externalID;
+		}
+	}
+
+	/**
 	 * Constructor.
 	 *
 	 * @param protocolRequest ProtocolRequest
@@ -134,13 +206,12 @@ public class GetNeighborsCommand extends Query {
     protected XmlAssembly executeSub() throws DaoException, NumberFormatException, AssemblyException {
 
 		// get neighbors
-		Set<String> neighborRecordIDs = getNeighbors();
+		Set<Neighbor> neighbors = getNeighbors();
 
 		// convert string hash set to long[]
-		int lc = -1;
-		long[] neighborsLong = new long[neighborRecordIDs.size()];
-		for (String neighborRecordID : neighborRecordIDs) {
-			neighborsLong[++lc] = Long.parseLong(neighborRecordID);
+		int lc = -1; long[] neighborsLong = new long[neighbors.size()];
+		for (Neighbor neighbor : neighbors) {
+			neighborsLong[++lc] = neighbor.getCPathID();
 		}
 
 		// outta here
@@ -155,13 +226,10 @@ public class GetNeighborsCommand extends Query {
 	/**
 	 * A wrapper function to NeighborsUtil.getNeighbors(..)
 	 *
-	 * @return Set<String>
+	 * @return Set<Neighbor>
 	 * @throws DaoException, NumberFormatException
 	 */
-	public Set<String> getNeighbors() throws DaoException, NumberFormatException {
-
-		// to return
-		Set<String> toReturn = new HashSet<String>();
+	public Set<Neighbor> getNeighbors() throws DaoException, NumberFormatException {
 
 		// get the physical entity id used in query
 		long physicalEntityRecordID = getPhysicalEntityRecordID();
@@ -173,18 +241,41 @@ public class GetNeighborsCommand extends Query {
 		// filter by data sources
 		neighborRecordIDs = filterByDataSource(neighborRecordIDs);
 
-		// cook output ids
-		if (cookOutputIDs) {
-			toReturn = cookOutputIDs(neighborRecordIDs);
-		}
-		else {
-			for (long neighborRecordID : neighborRecordIDs) {
-				toReturn.add(String.valueOf(neighborRecordID));
-			}
+		// outta here
+		return getNeighborSet(neighborRecordIDs);
+	}
+
+	/**
+	 * Given a set of neighbor objects, outputs a tab-delimeted summary of the data.
+	 *
+	 * @param neighbors Set<Neighbor>
+	 * @return String
+	 */
+	public String outputTabDelimitedText(Set<Neighbor> neighbors) {
+
+		// buffer to return
+		StringBuffer toReturn = new StringBuffer();
+
+		// header
+		toReturn.append ("Record Name" + "\t" +
+						 ExternalDatabaseConstants.INTERNAL_DATABASE + "\t" +
+						 "Database:ID" + "\n");
+
+		// body
+		String minLongStr = String.valueOf(Long.MIN_VALUE);
+		String outputIDTerm = protocolRequest.getOutputIDType();
+		outputIDTerm = (outputIDTerm == null) ? ExternalDatabaseConstants.INTERNAL_DATABASE : outputIDTerm;
+		for (Neighbor neighbor : neighbors) {
+			String externalID = neighbor.getExternalID();
+			externalID = (externalID.equals(minLongStr)) ? NO_MATCHING_EXTERNAL_ID_FOUND : externalID;
+			String output = (neighbor.getName() + "\t" +
+							 String.valueOf(neighbor.getCPathID()) + "\t" +
+							 outputIDTerm + ":" + externalID + "\n");
+			toReturn.append(output);
 		}
 
 		// outta here
-		return toReturn;
+		return toReturn.toString();
 	}
 
 	/**
@@ -317,37 +408,55 @@ public class GetNeighborsCommand extends Query {
 	}
 
 	/**
-	 * Method to cook output ids.
+	 * Generates set of neighbors.
 	 *
 	 * @param neighbors long[]
-	 * @return Set<String>
+	 * @return Set<Neighbor>
 	 * @throws DaoException
 	 */
-	private Set<String> cookOutputIDs(long[] neighborRecordIDs) throws DaoException {
+	private Set<Neighbor> getNeighborSet(long[] neighborRecordIDs) throws DaoException {
 
 		// set to return
-		Set<String> cookedNeighborIDs = new HashSet<String>();
+		Set<Neighbor> neighborSet = new HashSet<Neighbor>();
 
-		// get output id db term
-		String outputIDTerm = protocolRequest.getOutputIDType();
-		
-		// interate through all neighbor record ids, filter by external database terms
+		// get refs to needed dao's.
         DaoCPath daoCPath = DaoCPath.getInstance();
         DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
+
+		// which external id do we want (if any)
+		String outputIDTerm = protocolRequest.getOutputIDType();
+
+		// iterate through all neighbor record ids
 		for (long neighborRecordID : neighborRecordIDs) {
-			// get external link records associated with this cpath id
-			ArrayList<ExternalLinkRecord> externalLinkRecords =
-				daoExternalLinker.getRecordsByCPathId(neighborRecordID);
-			for (ExternalLinkRecord externalLinkRecord : externalLinkRecords) {
-				String masterTerm = externalLinkRecord.getExternalDatabase().getMasterTerm();
-				if (masterTerm.equals(outputIDTerm)) {
-					cookedNeighborIDs.add(externalLinkRecord.getLinkedToId());
-					break;
+			// neighborRecordID as string
+			String neighborRecordIDStr = String.valueOf(neighborRecordID);
+			// get cpath record
+			CPathRecord record = daoCPath.getRecordById(neighborRecordID);
+			// get external id - default to internal id unless user requested something else
+			String externalID = neighborRecordIDStr;
+			if (cookOutputIDs) {
+				// get external link records associated with this cpath id
+				ArrayList<ExternalLinkRecord> externalLinkRecords =
+					daoExternalLinker.getRecordsByCPathId(neighborRecordID);
+				for (ExternalLinkRecord externalLinkRecord : externalLinkRecords) {
+					String masterTerm = externalLinkRecord.getExternalDatabase().getMasterTerm();
+					if (masterTerm.equals(outputIDTerm)) {
+						externalID = externalLinkRecord.getLinkedToId();
+						break;
+					}
+				}
+				// made it here - we should be an external id,
+				// if we equals an internal id, set id to error number (Long.MIN_VALUE)
+				if (externalID.equals(neighborRecordIDStr)) {
+					externalID = String.valueOf(Long.MIN_VALUE);
 				}
 			}
+			// create neighbor object & add to return set
+			Neighbor neighbor = new Neighbor(record.getName(), record.getId(), externalID);
+			neighborSet.add(neighbor);
 		}
 
 		// outta here
-		return cookedNeighborIDs;
+		return neighborSet;
 	}
 }
