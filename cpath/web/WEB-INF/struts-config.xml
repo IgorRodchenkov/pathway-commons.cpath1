@@ -91,7 +91,6 @@
             type="org.mskcc.pathdb.action.ExecuteSearch">
             <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
             <forward name="biopax" path="/WEB-INF/jsp/pages/search/biopax_search.jsp"/>
-            <forward name="get_neighbors" path="/WEB-INF/jsp/pages/web_api/get-neighbors.jsp"/>
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
         </action>
 
