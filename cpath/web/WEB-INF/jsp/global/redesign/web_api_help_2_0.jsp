@@ -1,3 +1,4 @@
+<%@ page import="org.mskcc.pathdb.sql.query.GetNeighborsCommand"%>
 <%@ page import="org.mskcc.pathdb.util.ExternalDatabaseConstants"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot"%>
 <%@ page import="java.util.ArrayList"%>
@@ -134,13 +135,25 @@ A complete <a href="http://www.biopax.org">BioPAX</a> representation of the netw
 for the given physical entity (default) or a simple text file that lists all the physical entities
 in the neighborhood.  The output can specified by setting the <%= ProtocolRequest.ARG_OUTPUT%> parameter.
 See the <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %> command <a href=#get_neighbors_parameters>
-parameter list for more information</a>.
+parameter list for more information</a>.  The simple text file contains three columns of data:
+<ul>
+<li>Record Name:  Physical Entity name.</li>
+<li><%=ExternalDatabaseConstants.INTERNAL_DATABASE%>:  Internal cPath ID, used to uniquely identify the pathway.  These IDs can be used to create links to each pathway.  For example:  <a href="record2.do?id=1">record2.do?id=1</a>.  However, please note that these internal IDs (and any links created with them) are <b>not</b> stable, and may change after each new release of data.
+</li>
+<li>Database:ID:  External database identifier.  For example, <%= ExternalDatabaseConstants.UNIPROT %>:O14763.</li><li>Pathway_Database_Name:  Pathway database name.  For example, <%=ExternalDatabaseConstants.REACTOME %>.</li>
+</ul>
+
+<h3>Detecting matches:</h3>
+
+<ul>
+<li>If we are unable to find an external database identifier for a specified record, the third column of the tab-delimited text file will contain the keyword: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %></li>
+</ul>
 
 <h3>Example Query:</h3>
 
-Below is an example query.  Note that this query is not guaranteed to return results.
+Below is an example query.  Note that this query is not guaranteed to return results.<br>
 
-<a href="webservice.do?version=2.0&cmd=get_neighbors&format=biopax&q=9854">webservice.do?version=2.0&cmd=get_neighbors&format=biopax&q=9854</a>
+<a href="webservice.do?version=2.0&cmd=get_neighbors&q=9854">webservice.do?version=2.0&cmd=get_neighbors&q=9854</a>
 
 <h2><a NAME="get_by_cpath_id"></a>[3]  Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></h2>
 
