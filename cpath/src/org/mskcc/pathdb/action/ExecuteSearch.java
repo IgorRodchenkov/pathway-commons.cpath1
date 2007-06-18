@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.27 2007-06-15 17:10:24 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.28 2007-06-18 16:44:38 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,6 +48,7 @@ import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.query.QueryManager;
 import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
+import org.mskcc.pathdb.sql.query.GetNeighborsCommand.Neighbor;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
@@ -494,7 +495,7 @@ public class ExecuteSearch extends BaseAction {
 
 		if (protocolRequest.getCommand().equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
 			return getNeighborsHandler(mapping, protocolRequest,
-									   request, xdebug);
+									   request, response, xdebug);
 		} else if (protocolRequest.getCommand().equals
                 (ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
             return getPathwayListHandler(mapping, protocolRequest, request, response, xdebug);
@@ -510,6 +511,7 @@ public class ExecuteSearch extends BaseAction {
 	 * @param mapping ActionMapping
 	 * @param protocolRequest ProtocolRequest
 	 * @param request HttpServletRequest
+	 * @param response HttpServletResponse
 	 * @param xdebug XDebug
 	 * @return ActionForward
 	 * @throws ProtocolException,
@@ -517,19 +519,27 @@ public class ExecuteSearch extends BaseAction {
 	private ActionForward getNeighborsHandler(ActionMapping mapping,
 											  ProtocolRequest protocolRequest,
 											  HttpServletRequest request,
+											  HttpServletResponse response,
 											  XDebug xdebug) throws ProtocolException {
 		try {
 			GetNeighborsCommand cmd = new GetNeighborsCommand(protocolRequest, xdebug);
-			Set<String> neighbors = cmd.getNeighbors();
-			request.setAttribute(ATTRIBUTE_NEIGHBORS, neighbors);
-			return mapping.findForward(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS);
+			Set<Neighbor> neighbors = cmd.getNeighbors();
+            String table = cmd.outputTabDelimitedText(neighbors);
+            response.setContentType("text/plain");
+            PrintWriter writer = response.getWriter();
+            writer.println(table);
+            writer.flush();
+            writer.close();
+			return null;
 		}
 		catch (DaoException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
 		}
 		catch (NumberFormatException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-		}
+		} catch (IOException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+        }
 	}
 
 	/**
