@@ -177,7 +177,9 @@ class ProtocolValidatorVersion2 {
                         }
                     }
                     throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-                            ProtocolRequest.ARG_INPUT_ID_TYPE
+												(idType == ID_Type.INPUT_ID_TYPE) ?
+												ProtocolRequest.ARG_INPUT_ID_TYPE :
+												ProtocolRequest.ARG_OUTPUT_ID_TYPE
                                     + " must be set to one of the following: "
                                     + buf.toString() + ".");
                 }
