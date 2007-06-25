@@ -343,10 +343,27 @@ Sander Group, <a href="http://www.cbio.mskcc.org/">Computational Biology Center<
 </p>
 <h3>6. Release Notes / Current Limitations</h3>
 <p>
+	Version: 0.2
+</p>
+<ul>
+    <li>
+        Date: June 25, 2007
+    </li>
+    <li>
+        Features:
+        <ul>
+            <li>
+                Enables the automatic download and visualization of network neighborhoods
+                directly from PathwayCommons.org.
+            </li>
+        </ul>
+    </li>
+</ul>
+<p>
 	Version: 0.1
 </p>
 <ul>
-	<li>
+    <li>
 		Date: May 15, 2007
 	</li>
 	<li>
