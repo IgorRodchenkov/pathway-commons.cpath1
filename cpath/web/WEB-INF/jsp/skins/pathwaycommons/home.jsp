@@ -38,11 +38,20 @@ Browse and search pathways across multiple valuable public pathway databases.
 <p><b>Computational biologists:</b>
 Download an integrated set of pathways in BioPAX format for global analysis.</p>
 <p><b>Software developers:</b>
-Build software on top of Pathway Commons using our soon-to-be released web service API.
+Build software on top of Pathway Commons using our <a href="webservice.do?cmd=help">web service API</a>.
 Download and install the <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a> to
 create a local mirror.</p>
 </td>
 <td valign="top">
+
+<p><b>What's New:</b>
+<ul>
+<li>June 28, 2007: Check out our new <a href="webservice.do?cmd=help">web service API</a>.</li>
+<li>June 28, 2007: Pathway Commons now supports visualization of pathways via Cytoscape [<a href="cytoscape.do">Details</a>].</li>
+</ul>
+
+<p><b>Current Data Sources:</b></p>
+
 <%= webUIBean.getApplicationName() %> currently contains the following data sources:</p>
 <cbio:dataSourceListTable/>
 <div class="home_page_box">
@@ -50,6 +59,8 @@ create a local mirror.</p>
 </div>
 <p>Integration of additional data sources is planned in the near future.  For a comprehensive directory
 of interaction and pathway databases, please refer to <a href="http://www.pathguide.org">Pathguide</a>.</p>
+
+</p>
 </td>
 </tr>
 </table>
