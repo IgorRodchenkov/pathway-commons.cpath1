@@ -6,7 +6,9 @@ collected from public pathway databases, which you can browse or search.
     <li><b>Biologists</b> can browse and search Pathway Commons pathways.</li>
     <li><b>Computational biologists</b> can download all pathways in BioPAX format for global analysis.</li>
     <li><b>Software developers</b> can build software on top of Pathway Commons using
-        our soon-to-be released web service API. Download and install the <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a> to create a local mirror of Pathway Commons.
+        our <a href='webservice.do?cmd=help'>web service API</a>. You can also download and install
+        the <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a> to create a
+        local mirror of Pathway Commons.
     </li>
 </ul>
 <p>

@@ -32,8 +32,8 @@ ensure they can keep performing their valuable work.
 pathway data from database groups, with clear author attribution; store, validate, index and
 maintain the information to enable efficient, maximum quality access; distribute pathway
 information to the scientific public; and, provide a basic set of end user software for
-browsing and analysis.  We will be adding more databases over time and will add an
-advanced query tool and web service. Pathway Commons will also support additional types
+browsing and analysis.  We will be adding more databases over time. Pathway Commons will also
+support additional types
 of pathway data, such as gene regulation, molecular states and genetic interactions as
 these features are added to BioPAX.</p>
 <h3>What is BioPAX?</h3>
@@ -121,5 +121,5 @@ local install</a>.  Easy to install and administer.</li>
 Informatics Grid (<a href="https://cabig.nci.nih.gov/">caBIG</a>), and aims to meet
 "silver-level" requirements for software interoperability and data exchange.</li>
 </ul>
-<h3>Can I access Pathway Commosn data via a web service?</h3>
-<p>A web service is planned for a future release.</p>
+<h3>Can I access Pathway Commons data via a web service?</h3>
+<p>Yes.  Details are available on our <a href="webservice.do?cmd=help">web service API</a> help page.
