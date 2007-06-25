@@ -108,7 +108,7 @@ For example, get all the neighbors of BRCA2.
 <ul>
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%> = <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></li>
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%> = <%= ProtocolConstantsVersion2.VERSION_2 %></li>
-<li>[Required] <%= ProtocolRequest.ARG_QUERY%> = a internal or external identifier, used to identify
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%> = an internal or external identifier, used to identify
 the physical entity of interest. For example, the following query uses a UniProt identifier: O14763.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= internal or external database.  For example,
     to use UniProt IDs, set <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>=<%= ExternalDatabaseConstants.UNIPROT %>.
@@ -138,9 +138,9 @@ See the <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %> command <a href=#
 parameter list for more information</a>.  The simple text file contains three columns of data:
 <ul>
 <li>Record Name:  Physical Entity name.</li>
-<li><%=ExternalDatabaseConstants.INTERNAL_DATABASE%>:  Internal cPath ID, used to uniquely identify the pathway.  These IDs can be used to create links to each pathway.  For example:  <a href="record2.do?id=1">record2.do?id=1</a>.  However, please note that these internal IDs (and any links created with them) are <b>not</b> stable, and may change after each new release of data.
+<li><%=ExternalDatabaseConstants.INTERNAL_DATABASE%>:  Internal cPath ID, used to uniquely identify the physical entity.  These IDs can be used to create links to each pathway.  For example:  <a href="record2.do?id=1">record2.do?id=1</a>.  However, please note that these internal IDs (and any links created with them) are <b>not</b> stable, and may change after each new release of data.
 </li>
-<li>Database:ID:  External database identifier.  For example, <%= ExternalDatabaseConstants.UNIPROT %>:O14763.</li><li>Pathway_Database_Name:  Pathway database name.  For example, <%=ExternalDatabaseConstants.REACTOME %>.</li>
+<li>Database:ID:  External database identifier.  For example, <%= ExternalDatabaseConstants.UNIPROT %>:O14763.</li>
 </ul>
 
 <h3>Detecting matches:</h3>
