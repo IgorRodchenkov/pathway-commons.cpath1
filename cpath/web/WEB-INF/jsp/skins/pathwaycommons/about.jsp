@@ -1,4 +1,4 @@
-<h1>About Pathway Commons</h1>
+<h2>About Pathway Commons</h2>
 <p>Pathway Commons is a convenient point of access to biological pathway information
 collected from public pathway databases, which you can browse or search.
 </p>
@@ -15,7 +15,7 @@ collected from public pathway databases, which you can browse or search.
 All data is freely available, under the license terms of each contributing database.
 </p>
 
-<h1>About cBio @ MSKCC</h1>
+<h2>About cBio @ MSKCC</h2>
 <p>The <a href="http://cbio.mkscc.org">Computational Biology Center</a> at
 <a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
 pursues computational biology research projects and the development of bioinformatics
@@ -35,6 +35,6 @@ new computational methods created through the process of scientific inquiry shou
 generalized and supported as open-source and shared community resources.
 </p>
 
-<h1>About the University of Toronto</h1>
+<h2>About the University of Toronto</h2>
 <p>The University of Toronto is Canada's largest university, with a strong focus on research.
 Pathway Commons work is done in the <a href="http://baderlab.org">Bader Lab</a>.</p>

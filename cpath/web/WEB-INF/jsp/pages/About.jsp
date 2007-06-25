@@ -18,7 +18,7 @@ String aboutFile = CPathUIConfig.getPath("about.jsp");
 </div>
 <div>
 <% String appName = CPathUIConfig.getWebUIBean().getApplicationName(); %>
-<h1>Credits</h1>
+<h2>Credits</h2>
 <p><%= appName %> runs on <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a>,
 and was created by:  <a href="http://baderlab.org/">Gary Bader</a>,
 <a href="http://cbio.mskcc.org/people/info/ethan_cerami.html">Ethan Cerami</a>,
