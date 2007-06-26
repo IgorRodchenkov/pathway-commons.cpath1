@@ -482,7 +482,7 @@ enable Javascript support within your web browser.
     }
 
     //  Output Cytoscape Links
-    if (webUIBean.getWantCytoscape()) {
+    if (webUIBean.getWantCytoscape() && showTabs) {
 		out.println("<h3>Cytoscape:</h3>");
 		out.println("<ul><li>");
 		if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
