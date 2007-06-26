@@ -1,4 +1,4 @@
-// $Id: webstart.js,v 1.8 2007-06-12 12:13:15 grossben Exp $
+// $Id: webstart.js,v 1.9 2007-06-26 15:17:27 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,7 +67,7 @@ function webstartVersionCheck(versionString) {
  */
 function timeoutHandler() {
 
-	alert ('Could not detect Cytoscape, press the "ok" button to attempt to launch Cytoscape (this can take up to a minute or two).');
+	alert("Could not detect a running instance of Cytoscape. Press the 'OK' button to launch Cytoscape via Web Start. Depending on your network connection, this may take a minute or two.");
 
     // construct webstart url
     var hostname = window.location.hostname;
