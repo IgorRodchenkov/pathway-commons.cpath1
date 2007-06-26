@@ -94,6 +94,13 @@
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
         </action>
 
+        <action path="/biopax"
+            type="org.mskcc.pathdb.action.ExecuteSearch">
+            <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
+            <forward name="biopax" path="/WEB-INF/jsp/pages/search/biopax_search.jsp"/>
+            <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
+        </action>
+
         <!--  BioPAX Record Page -->
         <action path="/record"
             type="org.mskcc.pathdb.action.ShowBioPaxRecord">
@@ -123,6 +130,12 @@
         <action path="/about"
             type="org.mskcc.pathdb.action.HomeAction">
             <forward name="success" path="/WEB-INF/jsp/pages/About.jsp"/>
+        </action>
+
+        <!--  Download BioPAX Page -->
+        <action path="/downloadBioPax"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/DownloadBioPax.jsp"/>
         </action>
 
         <!-- Feedback Page(s) -->

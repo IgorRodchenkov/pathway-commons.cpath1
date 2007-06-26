@@ -98,7 +98,7 @@ this as an additional filter.
 You can download the pathways in BioPAX Level 2 format for global analysis.
 <a href="http://www.biopax.org">Details about the BioPAX format</a>
 <h3>How many pathways are part of Pathway Commons?</h3>
-<p>Please see the statistics on the homepage for up to the minute information.</p>
+<p>Please see the <a href="dbStats.do">statistics page</a> for up to the minute information.</p>
 <h3>What is cPath?</h3>
 <p>cPath is open source database software that runs Pathway Commons website. You can download it
 for your own use from <a href="http://cbio.mskcc.org/dev_site/cpath/">the cPath developer site</a>.
@@ -122,4 +122,7 @@ Informatics Grid (<a href="https://cabig.nci.nih.gov/">caBIG</a>), and aims to m
 "silver-level" requirements for software interoperability and data exchange.</li>
 </ul>
 <h3>Can I access Pathway Commons data via a web service?</h3>
-<p>Yes.  Details are available on our <a href="webservice.do?cmd=help">web service API</a> help page.
+<p>Yes! A <a href="webservice.do?cmd=help">web service</a> is available to answer specific
+queries with computer readable responses. This is designed to enable third party software and
+scripts to easily access the information.
+</p>

@@ -528,7 +528,7 @@ enable Javascript support within your web browser.
             pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
             pRequest.setOutput(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
             out.println("<h3>Download:</h3>");
-            out.println("<ul><li><a href=\"" + pRequest.getUri() + "\">"
+            out.println("<ul><li><a href='downloadBioPax.do?id=" + bpSummary.getRecordID() + "'>"
                 + "Download in BioPAX Format" + "</a></li></ul>");
     }
 
