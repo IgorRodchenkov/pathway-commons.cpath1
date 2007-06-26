@@ -6,11 +6,13 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.taglib.Pager,
                  org.mskcc.pathdb.sql.dao.DaoCPath,
+                 org.mskcc.pathdb.sql.dao.DaoInternalLink,
                  org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot,
                  org.mskcc.pathdb.sql.query.QueryUtil,
                  org.mskcc.pathdb.model.CPathRecord,
                  org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.model.GlobalFilterSettings,
+                 org.mskcc.pathdb.model.TypeCount,
                  org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord,
                  org.mskcc.pathdb.util.html.HtmlUtil,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
@@ -231,8 +233,18 @@ else {
     <table cellpadding="2" cellspacing="0" border="0" width="100%">
 <%
     DaoCPath dao = DaoCPath.getInstance();
+	DaoInternalLink daoInternalLink = new DaoInternalLink();
     for (int i=0; i< cpathIds.length; i++) {
         CPathRecord record = dao.getRecordById(cpathIds[i]);
+		// get number children - used to render on hide link to cytoscape
+		List<TypeCount> childTypes = daoInternalLink.getChildrenTypes(cpathIds[i], null);
+		boolean showCytoscape = false;
+		for (TypeCount typeCount : childTypes) {
+			if (typeCount.getCount() > 0) {
+				showCytoscape = true;
+				break;
+			}
+		}
         String url = "record2.do?id=" + record.getId();
 	    // used to render score board graphic
 	    Float score = (Float)scores.get(cpathIds[i]);
@@ -295,7 +307,7 @@ else {
             out.println("<tr><td colspan=\"3\">");
 			out.println("<div class='search_fragment'>");
             out.println(getFragmentsHtml(fragments.get(i), summaryLabel, header, 40));
-			if (webUIBean.getWantCytoscape()) {
+			if (webUIBean.getWantCytoscape() && showCytoscape) {
 				// add link to cytoscape
 				if (record.getType() == CPathRecordType.PATHWAY) {
 					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
