@@ -482,11 +482,12 @@ enable Javascript support within your web browser.
     }
 
     //  Output Cytoscape Links
-    if (webUIBean.getWantCytoscape() && showTabs) {
+    boolean pathwayType = (bpSummary.getType() != null &&
+						   bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString()));
+    if (webUIBean.getWantCytoscape() && (!pathwayType || (pathwayType && showTabs))) {
 		out.println("<h3>Cytoscape:</h3>");
 		out.println("<ul><li>");
-		if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
-            (CPathRecordType.PATHWAY.toString())) {
+		if (pathwayType) {
 			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
 						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +

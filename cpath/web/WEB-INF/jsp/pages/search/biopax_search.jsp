@@ -307,9 +307,10 @@ else {
             out.println("<tr><td colspan=\"3\">");
 			out.println("<div class='search_fragment'>");
             out.println(getFragmentsHtml(fragments.get(i), summaryLabel, header, 40));
-			if (webUIBean.getWantCytoscape() && showCytoscape) {
+			boolean pathwayType = record.getType() == CPathRecordType.PATHWAY;
+			if (webUIBean.getWantCytoscape() && (!pathwayType || (pathwayType && showCytoscape))) {
 				// add link to cytoscape
-				if (record.getType() == CPathRecordType.PATHWAY) {
+				if (pathwayType) {
 					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
