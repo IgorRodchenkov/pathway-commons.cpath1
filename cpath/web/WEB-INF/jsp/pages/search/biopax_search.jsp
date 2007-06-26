@@ -150,7 +150,7 @@ private String getFragmentsHtml(List<String> fragments, String summaryLabel, Str
 	if (fragments == null || fragments.size() == 0) return "";
 
 	Character period = new Character('.');
-    StringBuffer html = new StringBuffer();
+    StringBuffer html = new StringBuffer("<p><b>Excerpts:</b></p>\n\r");
 	boolean ulAppended = false;
 	for (String fragment : fragments) {
 	    // create copy of fragment with html stripped out for comparision purposes
