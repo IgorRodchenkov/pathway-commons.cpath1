@@ -91,7 +91,11 @@ public class PathwayBatchQuery {
                         out.append(ExternalDatabaseConstants.INTERNAL_DATABASE);
                     }
                     out.append(":" + peData.getExternalId());
-                    out.append("\t" + pathwaySummary.getName());
+                    if (pathwaySummary.getName() != null) {
+                        out.append("\t" + pathwaySummary.getName());
+                    } else {
+                        out.append("\tN/A");
+                    }
                     out.append("\t" +
                             pathwaySummary.getExternalDatabaseSnapshotRecord().
                             getExternalDatabase().getMasterTerm());
