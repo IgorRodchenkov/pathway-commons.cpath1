@@ -102,6 +102,10 @@
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.xml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>CytoscapeJnlpServlet</servlet-name>
         <url-pattern>/cytoscape.jnlp</url-pattern>
     </servlet-mapping>
