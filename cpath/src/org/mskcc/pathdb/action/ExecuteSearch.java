@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.28 2007-06-18 16:44:38 grossben Exp $
+// $Id: ExecuteSearch.java,v 1.29 2007-06-26 15:08:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -132,30 +132,28 @@ public class ExecuteSearch extends BaseAction {
                 return null;
             }
         } else {
-            validator.validate(webUiBean.getWebApiVersion());
-            if (protocolRequest.getOutput() != null && protocolRequest.getOutput().equals
-                    (ProtocolConstantsVersion1.FORMAT_BIO_PAX)) {
-                return processXmlRequest(protocolRequest, response, xdebug);
-            } else if (protocolRequest.getFormat() == null
-                    || protocolRequest.getFormat()
-                    .equals(ProtocolConstantsVersion1.FORMAT_HTML)) {
+            if (protocolRequest.getFormat() != null &&
+                    protocolRequest.getFormat().equals(ProtocolConstantsVersion1.FORMAT_HTML)) {
+                validator.validate(webUiBean.getWebApiVersion());
                 return processHtmlRequest(mapping, protocolRequest,
                         request, xdebug);
             } else {
-                return processXmlRequest(protocolRequest, response, xdebug);
+                return processXmlRequest(protocolRequest, response, validator, xdebug);
             }
         }
     }
 
     private ActionForward processXmlRequest(ProtocolRequest protocolRequest,
-            HttpServletResponse response,
+            HttpServletResponse response, ProtocolValidator validator,
             XDebug xdebug) throws NeedsHelpException {
+        WebUIBean webUiBean = CPathUIConfig.getWebUIBean();        
         //  Start timer here
         log.info("Received web service request:  " + protocolRequest.getUri());
         Date start = new Date();
         String xml = null;
         XmlAssembly xmlAssembly = null;
         try {
+            validator.validate(webUiBean.getWebApiVersion());
             xmlAssembly = executeQuery(xdebug, protocolRequest);
             if (xmlAssembly.isEmpty()) {
                 String q = protocolRequest.getQuery();
