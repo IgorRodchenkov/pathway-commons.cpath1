@@ -88,7 +88,7 @@ if (cPathId != null) {
 %>
 
 <h2>Download BioPAX Record:  
-<% if (record != null) {
+<% if (record != null && record.getName() != null) {
 	out.println(record.getName());
 }
 %>
