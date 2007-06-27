@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.11 2007-06-27 16:07:23 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.12 2007-06-27 17:02:44 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -305,7 +305,7 @@ public class GetNeighborsCommand extends Query {
 		// cook input id ?
 		String inputIDType = protocolRequest.getInputIDType();
 		cookInputID = (inputIDType != null &&
-					   !inputIDType.equals(ProtocolRequest.INTERNAL_ID));
+					   !inputIDType.equals(ExternalDatabaseConstants.INTERNAL_DATABASE));
 
 		// fully connected ?
 		String fullyConnectedStr = protocolRequest.getFullyConnected();
@@ -318,7 +318,7 @@ public class GetNeighborsCommand extends Query {
 		// cook id on the way out ?
 		String outputIDType = protocolRequest.getOutputIDType();
 		cookOutputIDs = (outputIDType != null &&
-						 !outputIDType.equals(ProtocolRequest.INTERNAL_ID));
+						 !outputIDType.equals(ExternalDatabaseConstants.INTERNAL_DATABASE));
 	}
 
 	/**
