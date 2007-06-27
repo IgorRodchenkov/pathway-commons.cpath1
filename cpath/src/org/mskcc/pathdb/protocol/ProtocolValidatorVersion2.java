@@ -295,14 +295,23 @@ class ProtocolValidatorVersion2 {
         try {
             if (inputIDTerm == null ||
                     inputIDTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
-                long recordID = Long.parseLong(query);
+				long recordID;
+				try {
+					recordID = Long.parseLong(query);
+				}
+				catch (NumberFormatException e) {
+                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+												ProtocolRequest.ARG_QUERY +
+												" internal record id: " +
+												query + " cannot contain non-digits.");
+				}
                 DaoCPath daoCPath = DaoCPath.getInstance();
                 CPathRecord record = daoCPath.getRecordById(recordID);
                 if (record == null) {
                     throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
-                            ProtocolRequest.ARG_QUERY +
-                                    " an internal record with id: " +
-                                    query + " cannot be found.");
+												ProtocolRequest.ARG_QUERY +
+												" an internal record with id: " +
+												query + " cannot be found.");
                 }
             } else if (inputIDTerm != null &&
                     !inputIDTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
@@ -314,17 +323,14 @@ class ProtocolValidatorVersion2 {
                                 query);
                 if (externalLinkRecords == null || externalLinkRecords.size() == 0) {
                     throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
-                            ProtocolRequest.ARG_QUERY + ": " +
-                                    " an internal record with the " + inputIDTerm +
-                                    " external database id: " + query +
-                                    " cannot be found.");
+												ProtocolRequest.ARG_QUERY + ": " +
+												" an internal record with the " + inputIDTerm +
+												" external database id: " + query +
+												" cannot be found.");
                 }
             }
         }
         catch (DaoException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        }
-        catch (NumberFormatException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
     }
