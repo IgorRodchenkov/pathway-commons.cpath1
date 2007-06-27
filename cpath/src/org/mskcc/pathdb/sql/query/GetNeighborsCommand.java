@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.9 2007-06-18 16:45:35 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.10 2007-06-27 14:31:05 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,6 +63,11 @@ import javax.servlet.http.HttpSession;
  * @author Benjamin Gross
  */
 public class GetNeighborsCommand extends Query {
+
+	/**
+	 * ref to no neighbors found string
+	 */
+	public static String NO_NEIGHBORS_FOUND = "NO_NEIGHBORS_FOUND";
 
 	/**
 	 * ref to no matching external id string
@@ -255,6 +260,11 @@ public class GetNeighborsCommand extends Query {
 
 		// buffer to return
 		StringBuffer toReturn = new StringBuffer();
+
+		// check args
+		if (neighbors.size() == 0) {
+			return NO_NEIGHBORS_FOUND;
+		}
 
 		// header
 		toReturn.append ("Record Name" + "\t" +

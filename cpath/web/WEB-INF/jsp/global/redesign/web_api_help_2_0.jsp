@@ -146,6 +146,7 @@ parameter list for more information</a>.  The simple text file contains three co
 <h3>Detecting matches:</h3>
 
 <ul>
+<li>If a neighborhood map does not exist for the given query, get_neighbors will return: <%= GetNeighborsCommand.NO_NEIGHBORS_FOUND %></li>
 <li>If we are unable to find an external database identifier for a specified record, the third column of the tab-delimited text file will contain the keyword: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %></li>
 </ul>
 
