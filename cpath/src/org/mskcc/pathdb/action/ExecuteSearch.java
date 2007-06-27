@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.30 2007-06-27 16:07:04 grossben Exp $
+// $Id: ExecuteSearch.java,v 1.31 2007-06-27 16:49:56 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -164,7 +164,7 @@ public class ExecuteSearch extends BaseAction {
                 }
                 throw new ProtocolException
                         (ProtocolStatusCode.NO_RESULTS_FOUND,
-                                ": No Results Found for:  " + q);
+                                "No Results Found for:  " + q);
             }
             xml = xmlAssembly.getXmlString();
 
