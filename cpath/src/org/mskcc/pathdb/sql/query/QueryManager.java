@@ -1,4 +1,4 @@
-// $Id: QueryManager.java,v 1.13 2007-06-06 18:13:16 cerami Exp $
+// $Id: QueryManager.java,v 1.14 2007-06-27 16:07:15 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -102,7 +102,7 @@ public class QueryManager {
                 log.info("Executing New Interaction/Pathway Query");
                 xmlAssembly = executeQuery(request);
                 Date start = new Date();
-                if (!xmlAssembly.isEmpty()) {
+                if (xmlAssembly != null && !xmlAssembly.isEmpty()) {
                     if (cachedXml == null) {
                         log.info("Storing XML to Database Cache:  "
                             + request.getUrlParameterString());

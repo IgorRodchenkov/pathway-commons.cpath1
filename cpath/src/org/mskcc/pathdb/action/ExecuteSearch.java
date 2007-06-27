@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.29 2007-06-26 15:08:56 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.30 2007-06-27 16:07:04 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -155,7 +155,7 @@ public class ExecuteSearch extends BaseAction {
         try {
             validator.validate(webUiBean.getWebApiVersion());
             xmlAssembly = executeQuery(xdebug, protocolRequest);
-            if (xmlAssembly.isEmpty()) {
+            if (xmlAssembly == null || xmlAssembly.isEmpty()) {
                 String q = protocolRequest.getQuery();
                 if (q == null && protocolRequest.getOrganism() != null) {
                     q = protocolRequest.getOrganism();
@@ -164,7 +164,7 @@ public class ExecuteSearch extends BaseAction {
                 }
                 throw new ProtocolException
                         (ProtocolStatusCode.NO_RESULTS_FOUND,
-                                "No Results Found for:  " + q);
+                                ": No Results Found for:  " + q);
             }
             xml = xmlAssembly.getXmlString();
 

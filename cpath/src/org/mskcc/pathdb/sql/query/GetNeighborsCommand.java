@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.10 2007-06-27 14:31:05 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.11 2007-06-27 16:07:23 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -212,6 +212,11 @@ public class GetNeighborsCommand extends Query {
 
 		// get neighbors
 		Set<Neighbor> neighbors = getNeighbors();
+
+		// check size
+		if (neighbors.size() == 0) {
+			return null;
+		}
 
 		// convert string hash set to long[]
 		int lc = -1; long[] neighborsLong = new long[neighbors.size()];
