@@ -152,7 +152,7 @@ private String getFragmentsHtml(List<String> fragments, String summaryLabel, Str
 	if (fragments == null || fragments.size() == 0) return "";
 
 	Character period = new Character('.');
-    StringBuffer html = new StringBuffer("<p><b>Excerpts:</b></p>\n\r");
+    StringBuffer html = new StringBuffer();
 	boolean ulAppended = false;
 	for (String fragment : fragments) {
 	    // create copy of fragment with html stripped out for comparision purposes
@@ -306,7 +306,11 @@ else {
 			// fragments
             out.println("<tr><td colspan=\"3\">");
 			out.println("<div class='search_fragment'>");
-            out.println(getFragmentsHtml(fragments.get(i), summaryLabel, header, 40));
+			String htmlFragments = getFragmentsHtml(fragments.get(i), summaryLabel, header, 40);
+			if (htmlFragments.length() > 0) {
+				out.println("<p><b>Excerpts:</b></p>\n\r");
+				out.println(htmlFragments);
+			}
 			boolean pathwayType = record.getType() == CPathRecordType.PATHWAY;
 			if (webUIBean.getWantCytoscape() && (!pathwayType || (pathwayType && showCytoscape))) {
 				// add link to cytoscape
