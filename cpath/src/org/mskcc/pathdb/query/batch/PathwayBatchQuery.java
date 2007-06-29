@@ -131,7 +131,7 @@ public class PathwayBatchQuery {
                     Long.parseLong(ids[i]);
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException ("ID:  " + ids[i]
-                        + " must be an integer value");
+                        + " must be an integer value.");
                 }
             }
         }
