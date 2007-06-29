@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.31 2007-06-27 16:49:56 grossben Exp $
+// $Id: ExecuteSearch.java,v 1.32 2007-06-29 17:20:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -146,7 +146,7 @@ public class ExecuteSearch extends BaseAction {
     private ActionForward processXmlRequest(ProtocolRequest protocolRequest,
             HttpServletResponse response, ProtocolValidator validator,
             XDebug xdebug) throws NeedsHelpException {
-        WebUIBean webUiBean = CPathUIConfig.getWebUIBean();        
+        WebUIBean webUiBean = CPathUIConfig.getWebUIBean();
         //  Start timer here
         log.info("Received web service request:  " + protocolRequest.getUri());
         Date start = new Date();
@@ -419,6 +419,7 @@ public class ExecuteSearch extends BaseAction {
         try {
             response.setContentType("text/xml");
             PrintWriter writer = response.getWriter();
+            response.setContentLength(xmlResponse.length());
             writer.println(xmlResponse);
             writer.flush();
             writer.close();
@@ -555,8 +556,7 @@ public class ExecuteSearch extends BaseAction {
         XDebug xdebug) throws ProtocolException {
 		try {
             PathwayBatchQuery batchQuery = new PathwayBatchQuery();
-            String ids[] = new String[1];
-            ids[0] = protocolRequest.getQuery();
+            String ids[] = protocolRequest.getQuery().split("[\\s]");
             String dbTerm = protocolRequest.getInputIDType();
             if (dbTerm == null) {
                 dbTerm = ExternalDatabaseConstants.INTERNAL_DATABASE;
