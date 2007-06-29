@@ -310,7 +310,7 @@ class ProtocolValidatorVersion2 {
                 if (record == null) {
                     throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
 												ProtocolRequest.ARG_QUERY +
-												" an internal record with id: " +
+												": an internal record with id: " +
 												query + " cannot be found.");
                 }
             } else if (inputIDTerm != null &&
