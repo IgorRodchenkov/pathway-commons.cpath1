@@ -258,7 +258,7 @@ The table below provides a list of error codes, with their
                     int errorCode = code.getErrorCode();
                     String errorMsg = code.getErrorMsg();
                     if (errorCode == 450 || errorCode == 452 || errorCode == 453
-                        || errorCode == 470 || errorCode == 500) {
+                        || errorCode == 460 || errorCode == 470 || errorCode == 500) {
                     %>
                     <tr>
                         <td><%= errorCode %></td>
