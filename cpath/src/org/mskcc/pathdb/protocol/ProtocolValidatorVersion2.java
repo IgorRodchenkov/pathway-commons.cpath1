@@ -308,7 +308,7 @@ class ProtocolValidatorVersion2 {
                 DaoCPath daoCPath = DaoCPath.getInstance();
                 CPathRecord record = daoCPath.getRecordById(recordID);
                 if (record == null) {
-                    throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
+                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
 												ProtocolRequest.ARG_QUERY +
 												": an internal record with id: " +
 												query + " cannot be found.");
@@ -322,7 +322,7 @@ class ProtocolValidatorVersion2 {
                         daoExternalLinker.getRecordByDbAndLinkedToId(dbRecord.getId(),
                                 query);
                 if (externalLinkRecords == null || externalLinkRecords.size() == 0) {
-                    throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
+                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
 												ProtocolRequest.ARG_QUERY + ": " +
 												" an internal record with the " + inputIDTerm +
 												" external database id: " + query +
