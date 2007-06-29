@@ -75,8 +75,7 @@ public class PathwayBatchQuery {
             PhysicalEntityWithPathwayList peData = responseList.get(i);
             ArrayList <BioPaxRecordSummary> pathwayList = peData.getPathwayList();
             if (pathwayList.size() == 0) {
-                out.append(peData.getExternalDb().getMasterTerm());
-                out.append(":" + peData.getExternalId());
+                outputPeId(peData, out);
                 if (peData.isPeFoundFlag()) {
                     out.append("\t" + ERROR_MSG_NO_PATHWAY_DATA + "\n");
                 } else {
@@ -85,12 +84,7 @@ public class PathwayBatchQuery {
             } else {
                 for (int j=0; j < pathwayList.size(); j++) {
                     BioPaxRecordSummary pathwaySummary = pathwayList.get(j);
-                    if (peData.getExternalDb() != null) {
-                        out.append(peData.getExternalDb().getMasterTerm());
-                    } else {
-                        out.append(ExternalDatabaseConstants.INTERNAL_DATABASE);
-                    }
-                    out.append(":" + peData.getExternalId());
+                    outputPeId(peData, out);
                     if (pathwaySummary.getName() != null) {
                         out.append("\t" + pathwaySummary.getName());
                     } else {
@@ -104,6 +98,15 @@ public class PathwayBatchQuery {
             }
         }
         return out.toString();
+    }
+
+    private void outputPeId (PhysicalEntityWithPathwayList peData, StringBuffer out) {
+        if (peData.getExternalDb() != null) {
+            out.append(peData.getExternalDb().getMasterTerm());
+        } else {
+            out.append(ExternalDatabaseConstants.INTERNAL_DATABASE);
+        }
+        out.append(":" + peData.getExternalId());
     }
 
     private ArrayList<PhysicalEntityWithPathwayList> execute (String dbTerm, String[] ids,
