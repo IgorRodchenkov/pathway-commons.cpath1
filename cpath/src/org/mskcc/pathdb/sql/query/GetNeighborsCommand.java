@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.12 2007-06-27 17:02:44 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.13 2007-06-29 19:32:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,7 +72,7 @@ public class GetNeighborsCommand extends Query {
 	/**
 	 * ref to no matching external id string
 	 */
-	public static String NO_MATCHING_EXTERNAL_ID_FOUND = "NO_MATCHING_EXTERNAL_ID_FOUND";
+	public static String NO_MATCHING_EXTERNAL_ID_FOUND = "EXTERNAL_ID_NOT_FOUND";
 
 	/**
 	 * ref to XDebug

@@ -30,7 +30,7 @@ public class PathwayBatchQuery {
      * Error Messaage:  No Match to Physical Entity.
      */
     public static String ERROR_MSG_NO_MATCH_TO_PHYSICAL_ENTITY =
-            "NO_MATCH_FOUND_TO_PHYSICAL_ENTITY";
+            "PHYSICAL_ENTITY_ID_NOT_FOUND";
 
     /**
      * Given a list of Physical Entity IDs, get the complete set of all linked pathways.
