@@ -62,4 +62,13 @@
 		<master_term>KEGG</master_term>
         </controlled_terms>
     </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>iHOP</name>
+        <description>information hyperlinked over proteins</description>
+        <home_page_url>http://www.ihop-net.org/UniPub/iHOP/</home_page_url>
+        <icon_path>iHOP.png</icon_path>
+        <controlled_terms>
+		<master_term>IHOP</master_term>
+        </controlled_terms>
+    </external_database>
 </external_database_list>
