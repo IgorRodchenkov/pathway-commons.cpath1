@@ -66,6 +66,10 @@
         <name>iHOP</name>
         <description>information hyperlinked over proteins</description>
         <home_page_url>http://www.ihop-net.org/UniPub/iHOP/</home_page_url>
+        <entity_url>
+            <url_pattern>http://www.ihop-net.org/UniPub/iHOP/go?ID1=%ID%</url_pattern>
+            <sample_id>32484</sample_id>
+        </entity_url>
         <icon_path>iHOP.png</icon_path>
         <controlled_terms>
 		<master_term>IHOP</master_term>
