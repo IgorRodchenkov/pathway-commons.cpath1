@@ -1,4 +1,4 @@
-// $Id: TransformBioPaxToCPathRecords.java,v 1.12 2007-02-07 17:56:48 cerami Exp $
+// $Id: TransformBioPaxToCPathRecords.java,v 1.13 2007-08-20 15:56:36 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -160,12 +160,7 @@ public class TransformBioPaxToCPathRecords {
         // precedence 1: short name
         name = extractShortName(resource, bioPaxNamespaceUri);
         if (name != null && name.length() > 0) {
-            //  If short name ends in a digit, this is probably a KEGG short name.
-            //  In this case, we ignore it, and use the regular name
-            char lastChar = name.charAt(name.length()-1);
-            if (! Character.isDigit(lastChar)) {
-                return name;
-            }
+			return name;
         }
 
         // precedence 2:  name
