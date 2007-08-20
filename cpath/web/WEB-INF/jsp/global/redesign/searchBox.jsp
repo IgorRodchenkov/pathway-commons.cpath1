@@ -21,7 +21,7 @@
         }
         taxId = pRequest.getOrganism();
     }
-    String entityValue = "pathway";
+    String entityValue = "ALL_ENTITY_TYPE";
     String entityName = GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME;
     String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
     String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
@@ -40,7 +40,7 @@
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
     <input type="hidden" name="<%= dataSourceName %>" value="<%= dataSourceValue %>"/>
-    <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
+	<input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
 
     <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
         <% try { %>
