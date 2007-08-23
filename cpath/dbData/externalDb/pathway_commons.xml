@@ -75,4 +75,17 @@
 		<master_term>IHOP</master_term>
         </controlled_terms>
     </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>HPRD</name>
+        <description>Human Protein Reference Database</description>
+        <home_page_url>http://hprd.org</home_page_url>
+        <entity_url>
+            <url_pattern>http://hprd.org/summary?protein=%ID%&amp;isoform_id=%ID%_1&amp;isoform_name=isoform_1</url_pattern>
+            <sample_id>03554</sample_id>
+        </entity_url>
+        <icon_path>HPRD.png</icon_path>
+        <controlled_terms>
+            <master_term>HPRD</master_term>
+        </controlled_terms>
+    </external_database>
 </external_database_list>
