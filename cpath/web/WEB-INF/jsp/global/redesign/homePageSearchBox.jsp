@@ -8,7 +8,7 @@
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
 String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
-String entityValue =  "pathway";
+String entityValue =  "ALL_ENTITY_TYPE";
 String entityName = GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME;
 %>
 <form name="searchbox" action="webservice.do" method="get">
