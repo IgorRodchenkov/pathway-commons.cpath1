@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.32 2007-06-29 17:20:15 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.33 2007-09-04 17:39:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -133,7 +133,7 @@ public class ExecuteSearch extends BaseAction {
             }
         } else {
             if (protocolRequest.getFormat() != null &&
-                    protocolRequest.getFormat().equals(ProtocolConstantsVersion1.FORMAT_HTML)) {
+                    protocolRequest.getFormat().equals(ProtocolConstants.FORMAT_HTML)) {
                 validator.validate(webUiBean.getWebApiVersion());
                 return processHtmlRequest(mapping, protocolRequest,
                         request, xdebug);

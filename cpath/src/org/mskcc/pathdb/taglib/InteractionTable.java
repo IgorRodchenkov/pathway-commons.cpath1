@@ -1,4 +1,4 @@
-// $Id: InteractionTable.java,v 1.60 2007-06-05 21:00:36 cerami Exp $
+// $Id: InteractionTable.java,v 1.61 2007-09-04 17:39:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.ProteinWithWeight;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
@@ -185,7 +186,7 @@ public class InteractionTable extends HtmlTable {
         String psiUrl = protocolRequest.getUri();
 
         pager = new Pager(protocolRequest, xmlAssembly.getNumHits());
-        protocolRequest.setFormat(ProtocolConstantsVersion1.FORMAT_HTML);
+        protocolRequest.setFormat(ProtocolConstants.FORMAT_HTML);
         String pagerLinks = pager.getHeaderHtml();
 
         startRow();
@@ -341,7 +342,7 @@ public class InteractionTable extends HtmlTable {
     private void outputInteractorName(String proteinId, NamesType name,
             boolean isSelfInteracting) {
         String link = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
-                + ":" + proteinId, ProtocolConstantsVersion1.FORMAT_HTML);
+                + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
         append("<TD class='cpath3'>");
         if (targetProtein != null) {
             append(currentIndex + ".  ");

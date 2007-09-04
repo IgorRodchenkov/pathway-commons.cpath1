@@ -1,4 +1,4 @@
-// $Id: ProtocolConstantsVersion1.java,v 1.4 2007-06-06 18:13:16 cerami Exp $
+// $Id: ProtocolConstantsVersion1.java,v 1.5 2007-09-04 17:39:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -74,12 +74,7 @@ public class ProtocolConstantsVersion1 {
      */
     public static final String FORMAT_BIO_PAX = "biopax";
 
-    /**
-     * HTML Format.
-     */
-    public static final String FORMAT_HTML = "html";
-
-    /**
+     /**
      * Count Only Format.
      */
     public static final String FORMAT_COUNT_ONLY = "count_only";
@@ -195,7 +190,7 @@ public class ProtocolConstantsVersion1 {
             validPsiMiFormats = new HashSet();
             validPsiMiFormats.add(FORMAT_XML);
             validPsiMiFormats.add(FORMAT_PSI_MI);
-            validPsiMiFormats.add(FORMAT_HTML);
+            validPsiMiFormats.add(ProtocolConstants.FORMAT_HTML);
             validPsiMiFormats.add(FORMAT_COUNT_ONLY);
         }
         return validPsiMiFormats;
@@ -210,7 +205,7 @@ public class ProtocolConstantsVersion1 {
         if (validBioPaxFormats == null) {
             validBioPaxFormats = new HashSet();
             validBioPaxFormats.add(FORMAT_BIO_PAX);
-            validBioPaxFormats.add(FORMAT_HTML);
+            validBioPaxFormats.add(ProtocolConstants.FORMAT_HTML);
         }
         return validBioPaxFormats;
     }

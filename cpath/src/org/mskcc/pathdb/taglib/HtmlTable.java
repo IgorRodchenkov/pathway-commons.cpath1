@@ -1,4 +1,4 @@
-// $Id: HtmlTable.java,v 1.28 2007-06-06 13:47:56 cerami Exp $
+// $Id: HtmlTable.java,v 1.29 2007-09-04 17:39:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -234,7 +234,7 @@ public abstract class HtmlTable extends TagSupport {
         ProtocolRequest request = new ProtocolRequest();
         request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
         request.setVersion(ProtocolConstantsVersion1.VERSION_1);
-        request.setFormat(ProtocolConstantsVersion1.FORMAT_HTML);
+        request.setFormat(ProtocolConstants.FORMAT_HTML);
         request.setOrganism(Integer.toString(taxonomyId));
         return request.getUri();
     }

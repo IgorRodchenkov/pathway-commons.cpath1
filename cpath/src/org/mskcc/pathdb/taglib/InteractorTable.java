@@ -1,4 +1,4 @@
-// $Id: InteractorTable.java,v 1.21 2007-06-05 21:00:36 cerami Exp $
+// $Id: InteractorTable.java,v 1.22 2007-09-04 17:39:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.model.ProteinWithWeight;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
 
 import java.util.Iterator;
 import java.util.List;
@@ -101,7 +102,7 @@ public class InteractorTable extends HtmlTable {
             String proteinId = protein.getId();
             append("<li>");
             String href = getInteractionLink(LuceneConfig.FIELD_INTERACTOR_ID
-                    + ":" + proteinId, ProtocolConstantsVersion1.FORMAT_HTML);
+                    + ":" + proteinId, ProtocolConstants.FORMAT_HTML);
             String toolTip = TagUtil.getLabel(names);
             String label = TagUtil.truncateLabel(toolTip);
             String link = TagUtil.createLink(toolTip, href, label);

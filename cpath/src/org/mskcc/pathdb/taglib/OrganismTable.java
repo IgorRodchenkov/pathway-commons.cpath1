@@ -1,4 +1,4 @@
-// $Id: OrganismTable.java,v 1.26 2007-06-06 13:47:56 cerami Exp $
+// $Id: OrganismTable.java,v 1.27 2007-09-04 17:39:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -203,7 +203,7 @@ public class OrganismTable extends HtmlTable {
                 ProtocolRequest request = new ProtocolRequest();
                 request.setOrganism(Integer.toString(organism.getTaxonomyId()));
                 request.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
-                request.setFormat(ProtocolConstantsVersion1.FORMAT_HTML);
+                request.setFormat(ProtocolConstants.FORMAT_HTML);
                 String url = request.getUri();
                 outputDataField("<a href='" + url + "' title='"
                         + "View All Records for Organism:  "
