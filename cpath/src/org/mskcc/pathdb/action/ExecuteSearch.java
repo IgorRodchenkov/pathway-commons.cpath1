@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.33 2007-09-04 17:39:08 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.34 2007-09-04 18:20:03 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -94,6 +94,12 @@ public class ExecuteSearch extends BaseAction {
 
     /**
      * Processes Client Request.
+     * @param mapping   Struts ActionMapping Object.
+     * @param request   Struts Servlet Request.
+     * @param response  Struts Servelt Response.
+     * @param xdebug    XDebug Object.
+     * @return Struts Action Forward Object.
+     * @throws ProtocolException Protocol Error.
      */
     private ActionForward processRequest(ActionMapping mapping,
             HttpServletRequest request, HttpServletResponse response,
