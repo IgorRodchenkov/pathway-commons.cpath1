@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.26 2007-06-12 16:20:26 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.27 2007-09-11 17:15:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -662,17 +662,15 @@ public class ProtocolRequest implements PagedResult {
         if (maxHits != null) {
             list.add(new NameValuePair(ARG_MAX_HITS, maxHits));
         }
+        
         if (checkXmlCache == false) {
             list.add(new NameValuePair(ARG_CHECK_XML_CACHE, "0"));
-        } else {
-            list.add(new NameValuePair(ARG_CHECK_XML_CACHE, "1"));
         }
         if (useOptimizedCode == false) {
             list.add(new NameValuePair(ARG_USE_OPTIMIZED_CODE, "0"));
-        } else {
-            list.add(new NameValuePair(ARG_USE_OPTIMIZED_CODE, "1"));
         }
-		// start get_neighbors parameters
+
+        // start get_neighbors parameters
 		if (inputIDType != null) {
             list.add(new NameValuePair(ARG_INPUT_ID_TYPE, inputIDType));
 		}
