@@ -39,8 +39,11 @@
     <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
-    <input type="hidden" name="<%= dataSourceName %>" value="<%= dataSourceValue %>"/>
-	<input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
+
+    <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX) { %>
+        <input type="hidden" name="<%= dataSourceName %>" value="<%= dataSourceValue %>"/>
+        <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
+    <% } %>
 
     <% if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) { %>
         <% try { %>
