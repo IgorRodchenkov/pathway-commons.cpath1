@@ -1,4 +1,4 @@
-// $Id: ExecuteXmlResponse.java,v 1.1 2007-09-04 18:21:08 cerami Exp $
+// $Id: ExecuteXmlResponse.java,v 1.2 2007-09-11 17:10:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,15 +62,10 @@ public class ExecuteXmlResponse {
      * @param mapping         Struct Action Mapping Object.
      * @return ActionForward Class.
      * @throws ProtocolException   Protocol Error.
-     * @throws ValidationException XML Validation Error.
-     * @throws MarshalException    XML Marshaling Error.
-     * @throws IOException         I/O Error.
-     * @throws ParseException      XML Parsing Error.
      */
-    public static ActionForward processRequest(XDebug xdebug,
+    public ActionForward processRequest(XDebug xdebug,
             ProtocolRequest protocolRequest, HttpServletRequest request,
-            HttpServletResponse response, ActionMapping mapping) throws ProtocolException,
-            ValidationException, MarshalException, IOException, ParseException {
+            HttpServletResponse response, ActionMapping mapping) throws ProtocolException {
         String xml = null;
         XmlAssembly xmlAssembly = null;
         xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);

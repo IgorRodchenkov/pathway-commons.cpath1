@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.2 2007-09-11 16:18:11 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.3 2007-09-11 17:10:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -123,7 +123,7 @@ public class ExecuteWebApi extends BaseAction {
             //  For XML Responses, we need to display the error within a small XML Error document.
             String returnFormat = protocolRequest.getFormat();
             if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
-                throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+                throw e;
             } else {
                 String xml = e.toXml();
                 WebApiUtil.returnXml(response, xml);
@@ -161,7 +161,8 @@ public class ExecuteWebApi extends BaseAction {
                     ExecuteHtmlResponse task = new ExecuteHtmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
-                    return ExecuteXmlResponse.processRequest(xdebug, protocolRequest, request, response, mapping);
+                    ExecuteXmlResponse task = new ExecuteXmlResponse();
+                    return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 }
 
             } else {
