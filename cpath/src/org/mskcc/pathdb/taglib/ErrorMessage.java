@@ -1,4 +1,4 @@
-// $Id: ErrorMessage.java,v 1.19 2006-12-23 04:19:53 cerami Exp $
+// $Id: ErrorMessage.java,v 1.20 2007-09-11 16:17:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -162,14 +162,19 @@ public class ErrorMessage extends HtmlTable {
         } else if (rootCause instanceof IllegalArgumentException) {
             userMsg = "Illegal or missing argument:  " + rootCause.getMessage();
         }
-        this.append(userMsg);
+        append("<table border='0' cellspacing='2' cellpadding='3' width='100%'>\n" +
+                "<tr class='a'><td>");
+        append(userMsg);
+        append("</td></tr></table>");
     }
 
     /**
      * Outputs Full Diagnostics.
      */
     private void outputDiagnostics(Throwable throwable, Throwable rootCause) {
-        append("<p>Root Cause Message:  "
+        append("<table border='0' cellspacing='2' cellpadding='3' width='100%'>\n" +
+                "<tr class='b'><td>");
+        append("Root Cause Message:  "
                 + rootCause.getMessage());
         append("</p><p>Root Cause Class:  "
                 + rootCause.getClass().getName() +"</p>");
@@ -178,6 +183,7 @@ public class ErrorMessage extends HtmlTable {
         throwable.printStackTrace(pWriter);
         append("<pre>\n"
                 + writer.toString() + "\n</pre>");
+        append("</td></tr></table>");
     }
 
     /**
