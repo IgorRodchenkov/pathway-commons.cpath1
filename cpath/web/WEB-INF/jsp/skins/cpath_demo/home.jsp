@@ -27,7 +27,7 @@ analyzing biological pathways.
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="<%= CPathUIConfig.getWebUIBean().getWebApiVersion() %>"/>
     <input type="text" name="<%= ProtocolRequest.ARG_QUERY %>" size="15"/>
     <input type="submit" value="Search"/>
-    <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstantsVersion1.FORMAT_HTML %>"/>
+    <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
     <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
