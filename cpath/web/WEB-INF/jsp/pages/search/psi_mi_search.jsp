@@ -16,12 +16,8 @@
             request.getAttribute(BaseAction.ATTRIBUTE_INTERACTOR_SET);
 %>
 
-
-<jsp:include page="../../global/redesign/psi-mi/psiMiLeftColumn.jsp" flush="true" />
-<div class="splitcontentright">
 <cbio:interactionTable xmlAssembly="<%= xmlAssembly %>"
     interactorList="<%= interactorList %>"
     protocolRequest="<%= protocolRequest %>"/>
-</div>
 <jsp:include page="../../global/redesign/footer.jsp" flush="true" />
 

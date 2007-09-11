@@ -112,3 +112,11 @@ if (baseAction != null) {
 <div id="content">
 
 <jsp:include page="userMessage.jsp" flush="true" />
+
+<% 
+int webMode = CPathUIConfig.getWebMode();
+
+if (webMode == CPathUIConfig.WEB_MODE_PSI_MI) { %>
+    <jsp:include page="psi-mi/psiMiLeftColumn.jsp" flush="true" />
+    <div class="splitcontentright">
+<% } %>
