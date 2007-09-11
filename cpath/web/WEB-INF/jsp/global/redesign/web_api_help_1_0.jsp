@@ -40,7 +40,7 @@ URL parameters.  Parameters are as follows:
                     Standards Initiative Molecular Interaction (PSI-MI)</a>
                     XML format.
                     </li>
-                    <li><%= ProtocolConstantsVersion1.FORMAT_HTML %>:  Data will be
+                    <li><%= ProtocolConstants.FORMAT_HTML %>:  Data will be
                     formatted in HTML.  This is useful for creating link outs to
                     specific web pages.
                     </li>
@@ -224,7 +224,7 @@ The table below provides a list of error codes, with their
 
 <p>The following query searches for the keyword "DNA".
         Data will be formatted in HTML.
-        <% pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_HTML); %>
+        <% pRequest.setFormat(ProtocolConstants.FORMAT_HTML); %>
 </p>
         <ul>
             <li><small><a href="<%= pRequest.getUri() %>"><%= pRequest.getUri() %></a>

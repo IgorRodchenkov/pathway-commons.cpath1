@@ -1,23 +1,20 @@
-<%@ page import="org.mskcc.pathdb.model.CPathRecordType,
-                 org.mskcc.pathdb.util.security.XssFilter,
-                 org.mskcc.pathdb.protocol.ProtocolRequest,
-                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest,
                  java.util.ArrayList,
                  org.mskcc.pathdb.model.Organism,
                  org.mskcc.pathdb.lucene.OrganismStats,
-                 org.mskcc.pathdb.xdebug.XDebug,
                  java.util.Collections"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants" %>
 <%
     try {
-    ProtocolRequest pRequest = new ProtocolRequest();
-    pRequest.setCommand(ProtocolConstantsVersion1.COMMAND_GET_BY_KEYWORD);
-    pRequest.setFormat(ProtocolConstantsVersion1.FORMAT_HTML);
-    OrganismStats orgStats = new OrganismStats();
-    ArrayList orgList = orgStats.getOrganismsSortedByNumInteractions();
+        ProtocolRequest pRequest = new ProtocolRequest();
+        pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+        pRequest.setFormat(ProtocolConstants.FORMAT_HTML);
+        OrganismStats orgStats = new OrganismStats();
+        ArrayList orgList = orgStats.getOrganismsSortedByNumInteractions();
 
-    //  Clone the ArrayList Locally and Reverse Sort
-    orgList = (ArrayList) orgList.clone();
-    Collections.reverse(orgList);
+        //  Clone the ArrayList Locally and Reverse Sort
+        orgList = (ArrayList) orgList.clone();
+        Collections.reverse(orgList);
 %>
 
 <h3>Quick Browse</h3>
