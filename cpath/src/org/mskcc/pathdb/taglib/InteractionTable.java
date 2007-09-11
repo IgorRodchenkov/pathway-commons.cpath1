@@ -1,4 +1,4 @@
-// $Id: InteractionTable.java,v 1.61 2007-09-04 17:39:08 cerami Exp $
+// $Id: InteractionTable.java,v 1.62 2007-09-11 17:21:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -279,7 +279,7 @@ public class InteractionTable extends HtmlTable {
     private void outputInteractionHeaders(int index) {
         startRow();
         if (targetProtein == null) {
-            append("<th colspan=4>" + currentIndex + ". Interaction</th>");
+            append("<th align=left colspan=4>" + currentIndex + ". Interaction</th>");
             currentIndex++;
         } else {
             append("<th colspan=4>  This Protein interacts with the "
