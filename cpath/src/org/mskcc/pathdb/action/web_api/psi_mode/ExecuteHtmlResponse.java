@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.1 2007-09-04 18:21:08 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.2 2007-09-11 16:18:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,10 +73,15 @@ public class ExecuteHtmlResponse {
      * @throws IOException         I/O Error.
      * @throws ParseException      XML Parsing Error.
      */
-    public static ActionForward processRequest(XDebug xdebug,
+    public ActionForward processRequest(XDebug xdebug,
             ProtocolRequest protocolRequest, HttpServletRequest request,
             HttpServletResponse response, ActionMapping mapping) throws ProtocolException,
             ValidationException, MarshalException, IOException, ParseException {
+
+        xdebug.logMsg(this, "Executing PSI-MI Search");
+
+        //  Set PAGE_IS_SEARCH_RESULT Flag
+        request.setAttribute(BaseAction.PAGE_IS_SEARCH_RESULT, BaseAction.YES);
 
         //  Fetch the PSI-MI XML Assembly w/ search results.
         XmlAssembly xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
@@ -103,11 +108,12 @@ public class ExecuteHtmlResponse {
      * @throws IOException         I/O Error.
      * @throws ParseException      XML Parsing Error.
      */
-    private static ArrayList extractInteractors(XmlAssembly xmlAssembly,
+    private ArrayList extractInteractors(XmlAssembly xmlAssembly,
             ProtocolRequest request, XDebug xdebug) throws MarshalException,
             ValidationException, IOException, ParseException {
         EntrySet entrySet = (EntrySet) xmlAssembly.getXmlObject();
         if (entrySet != null) {
+            xdebug.logMsg (this, "Extracting matching interactors");
             PsiInteractorExtractor interactorExtractor = new PsiInteractorExtractor(entrySet,
                     request.getQuery(), xdebug);
             return interactorExtractor.getSortedInteractors();

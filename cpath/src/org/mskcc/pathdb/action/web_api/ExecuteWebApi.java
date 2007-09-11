@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.1 2007-09-04 18:21:08 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.2 2007-09-11 16:18:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,14 +38,19 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.log4j.Logger;
+import org.apache.lucene.queryParser.ParseException;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.io.IOException;
 
 /**
  * Central controller class for executing all Web API calls and all web search requests.
@@ -75,9 +80,6 @@ public class ExecuteWebApi extends BaseAction {
 
     /**
      * Processes Client Request.
-     */
-    /**
-     * Processes Client Request.
      *
      * @param mapping  Struts ActionMapping Object.
      * @param request  Http Servlet Request.
@@ -91,23 +93,42 @@ public class ExecuteWebApi extends BaseAction {
     private ActionForward processRequest(ActionMapping mapping,
             HttpServletRequest request, HttpServletResponse response,
             XDebug xdebug) throws ProtocolException {
+        WebUIBean webUiBean = CPathUIConfig.getWebUIBean();
         ProtocolRequest protocolRequest = null;
-//        try {
-        //  Execute XssFilter, to prevent cross-site scripting attacks.
-        HashMap parameterMap = XssFilter.filterAllParameters(request.getParameterMap());
+        try {
+            //  Execute XssFilter, to prevent cross-site scripting attacks.
+            HashMap parameterMap = XssFilter.filterAllParameters(request.getParameterMap());
 
-        //  Generate a ProtocolRequest object;  will contain all client parameters for web service API.
-        protocolRequest = new ProtocolRequest(parameterMap);
+            //  Generate a ProtocolRequest object;  will contain all client parameters for web service API.
+            protocolRequest = new ProtocolRequest(parameterMap);
 
-        //  Execute the appropriate query
-        xdebug.logMsg(this, "Executing Web Service API Query:  " + protocolRequest.getUri());
-        //return processQuery(mapping, protocolRequest, request, response, xdebug);
-//        } catch (NeedsHelpException e) {
-//            //  Forward to Help Page;  removing the search result flag enables the correct tab to be shown
-//            //  on the help page.
-//            request.removeAttribute(BaseAction.PAGE_IS_SEARCH_RESULT);
-//            return mapping.findForward(BaseAction.FORWARD_HELP);
-//        }
+            //  Pass ProtocolRequest along to JSP
+            request.setAttribute(ATTRIBUTE_PROTOCOL_REQUEST, protocolRequest);
+            
+            //  Execute the appropriate query
+            xdebug.logMsg(this, "Executing Web Service API Query:  " + protocolRequest.getUri());
+
+            //  Validate the client request;  validation depends on the currently supported Web API Version #.
+            ProtocolValidator validator = new ProtocolValidator(protocolRequest);
+            validator.validate(webUiBean.getWebApiVersion());
+            return processQuery(mapping, protocolRequest, request, response, xdebug);
+        } catch (NeedsHelpException e) {
+            //  Forward to Help Page;  removing the search result flag enables the correct tab to be shown
+            //  on the help page.
+            request.removeAttribute(BaseAction.PAGE_IS_SEARCH_RESULT);
+            return mapping.findForward(BaseAction.FORWARD_HELP);
+        } catch (ProtocolException e) {
+            //  Depending on the type of request, we handle errors differently.
+            //  For HTML Responses, we need to display within a web page.
+            //  For XML Responses, we need to display the error within a small XML Error document.
+            String returnFormat = protocolRequest.getFormat();
+            if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
+                throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            } else {
+                String xml = e.toXml();
+                WebApiUtil.returnXml(response, xml);
+            }
+        }
         return null;
     }
 
@@ -120,50 +141,54 @@ public class ExecuteWebApi extends BaseAction {
      * @param response        Struts Servelt Response.
      * @param xdebug          XDebug Object.
      * @return Struts Action Forward Object.
-     * @throws Exception All Errors.
+     * @throws ProtocolException Protocol or Internal Error.
      */
     private ActionForward processQuery(ActionMapping mapping, ProtocolRequest protocolRequest,
             HttpServletRequest request, HttpServletResponse response,
-            XDebug xdebug) throws Exception {
+            XDebug xdebug) throws ProtocolException {
 
-        //  Create the appropriate protocol validator, based on version # indicated by the client.
-        ProtocolValidator validator = new ProtocolValidator(protocolRequest);
+        try {
+            //  Get requested return format
+            String returnFormat = protocolRequest.getFormat();
 
-        //  Get requested return format
-        String returnFormat = protocolRequest.getFormat();
+            //  First, branch based on WebUI Mode
+            if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
+                xdebug.logMsg(this, "Branching based on web mode:  WEB_MODE_PSI_MI");
 
-        //  First, branch based on WebUI Mode
-        if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
-            xdebug.logMsg(this, "Branching based on web mode:  WEB_MODE_PSI_MI");
-
-            //  Then, branch based on response type
-            if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
-                xdebug.logMsg(this, "Branching based on response type:  HTML");
-                ExecuteHtmlResponse.processRequest(xdebug, protocolRequest, request, response, mapping);
-            } else {
-                ExecuteXmlResponse.processRequest(xdebug, protocolRequest, request, response, mapping);
-            }
-
-        } else {
-            xdebug.logMsg(this, "Branching based on web mode:  WEB_MODE_BIOPAX");
-
-            //  Then, branch based on response type
-            if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
-                xdebug.logMsg(this, "Branching based on response type:  HTML");
-
-            } else if (isResponseText(protocolRequest)) {
-                xdebug.logMsg(this, "Branching based on response type:  TEXT");
-
-                //  Do something else
+                //  Then, branch based on response type
+                if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
+                    xdebug.logMsg(this, "Branching based on response type:  HTML");
+                    ExecuteHtmlResponse task = new ExecuteHtmlResponse();
+                    return task.processRequest(xdebug, protocolRequest, request, response, mapping);
+                } else {
+                    return ExecuteXmlResponse.processRequest(xdebug, protocolRequest, request, response, mapping);
+                }
 
             } else {
-                xdebug.logMsg(this, "Branching based on response type:  XML");
+                xdebug.logMsg(this, "Branching based on web mode:  WEB_MODE_BIOPAX");
 
-                //return processXmlRequest(protocolRequest, response, validator, xdebug);
-
+                //  Then, branch based on response type
+                if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
+                    xdebug.logMsg(this, "Branching based on response type:  HTML");
+                    // TODO:  Branch code here
+                } else if (isResponseText(protocolRequest)) {
+                    xdebug.logMsg(this, "Branching based on response type:  TEXT");
+                    //  TODO:  Branch code here
+                } else {
+                    xdebug.logMsg(this, "Branching based on response type:  XML");
+                    //  TODO:  processXmlRequest(protocolRequest, response, validator, xdebug);
+                }
             }
+            return null;
+        } catch (MarshalException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (ValidationException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (IOException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (ParseException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
         }
-        return null;
     }
 
     /**
