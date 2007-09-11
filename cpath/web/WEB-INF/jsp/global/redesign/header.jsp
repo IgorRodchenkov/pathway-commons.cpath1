@@ -115,8 +115,7 @@ if (baseAction != null) {
 
 <% 
 int webMode = CPathUIConfig.getWebMode();
-
-if (webMode == CPathUIConfig.WEB_MODE_PSI_MI) { %>
+if (webMode == CPathUIConfig.WEB_MODE_PSI_MI && isAdminPage == null) { %>
     <jsp:include page="psi-mi/psiMiLeftColumn.jsp" flush="true" />
     <div class="splitcontentright">
 <% } %>
