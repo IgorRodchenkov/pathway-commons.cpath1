@@ -1,4 +1,4 @@
-// $Id: ExecuteXmlResponse.java,v 1.1 2007-09-04 18:21:08 cerami Exp $
+// $Id: ExecuteXmlResponse.java,v 1.2 2007-09-12 14:26:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,12 +31,62 @@
  **/
 package org.mskcc.pathdb.action.web_api.biopax_mode;
 
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.lucene.queryParser.ParseException;
+import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolException;
+import org.mskcc.pathdb.protocol.ProtocolStatusCode;
+import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.sql.assembly.AssemblyException;
+import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.action.web_api.WebApiUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
- * Created by IntelliJ IDEA.
- * User: cerami
- * Date: Sep 4, 2007
- * Time: 10:16:18 AM
- * To change this template use File | Settings | File Templates.
+ * Process XML Request:  BioPAX Web Mode.
+ *
+ * @author Ethan Cerami, Benjamin Gross.
  */
 public class ExecuteXmlResponse {
+
+    /**
+     * Processes Client Request.
+     * @param xdebug            XDebug Object.
+     * @param protocolRequest   Protocol Request Object.
+     * @param request           Http Servlet Request Object.
+     * @param response          Http Servlet Response Object.
+     * @param mapping           Struts Action Mapping Object.
+     * @return                  Struts Action Forward Object.
+     * @throws org.mskcc.pathdb.sql.query.QueryException       Query Error.
+     * @throws java.io.IOException          I/O Error.
+     * @throws org.mskcc.pathdb.sql.assembly.AssemblyException    XML Assembly Error.
+     * @throws org.apache.lucene.queryParser.ParseException       Lucene Parsing Error.
+     * @throws org.mskcc.pathdb.protocol.ProtocolException    Protocol Error.
+     * @throws org.mskcc.pathdb.sql.dao.DaoException         Database Error.
+     * @throws CloneNotSupportedException   Cloning Error.
+     */
+    public ActionForward processRequest (XDebug xdebug, ProtocolRequest protocolRequest,
+		 HttpServletRequest request, HttpServletResponse response, ActionMapping mapping)
+            throws QueryException, IOException, AssemblyException, ParseException, ProtocolException,
+            DaoException, CloneNotSupportedException {
+        String xml;
+        XmlAssembly xmlAssembly;
+        xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
+        if (xmlAssembly == null || xmlAssembly.isEmpty()) {
+            String q = protocolRequest.getQuery();
+            throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
+                    "No Results Found for:  " + q);
+        }
+        xml = xmlAssembly.getXmlString();
+        WebApiUtil.returnXml(response, xml);
+
+        //  Return null here, because we do not want Struts to do any forwarding.
+        return null;
+    }
 }
