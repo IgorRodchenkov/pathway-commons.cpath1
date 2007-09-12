@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.3 2007-09-11 17:10:47 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.4 2007-09-12 14:17:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,13 +32,14 @@
 package org.mskcc.pathdb.action.web_api;
 
 import org.mskcc.pathdb.action.BaseAction;
-import org.mskcc.pathdb.action.web_api.psi_mode.ExecuteHtmlResponse;
-import org.mskcc.pathdb.action.web_api.psi_mode.ExecuteXmlResponse;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.form.WebUIBean;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -158,10 +159,12 @@ public class ExecuteWebApi extends BaseAction {
                 //  Then, branch based on response type
                 if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
                     xdebug.logMsg(this, "Branching based on response type:  HTML");
-                    ExecuteHtmlResponse task = new ExecuteHtmlResponse();
+                    org.mskcc.pathdb.action.web_api.psi_mode.ExecuteHtmlResponse task =
+                            new org.mskcc.pathdb.action.web_api.psi_mode.ExecuteHtmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
-                    ExecuteXmlResponse task = new ExecuteXmlResponse();
+                    org.mskcc.pathdb.action.web_api.psi_mode.ExecuteXmlResponse task =
+                            new org.mskcc.pathdb.action.web_api.psi_mode.ExecuteXmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 }
 
@@ -171,7 +174,9 @@ public class ExecuteWebApi extends BaseAction {
                 //  Then, branch based on response type
                 if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
                     xdebug.logMsg(this, "Branching based on response type:  HTML");
-                    // TODO:  Branch code here
+                    org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteHtmlResponse task =
+                            new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteHtmlResponse();
+                    return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else if (isResponseText(protocolRequest)) {
                     xdebug.logMsg(this, "Branching based on response type:  TEXT");
                     //  TODO:  Branch code here
@@ -188,6 +193,14 @@ public class ExecuteWebApi extends BaseAction {
         } catch (IOException e) {
             throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (ParseException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (CloneNotSupportedException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (DaoException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (QueryException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (AssemblyException e) {
             throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
         }
     }
