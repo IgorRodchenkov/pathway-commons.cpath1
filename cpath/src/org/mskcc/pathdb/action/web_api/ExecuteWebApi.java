@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.7 2007-09-12 14:41:27 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.8 2007-09-12 14:56:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,6 +40,7 @@ import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -179,7 +180,9 @@ public class ExecuteWebApi extends BaseAction {
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else if (isResponseText(protocolRequest)) {
                     xdebug.logMsg(this, "Branching based on response type:  TEXT");
-                    //  TODO:  Branch code here
+                    org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteTextResponse task =
+                            new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteTextResponse();
+                    return task.processRequeset(xdebug, protocolRequest, request, response, mapping);
                 } else {
                     xdebug.logMsg(this, "Branching based on response type:  XML");
                     org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxResponse task =
@@ -187,7 +190,6 @@ public class ExecuteWebApi extends BaseAction {
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 }
             }
-            return null;
         } catch (MarshalException e) {
             throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (ValidationException e) {
@@ -203,6 +205,8 @@ public class ExecuteWebApi extends BaseAction {
         } catch (QueryException e) {
             throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (AssemblyException e) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+        } catch (BioPaxRecordSummaryException e) {
             throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
         }
     }
