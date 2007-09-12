@@ -1,4 +1,4 @@
-// $Id: ExecuteXmlResponse.java,v 1.2 2007-09-11 17:10:47 cerami Exp $
+// $Id: ExecuteXmlResponse.java,v 1.3 2007-09-12 14:28:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,17 +33,13 @@ package org.mskcc.pathdb.action.web_api.psi_mode;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.lucene.queryParser.ParseException;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.action.web_api.WebApiUtil;
-import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.MarshalException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Process XML Request:  PSI_MI Web Mode.

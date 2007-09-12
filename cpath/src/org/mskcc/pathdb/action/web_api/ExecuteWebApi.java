@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.5 2007-09-12 14:26:49 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.6 2007-09-12 14:28:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -182,8 +182,8 @@ public class ExecuteWebApi extends BaseAction {
                     //  TODO:  Branch code here
                 } else {
                     xdebug.logMsg(this, "Branching based on response type:  XML");
-                    org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteXmlResponse task =
-                            new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteXmlResponse();
+                    org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxResponse task =
+                            new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 }
             }
