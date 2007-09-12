@@ -1,4 +1,4 @@
-// $Id: ExecutePsiMiResponse.java,v 1.2 2007-09-12 14:41:27 cerami Exp $
+// $Id: ExecutePsiMiResponse.java,v 1.3 2007-09-12 14:57:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -57,7 +57,7 @@ public class ExecutePsiMiResponse {
      * @param response        Servlet Response Object.
      * @param mapping         Struct Action Mapping Object.
      * @return ActionForward Class.
-     * @throws ProtocolException   Protocol Error.
+     * @throws ProtocolException Protocol Error.
      */
     public ActionForward processRequest(XDebug xdebug,
             ProtocolRequest protocolRequest, HttpServletRequest request,

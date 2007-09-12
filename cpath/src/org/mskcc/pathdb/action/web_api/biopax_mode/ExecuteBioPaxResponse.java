@@ -1,4 +1,4 @@
-// $Id: ExecuteBioPaxResponse.java,v 1.2 2007-09-12 14:41:27 cerami Exp $
+// $Id: ExecuteBioPaxResponse.java,v 1.3 2007-09-12 14:57:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -57,22 +57,28 @@ public class ExecuteBioPaxResponse {
 
     /**
      * Processes Client Request.
-     * @param xdebug            XDebug Object.
-     * @param protocolRequest   Protocol Request Object.
-     * @param request           Http Servlet Request Object.
-     * @param response          Http Servlet Response Object.
-     * @param mapping           Struts Action Mapping Object.
-     * @return                  Struts Action Forward Object.
-     * @throws org.mskcc.pathdb.sql.query.QueryException       Query Error.
-     * @throws java.io.IOException          I/O Error.
-     * @throws org.mskcc.pathdb.sql.assembly.AssemblyException    XML Assembly Error.
-     * @throws org.apache.lucene.queryParser.ParseException       Lucene Parsing Error.
-     * @throws org.mskcc.pathdb.protocol.ProtocolException    Protocol Error.
-     * @throws org.mskcc.pathdb.sql.dao.DaoException         Database Error.
-     * @throws CloneNotSupportedException   Cloning Error.
+     *
+     * @param xdebug          XDebug Object.
+     * @param protocolRequest Protocol Request Object.
+     * @param request         Http Servlet Request Object.
+     * @param response        Http Servlet Response Object.
+     * @param mapping         Struts Action Mapping Object.
+     * @return Struts Action Forward Object.
+     * @throws org.mskcc.pathdb.sql.query.QueryException
+     *                                    Query Error.
+     * @throws java.io.IOException        I/O Error.
+     * @throws org.mskcc.pathdb.sql.assembly.AssemblyException
+     *                                    XML Assembly Error.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                                    Lucene Parsing Error.
+     * @throws org.mskcc.pathdb.protocol.ProtocolException
+     *                                    Protocol Error.
+     * @throws org.mskcc.pathdb.sql.dao.DaoException
+     *                                    Database Error.
+     * @throws CloneNotSupportedException Cloning Error.
      */
-    public ActionForward processRequest (XDebug xdebug, ProtocolRequest protocolRequest,
-		 HttpServletRequest request, HttpServletResponse response, ActionMapping mapping)
+    public ActionForward processRequest(XDebug xdebug, ProtocolRequest protocolRequest,
+            HttpServletRequest request, HttpServletResponse response, ActionMapping mapping)
             throws QueryException, IOException, AssemblyException, ParseException, ProtocolException,
             DaoException, CloneNotSupportedException {
         String xml;

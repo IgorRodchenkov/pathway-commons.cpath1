@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.3 2007-09-12 14:41:27 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.4 2007-09-12 14:57:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -113,7 +113,7 @@ public class ExecuteHtmlResponse {
             ValidationException, IOException, ParseException {
         EntrySet entrySet = (EntrySet) xmlAssembly.getXmlObject();
         if (entrySet != null) {
-            xdebug.logMsg (this, "Extracting matching interactors");
+            xdebug.logMsg(this, "Extracting matching interactors");
             PsiInteractorExtractor interactorExtractor = new PsiInteractorExtractor(entrySet,
                     request.getQuery(), xdebug);
             return interactorExtractor.getSortedInteractors();

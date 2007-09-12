@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.8 2007-09-12 14:56:45 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.9 2007-09-12 14:57:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -106,7 +106,7 @@ public class ExecuteWebApi extends BaseAction {
 
             //  Pass ProtocolRequest along to JSP
             request.setAttribute(ATTRIBUTE_PROTOCOL_REQUEST, protocolRequest);
-            
+
             //  Execute the appropriate query
             xdebug.logMsg(this, "Executing Web Service API Query:  " + protocolRequest.getUri());
 
@@ -191,23 +191,23 @@ public class ExecuteWebApi extends BaseAction {
                 }
             }
         } catch (MarshalException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (ValidationException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (IOException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (ParseException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (CloneNotSupportedException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (DaoException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (QueryException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (AssemblyException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         } catch (BioPaxRecordSummaryException e) {
-            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
     }
 
