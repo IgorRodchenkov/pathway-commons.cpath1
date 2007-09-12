@@ -88,14 +88,14 @@
 
         <!--  Query / Web Service API -->
         <action path="/webservice"
-            type="org.mskcc.pathdb.action.ExecuteSearch">
+            type="org.mskcc.pathdb.action.web_api.ExecuteWebApi">
             <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
             <forward name="biopax" path="/WEB-INF/jsp/pages/search/biopax_search.jsp"/>
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
         </action>
 
         <action path="/biopax"
-            type="org.mskcc.pathdb.action.ExecuteSearch">
+            type="org.mskcc.pathdb.action.web_api.ExecuteWebApi">
             <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
             <forward name="biopax" path="/WEB-INF/jsp/pages/search/biopax_search.jsp"/>
             <forward name="help" path="/WEB-INF/jsp/pages/Help.jsp"/>
