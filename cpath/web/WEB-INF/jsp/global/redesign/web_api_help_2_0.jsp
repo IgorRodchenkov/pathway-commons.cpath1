@@ -35,7 +35,7 @@ This page provides a quick reference guide to help you get started.
 
 Retrieves all pathways involving a specified physical entity (e.g. protein or small molecule).
 For example, get all pathways involving BRCA2.  Output is a tab-delimited text file,
-designed for easy parsing in your favorite scripting language, such as Perl, Python.
+designed for easy parsing in your favorite scripting language, such as Perl or Python.
 
 <h3>Parameters:</h3>
 
@@ -213,7 +213,7 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 %>
 </ul>
 
-<h3><a name='valid_data_source'>Valid values for the <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter:</h3>
+<h3><a name='valid_data_source'></a>Valid values for the <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter:</h3>
 <ul>
 <%
     for (int i=0; i < snapshotList.size(); i++) {
