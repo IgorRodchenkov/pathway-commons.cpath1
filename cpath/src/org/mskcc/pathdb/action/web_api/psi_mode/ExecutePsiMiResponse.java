@@ -1,4 +1,4 @@
-// $Id: ExecutePsiMiResponse.java,v 1.1 2007-09-12 14:31:53 cerami Exp $
+// $Id: ExecutePsiMiResponse.java,v 1.2 2007-09-12 14:41:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Process XML Request:  PSI_MI Web Mode.
+ * PSI_MI Web Mode:  Response is of type: PSI-MI.
  *
  * @author Ethan Cerami.
  */

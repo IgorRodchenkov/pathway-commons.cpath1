@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.6 2007-09-12 14:28:42 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.7 2007-09-12 14:41:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -163,8 +163,8 @@ public class ExecuteWebApi extends BaseAction {
                             new org.mskcc.pathdb.action.web_api.psi_mode.ExecuteHtmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
-                    org.mskcc.pathdb.action.web_api.psi_mode.ExecuteXmlResponse task =
-                            new org.mskcc.pathdb.action.web_api.psi_mode.ExecuteXmlResponse();
+                    org.mskcc.pathdb.action.web_api.psi_mode.ExecutePsiMiResponse task =
+                            new org.mskcc.pathdb.action.web_api.psi_mode.ExecutePsiMiResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 }
 

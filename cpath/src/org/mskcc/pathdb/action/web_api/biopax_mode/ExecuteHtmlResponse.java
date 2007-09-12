@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.2 2007-09-12 14:17:08 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.3 2007-09-12 14:41:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,7 +59,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * Process HTML Request:  BioPAX Web Mode.
+ * BioPAX Web Mode:  Response is of type HTML.
  *
  * @author Ethan Cerami, Benjamin Gross.
  */

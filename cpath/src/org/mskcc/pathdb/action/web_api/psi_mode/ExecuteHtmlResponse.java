@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.2 2007-09-11 16:18:11 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.3 2007-09-12 14:41:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,7 +52,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Process HTML Request:  PSI_MI Web Mode.
+ * PSI_MI Web Mode:  Response is of type HTML.
  *
  * @author Ethan Cerami.
  */

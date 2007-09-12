@@ -1,4 +1,4 @@
-// $Id: ExecuteBioPaxResponse.java,v 1.1 2007-09-12 14:28:42 cerami Exp $
+// $Id: ExecuteBioPaxResponse.java,v 1.2 2007-09-12 14:41:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,7 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Process XML Request:  BioPAX Web Mode.
+ * BioPAX Web Mode:  Response is of type BioPAX.
  *
  * @author Ethan Cerami, Benjamin Gross.
  */
