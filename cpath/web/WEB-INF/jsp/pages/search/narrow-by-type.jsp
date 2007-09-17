@@ -18,7 +18,7 @@
     HashMap typesMap = BioPaxEntityTypeMap.getCompleteMap();
     typesMap.put(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL,
             GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
-    String keyType = (String) request.getParameter(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME);
+    String keyType = protocolRequest.getEntityType();
     String keyDataSource = (String) request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
 %>
 <%
@@ -38,7 +38,7 @@
                             webUIBean.getWebApiVersion() +
                             "&q=" + protocolRequest.getQuery() +
 			                "&format=html&cmd=get_by_keyword&" +
-			                GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME + "=" + type + "&" +
+			                ProtocolRequest.ARG_ENTITY_TYPE + "=" + type + "&" +
 						    GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource +
 				            "'>" + label +
 				            "</a>" +

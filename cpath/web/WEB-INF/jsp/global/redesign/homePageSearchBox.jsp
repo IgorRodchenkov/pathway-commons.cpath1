@@ -3,12 +3,13 @@
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.mskcc.pathdb.action.BaseAction" %>
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
 String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
 String entityValue =  "ALL_ENTITY_TYPE";
-String entityName = GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME;
+String entityName = ProtocolRequest.ARG_ENTITY_TYPE;
 %>
 <form name="searchbox" action="webservice.do" method="get">
 <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="<%= webUIBean.getWebApiVersion() %>"/>

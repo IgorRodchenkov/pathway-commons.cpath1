@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.27 2007-09-11 17:15:08 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.28 2007-09-17 21:00:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -160,6 +160,13 @@ public class ProtocolRequest implements PagedResult {
 	public static final String ARG_DATA_SOURCE = "data_source";
 
     /**
+     * Entity Type.
+     *
+     * An optional parameter which filters the output by entity type.
+     */
+    public static final String ARG_ENTITY_TYPE = "entity_type";
+
+    /**
      * Command.
      */
     private String command;
@@ -235,6 +242,11 @@ public class ProtocolRequest implements PagedResult {
 	private String dataSource;
 
     /**
+     * Entity Type Parameter.
+     */
+    private String entityType;
+
+    /**
      * EmptyParameterSet.
      */
     private boolean emptyParameterSet;
@@ -302,7 +314,9 @@ public class ProtocolRequest implements PagedResult {
             useOptimizedCode = true;
         }
 
-		// start get_neighbors parameters
+        this.entityType = (String) parameterMap.get(ProtocolRequest.ARG_ENTITY_TYPE);
+
+        // start get_neighbors parameters
 		this.inputIDType = (String)parameterMap.get(ProtocolRequest.ARG_INPUT_ID_TYPE);
 		this.fullyConnected = (String)parameterMap.get(ProtocolRequest.ARG_FULLY_CONNECTED);
 		this.output = (String)parameterMap.get(ProtocolRequest.ARG_OUTPUT);
@@ -606,6 +620,22 @@ public class ProtocolRequest implements PagedResult {
      */
     public void setDataSource(String dataSource) {
         this.dataSource = dataSource;
+    }
+
+    /**
+     * Gets the BioPAX Entity Type.
+     * @return BioPAX Entity Type.
+     */
+    public String getEntityType() {
+        return entityType;
+    }
+
+    /**
+     * Sets the BioPAX Entity Type.
+     * @param entityType BioPAX Entity Type.
+     */
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
     }
 
     /**

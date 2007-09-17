@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.35 2007-09-17 18:40:50 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.36 2007-09-17 21:00:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -274,8 +274,7 @@ public class ExecuteSearch extends BaseAction {
 		GlobalFilterSettings filterSettings = globalFilterSettings.clone();
 
 		// grab user selected entity type, and set it in global settings
-		String userSelectedEntityType =
-			request.getParameter(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME);
+		String userSelectedEntityType = protocolRequest.getEntityType();
 		List<String> typeList = new ArrayList();
 		typeList.add(userSelectedEntityType);
 		filterSettings.setEntityTypeSelected(typeList);
@@ -322,8 +321,7 @@ public class ExecuteSearch extends BaseAction {
 		String userSelectedDataSource =
 			request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
 		// grab user selected entity type
-		String userSelectedEntityType =
-			request.getParameter(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME);
+		String userSelectedEntityType = protocolRequest.getEntityType();
 
 		// we are going to be modifying global filter settings, lets make a clone
 		GlobalFilterSettings filterSettings = globalFilterSettings.clone();

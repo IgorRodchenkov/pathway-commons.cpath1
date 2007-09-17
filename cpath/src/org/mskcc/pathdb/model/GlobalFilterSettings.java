@@ -28,11 +28,6 @@ public class GlobalFilterSettings implements Cloneable {
     public final static int ALL_ORGANISMS_FILTER_VALUE = Integer.MAX_VALUE;
 
     /**
-     * Session / Parameter Argument for Entity Type.
-     */
-    public final static String NARROW_BY_ENTITY_TYPES_FILTER_NAME = "ENTITY_TYPE";
-
-    /**
      * Flag to indicate that users wants _all_ entity types.
      */
     public final static String NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL = "ALL_ENTITY_TYPE";
@@ -87,7 +82,6 @@ public class GlobalFilterSettings implements Cloneable {
 
     /**
      * Is the specified Entity Type currently selected by the user.
-     * // TODO:  Entity Type should be an enumerated value
      * @param entityType Entity Type.
      * @return true or false.
      */
@@ -113,7 +107,6 @@ public class GlobalFilterSettings implements Cloneable {
 
     /**
      * Gets the set of all currently selected entity types.
-     * // TODO:  Update when entity type is an enumerated value.
      * @return Set of String Values.
      */
     public Set<String> getEntityTypeSet() {
@@ -148,7 +141,6 @@ public class GlobalFilterSettings implements Cloneable {
 
     /**
      * Stores all specified entity types as selected.
-     * // TODO:  update when entity type is an enumerated value.
      * @param entityTypes List of Entity Types.
      */
     public void setEntityTypeSelected (List<String> entityTypes) {

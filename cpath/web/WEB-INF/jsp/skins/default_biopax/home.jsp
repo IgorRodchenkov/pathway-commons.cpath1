@@ -5,8 +5,6 @@
 <%@ page import="org.mskcc.pathdb.model.GlobalFilterSettings"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
-String entityValue =  "pathway";
-String entityName = GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME;
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 %>
 

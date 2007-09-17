@@ -50,7 +50,7 @@
     Map<Long,Float> scores = (Map<Long,Float>) request.getAttribute
             (BaseAction.ATTRIBUTE_SCORES);
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
-    String keyType = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME);
+    String keyType = protocolRequest.getEntityType();
     String keyDataSource = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
     // server name
     String serverName = (String)request.getServerName();
@@ -227,7 +227,7 @@ else {
 <%
 	Pager pager = new Pager (protocolRequest, totalNumHits.intValue());
 	out.println("<div class='search_buttons'>");
-	out.println("<srp>" + pager.getHeaderHtmlForSearchPage("white", GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME + "=" + keyType + "&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource) + "</srp>");
+	out.println("<srp>" + pager.getHeaderHtmlForSearchPage("white", ProtocolRequest.ARG_ENTITY_TYPE + "=" + keyType + "&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource) + "</srp>");
 	out.println ("</div>");
 %>
     <table cellpadding="2" cellspacing="0" border="0" width="100%">

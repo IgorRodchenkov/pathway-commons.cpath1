@@ -8,6 +8,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.mskcc.pathdb.protocol.ProtocolRequest;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,7 @@ public class DataSourceListTable extends HtmlTable {
                     append ("<br><a href=\"webservice.do?version=");
                     append (webUIBean.getWebApiVersion());
                     append ("&format=html&cmd=get_by_keyword");
-					append ("&" + GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME + "=ALL_ENTITY_TYPE");
+					append ("&" + ProtocolRequest.ARG_ENTITY_TYPE + "=ALL_ENTITY_TYPE");
 					append ("&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL);
 					append ("&q=data_source%3A" + dbRecord.getMasterTerm() + "\">");
                     append ("Browse</a>");

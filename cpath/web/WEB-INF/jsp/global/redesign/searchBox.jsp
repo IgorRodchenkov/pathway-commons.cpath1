@@ -22,7 +22,7 @@
         taxId = pRequest.getOrganism();
     }
     String entityValue = "ALL_ENTITY_TYPE";
-    String entityName = GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME;
+    String entityName = ProtocolRequest.ARG_ENTITY_TYPE;
     String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
     String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
 %>
