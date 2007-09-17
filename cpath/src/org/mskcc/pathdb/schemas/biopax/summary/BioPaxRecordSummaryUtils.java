@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.51 2007-05-11 17:57:11 grossben Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.52 2007-09-17 18:40:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -75,7 +75,7 @@ public class BioPaxRecordSummaryUtils {
         }
 
         // used to make type more readable
-        BioPaxEntityTypeMap entityTypeMap = new BioPaxEntityTypeMap();
+        HashMap entityTypeMap = BioPaxEntityTypeMap.getCompleteMap();
 
         // get type
         String type = biopaxRecordSummary.getType();

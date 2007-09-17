@@ -1,4 +1,4 @@
-// $Id: BioPaxParentChildTable.java,v 1.20 2006-12-12 19:06:13 grossb Exp $
+// $Id: BioPaxParentChildTable.java,v 1.21 2007-09-17 18:40:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,6 +44,7 @@ import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Custom JSP tag for displaying a list of BioPAX Parent Elements
@@ -56,7 +57,7 @@ public class BioPaxParentChildTable extends HtmlTable {
     private HttpServletRequest request;
     private long cPathId;
     private String currentType;
-    private BioPaxEntityTypeMap map = new BioPaxEntityTypeMap();
+    private HashMap map = BioPaxEntityTypeMap.getCompleteMap();
     private int mode;
     private static final int DEFAULT_NUM_RECORDS = 10;
 

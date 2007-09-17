@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.34 2007-09-04 18:20:03 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.35 2007-09-17 18:40:50 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -338,7 +338,7 @@ public class ExecuteSearch extends BaseAction {
 
 		// setup types map
 		HashMap<String, Integer> hitByTypeMap = new HashMap<String, Integer>();
-		BioPaxEntityTypeMap typesMap = new BioPaxEntityTypeMap();
+		HashMap typesMap = BioPaxEntityTypeMap.getCompleteMap();
 		typesMap.put(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL,
 					 GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
 

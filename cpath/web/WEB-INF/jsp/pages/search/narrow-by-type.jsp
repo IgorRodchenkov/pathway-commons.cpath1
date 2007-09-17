@@ -7,18 +7,19 @@
 <%@ page import="java.util.TreeMap"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="java.util.HashMap" %>
 <%
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
     Map<String, Integer> hitByTypeMap =
-        (Map<String, Integer>)request.getAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP);
-	Map sortedHitByTypeMap = new TreeMap(hitByTypeMap);
-    BioPaxEntityTypeMap typesMap = new BioPaxEntityTypeMap();
+            (Map<String, Integer>) request.getAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP);
+    Map sortedHitByTypeMap = new TreeMap(hitByTypeMap);
+    HashMap typesMap = BioPaxEntityTypeMap.getCompleteMap();
     typesMap.put(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL,
-    GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
-    String keyType = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME);
-    String keyDataSource = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
+            GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
+    String keyType = (String) request.getParameter(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_NAME);
+    String keyDataSource = (String) request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
 %>
 <%
     out.println("<h3>Narrow Results by Type:</h3>");
