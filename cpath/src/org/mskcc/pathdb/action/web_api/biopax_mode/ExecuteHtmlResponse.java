@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.8 2007-09-17 20:20:39 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.9 2007-09-17 20:34:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -95,9 +95,9 @@ public class ExecuteHtmlResponse {
             }
             xdebug.logMsg(this, "User has Global Filter Settings");
             // query by type(s)
-            queryByType(xdebug, request, protocolRequest, filterSettings);
+            int totalHitsAllEntities = queryByType(xdebug, request, protocolRequest, filterSettings);
             // query by data source
-            getDataSourceSummaries(xdebug, request, protocolRequest, filterSettings);
+            getDataSourceSummaries(xdebug, request, protocolRequest, filterSettings, totalHitsAllEntities);
         }
         // outta here
         return mapping.findForward(CPathUIConfig.BIOPAX);
@@ -107,7 +107,8 @@ public class ExecuteHtmlResponse {
      * Query by Data Source(s).
      */
     private void getDataSourceSummaries(XDebug xdebug, HttpServletRequest request,
-            ProtocolRequest protocolRequest, GlobalFilterSettings globalFilterSettings)
+            ProtocolRequest protocolRequest, GlobalFilterSettings globalFilterSettings,
+            int totalHitsAllEntities)
             throws QueryException, DaoException, IOException,
             AssemblyException, ParseException, CloneNotSupportedException {
         xdebug.logMsg(this, "Querying by Data Source");
@@ -127,14 +128,8 @@ public class ExecuteHtmlResponse {
         typeList.add(userSelectedEntityType);
         filterSettings.setEntityTypeSelected(typeList);
 
-        // process all (global) data sources
-        search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
-        search.executeSearch();
-        totalNumberHits = search.getTotalNumHits();
-        if (totalNumberHits > 0) {
-            hitByDataSourceMap.put(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL,
-                    totalNumberHits);
-        }
+        hitByDataSourceMap.put(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL,
+                    totalHitsAllEntities);
 
         Set<Long> snapShotIds = filterSettings.getSnapshotIdSet();
         // we override global filter settings when we narrow by specific type
@@ -161,10 +156,11 @@ public class ExecuteHtmlResponse {
     /**
      * Query by Entity Type.
      */
-    private void queryByType(XDebug xdebug, HttpServletRequest request,
+    private int queryByType(XDebug xdebug, HttpServletRequest request,
             ProtocolRequest protocolRequest, GlobalFilterSettings globalFilterSettings)
             throws QueryException, DaoException, IOException,
             AssemblyException, ParseException, CloneNotSupportedException {
+        int totalHitsAllEntities = 0;
         xdebug.logMsg(this, "Querying by BioPax Entity Type");
 
         // grab data source
@@ -193,6 +189,7 @@ public class ExecuteHtmlResponse {
 
         // interate through all types, and store query hits by type
         for (String type : (Set<String>) typesMap.keySet()) {
+            xdebug.logMsg(this, "Querying by entity type:  " + type);
             // setup global filters setting - types filter
             List<String> typeList = new ArrayList();
             typeList.add(type);
@@ -213,8 +210,12 @@ public class ExecuteHtmlResponse {
             }
             int totalNumberHits = search.getTotalNumHits();
             if (totalNumberHits > 0) hitByTypeMap.put(type, totalNumberHits);
+            if (type.equals(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL)) {
+                totalHitsAllEntities = search.getTotalNumHits();
+            }
         }
         // add hits by record type map to request object
         request.setAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP, hitByTypeMap);
+        return totalHitsAllEntities;
     }
 }
