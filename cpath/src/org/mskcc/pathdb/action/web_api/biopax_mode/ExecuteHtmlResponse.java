@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.7 2007-09-17 20:19:29 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.8 2007-09-17 20:20:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -110,6 +110,7 @@ public class ExecuteHtmlResponse {
             ProtocolRequest protocolRequest, GlobalFilterSettings globalFilterSettings)
             throws QueryException, DaoException, IOException,
             AssemblyException, ParseException, CloneNotSupportedException {
+        xdebug.logMsg(this, "Querying by Data Source");
 
         // needed vars
         int totalNumberHits = 0;
@@ -164,6 +165,7 @@ public class ExecuteHtmlResponse {
             ProtocolRequest protocolRequest, GlobalFilterSettings globalFilterSettings)
             throws QueryException, DaoException, IOException,
             AssemblyException, ParseException, CloneNotSupportedException {
+        xdebug.logMsg(this, "Querying by BioPax Entity Type");
 
         // grab data source
         String userSelectedDataSource =

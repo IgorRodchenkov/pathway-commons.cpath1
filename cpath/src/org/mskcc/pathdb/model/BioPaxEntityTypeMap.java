@@ -1,4 +1,4 @@
-// $Id: BioPaxEntityTypeMap.java,v 1.9 2007-09-17 18:40:24 cerami Exp $
+// $Id: BioPaxEntityTypeMap.java,v 1.10 2007-09-17 20:19:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,29 +52,30 @@ public class BioPaxEntityTypeMap {
     }
 
     /**
-     * Gets the HashMap of all pathway and physical entity BioPAX Entity Types.
+     * Gets the HashMap of indexed entities only.
+     * Includes pathway, protein, small molecule, physical entities.
      * Interaction types are *not* included.
      * @return HashMap Object.
      */
-    public static HashMap getPhysicalEntitiesAndPathwaysOnly() {
+    public static HashMap getIndexedEntitiesOnly() {
         return getMap(false);
     }
 
     /**
      * Creates the appropriate HashMap.
-     * @param includeInteractions   Flag to include/not include interaction types.
+     * @param includeAll   Flag to include/not include all entity types types.
      * @return HashMap Object.
      */
-    private static HashMap getMap (boolean includeInteractions) {
+    private static HashMap getMap (boolean includeAll) {
         HashMap map = new HashMap();
-        map.put("complex", "Complex");
         map.put("pathway", "Pathway");
         map.put("protein", "Protein");
-        map.put("rna", "RNA");
-        map.put("dna", "DNA");
         map.put("smallMolecule", "Small Molecule");
         map.put("physicalEntity", "Physical Entity");
-        if (includeInteractions) {
+        if (includeAll) {
+            map.put("complex", "Complex");
+            map.put("rna", "RNA");
+            map.put("dna", "DNA");
             map.put("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
             map.put("transport", "Transport Reaction");
             map.put("complexAssembly", "Complex Assembly");
