@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.6 2007-09-17 18:40:50 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.7 2007-09-17 20:19:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -185,7 +185,7 @@ public class ExecuteHtmlResponse {
 
         // setup types map
         HashMap<String, Integer> hitByTypeMap = new HashMap<String, Integer>();
-        HashMap typesMap = BioPaxEntityTypeMap.getCompleteMap();
+        HashMap typesMap = BioPaxEntityTypeMap.getIndexedEntitiesOnly();
         typesMap.put(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL,
                 GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
 
