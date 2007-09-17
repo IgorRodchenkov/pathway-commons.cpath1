@@ -1,4 +1,4 @@
-// $Id: BioPaxEntityTypeMap.java,v 1.8 2006-12-18 21:44:55 cerami Exp $
+// $Id: BioPaxEntityTypeMap.java,v 1.9 2007-09-17 18:40:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,29 +40,52 @@ import java.util.HashMap;
  *
  * @author Benjamin Gross
  */
-public class BioPaxEntityTypeMap extends HashMap {
+public class BioPaxEntityTypeMap {
 
     /**
-     * Constructor.
+     * Gets the complete HashMap of all BioPAX Entity Types.
+     * Includes all pathways, physical entities and interactions.
+     * @return HashMap Object.
      */
-    public BioPaxEntityTypeMap() {
-        put("complex", "Complex");
-        put("pathway", "Pathway");
-        put("protein", "Protein");
-        put("rna", "RNA");
-        put("dna", "DNA");
-        put("smallMolecule", "Small Molecule");
-        put("physicalEntity", "Physical Entity");
-        put("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
-        put("transport", "Transport Reaction");
-        put("complexAssembly", "Complex Assembly");
-        put("biochemicalReaction", "Biochemical Reaction");
-        put("conversion", "Conversion Reaction");
-        put("modulation", "Modulation Reaction");
-        put("catalysis", "Catalysis Reaction");
-        put("control", "Control Reaction");
-        put("physicalInteraction", "Physical Interaction");
-        put("interaction", "Interaction");
+    public static HashMap getCompleteMap () {
+        return getMap(true);
     }
 
+    /**
+     * Gets the HashMap of all pathway and physical entity BioPAX Entity Types.
+     * Interaction types are *not* included.
+     * @return HashMap Object.
+     */
+    public static HashMap getPhysicalEntitiesAndPathwaysOnly() {
+        return getMap(false);
+    }
+
+    /**
+     * Creates the appropriate HashMap.
+     * @param includeInteractions   Flag to include/not include interaction types.
+     * @return HashMap Object.
+     */
+    private static HashMap getMap (boolean includeInteractions) {
+        HashMap map = new HashMap();
+        map.put("complex", "Complex");
+        map.put("pathway", "Pathway");
+        map.put("protein", "Protein");
+        map.put("rna", "RNA");
+        map.put("dna", "DNA");
+        map.put("smallMolecule", "Small Molecule");
+        map.put("physicalEntity", "Physical Entity");
+        if (includeInteractions) {
+            map.put("transportWithBiochemicalReaction", "Transport with Biochemical Reaction");
+            map.put("transport", "Transport Reaction");
+            map.put("complexAssembly", "Complex Assembly");
+            map.put("biochemicalReaction", "Biochemical Reaction");
+            map.put("conversion", "Conversion Reaction");
+            map.put("modulation", "Modulation Reaction");
+            map.put("catalysis", "Catalysis Reaction");
+            map.put("control", "Control Reaction");
+            map.put("physicalInteraction", "Physical Interaction");
+            map.put("interaction", "Interaction");
+        }
+        return map;
+    }
 }
