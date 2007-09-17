@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.18 2007-05-15 02:19:18 grossben Exp $
+// $Id: QueryUtil.java,v 1.19 2007-09-17 20:27:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -83,9 +83,6 @@ public class QueryUtil {
         int size = pager.getEndIndex() - pager.getStartIndex();
         long cpathIds[] = new long[size];
         int index = 0;
-        xdebug.logMsg(QueryUtil.class, "Extracting hits:  "
-                + pager.getStartIndex()
-                + " - " + pager.getEndIndex());
 
         for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
             Document doc = hits.doc(i);
