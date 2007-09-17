@@ -1,4 +1,4 @@
-// $Id: ExecuteBioPaxResponse.java,v 1.3 2007-09-12 14:57:21 cerami Exp $
+// $Id: ExecuteBioPaxXmlResponse.java,v 1.1 2007-09-17 18:23:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,7 +53,7 @@ import java.io.IOException;
  *
  * @author Ethan Cerami, Benjamin Gross.
  */
-public class ExecuteBioPaxResponse {
+public class ExecuteBioPaxXmlResponse {
 
     /**
      * Processes Client Request.

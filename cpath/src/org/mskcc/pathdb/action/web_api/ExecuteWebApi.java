@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.9 2007-09-12 14:57:21 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.10 2007-09-17 18:23:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -164,8 +164,8 @@ public class ExecuteWebApi extends BaseAction {
                             new org.mskcc.pathdb.action.web_api.psi_mode.ExecuteHtmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
-                    org.mskcc.pathdb.action.web_api.psi_mode.ExecutePsiMiResponse task =
-                            new org.mskcc.pathdb.action.web_api.psi_mode.ExecutePsiMiResponse();
+                    org.mskcc.pathdb.action.web_api.psi_mode.ExecutePsiMiXmlResponse task =
+                            new org.mskcc.pathdb.action.web_api.psi_mode.ExecutePsiMiXmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 }
 
@@ -185,8 +185,8 @@ public class ExecuteWebApi extends BaseAction {
                     return task.processRequeset(xdebug, protocolRequest, request, response, mapping);
                 } else {
                     xdebug.logMsg(this, "Branching based on response type:  XML");
-                    org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxResponse task =
-                            new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxResponse();
+                    org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxXmlResponse task =
+                            new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxXmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 }
             }
