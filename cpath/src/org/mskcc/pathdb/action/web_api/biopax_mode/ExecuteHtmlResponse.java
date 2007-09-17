@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.4 2007-09-12 14:57:21 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.5 2007-09-17 18:24:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,7 +37,6 @@ import org.apache.lucene.queryParser.ParseException;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
-import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
@@ -46,8 +45,6 @@ import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.lucene.LuceneQuery;
 import org.mskcc.pathdb.action.BaseAction;
-import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.MarshalException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,7 +97,7 @@ public class ExecuteHtmlResponse {
             // query by type(s)
             queryByType(xdebug, request, protocolRequest, filterSettings);
             // query by data source
-            queryByDataSource(xdebug, request, protocolRequest, filterSettings);
+            getDataSourceSummaries(xdebug, request, protocolRequest, filterSettings);
         }
         // outta here
         return mapping.findForward(CPathUIConfig.BIOPAX);
@@ -109,7 +106,7 @@ public class ExecuteHtmlResponse {
     /**
      * Query by Data Source(s).
      */
-    private void queryByDataSource(XDebug xdebug, HttpServletRequest request,
+    private void getDataSourceSummaries(XDebug xdebug, HttpServletRequest request,
             ProtocolRequest protocolRequest, GlobalFilterSettings globalFilterSettings)
             throws QueryException, DaoException, IOException,
             AssemblyException, ParseException, CloneNotSupportedException {
