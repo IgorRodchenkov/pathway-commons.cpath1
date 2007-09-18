@@ -35,7 +35,7 @@ public class GlobalFilterSettings implements Cloneable {
     /**
      * Session / Parameter Argument for Data Source.
      */
-    public final static String NARROW_BY_DATA_SOURCES_FILTER_NAME = "NARROW_BY_DATA_SOURCE";
+    public final static String NARROW_BY_DATA_SOURCES_FILTER_NAME = "snapshot_id";
 
     /**
      * Flag to indicate that Data Source selections are stored in the Global Filter Settings.
