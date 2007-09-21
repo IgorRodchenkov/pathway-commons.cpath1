@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.54 2007-03-30 19:10:47 cerami Exp $
+// $Id: IndexLuceneTask.java,v 1.55 2007-09-21 16:56:58 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -182,6 +182,10 @@ public class IndexLuceneTask extends Task {
 
                 for (; startId <= maxId; startId = endId + 1,
                         endId = startId + BLOCK_SIZE) {
+
+					// bug fix - it is possible for endId to go beyond maxId,
+					// in which case records over maxId will be indexed twice
+					if (endId > maxId) endId = maxId;
 
                     con = JdbcUtil.getCPathConnection();
 
