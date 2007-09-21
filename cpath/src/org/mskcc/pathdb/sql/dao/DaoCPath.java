@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.32 2007-04-16 19:19:00 cerami Exp $
+// $Id: DaoCPath.java,v 1.33 2007-09-21 16:54:50 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -57,6 +57,10 @@ public class DaoCPath extends ManagedDAO {
     //  Get Num Entities SQL
     private static final String GET_NUM_ENTITIES_KEY = "GET_NUM_ENTITIES_KEY";
 
+	// Get Num Physical Entities SQL
+    private static final String GET_NUM_PHYSICAL_ENTITIES_KEY =
+		"GET_NUM_PHYSICAL_ENTITIES_KEY";
+
     //  Note added by Ethan (March 26, 2007)
     //  Previously, this SQL query was set to:
     //  "select count(CPATH_ID) from cpath where type = ?";
@@ -64,6 +68,14 @@ public class DaoCPath extends ManagedDAO {
     //  the performance improved dramatically.
     private static final String GET_NUM_ENTITIES =
             "select count(*) from cpath where type = ?";
+
+    // Getting number of physical entities is now separated from 
+	// getting number of pathways and/or interactions because
+	// cpath creates records to merge pe's from multiple databases and  
+	// retains the original records for retrieval.  We need a query to filter 
+	// out the cpath generated records from the entire set of physical entity records.
+	private static final String GET_NUM_PHYSICAL_ENTITIES =
+            "select count(*) from cpath where type = ? and CPATH_GENERATED = 0";
 
     //  Insert SQL
     private static final String INSERT_KEY = "INSERT_KEY";
@@ -152,6 +164,7 @@ public class DaoCPath extends ManagedDAO {
     protected void init() throws DaoException {
         super.init();
         addPreparedStatement(GET_NUM_ENTITIES_KEY, GET_NUM_ENTITIES);
+        addPreparedStatement(GET_NUM_PHYSICAL_ENTITIES_KEY, GET_NUM_PHYSICAL_ENTITIES);
         addPreparedStatement(INSERT_KEY, INSERT);
         addPreparedStatement(GET_MAX_ID_KEY, GET_MAX_ID);
         addPreparedStatement(GET_ALL_KEY, GET_ALL);
@@ -180,7 +193,9 @@ public class DaoCPath extends ManagedDAO {
         ResultSet rs = null;
         try {
             con = getConnection();
-            pstmt = getStatement(con, GET_NUM_ENTITIES_KEY);
+            pstmt = (recordType == CPathRecordType.PHYSICAL_ENTITY) ?
+				getStatement(con, GET_NUM_PHYSICAL_ENTITIES_KEY) :
+				getStatement(con, GET_NUM_ENTITIES_KEY);
             pstmt.setString(1, recordType.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {
