@@ -1,7 +1,7 @@
 package org.mskcc.pathdb.taglib;
 
-import java.util.StringTokenizer;
 import java.util.HashSet;
+import java.util.StringTokenizer;
 
 /**
  * Hack to Parse Reactome Comments.
@@ -13,6 +13,7 @@ public class ReactomeCommentUtil {
 
     /**
      * Massage Reactome Comments.
+     *
      * @param originalComment Original comment.
      * @return massaged HTML comment.
      */
@@ -34,27 +35,27 @@ public class ReactomeCommentUtil {
         if (originalComment.indexOf("<a href") > -1) {
             originalComment = originalComment.replaceAll
                     ("<a href='/electronic_inference.html' target = 'NEW'>",
-                     "<a href='http://reactome.org/electronic_inference.html' target = 'NEW'>");
+                            "<a href='http://reactome.org/electronic_inference.html' target = 'NEW'>");
             originalComment = originalComment.replaceAll("For details on the OrthoMCL system "
-                + "see also:",
-                "For details on the OrthoMCL system see also:  "
-                + "[<A HREF='http://www.ncbi.nlm.nih.gov:80/entrez/query.fcgi?"
-                + "cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=12952885' target='NEW'>"
-                + "Li <I>et al"
-                + "</I> 2003</A>]");
+                    + "see also:",
+                    "For details on the OrthoMCL system see also:  "
+                            + "[<A HREF='http://www.ncbi.nlm.nih.gov:80/entrez/query.fcgi?"
+                            + "cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=12952885' target='NEW'>"
+                            + "Li <I>et al"
+                            + "</I> 2003</A>]");
         }
 
         StringBuffer buf = new StringBuffer();
-        StringTokenizer tokenizer = new StringTokenizer (originalComment, " ");
+        StringTokenizer tokenizer = new StringTokenizer(originalComment, " ");
 
         //  This is a mini hack to parse Reactome comments
         int tokenNum = 0;
         while (tokenizer.hasMoreElements()) {
             String token = (String) tokenizer.nextElement();
             if (isMagicReactomeWord(token) && tokenNum > 0) {
-                buf.append ("<p>");
+                buf.append("<p>");
             }
-            buf.append (token + " ");
+            buf.append(token + " ");
             tokenNum++;
         }
         return buf.toString();
@@ -63,6 +64,7 @@ public class ReactomeCommentUtil {
 
     /**
      * Hack to chop Reactome comments into pieces.
+     *
      * @param originalComment Original comment.
      * @return original comment, chopped up into bite sized pieces.
      */
@@ -71,14 +73,14 @@ public class ReactomeCommentUtil {
             initReactomeWordHack();
         }
         StringBuffer buf = new StringBuffer();
-        StringTokenizer tokenizer = new StringTokenizer (originalComment, " ");
+        StringTokenizer tokenizer = new StringTokenizer(originalComment, " ");
         int tokenNum = 0;
         while (tokenizer.hasMoreElements()) {
             String token = (String) tokenizer.nextElement();
             if (isMagicReactomeWord(token) && tokenNum > 0) {
-                buf.append ("###");
+                buf.append("###");
             }
-            buf.append (token + " ");
+            buf.append(token + " ");
             tokenNum++;
         }
         String temp = buf.toString();
