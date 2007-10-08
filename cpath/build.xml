@@ -65,12 +65,12 @@
     <taskdef resource="checkstyletask.properties"
         classpath="lib/ant/checkstyle-all-3.0.jar"/>
 
-	<!--  ============ Compilation Control Options ======================= -->
+    <!--  ============ Compilation Control Options ======================= -->
   	<property name="compile.debug"       value="true"/>
   	<property name="compile.deprecation" value="false"/>
   	<property name="compile.optimize"    value="true"/>
 
-	<!-- ==================== Compilation Classpath ====================== -->
+    <!-- ==================== Compilation Classpath ====================== -->
  	<path id="compile.classpath">
 		<pathelement path="${build.dir}/WEB-INF/classes"/>
 		<fileset dir="${lib.dir}">
@@ -78,10 +78,16 @@
 		</fileset>
   	</path>
 
+    <!-- For XJC compiler task -->
+    <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+        <classpath refid="compile.classpath" />
+    </taskdef>
+
     <!-- ==================== Clean Target =============================== -->
     <target name="clean"
         description="Deletes all build files and starts fresh.">
         <delete dir="${build.dir}"/>
+        <delete dir="${src.dir}/org/mskcc/pathdb/schemas/search_response"/>        
         <delete dir="ant_eater/reports"/>
         <delete dir="ant_eater/logs"/>
         <delete>
@@ -109,8 +115,19 @@
         <delete dir="xdocs/target"/>        
     </target>
 
+    <!-- Generate package using XJC compiler            -->
+    <target name="bind" depends="prepare" description="Run XJC to generate new packages.">
+        <mkdir dir="${src.dir}/org/mskcc/pathdb/schemas/search_response"/>
+        <xjc schema="xml/SearchResponse.xsd"
+             target="${src.dir}"
+             package="org.mskcc.pathdb.schemas.search_response">
+            <produces dir="${src.dir}/org/mskcc/pathdb/schemas/search_response"/>
+            <arg value="-nv"/>
+        </xjc>
+    </target>
+
     <!-- ==================== Compile Target ==============================-->
-    <target name="compile" depends="prepare"
+    <target name="compile" depends="bind"
         description="Compile all Java source files.">
         <mkdir dir="${build.dir}/WEB-INF/classes"/>
         <javac srcdir="${src.dir}"
