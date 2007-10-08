@@ -140,7 +140,8 @@ public class ExecuteSearchXmlResponse {
         return searchResponse;
     }
 
-    private void setComments(CPathRecord record, SearchHitType searchHit) throws BioPaxRecordSummaryException {
+    private void setComments(CPathRecord record, SearchHitType searchHit)
+            throws BioPaxRecordSummaryException {
         BioPaxRecordSummary recordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
         String comments[] = recordSummary.getComments();
         List<String> commentList = searchHit.getComment();

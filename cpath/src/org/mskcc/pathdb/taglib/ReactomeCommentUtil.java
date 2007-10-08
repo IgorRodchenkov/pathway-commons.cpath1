@@ -60,6 +60,7 @@ public class ReactomeCommentUtil {
         return buf.toString();
     }
 
+
     /**
      * Hack to chop Reactome comments into pieces.
      * @param originalComment Original comment.
