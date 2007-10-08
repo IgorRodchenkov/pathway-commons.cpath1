@@ -60,6 +60,30 @@ public class ReactomeCommentUtil {
         return buf.toString();
     }
 
+    /**
+     * Hack to chop Reactome comments into pieces.
+     * @param originalComment Original comment.
+     * @return original comment, chopped up into bite sized pieces.
+     */
+    public static String[] chopComments(String originalComment) {
+        if (reactomeWordHack == null) {
+            initReactomeWordHack();
+        }
+        StringBuffer buf = new StringBuffer();
+        StringTokenizer tokenizer = new StringTokenizer (originalComment, " ");
+        int tokenNum = 0;
+        while (tokenizer.hasMoreElements()) {
+            String token = (String) tokenizer.nextElement();
+            if (isMagicReactomeWord(token) && tokenNum > 0) {
+                buf.append ("###");
+            }
+            buf.append (token + " ");
+            tokenNum++;
+        }
+        String temp = buf.toString();
+        return temp.split("###");
+    }
+
     private static boolean isMagicReactomeWord(String text) {
         if (reactomeWordHack.contains(text)) {
             return true;
