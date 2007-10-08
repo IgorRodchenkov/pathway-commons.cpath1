@@ -9,26 +9,28 @@ import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoOrganism;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.lucene.LuceneQuery;
 import org.mskcc.pathdb.action.web_api.WebApiUtil;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
-import org.jdom.output.Format;
+import org.mskcc.pathdb.schemas.search_response.*;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
+import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
+import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.taglib.ReactomeCommentUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.Iterator;
+import java.math.BigInteger;
 
 /**
  * Executes Search:  Returns XML.
@@ -61,8 +63,9 @@ public class ExecuteSearchXmlResponse {
      */
     public ActionForward processRequest(XDebug xdebug, ProtocolRequest protocolRequest,
             HttpServletRequest request, HttpServletResponse response, ActionMapping mapping)
-            throws QueryException, IOException, AssemblyException, ParseException, ProtocolException,
-            DaoException, CloneNotSupportedException {
+            throws QueryException, IOException, AssemblyException, ParseException,
+            ProtocolException, DaoException, CloneNotSupportedException, JAXBException,
+            BioPaxRecordSummaryException {
         GlobalFilterSettings filterSettings = new GlobalFilterSettings();
         ArrayList<String> entityTypes = new ArrayList<String>();
         entityTypes.add("protein");
@@ -71,17 +74,36 @@ public class ExecuteSearchXmlResponse {
         long cpathIds[] = search.executeSearch();
         List<List<String>> textFragments = search.getTextFragments();
         if (cpathIds.length > 0) {
-            Document doc = createXmlDocument (search.getTotalNumHits(), cpathIds, textFragments, xdebug);
-            XMLOutputter outputter = new XMLOutputter();
-            outputter.setFormat(Format.getPrettyFormat());
+            SearchResponseType searchResponse = createXmlDocument
+                    (search.getTotalNumHits(), cpathIds, textFragments, xdebug);
             StringWriter writer = new StringWriter();
-            outputter.output(doc, writer);
+            Marshaller marshaller = createMarshaller("org.mskcc.pathdb.schemas.search_response");
+
+            //  Work-around suggested by:
+            //  http://weblogs.java.net/blog/kohsuke/archive/2006/03/why_does_jaxb_p.html
+            QName qName = new QName ("", "search_response");
+            marshaller.marshal(new JAXBElement(qName, SearchResponseType.class, searchResponse),
+                    writer);
             WebApiUtil.returnXml(response, writer.toString());
         } else {
-            throw new ProtocolException (ProtocolStatusCode.NO_RESULTS_FOUND,
+            throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
                     "Sorry.  No results found for:  " + protocolRequest.getQuery() + ".");
         }
         return null;
+    }
+
+    /**
+     * Creates the JAXB Marshaller.
+     * @param schema            Path to XML Schema.
+     * @return                  Marshaller Object.
+     * @throws JAXBException    JAXB Error.
+     */
+    private Marshaller createMarshaller(String schema) throws JAXBException {
+        JAXBContext jc = JAXBContext.newInstance(schema);
+        Marshaller marshaller = jc.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        return marshaller;
     }
 
     /**
@@ -89,80 +111,98 @@ public class ExecuteSearchXmlResponse {
      *
      * @return JDOM Document object.
      */
-    private Document createXmlDocument(int totalNumHits, long cpathIds[], List<List<String>> textFragments,
-            XDebug xdebug)
-            throws DaoException {
-        Document document = new Document();
-        Element rootElement = new Element("search_results");
-        rootElement.setAttribute("total_num_hits", Integer.toString(totalNumHits));
-        document.setRootElement(rootElement);
-        DaoCPath dao = DaoCPath.getInstance();
+    private SearchResponseType createXmlDocument(int totalNumHits, long cpathIds[],
+            List<List<String>> textFragments, XDebug xdebug) throws DaoException,
+            BioPaxRecordSummaryException {
 
-        for (int i=0; i<cpathIds.length; i++) {
+        DaoCPath dao = DaoCPath.getInstance();
+        ObjectFactory factory = new ObjectFactory();
+        SearchResponseType searchResponse = factory.createSearchResponseType();
+
+        //  Set total number of hits
+        searchResponse.setTotalNumHits((long) totalNumHits);
+
+        //  Output search hits
+        List<SearchHitType> searchHits = searchResponse.getSearchHit();
+        for (int i = 0; i < cpathIds.length; i++) {
             long cpathId = cpathIds[i];
             CPathRecord record = dao.getRecordById(cpathId);
-            Element itemElement = new Element ("item");
-            itemElement.setAttribute("local_id", Long.toString(record.getId()));
-            Element nameElement = new Element ("name");
-            nameElement.setText(record.getName());
-            Element typeElement = new Element ("type");
-            typeElement.setText(record.getSpecificType());
-
-            int taxId = record.getNcbiTaxonomyId();
-            Element orgElement = new Element ("organism");
-            if (taxId > 0) {
-                DaoOrganism daoOrganism = new DaoOrganism();
-                Organism org = daoOrganism.getOrganismByTaxonomyId(taxId);
-                orgElement.setText(org.getSpeciesName());
-                orgElement.setAttribute("ncbi_taxonomy_id", Integer.toString(taxId));
-            } else {
-                orgElement.setText("N/A");
-            }
-
-            List<String> fragments = textFragments.get(i);
-            Element fragmentElement = new Element ("excerpt");
-            if (fragments != null && fragments.size() > 0) {
-                String frag = fragments.get(0);
-                fragmentElement.setText(frag);
-            }
-
-            DaoInternalLink daoLinker = new DaoInternalLink();
-            GlobalFilterSettings filter = new GlobalFilterSettings();
-
-            ArrayList parentTypes = daoLinker.getParentTypes(cpathId, -1,
-                    getSnapshotFilter(filter), xdebug);
-
-            itemElement.addContent(nameElement);
-            itemElement.addContent(typeElement);
-            itemElement.addContent(fragmentElement);
-            itemElement.addContent(orgElement);
-
-            for (int j=0; j<parentTypes.size(); j++) {
-                TypeCount typeCount = (TypeCount) parentTypes.get(j);
-                Element typeCountElement = new Element (typeCount.getType());
-                typeCountElement.setText(Integer.toString(typeCount.getCount()));
-                itemElement.addContent(typeCountElement);
-            }
-
-            rootElement.addContent(itemElement);
+            SearchHitType searchHit = factory.createSearchHitType();
+            searchHits.add(searchHit);
+            searchHit.setPrimaryId(record.getId());
+            searchHit.setName(record.getName());
+            searchHit.setEntityType(record.getSpecificType());
+            OrganismType organism = setOrganismInfo(factory, record);
+            searchHit.setOrganism(organism);
+            setComments(record, searchHit);
+            setPathwayInfo(searchHit, cpathId, dao, factory);
         }
-        return document;
+        return searchResponse;
+    }
+
+    private void setComments(CPathRecord record, SearchHitType searchHit) throws BioPaxRecordSummaryException {
+        BioPaxRecordSummary recordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
+        String comments[] = recordSummary.getComments();
+        List<String> commentList = searchHit.getComment();
+        if (comments != null) {
+            for (String comment : comments) {
+                String commentParts[] = ReactomeCommentUtil.chopComments(comment);
+                for (String commentPart:  commentParts) {
+                    commentList.add(commentPart);
+                }
+            }
+        }
     }
 
     /**
-     * Determines the current data source filter.
-     * @param filterSettings        GlobalFilterSettings Object.
-     * @return array of snapshot IDs.
+     * Outputs all pathway info.
      */
-    protected long[] getSnapshotFilter (GlobalFilterSettings filterSettings) {
-        Set snapshotSet = filterSettings.getSnapshotIdSet();
-        long snapshotIds [] = new long[snapshotSet.size()];
-        Iterator snapshotIterator = snapshotSet.iterator();
-        int index = 0;
-        while (snapshotIterator.hasNext()) {
-            Long snapshotId = (Long) snapshotIterator.next();
-            snapshotIds[index++] = snapshotId;
+    private void setPathwayInfo(SearchHitType searchHit, long cpathId, DaoCPath dao,
+            ObjectFactory factory) throws DaoException {
+        DaoInternalFamily daoFamily = new DaoInternalFamily();
+        PathwayListType pathwayListRoot = factory.createPathwayListType();
+        searchHit.setPathwayList(pathwayListRoot);
+        List<PathwayType> pathwayList = pathwayListRoot.getPathway();
+        long pathwayIds[] = daoFamily.getAncestorIds(cpathId, CPathRecordType.PATHWAY);
+        for (int j=0; j<pathwayIds.length; j++) {
+            CPathRecord pathwayRecord = dao.getRecordById(pathwayIds[j]);
+            PathwayType pathway = factory.createPathwayType();
+            pathway.setName(pathwayRecord.getName());
+            pathway.setPrimaryId(pathwayRecord.getId());
+
+            DataSourceType dataSource = factory.createDataSourceType();
+            long snapshotId = pathwayRecord.getSnapshotId();
+            DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
+            ExternalDatabaseSnapshotRecord snapshotRecord =
+                    daoSnapshot.getDatabaseSnapshot(snapshotId);
+            dataSource.setName(snapshotRecord.getExternalDatabase().getName());
+            pathway.setDataSource(dataSource);
+            pathwayList.add(pathway);
         }
-        return snapshotIds;
+    }
+
+    /**
+     * Outputs all organism info.
+     */
+    private OrganismType setOrganismInfo(ObjectFactory factory, CPathRecord record)
+            throws DaoException {
+        OrganismType organism = factory.createOrganismType();
+        organism.setCommonName("N/A");
+        organism.setSpeciesName("N/A");
+        organism.setNcbiOrganismId(BigInteger.valueOf(-1));
+
+        int taxId = record.getNcbiTaxonomyId();
+        if (taxId > 0) {
+            DaoOrganism daoOrganism = new DaoOrganism();
+            Organism org = daoOrganism.getOrganismByTaxonomyId(taxId);
+            if (org.getSpeciesName() != null && org.getSpeciesName().length() > 0) {
+                organism.setSpeciesName(org.getSpeciesName());
+            }
+            if (org.getCommonName() != null && org.getCommonName().length() > 0) {
+                organism.setCommonName(org.getCommonName());
+            }
+            organism.setNcbiOrganismId(BigInteger.valueOf(taxId));
+        }
+        return organism;
     }
 }
