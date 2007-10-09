@@ -136,6 +136,8 @@ public class ExecuteSearchXmlResponse {
             searchHit.setOrganism(organism);
             setComments(record, searchHit);
             setPathwayInfo(searchHit, cpathId, dao, factory);
+
+            // TODO:  Set Interaction Bundle Information.
         }
         return searchResponse;
     }
@@ -180,6 +182,9 @@ public class ExecuteSearchXmlResponse {
             pathway.setDataSource(dataSource);
             pathwayList.add(pathway);
         }
+        InteractionBundleListType interactionBundleListRoot =
+                factory.createInteractionBundleListType();
+        searchHit.setInteractionBundleList(interactionBundleListRoot);
     }
 
     /**
