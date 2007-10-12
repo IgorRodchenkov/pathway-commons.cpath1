@@ -320,7 +320,7 @@ else {
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
 								"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
-								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) +
+								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + "\"" +
 								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
