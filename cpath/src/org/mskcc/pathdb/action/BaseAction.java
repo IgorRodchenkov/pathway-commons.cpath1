@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.38 2007-10-29 14:41:19 cerami Exp $
+// $Id: BaseAction.java,v 1.39 2007-10-29 14:42:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -259,12 +259,6 @@ public abstract class BaseAction extends Action {
         ActionForward forward = null;
         XDebug xdebug = null;
         try {
-
-            try {
-            Thread.sleep(0);
-            } catch (Exception e) {
-            }
-
             xdebug = new XDebug();
 
             //  Include the Skin init.jsp now
