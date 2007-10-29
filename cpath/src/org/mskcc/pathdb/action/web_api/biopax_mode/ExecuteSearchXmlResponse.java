@@ -70,6 +70,19 @@ public class ExecuteSearchXmlResponse {
         ArrayList<String> entityTypes = new ArrayList<String>();
         entityTypes.add("protein");
         filterSettings.setEntityTypeSelected(entityTypes);
+
+        String q = protocolRequest.getQuery();
+        if (q != null && q.equalsIgnoreCase("test_slow")) {
+            protocolRequest.setQuery("TNF");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+            }
+        } else if (q != null && q.equalsIgnoreCase("test_500")) {
+            throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, "Server is currently "
+               + "down for maintenance");
+        }
+
         LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
         long cpathIds[] = search.executeSearch();
         List<List<String>> textFragments = search.getTextFragments();
@@ -127,6 +140,7 @@ public class ExecuteSearchXmlResponse {
         for (int i = 0; i < cpathIds.length; i++) {
             long cpathId = cpathIds[i];
             CPathRecord record = dao.getRecordById(cpathId);
+            BioPaxRecordSummary recordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
             SearchHitType searchHit = factory.createSearchHitType();
             searchHits.add(searchHit);
             searchHit.setPrimaryId(record.getId());
@@ -134,7 +148,9 @@ public class ExecuteSearchXmlResponse {
             searchHit.setEntityType(record.getSpecificType());
             OrganismType organism = setOrganismInfo(factory, record);
             searchHit.setOrganism(organism);
-            setComments(record, searchHit);
+            setSynonyms(recordSummary, searchHit);
+            setXrefs(recordSummary, searchHit);
+            setComments(recordSummary, searchHit);
             setPathwayInfo(searchHit, cpathId, dao, factory);
 
             // TODO:  Set Interaction Bundle Information.
@@ -142,9 +158,43 @@ public class ExecuteSearchXmlResponse {
         return searchResponse;
     }
 
-    private void setComments(CPathRecord record, SearchHitType searchHit)
+    /**
+     * Sets all External Refs.
+     */
+    private void setXrefs (BioPaxRecordSummary recordSummary, SearchHitType searchHit) {
+        ObjectFactory factory = new ObjectFactory();
+        List <ExternalLinkRecord> xrefs = recordSummary.getExternalLinks();
+        List <XRefType> xrefList = searchHit.getXref();
+        for (ExternalLinkRecord link:  xrefs) {
+            ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
+            String id = link.getLinkedToId();
+            String db = dbRecord.getName();
+            String url = link.getWebLink();
+            XRefType xrefType = factory.createXRefType();
+            xrefType.setDb(db);
+            xrefType.setId(id);
+            if (url != null) {
+                xrefType.setUrl(url);
+            }
+            xrefList.add(xrefType);
+        }
+    }
+
+    /**
+     * Sets all Synonyms.
+     */
+    private void setSynonyms (BioPaxRecordSummary recordSummary, SearchHitType searchHit) {
+        List <String> synonyms = recordSummary.getSynonyms();
+        List <String> synList = searchHit.getSynonym();
+        if (synonyms != null && synonyms.size() > 0) {
+            for (String synonym : synonyms) {
+                synList.add(synonym);
+            }
+        }
+    }
+
+    private void setComments(BioPaxRecordSummary recordSummary, SearchHitType searchHit)
             throws BioPaxRecordSummaryException {
-        BioPaxRecordSummary recordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
         String comments[] = recordSummary.getComments();
         List<String> commentList = searchHit.getComment();
         if (comments != null) {

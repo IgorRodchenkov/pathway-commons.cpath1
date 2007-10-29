@@ -1,4 +1,4 @@
-// $Id: WebApiUtil.java,v 1.2 2007-09-12 14:58:37 cerami Exp $
+// $Id: WebApiUtil.java,v 1.3 2007-10-29 14:41:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,7 @@ import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 
 /**
  * Utility Methods Common to Multiple Web API Calls.
@@ -98,11 +99,12 @@ public class WebApiUtil {
     public static void returnXml(HttpServletResponse response, String xmlString) {
         try {
             response.setContentType("text/xml");
-            PrintWriter writer = response.getWriter();
-            response.setContentLength(xmlString.length());
-            writer.println(xmlString);
-            writer.flush();
-            writer.close();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            out.write(xmlString.getBytes());
+            response.setContentLength(out.size());
+            out.writeTo(response.getOutputStream());
+            out.flush();
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
