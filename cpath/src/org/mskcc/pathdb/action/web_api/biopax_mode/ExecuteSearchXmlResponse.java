@@ -3,6 +3,7 @@ package org.mskcc.pathdb.action.web_api.biopax_mode;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
@@ -38,6 +39,7 @@ import java.math.BigInteger;
  * @author Ethan Cerami
  */
 public class ExecuteSearchXmlResponse {
+    private Logger log = Logger.getLogger(ExecuteSearchXmlResponse.class);
 
     /**
      * Processes Client Request.
@@ -66,6 +68,7 @@ public class ExecuteSearchXmlResponse {
             throws QueryException, IOException, AssemblyException, ParseException,
             ProtocolException, DaoException, CloneNotSupportedException, JAXBException,
             BioPaxRecordSummaryException {
+        log.info ("Processing Search XML Response");
         GlobalFilterSettings filterSettings = new GlobalFilterSettings();
         ArrayList<String> entityTypes = new ArrayList<String>();
         entityTypes.add("protein");
@@ -150,6 +153,7 @@ public class ExecuteSearchXmlResponse {
             searchHit.setOrganism(organism);
             setSynonyms(recordSummary, searchHit);
             setXrefs(recordSummary, searchHit);
+            setExcerpts (textFragments, searchHit, i);
             setComments(recordSummary, searchHit);
             setPathwayInfo(searchHit, cpathId, dao, factory);
 
@@ -189,6 +193,17 @@ public class ExecuteSearchXmlResponse {
         if (synonyms != null && synonyms.size() > 0) {
             for (String synonym : synonyms) {
                 synList.add(synonym);
+            }
+        }
+    }
+
+    private void setExcerpts (List<List<String>> masterTextFragments, SearchHitType searchHit,
+            int i) {
+        List <String> excerptList = searchHit.getExcerpt();
+        List <String> textFragments = masterTextFragments.get(i);
+        if (textFragments != null && textFragments.size() > 0) {
+            for (String excerpt: textFragments) {
+                excerptList.add(excerpt);
             }
         }
     }
