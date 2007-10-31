@@ -650,7 +650,7 @@ This error occurs because cPath stores the complete contents of all imported rec
 \subsubsection{Solution}
 To fix this problem, increase the MySQL setting for \verb+max_allowed_packet+.
 
-The simplest way to do so is to update (or create) a my.cnf configuration file.  For example, the following file (/etc/my.snf) increases the \verb+max_allowed_packet+ to 65M:
+The simplest way to do so is to update (or create) a my.cnf configuration file.  For example, the following file (/etc/my.cnf) increases the \verb+max_allowed_packet+ to 65M:
 
 \begin{verbatim}
 [mysqld]
