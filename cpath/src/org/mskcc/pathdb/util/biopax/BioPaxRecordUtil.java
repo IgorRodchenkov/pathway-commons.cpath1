@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.32 2007-04-30 19:57:10 cerami Exp $
+// $Id: BioPaxRecordUtil.java,v 1.33 2007-11-02 13:12:26 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,8 +41,12 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+import org.mskcc.pathdb.model.Evidence;
+import org.mskcc.pathdb.model.Evidence.Code;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
@@ -50,6 +54,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.ParticipantSummaryComponent;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxFeature;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
@@ -695,4 +700,128 @@ public class BioPaxRecordUtil {
         // made it here
         return false;
     }
+
+	/**
+	 * Method to create an Evidence object given an Element.
+	 *
+	 * @param evidenceElement Element
+	 * @return Evidence
+	 * @throws IOException
+	 * @throws DaoException
+	 * @throws JDOMException
+	 */
+	public static Evidence getEvidence(RdfQuery rdfQuery, Element evidenceElement) throws JDOMException, IOException, DaoException {
+
+		// object to return
+		Evidence evidence = new Evidence();
+
+		// get confidence - skip for now
+
+		// get evidence code
+		List<Evidence.Code> codes = getEvidenceCode(evidenceElement, rdfQuery);
+		if (codes.size() > 0) evidence.setCodes(codes);
+
+		// get xref
+		List<ExternalLinkRecord> xrefs = getXrefs(evidenceElement, rdfQuery);
+		if (xrefs.size() > 0) evidence.setExternalLinks(xrefs);
+
+		// get comment
+		List<String> comments = getListAttribute(evidenceElement, rdfQuery, "COMMENT");
+		if (comments.size() > 0) evidence.setComments(comments);
+
+		// outta here
+		return evidence;
+	}
+
+    /**
+     * Grabs evidence code from evidence element.
+     *
+     * @param evidenceElement Element
+     * @return List<Evidence.Code>
+     * @throws IOException
+     * @throws DAOException
+     * @throws JDOMException
+     */
+    private static List<Evidence.Code> getEvidenceCode(Element evidenceElement, RdfQuery rdfQuery) throws JDOMException, DaoException, IOException {
+
+		// object to return
+		List<Evidence.Code> toReturn = new ArrayList<Evidence.Code>();
+
+		// setup/perform query
+		XPath xpath = XPath.newInstance("bp:EVIDENCE-CODE/*");
+		xpath.addNamespace("bp", evidenceElement.getNamespaceURI());
+		List<Element> evidenceCodes = xpath.selectNodes(evidenceElement);
+
+		if (evidenceCodes != null) {
+			for (Element evidenceCode : evidenceCodes) {
+				Evidence.Code code = new Evidence.Code();
+				// term
+				List<String> terms = getListAttribute(evidenceCode, rdfQuery, "TERM");
+				if (terms.size() > 0) code.setTerms(terms);
+				// xrefs
+				List<ExternalLinkRecord> xrefs = getXrefs(evidenceCode, rdfQuery);
+				if (xrefs.size() > 0) code.setExternalLinks(xrefs);
+				// comment
+				List<String> comments = getListAttribute(evidenceCode, rdfQuery, "COMMENT");
+				if (comments.size() > 0) code.setComments(comments);
+
+				toReturn.add(code);
+			}
+		}
+
+		// outta here
+		return toReturn;
+	}
+
+	private static List<String> getListAttribute(Element e, RdfQuery rdfQuery, String query) throws JDOMException {
+
+		// object to return
+		List<String> toReturn = new ArrayList<String>();
+
+		List<Element> elements = rdfQuery.getNodes(e, query);
+		if (elements != null) {
+			for (Element element : elements) {
+				String text = element.getTextNormalize();
+				if (text != null & text.length() > 0) toReturn.add(text);
+			}
+		}
+
+		// outta here
+		return toReturn;
+	}
+
+	private static List<ExternalLinkRecord> getXrefs(Element e, RdfQuery rdfQuery) throws JDOMException, DaoException, IOException {
+
+		// to return
+		List<ExternalLinkRecord> toReturn = new ArrayList<ExternalLinkRecord>();
+
+		// setup/perform query
+		XPath xpath = XPath.newInstance("bp:XREF/*");
+		xpath.addNamespace("bp", e.getNamespaceURI());
+		List<Element> xrefs = xpath.selectNodes(e);
+
+		if (xrefs != null) {
+			for (Element xref : xrefs) {
+				// id
+				Element id = rdfQuery.getNode(xref, "ID");
+				String idStr = (id != null && id.getTextNormalize().length() > 0) ? 
+					id.getTextNormalize() : null;
+				// db
+				Element db = rdfQuery.getNode(xref, "DB");
+				String dbStr = (db != null && db.getTextNormalize().length() > 0) ? 
+					db.getTextNormalize() : null;
+				if (id != null && db != null) {
+					ExternalLinkRecord link = new ExternalLinkRecord();
+					DaoExternalDb daoExternalDb = new DaoExternalDb();
+					ExternalDatabaseRecord externalDBRecord = daoExternalDb.getRecordByName(dbStr);
+					link.setLinkedToId(idStr);
+					link.setExternalDatabase(externalDBRecord);
+					toReturn.add(link);
+				}
+			}
+		}
+
+		// outta here
+		return toReturn;
+	}
 }
