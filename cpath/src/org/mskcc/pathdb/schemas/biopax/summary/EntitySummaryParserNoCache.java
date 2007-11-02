@@ -5,6 +5,7 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.jdom.input.SAXBuilder;
+import org.mskcc.pathdb.model.Evidence;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
@@ -12,7 +13,10 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.util.rdf.RdfQuery;
+import org.mskcc.pathdb.util.biopax.BioPaxUtil;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +148,13 @@ class EntitySummaryParserNoCache {
         if (entitySummary == null) {
             entitySummary = new EntitySummary();
         }
+		else {
+			try {
+				((InteractionSummary)entitySummary).setEvidence(getInteractionEvidenceInformation(new StringReader(record.getXmlContent())));
+			} catch (Throwable throwable) {
+				throw new EntitySummaryException(throwable);
+			}
+		}
         entitySummary.setSpecificType(record.getSpecificType());
         entitySummary.setId(record.getId());
         entitySummary.setName(record.getName());
@@ -310,4 +321,35 @@ class EntitySummaryParserNoCache {
         // outta here
         return interactionType;
     }
+
+	/**
+	 * Method to extract interaction evidence information.
+	 *
+	 * @return List<Evidence>
+	 * @throws IOException
+	 * @throws DaoException
+	 * @throws JDOMException
+	 */
+	private List<Evidence> getInteractionEvidenceInformation(StringReader reader) throws JDOMException,
+																						 IOException,
+																						 DaoException {
+		// object to return
+		List<Evidence> toReturn = new ArrayList<Evidence>();
+
+        // perform query
+        XPath xpath = XPath.newInstance("/*/bp:EVIDENCE/*");
+        xpath.addNamespace("bp", root.getNamespaceURI());
+        List<Element> elements = xpath.selectNodes(root);
+
+		if (elements != null) {
+			BioPaxUtil bpUtil = new BioPaxUtil(reader);
+			RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
+			for (Element element : elements) {
+				toReturn.add(BioPaxRecordUtil.getEvidence(rdfQuery, element));
+			}
+		}
+
+		// outta here
+		return toReturn;
+	}
 }
