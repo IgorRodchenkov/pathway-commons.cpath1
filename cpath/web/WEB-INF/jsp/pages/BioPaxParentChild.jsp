@@ -1,3 +1,4 @@
+<%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="org.mskcc.pathdb.action.BioPaxParentChild"%>
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
@@ -6,6 +7,7 @@
 <%@ page import="java.util.HashMap"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
+<%@ page import="org.mskcc.pathdb.taglib.ExperimentUtil"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="java.io.IOException"%>
@@ -113,7 +115,7 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
                     interactionSummaryMap, out, debugMode);
             out.println("</span>");
             out.println("</td>");
-            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap, i, detailsTracker));
+            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap, i, detailsTracker, interactionSummary));
         } else {
             out.println(getBioPaxRecordHtml(bpSummary, referenceMap, i, detailsTracker));
         }
@@ -189,12 +191,13 @@ private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
         buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
             + bpSummary.getLabel() + "</a>");
     }
-    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index, detailsTracker));
+    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index, detailsTracker, null));
     return buf.toString();
 }
 
 private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
-        HashMap<String, Reference> referenceMap, int index, DetailsTracker detailsTracker)
+									 HashMap<String, Reference> referenceMap, int index,
+									 DetailsTracker detailsTracker, InteractionSummary interactionSummary)
         throws DaoException {
     ReferenceUtil refUtil = new ReferenceUtil();
     ArrayList masterList = refUtil.categorize(bpSummary);
@@ -255,6 +258,15 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     } else {
         buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs", ""));
     }
+	if (interactionSummary != null) {
+		List<Evidence> evidenceList = interactionSummary.getEvidence();
+		buf.append(getDetailsHtml(bpSummary.getRecordID(), "experiment", 
+								  ExperimentUtil.getExperimentHtml(evidenceList)));
+		hasDetails = true;
+	}
+	else {
+		buf.append(getDetailsHtml(bpSummary.getRecordID(), "experiment", ""));
+	}
     buf.append("</td></tr>");
     return buf.toString();
 }
