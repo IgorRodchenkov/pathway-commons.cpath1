@@ -7,7 +7,7 @@
 <%@ page import="java.util.HashMap"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
-<%@ page import="org.mskcc.pathdb.taglib.ExperimentUtil"%>
+<%@ page import="org.mskcc.pathdb.taglib.EvidenceUtil"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="java.io.IOException"%>
@@ -260,12 +260,12 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     }
 	if (interactionSummary != null) {
 		List<Evidence> evidenceList = interactionSummary.getEvidence();
-		buf.append(getDetailsHtml(bpSummary.getRecordID(), "experiment", 
-								  ExperimentUtil.getExperimentHtml(evidenceList)));
+		buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence", 
+								  EvidenceUtil.getEvidenceHtml(evidenceList)));
 		hasDetails = true;
 	}
 	else {
-		buf.append(getDetailsHtml(bpSummary.getRecordID(), "experiment", ""));
+		buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence", ""));
 	}
     buf.append("</td></tr>");
     return buf.toString();
