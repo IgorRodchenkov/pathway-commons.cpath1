@@ -1,4 +1,4 @@
-// $Id: InteractionSummary.java,v 1.7 2006-02-27 19:43:35 grossb Exp $
+// $Id: InteractionSummary.java,v 1.8 2007-11-02 13:08:12 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,7 +34,9 @@
 package org.mskcc.pathdb.schemas.biopax.summary;
 
 // imports
+import org.mskcc.pathdb.model.Evidence;
 
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -44,6 +46,11 @@ import java.util.ArrayList;
  * @author Benjamin Gross.
  */
 public class InteractionSummary extends EntitySummary {
+
+	/**
+	 * A ref to an evidence/experiment list.
+	 */
+	protected List<Evidence> evidence;
 
     /**
      * A list of interaction participants.
@@ -66,6 +73,24 @@ public class InteractionSummary extends EntitySummary {
         // init our members
         this.participants = participants;
     }
+
+	/**
+	 * Sets the evidence ref.
+	 *
+	 * @param evidence Evidence
+	 */
+	public void setEvidence(List<Evidence> evidence) {
+		this.evidence = evidence;
+	}
+	
+	/**
+	 * Gets the evidence object.
+	 *
+	 * @return Evidence
+	 */
+	public List<Evidence> getEvidence() {
+		return evidence;
+	}
 
     /**
      * Returns the ArrayList of participants.
