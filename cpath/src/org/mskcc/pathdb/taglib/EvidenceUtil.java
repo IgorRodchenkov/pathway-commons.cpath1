@@ -1,4 +1,4 @@
-// $Id: EvidenceUtil.java,v 1.1 2007-11-02 13:17:26 grossben Exp $
+// $Id: EvidenceUtil.java,v 1.2 2007-11-02 15:33:08 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,7 +35,9 @@ import org.mskcc.pathdb.model.Evidence;
 import org.mskcc.pathdb.model.Evidence.Code;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 
+import java.util.Map;
 import java.util.List;
+import java.util.HashMap;
 
 /**
  * Evidence Utility Class.
@@ -53,6 +55,7 @@ public class EvidenceUtil {
 
 		// buffer to return
         StringBuffer html = new StringBuffer("");
+		Map<String,String> links = new HashMap<String,String>();
 
         // iterate over list of evidence list
 		if (evidenceList.size() > 0) {
@@ -72,18 +75,24 @@ public class EvidenceUtil {
 				if (externalLinkRecord == null) continue;
 				String uri = (externalLinkRecord.getWebLink() == null) ? "" :
 					externalLinkRecord.getWebLink();
-				// evidence code
+				// evidence code/terms
+				String terms = "";
 				for (Evidence.Code code : evidence.getCodes()) {
-					html.append("<li>");
-					String terms = "";
 					for (String term : code.getTerms()) {
-						terms += term + " ;";
+						terms += term + "; ";
 					}
-					terms = terms.replaceAll(" ;$", "");
-					uri = (uri == null) ? "" : uri;
-					html.append("[<a href=\"" + uri + "\">" + terms + "</a>]");
-					html.append("</li>\n\r");
+					terms = terms.replaceAll("; $", "");
 				}
+				uri = (uri == null) ? "" : uri;
+				if (links.containsKey(uri)) {
+					terms = links.get(uri) + "; " + terms;
+				}
+				links.put(uri, terms);
+			}
+			for (String uri : links.keySet()) {
+				html.append("<li>");
+				html.append("[<a href=\"" + uri + "\">" + links.get(uri) + "</a>]");
+				html.append("</li>\n\r");
             }
             html.append("</ul>\n\r");
         }
