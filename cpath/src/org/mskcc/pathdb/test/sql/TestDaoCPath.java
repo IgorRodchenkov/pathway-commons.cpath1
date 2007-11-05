@@ -1,4 +1,4 @@
-// $Id: TestDaoCPath.java,v 1.22 2007-04-16 19:21:03 cerami Exp $
+// $Id: TestDaoCPath.java,v 1.23 2007-11-05 16:04:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -80,18 +80,21 @@ public class TestDaoCPath extends TestCase {
         refs[1] = new ExternalReference(DB_NAME_1, DB_ID_1);
 
         //  Test getNumEntities()
-        int numInteractionsBefore = dao.getNumEntities
+        int numInteractorsBefore = dao.getNumEntities
                 (CPathRecordType.PHYSICAL_ENTITY);
 
         //  Test addRecord()
         long cpathId = dao.addRecord(NAME, DESCRIPTION, YEAST_NCBI_ID,
                 CPathRecordType.PHYSICAL_ENTITY, BioPaxConstants.PROTEIN,
-                XmlRecordType.PSI_MI, XML, refs, 99, true);
+                XmlRecordType.PSI_MI, XML, refs, 99, false);
         assertTrue(cpathId > 0);
 
-        int numInteractionsAfter = dao.getNumEntities
+        int numInteractorsAfter = dao.getNumEntities
                 (CPathRecordType.PHYSICAL_ENTITY);
-        assertTrue(numInteractionsAfter > numInteractionsBefore);
+        
+        System.out.println ("Num interactors before:  " + numInteractorsBefore);
+        System.out.println ("Num interactors after:  " + numInteractorsAfter);
+        assertTrue(numInteractorsAfter > numInteractorsBefore);
 
         //  Test getRecordById()
         CPathRecord record = dao.getRecordById(cpathId);
@@ -153,7 +156,7 @@ public class TestDaoCPath extends TestCase {
         assertEquals(DB_ID_1, link.getLinkedToId());
 
         assertEquals (99, record.getSnapshotId());
-        assertEquals (true, record.isCpathGenerated());
+        assertEquals (false, record.isCpathGenerated());
     }
 
     /**
