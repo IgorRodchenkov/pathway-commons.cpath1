@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.12 2007-10-08 20:02:37 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.13 2007-11-06 16:37:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,7 @@ package org.mskcc.pathdb.action.web_api;
 
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteSearchXmlResponse;
+import org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteGetParentsXmlResponse;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.util.security.XssFilter;
@@ -189,6 +190,13 @@ public class ExecuteWebApi extends BaseAction {
                         ProtocolConstants.COMMAND_GET_BY_KEYWORD)) {
                     xdebug.logMsg(this, "Branching based on response type:  Search XML");
                     ExecuteSearchXmlResponse task = new ExecuteSearchXmlResponse();
+                    return task.processRequest(xdebug, protocolRequest, request, response, mapping);
+                } else if (protocolRequest.getCommand() != null && protocolRequest.getCommand().equals(
+                        ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES)) {
+                    xdebug.logMsg(this, "Branching based on response type:  Interaction "
+                            + "Summaries XML");
+                    ExecuteGetParentsXmlResponse task =
+                            new ExecuteGetParentsXmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
                     xdebug.logMsg(this, "Branching based on response type:  BioPAX XML");

@@ -24,6 +24,11 @@ public class ProtocolConstantsVersion2 {
     public static final String COMMAND_GET_PATHWAY_LIST = "get_pathway_list";
 
     /**
+     * Get Pathway List Command.
+     */
+    public static final String COMMAND_GET_PARENT_SUMMARIES = "get_parent_summaries";
+
+    /**
      * ID_LIST Format / Output.
      */
     public static final String FORMAT_ID_LIST = "id_list";
@@ -51,6 +56,7 @@ public class ProtocolConstantsVersion2 {
             validCommands.add(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
             validCommands.add(COMMAND_GET_NEIGHBORS);
             validCommands.add(COMMAND_GET_PATHWAY_LIST);
+            validCommands.add(COMMAND_GET_PARENT_SUMMARIES);
         }
         return validCommands;
     }
