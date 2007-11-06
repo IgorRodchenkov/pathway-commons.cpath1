@@ -32,7 +32,7 @@ class ProtocolValidatorVersion2 {
      */
     public enum ID_Type {
         INPUT_ID_TYPE,
-        OUTPUT_ID_TYPE;
+        OUTPUT_ID_TYPE
     }
 
     /**
@@ -40,7 +40,7 @@ class ProtocolValidatorVersion2 {
      *
      * @param request Protocol Request.
      */
-    ProtocolValidatorVersion2 (ProtocolRequest request) {
+    ProtocolValidatorVersion2(ProtocolRequest request) {
         this.request = request;
     }
 
@@ -50,16 +50,19 @@ class ProtocolValidatorVersion2 {
      * @throws ProtocolException  Indicates Violation of Protocol.
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
-    public void validate () throws ProtocolException, NeedsHelpException {
-        validateCommand();
-        validateVersion();
-        validateIdType(ID_Type.INPUT_ID_TYPE);
-        validateIdType(ID_Type.OUTPUT_ID_TYPE);
-        validateDataSources();
-        validateQuery();
-        validateOutput();
-        // used to validate misc arguments based on given command
-        validateMisc();
+    public void validate() throws ProtocolException, NeedsHelpException {
+        try {
+            validateCommand();
+            validateVersion();
+            validateIdType(ID_Type.INPUT_ID_TYPE);
+            validateIdType(ID_Type.OUTPUT_ID_TYPE);
+            validateDataSources();
+            validateQuery();
+            validateOutput();
+            validateMisc();
+        } catch (DaoException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR);
+        }
     }
 
     /**
@@ -68,74 +71,55 @@ class ProtocolValidatorVersion2 {
      * @throws ProtocolException  Indicates Violation of Protocol.
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
-    private void validateCommand () throws ProtocolException,
+    private void validateCommand() throws ProtocolException,
             NeedsHelpException {
         if (request.getCommand() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_COMMAND
                             + "' is not specified." + ProtocolValidator.HELP_MESSAGE);
-        }
-        HashSet set = constants.getValidCommands();
-        if (!set.contains(request.getCommand())) {
-            throw new ProtocolException(ProtocolStatusCode.BAD_COMMAND,
-                    "Command:  '" + request.getCommand()
-                            + "' is not recognized." + ProtocolValidator.HELP_MESSAGE);
-        }
-        if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
-            throw new NeedsHelpException();
-        }
-        if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
-            throw new NeedsHelpException();
+        } else {
+            HashSet set = constants.getValidCommands();
+            if (!set.contains(request.getCommand())) {
+                throw new ProtocolException(ProtocolStatusCode.BAD_COMMAND,
+                        "Command:  '" + request.getCommand()
+                                + "' is not recognized." + ProtocolValidator.HELP_MESSAGE);
+            } else if (request.getCommand().equals(ProtocolConstants.COMMAND_HELP)) {
+                throw new NeedsHelpException();
+            }
         }
     }
 
     /**
-     * Validates the UID Parameter.
+     * Validates the Query Parameter.
      *
      * @throws ProtocolException Indicates Violation of Protocol.
      */
-    private void validateQuery () throws ProtocolException {
+    private void validateQuery() throws ProtocolException, DaoException {
         String command = request.getCommand();
         String q = request.getQuery();
-        String org = request.getOrganism();
-        boolean qExists = true;
-        boolean organismExists = true;
-        boolean errorFlag = false;
         if (q == null || q.length() == 0) {
-            qExists = false;
-        }
-        if (org == null || org.length() == 0) {
-            organismExists = false;
-        }
-        if (!qExists) {
-            errorFlag = true;
-        }
-        if (command != null && command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
-            if (q != null) {
-                String ids[] = q.split("[\\s]");
-                if (ids.length > ProtocolConstantsVersion2.MAX_NUM_IDS) {
-                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-                            "To prevent overloading of the system, clients are "
-                                    + "restricted to a maximum of "
-                                    + ProtocolConstantsVersion2.MAX_NUM_IDS + " IDs at a time.");
-                }
-            }
-        }
-        if (command != null && command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
-            if (q != null) {
-                try {
-                    Long.parseLong(q);
-                } catch (NumberFormatException e) {
-                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-                            "q must be an integer value.");
-                }
-            }
-        }
-        if (errorFlag) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument:  '" + ProtocolRequest.ARG_QUERY
                             + "' is not specified." + ProtocolValidator.HELP_MESSAGE,
                     "You did not specify a query term.  Please try again.");
+        } else {
+            if (command != null) {
+                if (command.equals (ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
+                    String ids[] = q.split("[\\s]");
+                    if (ids.length > ProtocolConstantsVersion2.MAX_NUM_IDS) {
+                        throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                                "To prevent overloading of the system, clients are "
+                                        + "restricted to a maximum of "
+                                        + ProtocolConstantsVersion2.MAX_NUM_IDS
+                                        + " IDs at a time.");
+                    }
+                } else if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)
+                    || command.equals
+                        (ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES)) {
+                    long cpathId = convertQueryToLong(q);
+                    checkRecordExists(cpathId, q);
+                }
+            }
         }
     }
 
@@ -144,13 +128,12 @@ class ProtocolValidatorVersion2 {
      *
      * @throws ProtocolException Indicates Violation of Protocol.
      */
-    private void validateVersion () throws ProtocolException {
+    private void validateVersion() throws ProtocolException {
         if (request.getVersion() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument: '" + ProtocolRequest.ARG_VERSION
                             + "' is not specified." + ProtocolValidator.HELP_MESSAGE);
-        }
-        if (!request.getVersion().equals(ProtocolConstantsVersion2.VERSION_2)) {
+        } else if (!request.getVersion().equals(ProtocolConstantsVersion2.VERSION_2)) {
             throw new ProtocolException
                     (ProtocolStatusCode.VERSION_NOT_SUPPORTED,
                             "The web service API currently only supports "
@@ -158,7 +141,7 @@ class ProtocolValidatorVersion2 {
         }
     }
 
-    private void validateIdType (ID_Type idType) throws ProtocolException {
+    private void validateIdType(ID_Type idType) throws ProtocolException {
         String command = request.getCommand();
         if (command != null &&
                 (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST) ||
@@ -176,30 +159,30 @@ class ProtocolValidatorVersion2 {
                             buf.append(", ");
                         }
                     }
-					String idTypeStr = (idType == ID_Type.INPUT_ID_TYPE) ?
-						ProtocolRequest.ARG_INPUT_ID_TYPE : ProtocolRequest.ARG_OUTPUT_ID_TYPE;
+                    String idTypeStr = (idType == ID_Type.INPUT_ID_TYPE) ?
+                            ProtocolRequest.ARG_INPUT_ID_TYPE : ProtocolRequest.ARG_OUTPUT_ID_TYPE;
                     throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-												idTypeStr +
-												" must be set to one of the following: " +
-												buf.toString() + ".");
+                            idTypeStr +
+                                    " must be set to one of the following: " +
+                                    buf.toString() + ".");
                 }
             }
         }
     }
 
-    private void validateOutput () throws ProtocolException {
+    private void validateOutput() throws ProtocolException {
         String command = request.getCommand();
 
         if (command != null &&
                 command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
             String output = request.getOutput();
-			if (output == null) {
-				output = ProtocolConstantsVersion1.FORMAT_BIO_PAX;
-				request.setOutput(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
-			}
+            if (output == null) {
+                output = ProtocolConstantsVersion1.FORMAT_BIO_PAX;
+                request.setOutput(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
+            }
             if (output != null &&
-                !output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX) &&
-				!output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_ID_LIST)) {
+                    !output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX) &&
+                    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_ID_LIST)) {
                 throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                         ProtocolRequest.ARG_OUTPUT +
                                 " must be set to one of the following: " +
@@ -216,7 +199,7 @@ class ProtocolValidatorVersion2 {
                                 + "' is not specified." + ProtocolValidator.HELP_MESSAGE,
                         "You did not specify an output format.  Please try again.");
             } else {
-                if (! output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX)) {
+                if (!output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX)) {
                     throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                             ProtocolRequest.ARG_OUTPUT +
                                     " must be set to: " +
@@ -226,27 +209,22 @@ class ProtocolValidatorVersion2 {
         }
     }
 
-    private void validateDataSources
-            () throws ProtocolException {
+    private void validateDataSources() throws ProtocolException, DaoException {
         String command = request.getCommand();
-        try {
-            if (command != null &&
-                    (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST) ||
-                            command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS))) {
-                String dataSources[] = request.getDataSources();
-                if (dataSources != null) {
-                    ArrayList masterTermList = getMasterTermList();
-                    for (int i = 0; i < dataSources.length; i++) {
-                        if (!masterTermList.contains(dataSources[i])) {
-                            throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-                                    ProtocolRequest.ARG_DATA_SOURCE + ": "
-                                            + dataSources[i] + " is not a recognized data source.");
-                        }
+        if (command != null &&
+                (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST) ||
+                        command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS))) {
+            String dataSources[] = request.getDataSources();
+            if (dataSources != null) {
+                ArrayList masterTermList = getMasterTermList();
+                for (int i = 0; i < dataSources.length; i++) {
+                    if (!masterTermList.contains(dataSources[i])) {
+                        throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                                ProtocolRequest.ARG_DATA_SOURCE + ": "
+                                        + dataSources[i] + " is not a recognized data source.");
                     }
                 }
             }
-        } catch (DaoException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR);
         }
     }
 
@@ -264,8 +242,7 @@ class ProtocolValidatorVersion2 {
         return masterTermList;
     }
 
-    private void validateMisc
-            () throws ProtocolException {
+    private void validateMisc() throws ProtocolException, DaoException {
 
         String command = request.getCommand();
 
@@ -276,14 +253,13 @@ class ProtocolValidatorVersion2 {
         }
     }
 
-    private void validateMiscGetNeighborArgs
-            () throws ProtocolException {
+    private void validateMiscGetNeighborArgs() throws ProtocolException, DaoException {
 
         // validate fully connected
         String fullyConnected = request.getFullyConnected();
         if (fullyConnected != null &&
-            !fullyConnected.equalsIgnoreCase("yes") &&
-			!fullyConnected.equalsIgnoreCase("no")) {
+                !fullyConnected.equalsIgnoreCase("yes") &&
+                !fullyConnected.equalsIgnoreCase("no")) {
             throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                     ProtocolRequest.ARG_FULLY_CONNECTED +
                             " must be set to one of the following: yes no.");
@@ -292,46 +268,54 @@ class ProtocolValidatorVersion2 {
         // validate query
         String inputIDTerm = request.getInputIDType();
         String query = request.getQuery();
-        try {
-            if (inputIDTerm == null ||
-                    inputIDTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
-				long recordID;
-				try {
-					recordID = Long.parseLong(query);
-				}
-				catch (NumberFormatException e) {
-                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-												ProtocolRequest.ARG_QUERY +
-												" internal record id: " +
-												query + " cannot contain non-digits.");
-				}
-                DaoCPath daoCPath = DaoCPath.getInstance();
-                CPathRecord record = daoCPath.getRecordById(recordID);
-                if (record == null) {
-                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-												ProtocolRequest.ARG_QUERY +
-												": an internal record with id: " +
-												query + " cannot be found.");
-                }
-            } else if (inputIDTerm != null &&
-                    !inputIDTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
-                DaoExternalDb daoExternalDb = new DaoExternalDb();
-                DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
-                ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByTerm(inputIDTerm);
-                ArrayList externalLinkRecords =
-                        daoExternalLinker.getRecordByDbAndLinkedToId(dbRecord.getId(),
-                                query);
-                if (externalLinkRecords == null || externalLinkRecords.size() == 0) {
-                    throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
-												ProtocolRequest.ARG_QUERY + ": " +
-												" an internal record with the " + inputIDTerm +
-												" external database id: " + query +
-												" cannot be found.");
-                }
+        if (inputIDTerm == null ||
+                inputIDTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
+            long recordID = convertQueryToLong(query);
+            checkRecordExists(recordID, query);
+        } else if (inputIDTerm != null &&
+                !inputIDTerm.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
+            DaoExternalDb daoExternalDb = new DaoExternalDb();
+            DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
+            ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByTerm(inputIDTerm);
+            ArrayList externalLinkRecords =
+                    daoExternalLinker.getRecordByDbAndLinkedToId(dbRecord.getId(),
+                            query);
+            if (externalLinkRecords == null || externalLinkRecords.size() == 0) {
+                throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                        ProtocolRequest.ARG_QUERY + ": " +
+                                " an internal record with the " + inputIDTerm +
+                                " external database id: " + query +
+                                " cannot be found.");
             }
         }
-        catch (DaoException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+    }
+
+    /**
+     * Checks that the specified cpathId exists within the database.
+     */
+    private void checkRecordExists(long cpathId, String query) throws DaoException,
+            ProtocolException {
+        DaoCPath daoCPath = DaoCPath.getInstance();
+        CPathRecord record = daoCPath.getRecordById(cpathId);
+        if (record == null) {
+            throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                    ProtocolRequest.ARG_QUERY + ": an internal record with id: " +
+                            query + " cannot be found.");
         }
+    }
+
+    /**
+     * Checks that the query is an integer value.
+     */
+    private long convertQueryToLong(String q) throws ProtocolException {
+        if (q != null) {
+            try {
+                return Long.parseLong(q);
+            } catch (NumberFormatException e) {
+                throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                        "q must be an integer value.");
+            }
+        }
+        return -1;
     }
 }
