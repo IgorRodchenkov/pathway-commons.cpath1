@@ -87,7 +87,8 @@
     <target name="clean"
         description="Deletes all build files and starts fresh.">
         <delete dir="${build.dir}"/>
-        <delete dir="${src.dir}/org/mskcc/pathdb/schemas/search_response"/>        
+        <delete dir="${src.dir}/org/mskcc/pathdb/schemas/search_response"/>
+        <delete dir="${src.dir}/org/mskcc/pathdb/schemas/summary_response"/>
         <delete dir="ant_eater/reports"/>
         <delete dir="ant_eater/logs"/>
         <delete>
@@ -122,6 +123,13 @@
              target="${src.dir}"
              package="org.mskcc.pathdb.schemas.search_response">
             <produces dir="${src.dir}/org/mskcc/pathdb/schemas/search_response"/>
+            <arg value="-nv"/>
+        </xjc>
+        <mkdir dir="${src.dir}/org/mskcc/pathdb/schemas/summary_response"/>
+        <xjc schema="xml/SummaryResponse.xsd"
+             target="${src.dir}"
+             package="org.mskcc.pathdb.schemas.summary_response">
+            <produces dir="${src.dir}/org/mskcc/pathdb/schemas/summary_response"/>
             <arg value="-nv"/>
         </xjc>
     </target>
