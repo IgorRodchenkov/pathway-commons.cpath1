@@ -75,6 +75,8 @@ public class ExecuteSearchXmlResponse {
         filterSettings.setEntityTypeSelected(entityTypes);
 
         String q = protocolRequest.getQuery();
+
+        //  Special cases, used for local debugging only
         if (q != null && q.equalsIgnoreCase("test_slow")) {
             protocolRequest.setQuery("TNF");
             try {
@@ -123,9 +125,9 @@ public class ExecuteSearchXmlResponse {
     }
 
     /**
-     * Creates JDOM Representation of XML Document.
+     * Creates JAXB Representation of XML Document.
      *
-     * @return JDOM Document object.
+     * @return SearchResponseType Document object.
      */
     private SearchResponseType createXmlDocument(int totalNumHits, long cpathIds[],
             List<List<String>> textFragments, XDebug xdebug) throws DaoException,
@@ -156,8 +158,6 @@ public class ExecuteSearchXmlResponse {
             setExcerpts (textFragments, searchHit, i);
             setComments(recordSummary, searchHit);
             setPathwayInfo(searchHit, cpathId, dao, factory);
-
-            // TODO:  Set Interaction Bundle Information.
         }
         return searchResponse;
     }
