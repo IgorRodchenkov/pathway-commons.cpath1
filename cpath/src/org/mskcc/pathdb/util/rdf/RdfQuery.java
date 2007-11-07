@@ -1,4 +1,4 @@
-// $Id: RdfQuery.java,v 1.6 2006-06-09 19:22:04 cerami Exp $
+// $Id: RdfQuery.java,v 1.7 2007-11-07 15:29:22 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import org.jdom.Element;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -58,6 +59,17 @@ public class RdfQuery {
     public RdfQuery(HashMap rdfMap) {
         this.rdfMap = rdfMap;
     }
+
+	/**
+	 * Convenience method to return
+	 * rdf resource map used to init
+	 * this query instance.
+	 *
+	 * @return Map
+	 */
+	public Map getResourceMap() {
+		return rdfMap;
+	}
 
     /**
      * Gets all Nodes that match the XPath-"lite" Query.
