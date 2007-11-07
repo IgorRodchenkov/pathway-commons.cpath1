@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.33 2007-11-02 13:12:26 grossben Exp $
+// $Id: BioPaxRecordUtil.java,v 1.34 2007-11-07 15:41:39 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -704,6 +704,7 @@ public class BioPaxRecordUtil {
 	/**
 	 * Method to create an Evidence object given an Element.
 	 *
+	 * @param rdfQuery RdfQuery
 	 * @param evidenceElement Element
 	 * @return Evidence
 	 * @throws IOException
@@ -790,24 +791,30 @@ public class BioPaxRecordUtil {
 		return toReturn;
 	}
 
-	private static List<ExternalLinkRecord> getXrefs(Element e, RdfQuery rdfQuery) throws JDOMException, DaoException, IOException {
+	private static List<ExternalLinkRecord> getXrefs(Element e, RdfQuery rdfQuery) throws JDOMException, DaoException, IOException, RuntimeException {
 
 		// to return
 		List<ExternalLinkRecord> toReturn = new ArrayList<ExternalLinkRecord>();
 
 		// setup/perform query
-		XPath xpath = XPath.newInstance("bp:XREF/*");
+		XPath xpath = XPath.newInstance("bp:XREF");
 		xpath.addNamespace("bp", e.getNamespaceURI());
 		List<Element> xrefs = xpath.selectNodes(e);
 
 		if (xrefs != null) {
 			for (Element xref : xrefs) {
+				boolean followedLocalResource = false;
+				Element localElement = getLocalResource(rdfQuery, xref);
+				if (localElement != null) {
+					xref = localElement;
+					followedLocalResource = true;
+				}
 				// id
-				Element id = rdfQuery.getNode(xref, "ID");
+				Element id = rdfQuery.getNode(xref, (followedLocalResource) ? "ID" : "/*/ID");
 				String idStr = (id != null && id.getTextNormalize().length() > 0) ? 
 					id.getTextNormalize() : null;
 				// db
-				Element db = rdfQuery.getNode(xref, "DB");
+				Element db = rdfQuery.getNode(xref, (followedLocalResource) ? "DB" : "/*/DB");
 				String dbStr = (db != null && db.getTextNormalize().length() > 0) ? 
 					db.getTextNormalize() : null;
 				if (id != null && db != null) {
@@ -823,5 +830,28 @@ public class BioPaxRecordUtil {
 
 		// outta here
 		return toReturn;
+	}
+
+	/**
+	 * Method to follow local resource links within a given element.
+	 *
+	 * @param rdfQuery RdfQuery
+	 * @param xref Element
+	 * @returns Element (or null if local resource is not referenced)
+	 */
+	private static Element getLocalResource(RdfQuery rdfQuery, Element xref) {
+
+		Attribute rdfResourceAttribute =
+			xref.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+		String resourceAttributeStr = (rdfResourceAttribute != null) ?
+			rdfResourceAttribute.getValue() : null;
+		if (resourceAttributeStr != null && resourceAttributeStr.startsWith("#CPATH-LOCAL-")) {
+			String uri = RdfUtil.removeHashMark(resourceAttributeStr);
+			xref = (Element) rdfQuery.getResourceMap().get(uri);
+			return xref;
+		}
+
+		// made it here
+		return null;
 	}
 }
