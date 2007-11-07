@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.34 2007-11-07 15:41:39 grossben Exp $
+// $Id: BioPaxRecordUtil.java,v 1.35 2007-11-07 15:42:36 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -791,7 +791,7 @@ public class BioPaxRecordUtil {
 		return toReturn;
 	}
 
-	private static List<ExternalLinkRecord> getXrefs(Element e, RdfQuery rdfQuery) throws JDOMException, DaoException, IOException, RuntimeException {
+	private static List<ExternalLinkRecord> getXrefs(Element e, RdfQuery rdfQuery) throws JDOMException, DaoException, IOException {
 
 		// to return
 		List<ExternalLinkRecord> toReturn = new ArrayList<ExternalLinkRecord>();
