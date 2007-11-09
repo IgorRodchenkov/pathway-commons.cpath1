@@ -1,4 +1,4 @@
-// $Id: EvidenceUtil.java,v 1.2 2007-11-02 15:33:08 grossben Exp $
+// $Id: EvidenceUtil.java,v 1.3 2007-11-09 22:16:57 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,7 +33,10 @@ package org.mskcc.pathdb.taglib;
 
 import org.mskcc.pathdb.model.Evidence;
 import org.mskcc.pathdb.model.Evidence.Code;
+import org.mskcc.pathdb.model.Reference;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
+import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoReference;
 
 import java.util.Map;
 import java.util.List;
@@ -51,14 +54,16 @@ public class EvidenceUtil {
      * @param evidenceList List<Evidence>
      * @return HTML String
      */
-    public static String getEvidenceHtml (List<Evidence> evidenceList) {
+    public static String getEvidenceHtml (List<Evidence> evidenceList) throws DaoException {
 
 		// buffer to return
         StringBuffer html = new StringBuffer("");
 		Map<String,String> links = new HashMap<String,String>();
+		Map<String,String> references = new HashMap<String, String>();
 
         // iterate over list of evidence list
 		if (evidenceList.size() > 0) {
+            DaoReference daoReference = new DaoReference();
 		    html.append("<p><b>Experiment Type:</b></p>\n\r");
             html.append("<ul>\n\r");
             for (Evidence evidence : evidenceList) {
@@ -75,6 +80,9 @@ public class EvidenceUtil {
 				if (externalLinkRecord == null) continue;
 				String uri = (externalLinkRecord.getWebLink() == null) ? "" :
 					externalLinkRecord.getWebLink();
+				// used for pubmed abstract title
+				Reference reference = daoReference.getRecord(externalLinkRecord.getLinkedToId(),
+															 externalLinkRecord.getExternalDatabase().getId());
 				// evidence code/terms
 				String terms = "";
 				for (Evidence.Code code : evidence.getCodes()) {
@@ -88,10 +96,13 @@ public class EvidenceUtil {
 					terms = links.get(uri) + "; " + terms;
 				}
 				links.put(uri, terms);
+				references.put(uri, reference.getReferenceString());
 			}
 			for (String uri : links.keySet()) {
 				html.append("<li>");
-				html.append("[<a href=\"" + uri + "\">" + links.get(uri) + "</a>]");
+				html.append(links.get(uri) +
+							"; " + references.get(uri) + " " +
+							"[<a href=\"" + uri + "\">PubMed</a>]");
 				html.append("</li>\n\r");
             }
             html.append("</ul>\n\r");
