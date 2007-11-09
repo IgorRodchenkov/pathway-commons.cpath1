@@ -1,4 +1,4 @@
-// $Id: DaoReference.java,v 1.4 2006-12-22 18:02:45 grossb Exp $
+// $Id: DaoReference.java,v 1.5 2007-11-09 20:11:58 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Data Access Object to the reference Table.
  *
@@ -67,8 +70,8 @@ public class DaoReference {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement ("INSERT INTO reference (" +
 										  "`REFERENCE_ID`, `YEAR`, `TITLE`, " +
-										  "`AUTHORS`, `SOURCE`, `EXTERNAL_DB_ID`) " +
-										  "VALUES (?,?,?,?,?,?)");
+										  "`AUTHORS`, `SOURCE`, `EXTERNAL_DB_ID`, `IS_EVIDENCE_REF`) " +
+										  "VALUES (?,?,?,?,?,?,?)");
 			// id
 			pstmt.setString(1, ref.getId());
 			// year
@@ -87,6 +90,8 @@ public class DaoReference {
 			DaoExternalDb daoExternalDb = new DaoExternalDb();
 			ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByName(ref.getDatabase());
 			pstmt.setInt(6, dbRecord.getId());
+			// evidence ref boolean
+			pstmt.setInt(7, (ref.isEvidenceReference()) ? 1 : 0);
 			// execute query
 			pstmt.executeUpdate();			  
         } catch (SQLException e) {
@@ -140,6 +145,8 @@ public class DaoReference {
 				DaoExternalDb daoExternalDb = new DaoExternalDb();
 				ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordById(rs.getInt(6));
 				ref.setDatabase(dbRecord.getName());
+				// is evidence ref
+				ref.setIsEvidenceReference((rs.getInt(7) == 1) ? true : false);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -150,6 +157,63 @@ public class DaoReference {
         // outta here
         return ref;
     }
+
+	/**
+	 * Given a db id, returns all reference objects
+	 * that are evidence records in the table for that db.
+	 *
+	 * @param databaseId int
+     * @return List<Reference>
+     * @throws DaoException
+	 */
+    public List<Reference> getEvidenceRecords(int databaseId) throws DaoException {
+
+        // init some local vars
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Reference> references = new ArrayList<Reference>();
+
+        try {
+            // perform the query
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement("select * from reference where " +
+										 "EXTERNAL_DB_ID = ? AND IS_EVIDENCE_REF = 1");
+			pstmt.setInt(1, databaseId);
+            rs = pstmt.executeQuery();
+
+            // set the form object
+            if (rs.next()) {
+				// create new object
+                Reference ref = new Reference();
+				// id
+				ref.setId(rs.getString(1));
+				// year
+				ref.setYear(rs.getString(2));
+				// title
+				ref.setTitle(rs.getString(3));
+				// authors
+				String authors = rs.getString(4);
+				ref.setAuthors(authors.split(AUTHORS_DELIMITER));
+				// source
+				ref.setSource(rs.getString(5));
+				// database name
+				DaoExternalDb daoExternalDb = new DaoExternalDb();
+				ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordById(rs.getInt(6));
+				ref.setDatabase(dbRecord.getName());
+				// is evidence ref
+				ref.setIsEvidenceReference((rs.getInt(7) == 1) ? true : false);
+				references.add(ref);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+
+        // outta here
+        return references;
+	}
 
     /**
      * Deletes Record specified by Reference ID.
