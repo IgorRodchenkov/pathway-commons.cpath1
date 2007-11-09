@@ -1,4 +1,4 @@
-// $Id: TestPopulateReferenceTableTask.java,v 1.5 2007-01-04 15:59:38 cerami Exp $
+// $Id: TestPopulateReferenceTableTask.java,v 1.6 2007-11-09 20:48:20 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -100,7 +100,7 @@ public class TestPopulateReferenceTableTask extends TestCase {
 
 		// fetch the records from the ncbi
 		PopulateReferenceTableTask task = new PopulateReferenceTableTask(true, new XDebug());
-		task.processPubMedBatch(recordsToFetch, new ProgressMonitor());
+		task.processPubMedBatch(recordsToFetch, false, new ProgressMonitor());
 
 		// verify the fetched/data
 		Reference ref;
