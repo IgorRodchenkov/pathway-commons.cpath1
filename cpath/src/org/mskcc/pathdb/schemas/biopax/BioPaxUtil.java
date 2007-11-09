@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.33 2007-05-14 17:48:18 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.34 2007-11-09 20:16:40 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,6 +114,15 @@ public class BioPaxUtil {
         validateAndOrAddExternalReferences(root);
     }
 
+	/**
+	 * Method to return root element of the biopax document.
+	 *
+	 * @return Element
+	 */
+	public Element getRootElement() {
+		return bioPaxDoc.getRootElement();
+	}
+ 
     /**
      * Gets HashMap of All RDF Resources, keyed by RDF ID.
      *
@@ -264,12 +273,13 @@ public class BioPaxUtil {
      * Extracts All Publication XREF Data within the specified Element.
      *
      * @param e JDOM Element.
-     * @return Array of Reference Objects.
+	 * @param query String.
+     * @return List<Reference>.
      * @throws JDOMException JDOM Error.
      */
-    public Reference[] extractPublicationXrefs(Element e)
+    public List<Reference> extractPublicationXrefs(Element e, String query)
             throws JDOMException {
-        XPath xpath = XPath.newInstance("biopax:XREF/biopax:publicationXref");
+		XPath xpath = XPath.newInstance(query);
         xpath.addNamespace("biopax", e.getNamespaceURI());
         List xrefs = xpath.selectNodes(e);
         ArrayList refs = new ArrayList();
@@ -308,8 +318,7 @@ public class BioPaxUtil {
                 refs.add(reference);
             }
         }
-        return (Reference[])
-                refs.toArray(new Reference[refs.size()]);
+        return refs;
     }
 
     /**
