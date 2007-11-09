@@ -178,26 +178,46 @@ public class PopulateReferenceTableTask extends Task {
 			// ok, batch this record and fetch from ncbi if 
 			recordsToFetch.add(linkedToId);
 			if (recordsToFetch.size() == NCBI_BATCH_SIZE) {
-				processPubMedBatch(recordsToFetch, pMonitor);
+				processPubMedBatch(recordsToFetch, false, pMonitor);
+				recordsToFetch = new ArrayList<String>();
+			}
+		}
+
+		// any records left to process ?
+		if (!recordsToFetch.isEmpty()) {
+			processPubMedBatch(recordsToFetch, false, pMonitor);
+		}
+
+		// process evidence records
+		List<Reference> evidenceReferences = daoReference.getEvidenceRecords(dbRecord.getId());
+		for (Reference reference : evidenceReferences) {
+			if (completeReference(reference)) continue;
+			if (reference != null) daoReference.deleteRecordById(reference.getId());
+
+			// ok, batch this record and fetch from ncbi if 
+			recordsToFetch.add(reference.getId());
+			if (recordsToFetch.size() == NCBI_BATCH_SIZE) {
+				processPubMedBatch(recordsToFetch, true, pMonitor);
 				recordsToFetch = new ArrayList<String>();
 			}
 		}
 
 		// any records left to process ?
 		if (recordsToFetch.isEmpty()) return;
-		processPubMedBatch(recordsToFetch, pMonitor);
+		processPubMedBatch(recordsToFetch, true, pMonitor);
 	}
 
 	/**
 	 * Process batch of PubMed records.
 	 *
 	 * @param recordsToFetch List<String>
+	 * @param isEvidenceRecords boolean
 	 * @throws DaoException
 	 * @throws InterruptedException
 	 * @throws IOException
 	 * @throws JDOMException
 	 */
-	public void processPubMedBatch(List<String> recordsToFetch, ProgressMonitor pMonitor)
+	public void processPubMedBatch(List<String> recordsToFetch, boolean isEvidenceRecords, ProgressMonitor pMonitor)
 		throws DaoException, InterruptedException, IOException, JDOMException {
 
 		// construct query
@@ -222,18 +242,19 @@ public class PopulateReferenceTableTask extends Task {
 			new BufferedReader( new InputStreamReader(urlConnection.getInputStream()));
 
 		// parse data
-		parsePubMedData(reader, ncbiURL, pMonitor);
+		parsePubMedData(reader, isEvidenceRecords, ncbiURL, pMonitor);
 	}
 
 	/**
 	 * Parses PubMed data retrieved from NCBI e-fetch web service
 	 *
 	 * @param xml Reader
+	 * @param isEvidenceRecords boolean
 	 * @throws DaoException
 	 * @throws IOException
 	 * @throws JDOMException
 	 */
-	private void parsePubMedData(Reader xml, URL ncbiURL, ProgressMonitor pMonitor)
+	private void parsePubMedData(Reader xml, boolean isEvidenceRecords, URL ncbiURL, ProgressMonitor pMonitor)
             throws DaoException, IOException, JDOMException {
 
         //  setup jdom
@@ -292,6 +313,8 @@ public class PopulateReferenceTableTask extends Task {
                 }
                 // source
 				reference.setSource(constructSourceString(medlineCitationElement));
+				// is evidence flag
+				reference.setIsEvidenceReference(isEvidenceRecords);
 				// add object to db
 				daoReference.addReference(reference);
                 String title = reference.getTitle();
