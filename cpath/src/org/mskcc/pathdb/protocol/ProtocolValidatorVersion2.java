@@ -113,11 +113,11 @@ class ProtocolValidatorVersion2 {
                                         + ProtocolConstantsVersion2.MAX_NUM_IDS
                                         + " IDs at a time.");
                     }
-                } else if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)
-                    || command.equals
-                        (ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES)) {
+                } else if (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES)) {
                     long cpathId = convertQueryToLong(q);
                     checkRecordExists(cpathId, q);
+                } else if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+                    long cPathIds[] = convertQueryToLongs(q);
                 }
             }
         }
@@ -317,5 +317,25 @@ class ProtocolValidatorVersion2 {
             }
         }
         return -1;
+    }
+
+    /**
+     * Checks that the query is an integer value.
+     */
+    private long[] convertQueryToLongs(String q) throws ProtocolException {
+        if (q != null) {
+            try {
+                String idStrs[] = q.split(",");
+                long ids[] = new long[idStrs.length];
+                for (int i=0; i< idStrs.length; i++) {
+                    ids[i] = Long.parseLong(idStrs[i]);
+                }
+                return ids;
+            } catch (NumberFormatException e) {
+                throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                        "q must contain integer values only.");
+            }
+        }
+        return null;
     }
 }

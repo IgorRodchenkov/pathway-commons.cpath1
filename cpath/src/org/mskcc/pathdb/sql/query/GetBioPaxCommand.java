@@ -1,4 +1,4 @@
-// $Id: GetBioPaxCommand.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: GetBioPaxCommand.java,v 1.9 2007-11-09 20:42:33 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,11 +34,14 @@ package org.mskcc.pathdb.sql.query;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolException;
+import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.apache.log4j.Logger;
 
 /**
  * Gets a Complete BioPAX Record from cPath.
@@ -46,6 +49,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
  * @author Ethan Cerami
  */
 class GetBioPaxCommand extends Query {
+    private Logger log = Logger.getLogger(GetBioPaxCommand.class);
     private ProtocolRequest request;
 
     /**
@@ -63,28 +67,32 @@ class GetBioPaxCommand extends Query {
 
         //  Extract the cPath ID
         //  If we get here, the protocol validator has already verified
-        //  that the query parameter is a long number.
-        long id = Long.parseLong(request.getQuery());
-        xdebug.logMsg(this, "Retrieving BioPAX Record with cPath ID:  "
-                + id);
-
-        //  Before proceeding, make sure that the requested record
-        //  is actually of type BioPAX.
-        DaoCPath dao = DaoCPath.getInstance();
-        CPathRecord record = dao.getRecordById(id);
-        if (record == null) {
-            return XmlAssemblyFactory.createEmptyXmlAssembly(xdebug);
-        }
-        XmlRecordType xmlType = record.getXmlType();
-        if (!xmlType.equals(XmlRecordType.BIO_PAX)) {
-            throw new QueryException("cPath Record: " + id
-                    + " is not of type:  BioPAX");
-        }
-        xdebug.logMsg(this, "Checking that record is of type:  BioPAX --> OK");
+        //  that the query parameter has long numbers.
+        long ids[] = convertQueryToLongs(request.getQuery());
+        xdebug.logMsg(this, "Retrieving BioPAX Record with cPath ID(s):  "
+                + request.getQuery());
 
         //  Go ahead and create the assembly.
-        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly
-                (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
+        XmlAssembly assembly = XmlAssemblyFactory.createXmlAssembly(ids, XmlRecordType.BIO_PAX, 1,
+                XmlAssemblyFactory.XML_FULL, true, xdebug);
         return assembly;
+    }
+
+        /**
+     * Checks that the query is an integer value.
+     */
+    private long[] convertQueryToLongs(String q) {
+        if (q != null) {
+            try {
+                String idStrs[] = q.split(",");
+                long ids[] = new long[idStrs.length];
+                for (int i=0; i< idStrs.length; i++) {
+                    ids[i] = Long.parseLong(idStrs[i]);
+                }
+                return ids;
+            } catch (NumberFormatException e) {
+            }
+        }
+        return null;
     }
 }
