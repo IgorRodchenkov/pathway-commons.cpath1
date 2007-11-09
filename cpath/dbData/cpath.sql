@@ -269,5 +269,6 @@ CREATE TABLE `reference` (
 	`AUTHORS` varchar(255) NOT NULL default '',
 	`SOURCE` varchar(255) NOT NULL default '',
 	`EXTERNAL_DB_ID` int(11) NOT NULL default '0',
+	`IS_EVIDENCE_REF` int(1) NOT NULL default '0',
 	PRIMARY KEY (`REFERENCE_ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
