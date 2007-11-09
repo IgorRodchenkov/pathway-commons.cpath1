@@ -1,4 +1,4 @@
-// $Id: Reference.java,v 1.2 2006-12-22 13:42:15 grossb Exp $
+// $Id: Reference.java,v 1.3 2007-11-09 20:12:37 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,6 +55,9 @@ public class Reference {
 
 	// source
 	private String source;
+
+	// evidence reference
+	private boolean isEvidenceReference;
 
     /**
      * Sets the ref id.
@@ -176,4 +179,22 @@ public class Reference {
 			(title + " " + source) : 
 			(database + ":" + id);
 	}
+
+    /**
+     * Sets evidence reference flag.
+     *
+     * @param isEvidenceReference
+     */
+    public void setIsEvidenceReference(boolean isEvidenceReference) {
+        this.isEvidenceReference = isEvidenceReference;
+    }
+
+    /**
+     * Gets the evidence reference flag.
+	 *
+     * @return boolean
+     */
+    public boolean isEvidenceReference() {
+        return isEvidenceReference;
+    }
 }
