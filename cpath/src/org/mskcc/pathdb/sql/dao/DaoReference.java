@@ -1,4 +1,4 @@
-// $Id: DaoReference.java,v 1.5 2007-11-09 20:11:58 grossben Exp $
+// $Id: DaoReference.java,v 1.6 2007-11-10 03:47:57 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -183,7 +183,7 @@ public class DaoReference {
             rs = pstmt.executeQuery();
 
             // set the form object
-            if (rs.next()) {
+            while (rs.next()) {
 				// create new object
                 Reference ref = new Reference();
 				// id
