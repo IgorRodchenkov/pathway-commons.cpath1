@@ -186,13 +186,14 @@ public class PopulateReferenceTableTask extends Task {
 		// any records left to process ?
 		if (!recordsToFetch.isEmpty()) {
 			processPubMedBatch(recordsToFetch, false, pMonitor);
+			recordsToFetch = new ArrayList<String>();
 		}
 
 		// process evidence records
 		List<Reference> evidenceReferences = daoReference.getEvidenceRecords(dbRecord.getId());
 		for (Reference reference : evidenceReferences) {
 			if (completeReference(reference)) continue;
-			if (reference != null) daoReference.deleteRecordById(reference.getId());
+			daoReference.deleteRecordById(reference.getId());
 
 			// ok, batch this record and fetch from ncbi if 
 			recordsToFetch.add(reference.getId());
