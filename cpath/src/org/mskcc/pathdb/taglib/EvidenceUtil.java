@@ -1,4 +1,4 @@
-// $Id: EvidenceUtil.java,v 1.3 2007-11-09 22:16:57 grossben Exp $
+// $Id: EvidenceUtil.java,v 1.4 2007-11-14 15:23:39 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,21 +87,22 @@ public class EvidenceUtil {
 				String terms = "";
 				for (Evidence.Code code : evidence.getCodes()) {
 					for (String term : code.getTerms()) {
-						terms += term + "; ";
+						if (term.length() > 0) {
+							terms += term + "; ";
+						}
 					}
-					terms = terms.replaceAll("; $", "");
 				}
 				uri = (uri == null) ? "" : uri;
 				if (links.containsKey(uri)) {
-					terms = links.get(uri) + "; " + terms;
+					terms = links.get(uri) + terms;
 				}
 				links.put(uri, terms);
-				references.put(uri, reference.getReferenceString());
+				references.put(uri, (reference != null) ? reference.getReferenceString() : "");
 			}
 			for (String uri : links.keySet()) {
 				html.append("<li>");
 				html.append(links.get(uri) +
-							"; " + references.get(uri) + " " +
+							references.get(uri) + " " +
 							"[<a href=\"" + uri + "\">PubMed</a>]");
 				html.append("</li>\n\r");
             }
