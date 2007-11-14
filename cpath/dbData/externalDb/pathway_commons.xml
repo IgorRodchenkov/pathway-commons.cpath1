@@ -77,15 +77,38 @@
     </external_database>
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>HPRD</name>
-        <description>Human Protein Reference Database</description>
-        <home_page_url>http://hprd.org</home_page_url>
+        <description>Human Protein Reference Database (HPRD)</description>
         <entity_url>
-            <url_pattern>http://hprd.org/summary?protein=%ID%&amp;isoform_id=%ID%_1&amp;isoform_name=isoform_1</url_pattern>
-            <sample_id>03554</sample_id>
+            <url_pattern>http://hprd.ibioinformatics.org/hprdId?hprdId=%ID%</url_pattern>
+            <sample_id>01284</sample_id>
         </entity_url>
         <icon_path>HPRD.png</icon_path>
         <controlled_terms>
             <master_term>HPRD</master_term>
+        </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>IntAct</name>
+        <description>IntAct database of protein interaction data</description>
+        <entity_url>
+            <url_pattern>http://www.ebi.ac.uk/intact/search/do/search?searchClass=Protein&amp;view=partner&amp;filter=ac&amp;searchString=%ID%</url_pattern>
+            <sample_id>EBI-366083</sample_id>
+        </entity_url>
+        <icon_path>intact.png</icon_path>
+        <controlled_terms>
+            <master_term>INTACT</master_term>
+        </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>MINT</name>
+        <description>Molecular INTeraction database (MINT)</description>
+        <entity_url>
+            <url_pattern>http://mint.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%</url_pattern>
+            <sample_id>mint_14046</sample_id>
+        </entity_url>
+        <icon_path>mint.png</icon_path>
+        <controlled_terms>
+            <master_term>MINT</master_term>
         </controlled_terms>
     </external_database>
 </external_database_list>
