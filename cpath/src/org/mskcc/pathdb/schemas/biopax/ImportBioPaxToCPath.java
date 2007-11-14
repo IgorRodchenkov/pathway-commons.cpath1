@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.30 2007-11-09 20:15:37 grossben Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.31 2007-11-14 15:24:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -435,10 +435,16 @@ public class ImportBioPaxToCPath {
 		Element root = bpUtil.getRootElement();
 		org.mskcc.pathdb.util.rdf.RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
 		List<Reference> references = new ArrayList<Reference>();
-		List<Element> evidences = rdfQuery.getNodes(root, "evidence");
+		List<Element> evidences = evidences = rdfQuery.getNodes(root, "EVIDENCE");
 		if (evidences != null) {
 			for (Element evidence : evidences) {
 				references.addAll(bpUtil.extractPublicationXrefs(evidence, "biopax:XREF/biopax:publicationXref"));
+			}
+		}
+		evidences = rdfQuery.getNodes(root, "*/EVIDENCE");
+		if (evidences != null) {
+			for (Element evidence : evidences) {
+				references.addAll(bpUtil.extractPublicationXrefs(evidence, "biopax:evidence/biopax:XREF/biopax:publicationXref"));
 			}
 		}
 		if (references.size() > 0) {
