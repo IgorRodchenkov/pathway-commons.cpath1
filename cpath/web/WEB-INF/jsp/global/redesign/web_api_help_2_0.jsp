@@ -17,17 +17,17 @@
 <h1>Web Service API:</h1>
 <p>
 You can programmatically access pathway data via the Web Service API.
-This page provides a quick reference guide to help you get started.
+This page provides a reference guide to help you get started.
 
 <ul>
-<li><a href="#get_pathway_list">[1] Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></a></li>
+<li><a href="#get_pathway_list">[1] Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></a</li>
 <li><a href="#get_neighbors">[2] Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></a></li>
 <li><a href="#get_by_cpath_id">[3] Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></a></li>
-<li><a href="#additional_params">[4] Additional Parameter Details</a></li>
-<li><a href="#errors">[5] Error Codes</a></li>
+<li><a href="#get_by_keyword">[4] Command:  <%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %></a></li>
+<li><a href="#get_summaries">[5]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></a></li>
+<li><a href="#additional_params">[6] Additional Parameter Details</a></li>
+<li><a href="#errors">[7] Error Codes</a></li>
 </ul>
-
-</p>
 
 <h2><a NAME="get_pathway_list"></a>[1]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h2>
 
@@ -90,7 +90,7 @@ column of the tab-delimited text file will contain the keyword:
 
 <h3>Example Query:</h3>
 
-Below is an example query.  Note: this query is not guaranteed to return results.
+Below is an example query.  Note: this query is not guaranteed to return results. <br/>
 
 <a href="webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT%>">
 webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT %>
@@ -179,13 +179,74 @@ An XML file in the Biological Pathway Exchange (<a href="http://biopax.org">BioP
 
 <h3>Example Query:</h3>
 
-Below is an example query.  Note: this query is not guaranteed to return results.
+Below is an example query.  Note: this query is not guaranteed to return results. <br/>
 
 <a href="webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax">
 webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 </a>
 
-<h2><a NAME="additional_params"></a>[4]  Additional Parameter Details:</h2>
+<h2><a NAME="get_by_keyword"></a>[4]  Command:  <%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %></h2>
+
+<h3>Summary:</h3>
+
+Searches all records by keyword, name or external identifier.  For example,
+retrieve a list of all physical entity records that contains the word, "BRCA2".  This command
+currently only search physical entity records, such as proteins and small molecules.
+
+<h3>Parameters:</h3>
+
+<ul>
+<li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %></li>
+<li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a keyword, name or external identifier.</li>
+<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_XML%>
+</ul>
+
+<h3>Output:</h3>
+
+An XML file which follows the <a href="xml/SearchResponse.xsd">SearchResponse.xsd</a> XML Schema
+[<a href="xml/search_response/SearchResponse.xsd.html">Full Documentation</a>].
+
+<h3>Example Query:</h3>
+
+Below is an example query.  Note: this query is not guaranteed to return results.<br/>
+
+<a href="webservice.do?version=2.0&q=BRCA2&format=xml&cmd=get_by_keyword">
+webservice.do?version=2.0&q=BRCA2&output=xml&cmd=get_by_keyword
+</a>
+
+<h2><a NAME="get_summaries"></a>[5]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></h2>
+
+<h3>Summary:</h3>
+
+Retrieves a summary of all records which contain or reference the specified record.  For example, assume
+that internal ID 145 refers to the BRCA2 gene.  If you request
+<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %> for this ID, you will receive a list
+of all interactions and complexes that include BRCA2.
+
+<h3>Parameters:</h3>
+
+<ul>
+<li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></li>
+<li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= an internal identifier, used to identify the physical entity
+    or interaction of interest.</li>
+<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_XML%>
+</ul>
+
+<h3>Output:</h3>
+
+An XML file which follows the <a href="xml/SummaryResponse.xsd">SummaryResponse.xsd</a> XML Schema
+[<a href="xml/summary_response/SummaryResponse.xsd.html">Full Documentation</a>].
+
+<h3>Example Query:</h3>
+
+Below is an example query.  Note: this query is not guaranteed to return results.<br/>
+
+<a href="webservice.do?version=2.0&q=145&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%>">
+webservice.do?version=2.0&q=145&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%></a>
+
+<h2><a NAME="additional_params"></a>[6]  Additional Parameter Details:</h2>
 
 <h3><a name='valid_input_id_type'></a>Valid values for the <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter:</h3>
 <ul>
@@ -225,7 +286,7 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 %>
 </ul>
 
-<h2><a NAME="errors"></a>[5]  Error Codes:</h2>
+<h2><a NAME="errors"></a>[7]  Error Codes:</h2>
 <p>
 An error while processing a request is reported
 as an XML document with information about the error cause
