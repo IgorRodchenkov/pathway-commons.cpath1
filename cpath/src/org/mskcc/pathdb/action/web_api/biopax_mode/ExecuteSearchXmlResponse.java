@@ -141,12 +141,12 @@ public class ExecuteSearchXmlResponse {
         searchResponse.setTotalNumHits((long) totalNumHits);
 
         //  Output search hits
-        List<SearchHitType> searchHits = searchResponse.getSearchHit();
+        List<ExtendedRecordType> searchHits = searchResponse.getSearchHit();
         for (int i = 0; i < cpathIds.length; i++) {
             long cpathId = cpathIds[i];
             CPathRecord record = dao.getRecordById(cpathId);
             BioPaxRecordSummary recordSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
-            SearchHitType searchHit = factory.createSearchHitType();
+            ExtendedRecordType searchHit = factory.createExtendedRecordType();
             searchHits.add(searchHit);
             searchHit.setPrimaryId(record.getId());
             searchHit.setName(record.getName());
@@ -156,7 +156,6 @@ public class ExecuteSearchXmlResponse {
             setSynonyms(recordSummary, searchHit);
             setXrefs(recordSummary, searchHit);
             setExcerpts (textFragments, searchHit, i);
-            setComments(recordSummary, searchHit);
             setPathwayInfo(searchHit, cpathId, dao, factory);
         }
         return searchResponse;
@@ -165,7 +164,7 @@ public class ExecuteSearchXmlResponse {
     /**
      * Sets all External Refs.
      */
-    private void setXrefs (BioPaxRecordSummary recordSummary, SearchHitType searchHit) {
+    private void setXrefs (BioPaxRecordSummary recordSummary, ExtendedRecordType searchHit) {
         ObjectFactory factory = new ObjectFactory();
         List <ExternalLinkRecord> xrefs = recordSummary.getExternalLinks();
         List <XRefType> xrefList = searchHit.getXref();
@@ -187,7 +186,7 @@ public class ExecuteSearchXmlResponse {
     /**
      * Sets all Synonyms.
      */
-    private void setSynonyms (BioPaxRecordSummary recordSummary, SearchHitType searchHit) {
+    private void setSynonyms (BioPaxRecordSummary recordSummary, ExtendedRecordType searchHit) {
         List <String> synonyms = recordSummary.getSynonyms();
         List <String> synList = searchHit.getSynonym();
         if (synonyms != null && synonyms.size() > 0) {
@@ -197,7 +196,7 @@ public class ExecuteSearchXmlResponse {
         }
     }
 
-    private void setExcerpts (List<List<String>> masterTextFragments, SearchHitType searchHit,
+    private void setExcerpts (List<List<String>> masterTextFragments, ExtendedRecordType searchHit,
             int i) {
         List <String> excerptList = searchHit.getExcerpt();
         List <String> textFragments = masterTextFragments.get(i);
@@ -208,24 +207,10 @@ public class ExecuteSearchXmlResponse {
         }
     }
 
-    private void setComments(BioPaxRecordSummary recordSummary, SearchHitType searchHit)
-            throws BioPaxRecordSummaryException {
-        String comments[] = recordSummary.getComments();
-        List<String> commentList = searchHit.getComment();
-        if (comments != null) {
-            for (String comment : comments) {
-                String commentParts[] = ReactomeCommentUtil.chopComments(comment);
-                for (String commentPart:  commentParts) {
-                    commentList.add(commentPart);
-                }
-            }
-        }
-    }
-
     /**
      * Outputs all pathway info.
      */
-    private void setPathwayInfo(SearchHitType searchHit, long cpathId, DaoCPath dao,
+    private void setPathwayInfo(ExtendedRecordType searchHit, long cpathId, DaoCPath dao,
             ObjectFactory factory) throws DaoException {
         DaoInternalFamily daoFamily = new DaoInternalFamily();
         PathwayListType pathwayListRoot = factory.createPathwayListType();
@@ -247,9 +232,6 @@ public class ExecuteSearchXmlResponse {
             pathway.setDataSource(dataSource);
             pathwayList.add(pathway);
         }
-        InteractionBundleListType interactionBundleListRoot =
-                factory.createInteractionBundleListType();
-        searchHit.setInteractionBundleList(interactionBundleListRoot);
     }
 
     /**

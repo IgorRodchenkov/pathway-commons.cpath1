@@ -10,7 +10,7 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 import org.mskcc.pathdb.schemas.summary_response.SummaryResponseType;
 import org.mskcc.pathdb.schemas.summary_response.DataSourceType;
-import org.mskcc.pathdb.schemas.summary_response.RecordType;
+import org.mskcc.pathdb.schemas.summary_response.BasicRecordType;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.xdebug.XDebug;
 
@@ -53,6 +53,7 @@ public class ExecuteGetParentsXmlResponse {
             throws DaoException, ProtocolException, JAXBException {
         log.info("Processing Parent Summary Look Up: XML Response");
         DaoInternalLink daoInternalLink = new DaoInternalLink();
+
 
         //  Get all parents/sources of this record.
         long cpathId = Long.parseLong(protocolRequest.getQuery());
@@ -103,15 +104,14 @@ public class ExecuteGetParentsXmlResponse {
      */
     private SummaryResponseType createXmlDocument(Set<Long> IdSet) throws DaoException {
         SummaryResponseType summaryResponse = new SummaryResponseType();
-        List<RecordType> summaryList = summaryResponse.getRecord();
+        List<BasicRecordType> summaryList = summaryResponse.getRecord();
         DaoCPath daoCPath = DaoCPath.getInstance();
         DaoExternalDbSnapshot daoExternalDbSnapshot = new DaoExternalDbSnapshot();
 
         for (Long id : IdSet) {
             CPathRecord record = daoCPath.getRecordById(id);
 
-            //  TODO: Eventually Add Experimental Evidence
-            RecordType summary = new RecordType();
+            BasicRecordType summary = new BasicRecordType();
             summary.setPrimaryId(record.getId());
 
             if (record.getName() != null && record.getName().length() > 0) {
@@ -121,7 +121,7 @@ public class ExecuteGetParentsXmlResponse {
                 summary.setDescription(record.getDescription());
             }
 
-            summary.setType(record.getSpecificType());
+            summary.setEntityType(record.getSpecificType());
 
             ExternalDatabaseSnapshotRecord snapshotRecord = daoExternalDbSnapshot.
                     getDatabaseSnapshot(record.getSnapshotId());
