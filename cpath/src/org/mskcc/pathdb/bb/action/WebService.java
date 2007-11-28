@@ -47,7 +47,6 @@ public class WebService extends BaseAction {
         }
 		else {
 			StringBuffer buffer = new StringBuffer();
-			getMembersFromBBTable(q, buffer);
 			if (buffer.length() == 0) {
 				getMembersFromCPathTable(q, buffer);
 			}
@@ -117,7 +116,7 @@ public class WebService extends BaseAction {
 					}
 				}
 				if (counter == 0) {
-					buffer.append("NO_IDS\n");
+					buffer.append("NO_IDS");
 				}
 				buffer.append("\n");
 			}
