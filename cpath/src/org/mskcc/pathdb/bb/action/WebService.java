@@ -94,7 +94,7 @@ public class WebService extends BaseAction {
 		ExternalDatabaseSnapshotRecord snapshot =
 			daoSnapshot.getDatabaseSnapshot(record.getSnapshotId());
 		buffer.append("#Data Source: " + snapshot.getExternalDatabase().getMasterTerm() + "\n");
-		buffer.append("#Name[TAB][ENTREZ GENE ID || ChEBI ID || NO_IDS]\n");
+		buffer.append("#Name[TAB][UNIPROT_ID || ENTREZ GENE ID || ChEBI ID || NO_IDS]\n");
 		DaoInternalFamily daoFamily = new DaoInternalFamily();
 		long peIds[] = daoFamily.getDescendentIds(Integer.parseInt(pathwayID),
 												  CPathRecordType.PHYSICAL_ENTITY);
@@ -110,8 +110,8 @@ public class WebService extends BaseAction {
 				for (int j=0; j<xrefList.size(); j++) {
 					ExternalLinkRecord xref = (ExternalLinkRecord) xrefList.get(j);
 					String dbTerm = xref.getExternalDatabase().getMasterTerm();
-					if (dbTerm.equals("ENTREZ_GENE") || dbTerm.equals("ChEBI")) {
-						buffer.append(dbTerm+":" + xref.getLinkedToId() + " ");
+					if (dbTerm.equals("UNIPROT")) {
+						buffer.append(xref.getLinkedToId() + " ");
 						counter++;
 					}
 				}
