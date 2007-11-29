@@ -138,7 +138,7 @@ public class PopulateReferenceTableTask extends Task {
 	 * @param daoExternalLink DaoExternalLink
 	 * @throws DaoException
 	 * @throws InterruptedException
-	 * @throws IOException
+	 * @throws IOException	 
 	 * @throws JDOMException
 	 */
 	public void processPubMed(DaoExternalDb daoExternalDb, DaoExternalLink daoExternalLink,
