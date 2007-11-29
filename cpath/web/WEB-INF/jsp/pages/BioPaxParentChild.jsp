@@ -208,7 +208,10 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     boolean hasDetails = false;
     if (bpSummary.getComments() != null
             || bpSummary.getOrganism() != null
-            || referenceLinks.size() > 0) {
+            || referenceLinks.size() > 0
+		    || (interactionSummary != null &&
+				interactionSummary.getEvidence() != null &&
+				interactionSummary.getEvidence().size() > 0)) {
         hasDetails = true;
     }
     buf.append("<td>");
