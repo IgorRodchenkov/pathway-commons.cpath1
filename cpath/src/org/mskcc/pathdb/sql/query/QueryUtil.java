@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.19 2007-09-17 20:27:16 cerami Exp $
+// $Id: QueryUtil.java,v 1.20 2007-11-29 18:02:50 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -128,7 +128,8 @@ public class QueryUtil {
             Document doc = hits.doc(i);
 			String fragment = getFragment(doc, highLighter);
 			// if fragment is null, assume descendent ?
-			if (fragment == null || fragment.length() == 0) {
+			if ((fragment == null || fragment.length() == 0) &&
+				term.contains(" entity_type:pathway ")){
 				String value = doc.getField(LuceneConfig.FIELD_NAME).stringValue();
 				if (value != null && value.length() > 0) {
 					List<String> listToReturn = new ArrayList<String>();
