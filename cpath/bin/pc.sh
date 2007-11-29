@@ -22,8 +22,8 @@ mv -f $CPATH_HOME/../pathway-commons/reactome/version21/"Homo sapiens.bak.owl" $
 #./admin.pl -f $CPATH_HOME/../pathway-commons/ihop/sc-june-07/iHOP.owl import
 
 # hprd
-$CPATH_HOME/../pathway-commons/bin/psi-mi-converter.sh $CPATH_HOME/../pathway-commons/hprd/09-01-07/HPRD_SINGLE_PSIMI_090107.xml $CPATH_HOME/../pathway-commons/hprd/09-01-07/HPRD_SINGLE_PSIMI_090107.xml.owl
-./admin.pl -f $CPATH_HOME/../pathway-commons/hprd/09-01-07/HPRD_SINGLE_PSIMI_090107.xml.owl import
+$CPATH_HOME/../pathway-commons/bin/psi-mi-converter.sh $CPATH_HOME/../pathway-commons/hprd/09-01-07/HPRD_SINGLE_PSIMI_090107.xml $CPATH_HOME/../pathway-commons/hprd/09-01-07/biopax/HPRD_SINGLE_PSIMI_090107.xml.owl
+./admin.pl -f $CPATH_HOME/../pathway-commons/hprd/09-01-07/biopax/HPRD_SINGLE_PSIMI_090107.xml.owl import
 
 # intact
 $CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $CPATH_HOME/../pathway-commons/intact/10-27-2007 $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax
