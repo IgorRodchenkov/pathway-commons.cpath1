@@ -1,4 +1,4 @@
-// $Id: EvidenceUtil.java,v 1.4 2007-11-14 15:23:39 grossben Exp $
+// $Id: EvidenceUtil.java,v 1.5 2007-11-30 20:31:29 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,7 +87,7 @@ public class EvidenceUtil {
 				String terms = "";
 				for (Evidence.Code code : evidence.getCodes()) {
 					for (String term : code.getTerms()) {
-						if (term.length() > 0) {
+						if (term.length() > 0 && !term.equals("N/A")) {
 							terms += term + "; ";
 						}
 					}
