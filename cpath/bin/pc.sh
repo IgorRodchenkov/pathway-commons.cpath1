@@ -25,23 +25,26 @@ mv -f $CPATH_HOME/../pathway-commons/reactome/version21/"Homo sapiens.bak.owl" $
 # hprd
 $CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py hprd-cooker.py $CPATH_HOME/../pathway-commons/hprd/09-01-2007 $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax
 $CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax
+rm -f $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax/*.xml
 cp $CPATH_HOME/../pathway-commons/hprd/09-01-2007/db.info $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax
 ./admin.pl -f $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax import
-rm -f $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax/{*.xml,*.owl,db.info}
+rm -f $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax/{*.owl,db.info}
 
 # intact
 $CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py intact-cooker.py $CPATH_HOME/../pathway-commons/intact/10-27-2007 $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax
 $CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax
+rm -f $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax/*.xml
 cp $CPATH_HOME/../pathway-commons/intact/10-27-2007/db.info $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax
 ./admin.pl -f $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax import
-rm -f $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax/{*.xml,*.owl,db.info}
+rm -f $CPATH_HOME/../pathway-commons/intact/10-27-2007/biopax/{*.owl,db.info}
 
 # mint
 $CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py mint-cooker.py $CPATH_HOME/../pathway-commons/mint/07-01-2007 $CPATH_HOME/../pathway-commons/mint/07-01-2007/biopax
 $CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $CPATH_HOME/../pathway-commons/mint/07-01-2007/biopax $CPATH_HOME/../pathway-commons/mint/07-01-2007/biopax
+rm -f $CPATH_HOME/../pathway-commons/mint/07-01-2007/biopax/*.xml
 cp $CPATH_HOME/../pathway-commons/mint/07-01-2007/db.info $CPATH_HOME/../pathway-commons/mint/07-01-2007/biopax
 ./admin.pl -f $CPATH_HOME/../pathway-commons/mint/07-01-2007/biopax import
-rm -f $CPATH_HOME/../pathway-commons/mint/07-01-2007/biopax/{*.xml,*.owl,db.info}
+rm -f $CPATH_HOME/../pathway-commons/mint/07-01-2007/biopax/{*.owl,db.info}
 
 # fetch publication references
 ./admin.pl pop_ref
