@@ -1,6 +1,7 @@
 # setup the database
 ./initDb.pl
 ./admin.pl -f ../dbData/externalDb/pathway_commons.xml import
+./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_uniprot2uniprot.txt import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_sp2refseq.txt import
 
 # reactome
