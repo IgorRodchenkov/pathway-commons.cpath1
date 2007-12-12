@@ -12,6 +12,7 @@ See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
 <link type="text/css" rel="stylesheet" href="jsp/yui/build/logger/assets/logger.css"/>
 <link rel="stylesheet" type="text/css" href="jsp/yui/build/tabview/assets/border_tabs.css"/>
 <link type="text/css" rel="stylesheet" href="jsp/yui/build/container/assets/container.css"/>
+<link type="text/css" rel="stylesheet" href="jsp/yui/build/autocomplete/assets/autocomplete.css"/>
 
 <!-- Yahoo UI -->
 <script type="text/javascript" src="jsp/yui/build/yahoo/yahoo.js"></script>
@@ -23,6 +24,8 @@ See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
 <script type="text/javascript" src="jsp/yui/build/container/container.js"></script>
 <script type="text/javascript" src="jsp/yui/build/connection/connection.js"></script>
 <script type="text/javascript" src="jsp/yui/build/tabview/tabview.js"></script>
+<script type="text/javascript" src="jsp/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="jsp/yui/build/autocomplete/autocomplete-min.js"></script>
 
 <!-- Overlib -->
 <script type="text/javascript" src="jsp/javascript/overlib/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>
