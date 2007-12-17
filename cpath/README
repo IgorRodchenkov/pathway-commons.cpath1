@@ -3,15 +3,16 @@ CREATE CYTOSCAPE WEBSTART
 
 1) Run cytoscape webstart ant task:
 
-- update bulid.xml and replace all storepass attributes with your storepass 
-- update bulid.xml and replace all alias attributes with your alias
+- update build.xml and replace all storepass attributes with your storepass (see Ben for password)
+- update build.xml and replace all alias attributes with your alias (alias="cbio")
 - make sure code signing keystore file, .keystore is located in your home directory
 - type: "ant -DwebstartURL=http://yourdomain.com webstart" on commandline inside cytoscape dir
+  example:  ant -DwebstartURL=http://cerami.bscb.cornell.edu/ webstart
 
 2) Move signed cytoscape files into cpath tree:
 
 - move files in build/webstart to $CPATH_ROOT/web/jsp/cytoscape
-- modify .props files as needed
+- restore the original cytoscape.props file in $CPATH_ROOT/web/jsp/cytoscape (if you just clobbered it), and modify as needed
 - verify that $CPATH_ROOT/src/org/mskcc/pathdb/servlet/CytoscapeJnlpServlet.java, writeJNLPData() references all required jars
   (this can be done by comparing servlet with $CPATH_ROOT/web/jsp/cytoscape/cy1.jnlp
 
