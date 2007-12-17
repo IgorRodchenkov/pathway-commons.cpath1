@@ -25,12 +25,12 @@
 
 /* styles for results list */
 .yui-skin-sam .yui-ac-content ul {
-    margin:0;padding:0;width:100%;
+    margin:0;padding:0;width:100%;list-style:none;
 }
 
 /* styles for result item */
 .yui-skin-sam .yui-ac-content li {
-    margin:0;padding:2px 5px;cursor:default;white-space:nowrap;
+    margin:0;padding:2px 5px;cursor:default;white-space:nowrap;margin-left:-35px;
 }
 
 /* styles for prehighlighted result item */
