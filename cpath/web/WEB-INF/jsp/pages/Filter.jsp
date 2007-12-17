@@ -88,10 +88,9 @@
 		}
 		var organismID = javascriptOrganismMap[organismInputElement.value];
 		var organismTableRow = document.getElementById("<%= ORGANISM_TR%>" + organismID);
-		YAHOO.util.Dom.setStyle(organismTableRow, 'display', "block");
+		YAHOO.util.Dom.setStyle(organismTableRow, 'display', "table-row");
 		organismInputElement.value = "";
 		organismCheckBoxClicked(organismID, true);
-		//organismInputElement.disabled = true;
 	}
 
     //
@@ -170,7 +169,7 @@
 				String checked = (organismSelected) ? "" : " checked=\"checked\"";
 				String orgTrID = ORGANISM_TR + ALL_ORGANISMS_FILTER_VALUE;
 				String orgCbID = ORGANISM_CB + ALL_ORGANISMS_FILTER_VALUE;
-				out.println("<tr id=\"" + orgTrID + "\"" + " style=\"display:block;\">");
+				out.println("<tr id=\"" + orgTrID + "\"" + " style=\"display:table-row;\">");
 				out.println("<td><input type=\"checkbox\" id=\"" + orgCbID + "\"" + " name=\"ORGANISM_TAXONOMY_ID\" value=\"" +
 							ALL_ORGANISMS_FILTER_VALUE + "\"" + " onclick=\"allOrganismsCheckBoxClicked()" + "\"" + checked + "/>&nbsp;&nbsp;All organisms</td>");
 				out.println("</tr>");
@@ -180,7 +179,7 @@
 					orgTrID = ORGANISM_TR + organism.getTaxonomyId();
 					orgCbID = ORGANISM_CB + organism.getTaxonomyId();
 					checked = (isSelected) ? " checked=\"checked\"" : "";
-					String styleStr = (isSelected || topOrganismsString.contains(organism.getSpeciesName())) ? "style=\"display:block;\"" : "style=\"display:none;\"";
+					String styleStr = (isSelected || topOrganismsString.contains(organism.getSpeciesName())) ? "style=\"display:table-row;\"" : "style=\"display:none;\"";
 					out.println("<tr id=\"" + orgTrID + "\" "  + styleStr + ">");
 					out.println("<td><input type=\"checkbox\" id=\"" + orgCbID + "\"" + " name=\"ORGANISM_TAXONOMY_ID\" value=\"" +
 								organism.getTaxonomyId() + "\"" + " onclick=\"organismCheckBoxClicked('" + organism.getTaxonomyId() + "', false)\"" + checked + "/>&nbsp;&nbsp;" + organism.getSpeciesName() + "</td>");
