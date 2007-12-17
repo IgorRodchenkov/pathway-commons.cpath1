@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.10 2007-06-15 19:17:09 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.11 2007-12-17 21:43:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -162,71 +162,90 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 				       "<property name=\"biopax.web_services_url\" value=\"" + urlToPathwayCommons + "\"/>\n" +
 				       "<property name=\"biopax.data_sources\" value=\"" + dataSources + "\"/>\n" +
                        "<!--All lib jars that cytoscape requires to run should be in this list-->\n" +
-                       "<jar href=\"cytoscape.jar\" />\n" +
-                       "<jar href=\"lib/activation.jar\" />\n" +
-                       "<jar href=\"lib/biojava-1.4.jar\" />\n" +
-                       "<jar href=\"lib/colt.jar\" />\n" +
-                       "<jar href=\"lib/coltginy.jar\" />\n" +
-                       "<jar href=\"lib/com-nerius-math-xform.jar\" />\n" +
-                       "<jar href=\"lib/commons-cli-1.x-cytoscape-custom.jar\" />\n" +
-                       "<jar href=\"lib/concurrent.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-cruft-obo.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-geom-rtree.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-geom-spacial.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-graph-dynamic.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-graph-fixed.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-render-export.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-render-immed.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-render-stateful.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-task.jar\" />\n" +
-                       "<jar href=\"lib/cytoscape-util-intr.jar\" />\n" +
-                       "<jar href=\"lib/ding.jar\" />\n" +
-                       "<jar href=\"lib/fing.jar\" />\n" +
-                       "<jar href=\"lib/freehep-base.jar\" />\n" +
-                       "<jar href=\"lib/freehep-graphics2d.jar\" />\n" +
-                       "<jar href=\"lib/freehep-graphicsio-gif.jar\" />\n" +
-                       "<jar href=\"lib/freehep-graphicsio-pdf.jar\" />\n" +
-                       "<jar href=\"lib/freehep-graphicsio-ps.jar\" />\n" +
-                       "<jar href=\"lib/freehep-graphicsio-svg.jar\" />\n" +
-                       "<jar href=\"lib/freehep-graphicsio-swf.jar\" />\n" +
-                       "<jar href=\"lib/freehep-graphicsio.jar\" />\n" +
-                       "<jar href=\"lib/giny.jar\" />\n" +
-                       "<jar href=\"lib/glf.jar\" />\n" +
-                       "<jar href=\"lib/jaxb-api.jar\" />\n" +
-                       "<jar href=\"lib/jaxb-impl.jar\" />\n" +
-                       "<jar href=\"lib/jdom.jar\" />\n" +
-                       "<jar href=\"lib/jhall.jar\" />\n" +
-                       "<jar href=\"lib/jnlp.jar\" />\n" +
-                       "<jar href=\"lib/jsr173_1.0_api.jar\" />\n" +
-                       "<jar href=\"lib/junit.jar\" />\n" +
-                       "<jar href=\"lib/looks-1.1.3.jar\" />\n" +
-                       "<jar href=\"lib/phoebe.jar\" />\n" +
-                       "<jar href=\"lib/piccolo.jar\" />\n" +
-                       "<jar href=\"lib/piccolox.jar\" />\n" +
-                       "<jar href=\"lib/swing-layout-1.0.1.jar\" />\n" +
-                       "<jar href=\"lib/tclib.jar\" />\n" +
-                       "<jar href=\"lib/violinstrings-1.0.2.jar\" />\n" +
-                       "<jar href=\"lib/wizard.jar\" />\n" +
-                       "<jar href=\"lib/xercesImpl.jar\" />\n" +
-                       "<!--These are the plugins you wish to load, edit as necessary.-->\n" +
-                       "<jar href=\"plugins/AutomaticLayout.jar\" />\n" +
-                       "<jar href=\"plugins/biopax.jar\" />\n" +
-                       "<jar href=\"plugins/browser.jar\" />\n" +
-                       "<jar href=\"plugins/cPath.jar\" />\n" +
-                       "<jar href=\"plugins/CytoscapeEditor.jar\" />\n" +
-                       "<jar href=\"plugins/exesto.jar\" />\n" +
-                       "<jar href=\"plugins/filter.jar\" />\n" +
-                       "<jar href=\"plugins/GraphMerge.jar\" />\n" +
-                       "<jar href=\"plugins/linkout.jar\" />\n" +
-                       "<jar href=\"plugins/ManualLayout.jar\" />\n" +
-                       "<jar href=\"plugins/pathway_commons.jar\" />\n" +
-                       "<jar href=\"plugins/psi_mi.jar\" />\n" +
-                       "<jar href=\"plugins/quick_find.jar\" />\n" +
-                       "<jar href=\"plugins/SBMLReader.jar\" />\n" +
-                       "<jar href=\"plugins/TableImport.jar\" />\n" +
-                       "<jar href=\"plugins/yeast-context.jar\" />\n" +
-                       "<jar href=\"plugins/yLayouts.jar\" />\n" +
-                     "</resources>\n" +
+                     "    <!--All lib jars that cytoscape requires to run should be in this list-->\n" +
+                "    <jar href=\"cytoscape.jar\" />\n" +
+                "    <jar href=\"lib/activation.jar\" />\n" +
+                "    <jar href=\"lib/biojava-1.4.jar\" />\n" +
+                "    <jar href=\"lib/colt.jar\" />\n" +
+                "    <jar href=\"lib/coltginy.jar\" />\n" +
+                "    <jar href=\"lib/com-nerius-math-xform.jar\" />\n" +
+                "    <jar href=\"lib/commons-cli-1.x-cytoscape-custom.jar\" />\n" +
+                "    <jar href=\"lib/concurrent.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-cruft-obo.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-geom-rtree.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-geom-spacial.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-graph-dynamic.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-graph-fixed.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-render-export.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-render-immed.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-render-stateful.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-task.jar\" />\n" +
+                "    <jar href=\"lib/cytoscape-util-intr.jar\" />\n" +
+                "    <jar href=\"lib/ding.jar\" />\n" +
+                "    <jar href=\"lib/FastInfoset.jar\" />\n" +
+                "    <jar href=\"lib/fing.jar\" />\n" +
+                "    <jar href=\"lib/freehep-export-2.0.3.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphics2d-2.0.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-2.0.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-emf-2.0.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-pdf-2.0.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-ps-2.0.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-svg-2.0.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-swf-2.0.jar\" />\n" +
+                "    <jar href=\"lib/freehep-io-2.0.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-swing-2.0.2.jar\" />\n" +
+                "    <jar href=\"lib/freehep-util-2.0.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-xml-2.0.1.jar\" />\n" +
+                "    <jar href=\"lib/giny.jar\" />\n" +
+                "    <jar href=\"lib/glf.jar\" />\n" +
+                "    <jar href=\"lib/http.jar\" />\n" +
+                "    <jar href=\"lib/itext-2.0.4.jar\" />\n" +
+                "    <jar href=\"lib/jaxb-api.jar\" />\n" +
+                "    <jar href=\"lib/jaxb-impl.jar\" />\n" +
+                "    <jar href=\"lib/jaxws-api.jar\" />\n" +
+                "    <jar href=\"lib/jaxws-rt.jar\" />\n" +
+                "    <jar href=\"lib/jaxws-tools.jar\" />\n" +
+                "    <jar href=\"lib/jdom-1.0.jar\" />\n" +
+                "    <jar href=\"lib/jhall.jar\" />\n" +
+                "    <jar href=\"lib/jnlp.jar\" />\n" +
+                "    <jar href=\"lib/jsr173_api.jar\" />\n" +
+                "    <jar href=\"lib/jsr181-api.jar\" />\n" +
+                "    <jar href=\"lib/jsr250-api.jar\" />\n" +
+                "    <jar href=\"lib/junit.jar\" />\n" +
+                "    <jar href=\"lib/l2fprod-common-all.jar\" />\n" +
+                "    <jar href=\"lib/looks-2.1.4.jar\" />\n" +
+                "    <jar href=\"lib/phoebe.jar\" />\n" +
+                "    <jar href=\"lib/piccolo.jar\" />\n" +
+                "    <jar href=\"lib/resolver.jar\" />\n" +
+                "    <jar href=\"lib/saaj-api.jar\" />\n" +
+                "    <jar href=\"lib/saaj-impl.jar\" />\n" +
+                "    <jar href=\"lib/sjsxp.jar\" />\n" +
+                "    <jar href=\"lib/stax-ex.jar\" />\n" +
+                "    <jar href=\"lib/streambuffer.jar\" />\n" +
+                "    <jar href=\"lib/swing-layout-1.0.1.jar\" />\n" +
+                "    <jar href=\"lib/swingx-2006_10_27.jar\" />\n" +
+                "    <jar href=\"lib/tclib.jar\" />\n" +
+                "    <jar href=\"lib/undo.support.jar\" />\n" +
+                "    <jar href=\"lib/violinstrings-1.0.2.jar\" />\n" +
+                "    <jar href=\"lib/wizard.jar\" />\n" +
+                "    <!--These are the plugins you wish to load, edit as necessary.-->\n" +
+                "    <jar href=\"plugins/AutomaticLayout.jar\" />\n" +
+                "    <jar href=\"plugins/biopax.jar\" />\n" +
+                "    <jar href=\"plugins/browser.jar\" />\n" +
+                "    <jar href=\"plugins/cpath2.jar\" />\n" +
+                "    <jar href=\"plugins/CytoscapeEditor.jar\" />\n" +
+                "    <jar href=\"plugins/exesto.jar\" />\n" +
+                "    <jar href=\"plugins/filter.jar\" />\n" +
+                "    <jar href=\"plugins/filters.jar\" />\n" +
+                "    <jar href=\"plugins/GraphMerge.jar\" />\n" +
+                "    <jar href=\"plugins/linkout.jar\" />\n" +
+                "    <jar href=\"plugins/ManualLayout.jar\" />\n" +
+                "    <jar href=\"plugins/psi_mi.jar\" />\n" +
+                "    <jar href=\"plugins/quick_find.jar\" />\n" +
+                "    <jar href=\"plugins/SBMLReader.jar\" />\n" +
+                "    <jar href=\"plugins/TableImport.jar\" />\n" +
+                "    <jar href=\"plugins/yLayouts.jar\" />\n" +
+                "    </resources>\n" +
                      "<!--This starts-up Cytoscape, specify your plugins to load, and other command line arguments.  Plugins not specified here will not be loaded.-->\n" +
                      "<application-desc main-class=\"cytoscape.CyMain\">\n" +
                        "<argument>-p</argument>\n" +
