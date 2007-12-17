@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.11 2007-12-17 21:43:12 cerami Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.12 2007-12-17 21:59:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -255,7 +255,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
                        "<argument>-p</argument>\n" +
                        "<argument>browser.AttributeBrowserPlugin</argument>\n" +
                        "<argument>-p</argument>\n" +
-                       "<argument>org.cytoscape.coreplugin.cpath.plugin.CPathPlugIn</argument>\n" +
+                       "<argument>org.cytoscape.coreplugin.cpath2.plugin.CPathPlugIn2</argument>\n" +
                        "<argument>-p</argument>\n" +
                        "<argument>cytoscape.editor.CytoscapeEditorPlugin</argument>\n" +
                        "<argument>-p</argument>\n" +
