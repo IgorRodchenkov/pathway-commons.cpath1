@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.39 2007-10-29 14:42:12 cerami Exp $
+// $Id: BaseAction.java,v 1.40 2007-12-18 20:02:14 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -281,8 +281,7 @@ public abstract class BaseAction extends Action {
             if (request.getRequestURL() != null
                     && request.getQueryString() != null) {
                 request.setAttribute(ATTRIBUTE_URL_BEFORE_FORWARDING,
-                        request.getRequestURL().toString() + "?"
-                                + request.getQueryString());
+                        request.getRequestURL().toString());
             }
             xdebug.logMsg(this, "Running cPath Base Action");
             boolean authorized = isUserAuthorized
