@@ -56,7 +56,8 @@
     String serverName = (String)request.getServerName();
     serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverName + ":8080";
     // cytoscape link
-    String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
+    String urlForCytoscapeLink = (String) request.getAttribute("request_url");
+    //String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
     urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
     // data source parameter string  to network neighborhood map
     String encodedDataSourceParameter = "";
@@ -320,9 +321,9 @@ else {
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
 								"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
-								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + "\"" +
+								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i])  +
 								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
-								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
+								"\"" + " id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
 								//" onmouseout=\"return nd();\"" +
 								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
