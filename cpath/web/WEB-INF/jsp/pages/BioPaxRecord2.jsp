@@ -50,11 +50,9 @@ ArrayList<ExternalLinkRecord> nonReferenceLinks = (ArrayList<ExternalLinkRecord>
 
 // server name
 final String CYTOSCAPE_HTTP_SERVER = "127.0.0.1:27182";
-String serverName = (String)request.getServerName();
-serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverName + ":8080";
 
 // cytoscape link
-String urlForCytoscapeLink = ((StringBuffer)request.getRequestURL()).toString();
+String urlForCytoscapeLink = (String) request.getAttribute("request_url");
 urlForCytoscapeLink = urlForCytoscapeLink.substring(7); // remove "http://" from string
 urlForCytoscapeLink = urlForCytoscapeLink.replace("record2.do", "webservice.do");
 
@@ -494,9 +492,10 @@ enable Javascript support within your web browser.
 						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
 						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
-						"&" + ProtocolRequest.ARG_QUERY + "=" + id + "\"" +
+						"&" + ProtocolRequest.ARG_QUERY + "=" + id +
 						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
-						" id=\"" + id +"\"" +
+                        "\"" +  
+                        " id=\"" + id +"\"" +
 						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
 						">View this pathway in Cytoscape</a>");
 			out.println("<a href=\"cytoscape.do\">(help)</a>");
