@@ -8,6 +8,7 @@ CREATE CYTOSCAPE WEBSTART
 - make sure code signing keystore file, .keystore is located in your home directory
 - type: "ant -DwebstartURL=http://yourdomain.com webstart" on commandline inside cytoscape dir
   example:  ant -DwebstartURL=http://cerami.bscb.cornell.edu/ webstart
+  example:  ant -DwebstartURL=http://192.168.0.4/ webstart
 
 2) Move signed cytoscape files into cpath tree:
 
