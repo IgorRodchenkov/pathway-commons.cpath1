@@ -1,4 +1,4 @@
-// $Id: webstart.js,v 1.10 2007-12-18 19:27:57 cerami Exp $
+// $Id: webstart.js,v 1.11 2007-12-20 17:58:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,41 +67,43 @@ function webstartVersionCheck(versionString) {
  */
 function timeoutHandler() {
 
-	alert("Could not detect a running instance of Cytoscape. Press the 'OK' button to launch Cytoscape via Web Start. Depending on your network connection, this may take a minute or two.");
+	var answer = confirm ("Could not detect a running instance of Cytoscape. Press the 'OK' button to launch Cytoscape via Web Start. Depending on your network connection, this may take a minute or two.");
 
-    // construct webstart url
-    var hostname = window.location.hostname;
-    var port = window.location.port;
-    if (port) {
-        hostname += (":" + port);
-    }
-	var webstart_url = "cytoscape.jnlp?id=" + requestedID + "&command=" + requestedCommand;
-	if (requestedNetworkViewTitle != "empty_title") {
-	  webstart_url += "&network_view_title=" + requestedNetworkViewTitle;
-	}
-	webstart_url += "&data_source=" + requestedDataSources;
+    if (answer) {
+        // construct webstart url
+        var hostname = window.location.hostname;
+        var port = window.location.port;
+        if (port) {
+            hostname += (":" + port);
+        }
+        var webstart_url = "cytoscape.jnlp?id=" + requestedID + "&command=" + requestedCommand;
+        if (requestedNetworkViewTitle != "empty_title") {
+          webstart_url += "&network_view_title=" + requestedNetworkViewTitle;
+        }
+        webstart_url += "&data_source=" + requestedDataSources;
 
-    // determine if webstart is available - code taken from sun site
-    var userAgent = navigator.userAgent.toLowerCase();
-	// user is running windows
-    if (userAgent.indexOf("msie") != -1 && userAgent.indexOf("win") != -1){
-	    document.write("<OBJECT " +
-					   "codeBase=http://java.sun.com/update/1.5.0/jinstall-1_5_0_05-windows-i586.cab " +
-					   "classid=clsid:5852F5ED-8BF4-11D4-A245-0080C6F74284 height=0 width=0>");
-		document.write("<PARAM name=app VALUE=" + webstart_url + ">");
-	    document.write("<PARAM NAME=back VALUE=true>");
-		// alternate html for browsers which cannot instantiate the object
-		document.write("<A href=\"http://java.sun.com/j2se/1.5.0/download.html\">Download Java WebStart</A>");
-	    document.write("</OBJECT>");
-	}
-	// user is not running windows
-	else if (webstartVersionCheck("1.5")) {
-        window.location = webstart_url;
-    }
-    // user does not have jre installed or lacks appropriate version - direct them to sun download site
-	else {
-	    window.open("http://jdl.sun.com/webapps/getjava/BrowserRedirect?locale=en&host=java.com",
-		            "needdownload");		
+        // determine if webstart is available - code taken from sun site
+        var userAgent = navigator.userAgent.toLowerCase();
+        // user is running windows
+        if (userAgent.indexOf("msie") != -1 && userAgent.indexOf("win") != -1){
+            document.write("<OBJECT " +
+                           "codeBase=http://java.sun.com/update/1.5.0/jinstall-1_5_0_05-windows-i586.cab " +
+                           "classid=clsid:5852F5ED-8BF4-11D4-A245-0080C6F74284 height=0 width=0>");
+            document.write("<PARAM name=app VALUE=" + webstart_url + ">");
+            document.write("<PARAM NAME=back VALUE=true>");
+            // alternate html for browsers which cannot instantiate the object
+            document.write("<A href=\"http://java.sun.com/j2se/1.5.0/download.html\">Download Java WebStart</A>");
+            document.write("</OBJECT>");
+        }
+        // user is not running windows
+        else if (webstartVersionCheck("1.5")) {
+            window.location = webstart_url;
+        }
+        // user does not have jre installed or lacks appropriate version - direct them to sun download site
+        else {
+            window.open("http://jdl.sun.com/webapps/getjava/BrowserRedirect?locale=en&host=java.com",
+                        "needdownload");
+        }
     }
 
     // outta here
