@@ -39,12 +39,12 @@ cp $CPATH_HOME/../pathway-commons/intact/12-14-2007/db.info $CPATH_HOME/../pathw
 rm -f $CPATH_HOME/../pathway-commons/intact/12-14-2007/biopax/{*.owl,db.info}
 
 # mint
-$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py mint-cooker.py $CPATH_HOME/../pathway-commons/mint/12-07-2007 $CPATH_HOME/../pathway-commons/mint/12-07-2007/biopax
-$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $CPATH_HOME/../pathway-commons/mint/12-07-2007/biopax $CPATH_HOME/../pathway-commons/mint/12-07-2007/biopax
-rm -f $CPATH_HOME/../pathway-commons/mint/12-07-2007/biopax/*.xml
-cp $CPATH_HOME/../pathway-commons/mint/12-07-2007/db.info $CPATH_HOME/../pathway-commons/mint/12-07-2007/biopax
-./admin.pl -f $CPATH_HOME/../pathway-commons/mint/12-07-2007/biopax import
-rm -f $CPATH_HOME/../pathway-commons/mint/12-07-2007/biopax/{*.owl,db.info}
+$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py mint-cooker.py $CPATH_HOME/../pathway-commons/mint/12-21-2007 $CPATH_HOME/../pathway-commons/mint/12-21-2007/biopax
+$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $CPATH_HOME/../pathway-commons/mint/12-21-2007/biopax $CPATH_HOME/../pathway-commons/mint/12-21-2007/biopax
+rm -f $CPATH_HOME/../pathway-commons/mint/12-21-2007/biopax/*.xml
+cp $CPATH_HOME/../pathway-commons/mint/12-21-2007/db.info $CPATH_HOME/../pathway-commons/mint/12-21-2007/biopax
+./admin.pl -f $CPATH_HOME/../pathway-commons/mint/12-21-2007/biopax import
+rm -f $CPATH_HOME/../pathway-commons/mint/12-21-2007/biopax/{*.owl,db.info}
 
 # fetch publication references
 ./admin.pl pop_ref
