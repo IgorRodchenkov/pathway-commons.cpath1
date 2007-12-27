@@ -1,4 +1,4 @@
-// $Id: EvidenceUtil.java,v 1.6 2007-12-26 13:46:42 grossben Exp $
+// $Id: EvidenceUtil.java,v 1.7 2007-12-27 13:28:16 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -57,6 +57,7 @@ public class EvidenceUtil {
     public static String getEvidenceHtml (List<Evidence> evidenceList) throws DaoException {
 
 		// buffer to return
+		boolean printedHeading = false;
         StringBuffer html = new StringBuffer("");
 		Map<String,String> links = new HashMap<String,String>();
 		Map<String,String> references = new HashMap<String, String>();
@@ -64,8 +65,6 @@ public class EvidenceUtil {
         // iterate over list of evidence list
 		if (evidenceList.size() > 0) {
             DaoReference daoReference = new DaoReference();
-		    html.append("<p><b>Experiment Type:</b></p>\n\r");
-            html.append("<ul>\n\r");
             for (Evidence evidence : evidenceList) {
 				// external link - only process pubmed
 				ExternalLinkRecord externalLinkRecord = null;
@@ -103,6 +102,11 @@ public class EvidenceUtil {
 				references.put(uri, (reference != null) ? reference.getReferenceString() : "");
 			}
 			for (String uri : links.keySet()) {
+				if (!printedHeading) {
+					html.append("<p><b>Experiment Type:</b></p>\n\r");
+					html.append("<ul>\n\r");
+					printedHeading = true;
+				}
 				html.append("<li>");
 				html.append(links.get(uri) +
 							references.get(uri) + " " +
