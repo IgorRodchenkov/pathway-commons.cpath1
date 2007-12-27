@@ -110,7 +110,7 @@ private String getDetailsHtml (long cPathId, String label, String html) {
 }
 private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> recordDataSources) {
 		StringBuffer html = new StringBuffer();
-		html.append("<p><b>Data Sources:</b></p>\n\r");
+		html.append("<p><b>Data Source(s):</b></p>\n\r");
 		html.append("<ul>\n\r");
 		// loop here
 		for (String dataSource : (Set<String>)recordDataSources.get(cPathId)) {
