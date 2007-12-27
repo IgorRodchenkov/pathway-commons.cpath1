@@ -5,7 +5,7 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-String entityValue = "ALL_ENTITY_TYPE";
+String entityValue = "pathway";
 String entityName = ProtocolRequest.ARG_ENTITY_TYPE;
 String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
 String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
