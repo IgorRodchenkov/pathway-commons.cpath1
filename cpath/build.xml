@@ -297,6 +297,15 @@
              token="cache_path__value" value="${cache.path}"
              summary="yes"/>
 
+        <!-- Copy XML Schemas to public web dir -->
+       <copy todir="web/xml">
+            <fileset dir="xml">
+                <include name="RecordBase.xsd"/>
+                <include name="SearchResponse.xsd"/>
+                <include name="SummaryResponse.xsd"/>
+            </fileset>
+        </copy>
+
     </target>
 
     <!-- ==================== Reload Target =============================== -->
