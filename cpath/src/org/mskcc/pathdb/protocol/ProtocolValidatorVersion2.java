@@ -328,7 +328,7 @@ class ProtocolValidatorVersion2 {
                 String idStrs[] = q.split(",");
                 long ids[] = new long[idStrs.length];
                 for (int i=0; i< idStrs.length; i++) {
-                    ids[i] = Long.parseLong(idStrs[i]);
+                    ids[i] = Long.parseLong(idStrs[i].trim());
                 }
                 return ids;
             } catch (NumberFormatException e) {

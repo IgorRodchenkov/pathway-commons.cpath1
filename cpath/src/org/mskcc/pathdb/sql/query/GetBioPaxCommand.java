@@ -1,4 +1,4 @@
-// $Id: GetBioPaxCommand.java,v 1.9 2007-11-09 20:42:33 cerami Exp $
+// $Id: GetBioPaxCommand.java,v 1.10 2007-12-28 21:21:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,7 +87,7 @@ class GetBioPaxCommand extends Query {
                 String idStrs[] = q.split(",");
                 long ids[] = new long[idStrs.length];
                 for (int i=0; i< idStrs.length; i++) {
-                    ids[i] = Long.parseLong(idStrs[i]);
+                    ids[i] = Long.parseLong(idStrs[i].trim());
                 }
                 return ids;
             } catch (NumberFormatException e) {
