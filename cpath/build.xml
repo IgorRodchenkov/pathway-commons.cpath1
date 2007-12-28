@@ -113,7 +113,15 @@
         <delete>
             <fileset dir="xdocs" includes="*.log"/>
         </delete>
-        <delete dir="xdocs/target"/>        
+        <delete dir="xdocs/target"/>
+
+        <delete>
+            <fileset dir="web/xml">
+                <include name="RecordBase.xsd"/>
+                <include name="SearchResponse.xsd"/>
+                <include name="SummaryResponse.xsd"/>
+            </fileset>
+        </delete>
     </target>
 
     <!-- Generate package using XJC compiler            -->
