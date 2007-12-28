@@ -1,4 +1,4 @@
-// $Id: Pager.java,v 1.17 2007-03-28 14:28:02 grossb Exp $
+// $Id: Pager.java,v 1.18 2007-12-28 14:44:37 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -189,17 +189,17 @@ public class Pager {
         String nextUrl = this.getNextUrl();
         if (nextUrl != null) {
 			nextUrl += ("&" + entityTypeParameter);
-            String link = createLink("<font color=\"" + color + "\"> Next " + hitsPerPage + "</font>", nextUrl);
+            String link = createLink("<font color=\"" + color + "\">Next " + hitsPerPage + "</font>", nextUrl);
             text.append(bar + link);
         }
         if (previousUrl != null) {
 			previousUrl += ("&" + entityTypeParameter);
-            String link = createLink("<font color=\"" + color + "\"> Previous " + hitsPerPage + "</font>", previousUrl);
+            String link = createLink("<font color=\"" + color + "\">Previous " + hitsPerPage + "</font>", previousUrl);
             text.append(bar + link);
         }
         if (firstUrl != null) {
 			firstUrl += ("&" + entityTypeParameter);
-            String link = createLink("<font color=\"" + color + "\"> First Page</font>", firstUrl);
+            String link = createLink("<font color=\"" + color + "\">First Page</font>", firstUrl);
             text.append(bar + link);
         }
         return text.toString();
