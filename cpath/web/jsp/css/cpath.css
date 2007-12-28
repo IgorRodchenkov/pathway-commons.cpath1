@@ -93,7 +93,7 @@ cursor:pointer;
   display:none;
 }
 
-.details ul {list-style-type:square; margin-left:0px;}
+.details ul {list-style-type:square; margin-bottom:0px !important}
 .details li {margin-left:-20px;padding-left:0px}
 .details p {margin-top: 7px;}
 
@@ -114,7 +114,7 @@ cursor:pointer;
 
 .yui-nav {
   font-size:85%;
-  margin-left:0px !important;
+  margin-left:0px margin:0 5px 16px 35px;;
   margin-bottom:0px !important;
 }
 
