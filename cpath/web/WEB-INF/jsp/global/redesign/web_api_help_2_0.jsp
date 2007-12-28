@@ -42,9 +42,9 @@ designed for easy parsing in your favorite scripting language, such as Perl or P
 <ul>
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></li>
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
-<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a white-space separated list of internal or external
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a comma separated list of internal or external
 identifiers (IDs), used to identify the physical entities of interest. For example, look up two distinct proteins by
-their UniProt IDs using the following query: O14763 P55957.  To prevent system overload, clients
+their UniProt IDs using the following query: O14763, P55957.  To prevent system overload, clients
 are currently restricted to a maximum of <%= ProtocolConstantsVersion2.MAX_NUM_IDS %>
 IDs.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= internal or external database.  For example,
@@ -52,7 +52,7 @@ to use UniProt IDs, set <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>=<%= ExternalDat
 See the <a href=#valid_input_id_type>valid values for
 <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.  If not specified, the internal
 <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
-<li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a white-space separated list of pathway data sources
+<li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a comma separated list of pathway data sources
 to search.  For example, the following restricts your results to Reactome pathways only:
 <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>.
 See the <a href=#valid_data_source>valid values for <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter</a> below.
@@ -123,7 +123,7 @@ and is used to specify which external identifiers should be used to identify the
 neighborhood.  For example, to output UniProt IDs, use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for
 <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> parameter</a> below.
 If not specified, the internal <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li></li>
-<li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a white-space separated list of pathway data
+<li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a comma separated list of pathway data
 sources that you want to search.  For example, the following restricts your results to Reactome pathways
 only: <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>. See the
 <a href=#valid_data_source>valid values for <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter</a> below.
@@ -160,7 +160,7 @@ Below is an example query.  Note: this query is not guaranteed to return results
 
 <h3>Summary:</h3>
 
-Retrieves details regarding a specific record, such as a pathway, interaction or physical entity.
+Retrieves details regarding one or more records, such as a pathway, interaction or physical entity.
 For example, get the complete Apoptosis pathway from Reactome.
 
 <h3>Parameters:</h3>
@@ -168,8 +168,8 @@ For example, get the complete Apoptosis pathway from Reactome.
 <ul>
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></li>
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
-<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= an internal identifier, used to identify the pathway, interaction
-or physical entity of interest.</li>
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a comma delimited list of internal identifiers, used to identify the pathways, interactions
+or physical entities of interest.</li>
 <li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>
 </ul>
 

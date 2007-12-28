@@ -64,10 +64,10 @@ DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
 if (filterSettings != null) {
 	for (Long snapshotID : (Set<Long>)filterSettings.getSnapshotIdSet()) {
 		 ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
-		 encodedDataSourceParameter += record.getExternalDatabase().getMasterTerm() + " ";
+		 encodedDataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
 	}
 	// snip off last ' '
-	encodedDataSourceParameter = encodedDataSourceParameter.replaceAll(" $", "");
+	encodedDataSourceParameter = encodedDataSourceParameter.replaceAll(",$", "");
 	// encode
 	encodedDataSourceParameter = URLEncoder.encode(encodedDataSourceParameter, "UTF-8");
 }
