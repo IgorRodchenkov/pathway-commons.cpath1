@@ -222,7 +222,7 @@ else {
 	<div class="splitcontentleft">
     <jsp:include page="./narrow-by-type.jsp" flush="true" />
     <jsp:include page="./narrow-by-datasource.jsp" flush="true" />
-    <%out.println("<p>[<a href='filter.do'>Update Filter Settings</a>]</p>");%>
+    <jsp:include page="../../global/redesign/currentFilterSettings.jsp" flush="true" />
 	</div>
 	<div class="splitcontentright">
 <%
