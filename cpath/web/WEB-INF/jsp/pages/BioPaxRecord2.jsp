@@ -485,9 +485,8 @@ enable Javascript support within your web browser.
 						   bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString()));
     if (webUIBean.getWantCytoscape() && (!pathwayType || (pathwayType && showTabs))) {
 		out.println("<h3>Cytoscape:</h3>");
-		out.println("<ul><li>");
 		if (pathwayType) {
-			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+			out.println("<P><img src='jsp/images/cytoscape.png' align='ABSMIDDLE'>&nbsp;<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
 						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
@@ -497,13 +496,12 @@ enable Javascript support within your web browser.
                         "\"" +  
                         " id=\"" + id +"\"" +
 						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
-						">View this pathway in Cytoscape</a>");
-			out.println("<a href=\"cytoscape.do\">(help)</a>");
-		    out.println("</li></ul>");
+						">View in Cytoscape</a>");
+			//out.println("<a href=\"cytoscape.do\">(help)</a></P>");
 		}
 		else {
 			String encodedNeighborhoodTitle = URLEncoder.encode("Neighborhood: " + bpSummary.getLabel(), "UTF-8");
-			out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+			out.println("<P><img src='jsp/images/cytoscape.png' align='ABSMIDDLE'>&nbsp;<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
 						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
@@ -513,11 +511,11 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + encodedNeighborhoodTitle + "\"" +
 						" id=\"" + id +"\"" +
 						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
-						">View network neighborhood map in Cytoscape</a>");
-			out.println("<a href=\"cytoscape.do\">(help)</a>");
-		    out.println("</li></ul>");
+						"><img src='jsp/images/cytoscape.png'>View in Cytoscape</a>");
+			//out.println("<a href=\"cytoscape.do\">(help)</a></P>");
 		}
-	}
+        out.println("</P>");
+    }
 
 	//  Output BioPAX Links
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
@@ -528,8 +526,8 @@ enable Javascript support within your web browser.
             pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
             pRequest.setOutput(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
             out.println("<h3>Download:</h3>");
-            out.println("<ul><li><a href='downloadBioPax.do?id=" + bpSummary.getRecordID() + "'>"
-                + "Download in BioPAX Format" + "</a></li></ul>");
+            out.println("<P>&nbsp;<img src='jsp/images/xml_doc.gif' align='ABSMIDDLE'>&nbsp;&nbsp;<a href='downloadBioPax.do?id=" + bpSummary.getRecordID() + "'>"
+                + "Download BioPAX" + "</a></P>");
     }
 
 	//  Output XML_ABBREV Link (Debug Mode)

@@ -316,7 +316,7 @@ else {
 			if (webUIBean.getWantCytoscape() && (!pathwayType || (pathwayType && showCytoscape))) {
 				// add link to cytoscape
 				if (pathwayType) {
-					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+					out.println("<img src='jsp/images/cytoscape.png' align='ABSMIDDLE'>&nbsp;<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
@@ -327,11 +327,11 @@ else {
 								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
 								//" onmouseout=\"return nd();\"" +
 								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
-								">View this pathway in Cytoscape</a>");
+								">View in Cytoscape</a>");
 				}
 				else {
 					String encodedNeighborhoodTitle = URLEncoder.encode("Neighborhood: " + summaryLabel, "UTF-8");
-					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+					out.println("<img src='jsp/images/cytoscape.png' align='ABSMIDDLE'>&nbsp;<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
@@ -341,7 +341,7 @@ else {
 								"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + encodedNeighborhoodTitle + "\"" +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
-								">View network neighborhood map in Cytoscape</a>");
+								">View in Cytoscape</a>");
 				}
 				out.println("<a href=\"cytoscape.do\">(help)</a>");
 			}
