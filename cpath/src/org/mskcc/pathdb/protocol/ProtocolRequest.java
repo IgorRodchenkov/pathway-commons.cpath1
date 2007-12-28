@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.28 2007-09-17 21:00:26 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.29 2007-12-28 20:20:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,8 @@ import org.mskcc.pathdb.model.PagedResult;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Encapsulates Request object from client/browser application.
@@ -603,7 +605,8 @@ public class ProtocolRequest implements PagedResult {
      */
     public String[] getDataSources() {
         if (dataSource != null && dataSource.trim().length() > 0) {
-            String dataSources[] = dataSource.split("[\\s]");
+            //  Split by comma, and then trim
+            String dataSources[] = dataSource.split(",");
             for (int i=0; i<dataSources.length; i++) {
                 dataSources[i] = dataSources[i].trim();
             }
