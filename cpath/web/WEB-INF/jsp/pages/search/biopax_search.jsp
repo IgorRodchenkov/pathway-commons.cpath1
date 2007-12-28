@@ -327,7 +327,7 @@ else {
 								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
 								//" onmouseout=\"return nd();\"" +
 								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
-								">View in Cytoscape</a>");
+								">View pathway in Cytoscape</a>");
 				}
 				else {
 					String encodedNeighborhoodTitle = URLEncoder.encode("Neighborhood: " + summaryLabel, "UTF-8");
@@ -341,7 +341,7 @@ else {
 								"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + encodedNeighborhoodTitle + "\"" +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
 								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
-								">View in Cytoscape</a>");
+								">View network neighborhood in Cytoscape</a>");
 				}
 				out.println("<a href=\"cytoscape.do\">(help)</a>");
 			}

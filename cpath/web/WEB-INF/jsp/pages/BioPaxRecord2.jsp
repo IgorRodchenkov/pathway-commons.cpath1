@@ -511,7 +511,7 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + encodedNeighborhoodTitle + "\"" +
 						" id=\"" + id +"\"" +
 						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
-						"><img src='jsp/images/cytoscape.png'>View in Cytoscape</a>");
+						">View in Cytoscape</a>");
 			//out.println("<a href=\"cytoscape.do\">(help)</a></P>");
 		}
         out.println("</P>");
