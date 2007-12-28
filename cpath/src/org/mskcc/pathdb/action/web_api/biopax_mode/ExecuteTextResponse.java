@@ -1,4 +1,4 @@
-// $Id: ExecuteTextResponse.java,v 1.3 2007-09-12 14:57:21 cerami Exp $
+// $Id: ExecuteTextResponse.java,v 1.4 2007-12-28 21:09:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,6 +50,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * BioPAX Web Mode:  Response is of type Text.
@@ -103,7 +105,11 @@ public class ExecuteTextResponse {
     private ActionForward getPathwayListHandler(ProtocolRequest protocolRequest, HttpServletResponse response)
             throws ProtocolException, DaoException, BioPaxRecordSummaryException {
         PathwayBatchQuery batchQuery = new PathwayBatchQuery();
-        String ids[] = protocolRequest.getQuery().split("[\\s]");
+        //  Split by comma;  then make sure to trim
+        String ids[] = protocolRequest.getQuery().split(",");
+        for (int i=0; i< ids.length; i++) {
+            ids[i] = ids[i].trim();
+        }
         String dbTerm = protocolRequest.getInputIDType();
         if (dbTerm == null) {
             dbTerm = ExternalDatabaseConstants.INTERNAL_DATABASE;
