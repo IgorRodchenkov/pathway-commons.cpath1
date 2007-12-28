@@ -29,7 +29,7 @@
 		String plain = (type.equals(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL)) ? "All Types" : (String)typesMap.get(type);
 	    String label = plain + " (" + hitByTypeMap.get(type) + ")";
 	    if (type.equals(keyType)) {
-		   out.println("<li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"10\"><img src=\"jsp/images/arrow.gif\"></li>");
+		   out.println("<nobr><li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"10\"><img src=\"jsp/images/arrow.gif\"></li></nobr>");
 	    }
 	    else {
 		    if (hitByTypeMap.get(type) > 0) {
