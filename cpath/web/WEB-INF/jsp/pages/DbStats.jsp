@@ -5,5 +5,6 @@
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
 <jsp:include page="../global/redesign/dbStats.jsp" flush="true" />
-<cbio:importTable />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <jsp:include page="../global/redesign/footer.jsp" flush="true" />
