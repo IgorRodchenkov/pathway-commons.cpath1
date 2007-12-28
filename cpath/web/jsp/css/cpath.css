@@ -74,7 +74,7 @@ display:none;
 
 .button {
 font-size:85%;
-color:blue;
+color:#467aa7;
 text-decoration:underline;
 cursor:pointer;
 }
@@ -172,6 +172,8 @@ cursor:pointer;
     margin-bottom: 10px;
 }
 
+.search_buttons a {color:#ffffff !important;}
+
 .search_fragment {
     font-size:85%;
     color:black;
@@ -229,3 +231,5 @@ color:#ffffff;
     font-size:80%;
     text-transform:uppercase;
 }
+
+.splitcontentleft h3 a {color:#ffffff !important; font-size:90%;}
