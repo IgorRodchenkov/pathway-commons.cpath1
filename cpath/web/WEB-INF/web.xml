@@ -31,7 +31,10 @@
         <filter-name>Cache</filter-name>
         <url-pattern>/about.do</url-pattern>
     </filter-mapping>
-
+    <filter-mapping>
+        <filter-name>Cache</filter-name>
+        <url-pattern>/dbStats.do</url-pattern>
+    </filter-mapping>
 
     <!-- Struts cPath Action Servlet Configuration -->
     <servlet>
