@@ -1,4 +1,4 @@
-// $Id: EvidenceUtil.java,v 1.7 2007-12-27 13:28:16 grossben Exp $
+// $Id: EvidenceUtil.java,v 1.8 2008-01-03 16:13:44 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,6 +114,7 @@ public class EvidenceUtil {
 				html.append("</li>\n\r");
             }
             html.append("</ul>\n\r");
+			html.append("<br>");
         }
 
 		//  outta here
