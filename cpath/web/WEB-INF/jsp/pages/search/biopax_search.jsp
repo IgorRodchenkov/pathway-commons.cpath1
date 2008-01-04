@@ -220,6 +220,7 @@ else {
 	//out.println("</p>");
 %>
 	<div class="splitcontentleft">
+    <h3>Narrow Results</h3>
     <jsp:include page="./narrow-by-type.jsp" flush="true" />
     <jsp:include page="./narrow-by-datasource.jsp" flush="true" />
     <jsp:include page="../../global/redesign/currentFilterSettings.jsp" flush="true" />

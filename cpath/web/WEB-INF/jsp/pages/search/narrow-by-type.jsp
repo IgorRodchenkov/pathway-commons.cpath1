@@ -22,7 +22,7 @@
     String keyDataSource = (String) request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
 %>
 <%
-    out.println("<h3>Narrow Results by Type:</h3>");
+    out.println("<h0>Type:</h0>");
     out.println("<ul>");
     for (String type : (Set<String>)sortedHitByTypeMap.keySet()) {
 	    // label
