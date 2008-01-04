@@ -117,6 +117,16 @@ font-size:0.9em;
 padding:10px 0 0 20px;
 }
 
+#content h0{
+display:block;
+margin:5px 0 5px 0;
+font-size:.9em;
+font-weight:bold;
+letter-spacing:-1px;
+color:#505050;
+background-color:inherit;
+}
+
 #content h1{
 display:block;
 margin:5px 0 5px 0;
