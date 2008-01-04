@@ -18,7 +18,8 @@
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
     Set<Long> snapshotIdSet = settings.getSnapshotIdSet();
 %>
-<h3>Current Data Source Filter Settings:</h3>
+<h3>Filters</h3>
+<h0>Data Source:</h0>
 <%
     out.println("<ul>");
     if (snapshotIdSet.size() == dao.getAllDatabaseSnapshots().size()) {
@@ -37,7 +38,7 @@
 	}
     out.println("</ul>");
 %>
-<h3>Current Organism Filter Settings:</h3>
+<h0>Organism:</h0>
 <%
     out.println("<ul>");
     DaoOrganism daoOrganism = new DaoOrganism();
