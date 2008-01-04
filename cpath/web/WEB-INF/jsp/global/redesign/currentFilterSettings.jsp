@@ -31,7 +31,7 @@
 	}
     for (Integer ncbiTaxonomyId : (Set<Integer>)settings.getOrganismTaxonomyIdSet()) {
         if (ncbiTaxonomyId == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
-            out.println("<li>All organisms</li>");
+            out.println("<li>All Organisms</li>");
         } else {
             DaoOrganism daoOrganism = new DaoOrganism();
             Organism organism = daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId);
