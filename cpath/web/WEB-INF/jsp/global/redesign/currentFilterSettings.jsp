@@ -5,6 +5,7 @@
 <%@ page import="org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoOrganism"%>
 <%@ page import="java.util.Map"%>
+<%@ page import="java.util.Collections"%>
 <%@ page import="org.mskcc.pathdb.model.Organism"%>
 <%
     GlobalFilterSettings settings = (GlobalFilterSettings)
@@ -24,9 +25,14 @@
         out.println("<li>All Data Sources</li>");
     }
     else {
+		ArrayList<String> dsNames = new ArrayList<String>();
         for (Long snapshotId : snapshotIdSet) {
             ExternalDatabaseSnapshotRecord snapshotRecord = dao.getDatabaseSnapshot(snapshotId);
-            out.println("<li>" + snapshotRecord.getExternalDatabase().getName() + "</li>");
+			dsNames.add(snapshotRecord.getExternalDatabase().getName());
+		}
+		Collections.sort(dsNames);
+        for (String dsName : dsNames) {
+            out.println("<li>" + dsName + "</li>");
         }
 	}
     out.println("</ul>");
@@ -34,14 +40,18 @@
 <h3>Current Organism Filter Settings:</h3>
 <%
     out.println("<ul>");
+    DaoOrganism daoOrganism = new DaoOrganism();
+    ArrayList<String> organismNames = new ArrayList<String>();
     for (Integer ncbiTaxonomyId : (Set<Integer>)settings.getOrganismTaxonomyIdSet()) {
         if (ncbiTaxonomyId == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
-            out.println("<li>All Organisms</li>");
+            organismNames.add("All Organisms");
         } else {
-            DaoOrganism daoOrganism = new DaoOrganism();
-            Organism organism = daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId);
-            out.println("<li>" + organism.getSpeciesName() + "</li>");
-        }
+			organismNames.add(daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId).getSpeciesName());
+		}
+	}
+    Collections.sort(organismNames);
+    for(String organismName : organismNames) {
+        out.println("<li>" + organismName + "</li>");
     }
     out.println("</ul>");
     out.println("<p>[<a href='filter.do'>Update Filter Settings</a>]</p>");
