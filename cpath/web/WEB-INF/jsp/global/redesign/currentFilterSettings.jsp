@@ -2,7 +2,6 @@
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Set"%>
-<%@ page import="java.util.Iterator"%>
 <%@ page import="org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoOrganism"%>
 <%@ page import="java.util.Map"%>
@@ -16,20 +15,21 @@
         session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS, settings);
     }
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-    Iterator iterator = settings.getSnapshotIdSet().iterator();
+    Set<Long> snapshotIdSet = settings.getSnapshotIdSet();
 %>
 <h3>Current Filter Settings:</h3>
 <%
     out.println("<ul>");
-    while (iterator.hasNext()) {
-        Long snapshotId = (Long) iterator.next();
-        ExternalDatabaseSnapshotRecord snapshotRecord = dao.getDatabaseSnapshot(snapshotId);
-        out.println("<li>" + snapshotRecord.getExternalDatabase().getName()
-            +"</li>");
+    if (snapshotIdSet.size() == dao.getAllDatabaseSnapshots().size()) {
+        out.println("<li>All Data Sources</li>");
     }
-    Iterator organismIterator = settings.getOrganismTaxonomyIdSet().iterator();
-    if (organismIterator.hasNext()) {
-        Integer ncbiTaxonomyId = (Integer) organismIterator.next();
+    else {
+        for (Long snapshotId : snapshotIdSet) {
+            ExternalDatabaseSnapshotRecord snapshotRecord = dao.getDatabaseSnapshot(snapshotId);
+            out.println("<li>" + snapshotRecord.getExternalDatabase().getName() + "</li>");
+        }
+	}
+    for (Integer ncbiTaxonomyId : (Set<Integer>)settings.getOrganismTaxonomyIdSet()) {
         if (ncbiTaxonomyId == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
             out.println("<li>All organisms</li>");
         } else {
