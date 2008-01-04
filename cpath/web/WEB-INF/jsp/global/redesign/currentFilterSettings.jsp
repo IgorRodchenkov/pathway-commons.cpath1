@@ -17,7 +17,7 @@
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
     Set<Long> snapshotIdSet = settings.getSnapshotIdSet();
 %>
-<h3>Current Filter Settings:</h3>
+<h3>Current Data Source Filter Settings:</h3>
 <%
     out.println("<ul>");
     if (snapshotIdSet.size() == dao.getAllDatabaseSnapshots().size()) {
@@ -29,6 +29,11 @@
             out.println("<li>" + snapshotRecord.getExternalDatabase().getName() + "</li>");
         }
 	}
+    out.println("</ul>");
+%>
+<h3>Current Organism Filter Settings:</h3>
+<%
+    out.println("<ul>");
     for (Integer ncbiTaxonomyId : (Set<Integer>)settings.getOrganismTaxonomyIdSet()) {
         if (ncbiTaxonomyId == GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE) {
             out.println("<li>All Organisms</li>");
