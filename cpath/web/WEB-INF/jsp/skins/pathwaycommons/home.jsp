@@ -16,7 +16,7 @@ String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALU
 <td width="60%" valign="top">
 
 <div>
-<h2>About Pathway Commons:</h2>
+<h4>About Pathway Commons:</h4>
 <b>Pathway Commons</b> is a convenient point of access to biological pathway information collected
 from public pathway databases, which you can browse or search. Pathways include biochemical reactions,
 complex assembly, transport and catalysis events, and physical interactions involving proteins, DNA,
@@ -56,7 +56,7 @@ New and improved <a href="webservice.do?cmd=help">web service API</a>.</li>
 <td width=20>&nbsp;</td>
 <td valign="top">
 
-<h2>Current Data Sources:</h2>
+<h4>Current Data Sources:</h4>
 
 <%= webUIBean.getApplicationName() %> currently contains the following data sources:</p>
 <cbio:dataSourceListTable/>
