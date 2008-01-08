@@ -20,16 +20,48 @@ You can programmatically access pathway data via the Web Service API.
 This page provides a reference guide to help you get started.
 
 <ul>
-<li><a href="#get_pathway_list">[1] Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></a</li>
-<li><a href="#get_neighbors">[2] Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></a></li>
-<li><a href="#get_by_cpath_id">[3] Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></a></li>
-<li><a href="#get_by_keyword">[4] Command:  <%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %></a></li>
-<li><a href="#get_summaries">[5]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></a></li>
+<li><a href="#search">[1] Command:  <%= ProtocolConstantsVersion2.COMMAND_SEARCH %></a></li>
+<li><a href="#get_pathways">[2] Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></a</li>
+<li><a href="#get_neighbors">[3] Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></a></li>
+<li><a href="#get_parents">[4]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></a></li>
+<li><a href="#get_by_cpath_id">[5] Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></a></li>
 <li><a href="#additional_params">[6] Additional Parameter Details</a></li>
 <li><a href="#errors">[7] Error Codes</a></li>
 </ul>
 
-<h2><a NAME="get_pathway_list"></a>[1]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h2>
+<h2><a NAME="search"></a>[4]  Command:  <%= ProtocolConstantsVersion2.COMMAND_SEARCH %></h2>
+
+<h3>Summary:</h3>
+
+Searches all records by keyword, name or external identifier.  For example,
+retrieve a list of all physical entity records that contain the word, "BRCA2".  This command
+currently only search physical entity records, such as proteins and small molecules.
+
+<h3>Parameters:</h3>
+
+<ul>
+<li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %></li>
+<li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a keyword, name or external identifier.</li>
+<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_XML%>
+<li>[Optional] <%= ProtocolRequest.ARG_ORGANISM %> = organism filter.  Must be specified as an
+<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/">NCBI Taxonomy</a> identifier, e.g. 9606 for human.</li>
+</ul>
+
+<h3>Output:</h3>
+
+An XML file which follows the <a href="xml/SearchResponse.xsd">SearchResponse.xsd</a> XML Schema
+[<a href="xml/search_response/SearchResponse.xsd.html">Full Documentation</a>].
+
+<h3>Example Query:</h3>
+
+Below is an example query.  Note: this query is not guaranteed to return results.<br/>
+
+<a href="webservice.do?version=2.0&q=BRCA2&format=xml&cmd=search">
+webservice.do?version=2.0&q=BRCA2&output=xml&cmd=search
+</a>
+
+<h2><a NAME="get_pathways"></a>[1]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h2>
 
 <h3>Summary:</h3>
 
@@ -156,68 +188,7 @@ Below is an example query.  Note: this query is not guaranteed to return results
 
 <a href="webservice.do?version=2.0&cmd=get_neighbors&q=9854">webservice.do?version=2.0&cmd=get_neighbors&q=9854</a>
 
-<h2><a NAME="get_by_cpath_id"></a>[3]  Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></h2>
-
-<h3>Summary:</h3>
-
-Retrieves details regarding one or more records, such as a pathway, interaction or physical entity.
-For example, get the complete Apoptosis pathway from Reactome.
-
-<h3>Parameters:</h3>
-
-<ul>
-<li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></li>
-<li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
-<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a comma delimited list of internal identifiers, used to identify the pathways, interactions
-or physical entities of interest.</li>
-<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>
-</ul>
-
-<h3>Output:</h3>
-
-An XML file in the Biological Pathway Exchange (<a href="http://biopax.org">BioPAX</a>) format.
-
-<h3>Example Query:</h3>
-
-Below is an example query.  Note: this query is not guaranteed to return results. <br/>
-
-<a href="webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax">
-webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
-</a>
-
-<h2><a NAME="get_by_keyword"></a>[4]  Command:  <%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %></h2>
-
-<h3>Summary:</h3>
-
-Searches all records by keyword, name or external identifier.  For example,
-retrieve a list of all physical entity records that contain the word, "BRCA2".  This command
-currently only search physical entity records, such as proteins and small molecules.
-
-<h3>Parameters:</h3>
-
-<ul>
-<li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %></li>
-<li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
-<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a keyword, name or external identifier.</li>
-<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_XML%>
-<li>[Optional] <%= ProtocolRequest.ARG_ORGANISM %> = organism filter.  Must be specified as an
-<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/">NCBI Taxonomy</a> identifier, e.g. 9606 for human.</li>
-</ul>
-
-<h3>Output:</h3>
-
-An XML file which follows the <a href="xml/SearchResponse.xsd">SearchResponse.xsd</a> XML Schema
-[<a href="xml/search_response/SearchResponse.xsd.html">Full Documentation</a>].
-
-<h3>Example Query:</h3>
-
-Below is an example query.  Note: this query is not guaranteed to return results.<br/>
-
-<a href="webservice.do?version=2.0&q=BRCA2&format=xml&cmd=get_by_keyword">
-webservice.do?version=2.0&q=BRCA2&output=xml&cmd=get_by_keyword
-</a>
-
-<h2><a NAME="get_summaries"></a>[5]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></h2>
+<h2><a NAME="get_parents"></a>[5]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></h2>
 
 <h3>Summary:</h3>
 
@@ -247,6 +218,35 @@ Below is an example query.  Note: this query is not guaranteed to return results
 
 <a href="webservice.do?version=2.0&q=145&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%>">
 webservice.do?version=2.0&q=145&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%></a>
+
+<h2><a NAME="get_by_cpath_id"></a>[3]  Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></h2>
+
+<h3>Summary:</h3>
+
+Retrieves details regarding one or more records, such as a pathway, interaction or physical entity.
+For example, get the complete Apoptosis pathway from Reactome.
+
+<h3>Parameters:</h3>
+
+<ul>
+<li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></li>
+<li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
+<li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a comma delimited list of internal identifiers, used to identify the pathways, interactions
+or physical entities of interest.</li>
+<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>
+</ul>
+
+<h3>Output:</h3>
+
+An XML file in the Biological Pathway Exchange (<a href="http://biopax.org">BioPAX</a>) format.
+
+<h3>Example Query:</h3>
+
+Below is an example query.  Note: this query is not guaranteed to return results. <br/>
+
+<a href="webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax">
+webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
+</a>
 
 <h2><a NAME="additional_params"></a>[6]  Additional Parameter Details:</h2>
 
