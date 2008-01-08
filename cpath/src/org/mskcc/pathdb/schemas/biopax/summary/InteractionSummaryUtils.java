@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.36 2007-05-14 20:24:46 cerami Exp $
+// $Id: InteractionSummaryUtils.java,v 1.37 2008-01-08 18:57:31 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,6 +62,18 @@ public class InteractionSummaryUtils {
      */
     public static String createInteractionSummaryString
             (InteractionSummary interactionSummary) {
+		return createInteractionSummaryString(interactionSummary, null);
+	}
+
+    /**
+     * Creates the interaction summary string.
+     *
+     * @param interactionSummary PhysicalInteractiong
+	 * @param bpSummary BioPaxRecordSummary
+     * @return HTML String
+     */
+    public static String createInteractionSummaryString(InteractionSummary interactionSummary,
+														BioPaxRecordSummary bpSummary) {
         StringBuffer buf = new StringBuffer();
 
         //  Branch, depending on interaction type.
@@ -70,7 +82,7 @@ public class InteractionSummaryUtils {
         } else if (interactionSummary instanceof ControlInteractionSummary) {
             createControlSummary(interactionSummary, true, buf);
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
-            createPhysicalInteractionSummary(interactionSummary, buf);
+            createPhysicalInteractionSummary(interactionSummary, bpSummary, buf);
         } else {
             createInteractionSummary(interactionSummary, true, buf);
         }
@@ -93,7 +105,7 @@ public class InteractionSummaryUtils {
         } else if (interactionSummary instanceof ControlInteractionSummary) {
             createControlSummary(interactionSummary, false, buf);
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
-            createPhysicalInteractionSummary(interactionSummary, buf);
+            createPhysicalInteractionSummary(interactionSummary, null, buf);
         } else {
             createInteractionSummary(interactionSummary, false, buf);
         }
@@ -130,28 +142,42 @@ public class InteractionSummaryUtils {
      * Creates a Physical Interaction Summary.
      *
      * @param interactionSummary InteractionSummary Object.
+	 * @param bpSummary BioPaxRecordSummary
      * @param buf                HTML String Buffer.
      */
-    private static void createPhysicalInteractionSummary(InteractionSummary
-            interactionSummary, StringBuffer buf) {
+    private static void createPhysicalInteractionSummary(InteractionSummary interactionSummary,
+														 BioPaxRecordSummary bpSummary,
+														 StringBuffer buf) {
         PhysicalInteractionSummary summary =
                 (PhysicalInteractionSummary) interactionSummary;
 
-        //  Iterate through all participants
-        ArrayList participantList = summary.getParticipants();
-        if (participantList != null) {
-            for (int i = 0; i < participantList.size(); i++) {
-                ParticipantSummaryComponent component =
-                        (ParticipantSummaryComponent) participantList.get(i);
-                buf.append(BioPaxRecordSummaryUtils.createEntityLink
-                        (component, interactionSummary));
-                if (i < participantList.size() - 1) {
-                    buf.append(", ");
-                }
-            }
-        } else {
+		List<ParticipantSummaryComponent> participantSummaryComponentList =
+			new ArrayList<ParticipantSummaryComponent>();
+
+		// if available, use bpSummary to properly order participants in interaction, 
+		// protein whose summary page we are on should go first - see bug #1650
+		for (ParticipantSummaryComponent component : (List<ParticipantSummaryComponent>)summary.getParticipants()) {
+			if (bpSummary != null && bpSummary.getName().equals(component.getName())) {
+				participantSummaryComponentList.add(0, component);
+			}
+			else {
+				participantSummaryComponentList.add(component);
+			}
+		}
+
+		if (participantSummaryComponentList.size() == 0) {
             buf.append("[&empty;]");
-        }
+		}
+		else {
+			//  Iterate through all participants
+			for (int i = 0; i < participantSummaryComponentList.size(); i++) {
+				ParticipantSummaryComponent component = participantSummaryComponentList.get(i);
+				buf.append(BioPaxRecordSummaryUtils.createEntityLink(component, interactionSummary));
+				if (i < participantSummaryComponentList.size() - 1) {
+					buf.append(", ");
+				}
+			}
+		}
     }
 
     /**

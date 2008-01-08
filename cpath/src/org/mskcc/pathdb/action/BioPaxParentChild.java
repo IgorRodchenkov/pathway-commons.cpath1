@@ -101,6 +101,11 @@ public class BioPaxParentChild extends BaseAction {
      */
     public static String TOTAL_NUM_RECORDS_PARAMETER = "totalNumRecords";
 
+	/**
+	 * BioPaxSummary object for protein whose summary page we are on.
+	 */
+	public static String BP_SUMMARY_OBJECT_PARAMETER = "bp_summary_object";
+
     /**
      * Executes Action.
      *
@@ -188,7 +193,11 @@ public class BioPaxParentChild extends BaseAction {
                     + " does not exist in database.");
         }
         xdebug.logMsg(this, "cPath Record Name:  " + record.getName());
-
+		
+		// set bp summary object
+		BioPaxRecordSummary bpSummary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
+        request.setAttribute(BP_SUMMARY_OBJECT_PARAMETER, bpSummary);
+		
         //  Determine Current Filter Settings
         GlobalFilterSettings filterSettings = this.getCurrentFilterSettings(request, xdebug);
         int taxId = getTaxonomyIdFilter(filterSettings, xdebug);

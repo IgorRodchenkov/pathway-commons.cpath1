@@ -8,6 +8,7 @@
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ page import="org.mskcc.pathdb.taglib.EvidenceUtil"%>
+<%@ page import="org.mskcc.pathdb.action.ShowBioPaxRecord2"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="java.io.IOException"%>
@@ -52,6 +53,10 @@ if (xdebugSession != null || xdebugParameter != null) {
 }
 
 DetailsTracker detailsTracker = new DetailsTracker();
+
+//  The BioPAX Record Summary for the protein page we are on
+BioPaxRecordSummary proteinPageBpSummary =
+	(BioPaxRecordSummary) request.getAttribute(BioPaxParentChild.BP_SUMMARY_OBJECT_PARAMETER);
 %>
 
 <% if (headerFlag) { %>
@@ -107,7 +112,7 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
         if (entitySummary instanceof InteractionSummary) {
             InteractionSummary interactionSummary = (InteractionSummary) entitySummary;
             String interactionString = InteractionSummaryUtils.createInteractionSummaryString
-                (interactionSummary);
+                (interactionSummary, proteinPageBpSummary);
             if (interactionString != null) {
                 out.println("<span class='entity_summary'>" + interactionString);
             }
