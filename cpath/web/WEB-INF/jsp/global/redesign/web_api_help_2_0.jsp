@@ -190,7 +190,7 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 <h3>Summary:</h3>
 
 Searches all records by keyword, name or external identifier.  For example,
-retrieve a list of all physical entity records that contains the word, "BRCA2".  This command
+retrieve a list of all physical entity records that contain the word, "BRCA2".  This command
 currently only search physical entity records, such as proteins and small molecules.
 
 <h3>Parameters:</h3>
@@ -200,6 +200,8 @@ currently only search physical entity records, such as proteins and small molecu
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a keyword, name or external identifier.</li>
 <li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_XML%>
+<li>[Optional] <%= ProtocolRequest.ARG_ORGANISM %> = organism filter.  Must be specified as an
+<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/">NCBI Taxonomy</a> identifier, e.g. 9606 for human.</li>
 </ul>
 
 <h3>Output:</h3>
