@@ -139,11 +139,12 @@ background-color:inherit;
 
 #content h2{
 display:block;
-margin:20px 0 5px 0;
+margin:2px 0 5px 0;
+padding-left:2px;
 font-size:1.0em;
 font-weight:bold;
 color:#505050;
-background-color:#DDDDDD;
+background-color:#EEEEEE;
 }
 
 #content h3{
