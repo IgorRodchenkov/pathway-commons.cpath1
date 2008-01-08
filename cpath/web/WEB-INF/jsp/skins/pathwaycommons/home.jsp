@@ -15,17 +15,9 @@ String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALU
 <tr valign="top">
 <td width="60%" valign="top">
 
-<b>What's New:</b>
-<ul>
-<li>February 1, 2008:  New data sources, including:  HPRD, IntAct, and MINT.
-New and improved <a href="webservice.do?cmd=help">web service API</a>.</li>
-<li>June 28, 2007: Pathway Commons now supports visualization of pathways via Cytoscape [<a href="cytoscape.do">Details</a>].</li>
-</ul>
-
 <div>
-<b>About Pathway Commons:</b>
-<br>
-Pathway Commons is a convenient point of access to biological pathway information collected
+<h2>About Pathway Commons:</h2>
+<b>Pathway Commons</b> is a convenient point of access to biological pathway information collected
 from public pathway databases, which you can browse or search. Pathways include biochemical reactions,
 complex assembly, transport and catalysis events, and physical interactions involving proteins, DNA,
 RNA, small molecules and complexes. <a href="about.do">more...</a>
@@ -52,11 +44,19 @@ Download an integrated set of pathways in BioPAX format for global analysis.</p>
 Build software on top of Pathway Commons using our <a href="webservice.do?cmd=help">web service API</a>.
 Download and install the <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a> to
 create a local mirror.</p>
+
+<h2>What's New:</h2>
+<ul>
+<li>February 1, 2008:  New data sources, including:  HPRD, IntAct, and MINT.
+New and improved <a href="webservice.do?cmd=help">web service API</a>.</li>
+<li>June 28, 2007: Pathway Commons now supports visualization of pathways via Cytoscape [<a href="cytoscape.do">Details</a>].</li>
+</ul>
+
 </td>
 <td width=20>&nbsp;</td>
 <td valign="top">
 
-<p><b>Current Data Sources:</b></p>
+<h2>Current Data Sources:</h2>
 
 <%= webUIBean.getApplicationName() %> currently contains the following data sources:</p>
 <cbio:dataSourceListTable/>
