@@ -4,7 +4,7 @@
     <li><a href="#bio">Questions targeted for Biologists</a></li>
     <li><a href="#comp_bio">Questions targeted for Computational Biologists and Software Developers</a></li>
 </ul>
-<h2><a name="general">General Questions</a></h2>
+<h2><a name="general"></a>General Questions</h2>
 <h3>What is Pathway Commons?</h3>
 <p>Pathway Commons is a collection of publicly available pathways from multiple organisms.
 It provides researchers with convenient access to a comprehensive collection of pathways from
@@ -61,7 +61,7 @@ Commons.</p>
 <p>We have compiled a comprehensive list of pathway databases at
 <a href="http://www.pathguide.org">Pathguide</a>.</p>
 
-<h2><a name="bio">For Biologists</a></h2>
+<h2><a name="bio"></a>For Biologists</h2>
 <h3>What can I do with this information?</h3>
 <p>You can browse available pathway information and answer questions such as:</p>
 <ul>
@@ -93,7 +93,7 @@ Pathway Commons will implement published algorithms to automatically assess data
 this as an additional filter.
 </p>
 
-<h2><a name="comp_bio">For Computational Biologists and Software developers</a></h2>
+<h2><a name="comp_bio"></a>For Computational Biologists and Software developers</h2>
 <h3>What can I do with this information?</h3>
 You can download the pathways in BioPAX Level 2 format for global analysis.
 <a href="http://www.biopax.org">Details about the BioPAX format</a>
