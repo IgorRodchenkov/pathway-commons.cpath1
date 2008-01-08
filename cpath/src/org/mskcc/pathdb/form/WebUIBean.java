@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.18 2007-06-12 19:32:53 grossben Exp $
+// $Id: WebUIBean.java,v 1.19 2008-01-08 17:14:01 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -99,6 +99,11 @@ public class WebUIBean extends ActionForm {
      * Currently Supported Web API Version #.  Defaults to Version 2.0.
      */
     private String webApiVersion = ProtocolConstantsVersion2.VERSION_2;
+
+    /**
+     * Header Tag line.
+     */
+    private String tagLine = "";
 
     /**
      * List of Supported ID Types.
@@ -330,5 +335,21 @@ public class WebUIBean extends ActionForm {
      */
     public ArrayList <String> getSupportedIdTypes() {
         return supportedIdTypes;
+    }
+
+    /**
+     * Gets Tag Line for Home Page.
+     * @return tag line.
+     */
+    public String getTagLine() {
+        return tagLine;
+    }
+
+    /**
+     * Sets Tag Line for Home Page.
+     * @param tagLine Tag Line.
+     */
+    public void setTagLine(String tagLine) {
+        this.tagLine = tagLine;
     }
 }
