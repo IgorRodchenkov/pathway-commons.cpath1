@@ -12,8 +12,8 @@
     webUIBean.setWantCytoscape(true);
     webUIBean.setDisplayWebServiceTab(true);
     webUIBean.setDisplayFilterTab(true);
-    webUIBean.setDefaultUserMessage("Pathway Commons serves the scientific community.  "
-        + "We welcome your <a href='get_feedback.do'>feedback</a>.");
+    webUIBean.setDefaultUserMessage("Help us improve Pathway Commons.  "
+        + "Send us your <a href='get_feedback.do'>feedback</a>.");
     webUIBean.setBaseURL("pathwaycommons.org");
     webUIBean.setSmtpHost("cbio.mskcc.org");
     webUIBean.setFeedbackEmailTo("pc-info@pathwaycommons.org");
