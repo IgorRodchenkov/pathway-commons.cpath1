@@ -59,9 +59,27 @@ class ProtocolValidatorVersion2 {
             validateDataSources();
             validateQuery();
             validateOutput();
+            validateOrganism();
             validateMisc();
         } catch (DaoException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR);
+        }
+    }
+
+    /**
+     * Validates the organism paramter.
+     * @throws ProtocolException Indicates violocation of Protocol.
+     */
+    private void validateOrganism() throws ProtocolException {
+        String organism = request.getOrganism();
+        if (organism != null && organism.length() > 0) {
+            try {
+                Integer temp = new Integer(organism);
+            } catch (NumberFormatException e) {
+                throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+                        "Argument:  '" + ProtocolRequest.ARG_ORGANISM
+                        + "' must must be an integer value, e.g. 9606.");
+            }
         }
     }
 
