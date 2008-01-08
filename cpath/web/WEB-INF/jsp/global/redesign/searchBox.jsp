@@ -10,7 +10,7 @@
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-    String uri = (String) request.getAttribute("javax.servlet.forward.servlet_path");
+    String uri = (String) request.getAttribute("servlet_name");
     String searchTerm = new String("");
     String taxId = new String("");
     ProtocolRequest pRequest = (ProtocolRequest) request.getAttribute
@@ -77,5 +77,9 @@
         <% } %>
     <% } %>
 </form>
+</div>
+<% } else { %>
+<div id="tagline">
+<%= webUIBean.getTagLine() %>
 </div>
 <% } %>

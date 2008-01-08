@@ -20,5 +20,7 @@
     webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);
     webUIBean.addSupportedIdType(ExternalDatabaseConstants.UNIPROT);
     webUIBean.addSupportedIdType(ExternalDatabaseConstants.INTERNAL_DATABASE);
+    webUIBean.setTagLine("A public resource for pathway analysis and systems biology.  Thousands "
+        + "of pathways.  Single point of access.");
     CPathUIConfig.setWebUIBean(webUIBean);
 %>

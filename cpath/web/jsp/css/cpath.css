@@ -233,3 +233,10 @@ color:#ffffff;
 }
 
 .splitcontentleft h3 a {color:#ffffff !important; font-size:90%;}
+
+#tagline{
+float:right;
+width:60%;
+padding: 50px 0px 0px 0px;
+margin:0 0 20px 0;
+}
