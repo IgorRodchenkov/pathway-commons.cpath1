@@ -114,7 +114,7 @@ cursor:pointer;
 
 .yui-nav {
   font-size:85%;
-  margin-left:0px margin:0 5px 16px 35px;;
+  margin-left:0px !important;
   margin-bottom:0px !important;
 }
 
