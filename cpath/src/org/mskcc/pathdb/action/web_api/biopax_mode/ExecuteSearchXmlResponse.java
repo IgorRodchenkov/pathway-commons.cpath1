@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
 import java.math.BigInteger;
 
 /**
@@ -73,6 +74,19 @@ public class ExecuteSearchXmlResponse {
         ArrayList<String> entityTypes = new ArrayList<String>();
         entityTypes.add("protein");
         filterSettings.setEntityTypeSelected(entityTypes);
+
+        //  Extract and set Organism Taxonomy ID
+        String organism = protocolRequest.getOrganism().trim();
+        if (organism != null && organism.length() > 0) {
+            List <Integer> organismTaxonomyIds = new ArrayList<Integer>();
+            try {
+                Integer taxId = new Integer(organism);
+                organismTaxonomyIds.add(taxId);
+                filterSettings.setOrganismSelected(organismTaxonomyIds);
+            } catch (NumberFormatException e) {
+                //  no-op
+            }
+        }
 
         String q = protocolRequest.getQuery();
 
