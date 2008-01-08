@@ -18,6 +18,7 @@
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot"%>
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.Set"%>
+<%@ page import="java.util.Collections"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
@@ -461,22 +462,30 @@ enable Javascript support within your web browser.
 
     //  Output external links
     if (nonReferenceLinks.size() > 0) {
-        out.println("<h3>Links:</h3>");
-        out.println("<ul>");
+		HashMap<String, String> linksMap = new HashMap<String,String>();
         for (int i=0; i<nonReferenceLinks.size(); i++) {
             ExternalLinkRecord link = nonReferenceLinks.get(i);
             ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
             String dbId = link.getLinkedToId();
             String linkStr = dbRecord.getName() + ": " + dbId;
             String uri = link.getWebLink();
-            out.println("<li>");
             if (uri != null && uri.length() > 0) {
-                out.println("<a href=\"" + uri + "\">" + linkStr + "</a>");
+                linksMap.put(linkStr, new String("<a href=\"" + uri + "\">" + linkStr + "</a>"));
             } else {
-                out.println(linkStr);
+                linksMap.put(linkStr, linkStr);
             }
-            out.println("</li>");
         }
+        out.println("<h3>Links:</h3>");
+        out.println("<ul>");
+		// output goes here
+		ArrayList<String> linksMapKeys = new ArrayList<String>();
+		linksMapKeys.addAll(linksMap.keySet());
+		Collections.sort(linksMapKeys);
+		for (String key : linksMapKeys) {
+			out.println("<li>");
+			out.println(linksMap.get(key));
+			out.println("</li>");
+		}
         out.println("</ul>");
     }
 
