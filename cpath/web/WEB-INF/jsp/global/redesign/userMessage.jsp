@@ -13,6 +13,6 @@
 
 <% if (userMessage != null) { %>
     <div class="user_message">
-    &gt; <%= userMessage %>
+    <%= userMessage %>
     </div>
 <% } %>
