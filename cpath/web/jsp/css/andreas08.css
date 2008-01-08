@@ -139,7 +139,7 @@ background-color:inherit;
 
 #content h2{
 display:block;
-margin:2px 0 5px 0;
+margin:8px 0 5px 0;
 padding-left:2px;
 font-size:1.0em;
 font-weight:bold;
@@ -149,14 +149,24 @@ background-color:#EEEEEE;
 
 #content h3{
 font-size:0.9em;
-font-weight:normal;
+font-weight:bold;
 display:block;
 margin:5px 0 5px 0;
-padding-left:5px;
+#padding-left:5px;
 height:1.7em;
 line-height:1.7em;
-background-color:#578bb8;
-color:#ffffff;
+#background-color:#578bb8;
+#color:#ffffff;
+}
+
+#content h4{
+display:block;
+margin:2px 0 5px 0;
+padding-left:2px;
+font-size:1.0em;
+font-weight:bold;
+color:#505050;
+background-color:#EEEEEE;
 }
 
 #content a:hover,#subcontent a:hover{text-decoration:underline;}
