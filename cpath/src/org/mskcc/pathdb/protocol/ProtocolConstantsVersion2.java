@@ -21,12 +21,17 @@ public class ProtocolConstantsVersion2 {
     /**
      * Get Pathway List Command.
      */
-    public static final String COMMAND_GET_PATHWAY_LIST = "get_pathway_list";
+    public static final String COMMAND_GET_PATHWAY_LIST = "get_pathways";
 
     /**
      * Get Pathway List Command.
      */
-    public static final String COMMAND_GET_PARENT_SUMMARIES = "get_parent_summaries";
+    public static final String COMMAND_GET_PARENT_SUMMARIES = "get_parents";
+
+    /**
+     * Search by Keyword.
+     */
+    public static final String COMMAND_SEARCH = "search";    
 
     /**
      * ID_LIST Format / Output.
