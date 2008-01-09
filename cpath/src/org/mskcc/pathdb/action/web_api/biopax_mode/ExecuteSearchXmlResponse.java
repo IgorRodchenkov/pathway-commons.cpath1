@@ -76,7 +76,7 @@ public class ExecuteSearchXmlResponse {
         filterSettings.setEntityTypeSelected(entityTypes);
 
         //  Extract and set Organism Taxonomy ID
-        String organism = protocolRequest.getOrganism().trim();
+        String organism = protocolRequest.getOrganism();
         if (organism != null && organism.length() > 0) {
             List <Integer> organismTaxonomyIds = new ArrayList<Integer>();
             try {
