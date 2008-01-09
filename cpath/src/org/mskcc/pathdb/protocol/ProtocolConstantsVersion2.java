@@ -59,6 +59,7 @@ public class ProtocolConstantsVersion2 {
             validCommands.add(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             validCommands.add(ProtocolConstants.COMMAND_HELP);
             validCommands.add(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+            validCommands.add(COMMAND_SEARCH);
             validCommands.add(COMMAND_GET_NEIGHBORS);
             validCommands.add(COMMAND_GET_PATHWAY_LIST);
             validCommands.add(COMMAND_GET_PARENT_SUMMARIES);
