@@ -1,5 +1,5 @@
 # setup the database
-./initDb.pl
+./initDb.pl -f
 ./admin.pl -f ../dbData/externalDb/pathway_commons.xml import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_uniprot2uniprot.txt import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_sp2refseq.txt import
@@ -14,7 +14,7 @@ mv -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.bak.owl" $
 ./admin.pl -f $CPATH_HOME/../pathway-commons/humancyc import
 
 # nci
-./admin.pl -f $CPATH_HOME/../pathway-commons/nci/12-11-2007 import
+./admin.pl -f $CPATH_HOME/../pathway-commons/nci/01-08-2008 import
 
 # cellmap
 ./admin.pl -f $CPATH_HOME/../pathway-commons/cellmap import
