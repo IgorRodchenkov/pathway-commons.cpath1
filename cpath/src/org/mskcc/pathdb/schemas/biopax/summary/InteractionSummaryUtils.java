@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.37 2008-01-08 18:57:31 grossben Exp $
+// $Id: InteractionSummaryUtils.java,v 1.38 2008-01-11 14:46:35 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -157,7 +157,7 @@ public class InteractionSummaryUtils {
 		// if available, use bpSummary to properly order participants in interaction, 
 		// protein whose summary page we are on should go first - see bug #1650
 		for (ParticipantSummaryComponent component : (List<ParticipantSummaryComponent>)summary.getParticipants()) {
-			if (bpSummary != null && bpSummary.getName().equals(component.getName())) {
+			if (bpSummary != null && bpSummary.getName() != null && bpSummary.getName().equals(component.getName())) {
 				participantSummaryComponentList.add(0, component);
 			}
 			else {
