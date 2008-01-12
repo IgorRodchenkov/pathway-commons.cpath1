@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.38 2008-01-11 14:46:35 grossben Exp $
+// $Id: InteractionSummaryUtils.java,v 1.39 2008-01-12 02:13:43 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Collections;
 
 /**
  * This class generates Summary Strings of BioPAX Interaction Objects.
@@ -63,6 +64,35 @@ public class InteractionSummaryUtils {
     public static String createInteractionSummaryString
             (InteractionSummary interactionSummary) {
 		return createInteractionSummaryString(interactionSummary, null);
+	}
+
+    /**
+     * Creates the interaction summary string.
+     *
+     * @param interactionSummary PhysicalInteractiong
+	 * @param bpSummary BioPaxRecordSummary
+     * @return List<String>
+     */
+    public static List<String> createInteractionSummaryStringList(InteractionSummary interactionSummary,
+																  BioPaxRecordSummary bpSummary) {
+
+		// list to return
+		List<String> toReturn = new ArrayList<String>();
+
+		// get html string
+		String htmlString = createInteractionSummaryString(interactionSummary, bpSummary);
+		
+		// split string by component tags
+		String[] components = htmlString.split("<span class='component'>");
+
+		// create List<String> to return)
+		for (String component : components) {
+			if (component.length() == 0) continue;
+			toReturn.add("<span class='component'>" + component);
+		}
+
+		// outta here
+		return toReturn;
 	}
 
     /**

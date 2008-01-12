@@ -29,6 +29,7 @@ if (showHeader != null && showHeader.equals("false")) {
     headerFlag = false;
 }
 
+int NUM_PREVIEW_INTERACTION_PARTICIPANTS = 2;
 int max = BioPaxParentChild.MAX_RECORDS;
 
 int total = 9999;
@@ -111,16 +112,27 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
         EntitySummary entitySummary = interactionSummaryMap.get(bpSummary.getRecordID());
         if (entitySummary instanceof InteractionSummary) {
             InteractionSummary interactionSummary = (InteractionSummary) entitySummary;
-            String interactionString = InteractionSummaryUtils.createInteractionSummaryString
+            List<String> interactionSummaryStringList = InteractionSummaryUtils.createInteractionSummaryStringList
                 (interactionSummary, proteinPageBpSummary);
-            if (interactionString != null) {
-                out.println("<span class='entity_summary'>" + interactionString);
+            if (interactionSummaryStringList.size() > 0) {
+                out.println("<span class='entity_summary'>");
+				int interactionSummaryStringListSize = interactionSummaryStringList.size();
+				int num_participants_to_show = (interactionSummaryStringListSize > NUM_PREVIEW_INTERACTION_PARTICIPANTS) ?
+					NUM_PREVIEW_INTERACTION_PARTICIPANTS : interactionSummaryStringListSize;
+				for (int lc = 0; lc < num_participants_to_show; lc++) {
+					out.println(interactionSummaryStringList.get(lc));
+				}
+				int remainding_particpants_to_show = interactionSummaryStringListSize - NUM_PREVIEW_INTERACTION_PARTICIPANTS;
+				if (remainding_particpants_to_show > 0) {
+					out.println("(and " + String.valueOf(remainding_particpants_to_show) + " other participants)");
+				}
             }
             outputParentInteractions(interactionSummary, parentInteractionMap,
                     interactionSummaryMap, out, debugMode);
             out.println("</span>");
             out.println("</td>");
-            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap, i, detailsTracker, interactionSummary));
+            out.println(getBioPaxDetailsHtml(bpSummary, referenceMap, i, detailsTracker, interactionSummary,
+											 interactionSummaryStringList, NUM_PREVIEW_INTERACTION_PARTICIPANTS));
         } else {
             out.println(getBioPaxRecordHtml(bpSummary, referenceMap, i, detailsTracker));
         }
@@ -196,13 +208,14 @@ private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
         buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
             + bpSummary.getLabel() + "</a>");
     }
-    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index, detailsTracker, null));
+    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index, detailsTracker, null, null, 0));
     return buf.toString();
 }
 
 private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
 									 HashMap<String, Reference> referenceMap, int index,
-									 DetailsTracker detailsTracker, InteractionSummary interactionSummary)
+									 DetailsTracker detailsTracker, InteractionSummary interactionSummary,
+									 List<String> interactionSummaryStringList, int NUM_PREVIEW_INTERACTION_PARTICIPANTS)
         throws DaoException {
     ReferenceUtil refUtil = new ReferenceUtil();
     ArrayList masterList = refUtil.categorize(bpSummary);
@@ -216,7 +229,9 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
             || referenceLinks.size() > 0
 		    || (interactionSummary != null &&
 				interactionSummary.getEvidence() != null &&
-				interactionSummary.getEvidence().size() > 0)) {
+				interactionSummary.getEvidence().size() > 0)
+		    || (interactionSummaryStringList != null &&
+				(interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0))) {
         hasDetails = true;
     }
     buf.append("<td>");
@@ -238,6 +253,18 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     buf.append ("</tr>");
     buf.append(getStartRow(index));
     buf.append("<td colspan=3>");
+	if (interactionSummaryStringList != null &&
+		(interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0)) {
+		String interactionSummaryListString = "";
+		for (int lc = NUM_PREVIEW_INTERACTION_PARTICIPANTS; lc < interactionSummaryStringList.size(); lc++) {
+			interactionSummaryListString += interactionSummaryStringList.get(lc);
+		}
+		buf.append(getDetailsHtml(bpSummary.getRecordID(), "remaining_participants", 
+								  "<p><b>Additional Participants:</b></p>\n\r" + interactionSummaryListString));
+	}
+	else {
+		buf.append(getDetailsHtml(bpSummary.getRecordID(), "remaining_participants", ""));
+	}
     if (bpSummary.getComments() != null) {
         String comments[] = bpSummary.getComments();
         StringBuffer commentHtml = new StringBuffer();
