@@ -1,4 +1,4 @@
-// $Id: webstart.js,v 1.12 2007-12-28 14:11:07 grossben Exp $
+// $Id: webstart.js,v 1.13 2008-01-14 15:05:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -76,7 +76,8 @@ function timeoutHandler() {
         if (port) {
             hostname += (":" + port);
         }
-        var webstart_url = "cytoscape.jnlp?id=" + requestedID + "&command=" + requestedCommand;
+		// note: context_path is set in stylesAndScripts.jsp
+        var webstart_url = "http://" + hostname + context_path + "/cytoscape.jnlp?id=" + requestedID + "&command=" + requestedCommand;
         if (requestedNetworkViewTitle != "empty_title") {
           webstart_url += "&network_view_title=" + requestedNetworkViewTitle;
         }

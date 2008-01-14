@@ -31,4 +31,7 @@ See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
 <script type="text/javascript" src="jsp/javascript/overlib/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>
 
 <!-- Webstart -->
+<script type="text/javascript">
+var context_path = '<%= request.getContextPath() %>';
+</script>
 <script type="text/javascript" src="jsp/javascript/webstart/webstart.js"></script>
