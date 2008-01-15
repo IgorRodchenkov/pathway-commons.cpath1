@@ -15,13 +15,6 @@ String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALU
 <tr valign="top">
 <td width="60%" valign="top">
 
-<div>
-<h4>About Pathway Commons:</h4>
-<b>Pathway Commons</b> is a convenient point of access to biological pathway information collected
-from public pathway databases, which you can browse or search. Pathways include biochemical reactions,
-complex assembly, transport and catalysis events, and physical interactions involving proteins, DNA,
-RNA, small molecules and complexes. <a href="about.do">more...</a>
-</div>
 <div class="large_search_box">
 <h1>Search <%= webUIBean.getApplicationName() %>:</h1>
 <p>
@@ -35,6 +28,7 @@ or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%=
 <p>To restrict your search to specific data sources or specific organisms, update your
 <a href="filter.do">global filter settings</a>.</p>
 </div>
+<h4>Using Pathway Commons:</h4>
 <p><b>Biologists:</b>
 Browse and search pathways across multiple valuable public pathway databases.
 </p>

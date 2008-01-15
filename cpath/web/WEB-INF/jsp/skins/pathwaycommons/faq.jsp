@@ -11,7 +11,9 @@ It provides researchers with convenient access to a comprehensive collection of 
 multiple sources represented in a common language. Access is via a web portal for browsing,
 query and download. Database providers can share their pathway data via a common repository
 and avoid duplication and reduce software development costs. Bioinformatics software developers
-can increase efficiency by sharing software components.
+can increase efficiency by sharing software components.  Pathways include biochemical reactions,
+complex assembly, transport and catalysis events, and physical interactions involving proteins, DNA,
+RNA, small molecules and complexes. 
 </p>
 <h3>Is Pathway Commons free?</h3>
 <p>Yes, it's free! Pathway Commons distributes pathway content with the intellectual
