@@ -42,9 +42,10 @@ font-size:90%;
     margin-bottom:10px;    
 }
 
+
 .large_search_box {
-	margin: 10px 5px 5px 0px;
-	border: 1px solid #000000;
+	margin: 2px 5px 15px 0px;
+    #border: 1px solid #000000;
     padding: 5px 20px 5px 20px;
     background: #CCCCFF;
 }
@@ -54,7 +55,8 @@ font-size:90%;
 }
 
 .large_search_box input {
-   font-size:90%;
+   #font-size:90%;
+   margin-bottom:7px;
 }
 
 .home_page_box {
@@ -237,6 +239,10 @@ color:#ffffff;
 #tagline{
 float:right;
 width:60%;
-padding: 50px 0px 0px 0px;
+padding: 30px 0px 0px 0px;
 margin:0 0 20px 0;
+}
+
+#tagline a{
+color:#FFFFFF;
 }
