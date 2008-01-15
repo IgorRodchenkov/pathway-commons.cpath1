@@ -307,6 +307,7 @@ YAHOO.example.init();
         elements[1] = document.getElementById(id + "_organism");
         elements[2] = document.getElementById(id + "_refs");
         elements[3] = document.getElementById(id + "_evidence");
+        elements[4] = document.getElementById(id + "_remaining_participants");
         var current = YAHOO.util.Dom.getStyle(elements[0], 'display');
         YAHOO.log ("Current Display Style is set to:  " + current);
         var toggleImage = document.getElementById (id + "_image");
