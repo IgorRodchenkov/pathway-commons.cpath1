@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.16 2008-01-09 20:33:56 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.17 2008-01-16 03:35:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -198,6 +198,11 @@ public class ExecuteWebApi extends BaseAction {
                     ExecuteGetParentsXmlResponse task =
                             new ExecuteGetParentsXmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
+				} else if (isBinaryInteraction(protocolRequest)) {
+                    xdebug.logMsg(this, "Branching based on command and output: Binary Interaction");
+                    org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction task =
+                            new org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction();
+                    return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
                     xdebug.logMsg(this, "Branching based on response type:  BioPAX XML");
                     org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxXmlResponse task =
@@ -251,4 +256,24 @@ public class ExecuteWebApi extends BaseAction {
         return false;
     }
 
+    /**
+     * Routine which checks if the specified web service command returns binary interactions.
+     *
+     * @param protocolRequest ProtocolRequest
+     * @return boolean indicates that the specified web service command returns binary interactions.
+     */
+    private boolean isBinaryInteraction(ProtocolRequest protocolRequest) {
+
+        String command = protocolRequest.getCommand();
+		if (command != null) {
+			String output = protocolRequest.getOutput();
+			if (output != null) {
+				return (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID) &&
+						!output.equals(ProtocolConstantsVersion1.FORMAT_BIO_PAX));
+			}
+		}
+
+		// outta here
+		return false;
+	}
 }
