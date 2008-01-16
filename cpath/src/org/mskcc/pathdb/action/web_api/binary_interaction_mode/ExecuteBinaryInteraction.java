@@ -1,8 +1,8 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.1 2008-01-16 03:15:12 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.2 2008-01-16 03:34:07 grossben Exp $
 //------------------------------------------------------------------------------
-/** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
+/** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
- ** Code written by: Ethan Cerami
+ ** Code written by: Ethan Cerami, Benjamin Gross
  ** Authors: Ethan Cerami, Gary Bader, Chris Sander
  **
  ** This library is free software; you can redistribute it and/or modify it
@@ -29,7 +29,7 @@
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
-package org.mskcc.pathdb.action.web_api.biopax_mode;
+package org.mskcc.pathdb.action.web_api.binary_interaction_mode;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -38,6 +38,7 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.protocol.ProtocolStatusCode;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
@@ -53,10 +54,12 @@ import org.mskcc.pathdb.schemas.binary_interaction.assembly.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.io.IOException;
 
 /**
- * BioPAX Web Mode:  Response is of type BioPAX.
+ * Binary Interaction Web Mode:  Response is Binary Interaction.
  *
  * @author Ethan Cerami, Benjamin Gross.
  */
@@ -88,9 +91,8 @@ public class ExecuteBinaryInteraction {
             HttpServletRequest request, HttpServletResponse response, ActionMapping mapping)
             throws QueryException, IOException, AssemblyException, ParseException, ProtocolException,
             DaoException, CloneNotSupportedException {
-        String xml;
-        XmlAssembly xmlAssembly;
-        xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
+
+        XmlAssembly xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
         if (xmlAssembly == null || xmlAssembly.isEmpty()) {
             String q = protocolRequest.getQuery();
             throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,
@@ -98,9 +100,9 @@ public class ExecuteBinaryInteraction {
         }
 
 		// determine binary interaction assembly type
-		BinaryInteractionAssembly.Assembly binaryInteractionAssemblyType = null;
+		BinaryInteractionAssemblyFactory.AssemblyType binaryInteractionAssemblyType = null;
 		if (protocolRequest.getOutput().equals(ProtocolConstantsVersion2.FORMAT_BINARY_SIF)) {
-			type = BinaryInteractionAssemblyFactory.AssemblyType.SIF
+			binaryInteractionAssemblyType = BinaryInteractionAssemblyFactory.AssemblyType.SIF;
 		}
 
 		// contruct rule types
@@ -108,12 +110,12 @@ public class ExecuteBinaryInteraction {
 
 		// get binary interaction assembly
 		BinaryInteractionAssembly assembly =
-			BinaryInteractionAssemblyFactory.createAssembly(binaryInteractionAssemblytype,
+			BinaryInteractionAssemblyFactory.createAssembly(binaryInteractionAssemblyType,
 															binaryInteractionRuleTypes,
 															xmlAssembly.getXmlString());
 
 		// write out the binary interaction text
-        WebApiUtil.returnText(response, xml);
+        WebApiUtil.returnText(response, assembly.getBinaryInteractionString());
 
         //  Return null here, because we do not want Struts to do any forwarding.
         return null;
