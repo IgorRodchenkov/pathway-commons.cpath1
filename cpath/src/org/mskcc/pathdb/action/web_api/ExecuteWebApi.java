@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.17 2008-01-16 03:35:07 grossben Exp $
+// $Id: ExecuteWebApi.java,v 1.18 2008-01-16 14:14:40 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -268,8 +268,9 @@ public class ExecuteWebApi extends BaseAction {
 		if (command != null) {
 			String output = protocolRequest.getOutput();
 			if (output != null) {
-				return (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID) &&
-						!output.equals(ProtocolConstantsVersion1.FORMAT_BIO_PAX));
+				return ((command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID) ||
+						 command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) &&
+						(output.equals(ProtocolConstantsVersion2.FORMAT_BINARY_SIF)));
 			}
 		}
 
