@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.36 2007-09-17 21:00:26 cerami Exp $
+// $Id: ExecuteSearch.java,v 1.37 2008-01-16 02:05:32 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,6 +59,12 @@ import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.query.batch.PathwayBatchQuery;
 import org.mskcc.pathdb.query.batch.PhysicalEntityWithPathwayList;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
+import org.mskcc.pathdb.schemas.binary_interaction.assembly.*;
+import org.biopax.paxtools.io.sif.InteractionRule;
+import org.biopax.paxtools.io.sif.level2.ControlRule;
+import org.biopax.paxtools.io.sif.level2.ComponentRule;
+import org.biopax.paxtools.io.sif.level2.ParticipatesRule;
+import org.biopax.paxtools.io.sif.level2.ConsecutiveCatalysisRule;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -130,7 +136,7 @@ public class ExecuteSearch extends BaseAction {
 		if (isSpecialCaseCommand(protocolRequest)) {
             try {
                 validator.validate(webUiBean.getWebApiVersion());
-                return specialCaseCommandHandler(mapping, protocolRequest, request, response,
+                return specialCaseCommandHandler(mapping, protocolRequest, validator, request, response,
                         xdebug);
             } catch (ProtocolException e) {
                 String xml = e.toXml();
@@ -152,38 +158,23 @@ public class ExecuteSearch extends BaseAction {
     private ActionForward processXmlRequest(ProtocolRequest protocolRequest,
             HttpServletResponse response, ProtocolValidator validator,
             XDebug xdebug) throws NeedsHelpException {
-        WebUIBean webUiBean = CPathUIConfig.getWebUIBean();
+
         //  Start timer here
         log.info("Received web service request:  " + protocolRequest.getUri());
         Date start = new Date();
-        String xml = null;
         XmlAssembly xmlAssembly = null;
         try {
-            validator.validate(webUiBean.getWebApiVersion());
-            xmlAssembly = executeQuery(xdebug, protocolRequest);
-            if (xmlAssembly == null || xmlAssembly.isEmpty()) {
-                String q = protocolRequest.getQuery();
-                if (q == null && protocolRequest.getOrganism() != null) {
-                    q = protocolRequest.getOrganism();
-                } else if (q == null) {
-                    q = protocolRequest.getCommand();
-                }
-                throw new ProtocolException
-                        (ProtocolStatusCode.NO_RESULTS_FOUND,
-                                "No Results Found for:  " + q);
-            }
-            xml = xmlAssembly.getXmlString();
-
+			// get xml assembly
+            xmlAssembly = getXmlAssembly(protocolRequest, validator, xdebug);
             //  Return Number of Hits Only or Complete XML.
             if (protocolRequest.getFormat() != null && protocolRequest.getFormat().
                     equals(ProtocolConstantsVersion1.FORMAT_COUNT_ONLY)) {
                 returnCountOnly(response, xmlAssembly);
             } else {
-                returnXml(response, xml);
+                returnXml(response, xmlAssembly.getXmlString());
             }
         } catch (ProtocolException e) {
-            xml = e.toXml();
-            returnXml(response, xml);
+            returnXml(response, e.toXml());
         }
 
         //  Return null here, because we do not want Struts to do any
@@ -194,6 +185,29 @@ public class ExecuteSearch extends BaseAction {
             + " ms");
         return null;
     }
+
+	private XmlAssembly getXmlAssembly(ProtocolRequest protocolRequest, 
+									   ProtocolValidator validator, XDebug xdebug) throws ProtocolException,
+																						  NeedsHelpException {
+
+        WebUIBean webUiBean = CPathUIConfig.getWebUIBean();
+		validator.validate(webUiBean.getWebApiVersion());
+		XmlAssembly xmlAssembly = executeQuery(xdebug, protocolRequest);
+		if (xmlAssembly == null || xmlAssembly.isEmpty()) {
+			String q = protocolRequest.getQuery();
+			if (q == null && protocolRequest.getOrganism() != null) {
+				q = protocolRequest.getOrganism();
+			} else if (q == null) {
+				q = protocolRequest.getCommand();
+			}
+			throw new ProtocolException
+				(ProtocolStatusCode.NO_RESULTS_FOUND,
+				 "No Results Found for:  " + q);
+		}
+
+		// outta here
+		return xmlAssembly;
+	}
 
     private ActionForward processHtmlRequest(ActionMapping mapping,
             ProtocolRequest protocolRequest, HttpServletRequest request,
@@ -470,7 +484,10 @@ public class ExecuteSearch extends BaseAction {
 						protocolRequest.getOutput().equals(ProtocolRequest.ID_LIST));
 			} else if (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
                 return true;
-            }
+            } else if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+				return (protocolRequest.getOutput() != null &&
+						protocolRequest.getOutput().equals(ProtocolConstantsVersion2.FORMAT_BINARY_SIF));
+			}
 		}
 
 		// outta here
@@ -485,6 +502,7 @@ public class ExecuteSearch extends BaseAction {
 	 *
 	 * @param mapping ActionMapping
 	 * @param protocolRequest ProtocolRequest
+	 * @param protocolValidator ProtocolValidator
 	 * @param request HttpServletRequest
 	 * @param xdebug XDebug
 	 * @return ActionForward
@@ -492,6 +510,7 @@ public class ExecuteSearch extends BaseAction {
 	 */
 	private ActionForward specialCaseCommandHandler(ActionMapping mapping,
 													ProtocolRequest protocolRequest,
+													ProtocolValidator protocolValidator,
 													HttpServletRequest request,
                                                     HttpServletResponse response,
                                                     XDebug xdebug) throws ProtocolException {
@@ -502,7 +521,9 @@ public class ExecuteSearch extends BaseAction {
 		} else if (protocolRequest.getCommand().equals
                 (ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
             return getPathwayListHandler(mapping, protocolRequest, request, response, xdebug);
-        }
+        } else if (protocolRequest.getCommand().equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+            return getRecordByCPathIdHandler(mapping, protocolRequest, protocolValidator, request, response, xdebug);
+		}
 
 		// outta here
 		return null;
@@ -586,5 +607,75 @@ public class ExecuteSearch extends BaseAction {
 		} catch (IOException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
+	}
+
+	/**
+	 * Special-Case handler for getRecordByCpathId Command.
+	 *
+	 * @param mapping ActionMapping
+	 * @param protocolRequest ProtocolRequest
+	 * @param protocolValidator ProtocolValidator
+	 * @param request HttpServletRequest
+	 * @param xdebug XDebug
+	 * @return ActionForward
+	 * @throws ProtocolException
+	 */
+	private ActionForward getRecordByCPathIdHandler(ActionMapping mapping,
+													ProtocolRequest protocolRequest,
+													ProtocolValidator protocolValidator,
+													HttpServletRequest request,
+													HttpServletResponse response,
+													XDebug xdebug) throws ProtocolException {
+
+		try {
+			// get xml for cpath record
+			XmlAssembly xmlAssembly = getXmlAssembly(protocolRequest, protocolValidator, xdebug);
+
+			// contruct rule types
+			List<String> binaryInteractionRuleTypes = getBinaryInteractionRuleTypes(protocolRequest);
+
+			// get assembly
+			BinaryInteractionAssembly assembly =
+				BinaryInteractionAssemblyFactory.createAssembly(BinaryInteractionAssemblyFactory.AssemblyType.SIF,
+																binaryInteractionRuleTypes,
+																xmlAssembly.getXmlString());
+			// write out to response document
+			response.setContentType("text/plain");
+			PrintWriter writer = response.getWriter();
+			writer.println(assembly.getBinaryInteractionString());
+			writer.flush();
+			writer.close();
+			return null;
+		}
+		catch (IOException e) {
+            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+		}
+		catch (NeedsHelpException e) {
+            request.removeAttribute(BaseAction.PAGE_IS_SEARCH_RESULT);
+            return mapping.findForward(BaseAction.FORWARD_HELP);
+		}
+	}
+
+	private List<String> getBinaryInteractionRuleTypes(ProtocolRequest protocolRequest) {
+
+		// list to return
+		List<String> toReturn = new ArrayList<String>();
+
+		// possible rules
+		List<InteractionRule> possibleRules = Arrays.asList(new ComponentRule(),
+															new ConsecutiveCatalysisRule(),
+															new ControlRule(),
+															new ParticipatesRule());
+
+		// interate through each rule class and get each rule type
+		for (InteractionRule rule : possibleRules) {
+			for (String ruleType : rule.getRuleTypes()) {
+				toReturn.add(ruleType);
+			}
+		}
+
+		// outta here
+		return toReturn;
+
 	}
 }
