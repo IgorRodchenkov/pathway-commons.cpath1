@@ -39,6 +39,11 @@ public class ProtocolConstantsVersion2 {
     public static final String FORMAT_ID_LIST = "id_list";
 
     /**
+     * BINARY_SIF Format / Output.
+     */
+    public static final String FORMAT_BINARY_SIF = "binary_sif";
+
+    /**
      * Protocol Version:  2.0
      */
     public static final String VERSION_2 = "2.0";

@@ -217,7 +217,8 @@ class ProtocolValidatorVersion2 {
                                 + "' is not specified." + ProtocolValidator.HELP_MESSAGE,
                         "You did not specify an output format.  Please try again.");
             } else {
-                if (!output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX)) {
+                if (!(output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX) ||
+					  output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_BINARY_SIF))) {
                     throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                             ProtocolRequest.ARG_OUTPUT +
                                     " must be set to: " +
