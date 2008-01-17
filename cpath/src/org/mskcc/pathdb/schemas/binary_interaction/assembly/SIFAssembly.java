@@ -1,4 +1,4 @@
-// $Id: SIFAssembly.java,v 1.1 2008-01-16 02:04:46 grossben Exp $
+// $Id: SIFAssembly.java,v 1.2 2008-01-17 02:10:30 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -66,10 +66,15 @@ public class SIFAssembly extends BinaryInteractionAssemblyBase implements Binary
 
 		// create outputstream to pass into simple interaction converter
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
 		// write out binary interactions
 		converter.writeInteractionsInSIF(bpModel, out);
 
+		// do a bit of cooking
+		String toReturn = out.toString();
+		toReturn = toReturn.replaceAll("http://cbio.mskcc.org/cpath#CPATH-", "");
+
 		// outta here
-		return out.toString();
+		return toReturn;
 	}
 }
