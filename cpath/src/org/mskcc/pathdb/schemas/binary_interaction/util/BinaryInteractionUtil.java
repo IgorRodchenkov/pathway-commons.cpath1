@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssemblyBase.java,v 1.2 2008-01-17 15:49:30 grossben Exp $
+// $Id: BinaryInteractionUtil.java,v 1.1 2008-01-17 15:49:30 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -29,73 +29,59 @@
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
-package org.mskcc.pathdb.schemas.binary_interaction.assembly;
+package org.mskcc.pathdb.schemas.binary_interaction.util;
 
 // imports
-import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.io.sif.InteractionRule;
-import org.biopax.paxtools.io.sif.SimpleInteractionConverter;
-import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
+import org.biopax.paxtools.io.sif.level2.ControlRule;
+import org.biopax.paxtools.io.sif.level2.ComponentRule;
+import org.biopax.paxtools.io.sif.level2.ParticipatesRule;
+import org.biopax.paxtools.io.sif.level2.ConsecutiveCatalysisRule;
 
-import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
- * BinaryInteractionAssemblyBase class.
- * (contains logic to deal with paxtools - simply interactions).
+ * Class which provides various util methods to suppport binary interactions.
  *
  * @author Benjamin Gross
  */
-public abstract class BinaryInteractionAssemblyBase {
+public class BinaryInteractionUtil {
+
+	// possible rules
+	private static final List<InteractionRule> possibleRules = Arrays.asList(new ComponentRule(),
+																			 new ConsecutiveCatalysisRule(),
+																			 new ControlRule(),
+																			 new ParticipatesRule());
 
 	/**
-	 * ref to paxtools model
-	 */
-	protected Model bpModel;
-
-	/**
-	 * ref to simple interaction converter
-	 */
-	protected SimpleInteractionConverter converter;
-
-	/**
-	 * Constructor.
+	 * Gets arrary of all binary interaction rule classes.
 	 *
-	 * @param bpModel Model
-	 * @pararm ruleTypes List<String>
+	 * @return InteractionRule[]
 	 */
-	public BinaryInteractionAssemblyBase(Model bpModel, List<String> ruleTypes) {
-
-		// init args
-		this.bpModel = bpModel;
-		this.converter = createConverter(ruleTypes);
+	public static InteractionRule[] getRuleClasses() {
+		return possibleRules.toArray(new InteractionRule[possibleRules.size()]);
 	}
 
 	/**
-	 * Creates a simple converter.
+	 * Gets list of binary interaction rule types for all rule classes.
 	 *
-	 * @param ruleTypes List<String>
-	 * @return SimpleInteractionConverter
+	 * @return List<String>
 	 */
-	private SimpleInteractionConverter createConverter(List<String> ruleTypes) {
+	public static List<String> getRuleTypes() {
 
-		InteractionRule[] rules = BinaryInteractionUtil.getRuleClasses();
-		Map<String, Boolean> options = new HashMap<String, Boolean>();
+		// list to return
+		List<String> toReturn = new ArrayList<String>();
 
-		for (InteractionRule rule : rules) {
+		// interate through each rule class and get each rule type
+		for (InteractionRule rule : possibleRules) {
 			for (String ruleType : rule.getRuleTypes()) {
-				if (ruleTypes.contains(ruleType)) {
-					options.put(ruleType, true);
-				}
-				else {
-					options.put(ruleType, false);
-				}
+				toReturn.add(ruleType);
 			}
 		}
 
 		// outta here
-		return new SimpleInteractionConverter(options, rules);
+		return toReturn;
 	}
 }
