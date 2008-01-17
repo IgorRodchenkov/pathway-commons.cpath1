@@ -1,11 +1,13 @@
 <%@ page import="org.mskcc.pathdb.sql.query.GetNeighborsCommand"%>
 <%@ page import="org.mskcc.pathdb.util.ExternalDatabaseConstants"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot"%>
+<%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.query.batch.PathwayBatchQuery"%>
+<%@ page import="org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction"%>
 <%@ page import="org.mskcc.pathdb.protocol.*"%>
 <%
 	// setup some globals
@@ -13,6 +15,8 @@
     ArrayList <String> supportedIdTypes = webUIBean.getSupportedIdTypes();
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
     ArrayList snapshotList = dao.getAllDatabaseSnapshots();
+    List<String> binaryInteractionRules = ExecuteBinaryInteraction.getRuleTypesForDisplay();
+String binaryInteractionRule = "a comma separated list of binary interaction rules that are applied when binary interactions are requested.  This parameter is only relevant when the " + ProtocolRequest.ARG_OUTPUT + " parameter is set to " + ProtocolConstantsVersion2.FORMAT_BINARY_SIF + ".  See the <a href=#valid_binary_rule>valid values for " + ProtocolRequest.ARG_BINARY_INTERACTION_RULE + " parameter</a> below.  If not specified, all binary interaction rules will be applied.";
 %>
 <h1>Web Service API:</h1>
 <p>
@@ -148,7 +152,7 @@ the physical entity of interest. For example, the following query uses a UniProt
     <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.  If not specified, the internal
     <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> (default) or
-<%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX representation of the neighborhood.  When set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>, the client will receive a simple text file that lists all the physical entities in the neighborhood.
+<%=ProtocolConstantsVersion2.FORMAT_ID_LIST%> or <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX representation of the neighborhood.  When set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>, the client will receive a simple text file that lists all the physical entities in the neighborhood.  When set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a simple text file that lists all the interactions in the neighborhood in the following simple interaction format: <b>physical_entity_id &lt;relationship type&gt; physical_entity_id</b>, where physical_entity_id is a valid CPATH_ID.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> = internal or external database.
 This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>,
 and is used to specify which external identifiers should be used to identify the physical entities in the
@@ -157,9 +161,10 @@ neighborhood.  For example, to output UniProt IDs, use: <%= ExternalDatabaseCons
 If not specified, the internal <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li></li>
 <li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a comma separated list of pathway data
 sources that you want to search.  For example, the following restricts your results to Reactome pathways
-only: <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>. See the
+only: <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>.  See the
 <a href=#valid_data_source>valid values for <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter</a> below.
 If not specified, all pathway data sources will be searched.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
 </ul>
 
 <h3>Output:</h3>
@@ -233,7 +238,9 @@ For example, get the complete Apoptosis pathway from Reactome.
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a comma delimited list of internal identifiers, used to identify the pathways, interactions
 or physical entities of interest.</li>
-<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>
+<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> or
+ <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX representation of the desired record.  When set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a simple text file that lists all the interactions in the following simple interaction format: <b>physical_entity_id &lt;relationship type&gt; physical_entity_id</b>, where physical_entity_id is a valid CPATH_ID.  Note that <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> is only relevant if the query parameter <%= ProtocolRequest.ARG_QUERY%> corresponds to a pathway or interaction record.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
 </ul>
 
 <h3>Output:</h3>
@@ -284,6 +291,15 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
                 snapshotList.get(i);
         String masterTerm = snapshotRecord.getExternalDatabase().getMasterTerm();
         out.println("<li>" + masterTerm + "</li>");
+    }
+%>
+</ul>
+
+<h3><a name='valid_binary_rule'></a>Valid values for the <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> parameter:</h3>
+<ul>
+<%
+    for (String rule : binaryInteractionRules) {
+        out.println("<li>" + rule + "</li>");
     }
 %>
 </ul>
