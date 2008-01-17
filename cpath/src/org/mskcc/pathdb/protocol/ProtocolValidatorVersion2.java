@@ -200,7 +200,8 @@ class ProtocolValidatorVersion2 {
             }
             if (output != null &&
                     !output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX) &&
-                    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_ID_LIST)) {
+                    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_ID_LIST) &&
+				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_BINARY_SIF)) {
                 throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                         ProtocolRequest.ARG_OUTPUT +
                                 " must be set to one of the following: " +
