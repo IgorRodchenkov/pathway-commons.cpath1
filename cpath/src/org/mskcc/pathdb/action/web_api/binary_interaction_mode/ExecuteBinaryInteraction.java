@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.3 2008-01-17 15:48:02 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.4 2008-01-17 16:05:34 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -104,7 +104,7 @@ public class ExecuteBinaryInteraction {
 		}
 
 		// contruct rule types
-		List<String> binaryInteractionRuleTypes = getBinaryInteractionRuleTypes(protocolRequest);
+		List<String> binaryInteractionRuleTypes = getRuleTypes(protocolRequest);
 
 		// get binary interaction assembly
 		BinaryInteractionAssembly assembly =
@@ -141,7 +141,7 @@ public class ExecuteBinaryInteraction {
 
 		// convert to display
 		for (String ruleType : ruleTypes) {
-			ruleType = ruleType.replaceAll(".", "_");
+			ruleType = ruleType.replace('.', '_');
 			toReturn.add(ruleType);
 		}
 
@@ -152,8 +152,11 @@ public class ExecuteBinaryInteraction {
 	/*
 	 * This code takes a rule in display format (getRuleTypesForDisplay()),
 	 * and returns a rule type valid for paxtools consumption
+	 *
+	 * @param protocolRequest ProtocolRequest
+	 * @return List<String>
 	 */
-	private List<String> getBinaryInteractionRuleTypes(ProtocolRequest protocolRequest) {
+	private List<String> getRuleTypes(ProtocolRequest protocolRequest) {
 
 		// list to return
 		List<String> toReturn = null;
