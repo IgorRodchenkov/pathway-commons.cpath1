@@ -37,9 +37,13 @@ This page provides a reference guide to help you get started.
 
 <h3>Summary:</h3>
 
-Searches all records by keyword, name or external identifier.  For example,
-retrieve a list of all physical entity records that contain the word, "BRCA2".  This command
-currently only search physical entity records, such as proteins and small molecules.
+Searches all physical entity records (e.g. proteins and small molecules) by keyword, name or
+external identifier.  For example, retrieve a list of all physical entity records that contain the
+word, "BRCA2".
+
+<% if (CPathUIConfig.getWebSkin().equalsIgnoreCase("pathwaycommons")) { %>
+This command enables third-party software to implement direct query interfaces to Pathway Commons.
+<% } %>
 
 <h3>Parameters:</h3>
 
