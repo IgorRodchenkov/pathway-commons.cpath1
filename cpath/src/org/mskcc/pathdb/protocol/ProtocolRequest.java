@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.29 2007-12-28 20:20:06 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.30 2008-01-17 15:47:29 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -137,6 +137,18 @@ public class ProtocolRequest implements PagedResult {
 	public static final String ARG_FULLY_CONNECTED = "fully_connected";
 
 	/**
+	 * Binary Interaction Rule(s).
+	 *
+	 * An optional parameter to get_neighbors & get_record_by_cpath_id. This is
+	 * only relevant when user requests binary interactions (ie BINARY_SIF),
+	 * as output type.  This optional parameter will specify which rules need
+	 * to be governed when binary interactions are created.  If binary interactions
+	 * are requested, and binary interaction rules are not specified, all rules 
+	 * will be used.
+	 */
+	public static final String ARG_BINARY_INTERACTION_RULE = "binary_interaction_rule";
+
+	/**
 	 * Output.
 	 *
 	 * An optional parameter to specify the output format.
@@ -226,6 +238,12 @@ public class ProtocolRequest implements PagedResult {
 	private String fullyConnected;
 
 	/**
+	 * Binary Interaction Rule Parameter.
+	 * (see ProtocolRequest.ARG_BINARY_INTERACTION_RULE)
+	 */
+	private String binaryInteractionRule;
+
+	/**
 	 * Output Parameter.
 	 * (see ProtocolRequest.ARG_OUTPUT)
 	 */
@@ -269,6 +287,7 @@ public class ProtocolRequest implements PagedResult {
 		// start get_neighbors parameters
 		this.inputIDType = null;
 		this.fullyConnected = null;
+		this.binaryInteractionRule = null;
 		this.output = null;
 		this.outputIDType = null;
 		this.dataSource = null;
@@ -321,6 +340,7 @@ public class ProtocolRequest implements PagedResult {
         // start get_neighbors parameters
 		this.inputIDType = (String)parameterMap.get(ProtocolRequest.ARG_INPUT_ID_TYPE);
 		this.fullyConnected = (String)parameterMap.get(ProtocolRequest.ARG_FULLY_CONNECTED);
+		this.binaryInteractionRule = (String)parameterMap.get(ProtocolRequest.ARG_BINARY_INTERACTION_RULE);
 		this.output = (String)parameterMap.get(ProtocolRequest.ARG_OUTPUT);
 		this.outputIDType = (String)parameterMap.get(ProtocolRequest.ARG_OUTPUT_ID_TYPE);
 		this.dataSource = (String)parameterMap.get(ProtocolRequest.ARG_DATA_SOURCE);
@@ -555,6 +575,43 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
+     * Gets binary interaction rule.
+	 *
+     * @return String
+     */
+    public String getBinaryInteractionRule() {
+        return this.binaryInteractionRule;
+    }
+
+    /**
+     * Gets list of binary interaction rules.
+	 *
+     * @return String[]
+     */
+    public String[] getBinaryInteractionRules() {
+		if (binaryInteractionRule != null &&
+			binaryInteractionRule.trim().length() > 0) {
+            //  Split by comma, and then trim
+            String rules[] = binaryInteractionRule.split(",");
+            for (int i=0; i< rules.length; i++) {
+                rules[i] = rules[i].trim();
+            }
+            return rules;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Sets binary interaction rule.
+	 *
+     * @param binaryInteractionRule binary interaction rule string.
+     */
+    public void setBinaryInteracitonRule(String binaryInteractionRule) {
+        this.binaryInteractionRule = binaryInteractionRule;
+    }
+
+    /**
      * Gets Output.
      *
      * @return String
@@ -703,12 +760,14 @@ public class ProtocolRequest implements PagedResult {
             list.add(new NameValuePair(ARG_USE_OPTIMIZED_CODE, "0"));
         }
 
-        // start get_neighbors parameters
 		if (inputIDType != null) {
             list.add(new NameValuePair(ARG_INPUT_ID_TYPE, inputIDType));
 		}
 		if (fullyConnected != null) {
 			list.add(new NameValuePair(ARG_FULLY_CONNECTED, fullyConnected));
+		}
+		if (binaryInteractionRule != null) {
+			list.add(new NameValuePair(ARG_BINARY_INTERACTION_RULE, binaryInteractionRule));
 		}
 		if (output != null) {
             list.add(new NameValuePair(ARG_OUTPUT, output));
@@ -719,7 +778,6 @@ public class ProtocolRequest implements PagedResult {
 		if (dataSource != null) {
             list.add(new NameValuePair(ARG_DATA_SOURCE, dataSource));
 		}
-		// end get_neighbors parameters
 
         NameValuePair nvps[] = (NameValuePair[])
                 list.toArray(new NameValuePair[list.size()]);

@@ -7,9 +7,11 @@ import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
+import org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Validates Client/Browser Request, Version 1.0.
@@ -266,14 +268,27 @@ class ProtocolValidatorVersion2 {
 
         String command = request.getCommand();
 
+		// get record by cpath id misc args
+		if (command != null && command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+			validateMiscGetRecordByCpathIdArgs();
+		}
+
         // get neighbors misc args
-        if (command != null &&
-                command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
+        if (command != null && command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
             validateMiscGetNeighborArgs();
         }
     }
 
+	private void validateMiscGetRecordByCpathIdArgs() throws ProtocolException {
+
+		// validate binary interaction rule
+		validateBinaryInteractionRule();
+	}
+
     private void validateMiscGetNeighborArgs() throws ProtocolException, DaoException {
+
+		// validate binary interaction rule
+		validateBinaryInteractionRule();
 
         // validate fully connected
         String fullyConnected = request.getFullyConnected();
@@ -309,6 +324,26 @@ class ProtocolValidatorVersion2 {
             }
         }
     }
+
+	/**
+	 * Validates the binary interaction rule argument.
+	 */
+	private void validateBinaryInteractionRule() throws ProtocolException {
+
+        String[] binaryInteractionRules = request.getBinaryInteractionRules();
+        if (binaryInteractionRules != null) {
+			// get valid rule types
+			List<String> ruleTypes = ExecuteBinaryInteraction.getRuleTypesForDisplay();
+			// interate through requested rule(s) and check for validity
+			for (String rule : binaryInteractionRules) {
+				if (!ruleTypes.contains(rule)) {
+						throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
+													ProtocolRequest.ARG_BINARY_INTERACTION_RULE + ": "
+													+ rule + " is not a recognized binary interaction rule.");
+				}
+			}
+		}
+	}
 
     /**
      * Checks that the specified cpathId exists within the database.

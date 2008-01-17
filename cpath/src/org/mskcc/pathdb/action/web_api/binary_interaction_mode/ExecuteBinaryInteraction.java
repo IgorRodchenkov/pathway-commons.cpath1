@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.2 2008-01-16 03:34:07 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.3 2008-01-17 15:48:02 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,18 +44,16 @@ import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.action.web_api.WebApiUtil;
-import org.biopax.paxtools.io.sif.InteractionRule;
-import org.biopax.paxtools.io.sif.level2.ControlRule;
-import org.biopax.paxtools.io.sif.level2.ComponentRule;
-import org.biopax.paxtools.io.sif.level2.ParticipatesRule;
-import org.biopax.paxtools.io.sif.level2.ConsecutiveCatalysisRule;
-import org.mskcc.pathdb.schemas.binary_interaction.assembly.*;
+import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
+import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssembly;
+import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssemblyFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.IOException;
 
 /**
@@ -121,22 +119,55 @@ public class ExecuteBinaryInteraction {
         return null;
     }
 
-	private List<String> getBinaryInteractionRuleTypes(ProtocolRequest protocolRequest) {
+	/**
+	 * Gets list of binary interaction rule types for all rule classes
+	 * display (ie web api docs, protocol request argument validation).
+	 *
+	 * Rules are in Rule.RuleType format, this code changes
+	 * with "_".
+	 *
+	 * @return List<String>
+	 */
+	public static List<String> getRuleTypesForDisplay() {
 
 		// list to return
 		List<String> toReturn = new ArrayList<String>();
 
-		// possible rules
-		List<InteractionRule> possibleRules = Arrays.asList(new ComponentRule(),
-															new ConsecutiveCatalysisRule(),
-															new ControlRule(),
-															new ParticipatesRule());
+		// get rule types
+		List<String> ruleTypes = BinaryInteractionUtil.getRuleTypes();
 
-		// interate through each rule class and get each rule type
-		for (InteractionRule rule : possibleRules) {
-			for (String ruleType : rule.getRuleTypes()) {
+		// sort
+		Collections.sort(ruleTypes);
+
+		// convert to display
+		for (String ruleType : ruleTypes) {
+			ruleType = ruleType.replaceAll(".", "_");
+			toReturn.add(ruleType);
+		}
+
+		// outta here
+		return toReturn;
+	}
+
+	/*
+	 * This code takes a rule in display format (getRuleTypesForDisplay()),
+	 * and returns a rule type valid for paxtools consumption
+	 */
+	private List<String> getBinaryInteractionRuleTypes(ProtocolRequest protocolRequest) {
+
+		// list to return
+		List<String> toReturn = null;
+
+        String[] binaryInteractionRules = protocolRequest.getBinaryInteractionRules();
+		if (binaryInteractionRules != null) {
+			toReturn = new ArrayList<String>();
+			for (String ruleType : binaryInteractionRules) {
+				ruleType = ruleType.replaceAll("_", ".");
 				toReturn.add(ruleType);
 			}
+		}
+		else {
+			toReturn = BinaryInteractionUtil.getRuleTypes();
 		}
 
 		// outta here
