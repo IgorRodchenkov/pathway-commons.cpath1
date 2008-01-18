@@ -165,6 +165,8 @@
             <fileset dir="${lib.dir}">
                 <include name="**/*.jar"/>
                 <exclude name="servlet.jar"/>
+				<!-- Exclude arp2.jar - conficts with jena.jar and is only used for import process -->
+                <exclude name="arp2.jar"/>
             </fileset>
         </copy>
 
