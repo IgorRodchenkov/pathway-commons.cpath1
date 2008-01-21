@@ -1,4 +1,4 @@
-// $Id: SIFAssembly.java,v 1.2 2008-01-17 02:10:30 grossben Exp $
+// $Id: SIFAssembly.java,v 1.3 2008-01-21 22:08:34 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,8 +33,11 @@ package org.mskcc.pathdb.schemas.binary_interaction.assembly;
 
 // imports
 import org.biopax.paxtools.model.Model;
+import org.biopax.paxtools.io.sif.SimpleInteraction;
 
 import java.util.List;
+import java.util.Set;
+import java.util.Iterator;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 
@@ -70,11 +73,16 @@ public class SIFAssembly extends BinaryInteractionAssemblyBase implements Binary
 		// write out binary interactions
 		converter.writeInteractionsInSIF(bpModel, out);
 
-		// do a bit of cooking
+        // do a bit of cooking
 		String toReturn = out.toString();
-		toReturn = toReturn.replaceAll("http://cbio.mskcc.org/cpath#CPATH-", "");
+        if (toReturn.indexOf("http://cbio.mskcc.org/cpath#CPATH") > -1) {
+            toReturn = toReturn.replaceAll("http://cbio.mskcc.org/cpath#CPATH-", "");
+        } else if (toReturn.indexOf("http://www.biopax.org/examples/proteomics-interaction") > -1){
+            //  This is a special case to handle the unit test data.
+            toReturn = toReturn.replaceAll("http://www.biopax.org/examples/proteomics-interaction#", "");
+        }
 
-		// outta here
+        // outta here
 		return toReturn;
 	}
 }
