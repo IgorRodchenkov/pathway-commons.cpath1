@@ -1,4 +1,4 @@
-// $Id: BioPaxSuite.java,v 1.13 2006-06-09 19:22:04 cerami Exp $
+// $Id: BioPaxSuite.java,v 1.14 2008-01-21 22:09:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,6 +63,7 @@ public class BioPaxSuite extends TestCase {
         suite.addTestSuite(TestBioPaxSummary.class);
         suite.addTestSuite(TestInteractionSummaryUtils.class);
         suite.addTestSuite(TestSummaryListUtil.class);
+        suite.addTestSuite(TestBinaryInteractionAssemblyFactory.class);
         suite.setName("BioPax Tests");
         return suite;
     }
