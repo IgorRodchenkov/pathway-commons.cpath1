@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionUtil.java,v 1.1 2008-01-17 15:49:30 grossben Exp $
+// $Id: BinaryInteractionUtil.java,v 1.2 2008-01-22 17:48:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,8 +38,10 @@ import org.biopax.paxtools.io.sif.level2.ComponentRule;
 import org.biopax.paxtools.io.sif.level2.ParticipatesRule;
 import org.biopax.paxtools.io.sif.level2.ConsecutiveCatalysisRule;
 
+import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 /**
@@ -54,6 +56,18 @@ public class BinaryInteractionUtil {
 																			 new ConsecutiveCatalysisRule(),
 																			 new ControlRule(),
 																			 new ParticipatesRule());
+
+	// rule description map - this is temporary, descrip should come from paxtool rule classes themselves.
+	private static final Map<String, String> ruleTypeDescriptionMap = new HashMap<String, String>();
+	static {
+		ruleTypeDescriptionMap.put(ComponentRule.COMPONENT_OF, "This rule infers an interaction if the first entity is a component of the second entity, which is a complex. This interaction is transient in the sense that A component_of B and B component_of C implies A component_of C. This interaction is directed.");
+		ruleTypeDescriptionMap.put(ComponentRule.COMPONENT_IN_SAME, "This rule infers an interaction if two entities belong to at least one molecular complex. This does not necessarily mean they interact directly. In a complex with n molecules, this rule will create a clique composed of n(n-1)/2 interactions. This interaction is undirected.");
+		ruleTypeDescriptionMap.put(ConsecutiveCatalysisRule.SEQUENTIAL_CATALYSIS, "This rule infers an interaction if A and B catalyzes two conversions that are connected via a common molecule, and where potentially that common substrate is produced by the former and consumed by the latter. This rule is directed.");
+		ruleTypeDescriptionMap.put(ControlRule.CONTROLS_STATE_CHANGE, "This rule infers an interaction if the first entity catalyses a reaction that either consumes or produces the second entity. More specifically, this rule will find an interaction between two entities A and B if and only if A controls a conversion which B participates and appears both on the left or right side of the conversion. This rule is directed.");
+		ruleTypeDescriptionMap.put(ControlRule.CONTROLS_METABOLIC_CHANGE, "This rule infers an interaction if the first entity catalyses a reaction that either consumes or produces the second entity. More specifically, this rule will find an interaction between two entities A and B if and only if A controls a conversion which B participates and appears only on the left or right side of the conversion but not both. This rule is directed.");
+		ruleTypeDescriptionMap.put(ParticipatesRule.PARTICIPATES_CONVERSION, "This rule infers an interaction if both A and B participates in a conversion as substrates or products. Controllers are not included. This rule is undirected.");
+		ruleTypeDescriptionMap.put(ParticipatesRule.PARTICIPATES_INTERACTION, "This rule infers an interaction if both A and B participates in an interaction as participants. Controllers are not included. This rule is undirected.");
+	}
 
 	/**
 	 * Gets arrary of all binary interaction rule classes.
@@ -83,5 +97,15 @@ public class BinaryInteractionUtil {
 
 		// outta here
 		return toReturn;
+	}
+
+	/**
+	 * Given a rule type, returns the rule type description.
+	 *
+	 * @param ruleType String
+	 * @return String
+	 */
+	public static String getRuleTypeDescription(String ruleType) {
+		return ruleTypeDescriptionMap.get(ruleType);
 	}
 }

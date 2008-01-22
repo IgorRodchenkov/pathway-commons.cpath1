@@ -299,15 +299,25 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 %>
 </ul>
 
-<h3><a name='valid_binary_rule'></a>Valid values for the <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> parameter:</h3>
-<ul>
-<%
-    for (String rule : binaryInteractionRules) {
-        out.println("<li>" + rule + "</li>");
-    }
-%>
-</ul>
-
+<a name='valid_binary_rule'></a>
+<div>
+    <table>
+        <tr>
+            <th>Valid values for the <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> parameter</th>
+            <th>Binary Interaction Rule Description</th>
+        </tr>
+        <%
+            for (String rule : binaryInteractionRules) {
+                String ruleDescKey = rule.replace('_', '.');
+                String ruleDesc = ExecuteBinaryInteraction.getRuleTypeDescription(ruleDescKey);
+                out.println("<tr>");
+                out.println("<td>" + rule + "</td>");
+                out.println("<td>" + ruleDesc + "</td>");
+                out.println("</tr>");
+            }
+        %>
+    </table>
+</div>
 <h2><a NAME="errors"></a>[7]  Error Codes:</h2>
 <p>
 An error while processing a request is reported

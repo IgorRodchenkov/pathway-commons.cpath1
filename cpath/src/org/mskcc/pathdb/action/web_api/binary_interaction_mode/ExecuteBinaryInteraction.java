@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.4 2008-01-17 16:05:34 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.5 2008-01-22 17:48:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -147,6 +147,16 @@ public class ExecuteBinaryInteraction {
 
 		// outta here
 		return toReturn;
+	}
+
+	/**
+	 * Given a rule type, returns the rule type description.
+	 *
+	 * @param ruleType String
+	 * @return String
+	 */
+	public static String getRuleTypeDescription(String ruleType) {
+		return BinaryInteractionUtil.getRuleTypeDescription(ruleType);
 	}
 
 	/*
