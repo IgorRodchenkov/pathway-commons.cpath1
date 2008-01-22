@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.52 2007-09-17 18:40:50 cerami Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.53 2008-01-22 19:25:54 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -234,6 +234,19 @@ public class BioPaxRecordSummaryUtils {
         }
         buf.append("</DIV>");
         buf.append("<DIV CLASS=popup_text>");
+
+		// add organism to popup text if
+		// participant organism different from record summary component
+		if (participant != null) {
+			String partOrganism = participant.getOrganism();
+			String compOrganism = component.getOrganism();
+			if (partOrganism != null && compOrganism != null &&
+				! partOrganism.equals(compOrganism)) {
+				buf.append("Organism:  <ul>");
+				buf.append("<li>" + participant.getOrganism() + "</li>");
+				buf.append("</ul>");
+			}
+		}
 
         StringBuffer detailsBuf = new StringBuffer();
         //  Add Synonyms to Pop-Up Box
