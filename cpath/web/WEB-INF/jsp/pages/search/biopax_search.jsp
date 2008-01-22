@@ -203,7 +203,12 @@ if (protocolRequest.getQuery() != null) {
 <%
 if (totalNumHits.intValue() == 0) {
 %>
-    <p>No Matching Records Found. Please try again.</p>
+	<div class="splitcontentleft">
+    <jsp:include page="../../global/redesign/currentFilterSettings.jsp" flush="true" />
+	</div>
+	<div class="splitcontentright">
+    <p>No Matching Records Found. Try updating your filter settings.</p>
+    </div>
 <%
 }
 else {
