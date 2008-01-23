@@ -29,8 +29,6 @@ print "Using CPATH_HOME $cpathHome\n";
 $cp="$cpathHome/build/WEB-INF/classes";
 @jar_files = glob ("$cpathHome/lib/*.jar");
 foreach my $jar (@jar_files) {
-  # exclude jena.jar - conflicts with arp2.jar and is not required to run admin tool
-  next if ($jar =~ m/"jena.jar/);
   $cp="$cp$pathDelim$jar"
 }
 
