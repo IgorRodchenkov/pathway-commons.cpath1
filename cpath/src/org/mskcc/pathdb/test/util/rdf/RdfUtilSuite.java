@@ -1,4 +1,4 @@
-// $Id: RdfUtilSuite.java,v 1.5 2006-02-22 22:47:51 grossb Exp $
+// $Id: RdfUtilSuite.java,v 1.6 2008-01-23 18:53:08 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,7 +49,6 @@ public class RdfUtilSuite extends TestCase {
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestRdfValidator.class);
         suite.addTestSuite(TestRdfExtractor.class);
         suite.setName("RDF Utility Tests");
         return suite;
