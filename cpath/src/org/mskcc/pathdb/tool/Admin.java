@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.64 2007-04-30 15:52:25 cerami Exp $
+// $Id: Admin.java,v 1.65 2008-01-23 18:49:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,13 +41,15 @@ import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
-import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.file.FileUtil;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.jdom.JDOMException;
+import org.biopax.paxtools.model.Model;
+import org.biopax.paxtools.model.BioPAXLevel;
+import org.biopax.paxtools.io.jena.JenaIOHandler;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -257,17 +259,19 @@ public class Admin {
         if (file.isDirectory()) return true;
         System.out.print ("Testing File for RDF Validity:  " + file.getName());
         int fileType = FileUtil.getFileType(file);
-        FileReader reader = new FileReader (file);
         if (fileType == FileUtil.BIOPAX) {
-            RdfValidator rdfValidator = new RdfValidator(reader);
-            boolean hasErrors = rdfValidator.hasErrorsOrWarnings();
-            if (hasErrors) {
+			try {
+				FileInputStream in = new FileInputStream(file);
+				JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
+				jenaIOHandler.setStrict(true);
+				Model bpModel = jenaIOHandler.convertFromOWL(in);
+			}
+			catch(Exception e) {
                 System.out.println(" --> Invalid");
-                System.out.println(rdfValidator.getReadableErrorList());
+                System.out.println(e.getMessage());
                 return false;
-            } else {
-                System.out.println(" --> OK");
-            }
+			}
+			System.out.println(" --> OK");
         } else {
             System.out.println (" --> Not RDF");
         }

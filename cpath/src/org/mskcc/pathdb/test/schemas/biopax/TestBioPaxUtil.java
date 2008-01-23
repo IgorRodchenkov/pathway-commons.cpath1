@@ -1,4 +1,4 @@
-// $Id: TestBioPaxUtil.java,v 1.19 2006-11-16 15:45:31 cerami Exp $
+// $Id: TestBioPaxUtil.java,v 1.20 2008-01-23 18:50:24 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,10 +46,12 @@ import org.mskcc.pathdb.schemas.biopax.OwlConstants;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
-import org.mskcc.pathdb.util.rdf.RdfValidator;
+import org.biopax.paxtools.model.Model;
+import org.biopax.paxtools.model.BioPAXLevel;
+import org.biopax.paxtools.io.jena.JenaIOHandler;
 
 import java.io.FileReader;
-import java.io.StringReader;
+import java.io.StringBufferInputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -144,10 +146,16 @@ public class TestBioPaxUtil extends TestCase {
         rdfElement.addContent((Element) pathway.clone());
         doc.addContent(rdfElement);
         out.output(doc, writer);
-        StringReader reader = new StringReader(writer.toString());
-        RdfValidator rdfValidator = new RdfValidator(reader);
-        assertTrue("Newly generated XML document contains invalid RDF",
-                !rdfValidator.hasErrorsOrWarnings());
+		StringBufferInputStream in = new StringBufferInputStream(writer.toString());
+		try {
+			JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
+			jenaIOHandler.setStrict(true);
+			Model bpModel = jenaIOHandler.convertFromOWL(in);
+		}
+		catch(Exception e) {
+			assertTrue("Newly generated XML document contains invalid RDF", false);
+		}
+        assertTrue("Newly generated XML document contains invalid RDF", true);
 
         //  Test the extractXrefs Method
         //  We should find a total of 3 XRefs.

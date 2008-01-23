@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.31 2007-11-14 15:24:28 grossben Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.32 2008-01-23 18:49:50 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,15 +50,19 @@ import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.ExternalReferenceUtil;
-import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
+import org.biopax.paxtools.model.Model;
+import org.biopax.paxtools.model.BioPAXLevel;
+import org.biopax.paxtools.io.jena.JenaIOHandler;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.InputStream;
 import java.io.StringReader;
+import java.io.StringBufferInputStream;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +101,7 @@ public class ImportBioPaxToCPath {
         this.importSummary = new ImportSummary();
         this.newRecordFlags = new ArrayList();
         try {
-            validateRdf(new StringReader(xml));
+            validateRdf(new StringBufferInputStream(xml));
             massageBioPaxData(new StringReader(xml));
             storeRecords();
             storeLinks();
@@ -108,8 +112,6 @@ public class ImportBioPaxToCPath {
             throw new ImportException(e);
         } catch (JDOMException e) {
             throw new ImportException(e);
-        } catch (SAXException e) {
-            throw new ImportException(e);
         } catch (ExternalDatabaseNotFoundException e) {
             throw new ImportException(e);
         }
@@ -119,17 +121,18 @@ public class ImportBioPaxToCPath {
     /**
      * Validates RDF Data.
      */
-    private void validateRdf (Reader reader) throws IOException, SAXException,
-            ImportException {
-        RdfValidator rdfValidator = new RdfValidator(reader);
-        boolean hasErrors = rdfValidator.hasErrorsOrWarnings();
-        pMonitor.setCurrentMessage
-                ("Validating BioPAX File with RDF Validator...");
-        if (hasErrors) {
-            pMonitor.setCurrentMessage(rdfValidator.getReadableErrorList());
+    private void validateRdf (InputStream in) throws ImportException {
+
+		try {
+			pMonitor.setCurrentMessage("Validating BioPAX File with Paxtools...");
+			JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
+			jenaIOHandler.setStrict(true);
+			Model bpModel = jenaIOHandler.convertFromOWL(in);
+		}
+		catch(Exception e) {
+            pMonitor.setCurrentMessage(e.getMessage());
             throw new ImportException("RDF Validation Errors");
-        }
-        pMonitor.setCurrentMessage("   --->  BioPAX RDF is Valid");
+		}
     }
 
     /**

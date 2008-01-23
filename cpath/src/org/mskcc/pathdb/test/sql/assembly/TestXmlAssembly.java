@@ -1,4 +1,4 @@
-// $Id: TestXmlAssembly.java,v 1.12 2007-04-16 19:21:24 cerami Exp $
+// $Id: TestXmlAssembly.java,v 1.13 2008-01-23 18:50:54 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,12 +45,14 @@ import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.xml.XmlValidator;
-import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.biopax.paxtools.model.Model;
+import org.biopax.paxtools.model.BioPAXLevel;
+import org.biopax.paxtools.io.jena.JenaIOHandler;
 
-import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.StringBufferInputStream;
 
 /**
  * Tests the XML Assembly Functionality.
@@ -193,9 +195,7 @@ public class TestXmlAssembly extends TestCase {
         assertEquals(BioPaxConstants.SMALL_MOLECULE, child.getName());
 
         //  Check that this is valid RDF
-        StringReader reader = new StringReader(xmlAssembly);
-        RdfValidator rdfValidator = new RdfValidator(reader);
-        assertTrue(!rdfValidator.hasErrorsOrWarnings());
+		validateRdf(xmlAssembly);
 
         //  Validate that Root RDF Element has an xml:base attribute
         Attribute baseAttribute =
@@ -232,9 +232,7 @@ public class TestXmlAssembly extends TestCase {
         assertEquals(2, children.size());
 
         //  Check that this is valid RDF
-        StringReader reader = new StringReader(xmlAssembly);
-        RdfValidator rdfValidator = new RdfValidator(reader);
-        assertTrue(!rdfValidator.hasErrorsOrWarnings());
+		validateRdf(xmlAssembly);
 
         //  Validate that Root RDF Element has an xml:base attribute
         Attribute baseAttribute =
@@ -268,4 +266,23 @@ public class TestXmlAssembly extends TestCase {
     public String getName() {
         return "Test that we can generate BioPAX/PSI-MI XML Assemblies:  " + testName;
     }
+
+	/**
+	 * Validates rdf file
+	 * 
+	 * @param xmlAssembly String
+	 */
+	private void validateRdf(String xmlAssembly) {
+
+		StringBufferInputStream in = new StringBufferInputStream(xmlAssembly);
+		try {
+			JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
+			jenaIOHandler.setStrict(true);
+			Model bpModel = jenaIOHandler.convertFromOWL(in);
+		}
+		catch(Exception e) {
+			assertTrue(false);
+		}
+        assertTrue(true);
+	}
 }
