@@ -1,20 +1,25 @@
 # setup the database
-./initDb.pl
+./initDb.pl -f
 ./admin.pl -f ../dbData/externalDb/pathway_commons.xml import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_uniprot2uniprot.txt import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_sp2refseq.txt import
 
 # reactome
-mv -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl" $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.bak.owl"
-$CPATH_HOME/../pathway-commons/bin/reactome-cooker.py < $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.bak.owl" > $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl"
+mv -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl" $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.bak"
+iconv -f ISO8859-1 -t UTF-8 $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.bak" > $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.iconv"
+$CPATH_HOME/../pathway-commons/bin/reactome-cooker.py < $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.iconv" > $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl"
+rm -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.iconv"
 ./admin.pl -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo\ sapiens.owl" import
-mv -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.bak.owl" $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl"
+mv -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.bak" $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl"
 
 # humancyc
-./admin.pl -f $CPATH_HOME/../pathway-commons/humancyc import
+mv -f $CPATH_HOME/../pathway-commons/humancyc/biopax.owl $CPATH_HOME/../pathway-commons/humancyc/biopax.owl.bak
+$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $CPATH_HOME/../pathway-commons/humancyc/biopax.owl.bak > $CPATH_HOME/../pathway-commons/humancyc/biopax.owl
+./admin.pl -f $CPATH_HOME/../pathway-commons/humancyc/biopax.owl import
+mv -f $CPATH_HOME/../pathway-commons/humancyc/biopax.owl.bak $CPATH_HOME/../pathway-commons/humancyc/biopax.owl
 
 # nci
-./admin.pl -f $CPATH_HOME/../pathway-commons/nci/01-08-2008 import
+./admin.pl -d -f $CPATH_HOME/../pathway-commons/nci/01-08-2008 import
 
 # cellmap
 ./admin.pl -f $CPATH_HOME/../pathway-commons/cellmap import
