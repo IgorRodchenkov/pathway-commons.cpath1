@@ -117,12 +117,15 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
             if (interactionSummaryStringList.size() > 0) {
                 out.println("<span class='entity_summary'>");
 				int interactionSummaryStringListSize = interactionSummaryStringList.size();
-				int num_participants_to_show = (interactionSummaryStringListSize > NUM_PREVIEW_INTERACTION_PARTICIPANTS) ?
-					NUM_PREVIEW_INTERACTION_PARTICIPANTS : interactionSummaryStringListSize;
+				int num_participants_to_show = (interactionSummary.getSpecificType().equals("physicalInteraction") &&
+												interactionSummaryStringListSize > NUM_PREVIEW_INTERACTION_PARTICIPANTS)
+					? NUM_PREVIEW_INTERACTION_PARTICIPANTS : interactionSummaryStringListSize;
 				for (int lc = 0; lc < num_participants_to_show; lc++) {
 					out.println(interactionSummaryStringList.get(lc));
 				}
-				int remainding_particpants_to_show = interactionSummaryStringListSize - NUM_PREVIEW_INTERACTION_PARTICIPANTS;
+				int remainding_particpants_to_show = (interactionSummary.getSpecificType().equals("physicalInteraction") &&
+													  num_participants_to_show < interactionSummaryStringListSize) ?
+													  (interactionSummaryStringListSize - NUM_PREVIEW_INTERACTION_PARTICIPANTS) : 0;
 				if (remainding_particpants_to_show > 0) {
 					out.println("(and " + String.valueOf(remainding_particpants_to_show) + " other participants)");
 				}
@@ -254,6 +257,7 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     buf.append(getStartRow(index));
     buf.append("<td colspan=3>");
 	if (interactionSummaryStringList != null &&
+		interactionSummary.getSpecificType().equals("physicalInteraction") &&
 		(interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0)) {
 		String interactionSummaryListString = "";
 		for (int lc = NUM_PREVIEW_INTERACTION_PARTICIPANTS; lc < interactionSummaryStringList.size(); lc++) {
