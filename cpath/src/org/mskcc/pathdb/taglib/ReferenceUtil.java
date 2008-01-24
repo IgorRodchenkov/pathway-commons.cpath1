@@ -97,6 +97,7 @@ public class ReferenceUtil {
                 html.append("</li>\n\r");
             }
             html.append("</ul>\n\r");
+			html.append("<br>");
         }
         return html.toString();
     }
