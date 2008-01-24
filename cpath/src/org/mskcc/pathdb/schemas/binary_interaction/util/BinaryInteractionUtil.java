@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionUtil.java,v 1.2 2008-01-22 17:48:07 grossben Exp $
+// $Id: BinaryInteractionUtil.java,v 1.3 2008-01-24 15:32:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,11 +32,9 @@
 package org.mskcc.pathdb.schemas.binary_interaction.util;
 
 // imports
-import org.biopax.paxtools.io.sif.InteractionRule;
-import org.biopax.paxtools.io.sif.level2.ControlRule;
-import org.biopax.paxtools.io.sif.level2.ComponentRule;
-import org.biopax.paxtools.io.sif.level2.ParticipatesRule;
-import org.biopax.paxtools.io.sif.level2.ConsecutiveCatalysisRule;
+import org.biopax.paxtools.io.sif.*;
+import org.biopax.paxtools.io.sif.level2.*;
+import org.biopax.paxtools.io.sif.level2.BinaryInteractionType.*;
 
 import java.util.Map;
 import java.util.List;
@@ -55,18 +53,27 @@ public class BinaryInteractionUtil {
 	private static final List<InteractionRule> possibleRules = Arrays.asList(new ComponentRule(),
 																			 new ConsecutiveCatalysisRule(),
 																			 new ControlRule(),
+																			 new ControlsTogetherRule(),
 																			 new ParticipatesRule());
 
-	// rule description map - this is temporary, descrip should come from paxtool rule classes themselves.
-	private static final Map<String, String> ruleTypeDescriptionMap = new HashMap<String, String>();
+	// initialive rule type list and binaryInteractionTypeMap
+	private static final ArrayList<String> ruleTypes = new ArrayList<String>();
+	private static final Map<String, BinaryInteractionType> binaryInteractionTypeMap = new HashMap<String, BinaryInteractionType>();
 	static {
-		ruleTypeDescriptionMap.put(ComponentRule.COMPONENT_OF, "This rule infers an interaction if the first entity is a component of the second entity, which is a complex. This interaction is transient in the sense that A component_of B and B component_of C implies A component_of C. This interaction is directed.");
-		ruleTypeDescriptionMap.put(ComponentRule.COMPONENT_IN_SAME, "This rule infers an interaction if two entities belong to at least one molecular complex. This does not necessarily mean they interact directly. In a complex with n molecules, this rule will create a clique composed of n(n-1)/2 interactions. This interaction is undirected.");
-		ruleTypeDescriptionMap.put(ConsecutiveCatalysisRule.SEQUENTIAL_CATALYSIS, "This rule infers an interaction if A and B catalyzes two conversions that are connected via a common molecule, and where potentially that common substrate is produced by the former and consumed by the latter. This rule is directed.");
-		ruleTypeDescriptionMap.put(ControlRule.CONTROLS_STATE_CHANGE, "This rule infers an interaction if the first entity catalyses a reaction that either consumes or produces the second entity. More specifically, this rule will find an interaction between two entities A and B if and only if A controls a conversion which B participates and appears both on the left or right side of the conversion. This rule is directed.");
-		ruleTypeDescriptionMap.put(ControlRule.CONTROLS_METABOLIC_CHANGE, "This rule infers an interaction if the first entity catalyses a reaction that either consumes or produces the second entity. More specifically, this rule will find an interaction between two entities A and B if and only if A controls a conversion which B participates and appears only on the left or right side of the conversion but not both. This rule is directed.");
-		ruleTypeDescriptionMap.put(ParticipatesRule.PARTICIPATES_CONVERSION, "This rule infers an interaction if both A and B participates in a conversion as substrates or products. Controllers are not included. This rule is undirected.");
-		ruleTypeDescriptionMap.put(ParticipatesRule.PARTICIPATES_INTERACTION, "This rule infers an interaction if both A and B participates in an interaction as participants. Controllers are not included. This rule is undirected.");
+		// interate through each rule class and get each rule type
+		for (InteractionRule rule : possibleRules) {
+			for (String ruleType : rule.getRuleTypes()) {
+				// add ruleType to ruletype list
+				ruleTypes.add(ruleType);
+				// add to binaryInteractionTypeMap
+				BinaryInteractionType[] binaryInteractionTypes = BinaryInteractionType.values();
+				for (BinaryInteractionType binaryInteractionType : binaryInteractionTypes) {
+					if (binaryInteractionType.getTag().equals(ruleType)) {
+						binaryInteractionTypeMap.put(ruleType, binaryInteractionType);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -85,18 +92,8 @@ public class BinaryInteractionUtil {
 	 */
 	public static List<String> getRuleTypes() {
 
-		// list to return
-		List<String> toReturn = new ArrayList<String>();
-
-		// interate through each rule class and get each rule type
-		for (InteractionRule rule : possibleRules) {
-			for (String ruleType : rule.getRuleTypes()) {
-				toReturn.add(ruleType);
-			}
-		}
-
 		// outta here
-		return toReturn;
+		return (List<String>)ruleTypes.clone();
 	}
 
 	/**
@@ -106,6 +103,6 @@ public class BinaryInteractionUtil {
 	 * @return String
 	 */
 	public static String getRuleTypeDescription(String ruleType) {
-		return ruleTypeDescriptionMap.get(ruleType);
+		return binaryInteractionTypeMap.get(ruleType).getDescription();
 	}
 }
