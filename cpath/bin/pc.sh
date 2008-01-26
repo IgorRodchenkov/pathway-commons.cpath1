@@ -1,5 +1,5 @@
 # setup the database
-./initDb.pl -f
+./initDb.pl
 ./admin.pl -f ../dbData/externalDb/pathway_commons.xml import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_uniprot2uniprot.txt import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_sp2refseq.txt import
@@ -19,7 +19,7 @@ $CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $CPATH_HOME/../pathway-c
 mv -f $CPATH_HOME/../pathway-commons/humancyc/biopax.owl.bak $CPATH_HOME/../pathway-commons/humancyc/biopax.owl
 
 # nci
-./admin.pl -d -f $CPATH_HOME/../pathway-commons/nci/01-08-2008 import
+./admin.pl -f -f $CPATH_HOME/../pathway-commons/nci/01-08-2008 import
 
 # cellmap
 ./admin.pl -f $CPATH_HOME/../pathway-commons/cellmap import
