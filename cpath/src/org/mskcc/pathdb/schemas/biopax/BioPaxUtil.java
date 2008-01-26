@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.34 2007-11-09 20:16:40 grossben Exp $
+// $Id: BioPaxUtil.java,v 1.35 2008-01-26 21:39:25 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -250,9 +250,35 @@ public class BioPaxUtil {
      * @return Array of External Reference Objects.
      * @throws JDOMException JDOM Error.
      */
+    public ExternalReference[] extractInteractionUnificationXrefs(Element e)
+            throws JDOMException {
+		return extractUnificationXrefs(e, "biopax:DATA-SOURCE/*/biopax:XREF/biopax:unificationXref");
+    }
+
+    /**
+     * Extracts All Unification XREF Data within the specified Element.
+     *
+     * @param e JDOM Element.
+     * @return Array of External Reference Objects.
+     * @throws JDOMException JDOM Error.
+     */
     public ExternalReference[] extractUnificationXrefs(Element e)
             throws JDOMException {
-        XPath xpath = XPath.newInstance("biopax:XREF/biopax:unificationXref");
+		return extractUnificationXrefs(e, null);
+	}
+
+    /**
+     * Extracts All Unification XREF Data within the specified Element.
+     *
+     * @param e JDOM Element.
+     * @param query String
+     * @return Array of External Reference Objects.
+     * @throws JDOMException JDOM Error.
+     */
+    public ExternalReference[] extractUnificationXrefs(Element e, String query)
+            throws JDOMException {
+		query = (query == null) ? "biopax:XREF/biopax:unificationXref" : query;
+        XPath xpath = XPath.newInstance(query);
         xpath.addNamespace("biopax", e.getNamespaceURI());
         List xrefs = xpath.selectNodes(e);
         ArrayList refs = new ArrayList();

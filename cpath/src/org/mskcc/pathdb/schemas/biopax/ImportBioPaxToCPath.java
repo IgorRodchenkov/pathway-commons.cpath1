@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.32 2008-01-23 18:49:50 grossben Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.33 2008-01-26 21:38:00 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -239,12 +239,20 @@ public class ImportBioPaxToCPath {
                     (unificationXrefs);
             appendNewUnificationsXRefs(newUnificationRefs, resource);
 
+			// Find any Interaction - Unification References.
+			ExternalReference interactionUnificationRefs[] =
+				(record.getType().equals(CPathRecordType.INTERACTION)) ?
+				bpUtil.extractInteractionUnificationXrefs(resource) : null;
+
             //  Merge all references into unified reference list
             ExternalReference unifiedRefs[] =
                     ExternalReferenceUtil.createUnifiedList(xrefs,
                             linkOutRefs);
             unifiedRefs = ExternalReferenceUtil.createUnifiedList(unifiedRefs,
                 newUnificationRefs);
+            unifiedRefs = (interactionUnificationRefs != null) ?
+				ExternalReferenceUtil.createUnifiedList(unifiedRefs, interactionUnificationRefs) :
+				unifiedRefs;
 
             //  Validate All Refs
             externalLinker.validateExternalReferences(unifiedRefs, strictValidation);
