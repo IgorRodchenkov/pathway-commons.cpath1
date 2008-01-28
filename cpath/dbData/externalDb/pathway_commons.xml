@@ -91,7 +91,7 @@
         <name>IntAct</name>
         <description>IntAct database of protein interaction data</description>
         <entity_url>
-            <url_pattern>http://www.ebi.ac.uk/intact/search/do/search?searchClass=Protein&amp;view=partner&amp;filter=ac&amp;searchString=%ID%</url_pattern>
+            <url_pattern>http://www.ebi.ac.uk/intact/search/do/search?searchString=%ID%</url_pattern>
             <sample_id>EBI-366083</sample_id>
         </entity_url>
         <icon_path>intact.png</icon_path>
