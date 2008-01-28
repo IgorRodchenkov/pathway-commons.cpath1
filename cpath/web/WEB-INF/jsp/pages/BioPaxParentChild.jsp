@@ -3,6 +3,7 @@
 <%@ page import="org.mskcc.pathdb.action.BioPaxParentChild"%>
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
+<%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalLink"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoException"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
@@ -241,9 +242,7 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
     if (bpSummary.getCPathRecord() != null) {
         CPathRecord record = bpSummary.getCPathRecord();
         if (record.getSnapshotId() > 0) {
-            buf.append("<div class='data_source'> "
-                + DbSnapshotInfo.getDbSnapshotHtmlAbbrev (record.getSnapshotId())
-                + "</div>");
+            buf.append("<div class='data_source'> " + getDataSourceString(bpSummary, record) + "</div>");
         }
     }
     buf.append("</td>");
@@ -308,6 +307,30 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
 	}
     buf.append("</td></tr>");
     return buf.toString();
+}
+
+private String getDataSourceString(BioPaxRecordSummary bpSummary, CPathRecord record) throws
+	DaoException {
+
+	String toReturn = "";
+	ExternalDatabaseSnapshotRecord snapshot = bpSummary.getExternalDatabaseSnapshotRecord();
+	ExternalDatabaseRecord summaryDBRecord = snapshot.getExternalDatabase();
+
+	ArrayList<ExternalLinkRecord> externalLinks = DaoExternalLink.getInstance().getRecordsByCPathId(record.getId());
+	for (ExternalLinkRecord externalLink : externalLinks) {
+		ExternalDatabaseRecord dbRecord = externalLink.getExternalDatabase();
+		if (dbRecord.getId() == summaryDBRecord.getId()) {
+			String uri = externalLink.getWebLink();
+			toReturn = (uri != null && uri.length() > 0) ?
+				"<a href=\"" + uri + "\">" + dbRecord.getName() + "</a>" :
+				DbSnapshotInfo.getDbSnapshotHtmlAbbrev (record.getSnapshotId());
+			break;
+		}
+	}
+
+	// outta here
+	return (toReturn.length() == 0) ?
+					DbSnapshotInfo.getDbSnapshotHtmlAbbrev(record.getSnapshotId()) : toReturn;
 }
 %>
 </table>
