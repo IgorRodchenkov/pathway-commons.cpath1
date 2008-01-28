@@ -301,15 +301,14 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 
 <a name='valid_binary_rule'></a>
 <div>
-    <table>
+    <table border=1>
         <tr>
             <th>Valid values for the <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> parameter</th>
             <th>Binary Interaction Rule Description</th>
         </tr>
         <%
             for (String rule : binaryInteractionRules) {
-                String ruleDescKey = rule.replace('_', '.');
-                String ruleDesc = ExecuteBinaryInteraction.getRuleTypeDescription(ruleDescKey);
+                String ruleDesc = ExecuteBinaryInteraction.getRuleTypeDescription(rule);
                 out.println("<tr>");
                 out.println("<td>" + rule + "</td>");
                 out.println("<td>" + ruleDesc + "</td>");

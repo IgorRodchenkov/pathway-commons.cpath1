@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.5 2008-01-22 17:48:07 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.6 2008-01-28 17:57:05 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -130,23 +130,14 @@ public class ExecuteBinaryInteraction {
 	 */
 	public static List<String> getRuleTypesForDisplay() {
 
-		// list to return
-		List<String> toReturn = new ArrayList<String>();
-
 		// get rule types
 		List<String> ruleTypes = BinaryInteractionUtil.getRuleTypes();
 
 		// sort
 		Collections.sort(ruleTypes);
 
-		// convert to display
-		for (String ruleType : ruleTypes) {
-			ruleType = ruleType.replace('.', '_');
-			toReturn.add(ruleType);
-		}
-
 		// outta here
-		return toReturn;
+		return ruleTypes;
 	}
 
 	/**
@@ -175,7 +166,6 @@ public class ExecuteBinaryInteraction {
 		if (binaryInteractionRules != null) {
 			toReturn = new ArrayList<String>();
 			for (String ruleType : binaryInteractionRules) {
-				ruleType = ruleType.replaceAll("_", ".");
 				toReturn.add(ruleType);
 			}
 		}
