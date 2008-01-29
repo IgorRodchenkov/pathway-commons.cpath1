@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.18 2008-01-16 14:14:40 grossben Exp $
+// $Id: ExecuteWebApi.java,v 1.19 2008-01-29 23:58:10 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -180,6 +180,7 @@ public class ExecuteWebApi extends BaseAction {
                     xdebug.logMsg(this, "Branching based on response type:  HTML");
                     org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteHtmlResponse task =
                             new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteHtmlResponse();
+					request.setAttribute(BaseAction.PAGE_IS_SEARCH_RESULT, BaseAction.YES);
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else if (isResponseText(protocolRequest)) {
                     xdebug.logMsg(this, "Branching based on response type:  TEXT");
