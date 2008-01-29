@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.36 2007-11-07 16:49:55 grossben Exp $
+// $Id: BioPaxRecordUtil.java,v 1.37 2008-01-29 19:55:39 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,6 +44,7 @@ import org.jdom.xpath.XPath;
 import org.mskcc.pathdb.model.Evidence;
 import org.mskcc.pathdb.model.Evidence.Code;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
@@ -155,6 +156,14 @@ public class BioPaxRecordUtil {
                                            "/*/bp:AVAILABILITY",
                                            "setAvailability",
                                            biopaxRecordSummary);
+			if ((biopaxRecordSummary.getAvailability() == null ||
+				 biopaxRecordSummary.getAvailability().length() == 0) &&
+				record.getType().equals(CPathRecordType.INTERACTION)) {
+				setBioPaxRecordStringAttribute(root,
+											   "bp:physicalInteraction/*/bp:AVAILABILITY",
+											   "setAvailability",
+											   biopaxRecordSummary);
+			}
             // external links
             DaoExternalLink externalLinker = DaoExternalLink.getInstance();
             ArrayList externalLinks = externalLinker.getRecordsByCPathId(record.getId());

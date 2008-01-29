@@ -235,7 +235,8 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
 				interactionSummary.getEvidence() != null &&
 				interactionSummary.getEvidence().size() > 0)
 		    || (interactionSummaryStringList != null &&
-				(interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0))) {
+				(interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0))
+		    || (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0)) {
         hasDetails = true;
     }
     buf.append("<td>");
@@ -304,6 +305,15 @@ private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
 	}
 	else {
 		buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence", ""));
+	}
+	if (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0) {
+		String availabilityString = "<p><b>Availability:</b></p>\n" +
+			                        "<p>" + bpSummary.getAvailability() + "</p>\n<br>";
+		buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", availabilityString)); 
+		hasDetails = true;
+	}
+	else {
+		buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", ""));
 	}
     buf.append("</td></tr>");
     return buf.toString();
