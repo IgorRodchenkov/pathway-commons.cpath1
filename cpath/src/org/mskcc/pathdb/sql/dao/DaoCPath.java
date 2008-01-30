@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.34 2008-01-30 15:22:29 grossben Exp $
+// $Id: DaoCPath.java,v 1.35 2008-01-30 21:38:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -77,9 +77,9 @@ public class DaoCPath extends ManagedDAO {
 	// retains the original records for retrieval.  We need a query to filter 
 	// out or include the cpath generated records from the entire set of physical entity records.
 	private static final String GET_NUM_PHYSICAL_ENTITIES_NO_GEN =
-            "select count(*) from cpath where type = " + CPathRecordType.PHYSICAL_ENTITY  + " and CPATH_GENERATED = 0";
+            "select count(*) from cpath where type = ? and CPATH_GENERATED = 0";
 	private static final String GET_NUM_PHYSICAL_ENTITIES_GEN =
-            "select count(*) from cpath where type = " + CPathRecordType.PHYSICAL_ENTITY  + " and CPATH_GENERATED = 1";
+            "select count(*) from cpath where type = ? and CPATH_GENERATED = 1";
 
     //  Insert SQL
     private static final String INSERT_KEY = "INSERT_KEY";
