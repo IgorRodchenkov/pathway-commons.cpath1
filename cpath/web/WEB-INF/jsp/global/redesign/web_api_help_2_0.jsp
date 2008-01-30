@@ -300,10 +300,11 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 </ul>
 
 <a name='valid_binary_rule'></a>
+<h3><a name='valid_binary_rule'></a>Valid values for the <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> parameter:</h3>
 <div>
     <table border=1>
         <tr>
-            <th>Valid values for the <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> parameter</th>
+            <th><%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %></th>
             <th>Binary Interaction Rule Description</th>
         </tr>
         <%
