@@ -11,8 +11,7 @@ try {
     DaoCPath dao = DaoCPath.getInstance();
     int numPathways = dao.getNumEntities(CPathRecordType.PATHWAY);
     int numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
-    int numPhysicalEntities = dao.getNumEntities
-            (CPathRecordType.PHYSICAL_ENTITY);
+    int numPhysicalEntities = dao.getNumPhysicalEntities(true);
     NumberFormat formatter = new DecimalFormat("#,###,###");
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     DaoOrganism daoOrganism = new DaoOrganism();

@@ -9,8 +9,7 @@ try {
     DaoCPath dao = DaoCPath.getInstance();
     int numPathways = dao.getNumEntities(CPathRecordType.PATHWAY);
     int numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
-    int numPhysicalEntities = dao.getNumEntities
-            (CPathRecordType.PHYSICAL_ENTITY);
+    int numPhysicalEntities = dao.getNumPhysicalEntities(true);
     OrganismStats orgStats = new OrganismStats();
     NumberFormat formatter = new DecimalFormat("#,###,###");
 

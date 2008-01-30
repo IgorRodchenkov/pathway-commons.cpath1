@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.33 2007-09-21 16:54:50 grossben Exp $
+// $Id: DaoCPath.java,v 1.34 2008-01-30 15:22:29 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -58,8 +58,10 @@ public class DaoCPath extends ManagedDAO {
     private static final String GET_NUM_ENTITIES_KEY = "GET_NUM_ENTITIES_KEY";
 
 	// Get Num Physical Entities SQL
-    private static final String GET_NUM_PHYSICAL_ENTITIES_KEY =
-		"GET_NUM_PHYSICAL_ENTITIES_KEY";
+    private static final String GET_NUM_PHYSICAL_ENTITIES_NO_GEN_KEY =
+		"GET_NUM_PHYSICAL_ENTITIES_NO_KEY";
+    private static final String GET_NUM_PHYSICAL_ENTITIES_GEN_KEY =
+		"GET_NUM_PHYSICAL_ENTITIES_GEN_KEY";
 
     //  Note added by Ethan (March 26, 2007)
     //  Previously, this SQL query was set to:
@@ -73,9 +75,11 @@ public class DaoCPath extends ManagedDAO {
 	// getting number of pathways and/or interactions because
 	// cpath creates records to merge pe's from multiple databases and  
 	// retains the original records for retrieval.  We need a query to filter 
-	// out the cpath generated records from the entire set of physical entity records.
-	private static final String GET_NUM_PHYSICAL_ENTITIES =
-            "select count(*) from cpath where type = ? and CPATH_GENERATED = 0";
+	// out or include the cpath generated records from the entire set of physical entity records.
+	private static final String GET_NUM_PHYSICAL_ENTITIES_NO_GEN =
+            "select count(*) from cpath where type = " + CPathRecordType.PHYSICAL_ENTITY  + " and CPATH_GENERATED = 0";
+	private static final String GET_NUM_PHYSICAL_ENTITIES_GEN =
+            "select count(*) from cpath where type = " + CPathRecordType.PHYSICAL_ENTITY  + " and CPATH_GENERATED = 1";
 
     //  Insert SQL
     private static final String INSERT_KEY = "INSERT_KEY";
@@ -164,7 +168,8 @@ public class DaoCPath extends ManagedDAO {
     protected void init() throws DaoException {
         super.init();
         addPreparedStatement(GET_NUM_ENTITIES_KEY, GET_NUM_ENTITIES);
-        addPreparedStatement(GET_NUM_PHYSICAL_ENTITIES_KEY, GET_NUM_PHYSICAL_ENTITIES);
+        addPreparedStatement(GET_NUM_PHYSICAL_ENTITIES_NO_GEN_KEY, GET_NUM_PHYSICAL_ENTITIES_NO_GEN);
+        addPreparedStatement(GET_NUM_PHYSICAL_ENTITIES_GEN_KEY, GET_NUM_PHYSICAL_ENTITIES_GEN);
         addPreparedStatement(INSERT_KEY, INSERT);
         addPreparedStatement(GET_MAX_ID_KEY, GET_MAX_ID);
         addPreparedStatement(GET_ALL_KEY, GET_ALL);
@@ -185,17 +190,41 @@ public class DaoCPath extends ManagedDAO {
      * @return number of entities.
      * @throws DaoException Indicates Error in Data access.
      */
+    public int getNumPhysicalEntities(boolean cpath_generated) throws DaoException {
+		return getNumEntities(CPathRecordType.PHYSICAL_ENTITY,
+							  (cpath_generated) ? GET_NUM_PHYSICAL_ENTITIES_GEN_KEY :
+							  GET_NUM_PHYSICAL_ENTITIES_NO_GEN_KEY);
+	}
+
+    /**
+     * Gets Total Number of Entities which match the specified Record Type.
+     *
+     * @param recordType RecordType Object.
+     * @return number of entities.
+     * @throws DaoException Indicates Error in Data access.
+     */
     public int getNumEntities(CPathRecordType recordType)
+            throws DaoException {
+		return getNumEntities(recordType, null);
+	}
+
+    /**
+     * Gets Total Number of Entities which match the specified Record Type.
+     *
+     * @param recordType RecordType Object.
+	 * @param key String PreparedStatement hash key
+     * @return number of entities.
+     * @throws DaoException Indicates Error in Data access.
+     */
+    private int getNumEntities(CPathRecordType recordType, String key)
             throws DaoException {
         int num = -1;
         Connection con = null;
-        PreparedStatement pstmt = null;
         ResultSet rs = null;
+		PreparedStatement pstmt = null;
         try {
             con = getConnection();
-            pstmt = (recordType == CPathRecordType.PHYSICAL_ENTITY) ?
-				getStatement(con, GET_NUM_PHYSICAL_ENTITIES_KEY) :
-				getStatement(con, GET_NUM_ENTITIES_KEY);
+            pstmt = getStatement(con, (key == null) ? GET_NUM_ENTITIES_KEY : key);
             pstmt.setString(1, recordType.toString());
             rs = pstmt.executeQuery();
             while (rs.next()) {
