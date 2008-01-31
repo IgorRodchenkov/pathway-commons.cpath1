@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.40 2008-01-12 02:21:17 grossben Exp $
+// $Id: InteractionSummaryUtils.java,v 1.41 2008-01-31 02:57:42 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -205,7 +205,7 @@ public class InteractionSummaryUtils {
 			//  Iterate through all participants
 			for (int i = 0; i < participantSummaryComponentList.size(); i++) {
 				ParticipantSummaryComponent component = participantSummaryComponentList.get(i);
-				buf.append(BioPaxRecordSummaryUtils.createEntityLink(component, interactionSummary));
+				buf.append(BioPaxRecordSummaryUtils.createEntityLink(component, interactionSummary, bpSummary.getOrganism()));
 				if (i < participantSummaryComponentList.size() - 1) {
 					buf.append(", ");
 				}
@@ -241,7 +241,7 @@ public class InteractionSummaryUtils {
                 ParticipantSummaryComponent component =
                         (ParticipantSummaryComponent) participantList.get(i);
                 buf.append(BioPaxRecordSummaryUtils.createEntityLink
-                        (component, interactionSummary));
+						   (component, interactionSummary, null));
                 if (i < participantList.size() - 1) {
                     buf.append(", ");
                 }
@@ -296,7 +296,7 @@ public class InteractionSummaryUtils {
                 ParticipantSummaryComponent component =
                         (ParticipantSummaryComponent) controllerList.get(i);
                 buf.append(BioPaxRecordSummaryUtils.createEntityLink
-                        (component, interactionSummary));
+						   (component, interactionSummary, null));
                 if (i < controllerList.size() - 1) {
                     buf.append(", ");
                 }
@@ -355,7 +355,7 @@ public class InteractionSummaryUtils {
                 ParticipantSummaryComponent component =
                         (ParticipantSummaryComponent) list.get(i);
                 buf.append(BioPaxRecordSummaryUtils.createEntityLink
-                        (component, summary));
+						   (component, summary, null));
                 if (i < list.size() - 1) {
                     buf.append(" + ");
                 }

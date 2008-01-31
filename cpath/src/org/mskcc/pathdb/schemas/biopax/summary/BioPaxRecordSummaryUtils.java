@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordSummaryUtils.java,v 1.53 2008-01-22 19:25:54 grossben Exp $
+// $Id: BioPaxRecordSummaryUtils.java,v 1.54 2008-01-31 02:59:17 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -150,13 +150,14 @@ public class BioPaxRecordSummaryUtils {
     /**
      * Creates an HTML Link to the Specified BioPaxRecordSummary Object.
      *
-     * @param entitySummary      ParticipantSummaryComponent Object.
-     * @param interactionSummary Interaction Summary Object.
+     * @param entitySummary       ParticipantSummaryComponent Object.
+     * @param interactionSummary  Interaction Summary Object.
+     * @param physicalEntityPageOrganism String
      * @return HTML String.
      */
     public static String createEntityLink(BioPaxRecordSummary entitySummary,
-            InteractionSummary interactionSummary) {
-        return createComponentLink(entitySummary, interactionSummary);
+										  InteractionSummary interactionSummary, String physicalEntityPageOrganism) {
+        return createComponentLink(entitySummary, interactionSummary, physicalEntityPageOrganism);
     }
 
     /**
@@ -166,7 +167,7 @@ public class BioPaxRecordSummaryUtils {
      * @return HTML String.
      */
     public static String createEntityLink(BioPaxRecordSummary entitySummary) {
-        return createComponentLink(entitySummary, null);
+        return createComponentLink(entitySummary, null, null);
     }
 
     /**
@@ -178,7 +179,7 @@ public class BioPaxRecordSummaryUtils {
      */
     public static String createEntityLink(BioPaxRecordSummary entitySummary, int max) {
         maxLength = max;
-        String html = createComponentLink(entitySummary, null);
+        String html = createComponentLink(entitySummary, null, null);
         maxLength = NAME_LENGTH;
         return html;
     }
@@ -188,10 +189,11 @@ public class BioPaxRecordSummaryUtils {
      *
      * @param component          ParticipantSummaryComponent Object.
      * @param interactionSummary Interaction Summary Object.
+     * @param physicalEntityPageOrganism String
      * @return HTML String.
      */
     private static String createComponentLink(BioPaxRecordSummary component,
-            InteractionSummary interactionSummary) {
+											  InteractionSummary interactionSummary, String physicalEntityPageOrganism) {
         String label = component.getLabel();
         boolean isTransport = false;
         ParticipantSummaryComponent participant = null;
@@ -239,9 +241,8 @@ public class BioPaxRecordSummaryUtils {
 		// participant organism different from record summary component
 		if (participant != null) {
 			String partOrganism = participant.getOrganism();
-			String compOrganism = component.getOrganism();
-			if (partOrganism != null && compOrganism != null &&
-				! partOrganism.equals(compOrganism)) {
+			if (partOrganism != null && physicalEntityPageOrganism != null &&
+				! partOrganism.equalsIgnoreCase(physicalEntityPageOrganism.trim())) {
 				buf.append("Organism:  <ul>");
 				buf.append("<li>" + participant.getOrganism() + "</li>");
 				buf.append("</ul>");
