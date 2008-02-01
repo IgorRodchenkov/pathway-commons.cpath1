@@ -207,7 +207,16 @@ if (totalNumHits.intValue() == 0) {
     <jsp:include page="../../global/redesign/currentFilterSettings.jsp" flush="true" />
 	</div>
 	<div class="splitcontentright">
-    <p>No Matching Records Found. Try updating your filter settings.</p>
+<%
+	Set<Integer> organismIdSet = filterSettings.getOrganismTaxonomyIdSet();
+	if (daoSnapShot.getAllDatabaseSnapshots().size() != filterSettings.getSnapshotIdSet().size() ||
+		!organismIdSet.contains(GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE)) {
+		out.println("<p>No Matching Records Found. Try updating your filter settings.</p>");
+	}
+	else {
+		out.println("<p>No Matching Records Found.</p>");
+	}
+%>
     </div>
 <%
 }
