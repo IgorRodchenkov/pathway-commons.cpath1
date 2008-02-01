@@ -33,7 +33,7 @@ This page provides a reference guide to help you get started.
 <li><a href="#errors">[7] Error Codes</a></li>
 </ul>
 
-<h2><a NAME="search"></a>[4]  Command:  <%= ProtocolConstantsVersion2.COMMAND_SEARCH %></h2>
+<h2><a NAME="search"></a>[1]  Command:  <%= ProtocolConstantsVersion2.COMMAND_SEARCH %></h2>
 
 <h3>Summary:</h3>
 
@@ -69,7 +69,7 @@ Below is an example query.  Note: this query is not guaranteed to return results
 webservice.do?version=2.0&q=BRCA2&output=xml&cmd=search
 </a>
 
-<h2><a NAME="get_pathways"></a>[1]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h2>
+<h2><a NAME="get_pathways"></a>[2]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></h2>
 
 <h3>Summary:</h3>
 
@@ -136,7 +136,7 @@ Below is an example query.  Note: this query is not guaranteed to return results
 webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT %>
 </a>
 
-<h2><a NAME="get_neighbors"></a>[2]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></h2>
+<h2><a NAME="get_neighbors"></a>[3]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></h2>
 
 <h3>Summary:</h3>
 
@@ -197,7 +197,7 @@ Below is an example query.  Note: this query is not guaranteed to return results
 
 <a href="webservice.do?version=2.0&cmd=get_neighbors&q=9854">webservice.do?version=2.0&cmd=get_neighbors&q=9854</a>
 
-<h2><a NAME="get_parents"></a>[5]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></h2>
+<h2><a NAME="get_parents"></a>[4]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></h2>
 
 <h3>Summary:</h3>
 
@@ -228,7 +228,7 @@ Below is an example query.  Note: this query is not guaranteed to return results
 <a href="webservice.do?version=2.0&q=145&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%>">
 webservice.do?version=2.0&q=145&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%></a>
 
-<h2><a NAME="get_by_cpath_id"></a>[3]  Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></h2>
+<h2><a NAME="get_by_cpath_id"></a>[5]  Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></h2>
 
 <h3>Summary:</h3>
 
