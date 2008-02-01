@@ -15,8 +15,6 @@
     ArrayList <String> supportedIdTypes = webUIBean.getSupportedIdTypes();
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
     ArrayList snapshotList = dao.getAllDatabaseSnapshots();
-    List<String> binaryInteractionRules = ExecuteBinaryInteraction.getRuleTypesForDisplay();
-String binaryInteractionRule = "a comma separated list of binary interaction rules that are applied when binary interactions are requested.  This parameter is only relevant when the " + ProtocolRequest.ARG_OUTPUT + " parameter is set to " + ProtocolConstantsVersion2.FORMAT_BINARY_SIF + ".  See the <a href=#valid_binary_rule>valid values for " + ProtocolRequest.ARG_BINARY_INTERACTION_RULE + " parameter</a> below.  If not specified, all binary interaction rules will be applied.";
 %>
 <h1>Web Service API:</h1>
 <p>
@@ -168,7 +166,6 @@ sources that you want to search.  For example, the following restricts your resu
 only: <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>.  See the
 <a href=#valid_data_source>valid values for <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter</a> below.
 If not specified, all pathway data sources will be searched.</li>
-<li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
 </ul>
 
 <h3>Output:</h3>
@@ -244,7 +241,6 @@ For example, get the complete Apoptosis pathway from Reactome.
 or physical entities of interest.</li>
 <li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> or
  <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX representation of the desired record.  When set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a simple text file that lists all the interactions in the following simple interaction format: <b>physical_entity_id &lt;relationship type&gt; physical_entity_id</b>, where physical_entity_id is a valid CPATH_ID.  Note that <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> is only relevant if the query parameter <%= ProtocolRequest.ARG_QUERY%> corresponds to a pathway or interaction record.</li>
-<li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
 </ul>
 
 <h3>Output:</h3>
@@ -299,25 +295,6 @@ webservice.do?cmd=get_record_by_cpath_id&version=2.0&q=1&output=biopax
 %>
 </ul>
 
-<a name='valid_binary_rule'></a>
-<h3><a name='valid_binary_rule'></a>Valid values for the <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> parameter:</h3>
-<div>
-    <table border=1>
-        <tr>
-            <th><%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %></th>
-            <th>Binary Interaction Rule Description</th>
-        </tr>
-        <%
-            for (String rule : binaryInteractionRules) {
-                String ruleDesc = ExecuteBinaryInteraction.getRuleTypeDescription(rule);
-                out.println("<tr>");
-                out.println("<td>" + rule + "</td>");
-                out.println("<td>" + ruleDesc + "</td>");
-                out.println("</tr>");
-            }
-        %>
-    </table>
-</div>
 <h2><a NAME="errors"></a>[7]  Error Codes:</h2>
 <p>
 An error while processing a request is reported
