@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssemblyBase.java,v 1.2 2008-01-17 15:49:30 grossben Exp $
+// $Id: BinaryInteractionAssemblyBase.java,v 1.3 2008-02-19 21:17:51 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ package org.mskcc.pathdb.schemas.binary_interaction.assembly;
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.io.sif.InteractionRule;
 import org.biopax.paxtools.io.sif.SimpleInteractionConverter;
+import org.biopax.paxtools.io.sif.level2.BinaryInteractionType;
 import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
 
 import java.util.Map;
@@ -85,12 +86,12 @@ public abstract class BinaryInteractionAssemblyBase {
 		Map<String, Boolean> options = new HashMap<String, Boolean>();
 
 		for (InteractionRule rule : rules) {
-			for (String ruleType : rule.getRuleTypes()) {
-				if (ruleTypes.contains(ruleType)) {
-					options.put(ruleType, true);
+			for (BinaryInteractionType ruleType : rule.getRuleTypes()) {
+				if (ruleTypes.contains(ruleType.getTag())) {
+					options.put(ruleType.getTag(), true);
 				}
 				else {
-					options.put(ruleType, false);
+					options.put(ruleType.getTag(), false);
 				}
 			}
 		}

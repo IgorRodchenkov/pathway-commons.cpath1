@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionUtil.java,v 1.3 2008-01-24 15:32:28 grossben Exp $
+// $Id: BinaryInteractionUtil.java,v 1.4 2008-02-19 21:18:03 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,7 +34,6 @@ package org.mskcc.pathdb.schemas.binary_interaction.util;
 // imports
 import org.biopax.paxtools.io.sif.*;
 import org.biopax.paxtools.io.sif.level2.*;
-import org.biopax.paxtools.io.sif.level2.BinaryInteractionType.*;
 
 import java.util.Map;
 import java.util.List;
@@ -62,14 +61,14 @@ public class BinaryInteractionUtil {
 	static {
 		// interate through each rule class and get each rule type
 		for (InteractionRule rule : possibleRules) {
-			for (String ruleType : rule.getRuleTypes()) {
+			for (BinaryInteractionType ruleType : rule.getRuleTypes()) {
 				// add ruleType to ruletype list
-				ruleTypes.add(ruleType);
+				ruleTypes.add(ruleType.getTag());
 				// add to binaryInteractionTypeMap
 				BinaryInteractionType[] binaryInteractionTypes = BinaryInteractionType.values();
 				for (BinaryInteractionType binaryInteractionType : binaryInteractionTypes) {
-					if (binaryInteractionType.getTag().equals(ruleType)) {
-						binaryInteractionTypeMap.put(ruleType, binaryInteractionType);
+					if (binaryInteractionType.getTag().equals(ruleType.getTag())) {
+						binaryInteractionTypeMap.put(ruleType.getTag(), binaryInteractionType);
 					}
 				}
 			}
