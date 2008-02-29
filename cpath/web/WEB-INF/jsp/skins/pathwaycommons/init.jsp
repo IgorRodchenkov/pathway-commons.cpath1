@@ -12,8 +12,12 @@
     webUIBean.setWantCytoscape(true);
     webUIBean.setDisplayWebServiceTab(true);
     webUIBean.setDisplayFilterTab(true);
-    webUIBean.setDefaultUserMessage("Help us improve Pathway Commons.  "
-        + "Send us your <a href='get_feedback.do'>feedback</a>.");
+    webUIBean.setDefaultUserMessage("<table><tr>" +
+		"<td width=\"40%\" align=\"left\">Help us improve Pathway Commons.  Send us your <a href='get_feedback.do'>feedback</a>.</td>" +
+		"<td width=\"60%\" align=\"right\"><form action=\"http://groups-beta.google.com/group/pathway-commons-announce/boxsubscribe\">" + 
+		"Subscribe to pathway-commons-announce, email:&nbsp&nbsp<input type=text name=email>&nbsp&nbsp<input type=submit name=\"sub\" value=\"subscribe\">" +
+		"</form></td>" +
+		"</tr></table>");
     webUIBean.setBaseURL("pathwaycommons.org");
     webUIBean.setSmtpHost("cbio.mskcc.org");
     webUIBean.setFeedbackEmailTo("pc-info@pathwaycommons.org");
