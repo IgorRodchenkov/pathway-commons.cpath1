@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssemblyBase.java,v 1.3 2008-02-19 21:17:51 grossben Exp $
+// $Id: BinaryInteractionAssemblyBase.java,v 1.4 2008-02-29 12:35:56 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,7 +35,7 @@ package org.mskcc.pathdb.schemas.binary_interaction.assembly;
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.io.sif.InteractionRule;
 import org.biopax.paxtools.io.sif.SimpleInteractionConverter;
-import org.biopax.paxtools.io.sif.level2.BinaryInteractionType;
+import org.biopax.paxtools.io.sif.BinaryInteractionType;
 import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
 
 import java.util.Map;
