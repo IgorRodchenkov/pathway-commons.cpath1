@@ -18,6 +18,8 @@ import org.mskcc.pathdb.xdebug.XDebug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.jdom.JDOMException;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -255,7 +257,7 @@ public class BioPaxParentChild extends BaseAction {
 
     private void getParentInteractionSummaries (HashMap interactionParentMap,
             HashMap interactionSummaryMap, XDebug xdebug)
-            throws DaoException, EntitySummaryException {
+            throws DaoException, EntitySummaryException, IOException, JDOMException {
         Iterator iterator = interactionParentMap.keySet().iterator();
         while (iterator.hasNext()) {
             Long interactionId = (Long) iterator.next();
@@ -269,7 +271,7 @@ public class BioPaxParentChild extends BaseAction {
      */
     private HashMap<Long, EntitySummary> getInteractionSummaryMap
             (ArrayList records, XDebug xdebug)
-            throws DaoException, EntitySummaryException {
+            throws DaoException, EntitySummaryException, IOException, JDOMException {
         HashMap<Long, EntitySummary> map = new HashMap<Long, EntitySummary>();
         for (int i = 0; i < records.size(); i++) {
             CPathRecord record0 = (CPathRecord) records.get(i);

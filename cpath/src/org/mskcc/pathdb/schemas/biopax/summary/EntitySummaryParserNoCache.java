@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParserNoCache.java,v 1.7 2007-11-02 13:11:17 grossben Exp $
+// $Id: EntitySummaryParserNoCache.java,v 1.8 2008-03-04 16:27:14 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -71,10 +71,15 @@ class EntitySummaryParserNoCache {
      */
     private Element root;
 
-    /*
+    /**
 	 * Reference to CPathRecord.
 	 */
     private CPathRecord record;
+
+	/**
+	 * Reference to RdfQuery
+	 */
+	private RdfQuery rdfQuery;
 
     /**
      * Reference to BioPaxConstants Class.
@@ -92,9 +97,10 @@ class EntitySummaryParserNoCache {
      * @param recordID long
      * @throws DaoException             Throwable
      * @throws IllegalArgumentException Throwable
+     * @throws IOException              Throwable
+     * @throws JDOMException            Throwable
      */
-    public EntitySummaryParserNoCache(long recordID) throws DaoException,
-            IllegalArgumentException {
+    public EntitySummaryParserNoCache(long recordID) throws DaoException, IllegalArgumentException, IOException, JDOMException {
 
         // setup biopax constants
         biopaxConstants = new BioPaxConstants();
@@ -102,6 +108,7 @@ class EntitySummaryParserNoCache {
         // get cpath record
         DaoCPath cPath = DaoCPath.getInstance();
         record = cPath.getRecordById(recordID);
+
         // check record for validity
         if (record == null) {
             throw new IllegalArgumentException("cPath ID does not exist: " + recordID);
@@ -110,6 +117,9 @@ class EntitySummaryParserNoCache {
             throw new IllegalArgumentException("Specified cPath record is not of type "
                     + XmlRecordType.BIO_PAX);
         }
+
+		BioPaxUtil bpUtil = new BioPaxUtil(new StringReader(record.getXmlContent()));
+		rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
     }
 
     /**
@@ -141,29 +151,29 @@ class EntitySummaryParserNoCache {
             // get interaction information
             if (biopaxConstants.isConversion(record.getSpecificType())) {
                 // get conversion info
-                ArrayList leftParticipants = getInteractionInformation("/*/bp:LEFT/*");
-                ArrayList rightParticipants = getInteractionInformation("/*/bp:RIGHT/*");
+                ArrayList leftParticipants = getInteractionInformation("LEFT/*");
+                ArrayList rightParticipants = getInteractionInformation("RIGHT/*");
                 entitySummary =
                         new ConversionInteractionSummary(leftParticipants, rightParticipants);
             } else if (biopaxConstants.isControl(record.getSpecificType())) {
                 // get control info
-                ArrayList controllers = getInteractionInformation("/*/bp:CONTROLLER/*");
-                ArrayList controlled = getInteractionInformation("/*/bp:CONTROLLED");
-                String controlType = getControlType("/*/bp:CONTROL-TYPE");
+                ArrayList controllers = getInteractionInformation("CONTROLLER/*");
+                ArrayList controlled = getInteractionInformation("CONTROLLED");
+                String controlType = getControlType("CONTROL-TYPE");
                 entitySummary = new ControlInteractionSummary(controlType,
                         controllers, controlled);
             } else if (biopaxConstants.isPhysicalInteraction(record.getSpecificType())) {
                 // get physical interaction info
                 ArrayList participants = getInteractionInformation
-                        ("/*/bp:PARTICIPANTS/*");
+					("PARTICIPANTS/*");
                 String interactionType = getInteractionType
-                        ("/*/bp:INTERACTION-TYPE/*/bp:TERM");
+                        ("INTERACTION-TYPE/*/TERM");
                 entitySummary = new PhysicalInteractionSummary(interactionType,
                         participants);
             } else {
                 // get basic interaction info.
                 ArrayList participants = getInteractionInformation
-                        ("/*/bp:PARTICIPANTS/*");
+                        ("PARTICIPANTS/*");
                 entitySummary = new InteractionSummary(participants);
             }
 
@@ -205,23 +215,20 @@ class EntitySummaryParserNoCache {
      * @throws EntitySummaryException
      * @throws DaoException
      * @throws BioPaxRecordSummaryException
+     * @throws IOException
+     * @throws JDOMException
      */
     private ArrayList getInteractionInformation(String query)
-            throws JDOMException,
-            EntitySummaryException,
-            DaoException,
-            BioPaxRecordSummaryException {
+		throws JDOMException, EntitySummaryException, DaoException, BioPaxRecordSummaryException, IOException, JDOMException {
 
         // we dont process controlled queries as all others
-        boolean processingControlled = (query.equals("/*/bp:CONTROLLED"));
+        boolean processingControlled = (query.equals("CONTROLLED"));
 
         // our list to return
         ArrayList participantArrayList = new ArrayList();
 
         // perform query
-        XPath xpath = XPath.newInstance(query);
-        xpath.addNamespace("bp", root.getNamespaceURI());
-        List list = xpath.selectNodes(root);
+		List<Element> list = rdfQuery.getNodes(root, query);
 
         // interate through results
         if (list != null && list.size() > 0) {
@@ -239,7 +246,7 @@ class EntitySummaryParserNoCache {
                 } else {
                     // not processing controlled, we need to create a participant summary component
                     // to do this, we need to get physical entity CPathRecord
-                    xpath = XPath.newInstance("bp:PHYSICAL-ENTITY");
+                    XPath xpath = XPath.newInstance("bp:PHYSICAL-ENTITY");
                     xpath.addNamespace("bp", e.getNamespaceURI());
                     Element physicalEntity = (Element) xpath.selectSingleNode(e);
                     CPathRecord physicalEntityRecord;
@@ -270,9 +277,11 @@ class EntitySummaryParserNoCache {
      * @return Object
      * @throws EntitySummaryException
      * @throws DaoException
+     * @throws IOException
+     * @throws JDOMException
      */
     private Object getControlledInteractionType(Element element)
-            throws EntitySummaryException, DaoException {
+            throws EntitySummaryException, DaoException, IOException, JDOMException {
 
         // this is the object to return, but you didnt need me to tell you that
         Object objectToReturn = null;
@@ -319,9 +328,7 @@ class EntitySummaryParserNoCache {
             controlType = BioPaxConstants.ACTIVATION_CATALYSIS;
         } else {
             // lookup control type in xml blob
-            XPath xpath = XPath.newInstance(query);
-            xpath.addNamespace("bp", root.getNamespaceURI());
-            Element e = (Element) xpath.selectSingleNode(root);
+			Element e = rdfQuery.getNode(root, query);
             if (e != null && e.getTextNormalize().length() > 0) {
                 controlType = e.getTextNormalize();
             }
@@ -344,9 +351,7 @@ class EntitySummaryParserNoCache {
         String interactionType = null;
 
         // lookup control type in xml blob
-        XPath xpath = XPath.newInstance(query);
-        xpath.addNamespace("bp", root.getNamespaceURI());
-        Element e = (Element) xpath.selectSingleNode(root);
+        Element e = rdfQuery.getNode(root, query);
         if (e != null && e.getTextNormalize().length() > 0) {
             interactionType = e.getTextNormalize();
         }

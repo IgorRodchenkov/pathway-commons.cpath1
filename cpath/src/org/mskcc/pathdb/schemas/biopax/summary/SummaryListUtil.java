@@ -1,4 +1,4 @@
-// $Id: SummaryListUtil.java,v 1.10 2006-10-31 20:56:55 cerami Exp $
+// $Id: SummaryListUtil.java,v 1.11 2008-03-04 16:27:33 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,8 @@ import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
+import java.io.IOException;
+import org.jdom.JDOMException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -85,10 +87,11 @@ public class SummaryListUtil {
      *
      * @return ArrayList of EntitySummary Objects.
      * @throws DaoException           Database Access Error.
+     * @throws IOException              Throwable
+     * @throws JDOMException            Throwable
      * @throws EntitySummaryException Error Creating Summary.
      */
-    public ArrayList getSummaryList() throws EntitySummaryException,
-            DaoException {
+    public ArrayList getSummaryList() throws EntitySummaryException, DaoException, IOException, JDOMException {
         BioPaxConstants bpConstants = new BioPaxConstants();
         DaoInternalLink daoInternalLinks = new DaoInternalLink();
         DaoCPath dao = DaoCPath.getInstance();

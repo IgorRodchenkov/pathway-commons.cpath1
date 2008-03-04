@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParser.java,v 1.24 2007-05-08 20:23:35 cerami Exp $
+// $Id: EntitySummaryParser.java,v 1.25 2008-03-04 16:27:49 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,9 @@ import org.apache.log4j.Logger;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.util.cache.EhCache;
 
+import java.io.IOException;
+import org.jdom.JDOMException;
+
 /**
  * Provides a public wrapper to EntitySummaryParserNoCache.
  * This wrapper *supports* caching of Entity Summaries.
@@ -62,8 +65,10 @@ public class EntitySummaryParser {
      * @param recordID long
      * @throws DaoException             Throwable
      * @throws IllegalArgumentException Throwable
+     * @throws IOException              Throwable
+     * @throws JDOMException            Throwable
      */
-    public EntitySummaryParser (long recordID) throws DaoException, IllegalArgumentException {
+    public EntitySummaryParser (long recordID) throws DaoException, IllegalArgumentException, IOException, JDOMException {
 
         //  Check cache first
         CacheManager manager = CacheManager.getInstance();
