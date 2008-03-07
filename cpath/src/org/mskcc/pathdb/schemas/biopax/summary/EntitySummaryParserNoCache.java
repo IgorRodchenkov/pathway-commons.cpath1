@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParserNoCache.java,v 1.8 2008-03-04 16:27:14 grossben Exp $
+// $Id: EntitySummaryParserNoCache.java,v 1.9 2008-03-07 14:59:34 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -231,10 +231,10 @@ class EntitySummaryParserNoCache {
 		List<Element> list = rdfQuery.getNodes(root, query);
 
         // interate through results
-        if (list != null && list.size() > 0) {
-            for (int lc = 0; lc < list.size(); lc++) {
-                // get our next element to process
-                Element e = (Element) list.get(lc);
+        if (list != null) {
+            for (Element e : list) {
+				// added to fix null ptr exception.  tbd: debug rdfquery.getNodes()
+				if (e == null) continue;
                 // special processing of controlled
                 if (processingControlled) {
                     // we cast return as object because it could be a ParticipantSummaryComponent or
