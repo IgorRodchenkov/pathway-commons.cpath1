@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.41 2008-01-31 02:57:42 grossben Exp $
+// $Id: InteractionSummaryUtils.java,v 1.42 2008-03-07 14:13:56 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -362,19 +362,20 @@ public class InteractionSummaryUtils {
             }
         } else {
             List externalLinks = summary.getExternalLinks();
-
             //  The code below is required, at least until BioPAX Level 3 supports
             //  a description of transcriptional regulation.
             boolean empty = true;
-            for (int i=0; i<externalLinks.size(); i++) {
-                ExternalLinkRecord externalLink = (ExternalLinkRecord) externalLinks.get(i);
-                ExternalDatabaseRecord externalDb = externalLink.getExternalDatabase();
-                if(externalDb.getMasterTerm().equals("GENE ONTOLOGY")
-                        && externalLink.getLinkedToId().equals("0006350")) {
-                    buf.append ("transcription");
-                    empty = false;
-                }
-            }
+			if (externalLinks != null) {
+				for (int i=0; i<externalLinks.size(); i++) {
+					ExternalLinkRecord externalLink = (ExternalLinkRecord) externalLinks.get(i);
+					ExternalDatabaseRecord externalDb = externalLink.getExternalDatabase();
+					if(externalDb.getMasterTerm().equals("GENE ONTOLOGY")
+					   && externalLink.getLinkedToId().equals("0006350")) {
+						buf.append ("transcription");
+						empty = false;
+					}
+				}
+			}
             if (empty) {
                 buf.append ("[&empty;]");
             }
