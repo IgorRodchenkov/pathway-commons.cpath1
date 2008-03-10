@@ -1,4 +1,4 @@
-// $Id: TestIndexer.java,v 1.21 2007-03-20 16:02:33 cerami Exp $
+// $Id: TestIndexer.java,v 1.22 2008-03-10 15:38:44 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,22 +70,16 @@ public class TestIndexer extends TestCase {
         ItemToIndex item = IndexFactory.createItemToIndex(4, assembly);
         LuceneWriter indexWriter = new LuceneWriter(true);
         indexWriter.addRecord(item);
-        indexWriter.closeWriter();
         indexWriter.optimize();
+        indexWriter.closeWriter();
 
         queryInteraction("chaperonin");
-        queryInteraction("interactor:chaperonin");
         queryInteraction("P06139");
-        queryInteraction("interactor:P06139");
         queryInteraction("Escherichia coli");
         queryInteraction("organism:Escherichia coli");
         queryInteraction("organism:562");
         queryInteraction("Genetic");
         queryInteraction("\"MI:0045\"");
-        queryInteraction("experiment_type:\"MI:0045\"");
-        queryInteraction("experiment_type:Genetic");
-        queryInteraction("pmid:11821039");
-        queryInteraction("database:DIP");
     }
 
     /**

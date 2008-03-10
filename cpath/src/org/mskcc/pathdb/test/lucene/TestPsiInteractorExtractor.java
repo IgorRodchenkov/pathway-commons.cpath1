@@ -1,4 +1,4 @@
-// $Id: TestPsiInteractorExtractor.java,v 1.10 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestPsiInteractorExtractor.java,v 1.11 2008-03-10 15:38:36 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,8 +67,7 @@ public class TestPsiInteractorExtractor extends TestCase {
                 (record, 1, XmlAssemblyFactory.XML_FULL, xdebug);
         EntrySet entrySet = (EntrySet) assembly.getXmlObject();
         PsiInteractorExtractor interactorExtractor = new PsiInteractorExtractor
-                (entrySet, "chaperonin +interaction_type:Genetic",
-                        new XDebug());
+                (entrySet, "chaperonin", new XDebug());
         ArrayList proteins = interactorExtractor.getSortedInteractors();
 
         assertEquals(1, proteins.size());
