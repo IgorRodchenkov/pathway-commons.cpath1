@@ -1,4 +1,4 @@
-// $Id: RdfQuery.java,v 1.8 2007-11-07 16:49:04 grossben Exp $
+// $Id: RdfQuery.java,v 1.9 2008-03-10 19:14:58 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,12 +31,17 @@
  **/
 package org.mskcc.pathdb.util.rdf;
 
+import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.util.biopax.BioPaxUtil;
+
 import org.jdom.Attribute;
 import org.jdom.Element;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.io.StringReader;
 import java.util.StringTokenizer;
 
 /**
@@ -115,7 +120,11 @@ public class RdfQuery {
             String rdfKey = RdfUtil.removeHashMark
                     (rdfResourceAttribute.getValue());
             Element resource = (Element) rdfMap.get(rdfKey);
-            children.add(resource);
+			// the following code was added to support participants that are
+			// defined outside this RdfQuery context.  The motivation was an nci
+			// interaction which had a participant that was a pathway.
+			resource = (resource == null) ? getRecordResource(rdfKey) : resource;
+			if (resource != null) children.add(resource);
         } else {
             children = e.getChildren();
         }
@@ -134,4 +143,28 @@ public class RdfQuery {
         }
         return targetNodes;
     }
+
+	/**
+	 * Get element this lives outside this RdfQuery context.
+	 *
+	 * @param rdfKey String
+	 * @return Element
+	 */
+	private Element getRecordResource(String rdfKey) {
+
+		// create record id
+		String idStr = rdfKey.substring(rdfKey.lastIndexOf('-')+1);
+
+		// get record
+		try {
+			DaoCPath cPath = DaoCPath.getInstance();
+			CPathRecord record = cPath.getRecordById(new Long(idStr));
+			if (record == null) return null;
+			BioPaxUtil bpUtil = new BioPaxUtil(new StringReader(record.getXmlContent()));
+			return (Element)bpUtil.getRdfResourceMap().get(rdfKey);
+		}
+		catch(Exception e) {
+			return null;
+		}
+	}
 }

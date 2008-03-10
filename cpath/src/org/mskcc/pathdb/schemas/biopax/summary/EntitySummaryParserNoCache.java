@@ -1,4 +1,4 @@
-// $Id: EntitySummaryParserNoCache.java,v 1.9 2008-03-07 14:59:34 grossben Exp $
+// $Id: EntitySummaryParserNoCache.java,v 1.10 2008-03-10 19:16:48 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -246,9 +246,20 @@ class EntitySummaryParserNoCache {
                 } else {
                     // not processing controlled, we need to create a participant summary component
                     // to do this, we need to get physical entity CPathRecord
-                    XPath xpath = XPath.newInstance("bp:PHYSICAL-ENTITY");
-                    xpath.addNamespace("bp", e.getNamespaceURI());
-                    Element physicalEntity = (Element) xpath.selectSingleNode(e);
+					String elementName = e.getName();
+					elementName = (elementName == null) ? "" : elementName;
+                    Element physicalEntity = null;
+					// the following code was added to support interaction in which
+					// a participant is a pathway.
+					if (elementName.matches("^.*(pathway|PATHWAY).*$")) {
+						physicalEntity = e;
+					}
+					else {
+						XPath xpath = XPath.newInstance("bp:PHYSICAL-ENTITY");
+						xpath.addNamespace("bp", e.getNamespaceURI());
+						physicalEntity = (Element) xpath.selectSingleNode(e);
+					}
+					if (physicalEntity == null) continue;
                     CPathRecord physicalEntityRecord;
                     try {
                         physicalEntityRecord = BioPaxRecordUtil.getCPathRecord(physicalEntity);

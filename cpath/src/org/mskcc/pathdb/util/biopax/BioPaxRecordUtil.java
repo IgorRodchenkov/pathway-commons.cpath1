@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.37 2008-01-29 19:55:39 grossben Exp $
+// $Id: BioPaxRecordUtil.java,v 1.38 2008-03-10 19:15:37 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -305,6 +305,9 @@ public class BioPaxRecordUtil {
         // get elements attribute
         Attribute rdfResourceAttribute =
                 e.getAttribute(RdfConstants.RESOURCE_ATTRIBUTE, RdfConstants.RDF_NAMESPACE);
+
+		rdfResourceAttribute = (rdfResourceAttribute == null) ?
+			e.getAttribute(RdfConstants.ID_ATTRIBUTE, RdfConstants.RDF_NAMESPACE) : rdfResourceAttribute;
 
         // attribute not null
         if (rdfResourceAttribute != null) {
