@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.13 2007-04-16 15:38:53 cerami Exp $
+// $Id: LuceneReader.java,v 1.14 2008-03-10 15:05:05 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.IndexSearcher;
 import org.mskcc.pathdb.sql.query.QueryException;
 
@@ -91,20 +92,35 @@ public class LuceneReader {
             Analyzer analyzer = LuceneConfig.getLuceneAnalyzer();
 
 			// create query on FIELD_NAME, FIELD_ALL, FIELD_SYNONYMS, FIELD_EXTERNAL_REFS
-			String fields[] = new String[4];
-            fields[0] = LuceneConfig.FIELD_NAME;
-            fields[1] = LuceneConfig.FIELD_ALL;
-            fields[2] = LuceneConfig.FIELD_SYNONYMS;
-            fields[3] = LuceneConfig.FIELD_EXTERNAL_REFS;
-			BooleanQuery queryToSearch = 
-				(BooleanQuery)MultiFieldQueryParser.parse(term, fields, analyzer);
+			String fields[] = new String[2];
+            fields[0] = LuceneConfig.FIELD_ALL;
+            fields[1] = LuceneConfig.FIELD_EXTERNAL_REFS;
+			BooleanClause.Occur[] flags = { BooleanClause.Occur.SHOULD, BooleanClause.Occur.SHOULD };
+			BooleanQuery queryToSearch = (BooleanQuery)MultiFieldQueryParser.parse(term, fields, flags, analyzer);
+
+			// create query on FIELD_NAME and boost it
+			QueryParser nameQueryParser = new QueryParser(LuceneConfig.FIELD_NAME, analyzer);
+			Query nameQuery = nameQueryParser.parse(term);
+			nameQuery.setBoost((float)2.0);
+
+			// add query on FIELD_NAME to search query
+			queryToSearch.add(nameQuery, BooleanClause.Occur.SHOULD);
+
+			// create query on FIELD_SYNONYMS and boost it
+			QueryParser synQueryParser = new QueryParser(LuceneConfig.FIELD_SYNONYMS, analyzer);
+			Query synQuery = synQueryParser.parse(term);
+			synQuery.setBoost((float)1.75);
+
+			// add query on FIELD_SYNONYMS to search query
+			queryToSearch.add(synQuery, BooleanClause.Occur.SHOULD);
 
 			// create query on FIELD_DESCENDENTS and boost it
-			Query descQuery = QueryParser.parse(term, LuceneConfig.FIELD_DESCENDENTS, analyzer);
-			descQuery.setBoost(100);
+			QueryParser descQueryParser = new QueryParser(LuceneConfig.FIELD_DESCENDENTS, analyzer);
+			Query descQuery = descQueryParser.parse(term);
+			descQuery.setBoost((float)1.5);
 
 			// add query on FIELD_DESCENDENT to search query
-			queryToSearch.add(descQuery, false, false);
+			queryToSearch.add(descQuery, BooleanClause.Occur.SHOULD);
 
 			// outta here
             Hits hits = reader.search(queryToSearch);

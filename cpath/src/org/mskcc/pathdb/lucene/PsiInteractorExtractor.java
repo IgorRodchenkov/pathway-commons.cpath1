@@ -1,4 +1,4 @@
-// $Id: PsiInteractorExtractor.java,v 1.12 2007-03-20 16:04:26 cerami Exp $
+// $Id: PsiInteractorExtractor.java,v 1.13 2008-03-10 15:02:59 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -95,8 +95,8 @@ public class PsiInteractorExtractor {
             analyzer = new StandardAnalyzer();
             reader = IndexReader.open(LuceneConfig.getLuceneDirectory());
             if (queryStr != null) {
-                query = QueryParser.parse(queryStr, LuceneConfig.FIELD_ALL,
-                        analyzer);
+				QueryParser queryParser = new QueryParser(LuceneConfig.FIELD_ALL, analyzer);
+				query = queryParser.parse(queryStr);
                 query = query.rewrite(reader);
                 highLighter = new QueryHighlightExtractor(query, analyzer,
                         START_SPAN_TAG + COLOR + END_TAG, END_SPAN_TAG);

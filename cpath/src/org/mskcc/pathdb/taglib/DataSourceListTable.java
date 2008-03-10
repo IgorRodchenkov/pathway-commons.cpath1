@@ -80,7 +80,7 @@ public class DataSourceListTable extends HtmlTable {
 					ArrayList<Long> dataSourceList = new ArrayList();
 					dataSourceList.add(Long.valueOf(snapshotRecord.getId()));
 					filterSettings.setSnapshotsSelected(dataSourceList);
-					protocolRequest.setQuery("q=data_source " + dbRecord.getMasterTerm());
+					protocolRequest.setQuery("q=data_source:" + dbRecord.getMasterTerm());
 					// do lucene query
 					LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, new XDebug());
 					search.executeSearch();

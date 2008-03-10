@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.20 2007-05-14 17:28:06 grossben Exp $
+// $Id: BioPaxToIndex.java,v 1.21 2008-03-10 15:05:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -133,40 +133,38 @@ public class BioPaxToIndex implements ItemToIndex {
         //  Remove cPath IDs, part of bug:  #798
         terms = removecPathIds(terms);
 
-        fields.add(Field.Text(LuceneConfig.FIELD_ALL, terms));
+		// Index "all field"
+		fields.add(new Field(LuceneConfig.FIELD_ALL, terms, Field.Store.YES, Field.Index.TOKENIZED));
 
         //  Index cPath ID --> FIELD_CPATH_ID
-        fields.add(Field.Text(LuceneConfig.FIELD_CPATH_ID,
-                Long.toString(cpathId)));
+		fields.add(new Field(LuceneConfig.FIELD_CPATH_ID, Long.toString(cpathId), Field.Store.YES, Field.Index.UN_TOKENIZED));
 
 		// index entity type --> FIELD_ENTITY_TYPE
-		fields.add(Field.Text(LuceneConfig.FIELD_ENTITY_TYPE,
-							  record.getSpecificType()));
+		fields.add(new Field(LuceneConfig.FIELD_ENTITY_TYPE, record.getSpecificType(), Field.Store.YES, Field.Index.TOKENIZED));
 
 		// data source --> FIELD_DATA_SOURCE
 		String dataSource = getDataSources(record);
-		fields.add(Field.Text(LuceneConfig.FIELD_DATA_SOURCE,
-							  dataSource));
+		fields.add(new Field(LuceneConfig.FIELD_DATA_SOURCE, dataSource, Field.Store.YES, Field.Index.TOKENIZED));
 
 		// create the summary
 		BioPaxRecordSummary summary =
 			BioPaxRecordUtil.createBioPaxRecordSummary(record);
 
         //  Index Name/Short Name --> FIELD_NAME
-        fields.add(Field.Text(LuceneConfig.FIELD_NAME, getNamesForField(summary)));
+		fields.add(new Field(LuceneConfig.FIELD_NAME, getNamesForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
 
         //  Index Organism Data --> FIELD_ORGANISM
         indexOrganismData(xmlAssembly);
 
 		// Index Synonyms --> FIELD_SYNONYMS
-		fields.add(Field.Text(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary)));
+		fields.add(new Field(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
 
 		// Index Ext Refs --> FIELD_EXTERNAL_REFS
-		fields.add(Field.Text(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary)));
+		fields.add(new Field(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
 
 		// Index Descendents --> FIELD_DESCENDENTS
 		String descendents = getDescendents(cpath, record);
-		fields.add(Field.Text(LuceneConfig.FIELD_DESCENDENTS, descendents));
+		fields.add(new Field(LuceneConfig.FIELD_DESCENDENTS, descendents, Field.Store.YES, Field.Index.TOKENIZED));
 
 		// * NOTE: IF MORE FIELDS ARE INDEXED, QueryUtil.addTerm SHOULD BE UPDATES *
     }
@@ -291,8 +289,7 @@ public class BioPaxToIndex implements ItemToIndex {
             }
         }
         if (organismTokens.length() > 0) {
-            fields.add(Field.Text(LuceneConfig.FIELD_ORGANISM,
-                    organismTokens.toString()));
+			fields.add(new Field(LuceneConfig.FIELD_ORGANISM, organismTokens.toString(), Field.Store.YES, Field.Index.TOKENIZED));
         }
     }
 

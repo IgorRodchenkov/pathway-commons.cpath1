@@ -1,4 +1,4 @@
-// $Id: QueryFullText.java,v 1.18 2006-02-22 22:47:51 grossb Exp $
+// $Id: QueryFullText.java,v 1.19 2008-03-10 15:01:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,8 +70,8 @@ public class QueryFullText {
         if (hits.length() > 0) {
 
             StandardAnalyzer analyzer = new StandardAnalyzer();
-            Query query = QueryParser.parse(term, LuceneConfig.FIELD_ALL,
-                    analyzer);
+			QueryParser queryParser = new QueryParser(LuceneConfig.FIELD_ALL, analyzer);
+			Query query = queryParser.parse(term);
             QueryHighlightExtractor highLighter =
                     new QueryHighlightExtractor(query, analyzer, "[", "]");
 

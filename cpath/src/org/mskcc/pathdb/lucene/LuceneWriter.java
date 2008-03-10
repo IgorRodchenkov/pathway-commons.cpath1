@@ -1,4 +1,4 @@
-// $Id: LuceneWriter.java,v 1.13 2006-06-09 19:22:03 cerami Exp $
+// $Id: LuceneWriter.java,v 1.14 2008-03-10 15:04:35 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -95,11 +95,11 @@ public class LuceneWriter {
         //  Increase the Merge Factor.
         //  Results in faster indexing.  For details, refer to:
         //  http://www.onjava.com/pub/a/onjava/2003/03/05/lucene.html
-        writer.mergeFactor = 100;
+        writer.setMergeFactor(100);
 
         // see recomendation from 
         // http://wiki.apache.org/jakarta-lucene/PainlessIndexing
-        writer.minMergeDocs = 1000;
+        //writer.minMergeDocs = 1000; - removed in 2.3.1
     }
 
     /**

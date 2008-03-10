@@ -1,4 +1,4 @@
-// $Id: PsiInteractionToIndex.java,v 1.20 2007-03-20 16:04:26 cerami Exp $
+// $Id: PsiInteractionToIndex.java,v 1.21 2008-03-10 15:03:54 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -153,11 +153,10 @@ public class PsiInteractionToIndex implements ItemToIndex {
         //  Index All Terms -->  Default Field.
         String xml = xmlAssembly.getXmlString();
         String terms = XmlStripper.stripTags(xml, true, false);
-        fields.add(Field.Text(LuceneConfig.FIELD_ALL, terms));
+		fields.add(new Field(LuceneConfig.FIELD_ALL, terms, Field.Store.YES, Field.Index.TOKENIZED));
 
         //  Index cPath ID
-        fields.add(Field.Text(LuceneConfig.FIELD_CPATH_ID,
-                Long.toString(cpathId)));
+		fields.add(new Field(LuceneConfig.FIELD_CPATH_ID, Long.toString(cpathId), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
 
 
@@ -188,8 +187,7 @@ public class PsiInteractionToIndex implements ItemToIndex {
 
             // add them to the index
             if (extraTokens.length() > 0) {
-                fields.add(Field.Text(XmlUtil.normalizeText(fieldName),
-                        extraTokens.toString()));
+				fields.add(new Field(XmlUtil.normalizeText(fieldName), extraTokens.toString(), Field.Store.YES, Field.Index.TOKENIZED));
             }
         }
     }
@@ -232,11 +230,9 @@ public class PsiInteractionToIndex implements ItemToIndex {
             appendXrefTokens(protein.getXref(), interactorTokens);
             appendOrganismTokens(protein, organismTokens);
         }
-        fields.add(Field.Text(FIELD_INTERACTOR, interactorTokens.toString()));
-        fields.add(Field.Text(LuceneConfig.FIELD_INTERACTOR_ID,
-                interactorIdTokens.toString()));
-        fields.add(Field.Text(LuceneConfig.FIELD_ORGANISM,
-                organismTokens.toString()));
+		fields.add(new Field(FIELD_INTERACTOR, interactorTokens.toString(), Field.Store.YES, Field.Index.TOKENIZED));
+		fields.add(new Field(LuceneConfig.FIELD_INTERACTOR_ID, interactorIdTokens.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		fields.add(new Field(LuceneConfig.FIELD_ORGANISM, organismTokens.toString(), Field.Store.YES, Field.Index.TOKENIZED));
     }
 
     /**
@@ -259,10 +255,9 @@ public class PsiInteractionToIndex implements ItemToIndex {
             }
             appendXrefTokens(interaction.getXref(), dbTokens);
         }
-        fields.add(Field.Text(FIELD_PMID, pmidTokens.toString()));
-        fields.add(Field.Text(FIELD_EXPERIMENT_TYPE,
-                interactionTypeTokens.toString()));
-        fields.add(Field.Text(FIELD_DATABASE, dbTokens.toString()));
+		fields.add(new Field(FIELD_PMID, pmidTokens.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		fields.add(new Field(FIELD_EXPERIMENT_TYPE, interactionTypeTokens.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		fields.add(new Field(FIELD_DATABASE, dbTokens.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
 
     /**
