@@ -181,6 +181,7 @@ public class ExecuteSearchXmlResponse {
     private void setXrefs (BioPaxRecordSummary recordSummary, ExtendedRecordType searchHit) {
         ObjectFactory factory = new ObjectFactory();
         List <ExternalLinkRecord> xrefs = recordSummary.getExternalLinks();
+		if (xrefs == null) return;
         List <XRefType> xrefList = searchHit.getXref();
         for (ExternalLinkRecord link:  xrefs) {
             ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
