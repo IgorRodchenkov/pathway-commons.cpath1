@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.20 2007-11-29 18:02:50 grossben Exp $
+// $Id: QueryUtil.java,v 1.21 2008-03-11 19:02:39 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -107,6 +107,12 @@ public class QueryUtil {
             throws IOException, ParseException {
         int size = pager.getEndIndex() - pager.getStartIndex();
         List<List<String>> fragments = new ArrayList<List<String>>();
+
+		// if query contains multiple terms, surround it with quotes (unless the query already is)
+		term = term.trim();
+		if (term.matches("^[^\"]*\\s[^\"]*$")) {
+			term = "\"" + term + "\"";		
+		}
 
         QueryParser parser = new QueryParser(LuceneConfig.FIELD_ALL,
                 new StandardAnalyzer());
