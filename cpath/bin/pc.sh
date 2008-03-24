@@ -27,7 +27,11 @@ mv -f $CPATH_HOME/../pathway-commons/humancyc/biopax.owl.bak $CPATH_HOME/../path
 ./admin.pl -f $CPATH_HOME/../pathway-commons/cellmap import
 
 # ihop
-#./admin.pl -f $CPATH_HOME/../pathway-commons/ihop/sc-june-07/iHOP.owl import
+#echo "Importing iHOP file..."
+#$CPATH_HOME/../pathway-commons/bin/ihop-converter.sh < $CPATH_HOME/../pathway-commons/ihop/03-14-2008/iHOP_network_gene_chem.txt > $CPATH_HOME/../pathway-commons/ihop/03-14-2008/biopax/iHOP.owl
+#cp $CPATH_HOME/../pathway-commons/ihop/03-14-2008/db.info $CPATH_HOME/../pathway-commons/ihop/03-14-2008/biopax
+#./admin.pl -f $CPATH_HOME/../pathway-commons/ihop/03-14-2008/biopax/iHOP.owl import
+#rm -f $CPATH_HOME/../pathway-commons/ihop/03-14-2008/biopax/{*.owl,db.info}
 
 # hprd
 $CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py hprd-cooker.py $CPATH_HOME/../pathway-commons/hprd/09-01-2007 $CPATH_HOME/../pathway-commons/hprd/09-01-2007/biopax
