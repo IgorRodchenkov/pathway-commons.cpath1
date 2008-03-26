@@ -12,14 +12,11 @@ request.setAttribute(BaseAction.ATTRIBUTE_USER_MSG, "Help us improve Pathway Com
 <h1>Subscribe to pathway-commons-announce mailing list:</h1>
 
 <table>
-    <tr>
-        <td>Email address:</td>
-        <td><input type=text name="email" size="30" maxlength="100"/></td>
-    </tr>
    <tr>
-        <td></td>
-		<td><form action=\"http://groups-beta.google.com/group/pathway-commons-announce/boxsubscribe\"><input type=submit name="sub" value="subscribe"></form></td>
-    </tr>
+		<td><form action="http://groups-beta.google.com/group/pathway-commons-announce/boxsubscribe">
+		Email address:&nbsp;&nbsp;<input type=text name=email size="30" maxlength="100"/>
+		<input type=submit name="sub" value="Subscribe"></form></td>
+   </tr>
 </table>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
