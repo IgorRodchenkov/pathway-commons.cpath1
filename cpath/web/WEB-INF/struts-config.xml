@@ -154,6 +154,12 @@
             <forward name="failure" path="/WEB-INF/jsp/pages/feedback/FeedbackInput.jsp"/>
         </action>
 
+        <!-- Subscribe Page(s) -->
+        <action path="/get_subscribe"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/subscribe/Subscribe.jsp"/>
+        </action>
+
         <!-- Admin Actions -->
         <action path="/adminHome"
             type="org.mskcc.pathdb.action.admin.AdminHomeAction"
