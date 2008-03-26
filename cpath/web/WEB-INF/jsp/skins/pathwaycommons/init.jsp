@@ -14,9 +14,7 @@
     webUIBean.setDisplayFilterTab(true);
     webUIBean.setDefaultUserMessage("<table><tr>" +
 		"<td width=\"40%\" align=\"left\">Help us improve Pathway Commons.  Send us your <a href='get_feedback.do'>feedback</a>.</td>" +
-		"<td width=\"60%\" align=\"right\"><form action=\"http://groups-beta.google.com/group/pathway-commons-announce/boxsubscribe\">" + 
-		"Subscribe to pathway-commons-announce, email:&nbsp&nbsp<input type=text name=email>&nbsp&nbsp<input type=submit name=\"sub\" value=\"subscribe\">" +
-		"</form></td>" +
+		"<td width=\"60%\" align=\"right\">Interested in Pathway Commons <a href='get_subscribe.do'>announcements</a>&nbsp;?</td>" +
 		"</tr></table>");
     webUIBean.setBaseURL("pathwaycommons.org");
     webUIBean.setSmtpHost("cbio.mskcc.org");
