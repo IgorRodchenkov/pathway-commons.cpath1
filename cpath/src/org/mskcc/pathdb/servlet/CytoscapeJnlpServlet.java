@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.13 2007-12-27 14:25:14 cerami Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.14 2008-03-26 20:36:11 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -199,6 +199,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
                 "    <jar href=\"lib/giny.jar\" />\n" +
                 "    <jar href=\"lib/glf.jar\" />\n" +
                 "    <jar href=\"lib/http.jar\" />\n" +
+                "    <jar href=\"lib/i4jruntime.jar\" />\n" +
                 "    <jar href=\"lib/itext-2.0.4.jar\" />\n" +
                 "    <jar href=\"lib/jaxb-api.jar\" />\n" +
                 "    <jar href=\"lib/jaxb-impl.jar\" />\n" +
@@ -208,7 +209,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
                 "    <jar href=\"lib/jdom-1.0.jar\" />\n" +
                 "    <jar href=\"lib/jhall.jar\" />\n" +
                 "    <jar href=\"lib/jnlp.jar\" />\n" +
-                "    <jar href=\"lib/jsr173_api.jar\" />\n" +
+                "    <jar href=\"lib/jsr173_1.0_api.jar\" />\n" +
                 "    <jar href=\"lib/jsr181-api.jar\" />\n" +
                 "    <jar href=\"lib/jsr250-api.jar\" />\n" +
                 "    <jar href=\"lib/junit.jar\" />\n" +
