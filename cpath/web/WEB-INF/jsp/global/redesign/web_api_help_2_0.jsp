@@ -130,8 +130,8 @@ column of the tab-delimited text file will contain the keyword:
 
 Below is an example query.  Note: this query is not guaranteed to return results. <br/>
 
-<a href="webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT%>">
-webservice.do?cmd=get_pathway_list&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT %>
+<a href="webservice.do?cmd=get_pathways&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT%>">
+webservice.do?cmd=get_pathways&version=2.0&q=O14763&input_id_type=<%= ExternalDatabaseConstants.UNIPROT %>
 </a>
 
 <h2><a NAME="get_neighbors"></a>[3]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></h2>
