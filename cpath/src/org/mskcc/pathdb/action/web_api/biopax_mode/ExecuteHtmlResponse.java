@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.10 2007-09-17 21:00:26 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.11 2008-03-27 16:39:01 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -120,6 +120,7 @@ public class ExecuteHtmlResponse {
 
         // we are going to be modifying global filter settings, lets make a clone
         GlobalFilterSettings filterSettings = globalFilterSettings.clone();
+		Set<Integer> organismTaxIdSet = filterSettings.getOrganismTaxonomyIdSet();
 
         // grab user selected entity type, and set it in global settings
         String userSelectedEntityType = protocolRequest.getEntityType();
@@ -133,6 +134,7 @@ public class ExecuteHtmlResponse {
         Set<Long> snapShotIds = filterSettings.getSnapshotIdSet();
         // we override global filter settings when we narrow by specific type
         filterSettings = new GlobalFilterSettings();
+		filterSettings.setOrganismSelected(new ArrayList<Integer>(organismTaxIdSet));
         for (Long id : snapShotIds) {
             // set the datasource
             List<Long> dataSourceList = new ArrayList();
