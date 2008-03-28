@@ -216,8 +216,9 @@ public class BioPaxParentChild extends BaseAction {
                 bpSummaryList = getPathwayRoots(xdebug, id, filterSettings.getSnapshotIdSet(),
                         filterSettings.getOrganismTaxonomyIdSet(), start, max);
             } else {
-                records = getParents(xdebug, daoLinker, id, taxId, snapshotIds, type,
-                        start, max);
+				// we don't want to filter on tax id if we are fetching physical interactions - they don't have a tax id
+                records = getParents(xdebug, daoLinker, id,
+									 (type.equals("physicalInteraction")) ? -1 : taxId, snapshotIds, type, start, max);
             }
         } else {
             if (type != null && type.equals(GET_PE_LEAVES)) {
