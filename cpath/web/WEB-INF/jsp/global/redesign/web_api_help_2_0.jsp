@@ -15,6 +15,12 @@
     ArrayList <String> supportedIdTypes = webUIBean.getSupportedIdTypes();
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
     ArrayList snapshotList = dao.getAllDatabaseSnapshots();
+    String binaryInteractionRule = "a comma separated list of binary interaction rules "
+        + "that are applied when binary interactions are requested.  This parameter is "
+        + "only relevant when the " + ProtocolRequest.ARG_OUTPUT
+        + " parameter is set to " + ProtocolConstantsVersion2.FORMAT_BINARY_SIF
+        + ".  See <a href='sif_interaction_rules.do'>Exporting to the Simple Interaction Format (SIF)</a>"
+        + " for details.";
 %>
 <h1>Web Service API:</h1>
 <p>
@@ -37,16 +43,16 @@ This page provides a reference guide to help you get started.
 
 Searches all physical entity records (e.g. proteins and small molecules) by keyword, name or
 external identifier.  For example, retrieve a list of all physical entity records that contain the
-word, "BRCA2".
-
-<% if (CPathUIConfig.getWebSkin().equalsIgnoreCase("pathwaycommons")) { %>
-This command enables third-party software to implement direct query interfaces to Pathway Commons.
-<% } %>
+word, "BRCA2".  The response contains a summary list of the top 10 physical entity matches.
+For each match, detailed information is provided, including name, synonyms, external
+references and participating pathways.  This command enables third-party software to
+implement direct query interfaces to <%= webUIBean.getApplicationName()%>, and to link
+physical entities to known pathways.
 
 <h3>Parameters:</h3>
 
 <ul>
-<li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %></li>
+<li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstantsVersion2.COMMAND_SEARCH %></li>
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a keyword, name or external identifier.</li>
 <li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_XML%>
@@ -153,8 +159,14 @@ the physical entity of interest. For example, the following query uses a UniProt
     See the <a href=#valid_input_id_type>valid values for
     <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.  If not specified, the internal
     <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
-<li>[Optional] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> (default) or
-<%=ProtocolConstantsVersion2.FORMAT_ID_LIST%> or <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX representation of the neighborhood.  When set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>, the client will receive a simple text file that lists all the physical entities in the neighborhood.  When set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a simple text file that lists all the interactions in the neighborhood in the following simple interaction format: <b>physical_entity_id &lt;relationship type&gt; physical_entity_id</b>, where physical_entity_id is a valid CPATH_ID.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> (default),
+<%=ProtocolConstantsVersion2.FORMAT_ID_LIST%> or <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>.
+When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX
+representation of the neighborhood.  When set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>,
+the client will receive a list of all physical entities in the neighborhood (see below).
+When set to <%= ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a text file
+in the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.
+</li>
 <li>[Optional] <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> = internal or external database.
 This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>,
 and is used to specify which external identifiers should be used to identify the physical entities in the
@@ -166,6 +178,7 @@ sources that you want to search.  For example, the following restricts your resu
 only: <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>.  See the
 <a href=#valid_data_source>valid values for <%= ProtocolRequest.ARG_DATA_SOURCE %> parameter</a> below.
 If not specified, all pathway data sources will be searched.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
 </ul>
 
 <h3>Output:</h3>
@@ -200,7 +213,7 @@ Below is an example query.  Note: this query is not guaranteed to return results
 
 Retrieves a summary of all records which contain or reference the specified record.  For example, assume
 that internal ID 145 refers to the BRCA2 gene.  If you request
-<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %> for this ID, you will receive a list
+<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %> for this ID, you will receive a summary list
 of all interactions and complexes that include BRCA2.
 
 <h3>Parameters:</h3>
@@ -240,12 +253,14 @@ For example, get the complete Apoptosis pathway from Reactome.
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a comma delimited list of internal identifiers, used to identify the pathways, interactions
 or physical entities of interest.</li>
 <li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> or
- <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX representation of the desired record.  When set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a simple text file that lists all the interactions in the following simple interaction format: <b>physical_entity_id &lt;relationship type&gt; physical_entity_id</b>, where physical_entity_id is a valid CPATH_ID.  Note that <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> is only relevant if the query parameter <%= ProtocolRequest.ARG_QUERY%> corresponds to a pathway or interaction record.</li>
+ <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>,
+the client will receive a complete BioPAX representation of the desired record.
+When set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a text file
+in the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.
+Note that <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> is only relevant if the
+query parameter <%= ProtocolRequest.ARG_QUERY%> corresponds to a pathway or interaction record.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
 </ul>
-
-<h3>Output:</h3>
-
-An XML file in the Biological Pathway Exchange (<a href="http://biopax.org">BioPAX</a>) format.
 
 <h3>Example Query:</h3>
 
