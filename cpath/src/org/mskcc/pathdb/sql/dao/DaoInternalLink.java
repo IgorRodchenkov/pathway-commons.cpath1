@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.26 2008-03-28 02:24:38 grossben Exp $
+// $Id: DaoInternalLink.java,v 1.27 2008-03-28 02:26:42 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -561,7 +561,7 @@ public class DaoInternalLink {
             buf.append (")\n");
             buf.append ("AND cpath.CPATH_ID = internal_link.SOURCE_ID\n");
             buf.append ("AND internal_link.TARGET_ID = " + cPathId +"\n");
-			if (parentSpecificType != null) {
+			if (parentSpecificType != null && parentSpecificType.length() > 0) {
 				buf.append ("AND cpath.SPECIFIC_TYPE = '" + parentSpecificType + "'\n");
 			}
             buf.append ("GROUP BY cpath.SPECIFIC_TYPE\n");
