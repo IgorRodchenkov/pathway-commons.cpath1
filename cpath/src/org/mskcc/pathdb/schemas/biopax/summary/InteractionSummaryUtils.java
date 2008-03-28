@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.42 2008-03-07 14:13:56 grossben Exp $
+// $Id: InteractionSummaryUtils.java,v 1.43 2008-03-28 01:18:52 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -205,7 +205,7 @@ public class InteractionSummaryUtils {
 			//  Iterate through all participants
 			for (int i = 0; i < participantSummaryComponentList.size(); i++) {
 				ParticipantSummaryComponent component = participantSummaryComponentList.get(i);
-				buf.append(BioPaxRecordSummaryUtils.createEntityLink(component, interactionSummary, bpSummary.getOrganism()));
+				buf.append(BioPaxRecordSummaryUtils.createEntityLink(component, interactionSummary, (bpSummary != null) ? bpSummary.getOrganism() : null));
 				if (i < participantSummaryComponentList.size() - 1) {
 					buf.append(", ");
 				}
