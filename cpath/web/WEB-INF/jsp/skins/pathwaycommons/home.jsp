@@ -41,9 +41,9 @@ create a local mirror.</p>
 
 <h2>What's New:</h2>
 <ul>
+<li>April 1, 2008: New and improved Pathway Commons plugin for Cytoscape. [<a href="cytoscape.do">Details</a>].
 <li>February 1, 2008:  New data sources, including:  HPRD, IntAct, and MINT.
 New and improved <a href="webservice.do?cmd=help">web service API</a>.</li>
-<li>June 28, 2007: Pathway Commons now supports visualization of pathways via Cytoscape [<a href="cytoscape.do">Details</a>].</li>
 </ul>
 
 </td>
