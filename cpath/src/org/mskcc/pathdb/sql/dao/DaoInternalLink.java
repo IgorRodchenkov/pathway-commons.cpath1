@@ -1,4 +1,4 @@
-// $Id: DaoInternalLink.java,v 1.25 2007-06-26 18:30:22 grossben Exp $
+// $Id: DaoInternalLink.java,v 1.26 2008-03-28 02:24:38 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -520,6 +520,21 @@ public class DaoInternalLink {
      */
     public ArrayList getParentTypes (long cPathId, int ncbiTaxonomyId, long externalDbSnapshots[],
         XDebug xdebug) throws DaoException {
+		return getParentTypes(cPathId, ncbiTaxonomyId, externalDbSnapshots, null, xdebug);
+	}
+
+    /**
+     * Gets specific types (with counts) for all parent elements.
+     * @param cPathId   cPath ID.
+     * @param ncbiTaxonomyId Organism filter. Set to -1 if there is no organism filter.
+     * @param externalDbSnapshots data source filter.
+     * @param parentSpecificType parent - specific type filter.
+     * @param xdebug  XDebug.
+     * @return ArrayList of TypeCount Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getParentTypes (long cPathId, int ncbiTaxonomyId, long externalDbSnapshots[],
+									 String parentSpecificType, XDebug xdebug) throws DaoException {
         ArrayList records = new ArrayList();
         Connection con = null;
         ResultSet rs = null;
@@ -546,6 +561,9 @@ public class DaoInternalLink {
             buf.append (")\n");
             buf.append ("AND cpath.CPATH_ID = internal_link.SOURCE_ID\n");
             buf.append ("AND internal_link.TARGET_ID = " + cPathId +"\n");
+			if (parentSpecificType != null) {
+				buf.append ("AND cpath.SPECIFIC_TYPE = '" + parentSpecificType + "'\n");
+			}
             buf.append ("GROUP BY cpath.SPECIFIC_TYPE\n");
             buf.append ("ORDER BY cpath.SPECIFIC_TYPE\n");
 
