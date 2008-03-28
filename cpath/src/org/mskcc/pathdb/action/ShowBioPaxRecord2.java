@@ -286,6 +286,11 @@ public class ShowBioPaxRecord2 extends BaseAction {
         xdebug.logMsg(this, "Determing types of all parent elements");
         ArrayList parentTypes = daoLinker.getParentTypes(Long.parseLong(id),
                 taxId, snapshotIds, xdebug);
+		// physical interactions wont get picked up if we have a tax id,
+		// so explicitely get and add physicalInteraction records
+		if (taxId > 0 && recordType.equals(CPathRecordType.PHYSICAL_ENTITY)) {
+			parentTypes.addAll(daoLinker.getParentTypes(Long.parseLong(id), -1, snapshotIds, "physicalInteraction", xdebug));
+		}
 
         if (parentTypes.size() ==0) {
             xdebug.logMsg (this, "No parent types found");
