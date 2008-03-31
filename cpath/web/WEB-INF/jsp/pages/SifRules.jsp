@@ -44,13 +44,12 @@ and &lt;relationship type&gt; is one of the interaction inference rules specifie
 
 <h2>Inference Rules:</h2>
 
-It is not possible to fully translate a BioPAX network (which is capable of storing rich biological
-semantics) into a SIF binary network (which is only capable of storing pairwise interactions between physical
-entities).  We therefore use an inference engine that examines a BioPAX network, applies specific
-inference rules, and extracts relevant pairwise interactions.  By design, the translation
-from BioPAX to SIF will therefore always result in the loss of information.  Nonetheless,
-this SIF network remains useful for certain types of bioinformatic applications, and is much
-easier to use than BioPAX.
+It is not possible to fully translate a BioPAX formatted network (which is capable of storing rich
+biological semantics, including multi-participant relationships) into a SIF binary network
+(which is only capable of storing pairwise interactions between physical entities). We
+therefore infer pairwise SIF relationships from more complex BioPAX relationships using a
+set of rules. In general, this translation is lossy. Nonetheless, this SIF network remains
+useful for certain types of bioinformatic applications that require pairwise interaction input.
 <br><br>
 For those commands that support SIF export, users can specify an optional
 <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> argument.  This is a comma separated list
@@ -87,12 +86,12 @@ If not specified, all binary interaction rules will be applied.
 
     <h2>Retrieving Physical Entity Details:</h2>
 
-    In the SIF export defined above, note that physical entities are identified with physical_entity_id(s),
+    In the SIF export defined above, physical entities are identified with physical_entity_id(s),
     and not with standard gene names or external identifiers.  To retrieve the identity of each physical
-    entity, you must make an additional call back to <%= webUiBean.getApplicationName()%> and use the
+    entity, you must make a <%= webUiBean.getApplicationName()%> and use the
     <a href="webservice.do?cmd=help#get_by_cpath_id"><%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></a>.
     In this case, you specify one or more internal IDs, and set <%= ProtocolRequest.ARG_OUTPUT%>=<%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>.
-    This enables you to retrieve the full BioPAX for the physical entity only.
+    This enables you to retrieve the full physical entity information, in BioPAX format.
 
 <p></p>
 </div>
