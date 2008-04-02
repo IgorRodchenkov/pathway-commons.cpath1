@@ -1,76 +1,105 @@
-<h1>Viewing Pathways and Networks</h1>
+<h1>Visualizing Pathways and Networks in Cytoscape</h1>
 <p>
-You can view pathways and network neighborhood maps that you find in Pathway
-  Commons using the <a href="http://www.cytoscape.org">Cytoscape</a> software.
-  In this context, pathways include biochemical reactions, complex assembly,
-transport
-and catalysis events, and physical interactions involving proteins, DNA, RNA,
-small
-molecules and complexes.
+You can visualize pathways and network neighborhoods that you find in Pathway
+Commons using the open source <a href="http://www.cytoscape.org">Cytoscape</a> software.
+In this context, pathways include biochemical reactions, complex assembly,
+transport and catalysis events, and physical interactions involving proteins, DNA, RNA,
+small molecules and complexes.
 </p>
-<!--
-In addition network neighborhood maps are networks which include those proteins and
-interactions that involve the protein or small molecule referred to on the protein
-or search result page in which the network neighborhood map link resides.
--->
 <p>
-To do this, simply click on any of the following link(s) found throughout Pathway Commons (requires <a href="http://java.sun.com/docs/books/tutorial/information/javawebstart.html">Java Web Start</a>):
+Step-by-step instructions are provided below.
 </p>
-<ul>
-<li>'View this pathway in Cytoscape'<font size="-1"> [<a href="jsp/images/plugin/pc_pathway.png">example</a>]</font></li>
-<!--<li>'View network neighborhood map in Cytoscape'</li>-->
-</ul>
+<h2>Getting Started</h2>
+<table>
+<tr>
 
-<h3>1. Using Cytoscape on Pathway Commons</h3>
+<td valign=top>
+<img alt="Sample Screenshot Cytoscape Link" src="jsp/images/plugin/pc_pathway_thumb.png" border="0" align="right">
+To load a pathway or network neighborhood, click on any of the "View in Cytoscape"
+links found throughout Pathway Commons.
+<p>&nbsp;</p>
+These Cytoscape links are found on search results pages, pathway pages and physical entity pages.
+<p>&nbsp;</p>
+A sample screenshot of the mTOR Pathway page with a Cytoscape link is shown at right.
+</td>
+
+<tr>
+<td valign=top>
+<p>&nbsp;</p>    
+<img alt="Sample Screenshot of mTOR Pathway, as visualized within Cytoscape"
+src="jsp/images/plugin/mtor_cyto.png" border="0" align="right">
+
+The first time you click on a Cytoscape link, a
+<a href="http://java.sun.com/products/javawebstart/">Java Web Start</a> version
+of Cytoscape will be launched, which takes a few moments.
+<p>&nbsp;</p>
+Once launched, your chosen pathway or network neighborhood will be displayed within Cytoscape.
+<p>&nbsp;</p>
+<p>A screenshot of the mTOR pathway, as visualized within Cytoscape, is shown at right.</p>
+</td>
+<td valign=top>
+</td>
+</tr>
+</table>
+
+<h2>Loading additional data from Pathway Commons</h2>
+Once Cytoscape is running, you have two options for loading additional data from Pathway Commons:
+
 <ul>
-	<li>
-	    Load a pathway by clicking on the "View this pathway in Cytoscape" link found on
-        both the Search Result page and Pathway page.  Below is a sample screenshot of the
-        Pathway page which includes the "View this pathway in Cytoscape" link on
-        the left-hand panel:
-        <p>&nbsp;</p>
-        <p>
-	    <a href="jsp/images/plugin/pc_pathway.png"><img alt="Sample Screenshot of the Pathway page" src="jsp/images/plugin/pc_pathway_thumb.png" border="0"></a>
-	    <br>
-	    <font size="-1">[<a href="jsp/images/plugin/pc_pathway.png">Click to enlarge</a>]</font>
-	    </p>
-	</li>
-    <!--  Commented out until we have network neighborhoods
-        <li>
-	    Load a network neighborhood map by clicking on the "View network neighborhood map in Cytoscape" link found on both the Search Result page and Physical Entity page.
-	    Below is a sample screenshot of the Search Results page which includes the "View network neighborhood map in Cytoscape" link under each search result:
-	    <p>
-	    <a href="../../jsp/images/plugin/pc_search_results.png"><img alt="Sample Screenshot of the Search Results page" src="../../jsp/images/plugin/pc_search_results_thumb.png" border="0"></a>
-	    <br>
-	    <font size="-1">[<a href="../../jsp/images/plugin/pc_search_results.png">Click to enlarge</a>]
-	    </p>
-	    </li>
-		</li>
-    -->
-    <li>
-    The first time you click on a Cytoscape link, a
-    <a href="http://java.sun.com/products/javawebstart/">Java Web Start</a> version
-    of Cytoscape will be launched, which takes  a few moments. Once launched,
-    your chosen pathway will be displayed in Cytoscape.
+    <li>Click on additional "View in Cytoscape" links in the Pathway Commons web site; or</li>
+    <li>Search Pathway Commons directly from within Cytoscape.  See the next section for details.
     </li>
-
-    <li>Once Cytoscape is running, you can load additional data from Pathway
-      Commons by clicking on the Cytoscape links on the Pathway Commons web site
-      from your web browser. If one or more networks are already loaded in Cytoscape,
-      you will be given the option to merge your new network with an existing
-      network
-      or
-      create a new network (see  sample screenshot below):
-        <p>&nbsp;</p>
-        <p>
-	    <a href="jsp/images/plugin/pc_plugin_merge.png"><img alt="Sample Screenshot of the Pathway Commons Plugin Merge Dialog Window" src="jsp/images/plugin/pc_plugin_merge_thumb.png" border="0"></a>
-	    <br>
-	    <font size="-1">[<a href="jsp/images/plugin/pc_plugin_merge.png">Click to enlarge</a>]</font>
-	    </p>
-	</li>
 </ul>
 
-<h3>2. Understanding and Using Cytoscape</h3>
+<h2>Accessing Pathway Commons Data from within Cytoscape</h2>
+
+To search Pathway Commons directly from within Cytoscape:
+
+<ul>
+    <li>Select: File &rarr; Import &rarr; Network from web services...
+    <li>From the pull-down menu, select the Pathway Commons Web Service Client.</li>
+</ul>
+<p><img src="jsp/images/plugin/file_import.png" alt="Importing networks via the Cytoscape web services framework"></p>
+<p>Then, follow the three steps outlined below:</p>
+
+<p><img src="jsp/images/plugin/3_steps.png" alt="Three-step process for searching Pathway Commons"></p>
+<ul>
+<li>Step 1: Enter your search term and organism filter; for example: BRCA1 [All Organisms].</li>
+<li>Step 2: Select the protein or small molecule of interest. Full details regarding each molecule is shown in the bottom left panel.</li>
+<li>Step 3: Download a specific pathway or interaction network.</li>
+</ul>
+In Step 3, you can simply double-click on a pathway of interest, or click on the "Interaction Networks" tab.
+This tab enables you to filter interactions by data source and/or interaction type.
+For example, you can choose to restrict your network to direct physical interactions from HPRD and MINT only:
+
+<p><img src="jsp/images/plugin/intxn_filter.png" alt="Interaction Filters"></p>
+
+<h2>Retrieval Options</h2>
+
+You can configure access options from the Options tab. There are two retrieval options:
+<br>
+<ul>
+<li><b>Simplified Binary Model:</b> Retrieve a simplified binary network, as inferred from the original
+BioPAX representation. In this representation, nodes within a network refer to physical entities
+only, and edges refer to inferred interactions.</li>
+<li><b>Full Model:</b> Retrieve the full model, as stored in the original BioPAX representation.
+In this representation, nodes within a network can refer to physical entities and interactions.</li>
+</ul>
+By default, the simplified binary model is selected.  Note, however, that all pathways and networks
+loaded via the Cytoscape links on the Pathway Commons web site will automatically be retrieved and
+displayed in the full BioPAX model.
+
+<h2>Expanding a Network</h2>
+
+If you download a network in the Simplified Binary Mode, you can choose to expand the network
+by retrieving neighbors of existing nodes within your network.  To do so:
+<ul>
+<li>Right click on a node of interest.</li>
+<li>From the pull-down menu, select:  Use Web Services &rarr; Pathway Commons Web Service Client &rarr; Get Neighbors.</li>
+</ul>
+<p><img src="jsp/images/plugin/get_neighbors.png" alt="How to expand a network"></p>
+
+<h2>Understanding and Using Cytoscape</h2>
 
 <p>
 You can click on molecules and their interactions in the Cytoscape view to get
@@ -81,8 +110,8 @@ You can click on molecules and their interactions in the Cytoscape view to get
 web site and user manual (available in HTML and PDF formats).
 </p>
 
-<h3>3. The Meaning of the Symbols in a Network View</h3>
-By default, nodes and edges are displayed as follows:
+<h2>Full BioPAX Mode:  The Meaning of the Symbols in a Network View</h2>
+By default, nodes and edges in the full BioPAX mode are displayed as follows:
 <p>
 </p>
 <table cellpadding="3" cellspacing="3" width=100%>
@@ -326,13 +355,13 @@ By default, nodes and edges are displayed as follows:
 		</td>
 	</tr>
 </tbody></table>
-<h3>4. Bug Reporting</h3>
+<h2>Bug Reporting</h2>
 If you encounter a bug with this plugin, please use our
 <a href="get_feedback.do">feedback form</a>,
 or log a bug directly to the
 <a href="http://www.cbio.mskcc.org/cytoscape/bugs/">Cytoscape Bug Tracker</a>.
 
-<h3>5. Contacts</h3>
+<h2>Contacts</h2>
 <a href="http://cbio.mskcc.org/people/info/ethan_cerami.html">Ethan Cerami</a><br/>
 <a href="http://cbio.mskcc.org/people/info/benjamin_gross.html">Benjamin Gross</a><br/>
 Sander Group, <a href="http://www.cbio.mskcc.org/">Computational Biology Center</a>,
@@ -341,7 +370,23 @@ Sander Group, <a href="http://www.cbio.mskcc.org/">Computational Biology Center<
 	For any questions or feedback concerning this plugin, please use our
     <a href="get_feedback.do">feedback form</a>.
 </p>
-<h3>6. Release Notes / Current Limitations</h3>
+<h2>Release Notes / Current Limitations</h2>
+<p>
+	Version: 2.0
+</p>
+<ul>
+    <li>
+        Date: April 1, 2008
+    </li>
+    <li>
+        Features:
+        <ul>
+            <li>Now supports full BioPAX mode and simplified binary model.</li>
+            <li>Now supports direct query of Pathway Commons from within Cytoscape.</li>
+            <li>Additional merge features for merging two or more networks.</li>
+        </ul>
+    </li>
+</ul>
 <p>
 	Version: 0.2
 </p>
@@ -376,7 +421,7 @@ Sander Group, <a href="http://www.cbio.mskcc.org/">Computational Biology Center<
 		</ul>
 	</li>
 </ul>
-<h1>License / Credits</h1>
+<h2>License / Credits</h2>
 This software is made available under the LGPL (Lesser General Public License).
 </p>
 <p>This product includes software developed by the
