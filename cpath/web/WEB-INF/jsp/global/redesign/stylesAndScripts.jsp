@@ -12,25 +12,11 @@ See http://www.cert.org/tech_tips/malicious_code_mitigation.html.
     //  as we don't need them there.
     String uri = (String) request.getAttribute("servlet_name");
     if (uri != null  && !uri.endsWith("home.do")) { %>
-    <script type="text/javascript" src="jsp/yui/build/yahoo/yahoo.js"></script>
-    <script type="text/javascript" src="jsp/yui/build/dom/dom.js"></script>
-    <script type="text/javascript" src="jsp/yui/build/event/event.js"></script>
-    <script type="text/javascript" src="jsp/yui/build/logger/logger.js"></script>
-    <script type="text/javascript" src="jsp/yui/build/animation/animation.js" ></script>
-    <script type="text/javascript" src="jsp/yui/build/connection/connection.js" ></script>
-    <script type="text/javascript" src="jsp/yui/build/container/container.js"></script>
-    <script type="text/javascript" src="jsp/yui/build/connection/connection.js"></script>
-    <script type="text/javascript" src="jsp/yui/build/tabview/tabview.js"></script>
-    <script type="text/javascript" src="jsp/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-    <script type="text/javascript" src="jsp/yui/build/autocomplete/autocomplete-min.js"></script>
 
-    <!-- Overlib -->
-    <script type="text/javascript" src="jsp/javascript/overlib/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>
-
-    <!-- Webstart -->
     <script type="text/javascript">
     var context_path = '<%= request.getContextPath() %>';
     </script>
-    <script type="text/javascript" src="jsp/javascript/webstart/webstart.js"></script>
+
+    <script type="text/javascript" src="jsp/all_scripts.jsp"></script>
 <% } %>
 
