@@ -1,4 +1,4 @@
-// $Id: OrganismStats.java,v 1.20 2007-04-02 15:24:54 cerami Exp $
+// $Id: OrganismStats.java,v 1.21 2008-04-04 15:00:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,14 +67,14 @@ public class OrganismStats {
             QueryException, IOException, CacheException {
         CacheManager manager = CacheManager.create();
         Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
-        Element element = cache.get
+        boolean existsInCache = cache.isElementInMemory(EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME);
+        if (existsInCache) {
+            Element element = cache.get
                 (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME);
-        if (element != null) {
             return (ArrayList) element.getValue();
         } else {
             ArrayList list = lookUpOrganisms(cache, 0);
             return list;
-
         }
     }
 
