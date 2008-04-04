@@ -1,4 +1,4 @@
-// $Id: CacheFilter.java,v 1.24 2006-06-09 19:22:03 cerami Exp $
+// $Id: CacheFilter.java,v 1.25 2008-04-04 14:58:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.EOFException;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -101,10 +102,15 @@ public class CacheFilter implements Filter {
                     log.info("Translates to key:  " + key);
 
                     //  Query Cache
-                    Element element = cache.get(key);
                     log.info("Checking Cache");
-                    if (element != null) {
-                        processCacheHit(cache, key, element, response);
+                    boolean elementIsInMemory = cache.isElementInMemory(key);
+                    if (elementIsInMemory) {
+                        Element element = cache.get(key);
+                        if (element != null) {
+                            processCacheHit(cache, key, element, response);
+                        } else {
+                            processCacheMiss(response, filterChain, request, key, cache);
+                        }
                     } else {
                         processCacheMiss(response, filterChain, request, key, cache);
                     }
