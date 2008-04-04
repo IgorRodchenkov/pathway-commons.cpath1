@@ -4,11 +4,35 @@
 <web-app>
     <display-name>cPath: Pathway Database</display-name>
 
-    <!-- Filter Cache -->
+    <!-- Cache Filter-->
     <filter>
         <filter-name>Cache</filter-name>
         <filter-class>org.mskcc.pathdb.servlet.CacheFilter</filter-class>
     </filter>
+
+    <!-- Compression Filter -->
+    <filter>
+       <filter-name>GZIPFilter</filter-name>
+       <filter-class>org.mskcc.pathdb.servlet.compressionFilters.GZIPFilter</filter-class>
+    </filter>
+
+    <!-- Apply Compression Filter to everything, except for images -->
+    <filter-mapping>
+       <filter-name>GZIPFilter</filter-name>
+       <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+       <filter-name>GZIPFilter</filter-name>
+       <url-pattern>*.js</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+       <filter-name>GZIPFilter</filter-name>
+       <url-pattern>*.css</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+       <filter-name>GZIPFilter</filter-name>
+       <url-pattern>/jsp/all_scripts.jsp</url-pattern>
+    </filter-mapping>
 
     <!-- Apply the Filter Cache to select Struts actions -->
     <filter-mapping>
@@ -35,6 +59,11 @@
         <filter-name>Cache</filter-name>
         <url-pattern>/dbStats.do</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+       <filter-name>Cache</filter-name>
+       <url-pattern>/jsp/all_scripts.jsp</url-pattern>
+    </filter-mapping>
+
 
     <!-- Struts cPath Action Servlet Configuration -->
     <servlet>
@@ -113,6 +142,12 @@
         <url-pattern>/cytoscape.jnlp</url-pattern>
     </servlet-mapping>
 
+    <!-- MIME Mapping -->
+	<mime-mapping>
+	    <extension>pvals</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+
     <!-- Error Codes -->
     <error-page>
         <error-code>404</error-code>
@@ -137,9 +172,5 @@
         <taglib-location>/WEB-INF/taglib/struts-bean.tld</taglib-location>
     </taglib>
 
-	<mime-mapping>
-	    <extension>pvals</extension>
-		<mime-type>text/plain</mime-type>
-	</mime-mapping>
 
 </web-app>
