@@ -3,7 +3,6 @@ package org.mskcc.pathdb.util;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.tool.Admin;
 
@@ -29,22 +28,19 @@ public class ExternalDbImageUtil {
      */
     public void createDbImages() throws DaoException, IOException {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-        ArrayList list = dao.getAllDatabaseSnapshots();
         DaoExternalDb daoExternalDb = new DaoExternalDb();
-
+        ArrayList list = daoExternalDb.getAllRecords();
         for (int i = 0; i < list.size(); i++) {
-            ExternalDatabaseSnapshotRecord snapshotRecord =
-                    (ExternalDatabaseSnapshotRecord) list.get(i);
-            if (snapshotRecord.getExternalDatabase() != null) {
-                    ExternalDatabaseRecord dbRecord = snapshotRecord.getExternalDatabase();
-                    System.out.println ("Checking Database:  " + dbRecord.getName());
-                    if (dbRecord.getIconFileExtension() != null) {
-                        ImageIcon icon = daoExternalDb.getIcon(dbRecord.getId());
-                        int width = icon.getIconWidth();
-                        int height = icon.getIconHeight();
-                        createImage(dbRecord.getId(), dbRecord.getIconFileExtension(),
-                                width, height, icon);
-                    }
+            ExternalDatabaseRecord dbRecord = (ExternalDatabaseRecord) list.get(i);
+            System.out.print ("Checking Database:  " + dbRecord.getName());
+            if (dbRecord.getIconFileExtension() != null) {
+                ImageIcon icon = daoExternalDb.getIcon(dbRecord.getId());
+                int width = icon.getIconWidth();
+                int height = icon.getIconHeight();
+                createImage(dbRecord.getId(), dbRecord.getIconFileExtension(),
+                        width, height, icon);
+            } else {
+                System.out.println ("--> No image to create.");
             }
         }
     }
@@ -61,7 +57,7 @@ public class ExternalDbImageUtil {
         Graphics2D g2 = bi.createGraphics();
         g2.drawImage(icon.getImage(), 0, 0, null);
         g2.dispose();
-        System.out.println("Creating image:  " + outFile.getAbsolutePath());
+        System.out.println("--> Creating image:  " + outFile.getAbsolutePath());
         ImageIO.write(bi, fileExtension, new File(outFile.getAbsolutePath()));
     }
 }
