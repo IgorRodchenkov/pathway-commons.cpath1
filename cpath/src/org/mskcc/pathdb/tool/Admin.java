@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.65 2008-01-23 18:49:07 grossben Exp $
+// $Id: Admin.java,v 1.66 2008-04-07 14:52:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
+import org.mskcc.pathdb.util.ExternalDbImageUtil;
 import org.mskcc.pathdb.util.file.FileUtil;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -63,15 +64,16 @@ import java.util.Properties;
  */
 public class Admin {
     //  Command Constants
+    public static final String CPATH_HOME = "CPATH_HOME";
     private static final String COMMAND_INDEX = "index";
     private static final String COMMAND_IMPORT = "import";
 	private static final String COMMAND_POPULATE_REFERENCE_TABLE = "pop_ref";
     private static final String COMMAND_PRE_COMPUTE = "precompute";
+    private static final String COMMAND_IMAGES = "images";
     private static final String COMMAND_COUNT_AFFYMETRIX = "count_affy";
     private static final String COMMAND_VALIDATE = "validate";
     private static final String COMMAND_QUERY = "query";
     private static final int NOT_SET = -9999;
-    private static final String CPATH_HOME = "CPATH_HOME";
 
     //  User Parameters
     private static String dbName = null;
@@ -145,10 +147,20 @@ public class Admin {
             xdebug.startTimer();
 
             if (command.equals(COMMAND_INDEX)) {
+                //  Precompute family membership
                 PrecomputeTablesTask precomputer = new PrecomputeTablesTask (true, xdebug);
                 precomputer.executeTask();
+
+                //  Run Indexer
                 IndexLuceneTask indexer = new IndexLuceneTask(true, xdebug);
                 indexer.executeTask();
+
+                //  Process all images...
+                ExternalDbImageUtil imageUtil = new ExternalDbImageUtil();
+                imageUtil.createDbImages();
+            } else if (command.equals(COMMAND_IMAGES)) {
+                ExternalDbImageUtil imageUtil = new ExternalDbImageUtil();
+                imageUtil.createDbImages();
             } else if (command.equals(COMMAND_IMPORT)) {
                 importData();
 			} else if (command.equals(COMMAND_POPULATE_REFERENCE_TABLE)) {
@@ -186,7 +198,7 @@ public class Admin {
             //InputStreamReader inputStreamReader = new InputStreamReader ( System.in );
             //BufferedReader stdin = new BufferedReader ( inputStreamReader );
             //String line = stdin.readLine();
-        System.out.println("Done");
+            System.out.println("Done");
         } catch (SAXParseException e) {
             System.out.println("\n-----------------------------------------");
             System.out.println("XML Validation Error:  " + e.getMessage());
@@ -480,6 +492,8 @@ public class Admin {
         System.out.println("  -q, -q=term     Full Text Query Term");
         System.out.println("\nWhere command is one of:  ");
         System.out.println("  import          Imports Specified File.");
+        System.out.println("  images          Creates all database images and stores them to "
+                + "the JSP directory");
         System.out.println("                  Used to Import BioPAX Files, "
                 + "PSI-MI Files");
         System.out.println("                  ID Mapping Files, or External "
