@@ -44,9 +44,7 @@ public class DataSourceListTable extends HtmlTable {
      * @throws Exception Exception in writing to JspWriter.
      */
     protected void subDoStartTag() throws Exception {
-        startTable();
         outputRecords();
-        endTable();
     }
 
     /**
@@ -61,9 +59,11 @@ public class DataSourceListTable extends HtmlTable {
 
         // process records
         if (list.size() == 0) {
+            startTable();
             startRow();
             append("<TD COLSPAN=2>No Data Sources Available</TD>");
             endRow();
+            endTable();
         } else {
 			// create protocol request and filter objects
 			ProtocolRequest protocolRequest = getProtocolRequest(webUIBean);
@@ -75,7 +75,8 @@ public class DataSourceListTable extends HtmlTable {
             for (int i = 0; i < list.size(); i++) {
                 ExternalDatabaseSnapshotRecord snapshotRecord =
                         (ExternalDatabaseSnapshotRecord) list.get(i);
-                append ("<tr><td colspan=2><hr></td></tr>");
+                append("<table border='0' cellspacing='2' cellpadding='3' "
+                    + "width='100%' class='datasource_table'>");
                 append ("<tr class='c' valign=top>");
                 append("<td valign=top width=50>");
                 if (snapshotRecord.getExternalDatabase() != null) {
@@ -110,9 +111,9 @@ public class DataSourceListTable extends HtmlTable {
                 }
                 append ("</td>");
                 endRow();
+                endTable();
             }
         }
-        append ("<tr><td colspan=2><hr></td></tr>");
     }
 
     /**
