@@ -512,6 +512,16 @@ color:#ffffff;
     font-size:85%;
 }
 
+.datasource_table  {
+	border-width: 1px 1px 1px 1px;
+	border-spacing: 1px;
+	border-style: solid solid solid solid;
+	border-color: #CCCCCC;
+	border-collapse: collapse;
+	background-color: #FFFFFF;
+    margin-bottom:10px;
+}
+
 .psi_td {
 	background: #EEEEEE;
     font-size:85%;
