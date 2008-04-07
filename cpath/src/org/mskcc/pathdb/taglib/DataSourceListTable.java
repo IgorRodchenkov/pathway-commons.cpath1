@@ -6,18 +6,29 @@ import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.mskcc.pathdb.servlet.CPathServlet;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneQuery;
+import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.dataservices.util.PropertyManager;
 
+import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.io.FileWriter;
+import java.io.File;
+import java.awt.image.BufferedImage;
+import java.awt.*;
 
 /**
  * Custom JSP Tag for displaying a list of data sources
@@ -25,6 +36,7 @@ import java.io.IOException;
  * @author Benjamin Gross
  */
 public class DataSourceListTable extends HtmlTable {
+    private Logger log = Logger.getLogger(DataSourceListTable.class);
 
     /**
      * Executes JSP Custom Tag
@@ -45,6 +57,7 @@ public class DataSourceListTable extends HtmlTable {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
         ArrayList list = dao.getAllDatabaseSnapshots();
         WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+        DaoExternalDb daoExternalDb = new DaoExternalDb();
 
         // process records
         if (list.size() == 0) {
@@ -67,8 +80,9 @@ public class DataSourceListTable extends HtmlTable {
                 if (snapshotRecord.getExternalDatabase() != null) {
                     ExternalDatabaseRecord dbRecord = snapshotRecord.getExternalDatabase();
                     if (dbRecord.getIconFileExtension() != null) {
-                        append("<img class='data_source_logo' src='icon.do?id="
-                                + dbRecord.getId() + "'/>");
+                        append("<img class='data_source_logo' src='jsp/images/database/"
+                            + "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension()
+                            + "'/>");
                     }
                 }
                 append ("</td>");
@@ -99,7 +113,7 @@ public class DataSourceListTable extends HtmlTable {
         }
     }
 
-	/**
+    /**
 	 * Creates a ProtocolRequest Object.
 	 */
 	private ProtocolRequest getProtocolRequest(WebUIBean webUIBean) {

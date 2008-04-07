@@ -440,8 +440,8 @@ enable Javascript support within your web browser.
                 (bpSummary.getExternalDatabaseSnapshotRecord().getId()));
         out.println("</li></ul>");
         if (dbRecord.getIconFileExtension() != null) {
-            out.println("<div class='data_source_logo'><img src='icon.do?id="
-                    + dbRecord.getId() + "'/></div>");
+            out.println("<div class='data_source_logo'><img src='jsp/images/database/"
+                    + "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension() + "'/></div>");
         }
     }
 
