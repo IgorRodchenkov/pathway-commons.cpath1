@@ -1,8 +1,8 @@
 <h1>Frequently Asked Questions (FAQs)</h1>
 <ul>
     <li><a href="#general">General Questions</a></li>
-    <li><a href="#bio">Questions targeted for Biologists</a></li>
-    <li><a href="#comp_bio">Questions targeted for Computational Biologists and Software Developers</a></li>
+    <li><a href="#bio">Questions targeted at Biologists</a></li>
+    <li><a href="#comp_bio">Questions targeted at Computational Biologists and Software Developers</a></li>
 </ul>
 <h2><a name="general"></a>General Questions</h2>
 <h3>What is Pathway Commons?</h3>

@@ -43,7 +43,7 @@ create a local mirror.</p>
 <ul>
 <li>April 1, 2008: New features for visualizing pathways using Cytoscape [<a href="cytoscape.do">Details</a>].
 <li>February 1, 2008:  New data sources, including:  HPRD, IntAct, and MINT.
-New and improved <a href="webservice.do?cmd=help">web service API</a>.</li>
+Improved <a href="webservice.do?cmd=help">web service API</a>.</li>
 </ul>
 
 </td>
