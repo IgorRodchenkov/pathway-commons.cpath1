@@ -1,10 +1,9 @@
 <h1>Visualizing Pathways and Networks in Cytoscape</h1>
 <p>
-You can visualize pathways and network neighborhoods that you find in Pathway
-Commons using the open source <a href="http://www.cytoscape.org">Cytoscape</a> software.
-In this context, pathways include biochemical reactions, complex assembly,
-transport and catalysis events, and physical interactions involving proteins, DNA, RNA,
-small molecules and complexes.
+You can visualize pathways and network neighborhoods that you find in Pathway Commons using
+the free <a href="http://www.cytoscape.org">Cytoscape</a> software. Pathways include biochemical
+reactions, complex assembly, transport and catalysis events, and physical interactions involving
+proteins, DNA, RNA, small molecules and complexes.
 </p>
 <p>
 Step-by-step instructions are provided below.
@@ -20,7 +19,7 @@ links found throughout Pathway Commons.
 <p>&nbsp;</p>
 These Cytoscape links are found on search results pages, pathway pages and physical entity pages.
 <p>&nbsp;</p>
-A sample screenshot of the mTOR Pathway page with a Cytoscape link is shown at right.
+A screenshot of the mTOR Pathway page, with a Cytoscape link is shown at right.
 </td>
 
 <tr>
@@ -79,9 +78,9 @@ For example, you can choose to restrict your network to direct physical interact
 You can configure access options from the Options tab. There are two retrieval options:
 <br>
 <ul>
-<li><b>Simplified Binary Model:</b> Retrieve a simplified binary network, as inferred from the original
-BioPAX representation. In this representation, nodes within a network refer to physical entities
-only, and edges refer to inferred interactions.</li>
+<li><b>Simplified Binary Model:</b> Retrieve a <a href="sif_interaction_rules.do">simplified binary network</a>, as
+inferred from the original BioPAX representation. In this representation, nodes within a network
+refer to physical entities only, and edges refer to inferred interactions.</li>
 <li><b>Full Model:</b> Retrieve the full model, as stored in the original BioPAX representation.
 In this representation, nodes within a network can refer to physical entities and interactions.</li>
 </ul>
