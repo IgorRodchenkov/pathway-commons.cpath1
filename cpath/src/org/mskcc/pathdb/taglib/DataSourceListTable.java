@@ -75,8 +75,9 @@ public class DataSourceListTable extends HtmlTable {
             for (int i = 0; i < list.size(); i++) {
                 ExternalDatabaseSnapshotRecord snapshotRecord =
                         (ExternalDatabaseSnapshotRecord) list.get(i);
-                startRow(1);
-                append("<td width=50>");
+                append ("<tr><td colspan=2><hr></td></tr>");
+                append ("<tr class='c' valign=top>");
+                append("<td valign=top width=50>");
                 if (snapshotRecord.getExternalDatabase() != null) {
                     ExternalDatabaseRecord dbRecord = snapshotRecord.getExternalDatabase();
                     if (dbRecord.getIconFileExtension() != null) {
@@ -111,6 +112,7 @@ public class DataSourceListTable extends HtmlTable {
                 endRow();
             }
         }
+        append ("<tr><td colspan=2><hr></td></tr>");
     }
 
     /**
