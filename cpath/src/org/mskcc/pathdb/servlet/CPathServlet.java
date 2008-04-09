@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.38 2007-03-20 19:33:57 cerami Exp $
+// $Id: CPathServlet.java,v 1.39 2008-04-09 18:32:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,6 +48,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import java.util.Date;
 
 /**
  * CPath Servlet.
@@ -144,8 +145,7 @@ public final class CPathServlet extends ActionServlet {
         initGlobalCache();
 
         //  Start Quartz Scheduler
-        //  initQuartzScheduler();
-        //  initQuartzScheduler();
+        initQuartzScheduler();
     }
 
     /**
@@ -172,16 +172,18 @@ public final class CPathServlet extends ActionServlet {
     private void initQuartzScheduler() {
         try {
             Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
+            Date date = new Date();
+            long time = date.getTime();
+            Date scheduledDate = new Date (time + 5000);
             JobDetail jobDetail = new JobDetail("autoPopulateCache",
                     Scheduler.DEFAULT_GROUP, AutoPopulateCache.class);
 
-            //  Currently set to run every 60 minutes
             SimpleTrigger trigger = new SimpleTrigger("cPathTrigger",
-                    Scheduler.DEFAULT_GROUP, SimpleTrigger.REPEAT_INDEFINITELY,
-                    60L * 60L * 1000L);
-            sched.scheduleJob(jobDetail, trigger);
+                    Scheduler.DEFAULT_GROUP, scheduledDate);
             sched.start();
-            log.info("Starting Quartz Scheduler:  [OK]");
+            sched.scheduleJob(jobDetail, trigger);
+            log.info ("Starting Quartz Scheduler:  [OK]");
+            log.info ("Auto Populate Cache will start in 5 seconds...");
         } catch (SchedulerException e) {
             log.error("Error Starting Quartz Scheduler:  ", e);
         }
