@@ -1,4 +1,4 @@
-// $Id: OrganismStats.java,v 1.21 2008-04-04 15:00:10 cerami Exp $
+// $Id: OrganismStats.java,v 1.22 2008-04-09 18:34:37 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,60 +53,37 @@ import java.util.Comparator;
  * @author Ethan Cerami
  */
 public class OrganismStats {
+    private static OrganismStats organismStats;
+    private ArrayList listSortedByName;
+    private ArrayList listSortedByNumEntities;
 
     /**
-     * Gets All Organisms Sorted by Name.
-     *
-     * @return ArrayList of Organism Objects.
-     * @throws DaoException   Data Access Error.
+     * Gets Singleton Instance.
+     * @throws DaoException Database Error.
      * @throws QueryException Query Error.
-     * @throws IOException    Input / Output Error.
-     * @throws CacheException Cache Error.
+     * @return Organism Instance.
      */
-    public ArrayList getOrganismsSortedByName() throws DaoException,
-            QueryException, IOException, CacheException {
-        CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
-        boolean existsInCache = cache.isElementInMemory(EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME);
-        if (existsInCache) {
-            Element element = cache.get
-                (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME);
-            return (ArrayList) element.getValue();
-        } else {
-            ArrayList list = lookUpOrganisms(cache, 0);
-            return list;
+    public static OrganismStats getInstance() throws DaoException, QueryException {
+        if (organismStats == null) {
+            organismStats = new OrganismStats();
         }
+        return organismStats;
     }
 
     /**
-     * Gets All Organisms Sorted by Number of Interactions.
-     *
-     * @return ArrayList of Organism Objects.
-     * @throws DaoException   Data Access Error.
+     * Private Constructor.
+     * @throws DaoException Database Error.
      * @throws QueryException Query Error.
-     * @throws IOException    Input / Output Error.
-     * @throws CacheException Cache Error.
      */
-    public ArrayList getOrganismsSortedByNumInteractions() throws DaoException,
-            QueryException, IOException, CacheException {
-        CacheManager manager = CacheManager.create();
-        Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
-        Element element = cache.get
-                (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES);
-        if (element != null) {
-            return (ArrayList) element.getValue();
-        } else {
-            ArrayList list = lookUpOrganisms(cache, 1);
-            return list;
-        }
+    private OrganismStats() throws DaoException, QueryException {
+        getOrganismData();
     }
 
-    private ArrayList lookUpOrganisms(Cache cache, int type)
-            throws DaoException, QueryException {
+    private void getOrganismData() throws DaoException, QueryException {
         LuceneReader indexer = new LuceneReader();
         try {
             DaoOrganism dao = new DaoOrganism();
-            ArrayList listSortedByName = dao.getAllOrganisms();
+            listSortedByName = dao.getAllOrganisms();
             for (int i = 0; i < listSortedByName.size(); i++) {
                 Organism organism = (Organism) listSortedByName.get(i);
                 String query = new String(LuceneConfig.FIELD_ORGANISM
@@ -116,29 +93,32 @@ public class OrganismStats {
             }
 
             //  Clone and Sort by Number of Interactions
-            ArrayList listSortedByNumEntities = (ArrayList)
+            listSortedByNumEntities = (ArrayList)
                     listSortedByName.clone();
             Collections.sort(listSortedByNumEntities,
                     new SortByInteractionCount());
 
-            Element e0 = new Element
-                    (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NAME,
-                            listSortedByName);
-            Element e1 = new Element
-                    (EhCache.KEY_ORGANISM_LIST_SORTED_BY_NUM_ENTITIES,
-                            listSortedByNumEntities);
-            cache.put(e0);
-            cache.put(e1);            
-
-            if (type == 0) {
-                return listSortedByName;
-            } else {
-                return listSortedByNumEntities;
-            }
         } finally {
             //  Make sure to always close the LuceneReader
             indexer.close();
         }
+    }
+
+
+    /**
+     * Gets Organisms, Sorted by Name.
+     * @return ArrayList of Organism Objects.
+     */
+    public ArrayList getListSortedByName() {
+        return listSortedByName;
+    }
+
+    /**
+     * Gets Orgnanisms, Sorted by Number of Interactions.
+     * @return Arraylsit of Organism Objects.
+     */
+    public ArrayList getListSortedByNumEntities() {
+        return listSortedByNumEntities;
     }
 }
 
