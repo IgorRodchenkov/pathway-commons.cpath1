@@ -50,8 +50,8 @@
             <select name="<%= ProtocolRequest.ARG_ORGANISM %>">
             <option value="">All Organisms&nbsp;&nbsp;</option>
         <%
-            OrganismStats orgStats = new OrganismStats();
-            ArrayList organisms = orgStats.getOrganismsSortedByName();
+            OrganismStats orgStats = OrganismStats.getInstance();
+            ArrayList organisms = orgStats.getListSortedByName();
         %>
         <% for (int i=0; i<organisms.size(); i++) {
             Organism organism = (Organism) organisms.get(i);

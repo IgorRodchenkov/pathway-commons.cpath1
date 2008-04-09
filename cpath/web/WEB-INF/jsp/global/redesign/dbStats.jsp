@@ -1,18 +1,10 @@
-<%@ page import="org.mskcc.pathdb.sql.dao.DaoCPath,
-                 org.mskcc.pathdb.model.CPathRecordType,
-                 org.mskcc.pathdb.lucene.OrganismStats,
-                 java.text.DecimalFormat,
+<%@ page import="java.text.DecimalFormat,
                  java.text.NumberFormat"%>
+<%@ page import="org.mskcc.pathdb.sql.util.DatabaseStats" %>
 
 <%
-try {
-    DaoCPath dao = DaoCPath.getInstance();
-    int numPathways = dao.getNumEntities(CPathRecordType.PATHWAY);
-    int numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
-    int numPhysicalEntities = dao.getNumPhysicalEntities(true);
-    OrganismStats orgStats = new OrganismStats();
-    NumberFormat formatter = new DecimalFormat("#,###,###");
-
+DatabaseStats dbStats = DatabaseStats.getInstance();
+NumberFormat formatter = new DecimalFormat("#,###,###");
 %>
 <h1>Database Stats</h1>
 
@@ -20,29 +12,18 @@ try {
 
     <tr>
         <td>Number of Pathways:</td>
-        <td><%= formatter.format(numPathways) %></td>
+        <td><%= formatter.format(dbStats.getNumPathways()) %></td>
     </tr>
     <tr>
         <td>Number of Interactions:</td>
-        <td><%= formatter.format(numInteractions) %></td>
+        <td><%= formatter.format(dbStats.getNumInteractions()) %></td>
     </tr>
     <tr>
         <td>Number of Physical Entities:</td>
-        <td><%= formatter.format(numPhysicalEntities) %></td>
+        <td><%= formatter.format(dbStats.getNumPhysicalEntities()) %></td>
     </tr>
     <tr>
         <td>Number of Organisms:</td>
-        <td>
-            <% try {
-                out.println(formatter.format(orgStats.getOrganismsSortedByName().size()));
-            } catch (Exception e) {
-                out.println("Cannot determine organism data:  " + e.getMessage());
-            }
-            %>
-        </td>
+        <td><%= formatter.format(dbStats.getNumOrganisms()) %></td>
     </tr>
-
 </table>
-<% } catch (Exception e) {
-    out.println(e.toString());
-} %>

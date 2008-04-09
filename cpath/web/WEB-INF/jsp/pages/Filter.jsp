@@ -1,5 +1,3 @@
-<%@ page import="java.util.Map"%>
-<%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Collections"%>
@@ -47,8 +45,8 @@
     }
 
     // entire organism list - sorted by name
-    OrganismStats orgStats = new OrganismStats();
-    List<Organism> allOrganismsList = orgStats.getOrganismsSortedByName();
+    OrganismStats orgStats = OrganismStats.getInstance();
+    List<Organism> allOrganismsList = orgStats.getListSortedByName();
 
     // construct organism list into string used by autocomplete box
     boolean organismSelected = false; // used to check "All organisms" check box below
@@ -63,7 +61,7 @@
     organismListStr = organismListStr.replaceAll("\\, $", "");
 
     // top XX organisms
-    ArrayList<Organism> topOrganisms = orgStats.getOrganismsSortedByNumInteractions();
+    ArrayList<Organism> topOrganisms = orgStats.getListSortedByNumEntities();
     List<String> topOrganismsString = new ArrayList<String>();
     if (topOrganisms.size() > 0) {
 		topOrganisms = (ArrayList)topOrganisms.clone();
