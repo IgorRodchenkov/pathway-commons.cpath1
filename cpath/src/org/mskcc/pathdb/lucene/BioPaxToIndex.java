@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.21 2008-03-10 15:05:28 grossben Exp $
+// $Id: BioPaxToIndex.java,v 1.22 2008-04-09 17:25:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -163,8 +163,7 @@ public class BioPaxToIndex implements ItemToIndex {
 		fields.add(new Field(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
 
 		// Index Descendents --> FIELD_DESCENDENTS
-		String descendents = getDescendents(cpath, record);
-		fields.add(new Field(LuceneConfig.FIELD_DESCENDENTS, descendents, Field.Store.YES, Field.Index.TOKENIZED));
+		indexDescendents(cpath, record);
 
 		// * NOTE: IF MORE FIELDS ARE INDEXED, QueryUtil.addTerm SHOULD BE UPDATES *
     }
@@ -302,7 +301,7 @@ public class BioPaxToIndex implements ItemToIndex {
 	 * @throws DaoException
 	 * @throws BioPaxRecordSummaryException
 	 */
-	private String getDescendents(DaoCPath daoCPath, CPathRecord pathwayRecord)
+	private void indexDescendents(DaoCPath daoCPath, CPathRecord pathwayRecord)
 		throws DaoException, BioPaxRecordSummaryException {
 
 		// to return
@@ -334,8 +333,15 @@ public class BioPaxToIndex implements ItemToIndex {
 		}
 
 		// outta here
-		return bufferToReturn.toString().trim();
-	}
+        String desc = bufferToReturn.toString().trim();
+        fields.add(new Field(LuceneConfig.FIELD_DESCENDENTS, desc, Field.Store.YES,
+                Field.Index.TOKENIZED));
+        if (descendentIds.size() -1 > 0) {
+            fields.add(new Field(LuceneConfig.FIELD_NUM_DESCENDENTS,
+                    Integer.toString(descendentIds.size()-1),
+                    Field.Store.YES, Field.Index.TOKENIZED));
+        }
+    }
 
     /**
      * Gets all descendents of the specified cPath record.
