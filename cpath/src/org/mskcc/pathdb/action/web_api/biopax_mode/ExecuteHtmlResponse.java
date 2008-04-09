@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.11 2008-03-27 16:39:01 grossben Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.12 2008-04-09 17:27:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -207,6 +207,8 @@ public class ExecuteHtmlResponse {
                         search.getDataSources());
                 request.setAttribute(BaseAction.ATTRIBUTE_SCORES,
                         search.getScores());
+                request.setAttribute(BaseAction.ATTRIBUTE_NUM_DESCENDENTS,
+                        search.getNumDescendentsList());
             }
             int totalNumberHits = search.getTotalNumHits();
             if (totalNumberHits > 0) hitByTypeMap.put(type, totalNumberHits);

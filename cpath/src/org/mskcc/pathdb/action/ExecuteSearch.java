@@ -1,4 +1,4 @@
-// $Id: ExecuteSearch.java,v 1.38 2008-01-16 02:51:32 grossben Exp $
+// $Id: ExecuteSearch.java,v 1.39 2008-04-09 17:27:21 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -359,7 +359,9 @@ public class ExecuteSearch extends BaseAction {
 									 search.getDataSources());
 				request.setAttribute(BaseAction.ATTRIBUTE_SCORES,
 									 search.getScores());
-			}
+                request.setAttribute(BaseAction.ATTRIBUTE_NUM_DESCENDENTS,
+                                     search.getNumDescendentsList());
+            }
 			int totalNumberHits = search.getTotalNumHits();
 			if (totalNumberHits > 0) hitByTypeMap.put(type, totalNumberHits);
 		}
