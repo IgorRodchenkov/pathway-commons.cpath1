@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.21 2008-03-11 19:02:39 grossben Exp $
+// $Id: QueryUtil.java,v 1.22 2008-04-09 17:26:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -178,6 +178,38 @@ public class QueryUtil {
 			}
         }
         return dataSources;
+    }
+
+    /**
+     * Extracts Num Descendnts in specified range of
+     * Lucene Hits for the entire result set.
+     *
+     * @param pager Pager Object for Next/Previous Pages
+     * @param hits  Lucene Hits Object
+     * @return List of Num Descendents
+     * @throws IOException    Input/Output Error
+     * @throws ParseException Parsing Exception
+     * @throws DaoException   Data Access Exception
+     */
+    public static ArrayList<Integer> extractNumDescendents(Pager pager, Hits hits)
+		throws IOException, ParseException, DaoException {
+        ArrayList<Integer> numDescendentsList = new ArrayList<Integer>();
+
+        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
+            Document doc = hits.doc(i);
+            Field field = doc.getField(LuceneConfig.FIELD_NUM_DESCENDENTS);
+            if (field == null) {
+                numDescendentsList.add(0);
+            } else {
+                try {
+                    Integer num = Integer.parseInt(field.stringValue());
+                    numDescendentsList.add(num);
+                } catch (NumberFormatException e) {
+                    numDescendentsList.add(0);
+                }
+            }
+        }
+        return numDescendentsList;
     }
 
     /**
