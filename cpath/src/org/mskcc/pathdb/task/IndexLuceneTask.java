@@ -1,4 +1,4 @@
-// $Id: IndexLuceneTask.java,v 1.55 2007-09-21 16:56:58 grossben Exp $
+// $Id: IndexLuceneTask.java,v 1.56 2008-04-09 18:33:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -104,8 +104,6 @@ public class IndexLuceneTask extends Task {
         XDebug xdebug = new XDebug();
         xdebug.startTimer();
         indexAllInteractions();
-
-        OrganismStats orgStats = new OrganismStats();
         pMonitor.setCurrentMessage("Indexing Complete");
         xdebug.stopTimer();
     }

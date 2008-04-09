@@ -1,4 +1,4 @@
-// $Id: OrganismTable.java,v 1.27 2007-09-04 17:39:08 cerami Exp $
+// $Id: OrganismTable.java,v 1.28 2008-04-09 18:33:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -172,14 +172,14 @@ public class OrganismTable extends HtmlTable {
      */
     private void outputRecords(String sortBy, String sortOrder)
             throws DaoException, IOException, QueryException, CacheException {
-        OrganismStats orgStats = new OrganismStats();
+        OrganismStats orgStats = OrganismStats.getInstance();
         ArrayList records = null;
 
         //  Get Records By Sort Parameter
         if (sortBy.equals(SORT_BY_NAME)) {
-            records = orgStats.getOrganismsSortedByName();
+            records = orgStats.getListSortedByName();
         } else {
-            records = orgStats.getOrganismsSortedByNumInteractions();
+            records = orgStats.getListSortedByNumEntities();
         }
 
         //  Clone the ArrayList Locally
