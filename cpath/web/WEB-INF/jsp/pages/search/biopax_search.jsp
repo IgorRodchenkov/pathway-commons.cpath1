@@ -25,6 +25,11 @@
                  java.util.List,
                  java.net.URLEncoder"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
+<%@ page import="org.apache.lucene.search.Hits" %>
+<%@ page import="org.apache.lucene.document.Document" %>
+<%@ page import="org.apache.lucene.document.Field" %>
+<%@ page import="org.mskcc.pathdb.lucene.LuceneConfig" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
@@ -45,15 +50,17 @@
             (BaseAction.ATTRIBUTE_TEXT_FRAGMENTS);
     //Set<String> dataSourceSet = (Set<String>) request.getAttribute
     //        (BaseAction.ATTRIBUTE_DATA_SOURCE_SET);
-    Map<Long,Set<String>> recordDataSources = (Map<Long,Set<String>>) request.getAttribute
+    Map<Long, Set<String>> recordDataSources = (Map<Long, Set<String>>) request.getAttribute
             (BaseAction.ATTRIBUTE_DATA_SOURCES);
-    Map<Long,Float> scores = (Map<Long,Float>) request.getAttribute
+    Map<Long, Float> scores = (Map<Long, Float>) request.getAttribute
             (BaseAction.ATTRIBUTE_SCORES);
+    ArrayList<Integer> numDescendentsList = (ArrayList<Integer>) request.getAttribute
+            (BaseAction.ATTRIBUTE_NUM_DESCENDENTS);
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
     String keyType = protocolRequest.getEntityType();
-    String keyDataSource = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
+    String keyDataSource = (String) request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
     // server name
-    String serverName = (String)request.getServerName();
+    String serverName = (String) request.getServerName();
     serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverName + ":8080";
     // cytoscape link
     String urlForCytoscapeLink = (String) request.getAttribute("request_url");
@@ -62,17 +69,17 @@
     // data source parameter string  to network neighborhood map
     String encodedDataSourceParameter = "";
     GlobalFilterSettings filterSettings =
-	    (GlobalFilterSettings)request.getSession().getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+            (GlobalFilterSettings) request.getSession().getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
     DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
     if (filterSettings != null) {
-	    for (Long snapshotID : (Set<Long>)filterSettings.getSnapshotIdSet()) {
-		    ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
-		    encodedDataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
-	    }
-	    // snip off last ' '
-	    encodedDataSourceParameter = encodedDataSourceParameter.replaceAll(",$", "");
-		// encode
-		encodedDataSourceParameter = URLEncoder.encode(encodedDataSourceParameter, "UTF-8");
+        for (Long snapshotID : (Set<Long>) filterSettings.getSnapshotIdSet()) {
+            ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
+            encodedDataSourceParameter += record.getExternalDatabase().getMasterTerm() + ",";
+        }
+        // snip off last ' '
+        encodedDataSourceParameter = encodedDataSourceParameter.replaceAll(",$", "");
+        // encode
+        encodedDataSourceParameter = URLEncoder.encode(encodedDataSourceParameter, "UTF-8");
     }
 %>
 <script type="text/javascript">
@@ -299,8 +306,17 @@ else {
 		    out.println("</table>");
 			out.println("</th>");
 			// record header
-            out.println("<th align=left width=\"60%\">");
+            out.println("<th align=left width=\"90%\">");
 			out.println("<a href=\"" + url + "\">" + header + "</a>");
+
+			//  Show pathway size
+			if (record.getType() == CPathRecordType.PATHWAY) {
+                if (numDescendentsList != null) {
+                    Integer num = numDescendentsList.get(i);
+                    out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + num + " nodes]</span>");
+                }
+            }
+
             out.println("</th>");
 			// inspection button
 			out.println("<th align=right>");
