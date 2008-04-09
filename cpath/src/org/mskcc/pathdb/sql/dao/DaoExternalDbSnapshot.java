@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.6 2007-01-04 19:29:41 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.7 2008-04-09 18:31:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -142,10 +142,10 @@ public class DaoExternalDbSnapshot {
         String key = getClass().getName() + ".getDatabaseSnapshot." + snapshotId;
         CacheManager manager = CacheManager.getInstance();
         Cache cache = manager.getCache(EhCache.PERSISTENT_CACHE);
-        Element cachedElement = cache.get(key);
+        boolean elementInCache = cache.isElementInMemory(key);
 
         //  If not in cache, get from Database
-        if (cachedElement == null) {
+        if (!elementInCache) {
             try {
                 con = JdbcUtil.getCPathConnection();
                 pstmt = con.prepareStatement ("select * from external_db_snapshot where "
@@ -156,7 +156,7 @@ public class DaoExternalDbSnapshot {
                     ExternalDatabaseSnapshotRecord record = (ExternalDatabaseSnapshotRecord)
                             snapshotList.get(0);
                     //  Store to Cache
-                    cachedElement = new Element(key, record);
+                    Element cachedElement = new Element(key, record);
                     cache.put(cachedElement);
                     return record;
                 } else {
@@ -168,6 +168,7 @@ public class DaoExternalDbSnapshot {
                 JdbcUtil.closeAll(con, pstmt, rs);
             }
         } else {
+            Element cachedElement = cache.get(key);
             return (ExternalDatabaseSnapshotRecord) cachedElement.getValue();
         }
     }
