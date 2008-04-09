@@ -1,6 +1,9 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.action.BaseAction" %>
-<% String footerFile = "../" + CPathUIConfig.getPath("footer.jsp"); %>
+<%
+    String footerFile = "../" + CPathUIConfig.getPath("footer.jsp");
+    String finalFinal = "../" + CPathUIConfig.getPath("final.jsp");
+%>
 
 <%
 int webMode = CPathUIConfig.getWebMode();
@@ -18,5 +21,6 @@ if (webMode == CPathUIConfig.WEB_MODE_PSI_MI && isAdminPage == null) { %>
 <jsp:include page="xdebug.jsp" flush="true" />
 
 </div>
+<jsp:include page="<%=finalFinal%>" flush="true"/>
 </body>
 </html>
