@@ -1,4 +1,4 @@
-// $Id: LuceneConfig.java,v 1.12 2007-02-07 17:47:57 grossb Exp $
+// $Id: LuceneConfig.java,v 1.13 2008-04-09 17:24:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -93,6 +93,11 @@ public class LuceneConfig {
      * Lucene Field for Descendent Information
      */
     public static final String FIELD_DESCENDENTS = "descendents";
+
+    /**
+     * Lucene Field for Descendent Information
+     */
+    public static final String FIELD_NUM_DESCENDENTS = "num_descendents";    
 
     /**
      * Text Index Directory.
