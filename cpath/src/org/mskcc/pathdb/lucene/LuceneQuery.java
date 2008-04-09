@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.12 2007-02-26 18:22:11 grossb Exp $
+// $Id: LuceneQuery.java,v 1.13 2008-04-09 17:25:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,6 +45,7 @@ import org.mskcc.pathdb.model.GlobalFilterSettings;
 import java.util.Set;
 import java.util.Map;
 import java.util.List;
+import java.util.ArrayList;
 import java.io.IOException;
 
 /**
@@ -62,6 +63,7 @@ public class LuceneQuery {
 	private Set<String> dataSourceSet;
 	private Map<Long,Set<String>> dataSources;
 	private Map<Long,Float> scores;
+    private ArrayList<Integer> numDescendentsList;
 
     /**
      * Constructor.
@@ -116,6 +118,7 @@ public class LuceneQuery {
                 dataSources = QueryUtil.extractDataSources(searchTerms, pager, hits);
 				scores = QueryUtil.extractScores(searchTerms, pager, hits);
             }
+            numDescendentsList = QueryUtil.extractNumDescendents(pager, hits);
             return cpathIds;
         } finally {
             indexer.close();
@@ -170,6 +173,14 @@ public class LuceneQuery {
      */
     public Map<Long,Float> getScores() {
         return this.scores;
+    }
+
+    /**
+     * Gets Num Descendents List.
+     * @return ArrayList of Integer Num Descendents.
+     */
+    public ArrayList<Integer> getNumDescendentsList() {
+        return this.numDescendentsList;
     }
 
     /**
