@@ -255,6 +255,10 @@ background:#467aa7;
 .splitcontentright{float:right; width:79%;}
 .clear{clear:both;}
 .small{font-size:0.8em;}
+.small_no_bold{
+    font-size:0.9em;
+    font-weight:normal;
+}
 .hide{display:none;}
 .textcenter{text-align:center;}
 .textright{text-align:right;}
