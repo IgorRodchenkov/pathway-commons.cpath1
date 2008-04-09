@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.40 2007-12-18 20:02:14 cerami Exp $
+// $Id: BaseAction.java,v 1.41 2008-04-09 17:26:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -165,6 +165,11 @@ public abstract class BaseAction extends Action {
      * Page Attribute:  Scores.
      */
     public static final String ATTRIBUTE_SCORES = "scores";
+
+    /**
+     * Page Attribute:  Number of Descendents.
+     */
+    public static final String ATTRIBUTE_NUM_DESCENDENTS = "num_descendents";
 
     /**
      * Page Attribute:  INTERACTOR Set.
