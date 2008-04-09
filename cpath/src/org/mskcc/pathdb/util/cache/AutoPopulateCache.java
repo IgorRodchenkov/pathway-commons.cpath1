@@ -1,4 +1,4 @@
-// $Id: AutoPopulateCache.java,v 1.7 2006-06-09 19:22:04 cerami Exp $
+// $Id: AutoPopulateCache.java,v 1.8 2008-04-09 18:30:52 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,8 +32,8 @@
 package org.mskcc.pathdb.util.cache;
 
 import org.apache.log4j.Logger;
-import org.mskcc.pathdb.sql.util.TopLevelPathwayUtil;
-import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.sql.util.DatabaseStats;
+import org.mskcc.pathdb.lucene.OrganismStats;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -55,12 +55,13 @@ public class AutoPopulateCache implements Job {
     public void execute(JobExecutionContext jobExecutionContext)
             throws JobExecutionException {
         try {
-            log.info("Running Job:  AutoPopulateCache");
-            XDebug xdebug = new XDebug();
-            TopLevelPathwayUtil pathwayUtil = new TopLevelPathwayUtil(xdebug);
-            pathwayUtil.getTopLevelPathwayList(true);
-            pathwayUtil.getTopLevelPathwayList(9606, true);
-            log.info("Job Done:  AutoPopulateCache");
+            log.info("Running Quartz Job:  AutoPopulateCache");
+            OrganismStats organismStats = OrganismStats.getInstance();
+            log.info("Total number of organims:  "
+                    + organismStats.getListSortedByName().size());
+            DatabaseStats dbStats = DatabaseStats.getInstance();
+            log.info ("Total number of pathways:  " + dbStats.getNumPathways());
+            log.info("Quartz Job Done:  AutoPopulateCache");
         } catch (Exception e) {
             throw new JobExecutionException(e);
         }
