@@ -42,7 +42,7 @@ public class TestPathwayBatchQuery extends TestCase {
         assertTrue (id > 0);
 
         //  Populate internal family tables
-        PrecomputeTablesTask precomputer = new PrecomputeTablesTask (true, new XDebug());
+        PrecomputeTablesTask precomputer = new PrecomputeTablesTask (false, new XDebug());
         precomputer.executeTask();
     }
 

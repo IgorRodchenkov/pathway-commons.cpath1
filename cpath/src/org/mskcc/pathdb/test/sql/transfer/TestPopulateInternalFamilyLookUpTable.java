@@ -24,7 +24,7 @@ public class TestPopulateInternalFamilyLookUpTable extends TestCase {
      */
     public void testPopulator() throws DaoException, BioPaxRecordSummaryException {
         ProgressMonitor pMonitor = new ProgressMonitor();
-        pMonitor.setConsoleMode(true);
+        pMonitor.setConsoleMode(false);
         PopulateInternalFamilyLookUpTable populator = new PopulateInternalFamilyLookUpTable
                 (pMonitor);
         populator.execute();
