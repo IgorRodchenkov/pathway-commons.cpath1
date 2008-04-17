@@ -1,4 +1,4 @@
-// $Id: UtilSuite.java,v 1.17 2006-02-22 22:47:51 grossb Exp $
+// $Id: UtilSuite.java,v 1.18 2008-04-17 13:55:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,6 +55,7 @@ public class UtilSuite extends TestCase {
         suite.addTestSuite(TestFilter.class);
         suite.addTestSuite(TestLogUtil.class);
         suite.addTestSuite(TestExternalReferenceUtil.class);
+        suite.addTestSuite(TestUniProtFileUtil.class);
         suite.addTestSuite(TestHtmlUtil.class);
         suite.addTest(RdfUtilSuite.suite());
         suite.setName("Utility Tests");
