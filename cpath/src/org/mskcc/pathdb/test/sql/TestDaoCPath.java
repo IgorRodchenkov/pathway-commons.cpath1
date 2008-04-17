@@ -1,4 +1,4 @@
-// $Id: TestDaoCPath.java,v 1.23 2007-11-05 16:04:10 cerami Exp $
+// $Id: TestDaoCPath.java,v 1.24 2008-04-17 13:31:51 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -92,8 +92,6 @@ public class TestDaoCPath extends TestCase {
         int numInteractorsAfter = dao.getNumEntities
                 (CPathRecordType.PHYSICAL_ENTITY);
         
-        System.out.println ("Num interactors before:  " + numInteractorsBefore);
-        System.out.println ("Num interactors after:  " + numInteractorsAfter);
         assertTrue(numInteractorsAfter > numInteractorsBefore);
 
         //  Test getRecordById()

@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalLink.java,v 1.20 2006-12-11 18:13:18 cerami Exp $
+// $Id: TestDaoInternalLink.java,v 1.21 2008-04-17 13:31:51 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -148,7 +148,6 @@ public class TestDaoInternalLink extends TestCase {
         boolean flag2 = false, flag3 = false;
         for (int i = 0; i < list.size(); i++) {
             Long descendentId =  (Long) list.get(i);
-            System.out.println(descendentId);
             if (descendentId.longValue() == id2) {
                 flag2 = true;
             } else if (descendentId.longValue() == id3) {
