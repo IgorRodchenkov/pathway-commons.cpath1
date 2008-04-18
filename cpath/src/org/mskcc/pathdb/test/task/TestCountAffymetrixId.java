@@ -1,4 +1,4 @@
-// $Id: TestCountAffymetrixId.java,v 1.11 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestCountAffymetrixId.java,v 1.12 2008-04-18 17:36:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,7 +34,7 @@ package org.mskcc.pathdb.test.task;
 import junit.framework.TestCase;
 import org.mskcc.dataservices.bio.ExternalReference;
 import org.mskcc.pathdb.sql.transfer.UpdatePsiInteractor;
-import org.mskcc.pathdb.task.CountAffymetrixIdsTask;
+import org.mskcc.pathdb.task.CountExternalIdsTask;
 import org.mskcc.pathdb.task.ProgressMonitor;
 
 /**
@@ -50,7 +50,7 @@ public class TestCountAffymetrixId extends TestCase {
      * @throws Exception All Exceptions.
      */
     public void test() throws Exception {
-        CountAffymetrixIdsTask task = new CountAffymetrixIdsTask(562, false);
+        CountExternalIdsTask task = new CountExternalIdsTask(562, 0, false);
         int numRecords = task.getTotalNumRecords();
         int withAffyIds = task.getNumRecordsWithAffymetrixIds();
 
@@ -68,7 +68,7 @@ public class TestCountAffymetrixId extends TestCase {
         updater.doUpdate();
 
         //  Should now be 3 Records, with 1 Affy Id.
-        task = new CountAffymetrixIdsTask(562, false);
+        task = new CountExternalIdsTask(562, 0, false);
         numRecords = task.getTotalNumRecords();
         withAffyIds = task.getNumRecordsWithAffymetrixIds();
         assertTrue(numRecords > 0);
