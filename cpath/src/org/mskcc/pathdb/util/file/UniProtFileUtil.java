@@ -22,9 +22,9 @@ public class UniProtFileUtil {
      *
      * @param file      UniProt File of the pattern "xxx_xxx_[organism].dat"
      * @param prefix    Prefix of file that you want to generate.
-     * @return  file name of the form:  [prefix]_[organism].txt
+     * @return  new file name of the form:  [prefix]_[organism].txt
      */
-    public static String getOrganismSpecificFileName (File file, String prefix) {
+    public static File getOrganismSpecificFileName (File file, String prefix) {
         String fileName = file.getName();
         String parts[] = fileName.split("\\.");
         if (parts.length == 2) {
@@ -34,7 +34,7 @@ public class UniProtFileUtil {
                 throw new IllegalArgumentException ("Illegal file name:  " + fileName);
             } else {
                 String organism = parts[parts.length-1];
-                return prefix + "_" + organism + ".txt";
+                return new File (file.getParentFile(), prefix + "_" + organism + ".txt");
             }
         } else {
             throw new IllegalArgumentException ("Illegal file name:  " + fileName);
