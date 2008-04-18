@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.66 2008-04-07 14:52:27 cerami Exp $
+// $Id: Admin.java,v 1.67 2008-04-18 17:36:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,7 +35,6 @@ import gnu.getopt.Getopt;
 import org.mskcc.dataservices.core.DataServiceException;
 import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.model.XmlRecordType;
-import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.references.ParseBackgroundReferencesTask;
 import org.mskcc.pathdb.sql.transfer.ImportException;
@@ -70,7 +69,7 @@ public class Admin {
 	private static final String COMMAND_POPULATE_REFERENCE_TABLE = "pop_ref";
     private static final String COMMAND_PRE_COMPUTE = "precompute";
     private static final String COMMAND_IMAGES = "images";
-    private static final String COMMAND_COUNT_AFFYMETRIX = "count_affy";
+    private static final String COMMAND_COUNT_IDS = "count_ids";
     private static final String COMMAND_VALIDATE = "validate";
     private static final String COMMAND_QUERY = "query";
     private static final int NOT_SET = -9999;
@@ -83,6 +82,7 @@ public class Admin {
     private static String fileName = null;
     private static boolean strictValidation = false;
     private static int taxonomyId = NOT_SET;
+    private static int targetExternalId = NOT_SET;
     private static String ftQuery = null;
     private static boolean xdebugFlag = false;
     private static boolean removeAllInteractionXrefs = false;
@@ -173,9 +173,9 @@ public class Admin {
                 LoadPreComputedQueries preCompute =
                         new LoadPreComputedQueries();
                 preCompute.preCompute(fileName, xdebug);
-            } else if (command.equals(COMMAND_COUNT_AFFYMETRIX)) {
-                CountAffymetrixIdsTask task = new CountAffymetrixIdsTask
-                        (taxonomyId, true);
+            } else if (command.equals(COMMAND_COUNT_IDS)) {
+                CountExternalIdsTask task = new CountExternalIdsTask
+                        (taxonomyId, targetExternalId, true);
             } else if (command.equals(COMMAND_VALIDATE)) {
                 ValidateXmlTask validator = new ValidateXmlTask
                         (new File(fileName));
@@ -435,8 +435,9 @@ public class Admin {
             System.out.print("Enter Path to Precompute Config File:  ");
             fileName = in.readLine();
         }
-        if (command.equals(COMMAND_COUNT_AFFYMETRIX) && taxonomyId == NOT_SET) {
+        if (command.equals(COMMAND_COUNT_IDS) && taxonomyId == NOT_SET) {
             getTaxonomyId();
+            getTargetExternalId();
         }
         if (command.equals(COMMAND_VALIDATE) && fileName == null) {
             System.out.print("Enter Path to XML File:  ");
@@ -462,6 +463,30 @@ public class Admin {
             } catch (NumberFormatException e) {
                 System.out.print("Please Try Again.  Enter NCBI Taxonomy "
                         + "Identifier:  ");
+            }
+        }
+    }
+
+    /**
+     * Prompts for an External ID Option.
+     */
+    private static void getTargetExternalId() throws IOException {
+        BufferedReader in = new BufferedReader
+                (new InputStreamReader(System.in));
+        System.out.println ("Specified an external ID option:");
+        System.out.println ("0:  Count Affymetrix IDs");
+        System.out.println ("1:  Count Entrez Gene IDs");
+        System.out.print("Enter menu option:  ");
+        while (targetExternalId == NOT_SET) {
+            String line = in.readLine();
+            try {
+                targetExternalId = Integer.parseInt(line);
+                if (targetExternalId != 0 && targetExternalId != 1) {
+                    targetExternalId = NOT_SET;
+                    System.out.print("Please Try Again.  Enter a menu option:  ");
+                }
+            } catch (NumberFormatException e) {
+                System.out.print("Please Try Again.  Enter a menu option:  ");
             }
         }
     }
@@ -503,8 +528,8 @@ public class Admin {
         System.out.println("  pop_ref         Populate PubMed References");        
         System.out.println("  precompute      Precomputes all queries in "
                 + "specified config file.");
-        System.out.println("  count_affy      Counts Records with Affymetrix "
-                + "identifiers.");
+        System.out.println("  count_ids       Counts the number of physical entity records with "
+                + "the specified external identifier.");
         System.out.println("  validate        Validates the specified XML "
                 + "file.");
         System.out.println("  query           Executes Full Text Query");

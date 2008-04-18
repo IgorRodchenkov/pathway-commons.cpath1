@@ -1,4 +1,4 @@
-// $Id: CountAffymetrixIdsTask.java,v 1.24 2006-02-22 22:47:51 grossb Exp $
+// $Id: CountExternalIdsTask.java,v 1.1 2008-04-18 17:36:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,35 +46,46 @@ import java.util.Iterator;
 /**
  * Given a TaxonomyId, this class locates all proteins records
  * for the specified organism, and calculates how many of these records have
- * Affymetrix identifiers.
+ * the specified external identifier.
  *
  * @author Ethan Cerami.
  */
-public class CountAffymetrixIdsTask extends Task {
+public class CountExternalIdsTask extends Task {
     private static final String AFFYMETRIX_NAME = "AFFYMETRIX";
+    private static final String ENTREZ_GENE_NAME = "ENTREZ_GENE";
     private int taxonomyId;
     private int affyCount = 0;
     private int totalNumRecords;
     private HashMap dbMap;
     private int numEntitiesWithoutXrefs;
     private ArrayList entitiesWithOutXRefs = new ArrayList();
+    private String target;
 
     /**
      * Constructor.
      *
      * @param taxonomyId  NCBI Taxonomy ID.
+     * @param externalIdType:  0 = Affymetrix;  1 = Entrez Gene.
      * @param consoleMode Console Flag.  Set to true for console tools.
      * @throws DaoException Error Connecting to Database.
      */
-    public CountAffymetrixIdsTask(int taxonomyId, boolean consoleMode)
+    public CountExternalIdsTask(int taxonomyId, int externalIdType,
+            boolean consoleMode)
             throws DaoException {
-        super("Counting Affymetrix IDs", consoleMode);
+        super("Counting External IDs IDs", consoleMode);
+        if (externalIdType == 0) {
+            target = AFFYMETRIX_NAME;
+        } else if (externalIdType == 1) {
+            target = ENTREZ_GENE_NAME;
+        } else {
+            throw new IllegalArgumentException ("Invalid option:  " + externalIdType);
+        }
         ProgressMonitor pMonitor = this.getProgressMonitor();
-        pMonitor.setCurrentMessage("Counting Affymetrix IDs for Organism  "
-                + " -->  NCBI Taxonomy ID:  " + taxonomyId);
+        pMonitor.setCurrentMessage("Counting Externals IDs for Organism  "
+                + " -->  NCBI Taxonomy ID:  " + taxonomyId + ", External ID:  " + target);
         this.taxonomyId = taxonomyId;
         this.execute();
-        pMonitor.setCurrentMessage("\nTotal Number of Proteins "
+        pMonitor.setCurrentMessage("\nTotal Number of Physical Entities "
                 + "for NCBI Taxonomy ID " + taxonomyId + ":  "
                 + this.totalNumRecords);
 
@@ -84,11 +95,11 @@ public class CountAffymetrixIdsTask extends Task {
             String percentOut = formatter.format(percent);
             pMonitor.setCurrentMessage("Of these, " + affyCount
                     + " (" + percentOut
-                    + "%) have Affymetrix IDs.");
+                    + "%) have " + target +  " IDs.");
         }
 
-        pMonitor.setCurrentMessage("\nOf those proteins without Affymetrix "
-                + "IDs, the following databases were found:  ");
+        pMonitor.setCurrentMessage("\nOf those physical entities without " + target
+                + " IDs, the following databases were found:  ");
         Iterator keys = dbMap.keySet().iterator();
         while (keys.hasNext()) {
             String dbName = (String) keys.next();
@@ -97,9 +108,9 @@ public class CountAffymetrixIdsTask extends Task {
                 System.out.println(dbName + ":  " + counter);
             }
         }
-        pMonitor.setCurrentMessage("\nTotal Number of proteins that have no "
+        pMonitor.setCurrentMessage("\nTotal Number of physical entities that have no "
                 + "external database identifiers:  " + numEntitiesWithoutXrefs);
-        pMonitor.setCurrentMessage("\nThe following proteins have no "
+        pMonitor.setCurrentMessage("\nThe following physical entities have no "
                 + "external database identifiers:  ");
         for (int i = 0; i < entitiesWithOutXRefs.size(); i++) {
             CPathRecord record = (CPathRecord) entitiesWithOutXRefs.get(i);
@@ -138,8 +149,7 @@ public class CountAffymetrixIdsTask extends Task {
 
         //  Retrieve all Physical Entities for Specified Organism
         DaoCPath dao = DaoCPath.getInstance();
-        ArrayList records = dao.getRecordByTaxonomyID
-                (CPathRecordType.PHYSICAL_ENTITY, taxonomyId);
+        ArrayList records = dao.getPhysicalEntityRecordByTaxonomyID (taxonomyId);
 
         this.totalNumRecords = 0;
         pMonitor.setMaxValue(records.size());
@@ -157,7 +167,7 @@ public class CountAffymetrixIdsTask extends Task {
                     || xmlType.equals(XmlRecordType.BIO_PAX)
                     && specificType.equals(BioPaxConstants.PROTEIN)) {
                 totalNumRecords++;
-                if (xmlContent.toUpperCase().indexOf(AFFYMETRIX_NAME) > -1) {
+                if (xmlContent.toUpperCase().indexOf(target) > -1) {
                     affyCount++;
                 } else {
                     trackOtherIds(record);
