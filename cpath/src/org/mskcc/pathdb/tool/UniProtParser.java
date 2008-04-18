@@ -1,5 +1,10 @@
 package org.mskcc.pathdb.tool;
 
+import org.mskcc.pathdb.util.file.UniProtFileUtil;
+import org.mskcc.pathdb.util.file.FileUtil;
+import org.mskcc.pathdb.util.tool.ConsoleUtil;
+import org.mskcc.pathdb.task.ProgressMonitor;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -11,8 +16,24 @@ import java.util.ArrayList;
  */
 public class UniProtParser {
     private int numMappingRecords = 0;
+    private ProgressMonitor pMonitor;
     private final static String GENE_ID = "DR   GeneID;";
     private final static String REF_SEQ_ID = "DR   RefSeq;";
+
+    /**
+     * Empty Arg Constructor.
+     */
+    public UniProtParser() {
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param pMonitor  Progress Monitor.
+     */
+    public UniProtParser (ProgressMonitor pMonitor) {
+        this.pMonitor = pMonitor;
+    }
 
     /**
      * Parses a UniProt File and creates two ID mapping files:
@@ -44,6 +65,10 @@ public class UniProtParser {
             ArrayList <String> entrezGeneList = new ArrayList<String>();
             ArrayList <String> refSeqList = new ArrayList<String>();
             while (line != null) {
+                if (pMonitor != null) {
+                    pMonitor.incrementCurValue();
+                    ConsoleUtil.showProgress(pMonitor);
+                }
                 if (line.startsWith("ID")) {
                     createMapping(acList, entrezGeneList, refSeqList, acWriter, refSeqWriter);
                     acList = new ArrayList<String>();
@@ -75,6 +100,34 @@ public class UniProtParser {
             }
         }
         return numMappingRecords;
+    }
+
+    /**
+     * Command Line Usage.
+     * @param args          Must include UniProt File Name.
+     * @throws IOException  IO Error.
+     */
+    public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.out.println ("command line usage:  uniprot.pl <uniprot_file.dat>");
+            System.exit(1);
+        }
+        ProgressMonitor pMonitor = new ProgressMonitor();
+        pMonitor.setConsoleMode(true);
+
+        File uniProtFile = new File (args[0]);
+        File acOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile, "uniprot_ac");
+        File refSeqOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile, "refseq");
+
+        System.out.println ("Reading data from:  " + uniProtFile.getAbsolutePath());
+        int numLines = FileUtil.getNumLines(uniProtFile);
+        System.out.println (" --> total number of lines:  " + numLines);
+        pMonitor.setMaxValue(numLines);
+        System.out.println ("Writing out to:  " + acOutFile.getAbsolutePath());
+        System.out.println ("Writing out to:  " + refSeqOutFile.getAbsolutePath());
+        UniProtParser parser = new UniProtParser(pMonitor);
+        int numRecords = parser.createIdMappingFiles(uniProtFile, acOutFile, refSeqOutFile);
+        System.out.println ("Total number of id mappings created:  " + numRecords);
     }
 
     private void extractXref(String line, String match, ArrayList<String> idList) {
