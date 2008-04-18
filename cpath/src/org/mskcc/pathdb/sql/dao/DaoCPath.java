@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.35 2008-01-30 21:38:28 grossben Exp $
+// $Id: DaoCPath.java,v 1.36 2008-04-18 17:38:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -108,6 +108,14 @@ public class DaoCPath extends ManagedDAO {
     private static final String GET_ALL_BY_TAX_ID =
             "SELECT * FROM cpath WHERE TYPE = ? AND " + "NCBI_TAX_ID = ?";
 
+    //  Get All Physical Entities by Taxonomy ID SQL
+    private static final String GET_ALL_PHYSICAL_ENTITIES_BY_TAX_ID_KEY =
+            "GET_ALL_PHYSICAL_ENTITIES_BY_TAX_ID_KEY";
+    private static final String GET_ALL_PHYSICAL_ENTITIES_BY_TAX_ID =
+            "SELECT * FROM cpath WHERE TYPE = ? AND " + "NCBI_TAX_ID = ? "
+            + "AND CPATH_GENERATED = 1";
+
+
     //  Get Taxonomy IDs SQL
     private static final String GET_TAX_IDS_KEY = "GET_TAX_IDS";
     private static final String GET_TAX_IDS =
@@ -175,6 +183,7 @@ public class DaoCPath extends ManagedDAO {
         addPreparedStatement(GET_ALL_KEY, GET_ALL);
         addPreparedStatement(GET_ALL_BY_TYPE_KEY, GET_ALL_BY_TYPE);
         addPreparedStatement(GET_ALL_BY_TAX_ID_KEY, GET_ALL_BY_TAX_ID);
+        addPreparedStatement(GET_ALL_PHYSICAL_ENTITIES_BY_TAX_ID_KEY, GET_ALL_PHYSICAL_ENTITIES_BY_TAX_ID);
         addPreparedStatement(GET_TAX_IDS_KEY, GET_TAX_IDS);
         addPreparedStatement(GET_BY_ID_KEY, GET_BY_ID);
         addPreparedStatement(GET_BY_NAME_KEY, GET_BY_NAME);
@@ -407,6 +416,37 @@ public class DaoCPath extends ManagedDAO {
             con = this.getConnection();
             pstmt = getStatement(con, GET_ALL_BY_TAX_ID_KEY);
             pstmt.setString(1, recordType.toString());
+            pstmt.setInt(2, taxonomyId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                records.add(extractRecord(rs));
+            }
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(e);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            localCloseAll(con, pstmt, rs);
+        }
+        return records;
+    }
+
+    /**
+     * Gets Records by Taxonomy ID.
+     *
+     * @param taxonomyId NCBI Taxonomy ID.
+     * @return ArrayList of CPath Record Objects.
+     * @throws DaoException Error Retrieving Data.
+     */
+    public ArrayList getPhysicalEntityRecordByTaxonomyID(int taxonomyId) throws DaoException {
+        ArrayList records = new ArrayList();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = this.getConnection();
+            pstmt = getStatement(con, GET_ALL_PHYSICAL_ENTITIES_BY_TAX_ID_KEY);
+            pstmt.setString(1, CPathRecordType.PHYSICAL_ENTITY.toString());
             pstmt.setInt(2, taxonomyId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
