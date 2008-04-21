@@ -1,4 +1,4 @@
-// $Id: CountExternalIdsTask.java,v 1.2 2008-04-21 14:09:06 cerami Exp $
+// $Id: CountExternalIdsTask.java,v 1.3 2008-04-21 16:24:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 
 /**
  * Given a TaxonomyId, this class locates all proteins records
@@ -54,11 +57,12 @@ public class CountExternalIdsTask extends Task {
     private static final String AFFYMETRIX_NAME = "AFFYMETRIX";
     private static final String ENTREZ_GENE_NAME = "ENTREZ_GENE";
     private int taxonomyId;
-    private int affyCount = 0;
+    private int matchingIdCount = 0;
     private int totalNumProteins;
     private HashMap dbMap;
     private int numEntitiesWithoutXrefs;
     private ArrayList entitiesWithOutXRefs = new ArrayList();
+    private ArrayList entitiesWithXrefsWithoutTargetIds = new ArrayList();
     private String target;
 
     /**
@@ -71,8 +75,9 @@ public class CountExternalIdsTask extends Task {
      */
     public CountExternalIdsTask(int taxonomyId, int externalIdType,
             boolean consoleMode)
-            throws DaoException {
+            throws DaoException, IOException {
         super("Counting External IDs IDs", consoleMode);
+        DecimalFormat formatter = new DecimalFormat("###,###.##");
         if (externalIdType == 0) {
             target = AFFYMETRIX_NAME;
         } else if (externalIdType == 1) {
@@ -88,14 +93,27 @@ public class CountExternalIdsTask extends Task {
         pMonitor.setCurrentMessage("\nTotal Number of proteins "
                 + "for NCBI Taxonomy ID " + taxonomyId + ":  "
                 + this.totalNumProteins);
+        if (entitiesWithOutXRefs.size() > 0) {
+            double percent = (entitiesWithOutXRefs.size() / (double) totalNumProteins) * 100.0;
+            String percentOut = formatter.format(percent);
+            pMonitor.setCurrentMessage("Total number of proteins with 0 xrefs:  "
+                + entitiesWithOutXRefs.size() + " [" + percentOut + "%]");
+        }
+
+        if (entitiesWithXrefsWithoutTargetIds.size() > 0) {
+            double percent = (entitiesWithXrefsWithoutTargetIds.size() /
+                    (double) totalNumProteins) * 100.0;
+            String percentOut = formatter.format(percent);
+            pMonitor.setCurrentMessage("Total number of proteins with > 0 xrefs, but lacking "
+                + target + ": "
+                + entitiesWithXrefsWithoutTargetIds.size() + " [" + percentOut + "%]");
+        }
 
         if (totalNumProteins > 0) {
-            double percent = (affyCount / (double) totalNumProteins) * 100.0;
-            DecimalFormat formatter = new DecimalFormat("###,###.##");
+            double percent = (matchingIdCount / (double) totalNumProteins) * 100.0;
             String percentOut = formatter.format(percent);
-            pMonitor.setCurrentMessage("Of these, " + affyCount
-                    + " (" + percentOut
-                    + "%) have " + target +  " IDs.");
+            pMonitor.setCurrentMessage("Total number of proteins with " + target + ": "
+                + matchingIdCount + " [" + percentOut + "%]");
         }
 
         pMonitor.setCurrentMessage("\nOf those proteins without " + target
@@ -108,14 +126,34 @@ public class CountExternalIdsTask extends Task {
                 System.out.println(dbName + ":  " + counter);
             }
         }
-        pMonitor.setCurrentMessage("\nTotal Number of proteins that have no "
-                + "external database identifiers:  " + numEntitiesWithoutXrefs);
-        pMonitor.setCurrentMessage("\nThe following proteins have no "
-                + "external database identifiers:  ");
-        for (int i = 0; i < entitiesWithOutXRefs.size(); i++) {
-            CPathRecord record = (CPathRecord) entitiesWithOutXRefs.get(i);
-            pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
-                    + record.getId() + "]");
+
+        System.out.print ("\nShow all proteins with > 0 external cross-references," +
+                " but lacking "  + target + "?  [Y/N]:  ");
+        BufferedReader in = new BufferedReader
+                (new InputStreamReader(System.in));
+        String line = in.readLine();
+        if (line.trim().equalsIgnoreCase("y")) {
+            pMonitor.setCurrentMessage("\nThe following proteins have >0 external " +
+                    "cross-references, but lack " + target + ":");
+            for (int i = 0; i < entitiesWithXrefsWithoutTargetIds.size(); i++) {
+                CPathRecord record = (CPathRecord) entitiesWithXrefsWithoutTargetIds.get(i);
+                pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
+                        + record.getId() + "]");
+            }
+        }
+
+        System.out.print ("\nShow all proteins with zero external cross-references?  [Y/N]:  ");
+        in = new BufferedReader
+                (new InputStreamReader(System.in));
+        line = in.readLine();
+        if (line.trim().equalsIgnoreCase("y")) {
+            pMonitor.setCurrentMessage("\nThe following proteins have no "
+                    + "external database identifiers:  ");
+            for (int i = 0; i < entitiesWithOutXRefs.size(); i++) {
+                CPathRecord record = (CPathRecord) entitiesWithOutXRefs.get(i);
+                pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
+                        + record.getId() + "]");
+            }
         }
     }
 
@@ -135,7 +173,7 @@ public class CountExternalIdsTask extends Task {
      * @return integer value.
      */
     public int getNumRecordsWithAffymetrixIds() {
-        return this.affyCount;
+        return this.matchingIdCount;
     }
 
     /**
@@ -165,7 +203,7 @@ public class CountExternalIdsTask extends Task {
             if (specificType.equals(BioPaxConstants.PROTEIN)) {
                 totalNumProteins++;
                 if (xmlContent.toUpperCase().indexOf(target) > -1) {
-                    affyCount++;
+                    matchingIdCount++;
                 } else {
                     trackOtherIds(record);
                 }
@@ -183,7 +221,7 @@ public class CountExternalIdsTask extends Task {
             numEntitiesWithoutXrefs++;
             recordEmptyEntity(record);
         } else {
-            System.out.println ("No Entrez Gene ID for"  + record.getId());
+            recordEntityWithoutTargetId(record);
             for (int i = 0; i < externalLinkList.size(); i++) {
                 ExternalLinkRecord externalLink = (ExternalLinkRecord)
                         externalLinkList.get(i);
@@ -196,6 +234,10 @@ public class CountExternalIdsTask extends Task {
 
     private void recordEmptyEntity(CPathRecord record) {
         entitiesWithOutXRefs.add(record);
+    }
+
+    private void recordEntityWithoutTargetId (CPathRecord record) {
+        entitiesWithXrefsWithoutTargetIds.add(record);
     }
 
     private void incrementMapCounter(ExternalDatabaseRecord externalDb) {
