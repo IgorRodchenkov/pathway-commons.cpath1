@@ -1,4 +1,4 @@
-// $Id: CountExternalIdsTask.java,v 1.1 2008-04-18 17:36:39 cerami Exp $
+// $Id: CountExternalIdsTask.java,v 1.2 2008-04-21 14:09:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,7 +55,7 @@ public class CountExternalIdsTask extends Task {
     private static final String ENTREZ_GENE_NAME = "ENTREZ_GENE";
     private int taxonomyId;
     private int affyCount = 0;
-    private int totalNumRecords;
+    private int totalNumProteins;
     private HashMap dbMap;
     private int numEntitiesWithoutXrefs;
     private ArrayList entitiesWithOutXRefs = new ArrayList();
@@ -85,12 +85,12 @@ public class CountExternalIdsTask extends Task {
                 + " -->  NCBI Taxonomy ID:  " + taxonomyId + ", External ID:  " + target);
         this.taxonomyId = taxonomyId;
         this.execute();
-        pMonitor.setCurrentMessage("\nTotal Number of Physical Entities "
+        pMonitor.setCurrentMessage("\nTotal Number of proteins "
                 + "for NCBI Taxonomy ID " + taxonomyId + ":  "
-                + this.totalNumRecords);
+                + this.totalNumProteins);
 
-        if (totalNumRecords > 0) {
-            double percent = (affyCount / (double) totalNumRecords) * 100.0;
+        if (totalNumProteins > 0) {
+            double percent = (affyCount / (double) totalNumProteins) * 100.0;
             DecimalFormat formatter = new DecimalFormat("###,###.##");
             String percentOut = formatter.format(percent);
             pMonitor.setCurrentMessage("Of these, " + affyCount
@@ -98,7 +98,7 @@ public class CountExternalIdsTask extends Task {
                     + "%) have " + target +  " IDs.");
         }
 
-        pMonitor.setCurrentMessage("\nOf those physical entities without " + target
+        pMonitor.setCurrentMessage("\nOf those proteins without " + target
                 + " IDs, the following databases were found:  ");
         Iterator keys = dbMap.keySet().iterator();
         while (keys.hasNext()) {
@@ -108,9 +108,9 @@ public class CountExternalIdsTask extends Task {
                 System.out.println(dbName + ":  " + counter);
             }
         }
-        pMonitor.setCurrentMessage("\nTotal Number of physical entities that have no "
+        pMonitor.setCurrentMessage("\nTotal Number of proteins that have no "
                 + "external database identifiers:  " + numEntitiesWithoutXrefs);
-        pMonitor.setCurrentMessage("\nThe following physical entities have no "
+        pMonitor.setCurrentMessage("\nThe following proteins have no "
                 + "external database identifiers:  ");
         for (int i = 0; i < entitiesWithOutXRefs.size(); i++) {
             CPathRecord record = (CPathRecord) entitiesWithOutXRefs.get(i);
@@ -125,7 +125,7 @@ public class CountExternalIdsTask extends Task {
      * @return integer value.
      */
     public int getTotalNumRecords() {
-        return this.totalNumRecords;
+        return this.totalNumProteins;
     }
 
     /**
@@ -151,7 +151,7 @@ public class CountExternalIdsTask extends Task {
         DaoCPath dao = DaoCPath.getInstance();
         ArrayList records = dao.getPhysicalEntityRecordByTaxonomyID (taxonomyId);
 
-        this.totalNumRecords = 0;
+        this.totalNumProteins = 0;
         pMonitor.setMaxValue(records.size());
         pMonitor.setCurValue(1);
 
@@ -161,12 +161,9 @@ public class CountExternalIdsTask extends Task {
             CPathRecord record = (CPathRecord) records.get(i);
             String xmlContent = record.getXmlContent();
 
-            XmlRecordType xmlType = record.getXmlType();
             String specificType = record.getSpecificType();
-            if (xmlType.equals(XmlRecordType.PSI_MI)
-                    || xmlType.equals(XmlRecordType.BIO_PAX)
-                    && specificType.equals(BioPaxConstants.PROTEIN)) {
-                totalNumRecords++;
+            if (specificType.equals(BioPaxConstants.PROTEIN)) {
+                totalNumProteins++;
                 if (xmlContent.toUpperCase().indexOf(target) > -1) {
                     affyCount++;
                 } else {
@@ -186,14 +183,12 @@ public class CountExternalIdsTask extends Task {
             numEntitiesWithoutXrefs++;
             recordEmptyEntity(record);
         } else {
-//            System.out.println("Record:  " + record.getId());
+            System.out.println ("No Entrez Gene ID for"  + record.getId());
             for (int i = 0; i < externalLinkList.size(); i++) {
                 ExternalLinkRecord externalLink = (ExternalLinkRecord)
                         externalLinkList.get(i);
                 ExternalDatabaseRecord externalDb =
                         externalLink.getExternalDatabase();
-//                System.out.println("---  " + externalDb.getName()
-//                    + ":  " + externalLink.getLinkedToId());
                 incrementMapCounter(externalDb);
             }
         }
