@@ -1,4 +1,4 @@
-// $Id: TestBioPaxUtil.java,v 1.20 2008-01-23 18:50:24 grossben Exp $
+// $Id: TestBioPaxUtil.java,v 1.21 2008-04-22 16:36:51 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -164,11 +164,11 @@ public class TestBioPaxUtil extends TestCase {
         ExternalReference ref0 = refs[0];
         ExternalReference ref1 = refs[1];
         ExternalReference ref2 = refs[2];
-        assertEquals("aMAZE", ref0.getDatabase());
+        assertEquals("AMAZE", ref0.getDatabase());
         assertEquals("aMAZEProcess0000000027", ref0.getId());
-        assertEquals("PubMed", ref1.getDatabase());
+        assertEquals("PUBMED", ref1.getDatabase());
         assertEquals("2549346", ref1.getId());
-        assertEquals("Reactome", ref2.getDatabase());
+        assertEquals("REACTOME", ref2.getDatabase());
         assertEquals("69091", ref2.getId());
 
         //  Test the extractUnificationXrefs Method
@@ -178,9 +178,9 @@ public class TestBioPaxUtil extends TestCase {
         assertEquals(2, unificationRefs.length);
         ref0 = unificationRefs[0];
         ref1 = unificationRefs[1];
-        assertEquals("aMAZE", ref0.getDatabase());
+        assertEquals("AMAZE", ref0.getDatabase());
         assertEquals("aMAZEProcess0000000027", ref0.getId());
-        assertEquals("Reactome", ref1.getDatabase());
+        assertEquals("REACTOME", ref1.getDatabase());
         assertEquals("69091", ref1.getId());
 
     }
