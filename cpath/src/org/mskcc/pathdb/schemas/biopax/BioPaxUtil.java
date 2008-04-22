@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.35 2008-01-26 21:39:25 grossben Exp $
+// $Id: BioPaxUtil.java,v 1.36 2008-04-22 16:21:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,10 +35,7 @@ import org.jdom.*;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 import org.mskcc.dataservices.bio.ExternalReference;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalLink;
-import org.mskcc.pathdb.sql.dao.DaoIdGenerator;
-import org.mskcc.pathdb.sql.dao.ExternalDatabaseNotFoundException;
+import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
@@ -46,6 +43,7 @@ import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
 import org.mskcc.pathdb.model.Reference;
 import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -724,6 +722,14 @@ public class BioPaxUtil {
                     DaoExternalLink dao = DaoExternalLink.getInstance();
                     try {
                         dao.validateExternalReferences(refs, !strictValidation);
+
+                        //  Standardize to Master CV Term
+                        DaoExternalDb daoExternalDb = new DaoExternalDb();
+                        ExternalDatabaseRecord record =
+                                daoExternalDb.getRecordByTerm(dbTerm);
+                        if (record != null) {
+                            dbElement.setText(record.getMasterTerm());    
+                        }
                     } catch (ExternalDatabaseNotFoundException e) {
                         errorList.add(new String("XREF Element references a "
                                 + "database which does not exist in cPath:  "
