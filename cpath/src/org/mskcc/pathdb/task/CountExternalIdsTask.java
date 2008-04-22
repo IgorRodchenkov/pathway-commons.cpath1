@@ -1,4 +1,4 @@
-// $Id: CountExternalIdsTask.java,v 1.3 2008-04-21 16:24:08 cerami Exp $
+// $Id: CountExternalIdsTask.java,v 1.4 2008-04-22 16:38:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -60,7 +60,6 @@ public class CountExternalIdsTask extends Task {
     private int matchingIdCount = 0;
     private int totalNumProteins;
     private HashMap dbMap;
-    private int numEntitiesWithoutXrefs;
     private ArrayList entitiesWithOutXRefs = new ArrayList();
     private ArrayList entitiesWithXrefsWithoutTargetIds = new ArrayList();
     private String target;
@@ -127,32 +126,34 @@ public class CountExternalIdsTask extends Task {
             }
         }
 
-        System.out.print ("\nShow all proteins with > 0 external cross-references," +
-                " but lacking "  + target + "?  [Y/N]:  ");
-        BufferedReader in = new BufferedReader
-                (new InputStreamReader(System.in));
-        String line = in.readLine();
-        if (line.trim().equalsIgnoreCase("y")) {
-            pMonitor.setCurrentMessage("\nThe following proteins have >0 external " +
-                    "cross-references, but lack " + target + ":");
-            for (int i = 0; i < entitiesWithXrefsWithoutTargetIds.size(); i++) {
-                CPathRecord record = (CPathRecord) entitiesWithXrefsWithoutTargetIds.get(i);
-                pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
-                        + record.getId() + "]");
+        if (consoleMode) {
+            System.out.print ("\nShow all proteins with > 0 external cross-references," +
+                    " but lacking "  + target + "?  [Y/N]:  ");
+            BufferedReader in = new BufferedReader
+                    (new InputStreamReader(System.in));
+            String line = in.readLine();
+            if (line.trim().equalsIgnoreCase("y")) {
+                pMonitor.setCurrentMessage("\nThe following proteins have >0 external " +
+                        "cross-references, but lack " + target + ":");
+                for (int i = 0; i < entitiesWithXrefsWithoutTargetIds.size(); i++) {
+                    CPathRecord record = (CPathRecord) entitiesWithXrefsWithoutTargetIds.get(i);
+                    pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
+                            + record.getId() + "]");
+                }
             }
-        }
 
-        System.out.print ("\nShow all proteins with zero external cross-references?  [Y/N]:  ");
-        in = new BufferedReader
-                (new InputStreamReader(System.in));
-        line = in.readLine();
-        if (line.trim().equalsIgnoreCase("y")) {
-            pMonitor.setCurrentMessage("\nThe following proteins have no "
-                    + "external database identifiers:  ");
-            for (int i = 0; i < entitiesWithOutXRefs.size(); i++) {
-                CPathRecord record = (CPathRecord) entitiesWithOutXRefs.get(i);
-                pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
-                        + record.getId() + "]");
+            System.out.print ("\nShow all proteins with zero external cross-references?  [Y/N]:  ");
+            in = new BufferedReader
+                    (new InputStreamReader(System.in));
+            line = in.readLine();
+            if (line.trim().equalsIgnoreCase("y")) {
+                pMonitor.setCurrentMessage("\nThe following proteins have no "
+                        + "external database identifiers:  ");
+                for (int i = 0; i < entitiesWithOutXRefs.size(); i++) {
+                    CPathRecord record = (CPathRecord) entitiesWithOutXRefs.get(i);
+                    pMonitor.setCurrentMessage(record.getName() + ", [cPath ID:  "
+                            + record.getId() + "]");
+                }
             }
         }
     }
@@ -202,6 +203,7 @@ public class CountExternalIdsTask extends Task {
             String specificType = record.getSpecificType();
             if (specificType.equals(BioPaxConstants.PROTEIN)) {
                 totalNumProteins++;
+                System.out.println (xmlContent.toUpperCase());
                 if (xmlContent.toUpperCase().indexOf(target) > -1) {
                     matchingIdCount++;
                 } else {
@@ -218,7 +220,6 @@ public class CountExternalIdsTask extends Task {
         ArrayList externalLinkList = daoExternalLinker.getRecordsByCPathId
                 (record.getId());
         if (externalLinkList.size() == 0) {
-            numEntitiesWithoutXrefs++;
             recordEmptyEntity(record);
         } else {
             recordEntityWithoutTargetId(record);
