@@ -1,4 +1,4 @@
-// $Id: BackgroundReferenceService.java,v 1.9 2007-01-05 22:19:06 cerami Exp $
+// $Id: BackgroundReferenceService.java,v 1.10 2008-04-22 16:22:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -183,8 +183,15 @@ public class BackgroundReferenceService {
             throw new IllegalArgumentException("External Database: "
                     + ref.getDatabase() + " does not exist in database.");
         }
+        String id = ref.getId();
+        //  Remove version info. from the ID
+        //  Used to strip out version information from, e.g. Uniprot Accession Numbers.
+        if (id.contains("-")) {
+            String parts[] = id.split("-");
+            id = parts[0];
+        }
         BackgroundReference backgroundRef = new BackgroundReference
-                (dbRecord.getId(), ref.getId());
+                (dbRecord.getId(), id);
         DaoBackgroundReferences dao2 = new DaoBackgroundReferences();
         ArrayList backgroundRefList = dao2.getLinkOutList(backgroundRef);
         HashSet set = new HashSet();
