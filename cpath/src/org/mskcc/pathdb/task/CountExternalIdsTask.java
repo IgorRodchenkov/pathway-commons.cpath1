@@ -1,4 +1,4 @@
-// $Id: CountExternalIdsTask.java,v 1.4 2008-04-22 16:38:12 cerami Exp $
+// $Id: CountExternalIdsTask.java,v 1.5 2008-04-22 18:50:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -203,7 +203,6 @@ public class CountExternalIdsTask extends Task {
             String specificType = record.getSpecificType();
             if (specificType.equals(BioPaxConstants.PROTEIN)) {
                 totalNumProteins++;
-                System.out.println (xmlContent.toUpperCase());
                 if (xmlContent.toUpperCase().indexOf(target) > -1) {
                     matchingIdCount++;
                 } else {
