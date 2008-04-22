@@ -1,4 +1,4 @@
-// $Id: TaskSuite.java,v 1.8 2006-02-22 22:47:51 grossb Exp $
+// $Id: TaskSuite.java,v 1.9 2008-04-22 16:37:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,7 +50,6 @@ public class TaskSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestAffymetrixParser.class);
-        suite.addTestSuite(TestCountAffymetrixId.class);
         suite.addTestSuite(TestImportExternalDbTask.class);
         suite.setName("Task Tests");
         return suite;
