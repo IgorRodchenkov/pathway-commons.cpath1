@@ -123,7 +123,7 @@ public class EntrezGeneAccessionParser {
         pMonitor.setMaxValue(numLines);
         System.out.println ("Writing out to:  " + acOutFile.getAbsolutePath());
         System.out.println ("Writing out to:  " + refSeqOutFile.getAbsolutePath());
-        UniProtParser parser = new UniProtParser(pMonitor);
+        EntrezGeneAccessionParser parser = new EntrezGeneAccessionParser(pMonitor);
         int numRecords = parser.createIdMappingFiles(uniProtFile, acOutFile, refSeqOutFile);
         System.out.println ("Total number of id mappings created:  " + numRecords);
     }
