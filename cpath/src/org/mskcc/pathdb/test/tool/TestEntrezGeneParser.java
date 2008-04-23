@@ -42,8 +42,8 @@ public class TestEntrezGeneParser extends TestCase {
         buf.close();
 
         //  Don't forget to delete the temp files.
-        //acOutFile.delete();
-        //refSeqOutFile.delete();
+        acOutFile.delete();
+        refSeqOutFile.delete();
     }
 
     private void validateMapping(String line, String left, String right) {
