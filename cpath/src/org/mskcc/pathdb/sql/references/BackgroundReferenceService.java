@@ -1,4 +1,4 @@
-// $Id: BackgroundReferenceService.java,v 1.10 2008-04-22 16:22:20 cerami Exp $
+// $Id: BackgroundReferenceService.java,v 1.11 2008-04-23 20:59:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -188,6 +188,9 @@ public class BackgroundReferenceService {
         //  Used to strip out version information from, e.g. Uniprot Accession Numbers.
         if (id.contains("-")) {
             String parts[] = id.split("-");
+            id = parts[0];
+        } else if (id.contains(".")) {
+            String parts[] = id.split(".");
             id = parts[0];
         }
         BackgroundReference backgroundRef = new BackgroundReference
