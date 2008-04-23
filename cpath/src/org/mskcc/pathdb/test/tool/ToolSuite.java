@@ -21,6 +21,7 @@ public class ToolSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(TestUniProtParser.class);
+        suite.addTestSuite(TestEntrezGeneParser.class);
         suite.setName("Tool Tests");
         return suite;
     }
