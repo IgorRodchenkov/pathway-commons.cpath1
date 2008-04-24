@@ -1,4 +1,4 @@
-// $Id: BackgroundReferenceService.java,v 1.11 2008-04-23 20:59:47 cerami Exp $
+// $Id: BackgroundReferenceService.java,v 1.12 2008-04-24 17:02:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -190,7 +190,7 @@ public class BackgroundReferenceService {
             String parts[] = id.split("-");
             id = parts[0];
         } else if (id.contains(".")) {
-            String parts[] = id.split(".");
+            String parts[] = id.split("\\.");
             id = parts[0];
         }
         BackgroundReference backgroundRef = new BackgroundReference
