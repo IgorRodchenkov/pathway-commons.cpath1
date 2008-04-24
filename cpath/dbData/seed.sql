@@ -100,7 +100,7 @@ INSERT INTO `external_db_cv` VALUES (91, 2, 'ENTREZGENE', 0);
 INSERT INTO `external_db_cv` VALUES (24, 25, 'REFSEQ',  0);
 INSERT INTO `external_db_cv` VALUES (25, 25, 'REF_SEQ', 1);
 INSERT INTO `external_db_cv` VALUES (49, 25, 'REF-SEQ', 0);
-INSERT INTO `external_db_cv` VALUES (48, 25, 'REF_SEQ PROTEIN', 1);
+INSERT INTO `external_db_cv` VALUES (48, 25, 'REF_SEQ PROTEIN', 0);
 
 #  Terms Associated with GenBank and GI
 INSERT INTO `external_db_cv` VALUES (26, 22, 'GENBANK', 1);
