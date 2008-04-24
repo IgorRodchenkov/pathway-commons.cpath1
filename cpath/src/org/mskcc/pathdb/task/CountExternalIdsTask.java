@@ -1,4 +1,4 @@
-// $Id: CountExternalIdsTask.java,v 1.5 2008-04-22 18:50:06 cerami Exp $
+// $Id: CountExternalIdsTask.java,v 1.6 2008-04-24 18:55:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,6 +62,8 @@ public class CountExternalIdsTask extends Task {
     private HashMap dbMap;
     private ArrayList entitiesWithOutXRefs = new ArrayList();
     private ArrayList entitiesWithXrefsWithoutTargetIds = new ArrayList();
+    private ArrayList uniprotAccessionsWithoutTargetIds = new ArrayList();
+    private ArrayList refSeqIDsWithoutTargetIds = new ArrayList();
     private String target;
 
     /**
@@ -155,6 +157,33 @@ public class CountExternalIdsTask extends Task {
                             + record.getId() + "]");
                 }
             }
+
+            if (uniprotAccessionsWithoutTargetIds.size() > 0) {
+                System.out.print ("\nShow all UniProt Accession Numbers w/o "
+                        + target + " ID?  [Y/N]:  ");
+                in = new BufferedReader
+                        (new InputStreamReader(System.in));
+                line = in.readLine();
+                if (line.trim().equalsIgnoreCase("y")) {
+                    for (int i = 0; i < uniprotAccessionsWithoutTargetIds.size(); i++) {
+                        String uniProtAc = (String) uniprotAccessionsWithoutTargetIds.get(i);
+                        pMonitor.setCurrentMessage(uniProtAc);
+                    }
+                }
+            }
+
+            if (refSeqIDsWithoutTargetIds.size() > 0) {
+                System.out.print ("\nShow all RefSeq IDs  w/o " + target + " ID?  [Y/N]:  ");
+                in = new BufferedReader
+                        (new InputStreamReader(System.in));
+                line = in.readLine();
+                if (line.trim().equalsIgnoreCase("y")) {
+                    for (int i = 0; i < refSeqIDsWithoutTargetIds.size(); i++) {
+                        String uniProtAc = (String) refSeqIDsWithoutTargetIds.get(i);
+                        pMonitor.setCurrentMessage(uniProtAc);
+                    }
+                }
+            }
         }
     }
 
@@ -228,6 +257,11 @@ public class CountExternalIdsTask extends Task {
                 ExternalDatabaseRecord externalDb =
                         externalLink.getExternalDatabase();
                 incrementMapCounter(externalDb);
+                if (externalDb.getMasterTerm().equals("UNIPROT")) {
+                    uniprotAccessionsWithoutTargetIds.add(externalLink.getLinkedToId());
+                } else if (externalDb.getMasterTerm().equals("REF_SEQ")) {
+                    this.refSeqIDsWithoutTargetIds.add(externalLink.getLinkedToId());
+                }
             }
         }
     }
