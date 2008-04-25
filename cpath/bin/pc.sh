@@ -1,8 +1,42 @@
 #!/bin/sh
 
+############################################################################
+# Pathway Commons Import Script
+############################################################################
+
+# Dependency Checks
+# If any of these dependencies fail, abort.
+if [ ! -f $CPATH_HOME/../pathway-commons/fresh/ncbi/gene2accession ]
+then
+	echo "NCBI data files not found!  Run pc_get_fresh.sh first. Aborting..."
+	exit
+fi
+
+if [ ! -f $CPATH_HOME/../pathway-commons/fresh/uniprot/uniprot_sprot_human.dat ]
+then
+	echo "UniProt data files not found!  Run pc_get_fresh.sh first. Aborting..."
+	exit
+fi
+
 # setup the database
 ./initDb.pl
+
+# Import the Pathway Commons Data Sources --> Meta Data
 ./admin.pl -f ../dbData/externalDb/pathway_commons.xml import
+
+# Create the Entrez Gene ID Mapping Files from NCBI Source
+./entrez_gene.pl $CPATH_HOME/../pathway-commons/fresh/ncbi/gene2accession
+
+# Create the Entrez Gene ID Mapping Files from UniProt
+./uniprot.pl $CPATH_HOME/../pathway-commons/fresh/uniprot/uniprot_sprot_human.dat
+
+# Import the Entrez Gene Link Out Mapping Files
+./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/ncbi/refseq_2_entrez_gene_id.txt
+./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/ncbi/uniprot_2_entrez_gene_id.txt
+./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/uniprot/refseq_human.txt
+./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/uniprot/uniprot_ac_human.txt
+
+# Import the Unification ID Mapping Files
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_uniprot2uniprot.txt import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_sp2refseq.txt import
 
