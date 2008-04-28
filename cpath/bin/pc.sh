@@ -26,6 +26,8 @@ then
 fi
 
 # setup the database
+echo Import started at:
+date
 ./initDb.pl
 
 # Import the Pathway Commons Data Sources --> Meta Data
@@ -110,3 +112,6 @@ rm -f $CPATH_HOME/../pathway-commons/mint/12-21-2007/biopax/{*.owl,db.info}
 
 # create lucene index
 ./admin.pl index
+echo
+echo Import finished at:
+date
