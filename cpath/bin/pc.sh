@@ -6,15 +6,22 @@
 
 # Dependency Checks
 # If any of these dependencies fail, abort.
-if [ ! -f $CPATH_HOME/../pathway-commons/fresh/ncbi/gene2accession ]
+FRESH_HOME=$CPATH_HOME/../pathway-commons/fresh
+if [ ! -f $FRESH_HOME/ncbi/gene2accession ]
 then
-	echo "NCBI data files not found!  Run pc_get_fresh.sh first. Aborting..."
+	echo "Fresh NCBI data files not found!  Run pc_get_fresh.sh first. Aborting..."
 	exit
 fi
 
-if [ ! -f $CPATH_HOME/../pathway-commons/fresh/uniprot/uniprot_sprot_human.dat ]
+if [ ! -f $FRESH_HOME/uniprot/uniprot_sprot_human.dat ]
 then
-	echo "UniProt data files not found!  Run pc_get_fresh.sh first. Aborting..."
+	echo "Fresh UniProt data files not found!  Run pc_get_fresh.sh first. Aborting..."
+	exit
+fi
+
+if [ ! -f $FRESH_HOME/reactome/db.info ]
+then
+	echo "Fresh Reactome data files not found!  Run pc_get_fresh.sh first. Aborting..."
 	exit
 fi
 
@@ -41,14 +48,16 @@ fi
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_sp2refseq.txt import
 
 # reactome
-mv -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl" $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.bak"
-iconv -f ISO8859-1 -t UTF-8 $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.bak" > $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.iconv"
-$CPATH_HOME/../pathway-commons/bin/reactome-cooker.py < $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.iconv" > $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl"
-rm -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.iconv"
-./admin.pl -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo\ sapiens.owl" import
-mv -f $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl.bak" $CPATH_HOME/../pathway-commons/reactome/version23/"Homo sapiens.owl"
+echo Cooking and Char Converting Reactome Human Files...
+mv -f $FRESH_HOME/reactome/"Homo sapiens.owl" $FRESH_HOME/reactome/Homo_sapiens.owl.bak
+iconv -f ISO8859-1 -t UTF-8 $FRESH_HOME/reactome/Homo_sapiens.owl.bak > $FRESH_HOME/reactome/Homo_sapiens.owl.iconv
+$CPATH_HOME/../pathway-commons/bin/reactome-cooker.py < $FRESH_HOME/reactome/Homo_sapiens.owl.iconv > $FRESH_HOME/reactome/Homo_sapiens.owl
+rm -f $FRESH_HOME/reactome/Homo_sapiens.owl.iconv
+./admin.pl -f $FRESH_HOME/reactome/Homo_sapiens.owl import
+mv -f $FRESH_HOME/reactome/Homo_sapiens.owl.bak $FRESH_HOME/reactome/"Homo sapiens.owl"
 
 # humancyc
+echo Cooking and Char Converting Human Cyc Files...
 mv -f $CPATH_HOME/../pathway-commons/humancyc/biopax.owl $CPATH_HOME/../pathway-commons/humancyc/biopax.owl.bak
 $CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $CPATH_HOME/../pathway-commons/humancyc/biopax.owl.bak > $CPATH_HOME/../pathway-commons/humancyc/biopax.owl
 ./admin.pl -f $CPATH_HOME/../pathway-commons/humancyc/biopax.owl import
