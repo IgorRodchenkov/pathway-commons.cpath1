@@ -1,6 +1,11 @@
 CREATE CYTOSCAPE WEBSTART
 -------------------------
 
+0) Update cpath2.jar
+- in coreplugins/cPath2, update plugin.props, and make sure that the plugin is pointing to the correct URL.
+  for example:  cpath2.server_url=http://awabi.cbio.mskcc.org/pc/webservice.do
+- regenerate the jar:  ant jar
+
 1) Run cytoscape webstart ant task:
 
 - update build.xml and replace all storepass attributes with your storepass (see Ben for password)
