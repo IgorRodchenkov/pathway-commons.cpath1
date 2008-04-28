@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.14 2008-03-26 20:36:11 grossben Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.15 2008-04-28 16:56:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -161,9 +161,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 				       "<property name=\"biopax.network_view_title\" value=\"" + networkViewTitle + "\"/>\n" +
 				       "<property name=\"biopax.web_services_url\" value=\"" + urlToPathwayCommons + "\"/>\n" +
 				       "<property name=\"biopax.data_sources\" value=\"" + dataSources + "\"/>\n" +
-                       "<!--All lib jars that cytoscape requires to run should be in this list-->\n" +
-                     "    <!--All lib jars that cytoscape requires to run should be in this list-->\n" +
-                "    <jar href=\"cytoscape.jar\" />\n" +
+                    "    <jar href=\"cytoscape.jar\" />\n" +
                 "    <jar href=\"lib/activation.jar\" />\n" +
                 "    <jar href=\"lib/biojava-1.4.jar\" />\n" +
                 "    <jar href=\"lib/colt.jar\" />\n" +
@@ -184,18 +182,17 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
                 "    <jar href=\"lib/ding.jar\" />\n" +
                 "    <jar href=\"lib/FastInfoset.jar\" />\n" +
                 "    <jar href=\"lib/fing.jar\" />\n" +
-                "    <jar href=\"lib/freehep-export-2.0.3.jar\" />\n" +
-                "    <jar href=\"lib/freehep-graphics2d-2.0.jar\" />\n" +
-                "    <jar href=\"lib/freehep-graphicsio-2.0.jar\" />\n" +
-                "    <jar href=\"lib/freehep-graphicsio-emf-2.0.jar\" />\n" +
-                "    <jar href=\"lib/freehep-graphicsio-pdf-2.0.jar\" />\n" +
-                "    <jar href=\"lib/freehep-graphicsio-ps-2.0.jar\" />\n" +
-                "    <jar href=\"lib/freehep-graphicsio-svg-2.0.jar\" />\n" +
-                "    <jar href=\"lib/freehep-graphicsio-swf-2.0.jar\" />\n" +
-                "    <jar href=\"lib/freehep-io-2.0.1.jar\" />\n" +
-                "    <jar href=\"lib/freehep-swing-2.0.2.jar\" />\n" +
-                "    <jar href=\"lib/freehep-util-2.0.1.jar\" />\n" +
-                "    <jar href=\"lib/freehep-xml-2.0.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-export-2.1.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphics2d-2.1.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-2.1.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-java-2.1.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-ps-2.1.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-graphicsio-svg-2.1.1.jar\" />\n" +
+                "    <jar href=\"lib/freehep-io-2.0.2.jar\" />\n" +
+                "    <jar href=\"lib/freehep-jas-plotter-2.2.jar\" />\n" +
+                "    <jar href=\"lib/freehep-swing-2.0.3.jar\" />\n" +
+                "    <jar href=\"lib/freehep-util-2.0.2.jar\" />\n" +
+                "    <jar href=\"lib/freehep-xml-2.1.1.jar\" />\n" +
                 "    <jar href=\"lib/giny.jar\" />\n" +
                 "    <jar href=\"lib/glf.jar\" />\n" +
                 "    <jar href=\"lib/http.jar\" />\n" +
@@ -233,9 +230,10 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
                 "    <jar href=\"plugins/AutomaticLayout.jar\" />\n" +
                 "    <jar href=\"plugins/biopax.jar\" />\n" +
                 "    <jar href=\"plugins/browser.jar\" />\n" +
+                "    <jar href=\"plugins/cPath.jar\" />\n" +
                 "    <jar href=\"plugins/cpath2.jar\" />\n" +
                 "    <jar href=\"plugins/CytoscapeEditor.jar\" />\n" +
-                "    <jar href=\"plugins/exesto.jar\" />\n" +
+                "    <jar href=\"plugins/data-mapper.jar\" />\n" +
                 "    <jar href=\"plugins/filter.jar\" />\n" +
                 "    <jar href=\"plugins/filters.jar\" />\n" +
                 "    <jar href=\"plugins/GraphMerge.jar\" />\n" +
@@ -245,7 +243,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
                 "    <jar href=\"plugins/quick_find.jar\" />\n" +
                 "    <jar href=\"plugins/SBMLReader.jar\" />\n" +
                 "    <jar href=\"plugins/TableImport.jar\" />\n" +
-                "    <jar href=\"plugins/yLayouts.jar\" />\n" +
+                "    <jar href=\"plugins/yLayouts.jar\" />" +
                 "    </resources>\n" +
                      "<!--This starts-up Cytoscape, specify your plugins to load, and other command line arguments.  Plugins not specified here will not be loaded.-->\n" +
                      "<application-desc main-class=\"cytoscape.CyMain\">\n" +
