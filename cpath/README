@@ -16,5 +16,7 @@ CREATE CYTOSCAPE WEBSTART
 - restore the original cytoscape.props file in $CPATH_ROOT/web/jsp/cytoscape (if you just clobbered it), and modify as needed
 - verify that $CPATH_ROOT/src/org/mskcc/pathdb/servlet/CytoscapeJnlpServlet.java, writeJNLPData() references all required jars
   (this can be done by comparing servlet with $CPATH_ROOT/web/jsp/cytoscape/cy1.jnlp
+- modify cy1.jnlp file:  <jnlp codebase="http://192.168.0.4/" href="cy1.jnlp">  Codebase should match your installation.
+  for example:  <jnlp codebase="http://awabi.cbio.mskcc.org/pc/jsp/cytoscape/" href="cy1.jnlp">
 
 3) Done!
