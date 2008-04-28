@@ -313,7 +313,13 @@ else {
 			if (record.getType() == CPathRecordType.PATHWAY) {
                 if (numDescendentsList != null) {
                     Integer num = numDescendentsList.get(i);
-                    out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + num + " nodes]</span>");
+                    String text;
+                    if (num == 1) {
+                        text = "1 participant";
+                    } else {
+                           text = num + " participants";
+                    }
+                    out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
                 }
             }
 
