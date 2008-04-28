@@ -50,9 +50,9 @@ read version
 echo -n "Enter date for Reactome (MM/DD/YYYY):  "
 read date
 cat << END > $FRESH_HOME/reactome/db.info
-echo db_name=Reactome
-echo db_snapshot_version=$version
-echo db_snapshot_date=$date
+db_name=Reactome
+db_snapshot_version=$version
+db_snapshot_date=$date
 END
 
 echo
