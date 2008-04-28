@@ -67,23 +67,20 @@ public class EntrezGeneAccessionParser {
                     ConsoleUtil.showProgress(pMonitor);
                 }
                 String cols[] = line.split("\t");
-                String ncbiOrganismTaxId = cols[0];
-                if (ncbiOrganismTaxId.equalsIgnoreCase("9606")) {
-                    String entrezGeneId = cols[1];
-                    String proteinAc = cols[5];
+                String entrezGeneId = cols[1];
+                String proteinAc = cols[5];
 
-                    acList = new ArrayList<String>();
-                    entrezGeneList = new ArrayList<String>();
-                    refSeqList = new ArrayList<String>();
+                acList = new ArrayList<String>();
+                entrezGeneList = new ArrayList<String>();
+                refSeqList = new ArrayList<String>();
 
-                    entrezGeneList.add(entrezGeneId);
-                    if (proteinAc.contains("_")) {
-                        refSeqList.add(proteinAc);
-                    } else {
-                        acList.add(proteinAc);
-                    }
-                    createMapping(acList, entrezGeneList, refSeqList, acWriter, refSeqWriter);
+                entrezGeneList.add(entrezGeneId);
+                if (proteinAc.contains("_")) {
+                    refSeqList.add(proteinAc);
+                } else {
+                    acList.add(proteinAc);
                 }
+                createMapping(acList, entrezGeneList, refSeqList, acWriter, refSeqWriter);
                 line = bufferedReader.readLine();
             }
         } finally {
