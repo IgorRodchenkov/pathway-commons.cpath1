@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.35 2008-04-29 19:18:41 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.36 2008-04-29 19:29:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -82,6 +82,7 @@ public class ImportBioPaxToCPath {
     private boolean strictValidation;
     private ImportSummary importSummary;
     private long snapshotId;
+    private String xml;
 
     /**
      * Adds BioPAX Data to cPath.
@@ -95,6 +96,7 @@ public class ImportBioPaxToCPath {
      */
     public ImportSummary addRecord (String xml, long snapshotId, boolean strictValidation,
             ProgressMonitor pMonitor) throws ImportException {
+        this.xml = xml;
         this.snapshotId = snapshotId;
         this.pMonitor = pMonitor;
         this.strictValidation = strictValidation;
@@ -442,39 +444,44 @@ public class ImportBioPaxToCPath {
 	 */
 	private void storeEvidence() throws JDOMException, DaoException {
         pMonitor.setCurrentMessage("Extracing PubMed References...");
-		// store publication xrefs
-		Element root = bpUtil.getRootElement();
-		org.mskcc.pathdb.util.rdf.RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
-		List<Reference> references = new ArrayList<Reference>();
-		List<Element> evidences = evidences = rdfQuery.getNodes(root, "EVIDENCE");
-		if (evidences != null) {
-			for (Element evidence : evidences) {
-				references.addAll(bpUtil.extractPublicationXrefs(evidence, "biopax:XREF/biopax:publicationXref"));
-			}
-		}
-		evidences = rdfQuery.getNodes(root, "*/EVIDENCE");
-		if (evidences != null) {
-			for (Element evidence : evidences) {
-				references.addAll(bpUtil.extractPublicationXrefs(evidence, "biopax:evidence/biopax:XREF/biopax:publicationXref"));
-			}
-		}
 
-        if (references.size() > 0) {
-            pMonitor.setCurrentMessage("Storing Evidence and PubMed References to Database:");
-            pMonitor.setMaxValue(references.size());
-            DaoReference daoReference = new DaoReference();
-			DaoExternalDb daoExternalDb = new DaoExternalDb();
-			for (Reference ref : references) {
-				ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByName(ref.getDatabase());
-				if (daoReference.getRecord(ref.getId(), dbRecord.getId()) == null) {
-					ref.setIsEvidenceReference(true);
-					daoReference.addReference(ref);
-				}
-                pMonitor.incrementCurValue();
-                ConsoleUtil.showProgress(pMonitor);
+        //  First, do a quick string match.  If there are no matches for EVIDENCE
+        //  we avoid the lengthy RDF Query.
+        if (xml.contains("EVIDENCE")) {
+            // store publication xrefs
+            Element root = bpUtil.getRootElement();
+            org.mskcc.pathdb.util.rdf.RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
+            List<Reference> references = new ArrayList<Reference>();
+            List<Element> evidences = evidences = rdfQuery.getNodes(root, "EVIDENCE");
+            if (evidences != null) {
+                for (Element evidence : evidences) {
+                    references.addAll(bpUtil.extractPublicationXrefs(evidence, "biopax:XREF/biopax:publicationXref"));
+                }
             }
-		}
-	}
+            evidences = rdfQuery.getNodes(root, "*/EVIDENCE");
+            if (evidences != null) {
+                for (Element evidence : evidences) {
+                    references.addAll(bpUtil.extractPublicationXrefs(evidence, "biopax:evidence/biopax:XREF/biopax:publicationXref"));
+                }
+            }
+
+            if (references.size() > 0) {
+                pMonitor.setCurrentMessage("Storing Evidence and PubMed References to Database:");
+                pMonitor.setMaxValue(references.size());
+                DaoReference daoReference = new DaoReference();
+                DaoExternalDb daoExternalDb = new DaoExternalDb();
+                for (Reference ref : references) {
+                    ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByName(ref.getDatabase());
+                    if (daoReference.getRecord(ref.getId(), dbRecord.getId()) == null) {
+                        ref.setIsEvidenceReference(true);
+                        daoReference.addReference(ref);
+                    }
+                    pMonitor.incrementCurValue();
+                    ConsoleUtil.showProgress(pMonitor);
+                }
+            }
+        }
+    }
 
     /**
      * Saves Organism Data, if it is new.
