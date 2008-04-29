@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.34 2008-04-22 16:20:53 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.35 2008-04-29 19:18:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -441,7 +441,7 @@ public class ImportBioPaxToCPath {
 	 * Stores evidence information.
 	 */
 	private void storeEvidence() throws JDOMException, DaoException {
-
+        pMonitor.setCurrentMessage("Extracing PubMed References...");
 		// store publication xrefs
 		Element root = bpUtil.getRootElement();
 		org.mskcc.pathdb.util.rdf.RdfQuery rdfQuery = new RdfQuery(bpUtil.getRdfResourceMap());
@@ -458,8 +458,11 @@ public class ImportBioPaxToCPath {
 				references.addAll(bpUtil.extractPublicationXrefs(evidence, "biopax:evidence/biopax:XREF/biopax:publicationXref"));
 			}
 		}
-		if (references.size() > 0) {
-			DaoReference daoReference = new DaoReference();
+
+        if (references.size() > 0) {
+            pMonitor.setCurrentMessage("Storing Evidence and PubMed References to Database:");
+            pMonitor.setMaxValue(references.size());
+            DaoReference daoReference = new DaoReference();
 			DaoExternalDb daoExternalDb = new DaoExternalDb();
 			for (Reference ref : references) {
 				ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordByName(ref.getDatabase());
@@ -467,7 +470,9 @@ public class ImportBioPaxToCPath {
 					ref.setIsEvidenceReference(true);
 					daoReference.addReference(ref);
 				}
-			}
+                pMonitor.incrementCurValue();
+                ConsoleUtil.showProgress(pMonitor);
+            }
 		}
 	}
 
