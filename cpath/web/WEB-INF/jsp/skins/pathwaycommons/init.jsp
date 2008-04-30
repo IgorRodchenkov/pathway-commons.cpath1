@@ -20,6 +20,7 @@
     webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);
     webUIBean.addSupportedIdType(ExternalDatabaseConstants.UNIPROT);
     webUIBean.addSupportedIdType(ExternalDatabaseConstants.INTERNAL_DATABASE);
+    webUIBean.addSupportedIdType(ExternalDatabaseConstants.ENTREZ_GENE);
     webUIBean.setTagLine("Search and visualize public biological pathway information.  Single point of access. [<a href='faq.do'>more...</a>]");
     CPathUIConfig.setWebUIBean(webUIBean);
 %>
