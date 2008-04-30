@@ -473,8 +473,8 @@ enable Javascript support within your web browser.
             String linkStr = dbRecord.getName() + ": " + dbId;
             String uri = link.getWebLink();
             if (uri != null && uri.length() > 0) {
-                //  Hide GO Links for now
-                if (!dbRecord.getMasterTerm().equalsIgnoreCase(ExternalDatabaseConstants.GO)) {
+                //  Hide GO Links for now [Temporary]
+                if (!dbId.startsWith("GO")) {
                     linksMap.put(linkStr, new String("<a href=\"" + uri + "\">" + linkStr + "</a>"));
                 }
             }
