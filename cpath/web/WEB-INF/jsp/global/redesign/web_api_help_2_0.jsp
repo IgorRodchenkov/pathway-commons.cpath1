@@ -87,8 +87,8 @@ designed for easy parsing in your favorite scripting language, such as Perl or P
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%>=<%= ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST %></li>
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a comma separated list of internal or external
-identifiers (IDs), used to identify the physical entities of interest. For example, look up two distinct proteins by
-their UniProt IDs using the following query: O14763, P55957.  To prevent system overload, clients
+identifiers (IDs), used to identify the physical entities of interest. For example, to look up two
+distinct proteins by their UniProt IDs, use the following query: O14763, P55957.  To prevent system overload, clients
 are currently restricted to a maximum of <%= ProtocolConstantsVersion2.MAX_NUM_IDS %>
 IDs.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= internal or external database.  For example,
