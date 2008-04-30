@@ -19,6 +19,7 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.Set"%>
 <%@ page import="java.util.Collections"%>
+<%@ page import="org.mskcc.pathdb.util.ExternalDatabaseConstants" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
@@ -473,7 +474,7 @@ enable Javascript support within your web browser.
             String uri = link.getWebLink();
             if (uri != null && uri.length() > 0) {
                 //  Hide GO Links for now
-                if (!dbRecord.getMasterTerm().equalsIgnoreCase("GO")) {
+                if (!dbRecord.getMasterTerm().equalsIgnoreCase(ExternalDatabaseConstants.GO)) {
                     linksMap.put(linkStr, new String("<a href=\"" + uri + "\">" + linkStr + "</a>"));
                 }
             }
@@ -505,7 +506,7 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id +
 						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
-                        "\"" +  
+                        "\"" +
                         " id=\"" + id +"\"" +
 						" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
 						">View in Cytoscape</a>");
