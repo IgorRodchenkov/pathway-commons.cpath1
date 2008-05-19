@@ -4,6 +4,7 @@ import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.file.UniProtFileUtil;
 import org.mskcc.pathdb.util.file.FileUtil;
+import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.biopax.paxtools.model.BioPAXFactory;
 import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.model.Model;
@@ -81,6 +82,7 @@ public class UniProtToBioPax {
                     StringBuffer comments = (StringBuffer) dataElements.get("CC");
                     StringBuffer geneName = (StringBuffer) dataElements.get("GN");
                     StringBuffer acNames = (StringBuffer) dataElements.get("AC");
+                    StringBuffer xrefs = (StringBuffer) dataElements.get("DR");
 
                     currentProtein = bpFactory.createProtein();
                     String idParts[] = id.toString().split("\\s");
@@ -93,9 +95,10 @@ public class UniProtToBioPax {
                     setComments (comments.toString(), currentProtein);
                     setGeneName (geneName.toString(), currentProtein, bpModel);
                     setUniProtAccessionNumbers(acNames.toString(), currentProtein, bpModel);
-                    // TODO:  Add UniProt Accession Numbers
+                    
                     // TODO:  Add Ref Seq IDs
                     // TODO:  Add Entrez Gene IDs
+                    setXRefs (xrefs.toString(), currentProtein, bpModel);
                     bpModel.add(currentProtein);
                     dataElements = new HashMap();
                 } else {
@@ -179,20 +182,24 @@ public class UniProtToBioPax {
     private void setUniProtAccessionNumbers (String acNames, protein currentProtein,
             Model bpModel) {
         String acList[] = acNames.split(";");
-        Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
         for (int i=0; i<acList.length; i++) {
             String ac = acList[i].trim();
-            String rdfId = "UNIPROT_AC_" + ac;
-            if (bpMap.containsKey(rdfId)) {
-                unificationXref xref = (unificationXref) bpMap.get(rdfId);
-                currentProtein.addXREF(xref);
-            } else {
-                unificationXref xref = bpFactory.createUnificationXref();
-                xref.setRDFId(rdfId);
-                xref.setDB("UNIPROT");
-                xref.setID(ac);
-                bpModel.add(xref);
-                currentProtein.addXREF(xref);
+            setUnificationXRef(ExternalDatabaseConstants.UNIPROT, ac, currentProtein, bpModel);
+        }
+    }
+
+    private void setXRefs (String acNames, protein currentProtein,
+            Model bpModel) {
+        String xrefList[] = acNames.split("\\.");
+
+        for (int i=0; i<xrefList.length; i++) {
+            String xref = xrefList[i].trim();
+            if (xref.startsWith("GeneID")) {
+                xref = xref.replaceAll("; -.", "");
+                String parts[] = xref.split(";");
+                String entrezGeneId = parts[1];
+                setRelationshipXRef(ExternalDatabaseConstants.ENTREZ_GENE,
+                        entrezGeneId, currentProtein, bpModel);
             }
         }
     }
@@ -204,19 +211,8 @@ public class UniProtToBioPax {
             // Set HUGO Gene Name
             if (subParts[0].trim().equals("Name")) {
                 geneName = subParts[1];
-                Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
-                String rdfId = "HUGO_GENE_SYMBOL_" + geneName;
-                if (bpMap.containsKey(rdfId)) {
-                    relationshipXref xref = (relationshipXref) bpMap.get(rdfId);
-                    currentProtein.addXREF(xref);
-                } else {
-                    relationshipXref xref = bpFactory.createRelationshipXref();
-                    xref.setRDFId(rdfId);
-                    xref.setDB("HUGO_GENE_SYMBOL");
-                    xref.setID(geneName);
-                    bpModel.add(xref);
-                    currentProtein.addXREF(xref);
-                }
+                setRelationshipXRef(ExternalDatabaseConstants.HUGO_GENE_SYMBOL,
+                        geneName, currentProtein, bpModel);
             } else if (subParts[0].trim().equals("Synonyms")) {
                 String synList[] = subParts[1].split(",");
                 for (int j=0; j<synList.length; j++) {
@@ -224,6 +220,43 @@ public class UniProtToBioPax {
                     currentProtein.addSYNONYMS(currentSynonym.trim());
                 }
             }
+        }
+    }
+
+
+    private void setRelationshipXRef(String dbName, String id, protein currentProtein,
+            Model bpModel) {
+        id = id.trim();
+        Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
+        String rdfId = dbName + "_" +  id;
+        if (bpMap.containsKey(rdfId)) {
+            relationshipXref rXRef = (relationshipXref) bpMap.get(rdfId);
+            currentProtein.addXREF(rXRef);
+        } else {
+            relationshipXref rXRef = bpFactory.createRelationshipXref();
+            rXRef.setRDFId(rdfId);
+            rXRef.setDB(ExternalDatabaseConstants.ENTREZ_GENE);
+            rXRef.setID(id);
+            bpModel.add(rXRef);
+            currentProtein.addXREF(rXRef);
+        }
+    }
+
+    private void setUnificationXRef(String dbName, String id, protein currentProtein,
+            Model bpModel) {
+        id = id.trim();
+        Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
+        String rdfId = dbName + "_" +  id;
+        if (bpMap.containsKey(rdfId)) {
+            unificationXref rXRef = (unificationXref) bpMap.get(rdfId);
+            currentProtein.addXREF(rXRef);
+        } else {
+            unificationXref rXRef = bpFactory.createUnificationXref();
+            rXRef.setRDFId(rdfId);
+            rXRef.setDB(ExternalDatabaseConstants.ENTREZ_GENE);
+            rXRef.setID(id);
+            bpModel.add(rXRef);
+            currentProtein.addXREF(rXRef);
         }
     }
 
