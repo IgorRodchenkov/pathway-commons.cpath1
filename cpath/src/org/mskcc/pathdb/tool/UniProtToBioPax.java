@@ -79,6 +79,8 @@ public class UniProtToBioPax {
                     StringBuffer organismName = (StringBuffer) dataElements.get("OS");
                     StringBuffer organismTaxId = (StringBuffer) dataElements.get("OX");
                     StringBuffer comments = (StringBuffer) dataElements.get("CC");
+                    StringBuffer geneName = (StringBuffer) dataElements.get("GN");
+
                     currentProtein = bpFactory.createProtein();
                     String idParts[] = id.toString().split("\\s");
                     String shortName = idParts[0];
@@ -88,8 +90,7 @@ public class UniProtToBioPax {
                     setOrganism(organismName.toString(), organismTaxId.toString(),
                             currentProtein, bpModel);
                     setComments (comments.toString(), currentProtein);
-
-                    // TODO:  Add HUGO Gene Name, "GN"
+                    setGeneName (geneName.toString(), currentProtein, bpModel);
                     // TODO:  Add UniProt Accession Numbers
                     // TODO:  Add Ref Seq IDs
                     // TODO:  Add Entrez Gene IDs
@@ -171,6 +172,26 @@ public class UniProtToBioPax {
         HashSet <String> commentSet = new HashSet();
         commentSet.add(reducedComments.toString());
         currentProtein.setCOMMENT(commentSet);
+    }
+
+    private void setGeneName (String geneName, protein currentProtein, Model bpModel) {
+        // TODO:  Add support for synonyms...
+        String parts[] = geneName.split(";");
+        parts = parts[0].split("=");
+        geneName = parts[1];
+        Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
+        String rdfId = "HUGO_GENE_SYMBOL_" + geneName;
+        if (bpMap.containsKey(rdfId)) {
+            relationshipXref xref = (relationshipXref) bpMap.get(rdfId);
+            currentProtein.addXREF(xref);
+        } else {
+            relationshipXref xref = bpFactory.createRelationshipXref();
+            xref.setRDFId(rdfId);
+            xref.setDB("HUGO_GENE_SYMBOL");
+            xref.setID(geneName);
+            bpModel.add(xref);
+            currentProtein.addXREF(xref);
+        }
     }
 
     /**
