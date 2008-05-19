@@ -80,6 +80,7 @@ public class UniProtToBioPax {
                     StringBuffer organismTaxId = (StringBuffer) dataElements.get("OX");
                     StringBuffer comments = (StringBuffer) dataElements.get("CC");
                     StringBuffer geneName = (StringBuffer) dataElements.get("GN");
+                    StringBuffer acNames = (StringBuffer) dataElements.get("AC");
 
                     currentProtein = bpFactory.createProtein();
                     String idParts[] = id.toString().split("\\s");
@@ -91,6 +92,7 @@ public class UniProtToBioPax {
                             currentProtein, bpModel);
                     setComments (comments.toString(), currentProtein);
                     setGeneName (geneName.toString(), currentProtein, bpModel);
+                    setUniProtAccessionNumbers(acNames.toString(), currentProtein, bpModel);
                     // TODO:  Add UniProt Accession Numbers
                     // TODO:  Add Ref Seq IDs
                     // TODO:  Add Entrez Gene IDs
@@ -172,6 +174,27 @@ public class UniProtToBioPax {
         HashSet <String> commentSet = new HashSet();
         commentSet.add(reducedComments.toString());
         currentProtein.setCOMMENT(commentSet);
+    }
+
+    private void setUniProtAccessionNumbers (String acNames, protein currentProtein,
+            Model bpModel) {
+        String acList[] = acNames.split(";");
+        Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
+        for (int i=0; i<acList.length; i++) {
+            String ac = acList[i].trim();
+            String rdfId = "UNIPROT_AC_" + ac;
+            if (bpMap.containsKey(rdfId)) {
+                unificationXref xref = (unificationXref) bpMap.get(rdfId);
+                currentProtein.addXREF(xref);
+            } else {
+                unificationXref xref = bpFactory.createUnificationXref();
+                xref.setRDFId(rdfId);
+                xref.setDB("UNIPROT");
+                xref.setID(ac);
+                bpModel.add(xref);
+                currentProtein.addXREF(xref);
+            }
+        }
     }
 
     private void setGeneName (String geneName, protein currentProtein, Model bpModel) {
