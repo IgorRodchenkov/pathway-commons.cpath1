@@ -24,13 +24,18 @@ import java.lang.reflect.InvocationTargetException;
  * Utility class for parsing UniProt Flat Text Files, and converting into appropriate
  * BioPAX Physical Entities.
  * // TODO:  Add JUnit Test.
+ * // TODO:  Java Doc Everything.
  *
  * @author Ethan Cerami.
  */
 public class UniProtToBioPax {
-    private int numPeRecords = 0;
     private ProgressMonitor pMonitor;
     private static Level2Factory bpFactory = new Level2FactoryImpl();
+    private static final int RECORDS_PER_BATCH = 1000;
+    private int totalNumProteinsProcessed = 0;
+    private int numProteinsInCurrentBatch = 0;
+    private int batchNumber = 0;
+    private Model bpModel;
 
     /**
      * Empty Arg Constructor.
@@ -51,24 +56,24 @@ public class UniProtToBioPax {
      * Parses a UniProt File and converts to BioPAX.
      *
      * @param uniProtFile       UniProt Flat File.
-     * @param bpOutFile         BioPAX Output File.
      * @return                  Number of physical entity records created.
      * @throws java.io.IOException      Error Reading File.
      * @throws IllegalAccessException   BioPAX Output Error.
      * @throws InvocationTargetException BioPAX Output Error.
      */
-    public int convertToBioPax(File uniProtFile, File bpOutFile) throws IOException,
+    public int convertToBioPax(File uniProtFile) throws IOException,
             IllegalAccessException, InvocationTargetException {
         FileReader reader= null;
-        FileWriter acWriter = null;
+
         try {
             reader = new FileReader (uniProtFile);
             BufferedReader bufferedReader = new BufferedReader(reader);
             String line = bufferedReader.readLine();
 
             protein currentProtein = null;
-            Model bpModel = bpFactory.createModel();
+            bpModel = bpFactory.createModel();
             HashMap dataElements = new HashMap();
+            numProteinsInCurrentBatch = 0;
             while (line != null) {
                 if (pMonitor != null) {
                     pMonitor.incrementCurValue();
@@ -98,6 +103,11 @@ public class UniProtToBioPax {
                     setXRefs (xrefs.toString(), currentProtein, bpModel);
                     bpModel.add(currentProtein);
                     dataElements = new HashMap();
+                    numProteinsInCurrentBatch++;
+                    
+                    if (numProteinsInCurrentBatch > RECORDS_PER_BATCH) {
+                        streamToFile(uniProtFile);
+                    }
                 } else {
                     String key = line.substring (0, 2);
                     String data = line.substring(5);
@@ -116,21 +126,30 @@ public class UniProtToBioPax {
                 }
                 line = bufferedReader.readLine();
             }
-            //  TODO:  Output to file, not String
-            //  TODO:  Do batch export of ~100 proteins in each file
-            SimpleExporter exporter = new SimpleExporter(BioPAXLevel.L2);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            exporter.convertToOWL(bpModel, out);
-            System.out.println (out.toString());
+            if (numProteinsInCurrentBatch > 0) {
+                streamToFile(uniProtFile);
+            }
         } finally {
             if (reader != null) {
                 reader.close();
             }
-            if (acWriter != null) {
-                acWriter.close();
-            }
         }
-        return numPeRecords;
+        return totalNumProteinsProcessed;
+    }
+
+    private void streamToFile(File uniProtFile) throws IOException,
+            IllegalAccessException, InvocationTargetException {
+        File bpOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile,
+                "bp_" + batchNumber);
+        System.out.println ("Writing to:  " + bpOutFile.getAbsolutePath());
+        FileOutputStream out = new FileOutputStream (bpOutFile);
+        SimpleExporter exporter = new SimpleExporter(BioPAXLevel.L2);
+        exporter.convertToOWL(bpModel, out);
+        out.close();
+        totalNumProteinsProcessed += numProteinsInCurrentBatch;
+        numProteinsInCurrentBatch = 0;
+        bpModel = bpFactory.createModel();
+        batchNumber++;
     }
 
     private void setOrganism(String organismName, String organismTaxId,
@@ -284,15 +303,12 @@ public class UniProtToBioPax {
         pMonitor.setConsoleMode(true);
 
         File uniProtFile = new File (args[0]);
-        File bpOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile, "uniprot_bp");
-
         System.out.println ("Reading data from:  " + uniProtFile.getAbsolutePath());
         int numLines = FileUtil.getNumLines(uniProtFile);
         System.out.println (" --> total number of lines:  " + numLines);
         pMonitor.setMaxValue(numLines);
-        System.out.println ("Writing out to:  " + bpOutFile.getAbsolutePath());
         UniProtToBioPax parser = new UniProtToBioPax(pMonitor);
-        int numRecords = parser.convertToBioPax(uniProtFile, bpOutFile);
-        System.out.println ("Total number of physical entity records created:  " + numRecords);
+        int numRecords = parser.convertToBioPax(uniProtFile);
+        System.out.println ("Total number of protein records created:  " + numRecords);
     }
 }
