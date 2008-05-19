@@ -175,22 +175,32 @@ public class UniProtToBioPax {
     }
 
     private void setGeneName (String geneName, protein currentProtein, Model bpModel) {
-        // TODO:  Add support for synonyms...
         String parts[] = geneName.split(";");
-        parts = parts[0].split("=");
-        geneName = parts[1];
-        Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
-        String rdfId = "HUGO_GENE_SYMBOL_" + geneName;
-        if (bpMap.containsKey(rdfId)) {
-            relationshipXref xref = (relationshipXref) bpMap.get(rdfId);
-            currentProtein.addXREF(xref);
-        } else {
-            relationshipXref xref = bpFactory.createRelationshipXref();
-            xref.setRDFId(rdfId);
-            xref.setDB("HUGO_GENE_SYMBOL");
-            xref.setID(geneName);
-            bpModel.add(xref);
-            currentProtein.addXREF(xref);
+        for (int i=0; i<parts.length; i++) {
+            String subParts[] = parts[i].split("=");
+            // Set HUGO Gene Name
+            if (subParts[0].trim().equals("Name")) {
+                geneName = subParts[1];
+                Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
+                String rdfId = "HUGO_GENE_SYMBOL_" + geneName;
+                if (bpMap.containsKey(rdfId)) {
+                    relationshipXref xref = (relationshipXref) bpMap.get(rdfId);
+                    currentProtein.addXREF(xref);
+                } else {
+                    relationshipXref xref = bpFactory.createRelationshipXref();
+                    xref.setRDFId(rdfId);
+                    xref.setDB("HUGO_GENE_SYMBOL");
+                    xref.setID(geneName);
+                    bpModel.add(xref);
+                    currentProtein.addXREF(xref);
+                }
+            } else if (subParts[0].trim().equals("Synonyms")) {
+                String synList[] = subParts[1].split(",");
+                for (int j=0; j<synList.length; j++) {
+                    String currentSynonym = synList[j];
+                    currentProtein.addSYNONYMS(currentSynonym.trim());
+                }
+            }
         }
     }
 
