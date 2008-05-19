@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Utility class for parsing UniProt Flat Text Files, and converting into appropriate
  * BioPAX Physical Entities.
+ * // TODO:  Add JUnit Test.
  *
  * @author Ethan Cerami.
  */
@@ -85,6 +86,11 @@ public class UniProtToBioPax {
                     currentProtein.setNAME(name.toString());
                     setOrganism(organism.toString(), currentProtein, bpModel);
                     setComments (comments.toString(), currentProtein);
+
+                    // TODO:  Add HUGO Gene Name, "GN"
+                    // TODO:  Add UniProt Accession Numbers
+                    // TODO:  Add Ref Seq IDs
+                    // TODO:  Add Entrez Gene IDs
                     bpModel.add(currentProtein);
                     dataElements = new HashMap();
                 } else {
@@ -105,6 +111,8 @@ public class UniProtToBioPax {
                 }
                 line = bufferedReader.readLine();
             }
+            //  TODO:  Output to file, not String
+            //  TODO:  Do batch export of ~100 proteins in each file
             SimpleExporter exporter = new SimpleExporter(BioPAXLevel.L2);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             exporter.convertToOWL(bpModel, out);
@@ -121,6 +129,7 @@ public class UniProtToBioPax {
     }
 
     private void setOrganism(String organism, protein currentProtein, Model bpModel) {
+        //  TODO:  Add other organisms...
         if (organism.startsWith("Homo sapiens")) {
             Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
             String rdfId = "BIO_SOURCE_NCBI_9606";
