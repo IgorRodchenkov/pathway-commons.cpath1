@@ -76,7 +76,8 @@ public class UniProtToBioPax {
                 if (line.startsWith ("//")) {
                     StringBuffer name = (StringBuffer) dataElements.get("DE");
                     StringBuffer id = (StringBuffer) dataElements.get("ID");
-                    StringBuffer organism = (StringBuffer) dataElements.get("OS");
+                    StringBuffer organismName = (StringBuffer) dataElements.get("OS");
+                    StringBuffer organismTaxId = (StringBuffer) dataElements.get("OX");
                     StringBuffer comments = (StringBuffer) dataElements.get("CC");
                     currentProtein = bpFactory.createProtein();
                     String idParts[] = id.toString().split("\\s");
@@ -84,7 +85,8 @@ public class UniProtToBioPax {
                     currentProtein.setSHORT_NAME(shortName);
                     currentProtein.setRDFId(shortName);
                     currentProtein.setNAME(name.toString());
-                    setOrganism(organism.toString(), currentProtein, bpModel);
+                    setOrganism(organismName.toString(), organismTaxId.toString(),
+                            currentProtein, bpModel);
                     setComments (comments.toString(), currentProtein);
 
                     // TODO:  Add HUGO Gene Name, "GN"
@@ -128,30 +130,30 @@ public class UniProtToBioPax {
         return numPeRecords;
     }
 
-    private void setOrganism(String organism, protein currentProtein, Model bpModel) {
-        //  TODO:  Add other organisms...
-        if (organism.startsWith("Homo sapiens")) {
-            Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
-            String rdfId = "BIO_SOURCE_NCBI_9606";
-            if (bpMap.containsKey(rdfId)) {
-                bioSource currentBioSource = (bioSource) bpMap.get(rdfId);
-                currentProtein.setORGANISM(currentBioSource);
-            } else {
-                bioSource currentBioSource = bpFactory.createBioSource();
-                currentBioSource.setNAME("Homo sapiens");
-                unificationXref taxonXref = bpFactory.createUnificationXref();
-                taxonXref.setDB("NCBI_taxonomy");
-                taxonXref.setID("9606");
-                taxonXref.setRDFId("TAXON_NCBI_9606");
-                currentBioSource.setTAXON_XREF(taxonXref);
-                currentBioSource.setRDFId(rdfId);
-                currentProtein.setORGANISM(currentBioSource);
-                bpModel.add(currentBioSource);
-                bpModel.add(taxonXref);
-            }
+    private void setOrganism(String organismName, String organismTaxId,
+            protein currentProtein, Model bpModel) {
+        organismTaxId = organismTaxId.replaceAll(";", "");
+        String parts[] = organismTaxId.split("=");
+        String taxId = parts[1];
+        parts = organismName.split("\\(");
+        String name = parts[0].trim();
+        Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
+        String rdfId = "BIO_SOURCE_NCBI_" + taxId;
+        if (bpMap.containsKey(rdfId)) {
+            bioSource currentBioSource = (bioSource) bpMap.get(rdfId);
+            currentProtein.setORGANISM(currentBioSource);
         } else {
-            throw new IllegalArgumentException ("This parser currently only handles " +
-                    "human data.  Got:  " + organism);
+            bioSource currentBioSource = bpFactory.createBioSource();
+            currentBioSource.setNAME(name);
+            unificationXref taxonXref = bpFactory.createUnificationXref();
+            taxonXref.setDB("NCBI_taxonomy");
+            taxonXref.setID(taxId);
+            taxonXref.setRDFId("TAXON_NCBI_" + taxId);
+            currentBioSource.setTAXON_XREF(taxonXref);
+            currentBioSource.setRDFId(rdfId);
+            currentProtein.setORGANISM(currentBioSource);
+            bpModel.add(currentBioSource);
+            bpModel.add(taxonXref);
         }
     }
 
@@ -175,6 +177,8 @@ public class UniProtToBioPax {
      * Command Line Usage.
      * @param args          Must include UniProt File Name.
      * @throws java.io.IOException  IO Error.
+     * // TODO:  Set up command line tool.
+     * // TODO:  Verify that BioPAX created via this method can be imported into cPath.
      */
     public static void main(String[] args) throws IOException, IllegalAccessException,
             InvocationTargetException {
