@@ -95,9 +95,6 @@ public class UniProtToBioPax {
                     setComments (comments.toString(), currentProtein);
                     setGeneName (geneName.toString(), currentProtein, bpModel);
                     setUniProtAccessionNumbers(acNames.toString(), currentProtein, bpModel);
-                    
-                    // TODO:  Add Ref Seq IDs
-                    // TODO:  Add Entrez Gene IDs
                     setXRefs (xrefs.toString(), currentProtein, bpModel);
                     bpModel.add(currentProtein);
                     dataElements = new HashMap();
@@ -200,6 +197,16 @@ public class UniProtToBioPax {
                 String entrezGeneId = parts[1];
                 setRelationshipXRef(ExternalDatabaseConstants.ENTREZ_GENE,
                         entrezGeneId, currentProtein, bpModel);
+            } else if (xref.startsWith("RefSeq")) {
+                xref = xref.replaceAll("; -.", "");
+                String parts[] = xref.split(";");
+                String refSeqId = parts[1];
+                if (refSeqId.contains(".")) {
+                    parts = refSeqId.split("\\.");
+                    refSeqId = parts[0];
+                }
+                setRelationshipXRef(ExternalDatabaseConstants.REF_SEQ,
+                        refSeqId, currentProtein, bpModel);
             }
         }
     }
