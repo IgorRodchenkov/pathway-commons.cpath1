@@ -109,5 +109,6 @@ public class ReactomeCommentUtil {
         reactomeWordHack.add("PTM:");
         reactomeWordHack.add("INDUCTION:");
         reactomeWordHack.add("DISEASE:");
+        reactomeWordHack.add("COPYRIGHT:");
     }
 }
