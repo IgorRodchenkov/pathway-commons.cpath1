@@ -195,6 +195,11 @@ public class UniProtToBioPax {
                 reducedComments.append (currentComment);
             }
         }
+        if (reducedComments.length() > 0) {
+            reducedComments.append (" COPYRIGHT:  Protein annotation is derived from the "
+                    + "UniProt Consortium (http://www.uniprot.org/).  Distributed under "
+                    + "the Creative Commons Attribution-NoDerivs License.");
+        }
         HashSet <String> commentSet = new HashSet();
         commentSet.add(reducedComments.toString());
         currentProtein.setCOMMENT(commentSet);
@@ -309,7 +314,6 @@ public class UniProtToBioPax {
      * Command Line Usage.
      * @param args          Must include UniProt File Name.
      * @throws java.io.IOException  IO Error.
-     * // TODO:  Set up command line tool.
      * // TODO:  Verify that BioPAX created via this method can be imported into cPath.
      */
     public static void main(String[] args) throws IOException, IllegalAccessException,
@@ -329,5 +333,7 @@ public class UniProtToBioPax {
         UniProtToBioPax parser = new UniProtToBioPax(pMonitor);
         int numRecords = parser.convertToBioPax(uniProtFile);
         System.out.println ("Total number of protein records processed:  " + numRecords);
+        System.out.println ("All files written to:  "
+                + uniProtFile.getParentFile().getAbsolutePath());
     }
 }
