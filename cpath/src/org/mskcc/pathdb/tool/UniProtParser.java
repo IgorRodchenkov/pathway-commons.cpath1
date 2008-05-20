@@ -109,7 +109,7 @@ public class UniProtParser {
      */
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
-            System.out.println ("command line usage:  uniprot.pl <uniprot_file.dat>");
+            System.out.println ("command line usage:  uniprot2ids.pl <uniprot_file.dat>");
             System.exit(1);
         }
         ProgressMonitor pMonitor = new ProgressMonitor();
