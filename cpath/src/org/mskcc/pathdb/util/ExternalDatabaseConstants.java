@@ -25,12 +25,17 @@ public class ExternalDatabaseConstants {
     /**
      * Gene Ontology.
      */
-    public static String GO = "GO";
+    public static String GO = "GENE_ONTOLOGY";
 
     /**
      * Entrez Gene.
      */
     public static String ENTREZ_GENE = "ENTREZ_GENE";
+
+    /**
+     * HUGO Gene Symbol.
+     */
+    public static String HUGO_GENE_SYMBOL = "HUGO_GENE_SYMBOL";
 
     /**
      * Internal Database ID. 
