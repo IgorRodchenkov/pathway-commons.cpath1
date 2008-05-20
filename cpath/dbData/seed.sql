@@ -123,7 +123,7 @@ INSERT INTO `external_db_cv` VALUES (53, 9, 'DIP', 1);
 INSERT INTO `external_db_cv` VALUES (54, 10, 'PFAM', 1);
 INSERT INTO `external_db_cv` VALUES (55, 11, 'GO', 0);
 INSERT INTO `external_db_cv` VALUES (68, 11, 'GENE ONTOLOGY', 0);
-INSERT INTO `external_db_cv` VALUES (91, 11, 'GENE_ONTOLOGY', 1);
+INSERT INTO `external_db_cv` VALUES (92, 11, 'GENE_ONTOLOGY', 1);
 
 INSERT INTO `external_db_cv` VALUES (56, 12, 'AFFYMETRIX', 1);
 INSERT INTO `external_db_cv` VALUES (57, 13, 'INTACT', 1);
