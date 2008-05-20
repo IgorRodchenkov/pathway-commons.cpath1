@@ -23,8 +23,8 @@ public class TestUniProtParser extends TestCase {
     public void testUniProtParser() throws IOException {
         UniProtParser parser = new UniProtParser();
         File inFile = new File ("testData/uniprot/uniprot_test_human.dat");
-        File acOutFile = UniProtFileUtil.getOrganismSpecificFileName(inFile, "uniprot_ac");
-        File refSeqOutFile = UniProtFileUtil.getOrganismSpecificFileName(inFile, "refseq");
+        File acOutFile = UniProtFileUtil.getOrganismSpecificFileName(inFile, "uniprot_ac", "txt");
+        File refSeqOutFile = UniProtFileUtil.getOrganismSpecificFileName(inFile, "refseq", "txt");
         int numRecords = parser.createIdMappingFiles(inFile, acOutFile, refSeqOutFile);
         assertEquals (19, numRecords);
 
