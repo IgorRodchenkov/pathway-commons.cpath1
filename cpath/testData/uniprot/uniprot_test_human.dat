@@ -440,7 +440,7 @@ DT   01-OCT-1993, integrated into UniProtKB/Swiss-Prot.
 DT   23-JAN-2007, sequence version 4.
 DT   08-APR-2008, entry version 90.
 DE   14-3-3 protein eta (Protein AS1).
-GN   Name=YWHAH; Synonyms=YWHA1;
+GN   Name=YWHAH; Synonyms=YWHA1, YWHA1_X, YWHA1_Y, YWHA1_Z;
 OS   Homo sapiens (Human).
 OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
 OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
