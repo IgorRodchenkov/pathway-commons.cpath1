@@ -17,11 +17,11 @@ public class TestUniProtFileUtil extends TestCase {
      */
     public void testUnitProtFileUtil () {
         File file = new File ("testData/uniprot/uniprot_test_human.dat");
-        File target = UniProtFileUtil.getOrganismSpecificFileName(file, "uniprot_ac");
+        File target = UniProtFileUtil.getOrganismSpecificFileName(file, "uniprot_ac", "txt");
         assertEquals (target.getName(), "uniprot_ac_human.txt");
         try {
             file = new File ("testData/uniprot/uniprot.dat");
-            target = UniProtFileUtil.getOrganismSpecificFileName(file, "entrez_gene");
+            target = UniProtFileUtil.getOrganismSpecificFileName(file, "entrez_gene", "txt");
             fail ("Illegal Argument Exception should have been thrown.");
         } catch (IllegalArgumentException e) {
         }
