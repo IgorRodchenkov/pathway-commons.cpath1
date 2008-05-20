@@ -116,8 +116,10 @@ public class UniProtParser {
         pMonitor.setConsoleMode(true);
 
         File uniProtFile = new File (args[0]);
-        File acOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile, "uniprot_ac");
-        File refSeqOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile, "refseq");
+        File acOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile, "uniprot_ac",
+                "txt");
+        File refSeqOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile, "refseq",
+                "txt");
 
         System.out.println ("Reading data from:  " + uniProtFile.getAbsolutePath());
         int numLines = FileUtil.getNumLines(uniProtFile);

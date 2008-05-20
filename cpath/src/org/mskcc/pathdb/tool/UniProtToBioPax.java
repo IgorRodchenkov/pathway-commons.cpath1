@@ -5,7 +5,6 @@ import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.file.UniProtFileUtil;
 import org.mskcc.pathdb.util.file.FileUtil;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
-import org.biopax.paxtools.model.BioPAXFactory;
 import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.model.BioPAXElement;
@@ -14,7 +13,6 @@ import org.biopax.paxtools.impl.level2.Level2FactoryImpl;
 import org.biopax.paxtools.io.simpleIO.SimpleExporter;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
@@ -23,9 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Utility class for parsing UniProt Flat Text Files, and converting into appropriate
  * BioPAX Physical Entities.
- * // TODO:  Add JUnit Test.
- * // TODO:  Java Doc Everything.
- *
+  *
  * @author Ethan Cerami.
  */
 public class UniProtToBioPax {
@@ -98,7 +94,7 @@ public class UniProtToBioPax {
                     setOrganism(organismName.toString(), organismTaxId.toString(),
                             currentProtein, bpModel);
                     setComments (comments.toString(), currentProtein);
-                    setGeneName (geneName.toString(), currentProtein, bpModel);
+                    setGeneSymbolAndSynonyms(geneName.toString(), currentProtein, bpModel);
                     setUniProtAccessionNumbers(acNames.toString(), currentProtein, bpModel);
                     setXRefs (xrefs.toString(), currentProtein, bpModel);
                     bpModel.add(currentProtein);
@@ -137,11 +133,13 @@ public class UniProtToBioPax {
         return totalNumProteinsProcessed;
     }
 
+    /**
+     * Streams BioPAX to a file via PaxTools.
+     */
     private void streamToFile(File uniProtFile) throws IOException,
             IllegalAccessException, InvocationTargetException {
         File bpOutFile = UniProtFileUtil.getOrganismSpecificFileName(uniProtFile,
-                "bp_" + batchNumber);
-        System.out.println ("Writing to:  " + bpOutFile.getAbsolutePath());
+                "bp_" + batchNumber, "owl");
         FileOutputStream out = new FileOutputStream (bpOutFile);
         SimpleExporter exporter = new SimpleExporter(BioPAXLevel.L2);
         exporter.convertToOWL(bpModel, out);
@@ -152,6 +150,9 @@ public class UniProtToBioPax {
         batchNumber++;
     }
 
+    /**
+     * Sets the Current Organism Information.
+     */
     private void setOrganism(String organismName, String organismTaxId,
             protein currentProtein, Model bpModel) {
         organismTaxId = organismTaxId.replaceAll(";", "");
@@ -179,12 +180,16 @@ public class UniProtToBioPax {
         }
     }
 
+    /**
+     * Sets Multiple Comments.
+     */
     private void setComments (String comments, protein currentProtein) {
         String commentParts[] = comments.split("-!- ");
         StringBuffer reducedComments = new StringBuffer();
         for (int i=0; i<commentParts.length; i++) {
             String currentComment = commentParts[i];
             //  Filter out the Interaction comments.
+            //  We don't want these, as cPath itself will contain the interactions.
             if (!currentComment.startsWith("INTERACTION")) {
                 currentComment = currentComment.replaceAll("     ", " ");
                 reducedComments.append (currentComment);
@@ -195,6 +200,9 @@ public class UniProtToBioPax {
         currentProtein.setCOMMENT(commentSet);
     }
 
+    /**
+     * Sets UniProt Accession Numbers (can be 0,1 or N).
+     */
     private void setUniProtAccessionNumbers (String acNames, protein currentProtein,
             Model bpModel) {
         String acList[] = acNames.split(";");
@@ -204,6 +212,9 @@ public class UniProtToBioPax {
         }
     }
 
+    /**
+     * Sets Multiple Types of XRefs, e.g. Entrez Gene ID and RefSeq.
+     */
     private void setXRefs (String acNames, protein currentProtein,
             Model bpModel) {
         String xrefList[] = acNames.split("\\.");
@@ -230,7 +241,10 @@ public class UniProtToBioPax {
         }
     }
 
-    private void setGeneName (String geneName, protein currentProtein, Model bpModel) {
+    /**
+     * Sets the HUGO Gene Symbol and Synonyms.
+     */
+    private void setGeneSymbolAndSynonyms(String geneName, protein currentProtein, Model bpModel) {
         String parts[] = geneName.split(";");
         for (int i=0; i<parts.length; i++) {
             String subParts[] = parts[i].split("=");
@@ -249,7 +263,9 @@ public class UniProtToBioPax {
         }
     }
 
-
+    /**
+     * Sets Relationship XRefs.
+     */
     private void setRelationshipXRef(String dbName, String id, protein currentProtein,
             Model bpModel) {
         id = id.trim();
@@ -261,13 +277,16 @@ public class UniProtToBioPax {
         } else {
             relationshipXref rXRef = bpFactory.createRelationshipXref();
             rXRef.setRDFId(rdfId);
-            rXRef.setDB(ExternalDatabaseConstants.ENTREZ_GENE);
+            rXRef.setDB(dbName);
             rXRef.setID(id);
             bpModel.add(rXRef);
             currentProtein.addXREF(rXRef);
         }
     }
 
+    /**
+     * Sets Unification XRefs.
+     */
     private void setUnificationXRef(String dbName, String id, protein currentProtein,
             Model bpModel) {
         id = id.trim();
@@ -279,7 +298,7 @@ public class UniProtToBioPax {
         } else {
             unificationXref rXRef = bpFactory.createUnificationXref();
             rXRef.setRDFId(rdfId);
-            rXRef.setDB(ExternalDatabaseConstants.ENTREZ_GENE);
+            rXRef.setDB(dbName);
             rXRef.setID(id);
             bpModel.add(rXRef);
             currentProtein.addXREF(rXRef);
@@ -309,6 +328,6 @@ public class UniProtToBioPax {
         pMonitor.setMaxValue(numLines);
         UniProtToBioPax parser = new UniProtToBioPax(pMonitor);
         int numRecords = parser.convertToBioPax(uniProtFile);
-        System.out.println ("Total number of protein records created:  " + numRecords);
+        System.out.println ("Total number of protein records processed:  " + numRecords);
     }
 }
