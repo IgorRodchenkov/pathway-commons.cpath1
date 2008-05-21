@@ -264,13 +264,19 @@ background:#467aa7;
 .textright{text-align:right;}
 .important{color:#f02025; background-color:inherit; font-weight:bold;}
 
+
 .box{
-margin:0 0 20px 0;
-padding:10px;
+margin:0 0 10px 0;
+padding:3px;
 border:1px solid #c0c0c0;
 background-color:#fafbfc;
 color:#505050;
 line-height:1.5em;
+}
+
+.box h3{
+#border-bottom:2px dotted #c0c0c0;
+width:100%;
 }
 
 /**************** section styles ****************/
