@@ -419,6 +419,8 @@ enable Javascript support within your web browser.
 </div>
 </noscript>
 
+<% } else { %>
+    <div class="user_message">No pathway or interaction information available for this record.</div>
 <% } %>
 <%
     if (debugMode) {
