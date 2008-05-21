@@ -350,6 +350,10 @@ header = header.replaceAll("N/A", "");
 %>
 <h1><%= header %></h1>
 <%
+if (!bpSummary.getName().equals(bpSummary.getLabel())) { %>
+    <h1><%= bpSummary.getName() %></h1>
+<% } %>
+<%
     if (entitySummary != null && entitySummary instanceof InteractionSummary) {
         String entitySummaryStr = InteractionSummaryUtils.createInteractionSummaryStringTruncated
                 ((InteractionSummary) entitySummary);
