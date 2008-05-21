@@ -375,15 +375,16 @@ if (!bpSummary.getName().equals(bpSummary.getLabel())) { %>
         for (int j=0; j<paragraphs.length; j++) {
             if (firstParagraph == false) {
                 commentHtml.append("<div class='comment_first'>");
+                commentHtml.append("<p>");
+                commentHtml.append(paragraphs[j]);
                 if (paragraphs.length > 1 || comments.length > 1
                     || referenceLinks.size() > 0
                     || (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0)) {
                     commentHtml.append("<a title='Toggle Comments / References' onClick='toggleComments()'>");
                     commentHtml.append("<span id='toggleCommentImage' class='toggle_details'>");
-                    commentHtml.append("<img align=right src='jsp/images/open.gif'/></span></a>");
+                    commentHtml.append("more...</span></a>");
                 }
-                commentHtml.append("<p>");
-                commentHtml.append(paragraphs[j] + "</p>\n\r");
+                commentHtml.append("</p>\n\r");
                 commentHtml.append("</div>\n\r");
                 commentHtml.append("<div id='comment_remainder'>\n\r");
                 firstParagraph = true;
