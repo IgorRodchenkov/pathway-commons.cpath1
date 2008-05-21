@@ -183,7 +183,9 @@ public class ShowBioPaxRecord2 extends BaseAction {
             xdebug.logMsg (this, "Getting all parents");
             ArrayList parentList = getParentTypes(xdebug, daoLinker, id, taxId, snapshotIds,
                     record.getType());
-            typeList.addAll(parentList);
+            if (parentList != null) {
+                typeList.addAll(parentList);
+            }
         }
 
         //  get pathway roots count
@@ -284,26 +286,30 @@ public class ShowBioPaxRecord2 extends BaseAction {
             int taxId, long[] snapshotIds, CPathRecordType recordType)
             throws DaoException {
         xdebug.logMsg(this, "Determing types of all parent elements");
-        ArrayList parentTypes = daoLinker.getParentTypes(Long.parseLong(id),
-                taxId, snapshotIds, xdebug);
-		// physical interactions wont get picked up if we have a tax id,
-		// so explicitely get and add physicalInteraction records
-		if (taxId > 0 && recordType.equals(CPathRecordType.PHYSICAL_ENTITY)) {
-			parentTypes.addAll(daoLinker.getParentTypes(Long.parseLong(id), -1, snapshotIds, "physicalInteraction", xdebug));
-		}
+        if (snapshotIds.length > 0) {
+            ArrayList parentTypes = daoLinker.getParentTypes(Long.parseLong(id),
+                    taxId, snapshotIds, xdebug);
+            // physical interactions wont get picked up if we have a tax id,
+            // so explicitely get and add physicalInteraction records
+            if (taxId > 0 && recordType.equals(CPathRecordType.PHYSICAL_ENTITY)) {
+                parentTypes.addAll(daoLinker.getParentTypes(Long.parseLong(id), -1, snapshotIds, "physicalInteraction", xdebug));
+            }
 
-        if (parentTypes.size() ==0) {
-            xdebug.logMsg (this, "No parent types found");
+            if (parentTypes.size() ==0) {
+                xdebug.logMsg (this, "No parent types found");
+            }
+            for (int i=0; i<parentTypes.size(); i++) {
+                TypeCount typeCount = (TypeCount) parentTypes.get(i);
+                xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
+                    + " -->  " + typeCount.getCount() + " records");
+            }
+            //  remove control interactions, since these are now shown as the
+            //  parents of biochemical reactions.
+            removeControlInteractions (recordType, parentTypes, xdebug);
+            return parentTypes;
+        } else {
+            return null;
         }
-        for (int i=0; i<parentTypes.size(); i++) {
-            TypeCount typeCount = (TypeCount) parentTypes.get(i);
-            xdebug.logMsg(this, "Specific type:  " + typeCount.getType()
-                + " -->  " + typeCount.getCount() + " records");
-        }
-        //  remove control interactions, since these are now shown as the
-        //  parents of biochemical reactions.
-        removeControlInteractions (recordType, parentTypes, xdebug);
-        return parentTypes;
     }
 
     /**
