@@ -93,8 +93,12 @@ public class UniProtToBioPax {
                     currentProtein.setNAME(name.toString());
                     setOrganism(organismName.toString(), organismTaxId.toString(),
                             currentProtein, bpModel);
-                    setComments (comments.toString(), currentProtein);
-                    setGeneSymbolAndSynonyms(geneName.toString(), currentProtein, bpModel);
+                    if (comments != null) {
+                        setComments (comments.toString(), currentProtein);
+                    }
+                    if (geneName != null) {
+                        setGeneSymbolAndSynonyms(geneName.toString(), currentProtein, bpModel);
+                    }
                     setUniProtAccessionNumbers(acNames.toString(), currentProtein, bpModel);
                     setXRefs (xrefs.toString(), currentProtein, bpModel);
                     bpModel.add(currentProtein);
