@@ -454,12 +454,15 @@ enable Javascript support within your web browser.
 
     //  Output organism details
     if (bpSummary.getOrganism() != null) {
+        out.println ("<div class=\"box\">");
         out.println("<h3>Organism:</h3>");
         out.println("<ul><li>" + bpSummary.getOrganism() + "</li></ul>");
+        out.println ("</div>");
     }
 
     //  Output synonyms
     if (bpSummary.getSynonyms() != null && bpSummary.getSynonyms().size() > 0) {
+        out.println ("<div class=\"box\">");
         out.println("<h3>Synonyms:</h3>");
         out.println("<ul>");
         for (int i=0; i<bpSummary.getSynonyms().size(); i++) {
@@ -467,6 +470,7 @@ enable Javascript support within your web browser.
             out.println("<li>" + synonym + "</li>");
         }
         out.println("</ul>");
+        out.println("</div>");
     }
 
     //  Output external links
@@ -485,6 +489,7 @@ enable Javascript support within your web browser.
                 }
             }
         }
+        out.println ("<div class=\" box\">");
         out.println("<h3>Links:</h3>");
         out.println("<ul>");
 		// output goes here
@@ -497,13 +502,15 @@ enable Javascript support within your web browser.
 			out.println("</li>");
 		}
         out.println("</ul>");
+        out.println("</div>");
     }
 
     //  Output Cytoscape Links
     boolean pathwayType = (bpSummary.getType() != null &&
 						   bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString()));
     if (webUIBean.getWantCytoscape() && (!pathwayType || (pathwayType && showTabs))) {
-		out.println("<h3>Cytoscape:</h3>");
+        out.println ("<div class=\"box\">");
+        out.println("<h3>Cytoscape:</h3>");
 		if (pathwayType) {
 			out.println("<P><img src='jsp/images/cytoscape.png' align='ABSMIDDLE'>&nbsp;<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
@@ -534,6 +541,7 @@ enable Javascript support within your web browser.
 			//out.println("<a href=\"cytoscape.do\">(help)</a></P>");
 		}
         out.println("</P>");
+        out.println("</div>");
     }
 
 	//  Output BioPAX Links
@@ -544,13 +552,16 @@ enable Javascript support within your web browser.
             pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
             pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
             pRequest.setOutput(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
+            out.println ("<div class=\"box\">");
             out.println("<h3>Download:</h3>");
             out.println("<P>&nbsp;<img src='jsp/images/xml_doc.gif' align='ABSMIDDLE'>&nbsp;&nbsp;<a href='downloadBioPax.do?id=" + bpSummary.getRecordID() + "'>"
                 + "Download BioPAX" + "</a></P>");
+            out.println("</div>");
     }
 
 	//  Output XML_ABBREV Link (Debug Mode)
     if (debugMode) {
+        out.println ("<div class=\"box\">");
         out.println("<h3>Debug:</h3>");
         String xmlAbbrevUrl = "record.do?format=xml_abbrev&id=" + bpSummary.getRecordID();
         out.println("<ul>");

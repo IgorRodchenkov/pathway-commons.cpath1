@@ -18,7 +18,7 @@
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
     Set<Long> snapshotIdSet = settings.getSnapshotIdSet();
 %>
-<h3>Filters</h3>
+<div class="box">
 <h0>Data Source:</h0>
 <%
     out.println("<ul>");
@@ -56,3 +56,4 @@
     out.println("</ul>");
     out.println("<p>[<a href='filter.do'>Update Filter Settings</a>]</p>");
 %>
+</div>
