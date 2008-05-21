@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.22 2008-04-09 17:26:20 cerami Exp $
+// $Id: QueryUtil.java,v 1.23 2008-05-21 17:04:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -236,8 +236,10 @@ public class QueryUtil {
             Field dataSourceField = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
 			HashSet<String> dataSourcesSet = new HashSet<String>();
 			for (String fieldValue : dataSourceField.stringValue().split(" ")) {
-				dataSourcesSet.add(dao.getRecordByTerm(fieldValue).getName());
-			}
+                if (fieldValue != null && fieldValue.trim().length() > 0) {
+                    dataSourcesSet.add(dao.getRecordByTerm(fieldValue).getName());
+                }
+            }
 			dataSources.put(Long.parseLong(cpathIdField.stringValue()), dataSourcesSet);
         }
         return dataSources;
