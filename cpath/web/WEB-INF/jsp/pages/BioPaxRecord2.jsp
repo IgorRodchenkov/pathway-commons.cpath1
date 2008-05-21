@@ -336,10 +336,10 @@ YAHOO.example.init();
         YAHOO.log ("Toggling comments, show all comments:  " + showAllComments);;
         if (showAllComments) {
             YAHOO.util.Dom.setStyle(commentRemainder, 'display', 'inline');
-            toggleImage.innerHTML = "<img align=right src='jsp/images/close.gif'>";
+            toggleImage.innerHTML = "less...";
         } else {
             YAHOO.util.Dom.setStyle(commentRemainder, 'display', 'none');
-            toggleImage.innerHTML = "<img align=right src='jsp/images/open.gif'>";
+            toggleImage.innerHTML = "more...";
         }
     }
 </script>
@@ -381,7 +381,7 @@ if (!bpSummary.getName().equals(bpSummary.getLabel())) { %>
                     || referenceLinks.size() > 0
                     || (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0)) {
                     commentHtml.append("<a title='Toggle Comments / References' onClick='toggleComments()'>");
-                    commentHtml.append("<span id='toggleCommentImage' class='toggle_details'>");
+                    commentHtml.append("<span id='toggleCommentImage' class='toggle_details_text'>");
                     commentHtml.append("more...</span></a>");
                 }
                 commentHtml.append("</p>\n\r");
@@ -440,6 +440,7 @@ enable Javascript support within your web browser.
 <%
 	//  Output data source details
     if (bpSummary.getExternalDatabaseSnapshotRecord() != null) {
+        out.println ("<div class=\"box\">");
         out.println("<h3>Data Source:</h3>");
         ExternalDatabaseRecord dbRecord =
                 bpSummary.getExternalDatabaseSnapshotRecord().getExternalDatabase();
@@ -451,6 +452,7 @@ enable Javascript support within your web browser.
             out.println("<div class='data_source_logo'><img src='jsp/images/database/"
                     + "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension() + "'/></div>");
         }
+        out.println("</div>");
     }
 
     //  Output organism details
@@ -512,20 +514,22 @@ enable Javascript support within your web browser.
                 }
             }
         }
-        out.println ("<div class=\" box\">");
-        out.println("<h3>Links:</h3>");
-        out.println("<ul>");
-		// output goes here
-		ArrayList<String> linksMapKeys = new ArrayList<String>();
-		linksMapKeys.addAll(linksMap.keySet());
-		Collections.sort(linksMapKeys);
-		for (String key : linksMapKeys) {
-			out.println("<li>");
-			out.println(linksMap.get(key));
-			out.println("</li>");
-		}
-        out.println("</ul>");
-        out.println("</div>");
+        if (linksMap.keySet().size() > 0) {
+            out.println ("<div class=\" box\">");
+            out.println("<h3>Links:</h3>");
+            out.println("<ul>");
+            // output goes here
+            ArrayList<String> linksMapKeys = new ArrayList<String>();
+            linksMapKeys.addAll(linksMap.keySet());
+            Collections.sort(linksMapKeys);
+            for (String key : linksMapKeys) {
+                out.println("<li>");
+                out.println(linksMap.get(key));
+                out.println("</li>");
+            }
+            out.println("</ul>");
+            out.println("</div>");
+        }
     }
 
     //  Output Cytoscape Links
