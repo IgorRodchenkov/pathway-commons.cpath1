@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.22 2008-04-09 17:25:46 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.23 2008-05-21 17:03:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,11 +39,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.xml.XmlStripper;
-import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
-import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.model.ExternalDatabaseRecord;
-import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoSourceTracker;
@@ -239,8 +235,10 @@ public class BioPaxToIndex implements ItemToIndex {
 			if (externalDatabaseRecord == null) continue;
 
 			// get name of external db from external db record and append to buffer
-			dataSourceBuffer.append(externalDatabaseRecord.getMasterTerm() + " ");
-		}
+            if (!externalDatabaseRecord.getDbType().equals(ReferenceType.PROTEIN_UNIFICATION)) {
+                dataSourceBuffer.append(externalDatabaseRecord.getMasterTerm() + " ");
+            }
+        }
 
 		// outta here
 		return dataSourceBuffer.toString().trim();
