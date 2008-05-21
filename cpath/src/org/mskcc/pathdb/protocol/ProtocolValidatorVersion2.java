@@ -253,7 +253,7 @@ class ProtocolValidatorVersion2 {
     private ArrayList getMasterTermList
             () throws DaoException {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-        ArrayList list = dao.getAllDatabaseSnapshots();
+        ArrayList list = dao.getAllNetworkDatabaseSnapshots();
         ArrayList masterTermList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             ExternalDatabaseSnapshotRecord snapshotRecord = (ExternalDatabaseSnapshotRecord)

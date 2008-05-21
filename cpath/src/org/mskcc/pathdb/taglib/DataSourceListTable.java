@@ -3,30 +3,19 @@ package org.mskcc.pathdb.taglib;
 import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
-import org.mskcc.pathdb.servlet.CPathServlet;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.lucene.LuceneQuery;
-import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.log4j.Logger;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.util.ExternalDbSnapshotUtil;
-import org.mskcc.dataservices.util.PropertyManager;
 
-import javax.swing.*;
-import javax.imageio.ImageIO;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.IOException;
-import java.io.FileWriter;
-import java.io.File;
-import java.awt.image.BufferedImage;
-import java.awt.*;
 
 /**
  * Custom JSP Tag for displaying a list of data sources
@@ -51,11 +40,8 @@ public class DataSourceListTable extends HtmlTable {
     private void outputRecords() throws DaoException, QueryException, IOException,
 										AssemblyException, ParseException {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-        ArrayList list = dao.getAllDatabaseSnapshots();
+        ArrayList list = dao.getAllNetworkDatabaseSnapshots();
         WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-
-        //  Remove Protein Unification Snapshots before proceeding.
-        list = ExternalDbSnapshotUtil.removeProteinUnificationSnapshots(list);
         
         // process records
         if (list.size() == 0) {

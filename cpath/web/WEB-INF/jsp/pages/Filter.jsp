@@ -140,7 +140,7 @@
     <table cellpadding="0" cellspacing="5">
     <%
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-    ArrayList list = dao.getAllDatabaseSnapshots();
+    ArrayList list = dao.getAllNetworkDatabaseSnapshots();
 
     // process records
     if (list.size() == 0) {

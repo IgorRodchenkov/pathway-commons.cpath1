@@ -10,17 +10,17 @@
 <%@ page import="org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction"%>
 <%@ page import="org.mskcc.pathdb.protocol.*"%>
 <%
-	// setup some globals
+    // setup some globals
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-    ArrayList <String> supportedIdTypes = webUIBean.getSupportedIdTypes();
+    ArrayList<String> supportedIdTypes = webUIBean.getSupportedIdTypes();
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-    ArrayList snapshotList = dao.getAllDatabaseSnapshots();
+    ArrayList snapshotList = dao.getAllNetworkDatabaseSnapshots();
     String binaryInteractionRule = "a comma separated list of binary interaction rules "
-        + "that are applied when binary interactions are requested.  This parameter is "
-        + "only relevant when the " + ProtocolRequest.ARG_OUTPUT
-        + " parameter is set to " + ProtocolConstantsVersion2.FORMAT_BINARY_SIF
-        + ".  See <a href='sif_interaction_rules.do'>Exporting to the Simple Interaction Format (SIF)</a>"
-        + " for details.";
+            + "that are applied when binary interactions are requested.  This parameter is "
+            + "only relevant when the " + ProtocolRequest.ARG_OUTPUT
+            + " parameter is set to " + ProtocolConstantsVersion2.FORMAT_BINARY_SIF
+            + ".  See <a href='sif_interaction_rules.do'>Exporting to the Simple Interaction Format (SIF)</a>"
+            + " for details.";
 %>
 <h1>Web Service API:</h1>
 <p>

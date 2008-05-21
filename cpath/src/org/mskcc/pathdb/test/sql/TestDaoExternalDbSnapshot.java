@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDbSnapshot.java,v 1.3 2006-11-17 19:47:16 cerami Exp $
+// $Id: TestDaoExternalDbSnapshot.java,v 1.4 2008-05-21 17:02:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,7 +33,6 @@ package org.mskcc.pathdb.test.sql;
 
 import junit.framework.TestCase;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
-import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 
 import java.util.Date;
@@ -85,7 +84,7 @@ public class TestDaoExternalDbSnapshot extends TestCase {
         verifySnapshotRecord2 ((ExternalDatabaseSnapshotRecord) list.get(1));
 
         //  Get all snapshots
-        list = dao.getAllDatabaseSnapshots();
+        list = dao.getAllNetworkDatabaseSnapshots();
         assertEquals (2, list.size());
         verifySnapshotRecord1 ((ExternalDatabaseSnapshotRecord) list.get(0));
         verifySnapshotRecord2 ((ExternalDatabaseSnapshotRecord) list.get(1));

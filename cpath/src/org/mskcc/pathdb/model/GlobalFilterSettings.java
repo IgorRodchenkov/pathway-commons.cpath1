@@ -2,7 +2,6 @@ package org.mskcc.pathdb.model;
 
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoOrganism;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -52,7 +51,7 @@ public class GlobalFilterSettings implements Cloneable {
      */
     public GlobalFilterSettings() throws DaoException {
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-        ArrayList list = dao.getAllDatabaseSnapshots();
+        ArrayList list = dao.getAllNetworkDatabaseSnapshots();
         for (int i=0; i<list.size(); i++) {
             ExternalDatabaseSnapshotRecord snapshotRecord =
                     (ExternalDatabaseSnapshotRecord) list.get(i);

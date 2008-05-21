@@ -22,20 +22,19 @@
 <h0>Data Source:</h0>
 <%
     out.println("<ul>");
-    if (snapshotIdSet.size() == dao.getAllDatabaseSnapshots().size()) {
+    if (snapshotIdSet.size() == dao.getAllNetworkDatabaseSnapshots().size()) {
         out.println("<li>All Data Sources</li>");
-    }
-    else {
-		ArrayList<String> dsNames = new ArrayList<String>();
+    } else {
+        ArrayList<String> dsNames = new ArrayList<String>();
         for (Long snapshotId : snapshotIdSet) {
             ExternalDatabaseSnapshotRecord snapshotRecord = dao.getDatabaseSnapshot(snapshotId);
-			dsNames.add(snapshotRecord.getExternalDatabase().getName());
-		}
-		Collections.sort(dsNames);
+            dsNames.add(snapshotRecord.getExternalDatabase().getName());
+        }
+        Collections.sort(dsNames);
         for (String dsName : dsNames) {
             out.println("<li>" + dsName + "</li>");
         }
-	}
+    }
     out.println("</ul>");
 %>
 <h0>Organism:</h0>
