@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.7 2008-04-09 18:31:41 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.8 2008-05-21 17:04:37 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,6 +33,7 @@ package org.mskcc.pathdb.sql.dao;
 
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
+import org.mskcc.pathdb.model.ReferenceType;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.util.cache.EhCache;
 
@@ -236,12 +237,12 @@ public class DaoExternalDbSnapshot {
     }
 
     /**
-     * Gets all snapshots in the database.  Ordered by database name.
+     * Gets all pathway / interaction snapshots in the database.  Ordered by database name.
      *
      * @return ArrayList of ExternalDatabaseSnapshotRecord records.
      * @throws DaoException Error connecting to database.
      */
-    public ArrayList getAllDatabaseSnapshots() throws DaoException {
+    public ArrayList getAllNetworkDatabaseSnapshots() throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -280,11 +281,13 @@ public class DaoExternalDbSnapshot {
                 DaoExternalDb daoExternalDb = new DaoExternalDb();
                 ExternalDatabaseRecord dbRecord =
                         daoExternalDb.getRecordById(externalDbId);
-                ExternalDatabaseSnapshotRecord snapshotRecord =
-                        new ExternalDatabaseSnapshotRecord
-                                (dbRecord, new Date(date.getTime()), snapshotVersion);
-                snapshotRecord.setId(id);
-                snapshotList.add(snapshotRecord);
+                if (!dbRecord.getDbType().equals(ReferenceType.PROTEIN_UNIFICATION)) {
+                    ExternalDatabaseSnapshotRecord snapshotRecord =
+                            new ExternalDatabaseSnapshotRecord
+                                    (dbRecord, new Date(date.getTime()), snapshotVersion);
+                    snapshotRecord.setId(id);
+                    snapshotList.add(snapshotRecord);
+                }
             }
         } catch (SQLException e) {
             throw new DaoException(e);
