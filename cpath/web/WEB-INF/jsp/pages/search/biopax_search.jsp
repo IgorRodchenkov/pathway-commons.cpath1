@@ -117,16 +117,19 @@ private String getDetailsHtml (long cPathId, String label, String html) {
 }
 private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> recordDataSources) {
 		StringBuffer html = new StringBuffer();
-		html.append("<p><b>Data Source(s):</b></p>\n\r");
-		html.append("<ul>\n\r");
-		// loop here
-		for (String dataSource : (Set<String>)recordDataSources.get(cPathId)) {
-     		html.append("<li>");
-		    html.append(dataSource);
-		    html.append("</li>\n\r");
-		}
-		html.append("</ul>\n\r");
-		return html.toString();
+        Set<String> dataSourceSet = recordDataSources.get(cPathId);
+        if (dataSourceSet.size() > 0) {
+            html.append("<p><b>Data Source(s):</b></p>\n\r");
+            html.append("<ul>\n\r");
+            // loop here
+            for (String dataSource : (Set<String>)recordDataSources.get(cPathId)) {
+                html.append("<li>");
+                html.append(dataSource);
+                html.append("</li>\n\r");
+            }
+            html.append("</ul>\n\r");
+        }
+        return html.toString();
 }
 private String getPathwaySummaryHtml(CPathRecord record,
                                      BioPaxRecordSummary summary,
@@ -216,12 +219,14 @@ if (totalNumHits.intValue() == 0) {
 	<div class="splitcontentright">
 <%
 	Set<Integer> organismIdSet = filterSettings.getOrganismTaxonomyIdSet();
-	if (daoSnapShot.getAllDatabaseSnapshots().size() != filterSettings.getSnapshotIdSet().size() ||
+	if (daoSnapShot.getAllNetworkDatabaseSnapshots().size() != filterSettings.getSnapshotIdSet().size() ||
 		!organismIdSet.contains(GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE)) {
-		out.println("<p>No Matching Records Found. Try updating your filter settings.</p>");
+		out.println("<div class=\"user_message\"><b>Oops.  No Matching Records Found. " +
+                "Try updating your filter settings or try a different search term.</b></div></p>");
 	}
 	else {
-		out.println("<p>No Matching Records Found.</p>");
+		out.println("<div class=\"user_message\"><b>Oops.  No Matching Records Found.  Please try " +
+                "a different search term.</b></div>");
 	}
 %>
     </div>
@@ -229,16 +234,12 @@ if (totalNumHits.intValue() == 0) {
 }
 else {
     out.println("<p>");
-    out.println("Pathway Commons completed your search for \"<i>" +
-                protocolRequest.getQuery() + "</i>\" " +
-                "and found <b>" + totalNumHits.intValue() + "</b> " +
-                "relevant records:<br>");
-    //out.println("<ul>");
-	//for (String dataSource : dataSourceSet) {
-	//    out.println("<li>" + dataSource + "</li>");
-	//}
-	//out.println("</ul>");
-	//out.println("</p>");
+    String recordStr = "records";
+    if (totalNumHits.intValue() == 1) {
+        recordStr = "record";
+    }
+    out.println("Your search has found <b>" + totalNumHits.intValue() + "</b> " +
+                "relevant " + recordStr + ":<br>");
 %>
 	<div class="splitcontentleft">
     <h3>Narrow Results</h3>
