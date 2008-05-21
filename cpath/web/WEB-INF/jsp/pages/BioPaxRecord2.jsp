@@ -460,6 +460,28 @@ enable Javascript support within your web browser.
         out.println ("</div>");
     }
 
+    //  Output Gene Symbol
+    ArrayList<String> geneSymbols = new ArrayList<String>();
+    for (int i=0; i<nonReferenceLinks.size(); i++) {
+        ExternalLinkRecord link = nonReferenceLinks.get(i);
+        ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
+        String dbId = link.getLinkedToId();
+        if (dbRecord.getMasterTerm().equals(ExternalDatabaseConstants.HUGO_GENE_SYMBOL)) {
+            geneSymbols.add(dbId);
+        }
+    }
+    if (geneSymbols.size() > 0) {
+        out.println ("<div class=\"box\">");
+        out.println("<h3>Gene Symbol:</h3>");
+        out.println("<ul>");
+        for (String geneSymbol: geneSymbols) {
+            out.println("<li>" + geneSymbol + "</li>");
+        }
+        out.println("</ul>");
+        out.println("</div>");
+    }
+
+
     //  Output synonyms
     if (bpSummary.getSynonyms() != null && bpSummary.getSynonyms().size() > 0) {
         out.println ("<div class=\"box\">");
