@@ -1,4 +1,4 @@
-// $Id: ReferenceType.java,v 1.10 2006-03-06 17:29:04 cerami Exp $
+// $Id: ReferenceType.java,v 1.11 2008-05-21 17:05:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -77,6 +77,20 @@ public class ReferenceType implements Serializable {
             return INTERACTION_PATHWAY_UNIFICATION;
         } else {
             throw new NullPointerException("Cannot find:  " + typeName);
+        }
+    }
+
+    /**
+     * Overrides Equals() Method.
+     * @param object Object to compare.
+     * @return true or false.
+     */
+    public boolean equals(Object object) {
+        ReferenceType type = (ReferenceType) object;
+        if (type.toString().equals(name)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
