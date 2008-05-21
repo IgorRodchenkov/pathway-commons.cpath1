@@ -178,6 +178,14 @@ public class ShowBioPaxRecord2 extends BaseAction {
             typeList.addAll(childList);
         }
 
+
+        //  get pathway roots count
+        if (getPathwayRoots) {
+            xdebug.logMsg (this, "Getting all pathway roots");
+            TypeCount typeCount = getPathwayRoots(id, filterSettings, xdebug);
+            typeList.add(typeCount);
+        }        
+
         //  get parents count
         if (getParents) {
             xdebug.logMsg (this, "Getting all parents");
@@ -186,13 +194,6 @@ public class ShowBioPaxRecord2 extends BaseAction {
             if (parentList != null) {
                 typeList.addAll(parentList);
             }
-        }
-
-        //  get pathway roots count
-        if (getPathwayRoots) {
-            xdebug.logMsg (this, "Getting all pathway roots");
-            TypeCount typeCount = getPathwayRoots(id, filterSettings, xdebug);
-            typeList.add(typeCount);
         }
 
         //  get physical entity leaf count
