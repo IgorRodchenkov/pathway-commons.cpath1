@@ -105,10 +105,10 @@ public class ReactomeCommentUtil {
         reactomeWordHack.add("SIMILARITY:");
         reactomeWordHack.add("DOMAIN:");
         reactomeWordHack.add("ALTERNATIVE");
-        reactomeWordHack.add("CAUTION:");
         reactomeWordHack.add("PTM:");
         reactomeWordHack.add("INDUCTION:");
         reactomeWordHack.add("DISEASE:");
         reactomeWordHack.add("COPYRIGHT:");
+        reactomeWordHack.add("SEQUENCE");
     }
 }
