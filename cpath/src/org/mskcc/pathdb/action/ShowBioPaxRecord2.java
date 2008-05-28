@@ -4,10 +4,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForm;
 import org.mskcc.pathdb.xdebug.XDebug;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoInternalLink;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
+import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.model.TypeCount;
@@ -18,6 +15,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.EntitySummary;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.taglib.ReferenceUtil;
+import org.mskcc.dataservices.bio.ExternalReference;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,6 +61,11 @@ public class ShowBioPaxRecord2 extends BaseAction {
     public static String ID_PARAMETER = "id";
 
     /**
+     * Incoming DB Parameter.
+     */
+    public static String DB_PARAMETER = "db";
+
+    /**
      * Executes Action.
      * @param mapping       ActionMapping Object.
      * @param form          ActionForm Object.
@@ -79,6 +82,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
 
         //  Get the "id" parameter (required)
         String id = request.getParameter(ID_PARAMETER);
+        String db = request.getParameter(DB_PARAMETER);
         CPathRecord record = null;
         BioPaxRecordSummary bpSummary = null;
 
@@ -86,6 +90,21 @@ public class ShowBioPaxRecord2 extends BaseAction {
         if (id == null) {
             throw new IllegalArgumentException ("id parameter must be specified.");
         } else {
+            if (db != null) {
+                xdebug.logMsg (this, "Generating stable link");
+                DaoExternalLink externalLinker = DaoExternalLink.getInstance();
+                ExternalReference xref = new ExternalReference(db, id);
+                ArrayList recordList = externalLinker.lookUpByExternalRef(xref);
+                if (recordList.size() == 1) {
+                    CPathRecord matchingRecord = (CPathRecord) recordList.get(0);
+                    id = Long.toString(matchingRecord.getId());
+                    xdebug.logMsg (this, "Matches cPath ID:  " + id);
+                } else {
+                    request.setAttribute("MULTIPLE_HITS", recordList);
+                    return mapping.findForward("multiple_hits");    
+                }
+            }
+
             xdebug.logMsg(this, "Using cPath ID:  " + id);
             try {
                 record = dao.getRecordById(Long.parseLong(id));
