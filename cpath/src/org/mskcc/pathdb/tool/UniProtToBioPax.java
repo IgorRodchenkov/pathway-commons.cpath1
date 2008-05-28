@@ -217,7 +217,7 @@ public class UniProtToBioPax {
                 reducedComments.append (currentComment);
             }
         }
-        if (geneSynonyms.length() > 0) {
+        if (geneSynonyms != null && geneSynonyms.length() > 0) {
             reducedComments.append (" GENE SYNONYMS:" + geneSynonyms + ".");
         }
         if (reducedComments.length() > 0) {
