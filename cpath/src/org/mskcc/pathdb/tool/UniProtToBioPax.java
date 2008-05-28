@@ -16,6 +16,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -90,14 +92,17 @@ public class UniProtToBioPax {
                     String shortName = idParts[0];
                     currentProtein.setSHORT_NAME(shortName);
                     currentProtein.setRDFId(shortName);
-                    currentProtein.setNAME(name.toString());
+
+                    setNameAndSynonyms(currentProtein, name.toString());
                     setOrganism(organismName.toString(), organismTaxId.toString(),
                             currentProtein, bpModel);
-                    if (comments != null) {
-                        setComments (comments.toString(), currentProtein);
-                    }
+                    String geneSyns = null;
                     if (geneName != null) {
-                        setGeneSymbolAndSynonyms(geneName.toString(), currentProtein, bpModel);
+                        geneSyns= setGeneSymbolAndSynonyms(geneName.toString(),
+                                currentProtein, bpModel);
+                    }
+                    if (comments != null) {
+                        setComments (comments.toString(), geneSyns, currentProtein);
                     }
                     setUniProtAccessionNumbers(acNames.toString(), currentProtein, bpModel);
                     setXRefs (xrefs.toString(), currentProtein, bpModel);
@@ -135,6 +140,19 @@ public class UniProtToBioPax {
             }
         }
         return totalNumProteinsProcessed;
+    }
+
+    private void setNameAndSynonyms (protein currentProtein, String deLine) {
+        String parts[] = deLine.split("\\(");
+        currentProtein.setNAME(parts[0].trim());
+        if (parts.length > 1) {
+            for (int i=1; i<parts.length; i++) {
+                String syn = parts[i].trim();
+                syn = syn.replaceAll("\\)", "");
+                syn = syn.replaceAll("\\.", "");
+                currentProtein.addSYNONYMS(syn);
+            }
+        }
     }
 
     /**
@@ -187,7 +205,7 @@ public class UniProtToBioPax {
     /**
      * Sets Multiple Comments.
      */
-    private void setComments (String comments, protein currentProtein) {
+    private void setComments (String comments, String geneSynonyms, protein currentProtein) {
         String commentParts[] = comments.split("-!- ");
         StringBuffer reducedComments = new StringBuffer();
         for (int i=0; i<commentParts.length; i++) {
@@ -198,6 +216,9 @@ public class UniProtToBioPax {
                 currentComment = currentComment.replaceAll("     ", " ");
                 reducedComments.append (currentComment);
             }
+        }
+        if (geneSynonyms.length() > 0) {
+            reducedComments.append (" GENE SYNONYMS:" + geneSynonyms + ".");
         }
         if (reducedComments.length() > 0) {
             reducedComments.append (" COPYRIGHT:  Protein annotation is derived from the "
@@ -255,7 +276,9 @@ public class UniProtToBioPax {
     /**
      * Sets the HUGO Gene Symbol and Synonyms.
      */
-    private void setGeneSymbolAndSynonyms(String geneName, protein currentProtein, Model bpModel) {
+    private String setGeneSymbolAndSynonyms(String geneName, protein currentProtein,
+            Model bpModel) {
+        StringBuffer synBuffer = new StringBuffer();
         String parts[] = geneName.split(";");
         for (int i=0; i<parts.length; i++) {
             String subParts[] = parts[i].split("=");
@@ -267,11 +290,12 @@ public class UniProtToBioPax {
             } else if (subParts[0].trim().equals("Synonyms")) {
                 String synList[] = subParts[1].split(",");
                 for (int j=0; j<synList.length; j++) {
-                    String currentSynonym = synList[j];
-                    currentProtein.addSYNONYMS(currentSynonym.trim());
+                    String currentSynonym = synList[j].trim();
+                    synBuffer.append(" " + currentSynonym);
                 }
             }
         }
+        return synBuffer.toString();
     }
 
     /**
