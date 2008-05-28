@@ -1,4 +1,4 @@
-// $Id: SnapshotReader.java,v 1.4 2006-10-09 18:16:31 cerami Exp $
+// $Id: SnapshotReader.java,v 1.5 2008-05-28 16:30:01 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -136,7 +136,7 @@ public class SnapshotReader {
             String snapshotVersion) throws DaoException, ImportException {
         //  Look up Specified Database
         DaoExternalDb daoDb = new DaoExternalDb();
-        ExternalDatabaseRecord dbRecord = daoDb.getRecordByName(dbName);
+        ExternalDatabaseRecord dbRecord = daoDb.getRecordByTerm(dbName);
         if (dbRecord == null) {
             throw new ImportException ("In db.info, db_name is set to: '"
                 + dbName + "'.  However, no such database currently exists "
