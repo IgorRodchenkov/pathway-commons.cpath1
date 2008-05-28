@@ -43,8 +43,7 @@ public class TestUniProtToBioPaxParser extends TestCase {
         Map<String, BioPAXElement> bpMap = model.getIdMap();
         protein targetProtein = (protein) bpMap.get("1433B_HUMAN");
         assertEquals ("1433B_HUMAN", targetProtein.getSHORT_NAME());
-        assertEquals ("14-3-3 protein beta/alpha (Protein kinase C inhibitor protein 1) "
-            + "(KCIP-1) (Protein 1054).", targetProtein.getNAME());
+        assertEquals ("14-3-3 protein beta/alpha", targetProtein.getNAME());
         bioSource organismSource = targetProtein.getORGANISM();
         assertEquals ("Homo sapiens", organismSource.getNAME());
         unificationXref taxonRef = organismSource.getTAXON_XREF();
@@ -80,12 +79,19 @@ public class TestUniProtToBioPaxParser extends TestCase {
         }
 
         //  Get another target protein
-        targetProtein = (protein) bpMap.get("1433F_HUMAN");
+        targetProtein = (protein) bpMap.get("1433B_HUMAN");
         Set <String> synSet = targetProtein.getSYNONYMS();
-        assertTrue ("Missing synonym", synSet.contains("YWHA1_Z"));
-        assertTrue ("Missing synonym", synSet.contains("YWHA1_Y"));
-        assertTrue ("Missing synonym", synSet.contains("YWHA1"));
-        assertTrue ("Missing synonym", synSet.contains("YWHA1_X"));
+        assertTrue ("Missing synonym", synSet.contains("Protein kinase C inhibitor protein 1"));
+        assertTrue ("Missing synonym", synSet.contains("KCIP-1"));
+        assertTrue ("Missing synonym", synSet.contains("Protein 1054"));
+
+        targetProtein = (protein) bpMap.get("1433F_HUMAN");
+        Iterator<String> commentIterator = targetProtein.getCOMMENT().iterator();
+        while (commentIterator.hasNext()) {
+            String comment = commentIterator.next();
+            assertTrue (comment.contains("COPYRIGHT:  Protein annotation"));
+            assertTrue (comment.contains("GENE SYNONYMS: YWHA1 YWHA1_X YWHA1_Y YWHA1_Z."));
+        }
         bpFile.delete();
     }
 
