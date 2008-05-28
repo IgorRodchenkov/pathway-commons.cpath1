@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.8 2008-05-21 17:04:37 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.9 2008-05-28 16:29:42 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -152,7 +152,7 @@ public class DaoExternalDbSnapshot {
                 pstmt = con.prepareStatement ("select * from external_db_snapshot where "
                     + "EXTERNAL_DB_SNAPSHOT_ID = ?");
                 pstmt.setLong(1, snapshotId);
-                ArrayList snapshotList = getMultipleSnapshots(pstmt);
+                ArrayList snapshotList = getMultipleSnapshots(pstmt, false);
                 if (snapshotList.size() == 1) {
                     ExternalDatabaseSnapshotRecord record = (ExternalDatabaseSnapshotRecord)
                             snapshotList.get(0);
@@ -196,7 +196,7 @@ public class DaoExternalDbSnapshot {
             pstmt.setLong(1, externalDbId);
             java.sql.Date date = new java.sql.Date(snapshotDate.getTime());
             pstmt.setDate(2, date);
-            ArrayList snapshotList = getMultipleSnapshots(pstmt);
+            ArrayList snapshotList = getMultipleSnapshots(pstmt, false);
             if (snapshotList.size() == 1) {
                 return (ExternalDatabaseSnapshotRecord) snapshotList.get(0);
             } else {
@@ -228,7 +228,7 @@ public class DaoExternalDbSnapshot {
                             + "EXTERNAL_DB_ID = ? "
                             + "ORDER BY EXTERNAL_DB_SNAPSHOT_ID");
             pstmt.setLong(1, externalDbId);
-            return getMultipleSnapshots(pstmt);
+            return getMultipleSnapshots(pstmt, false);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -257,7 +257,7 @@ public class DaoExternalDbSnapshot {
                         + "where external_db_snapshot.EXTERNAL_DB_ID = external_db.EXTERNAL_DB_ID "
                         + "ORDER BY external_db.NAME, "
                         + "external_db_snapshot.EXTERNAL_DB_SNAPSHOT_ID");
-            return getMultipleSnapshots(pstmt);
+            return getMultipleSnapshots(pstmt, true);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -268,7 +268,8 @@ public class DaoExternalDbSnapshot {
     /**
      * Gets multiple snapshot records.
      */
-    private ArrayList getMultipleSnapshots(PreparedStatement pstmt)
+    private ArrayList getMultipleSnapshots(PreparedStatement pstmt,
+            boolean includeNetworkSnapshotsOnly)
             throws DaoException {
         ArrayList snapshotList = new ArrayList();
         try {
@@ -281,7 +282,12 @@ public class DaoExternalDbSnapshot {
                 DaoExternalDb daoExternalDb = new DaoExternalDb();
                 ExternalDatabaseRecord dbRecord =
                         daoExternalDb.getRecordById(externalDbId);
-                if (!dbRecord.getDbType().equals(ReferenceType.PROTEIN_UNIFICATION)) {
+                boolean addSnapshot = true;
+                if (includeNetworkSnapshotsOnly
+                        && dbRecord.getDbType().equals(ReferenceType.PROTEIN_UNIFICATION)) {
+                    addSnapshot = false;
+                }
+                if (addSnapshot) {
                     ExternalDatabaseSnapshotRecord snapshotRecord =
                             new ExternalDatabaseSnapshotRecord
                                     (dbRecord, new Date(date.getTime()), snapshotVersion);
