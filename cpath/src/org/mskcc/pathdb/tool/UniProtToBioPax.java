@@ -105,7 +105,7 @@ public class UniProtToBioPax {
                     dataElements = new HashMap();
                     numProteinsInCurrentBatch++;
                     
-                    if (numProteinsInCurrentBatch > RECORDS_PER_BATCH) {
+                    if (numProteinsInCurrentBatch >= RECORDS_PER_BATCH) {
                         streamToFile(uniProtFile);
                     }
                 } else {
@@ -210,13 +210,15 @@ public class UniProtToBioPax {
     }
 
     /**
-     * Sets UniProt Accession Numbers (can be 0,1 or N).
+     * Sets UniProt Accession Numbers (can be 0, 1 or N).
+     * However, we only take the 0th element, which is referred in UniProt as the
+     * "Primary Accession Number".
      */
     private void setUniProtAccessionNumbers (String acNames, protein currentProtein,
             Model bpModel) {
         String acList[] = acNames.split(";");
-        for (int i=0; i<acList.length; i++) {
-            String ac = acList[i].trim();
+        if (acList.length > 0) {
+            String ac = acList[0].trim();
             setUnificationXRef(ExternalDatabaseConstants.UNIPROT, ac, currentProtein, bpModel);
         }
     }
