@@ -126,6 +126,13 @@
             <forward name="out_of_scope" path="/WEB-INF/jsp/pages/OutOfScope.jsp"/>
         </action>
 
+        <!--  Stable Links -->
+        <action path="/stable"
+            type="org.mskcc.pathdb.action.ShowBioPaxRecord2">
+            <forward name="success" path="/WEB-INF/jsp/pages/BioPaxRecord2.jsp"/>
+            <forward name="multiple_hits" path="/WEB-INF/jsp/pages/StableMultipleHits.jsp"/>
+        </action>
+
         <!--  FAQ Page -->
         <action path="/faq"
             type="org.mskcc.pathdb.action.HomeAction">
