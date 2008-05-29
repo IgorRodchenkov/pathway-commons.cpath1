@@ -469,7 +469,7 @@ enable Javascript support within your web browser.
         ExternalLinkRecord link = nonReferenceLinks.get(i);
         ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
         String dbId = link.getLinkedToId();
-        if (dbRecord.getMasterTerm().equals(ExternalDatabaseConstants.HUGO_GENE_SYMBOL)) {
+        if (dbRecord.getMasterTerm().equals(ExternalDatabaseConstants.GENE_SYMBOL)) {
             geneSymbols.add(dbId);
         }
     }
