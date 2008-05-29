@@ -110,6 +110,6 @@ public class ReactomeCommentUtil {
         reactomeWordHack.add("DISEASE:");
         reactomeWordHack.add("COPYRIGHT:");
         reactomeWordHack.add("SEQUENCE");
-        reactomeWordHack.add("SYNONYMS:");
+        reactomeWordHack.add("GENE");
     }
 }
