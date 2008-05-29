@@ -61,7 +61,7 @@ public class TestUniProtToBioPaxParser extends TestCase {
             String db = currentXRef.getDB();
             String id = currentXRef.getID();
             entrezGeneIdFound += validateXRef("ENTREZ_GENE", db, "7529", id);
-            hugoGeneSymbolFound += validateXRef("HUGO_GENE_SYMBOL", db, "YWHAB", id);
+            hugoGeneSymbolFound += validateXRef("GENE_SYMBOL", db, "YWHAB", id);
             uniProtAcFound += validateXRef("UNIPROT", db, "P31946", id);
             refSeqIdFound += validateMultipleXRef("REF_SEQ", db, "NP_003395", "NP_647539", id);
         }

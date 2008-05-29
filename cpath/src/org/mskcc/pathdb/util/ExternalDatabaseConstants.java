@@ -35,7 +35,7 @@ public class ExternalDatabaseConstants {
     /**
      * HUGO Gene Symbol.
      */
-    public static String HUGO_GENE_SYMBOL = "HUGO_GENE_SYMBOL";
+    public static String GENE_SYMBOL = "GENE_SYMBOL";
 
     /**
      * Internal Database ID. 

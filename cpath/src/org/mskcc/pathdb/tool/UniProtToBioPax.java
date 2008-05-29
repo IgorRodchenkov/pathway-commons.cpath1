@@ -16,8 +16,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -285,7 +283,7 @@ public class UniProtToBioPax {
             // Set HUGO Gene Name
             if (subParts[0].trim().equals("Name")) {
                 geneName = subParts[1];
-                setRelationshipXRef(ExternalDatabaseConstants.HUGO_GENE_SYMBOL,
+                setRelationshipXRef(ExternalDatabaseConstants.GENE_SYMBOL,
                         geneName, currentProtein, bpModel);
             } else if (subParts[0].trim().equals("Synonyms")) {
                 String synList[] = subParts[1].split(",");
