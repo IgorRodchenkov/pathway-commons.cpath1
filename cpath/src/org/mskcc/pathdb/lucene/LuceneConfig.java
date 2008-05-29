@@ -1,4 +1,4 @@
-// $Id: LuceneConfig.java,v 1.13 2008-04-09 17:24:42 cerami Exp $
+// $Id: LuceneConfig.java,v 1.14 2008-05-29 00:43:08 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -82,12 +82,17 @@ public class LuceneConfig {
     /**
      * Lucene Field for Synonyms.
      */
-    public static final String FIELD_SYNONYMS = "SYNONYMS";
+    public static final String FIELD_SYNONYMS = "synonyms";
+
+    /**
+     * Lucene Field for Gene Symbols.
+     */
+    public static final String FIELD_GENE_SYMBOLS = "gene_symbol";
 
     /**
      * Lucene Field for External Links.
      */
-    public static final String FIELD_EXTERNAL_REFS = "EXTERNAL_REFS";
+    public static final String FIELD_EXTERNAL_REFS = "xrefs";
 
     /**
      * Lucene Field for Descendent Information
