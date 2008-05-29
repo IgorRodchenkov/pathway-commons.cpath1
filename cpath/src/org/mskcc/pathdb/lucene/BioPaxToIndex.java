@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.23 2008-05-21 17:03:19 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.24 2008-05-29 00:43:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -46,6 +46,7 @@ import org.mskcc.pathdb.sql.dao.DaoSourceTracker;
 import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
+import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
@@ -155,7 +156,11 @@ public class BioPaxToIndex implements ItemToIndex {
 		// Index Synonyms --> FIELD_SYNONYMS
 		fields.add(new Field(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
 
-		// Index Ext Refs --> FIELD_EXTERNAL_REFS
+        // Index Gene Symbol(s)
+        fields.add(new Field(LuceneConfig.FIELD_GENE_SYMBOLS, getGeneSymbol(summary), Field.Store.YES,
+                Field.Index.TOKENIZED));
+
+        // Index Ext Refs --> FIELD_EXTERNAL_REFS
 		fields.add(new Field(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
 
 		// Index Descendents --> FIELD_DESCENDENTS
@@ -422,5 +427,18 @@ public class BioPaxToIndex implements ItemToIndex {
 		// outta here
 		String toReturn = bufferToReturn.toString();
 		return toReturn.replaceAll(XmlStripper.ELEMENT_DELIMITER + "$", "");
+	}
+
+	private String getGeneSymbol (BioPaxRecordSummary summary) {
+		StringBuffer bufferToReturn = new StringBuffer();
+		if (summary.getExternalLinks() != null) {
+			for (ExternalLinkRecord link : (List<ExternalLinkRecord>)summary.getExternalLinks()) {
+				String dbName = link.getExternalDatabase().getMasterTerm();
+                if (dbName.equals(ExternalDatabaseConstants.GENE_SYMBOL)) {
+                    bufferToReturn.append(link.getLinkedToId());
+                }
+			}
+		}
+		return bufferToReturn.toString();
 	}
 }
