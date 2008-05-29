@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDbSnapshot.java,v 1.4 2008-05-21 17:02:11 cerami Exp $
+// $Id: TestDaoExternalDbSnapshot.java,v 1.5 2008-05-29 00:41:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,12 +79,6 @@ public class TestDaoExternalDbSnapshot extends TestCase {
 
         //  Try retrieving all snapshots by ID
         ArrayList list = dao.getDatabaseSnapshot(1);
-        assertEquals (2, list.size());
-        verifySnapshotRecord1 ((ExternalDatabaseSnapshotRecord) list.get(0));
-        verifySnapshotRecord2 ((ExternalDatabaseSnapshotRecord) list.get(1));
-
-        //  Get all snapshots
-        list = dao.getAllNetworkDatabaseSnapshots();
         assertEquals (2, list.size());
         verifySnapshotRecord1 ((ExternalDatabaseSnapshotRecord) list.get(0));
         verifySnapshotRecord2 ((ExternalDatabaseSnapshotRecord) list.get(1));
