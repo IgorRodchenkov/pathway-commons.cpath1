@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.14 2008-03-10 15:05:05 grossben Exp $
+// $Id: LuceneReader.java,v 1.15 2008-05-29 00:43:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -98,9 +98,17 @@ public class LuceneReader {
 			BooleanClause.Occur[] flags = { BooleanClause.Occur.SHOULD, BooleanClause.Occur.SHOULD };
 			BooleanQuery queryToSearch = (BooleanQuery)MultiFieldQueryParser.parse(term, fields, flags, analyzer);
 
-			// create query on FIELD_NAME and boost it
-			QueryParser nameQueryParser = new QueryParser(LuceneConfig.FIELD_NAME, analyzer);
+			// create query on FIELD_GENE_SYMBOL and boost it
+			QueryParser nameQueryParser = new QueryParser(LuceneConfig.FIELD_GENE_SYMBOLS, analyzer);
 			Query nameQuery = nameQueryParser.parse(term);
+			nameQuery.setBoost((float)3.0);
+
+			// add query on FIELD_NAME to search query
+			queryToSearch.add(nameQuery, BooleanClause.Occur.SHOULD);
+
+            // create query on FIELD_NAME and boost it
+		    nameQueryParser = new QueryParser(LuceneConfig.FIELD_NAME, analyzer);
+			nameQuery = nameQueryParser.parse(term);
 			nameQuery.setBoost((float)2.0);
 
 			// add query on FIELD_NAME to search query
