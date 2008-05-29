@@ -499,12 +499,17 @@ enable Javascript support within your web browser.
     }
 
     //  Output external links
+    String acStableLinkId = null;
     if (nonReferenceLinks.size() > 0) {
 		HashMap<String, String> linksMap = new HashMap<String,String>();
         for (int i=0; i<nonReferenceLinks.size(); i++) {
             ExternalLinkRecord link = nonReferenceLinks.get(i);
             ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
             String dbId = link.getLinkedToId();
+            if (dbRecord.getMasterTerm().equals(ExternalDatabaseConstants.UNIPROT)
+                    && acStableLinkId == null) {
+                acStableLinkId = dbId;
+            }
             String linkStr = dbRecord.getName() + ": " + dbId;
             String uri = link.getWebLink();
             if (uri != null && uri.length() > 0) {
@@ -586,7 +591,7 @@ enable Javascript support within your web browser.
             out.println("</div>");
     }
 
-	//  Output XML_ABBREV Link (Debug Mode)
+    //  Output XML_ABBREV Link (Debug Mode)
     if (debugMode) {
         out.println ("<div class=\"box\">");
         out.println("<h3>Debug:</h3>");
@@ -597,5 +602,15 @@ enable Javascript support within your web browser.
     }
 %>
 <jsp:include page="../global/redesign/currentFilterSettings.jsp" flush="true" />
+<%
+    if (acStableLinkId != null) {
+        out.println ("<div class=\"box\">");
+        out.println("<p><b><a href='stable.do?db="
+                + ExternalDatabaseConstants.UNIPROT + "&id=" + acStableLinkId
+                + "'>Stable link for this page</a></b></p>");
+        out.println ("</div>");
+    }
+%>
+
 </div>
 <jsp:include page="../global/redesign/footer.jsp" flush="true" />
