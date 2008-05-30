@@ -60,7 +60,10 @@ public class LuceneAutoFilter {
         List dataSourceList = new ArrayList();
         if (filterSettings != null) {
             Set idSet = filterSettings.getSnapshotIdSet();
-            if (idSet != null && idSet.size() > 0) {
+            ArrayList allNetworkDbSnapshots = dao.getAllNetworkDatabaseSnapshots();
+            //  A note regarding the last conditional:  if the user has selected all
+            //  databases, there is no need to explicitly filter for each one.
+            if (idSet != null && idSet.size() > 0 && idSet.size() != allNetworkDbSnapshots.size()) {
                 Iterator iterator = idSet.iterator();
                 while (iterator.hasNext()) {
                     Long idLong = (Long) iterator.next();
