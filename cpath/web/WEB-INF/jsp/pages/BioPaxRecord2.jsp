@@ -551,7 +551,7 @@ enable Javascript support within your web browser.
     //  Output Cytoscape Links
     boolean pathwayType = (bpSummary.getType() != null &&
 						   bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString()));
-    if (webUIBean.getWantCytoscape() && (!pathwayType || (pathwayType && showTabs))) {
+    if (webUIBean.getWantCytoscape() && (pathwayType && showTabs)) {
         out.println ("<div class=\"box\">");
         out.println("<h3>Cytoscape:</h3>");
 		if (pathwayType) {
