@@ -20,16 +20,13 @@
                  org.mskcc.pathdb.util.biopax.BioPaxRecordUtil,
                  org.mskcc.pathdb.taglib.DbSnapshotInfo,
                  org.mskcc.pathdb.taglib.ReactomeCommentUtil,
-                 java.util.Set,
-                 java.util.Map,
-                 java.util.List,
                  java.net.URLEncoder"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="org.apache.lucene.search.Hits" %>
 <%@ page import="org.apache.lucene.document.Document" %>
 <%@ page import="org.apache.lucene.document.Field" %>
 <%@ page import="org.mskcc.pathdb.lucene.LuceneConfig" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.*" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
@@ -263,8 +260,22 @@ else {
 	DaoInternalLink daoInternalLink = new DaoInternalLink();
     for (int i=0; i< cpathIds.length; i++) {
         CPathRecord record = dao.getRecordById(cpathIds[i]);
-		// get number children - used to render on hide link to cytoscape
-		List<TypeCount> childTypes = daoInternalLink.getChildrenTypes(cpathIds[i], null);
+        List<TypeCount> childTypes= null;
+		// get number children / parents - used to render on hide link to cytoscape
+		if (record.getType().toString().equals(CPathRecordType.PHYSICAL_ENTITY)) {
+		    Set<Long> snapshotIdSet = filterSettings.getSnapshotIdSet();
+		    long snapshotIds[] = new long[snapshotIdSet.size()];
+            Iterator<Long> iterator = snapshotIdSet.iterator();
+            int index = 0;
+            while (iterator.hasNext()) {
+                Long snapshotId = iterator.next();
+                snapshotIds[index] = snapshotId.longValue();
+            }
+    		daoInternalLink.getParentTypes(cpathIds[i], record.getNcbiTaxonomyId(),
+	    	    snapshotIds, null);
+        } else {
+		    childTypes = daoInternalLink.getChildrenTypes(cpathIds[i], null);
+        }
 		boolean showCytoscape = false;
 		for (TypeCount typeCount : childTypes) {
 			if (typeCount.getCount() > 0) {
