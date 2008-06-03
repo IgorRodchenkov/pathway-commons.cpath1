@@ -30,6 +30,7 @@ wget --passive-ftp -P $FRESH_HOME/uniprot ftp://ftp.uniprot.org/pub/databases/un
 echo Unzipping UniProt file...
 gunzip $FRESH_HOME/uniprot/uniprot_sprot_human.dat.gz
 
+
 ###########################################################
 # Retrieve "Fresh" Reactome BioPAX directly from Reactome
 ###########################################################
@@ -43,6 +44,17 @@ wget --passive-ftp -P $FRESH_HOME/reactome http://www.reactome.org/download/curr
 
 echo Unzipping Reactome file...
 unzip -d $FRESH_HOME/reactome $FRESH_HOME/reactome/biopax.zip
+
+echo
+echo -n "Enter version number for UniProt:  "
+read version
+echo -n "Enter date for UniProt (MM/DD/YYYY):  "
+read date
+cat << END > $FRESH_HOME/uniprot/db.info
+db_name=UNIPROT
+db_snapshot_version=$version
+db_snapshot_date=$date
+END
 
 echo
 echo -n "Enter version number for Reactome:  "
