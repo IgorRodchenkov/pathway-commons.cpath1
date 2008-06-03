@@ -354,7 +354,7 @@ else {
 				out.println(htmlFragments);
 			}
 			boolean pathwayType = record.getType() == CPathRecordType.PATHWAY;
-			if (webUIBean.getWantCytoscape() && (!pathwayType || (pathwayType && showCytoscape))) {
+			if (webUIBean.getWantCytoscape() && (pathwayType && showCytoscape)) {
 				// add link to cytoscape
 				if (pathwayType) {
 					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
