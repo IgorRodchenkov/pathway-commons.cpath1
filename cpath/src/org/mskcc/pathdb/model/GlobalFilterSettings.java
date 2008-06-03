@@ -62,6 +62,25 @@ public class GlobalFilterSettings implements Cloneable {
     }
 
     /**
+     * Resets the Filter to include all database snapshots, not just
+     * snapshots from pathway / network databases.
+     * Primarily used for JUnit tests.
+     * 
+     * @throws DaoException Database Error.
+     */
+    public void resetToIncludeAllDatabaseSnaphosts () throws DaoException {
+        DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+        ArrayList list = dao.getAllDatabaseSnapshots();
+        for (int i=0; i<list.size(); i++) {
+            ExternalDatabaseSnapshotRecord snapshotRecord =
+                    (ExternalDatabaseSnapshotRecord) list.get(i);
+            snapshotSet.add(new Long(snapshotRecord.getId()));
+        }
+        organismSet.add(ALL_ORGANISMS_FILTER_VALUE);
+        entityTypeSet.add(NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
+    }
+
+    /**
      * Is the specified snapshot ID currently selected by the user.
      * @param snapshotId    snapshot ID.
      * @return true or false.
