@@ -103,7 +103,9 @@ public class UniProtToBioPax {
                         setComments (comments.toString(), geneSyns, currentProtein);
                     }
                     setUniProtAccessionNumbers(acNames.toString(), currentProtein, bpModel);
-                    setXRefs (xrefs.toString(), currentProtein, bpModel);
+                    if (xrefs != null) {
+                        setXRefs (xrefs.toString(), currentProtein, bpModel);
+                    }
                     bpModel.add(currentProtein);
                     dataElements = new HashMap();
                     numProteinsInCurrentBatch++;
