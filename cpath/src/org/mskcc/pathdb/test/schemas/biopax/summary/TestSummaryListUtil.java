@@ -1,4 +1,4 @@
-// $Id: TestSummaryListUtil.java,v 1.10 2006-10-31 20:57:16 cerami Exp $
+// $Id: TestSummaryListUtil.java,v 1.11 2008-06-03 14:05:51 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,8 +51,10 @@ public class TestSummaryListUtil extends TestCase {
      * @throws Exception All Exceptions
      */
     public void testSummaryList() throws Exception {
+        GlobalFilterSettings filter = new GlobalFilterSettings();
+        filter.resetToIncludeAllDatabaseSnaphosts();
         SummaryListUtil util = new SummaryListUtil(108,
-                SummaryListUtil.MODE_GET_CHILDREN, new GlobalFilterSettings());
+                SummaryListUtil.MODE_GET_CHILDREN, filter);
         ArrayList list = util.getSummaryList();
         EntitySummary summary = (EntitySummary) list.get(0);
         String currentType = summary.getSpecificType();
