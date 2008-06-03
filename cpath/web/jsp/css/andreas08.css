@@ -783,7 +783,7 @@ Version 0.11.0
 	left:0px;top:0px;
 	font:1em Arial;
 	background-color:#FFF;
-	border:1px solid #000;
+	border:1px solid #AAAAAA;
 	z-index:1;
 	overflow:hidden;
 }
@@ -803,6 +803,12 @@ Version 0.11.0
 .panel .bd {
 	overflow:hidden;
 	padding:4px;
+    color:black;
+}
+
+.panel .url_box {
+    margin-top: 5px;
+    margin-bottom:10px;
 }
 
 .panel .bd p {
