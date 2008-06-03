@@ -11,3 +11,4 @@
 <jsp:include page="yui/build/autocomplete/autocomplete-min.js"/>
 <jsp:include page="javascript/overlib/overlib.js"/>
 <jsp:include page="javascript/webstart/webstart.js"/>
+<jsp:include page="yui/build/dragdrop/dragdrop.js"/>
