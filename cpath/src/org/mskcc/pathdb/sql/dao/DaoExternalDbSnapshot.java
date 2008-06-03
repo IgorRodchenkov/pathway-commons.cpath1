@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.9 2008-05-28 16:29:42 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.10 2008-06-03 14:05:19 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -258,6 +258,35 @@ public class DaoExternalDbSnapshot {
                         + "ORDER BY external_db.NAME, "
                         + "external_db_snapshot.EXTERNAL_DB_SNAPSHOT_ID");
             return getMultipleSnapshots(pstmt, true);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+    }
+
+    /**
+     * Gets all snapshots in the database.  Ordered by database name.
+     *
+     * @return ArrayList of ExternalDatabaseSnapshotRecord records.
+     * @throws DaoException Error connecting to database.
+     */
+    public ArrayList getAllDatabaseSnapshots() throws DaoException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement
+                    ("select external_db_snapshot.EXTERNAL_DB_SNAPSHOT_ID,"
+                        + "external_db_snapshot.EXTERNAL_DB_ID, "
+                        + "external_db_snapshot.SNAPSHOT_DATE, "
+                        + "external_db_snapshot.SNAPSHOT_VERSION from external_db_snapshot, "
+                        + "external_db "
+                        + "where external_db_snapshot.EXTERNAL_DB_ID = external_db.EXTERNAL_DB_ID "
+                        + "ORDER BY external_db.NAME, "
+                        + "external_db_snapshot.EXTERNAL_DB_SNAPSHOT_ID");
+            return getMultipleSnapshots(pstmt, false);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
