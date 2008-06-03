@@ -537,6 +537,17 @@ enable Javascript support within your web browser.
         }
     }
 
+    if (acStableLinkId != null) {
+        out.println ("<div class=\"box\">");
+        out.println("<h3>Stable Link:</h3>");
+        %>
+        <jsp:include page="../global/redesign/stableLink.jsp" flush="true">
+            <jsp:param name="acStableLinkId" value="<%= acStableLinkId%>" />
+            <jsp:param name="peName" value="<%= header %>" />
+        </jsp:include>
+        </div>
+    <% }
+
     //  Output Cytoscape Links
     boolean pathwayType = (bpSummary.getType() != null &&
 						   bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString()));
@@ -602,15 +613,9 @@ enable Javascript support within your web browser.
     }
 %>
 <jsp:include page="../global/redesign/currentFilterSettings.jsp" flush="true" />
-<%
-    if (acStableLinkId != null) {
-        out.println ("<div class=\"box\">");
-        out.println("<p><b><a href='stable.do?db="
-                + ExternalDatabaseConstants.UNIPROT + "&id=" + acStableLinkId
-                + "'>Stable link for this page</a></b></p>");
-        out.println ("</div>");
-    }
-%>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
 </div>
 <jsp:include page="../global/redesign/footer.jsp" flush="true" />
