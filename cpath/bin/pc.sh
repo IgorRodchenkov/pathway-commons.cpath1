@@ -33,11 +33,11 @@ date
 # Import the Pathway Commons Data Sources --> Meta Data
 ./admin.pl -f ../dbData/externalDb/pathway_commons.xml import
 
+# Import the Human UniProt Protein Info
+./pc_import_uniprot.sh
+
 # Create the Entrez Gene ID Mapping Files from NCBI Source
 ./entrez_gene.pl $CPATH_HOME/../pathway-commons/fresh/ncbi/gene2accession
-
-# Create the Entrez Gene ID Mapping Files from UniProt
-./uniprot.pl $CPATH_HOME/../pathway-commons/fresh/uniprot/uniprot_sprot_human.dat
 
 # Import the Entrez Gene Link Out Mapping Files
 ./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/ncbi/refseq_2_entrez_gene_id.txt import
