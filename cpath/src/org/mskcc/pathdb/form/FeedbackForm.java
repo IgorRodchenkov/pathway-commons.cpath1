@@ -3,6 +3,12 @@ package org.mskcc.pathdb.form;
 import org.apache.struts.action.*;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.methods.PostMethod;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -11,6 +17,11 @@ import javax.servlet.http.HttpServletRequest;
  * @author Ethan Cerami
  */
 public class FeedbackForm extends ActionForm {
+
+	private static final String CBIO_MSKCC_ORG_RECAPTCHA_KEY = "6Ld3PgIAAAAAAB8ZdAwyf4Rp2jvF24pDyUmMbZ6f";
+	private static final String PATHWAY_COMMONS_ORG_RECAPTCHA_KEY = "6Ld2PgIAAAAAAINTdo1lTZQt0eZQAzPbHfAAzYmt";
+	
+
     private String email;
     private String subject;
     private String message;
@@ -93,7 +104,7 @@ public class FeedbackForm extends ActionForm {
         if (email != null && email.length() > 0
             && !email.matches(".+@.+\\.[a-z]+")) {
             errors.add(ActionErrors.GLOBAL_ERROR,
-                    new ActionError("error.feedback_form.invaid_email"));
+                    new ActionError("error.feedback_form.invalid_email"));
         }
         if (message != null) {
             //  Find out how many URLs the message has.
@@ -113,9 +124,101 @@ public class FeedbackForm extends ActionForm {
             }
             if (numNonBaseUrls > 1) {
                 errors.add(ActionErrors.GLOBAL_ERROR,
-                        new ActionError("error.feedback_form.invaid_message"));
+                        new ActionError("error.feedback_form.invalid_message"));
             }
         }
+
+		// validate challenge
+		if (!validChallengeResponse(httpServletRequest)) {
+			errors.add(ActionErrors.GLOBAL_ERROR,
+					   new ActionError("error.feedback_form.invalid_challenge_response", "Challenge"));
+		}
+
         return errors;
     }
+
+	/**
+	 * Method to validate challenge response.
+	 *
+	 * @param httpServletRequest HttpServletRequest
+	 */
+	private boolean validChallengeResponse(HttpServletRequest httpServletRequest) {
+
+		// get the challenge field
+		String challenge = httpServletRequest.getParameter("recaptcha_challenge_field");
+		if (challenge == null || challenge.length() == 0) return false;
+
+		// get challenge response field
+		String challengeResponse = httpServletRequest.getParameter("recaptcha_response_field");
+		if (challengeResponse == null || challengeResponse.length() == 0) return false;
+
+		// private key
+		String privateKey = (httpServletRequest.getServerName().equals("pathway.commons.org")) ?
+			PATHWAY_COMMONS_ORG_RECAPTCHA_KEY : CBIO_MSKCC_ORG_RECAPTCHA_KEY;
+
+		// validate with reCAPTCHA servers
+		HttpClient client = new HttpClient();
+		NameValuePair nvps[] = new NameValuePair[4];
+		nvps[0] = new NameValuePair("privatekey", privateKey);
+		nvps[1] = new NameValuePair("remoteip", httpServletRequest.getRemoteAddr());
+		nvps[2] = new NameValuePair("challenge", challenge);
+		nvps[3] = new NameValuePair("response", challengeResponse);
+
+		// create method
+		HttpMethodBase method = new PostMethod("http://api-verify.recaptcha.net/verify");
+		((PostMethod)(method)).addParameters(nvps);
+
+		// outta here
+		return executeMethod(client, method);
+	}
+
+	/**
+	 * Executes http request.
+	 *
+	 * @param client HttpClient
+	 * @param method HttpMethodBase
+	 * @return boolean
+	 */
+	private boolean executeMethod(HttpClient client, HttpMethodBase method) {
+
+		try {
+			// execute method
+			int statusCode = client.executeMethod(method);
+			if (statusCode != 200) return false;
+
+			// read in content
+			String[] content = readContent(method).split("\n");
+
+			// outta here
+			return (content[0].contains("true"));
+        }
+		catch (Exception e) {
+            return false;
+        }
+	}
+
+    /**
+     * Reads content of http request.
+	 * 
+	 * @param method HttpMethodBase
+	 * @throws java.io.IOException
+     */
+    private String readContent(HttpMethodBase method) throws java.io.IOException {
+
+		// create input stream to read response
+		java.io.InputStream instream = method.getResponseBodyAsStream();
+
+		// create outputstream to write response into
+		java.io.ByteArrayOutputStream outstream =  new java.io.ByteArrayOutputStream(1024);
+		byte[] buffer = new byte[1024];
+		int len;
+		int totalBytes = 0;
+		while ((len = instream.read(buffer)) > 0) {
+			outstream.write(buffer, 0, len);
+		}
+		instream.close();
+
+		// outta here
+		return new String(outstream.toByteArray());
+	}
 }
