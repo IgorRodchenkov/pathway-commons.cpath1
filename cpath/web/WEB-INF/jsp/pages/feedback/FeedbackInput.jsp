@@ -34,15 +34,15 @@ else if (serverName.equals("toro.cbio.mskcc.org")) {
 <table>
     <tr>
         <td>Email address:</td>
-        <td><html:text property="email" size="30" maxlength="100"/></td>
+        <td><html:text property="em" size="30" maxlength="100"/></td>
     </tr>
     <tr>
         <td>Subject:</td>
-        <td><html:text property="subject" size="30" maxlength="100"/></td>
+        <td><html:text property="su" size="30" maxlength="100"/></td>
     </tr>
     <tr>
         <td valign="top">Message:</td>
-        <td><html:textarea property="message" rows="10" cols="50"/></td>
+        <td><html:textarea property="me" rows="10" cols="50"/></td>
     </tr>
 	<tr><td><br></td></tr>
     <tr>
