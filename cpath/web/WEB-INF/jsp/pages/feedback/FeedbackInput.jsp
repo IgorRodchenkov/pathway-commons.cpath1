@@ -9,8 +9,17 @@ request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Submit Feedback");
 request.setAttribute(BaseAction.ATTRIBUTE_USER_MSG, "We welcome your comments...");
 
 // we have to public captcha keys - one for pathway commons domain, another for dev (cbio.mskcc.org domain)
-String publicRECAPTCHAKey = request.getServerName().equals("pathway.commons.org") ?
-   "6Ld2PgIAAAAAAIF92OtuvCXDCRaVf2vFQyFgSuOC" : "6Ld3PgIAAAAAAE0WZbjra3Kbb3Fv6q0plEF2fbPJ";
+String serverName = request.getServerName();
+String PUBLIC_RECAPTCHA_KEY = "";
+if (serverName.equals("pathway.commons.org")) {
+   PUBLIC_RECAPTCHA_KEY = "6Ld2PgIAAAAAAIF92OtuvCXDCRaVf2vFQyFgSuOC";
+}
+else if (serverName.equals("awabi.cbio.mskcc.org")) {
+   PUBLIC_RECAPTCHA_KEY = "6LdtRAIAAAAAAHv-_R68sk7joQbnmzzkDhL4SzBJ";
+}
+else if (serverName.equals("toro.cbio.mskcc.org")) {
+   PUBLIC_RECAPTCHA_KEY = "6LdzRAIAAAAAAHwtrXzvVK5HQ84lfmaOmnaQK0jW";
+}
 %>
 
 <jsp:include page="../../global/redesign/header.jsp" flush="true" />
@@ -55,11 +64,11 @@ String publicRECAPTCHAKey = request.getServerName().equals("pathway.commons.org"
 		<td>
 			<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" size="30" maxlength="100"/>
 			<%
-			   out.println("<script type=\"text/javascript\" src=\"http://api.recaptcha.net/challenge?k=" + publicRECAPTCHAKey + "\"></script>");
+			   out.println("<script type=\"text/javascript\" src=\"http://api.recaptcha.net/challenge?k=" + PUBLIC_RECAPTCHA_KEY + "\"></script>");
 			%>
 			<noscript>
 			    <%
-			        out.println("<iframe src=\"http://api.recaptcha.net/noscript?k=" + publicRECAPTCHAKey + "\" height=\"300\" width=\"500\" frameborder=\"0\"></iframe><br>");
+			        out.println("<iframe src=\"http://api.recaptcha.net/noscript?k=" + PUBLIC_RECAPTCHA_KEY + "\" height=\"300\" width=\"500\" frameborder=\"0\"></iframe><br>");
 			    %>
 				<textarea property="recaptcha_challenge_field" size="30" maxlength="100"/></textarea>
 				<input type="hidden" name="recaptcha_response_field" value="manual_challenge">
