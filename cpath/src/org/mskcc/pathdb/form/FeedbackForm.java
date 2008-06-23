@@ -22,57 +22,63 @@ public class FeedbackForm extends ActionForm {
 	private static final String AWABI_PRIVATE_RECAPTCHA_KEY = "6LdtRAIAAAAAAHlDoc4RU8FJAV4bDcXJ5OyP0F6U";
 	private static final String TORO_PRIVATE_RECAPTCHA_KEY = "6LdzRAIAAAAAALdtZ7jdAg4uhQC1JJzWewMAWkho";
 
-    private String email;
-    private String subject;
-    private String message;
+    private String em;
+    private String su;
+    private String me;
 
     /**
      * Gets email address.
      * @return email email address.
      */
     public String getEmail () {
-        return email;
+        return em;
     }
+	public String getEm() { return getEmail(); }
 
     /**
      * Sets email address.
      * @param email email address
      */
     public void setEmail (String email) {
-        this.email = email;
+        this.em = email;
     }
+	public void setEm(String email) { setEmail(email); }
 
     /**
      * Get the subject.
      * @return subject.
      */
     public String getSubject () {
-        return subject;
+        return su;
     }
+	public String getSu() { return getSubject(); }
 
     /**
      * Sets the subject.
      * @param subject subject.
      */
     public void setSubject (String subject) {
-        this.subject = subject;
+        this.su = subject;
     }
+	public void setSu(String subject) { setSubject(subject); }
 
     /**
      * Gets the message.
      * @return message.
      */
     public String getMessage () {
-        return message;
+        return me;
     }
+	public String getMe() { return getMessage(); }
 
     /**
      * Sets the message.
      * @param message message.
      */
     public void setMessage (String message) {
-        this.message = message;
+        this.me = message;
     }
+	public void setMe(String message) { setMessage(message); }
 
     /**
      * Validate form data.
@@ -86,32 +92,32 @@ public class FeedbackForm extends ActionForm {
         ActionErrors errors = new ActionErrors();
 
         //  Check for required fields, and valid email address.
-        if (email == null || email.length() < 1) {
+        if (em == null || em.length() < 1) {
             errors.add(ActionErrors.GLOBAL_ERROR,
                     new ActionError ("error.feedback_form.required",
                     "Email address"));
         }
-        if (subject == null || subject.length() < 1) {
+        if (su == null || su.length() < 1) {
             errors.add(ActionErrors.GLOBAL_ERROR,
                     new ActionError ("error.feedback_form.required",
                     "Subject"));
         }
-        if (message == null || message.length() < 1) {
+        if (me == null || me.length() < 1) {
             errors.add(ActionErrors.GLOBAL_ERROR,
                     new ActionError ("error.feedback_form.required",
                     "Message"));
         }
-        if (email != null && email.length() > 0
-            && !email.matches(".+@.+\\.[a-z]+")) {
+        if (em != null && em.length() > 0
+            && !em.matches(".+@.+\\.[a-z]+")) {
             errors.add(ActionErrors.GLOBAL_ERROR,
                     new ActionError("error.feedback_form.invalid_email"));
         }
-        if (message != null) {
+        if (me != null) {
             //  Find out how many URLs the message has.
             //  If there is more than one URL that does not point to baseURL,
             //  flag it as invalid.
             int numNonBaseUrls = 0;
-            String words[] = message.split("\\s");
+            String words[] = me.split("\\s");
             for (int i=0; i<words.length; i++) {
                 String word = words[i];
                 if (word.startsWith("http://")) {
