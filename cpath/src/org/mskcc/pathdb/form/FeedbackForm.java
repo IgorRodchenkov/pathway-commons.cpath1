@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class FeedbackForm extends ActionForm {
 
-	private static final String CBIO_MSKCC_ORG_RECAPTCHA_KEY = "6Ld3PgIAAAAAAB8ZdAwyf4Rp2jvF24pDyUmMbZ6f";
-	private static final String PATHWAY_COMMONS_ORG_RECAPTCHA_KEY = "6Ld2PgIAAAAAAINTdo1lTZQt0eZQAzPbHfAAzYmt";
-	
+	private static final String PC_PRIVATE_RECAPTCHA_KEY = "6Ld2PgIAAAAAAINTdo1lTZQt0eZQAzPbHfAAzYmt";
+	private static final String AWABI_PRIVATE_RECAPTCHA_KEY = "6LdtRAIAAAAAAHlDoc4RU8FJAV4bDcXJ5OyP0F6U";
+	private static final String TORO_PRIVATE_RECAPTCHA_KEY = "6LdzRAIAAAAAALdtZ7jdAg4uhQC1JJzWewMAWkho";
 
     private String email;
     private String subject;
@@ -153,8 +153,17 @@ public class FeedbackForm extends ActionForm {
 		if (challengeResponse == null || challengeResponse.length() == 0) return false;
 
 		// private key
-		String privateKey = (httpServletRequest.getServerName().equals("pathway.commons.org")) ?
-			PATHWAY_COMMONS_ORG_RECAPTCHA_KEY : CBIO_MSKCC_ORG_RECAPTCHA_KEY;
+		String serverName = httpServletRequest.getServerName();
+		String privateKey = "";
+		if (serverName.equals("pathway.commons.org")) {
+			privateKey = PC_PRIVATE_RECAPTCHA_KEY;
+		}
+		else if (serverName.equals("awabi.cbio.mskcc.org")) {
+			privateKey = AWABI_PRIVATE_RECAPTCHA_KEY;
+		}
+		else if (serverName.equals("toro.cbio.mskcc.org")) {
+			privateKey = TORO_PRIVATE_RECAPTCHA_KEY;
+		}
 
 		// validate with reCAPTCHA servers
 		HttpClient client = new HttpClient();
