@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.67 2008-04-18 17:36:20 cerami Exp $
+// $Id: Admin.java,v 1.68 2008-06-24 20:17:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,6 +55,7 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Properties;
+import java.util.Stack;
 
 /**
  * Command Line cPath Administrator.
@@ -216,6 +217,17 @@ public class Admin {
             } else {
                 System.out.println("Fatal Error:  " + e.getMessage());
             }
+            Throwable rootCause = getRootCause(e);
+            if (rootCause != null && rootCause != e) {
+                System.out.println("Root Cause:  " + rootCause.getMessage());
+                if (rootCause instanceof SAXParseException) {
+                    SAXParseException saxException = (SAXParseException) rootCause;
+                    System.out.println ("             Error occurred at:  line:  "
+                            + saxException.getLineNumber() + ", col:  "
+                            + saxException.getColumnNumber());
+                }
+            }
+
             if (xdebugFlag) {
                 System.out.println("\nFull Details are available in the "
                         + "stack trace below.");
@@ -224,6 +236,24 @@ public class Admin {
             System.out.println("-----------------------------------------");
         } finally {
             EhCache.shutDownCache();
+        }
+    }
+
+    /**
+     * Gets the Root Cause of this Exception.
+     */
+    private static Throwable getRootCause(Throwable throwable) {
+        Stack stack = new Stack();
+        stack.push(throwable);
+        try {
+            Throwable temp = throwable.getCause();
+            while (temp != null) {
+                stack.push(temp);
+                temp = temp.getCause();
+            }
+            return (Throwable) stack.pop();
+        } catch (NullPointerException e) {
+            return throwable;
         }
     }
 
