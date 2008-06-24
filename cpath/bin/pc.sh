@@ -42,8 +42,6 @@ date
 # Import the Entrez Gene Link Out Mapping Files
 ./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/ncbi/refseq_2_entrez_gene_id.txt import
 ./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/ncbi/uniprot_2_entrez_gene_id.txt import
-./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/uniprot/refseq_human.txt import
-./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/uniprot/uniprot_ac_human.txt import
 
 # Import the Unification ID Mapping Files
 ./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_uniprot2uniprot.txt import
