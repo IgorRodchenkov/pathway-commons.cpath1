@@ -1,4 +1,4 @@
-// $Id: XmlValidator.java,v 1.5 2006-06-09 19:22:05 cerami Exp $
+// $Id: XmlValidator.java,v 1.6 2008-06-24 20:02:16 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -69,6 +69,7 @@ public class XmlValidator extends DefaultHandler {
             = "http://apache.org/xml/properties/schema/external-schemaLocation";
 
     private ArrayList errorList;
+    private boolean validateAgainstSchema;
 
     /**
      * Validates Specified Document.
@@ -78,8 +79,9 @@ public class XmlValidator extends DefaultHandler {
      * @throws SAXException Error Parsing Document.
      * @throws IOException  Error Reading Document.
      */
-    public ArrayList validate(String xml) throws SAXException, IOException {
-        return execute(xml, null);
+    public ArrayList validate(String xml, boolean validateAgainstSchema)
+            throws SAXException, IOException {
+        return execute(xml, validateAgainstSchema, null);
     }
 
     /**
@@ -93,7 +95,7 @@ public class XmlValidator extends DefaultHandler {
      */
     public ArrayList validate(String xml, String schemaLocation)
             throws SAXException, IOException {
-        return execute(xml, schemaLocation);
+        return execute(xml, true, schemaLocation);
     }
 
     /**
@@ -117,14 +119,20 @@ public class XmlValidator extends DefaultHandler {
         return validate(xml, psiMiLevel1);
     }
 
-    private ArrayList execute(String xmlData, String schemaLocation)
+    private ArrayList execute(String xmlData, boolean validateAgainstSchema, String schemaLocation)
             throws IOException {
         errorList = new ArrayList();
         try {
             XMLReader parser = XMLReaderFactory.createXMLReader
                     (DEFAULT_PARSER_NAME);
-            parser.setFeature(VALIDATION_FEATURE_ID, true);
-            parser.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
+            if (validateAgainstSchema) {
+                parser.setFeature(VALIDATION_FEATURE_ID, true);
+                parser.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
+            } else {
+                parser.setFeature(VALIDATION_FEATURE_ID, false);
+                parser.setFeature(SCHEMA_VALIDATION_FEATURE_ID, false);
+            }
+            
             if (schemaLocation != null) {
                 parser.setProperty(EXTERNAL_SCHEMA_LOCATION, schemaLocation);
             }
