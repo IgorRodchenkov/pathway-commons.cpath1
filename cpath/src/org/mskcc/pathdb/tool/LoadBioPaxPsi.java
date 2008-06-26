@@ -1,4 +1,4 @@
-// $Id: LoadBioPaxPsi.java,v 1.10 2008-06-26 16:12:17 cerami Exp $
+// $Id: LoadBioPaxPsi.java,v 1.11 2008-06-26 16:13:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -63,7 +63,7 @@ public class LoadBioPaxPsi {
             throws DataServiceException, DaoException, ImportException {
         long snapshotId = -1;
         String description = file.getName();
-        System.out.println("Reading in file:  " + file.getName());
+        System.out.println("Reading in file:  " + file.getAbsolutePath());
         System.out.println("XML Type:  " + xmlType.toString());
 
         //  If this is a BioPAX file, read in meta-data from db.info
