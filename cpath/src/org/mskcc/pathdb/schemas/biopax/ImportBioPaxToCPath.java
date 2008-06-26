@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.37 2008-06-24 20:03:16 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.38 2008-06-26 18:40:28 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -113,19 +113,12 @@ public class ImportBioPaxToCPath {
                 throw new ImportException ("Check XML Well-Formedness:  FAILED");
             } else {
                 pMonitor.setCurrentMessage("Check XML Well-Formedness:  PASSED");
-                RdfValidator rdfValidator = new RdfValidator(new StringReader(xml));
-                if (rdfValidator.hasErrorsOrWarnings()) {
-                    pMonitor.setCurrentMessage(rdfValidator.getReadableErrorList());
-                    throw new ImportException ("Check RDF Validity:  FAILED");
-                } else {
-                    pMonitor.setCurrentMessage("Check RDF Validity:  PASSED");
-                    validateRdf(new StringBufferInputStream(xml));
-                    pMonitor.setCurrentMessage("Check PAXTools Validity:  PASSED");
-                    massageBioPaxData(new StringReader(xml));
-                    storeRecords();
-                    storeLinks();
-                    storeEvidence();
-                }
+                validateRdf(new StringBufferInputStream(xml));
+                pMonitor.setCurrentMessage("Check PAXTools Validity:  PASSED");
+                massageBioPaxData(new StringReader(xml));
+                storeRecords();
+                storeLinks();
+                storeEvidence();
             }
         } catch (IOException e) {
             throw new ImportException(e);
