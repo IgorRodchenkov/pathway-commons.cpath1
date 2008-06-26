@@ -28,7 +28,7 @@ fi
 # setup the database
 echo Import started at:
 date
-./initDb.pl
+./initDb.pl -f
 
 # Import the Pathway Commons Data Sources --> Meta Data
 ./admin.pl -f ../dbData/externalDb/pathway_commons.xml import
@@ -37,6 +37,7 @@ date
 ./pc_import_uniprot.sh
 
 # Create the Entrez Gene ID Mapping Files from NCBI Source
+# Currently restricted to Human and Mouse
 ./entrez_gene.pl $CPATH_HOME/../pathway-commons/fresh/ncbi/gene2accession
 
 # Import the Entrez Gene Link Out Mapping Files
