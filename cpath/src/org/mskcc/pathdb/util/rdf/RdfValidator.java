@@ -1,4 +1,4 @@
-// $Id: RdfValidator.java,v 1.6 2006-02-22 22:51:58 grossb Exp $
+// $Id: RdfValidator.java,v 1.7 2008-06-26 16:55:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,8 @@
 package org.mskcc.pathdb.util.rdf;
 
 import com.hp.hpl.jena.rdf.arp.ARP;
+import com.hp.hpl.jena.rdf.arp.ARPOptions;
+import com.hp.hpl.jena.rdf.arp.ARPErrorNumbers;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -62,7 +64,13 @@ public class RdfValidator {
      */
     public RdfValidator(Reader reader) throws IOException, SAXException {
         ARP arp = new ARP();
-        arp.setStrictErrorMode();
+        ARPOptions arpOptions = arp.getOptions();
+        arpOptions.setStrictErrorMode();
+
+        // Turns off Empty Base URI Warning.
+        // Details:  http://osdir.com/ml/web.rdf/2003-08/msg00135.html
+        arpOptions.setErrorMode(ARPErrorNumbers.WARN_RESOLVING_URI_AGAINST_EMPTY_BASE,
+            ARPErrorNumbers.EM_IGNORE);
         errorHandler = new RdfErrorHandler();
         arp.setErrorHandler(errorHandler);
         arp.load(reader);
