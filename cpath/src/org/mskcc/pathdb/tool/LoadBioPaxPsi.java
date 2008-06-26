@@ -1,4 +1,4 @@
-// $Id: LoadBioPaxPsi.java,v 1.9 2006-11-16 15:42:47 cerami Exp $
+// $Id: LoadBioPaxPsi.java,v 1.10 2008-06-26 16:12:17 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -72,7 +72,9 @@ public class LoadBioPaxPsi {
             SnapshotReader snapshotReader = new SnapshotReader(file.getParentFile(), "db.info");
             snapshotId = snapshotReader.getSnapshotRecord().getId();
             System.out.println("Data source is:  "
-                    + snapshotReader.getSnapshotRecord().getExternalDatabase().getName());
+                    + snapshotReader.getSnapshotRecord().getExternalDatabase().getName()
+                    + ", " + snapshotReader.getSnapshotRecord().getSnapshotVersion()
+                    + ", " + snapshotReader.getSnapshotRecord().getSnapshotDate());
         }
         System.out.println("Reading in file content...");
         ContentReader contentReader = new ContentReader();
