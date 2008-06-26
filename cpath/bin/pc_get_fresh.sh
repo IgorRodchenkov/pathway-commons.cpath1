@@ -62,7 +62,7 @@ read version
 echo -n "Enter date for Reactome (MM/DD/YYYY):  "
 read date
 cat << END > $FRESH_HOME/reactome/db.info
-db_name=Reactome
+db_name=REACTOME
 db_snapshot_version=$version
 db_snapshot_date=$date
 END
