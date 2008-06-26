@@ -1,4 +1,4 @@
-// $Id: AdminBaseAction.java,v 1.19 2006-02-22 22:47:50 grossb Exp $
+// $Id: AdminBaseAction.java,v 1.20 2008-06-26 15:20:28 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -89,8 +89,10 @@ public abstract class AdminBaseAction extends BaseAction {
             HttpServletRequest request, HttpServletResponse response,
             XDebug xdebug) throws IOException {
         xdebug.logMsg(this, "Page is protected.  Available to Admin User only");
+        log.info("Page is protected.  Available to Admin User only.");
         String authorization = request.getHeader("Authorization");
         if (authorization == null) {
+            log.info("User is not authenticated.  Prompt for username / password.");
             askForPassword(response);
             return false;
         } else {
@@ -115,8 +117,11 @@ public abstract class AdminBaseAction extends BaseAction {
         xdebug.logMsg(this, "Password:  " + password);
         if (user.equals(adminUser) && password.equals(adminPassword)) {
             xdebug.logMsg(this, "User/Password Correct");
+            log.info("Admin Username / Password is correct.  Admin user is authorized.");
             return true;
         } else {
+            log.info("Admin Username / Password is *not* correct.  Admin user is *not* " +
+                    "authorized.");
             askForPassword(response);
             return false;
         }

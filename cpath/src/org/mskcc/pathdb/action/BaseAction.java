@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.41 2008-04-09 17:26:58 cerami Exp $
+// $Id: BaseAction.java,v 1.42 2008-06-26 15:20:28 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -246,7 +246,7 @@ public abstract class BaseAction extends Action {
      */
     public static final String YES = "yes";
 
-    private Logger log = Logger.getLogger(BaseAction.class);
+    protected Logger log = Logger.getLogger(BaseAction.class);
 
     /**
      * Executes Action.
@@ -333,6 +333,7 @@ public abstract class BaseAction extends Action {
             XDebug xdebug) throws IOException {
         xdebug.logMsg(this, "Page is not protected.  "
                 + "User is authorized");
+        log.info("Page is not protected.  User is therefore authorized.");
         return true;
     }
 
