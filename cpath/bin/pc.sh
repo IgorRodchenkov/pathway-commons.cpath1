@@ -129,7 +129,7 @@ function importHumanCyc {
 	logProgress "Cooking and Char Converting HumanCyc Files."
 	local HUMANCYC_HOME="$CPATH_HOME/../pathway-commons/humancyc"
 	mv -f $HUMANCYC_HOME/biopax.owl $HUMANCYC_HOME/biopax.owl.bak
-	$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $HUMANCYC_HOME/biopax.owl.bak > HUMANCYC_HOME/biopax.owl
+	$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $HUMANCYC_HOME/biopax.owl.bak > $HUMANCYC_HOME/biopax.owl
 	./admin.pl -f $HUMANCYC_HOME/biopax.owl import
 	mv -f $HUMANCYC_PATH/biopax.owl.bak $HUMANCYC_PATH/biopax.owl
 }
