@@ -128,10 +128,10 @@ function importReactome {
 function importHumanCyc {
 	logProgress "Cooking and Char Converting HumanCyc Files."
 	local HUMANCYC_HOME="$CPATH_HOME/../pathway-commons/humancyc"
-	mv -f $HUMANCYC_HOME/biopax.owl $HUMANCYC_HOME/biopax.owl.bak
+	mv -vf $HUMANCYC_HOME/biopax.owl $HUMANCYC_HOME/biopax.owl.bak
 	$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $HUMANCYC_HOME/biopax.owl.bak > $HUMANCYC_HOME/biopax.owl
-	./admin.pl -f $HUMANCYC_HOME/biopax.owl import
-	mv -f $HUMANCYC_PATH/biopax.owl.bak $HUMANCYC_PATH/biopax.owl
+	./admin.pl -d -f $HUMANCYC_HOME/biopax.owl import
+	mv -vf $HUMANCYC_HOME/biopax.owl.bak $HUMANCYC_HOME/biopax.owl
 }
 
 function importNci {
@@ -171,15 +171,15 @@ function wrapUp {
 init
 checkDependencies
 initDB
-importUniProtBackground
-importEntrezGeneIds
-importUnificationRefs
-importIntAct
-importHPRD
-importReactome
+#importUniProtBackground
+#importEntrezGeneIds
+#importUnificationRefs
+#importIntAct
+#importHPRD
+#importReactome
 importHumanCyc
-importNci
-importCellMap
+#importNci
+#importCellMap
 fetchPublications
 index
 wrapUp
