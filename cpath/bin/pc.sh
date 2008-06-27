@@ -180,6 +180,6 @@ importReactome
 importHumanCyc
 importNci
 importCellMap
-#fetchPublications
-#index
+fetchPublications
+index
 wrapUp
