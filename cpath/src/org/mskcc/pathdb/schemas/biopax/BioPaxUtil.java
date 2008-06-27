@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.36 2008-04-22 16:21:20 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.37 2008-06-27 20:04:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -546,7 +546,7 @@ public class BioPaxUtil {
                         e.setAttribute(RdfConstants.RESOURCE_ATTRIBUTE, newId,
                                 RdfConstants.RDF_NAMESPACE);
                         keepTraversingTree = false;
-                    } else if (bioPaxConstants.isBioPaxEntity
+                    } else if (referencedResource != null && bioPaxConstants.isBioPaxEntity
                             (referencedResource.getName())) {
                         //  Case 2A:  We are pointing at a Hinge Element
                         logMsg("Branching:  Subcase 2A");
