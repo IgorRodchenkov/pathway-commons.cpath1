@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.37 2008-06-27 20:04:18 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.38 2008-06-27 20:08:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -598,6 +598,9 @@ public class BioPaxUtil {
         Element child = (Element) rdfResources.get(uri);
 
         //  Clone the resource
+        if (child == null) {
+            throw new NullPointerException ("Can't find reference for:  " + uri + ".");
+        }
         Element clonedChild = (Element) child.clone();
 
         //  Remove the Existing RDF ID
