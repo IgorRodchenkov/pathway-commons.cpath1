@@ -126,12 +126,12 @@ function importReactome {
 }
 
 function importHumanCyc {
-	logProgress "Cooking and Char Converting HumanCyc Files."
+	logProgress "Loading HumanCyc."
 	local HUMANCYC_HOME="$CPATH_HOME/../pathway-commons/humancyc"
-	mv -vf $HUMANCYC_HOME/biopax.owl $HUMANCYC_HOME/biopax.owl.bak
-	$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $HUMANCYC_HOME/biopax.owl.bak > $HUMANCYC_HOME/biopax.owl
+	#mv -vf $HUMANCYC_HOME/biopax.owl $HUMANCYC_HOME/biopax.owl.bak
+	#$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $HUMANCYC_HOME/biopax.owl.bak > $HUMANCYC_HOME/biopax.owl
 	./admin.pl -d -f $HUMANCYC_HOME/biopax.owl import
-	mv -vf $HUMANCYC_HOME/biopax.owl.bak $HUMANCYC_HOME/biopax.owl
+	#mv -vf $HUMANCYC_HOME/biopax.owl.bak $HUMANCYC_HOME/biopax.owl
 }
 
 function importNci {
