@@ -175,6 +175,7 @@ importUniProtBackground
 importEntrezGeneIds
 importUnificationRefs
 importIntAct
+importMint
 importHPRD
 importReactome
 importHumanCyc
