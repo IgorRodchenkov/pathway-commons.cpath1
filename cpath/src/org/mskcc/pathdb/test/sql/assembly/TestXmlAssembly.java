@@ -1,4 +1,4 @@
-// $Id: TestXmlAssembly.java,v 1.13 2008-01-23 18:50:54 grossben Exp $
+// $Id: TestXmlAssembly.java,v 1.14 2008-07-01 20:11:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,6 +53,7 @@ import org.biopax.paxtools.io.jena.JenaIOHandler;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.StringBufferInputStream;
+import java.io.StringReader;
 
 /**
  * Tests the XML Assembly Functionality.
@@ -154,7 +155,7 @@ public class TestXmlAssembly extends TestCase {
         //  Validate the returned XML document against the PSI-MI Level 1 XML Schema
         //  This is an important test!
         XmlValidator validator = new XmlValidator();
-        ArrayList errorList = validator.validatePsiMiLevel1(xmlAssembly);
+        ArrayList errorList = validator.validatePsiMiLevel1(new StringReader(xmlAssembly));
         assertEquals (0, errorList.size());
     }
 

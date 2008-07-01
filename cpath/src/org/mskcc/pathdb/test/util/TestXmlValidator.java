@@ -1,4 +1,4 @@
-// $Id: TestXmlValidator.java,v 1.13 2006-06-09 19:22:04 cerami Exp $
+// $Id: TestXmlValidator.java,v 1.14 2008-07-01 20:11:31 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,6 +37,7 @@ import org.mskcc.dataservices.util.ContentReader;
 import org.mskcc.pathdb.util.xml.XmlValidator;
 
 import java.util.ArrayList;
+import java.io.StringReader;
 
 /**
  * Tests the XmlValidator Class.
@@ -54,18 +55,18 @@ public class TestXmlValidator extends TestCase {
         XmlValidator validator = new XmlValidator();
         ContentReader reader = new ContentReader();
         String xml = reader.retrieveContent("testData/psi_mi/dip_sample.xml");
-        ArrayList errors = validator.validate(xml,
+        ArrayList errors = validator.validate(new StringReader(xml),
                 "net:sf:psidev:mi http://www.cbio.mskcc.org/cpath/xml/MIF.xsd");
         assertEquals(0, errors.size());
 
         xml = reader.retrieveContent("testData/psi_mi/invalid.xml");
-        errors = validator.validate(xml,
+        errors = validator.validate(new StringReader(xml),
                 "net:sf:psidev:mi http://www.cbio.mskcc.org/cpath/xml/MIF.xsd");
         assertTrue(errors.size() > 0);
 
         xml = reader.retrieveContent
                 ("testData/psi_mi/dip_no_schema_location.xml");
-        errors = validator.validate(xml,
+        errors = validator.validate(new StringReader(xml),
                 "net:sf:psidev:mi http://psidev.sourceforge.net/mi/"
                         + "xml/src/MIF.xsd");
         assertEquals(0, errors.size());
