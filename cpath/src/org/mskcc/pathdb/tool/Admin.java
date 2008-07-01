@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.68 2008-06-24 20:17:16 cerami Exp $
+// $Id: Admin.java,v 1.69 2008-07-01 20:07:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,9 @@ import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.ExternalDbImageUtil;
+import org.mskcc.pathdb.util.biopax.BioPaxUtil;
+import org.mskcc.pathdb.util.xml.XmlValidator;
+import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.file.FileUtil;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -56,6 +59,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Properties;
 import java.util.Stack;
+import java.util.ArrayList;
+
+import com.hp.hpl.jena.ontology.ConversionException;
 
 /**
  * Command Line cPath Administrator.
@@ -194,11 +200,6 @@ public class Admin {
 
             System.out.println("Total Time:  " + xdebug.getTimeElapsed()
                     + " ms");
-
-            //System.out.println("Press Enter to exit");
-            //InputStreamReader inputStreamReader = new InputStreamReader ( System.in );
-            //BufferedReader stdin = new BufferedReader ( inputStreamReader );
-            //String line = stdin.readLine();
             System.out.println("Done");
         } catch (SAXParseException e) {
             System.out.println("\n-----------------------------------------");
@@ -270,7 +271,7 @@ public class Admin {
                 System.out.println("Loading all files in directory:  "
                         + file.getAbsolutePath());
                 File files[] = file.listFiles();
-                //  Do quick Validation pass on all files first.
+                //  Do validation pass on all files first.
                 for (int i = 0; i < files.length; i++) {
                     //  Avoid loading up hidden files, such as .DS_Store
                     //  files on Mac OS X.
@@ -289,9 +290,15 @@ public class Admin {
                             importDataFromSingleFile(files[i]);
                         }
                     }
+                } else {
+                    throw new ImportException ("One or more files failed validation.  " +
+                            "Import aborted.");
                 }
             } else {
-                importDataFromSingleFile(file);
+                boolean fileValid = validateSingleFile(file);
+                if (fileValid) {
+                    importDataFromSingleFile(file);
+                }
             }
         }
     }
@@ -299,25 +306,88 @@ public class Admin {
     private static boolean validateSingleFile (File file) throws IOException,
             SAXException {
         if (file.isDirectory()) return true;
-        System.out.print ("Testing File for RDF Validity:  " + file.getName());
+
+        XmlValidator xmlValidator = new XmlValidator();
+
+        //  First Level:  XML Well-Formedness
+        System.out.println ("\nValidating File:  " + file.getName());
         int fileType = FileUtil.getFileType(file);
         if (fileType == FileUtil.BIOPAX) {
-			try {
-				FileInputStream in = new FileInputStream(file);
-				JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
-				jenaIOHandler.setStrict(true);
-				Model bpModel = jenaIOHandler.convertFromOWL(in);
-			}
-			catch(Exception e) {
+
+            ArrayList errors = xmlValidator.validate(new FileReader (file), false);
+            System.out.print ("Testing for XML Well-Formedness.");
+            if (errors.size() > 0) {
                 System.out.println(" --> Invalid");
-                System.out.println(e.getMessage());
+                reportXMLWellFormednessErrors (errors);
                 return false;
-			}
-			System.out.println(" --> OK");
+            } else {
+                System.out.println(" --> OK");
+            }
+
+            //  Second Level:  RDF Validation
+            System.out.print ("Testing for RDF Validity.");
+            RdfValidator validator = new RdfValidator(new FileInputStream(file));
+            if (validator.hasErrorsOrWarnings()) {
+                System.out.println(" --> Invalid");
+                System.out.println(validator.getReadableErrorList());
+                //  Note:  if we have RDF validation errors, just output, but continue w/ the rest
+                //  of the validation steps for additional error messages.
+            } else {
+                System.out.println(" --> OK");
+            }
+
+            System.out.print ("Testing for dangling references.");
+            try {
+                BioPaxUtil bpUtil = new BioPaxUtil (new FileReader(file));
+                ArrayList errorList = bpUtil.getErrorList();
+                if (errorList.size() > 0) {
+                    System.out.println (" --> Invalid");
+                    for (int i=0; i<errorList.size(); i++) {
+                        String error = (String) errorList.get(i);
+                        System.out.println ("XML / RDF Error:  " + error);
+                    }
+                    return false;
+                }
+            } catch (JDOMException e) {
+                System.out.println(" --> Invalid");
+                e.printStackTrace();
+                return false;
+            }
+            System.out.println(" --> OK");
+
+            System.out.print ("Testing for PaxTools Validity.");
+            try {
+                FileInputStream in = new FileInputStream(file);
+                JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
+                jenaIOHandler.setStrict(true);
+                Model bpModel = jenaIOHandler.convertFromOWL(in);
+            }
+            catch(Exception e) {
+                System.out.println(" --> Invalid");
+                e.printStackTrace();
+                return false;
+            }
+            System.out.println(" --> OK");
         } else {
-            System.out.println (" --> Not RDF");
+            System.out.println (" --> Not XML/RDF");
         }
         return true;
+    }
+
+    private static void reportXMLWellFormednessErrors(ArrayList errors) {
+        for (int i=0; i<errors.size(); i++) {
+            SAXException exception = (SAXException) errors.get(i);
+            if (exception instanceof SAXParseException) {
+                SAXParseException saxParseException = (SAXParseException) exception;
+                System.out.println("XML Validation Error:  "
+                        + saxParseException.getMessage() + ", line:  "
+                        + saxParseException.getLineNumber() + ", col:  "
+                        + saxParseException.getColumnNumber());
+            } else {
+                System.out.println("XML Validation Error:  "
+                    + exception.getMessage());
+            }
+        }
     }
 
     private static void importDataFromSingleFile(File file) throws IOException,
