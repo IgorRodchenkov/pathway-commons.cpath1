@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.69 2008-07-01 20:07:11 cerami Exp $
+// $Id: Admin.java,v 1.70 2008-07-01 21:22:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,12 +41,12 @@ import org.mskcc.pathdb.sql.transfer.ImportException;
 import org.mskcc.pathdb.task.*;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.ExternalDbImageUtil;
-import org.mskcc.pathdb.util.biopax.BioPaxUtil;
 import org.mskcc.pathdb.util.xml.XmlValidator;
 import org.mskcc.pathdb.util.rdf.RdfValidator;
 import org.mskcc.pathdb.util.file.FileUtil;
 import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.schemas.biopax.BioPaxUtil;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.jdom.JDOMException;
@@ -77,7 +77,6 @@ public class Admin {
     private static final String COMMAND_PRE_COMPUTE = "precompute";
     private static final String COMMAND_IMAGES = "images";
     private static final String COMMAND_COUNT_IDS = "count_ids";
-    private static final String COMMAND_VALIDATE = "validate";
     private static final String COMMAND_QUERY = "query";
     private static final int NOT_SET = -9999;
 
@@ -183,10 +182,6 @@ public class Admin {
             } else if (command.equals(COMMAND_COUNT_IDS)) {
                 CountExternalIdsTask task = new CountExternalIdsTask
                         (taxonomyId, targetExternalId, true);
-            } else if (command.equals(COMMAND_VALIDATE)) {
-                ValidateXmlTask validator = new ValidateXmlTask
-                        (new File(fileName));
-                validator.validate(true);
             } else if (command.equals(COMMAND_QUERY)) {
                 QueryFullText.queryFullText(ftQuery);
             } else {
@@ -206,13 +201,13 @@ public class Admin {
             System.out.println("XML Validation Error:  " + e.getMessage());
             System.out.println("Error Located at line:  " + e.getLineNumber()
                     + ", column:  " + e.getColumnNumber());
-            System.out.println("-----------------------------------------");
+            System.out.println("----------------------------------------------------------");
         } catch (SAXException e) {
-            System.out.println("\n-----------------------------------------");
+            System.out.println("\n----------------------------------------------------------");
             System.out.println("XML Validation Error:  " + e.getMessage());
-            System.out.println("-----------------------------------------");
+            System.out.println("----------------------------------------------------------");
         } catch (Exception e) {
-            System.out.println("\n-----------------------------------------");
+            System.out.println("\n----------------------------------------------------------");
             if (e instanceof NullPointerException) {
                 System.out.println("Fatal Error:  Null Pointer Exception");
             } else {
@@ -234,7 +229,7 @@ public class Admin {
                         + "stack trace below.");
                 e.printStackTrace();
             }
-            System.out.println("-----------------------------------------");
+            System.out.println("----------------------------------------------------------");
         } finally {
             EhCache.shutDownCache();
         }
@@ -261,8 +256,7 @@ public class Admin {
     /**
      * Imports a BioPAX, PSI-MI or an External Reference File.
      */
-    private static void importData() throws IOException, DaoException,
-            ImportException, SAXException, JDOMException,
+    private static void importData() throws Exception,
             DataServiceException {
         if (fileName != null) {
             File file = new File(fileName);
@@ -303,8 +297,7 @@ public class Admin {
         }
     }
 
-    private static boolean validateSingleFile (File file) throws IOException,
-            SAXException {
+    private static boolean validateSingleFile (File file) throws Exception {
         if (file.isDirectory()) return true;
 
         XmlValidator xmlValidator = new XmlValidator();
@@ -313,47 +306,9 @@ public class Admin {
         System.out.println ("\nValidating File:  " + file.getName());
         int fileType = FileUtil.getFileType(file);
         if (fileType == FileUtil.BIOPAX) {
-
-            ArrayList errors = xmlValidator.validate(new FileReader (file), false);
-            System.out.print ("Testing for XML Well-Formedness.");
-            if (errors.size() > 0) {
-                System.out.println(" --> Invalid");
-                reportXMLWellFormednessErrors (errors);
-                return false;
-            } else {
-                System.out.println(" --> OK");
+            if (strictValidation) {
+                performAllValidationSteps(xmlValidator, file);
             }
-
-            //  Second Level:  RDF Validation
-            System.out.print ("Testing for RDF Validity.");
-            RdfValidator validator = new RdfValidator(new FileInputStream(file));
-            if (validator.hasErrorsOrWarnings()) {
-                System.out.println(" --> Invalid");
-                System.out.println(validator.getReadableErrorList());
-                //  Note:  if we have RDF validation errors, just output, but continue w/ the rest
-                //  of the validation steps for additional error messages.
-            } else {
-                System.out.println(" --> OK");
-            }
-
-            System.out.print ("Testing for dangling references.");
-            try {
-                BioPaxUtil bpUtil = new BioPaxUtil (new FileReader(file));
-                ArrayList errorList = bpUtil.getErrorList();
-                if (errorList.size() > 0) {
-                    System.out.println (" --> Invalid");
-                    for (int i=0; i<errorList.size(); i++) {
-                        String error = (String) errorList.get(i);
-                        System.out.println ("XML / RDF Error:  " + error);
-                    }
-                    return false;
-                }
-            } catch (JDOMException e) {
-                System.out.println(" --> Invalid");
-                e.printStackTrace();
-                return false;
-            }
-            System.out.println(" --> OK");
 
             System.out.print ("Testing for PaxTools Validity.");
             try {
@@ -361,17 +316,59 @@ public class Admin {
                 JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
                 jenaIOHandler.setStrict(true);
                 Model bpModel = jenaIOHandler.convertFromOWL(in);
-            }
-            catch(Exception e) {
+            } catch(Exception e) {
                 System.out.println(" --> Invalid");
-                e.printStackTrace();
-                return false;
+                if (!strictValidation) {
+                    System.out.println(" --> Try re-rerunning admin.pl with the -v for " +
+                            "additional validation checks and more detailed error messages.");
+                }
+                throw e;
             }
             System.out.println(" --> OK");
         } else {
             System.out.println (" --> Not XML/RDF");
         }
         return true;
+    }
+
+    private static boolean performAllValidationSteps(XmlValidator xmlValidator, File file)
+            throws SAXException, IOException, ImportException, DaoException, JDOMException {
+        ArrayList errors = xmlValidator.validate(new FileReader(file), false);
+        System.out.println ("Performing all levels of validation.");
+        System.out.print ("Testing for XML Well-Formedness.");
+        if (errors.size() > 0) {
+            System.out.println(" --> Invalid");
+            reportXMLWellFormednessErrors (errors);
+            throw new ImportException ("XML Well-Formedness Error.  Import aborted.");
+        } else {
+            System.out.println(" --> OK");
+        }
+
+        //  Second Level:  RDF Validation
+        System.out.print ("Testing for RDF Validity.");
+        RdfValidator validator = new RdfValidator(new FileInputStream(file));
+        if (validator.hasErrorsOrWarnings()) {
+            System.out.println(" --> Invalid");
+            System.out.println(validator.getReadableErrorList());
+            throw new ImportException ("RDF Validity Error.  Import aborted.");
+        } else {
+            System.out.println(" --> OK");
+        }
+
+        System.out.print ("Testing for dangling references.");
+        BioPaxUtil bpUtil = new BioPaxUtil (new FileReader(file), strictValidation,
+                new ProgressMonitor());
+        ArrayList errorList = bpUtil.getErrorList();
+        if (errorList.size() > 0) {
+            System.out.println (" --> Invalid");
+            for (int i=0; i<errorList.size(); i++) {
+                String error = (String) errorList.get(i);
+                System.out.println ("XML / RDF Error:  " + error);
+            }
+            throw new ImportException ("Dangling Reference Error.  Import aborted.");
+        }
+        System.out.println(" --> OK");
+        return false;
     }
 
     private static void reportXMLWellFormednessErrors(ArrayList errors) {
@@ -440,10 +437,6 @@ public class Admin {
             System.out.println("\n-------------------------------------");
             System.out.print("! Import detected XML validity errors.  However, ");
             System.out.println("import will proceed.");
-            System.out.println("Use the validate command to view "
-                    + "a complete list of XML validation errors.\n"
-                    + "For example:  admin.pl"
-                    + " -f " + file.getAbsolutePath() + " validate");
             System.out.println("-------------------------------------");
         }
         importId = LoadBioPaxPsi.importDataFile(file, XmlRecordType.PSI_MI);
@@ -461,7 +454,7 @@ public class Admin {
             displayHelp();
         }
 
-        Getopt g = new Getopt("admin.pl", argv, "o:u:p:f:h:b:sdr");
+        Getopt g = new Getopt("admin.pl", argv, "o:u:p:f:h:b:vdr");
         int c;
         while ((c = g.getopt()) != -1) {
             switch (c) {
@@ -493,7 +486,7 @@ public class Admin {
                 case 'd':
                     xdebugFlag = true;
                     break;
-                case 's':
+                case 'v':
                     strictValidation = true;
                     break;
                 case 'r':
@@ -538,10 +531,6 @@ public class Admin {
         if (command.equals(COMMAND_COUNT_IDS) && taxonomyId == NOT_SET) {
             getTaxonomyId();
             getTargetExternalId();
-        }
-        if (command.equals(COMMAND_VALIDATE) && fileName == null) {
-            System.out.print("Enter Path to XML File:  ");
-            fileName = in.readLine();
         }
         if (command.equals(COMMAND_QUERY) && ftQuery == null) {
             System.out.print("Enter Full Text Query Term:  ");
@@ -612,9 +601,10 @@ public class Admin {
                 + "(overrides build.properties)");
         System.out.println("  -b, -b=database Database name "
                 + "(overrides build.properties)");
-        System.out.println("  -s              Performs strict validation on imported files");
         System.out.println("  -o, -o=id       NCBI TaxonomyID");
         System.out.println("  -q, -q=term     Full Text Query Term");
+        System.out.println("  -v              Performs multiple levels of validation on " +
+                "imported files.  Useful for debugging purposes.");
         System.out.println("\nWhere command is one of:  ");
         System.out.println("  import          Imports Specified File.");
         System.out.println("  images          Creates all database images and stores them to "
@@ -623,7 +613,6 @@ public class Admin {
                 + "PSI-MI Files");
         System.out.println("                  ID Mapping Files, or External "
                 + "Database files");
-        System.out.println("  index           Indexes All Items in cPath");
         System.out.println("  index           Indexes All Items in cPath");
         System.out.println("  pop_ref         Populate PubMed References");        
         System.out.println("  precompute      Precomputes all queries in "
@@ -686,10 +675,10 @@ public class Admin {
             if (errorReader != null) errorReader.close();
         }
 		catch (IOException e) {
-            System.out.println("\n-----------------------------------------");
+            System.out.println("\n----------------------------------------------------------");
 			System.out.println("Error while attempting to dump mysql table '" + tableName + "':");
 			System.out.println("'" + e.getMessage() + "'");
-            System.out.println("-----------------------------------------");
+            System.out.println("----------------------------------------------------------");
 		}		
 	}
 }
