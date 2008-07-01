@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.38 2008-06-26 18:40:28 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.39 2008-07-01 20:05:23 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,20 +52,9 @@ import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.ExternalReferenceUtil;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.util.xml.XmlUtil;
-import org.mskcc.pathdb.util.xml.XmlValidator;
 import org.mskcc.pathdb.util.rdf.RdfQuery;
-import org.mskcc.pathdb.util.rdf.RdfValidator;
-import org.biopax.paxtools.model.Model;
-import org.biopax.paxtools.model.BioPAXLevel;
-import org.biopax.paxtools.io.jena.JenaIOHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringBufferInputStream;
+import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,20 +95,10 @@ public class ImportBioPaxToCPath {
         this.importSummary = new ImportSummary();
         this.newRecordFlags = new ArrayList();
         try {
-            XmlValidator xmlValidator = new XmlValidator();
-            ArrayList errors = xmlValidator.validate(xml, false);
-            if (errors.size() > 0) {
-                validateXml(pMonitor, errors);
-                throw new ImportException ("Check XML Well-Formedness:  FAILED");
-            } else {
-                pMonitor.setCurrentMessage("Check XML Well-Formedness:  PASSED");
-                validateRdf(new StringBufferInputStream(xml));
-                pMonitor.setCurrentMessage("Check PAXTools Validity:  PASSED");
-                massageBioPaxData(new StringReader(xml));
-                storeRecords();
-                storeLinks();
-                storeEvidence();
-            }
+            massageBioPaxData(new StringReader(xml));
+            storeRecords();
+            storeLinks();
+            storeEvidence();
         } catch (IOException e) {
             throw new ImportException(e);
         } catch (DaoException e) {
@@ -128,44 +107,8 @@ public class ImportBioPaxToCPath {
             throw new ImportException(e);
         } catch (ExternalDatabaseNotFoundException e) {
             throw new ImportException(e);
-        } catch (SAXException e) {
-            throw new ImportException(e);
         }
         return importSummary;
-    }
-
-    private void validateXml(ProgressMonitor pMonitor, ArrayList errors) {
-        for (int i=0; i<errors.size(); i++) {
-            SAXException exception = (SAXException) errors.get(i);
-            if (exception instanceof SAXParseException) {
-                SAXParseException saxParseException = (SAXParseException) exception;
-                pMonitor.setCurrentMessage("XML Validation Error:  "
-                        + saxParseException.getMessage() + ", line:  "
-                        + saxParseException.getLineNumber() + ", col:  "
-                        + saxParseException.getColumnNumber());
-            } else {
-                pMonitor.setCurrentMessage("XML Validation Error:  "
-                    + exception.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Validates RDF Data.
-     */
-    private void validateRdf (InputStream in) throws ImportException {
-
-		try {
-			JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
-			jenaIOHandler.setStrict(true);
-			Model bpModel = jenaIOHandler.convertFromOWL(in);
-		}
-		catch(Exception e) {
-            Throwable t = e.getCause();
-            
-            pMonitor.setCurrentMessage(e.getMessage());
-            throw new ImportException(e);
-		}
     }
 
     /**
