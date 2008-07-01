@@ -1,4 +1,4 @@
-// $Id: XmlValidator.java,v 1.6 2008-06-24 20:02:16 cerami Exp $
+// $Id: XmlValidator.java,v 1.7 2008-07-01 20:06:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,7 +39,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.io.Reader;
 import java.util.ArrayList;
 
 /**
@@ -74,28 +74,28 @@ public class XmlValidator extends DefaultHandler {
     /**
      * Validates Specified Document.
      *
-     * @param xml XML Document (String Representation).
+     * @param reader Reader Object.
      * @return ArrayList of SAXExceptions (if any).
      * @throws SAXException Error Parsing Document.
      * @throws IOException  Error Reading Document.
      */
-    public ArrayList validate(String xml, boolean validateAgainstSchema)
+    public ArrayList validate(Reader reader, boolean validateAgainstSchema)
             throws SAXException, IOException {
-        return execute(xml, validateAgainstSchema, null);
+        return execute(reader, validateAgainstSchema, null);
     }
 
     /**
      * Validates Specified Document, using designated schema location.
      *
-     * @param xml            XML Document (String Representation).
+     * @param reader Reader Object.
      * @param schemaLocation Schema Location.
      * @return ArrayList of SAXExceptions (if any).
      * @throws SAXException Error Parsing Document.
      * @throws IOException  Error Reading Document.
      */
-    public ArrayList validate(String xml, String schemaLocation)
+    public ArrayList validate(Reader reader, String schemaLocation)
             throws SAXException, IOException {
-        return execute(xml, true, schemaLocation);
+        return execute(reader, true, schemaLocation);
     }
 
     /**
@@ -106,20 +106,20 @@ public class XmlValidator extends DefaultHandler {
      * to local files (which do not actually exist).  To get around this very common problem,
      * this method explicitly validates the XML document against the local MIF.xsd in cPath.
      *
-     * @param xml XML Document.
+     * @param reader Reader Object.
      * @return ArrayList of SAXExceptions (if any).
      * @throws SAXException XML SAX Error.
      * @throws IOException File I/O Error.
      */
-    public ArrayList validatePsiMiLevel1(String xml) throws SAXException, IOException {
+    public ArrayList validatePsiMiLevel1(Reader reader) throws SAXException, IOException {
         String cpathHome = System.getProperty("CPATH_HOME");
         String separator = System.getProperty("file.separator");
         String psiMiLevel1 = "net:sf:psidev:mi " + cpathHome + separator + "testData"
                 + separator + "psi_mi" + separator + "MIF.xsd";
-        return validate(xml, psiMiLevel1);
+        return validate(reader, psiMiLevel1);
     }
 
-    private ArrayList execute(String xmlData, boolean validateAgainstSchema, String schemaLocation)
+    private ArrayList execute(Reader reader, boolean validateAgainstSchema, String schemaLocation)
             throws IOException {
         errorList = new ArrayList();
         try {
@@ -138,10 +138,7 @@ public class XmlValidator extends DefaultHandler {
             }
             parser.setContentHandler(this);
             parser.setErrorHandler(this);
-
-            StringReader reader = new StringReader(xmlData);
-            InputSource source = new InputSource(reader);
-            parser.parse(source);
+            parser.parse(new InputSource(reader));
         } catch (SAXParseException e) {
             errorList.add(e);
         } catch (SAXException e) {

@@ -1,4 +1,4 @@
-// $Id: RdfValidator.java,v 1.7 2008-06-26 16:55:18 cerami Exp $
+// $Id: RdfValidator.java,v 1.8 2008-07-01 20:06:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,6 +39,7 @@ import org.xml.sax.SAXParseException;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 /**
@@ -58,11 +59,11 @@ public class RdfValidator {
     /**
      * Constructor.
      *
-     * @param reader Reader Object.
+     * @param in FileInputStream.
      * @throws IOException  InputOuput Exception.
      * @throws SAXException XML SAX Parsing Error.
      */
-    public RdfValidator(Reader reader) throws IOException, SAXException {
+    public RdfValidator(FileInputStream in) throws IOException, SAXException {
         ARP arp = new ARP();
         ARPOptions arpOptions = arp.getOptions();
         arpOptions.setStrictErrorMode();
@@ -73,7 +74,7 @@ public class RdfValidator {
             ARPErrorNumbers.EM_IGNORE);
         errorHandler = new RdfErrorHandler();
         arp.setErrorHandler(errorHandler);
-        arp.load(reader);
+        arp.load(in);
     }
 
     /**
