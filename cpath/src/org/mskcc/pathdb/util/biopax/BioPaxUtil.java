@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.12 2006-06-09 19:22:04 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.13 2008-07-01 21:23:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,7 +50,7 @@ import java.util.List;
  *
  * @author Ethan Cerami
  */
-public class BioPaxUtil {
+public class  BioPaxUtil {
     private HashMap rdfResources = new HashMap();
     private ArrayList pathwayList = new ArrayList();
     private ArrayList interactionList = new ArrayList();
@@ -82,65 +82,6 @@ public class BioPaxUtil {
      */
     public HashMap getRdfResourceMap() {
         return rdfResources;
-    }
-
-    /**
-     * Gets list of Pathway Resources.
-     *
-     * @return ArrayList of JDOM Element Objects.
-     */
-    public ArrayList getPathwayList() {
-        return pathwayList;
-    }
-
-    /**
-     * Gets List of Interaction Resources.
-     *
-     * @return ArrayList of JDOM Element Objects.
-     */
-    public ArrayList getInteractionList() {
-        return interactionList;
-    }
-
-    /**
-     * Gets List of Physical Entity Resources.
-     *
-     * @return ArrayList of JDOM Element Objects.
-     */
-    public ArrayList getPhysicalEntityList() {
-        return physicalEntityList;
-    }
-
-    /**
-     * Gets the HashMap of Pathway Membership.
-     *
-     * @return HashMap of Element RDF Ids (String) to an ArrayList of Pathway
-     *         RDF IDs (Strings).
-     */
-    public HashMap getPathwayMembershipMap() {
-        return pathwayMembershipMap;
-    }
-
-    /**
-     * Gets a List of all Pathways, Interactions, and Physical Entities.
-     *
-     * @return ArrayList of JDOM Element Objects.
-     */
-    public ArrayList getTopLevelComponentList() {
-        ArrayList list = new ArrayList();
-        list.addAll(pathwayList);
-        list.addAll(interactionList);
-        list.addAll(physicalEntityList);
-        return list;
-    }
-
-    /**
-     * Gets List of Errors.
-     *
-     * @return ArrayList of String Objects.
-     */
-    public ArrayList getErrorList() {
-        return errorList;
     }
 
     /**
