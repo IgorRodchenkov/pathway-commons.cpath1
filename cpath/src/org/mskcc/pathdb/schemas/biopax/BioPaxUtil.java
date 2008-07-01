@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.38 2008-06-27 20:08:29 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.39 2008-07-01 21:23:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -75,7 +75,7 @@ public class BioPaxUtil {
      * Constructor.
      *
      * @param reader                    Reader Object.
-     * @param strictValidation                    Perform strictValidation validation.
+     * @param strictValidation          Perform strictValidation validation.
      *                                  Setting to true will check all RDF Resource Links
      *                                  and all external reference links.
      * @param pMonitor                  ProgressMonitor Object.
