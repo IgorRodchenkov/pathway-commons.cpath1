@@ -1,4 +1,4 @@
-// $Id: WebApiUtil.java,v 1.3 2007-10-29 14:41:20 cerami Exp $
+// $Id: WebApiUtil.java,v 1.4 2008-07-03 21:06:10 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,7 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.protocol.ProtocolStatusCode;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -50,6 +51,7 @@ import java.io.ByteArrayOutputStream;
  * @author Ethan Cerami
  */
 public class WebApiUtil {
+    private static Logger log = Logger.getLogger(WebApiUtil.class);
 
     /**
      * Fetches XML Assembly:  PSI-MI or BioPAX.
@@ -86,7 +88,7 @@ public class WebApiUtil {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
@@ -106,7 +108,7 @@ public class WebApiUtil {
             out.flush();
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 }
