@@ -1,4 +1,4 @@
-// $Id: WebApiUtil.java,v 1.8 2008-07-04 14:24:18 cerami Exp $
+// $Id: WebApiUtil.java,v 1.9 2008-07-04 14:29:59 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -100,6 +100,7 @@ public class WebApiUtil {
      */
     public static void returnXml(HttpServletResponse response, String xmlString) {
         try {
+            log.info("Begin Return XML Document");
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             out.write(xmlString.getBytes());
             response.setContentType("text/xml");
@@ -108,7 +109,7 @@ public class WebApiUtil {
             out.writeTo(response.getOutputStream());
             out.flush();
             out.close();
-            log.info("XML response completed without any errors.");
+            log.info("End Return XML Document:  completed without any errors.");
         } catch (IOException e) {
             log.error("IO Error", e);
         }
