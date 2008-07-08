@@ -9,7 +9,6 @@
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ page import="org.mskcc.pathdb.taglib.EvidenceUtil"%>
-<%@ page import="org.mskcc.pathdb.action.ShowBioPaxRecord2"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
 <%@ page import="org.mskcc.pathdb.model.*"%>
 <%@ page import="java.io.IOException"%>
@@ -160,8 +159,9 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
                 || (interactionSummary != null &&
                     interactionSummary.getEvidence() != null &&
                     interactionSummary.getEvidence().size() > 0)
-                || (interactionSummaryStringList != null &&
-                    (interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0))) {
+                || interactionSummaryStringList != null &&
+                    interactionSummary.getSpecificType().equals("physicalInteraction") &&
+                    (interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0)) {
             hasDetails = true;
         }
         return hasDetails;
