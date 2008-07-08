@@ -149,199 +149,222 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
 %>
 
 <%!
-/**
- * Outputs parent interactions, e.g. controllers.
- */
-private void outputParentInteractions (InteractionSummary interactionSummary,
-        HashMap <Long, ArrayList> parentInteractionMap,
-        HashMap <Long, EntitySummary> interactionSummaryMap,
-        JspWriter out, boolean debugMode) throws IOException {
-    long cpathId = interactionSummary.getRecordID();
+    private boolean hasDetails(BioPaxRecordSummary bpSummary,
+            ArrayList<ExternalLinkRecord> referenceLinks, InteractionSummary interactionSummary,
+            List<String> interactionSummaryStringList, int NUM_PREVIEW_INTERACTION_PARTICIPANTS) {
+        boolean hasDetails = false;
+        if      (  fieldExists(bpSummary.getComments())
+                || fieldExists(bpSummary.getOrganism())
+                || fieldExists (bpSummary.getAvailability())
+                || referenceLinks.size() > 0
+                || (interactionSummary != null &&
+                    interactionSummary.getEvidence() != null &&
+                    interactionSummary.getEvidence().size() > 0)
+                || (interactionSummaryStringList != null &&
+                    (interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0))) {
+            hasDetails = true;
+        }
+        return hasDetails;
+    }
 
-    //  First, get all parents of this interaction
-    ArrayList parentRecords = parentInteractionMap.get(cpathId);
-    if (parentRecords != null) {
-        out.println("<UL>");
-        for (int i=0; i<parentRecords.size(); i++) {
-            CPathRecord parentRecord = (CPathRecord) parentRecords.get(i);
-            EntitySummary summary = interactionSummaryMap.get(parentRecord.getId());
-            if (summary instanceof InteractionSummary) {
-                String summaryStr = InteractionSummaryUtils.createInteractionSummaryStringTruncated
-                    ((InteractionSummary) summary);
-                out.println("<LI>");
-                if (debugMode) {
-                    out.println ("[<a href='record2.do?id=" + summary.getRecordID()
-                        + "&debug=1'>" + summary.getRecordID() + "</a>]");
-                }
-                out.println (summaryStr + "</LI>");
+    private boolean fieldExists (String field) {
+        if (field != null && field.length() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean fieldExists (String[] fields) {
+        if (fields != null && fields.length > 0) {
+            if (fields[0].length() > 0) {
+                return true;
             }
         }
-        out.println("</UL>");
+        return false;
     }
-}
 
-private String getInspectorButtonHtml (long cPathId) {
-    return "<td align=right><div class='toggle_details'><a "
-        + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
-        + "')\"><div id='cpath_" + cPathId + "_image' class='toggleImage'>"
-        + "<img src='jsp/images/open.gif'/></div></a></td>";
-}
+    /**
+     * Outputs parent interactions, e.g. controllers.
+     */
+    private void outputParentInteractions(InteractionSummary interactionSummary,
+            HashMap<Long, ArrayList> parentInteractionMap,
+            HashMap<Long, EntitySummary> interactionSummaryMap,
+            JspWriter out, boolean debugMode) throws IOException {
+        long cpathId = interactionSummary.getRecordID();
 
-private String getDetailsHtml (long cPathId, String label, String html) {
-    return ("<div id='cpath_" + cPathId + "_" + label +"' class='details'>"
-        + html + "</div>");
-}
-
-private String getStartRow (int i) {
-    if (i%2 ==0) {
-        return ("<tr valign=top>");
-    } else {
-        return("<tr valign=top bgcolor=#EEEEEE>");
+        //  First, get all parents of this interaction
+        ArrayList parentRecords = parentInteractionMap.get(cpathId);
+        if (parentRecords != null) {
+            out.println("<UL>");
+            for (int i = 0; i < parentRecords.size(); i++) {
+                CPathRecord parentRecord = (CPathRecord) parentRecords.get(i);
+                EntitySummary summary = interactionSummaryMap.get(parentRecord.getId());
+                if (summary instanceof InteractionSummary) {
+                    String summaryStr = InteractionSummaryUtils.createInteractionSummaryStringTruncated
+                            ((InteractionSummary) summary);
+                    out.println("<LI>");
+                    if (debugMode) {
+                        out.println("[<a href='record2.do?id=" + summary.getRecordID()
+                                + "&debug=1'>" + summary.getRecordID() + "</a>]");
+                    }
+                    out.println(summaryStr + "</LI>");
+                }
+            }
+            out.println("</UL>");
+        }
     }
-}
 
-private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
-        HashMap<String, Reference> referenceMap, int index, DetailsTracker detailsTracker)
-        throws DaoException {
-    StringBuffer buf = new StringBuffer();
-    if (bpSummary.getCPathRecord() != null
-        && bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
+    private String getInspectorButtonHtml(long cPathId) {
+        return "<td align=right><div class='toggle_details'><a "
+                + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
+                + "')\"><div id='cpath_" + cPathId + "_image' class='toggleImage'>"
+                + "<img src='jsp/images/open.gif'/></div></a></td>";
+    }
+
+    private String getDetailsHtml(long cPathId, String label, String html) {
+        return ("<div id='cpath_" + cPathId + "_" + label + "' class='details'>"
+                + html + "</div>");
+    }
+
+    private String getStartRow(int i) {
+        if (i % 2 == 0) {
+            return ("<tr valign=top>");
+        } else {
+            return ("<tr valign=top bgcolor=#EEEEEE>");
+        }
+    }
+
+    private String getBioPaxRecordHtml(BioPaxRecordSummary bpSummary,
+            HashMap<String, Reference> referenceMap, int index, DetailsTracker detailsTracker)
+            throws DaoException {
+        StringBuffer buf = new StringBuffer();
+        if (bpSummary.getCPathRecord() != null
+                && bpSummary.getCPathRecord().getType() == CPathRecordType.PHYSICAL_ENTITY) {
             String entityLink = BioPaxRecordSummaryUtils.createEntityLink(bpSummary, 50);
             buf.append(entityLink);
-    } else {
-        buf.append ("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
-            + bpSummary.getLabel() + "</a>");
-    }
-    buf.append(getBioPaxDetailsHtml (bpSummary, referenceMap, index, detailsTracker, null, null, 0));
-    return buf.toString();
-}
-
-private String getBioPaxDetailsHtml (BioPaxRecordSummary bpSummary,
-									 HashMap<String, Reference> referenceMap, int index,
-									 DetailsTracker detailsTracker, InteractionSummary interactionSummary,
-									 List<String> interactionSummaryStringList, int NUM_PREVIEW_INTERACTION_PARTICIPANTS)
-        throws DaoException {
-    ReferenceUtil refUtil = new ReferenceUtil();
-    ArrayList masterList = refUtil.categorize(bpSummary);
-    ArrayList<ExternalLinkRecord> referenceLinks =
-            (ArrayList<ExternalLinkRecord>) masterList.get(0);
-
-    StringBuffer buf = new StringBuffer();
-    boolean hasDetails = false;
-    if (bpSummary.getComments() != null
-            || bpSummary.getOrganism() != null
-            || referenceLinks.size() > 0
-		    || (interactionSummary != null &&
-				interactionSummary.getEvidence() != null &&
-				interactionSummary.getEvidence().size() > 0)
-		    || (interactionSummaryStringList != null &&
-				(interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0))
-		    || (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0)) {
-        hasDetails = true;
-    }
-    buf.append("<td>");
-    if (bpSummary.getCPathRecord() != null) {
-        CPathRecord record = bpSummary.getCPathRecord();
-        if (record.getSnapshotId() > 0) {
-            buf.append("<div class='data_source'> " + getDataSourceString(bpSummary, record) + "</div>");
+        } else {
+            buf.append("<a href='record2.do?id=" + bpSummary.getRecordID() + "'>"
+                    + bpSummary.getLabel() + "</a>");
         }
+        buf.append(getBioPaxDetailsHtml(bpSummary, referenceMap, index, detailsTracker, null, null, 0));
+        return buf.toString();
     }
-    buf.append("</td>");
-    if (hasDetails) {
-        buf.append(getInspectorButtonHtml(bpSummary.getRecordID()));
-        detailsTracker.incrementNumRecordsWithDetails();
-    } else {
-        buf.append("<td></td>");
-    }
-    buf.append ("</tr>");
-    buf.append(getStartRow(index));
-    buf.append("<td colspan=3>");
-	if (interactionSummaryStringList != null &&
-		interactionSummary.getSpecificType().equals("physicalInteraction") &&
-		(interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0)) {
-		String interactionSummaryListString = "";
-		for (int lc = NUM_PREVIEW_INTERACTION_PARTICIPANTS; lc < interactionSummaryStringList.size(); lc++) {
-			interactionSummaryListString += interactionSummaryStringList.get(lc);
-		}
-		buf.append(getDetailsHtml(bpSummary.getRecordID(), "remaining_participants", 
-								  "<p><b>Additional Participants:</b></p>\n\r" + interactionSummaryListString));
-	}
-	else {
-		buf.append(getDetailsHtml(bpSummary.getRecordID(), "remaining_participants", ""));
-	}
-    if (bpSummary.getComments() != null) {
-        String comments[] = bpSummary.getComments();
-        StringBuffer commentHtml = new StringBuffer();
-        for (int i=0; i<comments.length; i++) {
-            commentHtml.append("<p>" + ReactomeCommentUtil.massageComment(comments[i])
-                + "</p>");
+
+    private String getBioPaxDetailsHtml(BioPaxRecordSummary bpSummary,
+            HashMap<String, Reference> referenceMap, int index,
+            DetailsTracker detailsTracker, InteractionSummary interactionSummary,
+            List<String> interactionSummaryStringList, int NUM_PREVIEW_INTERACTION_PARTICIPANTS)
+            throws DaoException {
+        ReferenceUtil refUtil = new ReferenceUtil();
+        ArrayList masterList = refUtil.categorize(bpSummary);
+        ArrayList<ExternalLinkRecord> referenceLinks =
+                (ArrayList<ExternalLinkRecord>) masterList.get(0);
+
+        StringBuffer buf = new StringBuffer();
+        boolean hasDetails = hasDetails(bpSummary, referenceLinks, interactionSummary,
+                interactionSummaryStringList, NUM_PREVIEW_INTERACTION_PARTICIPANTS);
+        buf.append("<td>");
+        if (bpSummary.getCPathRecord() != null) {
+            CPathRecord record = bpSummary.getCPathRecord();
+            if (record.getSnapshotId() > 0) {
+                buf.append("<div class='data_source'> " + getDataSourceString(bpSummary, record) + "</div>");
+            }
         }
-        buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment",
-                commentHtml.toString()));
-        hasDetails = true;
-    } else {
-        buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", ""));
+        buf.append("</td>");
+        if (hasDetails) {
+            buf.append(getInspectorButtonHtml(bpSummary.getRecordID()));
+            detailsTracker.incrementNumRecordsWithDetails();
+        } else {
+            buf.append("<td></td>");
+        }
+        buf.append("</tr>");
+        buf.append(getStartRow(index));
+        buf.append("<td colspan=3>");
+        if (interactionSummaryStringList != null &&
+                interactionSummary.getSpecificType().equals("physicalInteraction") &&
+                (interactionSummaryStringList.size() - NUM_PREVIEW_INTERACTION_PARTICIPANTS > 0)) {
+            String interactionSummaryListString = "";
+            for (int lc = NUM_PREVIEW_INTERACTION_PARTICIPANTS; lc < interactionSummaryStringList.size(); lc++)
+            {
+                interactionSummaryListString += interactionSummaryStringList.get(lc);
+            }
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "remaining_participants",
+                    "<p><b>Additional Participants:</b></p>\n\r" + interactionSummaryListString));
+        } else {
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "remaining_participants", ""));
+        }
+        if (fieldExists(bpSummary.getComments())) {
+            String comments[] = bpSummary.getComments();
+            StringBuffer commentHtml = new StringBuffer();
+            for (int i = 0; i < comments.length; i++) {
+                commentHtml.append("<p>" + ReactomeCommentUtil.massageComment(comments[i])
+                        + "</p>");
+            }
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment",
+                    commentHtml.toString()));
+            hasDetails = true;
+        } else {
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", ""));
+        }
+        String organism = bpSummary.getOrganism();
+        if (fieldExists(organism)) {
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism",
+                    "<p><b>Organism:</b>&nbsp;" + organism));
+            hasDetails = true;
+        } else {
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism", ""));
+        }
+        if (referenceLinks.size() > 0) {
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs",
+                    refUtil.getReferenceHtml(referenceLinks, referenceMap)));
+            hasDetails = true;
+        } else {
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs", ""));
+        }
+        if (interactionSummary != null) {
+            List<Evidence> evidenceList = interactionSummary.getEvidence();
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence",
+                    EvidenceUtil.getEvidenceHtml(evidenceList)));
+            hasDetails = true;
+        } else {
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence", ""));
+        }
+        if (fieldExists(bpSummary.getAvailability())) {
+            String availabilityString = "<p><b>Availability:</b></p>\n" +
+                    "<p>" + bpSummary.getAvailability() + "</p>\n<br>";
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", availabilityString));
+            hasDetails = true;
+        } else {
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", ""));
+        }
+        buf.append("</td></tr>");
+        return buf.toString();
     }
-    String organism = bpSummary.getOrganism();
-    if (organism != null) {
-        buf.append(getDetailsHtml (bpSummary.getRecordID(), "organism",
-                "<p><b>Organism:</b>&nbsp;" + organism));
-        hasDetails = true;
-    } else {
-        buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism", ""));
+
+    private String getDataSourceString(BioPaxRecordSummary bpSummary, CPathRecord record) throws
+            DaoException {
+
+        String toReturn = "";
+        ExternalDatabaseSnapshotRecord snapshot = bpSummary.getExternalDatabaseSnapshotRecord();
+        ExternalDatabaseRecord summaryDBRecord = snapshot.getExternalDatabase();
+
+        ArrayList<ExternalLinkRecord> externalLinks = DaoExternalLink.getInstance().getRecordsByCPathId(record.getId());
+        for (ExternalLinkRecord externalLink : externalLinks) {
+            ExternalDatabaseRecord dbRecord = externalLink.getExternalDatabase();
+            if (dbRecord.getId() == summaryDBRecord.getId()) {
+                String uri = externalLink.getWebLink();
+                toReturn = (uri != null && uri.length() > 0) ?
+                        "<a href=\"" + uri + "\">" + dbRecord.getName() + "</a>" :
+                        DbSnapshotInfo.getDbSnapshotHtmlAbbrev(record.getSnapshotId());
+                break;
+            }
+        }
+
+        // outta here
+        return (toReturn.length() == 0) ?
+                DbSnapshotInfo.getDbSnapshotHtmlAbbrev(record.getSnapshotId()) : toReturn;
     }
-    if (referenceLinks.size() > 0) {
-        buf.append(getDetailsHtml (bpSummary.getRecordID(), "refs",
-                refUtil.getReferenceHtml(referenceLinks, referenceMap)));
-        hasDetails = true;
-    } else {
-        buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs", ""));
-    }
-	if (interactionSummary != null) {
-		List<Evidence> evidenceList = interactionSummary.getEvidence();
-		buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence", 
-								  EvidenceUtil.getEvidenceHtml(evidenceList)));
-		hasDetails = true;
-	}
-	else {
-		buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence", ""));
-	}
-	if (bpSummary.getAvailability() != null && bpSummary.getAvailability().length() > 0) {
-		String availabilityString = "<p><b>Availability:</b></p>\n" +
-			                        "<p>" + bpSummary.getAvailability() + "</p>\n<br>";
-		buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", availabilityString)); 
-		hasDetails = true;
-	}
-	else {
-		buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", ""));
-	}
-    buf.append("</td></tr>");
-    return buf.toString();
-}
-
-private String getDataSourceString(BioPaxRecordSummary bpSummary, CPathRecord record) throws
-	DaoException {
-
-	String toReturn = "";
-	ExternalDatabaseSnapshotRecord snapshot = bpSummary.getExternalDatabaseSnapshotRecord();
-	ExternalDatabaseRecord summaryDBRecord = snapshot.getExternalDatabase();
-
-	ArrayList<ExternalLinkRecord> externalLinks = DaoExternalLink.getInstance().getRecordsByCPathId(record.getId());
-	for (ExternalLinkRecord externalLink : externalLinks) {
-		ExternalDatabaseRecord dbRecord = externalLink.getExternalDatabase();
-		if (dbRecord.getId() == summaryDBRecord.getId()) {
-			String uri = externalLink.getWebLink();
-			toReturn = (uri != null && uri.length() > 0) ?
-				"<a href=\"" + uri + "\">" + dbRecord.getName() + "</a>" :
-				DbSnapshotInfo.getDbSnapshotHtmlAbbrev (record.getSnapshotId());
-			break;
-		}
-	}
-
-	// outta here
-	return (toReturn.length() == 0) ?
-					DbSnapshotInfo.getDbSnapshotHtmlAbbrev(record.getSnapshotId()) : toReturn;
-}
 %>
 </table>
 </div>
