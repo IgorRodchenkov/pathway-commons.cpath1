@@ -47,7 +47,7 @@
     for (String dataSource : (Set<String>)sortedDataSourceNameMap.keySet()) {
 	    String label = dataSource + " (" + hitByDataSourceMap.get(dataSourceNameMap.get(dataSource)) + ")";
         if (keyDataSource.equals(dataSource)) {
-		    out.println("<nobr><li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"10\"><img src=\"jsp/images/arrow.gif\"></li></nobr>");
+		    out.println("<li>" + label + "<img src=\"jsp/images/spacer.gif\" width=\"10\"><img src=\"jsp/images/arrow.gif\"></li>");
 	    }
 	    else {
 			if (hitByDataSourceMap.get(dataSourceNameMap.get(dataSource)) > 0) {
