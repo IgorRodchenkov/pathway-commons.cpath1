@@ -303,40 +303,35 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
             }
             buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment",
                     commentHtml.toString()));
-            hasDetails = true;
         } else {
-            buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", ""));
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "comment", "---"));
         }
         String organism = bpSummary.getOrganism();
         if (fieldExists(organism)) {
             buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism",
                     "<p><b>Organism:</b>&nbsp;" + organism));
-            hasDetails = true;
         } else {
-            buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism", ""));
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "organism", "---"));
         }
         if (referenceLinks.size() > 0) {
             buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs",
                     refUtil.getReferenceHtml(referenceLinks, referenceMap)));
-            hasDetails = true;
         } else {
-            buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs", ""));
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "refs", "---"));
         }
         if (interactionSummary != null) {
             List<Evidence> evidenceList = interactionSummary.getEvidence();
             buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence",
                     EvidenceUtil.getEvidenceHtml(evidenceList)));
-            hasDetails = true;
         } else {
-            buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence", ""));
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "evidence", "---"));
         }
         if (fieldExists(bpSummary.getAvailability())) {
             String availabilityString = "<p><b>Availability:</b></p>\n" +
                     "<p>" + bpSummary.getAvailability() + "</p>\n<br>";
             buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", availabilityString));
-            hasDetails = true;
         } else {
-            buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", ""));
+            buf.append(getDetailsHtml(bpSummary.getRecordID(), "availability", "---"));
         }
         buf.append("</td></tr>");
         return buf.toString();
