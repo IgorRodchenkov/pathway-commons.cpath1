@@ -350,7 +350,8 @@ header = header.replaceAll("N/A", "");
 %>
 <h1><%= header %></h1>
 <%
-if (!bpSummary.getName().equals(bpSummary.getLabel())) { %>
+if ((bpSummary.getName() != null && bpSummary.getLabel() != null)
+        && !(bpSummary.getName().equals(bpSummary.getLabel()))) { %>
     <h1><%= bpSummary.getName() %></h1>
 <% } %>
 <%
