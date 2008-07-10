@@ -23,13 +23,10 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
-//  Extract data from user request
-String id = request.getParameter(ShowBioPaxRecord2.ID_PARAMETER);
-
 //  Extract data from attributes
-
 //  The BioPAX Record Summary
 BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute(ShowBioPaxRecord2.BP_SUMMARY);
+String id = Long.toString(bpSummary.getCPathRecord().getId());
 
 //  The Entity Summary (applies to interaction records only)
 EntitySummary entitySummary = (EntitySummary) request.getAttribute(ShowBioPaxRecord2.ENTITY_SUMMARY);
