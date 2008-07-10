@@ -1,4 +1,4 @@
-// $Id: WebApiUtil.java,v 1.9 2008-07-04 14:29:59 cerami Exp $
+// $Id: WebApiUtil.java,v 1.10 2008-07-10 15:30:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -82,11 +82,14 @@ public class WebApiUtil {
      */
     public static void returnText(HttpServletResponse response, String text) {
         try {
+            log.info("Begin Return Text Document");
+            log.info("String len:  " + text.length());
             response.setContentType("text/html");
             PrintWriter writer = response.getWriter();
             writer.println(text);
             writer.flush();
             writer.close();
+            log.info("End Return Text Document:  completed without any errors.");
         } catch (IOException e) {
             log.error(e);
         }
