@@ -18,6 +18,12 @@ request.setAttribute(BaseAction.ATTRIBUTE_USER_MSG, "Help us improve Pathway Com
 		<input type=submit name="sub" value="Subscribe"></form></td>
    </tr>
 </table>
+<p>
+    <ul>
+        <li><a href="http://groups-beta.google.com/group/pathway-commons-announce">Mailing List Archive</a></li>
+        <li><a href="http://groups.google.com/group/pathway-commons-announce/feeds"><img src="jsp/images/rss.gif" alt="RSS Logo"/></a> <a href="http://groups.google.com/group/pathway-commons-announce/feeds">Mailing List RSS / Atom Feeds</a></li>
+    </ul>
+</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
