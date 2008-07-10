@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.39 2008-07-01 21:23:44 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.40 2008-07-10 16:18:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -603,8 +603,10 @@ public class BioPaxUtil {
         }
         Element clonedChild = (Element) child.clone();
 
-        //  Remove the Existing RDF ID
+        //  Remove the Existing RDF ID and / or Existing RDF About Attribute
         clonedChild.removeAttribute(RdfConstants.ID_ATTRIBUTE,
+                RdfConstants.RDF_NAMESPACE);
+        clonedChild.removeAttribute(RdfConstants.ABOUT_ATTRIBUTE,
                 RdfConstants.RDF_NAMESPACE);
 
         //  Add New RDF ID, based on locally generated algorithm
