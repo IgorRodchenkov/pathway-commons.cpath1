@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.9 2007-06-05 21:00:36 cerami Exp $
+// $Id: SearchCommand.java,v 1.10 2008-07-10 20:51:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.sql.query;
 
 import org.apache.lucene.search.Hits;
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.log4j.Logger;
 import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.lucene.RequestAdapter;
@@ -41,6 +42,7 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.taglib.Pager;
 
 import java.io.IOException;
@@ -71,7 +73,7 @@ class SearchCommand extends Query {
      * Executes Query.
      */
     protected XmlAssembly executeSub() throws QueryException,
-            IOException, AssemblyException {
+            IOException, AssemblyException, DaoException, ParseException {
         xdebug.logMsg(this, "Searching Lucene full text index. "
                 + "Using search term(s):  " + searchTerms);
         log.info("Searching Lucene full text index. "
@@ -81,7 +83,8 @@ class SearchCommand extends Query {
             XmlAssembly xmlAssembly;
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
-            long[] cpathIds = QueryUtil.extractHits(xdebug, pager, hits);
+            QueryUtil queryUtil = new QueryUtil (pager, hits, null);
+            long[] cpathIds = queryUtil.getCpathIds();
             xmlAssembly = createXmlAssembly(cpathIds, hits);
             xmlAssembly.setNumHits(hits.length());
             return xmlAssembly;

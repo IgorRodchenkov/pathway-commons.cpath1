@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.13 2008-04-09 17:25:26 cerami Exp $
+// $Id: LuceneQuery.java,v 1.14 2008-07-10 20:51:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -103,22 +103,19 @@ public class LuceneQuery {
         try {
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
-            long[] cpathIds = QueryUtil.extractHits(xdebug, pager, hits);
 
+            QueryUtil queryUtil = null;
             if (queryFromUser != null) {
-                //  Extract fragments, based on original query from user
-                fragments = QueryUtil.extractFragments(queryFromUser, pager, hits);
-				// Extract data sources
-				dataSources = QueryUtil.extractDataSources(queryFromUser, pager, hits);
-				// Extract scores
-				scores = QueryUtil.extractScores(queryFromUser, pager, hits);
+                queryUtil = new QueryUtil (pager, hits, queryFromUser);
             } else {
-				fragments = QueryUtil.extractFragments(searchTerms, pager, hits);
-                dataSourceSet = QueryUtil.extractDataSourceSet(searchTerms, pager, hits);
-                dataSources = QueryUtil.extractDataSources(searchTerms, pager, hits);
-				scores = QueryUtil.extractScores(searchTerms, pager, hits);
+                queryUtil = new QueryUtil (pager, hits, searchTerms);
             }
-            numDescendentsList = QueryUtil.extractNumDescendents(pager, hits);
+            long[] cpathIds = queryUtil.getCpathIds();
+            fragments = queryUtil.getFragments();
+            dataSources = queryUtil.getDataSourceMap();
+            dataSourceSet = queryUtil.getDataSources();
+            scores = queryUtil.getScores();
+            numDescendentsList = queryUtil.getNumDescendentsList();
             return cpathIds;
         } finally {
             indexer.close();
