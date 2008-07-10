@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.24 2008-07-10 20:51:11 cerami Exp $
+// $Id: LuceneResults.java,v 1.1 2008-07-10 20:56:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -29,7 +29,7 @@
  ** along with this library; if not, write to the Free Software Foundation,
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
-package org.mskcc.pathdb.sql.query;
+package org.mskcc.pathdb.lucene;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -61,7 +61,7 @@ import java.util.ArrayList;
  *
  * @author Ethan Cerami, Benjamin Gross.
  */
-public class QueryUtil {
+public class LuceneResults {
     public static final String START_TAG = "<b>";
     public static final String END_TAG = "</b>";
     public static final String MEMBER_OF = "is a member of";
@@ -72,7 +72,7 @@ public class QueryUtil {
     private ArrayList<Integer> numDescendentsList;
     private Map<Long,Float> scores;
 
-    public QueryUtil (Pager pager, Hits hits, String term) throws IOException,
+    public LuceneResults(Pager pager, Hits hits, String term) throws IOException,
         ParseException, DaoException {
         int size = pager.getEndIndex() - pager.getStartIndex();
 

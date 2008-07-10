@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.10 2008-07-10 20:51:55 cerami Exp $
+// $Id: SearchCommand.java,v 1.11 2008-07-10 20:56:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.log4j.Logger;
 import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.lucene.RequestAdapter;
+import org.mskcc.pathdb.lucene.LuceneResults;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
@@ -83,8 +84,8 @@ class SearchCommand extends Query {
             XmlAssembly xmlAssembly;
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
-            QueryUtil queryUtil = new QueryUtil (pager, hits, null);
-            long[] cpathIds = queryUtil.getCpathIds();
+            LuceneResults luceneResults = new LuceneResults(pager, hits, null);
+            long[] cpathIds = luceneResults.getCpathIds();
             xmlAssembly = createXmlAssembly(cpathIds, hits);
             xmlAssembly.setNumHits(hits.length());
             return xmlAssembly;

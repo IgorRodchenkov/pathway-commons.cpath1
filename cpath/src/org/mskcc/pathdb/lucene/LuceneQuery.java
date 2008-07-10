@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.14 2008-07-10 20:51:35 cerami Exp $
+// $Id: LuceneQuery.java,v 1.15 2008-07-10 20:56:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,7 +36,7 @@ import org.apache.lucene.search.Hits;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.query.QueryException;
-import org.mskcc.pathdb.sql.query.QueryUtil;
+import org.mskcc.pathdb.lucene.LuceneResults;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.taglib.Pager;
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -104,18 +104,18 @@ public class LuceneQuery {
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
 
-            QueryUtil queryUtil = null;
+            LuceneResults luceneResults = null;
             if (queryFromUser != null) {
-                queryUtil = new QueryUtil (pager, hits, queryFromUser);
+                luceneResults = new LuceneResults(pager, hits, queryFromUser);
             } else {
-                queryUtil = new QueryUtil (pager, hits, searchTerms);
+                luceneResults = new LuceneResults(pager, hits, searchTerms);
             }
-            long[] cpathIds = queryUtil.getCpathIds();
-            fragments = queryUtil.getFragments();
-            dataSources = queryUtil.getDataSourceMap();
-            dataSourceSet = queryUtil.getDataSources();
-            scores = queryUtil.getScores();
-            numDescendentsList = queryUtil.getNumDescendentsList();
+            long[] cpathIds = luceneResults.getCpathIds();
+            fragments = luceneResults.getFragments();
+            dataSources = luceneResults.getDataSourceMap();
+            dataSourceSet = luceneResults.getDataSources();
+            scores = luceneResults.getScores();
+            numDescendentsList = luceneResults.getNumDescendentsList();
             return cpathIds;
         } finally {
             indexer.close();
