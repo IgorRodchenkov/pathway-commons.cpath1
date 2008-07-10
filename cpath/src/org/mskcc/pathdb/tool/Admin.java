@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.70 2008-07-01 21:22:47 cerami Exp $
+// $Id: Admin.java,v 1.71 2008-07-10 15:44:37 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -619,8 +619,6 @@ public class Admin {
                 + "specified config file.");
         System.out.println("  count_ids       Counts the number of physical entity records with "
                 + "the specified external identifier.");
-        System.out.println("  validate        Validates the specified XML "
-                + "file.");
         System.out.println("  query           Executes Full Text Query");
         System.out.println("\nExtra Options (not guaranteed to be available "
                 + "in future versions of cPath)");
