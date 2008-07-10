@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.15 2008-07-10 20:56:58 cerami Exp $
+// $Id: LuceneQuery.java,v 1.16 2008-07-10 21:05:48 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,11 +59,7 @@ public class LuceneQuery {
     private ProtocolRequest request;
     private XDebug xdebug;
     private int totalNumHits;
-    private List<List<String>> fragments;
-	private Set<String> dataSourceSet;
-	private Map<Long,Set<String>> dataSources;
-	private Map<Long,Float> scores;
-    private ArrayList<Integer> numDescendentsList;
+    private LuceneResults luceneResults;
 
     /**
      * Constructor.
@@ -104,19 +100,12 @@ public class LuceneQuery {
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
 
-            LuceneResults luceneResults = null;
             if (queryFromUser != null) {
                 luceneResults = new LuceneResults(pager, hits, queryFromUser);
             } else {
                 luceneResults = new LuceneResults(pager, hits, searchTerms);
             }
-            long[] cpathIds = luceneResults.getCpathIds();
-            fragments = luceneResults.getFragments();
-            dataSources = luceneResults.getDataSourceMap();
-            dataSourceSet = luceneResults.getDataSources();
-            scores = luceneResults.getScores();
-            numDescendentsList = luceneResults.getNumDescendentsList();
-            return cpathIds;
+            return luceneResults.getCpathIds();
         } finally {
             indexer.close();
         }
@@ -132,52 +121,11 @@ public class LuceneQuery {
     }
 
     /**
-     * Gets Text Fragments.
-     *
-     * @return text fragments, list of list of strings.
+     * Gets Lucene Results Object.
+     * @return Lucene Results Object.
      */
-    public List<List<String>> getTextFragments() {
-        return this.fragments;
-    }
-
-    /**
-     * Gets Data Source Set.
-	 * (set of data sources across entire result set).
-     *
-     * @return Set
-     */
-    public Set<String> getDataSourceSet() {
-        return this.dataSourceSet;
-    }
-
-    /**
-     * Gets Data Sources.
-     * (map of cpath id to data source name)
-     *
-     * @return Map<Long,Set<String>>
-     */
-    public Map<Long,Set<String>> getDataSources() {
-        return this.dataSources;
-    }
-
-    /**
-     * Gets query score map.
-	 *
-	 * The map key is cpath id.
-	 * The map value is lucene score (0-1)
-     *
-     * @return Map<Long,Float>
-     */
-    public Map<Long,Float> getScores() {
-        return this.scores;
-    }
-
-    /**
-     * Gets Num Descendents List.
-     * @return ArrayList of Integer Num Descendents.
-     */
-    public ArrayList<Integer> getNumDescendentsList() {
-        return this.numDescendentsList;
+    public LuceneResults getLuceneResults() {
+        return luceneResults;
     }
 
     /**

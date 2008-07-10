@@ -13,6 +13,7 @@ import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.lucene.LuceneQuery;
+import org.mskcc.pathdb.lucene.LuceneResults;
 import org.mskcc.pathdb.action.web_api.WebApiUtil;
 import org.mskcc.pathdb.schemas.search_response.*;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
@@ -104,7 +105,8 @@ public class ExecuteSearchXmlResponse {
 
         LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
         long cpathIds[] = search.executeSearch();
-        List<List<String>> textFragments = search.getTextFragments();
+        LuceneResults luceneResults = search.getLuceneResults();
+        List<List<String>> textFragments = luceneResults.getFragments();
         if (cpathIds.length > 0) {
             SearchResponseType searchResponse = createXmlDocument
                     (search.getTotalNumHits(), cpathIds, textFragments, xdebug);

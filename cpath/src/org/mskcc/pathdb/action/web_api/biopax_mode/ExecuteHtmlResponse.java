@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.12 2008-04-09 17:27:21 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.13 2008-07-10 21:06:05 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,6 +44,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.lucene.LuceneQuery;
+import org.mskcc.pathdb.lucene.LuceneResults;
 import org.mskcc.pathdb.action.BaseAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -201,14 +202,15 @@ public class ExecuteHtmlResponse {
                 request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
                 request.setAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS,
                         new Integer(search.getTotalNumHits()));
+                LuceneResults luceneResults = search.getLuceneResults();
                 request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
-                        search.getTextFragments());
+                        luceneResults.getFragments());
                 request.setAttribute(BaseAction.ATTRIBUTE_DATA_SOURCES,
-                        search.getDataSources());
+                        luceneResults.getDataSourceMap());
                 request.setAttribute(BaseAction.ATTRIBUTE_SCORES,
-                        search.getScores());
+                        luceneResults.getScores());
                 request.setAttribute(BaseAction.ATTRIBUTE_NUM_DESCENDENTS,
-                        search.getNumDescendentsList());
+                        luceneResults.getNumDescendentsList());
             }
             int totalNumberHits = search.getTotalNumHits();
             if (totalNumberHits > 0) hitByTypeMap.put(type, totalNumberHits);
