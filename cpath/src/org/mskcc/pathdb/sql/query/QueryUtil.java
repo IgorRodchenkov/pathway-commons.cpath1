@@ -1,4 +1,4 @@
-// $Id: QueryUtil.java,v 1.23 2008-05-21 17:04:00 cerami Exp $
+// $Id: QueryUtil.java,v 1.24 2008-07-10 20:51:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,11 +41,9 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.highlight.QueryHighlightExtractor;
 import org.mskcc.pathdb.lucene.LuceneConfig;
-import org.mskcc.pathdb.lucene.BioPaxToIndex;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.taglib.Pager;
-import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.util.xml.XmlStripper;
 
@@ -61,213 +59,169 @@ import java.util.ArrayList;
 /**
  * Query Utility Class.
  *
- * @author Ethan Cerami
+ * @author Ethan Cerami, Benjamin Gross.
  */
 public class QueryUtil {
     public static final String START_TAG = "<b>";
     public static final String END_TAG = "</b>";
     public static final String MEMBER_OF = "is a member of";
+    private long cpathIds[];
+    private List<List<String>> fragments;
+    private Set<String> dataSources;
+    private Map<Long,Set<String>> dataSourceMap;
+    private ArrayList<Integer> numDescendentsList;
+    private Map<Long,Float> scores;
 
-
-    /**
-     * Extracts cPath IDs associated with the specified range of Lucene Hits.
-     *
-     * @param xdebug XDebug Object
-     * @param pager  Pager Object for Next/Previous Pages
-     * @param hits   Lucene Hits Object
-     * @return array of cPath Ids.
-     * @throws IOException Input/Output Error.
-     */
-    public static long[] extractHits(XDebug xdebug, Pager pager, Hits hits)
-            throws IOException {
+    public QueryUtil (Pager pager, Hits hits, String term) throws IOException,
+        ParseException, DaoException {
         int size = pager.getEndIndex() - pager.getStartIndex();
-        long cpathIds[] = new long[size];
+
+        // init private variables
+        cpathIds = new long[size];
+        fragments = new ArrayList<List<String>>();
+        dataSources = new HashSet<String>();
+        numDescendentsList = new ArrayList<Integer>();
+        dataSourceMap = new HashMap<Long,Set<String>>();
+        scores = new HashMap<Long,Float>();
+
+        DaoExternalDb dao = new DaoExternalDb();
         int index = 0;
+        QueryHighlightExtractor highLighter = null;
+
+        if (term != null) {
+            term = reformatTerm(term);
+            highLighter = createHighlighter(term);
+        }
 
         for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
             Document doc = hits.doc(i);
             Field field = doc.getField(LuceneConfig.FIELD_CPATH_ID);
-            cpathIds[index++] = Long.parseLong(field.stringValue());
+            if (field != null) {
+                cpathIds[index++] = Long.parseLong(field.stringValue());
+                scores.put(Long.parseLong(field.stringValue()), new Float(hits.score(i)));
+            }
+
+            if (highLighter != null) {
+                extractFragment(doc, highLighter, term);
+            }
+
+            extractDataSources(doc, dao);
+            extractNumDescendents(doc);
+            extractDataSourceMap(doc, dao);
         }
+    }
+
+    public long[] getCpathIds() {
         return cpathIds;
     }
 
-    /**
-     * Extracts Text Fragments associated with the specified range of
-     * Lucene Hits.
-     *
-     * @param term  Query Term String
-     * @param pager Pager Object for Next/Previous Pages
-     * @param hits  Lucene Hits Object
-     * @return List<List<String>> for each document, return list of String fragments
-     * @throws IOException    Input/Output Error
-     * @throws ParseException Parsing Exception
-     */
-    public static List<List<String>> extractFragments(String term, Pager pager, Hits hits)
-            throws IOException, ParseException {
-        int size = pager.getEndIndex() - pager.getStartIndex();
-        List<List<String>> fragments = new ArrayList<List<String>>();
-
-		// if query contains multiple terms, surround it with quotes (unless the query already is)
-		term = term.trim();
-		if (term.matches("^[^\"]*\\s[^\"]*$")) {
-			term = "\"" + term + "\"";		
-		}
-
-        QueryParser parser = new QueryParser(LuceneConfig.FIELD_ALL,
-                new StandardAnalyzer());
-        Query luceneQuery = parser.parse(term);
-
-        // Necessary to expand search terms
-        IndexReader reader = IndexReader.open
-                (new File(LuceneConfig.getLuceneDirectory()));
-        luceneQuery = luceneQuery.rewrite(reader);
-
-		// we do our own highlighting since this one will highlight meta-data,
-		// like 'NCI_NATURE' or 'AND' or 'pathway' in a query like the following:
-		// 'data_source:"NCI_NATURE" AND entity_type:pathway'
-        QueryHighlightExtractor highLighter =
-                new QueryHighlightExtractor(luceneQuery,
-											new StandardAnalyzer(), "","");
-
-        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
-            Document doc = hits.doc(i);
-			String fragment = getFragment(doc, highLighter);
-			// if fragment is null, assume descendent ?
-			if ((fragment == null || fragment.length() == 0) &&
-				term.contains(" entity_type:pathway ")){
-				String value = doc.getField(LuceneConfig.FIELD_NAME).stringValue();
-				if (value != null && value.length() > 0) {
-					List<String> listToReturn = new ArrayList<String>();
-					listToReturn.add(START_TAG + term + END_TAG + " " + MEMBER_OF);
-					fragments.add(listToReturn);
-					continue;
-                }
-			}
-			fragments.add(cookFragment(term, fragment));
-        }
-        reader.close();
+    public List<List<String>> getFragments() {
         return fragments;
     }
 
-    /**
-     * Extracts Data Sources associated with the specified range of
-     * Lucene Hits for the entire result set.
-     *
-     * @param term  Query Term String
-     * @param pager Pager Object for Next/Previous Pages
-     * @param hits  Lucene Hits Object
-     * @return Set of data sources.
-     * @throws IOException    Input/Output Error
-     * @throws ParseException Parsing Exception
-     * @throws DaoException   Data Access Exception
-     */
-    public static Set<String> extractDataSourceSet(String term, Pager pager, Hits hits)
-		throws IOException, ParseException, DaoException {
-        int size = pager.getEndIndex() - pager.getStartIndex();
-        Set<String> dataSources = new HashSet<String>();
-        DaoExternalDb dao = new DaoExternalDb();
+    public void setDataSources(Set<String> dataSources) {
+        this.dataSources = dataSources;
+    }
 
-        //for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
-		for (int i = 0; i < hits.length(); i++) {
-            Document doc = hits.doc(i);
-            Field field = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
-			for (String fieldValue : field.stringValue().split(" ")) {
-				ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(fieldValue);
-				dataSources.add(dbRecord.getName());
-			}
-        }
+    public Set<String> getDataSources() {
         return dataSources;
     }
 
-    /**
-     * Extracts Num Descendnts in specified range of
-     * Lucene Hits for the entire result set.
-     *
-     * @param pager Pager Object for Next/Previous Pages
-     * @param hits  Lucene Hits Object
-     * @return List of Num Descendents
-     * @throws IOException    Input/Output Error
-     * @throws ParseException Parsing Exception
-     * @throws DaoException   Data Access Exception
-     */
-    public static ArrayList<Integer> extractNumDescendents(Pager pager, Hits hits)
-		throws IOException, ParseException, DaoException {
-        ArrayList<Integer> numDescendentsList = new ArrayList<Integer>();
+    public Map<Long, Set<String>> getDataSourceMap() {
+        return dataSourceMap;
+    }
 
-        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
-            Document doc = hits.doc(i);
-            Field field = doc.getField(LuceneConfig.FIELD_NUM_DESCENDENTS);
-            if (field == null) {
-                numDescendentsList.add(0);
-            } else {
-                try {
-                    Integer num = Integer.parseInt(field.stringValue());
-                    numDescendentsList.add(num);
-                } catch (NumberFormatException e) {
-                    numDescendentsList.add(0);
-                }
-            }
-        }
+    public ArrayList<Integer> getNumDescendentsList() {
         return numDescendentsList;
     }
 
-    /**
-     * Extracts Datasources associated with the specified range of
-     * Lucene Hits for each record.
-     *
-     * @param term  Query Term String
-     * @param pager Pager Object for Next/Previous Pages
-     * @param hits  Lucene Hits Object
-     * @return Map of cpath ids to data source names. Map<Long,Set<String>>
-     * @throws IOException    Input/Output Error
-     * @throws ParseException Parsing Exception
-     */
-    public static Map<Long,Set<String>> extractDataSources(String term, Pager pager, Hits hits)
-		throws IOException, ParseException, DaoException {
-        int size = pager.getEndIndex() - pager.getStartIndex();
-        Map<Long,Set<String>> dataSources = new HashMap<Long,Set<String>>();
-        DaoExternalDb dao = new DaoExternalDb();
+    public Map<Long, Float> getScores() {
+        return scores;
+    }
 
-        int index = 0;
-        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
-            Document doc = hits.doc(i);
-			Field cpathIdField = doc.getField(LuceneConfig.FIELD_CPATH_ID);
-            Field dataSourceField = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
-			HashSet<String> dataSourcesSet = new HashSet<String>();
-			for (String fieldValue : dataSourceField.stringValue().split(" ")) {
+    private void extractDataSourceMap(Document doc, DaoExternalDb dao) throws DaoException {
+        Field cpathIdField = doc.getField(LuceneConfig.FIELD_CPATH_ID);
+        Field dataSourceField = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
+        HashSet<String> dataSourcesSet = new HashSet<String>();
+        if (cpathIdField != null && dataSourceField != null) {
+            for (String fieldValue : dataSourceField.stringValue().split(" ")) {
                 if (fieldValue != null && fieldValue.trim().length() > 0) {
                     dataSourcesSet.add(dao.getRecordByTerm(fieldValue).getName());
                 }
             }
-			dataSources.put(Long.parseLong(cpathIdField.stringValue()), dataSourcesSet);
+            dataSourceMap.put(Long.parseLong(cpathIdField.stringValue()), dataSourcesSet);
         }
-        return dataSources;
     }
 
-    /**
-     * Extracts Scores associated with the specified range of
-     * Lucene Hits.
-     *
-     * @param term  Query Term String
-     * @param pager Pager Object for Next/Previous Pages
-     * @param hits  Lucene Hits Object
-     * @return Map of cpath ids to lucene scores (0-1). Map<Long,Float>
-     * @throws IOException    Input/Output Error
-     * @throws ParseException Parsing Exception
-     */
-    public static Map<Long,Float> extractScores(String term, Pager pager, Hits hits)
-            throws IOException, ParseException {
-        int size = pager.getEndIndex() - pager.getStartIndex();
-        Map<Long,Float> scores = new HashMap<Long,Float>();
-
-        int index = 0;
-        for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
-            Document doc = hits.doc(i);
-			Field cpathIdField = doc.getField(LuceneConfig.FIELD_CPATH_ID);
-			scores.put(Long.parseLong(cpathIdField.stringValue()), new Float(hits.score(i)));
+    private void extractNumDescendents(Document doc) {
+        Field field;
+        field = doc.getField(LuceneConfig.FIELD_NUM_DESCENDENTS);
+        if (field == null) {
+            numDescendentsList.add(0);
+        } else {
+            try {
+                Integer num = Integer.parseInt(field.stringValue());
+                numDescendentsList.add(num);
+            } catch (NumberFormatException e) {
+                numDescendentsList.add(0);
+            }
         }
-        return scores;
+    }
+
+    private void extractDataSources(Document doc, DaoExternalDb dao) throws DaoException {
+        Field field;
+        field = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
+        if (field != null) {
+            for (String fieldValue : field.stringValue().split(" ")) {
+                ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(fieldValue);
+                dataSources.add(dbRecord.getName());
+            }
+        }
+    }
+
+    private void extractFragment(Document doc, QueryHighlightExtractor highLighter, String term)
+            throws IOException {
+        String fragment = getFragment(doc, highLighter);
+        // if fragment is null, assume descendent ?
+        if ((fragment == null || fragment.length() == 0) &&
+            term.contains(" entity_type:pathway ")){
+            String value = doc.getField(LuceneConfig.FIELD_NAME).stringValue();
+            if (value != null && value.length() > 0) {
+                List<String> listToReturn = new ArrayList<String>();
+                listToReturn.add(START_TAG + term + END_TAG + " " + MEMBER_OF);
+                fragments.add(listToReturn);
+                return;
+            }
+        }
+        fragments.add(cookFragment(term, fragment));
+    }
+
+    // if query contains multiple terms, surround it with quotes (unless the query already is)
+    private String reformatTerm(String term) {
+        term = term.trim();
+        if (term.matches("^[^\"]*\\s[^\"]*$")) {
+            term = "\"" + term + "\"";
+        }
+        return term;
+    }
+
+    private QueryHighlightExtractor createHighlighter (String term) throws IOException,
+            ParseException {
+
+            QueryParser parser = new QueryParser(LuceneConfig.FIELD_ALL,
+                    new StandardAnalyzer());
+            Query luceneQuery = parser.parse(term);
+
+            // Necessary to expand search terms
+            IndexReader reader = IndexReader.open
+                    (new File(LuceneConfig.getLuceneDirectory()));
+            luceneQuery = luceneQuery.rewrite(reader);
+
+            // we do our own highlighting since this one will highlight meta-data,
+            // like 'NCI_NATURE' or 'AND' or 'pathway' in a query like the following:
+            // 'data_source:"NCI_NATURE" AND entity_type:pathway'
+            return new QueryHighlightExtractor(luceneQuery,
+                    new StandardAnalyzer(), "","");
     }
 
 	/**
@@ -280,7 +234,7 @@ public class QueryUtil {
 	 * @return String
 	 * @throws IOException
 	 */
-	private static String getFragment(Document doc, QueryHighlightExtractor highLighter)
+	private String getFragment(Document doc, QueryHighlightExtractor highLighter)
 		throws IOException {
 
 		String[] fields = {LuceneConfig.FIELD_ALL,
@@ -302,11 +256,11 @@ public class QueryUtil {
 	 * Removes XML element delimiter placed in fragment by XmlStripper.
 	 *  Also removes subset(s) of fragments that do not contain query terms.
 	 * 
-	 * @param term String
+	 * @param terms String
 	 * @param fragments String
 	 * @return List<String>
 	 */
-	private static List<String> cookFragment(String terms, String fragments) {
+	private List<String> cookFragment(String terms, String fragments) {
 
 		// check fragment args
 		if (fragments == null || fragments.length() == 0) return null;
@@ -339,7 +293,8 @@ public class QueryUtil {
 					String origFragment = fragment;
 					for (String term : terms.split(" ")) {
 					    if (validTerm(term)) {
-						fragment = fragment.replaceAll("(?i)" + "(" + term + ")", START_TAG + "$1" + END_TAG);
+						fragment = fragment.replaceAll("(?i)"
+                                + "(" + term + ")", START_TAG + "$1" + END_TAG);
 					    }
 					}
 					// lets remove sentences that are part of fragment but don't contain any terms
@@ -348,7 +303,8 @@ public class QueryUtil {
 						// try to determine if '.' is not part of title, like Dr.
 						if (!subFragment.matches("^.*(?i)dr$") && subFragment.matches(termRegex)) {
 							// do we append a '.' after subFragment ?
-							int indexOfPeriod = fragment.indexOf(subFragment) + subFragment.length();
+							int indexOfPeriod = fragment.indexOf(subFragment)
+                                    + subFragment.length();
 							boolean appendPeriod = ((indexOfPeriod <= fragment.length()-1) &&
 													(fragment.charAt(indexOfPeriod) == '.'));
 							subFragment = subFragment + ((appendPeriod) ? "." : "");
@@ -356,7 +312,8 @@ public class QueryUtil {
 						}
 					}
 					// fragment may not have contained periods
-					subFragmentsToReturn = (subFragmentsToReturn.length() == 0) ? fragment : subFragmentsToReturn;
+					subFragmentsToReturn = (subFragmentsToReturn.length() == 0)
+                            ? fragment : subFragmentsToReturn;
 					toReturn.add(subFragmentsToReturn);
 					fragmentMap.put(origFragment,"");
 				}
@@ -391,6 +348,8 @@ public class QueryUtil {
 				term.contains(LuceneConfig.FIELD_EXTERNAL_REFS + ":") ||
 				term.contains(LuceneConfig.FIELD_DESCENDENTS + ":") ||
 				// lucene boolean operators must be capitalized
-				term.equalsIgnoreCase("AND") || term.equalsIgnoreCase("OR") || term.equalsIgnoreCase("NOT")) ? false : true;
+				term.equalsIgnoreCase("AND") ||
+                term.equalsIgnoreCase("OR") ||
+                term.equalsIgnoreCase("NOT")) ? false : true;
 	}
 }
