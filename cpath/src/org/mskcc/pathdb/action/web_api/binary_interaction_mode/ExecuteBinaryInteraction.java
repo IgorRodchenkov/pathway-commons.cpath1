@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.6 2008-01-28 17:57:05 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.7 2008-07-10 15:14:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.action.web_api.binary_interaction_mode;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.log4j.Logger;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
@@ -62,6 +63,7 @@ import java.io.IOException;
  * @author Ethan Cerami, Benjamin Gross.
  */
 public class ExecuteBinaryInteraction {
+    private static Logger log = Logger.getLogger(ExecuteBinaryInteraction.class);
 
     /**
      * Processes Client Request.

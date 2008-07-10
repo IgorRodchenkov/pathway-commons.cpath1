@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.19 2008-01-29 23:58:10 grossben Exp $
+// $Id: ExecuteWebApi.java,v 1.20 2008-07-10 15:14:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -111,7 +111,7 @@ public class ExecuteWebApi extends BaseAction {
             request.setAttribute(ATTRIBUTE_PROTOCOL_REQUEST, protocolRequest);
 
             //  Execute the appropriate query
-            xdebug.logMsg(this, "Executing Web Service API Query:  " + protocolRequest.getUri());
+            log.info("Executing Web Service API Query:  " + protocolRequest.getUri());
 
             //  Validate the client request;  validation depends on the currently supported Web API Version #.
             ProtocolValidator validator = new ProtocolValidator(protocolRequest);
@@ -121,11 +121,15 @@ public class ExecuteWebApi extends BaseAction {
             //  Forward to Help Page;  removing the search result flag enables the correct tab to be shown
             //  on the help page.
             request.removeAttribute(BaseAction.PAGE_IS_SEARCH_RESULT);
+            log.info("Caught Needs Help Exception");
             return mapping.findForward(BaseAction.FORWARD_HELP);
         } catch (ProtocolException e) {
             //  Depending on the type of request, we handle errors differently.
             //  For HTML Responses, we need to display within a web page.
             //  For XML Responses, we need to display the error within a small XML Error document.
+            log.info("Protocol Exception:  " + e.getStatusCode() + " -->  " +
+                e.getMessage());
+            log.error("Protocol Exception", e);
             String returnFormat = protocolRequest.getFormat();
             if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
                 throw e;
@@ -158,11 +162,11 @@ public class ExecuteWebApi extends BaseAction {
 
             //  First, branch based on WebUI Mode
             if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_PSI_MI) {
-                xdebug.logMsg(this, "Branching based on web mode:  WEB_MODE_PSI_MI");
+                log.info("Branching based on web mode:  WEB_MODE_PSI_MI");
 
                 //  Then, branch based on response type
                 if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
-                    xdebug.logMsg(this, "Branching based on response type:  HTML");
+                    log.info("Branching based on response type:  HTML");
                     org.mskcc.pathdb.action.web_api.psi_mode.ExecuteHtmlResponse task =
                             new org.mskcc.pathdb.action.web_api.psi_mode.ExecuteHtmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
@@ -173,39 +177,39 @@ public class ExecuteWebApi extends BaseAction {
                 }
 
             } else {
-                xdebug.logMsg(this, "Branching based on web mode:  WEB_MODE_BIOPAX");
+                log.info("Branching based on web mode:  WEB_MODE_BIOPAX");
 
                 //  Then, branch based on response type
                 if (returnFormat != null && returnFormat.equals(ProtocolConstants.FORMAT_HTML)) {
-                    xdebug.logMsg(this, "Branching based on response type:  HTML");
+                    log.info("Branching based on response type:  HTML");
                     org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteHtmlResponse task =
                             new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteHtmlResponse();
 					request.setAttribute(BaseAction.PAGE_IS_SEARCH_RESULT, BaseAction.YES);
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else if (isResponseText(protocolRequest)) {
-                    xdebug.logMsg(this, "Branching based on response type:  TEXT");
+                    log.info("Branching based on response type:  TEXT");
                     org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteTextResponse task =
                             new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteTextResponse();
                     return task.processRequeset(xdebug, protocolRequest, request, response, mapping);
                 } else if (protocolRequest.getCommand() != null && protocolRequest.getCommand().equals(
                         ProtocolConstantsVersion2.COMMAND_SEARCH)) {
-                    xdebug.logMsg(this, "Branching based on response type:  Search XML");
+                    log.info("Branching based on response type:  Search XML");
                     ExecuteSearchXmlResponse task = new ExecuteSearchXmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else if (protocolRequest.getCommand() != null && protocolRequest.getCommand().equals(
                         ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES)) {
-                    xdebug.logMsg(this, "Branching based on response type:  Interaction "
+                    log.info("Branching based on response type:  Interaction "
                             + "Summaries XML");
                     ExecuteGetParentsXmlResponse task =
                             new ExecuteGetParentsXmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
 				} else if (isBinaryInteraction(protocolRequest)) {
-                    xdebug.logMsg(this, "Branching based on command and output: Binary Interaction");
+                    log.info("Branching based on command and output: Binary Interaction");
                     org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction task =
                             new org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
-                    xdebug.logMsg(this, "Branching based on response type:  BioPAX XML");
+                    log.info("Branching based on response type:  BioPAX XML");
                     org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxXmlResponse task =
                             new org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxXmlResponse();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
