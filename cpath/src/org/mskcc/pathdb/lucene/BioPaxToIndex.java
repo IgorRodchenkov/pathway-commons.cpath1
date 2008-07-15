@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.25 2008-07-10 20:56:58 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.26 2008-07-15 15:35:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,11 +40,7 @@ import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.util.xml.XmlStripper;
 import org.mskcc.pathdb.model.*;
-import org.mskcc.pathdb.sql.dao.DaoCPath;
-import org.mskcc.pathdb.sql.dao.DaoException;
-import org.mskcc.pathdb.sql.dao.DaoSourceTracker;
-import org.mskcc.pathdb.sql.dao.DaoInternalFamily;
-import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
+import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
@@ -165,8 +161,16 @@ public class BioPaxToIndex implements ItemToIndex {
 
 		// Index Descendents --> FIELD_DESCENDENTS
 		indexDescendents(cpath, record);
+        indexNumParents(record);
 
-		// * NOTE: IF MORE FIELDS ARE INDEXED, LuceneResults.addTerm SHOULD BE UPDATES *
+        // * NOTE: IF MORE FIELDS ARE INDEXED, LuceneResults.addTerm SHOULD BE UPDATES *
+    }
+
+    private void indexNumParents(CPathRecord record) throws DaoException {
+        DaoInternalLink daoInternalLink = new DaoInternalLink();
+        List parentList = daoInternalLink.getSources(record.getId());
+        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENTS, Integer.toString(parentList.size()),
+                Field.Store.YES, Field.Index.NO));
     }
 
     /**
@@ -342,7 +346,7 @@ public class BioPaxToIndex implements ItemToIndex {
         if (descendentIds.size() -1 > 0) {
             fields.add(new Field(LuceneConfig.FIELD_NUM_DESCENDENTS,
                     Integer.toString(descendentIds.size()-1),
-                    Field.Store.YES, Field.Index.TOKENIZED));
+                    Field.Store.YES, Field.Index.NO));
         }
     }
 

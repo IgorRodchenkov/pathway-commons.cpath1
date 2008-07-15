@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.2 2008-07-15 13:39:05 cerami Exp $
+// $Id: LuceneResults.java,v 1.3 2008-07-15 15:35:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,6 +70,7 @@ public class LuceneResults {
     private Set<String> dataSources;
     private Map<Long,Set<String>> dataSourceMap;
     private ArrayList<Integer> numDescendentsList;
+    private ArrayList<Integer> numParentsList;
     private Map<Long,Float> scores;
     private int numHits;
 
@@ -83,6 +84,7 @@ public class LuceneResults {
         fragments = new ArrayList<List<String>>();
         dataSources = new HashSet<String>();
         numDescendentsList = new ArrayList<Integer>();
+        numParentsList = new ArrayList<Integer>();
         dataSourceMap = new HashMap<Long,Set<String>>();
         scores = new HashMap<Long,Float>();
 
@@ -109,6 +111,7 @@ public class LuceneResults {
 
             extractDataSources(doc, dao);
             extractNumDescendents(doc);
+            extractNumParents(doc);
             extractDataSourceMap(doc, dao);
         }
     }
@@ -141,6 +144,10 @@ public class LuceneResults {
         return numDescendentsList;
     }
 
+    public ArrayList<Integer> getNumParentsList() {
+        return numParentsList;
+    }
+
     public Map<Long, Float> getScores() {
         return scores;
     }
@@ -170,6 +177,21 @@ public class LuceneResults {
                 numDescendentsList.add(num);
             } catch (NumberFormatException e) {
                 numDescendentsList.add(0);
+            }
+        }
+    }
+
+    private void extractNumParents(Document doc) {
+        Field field;
+        field = doc.getField(LuceneConfig.FIELD_NUM_PARENTS);
+        if (field == null) {
+            numParentsList.add(0);
+        } else {
+            try {
+                Integer num = Integer.parseInt(field.stringValue());
+                numParentsList.add(num);
+            } catch (NumberFormatException e) {
+                numParentsList.add(0);
             }
         }
     }

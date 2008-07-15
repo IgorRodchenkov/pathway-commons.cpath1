@@ -1,4 +1,4 @@
-// $Id: LuceneConfig.java,v 1.14 2008-05-29 00:43:08 cerami Exp $
+// $Id: LuceneConfig.java,v 1.15 2008-07-15 15:35:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -100,9 +100,14 @@ public class LuceneConfig {
     public static final String FIELD_DESCENDENTS = "descendents";
 
     /**
-     * Lucene Field for Descendent Information
+     * Lucene Field for Number of Descendents
      */
-    public static final String FIELD_NUM_DESCENDENTS = "num_descendents";    
+    public static final String FIELD_NUM_DESCENDENTS = "num_descendents";
+
+    /**
+     * Lucene Field for Number of Parents
+     */
+    public static final String FIELD_NUM_PARENTS = "num_parents";
 
     /**
      * Text Index Directory.
