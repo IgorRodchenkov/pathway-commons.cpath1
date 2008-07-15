@@ -374,7 +374,7 @@ else {
 			if (webUIBean.getWantCytoscape() && showCytoscape) {
 				// add link to cytoscape
 				if (pathwayType) {
-					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+					out.println("<p><a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
@@ -389,7 +389,7 @@ else {
 				}
 				else {
 					String encodedNeighborhoodTitle = URLEncoder.encode("Neighborhood: " + summaryLabel, "UTF-8");
-					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
+					out.println("<p><a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 								urlForCytoscapeLink +
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
@@ -401,7 +401,7 @@ else {
 								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
 								">View network neighborhood in Cytoscape</a>");
 				}
-				out.println("<a href=\"cytoscape.do\">(help)</a>");
+				out.println("<a href=\"cytoscape.do\">(help)</a></p>");
 			}
 			out.println("</div>");
 			out.println("</td></tr>");
