@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.42 2008-06-26 15:20:28 cerami Exp $
+// $Id: BaseAction.java,v 1.43 2008-07-15 13:41:18 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -132,6 +132,11 @@ public abstract class BaseAction extends Action {
     public static final String ATTRIBUTE_CPATH_IDS = "cpath_ids";
 
     /**
+     * Page Attribute:  CPath IDs.
+     */
+    public static final String ATTRIBUTE_LUCENE_RESULTS = "lucene_results";
+
+    /**
      * Page Attribute:  Total Number of Search Hits.
      */
     public static final String ATTRIBUTE_TOTAL_NUM_HITS = "total_num_hits";
@@ -147,29 +152,9 @@ public abstract class BaseAction extends Action {
     public static final String ATTRIBUTE_HITS_BY_DATA_SOURCE_MAP = "hits_by_data_source";
 
     /**
-     * Page Attribute:  Text Fragments.
-     */
-    public static final String ATTRIBUTE_TEXT_FRAGMENTS = "text_fragments";
-
-    /**
      * Page Attribute:  Data Source Set.
      */
     public static final String ATTRIBUTE_DATA_SOURCE_SET = "data_source_set";
-
-    /**
-     * Page Attribute:  Data Sources.
-     */
-    public static final String ATTRIBUTE_DATA_SOURCES = "data_sources";
-
-    /**
-     * Page Attribute:  Scores.
-     */
-    public static final String ATTRIBUTE_SCORES = "scores";
-
-    /**
-     * Page Attribute:  Number of Descendents.
-     */
-    public static final String ATTRIBUTE_NUM_DESCENDENTS = "num_descendents";
 
     /**
      * Page Attribute:  INTERACTOR Set.
