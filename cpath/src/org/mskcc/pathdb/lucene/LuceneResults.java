@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.1 2008-07-10 20:56:58 cerami Exp $
+// $Id: LuceneResults.java,v 1.2 2008-07-15 13:39:05 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -71,9 +71,11 @@ public class LuceneResults {
     private Map<Long,Set<String>> dataSourceMap;
     private ArrayList<Integer> numDescendentsList;
     private Map<Long,Float> scores;
+    private int numHits;
 
     public LuceneResults(Pager pager, Hits hits, String term) throws IOException,
         ParseException, DaoException {
+        numHits = hits.length();
         int size = pager.getEndIndex() - pager.getStartIndex();
 
         // init private variables
@@ -109,6 +111,10 @@ public class LuceneResults {
             extractNumDescendents(doc);
             extractDataSourceMap(doc, dao);
         }
+    }
+
+    public int getNumHits() {
+        return numHits;
     }
 
     public long[] getCpathIds() {
