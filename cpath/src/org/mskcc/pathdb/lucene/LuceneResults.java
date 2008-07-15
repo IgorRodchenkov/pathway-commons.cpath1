@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.3 2008-07-15 15:35:13 cerami Exp $
+// $Id: LuceneResults.java,v 1.4 2008-07-15 16:04:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -272,7 +272,7 @@ public class LuceneResults {
 		for (String fieldName : fields) {
 			Field field = doc.getField(fieldName);
 			String value = field.stringValue();
-			String fragment = highLighter.getBestFragment(value, 500);
+			String fragment = highLighter.getBestFragment(value, 200);
 			if (fragment != null && fragment.length() > 0) return fragment;
 		}
 
