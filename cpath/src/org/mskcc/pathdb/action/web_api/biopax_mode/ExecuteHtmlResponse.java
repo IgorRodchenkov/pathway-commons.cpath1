@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.13 2008-07-10 21:06:05 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.14 2008-07-15 13:40:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -146,7 +146,7 @@ public class ExecuteHtmlResponse {
             // perform the query
             search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
             search.executeSearch();
-            totalNumberHits = search.getTotalNumHits();
+            totalNumberHits = search.getLuceneResults().getNumHits();
             if (totalNumberHits > 0) {
                 hitByDataSourceMap.put(String.valueOf(id.intValue()), totalNumberHits);
             }
@@ -198,24 +198,15 @@ public class ExecuteHtmlResponse {
             // perform the query
             LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
             long cpathIds[] = search.executeSearch();
+            LuceneResults luceneResults = search.getLuceneResults();
             if (userSelectedEntityType.equals(type)) {
-                request.setAttribute(BaseAction.ATTRIBUTE_CPATH_IDS, cpathIds);
-                request.setAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS,
-                        new Integer(search.getTotalNumHits()));
-                LuceneResults luceneResults = search.getLuceneResults();
-                request.setAttribute(BaseAction.ATTRIBUTE_TEXT_FRAGMENTS,
-                        luceneResults.getFragments());
-                request.setAttribute(BaseAction.ATTRIBUTE_DATA_SOURCES,
-                        luceneResults.getDataSourceMap());
-                request.setAttribute(BaseAction.ATTRIBUTE_SCORES,
-                        luceneResults.getScores());
-                request.setAttribute(BaseAction.ATTRIBUTE_NUM_DESCENDENTS,
-                        luceneResults.getNumDescendentsList());
+                request.setAttribute(BaseAction.ATTRIBUTE_LUCENE_RESULTS, luceneResults);
             }
-            int totalNumberHits = search.getTotalNumHits();
-            if (totalNumberHits > 0) hitByTypeMap.put(type, totalNumberHits);
+            if (luceneResults.getNumHits() > 0) {
+                hitByTypeMap.put(type, luceneResults.getNumHits());
+            }
             if (type.equals(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL)) {
-                totalHitsAllEntities = search.getTotalNumHits();
+                totalHitsAllEntities = luceneResults.getNumHits();
             }
         }
         // add hits by record type map to request object
