@@ -392,7 +392,7 @@ cursor:pointer;
 
 .details ul {list-style-type:square; margin-bottom:0px !important}
 .details li {margin-left:-20px;padding-left:0px}
-.details p {margin-top: 7px;}
+.details p {margin-top: 4px;}
 
 /* Entity Summary, e.g. summary of interaction details */
 .entity_summary {
@@ -477,13 +477,13 @@ cursor:pointer;
 
 .search_fragment {
     font-size:85%;
-    color:black;
     line-height:1.2em;
-    margin-top:5px;
+    margin-top:0px;
     margin-bottom:10px;
 }
-.search_fragment ul {list-style-type:square; margin-left:0px;}
+.search_fragment ul {list-style-type:square; margin-bottom:0px !important}
 .search_fragment li {margin-left:-20px;padding-left:0px}
+.search_fragment p {margin-top: 2px;}
 
 #comment_remainder {
     display:none;
