@@ -109,7 +109,7 @@ public class ExecuteSearchXmlResponse {
         List<List<String>> textFragments = luceneResults.getFragments();
         if (cpathIds.length > 0) {
             SearchResponseType searchResponse = createXmlDocument
-                    (search.getTotalNumHits(), cpathIds, textFragments, xdebug);
+                    (search.getLuceneResults().getNumHits(), cpathIds, textFragments, xdebug);
             StringWriter writer = new StringWriter();
             Marshaller marshaller = createMarshaller("org.mskcc.pathdb.schemas.search_response");
 
