@@ -7,13 +7,11 @@
                  org.mskcc.pathdb.servlet.CPathUIConfig,
                  org.mskcc.pathdb.taglib.Pager,
                  org.mskcc.pathdb.sql.dao.DaoCPath,
-                 org.mskcc.pathdb.sql.dao.DaoInternalLink,
                  org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot,
                  org.mskcc.pathdb.lucene.LuceneResults,
                  org.mskcc.pathdb.model.CPathRecord,
                  org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.model.GlobalFilterSettings,
-                 org.mskcc.pathdb.model.TypeCount,
                  org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord,
                  org.mskcc.pathdb.util.html.HtmlUtil,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
@@ -43,6 +41,7 @@
     Map<Long, Set<String>> recordDataSources = luceneResults.getDataSourceMap();
     Map<Long, Float> scores = luceneResults.getScores();
     ArrayList<Integer> numDescendentsList = luceneResults.getNumDescendentsList();
+    ArrayList<Integer> numParentsList = luceneResults.getNumParentsList();
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
     String keyType = protocolRequest.getEntityType();
     String keyDataSource = request.getParameter
@@ -261,32 +260,24 @@ else {
     <table cellpadding="2" cellspacing="0" border="0" width="100%">
 <%
     DaoCPath dao = DaoCPath.getInstance();
-	DaoInternalLink daoInternalLink = new DaoInternalLink();
     for (int i=0; i< cpathIds.length; i++) {
         CPathRecord record = dao.getRecordById(cpathIds[i]);
-        List<TypeCount> childTypes= null;
-		// get number children / parents - used to render on hide link to cytoscape
-		if (record.getType().toString().equals(CPathRecordType.PHYSICAL_ENTITY)) {
-		    Set<Long> snapshotIdSet = filterSettings.getSnapshotIdSet();
-		    long snapshotIds[] = new long[snapshotIdSet.size()];
-            Iterator<Long> iterator = snapshotIdSet.iterator();
-            int index = 0;
-            while (iterator.hasNext()) {
-                Long snapshotId = iterator.next();
-                snapshotIds[index] = snapshotId.longValue();
+        int numDescendents = numDescendentsList.get(i);
+        int numParents = numParentsList.get(i);
+
+        boolean showCytoscape = false;
+
+		//  Determine if we should show / hide Cytoscape links
+		if (record.getType() == CPathRecordType.PHYSICAL_ENTITY) {
+		    if (numParents > 0) {
+		        showCytoscape = true;
             }
-    		daoInternalLink.getParentTypes(cpathIds[i], record.getNcbiTaxonomyId(),
-	    	    snapshotIds, null);
         } else {
-		    childTypes = daoInternalLink.getChildrenTypes(cpathIds[i], null);
+		    if (numDescendents > 0) {
+		        showCytoscape = true;
+            }
         }
-		boolean showCytoscape = false;
-		for (TypeCount typeCount : childTypes) {
-			if (typeCount.getCount() > 0) {
-				showCytoscape = true;
-				break;
-			}
-		}
+
         String url = "record2.do?id=" + record.getId();
 	    // used to render score board graphic
 	    Float score = (Float)scores.get(cpathIds[i]);
@@ -343,7 +334,6 @@ else {
                     out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
                 }
             }
-
             out.println("</th>");
 			// inspection button
 			out.println("<th align=right>");
