@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.16 2008-07-10 21:05:48 cerami Exp $
+// $Id: LuceneQuery.java,v 1.17 2008-07-15 13:39:24 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -109,15 +109,6 @@ public class LuceneQuery {
         } finally {
             indexer.close();
         }
-    }
-
-    /**
-     * Gets Total Number of Hits.
-     *
-     * @return total number of hits.
-     */
-    public int getTotalNumHits() {
-        return this.totalNumHits;
     }
 
     /**
