@@ -1,6 +1,7 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
+                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
                  org.mskcc.pathdb.protocol.ProtocolConstantsVersion2,
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
@@ -109,15 +110,16 @@
         StringBuffer html = new StringBuffer();
         Set<String> dataSourceSet = recordDataSources.get(cPathId);
         if (dataSourceSet.size() > 0) {
-            html.append("<p><b>Data Source(s):</b></p>\n\r");
-            html.append("<ul>\n\r");
+            html.append("<p><b>Data Source(s):</b>&nbsp;&nbsp;");
             // loop here
-            for (String dataSource : (Set<String>) recordDataSources.get(cPathId)) {
-                html.append("<li>");
+            int counter = 0;
+            for (String dataSource : recordDataSources.get(cPathId)) {
                 html.append(dataSource);
-                html.append("</li>\n\r");
+                if (counter < recordDataSources.get(cPathId).size() -1) {
+                    html.append (", ");
+                }
             }
-            html.append("</ul>\n\r");
+            html.append("</p>\n\r");
         }
         return html.toString();
     }
@@ -134,8 +136,7 @@
                 String comment = ReactomeCommentUtil.massageComment(comments[0]);
                 String paragraphs[] = comment.split("<p>");
                 if (paragraphs.length > 0) {
-                    html.append("<p><b>Summary:</b></p>\n\r");
-                    html.append("<p>");
+                    html.append("<p><b>Summary:</b>&nbsp;&nbsp;");
                     for (String term : request.getQuery().split(" ")) {
                         paragraphs[0] = paragraphs[0].replaceAll(term,
                                 LuceneResults.START_TAG +
