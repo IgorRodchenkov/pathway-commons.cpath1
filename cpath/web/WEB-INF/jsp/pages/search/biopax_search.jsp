@@ -8,7 +8,7 @@
                  org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.sql.dao.DaoInternalLink,
                  org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot,
-                 org.mskcc.pathdb.sql.query.QueryUtil,
+                 org.mskcc.pathdb.lucene.LuceneResults,
                  org.mskcc.pathdb.model.CPathRecord,
                  org.mskcc.pathdb.model.CPathRecordType,
                  org.mskcc.pathdb.model.GlobalFilterSettings,
@@ -18,14 +18,9 @@
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary,
                  org.mskcc.pathdb.util.biopax.BioPaxRecordUtil,
-                 org.mskcc.pathdb.taglib.DbSnapshotInfo,
                  org.mskcc.pathdb.taglib.ReactomeCommentUtil,
                  java.net.URLEncoder"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
-<%@ page import="org.apache.lucene.search.Hits" %>
-<%@ page import="org.apache.lucene.document.Document" %>
-<%@ page import="org.apache.lucene.document.Field" %>
-<%@ page import="org.mskcc.pathdb.lucene.LuceneConfig" %>
 <%@ page import="java.util.*" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
@@ -37,27 +32,22 @@
     final int SCOREBOARD_HEIGHT = 6;
 
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+    LuceneResults luceneResults = (LuceneResults) request.getAttribute
+            (BaseAction.ATTRIBUTE_LUCENE_RESULTS);
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
-    long cpathIds[] = (long[])
-            request.getAttribute(BaseAction.ATTRIBUTE_CPATH_IDS);
-    Integer totalNumHits = (Integer)
-            request.getAttribute(BaseAction.ATTRIBUTE_TOTAL_NUM_HITS);
-    List<List<String>> fragments = (List<List<String>>) request.getAttribute
-            (BaseAction.ATTRIBUTE_TEXT_FRAGMENTS);
-    //Set<String> dataSourceSet = (Set<String>) request.getAttribute
-    //        (BaseAction.ATTRIBUTE_DATA_SOURCE_SET);
-    Map<Long, Set<String>> recordDataSources = (Map<Long, Set<String>>) request.getAttribute
-            (BaseAction.ATTRIBUTE_DATA_SOURCES);
-    Map<Long, Float> scores = (Map<Long, Float>) request.getAttribute
-            (BaseAction.ATTRIBUTE_SCORES);
-    ArrayList<Integer> numDescendentsList = (ArrayList<Integer>) request.getAttribute
-            (BaseAction.ATTRIBUTE_NUM_DESCENDENTS);
+    long cpathIds[] = luceneResults.getCpathIds();
+    int totalNumHits = luceneResults.getNumHits();
+    List<List<String>> fragments = luceneResults.getFragments();
+    Map<Long, Set<String>> recordDataSources = luceneResults.getDataSourceMap();
+    Map<Long, Float> scores = luceneResults.getScores();
+    ArrayList<Integer> numDescendentsList = luceneResults.getNumDescendentsList();
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
     String keyType = protocolRequest.getEntityType();
-    String keyDataSource = (String) request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
+    String keyDataSource = request.getParameter
+            (GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
     // server name
-    String serverName = (String) request.getServerName();
+    String serverName = request.getServerName();
     serverName = (serverName.indexOf("pathwaycommons") != -1) ? serverName : serverName + ":8080";
     // cytoscape link
     String urlForCytoscapeLink = (String) request.getAttribute("request_url");
@@ -66,7 +56,8 @@
     // data source parameter string  to network neighborhood map
     String encodedDataSourceParameter = "";
     GlobalFilterSettings filterSettings =
-            (GlobalFilterSettings) request.getSession().getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+            (GlobalFilterSettings) request.getSession().getAttribute
+                    (GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
     DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
     if (filterSettings != null) {
         for (Long snapshotID : (Set<Long>) filterSettings.getSnapshotIdSet()) {
@@ -102,24 +93,26 @@
     }
 </script>
 <%!
-private String getInspectorButtonHtml (long cPathId) {
-	return "<div class='toggle_details'><a "
-        + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
-        + "')\"><div id='cpath_" + cPathId + "_image' class='toggleImage'>"
-        + "<img src='jsp/images/open.gif'/></div></a>";
-}
-private String getDetailsHtml (long cPathId, String label, String html) {
-    return ("<div id='cpath_" + cPathId + "_" + label +"' class='details'>"
-        + html + "</div>");
-}
-private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> recordDataSources) {
-		StringBuffer html = new StringBuffer();
+    private String getInspectorButtonHtml(long cPathId) {
+        return "<div class='toggle_details'><a "
+                + "title='Toggle Record Details' onClick=\"toggleDetails('cpath_" + cPathId
+                + "')\"><div id='cpath_" + cPathId + "_image' class='toggleImage'>"
+                + "<img src='jsp/images/open.gif'/></div></a>";
+    }
+
+    private String getDetailsHtml(long cPathId, String label, String html) {
+        return ("<div id='cpath_" + cPathId + "_" + label + "' class='details'>"
+                + html + "</div>");
+    }
+
+    private String getDataSourceHtml(long cPathId, Map<Long, Set<String>> recordDataSources) {
+        StringBuffer html = new StringBuffer();
         Set<String> dataSourceSet = recordDataSources.get(cPathId);
         if (dataSourceSet.size() > 0) {
             html.append("<p><b>Data Source(s):</b></p>\n\r");
             html.append("<ul>\n\r");
             // loop here
-            for (String dataSource : (Set<String>)recordDataSources.get(cPathId)) {
+            for (String dataSource : (Set<String>) recordDataSources.get(cPathId)) {
                 html.append("<li>");
                 html.append(dataSource);
                 html.append("</li>\n\r");
@@ -127,78 +120,85 @@ private String getDataSourceHtml(long cPathId, Map<Long,Set<String>> recordDataS
             html.append("</ul>\n\r");
         }
         return html.toString();
-}
-private String getPathwaySummaryHtml(CPathRecord record,
-                                     BioPaxRecordSummary summary,
-                                     ProtocolRequest request) {
-    // only show pathway summary info
-    //if (record.getType() != CPathRecordType.PATHWAY) return "";
-    StringBuffer html = new StringBuffer();
-    if (summary.getComments() != null) {
-        String comments[] = summary.getComments();
-	    if (comments.length > 0) {
-            String comment = ReactomeCommentUtil.massageComment(comments[0]);
-            String paragraphs[] = comment.split("<p>");
-		    if (paragraphs.length > 0) {
-				html.append("<p><b>Summary:</b></p>\n\r");
-                html.append("<p>");
-		        for (String term : request.getQuery().split(" ")) {
-			        paragraphs[0] = paragraphs[0].replaceAll(term,
-				                                             QueryUtil.START_TAG +
-                                                             term +
-                                                             QueryUtil.END_TAG);
+    }
+
+    private String getPathwaySummaryHtml(CPathRecord record,
+            BioPaxRecordSummary summary,
+            ProtocolRequest request) {
+        // only show pathway summary info
+        //if (record.getType() != CPathRecordType.PATHWAY) return "";
+        StringBuffer html = new StringBuffer();
+        if (summary.getComments() != null) {
+            String comments[] = summary.getComments();
+            if (comments.length > 0) {
+                String comment = ReactomeCommentUtil.massageComment(comments[0]);
+                String paragraphs[] = comment.split("<p>");
+                if (paragraphs.length > 0) {
+                    html.append("<p><b>Summary:</b></p>\n\r");
+                    html.append("<p>");
+                    for (String term : request.getQuery().split(" ")) {
+                        paragraphs[0] = paragraphs[0].replaceAll(term,
+                                LuceneResults.START_TAG +
+                                        term +
+                                        LuceneResults.END_TAG);
+                    }
+                    html.append(paragraphs[0] + "</p>\n\r");
                 }
-                html.append(paragraphs[0] + "</p>\n\r");
             }
         }
+        return html.toString();
     }
-    return html.toString();
-}
-private String getFragmentsHtml(List<String> fragments, String summaryLabel, String header, int maxLength) {
 
-    // check args
-	if (fragments == null || fragments.size() == 0) return "";
+    private String getFragmentsHtml(List<String> fragments, String summaryLabel,
+            String header, int maxLength) {
 
-	Character period = new Character('.');
-    StringBuffer html = new StringBuffer();
-	boolean ulAppended = false;
-	for (String fragment : fragments) {
-	    // create copy of fragment with html stripped out for comparision purposes
-		String fragmentCopy = new String (fragment);
-		fragmentCopy = fragmentCopy.replaceAll("<b>", "");
-		fragmentCopy = fragmentCopy.replaceAll("</b>", "");
-		boolean appendPrefix = (Character.isLowerCase(fragmentCopy.charAt(0)) ||
-		                        !Character.isLetter(fragmentCopy.charAt(0)));
-		boolean appendSuffix = period.compareTo(fragment.charAt(fragment.length()-1)) != 0;
-		// if the fragment equals the summaryLabel (header) skip
-	    if (fragmentCopy.indexOf(summaryLabel) != -1 && fragmentCopy.length() <= summaryLabel.length()) continue;
-		if (fragment.indexOf(QueryUtil.MEMBER_OF) != -1) {
-		    fragment += " " + header + ".";
-			appendPrefix = appendSuffix = false;
+        // check args
+        if (fragments == null || fragments.size() == 0) return "";
+
+        Character period = new Character('.');
+        StringBuffer html = new StringBuffer();
+        boolean ulAppended = false;
+        for (String fragment : fragments) {
+            // create copy of fragment with html stripped out for comparision purposes
+            String fragmentCopy = new String(fragment);
+            fragmentCopy = fragmentCopy.replaceAll("<b>", "");
+            fragmentCopy = fragmentCopy.replaceAll("</b>", "");
+            boolean appendPrefix = (Character.isLowerCase(fragmentCopy.charAt(0)) ||
+                    !Character.isLetter(fragmentCopy.charAt(0)));
+            boolean appendSuffix = period.compareTo(fragment.charAt(fragment.length() - 1)) != 0;
+            // if the fragment equals the summaryLabel (header) skip
+            if (fragmentCopy.indexOf(summaryLabel) != -1
+                    && fragmentCopy.length() <= summaryLabel.length())
+                continue;
+            if (fragment.indexOf(LuceneResults.MEMBER_OF) != -1) {
+                fragment += " " + header + ".";
+                appendPrefix = appendSuffix = false;
+            }
+            // write out the html, add "..." in front and back of fragment as needed
+            if (!ulAppended) {
+                html.append("<ul>");
+                ulAppended = true;
+            }
+            html.append("<li>");
+            if (appendPrefix) html.append("... ");
+            fragment = HtmlUtil.truncateLongWords(fragment, maxLength);
+            // to prevent Dr. being replade with Dr. ...
+            fragment = fragment.replaceAll("(?i)(dr)\\.", "$1\\*");
+            fragment = fragment.replaceAll("\\.", ". ...");
+            // to prevent Dr. being replade with Dr. ...
+            fragment = fragment.replaceAll("(?i)(dr)\\*", "$1\\.");
+            if (fragment.matches("^.*\\. \\.\\.\\.$")) {
+                fragment = fragment.replaceAll("\\. \\.\\.\\.$", ".");
+            }
+            html.append(fragment);
+            if (appendSuffix) html.append(" ...");
+            html.append("</li>\n\r");
         }
-		// write out the html, add "..." in front and back of fragment as needed
-		if (!ulAppended) {
-		   html.append("<ul>");
-		   ulAppended = true;
-		}
-     	html.append("<li>");
-		if (appendPrefix) html.append("... ");
-		fragment = HtmlUtil.truncateLongWords(fragment, maxLength);
-		fragment = fragment.replaceAll("(?i)(dr)\\.", "$1\\*"); // to prevent Dr. being replade with Dr. ...
-		fragment = fragment.replaceAll("\\.", ". ...");
-		fragment = fragment.replaceAll("(?i)(dr)\\*", "$1\\."); // to prevent Dr. being replade with Dr. ...
-		if (fragment.matches("^.*\\. \\.\\.\\.$")) {
-		    fragment = fragment.replaceAll("\\. \\.\\.\\.$", ".");
+        if (ulAppended) {
+            html.append("</ul>");
         }
-		html.append(fragment);
-		if (appendSuffix) html.append(" ...");
-	    html.append("</li>\n\r");
+        return html.toString();
     }
-	if (ulAppended) {
-	   html.append("</ul>");
-	}
-    return html.toString();
-}
 %>
 <%
 if (protocolRequest.getQuery() != null) {
@@ -208,7 +208,7 @@ if (protocolRequest.getQuery() != null) {
 }
 %>
 <%
-if (totalNumHits.intValue() == 0) {
+if (totalNumHits == 0) {
 %>
 	<div class="splitcontentleft">
     <jsp:include page="../../global/redesign/currentFilterSettings.jsp" flush="true" />
@@ -216,7 +216,8 @@ if (totalNumHits.intValue() == 0) {
 	<div class="splitcontentright">
 <%
 	Set<Integer> organismIdSet = filterSettings.getOrganismTaxonomyIdSet();
-	if (daoSnapShot.getAllNetworkDatabaseSnapshots().size() != filterSettings.getSnapshotIdSet().size() ||
+	if (daoSnapShot.getAllNetworkDatabaseSnapshots().size() !=
+            filterSettings.getSnapshotIdSet().size() ||
 		!organismIdSet.contains(GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE)) {
 		out.println("<div class=\"user_message\"><b>Oops.  No Matching Records Found. " +
                 "Try updating your filter settings or try a different search term.</b></div></p>");
@@ -232,10 +233,10 @@ if (totalNumHits.intValue() == 0) {
 else {
     out.println("<p>");
     String recordStr = "records";
-    if (totalNumHits.intValue() == 1) {
+    if (totalNumHits == 1) {
         recordStr = "record";
     }
-    out.println("Your search has found <b>" + totalNumHits.intValue() + "</b> " +
+    out.println("Your search has found <b>" + totalNumHits + "</b> " +
                 "relevant " + recordStr + ":<br>");
 %>
 	<div class="splitcontentleft">
@@ -249,9 +250,11 @@ else {
 	</div>
     <div class="splitcontentright">
 <%
-	Pager pager = new Pager (protocolRequest, totalNumHits.intValue());
+	Pager pager = new Pager (protocolRequest, totalNumHits);
 	out.println("<div class='search_buttons'>");
-	out.println("<srp>" + pager.getHeaderHtmlForSearchPage("white", ProtocolRequest.ARG_ENTITY_TYPE + "=" + keyType + "&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource) + "</srp>");
+	out.println("<srp>" + pager.getHeaderHtmlForSearchPage("white",
+	ProtocolRequest.ARG_ENTITY_TYPE + "=" + keyType + "&" +
+	GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource) + "</srp>");
 	out.println ("</div>");
 %>
     <table cellpadding="2" cellspacing="0" border="0" width="100%">
@@ -292,7 +295,9 @@ else {
 	    scoreboardWidth = (percentage == 1 && scoreboardWidth == 0) ? 1 : scoreboardWidth;
 	    scoreboardWidth = (score > 0.0 && scoreboardWidth == 0) ? 1 :  scoreboardWidth;
 	    String spacerString = (scoreboardWidth < MAX_SCOREBOARD_WIDTH) ?
-		    ("<td><img src=\"jsp/images/spacer.gif\" width=\"" + String.valueOf(MAX_SCOREBOARD_WIDTH-scoreboardWidth) + "\" height=\"" + SCOREBOARD_HEIGHT + "\" alt=\"" + String.valueOf(percentage) + "%\"></td>") : "";
+		    ("<td><img src=\"jsp/images/spacer.gif\" width=\"" + String.valueOf
+		    (MAX_SCOREBOARD_WIDTH-scoreboardWidth) + "\" height=\""
+		    + SCOREBOARD_HEIGHT + "\" alt=\"" + String.valueOf(percentage) + "%\"></td>") : "";
 		String summaryLabel = "";
 		String header = "";
         try {
@@ -365,7 +370,7 @@ else {
 				out.println(htmlFragments);
 			}
 			boolean pathwayType = record.getType() == CPathRecordType.PATHWAY;
-			if (webUIBean.getWantCytoscape() && (pathwayType && showCytoscape)) {
+			if (webUIBean.getWantCytoscape() && showCytoscape) {
 				// add link to cytoscape
 				if (pathwayType) {
 					out.println("<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
