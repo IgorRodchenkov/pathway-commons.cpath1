@@ -117,6 +117,7 @@
                 if (counter < recordDataSources.get(cPathId).size() -1) {
                     html.append (", ");
                 }
+                counter++;
             }
             html.append("</p>\n\r");
         }
