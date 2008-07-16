@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.4 2008-07-15 16:04:27 cerami Exp $
+// $Id: LuceneResults.java,v 1.5 2008-07-16 15:00:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,7 +67,6 @@ public class LuceneResults {
     public static final String MEMBER_OF = "is a member of";
     private long cpathIds[];
     private List<List<String>> fragments;
-    private Set<String> dataSources;
     private Map<Long,Set<String>> dataSourceMap;
     private ArrayList<Integer> numDescendentsList;
     private ArrayList<Integer> numParentsList;
@@ -82,7 +81,6 @@ public class LuceneResults {
         // init private variables
         cpathIds = new long[size];
         fragments = new ArrayList<List<String>>();
-        dataSources = new HashSet<String>();
         numDescendentsList = new ArrayList<Integer>();
         numParentsList = new ArrayList<Integer>();
         dataSourceMap = new HashMap<Long,Set<String>>();
@@ -109,7 +107,6 @@ public class LuceneResults {
                 extractFragment(doc, highLighter, term);
             }
 
-            extractDataSources(doc, dao);
             extractNumDescendents(doc);
             extractNumParents(doc);
             extractDataSourceMap(doc, dao);
@@ -126,14 +123,6 @@ public class LuceneResults {
 
     public List<List<String>> getFragments() {
         return fragments;
-    }
-
-    public void setDataSources(Set<String> dataSources) {
-        this.dataSources = dataSources;
-    }
-
-    public Set<String> getDataSources() {
-        return dataSources;
     }
 
     public Map<Long, Set<String>> getDataSourceMap() {
@@ -192,17 +181,6 @@ public class LuceneResults {
                 numParentsList.add(num);
             } catch (NumberFormatException e) {
                 numParentsList.add(0);
-            }
-        }
-    }
-
-    private void extractDataSources(Document doc, DaoExternalDb dao) throws DaoException {
-        Field field;
-        field = doc.getField(LuceneConfig.FIELD_DATA_SOURCE);
-        if (field != null) {
-            for (String fieldValue : field.stringValue().split(" ")) {
-                ExternalDatabaseRecord dbRecord = dao.getRecordByTerm(fieldValue);
-                dataSources.add(dbRecord.getName());
             }
         }
     }
