@@ -1,4 +1,4 @@
-// $Id: ProtocolException.java,v 1.8 2006-02-22 22:47:50 grossb Exp $
+// $Id: ProtocolException.java,v 1.9 2008-07-18 16:31:05 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -124,6 +124,17 @@ public class ProtocolException extends Exception {
      * @param e          Root Exception.
      */
     public ProtocolException(ProtocolStatusCode statusCode, Exception e) {
+        super(e);
+        this.statusCode = statusCode;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param statusCode Protocol Status Code.
+     * @param e          Root Exception.
+     */
+    public ProtocolException(ProtocolStatusCode statusCode, Throwable e) {
         super(e);
         this.statusCode = statusCode;
     }

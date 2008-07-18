@@ -105,6 +105,7 @@ public class ExecuteSearchXmlResponse {
 
         LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
         long cpathIds[] = search.executeSearch();
+        log.info("Total number of matches found:  "+ cpathIds.length);
         LuceneResults luceneResults = search.getLuceneResults();
         List<List<String>> textFragments = luceneResults.getFragments();
         if (cpathIds.length > 0) {

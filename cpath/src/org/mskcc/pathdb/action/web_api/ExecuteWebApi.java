@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.20 2008-07-10 15:14:58 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.21 2008-07-18 16:31:05 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -215,27 +215,7 @@ public class ExecuteWebApi extends BaseAction {
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 }
             }
-        } catch (MarshalException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (ValidationException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (IOException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (ParseException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (CloneNotSupportedException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (DaoException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (QueryException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (AssemblyException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (BioPaxRecordSummaryException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (JAXBException e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
-        } catch (NullPointerException e) {
+        } catch (Throwable e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }
     }
