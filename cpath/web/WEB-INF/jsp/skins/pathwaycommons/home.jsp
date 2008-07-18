@@ -20,7 +20,7 @@ String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALU
 <ul>
 <li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;July 15, 2008:
     <ul>
-        <li>All human and mouse proteins are now annotated with UniProt functional annotation.</li>
+        <li>All human, mouse and rat proteins are now annotated with UniProt functional annotation.</li>
         <li>Improved search support for gene symbols.</li>
         <li>Stable links now available for linking out to protein pages.</li>
         <li>Numerous bug fixes and performance improvements.</li>
@@ -37,7 +37,7 @@ Improved <a href="webservice.do?cmd=help">web service API</a>.</li>
 <jsp:include page="../../global/redesign/homePageSearchBox.jsp" flush="true" />
 </p>
 <p>To get started, enter a gene name, gene identifier or pathway name in the text box above.
-For example: <a href="webservice.do?version=2.0&q=p53&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">p53</a>,
+For example: <a href="webservice.do?version=2.0&q=BRCA1&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">BRCA1</a>,
 <a href="webservice.do?version=2.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">P38398</a>
 or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">mTOR</a>.
 </p>
