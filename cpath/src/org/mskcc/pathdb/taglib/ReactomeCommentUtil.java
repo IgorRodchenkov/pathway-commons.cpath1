@@ -97,6 +97,7 @@ public class ReactomeCommentUtil {
 
     private static void initReactomeWordHack() {
         reactomeWordHack = new HashSet();
+        reactomeWordHack.add("PATHWAY:");
         reactomeWordHack.add("FUNCTION:");
         reactomeWordHack.add("ENZYME");
         reactomeWordHack.add("SUBUNIT:");
