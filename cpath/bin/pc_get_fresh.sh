@@ -19,17 +19,23 @@ gunzip $FRESH_HOME/ncbi/gene2accession.gz
 ###########################################################
 # Retrieve "Fresh" UNIPROT Flat File directly from UniProt
 ###########################################################
-echo Retrieving Fresh UniProt Flat Files [Human] directly from UniProt
+echo Retrieving Fresh UniProt Flat Files [Human/Rodent] directly from UniProt
 echo Deleting all previous UniProt Files
 rm -v $FRESH_HOME/uniprot/*
 
-# Get file from UniProt 
-echo Retrieving file from UniProt...
-wget --passive-ftp -P $FRESH_HOME/uniprot ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/uniprot_sprot_human.dat.gz 
+# Get human data from UniProt
+echo Retrieving human data from UniProt...
+wget --passive-ftp -P $FRESH_HOME/uniprot ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/uniprot_sprot_human.dat.gz
 
-echo Unzipping UniProt file...
+# Get rodent data from UniProt
+echo Retrieving rodent data from UniProt...
+wget --passive-ftp -P $FRESH_HOME/uniprot ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/uniprot_sprot_rodents.dat.gz
+
+echo Unzipping Human UniProt file...
 gunzip $FRESH_HOME/uniprot/uniprot_sprot_human.dat.gz
 
+echo Unzipping Rodent UniProt file...
+gunzip $FRESH_HOME/uniprot/uniprot_sprot_rodents.dat.gz
 
 ###########################################################
 # Retrieve "Fresh" Reactome BioPAX directly from Reactome
