@@ -290,7 +290,8 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
                 interactionSummaryListString += interactionSummaryStringList.get(lc);
             }
             buf.append(getDetailsHtml(bpSummary.getRecordID(), "remaining_participants",
-                    "<p><b>Additional Participants:</b></p>\n\r" + interactionSummaryListString));
+                    "<p><b>Additional Participants:</b></p>\n\r<p>"
+                            + interactionSummaryListString + "</p>"));
         } else {
             buf.append(getDetailsHtml(bpSummary.getRecordID(), "remaining_participants", ""));
         }
