@@ -1,4 +1,4 @@
-// $Id: BioPaxUtil.java,v 1.40 2008-07-10 16:18:20 cerami Exp $
+// $Id: BioPaxUtil.java,v 1.41 2008-07-18 13:26:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -361,12 +361,20 @@ public class BioPaxUtil {
 		// get rdf id (or about attribute)
 		Attribute idAttribute = e.getAttribute(RdfConstants.ID_ATTRIBUTE,
 											   RdfConstants.RDF_NAMESPACE);
-		// if rdf id attribute is null, try about
-		idAttribute = (idAttribute == null) ?
-			e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
-						   RdfConstants.RDF_NAMESPACE) : idAttribute;
+        
+        Attribute aboutAttribute = e.getAttribute(RdfConstants.ABOUT_ATTRIBUTE,
+                                               RdfConstants.RDF_NAMESPACE);
 
-		// do we have an attribute to process ?
+        //  If we have an about attribute, remove it, and use ID attribute instead.
+        //  Why?  Because PaxTools currently only understands ID attributes.
+        if (aboutAttribute != null) {
+            e.removeAttribute(aboutAttribute);
+            e.setAttribute(RdfConstants.ID_ATTRIBUTE, aboutAttribute.getValue(),
+                    RdfConstants.RDF_NAMESPACE);
+            idAttribute = aboutAttribute;
+        }
+
+        // do we have an attribute to process ?
         if (idAttribute != null) {
             //  Store element to hashmap, keyed by RDF ID
             if (rdfResources.containsKey(idAttribute.getValue())) {
