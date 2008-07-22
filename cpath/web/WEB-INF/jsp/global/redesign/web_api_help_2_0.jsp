@@ -235,8 +235,8 @@ An XML file which follows the <a href="xml/SummaryResponse.xsd">SummaryResponse.
 
 Below is an example query.  Note: this query is not guaranteed to return results.<br/>
 
-<a href="webservice.do?version=2.0&q=145&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%>">
-webservice.do?version=2.0&q=145&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%></a>
+<a href="webservice.do?version=2.0&q=45202&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%>">
+webservice.do?version=2.0&q=45202&output=xml&cmd=<%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES%></a>
 
 <h2><a NAME="get_by_cpath_id"></a>[5]  Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></h2>
 
