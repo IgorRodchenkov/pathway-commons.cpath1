@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.1 2008-07-22 16:19:52 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.2 2008-07-22 18:29:35 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -142,7 +142,7 @@ public class NeighborhoodMapRetriever extends BaseAction {
 			XmlAssembly biopaxAssembly = XmlAssemblyFactory.createXmlAssembly(neighborIDs, XmlRecordType.BIO_PAX, 1,
 																			  XmlAssemblyFactory.XML_FULL, true, new XDebug());
 
-			log.info("************************ NeighborhoodMapRetriever.subExecute(), biopax assembly: " + biopaxAssembly.getXmlString());
+			log.info("************************ NeighborhoodMapRetriever.subExecute(), biopax assembly: " + biopaxAssembly);
 			
 			// get binary sif tmpFile
 			File sifFile = getSIFFile(biopaxAssembly);
@@ -229,7 +229,7 @@ public class NeighborhoodMapRetriever extends BaseAction {
 
 		// get data to write into temp file
 		FileWriter writer = new FileWriter(tmpFile);
-		log.info("************************ NeighborhoodMapRetriever.getSIFFile: sif assembly: " + sifAssembly.getBinaryInteractionString());
+		log.info("************************ NeighborhoodMapRetriever.getSIFFile: sif assembly: " + sifAssembly);
 		writer.write(sifAssembly.getBinaryInteractionString());
 		writer.close();
 
@@ -296,7 +296,6 @@ public class NeighborhoodMapRetriever extends BaseAction {
 		dView.setGraphLOD(new CyGraphLOD());
 
 		// set canvas attributes
-		//DGraphView dView = (DGraphView)cyNetworkView;
 		DingCanvas innerCanvas = (DingCanvas)dView.getComponent();
 		innerCanvas.setOpaque(true);
 		innerCanvas.setBackground(BACKGROUND_COLOR);
@@ -313,8 +312,8 @@ public class NeighborhoodMapRetriever extends BaseAction {
 
 		// layout
 		layoutAlgorithm.doLayout(dView);
-		dView.fitContent();
 		dView.redrawGraph(false, true);
+		dView.fitContent();
 
 		// outta here
 		return dView;
