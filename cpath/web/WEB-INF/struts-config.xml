@@ -254,6 +254,11 @@
 		  <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
         </action>
 
+        <!--  used to retrieve neighborhood map -->
+		<action path="/retrieve_neighborhood_map" type="org.mskcc.pathdb.action.NeighborhoodMapRetriever">
+		  <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
+        </action>
+
          <action path="/bb_webservice"
             type="org.mskcc.pathdb.bb.action.WebService">
              <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
