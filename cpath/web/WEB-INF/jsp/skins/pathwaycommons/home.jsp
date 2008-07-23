@@ -15,23 +15,6 @@ String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALU
 <tr valign="top">
 <td width="60%" valign="top">
 
-
-<h2>What's New:</h2>
-<ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;July 24, 2008:
-    <ul>
-        <li>Latest Reactome data set (June 30, 2008 Version 25).</li>
-        <li>All human, mouse and rat proteins are now annotated with UniProt functional annotation.</li>
-        <li>Improved search support for gene symbols.</li>
-        <li>Stable links now available for linking out to protein pages.</li>
-        <li>Numerous bug fixes and performance improvements.</li>
-    </ul>
-</li>
-<li>April 1, 2008: New features for visualizing pathways using Cytoscape [<a href="cytoscape.do">Details</a>].
-<li>February 1, 2008:  New data sources, including:  HPRD, IntAct, and MINT.
-Improved <a href="webservice.do?cmd=help">web service API</a>.</li>
-</ul>    
-    
 <div class="large_search_box">
 <h1>Search <%= webUIBean.getApplicationName() %>:</h1>
 <p>
@@ -55,6 +38,23 @@ Download an integrated set of pathways in BioPAX format for global analysis.</p>
 Build software on top of Pathway Commons using our <a href="webservice.do?cmd=help">web service API</a>.
 Download and install the <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a> to
 create a local mirror.</p>
+
+
+<h2>What's New:</h2>
+<ul>
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;July 24, 2008:
+    <ul>
+        <li>Latest Reactome data set (June 30, 2008 Version 25).</li>
+        <li>All human, mouse and rat proteins are now annotated with UniProt functional annotation.</li>
+        <li>Improved search support for gene symbols.</li>
+ExecuteGetParentsXmlResponse        <li>Stable links now available for linking out to protein pages.</li>
+        <li>Numerous bug fixes and performance improvements.</li>
+    </ul>
+</li>
+<li>April 1, 2008: New features for visualizing pathways using Cytoscape [<a href="cytoscape.do">Details</a>].
+<li>February 1, 2008:  New data sources, including:  HPRD, IntAct, and MINT.
+Improved <a href="webservice.do?cmd=help">web service API</a>.</li>
+</ul>
 
 </td>
 <td width=20>&nbsp;</td>
