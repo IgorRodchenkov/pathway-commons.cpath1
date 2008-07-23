@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.2 2008-07-22 18:29:35 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.3 2008-07-23 00:42:37 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,6 +73,7 @@ import org.jdom.JDOMException;
 import org.jdom.Attribute;
 import org.jdom.Namespace;
 
+import java.net.URL;
 import java.io.File;
 import java.io.StringReader;
 import java.io.FileWriter;
@@ -86,6 +87,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
 /**
  * Generates Neighborhood Map.
@@ -138,6 +140,12 @@ public class NeighborhoodMapRetriever extends BaseAction {
 
 			log.info("************************ NeighborhoodMapRetriever.subExecute(), id count: " + neighborIDs.length);
 
+			// short circuit if necessary
+			if (neighborIDs.length == 0) {
+				writeNoNeighborFoundToResponse(response);
+				return null;
+			}
+
 			// get biopax assembly
 			XmlAssembly biopaxAssembly = XmlAssemblyFactory.createXmlAssembly(neighborIDs, XmlRecordType.BIO_PAX, 1,
 																			  XmlAssemblyFactory.XML_FULL, true, new XDebug());
@@ -154,7 +162,7 @@ public class NeighborhoodMapRetriever extends BaseAction {
 			CyNetworkView cyNetworkView = postProcessCyNetwork(cyNetwork, wantThumbnail);
 
 			// write out png 
-			writePNGToResponse(response, cyNetworkView);
+			writeMapToResponse(response, cyNetworkView);
 		}
 		catch (Exception e) {
 			if (!contentTypeSet) {
@@ -185,7 +193,6 @@ public class NeighborhoodMapRetriever extends BaseAction {
 
 		// set to return
 		Set<Long> neighborIDs = new HashSet<Long>();
-		neighborIDs.add(cpathId);
 
 		// get all parents/sources of this record
         DaoInternalLink daoInternalLink = new DaoInternalLink();
@@ -326,9 +333,9 @@ public class NeighborhoodMapRetriever extends BaseAction {
 	 * @param cyNetworkView CyNetworkView
 	 * @throws IOException
 	 */
-	private void writePNGToResponse(HttpServletResponse response, CyNetworkView cyNetworkView) throws IOException {
+	private void writeMapToResponse(HttpServletResponse response, CyNetworkView cyNetworkView) throws IOException {
 
-		log.info("************************ NeighborhoodMapRetriever.writePNGToResponse, cyNetworkView: " + cyNetworkView);
+		log.info("************************ NeighborhoodMapRetriever.writeMapToResponse, cyNetworkView: " + cyNetworkView);
 
 		double scale = 1.0;
 
@@ -348,6 +355,28 @@ public class NeighborhoodMapRetriever extends BaseAction {
 		innerCanvas.print(g);
 		g.dispose();
 
+		response.setContentType("image/png");
+		contentTypeSet = true;
+		ImageIO.write(image, "png", response.getOutputStream());
+	}
+
+	/**
+	 * Writes no neighbors found image to response.
+	 * @throws IOException
+	 */
+	private void writeNoNeighborFoundToResponse(HttpServletResponse response) throws IOException {
+
+		// get no neighbor image
+		final URL url = NeighborhoodMapRetriever.class.getResource("resources/no-neighbors-found.png");
+		final ImageIcon icon = new ImageIcon(url);
+
+		// create buffered image
+		final BufferedImage image = new BufferedImage(SVG_WIDTH_SMALL, SVG_HEIGHT_SMALL, BufferedImage.TYPE_INT_RGB);
+		final Graphics2D g2d = image.createGraphics();
+		g2d.drawImage(icon.getImage(), 0, 0, SVG_WIDTH_SMALL, SVG_HEIGHT_SMALL, null);
+		g2d.dispose();
+
+		// write out the image bytes
 		response.setContentType("image/png");
 		contentTypeSet = true;
 		ImageIO.write(image, "png", response.getOutputStream());
