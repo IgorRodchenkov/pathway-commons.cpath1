@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.21 2008-07-18 16:31:05 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.22 2008-07-23 14:10:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -216,7 +216,11 @@ public class ExecuteWebApi extends BaseAction {
                 }
             }
         } catch (Throwable e) {
-            throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+            if (e instanceof ProtocolException) {
+                throw (ProtocolException) e;
+            } else {
+                throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
+            }
         }
     }
 
