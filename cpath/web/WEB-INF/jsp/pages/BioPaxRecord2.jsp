@@ -340,36 +340,6 @@ YAHOO.example.init();
         }
     }
 </script>
-<script type="text/javascript">
-	function reloadNeighborhoodMap() {
-		var now = new Date();
-		document.images.neighborhood_map_image.src = 'retrieve_neighborhood_map.do?id=' + <%=id%>  + '&want_thumbnail=true&' + now.getTime();
-	}
-    function loadLargeNeighborhoodMapNoReloadLink() {
-		window.open('retrieve_neighborhood_map.do?id=' + <%=id%>  + '&want_thumbnail=false',
-					'neighborhood_map_window', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=640, height=480'); 
-    }
-    function loadLargeNeighborhoodMap() {
-		neighborhoodMapWindow = window.open('','neighborhood_map_window',
-											'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=655, height=515'); 
-		neighborhoodMapWindow.document.write('<html><head><title>Neighborhood Map</title></head>');
-		neighborhoodMapWindow.document.write('<body>');
-		neighborhoodMapWindow.document.write('\<script type="text/javascript"\>');
-		neighborhoodMapWindow.document.write('function reloadNeighborhoodMap() {');
-		neighborhoodMapWindow.document.write('    var now = new Date();');
-		neighborhoodMapWindow.document.write('    document.images.neighborhood_map_image.src = \'retrieve_neighborhood_map.do?id=' + <%=id%> + '&want_thumbnail=false&\' + now.getTime();');
-		neighborhoodMapWindow.document.write('}');
-		neighborhoodMapWindow.document.write('\</script\>');
-		neighborhoodMapWindow.document.write('<img src=\'retrieve_neighborhood_map.do?id=' + <%=id%> + '&want_thumbnail=false\' name=\'neighborhood_map_image\'>');
-		neighborhoodMapWindow.document.write('<a href="javascript:reloadNeighborhoodMap()">(reload)</a>');
-		neighborhoodMapWindow.document.write('</body>');
-        neighborhoodMapWindow.document.write('</html>');
-		neighborhoodMapWindow.document.close();
-	}
-    function loadBinarySIFLegend() {
-		alert("not yet implemented!");
-    }
-</script>
 <div class="splitcontentright">
 <%
 String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
@@ -575,21 +545,6 @@ enable Javascript support within your web browser.
         </jsp:include>
         </div>
     <% }
-
-    // Output Neighborhood Map
-    if (!bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString())) {
-	    out.println ("<div class=\"box\">");
-        out.println("<h3>Neighborhood Map:</h3>");
-        out.println("<P>");
-        out.println("<img class='neighborhood_map' src='retrieve_neighborhood_map.do?id=" + id  + "&want_thumbnail=true' name='neighborhood_map_image'/>");
-        out.println("</P>");
-		out.println("<table><tr>");
-		out.println("<td align=left><a href=\"javascript:reloadNeighborhoodMap()\">(reload)</a></td>");
-		out.println("<td align=left><a href=\"javascript:loadLargeNeighborhoodMap()\">(view large)</a></td>");
-		out.println("<td align=right><a href=\"javascript:loadBinarySIFLegend()\">(legend)</a></td>");
-		out.println("</tr></table>");
-        out.println("</div>");
-	}
 
     //  Output Cytoscape Links
     boolean pathwayType = (bpSummary.getType() != null &&
