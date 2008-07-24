@@ -161,7 +161,7 @@ public class FeedbackForm extends ActionForm {
 		// private key
 		String serverName = httpServletRequest.getServerName();
 		String privateKey = "";
-		if (serverName.equals("pathway.commons.org")) {
+		if (serverName.equals("www.pathwaycommons.org")) {
 			privateKey = PC_PRIVATE_RECAPTCHA_KEY;
 		}
 		else if (serverName.equals("awabi.cbio.mskcc.org")) {
