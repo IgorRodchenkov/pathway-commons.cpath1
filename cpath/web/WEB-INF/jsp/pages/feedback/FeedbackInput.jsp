@@ -12,7 +12,7 @@ request.setAttribute(BaseAction.ATTRIBUTE_USER_MSG, "We welcome your comments...
 String serverName = request.getServerName();
 String PUBLIC_RECAPTCHA_KEY = "";
 if (serverName.equals("www.pathwaycommons.org")) {
-   PUBLIC_RECAPCHA_KEY = "6Ld2PgIAAAAAAIF92OtuvCXDCRaVf2vFQyFgSuOC";
+   PUBLIC_RECAPTCHA_KEY = "6Ld2PgIAAAAAAIF92OtuvCXDCRaVf2vFQyFgSuOC";
 }
 else if (serverName.equals("awabi.cbio.mskcc.org")) {
    PUBLIC_RECAPTCHA_KEY = "6LdtRAIAAAAAAHv-_R68sk7joQbnmzzkDhL4SzBJ";
