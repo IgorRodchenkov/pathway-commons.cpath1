@@ -11,7 +11,7 @@ request.setAttribute(BaseAction.ATTRIBUTE_USER_MSG, "We welcome your comments...
 // we have to public captcha keys - one for pathway commons domain, another for dev (cbio.mskcc.org domain)
 String serverName = request.getServerName();
 String PUBLIC_RECAPTCHA_KEY = "";
-if (serverName.equals("pathway.commons.org")) {
+if (serverName.equals("www.pathwaycommons.org")) {
    PUBLIC_RECAPTCHA_KEY = "6Ld2PgIAAAAAAIF92OtuvCXDCRaVf2vFQyFgSuOC";
 }
 else if (serverName.equals("awabi.cbio.mskcc.org")) {
