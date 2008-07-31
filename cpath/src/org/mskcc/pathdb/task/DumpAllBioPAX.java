@@ -1,4 +1,4 @@
-// $Id: DumpAllBioPAX.java,v 1.1 2008-07-31 16:31:30 grossben Exp $
+// $Id: DumpAllBioPAX.java,v 1.2 2008-07-31 16:41:45 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,7 +70,7 @@ public class DumpAllBioPAX extends Task {
 
 		String cpathHome = System.getProperty(Admin.CPATH_HOME);
 		String separator = System.getProperty("file.separator");
-		dumpFileName = (cpathHome + separator + "full-biopax-dump.xml");
+		dumpFileName = (cpathHome + separator + "full-biopax-dump.owl");
     }
 
 	    /**
