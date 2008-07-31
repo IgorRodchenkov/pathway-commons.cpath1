@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.71 2008-07-10 15:44:37 cerami Exp $
+// $Id: Admin.java,v 1.72 2008-07-31 16:29:57 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -78,6 +78,7 @@ public class Admin {
     private static final String COMMAND_IMAGES = "images";
     private static final String COMMAND_COUNT_IDS = "count_ids";
     private static final String COMMAND_QUERY = "query";
+    private static final String COMMAND_DUMP_ALL_BIOPAX = "dump_all_biopax";
     private static final int NOT_SET = -9999;
 
     //  User Parameters
@@ -184,6 +185,9 @@ public class Admin {
                         (taxonomyId, targetExternalId, true);
             } else if (command.equals(COMMAND_QUERY)) {
                 QueryFullText.queryFullText(ftQuery);
+			} else if (command.equals(COMMAND_DUMP_ALL_BIOPAX)) {
+				DumpAllBioPAX dump = new DumpAllBioPAX(true, xdebug);
+				dump.executeTask();
             } else {
                 throw new IllegalArgumentException("Command Not Recognized");
             }
