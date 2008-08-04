@@ -71,6 +71,7 @@ INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`,
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (42, 'KEGG Genomes', 'http://www.genome.jp/dbget-bin/www_bget?bja:%ID%', NULL, 'Kyoto Encyclopedia of Genes and Genomes (KEGG)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (43, 'NCBI PubChem', 'http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%ID%', NULL, 'NCBI PubChem provides information on the biological activities of small molecules. ', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (44, 'Gene Symbol', NULL, NULL, 'Gene Symbol', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (45, 'GENE_ONTOLOGY', 'http://amigo.geneontology.org/cgi-bin/amigo/term-details.cgi?term=GO:%ID%', NULL, 'the Gene Ontology', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
