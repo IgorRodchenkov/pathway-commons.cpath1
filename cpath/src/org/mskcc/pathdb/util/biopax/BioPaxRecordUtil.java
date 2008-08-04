@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.38 2008-03-10 19:15:37 grossben Exp $
+// $Id: BioPaxRecordUtil.java,v 1.39 2008-08-04 19:44:54 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -823,6 +823,7 @@ public class BioPaxRecordUtil {
 					ExternalLinkRecord link = new ExternalLinkRecord();
 					DaoExternalDb daoExternalDb = new DaoExternalDb();
 					ExternalDatabaseRecord externalDBRecord = daoExternalDb.getRecordByName(dbStr);
+					if (externalDBRecord == null) continue;
 					link.setLinkedToId(idStr);
 					link.setExternalDatabase(externalDBRecord);
 					toReturn.add(link);
