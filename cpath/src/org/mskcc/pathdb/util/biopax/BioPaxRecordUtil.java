@@ -1,4 +1,4 @@
-// $Id: BioPaxRecordUtil.java,v 1.39 2008-08-04 19:44:54 grossben Exp $
+// $Id: BioPaxRecordUtil.java,v 1.40 2008-08-04 20:28:41 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -819,7 +819,7 @@ public class BioPaxRecordUtil {
 				Element db = rdfQuery.getNode(xref, "/*/DB");
 				String dbStr = (db != null && db.getTextNormalize().length() > 0) ? 
 					db.getTextNormalize() : null;
-				if (id != null && db != null) {
+				if (idStr != null && dbStr != null) {
 					ExternalLinkRecord link = new ExternalLinkRecord();
 					DaoExternalDb daoExternalDb = new DaoExternalDb();
 					ExternalDatabaseRecord externalDBRecord = daoExternalDb.getRecordByName(dbStr);
