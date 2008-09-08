@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.5 2008-07-28 13:44:27 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.6 2008-09-08 18:11:52 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,48 +39,18 @@ import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
-import org.mskcc.pathdb.sql.assembly.AssemblyException;
-import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
-import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssembly;
-import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssemblyFactory;
-
-import cytoscape.CyNetwork;
-import cytoscape.Cytoscape;
-import cytoscape.view.CyNetworkView;
-import cytoscape.data.CyAttributes;
-import cytoscape.data.readers.GraphReader;
-import cytoscape.visual.VisualMappingManager;
-import cytoscape.visual.VisualStyle;
-import cytoscape.task.TaskMonitor;
-
-import org.mskcc.biopax_plugin.util.biopax.BioPaxUtil;
-import org.mskcc.biopax_plugin.util.cytoscape.LayoutUtil;
-import org.mskcc.biopax_plugin.mapping.MapNodeAttributes;
-import org.cytoscape.coreplugin.cpath2.cytoscape.BinarySifVisualStyleUtil;
-
-import ding.view.DGraphView;
-import ding.view.DingCanvas;
-import cytoscape.ding.CyGraphLOD;
-import cytoscape.ding.DingNetworkView;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Attribute;
-import org.jdom.Namespace;
+import org.apache.commons.httpclient.NameValuePair;
 
 import java.net.URL;
-import java.io.File;
-import java.io.StringReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.GraphicsEnvironment;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -98,10 +68,9 @@ public class NeighborhoodMapRetriever extends BaseAction {
 
 	// some statics
 	private static int SVG_WIDTH_SMALL = 200;
-	private static int SVG_HEIGHT_SMALL = 200;
 	private static int SVG_WIDTH_LARGE = 640;
+	private static int SVG_HEIGHT_SMALL = 200;
 	private static int SVG_HEIGHT_LARGE = 480;
-	private static java.awt.Color BACKGROUND_COLOR = new java.awt.Color(204,204,255);
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
 
 	// member vars
@@ -130,7 +99,9 @@ public class NeighborhoodMapRetriever extends BaseAction {
 		if (id == null) {
 			return mapping.findForward(BaseAction.FORWARD_FAILURE);
 		}
-		Boolean wantThumbnail = new Boolean(request.getParameter("want_thumbnail"));
+		boolean wantThumbnail = Boolean.valueOf(request.getParameter("want_thumbnail"));
+		int width = (wantThumbnail) ? SVG_WIDTH_SMALL : SVG_WIDTH_LARGE;
+		int height = (wantThumbnail) ? SVG_HEIGHT_SMALL : SVG_HEIGHT_LARGE;
 
 		log.info("************************ NeighborhoodMapRetriever.subExecute(), id: " + id + ", want_thumbnail: " + wantThumbnail);
 
@@ -142,7 +113,7 @@ public class NeighborhoodMapRetriever extends BaseAction {
 
 			// short circuit if necessary
 			if (neighborIDs.length == 0) {
-				writeNoNeighborFoundToResponse(response);
+				writeMapToResponse(NeighborhoodMapRetriever.class.getResource("resources/no-neighbors-found.png"), width, height, response);
 				return null;
 			}
 
@@ -151,18 +122,9 @@ public class NeighborhoodMapRetriever extends BaseAction {
 																			  XmlAssemblyFactory.XML_FULL, true, new XDebug());
 
 			log.info("************************ NeighborhoodMapRetriever.subExecute(), biopax assembly: " + biopaxAssembly);
-			
-			// get binary sif tmpFile
-			File sifFile = getSIFFile(biopaxAssembly);
-
-			// get CyNetwork
-			CyNetwork cyNetwork = getCyNetwork(sifFile, biopaxAssembly);
-
-			// post process the network (layout, apply style, etc)
-			CyNetworkView cyNetworkView = postProcessCyNetwork(cyNetwork, wantThumbnail);
 
 			// write out png 
-			writeMapToResponse(response, cyNetworkView);
+			writeMapToResponse(getNeighborhoodMapURL(biopaxAssembly, width, height), width, height, response);
 		}
 		catch (Exception e) {
 			if (!contentTypeSet) {
@@ -213,167 +175,49 @@ public class NeighborhoodMapRetriever extends BaseAction {
 	}
 
 	/**
-	 * Given a set of cpath ids, returns a binary sif file.
+	 * Gets url to neighborhood map server.
 	 *
-	 * @param biopaxAssembly XmlAssembly
-	 * @return File
-	 * @throws IOException
+	 * @param biopaxAssembly XmlAssemby
+	 * @param width int
+	 * @param height int
+	 * @return URL
+	 * @throws Exception
 	 */
-	private File getSIFFile(XmlAssembly biopaxAssembly) throws AssemblyException, IOException {
+	private URL getNeighborhoodMapURL(XmlAssembly biopaxAssembly, int width, int height) throws Exception {
 
-		log.info("************************ NeighborhoodMapRetriever.getSIFFile, biopaxAssembly: " + biopaxAssembly);
+		NameValuePair nvps[] = new NameValuePair[3];
+		nvps[0] = new NameValuePair("data", biopaxAssembly.getXmlString());
+		nvps[1] = new NameValuePair("width", Integer.toString(width));
+		nvps[2] = new NameValuePair("height", Integer.toString(height));
 
-		// get binary interaction assembly from biopax
-		BinaryInteractionAssembly sifAssembly =
-			BinaryInteractionAssemblyFactory.createAssembly(BinaryInteractionAssemblyFactory.AssemblyType.SIF,
-															BinaryInteractionUtil.getRuleTypes(),
-															biopaxAssembly.getXmlString());
-
-		// create tmp file
-		String tmpDir = System.getProperty("java.io.tmpdir");
-		File tmpFile = File.createTempFile("temp", ".sif", new File(tmpDir));
-		tmpFile.deleteOnExit();
-
-		// get data to write into temp file
-		FileWriter writer = new FileWriter(tmpFile);
-		log.info("************************ NeighborhoodMapRetriever.getSIFFile: sif assembly: " + sifAssembly);
-		writer.write(sifAssembly.getBinaryInteractionString());
-		writer.close();
+        StringBuffer buf = new StringBuffer("http://toro.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
+        buf.append("?");
+        for (NameValuePair nvp : nvps) {
+            buf.append(nvp.getName() + "=" + nvp.getValue() + "&");
+        }
 
 		// outta here
-		return tmpFile;
-	}
-
-	/**
-	 * Given a sif file, returns a CyNetwork.
-	 *
-	 * @param sifFile File
-	 * @param biopaxAssembly XmlAssembly
-	 * @return CyNetwork
-	 * @throws IOException
-	 * @throws JDOMException
-	 */
-	private CyNetwork getCyNetwork(File sifFile, XmlAssembly biopaxAssembly) throws IOException, JDOMException {
-
-		log.info("************************ NeighborhoodMapRetriever.getCyNetwork, biopaxAssembly: " + biopaxAssembly);
-
-		// create cytoscape network
-		GraphReader reader = Cytoscape.getImportHandler().getReader(sifFile.getAbsolutePath());
-		CyNetwork cyNetwork = Cytoscape.createNetwork(reader, false, null);
-
-		// init the attributes
-        CyAttributes nodeAttributes = Cytoscape.getNodeAttributes();
-        MapNodeAttributes.initAttributes(nodeAttributes);
-
-        // specify that this is a BINARY_NETWORK
-        Cytoscape.getNetworkAttributes().setAttribute(cyNetwork.getIdentifier(),
-													  BinarySifVisualStyleUtil.BINARY_NETWORK, Boolean.TRUE);
-
-		// setup node attributes
-		StringReader strReader = new StringReader(biopaxAssembly.getXmlString());
-		BioPaxUtil bpUtil = new BioPaxUtil(strReader, new NullTaskMonitor());
-		ArrayList<Element> peList = bpUtil.getPhysicalEntityList();
-		Namespace ns = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-		for (Element element : peList) {
-			String id = element.getAttributeValue("ID", ns);
-			if (id != null) {
-				id = id.replaceAll("CPATH-", "");
-				MapNodeAttributes.mapNodeAttribute(element, id, nodeAttributes, bpUtil);
-			}
-		}
-
-		// outta here
-		return cyNetwork;
-	}
-
-	/**
-	 * Given a binary sif file, creates a CyNetwork.
-	 *
-	 * @param cyNetwork CyNetwork
-	 * @param wantThumbnail boolean
-	 * @returns CyNetworkView
-	 */
-	private CyNetworkView postProcessCyNetwork(CyNetwork cyNetwork, boolean wantThumbnail) {
-
-		log.info("************************ NeighborhoodMapRetriever.postProcessCyNetwork(), cyNetwork: " + cyNetwork + ", wantThumbnail: " + wantThumbnail);
-
-		//  create view - use local create view option, so that we don't mess up the visual style.
-		LayoutUtil layoutAlgorithm = new LayoutUtil();
-		final DingNetworkView dView = new DingNetworkView(cyNetwork, "");
-		dView.setGraphLOD(new CyGraphLOD());
-
-		// set canvas attributes
-		DingCanvas innerCanvas = (DingCanvas)dView.getComponent();
-		innerCanvas.setOpaque(true);
-		innerCanvas.setBackground(BACKGROUND_COLOR);
-		innerCanvas.setBounds(0, 0,
-							  (wantThumbnail) ? SVG_WIDTH_SMALL : SVG_WIDTH_LARGE,
-							  (wantThumbnail) ? SVG_HEIGHT_SMALL : SVG_HEIGHT_LARGE);
-
-		// setup visual style
-		VisualStyle visualStyle = BinarySifVisualStyleUtil.getVisualStyle();
-		VisualMappingManager VMM = Cytoscape.getVisualMappingManager();
-		dView.setVisualStyle(visualStyle.getName());
-		VMM.setVisualStyle(visualStyle);
-		VMM.setNetworkView(dView);
-
-		// layout
-		layoutAlgorithm.doLayout(dView);
-		dView.redrawGraph(false, true);
-		dView.fitContent();
-
-		// outta here
-		return dView;
-	}
-
-	/**
-	 * Given a CyNetwork view, generates a png file.
-	 * 
-	 * @param response HttpServletResponse
-	 * @param cyNetworkView CyNetworkView
-	 * @throws IOException
-	 */
-	private void writeMapToResponse(HttpServletResponse response, CyNetworkView cyNetworkView) throws IOException {
-
-		log.info("************************ NeighborhoodMapRetriever.writeMapToResponse, cyNetworkView: " + cyNetworkView);
-
-		double scale = 1.0;
-
-		// needed to prevent java.lang.unsatisfiedLinkError: initGVIDS
-		GraphicsEnvironment.getLocalGraphicsEnvironment();
-
-		DGraphView dView = (DGraphView)cyNetworkView;
-		DingCanvas innerCanvas = (DingCanvas)dView.getComponent();
-		innerCanvas.setOpaque(true);
-			
-		int width  = (int) (innerCanvas.getWidth() * scale);
-		int height = (int) (innerCanvas.getHeight() * scale);
-
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g = (Graphics2D) image.getGraphics();
-		g.scale(scale, scale);
-		innerCanvas.print(g);
-		g.dispose();
-
-		response.setContentType("image/png");
-		contentTypeSet = true;
-		ImageIO.write(image, "png", response.getOutputStream());
+        return new URL(buf.toString());
 	}
 
 	/**
 	 * Writes no neighbors found image to response.
+	 *
+	 * @param url URL
+	 * @param width int
+	 * @param height int
+	 * @param response HttpServletResponse
 	 * @throws IOException
 	 */
-	private void writeNoNeighborFoundToResponse(HttpServletResponse response) throws IOException {
+	private void writeMapToResponse(URL url, int width, int height, HttpServletResponse response) throws IOException {
 
-		// get no neighbor image
-		final URL url = NeighborhoodMapRetriever.class.getResource("resources/no-neighbors-found.png");
+		// setup some vars
 		final ImageIcon icon = new ImageIcon(url);
 
 		// create buffered image
-		final BufferedImage image = new BufferedImage(SVG_WIDTH_SMALL, SVG_HEIGHT_SMALL, BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g2d = image.createGraphics();
-		g2d.drawImage(icon.getImage(), 0, 0, SVG_WIDTH_SMALL, SVG_HEIGHT_SMALL, null);
+		g2d.drawImage(icon.getImage(), 0, 0, width, height, null);
 		g2d.dispose();
 
 		// write out the image bytes
@@ -381,24 +225,4 @@ public class NeighborhoodMapRetriever extends BaseAction {
 		contentTypeSet = true;
 		ImageIO.write(image, "png", response.getOutputStream());
 	}
-}
-
-class NullTaskMonitor implements TaskMonitor {
-
-    public void setPercentCompleted(int i) throws IllegalArgumentException {
-    }
-
-    public void setEstimatedTimeRemaining(long l) throws IllegalThreadStateException {
-    }
-
-    public void setException(Throwable throwable, String string)
-            throws IllegalThreadStateException {
-    }
-
-    public void setException(Throwable throwable, String string, String string1)
-            throws IllegalThreadStateException {
-    }
-
-    public void setStatus(String string) throws IllegalThreadStateException, NullPointerException {
-    }
 }
