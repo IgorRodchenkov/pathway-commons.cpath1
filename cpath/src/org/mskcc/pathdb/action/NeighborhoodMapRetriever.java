@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.6 2008-09-08 18:11:52 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.7 2008-09-08 18:43:29 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -195,9 +195,12 @@ public class NeighborhoodMapRetriever extends BaseAction {
         for (NameValuePair nvp : nvps) {
             buf.append(nvp.getName() + "=" + nvp.getValue() + "&");
         }
+		// zap off last "&"
+		String url = buf.toString();
+		url = url.substring(0, url.length()-1);
 
 		// outta here
-        return new URL(buf.toString());
+        return new URL(url);
 	}
 
 	/**
