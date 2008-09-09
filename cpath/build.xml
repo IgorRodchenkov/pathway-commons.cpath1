@@ -182,6 +182,16 @@
              basedir="${build.dir}"/>
     </target>
 
+    <!-- ==================== Jar Target ================================== -->
+    <target name="nms-server-jar" depends="compile"
+        description="Creates binary JAR distribution.">
+        <mkdir dir="${war.dir}"/>
+		<jar destfile="${war.dir}/${app.name}.jar">
+		  <fileset dir="${build.dir}/WEB-INF/classes"/>
+		  <fileset dir="${build.dir}/WEB-INF/lib" excludes="paxtools.jar,jena.jar"/>
+		</jar>
+    </target>
+
     <!-- ==================== Install Target =============================== -->
     <!--
 
