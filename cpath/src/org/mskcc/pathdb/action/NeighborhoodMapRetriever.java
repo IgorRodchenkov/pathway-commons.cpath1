@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.7 2008-09-08 18:43:29 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.8 2008-09-09 16:19:57 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,10 +45,16 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.methods.PostMethod;
 
 import java.net.URL;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -109,11 +115,11 @@ public class NeighborhoodMapRetriever extends BaseAction {
 			// get neighbor ids
 			long[] neighborIDs = getNeighborIDs(id);
 
-			log.info("************************ NeighborhoodMapRetriever.subExecute(), id count: " + neighborIDs.length);
+			log.info("************************ NeighborhoodMapRetriever.subExecute(), neighbors id count: " + neighborIDs.length);
 
 			// short circuit if necessary
 			if (neighborIDs.length == 0) {
-				writeMapToResponse(NeighborhoodMapRetriever.class.getResource("resources/no-neighbors-found.png"), width, height, response);
+				writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource("resources/no-neighbors-found.png")), width, height, response);
 				return null;
 			}
 
@@ -123,8 +129,9 @@ public class NeighborhoodMapRetriever extends BaseAction {
 
 			log.info("************************ NeighborhoodMapRetriever.subExecute(), biopax assembly: " + biopaxAssembly);
 
-			// write out png 
-			writeMapToResponse(getNeighborhoodMapURL(biopaxAssembly, width, height), width, height, response);
+			// write out png
+			ImageIcon imageIcon = getNeighborhoodMapImage(biopaxAssembly, width, height);
+			if (imageIcon != null) writeMapToResponse(imageIcon, width, height, response);
 		}
 		catch (Exception e) {
 			if (!contentTypeSet) {
@@ -180,42 +187,54 @@ public class NeighborhoodMapRetriever extends BaseAction {
 	 * @param biopaxAssembly XmlAssemby
 	 * @param width int
 	 * @param height int
-	 * @return URL
+	 * @return ImageIcon
 	 * @throws Exception
 	 */
-	private URL getNeighborhoodMapURL(XmlAssembly biopaxAssembly, int width, int height) throws Exception {
+	private ImageIcon getNeighborhoodMapImage(XmlAssembly biopaxAssembly, int width, int height) throws Exception {
 
+		HttpClient client = new HttpClient();
 		NameValuePair nvps[] = new NameValuePair[3];
 		nvps[0] = new NameValuePair("data", biopaxAssembly.getXmlString());
 		nvps[1] = new NameValuePair("width", Integer.toString(width));
 		nvps[2] = new NameValuePair("height", Integer.toString(height));
+		PostMethod method = new PostMethod("http://toro.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
+		method.addParameters(nvps);
 
-        StringBuffer buf = new StringBuffer("http://toro.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
-        buf.append("?");
-        for (NameValuePair nvp : nvps) {
-            buf.append(nvp.getName() + "=" + nvp.getValue() + "&");
-        }
-		// zap off last "&"
-		String url = buf.toString();
-		url = url.substring(0, url.length()-1);
+		// check for http errors
+		int statusCode = client.executeMethod(method);
+		if (statusCode != 200) {
+			throw new Exception("Error fetching neighborhood map image: " + HttpStatus.getStatusText(statusCode));
+		}
+
+		// get content
+		InputStream instream = method.getResponseBodyAsStream();
+		ByteArrayOutputStream outstream =  new ByteArrayOutputStream();
+		byte[] buffer = new byte[4096];
+		int len;
+		int totalBytes = 0;
+		while ((len = instream.read(buffer)) > 0) {
+			outstream.write(buffer, 0, len);
+		}
+		instream.close();
 
 		// outta here
-        return new URL(url);
+		byte[] responseBody = outstream.toByteArray(); 
+		log.info("************************ NeighborhoodMapRetriever.getNeighborhoodMapImage, image size (bytes): " + responseBody.length);
+		return (responseBody != null) ? new ImageIcon(responseBody) : null;		
 	}
 
 	/**
 	 * Writes no neighbors found image to response.
 	 *
-	 * @param url URL
+	 * @param icon imageIcon
 	 * @param width int
 	 * @param height int
 	 * @param response HttpServletResponse
 	 * @throws IOException
 	 */
-	private void writeMapToResponse(URL url, int width, int height, HttpServletResponse response) throws IOException {
+	private void writeMapToResponse(ImageIcon icon, int width, int height, HttpServletResponse response) throws IOException {
 
-		// setup some vars
-		final ImageIcon icon = new ImageIcon(url);
+		log.info("************************ NeighborhoodMapRetriever.writeMapToResponse()");
 
 		// create buffered image
 		final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
