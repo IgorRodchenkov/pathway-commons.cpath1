@@ -12,6 +12,7 @@ import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
+import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
@@ -27,6 +28,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * Command Line Utility to Dump all Manually Curated Human Interactions in SIF-Like
@@ -37,6 +41,7 @@ public class DumpHumanSif {
     private File outFile;
     private HashSet curatedDbSet = new HashSet();
     private final static String TAB = "\t";
+    private static final int BLOCK_SIZE = 1000;
 
     /**
      * Constructor.
@@ -91,45 +96,77 @@ public class DumpHumanSif {
         FileWriter fileWriter = new FileWriter(outFile);
         try {
             DaoCPath dao = DaoCPath.getInstance();
-            DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
-            ArrayList<CPathRecord> recordList = dao.getAllRecords(CPathRecordType.INTERACTION);
-            pMonitor.setMaxValue(recordList.size());
-            for (CPathRecord record : recordList) {
-                long snapshotId = record.getSnapshotId();
-                ExternalDatabaseSnapshotRecord snapshotRecord =
-                        daoSnapshot.getDatabaseSnapshot(snapshotId);
-                String dbTerm = snapshotRecord.getExternalDatabase().getMasterTerm();
+            Connection con = null;
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+            CPathRecord record = null;
+            long maxIterId = dao.getMaxCpathID();
+            pMonitor.setMaxValue((int)maxIterId);
+            for (int id = 0; id <= maxIterId; id = id + BLOCK_SIZE + 1) {
+                System.out.println("Starting batch, starting at cPath id= " + id);
 
-                // If this is a curated db, dump the SIF.  otherwise, skip
-                if (curatedDbSet.contains(dbTerm)) {
-                    long ids[] = new long[1];
-                    ids[0] = record.getId();
-                    XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly(ids,
-                            XmlRecordType.BIO_PAX, 1, XmlAssemblyFactory.XML_FULL, true,
-                            new XDebug());
-                    // determine binary interaction assembly type
-                    BinaryInteractionAssemblyFactory.AssemblyType binaryInteractionAssemblyType =
-                            BinaryInteractionAssemblyFactory.AssemblyType.SIF;
+                // setup start/end id to fetch
+                long startId = id;
+                long endId = id + BLOCK_SIZE;
+                if (endId > maxIterId) endId = maxIterId;
 
-                    // contruct rule types
-                    List<String> binaryInteractionRuleTypes = BinaryInteractionUtil.getRuleTypes();
+                try {
+                    con = JdbcUtil.getCPathConnection();
+                    pstmt = con.prepareStatement("select * from cpath WHERE "
+                            + " CPATH_ID BETWEEN " + startId + " and " + endId
+                            + " order by CPATH_ID ");
+                    rs = pstmt.executeQuery();
 
-                    // get binary interaction assembly
-                    BinaryInteractionAssembly sifAssembly =
-                            BinaryInteractionAssemblyFactory.createAssembly
-                                    (binaryInteractionAssemblyType, binaryInteractionRuleTypes,
-                                            xmlAssembly.getXmlString());
-                    String sif = sifAssembly.getBinaryInteractionString();
-                    convertIdsToGeneSymbols(dbTerm, record.getId(), sif, fileWriter);
+                    while (rs.next()) {
+                        if (pMonitor != null) {
+                            pMonitor.incrementCurValue();
+                            ConsoleUtil.showProgress(pMonitor);
+                        }
+                        record = dao.extractRecord(rs);
+                        if (record.getType() == CPathRecordType.INTERACTION) {
+                            dumpInteractionRecord(record, fileWriter);
+                        }
+                    }
+                } catch (Exception e1) {
+                    throw new DaoException(e1);
                 }
-                if (pMonitor != null) {
-                    pMonitor.incrementCurValue();
-                    ConsoleUtil.showProgress(pMonitor);
-                }
+                JdbcUtil.closeAll(con, pstmt, rs);
             }
         } finally {
             fileWriter.flush();
             fileWriter.close();
+        }
+    }
+
+    private void dumpInteractionRecord(CPathRecord record, FileWriter fileWriter)
+            throws DaoException, AssemblyException, IOException {
+        DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
+        long snapshotId = record.getSnapshotId();
+        ExternalDatabaseSnapshotRecord snapshotRecord =
+                daoSnapshot.getDatabaseSnapshot(snapshotId);
+        String dbTerm = snapshotRecord.getExternalDatabase().getMasterTerm();
+
+        // If this is a curated db, dump the SIF.  otherwise, skip
+        if (curatedDbSet.contains(dbTerm)) {
+            long ids[] = new long[1];
+            ids[0] = record.getId();
+            XmlAssembly xmlAssembly = XmlAssemblyFactory.createXmlAssembly(ids,
+                    XmlRecordType.BIO_PAX, 1, XmlAssemblyFactory.XML_FULL, true,
+                    new XDebug());
+            // determine binary interaction assembly type
+            BinaryInteractionAssemblyFactory.AssemblyType binaryInteractionAssemblyType =
+                    BinaryInteractionAssemblyFactory.AssemblyType.SIF;
+
+            // contruct rule types
+            List<String> binaryInteractionRuleTypes = BinaryInteractionUtil.getRuleTypes();
+
+            // get binary interaction assembly
+            BinaryInteractionAssembly sifAssembly =
+                    BinaryInteractionAssemblyFactory.createAssembly
+                            (binaryInteractionAssemblyType, binaryInteractionRuleTypes,
+                                    xmlAssembly.getXmlString());
+            String sif = sifAssembly.getBinaryInteractionString();
+            convertIdsToGeneSymbols(dbTerm, record.getId(), sif, fileWriter);
         }
     }
 
