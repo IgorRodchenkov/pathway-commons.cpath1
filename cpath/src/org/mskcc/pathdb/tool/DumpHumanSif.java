@@ -32,6 +32,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.hp.hpl.jena.shared.JenaException;
+
 /**
  * Command Line Utility to Dump all Manually Curated Human Interactions in SIF-Like
  * output file format.
@@ -103,7 +105,7 @@ public class DumpHumanSif {
             long maxIterId = dao.getMaxCpathID();
             pMonitor.setMaxValue((int)maxIterId);
             for (int id = 0; id <= maxIterId; id = id + BLOCK_SIZE + 1) {
-                System.out.println("Starting batch, starting at cPath id= " + id);
+                //  System.out.println("Starting batch, starting at cPath id= " + id);
 
                 // setup start/end id to fetch
                 long startId = id;
@@ -161,12 +163,16 @@ public class DumpHumanSif {
             List<String> binaryInteractionRuleTypes = BinaryInteractionUtil.getRuleTypes();
 
             // get binary interaction assembly
-            BinaryInteractionAssembly sifAssembly =
-                    BinaryInteractionAssemblyFactory.createAssembly
-                            (binaryInteractionAssemblyType, binaryInteractionRuleTypes,
-                                    xmlAssembly.getXmlString());
-            String sif = sifAssembly.getBinaryInteractionString();
-            convertIdsToGeneSymbols(dbTerm, record.getId(), sif, fileWriter);
+            try {
+                BinaryInteractionAssembly sifAssembly =
+                        BinaryInteractionAssemblyFactory.createAssembly
+                                (binaryInteractionAssemblyType, binaryInteractionRuleTypes,
+                                        xmlAssembly.getXmlString());
+                String sif = sifAssembly.getBinaryInteractionString();
+                convertIdsToGeneSymbols(dbTerm, record.getId(), sif, fileWriter);
+            } catch (JenaException e) {
+                pMonitor.setCurrentMessage("Jena Exception while parsing:  " + record.getId());
+            }
         }
     }
 
