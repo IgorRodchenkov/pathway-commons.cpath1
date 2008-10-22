@@ -340,109 +340,6 @@ YAHOO.example.init();
         }
     }
 </script>
-<script type="text/javascript">
-	function reloadNeighborhoodMap() {
-		var now = new Date();
-		document.images.neighborhood_map_image.src = 'retrieve_neighborhood_map.do?id=' + <%=id%>  + '&want_thumbnail=true&' + now.getTime();
-	}
-    function loadLargeNeighborhoodMapNoReloadLink() {
-		window.open('retrieve_neighborhood_map.do?id=' + <%=id%>  + '&want_thumbnail=false',
-					'neighborhood_map_window',
-					'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=640, height=480'); 
-    }
-    function loadLargeNeighborhoodMapNoFrames() {
-		neighborhoodMapWindow = window.open('','neighborhood_map_window',
-											'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=655, height=515'); 
-		neighborhoodMapWindow.document.write('<html><head><title>Neighborhood Map</title></head>');
-		neighborhoodMapWindow.document.write('<body>');
-		neighborhoodMapWindow.document.write('\<script type="text/javascript"\>');
-		neighborhoodMapWindow.document.write('function reloadNeighborhoodMap() {');
-		neighborhoodMapWindow.document.write('    var now = new Date();');
-		neighborhoodMapWindow.document.write('    document.images.neighborhood_map_image.src = \'retrieve_neighborhood_map.do?id=' + <%=id%> + '&want_thumbnail=false&\' + now.getTime();');
-		neighborhoodMapWindow.document.write('}');
-		neighborhoodMapWindow.document.write('\</script\>');
-		neighborhoodMapWindow.document.write('<img src=\'retrieve_neighborhood_map.do?id=' + <%=id%> + '&want_thumbnail=false\' name=\'neighborhood_map_image\'>');
-		neighborhoodMapWindow.document.write('<a href="javascript:reloadNeighborhoodMap()">(reload)</a>');
-		neighborhoodMapWindow.document.write('</body>');
-        neighborhoodMapWindow.document.write('</html>');
-		neighborhoodMapWindow.document.close();
-	}
-    function loadLargeNeighborhoodMap() {
-		neighborhoodMapWindow = window.open('','neighborhood_map_window',
-											'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=1100, height=525'); 
-		neighborhoodMapWindow.document.write('<html>');
-		neighborhoodMapWindow.document.write('<head>');
-		neighborhoodMapWindow.document.write('<title>Neighborhood Map</title>');
-		neighborhoodMapWindow.document.write('\<script type="text/javascript"\>');
-		neighborhoodMapWindow.document.write('function populateNeighborhoodMapFrame() {');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'<html><head><title>Neighborhood Map</title></head>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'<body>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script src="jsp/yui/build/yahoo/yahoo.js"\\>\\</script\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script src="jsp/yui/build/dom/dom.js"\\>\\</script\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script src="jsp/yui/build/event/event.js"\\>\\</script\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script src="jsp/yui/build/logger/logger.js"\\>\\</script\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script src="jsp/yui/build/animation/animation.js"\\>\\</script\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script src="jsp/yui/build/connection/connection.js"\\>\\</script\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script src="jsp/yui/build/container/container.js"\\>\\</script\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script src="jsp/yui/build/yahoo-dom-event/yahoo-dom-event.js"\\>\\</script\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\<script type="text/javascript"\\>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'function reloadNeighborhoodMap() {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    var now = new Date();\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    document.images.neighborhood_map_image.src = "retrieve_neighborhood_map.do?id=' + <%=id%> + '&want_thumbnail=false&" + now.getTime();\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'}\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'var AjaxObject = {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    handleSuccess:function(o) {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        YAHOO.log("Connection Success", "info");\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        this.processResult(o);\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    },\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    handleFailure:function(o) {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        YAHOO.log("Connection Failure", "info");\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    },\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    processResult:function(o) {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        YAHOO.log("Processing result", "info");\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        var content = document.getElementById("response");\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        if (o.responseText.indexOf("<error>") == -1) {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'            content.innerHTML = "<img src=\\\'retrieve_neighborhood_map.do?id=' + <%=id%> + '&want_thumbnail=false\\\' name=\\\'neighborhood_map_image\\\'>"+\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'                                "<a href=\\\'javascript:reloadNeighborhoodMap()\\\'>(reload)</a>";\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        } else {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'            content.innerHTML = "Sorry.  Unable to load Network Neighborhood Map.";\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        }\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    },\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    startRequest:function() {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        YAHOO.log("Starting Request", "info");\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        var url = "http://awabi.cbio.mskcc.org/pc/retrieve_neighborhood_map.do?id=' + <%=id%> + '&want_thumbnail=false";\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'        YAHOO.util.Connect.asyncRequest(\\\'GET\\\', url, callback, null);\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    }\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'};\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'var callback = {\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    success:AjaxObject.handleSuccess,\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    failure:AjaxObject.handleFailure,\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'    scope: AjaxObject\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'};\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'AjaxObject.startRequest();\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'\\</script\\>\');');
-        neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'<div id="response">\');');
-        neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'<img src="jsp/images/loading.gif"/>&nbsp;  Loading Neighborhood Map...\');');
-        neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'</div>\');');
-		neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'</body>\');');
-        neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.write(\'</html>\');');
-        neighborhoodMapWindow.document.write('    neighborhood_map_frame.document.close();');
-		neighborhoodMapWindow.document.write('}');
-	    neighborhoodMapWindow.document.write('\</script\>');
-        neighborhoodMapWindow.document.write('</head>');
-        neighborhoodMapWindow.document.write('<frameset cols="60%,40%" onLoad="populateNeighborhoodMapFrame();"');
-        neighborhoodMapWindow.document.write('<frame src="about:blank" name="neighborhood_map_frame" id="neighborhood_map_frame">');
-        neighborhoodMapWindow.document.write('<frame src="jsp/neighborhood_maps/binary_legend.html" name="neighborhood_map_legend_frame" id="neighborhood_map_legend_frame">');
-        neighborhoodMapWindow.document.write('</frameset>');
-        neighborhoodMapWindow.document.write('</html>');
-		neighborhoodMapWindow.document.close();
-	}
-    function loadBinarySIFLegend() {
-		window.open('jsp/neighborhood_maps/binary_legend.html',
-					'neighborhood_map_legend_window',
-					'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=yes, scrollbars=yes, width=400, height=500'); 
-    }
-</script>
 <div class="splitcontentright">
 <%
 String header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(bpSummary);
@@ -585,7 +482,6 @@ enable Javascript support within your web browser.
         out.println("</div>");
     }
 
-
     //  Output synonyms
     if (bpSummary.getSynonyms() != null && bpSummary.getSynonyms().size() > 0) {
         out.println ("<div class=\"box\">");
@@ -598,72 +494,22 @@ enable Javascript support within your web browser.
         out.println("</ul>");
         out.println("</div>");
     }
-
-    //  Output external links
-    String acStableLinkId = null;
-    if (nonReferenceLinks.size() > 0) {
-		HashMap<String, String> linksMap = new HashMap<String,String>();
-        for (int i=0; i<nonReferenceLinks.size(); i++) {
-            ExternalLinkRecord link = nonReferenceLinks.get(i);
-            ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
-            String dbId = link.getLinkedToId();
-            if (dbRecord.getMasterTerm().equals(ExternalDatabaseConstants.UNIPROT)
-                    && acStableLinkId == null) {
-                acStableLinkId = dbId;
-            }
-            String linkStr = dbRecord.getName() + ": " + dbId;
-            String uri = link.getWebLink();
-            if (uri != null && uri.length() > 0) {
-                //  Hide GO Links for now [Temporary]
-                if (!dbId.startsWith("GO")) {
-                    linksMap.put(linkStr, new String("<a href=\"" + uri + "\">" + linkStr + "</a>"));
-                }
-            }
-        }
-        if (linksMap.keySet().size() > 0) {
-            out.println ("<div class=\" box\">");
-            out.println("<h3>Links:</h3>");
-            out.println("<ul>");
-            // output goes here
-            ArrayList<String> linksMapKeys = new ArrayList<String>();
-            linksMapKeys.addAll(linksMap.keySet());
-            Collections.sort(linksMapKeys);
-            for (String key : linksMapKeys) {
-                out.println("<li>");
-                out.println(linksMap.get(key));
-                out.println("</li>");
-            }
-            out.println("</ul>");
-            out.println("</div>");
-        }
-    }
-
-    if (acStableLinkId != null) {
-        out.println ("<div class=\"box\">");
-        out.println("<h3>Stable Link:</h3>");
-        %>
-        <jsp:include page="../global/redesign/stableLink.jsp" flush="true">
-            <jsp:param name="acStableLinkId" value="<%= acStableLinkId%>" />
-            <jsp:param name="peName" value="<%= header %>" />
-        </jsp:include>
-        </div>
-    <% }
-
+%>
+<%
     // Output Neighborhood Map
     if (!bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString())) {
 	    out.println ("<div class=\"box\">");
         out.println("<h3>Neighborhood Map:</h3>");
         out.println("<P>");
-        out.println("<img class='neighborhood_map' src='retrieve_neighborhood_map.do?id=" + id  + "&want_thumbnail=true' name='neighborhood_map_image'/>");
+		out.println("<a href=\"webservice.do?version=2.0&cmd=get_neighbors&q=" + id + "&output=image_map_frameset\"" +
+					"onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 1024, height: 540})\">" +
+					"<img src='webservice.do?version=2.0&cmd=get_neighbors&q=" + id  + "&output=image_map_thumbnail'/></a>");
         out.println("</P>");
-		out.println("<table><tr>");
-		out.println("<td align=left><a href=\"javascript:reloadNeighborhoodMap()\">(reload)</a></td>");
-		out.println("<td align=left><a href=\"javascript:loadLargeNeighborhoodMap()\">(view large)</a></td>");
-		out.println("<td align=right><a href=\"javascript:loadBinarySIFLegend()\">(legend)</a></td>");
-		out.println("</tr></table>");
+		out.println("<a href=\"jsp/neighborhood_maps/binary_legend.html\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', height: 540})\">(legend)</a>");
         out.println("</div>");
 	}
-
+%>
+<%
     //  Output Cytoscape Links
     boolean pathwayType = (bpSummary.getType() != null &&
 						   bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString()));
@@ -702,7 +548,61 @@ enable Javascript support within your web browser.
         out.println("</P>");
         out.println("</div>");
     }
-
+%>
+<%
+    //  Output external links
+    String acStableLinkId = null;
+    if (nonReferenceLinks.size() > 0) {
+		HashMap<String, String> linksMap = new HashMap<String,String>();
+        for (int i=0; i<nonReferenceLinks.size(); i++) {
+            ExternalLinkRecord link = nonReferenceLinks.get(i);
+            ExternalDatabaseRecord dbRecord = link.getExternalDatabase();
+            String dbId = link.getLinkedToId();
+            if (dbRecord.getMasterTerm().equals(ExternalDatabaseConstants.UNIPROT)
+                    && acStableLinkId == null) {
+                acStableLinkId = dbId;
+            }
+            String linkStr = dbRecord.getName() + ": " + dbId;
+            String uri = link.getWebLink();
+            if (uri != null && uri.length() > 0) {
+                //  Hide GO Links for now [Temporary]
+                if (!dbId.startsWith("GO")) {
+                    linksMap.put(linkStr, new String("<a href=\"" + uri + "\">" + linkStr + "</a>"));
+                }
+            }
+        }
+        if (linksMap.keySet().size() > 0) {
+            out.println ("<div class=\" box\">");
+            out.println("<h3>Links:</h3>");
+            out.println("<ul>");
+            // output goes here
+            ArrayList<String> linksMapKeys = new ArrayList<String>();
+            linksMapKeys.addAll(linksMap.keySet());
+            Collections.sort(linksMapKeys);
+            for (String key : linksMapKeys) {
+                out.println("<li>");
+                out.println(linksMap.get(key));
+                out.println("</li>");
+            }
+            out.println("</ul>");
+            out.println("</div>");
+        }
+    }
+%>
+<%
+    if (acStableLinkId != null) {
+        out.println ("<div class=\"box\">");
+        out.println("<h3>Stable Link:</h3>");
+%>
+        <jsp:include page="../global/redesign/stableLink.jsp" flush="true">
+            <jsp:param name="acStableLinkId" value="<%= acStableLinkId%>" />
+            <jsp:param name="peName" value="<%= header %>" />
+        </jsp:include>
+        </div>
+<%
+    }
+%>
+<%
 	//  Output BioPAX Links
     if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
             (CPathRecordType.PATHWAY.toString())) {
@@ -717,7 +617,8 @@ enable Javascript support within your web browser.
                 + "Download BioPAX" + "</a></P>");
             out.println("</div>");
     }
-
+%>
+<%
     //  Output XML_ABBREV Link (Debug Mode)
     if (debugMode) {
         out.println ("<div class=\"box\">");
