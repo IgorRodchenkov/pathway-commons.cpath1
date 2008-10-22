@@ -44,6 +44,21 @@ public class ProtocolConstantsVersion2 {
     public static final String FORMAT_BINARY_SIF = "binary_sif";
 
     /**
+     * IMAGE_MAP Format / Output.
+     */
+    public static final String FORMAT_IMAGE_MAP = "image_map";
+
+    /**
+     * IMAGE_MAP_THUMBNAIL Format / Output.
+     */
+    public static final String FORMAT_IMAGE_MAP_THUMBNAIL = "image_map_thumbnail";
+
+    /**
+     * IMAGE_MAP_FRAMESET Format / Output.
+     */
+    public static final String FORMAT_IMAGE_MAP_FRAMESET = "image_map_frameset";
+
+    /**
      * Protocol Version:  2.0
      */
     public static final String VERSION_2 = "2.0";

@@ -203,12 +203,19 @@ class ProtocolValidatorVersion2 {
             if (output != null &&
                     !output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX) &&
                     !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_ID_LIST) &&
-				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_BINARY_SIF)) {
+				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_BINARY_SIF) &&
+				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP) &&
+				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL) &&
+				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET)) {
                 throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                         ProtocolRequest.ARG_OUTPUT +
                                 " must be set to one of the following: " +
                                 ProtocolConstantsVersion1.FORMAT_BIO_PAX + " " +
-                                ProtocolConstantsVersion2.FORMAT_ID_LIST + ".");
+                                ProtocolConstantsVersion2.FORMAT_ID_LIST + "." +
+                                ProtocolConstantsVersion2.FORMAT_BINARY_SIF + "." + 
+                                ProtocolConstantsVersion2.FORMAT_IMAGE_MAP + "." +
+                                ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + "." +
+                                ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET + ".");
             }
         }
         if (command != null &&
