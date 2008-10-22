@@ -12,3 +12,4 @@
 <jsp:include page="javascript/overlib/overlib.js"/>
 <jsp:include page="javascript/webstart/webstart.js"/>
 <jsp:include page="yui/build/dragdrop/dragdrop.js"/>
+<jsp:include page="javascript/highslide/highslide-full.js"/>
