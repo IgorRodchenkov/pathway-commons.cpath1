@@ -60,7 +60,7 @@
         }
         #demo .yui-nav .selected {
             font-weight:bold;
-        }
+        } 
         #demo .yui-nav .selected a{
 
         }
@@ -78,6 +78,14 @@
            border:1px solid #467aa7;
         }
     </style>
+
+    <!-- highslide setup  -->
+    <script type="text/javascript">
+        hs.graphicsDir = 'jsp/javascript/highslide/graphics/';
+        hs.outlineType = 'rounded-white';
+        hs.outlineWhileAnimating = true;
+        hs.showCredits = false;
+    </script>
 </head>
 
 <body>
