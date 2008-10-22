@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.22 2008-07-23 14:10:57 cerami Exp $
+// $Id: ExecuteWebApi.java,v 1.23 2008-10-22 16:29:50 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -208,6 +208,11 @@ public class ExecuteWebApi extends BaseAction {
                     org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction task =
                             new org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
+				} else if (wantNeighborhoodMapImage(protocolRequest)) {
+                    log.info("Branching based on command and output: Neighborhood Map Image");
+                    org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever task =
+                            new org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever();
+                    return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
                     log.info("Branching based on response type:  BioPAX XML");
                     org.mskcc.pathdb.action.web_api.biopax_mode.ExecuteBioPaxXmlResponse task =
@@ -260,6 +265,29 @@ public class ExecuteWebApi extends BaseAction {
 				return ((command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID) ||
 						 command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) &&
 						(output.equals(ProtocolConstantsVersion2.FORMAT_BINARY_SIF)));
+			}
+		}
+
+		// outta here
+		return false;
+	}
+
+    /**
+     * Routine which checks if the specified web service command returns a neighborhood map.
+     *
+     * @param protocolRequest ProtocolRequest
+     * @return boolean indicates that the specified web service command returns binary interactions.
+     */
+    private boolean wantNeighborhoodMapImage(ProtocolRequest protocolRequest) {
+
+        String command = protocolRequest.getCommand();
+		if (command != null) {
+			String output = protocolRequest.getOutput();
+			if (output != null) {
+				return (command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS) &&
+					    (output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP) ||
+						 output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL) ||
+						 output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET)));
 			}
 		}
 
