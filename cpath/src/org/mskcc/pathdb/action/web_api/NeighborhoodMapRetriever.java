@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.1 2008-10-22 16:32:14 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.2 2008-10-27 17:53:23 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -82,8 +82,12 @@ public class NeighborhoodMapRetriever {
 	private static int SVG_WIDTH_LARGE = 640;
 	private static int SVG_HEIGHT_SMALL = 200;
 	private static int SVG_HEIGHT_LARGE = 480;
-	private static String NMS = "http://toro.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do";
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
+	private static String NMS;
+	static {
+		org.mskcc.dataservices.util.PropertyManager pManager = org.mskcc.dataservices.util.PropertyManager.getInstance();
+		NMS = pManager.getProperty(org.mskcc.pathdb.action.BaseAction.PROPERTY_ADMIN_NEIGHBORHOOD_MAP_SERVER_URL);
+	}
 
 	// member vars
 	private int WIDTH;
@@ -106,11 +110,15 @@ public class NeighborhoodMapRetriever {
      * @param response Http Servlet Response.
      * @param mapping  Struts ActionMapping Object.
      * @return Struts Action Forward Object.
-	 * @throws DaoException, NumberFormatException
+	 * @throws DaoException, NumberFormatException, IllegalArgumentException
      */
     public ActionForward processRequest(XDebug xdebug, ProtocolRequest protocolRequest,
 										HttpServletRequest request, HttpServletResponse response,
-										ActionMapping mapping) throws DaoException, NumberFormatException {
+										ActionMapping mapping) throws DaoException, NumberFormatException, IllegalArgumentException {
+
+		if (NMS == null || NMS.length() == 0) {
+			throw new IllegalArgumentException("Neighborhood Map Server URL has not been properly set in build.properties file.");
+		}
 
 		// set some member args
 		setMemberVars(xdebug, protocolRequest);
@@ -162,6 +170,7 @@ public class NeighborhoodMapRetriever {
 	 * @param protocolRequest ProtocolRequest
 	 * @throws NumberFormatException
 	 * @throws DaoException
+	 * @throws IllegalArgumentException
 	 */
 	private void setMemberVars(XDebug xdebug, ProtocolRequest protocolRequest) throws NumberFormatException, DaoException {
 

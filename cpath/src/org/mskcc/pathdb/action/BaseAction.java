@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.43 2008-07-15 13:41:18 cerami Exp $
+// $Id: BaseAction.java,v 1.44 2008-10-27 17:48:55 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -185,6 +185,16 @@ public abstract class BaseAction extends Action {
      * Global Property:  Admin Page Active.
      */
     public static final String PROPERTY_ADMIN_MODE_ACTIVE = "admin_mode_active";
+
+    /**
+     * Global Property:  Enable Neighborhood Maps.
+     */
+    public static final String PROPERTY_ADMIN_ENABLE_NEIGHBORHOOD_MAPS = "admin_neighborhood_maps_enabled";
+
+    /**
+     * Global Property:  Neighborhood Map URL.
+     */
+    public static final String PROPERTY_ADMIN_NEIGHBORHOOD_MAP_SERVER_URL = "admin_neighborhood_map_server_url";
 
     /**
      * Admin page

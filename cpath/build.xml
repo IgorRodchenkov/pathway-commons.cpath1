@@ -293,6 +293,12 @@
              token="admin_mode_active__value" value="${web.admin.active}"
              summary="yes"/>
         <replace file="${build.dir}/WEB-INF/web.xml"
+             token="admin_neighborhood_maps_enabled__value" value="${web.admin.enable_neighborhood_maps}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
+             token="admin_neighborhood_map_server_url__value" value="${web.admin.neighborhood_map_server_url}"
+             summary="yes"/>
+        <replace file="${build.dir}/WEB-INF/web.xml"
              token="web_skin__value" value="${web.skin}"
              summary="yes"/>
 

@@ -23,6 +23,11 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
+// get admin property to determine if neighborhood maps should be enabled
+org.mskcc.dataservices.util.PropertyManager pManager = org.mskcc.dataservices.util.PropertyManager.getInstance();
+Boolean enableNeighborhoodMaps =
+	new Boolean(pManager.getProperty(org.mskcc.pathdb.action.BaseAction.PROPERTY_ADMIN_ENABLE_NEIGHBORHOOD_MAPS));
+
 //  Extract data from attributes
 //  The BioPAX Record Summary
 BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute(ShowBioPaxRecord2.BP_SUMMARY);
@@ -497,7 +502,7 @@ enable Javascript support within your web browser.
 %>
 <%
     // Output Neighborhood Map
-    if (!bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString())) {
+    if (enableNeighborhoodMaps && !bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString())) {
 	    out.println ("<div class=\"box\">");
         out.println("<h3>Neighborhood Map:</h3>");
         out.println("<P>");
