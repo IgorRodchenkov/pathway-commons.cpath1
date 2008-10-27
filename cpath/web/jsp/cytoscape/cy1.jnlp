@@ -84,7 +84,6 @@
     <jar href="plugins/cPath.jar" />
     <jar href="plugins/cpath2.jar" />
     <jar href="plugins/CytoscapeEditor.jar" />
-    <jar href="plugins/exesto.jar" />
     <jar href="plugins/filter.jar" />
     <jar href="plugins/filters.jar" />
     <jar href="plugins/GraphMerge.jar" />
