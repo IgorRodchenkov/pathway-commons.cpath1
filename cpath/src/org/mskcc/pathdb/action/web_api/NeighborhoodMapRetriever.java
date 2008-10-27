@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.2 2008-10-27 17:53:23 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.3 2008-10-27 19:19:30 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -223,10 +223,11 @@ public class NeighborhoodMapRetriever {
 	private ImageIcon getNeighborhoodMapImage(XmlAssembly biopaxAssembly) throws Exception {
 
 		HttpClient client = new HttpClient();
-		NameValuePair nvps[] = new NameValuePair[3];
+		NameValuePair nvps[] = new NameValuePair[4];
 		nvps[0] = new NameValuePair("data", biopaxAssembly.getXmlString());
 		nvps[1] = new NameValuePair("width", Integer.toString(WIDTH));
 		nvps[2] = new NameValuePair("height", Integer.toString(HEIGHT));
+		nvps[3] = new NameValuePair("version", "0.1");
 		PostMethod method = new PostMethod(NMS);
 		method.addParameters(nvps);
 
