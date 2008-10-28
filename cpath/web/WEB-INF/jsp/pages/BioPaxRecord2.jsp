@@ -16,6 +16,7 @@
 <%@ page import="org.mskcc.pathdb.action.ShowBioPaxRecord2"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot"%>
+<%@ page import="org.mskcc.pathdb.schemas.biopax.BioPaxConstants"%>
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.Set"%>
 <%@ page import="java.util.Collections"%>
@@ -502,7 +503,13 @@ enable Javascript support within your web browser.
 %>
 <%
     // Output Neighborhood Map
-    if (enableNeighborhoodMaps && !bpSummary.getType().equalsIgnoreCase(CPathRecordType.PATHWAY.toString())) {
+    if (enableNeighborhoodMaps &&
+		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PATHWAY) &&
+		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.DNA) &&
+		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.RNA) &&
+		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.SMALL_MOLECULE) &&
+		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PHYSICAL_ENTITY) &&
+		!bpSummary.getType().equalsIgnoreCase("Physical Entity")) {
 	    out.println ("<div class=\"box\">");
         out.println("<h3>Neighborhood Map:</h3>");
         out.println("<P>");
