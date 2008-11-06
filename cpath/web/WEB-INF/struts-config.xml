@@ -100,6 +100,12 @@
             <forward name="success" path="/WEB-INF/jsp/pages/SifRules.jsp"/>
         </action>
 
+        <!--  SIF Interaction Rules Page -->
+        <action path="/sif_legend"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/SifLegend.jsp"/>
+        </action>
+
         <action path="/biopax"
             type="org.mskcc.pathdb.action.web_api.ExecuteWebApi">
             <forward name="psi_mi" path="/WEB-INF/jsp/pages/search/psi_mi_search.jsp"/>
