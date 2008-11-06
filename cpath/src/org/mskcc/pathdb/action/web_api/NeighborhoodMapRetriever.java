@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.3 2008-10-27 19:19:30 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.4 2008-11-06 15:47:57 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,9 +79,9 @@ public class NeighborhoodMapRetriever {
 
 	// some statics
 	private static int SVG_WIDTH_SMALL = 200;
-	private static int SVG_WIDTH_LARGE = 640;
 	private static int SVG_HEIGHT_SMALL = 200;
-	private static int SVG_HEIGHT_LARGE = 480;
+	private static int SVG_WIDTH_LARGE = 585;
+	private static int SVG_HEIGHT_LARGE = 540;
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
 	private static String NMS;
 	static {
@@ -271,9 +271,9 @@ public class NeighborhoodMapRetriever {
 		stream.println("<head>");
 		stream.println("<title>Neighborhood Map</title>");
 		stream.println("</head>");
-        stream.println("<frameset cols=\"63%,37%\"");
+        stream.println("<frameset cols=\"60%,40%\"");
         stream.println("<frame src=\"webservice.do?version=2.0&cmd=get_neighbors&q=" + Long.toString(PHYSICAL_ENTITY_RECORD_ID)  + "&output=image_map\">");
-        stream.println("<frame src=\"jsp/neighborhood_maps/binary_legend.html\">");
+        stream.println("<frame src=\"sif_legend.do\">");
         stream.println("</frameset>");
 		stream.println("</html>");
 
