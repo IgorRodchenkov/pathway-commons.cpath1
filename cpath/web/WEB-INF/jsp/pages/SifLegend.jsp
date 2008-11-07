@@ -83,36 +83,38 @@
 </tr>
 <%
     for (String rule : binaryInteractionRules) {
-		String ruleDesc = ExecuteBinaryInteraction.getRuleTypeDescription(rule);
-        if (!ruleDesc.trim().endsWith(".")) {
-            ruleDesc = ruleDesc.concat(".");
-        }
-        out.println("<tr>");
-		out.println("<td valign=top align=center><img src='jsp/images/sif_rules/" + rule + "_LEGEND_SIF.png'/>");
-		//out.println("<td valign=center><span class=\"rule\"><a href=\"\"" +
-		//			" onmouseover=\"return overlib('<DIV CLASS=popup><DIV CLASS=popup_caption>" + rule + "</DIV>" +
-		//			"<DIV CLASS=popup_text>" + ruleDesc + "</DIV></DIV>', FULLHTML, WRAP, CELLPAD, 5, OFFSETY, -25);" +
-		//			" return true;\" onmouseout=\"return nd();\">" + rule + "</a></span><td>");
-		out.println("<td valign=center><span class=\"rule\"><a href=\"#\"" +
-		            " onclick=\"return hs.htmlExpand(this, {contentId: '" + rule + "-html" + "', width: 300})\" class=\"highslide\">" +
-		            rule + "</a></span></td>");
-        out.println("</tr>");
-		out.println("<div class=\"highslide-html-content\" id=\"" + rule + "-html" + "\">");
-		out.println("<div class=\"highslide-header\">");
-		out.println("<ul>");
-		out.println("<li class=\"highslide-move\">");
-		out.println("<a href=\"#\" onclick=\"return false\">Move</a>");
-		out.println("</li>");
-  		out.println("<li class=\"highslide-close\">");
-		out.println("<a href=\"#\" onclick=\"return hs.close(this)\">Close</a>");
-		out.println("</li>");
-		out.println("</ul>");
-		out.println("</div>"); // highslide-header
-		out.println("<div class=\"highslide-body\">");
-  		out.println("<h5>" + rule  + "</h5>");
-		out.println(ruleDesc);
-  		out.println("</div>"); // highslide-body
-  		out.println("</div>"); // highslide-html-content
+        if (!org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever.UNWANTED_INTERACTIONS.contains(rule.trim())) {
+            String ruleDesc = ExecuteBinaryInteraction.getRuleTypeDescription(rule);
+            if (!ruleDesc.trim().endsWith(".")) {
+                ruleDesc = ruleDesc.concat(".");
+            }
+            out.println("<tr>");
+			out.println("<td valign=top align=center><img src='jsp/images/sif_rules/" + rule + "_LEGEND_SIF.png'/>");
+			//out.println("<td valign=center><span class=\"rule\"><a href=\"\"" +
+			//            " onmouseover=\"return overlib('<DIV CLASS=popup><DIV CLASS=popup_caption>" + rule + "</DIV>" +
+            //            "<DIV CLASS=popup_text>" + ruleDesc + "</DIV></DIV>', FULLHTML, WRAP, CELLPAD, 5, OFFSETY, -25);" +
+		    //            " return true;\" onmouseout=\"return nd();\">" + rule + "</a></span><td>");
+            out.println("<td valign=center><span class=\"rule\"><a href=\"#\"" +
+                        " onclick=\"return hs.htmlExpand(this, {contentId: '" + rule + "-html" + "', width: 300})\" class=\"highslide\">" +
+                        rule + "</a></span></td>");
+            out.println("</tr>");
+            out.println("<div class=\"highslide-html-content\" id=\"" + rule + "-html" + "\">");
+            out.println("<div class=\"highslide-header\">");
+            out.println("<ul>");
+            out.println("<li class=\"highslide-move\">");
+            out.println("<a href=\"#\" onclick=\"return false\">Move</a>");
+            out.println("</li>");
+            out.println("<li class=\"highslide-close\">");
+            out.println("<a href=\"#\" onclick=\"return hs.close(this)\">Close</a>");
+            out.println("</li>");
+            out.println("</ul>");
+            out.println("</div>"); // highslide-header
+            out.println("<div class=\"highslide-body\">");
+            out.println("<h5>" + rule  + "</h5>");
+            out.println(ruleDesc);
+            out.println("</div>"); // highslide-body
+            out.println("</div>"); // highslide-html-content
+		}
     }
 %>
 <tr>
