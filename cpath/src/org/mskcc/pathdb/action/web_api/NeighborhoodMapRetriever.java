@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.4 2008-11-06 15:47:57 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.5 2008-11-07 16:33:48 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -78,8 +78,8 @@ import javax.swing.ImageIcon;
 public class NeighborhoodMapRetriever {
 
 	// some statics
-	private static int SVG_WIDTH_SMALL = 200;
-	private static int SVG_HEIGHT_SMALL = 200;
+	private static int SVG_WIDTH_SMALL = 185;
+	private static int SVG_HEIGHT_SMALL = 185;
 	private static int SVG_WIDTH_LARGE = 585;
 	private static int SVG_HEIGHT_LARGE = 540;
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
