@@ -252,7 +252,7 @@ background:#467aa7;
 /**************** Misc classes and styles ****************/
 
 .splitcontentleft{float:left; width:20%;}
-.splitcontentright{float:right; width:77%;}
+.splitcontentright{float:right; width:79%;}
 .clear{clear:both;}
 .small{font-size:0.8em;}
 .small_no_bold{
@@ -272,7 +272,6 @@ border:1px solid #c0c0c0;
 background-color:#fafbfc;
 color:#505050;
 line-height:1.5em;
-width: 205px; /* width is set to properly display neighborhood map thumbnail */
 }
 
 .box h3{
