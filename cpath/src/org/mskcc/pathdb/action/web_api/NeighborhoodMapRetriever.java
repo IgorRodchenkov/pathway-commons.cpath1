@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.5 2008-11-07 16:33:48 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.6 2008-11-07 19:38:02 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -87,6 +87,18 @@ public class NeighborhoodMapRetriever {
 	static {
 		org.mskcc.dataservices.util.PropertyManager pManager = org.mskcc.dataservices.util.PropertyManager.getInstance();
 		NMS = pManager.getProperty(org.mskcc.pathdb.action.BaseAction.PROPERTY_ADMIN_NEIGHBORHOOD_MAP_SERVER_URL);
+	}
+	public static ArrayList<String> UNWANTED_INTERACTIONS = new ArrayList<String>(); // made public for use by legend generation code
+	private static StringBuffer UNWANTED_INTERACTIONS_BUFFER = new StringBuffer();
+	static {
+		UNWANTED_INTERACTIONS.add("COMPONENT_IN_SAME");
+		UNWANTED_INTERACTIONS.add("CO_CONTROL_DEPENDENT_SIMILAR");
+		UNWANTED_INTERACTIONS.add("CO_CONTROL_DEPENDENT_ANTI");
+		UNWANTED_INTERACTIONS.add("CO_CONTROL_INDEPENDENT_SIMILAR");
+		UNWANTED_INTERACTIONS.add("CO_CONTROL_INDEPENDENT_ANTI");
+		for (String unwantedInteraction : UNWANTED_INTERACTIONS) {
+			UNWANTED_INTERACTIONS_BUFFER.append(unwantedInteraction + " ");
+		}
 	}
 
 	// member vars
@@ -223,11 +235,12 @@ public class NeighborhoodMapRetriever {
 	private ImageIcon getNeighborhoodMapImage(XmlAssembly biopaxAssembly) throws Exception {
 
 		HttpClient client = new HttpClient();
-		NameValuePair nvps[] = new NameValuePair[4];
+		NameValuePair nvps[] = new NameValuePair[5];
 		nvps[0] = new NameValuePair("data", biopaxAssembly.getXmlString());
 		nvps[1] = new NameValuePair("width", Integer.toString(WIDTH));
 		nvps[2] = new NameValuePair("height", Integer.toString(HEIGHT));
-		nvps[3] = new NameValuePair("version", "0.1");
+		nvps[3] = new NameValuePair("unwanted_interactions", UNWANTED_INTERACTIONS_BUFFER.toString());
+		nvps[4] = new NameValuePair("version", "0.1");
 		PostMethod method = new PostMethod(NMS);
 		method.addParameters(nvps);
 
