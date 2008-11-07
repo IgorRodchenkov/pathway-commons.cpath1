@@ -517,7 +517,7 @@ enable Javascript support within your web browser.
 					"onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 1024, height: 600})\">" +
 					"<img src='webservice.do?version=2.0&cmd=get_neighbors&q=" + id  + "&output=image_map_thumbnail'/></a>");
         out.println("</P>");
-		out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 600})\">(legend)</a></div>");
+		out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a></div>");
         out.println("</div>");
 	}
 %>
