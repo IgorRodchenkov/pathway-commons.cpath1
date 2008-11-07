@@ -510,14 +510,14 @@ enable Javascript support within your web browser.
 		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.SMALL_MOLECULE) &&
 		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PHYSICAL_ENTITY) &&
 		!bpSummary.getType().equalsIgnoreCase("Physical Entity")) {
-	    out.println ("<div class=\"box\">");
+	    out.println ("<div class=\"thumbnail_box\">");
         out.println("<h3>Neighborhood Map:</h3>");
         out.println("<P>");
 		out.println("<a href=\"webservice.do?version=2.0&cmd=get_neighbors&q=" + id + "&output=image_map_frameset\"" +
 					"onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 1024, height: 600})\">" +
 					"<img src='webservice.do?version=2.0&cmd=get_neighbors&q=" + id  + "&output=image_map_thumbnail'/></a>");
         out.println("</P>");
-		out.println("<a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 600})\">(legend)</a>");
+		out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 600})\">(legend)</a></div>");
         out.println("</div>");
 	}
 %>
