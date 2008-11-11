@@ -108,7 +108,7 @@
     }
 %>
 <tr>
-<td colspan="2"><a href="http://www.pathwaycommons.org/pc/sif_interaction_rules.do" target="_blank">more information</a></td>
+<td colspan="2"><a href="sif_interaction_rules.do" target="_blank">more information</a></td>
 </tr>
 </table>
 </div>
