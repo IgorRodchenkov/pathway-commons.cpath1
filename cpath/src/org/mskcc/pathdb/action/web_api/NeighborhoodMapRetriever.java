@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.6 2008-11-07 19:38:02 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.7 2008-11-11 19:20:05 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -88,16 +88,40 @@ public class NeighborhoodMapRetriever {
 		org.mskcc.dataservices.util.PropertyManager pManager = org.mskcc.dataservices.util.PropertyManager.getInstance();
 		NMS = pManager.getProperty(org.mskcc.pathdb.action.BaseAction.PROPERTY_ADMIN_NEIGHBORHOOD_MAP_SERVER_URL);
 	}
-	public static ArrayList<String> UNWANTED_INTERACTIONS = new ArrayList<String>(); // made public for use by legend generation code
-	private static StringBuffer UNWANTED_INTERACTIONS_BUFFER = new StringBuffer();
+
+	// unwanted interactions
+	public static final ArrayList<String> UNWANTED_INTERACTIONS = new ArrayList<String>(); // made public for use by legend generation code
+	private static final StringBuffer UNWANTED_INTERACTIONS_BUFFER = new StringBuffer();
 	static {
-		UNWANTED_INTERACTIONS.add("COMPONENT_IN_SAME");
+		UNWANTED_INTERACTIONS.add("IN_SAME_COMPONENT");
 		UNWANTED_INTERACTIONS.add("CO_CONTROL_DEPENDENT_SIMILAR");
 		UNWANTED_INTERACTIONS.add("CO_CONTROL_DEPENDENT_ANTI");
 		UNWANTED_INTERACTIONS.add("CO_CONTROL_INDEPENDENT_SIMILAR");
 		UNWANTED_INTERACTIONS.add("CO_CONTROL_INDEPENDENT_ANTI");
 		for (String unwantedInteraction : UNWANTED_INTERACTIONS) {
 			UNWANTED_INTERACTIONS_BUFFER.append(unwantedInteraction + " ");
+		}
+	}
+
+	// unwanted molecules
+	private static final StringBuffer UNWANTED_SMALL_MOLECULES_BUFFER = new StringBuffer();
+	static {
+		final String[] UNWANTED_SMALL_MOLECULES = { "ATP", "ADP", "GTP", "GDP", "NADP", "NADP+",
+													"NADPH", "NAD", "NAD+", "NADH", "FAD", "FADH2", "H2O" };
+
+		try {
+			org.mskcc.pathdb.sql.dao.DaoCPath daoCPath = org.mskcc.pathdb.sql.dao.DaoCPath.getInstance();
+			for (String smallMolecule : UNWANTED_SMALL_MOLECULES) {
+				org.mskcc.pathdb.model.CPathRecord cpathRecord = daoCPath.getRecordByName(smallMolecule);
+				if (cpathRecord != null && cpathRecord.getSpecificType().equalsIgnoreCase(org.mskcc.pathdb.schemas.biopax.BioPaxConstants.SMALL_MOLECULE)) {
+					UNWANTED_SMALL_MOLECULES_BUFFER.append(Long.toString(cpathRecord.getId()) + " ");
+					log.info("Mapping unwanted small molecule " + smallMolecule + " to cpath id: " + Long.toString(cpathRecord.getId()));
+				}
+			}
+		}
+		catch (DaoException e) {
+			log.info("NeighborhoodMapRetriever (static code execution)");
+			e.printStackTrace();
 		}
 	}
 
@@ -235,12 +259,13 @@ public class NeighborhoodMapRetriever {
 	private ImageIcon getNeighborhoodMapImage(XmlAssembly biopaxAssembly) throws Exception {
 
 		HttpClient client = new HttpClient();
-		NameValuePair nvps[] = new NameValuePair[5];
+		NameValuePair nvps[] = new NameValuePair[6];
 		nvps[0] = new NameValuePair("data", biopaxAssembly.getXmlString());
 		nvps[1] = new NameValuePair("width", Integer.toString(WIDTH));
 		nvps[2] = new NameValuePair("height", Integer.toString(HEIGHT));
-		nvps[3] = new NameValuePair("unwanted_interactions", UNWANTED_INTERACTIONS_BUFFER.toString());
-		nvps[4] = new NameValuePair("version", "0.1");
+		nvps[3] = new NameValuePair("unwanted_interactions", UNWANTED_INTERACTIONS_BUFFER.toString().trim());
+		nvps[4] = new NameValuePair("unwanted_small_molecules", UNWANTED_SMALL_MOLECULES_BUFFER.toString().trim());
+		nvps[5] = new NameValuePair("version", "0.1");
 		PostMethod method = new PostMethod(NMS);
 		method.addParameters(nvps);
 
