@@ -136,7 +136,7 @@ function importHumanCyc {
 
 function importNci {
 	logProgress "Loading NCI / Nature PID."
-	./admin.pl -f $CPATH_HOME/../pathway-commons/nci/01-28-2008 import
+	./admin.pl -f $CPATH_HOME/../pathway-commons/nci/11-12-2008 import
 }
 
 function importCellMap {
