@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Log Progress
 function logProgress {
 	echo "$1 [`date`]"
