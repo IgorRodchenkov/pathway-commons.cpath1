@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.7 2008-07-10 15:14:58 cerami Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.8 2008-11-26 20:20:38 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,6 +40,7 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion3;
 import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
@@ -48,9 +49,11 @@ import org.mskcc.pathdb.action.web_api.WebApiUtil;
 import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
 import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssembly;
 import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssemblyFactory;
+import org.biopax.paxtools.io.sif.BinaryInteractionType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -90,7 +93,7 @@ public class ExecuteBinaryInteraction {
     public ActionForward processRequest(XDebug xdebug, ProtocolRequest protocolRequest,
             HttpServletRequest request, HttpServletResponse response, ActionMapping mapping)
             throws QueryException, IOException, AssemblyException, ParseException, ProtocolException,
-            DaoException, CloneNotSupportedException {
+				   DaoException, CloneNotSupportedException, NumberFormatException {
 
         XmlAssembly xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
         if (xmlAssembly == null || xmlAssembly.isEmpty()) {
@@ -115,7 +118,30 @@ public class ExecuteBinaryInteraction {
 															xmlAssembly.getXmlString());
 
 		// write out the binary interaction text
-        WebApiUtil.returnText(response, assembly.getBinaryInteractionString());
+		// (if version < 3.0, we need to convert interaction type tags)
+		Double version = new Double(protocolRequest.getVersion());
+		Double version3 = new Double(ProtocolConstantsVersion3.VERSION_3);
+		if (version < version3) {
+			log.info("************************ ExecuteBinaryInteraction.processRequest(): sif assembly string before conversion:\n");
+			log.info(assembly.getBinaryInteractionString());
+			StringBuffer sifBuffer = new StringBuffer("");
+			String[] binaryInteractions = (assembly.getBinaryInteractionString() != null) ?
+				assembly.getBinaryInteractionString().split("\n") : null;
+			if (binaryInteractions != null && binaryInteractions.length > 0) {
+				Map<String, String> tagMap = BinaryInteractionType.getTagMap();
+				for (String binaryInteraction : binaryInteractions) {
+					// sif format:  ID\tINTERACTION_TYPE\tID
+					String[] components = binaryInteraction.split("\t");
+					sifBuffer.append(components[0] + "\t" + tagMap.get(components[1]) + "\t" + components[2] + "\n");
+				}
+			}
+			log.info("************************ ExecuteBinaryInteraction.processRequest(): sif assembly string after conversion:\n");
+			log.info(sifBuffer.toString());
+			WebApiUtil.returnText(response, sifBuffer.toString());
+		}
+		else {
+			WebApiUtil.returnText(response, assembly.getBinaryInteractionString());
+		}
 
         //  Return null here, because we do not want Struts to do any forwarding.
         return null;
