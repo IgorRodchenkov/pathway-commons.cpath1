@@ -83,8 +83,8 @@
         if (!org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever.UNWANTED_INTERACTIONS.contains(rule.trim())) {
             String displayName = rule.replace("_", " ");
             out.println("<tr>");
-			out.println("<td valign=top align=center><img src='jsp/images/sif_rules/" + rule + "_LEGEND_SIF.png'/>");
-            out.println("<td valign=center><span class=\"rule\"><a href=\"#\"" +
+			out.println("<td valign=CENTER><img src='jsp/images/sif_rules/" + rule + "_LEGEND_SIF.png' align='ABSMIDDLE'/>");
+            out.println("<td valign=CENTER><span class=\"rule\"><a href=\"#\"" +
                         " onclick=\"return hs.htmlExpand(this, {contentId: '" + rule + "-html" + "', width: 300})\" class=\"highslide\">" +
                         displayName + "</a></span></td>");
             out.println("</tr>");
