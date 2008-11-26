@@ -1,6 +1,6 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion2"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion3"%>
 <%@ page import="org.mskcc.pathdb.util.ExternalDatabaseConstants"%>
 <%
     CPathUIConfig.setShowDataSourceDetails(true);
@@ -18,7 +18,7 @@
     webUIBean.setBaseURL("pathwaycommons.org");
     webUIBean.setSmtpHost("cbio.mskcc.org");
     webUIBean.setFeedbackEmailTo("pc-info@pathwaycommons.org");
-    webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);
+    webUIBean.setWebApiVersion(ProtocolConstantsVersion3.VERSION_3);
     webUIBean.addSupportedIdType(ExternalDatabaseConstants.UNIPROT);
     webUIBean.addSupportedIdType(ExternalDatabaseConstants.INTERNAL_DATABASE);
     webUIBean.addSupportedIdType(ExternalDatabaseConstants.ENTREZ_GENE);
