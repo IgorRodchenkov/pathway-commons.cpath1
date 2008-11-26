@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.8 2008-11-21 20:24:43 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.9 2008-11-26 20:18:57 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,7 @@ import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion3;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.sql.util.NeighborsUtil;
 
@@ -193,7 +194,13 @@ public class NeighborhoodMapRetriever {
 
 			// short circuit if necessary
 			if (neighborIDs.length == 0) {
-				writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource("resources/no-neighbors-found.png")), response);
+				String imageFile = (WANT_THUMBNAIL) ? "resources/no-neighbors-found-thumbnail.png" : "resources/no-neighbors-found.png";
+				writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
+				return null;
+			}
+			else if (neighborIDs.length > 50) {
+				String imageFile = (WANT_THUMBNAIL) ? "resources/too-many-neighbors-found-thumbnail.png" : "resources/too-many-neighbors-found.png";
+				writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
 				return null;
 			}
 
@@ -336,7 +343,10 @@ public class NeighborhoodMapRetriever {
 		stream.println("<title>Neighborhood Map</title>");
 		stream.println("</head>");
         stream.println("<frameset cols=\"60%,40%\"");
-        stream.println("<frame src=\"webservice.do?version=2.0&cmd=get_neighbors&q=" + Long.toString(PHYSICAL_ENTITY_RECORD_ID)  + "&output=image_map\">");
+        stream.println("<frame src=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
+					   "&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
+					   "&" + ProtocolRequest.ARG_QUERY + "=" + Long.toString(PHYSICAL_ENTITY_RECORD_ID)  +
+					   "&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP + "\">");
         stream.println("<frame src=\"sif_legend.do\">");
         stream.println("</frameset>");
 		stream.println("</html>");

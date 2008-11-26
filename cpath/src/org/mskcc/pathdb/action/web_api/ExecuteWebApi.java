@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.23 2008-10-22 16:29:50 grossben Exp $
+// $Id: ExecuteWebApi.java,v 1.24 2008-11-26 20:19:36 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -211,7 +211,7 @@ public class ExecuteWebApi extends BaseAction {
 				} else if (wantNeighborhoodMapImage(protocolRequest)) {
                     log.info("Branching based on command and output: Neighborhood Map Image");
                     org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever task =
-                            new org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever();
+						org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever.getInstance();
                     return task.processRequest(xdebug, protocolRequest, request, response, mapping);
                 } else {
                     log.info("Branching based on response type:  BioPAX XML");
