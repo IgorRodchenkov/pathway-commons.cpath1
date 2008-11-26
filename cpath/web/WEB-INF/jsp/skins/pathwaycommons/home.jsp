@@ -42,12 +42,19 @@ create a local mirror.</p>
 
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;July 24, 2008:
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;December 1, 2008:
+    <ul>
+        <li>Latest Reactome data set (September 30, 2008 Version 26).</li>
+        <li>Neighborhood maps added to protein pages.</li>
+        <li>Numerous bug fixes and performance improvements.</li>
+    </ul>
+</li>
+<li>July 24, 2008:
     <ul>
         <li>Latest Reactome data set (June 30, 2008 Version 25).</li>
         <li>All human, mouse and rat proteins are now annotated with UniProt functional annotation.</li>
         <li>Improved search support for gene symbols.</li>
-ExecuteGetParentsXmlResponse        <li>Stable links now available for linking out to protein pages.</li>
+        <li>Stable links now available for linking out to protein pages.</li>
         <li>Numerous bug fixes and performance improvements.</li>
     </ul>
 </li>
