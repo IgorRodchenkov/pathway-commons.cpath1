@@ -1,4 +1,4 @@
-// $Id: ProtocolValidator.java,v 1.22 2007-06-05 21:22:21 cerami Exp $
+// $Id: ProtocolValidator.java,v 1.23 2008-11-26 20:22:27 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -71,6 +71,9 @@ public class ProtocolValidator {
             } else if (version.equals(ProtocolConstantsVersion2.VERSION_2)) {
                 ProtocolValidatorVersion2 validator2 = new ProtocolValidatorVersion2(request);
                 validator2.validate();
+            } else if (version.equals(ProtocolConstantsVersion3.VERSION_3)) {
+                ProtocolValidatorVersion3 validator3 = new ProtocolValidatorVersion3(request);
+                validator3.validate();
             } else {
                 throw new IllegalArgumentException ("Unsupported version # specified:  "
                     + version);
