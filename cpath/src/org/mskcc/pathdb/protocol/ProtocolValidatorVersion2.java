@@ -72,7 +72,7 @@ class ProtocolValidatorVersion2 {
      * Validates the organism paramter.
      * @throws ProtocolException Indicates violocation of Protocol.
      */
-    private void validateOrganism() throws ProtocolException {
+    protected void validateOrganism() throws ProtocolException {
         String organism = request.getOrganism();
         if (organism != null && organism.length() > 0) {
             try {
@@ -91,7 +91,7 @@ class ProtocolValidatorVersion2 {
      * @throws ProtocolException  Indicates Violation of Protocol.
      * @throws NeedsHelpException Indicates user requests/needs help.
      */
-    private void validateCommand() throws ProtocolException,
+    protected void validateCommand() throws ProtocolException,
             NeedsHelpException {
         if (request.getCommand() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
@@ -114,7 +114,7 @@ class ProtocolValidatorVersion2 {
      *
      * @throws ProtocolException Indicates Violation of Protocol.
      */
-    private void validateQuery() throws ProtocolException, DaoException {
+    protected void validateQuery() throws ProtocolException, DaoException {
         String command = request.getCommand();
         String q = request.getQuery();
         if (q == null || q.length() == 0) {
@@ -148,7 +148,7 @@ class ProtocolValidatorVersion2 {
      *
      * @throws ProtocolException Indicates Violation of Protocol.
      */
-    private void validateVersion() throws ProtocolException {
+    protected void validateVersion() throws ProtocolException {
         if (request.getVersion() == null) {
             throw new ProtocolException(ProtocolStatusCode.MISSING_ARGUMENTS,
                     "Argument: '" + ProtocolRequest.ARG_VERSION
@@ -161,7 +161,7 @@ class ProtocolValidatorVersion2 {
         }
     }
 
-    private void validateIdType(ID_Type idType) throws ProtocolException {
+    protected void validateIdType(ID_Type idType) throws ProtocolException {
         String command = request.getCommand();
         if (command != null &&
                 (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST) ||
@@ -190,7 +190,7 @@ class ProtocolValidatorVersion2 {
         }
     }
 
-    private void validateOutput() throws ProtocolException {
+    protected void validateOutput() throws ProtocolException {
         String command = request.getCommand();
 
         if (command != null &&
@@ -238,7 +238,7 @@ class ProtocolValidatorVersion2 {
         }
     }
 
-    private void validateDataSources() throws ProtocolException, DaoException {
+    protected void validateDataSources() throws ProtocolException, DaoException {
         String command = request.getCommand();
         if (command != null &&
                 (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST) ||
@@ -271,7 +271,7 @@ class ProtocolValidatorVersion2 {
         return masterTermList;
     }
 
-    private void validateMisc() throws ProtocolException, DaoException {
+    protected void validateMisc() throws ProtocolException, DaoException {
 
         String command = request.getCommand();
 
