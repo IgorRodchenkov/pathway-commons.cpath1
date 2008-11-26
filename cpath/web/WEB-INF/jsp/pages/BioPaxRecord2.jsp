@@ -10,6 +10,7 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion1"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion2"%>
+<%@ page import="org.mskcc.pathdb.protocol.ProtocolConstantsVersion3"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReferenceUtil"%>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.summary.*"%>
 <%@ page import="org.mskcc.pathdb.xdebug.XDebugUtil"%>
@@ -513,9 +514,15 @@ enable Javascript support within your web browser.
 	    out.println ("<div class=\"thumbnail_box\">");
         out.println("<h3>Neighborhood Map:</h3>");
         out.println("<P>");
-		out.println("<a href=\"webservice.do?version=2.0&cmd=get_neighbors&q=" + id + "&output=image_map_frameset\"" +
+		out.println("<a href=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
+					"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
+					"&" + ProtocolRequest.ARG_QUERY + "=" + id +
+					"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET + "\"" +
 					"onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 1024, height: 600})\">" +
-					"<img src='webservice.do?version=2.0&cmd=get_neighbors&q=" + id  + "&output=image_map_thumbnail'/></a>");
+					"<img src='webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
+					"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
+					"&" + ProtocolRequest.ARG_QUERY + "=" + id +
+					"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + "'/></a>");
         out.println("</P>");
 		out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a></div>");
         out.println("</div>");
@@ -531,7 +538,7 @@ enable Javascript support within your web browser.
 		if (pathwayType) {
 			out.println("<P><img src='jsp/images/cytoscape.png' align='ABSMIDDLE'>&nbsp;<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
-						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
+						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID +
 						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id +
@@ -546,7 +553,7 @@ enable Javascript support within your web browser.
 			String encodedNeighborhoodTitle = URLEncoder.encode("Neighborhood: " + bpSummary.getLabel(), "UTF-8");
 			out.println("<P><img src='jsp/images/cytoscape.png' align='ABSMIDDLE'>&nbsp;<a href=\"http://" + CYTOSCAPE_HTTP_SERVER + "/" +
 						urlForCytoscapeLink +
-						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
+						"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id + 
