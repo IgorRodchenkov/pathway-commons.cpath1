@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.9 2008-11-26 20:18:57 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.10 2008-12-01 18:53:05 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,11 +79,12 @@ import javax.swing.ImageIcon;
 public class NeighborhoodMapRetriever {
 
 	// some statics
-    private static NeighborhoodMapRetriever neighborhoodMapRetriever = null;
+	private static int MAX_NODES_IN_MAP = 100;
 	private static int SVG_WIDTH_SMALL = 150;
 	private static int SVG_HEIGHT_SMALL = 150;
 	private static int SVG_WIDTH_LARGE = 585;
 	private static int SVG_HEIGHT_LARGE = 540;
+    private static NeighborhoodMapRetriever neighborhoodMapRetriever = null;
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
 	private static String NMS;
 	static {
@@ -191,6 +192,7 @@ public class NeighborhoodMapRetriever {
 
 			// get neighbor ids
 			long[] neighborIDs = getNeighborIDs();
+			log.info("NeighborhoodMapRetriever.subExecute(), numNodes: " + Long.toString(neighborIDs.length));
 
 			// short circuit if necessary
 			if (neighborIDs.length == 0) {
@@ -198,7 +200,7 @@ public class NeighborhoodMapRetriever {
 				writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
 				return null;
 			}
-			else if (neighborIDs.length > 50) {
+			else if (neighborIDs.length > MAX_NODES_IN_MAP) {
 				String imageFile = (WANT_THUMBNAIL) ? "resources/too-many-neighbors-found-thumbnail.png" : "resources/too-many-neighbors-found.png";
 				writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
 				return null;
@@ -268,7 +270,7 @@ public class NeighborhoodMapRetriever {
 	 */
 	private long[] getNeighborIDs() throws DaoException {
 
-		log.info("NeighborhoodMapRetriever.getNeighborIDs");
+		log.info("NeighborhoodMapRetriever.getNeighborIDs()");
 
 		// get neighbors - easy!
 		long neighborRecordIDs[] = NEIGHBORS_UTIL.getNeighbors(PHYSICAL_ENTITY_RECORD_ID, FULLY_CONNECTED);
@@ -286,7 +288,7 @@ public class NeighborhoodMapRetriever {
 	 */
 	private ImageIcon getNeighborhoodMapImage(XmlAssembly biopaxAssembly) throws Exception {
 
-		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage");
+		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage()");
 
 		HttpClient client = new HttpClient();
 		NameValuePair nvps[] = new NameValuePair[6];
@@ -295,7 +297,7 @@ public class NeighborhoodMapRetriever {
 		nvps[2] = new NameValuePair("height", Integer.toString(HEIGHT));
 		nvps[3] = new NameValuePair("unwanted_interactions", UNWANTED_INTERACTIONS_BUFFER.toString().trim());
 		nvps[4] = new NameValuePair("unwanted_small_molecules", UNWANTED_SMALL_MOLECULES_BUFFER.toString().trim());
-		nvps[5] = new NameValuePair("version", "0.1");
+		nvps[5] = new NameValuePair("version", "1.0");
 		PostMethod method = new PostMethod(NMS);
 		method.addParameters(nvps);
 
@@ -305,6 +307,8 @@ public class NeighborhoodMapRetriever {
 		if (statusCode != 200) {
 			throw new Exception("Error fetching neighborhood map image: " + HttpStatus.getStatusText(statusCode));
 		}
+
+		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage(), neighborhood map image fetched, reading response...");
 
 		// get content
 		InputStream instream = method.getResponseBodyAsStream();
