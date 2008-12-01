@@ -1,4 +1,4 @@
-// $Id: CytoscapeJnlpServlet.java,v 1.16 2008-04-28 17:06:54 cerami Exp $
+// $Id: CytoscapeJnlpServlet.java,v 1.17 2008-12-01 21:11:43 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,7 +33,7 @@ package org.mskcc.pathdb.servlet;
 
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion1;
-import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
+import org.mskcc.pathdb.protocol.ProtocolConstantsVersion3;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -118,7 +118,7 @@ public final class CytoscapeJnlpServlet extends HttpServlet {
 		// contruct url to retrieve record, ie include web services api call
 		String urlToRetrieveRecord = (urlToPathwayCommons +
 									  "/webservice.do?" +
-									  ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
+									  ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
 									  "&" + ProtocolRequest.ARG_COMMAND + "=" + command +
 									  "&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
 									  "&" + ProtocolRequest.ARG_QUERY + "=" + recordID +
