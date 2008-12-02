@@ -66,6 +66,11 @@ public class ShowBioPaxRecord2 extends BaseAction {
     public static String DB_PARAMETER = "db";
 
     /**
+     * Entity Summary Attribute name.
+     */
+    public static String NUM_NEIGHBORS = "NUM_NEIGHBORS";
+
+    /**
      * Executes Action.
      * @param mapping       ActionMapping Object.
      * @param form          ActionForm Object.
@@ -226,6 +231,21 @@ public class ShowBioPaxRecord2 extends BaseAction {
         xdebug.logMsg(this, "Total number of tabs:  " + typeList.size());
         request.setAttribute(TYPES_LIST, typeList);
 
+		// set number of neighbors
+		org.mskcc.dataservices.util.PropertyManager pManager =
+			org.mskcc.dataservices.util.PropertyManager.getInstance();
+		Boolean enableNeighborhoodMaps =
+			new Boolean(pManager.getProperty(org.mskcc.pathdb.action.BaseAction.PROPERTY_ADMIN_ENABLE_NEIGHBORHOOD_MAPS));
+		if (enableNeighborhoodMaps &&
+			!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PATHWAY) &&
+			!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.DNA) &&
+			!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.RNA) &&
+			!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.SMALL_MOLECULE) &&
+			!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PHYSICAL_ENTITY) &&
+			!bpSummary.getType().equalsIgnoreCase("Physical Entity")) {
+			request.setAttribute(NUM_NEIGHBORS, getNumNeighbors(xdebug, request, snapshotIdSet));
+		}
+
         //  Forward to JSP page for HTML creation.
         return mapping.findForward(BaseAction.FORWARD_SUCCESS);
     }
@@ -355,4 +375,35 @@ public class ShowBioPaxRecord2 extends BaseAction {
             }
         }
     }
+
+	/**
+	 * Gets number of neighbors.
+	 *
+	 * @param request HttpServletRequest
+     * @param xdebug XDebug Object.
+	 * @param snapshotIdSet Set<Long>
+	 * @return Integer
+	 * @throws Exception
+	 */
+	private Integer getNumNeighbors(XDebug xdebug, HttpServletRequest request, Set<Long> snapshotIdSet) throws Exception {
+		java.util.HashMap parameterMap =
+			org.mskcc.pathdb.util.security.XssFilter.filterAllParameters(request.getParameterMap());
+        org.mskcc.pathdb.protocol.ProtocolRequest protocolRequest =
+			new org.mskcc.pathdb.protocol.ProtocolRequest(parameterMap);
+		protocolRequest.setQuery(request.getParameter(ID_PARAMETER));
+		protocolRequest.setInputIDType("CPATH_ID");
+		String dataSources = "";
+		org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot daoSnapShot = 
+			new org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot();
+		for (Long snapshotID : snapshotIdSet) {
+			org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
+			if (record == null) continue;
+			dataSources += record.getExternalDatabase().getMasterTerm() + ",";
+		}
+		protocolRequest.setDataSource(dataSources);
+		long[] neighborIDs =
+			org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever.getInstance().getNeighborIDs(xdebug, protocolRequest);
+		xdebug.logMsg(this, "getNumNeighbors(): " + Long.toString(neighborIDs.length));
+		return new Integer(neighborIDs.length);
+	}
 }
