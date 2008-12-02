@@ -3,6 +3,7 @@
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.action.admin.AdminWebLogging"%>
+<%@ page import="org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever"%>
 <%@ page import="org.mskcc.pathdb.taglib.ReactomeCommentUtil"%>
 <%@ page import="org.mskcc.pathdb.action.BaseAction"%>
 <%@ page import="org.mskcc.pathdb.taglib.DbSnapshotInfo"%>
@@ -78,6 +79,8 @@ if (filterSettings != null) {
 	encodedDataSourceParameter = URLEncoder.encode(encodedDataSourceParameter, "UTF-8");
 }
 
+// num neighbors
+Integer numNeighbors = (Integer)request.getAttribute(ShowBioPaxRecord2.NUM_NEIGHBORS);
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
@@ -514,18 +517,30 @@ enable Javascript support within your web browser.
 	    out.println ("<div class=\"thumbnail_box\">");
         out.println("<h3>Neighborhood Map:</h3>");
         out.println("<P>");
-		out.println("<a href=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
-					"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
-					"&" + ProtocolRequest.ARG_QUERY + "=" + id +
-					"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET + "\"" +
-					"onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 1024, height: 600})\">" +
-					"<img src='webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
-					"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
-					"&" + ProtocolRequest.ARG_QUERY + "=" + id +
-					"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + "'/></a>");
-        out.println("</P>");
-		out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a></div>");
-        out.println("</div>");
+		if (numNeighbors == 0) {
+			// use no neighbors found
+			out.println("<img src=\"jsp/images/maps/no-neighbors-found-thumbnail.png\">");
+		}
+		else if (numNeighbors > NeighborhoodMapRetriever.MAX_NODES_IN_MAP) {
+			// use too many neighbors image
+			out.println("<img src=\"jsp/images/maps/too-many-neighbors-found-thumbnail.png\">");
+		}
+		else {
+			out.println("<a href=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
+						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
+						"&" + ProtocolRequest.ARG_QUERY + "=" + id +
+						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
+						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET + "\"" +
+						"onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 1024, height: 600})\">" +
+						"<img src='webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
+						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
+						"&" + ProtocolRequest.ARG_QUERY + "=" + id +
+						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
+						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + "'/></a>");
+			out.println("</P>");
+			out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a></div>");
+		}
+		out.println("</div>");
 	}
 %>
 <%
