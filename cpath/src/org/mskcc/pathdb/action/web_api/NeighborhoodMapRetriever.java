@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.10 2008-12-01 18:53:05 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.11 2008-12-02 20:48:40 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,7 +79,7 @@ import javax.swing.ImageIcon;
 public class NeighborhoodMapRetriever {
 
 	// some statics
-	private static int MAX_NODES_IN_MAP = 100;
+	public static int MAX_NODES_IN_MAP = 100;
 	private static int SVG_WIDTH_SMALL = 150;
 	private static int SVG_HEIGHT_SMALL = 150;
 	private static int SVG_WIDTH_LARGE = 585;
@@ -158,6 +158,20 @@ public class NeighborhoodMapRetriever {
      */
     private NeighborhoodMapRetriever() { }
 
+	/**
+	 * Gets neighborhood map count.
+	 *
+     * @param xdebug   XDebug Object.
+     * @param protocolRequest Protocol Request Object.
+	 * @throws DaoException
+	 * @return long[]
+	 */
+	public long[] getNeighborIDs(XDebug xdebug, ProtocolRequest protocolRequest) throws DaoException {
+
+		setMemberVars(xdebug, protocolRequest);
+		return getNeighborIDs();
+	}
+
     /**
      * Generates neighborhood map image
      *
@@ -194,17 +208,17 @@ public class NeighborhoodMapRetriever {
 			long[] neighborIDs = getNeighborIDs();
 			log.info("NeighborhoodMapRetriever.subExecute(), numNodes: " + Long.toString(neighborIDs.length));
 
-			// short circuit if necessary
-			if (neighborIDs.length == 0) {
-				String imageFile = (WANT_THUMBNAIL) ? "resources/no-neighbors-found-thumbnail.png" : "resources/no-neighbors-found.png";
-				writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
-				return null;
-			}
-			else if (neighborIDs.length > MAX_NODES_IN_MAP) {
-				String imageFile = (WANT_THUMBNAIL) ? "resources/too-many-neighbors-found-thumbnail.png" : "resources/too-many-neighbors-found.png";
-				writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
-				return null;
-			}
+			// short circuit if necessary - now handled in BioPAXRecord2.jsp
+			//if (neighborIDs.length == 0) {
+			//	String imageFile = (WANT_THUMBNAIL) ? "resources/no-neighbors-found-thumbnail.png" : "resources/no-neighbors-found.png";
+			//	writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
+			//	return null;
+			//}
+			//else if (neighborIDs.length > MAX_NODES_IN_MAP) {
+			//	String imageFile = (WANT_THUMBNAIL) ? "resources/too-many-neighbors-found-thumbnail.png" : "resources/too-many-neighbors-found.png";
+			//	writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
+			//	return null;
+			//}
 
 			// get biopax assembly
 			XmlAssembly biopaxAssembly = XmlAssemblyFactory.createXmlAssembly(neighborIDs, XmlRecordType.BIO_PAX, 1,
@@ -350,6 +364,7 @@ public class NeighborhoodMapRetriever {
         stream.println("<frame src=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
 					   "&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 					   "&" + ProtocolRequest.ARG_QUERY + "=" + Long.toString(PHYSICAL_ENTITY_RECORD_ID)  +
+					   "&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + PROTOCOL_REQUEST.getDataSource() + 
 					   "&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP + "\">");
         stream.println("<frame src=\"sif_legend.do\">");
         stream.println("</frameset>");
