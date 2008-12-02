@@ -340,10 +340,10 @@ YAHOO.example.init();
         YAHOO.log ("Toggling comments, show all comments:  " + showAllComments);;
         if (showAllComments) {
             YAHOO.util.Dom.setStyle(commentRemainder, 'display', 'inline');
-            toggleImage.innerHTML = "less...";
+            toggleImage.innerHTML = " less...";
         } else {
             YAHOO.util.Dom.setStyle(commentRemainder, 'display', 'none');
-            toggleImage.innerHTML = "more...";
+            toggleImage.innerHTML = " more...";
         }
     }
 </script>
