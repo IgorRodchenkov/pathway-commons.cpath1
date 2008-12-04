@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssemblyFactory.java,v 1.1 2008-01-16 02:04:46 grossben Exp $
+// $Id: BinaryInteractionAssemblyFactory.java,v 1.2 2008-12-04 20:42:53 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,6 +53,14 @@ public class BinaryInteractionAssemblyFactory {
 		SIF;
 	}
 
+	/**
+	 * JenaIOHandler - initialize here since this is time consuming
+	 */
+	private static JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
+	static {
+		jenaIOHandler.setStrict(true);
+	}
+
     /**
      * Creates a BinaryAssembly based on specified AssemblyType
      *
@@ -66,8 +74,6 @@ public class BinaryInteractionAssemblyFactory {
 														   String owlXML) {
 
 		// construct paxtools model with this owlXML
-		JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
-		jenaIOHandler.setStrict(true);
 		Model level2 = jenaIOHandler.convertFromOWL(new StringBufferInputStream(owlXML));
 
 		// return the proper assembly type
