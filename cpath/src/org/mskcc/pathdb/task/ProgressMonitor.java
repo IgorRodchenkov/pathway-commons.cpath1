@@ -1,4 +1,4 @@
-// $Id: ProgressMonitor.java,v 1.11 2006-02-22 22:47:51 grossb Exp $
+// $Id: ProgressMonitor.java,v 1.12 2008-12-09 16:58:06 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -31,6 +31,8 @@
  **/
 package org.mskcc.pathdb.task;
 
+import java.util.ArrayList;
+
 /**
  * Monitors Progress of Long Term Tasks.
  *
@@ -42,6 +44,7 @@ public class ProgressMonitor {
     private String currentMessage;
     private StringBuffer log = new StringBuffer();
     private boolean consoleMode;
+    private ArrayList<String> warningList = new ArrayList<String>();
 
     /**
      * Sets Console Flag.
@@ -148,5 +151,21 @@ public class ProgressMonitor {
         if (consoleMode) {
             System.out.println(currentMessage);
         }
+    }
+
+    /**
+     * Logs a warning message.
+     * @param warning Warning Message.
+     */
+    public void logWarning (String warning) {
+        warningList.add(warning);
+    }
+
+    /**
+     * Gets the list of warnings.
+     * @return ArrayList of Warning Strings.
+     */
+    public ArrayList <String> getWarningList() {
+        return warningList;
     }
 }
