@@ -171,7 +171,9 @@ public class DumpHumanSif {
                 String sif = sifAssembly.getBinaryInteractionString();
                 convertIdsToGeneSymbols(dbTerm, record.getId(), sif, fileWriter);
             } catch (JenaException e) {
-                pMonitor.setCurrentMessage("Jena Exception while parsing:  " + record.getId());
+                pMonitor.logWarning("Got JenaException:  " + e.getMessage() + ".  Occurred "
+                    + " while getting SIF for interaction:  " + record.getId() + ", Data Source:  "
+                    + dbTerm);
             }
         }
     }
@@ -237,5 +239,13 @@ public class DumpHumanSif {
         System.out.println("Writing out to:  " + file.getAbsoluteFile());
         DumpHumanSif dumper = new DumpHumanSif(pMonitor, file);
         dumper.dump();
+
+        ArrayList <String> warningList = pMonitor.getWarningList();
+        System.out.println ("Total number of warning messages:  " + warningList.size());
+        int i = 1;
+        for (String warning:  warningList) {
+            System.out.println ("Warning #" + i + ":  " + warning);
+            i++;
+        }
     }
 }
