@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.12 2008-12-10 04:55:41 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.13 2008-12-10 05:30:48 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
@@ -257,9 +258,10 @@ public class NeighborhoodMapRetriever {
 		WIDTH = (WANT_THUMBNAIL) ? SVG_WIDTH_SMALL : SVG_WIDTH_LARGE;
 		HEIGHT = (WANT_THUMBNAIL) ? SVG_HEIGHT_SMALL : SVG_HEIGHT_LARGE;
 
-		UNWANTED_INTERACTIONS = new ArrayList<String>();
 		UNWANTED_INTERACTIONS_STRING = "";
-		String[] filterInteractions = CPathUIConfig.getWebUIBean().getFilterInteractions().split(",");
+		UNWANTED_INTERACTIONS = new ArrayList<String>();
+		WebUIBean bean = (CPathUIConfig.getWebUIBean() != null) ? CPathUIConfig.getWebUIBean() : new WebUIBean();
+		String[] filterInteractions = bean.getFilterInteractions().split(",");
 		if (filterInteractions.length > 0) {
 			for (String filterInteraction : filterInteractions) {
 				UNWANTED_INTERACTIONS.add(filterInteraction.trim());
