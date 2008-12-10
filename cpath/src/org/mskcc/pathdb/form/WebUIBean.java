@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.19 2008-01-08 17:14:01 cerami Exp $
+// $Id: WebUIBean.java,v 1.20 2008-12-10 04:56:30 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,8 +33,11 @@ package org.mskcc.pathdb.form;
 
 // imports
 
-import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.*;
+import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
+
+import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 
@@ -104,6 +107,26 @@ public class WebUIBean extends ActionForm {
      * Header Tag line.
      */
     private String tagLine = "";
+
+	/**
+	 * Flag indicating Mini-Maps are enabled.
+	 */
+    private boolean enableMiniMaps;
+
+	/**
+	 * Image Map Server URL
+	 */
+	private String imageMapServerURL = "";
+
+	/**
+	 * Max Neighborhood Map Size
+	 */
+	private Integer maxMiniMapSize;
+
+	/**
+	 * Filter Interactions
+	 */
+	private String filterInteractions = "";
 
     /**
      * List of Supported ID Types.
@@ -352,4 +375,102 @@ public class WebUIBean extends ActionForm {
     public void setTagLine(String tagLine) {
         this.tagLine = tagLine;
     }
+
+	/**
+	 * Sets enable mini maps flag.
+	 *
+	 * @param enableMiniMaps boolean
+	 */
+	public void setEnableMiniMaps(boolean enableMiniMaps) {
+		this.enableMiniMaps = enableMiniMaps;
+	}
+
+	/**
+	 * Returns enable mini maps flag.
+	 *
+	 * @return boolean
+	 */
+	public boolean getEnableMiniMaps() {
+		return enableMiniMaps;
+	}
+
+	/**
+	 * Sets image map server url
+	 *
+	 * @param imageMapServerURL String
+	 */
+    public void setImageMapServerURL(String imageMapServerURL)
+    {
+        this.imageMapServerURL = imageMapServerURL;
+    }
+
+	/**
+	 * Gets image map server url.
+	 *
+	 * @return String
+	 */
+    public String getImageMapServerURL()
+    {
+        return imageMapServerURL;
+    }
+
+	/**
+	 * Sets max size (nodes) of mini map.
+	 *
+	 * @param maxMiniMapSize Integer
+	 */
+	public void setMaxMiniMapSize(Integer maxMiniMapSize) {
+		this.maxMiniMapSize = maxMiniMapSize;
+	}
+
+	/**
+	 * Gets max mini map size.
+	 *
+	 * @return Integer
+	 */
+	public Integer getMaxMiniMapSize() {
+		return maxMiniMapSize;
+	}
+
+	/**
+	 * Sets filter interactions string (comma delimited list of interactions).
+	 *
+	 * @param filterInteractions
+	 */
+	public void setFilterInteractions(String filterInteractions) {
+		this.filterInteractions = filterInteractions;
+	}
+
+	/**
+	 * Gets filter interactions string.
+	 *
+	 * @return String
+	 */
+	public String getFilterInteractions() {
+		return filterInteractions;
+	}
+
+	/**
+	 * Validates Mini-Map entries.
+	 */
+	public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
+		ActionErrors errors = new ActionErrors();
+		if (enableMiniMaps) {
+			if (imageMapServerURL == null || imageMapServerURL.equals("")) {
+				errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.mini_maps_config_form.required", "Image Map Server URL"));
+			}
+			else {
+				try {
+					java.net.URL url = new java.net.URL(imageMapServerURL);
+				}
+				catch (java.net.MalformedURLException e) {
+				errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.mini_maps_config_form.invalid_imageMapServerURL"));
+				}
+			}
+			if (maxMiniMapSize <= 0) {
+				errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.mini_maps_config_form.invalid_maxMiniMapSize"));
+			}
+		}
+		return errors;
+	}
 }
