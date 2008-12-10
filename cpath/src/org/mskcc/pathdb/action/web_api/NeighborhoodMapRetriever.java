@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.11 2008-12-02 20:48:40 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.12 2008-12-10 04:55:41 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -39,12 +39,17 @@ import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.InternalLinkRecord;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
+import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
+import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssembly;
+import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssemblyFactory;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion3;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.sql.util.NeighborsUtil;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForward;
@@ -79,55 +84,11 @@ import javax.swing.ImageIcon;
 public class NeighborhoodMapRetriever {
 
 	// some statics
-	public static int MAX_NODES_IN_MAP = 100;
 	private static int SVG_WIDTH_SMALL = 150;
 	private static int SVG_HEIGHT_SMALL = 150;
 	private static int SVG_WIDTH_LARGE = 585;
 	private static int SVG_HEIGHT_LARGE = 540;
-    private static NeighborhoodMapRetriever neighborhoodMapRetriever = null;
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
-	private static String NMS;
-	static {
-		org.mskcc.dataservices.util.PropertyManager pManager = org.mskcc.dataservices.util.PropertyManager.getInstance();
-		NMS = pManager.getProperty(org.mskcc.pathdb.action.BaseAction.PROPERTY_ADMIN_NEIGHBORHOOD_MAP_SERVER_URL);
-	}
-
-	// unwanted interactions
-	public static final ArrayList<String> UNWANTED_INTERACTIONS = new ArrayList<String>(); // made public for use by legend generation code
-	private static final StringBuffer UNWANTED_INTERACTIONS_BUFFER = new StringBuffer();
-	static {
-		UNWANTED_INTERACTIONS.add("IN_SAME_COMPONENT");
-		UNWANTED_INTERACTIONS.add("CO_CONTROL_DEPENDENT_SIMILAR");
-		UNWANTED_INTERACTIONS.add("CO_CONTROL_DEPENDENT_ANTI");
-		UNWANTED_INTERACTIONS.add("CO_CONTROL_INDEPENDENT_SIMILAR");
-		UNWANTED_INTERACTIONS.add("CO_CONTROL_INDEPENDENT_ANTI");
-		for (String unwantedInteraction : UNWANTED_INTERACTIONS) {
-			UNWANTED_INTERACTIONS_BUFFER.append(unwantedInteraction + " ");
-		}
-	}
-
-	// unwanted molecules
-	private static final StringBuffer UNWANTED_SMALL_MOLECULES_BUFFER = new StringBuffer();
-	static {
-		UNWANTED_SMALL_MOLECULES_BUFFER.append(" ");
-		//final String[] UNWANTED_SMALL_MOLECULES = { "ATP", "ADP", "GTP", "GDP", "NADP", "NADP+",
-		//											"NADPH", "NAD", "NAD+", "NADH", "FAD", "FADH2", "H2O" };
-
-		//try {
-		//	org.mskcc.pathdb.sql.dao.DaoCPath daoCPath = org.mskcc.pathdb.sql.dao.DaoCPath.getInstance();
-		//	for (String smallMolecule : UNWANTED_SMALL_MOLECULES) {
-		//		org.mskcc.pathdb.model.CPathRecord cpathRecord = daoCPath.getRecordByName(smallMolecule);
-		//		if (cpathRecord != null && cpathRecord.getSpecificType().equalsIgnoreCase(org.mskcc.pathdb.schemas.biopax.BioPaxConstants.SMALL_MOLECULE)) {
-		//			UNWANTED_SMALL_MOLECULES_BUFFER.append(Long.toString(cpathRecord.getId()) + " ");
-		//			log.info("Mapping unwanted small molecule " + smallMolecule + " to cpath id: " + Long.toString(cpathRecord.getId()));
-		//		}
-		//	}
-		//}
-		//catch (DaoException e) {
-		//	log.info("NeighborhoodMapRetriever (static code execution)");
-		//	e.printStackTrace();
-		//}
-	}
 
 	// member vars
 	private int WIDTH;
@@ -140,36 +101,61 @@ public class NeighborhoodMapRetriever {
 	private long PHYSICAL_ENTITY_RECORD_ID;
 	private ProtocolRequest PROTOCOL_REQUEST;
 	private NeighborsUtil NEIGHBORS_UTIL;
-
-    /**
-     * Gets instance of NeighborhoodMapRetriever.
-     *
-     * @return DaoCPath Object.
-     */
-    public static NeighborhoodMapRetriever getInstance() {
-        if (neighborhoodMapRetriever == null) {
-            neighborhoodMapRetriever = new NeighborhoodMapRetriever();
-        }
-        return neighborhoodMapRetriever;
-    }
-
-    /**
-     * Constructor (private).
-     */
-    private NeighborhoodMapRetriever() { }
+	private ArrayList<String> UNWANTED_INTERACTIONS;
+	private String UNWANTED_INTERACTIONS_STRING;
+	private String UNWANTED_SMALL_MOLECULES_STRING;
 
 	/**
 	 * Gets neighborhood map count.
 	 *
      * @param xdebug   XDebug Object.
      * @param protocolRequest Protocol Request Object.
-	 * @throws DaoException
-	 * @return long[]
+	 * @return Integer
 	 */
-	public long[] getNeighborIDs(XDebug xdebug, ProtocolRequest protocolRequest) throws DaoException {
+	public Integer getNeighborhoodMapSize(XDebug xdebug, ProtocolRequest protocolRequest) {
 
-		setMemberVars(xdebug, protocolRequest);
-		return getNeighborIDs();
+		HashSet<String> filteredBinaryInteractionParticipants = new HashSet<String>();
+		try {
+			// get list of neighbor ids
+			setMemberVars(xdebug, protocolRequest);
+			long[] neighborIDs = getNeighborIDs();
+
+			log.info("NeighborhoodMapRetriever.getNeighborMapSize(), before sif conversion: " + Long.toString(neighborIDs.length));
+			if (neighborIDs.length == 0) return 0;
+
+			// create sif assembly
+			XmlAssembly biopaxAssembly = XmlAssemblyFactory.createXmlAssembly(neighborIDs, XmlRecordType.BIO_PAX, 1,
+																			  XmlAssemblyFactory.XML_FULL, true, new XDebug());
+			BinaryInteractionAssembly sifAssembly =
+				BinaryInteractionAssemblyFactory.createAssembly(BinaryInteractionAssemblyFactory.AssemblyType.SIF,
+																BinaryInteractionUtil.getRuleTypes(),
+																biopaxAssembly.getXmlString());
+
+			// filter out unwanted interactions
+			String[] binaryInteractionStringArray = sifAssembly.getBinaryInteractionString().split("\n");
+			for (String binaryInteractionString : binaryInteractionStringArray) {
+				if (binaryInteractionString != null) {
+					// sif format:  ID\tINTERACTION_TYPE\tID
+					String[] components = binaryInteractionString.split("\t");
+					if (components.length == 3) {
+						// populate filteredBinaryInteractionParticpants (neighbors in map)
+						if (!UNWANTED_INTERACTIONS.contains(components[1])) {
+							filteredBinaryInteractionParticipants.add(components[0]);
+							filteredBinaryInteractionParticipants.add(components[2]);
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			log.info("NeighborhoodMapRetriever.getNeighborMapSize(), Exception caught: " + e.getMessage() + ", PHYSICAL_ENTITY_RECORD_ID: " + Long.toString(PHYSICAL_ENTITY_RECORD_ID));
+			return 0;
+		}
+
+		log.info("NeighborhoodMapRetriever.getNeighborMapSize(), after sif conversion: " + filteredBinaryInteractionParticipants.size());
+
+		// outta here
+		return filteredBinaryInteractionParticipants.size();
 	}
 
     /**
@@ -186,10 +172,6 @@ public class NeighborhoodMapRetriever {
     public ActionForward processRequest(XDebug xdebug, ProtocolRequest protocolRequest,
 										HttpServletRequest request, HttpServletResponse response,
 										ActionMapping mapping) throws DaoException, NumberFormatException, IllegalArgumentException {
-
-		if (NMS == null || NMS.length() == 0) {
-			throw new IllegalArgumentException("Neighborhood Map Server URL has not been properly set in build.properties file.");
-		}
 
 		// set some member args
 		setMemberVars(xdebug, protocolRequest);
@@ -214,7 +196,7 @@ public class NeighborhoodMapRetriever {
 			//	writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
 			//	return null;
 			//}
-			//else if (neighborIDs.length > MAX_NODES_IN_MAP) {
+			//else if (neighborIDs.length > CPathUIConfig.getWebUIBean().getMaxMiniMapSize()) {
 			//	String imageFile = (WANT_THUMBNAIL) ? "resources/too-many-neighbors-found-thumbnail.png" : "resources/too-many-neighbors-found.png";
 			//	writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
 			//	return null;
@@ -274,6 +256,33 @@ public class NeighborhoodMapRetriever {
 		// if WANT_FRAMESET, these will be ignored
 		WIDTH = (WANT_THUMBNAIL) ? SVG_WIDTH_SMALL : SVG_WIDTH_LARGE;
 		HEIGHT = (WANT_THUMBNAIL) ? SVG_HEIGHT_SMALL : SVG_HEIGHT_LARGE;
+
+		UNWANTED_INTERACTIONS = new ArrayList<String>();
+		UNWANTED_INTERACTIONS_STRING = "";
+		String[] filterInteractions = CPathUIConfig.getWebUIBean().getFilterInteractions().split(",");
+		if (filterInteractions.length > 0) {
+			for (String filterInteraction : filterInteractions) {
+				UNWANTED_INTERACTIONS.add(filterInteraction.trim());
+				UNWANTED_INTERACTIONS_STRING = UNWANTED_INTERACTIONS_STRING + filterInteraction.trim() + " ";
+			}
+		}
+		UNWANTED_SMALL_MOLECULES_STRING = "";
+		//final String[] UNWANTED_SMALL_MOLECULES = { "ATP", "ADP", "GTP", "GDP", "NADP", "NADP+",
+		//											"NADPH", "NAD", "NAD+", "NADH", "FAD", "FADH2", "H2O" };
+		//try {
+		//	org.mskcc.pathdb.sql.dao.DaoCPath daoCPath = org.mskcc.pathdb.sql.dao.DaoCPath.getInstance();
+		//	for (String smallMolecule : UNWANTED_SMALL_MOLECULES) {
+		//		org.mskcc.pathdb.model.CPathRecord cpathRecord = daoCPath.getRecordByName(smallMolecule);
+		//		if (cpathRecord != null && cpathRecord.getSpecificType().equalsIgnoreCase(org.mskcc.pathdb.schemas.biopax.BioPaxConstants.SMALL_MOLECULE)) {
+		//			UNWANTED_SMALL_MOLECULES_BUFFER.append(Long.toString(cpathRecord.getId()) + " ");
+		//			log.info("Mapping unwanted small molecule " + smallMolecule + " to cpath id: " + Long.toString(cpathRecord.getId()));
+		//		}
+		//	}
+		//}
+		//catch (DaoException e) {
+		//	log.info("NeighborhoodMapRetriever (static code execution)");
+		//	e.printStackTrace();
+		//}
 	}
 
 	/**
@@ -284,10 +293,12 @@ public class NeighborhoodMapRetriever {
 	 */
 	private long[] getNeighborIDs() throws DaoException {
 
-		log.info("NeighborhoodMapRetriever.getNeighborIDs()");
+		log.info("NeighborhoodMapRetriever.getNeighborIDs(), record id: " + PHYSICAL_ENTITY_RECORD_ID);
+		log.info("NeighborhoodMapRetriever.getNeighborIDs(), fully connected: " + FULLY_CONNECTED);
 
 		// get neighbors - easy!
 		long neighborRecordIDs[] = NEIGHBORS_UTIL.getNeighbors(PHYSICAL_ENTITY_RECORD_ID, FULLY_CONNECTED);
+		if (neighborRecordIDs.length == 0) return neighborRecordIDs;
 
 		// filter by data sources & return
 		return NEIGHBORS_UTIL.filterByDataSource(PROTOCOL_REQUEST, neighborRecordIDs);
@@ -303,26 +314,25 @@ public class NeighborhoodMapRetriever {
 	private ImageIcon getNeighborhoodMapImage(XmlAssembly biopaxAssembly) throws Exception {
 
 		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage()");
-
+		
 		HttpClient client = new HttpClient();
 		NameValuePair nvps[] = new NameValuePair[6];
 		nvps[0] = new NameValuePair("data", biopaxAssembly.getXmlString());
 		nvps[1] = new NameValuePair("width", Integer.toString(WIDTH));
 		nvps[2] = new NameValuePair("height", Integer.toString(HEIGHT));
-		nvps[3] = new NameValuePair("unwanted_interactions", UNWANTED_INTERACTIONS_BUFFER.toString().trim());
-		nvps[4] = new NameValuePair("unwanted_small_molecules", UNWANTED_SMALL_MOLECULES_BUFFER.toString().trim());
+		nvps[3] = new NameValuePair("unwanted_interactions", UNWANTED_INTERACTIONS_STRING.trim());
+		nvps[4] = new NameValuePair("unwanted_small_molecules", UNWANTED_SMALL_MOLECULES_STRING.trim());
 		nvps[5] = new NameValuePair("version", "1.0");
-		PostMethod method = new PostMethod(NMS);
+		PostMethod method = new PostMethod(CPathUIConfig.getWebUIBean().getImageMapServerURL());
 		method.addParameters(nvps);
 
-
-		// check for http errors
+		// execute method
+		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage(), executing method....");
 		int statusCode = client.executeMethod(method);
-		if (statusCode != 200) {
-			throw new Exception("Error fetching neighborhood map image: " + HttpStatus.getStatusText(statusCode));
+		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage(), neighborhood map image fetched, response code: " + Integer.toString(statusCode) + ",  reading response...");
+		if (statusCode != HttpStatus.SC_OK) {
+			throw new Exception("Error fetching neighborhood map image: " + method.getStatusLine());
 		}
-
-		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage(), neighborhood map image fetched, reading response...");
 
 		// get content
 		InputStream instream = method.getResponseBodyAsStream();
