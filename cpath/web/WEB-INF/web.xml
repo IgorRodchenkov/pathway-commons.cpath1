@@ -120,15 +120,6 @@
 	        <param-name>admin_mode_active</param-name>
             <param-value>admin_mode_active__value</param-value>
         </init-param>
-        <init-param>
-		    <!-- set to "true" or "false" -->
-	        <param-name>admin_neighborhood_maps_enabled</param-name>
-            <param-value>admin_neighborhood_maps_enabled__value</param-value>
-        </init-param>
-        <init-param>
-	        <param-name>admin_neighborhood_map_server_url</param-name>
-            <param-value>admin_neighborhood_map_server_url__value</param-value>
-        </init-param>
         <load-on-startup/>
     </servlet>
 	<servlet>
