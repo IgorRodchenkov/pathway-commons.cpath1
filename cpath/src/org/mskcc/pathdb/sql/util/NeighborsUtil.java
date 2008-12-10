@@ -1,4 +1,4 @@
-// $Id: NeighborsUtil.java,v 1.5 2008-10-22 16:27:41 grossben Exp $
+// $Id: NeighborsUtil.java,v 1.6 2008-12-10 04:57:44 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -102,7 +102,10 @@ public class NeighborsUtil {
 	 */
 	public long getPhysicalEntityRecordID(ProtocolRequest protocolRequest, boolean cookInputID) throws NumberFormatException, DaoException {
 
-		long physicalEntityRecordID = Long.MAX_VALUE;
+		// check args
+		if (protocolRequest == null) return -1;
+
+		long physicalEntityRecordID = -1;
 		if (cookInputID) {
 			//  get all cPath Records that match external ID
 			DaoExternalDb daoExternalDb = new DaoExternalDb();
@@ -134,6 +137,10 @@ public class NeighborsUtil {
 	 * @throws DaoException
 	 */
 	public long[] filterByDataSource(ProtocolRequest protocolRequest, long[] neighborRecordIDs) throws DaoException {
+
+		// check args
+		if (protocolRequest == null) return neighborRecordIDs;
+		if (neighborRecordIDs.length == 0) return neighborRecordIDs;
 
 		// get datasource filter list
 		Set<String> dataSourceFilterSet = getDataSourceFilters(protocolRequest);
