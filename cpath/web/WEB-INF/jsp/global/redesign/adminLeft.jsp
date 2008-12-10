@@ -6,6 +6,7 @@
       <li><a href="adminWebLogging.do">Toggle Web Diagnostics</a></li>
       <li><a href="adminResetCache.do">Purge In-Memory / Persistent Disk Cache</a></li>
       <li><a href="adminDiagnostics.do">Run cPath Diagnostics</a></li>
+      <li><a href="adminMiniMapsConfig.do">Configure Mini-Maps</a></li>
 </ul>
 
 <h3>XML Cache</h3>
