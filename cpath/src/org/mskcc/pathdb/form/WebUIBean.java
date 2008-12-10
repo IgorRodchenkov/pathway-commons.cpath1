@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.20 2008-12-10 04:56:30 grossben Exp $
+// $Id: WebUIBean.java,v 1.21 2008-12-10 05:30:31 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -126,7 +126,9 @@ public class WebUIBean extends ActionForm {
 	/**
 	 * Filter Interactions
 	 */
-	private String filterInteractions = "";
+	private String filterInteractions = ("IN_SAME_COMPONENT,CO_CONTROL_DEPENDENT_SIMILAR," +
+										 "CO_CONTROL_DEPENDENT_ANTI,CO_CONTROL_INDEPENDENT_SIMILAR," +
+										 "CO_CONTROL_INDEPENDENT_ANTI");
 
     /**
      * List of Supported ID Types.
