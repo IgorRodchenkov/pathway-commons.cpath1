@@ -4,7 +4,9 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction"%>
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.action.web_api.binary_interaction_mode.ExecuteBinaryInteraction" %>
+<%@ page import="org.biopax.paxtools.io.sif.BinaryInteractionType"%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
@@ -19,16 +21,34 @@
         title = webUIBean.getApplicationName() + "::" + title;
     }
 
-    // ordered list of edge types (order used to display interaction types in legend)
-    final String[] orderedEdgeTypeList = {"COMPONENT_OF", "STATE_CHANGE", "METABOLIC_CATALYSIS",
-                                          "REACTS_WITH", "INTERACTS_WITH", "SEQUENTIAL_CATALYSIS"};
-
     // get binary interaction rules
     HashMap<String, String> edgeTypeMap = new HashMap<String,String>(); // map of tag name to tag description
     List<String> binaryInteractionRules = ExecuteBinaryInteraction.getRuleTypesForDisplay();
     for (String rule : binaryInteractionRules) {
         edgeTypeMap.put(rule, ExecuteBinaryInteraction.getRuleTypeDescription(rule));
     }
+
+    // unwanted interactions
+    ArrayList<String> unwantedInteractions = new ArrayList<String>();
+	String[] filterInteractions = CPathUIConfig.getWebUIBean().getFilterInteractions().split(",");
+	if (filterInteractions.length > 0) {
+		for (String filterInteraction : filterInteractions) {
+            unwantedInteractions.add(filterInteraction.trim());
+		}
+	}
+
+    // ordered list of edge types (order used to display interaction types in legend)
+    final String[] orderedEdgeTypeList = {BinaryInteractionType.COMPONENT_OF.getTag(),
+                                          BinaryInteractionType.STATE_CHANGE.getTag(),
+                                          BinaryInteractionType.METABOLIC_CATALYSIS.getTag(),
+                                          BinaryInteractionType.REACTS_WITH.getTag(),
+                                          BinaryInteractionType.INTERACTS_WITH.getTag(),
+                                          BinaryInteractionType.SEQUENTIAL_CATALYSIS.getTag(),
+                                          BinaryInteractionType.IN_SAME_COMPONENT.getTag(),
+                                          BinaryInteractionType.CO_CONTROL_DEPENDENT_ANTI.getTag(),
+                                          BinaryInteractionType.CO_CONTROL_DEPENDENT_SIMILAR.getTag(),
+                                          BinaryInteractionType.CO_CONTROL_INDEPENDENT_ANTI.getTag(),
+                                          BinaryInteractionType.CO_CONTROL_INDEPENDENT_SIMILAR.getTag()};
 %>
 
 <head>
@@ -80,7 +100,7 @@
 </tr>
 <%
     for (String rule : orderedEdgeTypeList) {
-        if (!org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever.UNWANTED_INTERACTIONS.contains(rule.trim())) {
+        if (!unwantedInteractions.contains(rule.trim())) {
             String displayName = rule.replace("_", " ");
             out.println("<tr>");
 			out.println("<td valign=CENTER><img src='jsp/images/sif_rules/" + rule + "_LEGEND_SIF.png' align='ABSMIDDLE'/>");
