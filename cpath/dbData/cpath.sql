@@ -272,3 +272,13 @@ CREATE TABLE `reference` (
 	`IS_EVIDENCE_REF` int(1) NOT NULL default '0',
 	PRIMARY KEY (`REFERENCE_ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+#
+# Table structure for table `neighborhood_map`
+#
+CREATE TABLE `neighborhood_map` (
+  `CPATH_ID` int(11) NOT NULL default '-1',
+  `NEIGHBORHOOD_MAP_SIZE` int(11) NOT NULL default '-1',
+  PRIMARY KEY (`CPATH_ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
