@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.72 2008-07-31 16:29:57 grossben Exp $
+// $Id: Admin.java,v 1.73 2008-12-10 04:58:32 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -79,6 +79,7 @@ public class Admin {
     private static final String COMMAND_COUNT_IDS = "count_ids";
     private static final String COMMAND_QUERY = "query";
     private static final String COMMAND_DUMP_ALL_BIOPAX = "dump_all_biopax";
+    private static final String COMMAND_NEIGHBORHOOD_MAP = "compute_neighborhood_map";
     private static final int NOT_SET = -9999;
 
     //  User Parameters
@@ -188,6 +189,9 @@ public class Admin {
 			} else if (command.equals(COMMAND_DUMP_ALL_BIOPAX)) {
 				DumpAllBioPAX dump = new DumpAllBioPAX(true, xdebug);
 				dump.executeTask();
+			} else if (command.equals(COMMAND_NEIGHBORHOOD_MAP)) {
+				ComputeNeighborhoodMapSize computeNeighborhoodMapSize = new ComputeNeighborhoodMapSize(true, xdebug);
+				computeNeighborhoodMapSize.executeTask();
             } else {
                 throw new IllegalArgumentException("Command Not Recognized");
             }
