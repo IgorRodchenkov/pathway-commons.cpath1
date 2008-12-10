@@ -151,41 +151,45 @@ public class FeedbackForm extends ActionForm {
 	private boolean validChallengeResponse(HttpServletRequest httpServletRequest) {
 
 		// get the challenge field
-		String challenge = httpServletRequest.getParameter("recaptcha_challenge_field");
-		if (challenge == null || challenge.length() == 0) return false;
+        if (httpServletRequest != null) {
+            String challenge = httpServletRequest.getParameter("recaptcha_challenge_field");
+            if (challenge == null || challenge.length() == 0) return false;
 
-		// get challenge response field
-		String challengeResponse = httpServletRequest.getParameter("recaptcha_response_field");
-		if (challengeResponse == null || challengeResponse.length() == 0) return false;
+            // get challenge response field
+            String challengeResponse = httpServletRequest.getParameter("recaptcha_response_field");
+            if (challengeResponse == null || challengeResponse.length() == 0) return false;
 
-		// private key
-		String serverName = httpServletRequest.getServerName();
-		String privateKey = "";
-		if (serverName.equals("www.pathwaycommons.org")) {
-			privateKey = PC_PRIVATE_RECAPTCHA_KEY;
-		}
-		else if (serverName.equals("awabi.cbio.mskcc.org")) {
-			privateKey = AWABI_PRIVATE_RECAPTCHA_KEY;
-		}
-		else if (serverName.equals("toro.cbio.mskcc.org")) {
-			privateKey = TORO_PRIVATE_RECAPTCHA_KEY;
-		}
+            // private key
+            String serverName = httpServletRequest.getServerName();
+            String privateKey = "";
+            if (serverName.equals("www.pathwaycommons.org")) {
+                privateKey = PC_PRIVATE_RECAPTCHA_KEY;
+            }
+            else if (serverName.equals("awabi.cbio.mskcc.org")) {
+                privateKey = AWABI_PRIVATE_RECAPTCHA_KEY;
+            }
+            else if (serverName.equals("toro.cbio.mskcc.org")) {
+                privateKey = TORO_PRIVATE_RECAPTCHA_KEY;
+            }
 
-		// validate with reCAPTCHA servers
-		HttpClient client = new HttpClient();
-		NameValuePair nvps[] = new NameValuePair[4];
-		nvps[0] = new NameValuePair("privatekey", privateKey);
-		nvps[1] = new NameValuePair("remoteip", httpServletRequest.getRemoteAddr());
-		nvps[2] = new NameValuePair("challenge", challenge);
-		nvps[3] = new NameValuePair("response", challengeResponse);
+            // validate with reCAPTCHA servers
+            HttpClient client = new HttpClient();
+            NameValuePair nvps[] = new NameValuePair[4];
+            nvps[0] = new NameValuePair("privatekey", privateKey);
+            nvps[1] = new NameValuePair("remoteip", httpServletRequest.getRemoteAddr());
+            nvps[2] = new NameValuePair("challenge", challenge);
+            nvps[3] = new NameValuePair("response", challengeResponse);
 
-		// create method
-		HttpMethodBase method = new PostMethod("http://api-verify.recaptcha.net/verify");
-		((PostMethod)(method)).addParameters(nvps);
+            // create method
+            HttpMethodBase method = new PostMethod("http://api-verify.recaptcha.net/verify");
+            ((PostMethod)(method)).addParameters(nvps);
 
-		// outta here
-		return executeMethod(client, method);
-	}
+            // outta here
+            return executeMethod(client, method);
+        } else {
+            return true;
+        }
+    }
 
 	/**
 	 * Executes http request.
