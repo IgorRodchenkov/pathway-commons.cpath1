@@ -448,7 +448,7 @@
 	<target name="prepare_cruise_control" depends="clean, prepare"
 		description="Prepares Everything for Cruise Control Build">
         <replace file="${basedir}/build.properties">
-            <replacetoken>db.name=cpath</replacetoken>
+            <replacetoken>db.name=pc</replacetoken>
             <replacevalue>db.name=cruisecpath</replacevalue>
         </replace>
     </target>
