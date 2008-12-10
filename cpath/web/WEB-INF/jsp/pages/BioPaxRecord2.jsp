@@ -26,11 +26,6 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 <%
-// get admin property to determine if neighborhood maps should be enabled
-org.mskcc.dataservices.util.PropertyManager pManager = org.mskcc.dataservices.util.PropertyManager.getInstance();
-Boolean enableNeighborhoodMaps =
-	new Boolean(pManager.getProperty(org.mskcc.pathdb.action.BaseAction.PROPERTY_ADMIN_ENABLE_NEIGHBORHOOD_MAPS));
-
 //  Extract data from attributes
 //  The BioPAX Record Summary
 BioPaxRecordSummary bpSummary = (BioPaxRecordSummary) request.getAttribute(ShowBioPaxRecord2.BP_SUMMARY);
@@ -80,7 +75,7 @@ if (filterSettings != null) {
 }
 
 // num neighbors
-Integer numNeighbors = (Integer)request.getAttribute(ShowBioPaxRecord2.NUM_NEIGHBORS);
+Integer numNeighbors = (Integer)request.getAttribute(ShowBioPaxRecord2.NUM_NEIGHBORS_ATTRIBUTE);
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
@@ -507,13 +502,7 @@ enable Javascript support within your web browser.
 %>
 <%
     // Output Neighborhood Map
-    if (enableNeighborhoodMaps &&
-		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PATHWAY) &&
-		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.DNA) &&
-		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.RNA) &&
-		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.SMALL_MOLECULE) &&
-		!bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PHYSICAL_ENTITY) &&
-		!bpSummary.getType().equalsIgnoreCase("Physical Entity")) {
+    if (webUIBean.getEnableMiniMaps() && bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
 	    out.println ("<div class=\"thumbnail_box\">");
         out.println("<h3>Neighborhood Map:</h3>");
         out.println("<P>");
@@ -521,7 +510,7 @@ enable Javascript support within your web browser.
 			// use no neighbors found
 			out.println("<img src=\"jsp/images/maps/no-neighbors-found-thumbnail.png\">");
 		}
-		else if (numNeighbors > NeighborhoodMapRetriever.MAX_NODES_IN_MAP) {
+		else if (numNeighbors > webUIBean.getMaxMiniMapSize()) {
 			// use too many neighbors image
 			out.println("<img src=\"jsp/images/maps/too-many-neighbors-found-thumbnail.png\">");
 		}
