@@ -148,7 +148,7 @@ public class FeedbackForm extends ActionForm {
 	 *
 	 * @param httpServletRequest HttpServletRequest
 	 */
-	private boolean validChallengeResponse(HttpServletRequest httpServletRequest) {
+//	private boolean validChallengeResponse(HttpServletRequest httpServletRequest) {
 
 		// get the challenge field
         if (httpServletRequest != null) {
