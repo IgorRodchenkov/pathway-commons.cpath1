@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.40 2008-10-27 17:49:32 grossben Exp $
+// $Id: CPathServlet.java,v 1.41 2008-12-10 04:57:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -95,8 +95,7 @@ public final class CPathServlet extends ActionServlet {
         String adminPassword = config.getInitParameter("admin_password");
         String webSkin = config.getInitParameter("web_skin");
         String adminModeActive = config.getInitParameter(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE);
-        String adminEnableNeighborhoodMaps = config.getInitParameter(BaseAction.PROPERTY_ADMIN_ENABLE_NEIGHBORHOOD_MAPS);
-        String adminNeighborhoodMapServerURL = config.getInitParameter(BaseAction.PROPERTY_ADMIN_NEIGHBORHOOD_MAP_SERVER_URL);
+
         String psiSchemaUrl = config.getInitParameter
                 (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
         log.info("web.xml param:  db_host --> " + dbHost + " [OK]");
@@ -114,12 +113,6 @@ public final class CPathServlet extends ActionServlet {
         log.info("web.xml param:  "
                 + BaseAction.PROPERTY_ADMIN_MODE_ACTIVE + "--> "
                 + adminModeActive + " [OK]");
-        log.info("web.xml param:  "
-                + BaseAction.PROPERTY_ADMIN_ENABLE_NEIGHBORHOOD_MAPS + "--> "
-                + adminEnableNeighborhoodMaps + " [OK]");
-        log.info("web.xml param:  "
-                + BaseAction.PROPERTY_ADMIN_NEIGHBORHOOD_MAP_SERVER_URL + "--> "
-                + adminNeighborhoodMapServerURL + " [OK]");
 
         manager.setProperty(PropertyManager.DB_USER, dbUser);
         manager.setProperty(PropertyManager.DB_PASSWORD,
@@ -129,8 +122,6 @@ public final class CPathServlet extends ActionServlet {
         manager.setProperty(CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION,
                 psiSchemaUrl);
         manager.setProperty(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE, adminModeActive);
-        manager.setProperty(BaseAction.PROPERTY_ADMIN_ENABLE_NEIGHBORHOOD_MAPS, adminEnableNeighborhoodMaps);
-        manager.setProperty(BaseAction.PROPERTY_ADMIN_NEIGHBORHOOD_MAP_SERVER_URL, adminNeighborhoodMapServerURL);
 
         CPathUIConfig.setWebSkin(webSkin);
         if (webSkin.equals("default_psi_mi")) {
