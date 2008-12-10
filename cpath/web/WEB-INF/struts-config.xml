@@ -189,6 +189,25 @@
 			    <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
         </action>
 
+        <action path="/adminMiniMapsConfig"
+            type="org.mskcc.pathdb.action.admin.AdminMiniMapsConfigAction"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/AdminMiniMapsConfig.jsp"
+			scope="request"
+			validate="false">
+			<forward name="success" path="/WEB-INF/jsp/pages/AdminMiniMapsConfig.jsp"/>
+        </action>
+
+        <action path="/adminUpdateMiniMapsConfig"
+            type="org.mskcc.pathdb.action.admin.AdminUpdateMiniMapsConfigAction"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/AdminMiniMapsConfig.jsp"
+            scope="request"
+			validate="true">
+            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+            <forward name="failure" path="/WEB-INF/jsp/pages/AdminMiniMapsConfig.jsp"/>
+        </action>
+
         <action path="/adminRemoveTask"
             type="org.mskcc.pathdb.action.admin.AdminRemoveTask">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
