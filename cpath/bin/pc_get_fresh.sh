@@ -54,7 +54,7 @@ echo Unzipping Reactome file...
 unzip -d $FRESH_HOME/reactome $FRESH_HOME/reactome/biopax.zip
 
 echo
-echo -n "Enter version number for UniProt:  "
+echo -n "Enter version number for UniProt (enter NA if you don't know the version number):  "
 read version
 echo -n "Enter date for UniProt (MM/DD/YYYY):  "
 read date
