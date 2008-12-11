@@ -47,4 +47,6 @@ public class CPathServletResponse implements HttpServletResponse {
 	public String encodeRedirectURL(String url) { return response.encodeRedirectURL(url); }
 	public boolean containsHeader(String header) { return response.containsHeader(header); }
 	public void addCookie(Cookie cookie) { response.addCookie(cookie); }
+    public void setCharacterEncoding(String s) { response.setCharacterEncoding(s); }
+    public String getContentType() { return response.getContentType(); }
 }

@@ -9,8 +9,8 @@
         ProtocolRequest pRequest = new ProtocolRequest();
         pRequest.setCommand(ProtocolConstants.COMMAND_GET_BY_KEYWORD);
         pRequest.setFormat(ProtocolConstants.FORMAT_HTML);
-        OrganismStats orgStats = new OrganismStats();
-        ArrayList orgList = orgStats.getOrganismsSortedByNumInteractions();
+        OrganismStats orgStats = OrganismStats.getInstance();
+        ArrayList orgList = orgStats.getListSortedByNumEntities();
 
         //  Clone the ArrayList Locally and Reverse Sort
         orgList = (ArrayList) orgList.clone();
