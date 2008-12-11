@@ -90,7 +90,7 @@ public class TestUniProtToBioPaxParser extends TestCase {
         while (commentIterator.hasNext()) {
             String comment = commentIterator.next();
             assertTrue (comment.contains("COPYRIGHT:  Protein annotation"));
-            assertTrue (comment.contains("GENE SYNONYMS: YWHA1 YWHA1_X YWHA1_Y YWHA1_Z."));
+            assertTrue (comment.contains("GENE SYNONYMS: YWHA1"));
         }
         bpFile.delete();
     }
