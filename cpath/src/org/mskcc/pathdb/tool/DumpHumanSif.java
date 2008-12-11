@@ -57,35 +57,7 @@ public class DumpHumanSif {
         curatedDbSet.add("CELL_MAP");
         curatedDbSet.add("NCI_NATURE");
         curatedDbSet.add("HPRD");
-        initProps();
-    }
-
-    /**
-     * Initializes the build properties.
-     * @throws IOException IO Error.
-     */
-    private void initProps() throws IOException {
-        EhCache.initCache();
-        EhCache.resetAllCaches();
-
-        //  Load build.properties
-        String cpathHome = System.getProperty(Admin.CPATH_HOME);
-        String separator = System.getProperty("file.separator");
-        Properties buildProps = new Properties();
-        buildProps.load(new FileInputStream(cpathHome
-                + separator + "build.properties"));
-
-        String dbUser = buildProps.getProperty("db.user");
-        String dbPwd = buildProps.getProperty("db.password");
-        String dbName = buildProps.getProperty("db.name");
-        String dbHost = buildProps.getProperty("db.host");
-
-        PropertyManager propertyManager = PropertyManager.getInstance();
-        propertyManager.setProperty(PropertyManager.DB_USER, dbUser);
-        propertyManager.setProperty(PropertyManager.DB_PASSWORD, dbPwd);
-        propertyManager.setProperty(CPathConstants.PROPERTY_MYSQL_DATABASE,
-                dbName);
-        propertyManager.setProperty(PropertyManager.DB_LOCATION, dbHost);
+        ToolInit.initProps();
     }
 
     /**
