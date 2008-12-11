@@ -76,7 +76,8 @@ public class UniProtToBioPax {
                     ConsoleUtil.showProgress(pMonitor);
                 }
                 if (line.startsWith ("//")) {
-                    StringBuffer name = (StringBuffer) dataElements.get("DE");
+                    StringBuffer deField = (StringBuffer) dataElements.get("DE");
+
                     StringBuffer id = (StringBuffer) dataElements.get("ID");
                     StringBuffer organismName = (StringBuffer) dataElements.get("OS");
                     StringBuffer organismTaxId = (StringBuffer) dataElements.get("OX");
@@ -91,7 +92,7 @@ public class UniProtToBioPax {
                     currentProtein.setSHORT_NAME(shortName);
                     currentProtein.setRDFId(shortName);
 
-                    setNameAndSynonyms(currentProtein, name.toString());
+                    setNameAndSynonyms(currentProtein, deField.toString());
                     setOrganism(organismName.toString(), organismTaxId.toString(),
                             currentProtein, bpModel);
                     String geneSyns = null;
@@ -142,15 +143,29 @@ public class UniProtToBioPax {
         return totalNumProteinsProcessed;
     }
 
-    private void setNameAndSynonyms (protein currentProtein, String deLine) {
-        String parts[] = deLine.split("\\(");
-        currentProtein.setNAME(parts[0].trim());
-        if (parts.length > 1) {
-            for (int i=1; i<parts.length; i++) {
-                String syn = parts[i].trim();
-                syn = syn.replaceAll("\\)", "");
-                syn = syn.replaceAll("\\.", "");
-                currentProtein.addSYNONYMS(syn);
+    private void setNameAndSynonyms (protein currentProtein, String deField) {
+        //  With the latest UNIPROT Export, the DE Line contains multiple fields.
+        //  For example:
+        //  DE   RecName: Full=14-3-3 protein beta/alpha;
+        //  DE   AltName: Full=Protein kinase C inhibitor protein 1;
+        //  DE            Short=KCIP-1;
+        //  DE   AltName: Full=Protein 1054;
+        //  We only want DE:  RecName:Full
+        String name = null;
+        if (deField != null && deField.length() > 0) {
+            String deTemp = deField.toString();
+            String fields[] = deTemp.split(";");
+            for (String field: fields) {
+                String parts[] = field.split("=");
+                if (parts.length == 2) {
+                    String fieldName = parts[0].trim();
+                    String fieldValue = parts[1].trim();
+                    if (fieldName.length() > 0 && fieldName.equals("RecName: Full")) {
+                        currentProtein.setNAME(fieldValue);
+                    } else {
+                        currentProtein.addSYNONYMS(fieldValue);
+                    }
+                }
             }
         }
     }
