@@ -510,10 +510,6 @@ enable Javascript support within your web browser.
 			// use no neighbors found
 			out.println("<img src=\"jsp/images/maps/no-neighbors-found-thumbnail.png\">");
 		}
-		else if (numNeighbors > webUIBean.getMaxMiniMapSize()) {
-			// use too many neighbors image
-			out.println("<img src=\"jsp/images/maps/too-many-neighbors-found-thumbnail.png\">");
-		}
 		else {
 			out.println("<a href=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
@@ -527,7 +523,9 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + "'/></a>");
 			out.println("</P>");
-			out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a></div>");
+			//out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a></div>");
+			out.println("<a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a>" +
+						"<a href='filter.do' TITLE='If this map is too large, try updating your filter settings to remove unwanted data sources.'\">(update filter settings)</a>");
 		}
 		out.println("</div>");
 	}
