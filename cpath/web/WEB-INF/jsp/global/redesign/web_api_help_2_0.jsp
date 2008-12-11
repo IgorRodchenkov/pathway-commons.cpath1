@@ -33,7 +33,6 @@ This page provides a reference guide to help you get started.
 <li><a href="#get_neighbors">[3] Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></a></li>
 <li><a href="#get_parents">[4]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></a></li>
 <li><a href="#get_by_cpath_id">[5] Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></a></li>
-<li><a href="#get_by_cpath_id">[5] Command:  <%= ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID %></a></li>
 <li><a href="#additional_params">[6] Additional Parameter Details</a></li>
 <li><a href="#errors">[7] Error Codes</a></li>
 </ul>
