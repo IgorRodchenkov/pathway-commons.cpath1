@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.39 2008-07-01 20:05:23 cerami Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.40 2008-12-11 23:08:30 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -417,7 +417,7 @@ public class ImportBioPaxToCPath {
 	 * Stores evidence information.
 	 */
 	private void storeEvidence() throws JDOMException, DaoException {
-        pMonitor.setCurrentMessage("Extracing PubMed References...");
+        pMonitor.setCurrentMessage("Extracting PubMed References...");
 
         //  First, do a quick string match.  If there are no matches for EVIDENCE
         //  we avoid the lengthy RDF Query.
