@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.13 2008-12-10 05:30:48 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.14 2008-12-11 23:09:14 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,8 +36,12 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.action.BaseAction;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.dao.DaoNeighborhoodMap;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.model.XmlRecordType;
+import org.mskcc.pathdb.model.NeighborhoodMap;
 import org.mskcc.pathdb.model.InternalLinkRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
@@ -51,6 +55,7 @@ import org.mskcc.pathdb.protocol.ProtocolConstantsVersion3;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.sql.util.NeighborsUtil;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
+import org.biopax.paxtools.io.sif.BinaryInteractionType;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForward;
@@ -90,6 +95,15 @@ public class NeighborhoodMapRetriever {
 	private static int SVG_WIDTH_LARGE = 585;
 	private static int SVG_HEIGHT_LARGE = 540;
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
+	private static Set<String> ALL_DATA_SOURCES;
+	public static class NeighborhoodMapSize {
+		public XmlAssembly biopaxAssembly; // biopax assembly used to create sif assembly - stored here for optimization
+		public Integer sifNeighborhoodSize; // size of map after conversion to sif and filtering of unwanted interactions
+		// constructor
+		NeighborhoodMapSize() {
+			sifNeighborhoodSize = 0;
+		}
+	}
 
 	// member vars
 	private int WIDTH;
@@ -105,28 +119,118 @@ public class NeighborhoodMapRetriever {
 	private ArrayList<String> UNWANTED_INTERACTIONS;
 	private String UNWANTED_INTERACTIONS_STRING;
 	private String UNWANTED_SMALL_MOLECULES_STRING;
+	private boolean MEMBER_VARS_SET;
 
-	/**
-	 * Gets neighborhood map count.
-	 *
+    /**
+     * Generates neighborhood map image
+     *
      * @param xdebug   XDebug Object.
      * @param protocolRequest Protocol Request Object.
-	 * @return Integer
-	 */
-	public Integer getNeighborhoodMapSize(XDebug xdebug, ProtocolRequest protocolRequest) {
+     * @param request  Http Servlet Request.
+     * @param response Http Servlet Response.
+     * @param mapping  Struts ActionMapping Object.
+     * @return Struts Action Forward Object.
+	 * @throws DaoException, NumberFormatException, IllegalArgumentException
+     */
+    public ActionForward processRequest(XDebug xdebug, ProtocolRequest protocolRequest,
+										HttpServletRequest request, HttpServletResponse response,
+										ActionMapping mapping) throws DaoException, NumberFormatException, IllegalArgumentException {
 
+		// set some member args
+		if (!MEMBER_VARS_SET) setMemberVars(xdebug, protocolRequest);
+
+		log.info("NeighborhoodMapRetriever.subExecute(), id: " + PHYSICAL_ENTITY_RECORD_ID + ", want_thumbnail: " + WANT_THUMBNAIL + ", want_map_legend_frameset: " + WANT_FRAMESET);
+
+		try {
+
+			// short circuit if frameset wanted
+			if (WANT_FRAMESET) {
+				writeFramesetToResponse(response);
+				return null;
+			}
+
+			// get neighbor ids
+			NeighborhoodMapSize neighborhoodMapSize = getNeighborhoodMapSize(xdebug, protocolRequest, true);
+			log.info("NeighborhoodMapRetriever.subExecute(), SIF Neighborhood Size: " + neighborhoodMapSize.sifNeighborhoodSize);
+
+			// any maps greater - tdb: this size is not accurate - need to compute base on sif
+			if (neighborhoodMapSize.sifNeighborhoodSize > CPathUIConfig.getWebUIBean().getMaxMiniMapSize()) {
+				log.info("NeighborhoodMapRetriever.subExecute(), SIF Neighborhood Size > MaxMiniMapSize, filtering out " + BinaryInteractionType.INTERACTS_WITH.getTag());
+				UNWANTED_INTERACTIONS_STRING += UNWANTED_INTERACTIONS_STRING + BinaryInteractionType.INTERACTS_WITH.getTag();
+			}
+
+			// write out png
+			ImageIcon imageIcon = getNeighborhoodMapImage(neighborhoodMapSize.biopaxAssembly);
+			if (imageIcon != null) writeMapToResponse(imageIcon, response);
+		}
+		catch (Exception e) {
+			if (!CONTENT_TYPE_SET) {
+				return mapping.findForward(BaseAction.FORWARD_FAILURE);
+			}
+			else {
+				e.printStackTrace();
+			}
+		}
+
+		// outta here
+		return null;
+    }
+
+	/**
+	 * Gets neighborhood map size that tries to optimize.
+	 *
+     * @param xdebug   XDebug
+     * @param protocolRequest ProtocolRequest
+	 * @return NeighborhoodMapSize
+	 * @throws DaoException
+	 */
+	public NeighborhoodMapSize getNeighborhoodMapSize(XDebug xdebug, ProtocolRequest protocolRequest, boolean wantAssembly)  throws DaoException {
+
+		log.info("NeighborhoodMapRetriever.getNeighborMapSize() (optimize), wantAssembly: " + wantAssembly);
+
+		// if assembly is required, 
+		// or precomputed value cannot be used (when subset of snapshot ids is requested) we need to do everything
+		if (wantAssembly || !allDataSources(xdebug, protocolRequest)) {
+			log.info("NeighborhoodMapRetriever.getNeighborMapSize() (optimize), CANNOT use precomputed map size...");
+			return getNeighborhoodMapSize(xdebug, protocolRequest);
+		}
+
+		// assembly is not wanted, entire data set is being used, just lookup in database
+		if (!MEMBER_VARS_SET) setMemberVars(xdebug, protocolRequest);
+		log.info("NeighborhoodMapRetriever.getNeighborMapSize() (optimize), using precomputed map size...");
+		DaoNeighborhoodMap daoMap = new DaoNeighborhoodMap();
+		NeighborhoodMap map = daoMap.getNeighborhoodMapRecord(PHYSICAL_ENTITY_RECORD_ID);
+		NeighborhoodMapSize toReturn = new NeighborhoodMapSize();
+		toReturn.sifNeighborhoodSize = map.getMapSize();
+
+		// outta here
+		return toReturn;
+	}
+
+	/**
+	 * Gets neighborhood map size.
+	 *
+     * @param xdebug   XDebug
+     * @param protocolRequest ProtocolRequest
+	 * @return NeighborhoodMapSize
+	 * @throws DaoException
+	 */
+	public NeighborhoodMapSize getNeighborhoodMapSize(XDebug xdebug, ProtocolRequest protocolRequest) throws DaoException {
+
+		NeighborhoodMapSize toReturn = new NeighborhoodMapSize();
 		HashSet<String> filteredBinaryInteractionParticipants = new HashSet<String>();
 		try {
 			// get list of neighbor ids
-			setMemberVars(xdebug, protocolRequest);
+			if (!MEMBER_VARS_SET) setMemberVars(xdebug, protocolRequest);
 			long[] neighborIDs = getNeighborIDs();
 
 			log.info("NeighborhoodMapRetriever.getNeighborMapSize(), before sif conversion: " + Long.toString(neighborIDs.length));
-			if (neighborIDs.length == 0) return 0;
+			if (neighborIDs.length == 0) return toReturn;
 
 			// create sif assembly
 			XmlAssembly biopaxAssembly = XmlAssemblyFactory.createXmlAssembly(neighborIDs, XmlRecordType.BIO_PAX, 1,
 																			  XmlAssemblyFactory.XML_FULL, true, new XDebug());
+			toReturn.biopaxAssembly = biopaxAssembly;
 			BinaryInteractionAssembly sifAssembly =
 				BinaryInteractionAssemblyFactory.createAssembly(BinaryInteractionAssemblyFactory.AssemblyType.SIF,
 																BinaryInteractionUtil.getRuleTypes(),
@@ -150,79 +254,15 @@ public class NeighborhoodMapRetriever {
 		}
 		catch (Exception e) {
 			log.info("NeighborhoodMapRetriever.getNeighborMapSize(), Exception caught: " + e.getMessage() + ", PHYSICAL_ENTITY_RECORD_ID: " + Long.toString(PHYSICAL_ENTITY_RECORD_ID));
-			return 0;
+			return toReturn;
 		}
 
 		log.info("NeighborhoodMapRetriever.getNeighborMapSize(), after sif conversion: " + filteredBinaryInteractionParticipants.size());
 
 		// outta here
-		return filteredBinaryInteractionParticipants.size();
+		toReturn.sifNeighborhoodSize = filteredBinaryInteractionParticipants.size();
+		return toReturn;
 	}
-
-    /**
-     * Generates neighborhood map image
-     *
-     * @param xdebug   XDebug Object.
-     * @param protocolRequest Protocol Request Object.
-     * @param request  Http Servlet Request.
-     * @param response Http Servlet Response.
-     * @param mapping  Struts ActionMapping Object.
-     * @return Struts Action Forward Object.
-	 * @throws DaoException, NumberFormatException, IllegalArgumentException
-     */
-    public ActionForward processRequest(XDebug xdebug, ProtocolRequest protocolRequest,
-										HttpServletRequest request, HttpServletResponse response,
-										ActionMapping mapping) throws DaoException, NumberFormatException, IllegalArgumentException {
-
-		// set some member args
-		setMemberVars(xdebug, protocolRequest);
-
-		log.info("NeighborhoodMapRetriever.subExecute(), id: " + PHYSICAL_ENTITY_RECORD_ID + ", want_thumbnail: " + WANT_THUMBNAIL + ", want_map_legend_frameset: " + WANT_FRAMESET);
-
-		try {
-
-			// short circuit if frameset wanted
-			if (WANT_FRAMESET) {
-				writeFramesetToResponse(response);
-				return null;
-			}
-
-			// get neighbor ids
-			long[] neighborIDs = getNeighborIDs();
-			log.info("NeighborhoodMapRetriever.subExecute(), numNodes: " + Long.toString(neighborIDs.length));
-
-			// short circuit if necessary - now handled in BioPAXRecord2.jsp
-			//if (neighborIDs.length == 0) {
-			//	String imageFile = (WANT_THUMBNAIL) ? "resources/no-neighbors-found-thumbnail.png" : "resources/no-neighbors-found.png";
-			//	writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
-			//	return null;
-			//}
-			//else if (neighborIDs.length > CPathUIConfig.getWebUIBean().getMaxMiniMapSize()) {
-			//	String imageFile = (WANT_THUMBNAIL) ? "resources/too-many-neighbors-found-thumbnail.png" : "resources/too-many-neighbors-found.png";
-			//	writeMapToResponse(new ImageIcon(NeighborhoodMapRetriever.class.getResource(imageFile)), response);
-			//	return null;
-			//}
-
-			// get biopax assembly
-			XmlAssembly biopaxAssembly = XmlAssemblyFactory.createXmlAssembly(neighborIDs, XmlRecordType.BIO_PAX, 1,
-																			  XmlAssemblyFactory.XML_FULL, true, new XDebug());
-
-			// write out png
-			ImageIcon imageIcon = getNeighborhoodMapImage(biopaxAssembly);
-			if (imageIcon != null) writeMapToResponse(imageIcon, response);
-		}
-		catch (Exception e) {
-			if (!CONTENT_TYPE_SET) {
-				return mapping.findForward(BaseAction.FORWARD_FAILURE);
-			}
-			else {
-				e.printStackTrace();
-			}
-		}
-
-		// outta here
-		return null;
-    }
 
 	/**
 	 * Set member vars
@@ -258,6 +298,16 @@ public class NeighborhoodMapRetriever {
 		WIDTH = (WANT_THUMBNAIL) ? SVG_WIDTH_SMALL : SVG_WIDTH_LARGE;
 		HEIGHT = (WANT_THUMBNAIL) ? SVG_HEIGHT_SMALL : SVG_HEIGHT_LARGE;
 
+		// grab entire snapshot master term set
+		if (ALL_DATA_SOURCES == null) {
+			ALL_DATA_SOURCES = new HashSet<String>();
+			DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
+			ArrayList<ExternalDatabaseSnapshotRecord> snapshotRecords = daoSnapshot.getAllNetworkDatabaseSnapshots();
+			for (ExternalDatabaseSnapshotRecord record : snapshotRecords) {
+				ALL_DATA_SOURCES.add(record.getExternalDatabase().getMasterTerm());
+			}
+		}
+
 		UNWANTED_INTERACTIONS_STRING = "";
 		UNWANTED_INTERACTIONS = new ArrayList<String>();
 		WebUIBean bean = (CPathUIConfig.getWebUIBean() != null) ? CPathUIConfig.getWebUIBean() : new WebUIBean();
@@ -265,7 +315,7 @@ public class NeighborhoodMapRetriever {
 		if (filterInteractions.length > 0) {
 			for (String filterInteraction : filterInteractions) {
 				UNWANTED_INTERACTIONS.add(filterInteraction.trim());
-				UNWANTED_INTERACTIONS_STRING = UNWANTED_INTERACTIONS_STRING + filterInteraction.trim() + " ";
+				UNWANTED_INTERACTIONS_STRING += filterInteraction.trim() + " ";
 			}
 		}
 		UNWANTED_SMALL_MOLECULES_STRING = "";
@@ -285,6 +335,8 @@ public class NeighborhoodMapRetriever {
 		//	log.info("NeighborhoodMapRetriever (static code execution)");
 		//	e.printStackTrace();
 		//}
+
+		MEMBER_VARS_SET = true;
 	}
 
 	/**
@@ -408,5 +460,36 @@ public class NeighborhoodMapRetriever {
 		response.setContentType("image/png");
 		CONTENT_TYPE_SET = true;
 		ImageIO.write(image, "png", response.getOutputStream());
+	}
+
+	/**
+	 * Determines if current snapshot id set  is equal to entire data source set
+	 *
+     * @param xdebug   XDebug
+	 * @param protocolRequest ProtocolRequest
+	 * @return boolean
+	 * @throws DaoException
+	 */
+	private boolean allDataSources(XDebug xdebug, ProtocolRequest protocolRequest) throws DaoException {
+
+		log.info("NeighborhoodMapRetriever.allDataSources()");
+
+		// do this to set ALL_DATA_SOURCES
+		if (!MEMBER_VARS_SET) setMemberVars(xdebug, protocolRequest);
+
+		// get snapshot id set from request
+		String[] requestedDataSources = protocolRequest.getDataSources();
+
+		// if size is not equal, outta here
+		if (requestedDataSources.length != ALL_DATA_SOURCES.size()) return false;
+
+		// size is equal, compare each id
+		for(String requestedDataSource : requestedDataSources) {
+			if (!ALL_DATA_SOURCES.contains(requestedDataSource)) return false;
+		}
+
+		// made it here
+		log.info("NeighborhoodMapRetriever.allDataSources() is true...");
+		return true;
 	}
 }

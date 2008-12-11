@@ -1,4 +1,4 @@
-// $Id: ComputeNeighborhoodMapSize.java,v 1.1 2008-12-10 16:51:43 grossben Exp $
+// $Id: ComputeNeighborhoodMapSize.java,v 1.2 2008-12-11 23:07:41 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -41,6 +41,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoNeighborhoodMap;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever;
+import org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever.NeighborhoodMapSize;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import org.mskcc.pathdb.xdebug.XDebug;
@@ -155,11 +156,11 @@ public class ComputeNeighborhoodMapSize extends Task {
 					map.setCpathID(record.getId());
 					// get map size
 					protocolRequest.setQuery(Long.toString(record.getId()));
-					Integer mapSize = retriever.getNeighborhoodMapSize(xdebug, protocolRequest);
-					map.setMapSize(mapSize);
+					NeighborhoodMapSize mapSize = retriever.getNeighborhoodMapSize(xdebug, protocolRequest);
+					map.setMapSize(mapSize.sifNeighborhoodSize);
 					// add record to table
 					daoMap.addNeighborhoodMap(map);
-					System.out.println(record.getId() + "|" + record.getName() + "|" + mapSize);
+					System.out.println(record.getId() + "|" + record.getName() + "|" + mapSize.sifNeighborhoodSize);
 				}
 			} catch (Exception e1) {
 				throw new DaoException(e1);
