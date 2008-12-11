@@ -359,7 +359,6 @@ public class UniProtToBioPax {
      * Command Line Usage.
      * @param args          Must include UniProt File Name.
      * @throws java.io.IOException  IO Error.
-     * // TODO:  Verify that BioPAX created via this method can be imported into cPath.
      */
     public static void main(String[] args) throws IOException, IllegalAccessException,
             InvocationTargetException {
@@ -378,7 +377,9 @@ public class UniProtToBioPax {
         UniProtToBioPax parser = new UniProtToBioPax(pMonitor);
         int numRecords = parser.convertToBioPax(uniProtFile);
         System.out.println ("Total number of protein records processed:  " + numRecords);
-        System.out.println ("All files written to:  "
-                + uniProtFile.getParentFile().getAbsolutePath());
+        if (uniProtFile.getParentFile() != null) {
+            System.out.println ("All files written to:  "
+                    + uniProtFile.getParentFile().getAbsolutePath());
+        }
     }
 }
