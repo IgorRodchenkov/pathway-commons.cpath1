@@ -2,9 +2,11 @@ ID   1433B_HUMAN             Reviewed;         246 AA.
 AC   P31946;
 DT   01-JUL-1993, integrated into UniProtKB/Swiss-Prot.
 DT   23-JAN-2007, sequence version 3.
-DT   26-FEB-2008, entry version 94.
-DE   14-3-3 protein beta/alpha (Protein kinase C inhibitor protein 1)
-DE   (KCIP-1) (Protein 1054).
+DT   25-NOV-2008, entry version 99.
+DE   RecName: Full=14-3-3 protein beta/alpha;
+DE   AltName: Full=Protein kinase C inhibitor protein 1;
+DE            Short=KCIP-1;
+DE   AltName: Full=Protein 1054;
 GN   Name=YWHAB;
 OS   Homo sapiens (Human).
 OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
@@ -114,19 +116,19 @@ CC       Q7Z401:DENND4A; NbExp=1; IntAct=EBI-359815, EBI-1046479;
 CC       Q13627-2:DYRK1A; NbExp=3; IntAct=EBI-359815, EBI-1053621;
 CC       Q96F86:EDC3; NbExp=1; IntAct=EBI-359815, EBI-997311;
 CC       Q9Y2J2:EPB41L3; NbExp=1; IntAct=EBI-359815, EBI-310986;
-CC       Q96TC7:FAM82C; NbExp=1; IntAct=EBI-359815, EBI-1056589;
+CC       Q96TC7:FAM82A2; NbExp=1; IntAct=EBI-359815, EBI-1056589;
 CC       Q9Y4H2:IRS2; NbExp=1; IntAct=EBI-359815, EBI-1049582;
 CC       Q02241:KIF23; NbExp=1; IntAct=EBI-359815, EBI-306852;
 CC       P33176:KIF5B; NbExp=1; IntAct=EBI-359815, EBI-355878;
 CC       Q07866:KLC1; NbExp=1; IntAct=EBI-359815, EBI-721019;
 CC       Q6PKG0:LARP1; NbExp=1; IntAct=EBI-359815, EBI-1052114;
 CC       P27448:MARK3; NbExp=1; IntAct=EBI-359815, EBI-707595;
-CC       Q6WCQ1:MRIP; NbExp=1; IntAct=EBI-359815, EBI-1022605;
+CC       Q6WCQ1:MPRIP; NbExp=1; IntAct=EBI-359815, EBI-1022605;
 CC       Q9Y2A7:NCKAP1; NbExp=1; IntAct=EBI-359815, EBI-389845;
 CC       Q9H4L5:OSBPL3; NbExp=1; IntAct=EBI-359815, EBI-1051317;
 CC       Q8TEW0:PARD3; NbExp=1; IntAct=EBI-359815, EBI-81968;
 CC       O94921:PFTK1; NbExp=5; IntAct=EBI-359815, EBI-1043945;
-CC       Q9UBF8:PIK4CB; NbExp=1; IntAct=EBI-359815, EBI-1053214;
+CC       Q9UBF8:PI4KB; NbExp=1; IntAct=EBI-359815, EBI-1053214;
 CC       Q9UJ41:RABGEF1; NbExp=1; IntAct=EBI-359815, EBI-913954;
 CC       Q9H0H5:RACGAP1; NbExp=1; IntAct=EBI-359815, EBI-717233;
 CC       P04049:RAF1; NbExp=4; IntAct=EBI-359815, EBI-365996;
@@ -179,14 +181,24 @@ DR   KEGG; hsa:7529; -.
 DR   H-InvDB; HIX0015846; -.
 DR   HGNC; HGNC:12849; YWHAB.
 DR   HPA; CAB003759; -.
+DR   HPA; HPA011212; -.
 DR   MIM; 601289; gene.
 DR   PharmGKB; PA37438; -.
+DR   HOGENOM; P31946; -.
+DR   HOVERGEN; P31946; -.
 DR   Reactome; REACT_578; Apoptosis.
+DR   NextBio; 29453; -.
 DR   ArrayExpress; P31946; -.
 DR   CleanEx; HS_YWHAB; -.
 DR   GermOnline; ENSG00000166913; Homo sapiens.
+DR   GO; GO:0005813; C:centrosome; IDA:HPA.
+DR   GO; GO:0005829; C:cytosol; EXP:Reactome.
+DR   GO; GO:0042470; C:melanosome; IEA:UniProtKB-SubCell.
+DR   GO; GO:0005634; C:nucleus; IDA:HPA.
 DR   GO; GO:0048471; C:perinuclear region of cytoplasm; IDA:UniProtKB.
-DR   GO; GO:0005515; F:protein binding; IPI:UniProtKB.
+DR   GO; GO:0019904; F:protein domain specific binding; IPI:UniProtKB.
+DR   GO; GO:0008633; P:activation of pro-apoptotic gene products; EXP:Reactome.
+DR   GO; GO:0007265; P:Ras protein signal transduction; EXP:Reactome.
 DR   InterPro; IPR000308; 14-3-3.
 DR   Gene3D; G3DSA:1.20.190.20; 14-3-3; 1.
 DR   PANTHER; PTHR18860; 14-3-3; 1.
@@ -207,18 +219,18 @@ FT   MOD_RES       2      2       N-acetylthreonine (By similarity).
 FT   MOD_RES     186    186       Phosphoserine (By similarity).
 FT   VAR_SEQ       1      2       Missing (in isoform Short).
 FT                                /FTId=VSP_018632.
-FT   HELIX         4     16
-FT   HELIX        20     31
-FT   HELIX        39     66
-FT   HELIX        74    104
-FT   HELIX       106    109
-FT   HELIX       113    132
-FT   HELIX       137    160
-FT   HELIX       166    181
-FT   HELIX       186    201
-FT   HELIX       202    206
-FT   TURN        209    211
-FT   HELIX       212    230
+FT   HELIX         5     17
+FT   HELIX        21     32
+FT   HELIX        40     67
+FT   HELIX        75    105
+FT   HELIX       107    110
+FT   HELIX       114    133
+FT   HELIX       138    161
+FT   HELIX       167    182
+FT   HELIX       187    202
+FT   HELIX       203    207
+FT   TURN        210    212
+FT   HELIX       213    231
 SQ   SEQUENCE   246 AA;  28082 MW;  6BE1A9BF97468017 CRC64;
      MTMDKSELVQ KAKLAEQAER YDDMAAAMKA VTEQGHELSN EERNLLSVAY KNVVGARRSS
      WRVISSIEQK TERNEKKQQM GKEYREKIEA ELQDICNDVL ELLDKYLIPN ATQPESKVFY
@@ -230,8 +242,9 @@ ID   1433E_HUMAN             Reviewed;         255 AA.
 AC   P62258; P29360; P42655; Q53XZ5; Q63631; Q7M4R4;
 DT   05-JUL-2004, integrated into UniProtKB/Swiss-Prot.
 DT   05-JUL-2004, sequence version 1.
-DT   08-APR-2008, entry version 52.
-DE   14-3-3 protein epsilon (14-3-3E).
+DT   25-NOV-2008, entry version 57.
+DE   RecName: Full=14-3-3 protein epsilon;
+DE            Short=14-3-3E;
 GN   Name=YWHAE;
 OS   Homo sapiens (Human).
 OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
@@ -342,6 +355,17 @@ RA   Hunt D.F.;
 RT   "Proteomic and bioinformatic characterization of the biogenesis and
 RT   function of melanosomes.";
 RL   J. Proteome Res. 5:3135-3144(2006).
+RN   [15]
+RP   PHOSPHORYLATION [LARGE SCALE ANALYSIS] AT SER-210, AND MASS
+RP   SPECTROMETRY.
+RC   TISSUE=Liver;
+RX   PubMed=18318008; DOI=10.1002/pmic.200700884;
+RA   Han G., Ye M., Zhou H., Jiang X., Feng S., Jiang X., Tian R., Wan D.,
+RA   Zou H., Gu J.;
+RT   "Large-scale phosphoproteome analysis of human liver tissue by
+RT   enrichment and fractionation of phosphopeptides with strong anion
+RT   exchange chromatography.";
+RL   Proteomics 8:1346-1361(2008).
 CC   -!- FUNCTION: Adapter protein implicated in the regulation of a large
 CC       spectrum of both general and specialized signaling pathway. Binds
 CC       to a large number of partners, usually by recognition of a
@@ -387,13 +411,21 @@ DR   H-InvDB; HIX0013397; -.
 DR   H-InvDB; HIX0013751; -.
 DR   H-InvDB; HIX0030006; -.
 DR   HGNC; HGNC:12851; YWHAE.
+DR   HPA; CAB016200; -.
+DR   HPA; HPA008445; -.
 DR   MIM; 605066; gene.
 DR   PharmGKB; PA37440; -.
+DR   HOGENOM; P62258; -.
+DR   HOVERGEN; P62258; -.
 DR   LinkHub; P62258; -.
+DR   NextBio; 29461; -.
 DR   ArrayExpress; P62258; -.
 DR   CleanEx; HS_YWHAE; -.
 DR   GermOnline; ENSG00000108953; Homo sapiens.
+DR   GO; GO:0042470; C:melanosome; IEA:UniProtKB-SubCell.
 DR   GO; GO:0019899; F:enzyme binding; IPI:UniProtKB.
+DR   GO; GO:0019904; F:protein domain specific binding; IEA:InterPro.
+DR   GO; GO:0044419; P:interspecies interaction between organisms; IEA:UniProtKB-KW.
 DR   GO; GO:0007242; P:intracellular signaling cascade; TAS:ProtInc.
 DR   InterPro; IPR000308; 14-3-3.
 DR   Gene3D; G3DSA:1.20.190.20; 14-3-3; 1.
@@ -411,7 +443,7 @@ KW   Host-virus interaction; Phosphoprotein.
 FT   CHAIN         1    255       14-3-3 protein epsilon.
 FT                                /FTId=PRO_0000058618.
 FT   MOD_RES       1      1       N-acetylmethionine.
-FT   MOD_RES     210    210       Phosphoserine (By similarity).
+FT   MOD_RES     210    210       Phosphoserine.
 FT   CONFLICT    106    107       KH -> NY (in Ref. 11; AA sequence).
 FT   CONFLICT    143    143       E -> F (in Ref. 11; AA sequence).
 FT   CONFLICT    148    148       S -> T (in Ref. 11; AA sequence).
@@ -438,9 +470,10 @@ ID   1433F_HUMAN             Reviewed;         246 AA.
 AC   Q04917;
 DT   01-OCT-1993, integrated into UniProtKB/Swiss-Prot.
 DT   23-JAN-2007, sequence version 4.
-DT   08-APR-2008, entry version 90.
-DE   14-3-3 protein eta (Protein AS1).
-GN   Name=YWHAH; Synonyms=YWHA1, YWHA1_X, YWHA1_Y, YWHA1_Z;
+DT   25-NOV-2008, entry version 95.
+DE   RecName: Full=14-3-3 protein eta;
+DE   AltName: Full=Protein AS1;
+GN   Name=YWHAH; Synonyms=YWHA1;
 OS   Homo sapiens (Human).
 OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
 OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
@@ -457,7 +490,7 @@ RL   Biochim. Biophys. Acta 1216:145-148(1993).
 RN   [2]
 RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
 RC   TISSUE=Brain;
-RX   MEDLINE=92251832; PubMed=1578511;
+RX   MEDLINE=92251832; PubMed=1578511; DOI=10.1002/jnr.490310403;
 RA   Ichimura-Ohshima Y., Morii K., Ichimura T., Araki K., Takahashi Y.,
 RA   Isobe T., Minoshima S., Fukuyama R., Shimizu N., Kuwano R.;
 RT   "cDNA cloning and chromosome assignment of the gene for human brain
@@ -590,13 +623,8 @@ CC       including AR, ESR1, ESR2, MC2R, NR3C1, NRIP1, PPARBP and THRA.
 CC   -!- INTERACTION:
 CC       Q9P0K1-3:ADAM22; NbExp=1; IntAct=EBI-306940, EBI-1567267;
 CC       O60565:GREM1; NbExp=2; IntAct=EBI-306940, EBI-944395;
-CC       Q14103-4:HNRPD; NbExp=1; IntAct=EBI-306940, EBI-432545;
-CC       Q96L34:MARK4; NbExp=1; IntAct=EBI-306940, EBI-302319;
-CC       Q8TEW0:PARD3; NbExp=1; IntAct=EBI-306940, EBI-81968;
-CC       Q9NPB6:PARD6A; NbExp=1; IntAct=EBI-306940, EBI-81876;
-CC       Q9BYG5:PARD6B; NbExp=1; IntAct=EBI-306940, EBI-295391;
+CC       Q14103-4:HNRNPD; NbExp=1; IntAct=EBI-306940, EBI-432545;
 CC       O94921:PFTK1; NbExp=3; IntAct=EBI-306940, EBI-1043945;
-CC       P41743:PRKCI; NbExp=1; IntAct=EBI-306940, EBI-286199;
 CC       P04049:RAF1; NbExp=1; IntAct=EBI-306940, EBI-365996;
 CC   -!- TISSUE SPECIFICITY: Expressed mainly in the brain and present in
 CC       other tissues albeit at lower levels.
@@ -634,6 +662,9 @@ DR   H-InvDB; HIX0016401; -.
 DR   HGNC; HGNC:12853; YWHAH.
 DR   MIM; 113508; gene.
 DR   PharmGKB; PA37442; -.
+DR   HOGENOM; Q04917; -.
+DR   HOVERGEN; Q04917; -.
+DR   NextBio; 29471; -.
 DR   ArrayExpress; Q04917; -.
 DR   CleanEx; HS_YWHAH; -.
 DR   GermOnline; ENSG00000128245; Homo sapiens.
@@ -648,7 +679,6 @@ DR   GO; GO:0042921; P:glucocorticoid receptor signaling pathway; IDA:UniProtKB.
 DR   GO; GO:0006886; P:intracellular protein transport; ISS:UniProtKB.
 DR   GO; GO:0050774; P:negative regulation of dendrite morphogenesis; ISS:UniProtKB.
 DR   GO; GO:0045941; P:positive regulation of transcription; IDA:UniProtKB.
-DR   GO; GO:0045664; P:regulation of neuron differentiation; ISS:UniProtKB.
 DR   GO; GO:0048167; P:regulation of synaptic plasticity; ISS:UniProtKB.
 DR   InterPro; IPR000308; 14-3-3.
 DR   Gene3D; G3DSA:1.20.190.20; 14-3-3; 1.
@@ -670,18 +700,18 @@ FT   MOD_RES     117    117       Phosphotyrosine (By similarity).
 FT   CONFLICT    144    144       N -> T (in Ref. 9; CAA40620).
 FT   CONFLICT    157    157       A -> G (in Ref. 1; AAA35483).
 FT   CONFLICT    237    237       Q -> L (in Ref. 1; AAA35483).
-FT   HELIX         3     15
-FT   HELIX        19     30
-FT   HELIX        38     72
-FT   HELIX        75    105
-FT   TURN        106    110
-FT   HELIX       116    136
-FT   HELIX       139    163
-FT   HELIX       169    184
-FT   HELIX       189    205
-FT   HELIX       206    209
-FT   TURN        212    214
-FT   HELIX       215    233
+FT   HELIX         4     16
+FT   HELIX        20     31
+FT   HELIX        39     73
+FT   HELIX        76    106
+FT   TURN        107    111
+FT   HELIX       117    137
+FT   HELIX       140    164
+FT   HELIX       170    185
+FT   HELIX       190    206
+FT   HELIX       207    210
+FT   TURN        213    215
+FT   HELIX       216    234
 SQ   SEQUENCE   246 AA;  28219 MW;  D70FBC100C45D6E5 CRC64;
      MGDREQLLQR ARLAEQAERY DDMASAMKAV TELNEPLSNE DRNLLSVAYK NVVGARRSSW
      RVISSIEQKT MADGNEKKLE KVKAYREKIE KELETVCNDV LSLLDKFLIK NCNDFQYESK
@@ -693,8 +723,10 @@ ID   1433G_HUMAN             Reviewed;         247 AA.
 AC   P61981; O70457; P35214; Q6FH52; Q9UDP2; Q9UN99;
 DT   07-JUN-2004, integrated into UniProtKB/Swiss-Prot.
 DT   23-JAN-2007, sequence version 2.
-DT   08-APR-2008, entry version 52.
-DE   14-3-3 protein gamma (Protein kinase C inhibitor protein 1) (KCIP-1).
+DT   25-NOV-2008, entry version 58.
+DE   RecName: Full=14-3-3 protein gamma;
+DE   AltName: Full=Protein kinase C inhibitor protein 1;
+DE            Short=KCIP-1;
 GN   Name=YWHAG;
 OS   Homo sapiens (Human).
 OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
@@ -769,18 +801,25 @@ RT   "Exploring proteomes and analyzing protein processing by mass
 RT   spectrometric identification of sorted N-terminal peptides.";
 RL   Nat. Biotechnol. 21:566-569(2003).
 RN   [7]
+RP   PROTEIN SEQUENCE OF 1-10; 13-56; 62-69; 133-172 AND 199-227, CLEAVAGE
+RP   OF INITIATOR METHIONINE, ACETYLATION AT MET-1 AND VAL-2,
+RP   PHOSPHORYLATION AT THR-145, AND MASS SPECTROMETRY.
+RC   TISSUE=Colon carcinoma, and Hepatoma;
+RA   Bienvenut W.V., Boldt K., von Kriegsheim A.F., Zebisch A., Kolch W.;
+RL   Submitted (OCT-2008) to UniProtKB.
+RN   [8]
 RP   PROTEIN SEQUENCE OF 2-10; 13-19; 29-42; 62-69; 133-143 AND 218-227,
 RP   CLEAVAGE OF INITIATOR METHIONINE, ACETYLATION AT VAL-2, AND MASS
 RP   SPECTROMETRY.
 RC   TISSUE=Platelet;
 RA   Bienvenut W.V., Claeys D.;
 RL   Submitted (NOV-2005) to UniProtKB.
-RN   [8]
+RN   [9]
 RP   PROTEIN SEQUENCE OF 92-110 AND 199-217, AND MASS SPECTROMETRY.
 RC   TISSUE=Brain, and Cajal-Retzius cell;
 RA   Lubec G., Vishwanath V.;
 RL   Submitted (MAR-2007) to UniProtKB.
-RN   [9]
+RN   [10]
 RP   INTERACTION WITH CRTC2.
 RX   PubMed=15454081; DOI=10.1016/j.cell.2004.09.015;
 RA   Screaton R.A., Conkright M.D., Katoh Y., Best J.L., Canettieri G.,
@@ -789,7 +828,7 @@ RA   Okamoto M., Montminy M.;
 RT   "The CREB coactivator TORC2 functions as a calcium- and cAMP-sensitive
 RT   coincidence detector.";
 RL   Cell 119:61-74(2004).
-RN   [10]
+RN   [11]
 RP   INTERACTION WITH SSH1.
 RX   PubMed=15159416; DOI=10.1083/jcb.200401136;
 RA   Nagata-Ohashi K., Ohta Y., Goto K., Chiba S., Mori R., Nishita M.,
@@ -806,7 +845,7 @@ CC   -!- SUBUNIT: Homodimer. Interacts with RAF1, SSH1 and CRTC2/TORC2.
 CC   -!- INTERACTION:
 CC       Q92625:ANKS1A; NbExp=1; IntAct=EBI-359832, EBI-1048612;
 CC       P10398:ARAF; NbExp=1; IntAct=EBI-359832, EBI-365961;
-CC       O75643:ASCC3L1; NbExp=1; IntAct=EBI-359832, EBI-1051631;
+CC       O75643:ASCC3L1; NbExp=1; IntAct=EBI-359832, EBI-1045395;
 CC       Q9UQB8:BAIAP2; NbExp=1; IntAct=EBI-359832, EBI-525456;
 CC       P15056:BRAF; NbExp=1; IntAct=EBI-359832, EBI-365980;
 CC       Q6ICG6:C22orf9; NbExp=1; IntAct=EBI-359832, EBI-1053969;
@@ -817,7 +856,7 @@ CC       Q7Z401:DENND4A; NbExp=1; IntAct=EBI-359832, EBI-1046479;
 CC       Q96F86:EDC3; NbExp=1; IntAct=EBI-359832, EBI-997311;
 CC       Q9Y2J2:EPB41L3; NbExp=1; IntAct=EBI-359832, EBI-310986;
 CC       Q8IUD2:ERC1; NbExp=1; IntAct=EBI-359832, EBI-1044755;
-CC       Q96TC7:FAM82C; NbExp=1; IntAct=EBI-359832, EBI-1056589;
+CC       Q96TC7:FAM82A2; NbExp=1; IntAct=EBI-359832, EBI-1056589;
 CC       Q92538:GBF1; NbExp=1; IntAct=EBI-359832, EBI-359050;
 CC       P08069:IGF1R; NbExp=1; IntAct=EBI-359832, EBI-475981;
 CC       Q9Y4H2:IRS2; NbExp=1; IntAct=EBI-359832, EBI-1049582;
@@ -828,18 +867,18 @@ CC       Q07866:KLC1; NbExp=1; IntAct=EBI-359832, EBI-721019;
 CC       Q9H0B6:KLC2; NbExp=1; IntAct=EBI-359832, EBI-726994;
 CC       Q9NSK0:KLC4; NbExp=1; IntAct=EBI-359832, EBI-949319;
 CC       Q15323:KRT31; NbExp=1; IntAct=EBI-359832, EBI-948001;
+CC       Q14525:KRT33B; NbExp=1; IntAct=EBI-359832, EBI-1049638;
 CC       P78386:KRT85; NbExp=1; IntAct=EBI-359832, EBI-1049371;
-CC       Q14525:KRTHA3B; NbExp=1; IntAct=EBI-359832, EBI-1049638;
 CC       Q6PKG0:LARP1; NbExp=1; IntAct=EBI-359832, EBI-1052114;
 CC       Q14739:LBR; NbExp=1; IntAct=EBI-359832, EBI-1055147;
 CC       Q9Y383:LUC7L2; NbExp=1; IntAct=EBI-359832, EBI-352851;
 CC       P27448:MARK3; NbExp=1; IntAct=EBI-359832, EBI-707595;
 CC       P55196:MLLT4; NbExp=1; IntAct=EBI-359832, EBI-365875;
-CC       Q6WCQ1:MRIP; NbExp=1; IntAct=EBI-359832, EBI-1022605;
+CC       Q6WCQ1:MPRIP; NbExp=1; IntAct=EBI-359832, EBI-1022605;
 CC       Q9H4L5:OSBPL3; NbExp=1; IntAct=EBI-359832, EBI-1051317;
 CC       O96013:PAK4; NbExp=1; IntAct=EBI-359832, EBI-713738;
 CC       Q8TEW0:PARD3; NbExp=1; IntAct=EBI-359832, EBI-81968;
-CC       Q9UBF8:PIK4CB; NbExp=1; IntAct=EBI-359832, EBI-1053214;
+CC       Q9UBF8:PI4KB; NbExp=1; IntAct=EBI-359832, EBI-1053214;
 CC       Q86W92:PPFIBP1; NbExp=1; IntAct=EBI-359832, EBI-1045582;
 CC       Q15276:RABEP1; NbExp=1; IntAct=EBI-359832, EBI-447043;
 CC       Q9UJ41:RABGEF1; NbExp=1; IntAct=EBI-359832, EBI-913954;
@@ -880,12 +919,19 @@ DR   GeneID; 7532; -.
 DR   KEGG; hsa:7532; -.
 DR   H-InvDB; HIX0006789; -.
 DR   HGNC; HGNC:12852; YWHAG.
+DR   HPA; CAB013274; -.
+DR   HPA; CAB018389; -.
 DR   MIM; 605356; gene.
 DR   PharmGKB; PA37441; -.
+DR   HOGENOM; P61981; -.
+DR   HOVERGEN; P61981; -.
+DR   NextBio; 29467; -.
 DR   ArrayExpress; P61981; -.
 DR   CleanEx; HS_YWHAG; -.
 DR   GermOnline; ENSG00000170027; Homo sapiens.
+DR   GO; GO:0005737; C:cytoplasm; IEA:UniProtKB-KW.
 DR   GO; GO:0005159; F:insulin-like growth factor receptor binding; IPI:UniProtKB.
+DR   GO; GO:0019904; F:protein domain specific binding; IEA:InterPro.
 DR   GO; GO:0005080; F:protein kinase C binding; IPI:UniProtKB.
 DR   GO; GO:0008426; F:protein kinase C inhibitor activity; NAS:UniProtKB.
 DR   GO; GO:0006469; P:negative regulation of protein kinase activity; NAS:UniProtKB.
@@ -905,11 +951,13 @@ DR   PROSITE; PS00797; 1433_2; 1.
 PE   1: Evidence at protein level;
 KW   3D-structure; Acetylation; Cytoplasm; Direct protein sequencing;
 KW   Phosphoprotein.
-FT   INIT_MET      1      1       Removed.
+FT   INIT_MET      1      1       Removed; alternate.
 FT   CHAIN         2    247       14-3-3 protein gamma.
 FT                                /FTId=PRO_0000058606.
-FT   MOD_RES       2      2       N-acetylvaline.
+FT   MOD_RES       1      1       N-acetylmethionine; alternate.
+FT   MOD_RES       2      2       N-acetylvaline; partial.
 FT   MOD_RES     117    117       Phosphotyrosine (By similarity).
+FT   MOD_RES     145    145       Phosphothreonine.
 FT   CONFLICT      4      4       R -> P (in Ref. 1; AAD48408).
 FT   CONFLICT     19     19       R -> G (in Ref. 1; AAD48408).
 FT   CONFLICT     78     78       Missing (in Ref. 1; AAD48408).
@@ -922,18 +970,18 @@ FT   CONFLICT    157    158       AH -> R (in Ref. 1; AAD48408).
 FT   CONFLICT    200    202       AFD -> EFE (in Ref. 1; AAD48408).
 FT   CONFLICT    214    214       D -> E (in Ref. 1; AAD48408).
 FT   CONFLICT    240    240       D -> DH (in Ref. 1; AAD48408).
-FT   HELIX         3     15
-FT   HELIX        19     30
-FT   HELIX        38     72
-FT   HELIX        75    105
-FT   TURN        106    110
-FT   HELIX       116    136
-FT   HELIX       139    163
-FT   HELIX       169    184
-FT   HELIX       189    205
-FT   HELIX       207    209
-FT   TURN        212    214
-FT   HELIX       215    232
+FT   HELIX         4     16
+FT   HELIX        20     31
+FT   HELIX        39     73
+FT   HELIX        76    106
+FT   TURN        107    111
+FT   HELIX       117    137
+FT   HELIX       140    164
+FT   HELIX       170    185
+FT   HELIX       190    206
+FT   HELIX       208    210
+FT   TURN        213    215
+FT   HELIX       216    233
 SQ   SEQUENCE   247 AA;  28303 MW;  B0D16C6DE1F4455D CRC64;
      MVDREQLVQK ARLAEQAERY DDMAAAMKNV TELNEPLSNE ERNLLSVAYK NVVGARRSSW
      RVISSIEQKT SADGNEKKIE MVRAYREKIE KELEAVCQDV LSLLDNYLIK NCSETQYESK
@@ -945,56 +993,8 @@ ID   1433S_HUMAN             Reviewed;         248 AA.
 AC   P31947; Q6FH30; Q6FH51; Q96DH0;
 DT   01-JUL-1993, integrated into UniProtKB/Swiss-Prot.
 DT   01-JUL-1993, sequence version 1.
-DT   08-APR-2008, entry version 85.
-DE   14-3-3 protein sigma (Stratifin) (Epithelial cell marker protein 1).
+DT   25-NOV-2008, entry version 89.
+DE   RecName: Full=14-3-3 protein sigma;
+DE   AltName: Full=Stratifin;
+DE   AltName: Full=Epithelial cell marker protein 1;
 GN   Name=SFN; Synonyms=HME1;
-OS   Homo sapiens (Human).
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
-OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
-OC   Catarrhini; Hominidae; Homo.
-OX   NCBI_TaxID=9606;
-RN   [1]
-RP   NUCLEOTIDE SEQUENCE [MRNA] (ISOFORM 1).
-RC   TISSUE=Epithelium;
-RX   MEDLINE=93002614; PubMed=1390337;
-RA   Prasad G.L., Valverius E.M., McDuffie E., Cooper H.L.;
-RT   "Complementary DNA cloning of a novel epithelial cell marker protein,
-RT   HME1, that may be down-regulated in neoplastic mammary cells.";
-RL   Cell Growth Differ. 3:507-513(1992).
-RN   [2]
-RP   NUCLEOTIDE SEQUENCE [MRNA] (ISOFORM 1), AND PROTEIN SEQUENCE OF 19-25;
-RP   42-49; 118-122; 130-139; 149-159; 161-181; 196-199; 225-229 AND
-RP   231-239.
-RC   TISSUE=Keratinocyte;
-RX   MEDLINE=93294871; PubMed=8515476; DOI=10.1006/jmbi.1993.1346;
-RA   Leffers H., Madsen P., Rasmussen H.H., Honore B., Andersen A.H.,
-RA   Walbum E., Vandekerckhove J., Celis J.E.;
-RT   "Molecular cloning and expression of the transformation sensitive
-RT   epithelial marker stratifin. A member of a protein family that has
-RT   been involved in the protein kinase C signalling pathway.";
-RL   J. Mol. Biol. 231:982-998(1993).
-RN   [3]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA / MRNA] (ISOFORM 1).
-RX   MEDLINE=98324083; PubMed=9659898; DOI=10.1016/S1097-2765(00)80002-7;
-RA   Hermeking H., Lengauer C., Polyak K., He T.-C., Zhang L.,
-RA   Thiagalingam S., Kinzler K.W., Vogelstein B.;
-RT   "14-3-3 sigma is a p53-regulated inhibitor of G2/M progression.";
-RL   Mol. Cell 1:3-11(1997).
-RN   [4]
-RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA] (ISOFORM 1).
-RA   Halleck A., Ebert L., Mkoundinya M., Schick M., Eisenstein S.,
-RA   Neubert P., Kstrang K., Schatten R., Shen B., Henze S., Mar W.,
-RA   Korn B., Zuo D., Hu Y., LaBaer J.;
-RT   "Cloning of human full open reading frames in Gateway(TM) system entry
-RT   vector (pDONR201).";
-RL   Submitted (JUN-2004) to the EMBL/GenBank/DDBJ databases.
-RN   [5]
-RP   NUCLEOTIDE SEQUENCE [LARGE SCALE GENOMIC DNA].
-RX   PubMed=16710414; DOI=10.1038/nature04727;
-RA   Gregory S.G., Barlow K.F., McLay K.E., Kaul R., Swarbreck D.,
-RA   Dunham A., Scott C.E., Howe K.L., Woodfine K., Spencer C.C.A.,
-RA   Jones M.C., Gillson C., Searle S., Zhou Y., Kokocinski F.,
-RA   McDonald L., Evans R., Phillips K., Atkinson A., Cooper R., Jones C.,
-RA   Hall R.E., Andrews T.D., Lloyd C., Ainscough R., Almeida J.P.,
-RA   Ambrose K.D., Anderson F., Andrew R.W., Ashwell R.I.S., Aubin K.,
-RA   Babbage A.K., Bagguley C.L., Bailey J., Beasley H., Bethel G.,
