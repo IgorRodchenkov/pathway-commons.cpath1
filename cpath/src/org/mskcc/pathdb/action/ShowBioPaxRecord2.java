@@ -20,6 +20,7 @@ import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
 import org.mskcc.pathdb.taglib.ReferenceUtil;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever;
+import org.mskcc.pathdb.action.web_api.NeighborhoodMapRetriever.NeighborhoodMapSize;
 import org.mskcc.pathdb.util.security.XssFilter;
 import org.mskcc.dataservices.bio.ExternalReference;
 
@@ -77,11 +78,6 @@ public class ShowBioPaxRecord2 extends BaseAction {
      * Entity Summary Attribute name.
      */
     public static String NUM_NEIGHBORS_ATTRIBUTE = "NUM_NEIGHBORS";
-
-	/**
-	 * Ref to hold all snapshot ids
-	 */
-	public static Set<Long> SNAPSHOT_ID_SET = null;
 
     /**
      * Executes Action.
@@ -246,25 +242,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
 
 		// set number of neighbors
 		if (CPathUIConfig.getWebUIBean().getEnableMiniMaps() && bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
-			if (SNAPSHOT_ID_SET == null) {
-				xdebug.logMsg(this, "SNAPSHOT_ID_SET is null, setting it....");
-				SNAPSHOT_ID_SET = new HashSet<Long>();
-				DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
-				ArrayList<ExternalDatabaseSnapshotRecord> snapshotRecords = daoSnapshot.getAllNetworkDatabaseSnapshots();
-				for (ExternalDatabaseSnapshotRecord snapshotRecord : snapshotRecords) {
-					SNAPSHOT_ID_SET.add(snapshotRecord.getId());
-				}
-			}
-			if (SNAPSHOT_ID_SET.equals(snapshotIdSet)) {
-				xdebug.logMsg(this, "SNAPSHOT_ID_SET equals current snapshot id set, grabbing neighborhood map size out of db...");
-				DaoNeighborhoodMap daoMap = new DaoNeighborhoodMap();
-				NeighborhoodMap map = daoMap.getNeighborhoodMapRecord(record.getId());
-				request.setAttribute(NUM_NEIGHBORS_ATTRIBUTE, map.getMapSize());
-			}
-			else {
-				xdebug.logMsg(this, "SNAPSHOT_ID_SET does not equal current snapshot id set, recomputing neighborhood size...");
-				request.setAttribute(NUM_NEIGHBORS_ATTRIBUTE, getNumNeighbors(xdebug, request, snapshotIdSet));
-			}
+			request.setAttribute(NUM_NEIGHBORS_ATTRIBUTE, getNumNeighbors(xdebug, request, snapshotIdSet));
 		}
 
         //  Forward to JSP page for HTML creation.
@@ -407,6 +385,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
 	 * @throws Exception
 	 */
 	private Integer getNumNeighbors(XDebug xdebug, HttpServletRequest request, Set<Long> snapshotIdSet) throws Exception {
+		xdebug.logMsg(this, "getting number of neighbors in map, snapshotIdSet size: " + snapshotIdSet.size());
 		HashMap parameterMap = 	XssFilter.filterAllParameters(request.getParameterMap());
         ProtocolRequest protocolRequest = new ProtocolRequest(parameterMap);
 		protocolRequest.setQuery(request.getParameter(ID_PARAMETER));
@@ -415,11 +394,11 @@ public class ShowBioPaxRecord2 extends BaseAction {
 		DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
 		for (Long snapshotID : snapshotIdSet) {
 			ExternalDatabaseSnapshotRecord record = daoSnapShot.getDatabaseSnapshot(snapshotID);
-			if (record == null) continue;
 			dataSources += record.getExternalDatabase().getMasterTerm() + ",";
 		}
 		protocolRequest.setDataSource(dataSources);
 		NeighborhoodMapRetriever retriever =  new NeighborhoodMapRetriever();
-		return retriever.getNeighborhoodMapSize(xdebug, protocolRequest);
+		NeighborhoodMapSize mapSize = retriever.getNeighborhoodMapSize(xdebug, protocolRequest, false);
+		return mapSize.sifNeighborhoodSize;
 	}
 }
