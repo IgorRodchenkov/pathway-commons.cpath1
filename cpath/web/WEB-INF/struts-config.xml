@@ -13,17 +13,12 @@
     </form-beans>
 
     <global-forwards>
-        <forward name="go_home" path="home.do"/>
+        <forward name="go_home" path="/home"/>
         <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
         <forward name="unauthorized" path="/WEB-INF/jsp/pages/Unauthorized.jsp"/>
     </global-forwards>
 
     <action-mappings>
-        <action path="/tree"
-            type="org.mskcc.pathdb.action.Tree">
-            <forward name="success" path="/WEB-INF/jsp/pages/Home.jsp"/>
-        </action>
-
         <!--  Home Page -->
         <action path="/home"
             type="org.mskcc.pathdb.action.HomeAction">
