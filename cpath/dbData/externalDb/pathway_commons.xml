@@ -111,4 +111,16 @@
             <master_term>MINT</master_term>
         </controlled_terms>
     </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>BIOGRID</name>
+        <description>General Repository for Interaction Datasets</description>
+        <entity_url>
+            <url_pattern>http://www.thebiogrid.org/search.php?keywords=%ID%</url_pattern>
+            <sample_id>113010</sample_id>
+        </entity_url>
+        <icon_path>biogrid.png</icon_path>
+        <controlled_terms>
+	    <master_term>BIOGRID</master_term>
+	    </controlled_terms>
+    </external_database>
 </external_database_list>
