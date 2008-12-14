@@ -144,6 +144,11 @@ function importCellMap {
 	./admin.pl -f $CPATH_HOME/../pathway-commons/cellmap import
 }
 
+function importCellMap {
+	logProgress "Loading BioGRID."
+	./admin.pl -f $CPATH_HOME/../pathway-commons/biogrid/BIOGRID-ALL.psi25.xml.owl import
+}
+
 function importiHop {
 	#echo "Importing iHOP file..."
 	local IHOP_HOME="$CPATH_HOME/../pathway-commons/ihop/03-14-2008/"
@@ -181,6 +186,7 @@ importReactome
 importHumanCyc
 importNci
 importCellMap
+#importBioGRID
 fetchPublications
 index
 wrapUp
