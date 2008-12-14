@@ -144,9 +144,13 @@ function importCellMap {
 	./admin.pl -f $CPATH_HOME/../pathway-commons/cellmap import
 }
 
-function importCellMap {
+function importBioGRID {
 	logProgress "Loading BioGRID."
-	./admin.pl -f $CPATH_HOME/../pathway-commons/biogrid/BIOGRID-ALL.psi25.xml.owl import
+	local BIOGRID_HOME="$CPATH_HOME/../pathway-commons/biogrid/09-29-2008"
+	#$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $BIOGRID_HOME $BIOGRID_HOME/biopax
+	#cp $BIOGRID_HOME/db.info $BIOGRID_HOME/biopax
+	./admin.pl -f $BIOGRID_HOME/biopax import
+	#rm -vf $BIOGRID_HOME/biopax/{*.owl,db.info}
 }
 
 function importiHop {
