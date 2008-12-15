@@ -513,7 +513,7 @@ enable Javascript support within your web browser.
     if (webUIBean.getEnableMiniMaps() && bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
 	    out.println ("<div class=\"thumbnail_box\">");
         out.println("<h3>Neighborhood Map:</h3>");
-		out.println("<div id='loading_neighborhood_map'><img src='jsp/images/loading.gif'/>&nbsp;  Loading Map...</div>");
+		out.println("<div id='loading_neighborhood_map'><img src='jsp/images/loading.gif'/>&nbsp;  Loading...</div>");
         out.println("<P>");
 		if (numNeighbors == 0) {
 			// use no neighbors found
