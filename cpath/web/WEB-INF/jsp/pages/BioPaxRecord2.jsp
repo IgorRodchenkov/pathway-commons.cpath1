@@ -344,6 +344,14 @@ YAHOO.example.init();
             toggleImage.innerHTML = " more...";
         }
     }
+
+    // called when neighborhood map has finished loading
+    function neighborhoodMapLoaded(displayCaption) {
+		YAHOO.util.Dom.setStyle(document.getElementById("loading_neighborhood_map"), 'display', 'none');
+		if (displayCaption) {
+			YAHOO.util.Dom.setStyle(document.getElementById("neighborhood_map_caption"), 'display', 'inline');
+		}
+    }
 </script>
 <div class="splitcontentright">
 <%
@@ -505,10 +513,11 @@ enable Javascript support within your web browser.
     if (webUIBean.getEnableMiniMaps() && bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
 	    out.println ("<div class=\"thumbnail_box\">");
         out.println("<h3>Neighborhood Map:</h3>");
+		out.println("<div id='loading_neighborhood_map'><img src='jsp/images/loading.gif'/>&nbsp;  Loading Map...</div>");
         out.println("<P>");
 		if (numNeighbors == 0) {
 			// use no neighbors found
-			out.println("<img src=\"jsp/images/maps/no-neighbors-found-thumbnail.png\">");
+			out.println("<img src='jsp/images/maps/no-neighbors-found-thumbnail.png' onload='neighborhoodMapLoaded(false)'>");
 		}
 		else {
 			out.println("<a href=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
@@ -521,11 +530,11 @@ enable Javascript support within your web browser.
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 						"&" + ProtocolRequest.ARG_QUERY + "=" + id +
 						"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
-						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + "'/></a>");
+						"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + "' onload='neighborhoodMapLoaded(true)'/></a>");
 			out.println("</P>");
 			//out.println("<div class=\"thumbnail_caption\"><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a></div>");
-			out.println("<a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a>" +
-						"<a href='filter.do' TITLE='If this map is too large, try updating your filter settings to remove unwanted data sources.'\">(update filter settings)</a>");
+			out.println("<div id='neighborhood_map_caption' style='display:none'><a href=\"sif_legend.do\" onClick=\"return hs.htmlExpand(this, {objectType: 'iframe', align: 'center', width: 425, height: 450})\">(legend)</a>" +
+						"<a href='filter.do' title='If this map is too large, try updating your filter settings to remove unwanted data sources.'\">(update filter settings)</a></div>");
 		}
 		out.println("</div>");
 	}
