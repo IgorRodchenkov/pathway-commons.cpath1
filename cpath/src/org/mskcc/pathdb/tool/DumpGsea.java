@@ -28,6 +28,8 @@ import java.util.Collection;
 public class DumpGsea {
     private ProgressMonitor pMonitor;
     private File outDir;
+    private File bySpeciesDir;
+    private File bySourceDir;
     private boolean mustUseGeneSymbols;
     private final static String TAB = "\t";
     private static final int BLOCK_SIZE = 1000;
@@ -38,8 +40,7 @@ public class DumpGsea {
      *
      * @param pMonitor Progress Monitor.
      */
-    public DumpGsea(ProgressMonitor pMonitor, boolean mustUseGeneSymbols,
-            File outDir) throws IOException {
+    public DumpGsea(ProgressMonitor pMonitor, File outDir) throws IOException {
         this.pMonitor = pMonitor;
         this.outDir = outDir;
         this.mustUseGeneSymbols = mustUseGeneSymbols;
@@ -111,13 +112,17 @@ public class DumpGsea {
         if (!outDir.exists()) {
             outDir.mkdir();
         }
-        File organismDir = new File (outDir, "by_species");
-        if (!organismDir.exists()) {
-            organismDir.mkdir();
+        File gseaDir = new File (outDir, "gsea");
+        if (!gseaDir.exists()) {
+            gseaDir.mkdir();
         }
-        File sourceDir = new File (outDir, "by_source");
-        if (!sourceDir.exists()) {
-            sourceDir.mkdir();
+        bySpeciesDir = new File (gseaDir, "by_species");
+        if (!bySpeciesDir.exists()) {
+            bySpeciesDir.mkdir();
+        }
+        bySourceDir = new File (gseaDir, "by_source");
+        if (!bySourceDir.exists()) {
+            bySourceDir.mkdir();
         }
     }
 
@@ -126,8 +131,6 @@ public class DumpGsea {
      */
     private void dumpPathwayRecord(CPathRecord record)
             throws DaoException, AssemblyException, IOException {
-        DaoCPath dao = DaoCPath.getInstance();
-
         //  Gets the Database Term
         DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
         long snapshotId = record.getSnapshotId();
@@ -142,20 +145,21 @@ public class DumpGsea {
         line.append (dbTerm + TAB);
         long[] descendentIds = daoInternalFamily.getDescendentIds(record.getId(),
                 CPathRecordType.PHYSICAL_ENTITY);
+
+        //  Dumps all participants
+        int numParticipantsOutput = 0;
         for (long descendentId : descendentIds) {
-            if (mustUseGeneSymbols) {
-                String geneSymbol = getGeneSymbol (descendentId);
-                if (geneSymbol != null) {
-                    line.append (geneSymbol + TAB);
-                }
-            } else {
-                CPathRecord participant = dao.getRecordById(descendentId);
-                line.append (participant.getName() + TAB);
+            String geneSymbol = getGeneSymbol (descendentId);
+            if (geneSymbol != null) {
+                numParticipantsOutput++;
+                line.append (geneSymbol + TAB);
             }
         }
         line.append ("\n");
-        appendToOrganismFile (line.toString(), record.getNcbiTaxonomyId());
-        appendToDataSourceFile (line.toString(), dbTerm);
+        if (numParticipantsOutput > 0) {
+            appendToOrganismFile (line.toString(), record.getNcbiTaxonomyId());
+            appendToDataSourceFile (line.toString(), dbTerm);
+        }
     }
 
     /**
@@ -165,8 +169,7 @@ public class DumpGsea {
         throws IOException {
         FileWriter writer = fileWriters.get(dbTerm);
         if (writer == null) {
-            File sourceDir = new File (outDir, "by_source");
-            writer = new FileWriter (new File (sourceDir, dbTerm.toLowerCase() + ".gmt"));
+            writer = new FileWriter (new File (bySourceDir, dbTerm.toLowerCase() + ".gmt"));
             fileWriters.put(dbTerm, writer);
         }
         writer.write(line);
@@ -182,8 +185,7 @@ public class DumpGsea {
             DaoOrganism daoOrganism = new DaoOrganism();
             Organism organism = daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId);
             String speciesName = organism.getSpeciesName().replaceAll(" ", "_");
-            File organismDir = new File (outDir, "by_species");
-            writer = new FileWriter (new File (organismDir, speciesName.toLowerCase() + ".gmt"));
+            writer = new FileWriter (new File (bySpeciesDir, speciesName.toLowerCase() + ".gmt"));
             fileWriters.put(Integer.toString(ncbiTaxonomyId), writer);
         }
         writer.write(line);
@@ -218,7 +220,7 @@ public class DumpGsea {
 
         File outDir = new File(args[0]);
         System.out.println("Writing out to:  " + outDir.getAbsolutePath());
-        DumpGsea dumper = new DumpGsea(pMonitor, true, outDir);
+        DumpGsea dumper = new DumpGsea(pMonitor, outDir);
         dumper.dump();
 
         ArrayList<String> warningList = pMonitor.getWarningList();
