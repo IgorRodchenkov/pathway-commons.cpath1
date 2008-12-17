@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
@@ -30,9 +31,10 @@ public class DumpGsea {
     private File outDir;
     private File bySpeciesDir;
     private File bySourceDir;
-    private boolean mustUseGeneSymbols;
     private final static String TAB = "\t";
     private static final int BLOCK_SIZE = 1000;
+
+    //  HashMap that will contain multiple open file writers
     private HashMap<String, FileWriter> fileWriters = new HashMap <String, FileWriter>();
 
     /**
@@ -43,7 +45,6 @@ public class DumpGsea {
     public DumpGsea(ProgressMonitor pMonitor, File outDir) throws IOException {
         this.pMonitor = pMonitor;
         this.outDir = outDir;
-        this.mustUseGeneSymbols = mustUseGeneSymbols;
         ToolInit.initProps();
     }
 
@@ -56,7 +57,7 @@ public class DumpGsea {
      * @throws org.mskcc.pathdb.sql.assembly.AssemblyException
      *                             XML/SIF Assembly Error.
      */
-    public void dump() throws IOException, DaoException, AssemblyException {
+    public void dump() throws IOException, DaoException, AssemblyException, SQLException {
         DaoCPath dao = DaoCPath.getInstance();
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -76,27 +77,23 @@ public class DumpGsea {
                 long endId = id + BLOCK_SIZE;
                 if (endId > maxIterId) endId = maxIterId;
 
-                try {
-                    con = JdbcUtil.getCPathConnection();
-                    pstmt = con.prepareStatement("select * from cpath WHERE "
-                            + " CPATH_ID BETWEEN " + startId + " and " + endId
-                            + " order by CPATH_ID ");
-                    rs = pstmt.executeQuery();
+                con = JdbcUtil.getCPathConnection();
+                pstmt = con.prepareStatement("select * from cpath WHERE "
+                        + " CPATH_ID BETWEEN " + startId + " and " + endId
+                        + " order by CPATH_ID ");
+                rs = pstmt.executeQuery();
 
-                    while (rs.next()) {
-                        if (pMonitor != null) {
-                            pMonitor.incrementCurValue();
-                            ConsoleUtil.showProgress(pMonitor);
-                        }
-                        record = dao.extractRecord(rs);
-
-                        //  Only dump pathway records
-                        if (record.getType() == CPathRecordType.PATHWAY) {
-                            dumpPathwayRecord(record);
-                        }
+                while (rs.next()) {
+                    if (pMonitor != null) {
+                        pMonitor.incrementCurValue();
+                        ConsoleUtil.showProgress(pMonitor);
                     }
-                } catch (Exception e1) {
-                    throw new DaoException(e1);
+                    record = dao.extractRecord(rs);
+
+                    //  Only dump pathway records
+                    if (record.getType() == CPathRecordType.PATHWAY) {
+                        dumpPathwayRecord(record);
+                    }
                 }
                 JdbcUtil.closeAll(con, pstmt, rs);
             }
@@ -105,9 +102,14 @@ public class DumpGsea {
             for (FileWriter fileWriter:  fds) {
                 fileWriter.close();
             }
+            JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
 
+    /**
+     * Initializes the Output Directories.
+     * @throws IOException IO Errors.
+     */
     private void initDirs() throws IOException {
         if (!outDir.exists()) {
             outDir.mkdir();
@@ -131,6 +133,7 @@ public class DumpGsea {
      */
     private void dumpPathwayRecord(CPathRecord record)
             throws DaoException, AssemblyException, IOException {
+
         //  Gets the Database Term
         DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
         long snapshotId = record.getSnapshotId();
@@ -138,7 +141,7 @@ public class DumpGsea {
                 daoSnapshot.getDatabaseSnapshot(snapshotId);
         String dbTerm = snapshotRecord.getExternalDatabase().getMasterTerm();
 
-        //  Gets all participants
+        //  Gets all participants in the pathway
         DaoInternalFamily daoInternalFamily = new DaoInternalFamily();
         StringBuffer line = new StringBuffer();
         line.append (record.getName() + TAB);
@@ -146,7 +149,7 @@ public class DumpGsea {
         long[] descendentIds = daoInternalFamily.getDescendentIds(record.getId(),
                 CPathRecordType.PHYSICAL_ENTITY);
 
-        //  Dumps all participants
+        //  Dumps all participants that have gene symbols
         int numParticipantsOutput = 0;
         for (long descendentId : descendentIds) {
             String geneSymbol = getGeneSymbol (descendentId);
@@ -156,6 +159,8 @@ public class DumpGsea {
             }
         }
         line.append ("\n");
+
+        //  Append to correct output files
         if (numParticipantsOutput > 0) {
             appendToOrganismFile (line.toString(), record.getNcbiTaxonomyId());
             appendToDataSourceFile (line.toString(), dbTerm);
