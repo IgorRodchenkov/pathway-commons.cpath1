@@ -29,7 +29,7 @@ import java.util.Collection;
  *
  * 2)  Pathway Commons Gene Set format:  Similar to the GSEA GMT format, except that all
  * participants are micro-encoded with multiple identifiers. For example, each participant
- * is specified as: CPATH_ID:UNIPROT_ACCESION:GENE_SYMBOL:ENTREZ_GENE_ID.
+ * is specified as: CPATH_ID:RECORD_TYPE:NAME:UNIPROT_ACCESION:GENE_SYMBOL:ENTREZ_GENE_ID.
  *
  * It also creates the a directory structure like so:
  *
@@ -48,6 +48,7 @@ public class DumpGeneSets {
     private File pcDir;
     private final static String TAB = "\t";
     private final static String COLON = ":";
+    private final static String NA = "NA";
     private static final int BLOCK_SIZE = 1000;
     private static final int GSEA_OUTPUT = 1;
     private static final int PC_OUTPUT = 2;
@@ -190,32 +191,37 @@ public class DumpGeneSets {
         long[] descendentIds = daoInternalFamily.getDescendentIds(record.getId(),
                 CPathRecordType.PHYSICAL_ENTITY);
 
+        ArrayList <CPathRecord> cpathRecordList = new ArrayList <CPathRecord>();
+
+        DaoCPath daoCPath = DaoCPath.getInstance();
         //  Get XRefs for all Participants
         ArrayList <HashMap <String, String>> xrefList =
                 new ArrayList <HashMap <String, String>>();
         for (long descendentId : descendentIds) {
             HashMap <String, String> xrefMap = getXRefMap (descendentId);
+            cpathRecordList.add(daoCPath.getRecordById(descendentId));
             xrefList.add (xrefMap);
         }
 
         //  Dump to both file formats.
-        outputGeneSet(record, dbTerm, descendentIds, xrefList, GSEA_OUTPUT);
-        outputGeneSet(record, dbTerm, descendentIds, xrefList, PC_OUTPUT);
+        outputGeneSet(record, dbTerm, cpathRecordList, xrefList, GSEA_OUTPUT);
+        outputGeneSet(record, dbTerm, cpathRecordList, xrefList, PC_OUTPUT);
     }
 
     /**
      * Actual Output of the Gene Set.
      */
-    private void outputGeneSet(CPathRecord record, String dbTerm, long[] descendentIds,
-            ArrayList<HashMap<String, String>> xrefList, int outputFormat) throws IOException,
-            DaoException {
+    private void outputGeneSet(CPathRecord record, String dbTerm, ArrayList <CPathRecord>
+            cpathRecordList, ArrayList<HashMap<String, String>> xrefList, int outputFormat)
+            throws IOException, DaoException {
         StringBuffer line = new StringBuffer();
         line.append (record.getName() + TAB);
         line.append (dbTerm + TAB);
 
         int numParticipantsOutput = 0;
-        for (int i=0; i < descendentIds.length; i++) {
-            long descendentId = descendentIds[i];
+        for (int i=0; i < cpathRecordList.size(); i++) {
+            CPathRecord participantRecord = cpathRecordList.get(i);
+            long descendentId = participantRecord.getId();
             HashMap <String, String> xrefMap = xrefList.get(i);
             String geneSymbol = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
             String entrezGeneId = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
@@ -228,6 +234,15 @@ public class DumpGeneSets {
             } else {
                 numParticipantsOutput++;
                 line.append (descendentId + COLON);
+                line.append (participantRecord.getSpecificType().toUpperCase() + COLON);
+                String name = participantRecord.getName();
+                if (name != null) {
+                    //  Replace all : with -, so that we don't screw up a client parser
+                    name = name.replaceAll(":", "-");
+                    line.append (participantRecord.getName() + COLON);
+                } else {
+                    line.append (NA + COLON);
+                }
                 line.append (getXRef (uniprotAccession) + COLON);
                 line.append (getXRef (geneSymbol) + COLON);
                 line.append (getXRef (entrezGeneId));
@@ -245,7 +260,7 @@ public class DumpGeneSets {
 
     private String getXRef (String id) {
         if (id == null) {
-            return "NA";
+            return NA;
         } else {
             return id;
         }
