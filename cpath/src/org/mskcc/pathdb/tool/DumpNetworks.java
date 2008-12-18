@@ -1,6 +1,5 @@
 package org.mskcc.pathdb.tool;
 
-import org.mskcc.dataservices.util.PropertyManager;
 import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssembly;
 import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssemblyFactory;
@@ -14,20 +13,16 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.task.ProgressMonitor;
-import org.mskcc.pathdb.util.CPathConstants;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
-import org.mskcc.pathdb.util.cache.EhCache;
 import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +33,7 @@ import com.hp.hpl.jena.shared.JenaException;
  * Command Line Utility to Dump all Manually Curated Human Interactions in SIF-Like
  * output file format.
  */
-public class DumpHumanSif {
+public class DumpNetworks {
     private ProgressMonitor pMonitor;
     private File outFile;
     private HashSet curatedDbSet = new HashSet();
@@ -50,7 +45,7 @@ public class DumpHumanSif {
      *
      * @param pMonitor Progress Monitor.
      */
-    public DumpHumanSif(ProgressMonitor pMonitor, File outFile) throws IOException {
+    public DumpNetworks(ProgressMonitor pMonitor, File outFile) throws IOException {
         this.pMonitor = pMonitor;
         this.outFile = outFile;
         curatedDbSet.add("REACTOME");
@@ -209,7 +204,7 @@ public class DumpHumanSif {
 
         File file = new File(args[0]);
         System.out.println("Writing out to:  " + file.getAbsoluteFile());
-        DumpHumanSif dumper = new DumpHumanSif(pMonitor, file);
+        DumpNetworks dumper = new DumpNetworks(pMonitor, file);
         dumper.dump();
 
         ArrayList <String> warningList = pMonitor.getWarningList();
