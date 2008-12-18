@@ -164,13 +164,18 @@ function importiHop {
 
 # fetch publication references
 function fetchPublications {
-	logProgress "Fetching Pulication References."
+	logProgress "Fetching Publication References."
 	./admin.pl pop_ref
 }
 
 function index {
-	logProgress "Running Lucene Indexer"
+	logProgress "Running Lucene Indexer."
 	./admin.pl index
+}
+
+function neighborhoodMaps {
+	logProgress "Running Neighborhood Map Precomputations."
+	./admin.pl compute_neighborhood_map
 }
 
 function wrapUp {
@@ -193,4 +198,5 @@ importCellMap
 #importBioGRID
 fetchPublications
 index
+neighborhoodMaps
 wrapUp
