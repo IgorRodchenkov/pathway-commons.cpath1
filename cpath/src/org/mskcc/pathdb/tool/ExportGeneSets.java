@@ -1,22 +1,15 @@
 package org.mskcc.pathdb.tool;
 
 import org.mskcc.pathdb.model.*;
-import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
-import org.mskcc.pathdb.util.tool.ConsoleUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Collection;
 
 /**
  * Command Line Utility to Dump Gene Sets.
@@ -41,7 +34,7 @@ import java.util.Collection;
  * ------- by_species
  * ------- by source
  */
-public class DumpGeneSets {
+public class ExportGeneSets {
     private ProgressMonitor pMonitor;
     private File outDir;
     private File gseaDir;
@@ -50,8 +43,6 @@ public class DumpGeneSets {
     private final static String COLON = ":";
     private final static String NA = "NA";
     private static final int BLOCK_SIZE = 1000;
-    private static final int GSEA_OUTPUT = 1;
-    private static final int PC_OUTPUT = 2;
 
     //  HashMap that will contain multiple open file writers
     private HashMap<String, FileWriter> fileWriters = new HashMap <String, FileWriter>();
@@ -61,62 +52,10 @@ public class DumpGeneSets {
      *
      * @param pMonitor Progress Monitor.
      */
-    public DumpGeneSets(ProgressMonitor pMonitor, File outDir) throws IOException {
+    public ExportGeneSets(ProgressMonitor pMonitor, File outDir) throws IOException {
         this.pMonitor = pMonitor;
         this.outDir = outDir;
         ToolInit.initProps();
-    }
-
-    /**
-     * Gene Set Dump.
-     */
-    public void dumpGeneSets() throws DaoException, IOException, SQLException {
-        DaoCPath dao = DaoCPath.getInstance();
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        CPathRecord record = null;
-        long maxIterId = dao.getMaxCpathID();
-        pMonitor.setMaxValue((int) maxIterId);
-
-        //  Initialize output directories
-        initDirs();
-
-        //  Iterate through all cPath Records in blocks
-        try {
-            for (int id = 0; id <= maxIterId; id = id + BLOCK_SIZE + 1) {
-                // setup start/end id to fetch
-                long startId = id;
-                long endId = id + BLOCK_SIZE;
-                if (endId > maxIterId) endId = maxIterId;
-
-                con = JdbcUtil.getCPathConnection();
-                pstmt = con.prepareStatement("select * from cpath WHERE "
-                        + " CPATH_ID BETWEEN " + startId + " and " + endId
-                        + " order by CPATH_ID ");
-                rs = pstmt.executeQuery();
-
-                while (rs.next()) {
-                    if (pMonitor != null) {
-                        pMonitor.incrementCurValue();
-                        ConsoleUtil.showProgress(pMonitor);
-                    }
-                    record = dao.extractRecord(rs);
-
-                    //  Only dump pathway records
-                    if (record.getType() == CPathRecordType.PATHWAY) {
-                        dumpPathwayRecord(record);
-                    }
-                }
-                JdbcUtil.closeAll(con, pstmt, rs);
-            }
-        } finally {
-            Collection<FileWriter> fds = fileWriters.values();
-            for (FileWriter fileWriter:  fds) {
-                fileWriter.close();
-            }
-            JdbcUtil.closeAll(con, pstmt, rs);
-        }
     }
 
     /**
@@ -130,54 +69,18 @@ public class DumpGeneSets {
      * 
      * @throws IOException IO Errors.
      */
-    private void initDirs() throws IOException {
+    private void initDirs(File outDir) throws IOException {
         if (!outDir.exists()) {
             outDir.mkdir();
         }
-        gseaDir = initDir (outDir, "gsea");
-        pcDir = initDir (outDir, "gene_sets");
-    }
-
-    /**
-     * Initializes output directories.  This method creates a structure like so:
-     * - gsea
-     * ---- by_species
-     * ---- by_source
-     */
-    private File initDir (File baseDir, String targetDir) {
-        File newDir = new File (baseDir, targetDir);
-        if (!newDir.exists()) {
-            newDir.mkdir();
-        }
-        File bySpeciesDir = getBySpeciesDir (newDir);
-        if (!bySpeciesDir.exists()) {
-            bySpeciesDir.mkdir();
-        }
-        File byDataSourceDir = getBySourceDir (newDir);
-        if (!byDataSourceDir.exists()) {
-            byDataSourceDir.mkdir();
-        }
-        return newDir;
-    }
-
-    /**
-     * Gets the by_species directory.
-     */
-    private File getBySpeciesDir (File baseDir) {
-        return new File (baseDir, "by_species");
-    }
-
-    /**
-     * Gets the by_source directory.
-     */
-    private File getBySourceDir (File baseDir) {
-        return new File (baseDir, "by_source");
+        gseaDir = ExportUtil.initDir (outDir, "gsea");
+        pcDir = ExportUtil.initDir (outDir, "gene_sets");
     }
 
     /**
      * Dumps the Pathway Record in the specified file format.
      */
-    private void dumpPathwayRecord(CPathRecord record)
+    public void dumpPathwayRecord(CPathRecord record)
             throws DaoException, IOException {
 
         //  Gets the Database Term
@@ -198,14 +101,14 @@ public class DumpGeneSets {
         ArrayList <HashMap <String, String>> xrefList =
                 new ArrayList <HashMap <String, String>>();
         for (long descendentId : descendentIds) {
-            HashMap <String, String> xrefMap = getXRefMap (descendentId);
+            HashMap <String, String> xrefMap = ExportUtil.getXRefMap (descendentId);
             cpathRecordList.add(daoCPath.getRecordById(descendentId));
             xrefList.add (xrefMap);
         }
 
         //  Dump to both file formats.
-        outputGeneSet(record, dbTerm, cpathRecordList, xrefList, GSEA_OUTPUT);
-        outputGeneSet(record, dbTerm, cpathRecordList, xrefList, PC_OUTPUT);
+        outputGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportUtil.GSEA_OUTPUT);
+        outputGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportUtil.PC_OUTPUT);
     }
 
     /**
@@ -226,7 +129,7 @@ public class DumpGeneSets {
             String geneSymbol = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
             String entrezGeneId = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
             String uniprotAccession = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
-            if (outputFormat == GSEA_OUTPUT) {
+            if (outputFormat == ExportUtil.GSEA_OUTPUT) {
                 if (geneSymbol != null) {
                     numParticipantsOutput++;
                     line.append (geneSymbol + TAB);
@@ -253,7 +156,7 @@ public class DumpGeneSets {
 
         //  Append to the correct output files
         if (numParticipantsOutput > 0) {
-            appendToOrganismFile (line.toString(), record.getNcbiTaxonomyId(), outputFormat);
+            appendToSpeciesFile(line.toString(), record.getNcbiTaxonomyId(), outputFormat);
             appendToDataSourceFile (line.toString(), dbTerm, outputFormat);
         }
     }
@@ -272,9 +175,9 @@ public class DumpGeneSets {
     private void appendToDataSourceFile (String line, String dbTerm, int outputFormat)
         throws IOException {
         String fdKey = dbTerm + outputFormat;
-        String fileExtension = getFileExtension (outputFormat);
+        String fileExtension = ExportUtil.getFileExtension (outputFormat);
         FileWriter writer = fileWriters.get(fdKey);
-        File dir = getBySourceDir (getFormatSpecificDir(outputFormat));
+        File dir = ExportUtil.getBySourceDir (getFormatSpecificDir(outputFormat));
         if (writer == null) {
             writer = new FileWriter (new File (dir, dbTerm.toLowerCase() + fileExtension));
             fileWriters.put(fdKey, writer);
@@ -283,14 +186,14 @@ public class DumpGeneSets {
     }
 
     /**
-     * Appends to an Organism File.
+     * Appends to a Speces File.
      */
-    private void appendToOrganismFile (String line, int ncbiTaxonomyId, int outputFormat)
+    private void appendToSpeciesFile(String line, int ncbiTaxonomyId, int outputFormat)
             throws IOException, DaoException {
         String fdKey = Integer.toString(ncbiTaxonomyId) + outputFormat;
-        String fileExtension = getFileExtension (outputFormat);
+        String fileExtension = ExportUtil.getFileExtension (outputFormat);
         FileWriter writer = fileWriters.get(fdKey);
-        File dir = getBySpeciesDir (getFormatSpecificDir(outputFormat));
+        File dir = ExportUtil.getBySpeciesDir (getFormatSpecificDir(outputFormat));
         if (writer == null) {
             DaoOrganism daoOrganism = new DaoOrganism();
             Organism organism = daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId);
@@ -301,14 +204,6 @@ public class DumpGeneSets {
         writer.write(line);
     }
 
-    private String getFileExtension (int outputFormat) {
-        if (outputFormat == GSEA_OUTPUT) {
-            return ".gmt";
-        } else {
-            return ".txt";
-        }
-    }
-
     /**
      * Gets the format specific base directory.
      * @param outputFormat  Output Format.
@@ -316,27 +211,12 @@ public class DumpGeneSets {
      */
     private File getFormatSpecificDir(int outputFormat) {
         File baseDir;
-        if (outputFormat == GSEA_OUTPUT) {
+        if (outputFormat == ExportUtil.GSEA_OUTPUT) {
             baseDir = gseaDir;
         } else {
             baseDir = pcDir;
         }
         return baseDir;
-    }
-
-    /**
-     * Gene Symbol Look up.
-     */
-    private HashMap <String, String> getXRefMap(long cpathId) throws DaoException {
-        HashMap <String, String> xrefMap = new HashMap <String, String> ();
-        DaoExternalLink daoExternalLink = DaoExternalLink.getInstance();
-        ArrayList<ExternalLinkRecord> xrefList = daoExternalLink.getRecordsByCPathId(cpathId);
-        for (ExternalLinkRecord xref : xrefList) {
-            String dbMasterTerm = xref.getExternalDatabase().getMasterTerm();
-            String xrefId = xref.getLinkedToId();
-            xrefMap.put(dbMasterTerm, xrefId);
-        }
-        return xrefMap;
     }
 
     /**
@@ -355,7 +235,7 @@ public class DumpGeneSets {
 
         File outDir = new File(args[0]);
         System.out.println("Writing out to:  " + outDir.getAbsolutePath());
-        DumpGeneSets dumper = new DumpGeneSets(pMonitor, outDir);
+        ExportGeneSets dumper = new ExportGeneSets(pMonitor, outDir);
         dumper.dumpGeneSets();
 
         ArrayList<String> warningList = pMonitor.getWarningList();
