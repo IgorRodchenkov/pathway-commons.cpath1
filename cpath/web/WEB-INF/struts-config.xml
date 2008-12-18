@@ -13,7 +13,7 @@
     </form-beans>
 
     <global-forwards>
-        <forward name="go_home" path="/home"/>
+        <forward name="go_home" path="/home.do"/>
         <forward name="failure" path="/WEB-INF/jsp/pages/Error.jsp"/>
         <forward name="unauthorized" path="/WEB-INF/jsp/pages/Unauthorized.jsp"/>
     </global-forwards>
