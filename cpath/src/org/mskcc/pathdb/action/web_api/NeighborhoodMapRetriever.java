@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.14 2008-12-11 23:09:14 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.15 2008-12-18 18:06:44 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -201,7 +201,7 @@ public class NeighborhoodMapRetriever {
 		DaoNeighborhoodMap daoMap = new DaoNeighborhoodMap();
 		NeighborhoodMap map = daoMap.getNeighborhoodMapRecord(PHYSICAL_ENTITY_RECORD_ID);
 		NeighborhoodMapSize toReturn = new NeighborhoodMapSize();
-		toReturn.sifNeighborhoodSize = map.getMapSize();
+		toReturn.sifNeighborhoodSize = (map != null) ? map.getMapSize() : 0;
 
 		// outta here
 		return toReturn;
