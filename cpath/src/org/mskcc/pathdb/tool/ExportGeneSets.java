@@ -236,7 +236,7 @@ public class ExportGeneSets {
         File outDir = new File(args[0]);
         System.out.println("Writing out to:  " + outDir.getAbsolutePath());
         ExportGeneSets dumper = new ExportGeneSets(pMonitor, outDir);
-        dumper.dumpGeneSets();
+        //dumper.dumpGeneSets();
 
         ArrayList<String> warningList = pMonitor.getWarningList();
         System.out.println("Total number of warning messages:  " + warningList.size());
