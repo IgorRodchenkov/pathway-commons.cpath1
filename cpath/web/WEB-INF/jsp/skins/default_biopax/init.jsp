@@ -7,14 +7,16 @@
     // Set to CPathUIConfig.WEB_MODE_PSI_MI or
     // CPathUIConfig.WEB_MODE_BIO_PAX.
     CPathUIConfig.setWebMode(CPathUIConfig.WEB_MODE_BIOPAX);
-    WebUIBean webUIBean = new WebUIBean();
-    webUIBean.setApplicationName("cPath");
+	if (CPathUIConfig.getWebUIBean() == null) {
+	   WebUIBean webUIBean = new WebUIBean();
+	   webUIBean.setApplicationName("cPath");
 
-    webUIBean.setDisplayBrowseByOrganismTab(false);
-    webUIBean.setDisplayBrowseByPathwayTab(true);
-    webUIBean.setWantCytoscape(true);
-    webUIBean.setDisplayWebServiceTab(true);
-    webUIBean.setDisplayFilterTab(true);
-    webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);    
-    CPathUIConfig.setWebUIBean(webUIBean);
+	   webUIBean.setDisplayBrowseByOrganismTab(false);
+	   webUIBean.setDisplayBrowseByPathwayTab(true);
+	   webUIBean.setWantCytoscape(true);
+	   webUIBean.setDisplayWebServiceTab(true);
+	   webUIBean.setDisplayFilterTab(true);
+	   webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);    
+	   CPathUIConfig.setWebUIBean(webUIBean);
+    }
 %>
