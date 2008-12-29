@@ -42,9 +42,11 @@ create a local mirror.</p>
 
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;December 1, 2008:
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;January 15, 2008:
     <ul>
-        <li>Latest Reactome data set (September 30, 2008 Version 26).</li>
+        <li>BioGRID data set added to repository (November 27, 2008 Version 2.0.47).</li>
+        <li>Latest Reactome data set (December 17, 2008 Version 27).</li>
+        <li>Latest HumanCyc data set (October 15, 2008 Version 12.5).</li>
         <li>Neighborhood maps added to protein pages.</li>
         <li>Numerous bug fixes and performance improvements.</li>
     </ul>
