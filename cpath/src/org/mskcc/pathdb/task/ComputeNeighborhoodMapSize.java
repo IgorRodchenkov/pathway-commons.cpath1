@@ -1,4 +1,4 @@
-// $Id: ComputeNeighborhoodMapSize.java,v 1.2 2008-12-11 23:07:41 grossben Exp $
+// $Id: ComputeNeighborhoodMapSize.java,v 1.3 2008-12-29 17:55:46 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -135,7 +135,6 @@ public class ComputeNeighborhoodMapSize extends Task {
         ResultSet rs = null;
         CPathRecord record = null;
         long maxIterId = cpath.getMaxCpathID();
-		NeighborhoodMapRetriever retriever = new NeighborhoodMapRetriever();
 		System.out.println("RecordID:RecordName:MapSize");
 		System.out.println("---------------------------");
         for (int id = 0; id <= maxIterId; id = id + BLOCK_SIZE + 1) {
@@ -156,6 +155,7 @@ public class ComputeNeighborhoodMapSize extends Task {
 					map.setCpathID(record.getId());
 					// get map size
 					protocolRequest.setQuery(Long.toString(record.getId()));
+					NeighborhoodMapRetriever retriever = new NeighborhoodMapRetriever();
 					NeighborhoodMapSize mapSize = retriever.getNeighborhoodMapSize(xdebug, protocolRequest);
 					map.setMapSize(mapSize.sifNeighborhoodSize);
 					// add record to table
