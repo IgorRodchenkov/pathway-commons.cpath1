@@ -333,8 +333,8 @@ else {
 				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
             }
 			else if (record.getSpecificType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
-				String textPathways = (numParentPathways == 1) ? "1 pathway" ? numParentPathways + " pathways";
-				String textInteractions = (numParentInteractions == 1) ? "1 interaction" ? numParentInteractions + " interactions";
+				String textPathways = (numParentPathways == 1) ? "1 pathway" : numParentPathways + " pathways";
+				String textInteractions = (numParentInteractions == 1) ? "1 interaction" : numParentInteractions + " interactions";
 				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + textPathways + ", " + textInteractions +"]</span>");
 			}
             out.println("</th>");
