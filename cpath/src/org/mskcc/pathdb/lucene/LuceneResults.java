@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.5 2008-07-16 15:00:40 cerami Exp $
+// $Id: LuceneResults.java,v 1.6 2008-12-30 16:39:36 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -70,6 +70,8 @@ public class LuceneResults {
     private Map<Long,Set<String>> dataSourceMap;
     private ArrayList<Integer> numDescendentsList;
     private ArrayList<Integer> numParentsList;
+    private ArrayList<Integer> numParentPathwaysList;
+    private ArrayList<Integer> numParentInteractionsList;
     private Map<Long,Float> scores;
     private int numHits;
 
@@ -83,6 +85,8 @@ public class LuceneResults {
         fragments = new ArrayList<List<String>>();
         numDescendentsList = new ArrayList<Integer>();
         numParentsList = new ArrayList<Integer>();
+		numParentPathwaysList = new ArrayList<Integer>();
+		numParentInteractionsList = new ArrayList<Integer>();
         dataSourceMap = new HashMap<Long,Set<String>>();
         scores = new HashMap<Long,Float>();
 
@@ -107,8 +111,10 @@ public class LuceneResults {
                 extractFragment(doc, highLighter, term);
             }
 
-            extractNumDescendents(doc);
-            extractNumParents(doc);
+			extractNumFamilyTree(doc, LuceneConfig.FIELD_NUM_DESCENDENTS, numDescendentsList);
+			extractNumFamilyTree(doc, LuceneConfig.FIELD_NUM_PARENTS, numParentsList);
+			extractNumFamilyTree(doc, LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, numParentPathwaysList);
+			extractNumFamilyTree(doc, LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, numParentInteractionsList);
             extractDataSourceMap(doc, dao);
         }
     }
@@ -137,6 +143,14 @@ public class LuceneResults {
         return numParentsList;
     }
 
+    public ArrayList<Integer> getNumParentPathwaysList() {
+        return numParentPathwaysList;
+    }
+
+    public ArrayList<Integer> getNumParentInteractionsList() {
+        return numParentInteractionsList;
+    }
+
     public Map<Long, Float> getScores() {
         return scores;
     }
@@ -155,35 +169,27 @@ public class LuceneResults {
         }
     }
 
-    private void extractNumDescendents(Document doc) {
+	/**
+	 * Generalized function to extract total number of descendents, parents, interactions, pathways.
+	 *
+	 * @param doc Document
+	 * @param fieldName String
+	 * @param list ArrayList<Integer>
+	 */
+	private void extractNumFamilyTree(Document doc, String fieldName, ArrayList<Integer> list) {
         Field field;
-        field = doc.getField(LuceneConfig.FIELD_NUM_DESCENDENTS);
+        field = doc.getField(fieldName);
         if (field == null) {
-            numDescendentsList.add(0);
+            list.add(0);
         } else {
             try {
                 Integer num = Integer.parseInt(field.stringValue());
-                numDescendentsList.add(num);
+                list.add(num);
             } catch (NumberFormatException e) {
-                numDescendentsList.add(0);
+                list.add(0);
             }
         }
-    }
-
-    private void extractNumParents(Document doc) {
-        Field field;
-        field = doc.getField(LuceneConfig.FIELD_NUM_PARENTS);
-        if (field == null) {
-            numParentsList.add(0);
-        } else {
-            try {
-                Integer num = Integer.parseInt(field.stringValue());
-                numParentsList.add(num);
-            } catch (NumberFormatException e) {
-                numParentsList.add(0);
-            }
-        }
-    }
+	}
 
     private void extractFragment(Document doc, QueryHighlightExtractor highLighter, String term)
             throws IOException {
