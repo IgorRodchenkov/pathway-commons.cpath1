@@ -1,4 +1,4 @@
-// $Id: LuceneConfig.java,v 1.15 2008-07-15 15:35:13 cerami Exp $
+// $Id: LuceneConfig.java,v 1.16 2008-12-30 16:38:54 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -108,6 +108,16 @@ public class LuceneConfig {
      * Lucene Field for Number of Parents
      */
     public static final String FIELD_NUM_PARENTS = "num_parents";
+
+    /**
+     * Lucene Field for Number of Parent Pathways
+     */
+    public static final String FIELD_NUM_PARENT_PATHWAYS = "num_parent_pathways";
+
+    /**
+     * Lucene Field for Number of Parent Interactions
+     */
+    public static final String FIELD_NUM_PARENT_INTERACTIONS = "num_parent_interactions";
 
     /**
      * Text Index Directory.
