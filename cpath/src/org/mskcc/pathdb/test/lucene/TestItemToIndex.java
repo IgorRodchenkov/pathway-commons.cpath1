@@ -1,4 +1,4 @@
-// $Id: TestItemToIndex.java,v 1.26 2008-07-18 13:29:32 cerami Exp $
+// $Id: TestItemToIndex.java,v 1.27 2008-12-30 17:13:20 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -143,7 +143,7 @@ public class TestItemToIndex extends TestCase {
 
         //  Validate Number of Fields
         int numFields = item.getNumFields();
-        assertEquals(11, numFields);
+        assertEquals(13, numFields);
 
         Field allField = item.getField(0);
         Field idField = item.getField(1);
