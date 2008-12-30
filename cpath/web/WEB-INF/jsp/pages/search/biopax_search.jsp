@@ -330,12 +330,18 @@ else {
 			//  Show pathway or protein (interaction & pathway) size
 			if (record.getType() == CPathRecordType.PATHWAY) {
 				String text = (numDescendents == 1) ? "1 participant" : numDescendents + " participants";
+				text = (numDescendents == 0) ? "" : text;
 				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
             }
 			else if (record.getSpecificType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
 				String textPathways = (numParentPathways == 1) ? "1 pathway" : numParentPathways + " pathways";
+				textPathways = (numParentPathways == 0) ? "" : textPathways;
 				String textInteractions = (numParentInteractions == 1) ? "1 interaction" : numParentInteractions + " interactions";
-				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + textPathways + ", " + textInteractions +"]</span>");
+				textInteractions = (numParentInteractions == 0) ? "" : textInteractions;
+				if (textPathways.length() > 0 || textInteractions.length() > 0) {
+					String delimiter = (textPathways.length() > 0 && textInteractions.length() > 0) ? ", " : "";
+					out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + textPathways + delimiter + textInteractions +"]</span>");
+				}
 			}
             out.println("</th>");
 			// inspection button
