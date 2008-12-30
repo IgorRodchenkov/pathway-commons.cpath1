@@ -14,6 +14,7 @@
                  org.mskcc.pathdb.model.GlobalFilterSettings,
                  org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord,
                  org.mskcc.pathdb.util.html.HtmlUtil,
+                 org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary,
                  org.mskcc.pathdb.util.biopax.BioPaxRecordUtil,
@@ -42,6 +43,8 @@
     Map<Long, Float> scores = luceneResults.getScores();
     ArrayList<Integer> numDescendentsList = luceneResults.getNumDescendentsList();
     ArrayList<Integer> numParentsList = luceneResults.getNumParentsList();
+    ArrayList<Integer> numParentPathwaysList = luceneResults.getNumParentPathwaysList();
+    ArrayList<Integer> numParentInteractionsList = luceneResults.getNumParentInteractionsList();
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
     String keyType = protocolRequest.getEntityType();
     String keyDataSource = request.getParameter
@@ -263,8 +266,10 @@ else {
     DaoCPath dao = DaoCPath.getInstance();
     for (int i=0; i< cpathIds.length; i++) {
         CPathRecord record = dao.getRecordById(cpathIds[i]);
-        int numDescendents = numDescendentsList.get(i);
-        int numParents = numParentsList.get(i);
+        Integer numDescendents = numDescendentsList.get(i);
+        Integer numParents = numParentsList.get(i);
+		Integer numParentPathways = numParentPathwaysList.get(i);
+		Integer numParentInteractions = numParentInteractionsList.get(i);
 
         boolean showCytoscape = false;
 
@@ -322,19 +327,16 @@ else {
             out.println("<th align=left width=\"90%\">");
 			out.println("<a href=\"" + url + "\">" + header + "</a>");
 
-			//  Show pathway size
+			//  Show pathway or protein (interaction & pathway) size
 			if (record.getType() == CPathRecordType.PATHWAY) {
-                if (numDescendentsList != null) {
-                    Integer num = numDescendentsList.get(i);
-                    String text;
-                    if (num == 1) {
-                        text = "1 participant";
-                    } else {
-                           text = num + " participants";
-                    }
-                    out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
-                }
+				String text = (numDescendents == 1) ? "1 participant" : numDescendents + " participants";
+				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
             }
+			else if (record.getSpecificType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
+				String textPathways = (numParentPathways == 1) ? "1 pathway" ? numParentPathways + " pathways";
+				String textInteractions = (numParentInteractions == 1) ? "1 interaction" ? numParentInteractions + " interactions";
+				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + textPathways + ", " + textInteractions +"]</span>");
+			}
             out.println("</th>");
 			// inspection button
 			out.println("<th align=right>");
