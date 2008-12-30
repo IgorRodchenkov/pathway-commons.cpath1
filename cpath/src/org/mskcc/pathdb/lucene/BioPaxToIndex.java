@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.26 2008-07-15 15:35:13 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.27 2008-12-30 16:39:17 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -168,9 +168,29 @@ public class BioPaxToIndex implements ItemToIndex {
 
     private void indexNumParents(CPathRecord record) throws DaoException {
         DaoInternalLink daoInternalLink = new DaoInternalLink();
-        List parentList = daoInternalLink.getSources(record.getId());
+        List<InternalLinkRecord>  parentList = daoInternalLink.getSources(record.getId());
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENTS, Integer.toString(parentList.size()),
                 Field.Store.YES, Field.Index.NO));
+
+		int numParentPathways = 0;
+		int numParentInteractions = 0;
+		// interate over parent list and populate parent pathway & interaction fields
+		DaoCPath cpath = DaoCPath.getInstance();
+		for (InternalLinkRecord internalLinkRecord : parentList) {
+			// get cpath record
+			CPathRecord srcRecord = cpath.getRecordById(internalLinkRecord.getSourceId());
+			// is it pathway or interaction ?
+			if (srcRecord.getType().equals(CPathRecordType.PATHWAY)) {
+				numParentPathways++;
+			}
+			else if (srcRecord.getType().equals(CPathRecordType.INTERACTION)) {
+				numParentInteractions++;
+			}
+		}
+        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, Integer.toString(numParentPathways),
+							 Field.Store.YES, Field.Index.NO));
+        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, Integer.toString(numParentInteractions),
+							 Field.Store.YES, Field.Index.NO));
     }
 
     /**
