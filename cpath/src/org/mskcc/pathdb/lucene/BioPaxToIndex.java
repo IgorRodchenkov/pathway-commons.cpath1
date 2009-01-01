@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.27 2008-12-30 16:39:17 grossben Exp $
+// $Id: BioPaxToIndex.java,v 1.28 2009-01-01 00:43:57 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -172,23 +172,23 @@ public class BioPaxToIndex implements ItemToIndex {
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENTS, Integer.toString(parentList.size()),
                 Field.Store.YES, Field.Index.NO));
 
-		int numParentPathways = 0;
+		// populate parent pathway - we use internal family table because we will only get interaction links via internal link table
+		// and the task that populates this table gets run before indexing
+		DaoInternalFamily daoInternalFamily = new DaoInternalFamily();
+		long[] parentPathways = daoInternalFamily.getAncestorIds(record.getId(), CPathRecordType.PATHWAY);
+        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, Integer.toString(parentPathways.length),
+							 Field.Store.YES, Field.Index.NO));
+
+		// interate over parent list to populate parent interaction field
 		int numParentInteractions = 0;
-		// interate over parent list and populate parent pathway & interaction fields
 		DaoCPath cpath = DaoCPath.getInstance();
 		for (InternalLinkRecord internalLinkRecord : parentList) {
 			// get cpath record
 			CPathRecord srcRecord = cpath.getRecordById(internalLinkRecord.getSourceId());
-			// is it pathway or interaction ?
-			if (srcRecord.getType().equals(CPathRecordType.PATHWAY)) {
-				numParentPathways++;
-			}
-			else if (srcRecord.getType().equals(CPathRecordType.INTERACTION)) {
+			if (srcRecord.getType().equals(CPathRecordType.INTERACTION)) {
 				numParentInteractions++;
 			}
 		}
-        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, Integer.toString(numParentPathways),
-							 Field.Store.YES, Field.Index.NO));
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, Integer.toString(numParentInteractions),
 							 Field.Store.YES, Field.Index.NO));
     }
