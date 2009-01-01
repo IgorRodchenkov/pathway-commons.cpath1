@@ -95,7 +95,7 @@ Pathway Commons will implement published algorithms to automatically assess data
 this as an additional filter.
 </p>
 <h3>How are Neighborhood Maps generated?</h3>
-<p>Pathway Commons will generate neighborhood maps for proteins.  These maps will be represented using the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.  In the event that the neighborhood map is greater than 200 nodes, Pathway Commons will try to reduce the size of the map by removing all nodes and edges whose interaction type is "INTERACTS_WITH".  See <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a> for more information regarding the interaction type "INTERACTS_WITH" as well as all other interaction types.
+<p>Pathway Commons displays neighborhood maps for proteins.  Each map displays the direct interactors of the protein.  The central circle (node) is the selected protein and neighbors are connected by lines colored according to Pathway Commons <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a> rules. If the neighborhood map is greater than 200 nodes, Pathway Commons tries to reduce the size of the map by removing all nodes and edges whose interaction type is "INTERACTS_WITH".  Alternatively, you may define search filters to limit the results, which can also reduce the map size.  See the full description of <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a> for more information regarding the interaction type "INTERACTS_WITH" and other interaction types.
 </p>
 
 <h2><a name="comp_bio"></a>For Computational Biologists and Software developers</h2>
