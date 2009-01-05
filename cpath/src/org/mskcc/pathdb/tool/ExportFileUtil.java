@@ -115,6 +115,9 @@ public class ExportFileUtil {
      */
     public void appendToSpeciesFile(String line, int ncbiTaxonomyId, int outputFormat)
             throws IOException, DaoException {
+        if (ncbiTaxonomyId == -9999) {
+            return;
+        }
         String fdKey = outputFormat + Integer.toString(ncbiTaxonomyId);
         String fileExtension = getFileExtension (outputFormat);
         FileWriter writer = fileWriters.get(fdKey);
