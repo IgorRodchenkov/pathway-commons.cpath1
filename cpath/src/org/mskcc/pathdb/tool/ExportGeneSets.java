@@ -3,6 +3,7 @@ package org.mskcc.pathdb.tool;
 import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import java.util.HashMap;
 public class ExportGeneSets {
     private final static String TAB = "\t";
     private final static String COLON = ":";
-    private final static String NA = "NA";
+    private final static String NA = "NOT_SPECIFIED";
     private ExportFileUtil exportFileUtil;
 
     public ExportGeneSets (ExportFileUtil exportFileUtil) {
@@ -100,10 +101,10 @@ public class ExportGeneSets {
             } else {
                 numParticipantsOutput++;
                 line.append (descendentId + COLON);
-                line.append (participantRecord.getSpecificType().toUpperCase() + COLON);
+                line.append (participantRecord.getSpecificType() + COLON);
                 String name = participantRecord.getName();
                 if (name != null) {
-                    //  Replace all : with -, so that we don't screw up a client parser
+                    //  Replace all : with -, so that we don't mess up the default delimiter.
                     name = name.replaceAll(":", "-");
                     line.append (participantRecord.getName() + COLON);
                 } else {
