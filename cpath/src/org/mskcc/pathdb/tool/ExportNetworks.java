@@ -10,22 +10,14 @@ import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
-import org.mskcc.pathdb.sql.JdbcUtil;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
-import org.mskcc.pathdb.util.tool.ConsoleUtil;
 import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
-import java.util.Collection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import com.hp.hpl.jena.shared.JenaException;
 
@@ -83,10 +75,13 @@ public class ExportNetworks {
                             (binaryInteractionAssemblyType, binaryInteractionRuleTypes,
                                     xmlAssembly.getXmlString());
             String sif = sifAssembly.getBinaryInteractionString();
-            String finalSif = convertIdsToGeneSymbols(dbTerm, record.getId(), sif);
-            exportFileUtil.appendToDataSourceFile(finalSif, dbTerm, ExportFileUtil.SIF_OUTPUT);
-            exportFileUtil.appendToSpeciesFile(finalSif, record.getNcbiTaxonomyId(),
-                    ExportFileUtil.TAB_DELIM_OUTPUT);
+            ArrayList <Interaction> interactionList = convertToInteractionList (dbTerm,
+                    record.getId(), sif);
+
+            for (Interaction interaction:  interactionList) {
+                exportRecord(dbTerm, interaction, ExportFileUtil.SIF_OUTPUT);
+                exportRecord(dbTerm, interaction, ExportFileUtil.TAB_DELIM_OUTPUT);
+            }
         } catch (JenaException e) {
             pMonitor.logWarning("Got JenaException:  " + e.getMessage() + ".  Occurred "
                 + " while getting SIF for interaction:  " + record.getId() + ", Data Source:  "
@@ -94,34 +89,141 @@ public class ExportNetworks {
         }
     }
 
-    private String convertIdsToGeneSymbols(String dbSource, long interactionId,
+    private void exportRecord(String dbTerm, Interaction interaction, int outputFormat)
+            throws IOException, DaoException {
+        StringBuffer finalSif = new StringBuffer();
+        finalSif.append(interaction.getGeneA() + TAB);
+        finalSif.append(interaction.getInteractionType() + TAB);
+        finalSif.append(interaction.getGeneB());
+        if (outputFormat == ExportFileUtil.TAB_DELIM_OUTPUT) {
+            finalSif.append(TAB + interaction.getDbSource());
+        }
+        finalSif.append ("\n");
+
+        //  Export to data source file
+        exportFileUtil.appendToDataSourceFile(finalSif.toString(), dbTerm, outputFormat);
+
+        //  Export to species specific file(s)
+        if (interaction.getCPathRecordA().getNcbiTaxonomyId()
+                == interaction.getCPathRecordA().getNcbiTaxonomyId()) {
+            exportFileUtil.appendToSpeciesFile(finalSif.toString(),
+                    interaction.getCPathRecordA().getNcbiTaxonomyId(), outputFormat);
+        } else {
+            //  If we have an interaction between two species, we need to export the
+            //  interaction in two places, once for each species.
+            exportFileUtil.appendToSpeciesFile(finalSif.toString(),
+                    interaction.getCPathRecordA().getNcbiTaxonomyId(), outputFormat);
+            exportFileUtil.appendToSpeciesFile(finalSif.toString(),
+                    interaction.getCPathRecordB().getNcbiTaxonomyId(), outputFormat);
+        }
+    }
+
+    private ArrayList <Interaction> convertToInteractionList (String dbSource, long interactionId,
             String sif) throws DaoException, IOException {
-        StringBuffer buf = new StringBuffer();
+        ArrayList <Interaction> interactionList = new ArrayList <Interaction>();
+        DaoCPath daoCPath = DaoCPath.getInstance();
         String lines[] = sif.split("\\n");
         for (int i=0; i<lines.length; i++) {
             String line = lines[i];
             if (line.length() > 0) {
                 String parts[] = lines[i].split("\\s");
-                String id0 = parts[0];
+                String id0Str = parts[0];
                 String intxnType = parts[1];
-                String id1 = parts[2];
-                String gene0 = getGeneSymbol(Integer.parseInt(id0));
-                String gene1 = getGeneSymbol(Integer.parseInt(id1));
-                //  Only export if we have gene symbols for both participants
+                String id1Str = parts[2];
+
+                int idA = Integer.parseInt(id0Str);
+                int idB = Integer.parseInt(id1Str);
+                String gene0 = getGeneSymbol(idA);
+                String gene1 = getGeneSymbol(idB);
                 if (gene0 != null && gene1 != null) {
-                    buf.append(gene0 + TAB);
-                    buf.append(intxnType + TAB);
-                    buf.append(gene1 + TAB);
-                    buf.append(dbSource + TAB);
-                    buf.append(interactionId + "\n");
+                    CPathRecord recordA = daoCPath.getRecordById(idA);
+                    CPathRecord recordB = daoCPath.getRecordById(idB);
+                    Interaction interaction = new Interaction (interactionId, dbSource);
+                    interaction.setCPathRecordA(recordA);
+                    interaction.setCPathRecordA(recordB);
+                    interaction.setGeneA(gene0);
+                    interaction.setGeneB(gene1);
+                    interaction.setInteractionType(intxnType);
+                    interactionList.add(interaction);
                 }
             }
         }
-        return buf.toString();
+        return interactionList;
     }
 
     private String getGeneSymbol(long cpathId) throws DaoException {
         HashMap<String, String> xrefMap = ExportUtil.getXRefMap(cpathId);
         return xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
+    }
+}
+
+class Interaction {
+    private String geneA;
+    private String geneB;
+    private String interactionType;
+    private String dbSource;
+    private long cPathId;
+    private CPathRecord recordA;
+    private CPathRecord recordB;
+
+    Interaction (long cPathId, String dbSource) {
+        this.cPathId = cPathId;
+        this.dbSource = dbSource;
+    }
+
+    public String getGeneA() {
+        return geneA;
+    }
+
+    public void setGeneA(String geneA) {
+        this.geneA = geneA;
+    }
+
+    public String getGeneB() {
+        return geneB;
+    }
+
+    public void setGeneB(String geneB) {
+        this.geneB = geneB;
+    }
+
+    public String getInteractionType() {
+        return interactionType;
+    }
+
+    public void setInteractionType(String interactionType) {
+        this.interactionType = interactionType;
+    }
+
+    public String getDbSource() {
+        return dbSource;
+    }
+
+    public void setDbSource(String dbSource) {
+        this.dbSource = dbSource;
+    }
+
+    public long getCPathId() {
+        return cPathId;
+    }
+
+    public void setCPathId(long cPathId) {
+        this.cPathId = cPathId;
+    }
+
+    public CPathRecord getCPathRecordA() {
+        return recordA;
+    }
+
+    public void setCPathRecordA(CPathRecord record) {
+        this.recordA = record;
+    }
+
+    public CPathRecord getCPathRecordB() {
+        return recordB;
+    }
+
+    public void setCPathRecordB (CPathRecord record) {
+        this.recordB = record;
     }
 }
