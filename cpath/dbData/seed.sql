@@ -39,7 +39,7 @@ INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`,
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (10, 'Pfam', 'http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%ID%', NULL, 'Pfam protein families database of alignments and hidden Markov models.', 'LINK_OUT', NULL, NULL, 20031002162804, 20031002162804);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (11, 'GO', 'http://www.godatabase.org/cgi-bin/amigo/go.cgi?view=details&search_constraint=terms&depth=0&query=%ID%', NULL, 'Gene Ontology (GO)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (12, 'Affymetrix', '', NULL, 'Affymetrix ID', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
-INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (13, 'IntAct', 'http://www.ebi.ac.uk/intact/search/do/hvWelcome?searchString=%ID%', NULL, 'IntAct database of protein interaction data', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (13, 'IntAct', 'http://www.ebi.ac.uk/intact/search/do/hvWelcome?searchString=%ID%', NULL, 'IntAct database of protein interaction data', 'INTERACTION_PATHWAY_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (14, 'FlyBase', 'http://flybase.bio.indiana.edu/.bin/fbidq.html?%ID%', NULL, 'FlyBase is a comprehensive database for information on the genetics and molecular biology of Drosophila.', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (15, 'PDB', 'http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=%ID%', NULL, 'Protein Data Bank (PDB)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (16, 'SGD', '', NULL, 'Saccharomyces Genome Database (SGD)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
@@ -71,6 +71,7 @@ INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`,
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (42, 'KEGG Genomes', 'http://www.genome.jp/dbget-bin/www_bget?bja:%ID%', NULL, 'Kyoto Encyclopedia of Genes and Genomes (KEGG)', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (43, 'NCBI PubChem', 'http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%ID%', NULL, 'NCBI PubChem provides information on the biological activities of small molecules. ', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
 INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (44, 'Gene Symbol', NULL, NULL, 'Gene Symbol', 'LINK_OUT', NULL, NULL, 20031002163709, 20031002163709);
+INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`, `DESC`, `DB_TYPE`, `PATH_GUIDE_ID`, `ICON_BLOB`, `CREATE_TIME`, `UPDATE_TIME`) VALUES (45, 'BioGRID', 'http://www.thebiogrid.org/search.php?keywords=%ID%', NULL, 'General Repository for Interaction Datasets', 'INTERACTION_PATHWAY_UNIFICATION', NULL, NULL, 20031002163709, 20031002163709);
 
 #
 #
@@ -80,42 +81,42 @@ INSERT INTO `external_db` (`EXTERNAL_DB_ID`, `NAME`, `URL_PATTERN`, `SAMPLE_ID`,
 #  Terms Associated with UNIPROT and SWISS-PROT (1-19)
 #  All these terms map to the UniProt Database
 INSERT INTO `external_db_cv` VALUES (1, 1, 'SWISS-PROT', 0);
-INSERT INTO `external_db_cv` VALUES (3, 1, 'SWISSPROT', 0);
-INSERT INTO `external_db_cv` VALUES (4, 1, 'SWISSTREMBL', 0);
-INSERT INTO `external_db_cv` VALUES (5, 1, 'SWP', 0);
-INSERT INTO `external_db_cv` VALUES (6, 1, 'UNIPROT', 1);
-INSERT INTO `external_db_cv` VALUES (7, 1, 'SWISS-PROT/TREMBL', 0);
-INSERT INTO `external_db_cv` VALUES (8, 1, 'UNIPROTKB', 0);
-INSERT INTO `external_db_cv` VALUES (9, 1, 'REACTOME PROTEIN', 0);
-INSERT INTO `external_db_cv` VALUES (10, 1, 'UNIPROT KNOWLEDGE BASE', 0);
+INSERT INTO `external_db_cv` VALUES (2, 1, 'SWISSPROT', 0);
+INSERT INTO `external_db_cv` VALUES (3, 1, 'SWISSTREMBL', 0);
+INSERT INTO `external_db_cv` VALUES (4, 1, 'SWP', 0);
+INSERT INTO `external_db_cv` VALUES (5, 1, 'UNIPROT', 1);
+INSERT INTO `external_db_cv` VALUES (6, 1, 'SWISS-PROT/TREMBL', 0);
+INSERT INTO `external_db_cv` VALUES (7, 1, 'UNIPROTKB', 0);
+INSERT INTO `external_db_cv` VALUES (8, 1, 'REACTOME PROTEIN', 0);
+INSERT INTO `external_db_cv` VALUES (9, 1, 'UNIPROT KNOWLEDGE BASE', 0);
 
 #  Terms Associated with NCBI Databases (20-49)
 #  Entrez Gene will soon replace LocusLink
-INSERT INTO `external_db_cv` VALUES (21, 2, 'ENTREZ_GENE', 1);
-INSERT INTO `external_db_cv` VALUES (22, 2, 'LOCUS_LINK', 0);
-INSERT INTO `external_db_cv` VALUES (23, 2, 'LOCUSLINK', 0);
-INSERT INTO `external_db_cv` VALUES (47, 2, 'LOCUS-LINK', 0);
-INSERT INTO `external_db_cv` VALUES (91, 2, 'ENTREZGENE', 0);
-
+INSERT INTO `external_db_cv` VALUES (20, 2, 'ENTREZ_GENE', 1);
+INSERT INTO `external_db_cv` VALUES (21, 2, 'LOCUS_LINK', 0);
+INSERT INTO `external_db_cv` VALUES (22, 2, 'LOCUSLINK', 0);
+INSERT INTO `external_db_cv` VALUES (23, 2, 'LOCUS-LINK', 0);
+INSERT INTO `external_db_cv` VALUES (24, 2, 'ENTREZGENE', 0);
+INSERT INTO `external_db_cv` VALUES (25, 2, 'ENTREZ GENE/LOCUSLINK', 0);
 
 #  Terms Associated with RefSeq
-INSERT INTO `external_db_cv` VALUES (24, 25, 'REFSEQ',  0);
-INSERT INTO `external_db_cv` VALUES (25, 25, 'REF_SEQ', 1);
-INSERT INTO `external_db_cv` VALUES (49, 25, 'REF-SEQ', 0);
-INSERT INTO `external_db_cv` VALUES (48, 25, 'REF_SEQ PROTEIN', 0);
+INSERT INTO `external_db_cv` VALUES (26, 25, 'REFSEQ',  0);
+INSERT INTO `external_db_cv` VALUES (27, 25, 'REF_SEQ', 1);
+INSERT INTO `external_db_cv` VALUES (28, 25, 'REF-SEQ', 0);
+INSERT INTO `external_db_cv` VALUES (29, 25, 'REF_SEQ PROTEIN', 0);
 
 #  Terms Associated with GenBank and GI
-INSERT INTO `external_db_cv` VALUES (26, 22, 'GENBANK', 1);
-INSERT INTO `external_db_cv` VALUES (27, 23, 'ENTREZ GI', 1);
-INSERT INTO `external_db_cv` VALUES (28, 23, 'GI', 0);
+INSERT INTO `external_db_cv` VALUES (30, 22, 'GENBANK', 1);
+INSERT INTO `external_db_cv` VALUES (31, 23, 'ENTREZ GI', 1);
+INSERT INTO `external_db_cv` VALUES (32, 23, 'GI', 0);
 
 #  Pub Med IDs
-INSERT INTO `external_db_cv` VALUES (29, 3, 'PUBMED', 1);
-INSERT INTO `external_db_cv` VALUES (30, 3, 'PMID', 0);
+INSERT INTO `external_db_cv` VALUES (33, 3, 'PUBMED', 1);
+INSERT INTO `external_db_cv` VALUES (34, 3, 'PMID', 0);
 
 # Other NCBI Databses
-INSERT INTO `external_db_cv` VALUES (31, 4, 'UNIGENE', 1);
-INSERT INTO `external_db_cv` VALUES (32, 5, 'OMIM', 1);
+INSERT INTO `external_db_cv` VALUES (35, 4, 'UNIGENE', 1);
+INSERT INTO `external_db_cv` VALUES (36, 5, 'OMIM', 1);
 
 # All Other Databases (50 - 999)
 INSERT INTO `external_db_cv` VALUES (50, 6, 'PIR', 1);
@@ -124,41 +125,42 @@ INSERT INTO `external_db_cv` VALUES (52, 8, 'PROSITE', 1);
 INSERT INTO `external_db_cv` VALUES (53, 9, 'DIP', 1);
 INSERT INTO `external_db_cv` VALUES (54, 10, 'PFAM', 1);
 INSERT INTO `external_db_cv` VALUES (55, 11, 'GO', 0);
-INSERT INTO `external_db_cv` VALUES (68, 11, 'GENE ONTOLOGY', 0);
-INSERT INTO `external_db_cv` VALUES (92, 11, 'GENE_ONTOLOGY', 1);
+INSERT INTO `external_db_cv` VALUES (56, 11, 'GENE ONTOLOGY', 0);
+INSERT INTO `external_db_cv` VALUES (57, 11, 'GENE_ONTOLOGY', 1);
 
-INSERT INTO `external_db_cv` VALUES (56, 12, 'AFFYMETRIX', 1);
-INSERT INTO `external_db_cv` VALUES (57, 13, 'INTACT', 1);
-INSERT INTO `external_db_cv` VALUES (58, 14, 'FLYBASE', 1);
-INSERT INTO `external_db_cv` VALUES (59, 15, 'PDB', 1);
-INSERT INTO `external_db_cv` VALUES (60, 16, 'SGD', 1);
-INSERT INTO `external_db_cv` VALUES (61, 17, 'HPRD', 1);
-INSERT INTO `external_db_cv` VALUES (62, 18, 'MINT', 1);
-INSERT INTO `external_db_cv` VALUES (63, 19, 'REACTOME', 1);
-INSERT INTO `external_db_cv` VALUES (64, 20, 'HUGE', 1);
-INSERT INTO `external_db_cv` VALUES (65, 21, 'ENSEMBL', 1);
-INSERT INTO `external_db_cv` VALUES (66, 26, 'AMAZE', 1);
-INSERT INTO `external_db_cv` VALUES (67, 27, 'KEGG', 1);
-INSERT INTO `external_db_cv` VALUES (69, 28, 'CAS', 1);
-INSERT INTO `external_db_cv` VALUES (70, 29, 'LIGAND', 1);
-INSERT INTO `external_db_cv` VALUES (71, 30, 'EcoO157Cyc', 1);
-INSERT INTO `external_db_cv` VALUES (72, 31, 'UMBBD', 1);
-INSERT INTO `external_db_cv` VALUES (73, 32, 'SWISS-MODEL', 1);
-INSERT INTO `external_db_cv` VALUES (74, 33, 'PSIMI', 1);
-INSERT INTO `external_db_cv` VALUES (75, 33, 'IOB', 1);
-INSERT INTO `external_db_cv` VALUES (76, 34, 'ChEBI', 1);
-INSERT INTO `external_db_cv` VALUES (77, 35, 'EMBL', 1);
-INSERT INTO `external_db_cv` VALUES (78, 36, 'COMPOUND', 1);
-INSERT INTO `external_db_cv` VALUES (79, 37, 'GLYCAN', 1);
-INSERT INTO `external_db_cv` VALUES (80, 38, 'WORMBASE', 1);
-INSERT INTO `external_db_cv` VALUES (81, 41, 'KEGG PATHWAY', 1);
-INSERT INTO `external_db_cv` VALUES (82, 39, 'UNIPARC', 1);
-INSERT INTO `external_db_cv` VALUES (83, 40, 'ENCODE', 1);
-INSERT INTO `external_db_cv` VALUES (84, 30, 'ECOCYC', 1);
-INSERT INTO `external_db_cv` VALUES (85, 2, 'ENTREZ GENE', 0);
-INSERT INTO `external_db_cv` VALUES (86, 29, 'KEGG LIGAND', 1);
-INSERT INTO `external_db_cv` VALUES (87, 42, 'KEGG GENOME', 1);
-INSERT INTO `external_db_cv` VALUES (88, 42, 'KEGG GENOMES', 1);
-INSERT INTO `external_db_cv` VALUES (89, 43, 'PUBCHEM COMPOUND', 1);
-INSERT INTO `external_db_cv` VALUES (90, 43, 'PUBCHEM', 1);
-INSERT INTO `external_db_cv` VALUES (93, 44, 'GENE_SYMBOL', 1);
+INSERT INTO `external_db_cv` VALUES (58, 12, 'AFFYMETRIX', 1);
+INSERT INTO `external_db_cv` VALUES (59, 13, 'INTACT', 1);
+INSERT INTO `external_db_cv` VALUES (60, 14, 'FLYBASE', 1);
+INSERT INTO `external_db_cv` VALUES (61, 15, 'PDB', 1);
+INSERT INTO `external_db_cv` VALUES (62, 16, 'SGD', 1);
+INSERT INTO `external_db_cv` VALUES (63, 17, 'HPRD', 1);
+INSERT INTO `external_db_cv` VALUES (64, 18, 'MINT', 1);
+INSERT INTO `external_db_cv` VALUES (65, 19, 'REACTOME', 1);
+INSERT INTO `external_db_cv` VALUES (66, 20, 'HUGE', 1);
+INSERT INTO `external_db_cv` VALUES (67, 21, 'ENSEMBL', 1);
+INSERT INTO `external_db_cv` VALUES (68, 26, 'AMAZE', 1);
+INSERT INTO `external_db_cv` VALUES (69, 27, 'KEGG', 1);
+INSERT INTO `external_db_cv` VALUES (70, 28, 'CAS', 1);
+INSERT INTO `external_db_cv` VALUES (71, 29, 'LIGAND', 1);
+INSERT INTO `external_db_cv` VALUES (72, 30, 'EcoO157Cyc', 1);
+INSERT INTO `external_db_cv` VALUES (73, 31, 'UMBBD', 1);
+INSERT INTO `external_db_cv` VALUES (74, 32, 'SWISS-MODEL', 1);
+INSERT INTO `external_db_cv` VALUES (75, 33, 'PSIMI', 1);
+INSERT INTO `external_db_cv` VALUES (76, 33, 'IOB', 1);
+INSERT INTO `external_db_cv` VALUES (77, 34, 'ChEBI', 1);
+INSERT INTO `external_db_cv` VALUES (78, 35, 'EMBL', 1);
+INSERT INTO `external_db_cv` VALUES (79, 36, 'COMPOUND', 1);
+INSERT INTO `external_db_cv` VALUES (80, 37, 'GLYCAN', 1);
+INSERT INTO `external_db_cv` VALUES (81, 38, 'WORMBASE', 1);
+INSERT INTO `external_db_cv` VALUES (82, 41, 'KEGG PATHWAY', 1);
+INSERT INTO `external_db_cv` VALUES (83, 39, 'UNIPARC', 1);
+INSERT INTO `external_db_cv` VALUES (84, 40, 'ENCODE', 1);
+INSERT INTO `external_db_cv` VALUES (85, 30, 'ECOCYC', 1);
+INSERT INTO `external_db_cv` VALUES (86, 2, 'ENTREZ GENE', 0);
+INSERT INTO `external_db_cv` VALUES (87, 29, 'KEGG LIGAND', 1);
+INSERT INTO `external_db_cv` VALUES (88, 42, 'KEGG GENOME', 1);
+INSERT INTO `external_db_cv` VALUES (89, 42, 'KEGG GENOMES', 1);
+INSERT INTO `external_db_cv` VALUES (90, 43, 'PUBCHEM COMPOUND', 1);
+INSERT INTO `external_db_cv` VALUES (91, 43, 'PUBCHEM', 1);
+INSERT INTO `external_db_cv` VALUES (92, 44, 'GENE_SYMBOL', 1);
+INSERT INTO `external_db_cv` VALUES (93, 45, 'BIOGRID', 1);
