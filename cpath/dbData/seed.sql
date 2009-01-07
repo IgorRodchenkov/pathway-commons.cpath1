@@ -87,6 +87,7 @@ INSERT INTO `external_db_cv` VALUES (6, 1, 'UNIPROT', 1);
 INSERT INTO `external_db_cv` VALUES (7, 1, 'SWISS-PROT/TREMBL', 0);
 INSERT INTO `external_db_cv` VALUES (8, 1, 'UNIPROTKB', 0);
 INSERT INTO `external_db_cv` VALUES (9, 1, 'REACTOME PROTEIN', 0);
+INSERT INTO `external_db_cv` VALUES (10, 1, 'UNIPROT KNOWLEDGE BASE', 0);
 
 #  Terms Associated with NCBI Databases (20-49)
 #  Entrez Gene will soon replace LocusLink
