@@ -2,16 +2,36 @@
 <!DOCTYPE external_database_list SYSTEM "external_db.dtd">
 <external_database_list>
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
-        <name>Reactome</name>
-        <description>Reactome: a knowledgebase of biological processes</description>
-        <home_page_url>http://reactome.org</home_page_url>
+        <name>BioGRID</name>
+        <description>General Repository for Interaction Datasets</description>
         <entity_url>
-            <url_pattern>http://reactome.org/cgi-bin/eventbrowser?DB=gk_current&amp;ID=%ID%</url_pattern>
-            <sample_id>12345</sample_id>
+            <url_pattern>http://www.thebiogrid.org/search.php?keywords=%ID%</url_pattern>
+            <sample_id>113010</sample_id>
         </entity_url>
-        <icon_path>Reactome.png</icon_path>
+        <icon_path>biogrid.png</icon_path>
         <controlled_terms>
-            <master_term>REACTOME</master_term>
+	    <master_term>BIOGRID</master_term>
+	    </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>Cancer Cell Map</name>
+        <description>The Cancer Cell Map:  Memorial Sloan-Kettering Cancer Center</description>
+        <home_page_url>http://cancer.cellmap.org/cellmap/</home_page_url>
+        <icon_path>MSKCC.png</icon_path>
+        <controlled_terms>
+            <master_term>CELL_MAP</master_term>
+        </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>HPRD</name>
+        <description>Human Protein Reference Database (HPRD)</description>
+        <entity_url>
+            <url_pattern>http://hprd.org/protein/%ID%</url_pattern>
+            <sample_id>01284</sample_id>
+        </entity_url>
+        <icon_path>HPRD.png</icon_path>
+        <controlled_terms>
+            <master_term>HPRD</master_term>
         </controlled_terms>
     </external_database>
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
@@ -25,66 +45,6 @@
         <icon_path>HumanCyc.png</icon_path>
         <controlled_terms>
             <master_term>HUMANCYC</master_term>
-        </controlled_terms>
-    </external_database>
-    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
-        <name>Cancer Cell Map</name>
-        <description>The Cancer Cell Map:  Memorial Sloan-Kettering Cancer Center</description>
-        <home_page_url>http://cancer.cellmap.org/cellmap/</home_page_url>
-        <icon_path>MSKCC.png</icon_path>
-        <controlled_terms>
-            <master_term>CELL_MAP</master_term>
-        </controlled_terms>
-    </external_database>
-    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
-        <name>NCI / Nature Pathway Interaction Database</name>
-        <description>The Pathway Interaction Database is a collaborative project between the
-        US National Cancer Institute (NCI) and Nature Publishing Group (NPG).</description>
-        <home_page_url>http://pid.nci.nih.gov/PID/index.shtml</home_page_url>
-        <icon_path>NCI.png</icon_path>
-        <controlled_terms>
-		<master_term>NCI_NATURE</master_term>
-        </controlled_terms>
-    </external_database>
-    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
-        <name>BioCarta</name>
-        <description>Charting Pathways of Life</description>
-        <home_page_url>http://www.biocarta.com/</home_page_url>
-        <controlled_terms>
-		<master_term>BIOCARTA</master_term>
-        </controlled_terms>
-    </external_database>
-    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
-        <name>KEGG</name>
-        <description>Kyoto Encyclopedia of Genes and Genomes</description>
-        <home_page_url>http://www.genome.jp/kegg/pathway.html</home_page_url>
-        <controlled_terms>
-		<master_term>KEGG</master_term>
-        </controlled_terms>
-    </external_database>
-    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
-        <name>iHOP</name>
-        <description>information hyperlinked over proteins</description>
-        <home_page_url>http://www.ihop-net.org/UniPub/iHOP/</home_page_url>
-        <entity_url>
-            <url_pattern>http://www.ihop-net.org/UniPub/iHOP/go?ID1=%ID%</url_pattern>
-            <sample_id>32484</sample_id>
-        </entity_url>
-        <icon_path>iHOP.png</icon_path>
-        <controlled_terms>
-		<master_term>IHOP</master_term>
-        </controlled_terms>
-    </external_database>
-    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
-        <name>HPRD</name>
-        <description>Human Protein Reference Database (HPRD)</description>
-        <entity_url>
-            <url_pattern>http://hprd.org/protein/%ID%</url_pattern>
-            <sample_id>01284</sample_id>
-        </entity_url>
-        <icon_path>HPRD.png</icon_path>
-        <controlled_terms>
-            <master_term>HPRD</master_term>
         </controlled_terms>
     </external_database>
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
@@ -112,15 +72,26 @@
         </controlled_terms>
     </external_database>
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
-        <name>BIOGRID</name>
-        <description>General Repository for Interaction Datasets</description>
-        <entity_url>
-            <url_pattern>http://www.thebiogrid.org/search.php?keywords=%ID%</url_pattern>
-            <sample_id>113010</sample_id>
-        </entity_url>
-        <icon_path>biogrid.png</icon_path>
+        <name>NCI / Nature Pathway Interaction Database</name>
+        <description>The Pathway Interaction Database is a collaborative project between the
+        US National Cancer Institute (NCI) and Nature Publishing Group (NPG).</description>
+        <home_page_url>http://pid.nci.nih.gov/PID/index.shtml</home_page_url>
+        <icon_path>NCI.png</icon_path>
         <controlled_terms>
-	    <master_term>BIOGRID</master_term>
-	    </controlled_terms>
+		<master_term>NCI_NATURE</master_term>
+        </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>Reactome</name>
+        <description>Reactome: a knowledgebase of biological processes</description>
+        <home_page_url>http://reactome.org</home_page_url>
+        <entity_url>
+            <url_pattern>http://reactome.org/cgi-bin/eventbrowser?DB=gk_current&amp;ID=%ID%</url_pattern>
+            <sample_id>12345</sample_id>
+        </entity_url>
+        <icon_path>Reactome.png</icon_path>
+        <controlled_terms>
+            <master_term>REACTOME</master_term>
+        </controlled_terms>
     </external_database>
 </external_database_list>
