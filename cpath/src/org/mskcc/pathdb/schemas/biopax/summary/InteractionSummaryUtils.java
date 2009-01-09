@@ -1,4 +1,4 @@
-// $Id: InteractionSummaryUtils.java,v 1.43 2008-03-28 01:18:52 grossben Exp $
+// $Id: InteractionSummaryUtils.java,v 1.44 2009-01-09 23:01:25 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -114,7 +114,8 @@ public class InteractionSummaryUtils {
         } else if (interactionSummary instanceof PhysicalInteractionSummary) {
             createPhysicalInteractionSummary(interactionSummary, bpSummary, buf);
         } else {
-            createInteractionSummary(interactionSummary, true, buf);
+            // per discussion with Emek, display Interaction like it is Physical Interaction
+            createPhysicalInteractionSummary(interactionSummary, bpSummary, buf);
         }
         return buf.toString();
     }
@@ -178,15 +179,13 @@ public class InteractionSummaryUtils {
     private static void createPhysicalInteractionSummary(InteractionSummary interactionSummary,
 														 BioPaxRecordSummary bpSummary,
 														 StringBuffer buf) {
-        PhysicalInteractionSummary summary =
-                (PhysicalInteractionSummary) interactionSummary;
 
 		List<ParticipantSummaryComponent> participantSummaryComponentList =
 			new ArrayList<ParticipantSummaryComponent>();
 
 		// if available, use bpSummary to properly order participants in interaction, 
 		// protein whose summary page we are on should go first - see bug #1650
-		List<ParticipantSummaryComponent> summaryParticipants = (List<ParticipantSummaryComponent>)summary.getParticipants();
+		List<ParticipantSummaryComponent> summaryParticipants = (List<ParticipantSummaryComponent>)interactionSummary.getParticipants();
 	    if (summaryParticipants != null) {
 		    for (ParticipantSummaryComponent component : summaryParticipants) {
 				if (bpSummary != null && bpSummary.getName() != null && bpSummary.getName().equals(component.getName())) {
