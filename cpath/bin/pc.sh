@@ -146,7 +146,7 @@ function importCellMap {
 
 function importBioGRID {
 	logProgress "Loading BioGRID."
-	local BIOGRID_HOME="$CPATH_HOME/../pathway-commons/biogrid/11-27-2008"
+	local BIOGRID_HOME="$CPATH_HOME/../pathway-commons/biogrid/12-29-2008"
 	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py biogrid-cooker.py $BIOGRID_HOME $BIOGRID_HOME/biopax
 	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $BIOGRID_HOME/biopax $BIOGRID_HOME/biopax
 	rm -fv $BIOGRID_HOME/biopax/*.xml
