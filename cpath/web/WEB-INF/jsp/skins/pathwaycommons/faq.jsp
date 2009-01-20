@@ -62,6 +62,15 @@ Commons.</p>
 <h3>What pathway databases exist?</h3>
 <p>We have compiled a comprehensive list of pathway databases at
 <a href="http://www.pathguide.org">Pathguide</a>.</p>
+<h3>Will Pathway Commons support the Systems Biology Graphical Notation?</h3>
+<p>
+<img src="jsp/images/sbgn_logo.png" alt="SBGN" align="right"/>
+We believe a standard visual representation is crucial for the future of
+systems biology. We are actively involved in SBGN development and most
+BioPAX level 3 concepts can already be represented in SBGN Process
+Diagrams. We will start providing neighborhood maps in SBGN once we
+update our software and resolve remaining mapping issues.
+</p>
 
 <h2><a name="bio"></a>For Biologists</h2>
 <h3>What can I do with this information?</h3>
