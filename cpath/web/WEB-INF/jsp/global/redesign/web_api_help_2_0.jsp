@@ -145,7 +145,19 @@ webservice.do?cmd=get_pathways&version=2.0&q=O14763&input_id_type=<%= ExternalDa
 <h3>Summary:</h3>
 
 Retrieves the nearest neighbors of a given physical entity (e.g. gene, protein or small molecule).
-For example, get all the neighbors of BRCA2.
+For example, get all the neighbors of BRCA2.  The following rules govern the construction of the neighborhood:
+<p>
+<ul>
+<li>
+if A is part of a [complex] (A:B), (A:B) is included in the neighborhood, but none of the interactions involving (A:B) are included.
+</li>
+<li>
+if A is a [CONTROLLER] for a [control] interaction, the reaction that is [CONTROLLED] (and all the participants in that reaction) are included in the neighborhood.
+</li>
+<li>
+if A participates in a [conversion] reaction, and this reaction is [CONTROLLED] by another interaction, the [control] interaction (plus its [CONTROLLER]) are included in the neighborhood.
+</li>
+<vul>
 
 <h3><a name='get_neighbors_parameters'></a>Parameters:</h3>
 
