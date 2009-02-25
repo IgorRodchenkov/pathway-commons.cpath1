@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.16 2009-02-25 19:50:58 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.17 2009-02-25 22:00:53 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -378,6 +378,7 @@ public class NeighborhoodMapRetriever {
 		nvps[4] = new NameValuePair("unwanted_small_molecules", UNWANTED_SMALL_MOLECULES_STRING.trim());
 		nvps[5] = new NameValuePair("version", "1.0");
 		PostMethod method = new PostMethod(CPathUIConfig.getWebUIBean().getImageMapServerURL());
+		method.setRequestHeader("Accept", "text/*,image");
 		method.addParameters(nvps);
 
 		// execute method
