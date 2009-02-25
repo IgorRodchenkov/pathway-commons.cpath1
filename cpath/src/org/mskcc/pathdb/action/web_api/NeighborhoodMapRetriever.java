@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.15 2008-12-18 18:06:44 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.16 2009-02-25 19:50:58 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -381,23 +381,28 @@ public class NeighborhoodMapRetriever {
 		method.addParameters(nvps);
 
 		// execute method
-		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage(), executing method....");
-		int statusCode = client.executeMethod(method);
-		log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage(), neighborhood map image fetched, response code: " + Integer.toString(statusCode) + ",  reading response...");
-		if (statusCode != HttpStatus.SC_OK) {
-			throw new Exception("Error fetching neighborhood map image: " + method.getStatusLine());
-		}
-
-		// get content
-		InputStream instream = method.getResponseBodyAsStream();
 		ByteArrayOutputStream outstream =  new ByteArrayOutputStream();
-		byte[] buffer = new byte[4096];
-		int len;
-		int totalBytes = 0;
-		while ((len = instream.read(buffer)) > 0) {
-			outstream.write(buffer, 0, len);
+		try {
+			log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage(), executing method....");
+			int statusCode = client.executeMethod(method);
+			log.info("NeighborhoodMapRetriever.getNeighborhoodMapImage(), neighborhood map image fetched, response code: " + Integer.toString(statusCode) + ",  reading response...");
+			if (statusCode != HttpStatus.SC_OK) {
+				throw new Exception("Error fetching neighborhood map image: " + method.getStatusLine());
+			}
+			// get content
+			InputStream instream = method.getResponseBodyAsStream();
+			byte[] buffer = new byte[4096];
+			int len;
+			int totalBytes = 0;
+			while ((len = instream.read(buffer)) > 0) {
+				outstream.write(buffer, 0, len);
+			}
+			instream.close();
 		}
-		instream.close();
+		finally {
+			// release current connection
+			method.releaseConnection();
+		}
 
 		// outta here
 		byte[] responseBody = outstream.toByteArray(); 
