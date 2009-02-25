@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.28 2009-01-01 00:43:57 grossben Exp $
+// $Id: BioPaxToIndex.java,v 1.29 2009-02-25 15:57:08 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,6 +49,9 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.HashMap;
 
 /**
  * Encapsulates a BioPAX Record scheduled for indexing in Lucene.
@@ -175,21 +178,52 @@ public class BioPaxToIndex implements ItemToIndex {
 		// populate parent pathway - we use internal family table because we will only get interaction links via internal link table
 		// and the task that populates this table gets run before indexing
 		DaoInternalFamily daoInternalFamily = new DaoInternalFamily();
-		long[] parentPathways = daoInternalFamily.getAncestorIds(record.getId(), CPathRecordType.PATHWAY);
-        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, Integer.toString(parentPathways.length),
+		Set<Integer> organismIds = new HashSet<Integer>();
+		organismIds.add(record.getNcbiTaxonomyId());
+		StringBuffer numParentPathways = new StringBuffer();
+		String[] dataSources = ((String)(getDataSources(record))).split(" ");
+		// the following maps will be used below when summing interactions
+		// but we set them up here since we are looping over data sources now
+		HashMap<String, Set<Long>> dataSourcesToSnapshotIdMap = new HashMap<String, Set<Long>>();
+		HashMap<String, Integer> dataSourcesToInteractionCountMap = new HashMap<String, Integer>();
+		for (String dataSource : dataSources) {
+			if (dataSource == null || dataSource.length() == 0) {
+				continue;
+			}
+			Set<Long> snapshotIds = getSnapshotIDs(dataSource);
+			dataSourcesToSnapshotIdMap.put(dataSource, snapshotIds);
+			dataSourcesToInteractionCountMap.put(dataSource, 0);
+			Integer count = daoInternalFamily.getAncestorIdCount(record.getId(), CPathRecordType.PATHWAY, snapshotIds, organismIds);
+			numParentPathways.append(dataSource + ":" + count + "\t");
+		}
+        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, numParentPathways.toString().trim(),
 							 Field.Store.YES, Field.Index.NO));
 
 		// interate over parent list to populate parent interaction field
-		int numParentInteractions = 0;
+		StringBuffer numParentInteractions = new StringBuffer();
 		DaoCPath cpath = DaoCPath.getInstance();
+		HashMap<String,Integer> num_parent_interactions = new HashMap<String, Integer>();
 		for (InternalLinkRecord internalLinkRecord : parentList) {
 			// get cpath record
 			CPathRecord srcRecord = cpath.getRecordById(internalLinkRecord.getSourceId());
 			if (srcRecord.getType().equals(CPathRecordType.INTERACTION)) {
-				numParentInteractions++;
+				// loop over all data sources
+				for (String dataSource : dataSourcesToSnapshotIdMap.keySet()) {
+					Set<Long> snapshotIds = dataSourcesToSnapshotIdMap.get(dataSource);
+					if (snapshotIds.contains(srcRecord.getSnapshotId())) {
+						dataSourcesToInteractionCountMap.put(dataSource,
+															 dataSourcesToInteractionCountMap.get(dataSource) + 1);
+						break;
+					}
+				}
 			}
 		}
-        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, Integer.toString(numParentInteractions),
+		// create string of total interactions by data source
+		for (String dataSource : dataSourcesToInteractionCountMap.keySet()) {
+			Integer numInteractionForDataSource = dataSourcesToInteractionCountMap.get(dataSource);
+			numParentInteractions.append(dataSource + ":" + numInteractionForDataSource + "\t");
+		}
+        fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, numParentInteractions.toString().trim(),
 							 Field.Store.YES, Field.Index.NO));
     }
 
@@ -225,7 +259,37 @@ public class BioPaxToIndex implements ItemToIndex {
     }
 
 	/**
-	 * Gets the data sources used to create this cpath record
+	 * Gets all snapshot ids for a given db master term.
+	 *
+	 * @param masterTerm String
+	 * @return Set<Long>
+	 * @throws DaoException
+	 */
+	private Set<Long> getSnapshotIDs(String masterTerm) throws DaoException {
+
+		Set toReturn = new HashSet<Long>();
+		
+		// get external db id from master term
+		DaoExternalDb daoExternalDb = new DaoExternalDb();
+		ExternalDatabaseRecord externalRecord = daoExternalDb.getRecordByTerm(masterTerm);
+		if (externalRecord == null) {
+			return toReturn;
+		}
+
+		// given external db id, get all snapshots
+		DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
+		ArrayList<ExternalDatabaseSnapshotRecord> snapshots = daoSnapshot.getDatabaseSnapshot(externalRecord.getId());
+		for (ExternalDatabaseSnapshotRecord record : snapshots) {
+			toReturn.add(record.getId());
+		}
+
+		// outta here
+		return toReturn;
+	}
+
+	/**
+	 * Gets the data sources used to create this cpath record 
+	 * as a string on space separated master terms.
 	 *
 	 * @param record CPathRecord
 	 * @return String

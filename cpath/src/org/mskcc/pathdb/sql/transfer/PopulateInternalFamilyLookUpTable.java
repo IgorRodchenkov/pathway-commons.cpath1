@@ -33,9 +33,9 @@ import java.util.*;
  */
 public class PopulateInternalFamilyLookUpTable {
     private static final String GET_RECORD_ITERATOR =
-            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT`, `EXTERNAL_DB_SNAPSHOT_ID` from cpath WHERE TYPE = ? LIMIT ?,1";
+            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT`, `EXTERNAL_DB_SNAPSHOT_ID`, `NCBI_TAX_ID` from cpath WHERE TYPE = ? LIMIT ?,1";
     private static final String GET_RECORD_BY_ID =
-            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT`, `EXTERNAL_DB_SNAPSHOT_ID` from cpath WHERE CPATH_ID = ?";
+            "select `CPATH_ID`, `TYPE`, `XML_TYPE`, `XML_CONTENT`, `EXTERNAL_DB_SNAPSHOT_ID`, `NCBI_TAX_ID` from cpath WHERE CPATH_ID = ?";
     private ProgressMonitor pMonitor;
     private HashMap cache = new HashMap();
     private HashSet visitedSet;
@@ -169,6 +169,7 @@ public class PopulateInternalFamilyLookUpTable {
         record.setXmlType(XmlRecordType.getType(rs.getString(3)));
         record.setXmlContent(rs.getString(4));
         record.setSnapshotId(rs.getLong(5));
+		record.setNcbiTaxonomyId(rs.getInt(6));
         return record;
     }
 

@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.6 2008-12-30 16:39:36 grossben Exp $
+// $Id: LuceneResults.java,v 1.7 2009-02-25 15:56:09 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,10 +42,13 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.highlight.QueryHighlightExtractor;
 import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
+import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.taglib.Pager;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
+import org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord;
 import org.mskcc.pathdb.util.xml.XmlStripper;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,8 +77,9 @@ public class LuceneResults {
     private ArrayList<Integer> numParentInteractionsList;
     private Map<Long,Float> scores;
     private int numHits;
+	private Set<String> globalDataSources;
 
-    public LuceneResults(Pager pager, Hits hits, String term) throws IOException,
+    public LuceneResults(Pager pager, Hits hits, String term, GlobalFilterSettings globalFilterSettings) throws IOException,
         ParseException, DaoException {
         numHits = hits.length();
         int size = pager.getEndIndex() - pager.getStartIndex();
@@ -89,6 +93,18 @@ public class LuceneResults {
 		numParentInteractionsList = new ArrayList<Integer>();
         dataSourceMap = new HashMap<Long,Set<String>>();
         scores = new HashMap<Long,Float>();
+		globalDataSources = new HashSet<String>();
+
+		if (globalFilterSettings != null) {
+			DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
+			for (Long snapshotId : globalFilterSettings.getSnapshotIdSet()) {
+				ExternalDatabaseSnapshotRecord snapShotRecord = daoSnapShot.getDatabaseSnapshot(snapshotId);
+				if (snapShotRecord == null) continue;
+				ExternalDatabaseRecord externalDatabaseRecord = snapShotRecord.getExternalDatabase();
+				if (externalDatabaseRecord == null) continue;
+				globalDataSources.add(externalDatabaseRecord.getMasterTerm());
+			}
+		}
 
         DaoExternalDb dao = new DaoExternalDb();
         int index = 0;
@@ -181,7 +197,32 @@ public class LuceneResults {
         field = doc.getField(fieldName);
         if (field == null) {
             list.add(0);
-        } else {
+        }
+		else if (fieldName == LuceneConfig.FIELD_NUM_PARENT_PATHWAYS ||
+			     fieldName == LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS) {
+			Integer num = new Integer(0);
+			String[] parentPathwaysOrInteractions = field.stringValue().split("\t");
+			if (parentPathwaysOrInteractions.length == 0) {
+				list.add(0);
+				return;
+			}
+			for (String parentPathwayOrInteraction : parentPathwaysOrInteractions) {
+				// first component is MASTER TERM, second is count
+				String[] components = parentPathwayOrInteraction.split(":");
+				if (components.length != 2) continue;
+				// get snapshot id
+				if (globalDataSources.contains(components[0])) {
+					try {
+						Integer toAdd = Integer.parseInt(components[1]);
+						num += toAdd;
+					}
+					catch (NumberFormatException e) {
+					}
+				}
+			}
+			list.add(num);
+		}
+		else {
             try {
                 Integer num = Integer.parseInt(field.stringValue());
                 list.add(num);

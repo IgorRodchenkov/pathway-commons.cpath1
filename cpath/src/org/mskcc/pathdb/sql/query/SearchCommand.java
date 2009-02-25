@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.11 2008-07-10 20:56:58 cerami Exp $
+// $Id: SearchCommand.java,v 1.12 2009-02-25 15:55:46 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -84,7 +84,7 @@ class SearchCommand extends Query {
             XmlAssembly xmlAssembly;
             Hits hits = executeLuceneSearch(indexer);
             Pager pager = new Pager(request, hits.length());
-            LuceneResults luceneResults = new LuceneResults(pager, hits, null);
+            LuceneResults luceneResults = new LuceneResults(pager, hits, null, null);
             long[] cpathIds = luceneResults.getCpathIds();
             xmlAssembly = createXmlAssembly(cpathIds, hits);
             xmlAssembly.setNumHits(hits.length());

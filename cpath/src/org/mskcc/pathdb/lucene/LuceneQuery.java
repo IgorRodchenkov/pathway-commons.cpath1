@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.17 2008-07-15 13:39:24 cerami Exp $
+// $Id: LuceneQuery.java,v 1.18 2009-02-25 15:56:24 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -60,6 +60,7 @@ public class LuceneQuery {
     private XDebug xdebug;
     private int totalNumHits;
     private LuceneResults luceneResults;
+	private GlobalFilterSettings globalFilterSettings;
 
     /**
      * Constructor.
@@ -71,13 +72,13 @@ public class LuceneQuery {
             XDebug xdebug) throws DaoException {
         this.request = request;
         this.xdebug = xdebug;
+		this.globalFilterSettings = globalFilterSettings;
         this.searchTerms = RequestAdapter.getSearchTerms(request);
         if (globalFilterSettings != null) {
             this.queryFromUser = request.getQuery ();
             this.searchTerms = LuceneAutoFilter.addFiltersToQuery
                 (request.getQuery(), globalFilterSettings);
         }
-
     }
 
     /**
@@ -101,9 +102,9 @@ public class LuceneQuery {
             Pager pager = new Pager(request, hits.length());
 
             if (queryFromUser != null) {
-                luceneResults = new LuceneResults(pager, hits, queryFromUser);
+                luceneResults = new LuceneResults(pager, hits, queryFromUser, globalFilterSettings);
             } else {
-                luceneResults = new LuceneResults(pager, hits, searchTerms);
+                luceneResults = new LuceneResults(pager, hits, searchTerms, globalFilterSettings);
             }
             return luceneResults.getCpathIds();
         } finally {
