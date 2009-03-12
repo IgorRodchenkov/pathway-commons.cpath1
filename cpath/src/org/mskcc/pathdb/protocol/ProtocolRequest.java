@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.30 2008-01-17 15:47:29 grossben Exp $
+// $Id: ProtocolRequest.java,v 1.31 2009-03-12 16:51:36 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -607,7 +607,7 @@ public class ProtocolRequest implements PagedResult {
 	 *
      * @param binaryInteractionRule binary interaction rule string.
      */
-    public void setBinaryInteracitonRule(String binaryInteractionRule) {
+    public void setBinaryInteractionRule(String binaryInteractionRule) {
         this.binaryInteractionRule = binaryInteractionRule;
     }
 
