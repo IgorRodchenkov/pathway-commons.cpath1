@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.10 2009-03-12 17:12:18 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.11 2009-03-12 20:19:51 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,7 +45,10 @@ import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.action.web_api.WebApiUtil;
+import org.mskcc.pathdb.util.ExternalDatabaseConstants;
+import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
 import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssembly;
 import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssemblyFactory;
@@ -54,6 +57,7 @@ import org.biopax.paxtools.io.sif.BinaryInteractionType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -122,6 +126,9 @@ public class ExecuteBinaryInteraction {
 		log.info(assembly.getBinaryInteractionString());
 		Double version = new Double(protocolRequest.getVersion());
 		Double version3 = new Double(ProtocolConstantsVersion3.VERSION_3);
+		String outputIDType = protocolRequest.getOutputIDType();
+		boolean cookOutputIDs = (outputIDType != null && !outputIDType.equals(ExternalDatabaseConstants.INTERNAL_DATABASE));
+		HashMap<String, String> outputIDMap = new HashMap<String, String>();
 		StringBuffer sifBuffer = new StringBuffer("");
 		String[] binaryInteractions = (assembly.getBinaryInteractionString() != null) ?
 			assembly.getBinaryInteractionString().split("\n") : null;
@@ -132,13 +139,14 @@ public class ExecuteBinaryInteraction {
 				String[] components = binaryInteraction.split("\t");
 				if (components.length == 3) {
 					if (binaryInteractionRuleTypes.contains(components[1])) {
+						// cook output ids if necessary
+						if (cookOutputIDs) {
+							components[0] = getOutputID(outputIDType, components[0], outputIDMap);
+							components[2] = getOutputID(outputIDType, components[2], outputIDMap);
+						}
 						// (if version < 3.0, we need to convert interaction type tags)
-						if (version < version3) {
-							sifBuffer.append(components[0] + "\t" + tagMap.get(components[1]) + "\t" + components[2] + "\n");
-						}
-						else {
-							sifBuffer.append(binaryInteraction + "\n");
-						}
+						String interactionType = (version < version3) ? tagMap.get(components[1]) : components[1];
+						sifBuffer.append(components[0] + "\t" + interactionType + "\t" + components[2] + "\n");
 					}
 				}
 			}
@@ -207,5 +215,45 @@ public class ExecuteBinaryInteraction {
 
 		// outta here
 		return toReturn;
+	}
+
+	/*
+	 * Given an internal (cPath) id, returns an external id given the output id type.
+	 * Takes a map to add external id to speedup processing.
+	 *
+	 * @param outputIDType String
+	 * @param internalID long
+	 * @param Map<String, String>
+	 * @return String
+	 * @throws DaoException
+	 * @throws NumberFormatException
+	 */
+	private String getOutputID(String outputIDType, String internalID, Map<String, String> outputIDMap) throws DaoException, NumberFormatException {
+
+		// convert long to string
+		String externalID = internalID;
+
+		// if external id already exists, let return it
+		if (outputIDMap.containsKey(internalID)) {
+			return outputIDMap.get(internalID);
+		}
+
+		// need to determine external id
+        DaoExternalLink daoExternalLinker = DaoExternalLink.getInstance();
+		ArrayList<ExternalLinkRecord> externalLinkRecords =
+			daoExternalLinker.getRecordsByCPathId(Long.valueOf(internalID));
+		for (ExternalLinkRecord externalLinkRecord : externalLinkRecords) {
+			String masterTerm = externalLinkRecord.getExternalDatabase().getMasterTerm();
+			if (masterTerm.equals(outputIDType)) {
+				externalID = externalLinkRecord.getLinkedToId();
+				outputIDMap.put(internalID, externalID);
+				return externalID;
+			}
+		}
+
+		// made it here, set external id to error number (Long.minVALUE)
+		externalID = "UNKNOWN";
+		outputIDMap.put(internalID, externalID);
+		return externalID;
 	}
 }
