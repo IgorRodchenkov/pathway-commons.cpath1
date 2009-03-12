@@ -54,6 +54,11 @@ public class ProtocolConstantsVersion2 {
     public static final String FORMAT_IMAGE_MAP_THUMBNAIL = "image_map_thumbnail";
 
     /**
+     * IMAGE_MAP_IPHONE Format / Output.
+     */
+    public static final String FORMAT_IMAGE_MAP_IPHONE = "image_map_iphone";
+
+    /**
      * IMAGE_MAP_FRAMESET Format / Output.
      */
     public static final String FORMAT_IMAGE_MAP_FRAMESET = "image_map_frameset";

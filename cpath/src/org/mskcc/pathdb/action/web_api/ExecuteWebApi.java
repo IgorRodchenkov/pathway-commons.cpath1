@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.25 2008-12-10 04:55:14 grossben Exp $
+// $Id: ExecuteWebApi.java,v 1.26 2009-03-12 16:56:04 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -287,6 +287,7 @@ public class ExecuteWebApi extends BaseAction {
 				return (command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS) &&
 					    (output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP) ||
 						 output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL) ||
+						 output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_IPHONE) ||
 						 output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET)));
 			}
 		}

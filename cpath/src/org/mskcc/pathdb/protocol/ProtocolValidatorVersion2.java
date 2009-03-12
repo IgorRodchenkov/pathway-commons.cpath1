@@ -206,6 +206,7 @@ class ProtocolValidatorVersion2 {
 				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_BINARY_SIF) &&
 				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP) &&
 				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL) &&
+				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_IPHONE) &&
 				    !output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET)) {
                 throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                         ProtocolRequest.ARG_OUTPUT +
