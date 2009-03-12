@@ -163,7 +163,7 @@ if A participates in a [conversion] reaction, and this reaction is [CONTROLLED] 
 
 <ul>
 <li>[Required] <%= ProtocolRequest.ARG_COMMAND%> = <%= ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS %></li>
-<li>[Required] <%= ProtocolRequest.ARG_VERSION%> = <%= ProtocolConstantsVersion2.VERSION_2 %></li>
+<li>[Required] <%= ProtocolRequest.ARG_VERSION%> = <%= ProtocolConstantsVersion3.VERSION_3 %></li>
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%> = an internal or external identifier (ID), corresponding to
 the physical entity of interest. For example, the following query uses a UniProt identifier: O14763.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_INPUT_ID_TYPE %>= internal or external database.  For example,
