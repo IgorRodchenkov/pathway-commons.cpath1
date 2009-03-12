@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.8 2008-11-26 20:20:38 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.9 2009-03-12 16:55:14 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -117,31 +117,35 @@ public class ExecuteBinaryInteraction {
 															binaryInteractionRuleTypes,
 															xmlAssembly.getXmlString());
 
-		// write out the binary interaction text
-		// (if version < 3.0, we need to convert interaction type tags)
+		// filter out unwanted interactions
+		log.info("************************ ExecuteBinaryInteraction.processRequest(): sif assembly string before conversion:\n");
+		log.info(assembly.getBinaryInteractionString());
 		Double version = new Double(protocolRequest.getVersion());
 		Double version3 = new Double(ProtocolConstantsVersion3.VERSION_3);
-		if (version < version3) {
-			log.info("************************ ExecuteBinaryInteraction.processRequest(): sif assembly string before conversion:\n");
-			log.info(assembly.getBinaryInteractionString());
-			StringBuffer sifBuffer = new StringBuffer("");
-			String[] binaryInteractions = (assembly.getBinaryInteractionString() != null) ?
-				assembly.getBinaryInteractionString().split("\n") : null;
-			if (binaryInteractions != null && binaryInteractions.length > 0) {
-				Map<String, String> tagMap = BinaryInteractionType.getTagMap();
-				for (String binaryInteraction : binaryInteractions) {
-					// sif format:  ID\tINTERACTION_TYPE\tID
-					String[] components = binaryInteraction.split("\t");
-					sifBuffer.append(components[0] + "\t" + tagMap.get(components[1]) + "\t" + components[2] + "\n");
+		StringBuffer sifBuffer = new StringBuffer("");
+		String[] binaryInteractions = (assembly.getBinaryInteractionString() != null) ?
+			assembly.getBinaryInteractionString().split("\n") : null;
+		if (binaryInteractions != null && binaryInteractions.length > 0) {
+			Map<String, String> tagMap = BinaryInteractionType.getTagMap();
+			for (String binaryInteraction : binaryInteractions) {
+				// sif format:  ID\tINTERACTION_TYPE\tID
+				String[] components = binaryInteraction.split("\t");
+				if (components.length == 30) {
+					if (binaryInteractionRuleTypes.contains(components[1])) {
+						// (if version < 3.0, we need to convert interaction type tags)
+						if (version < version3) {
+							sifBuffer.append(components[0] + "\t" + tagMap.get(components[1]) + "\t" + components[2] + "\n");
+						}
+						else {
+							sifBuffer.append(binaryInteraction + "\n");
+						}
+					}
 				}
 			}
-			log.info("************************ ExecuteBinaryInteraction.processRequest(): sif assembly string after conversion:\n");
-			log.info(sifBuffer.toString());
-			WebApiUtil.returnText(response, sifBuffer.toString());
 		}
-		else {
-			WebApiUtil.returnText(response, assembly.getBinaryInteractionString());
-		}
+		WebApiUtil.returnText(response, sifBuffer.toString());
+		log.info("************************ ExecuteBinaryInteraction.processRequest(): sif assembly string after conversion:\n");
+		log.info(sifBuffer.toString());
 
         //  Return null here, because we do not want Struts to do any forwarding.
         return null;
