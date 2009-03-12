@@ -186,11 +186,12 @@ in the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.  
  the client will receive an html frameset that contains both a neighborhood image and legend.
 </li>
 <li>[Optional] <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> = internal or external database.
-This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>,
-and is used to specify which external identifiers should be used to identify the physical entities in the
-neighborhood.  For example, to output UniProt IDs, use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for
+This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>
+or <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> and is used to specify which external identifiers should be
+ used to identify the physical entities in the neighborhood.  For example, to output UniProt IDs, 
+use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for
 <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> parameter</a> below.
-If not specified, the internal <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li></li>
+If not specified, the internal <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_DATA_SOURCE %> = a comma separated list of pathway data
 sources that you want to search.  For example, the following restricts your results to Reactome pathways
 only: <%= ProtocolRequest.ARG_DATA_SOURCE %>=<%=ExternalDatabaseConstants.REACTOME %>.  See the
@@ -277,6 +278,12 @@ When set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will re
 in the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.
 Note that <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> is only relevant if the
 query parameter <%= ProtocolRequest.ARG_QUERY%> corresponds to a pathway or interaction record.</li>
+<li>[Optional] <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> = internal or external database.
+This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> 
+and is used to specify which external identifiers should be  used to identify the physical entities.  For example, to output UniProt IDs, 
+use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for
+<%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> parameter</a> below.
+If not specified, the internal <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
 </ul>
 
