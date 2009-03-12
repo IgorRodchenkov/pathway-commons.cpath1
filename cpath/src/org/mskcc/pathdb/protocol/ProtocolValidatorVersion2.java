@@ -165,6 +165,7 @@ class ProtocolValidatorVersion2 {
         String command = request.getCommand();
         if (command != null &&
                 (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST) ||
+                 command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID) ||
                         command.equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS))) {
             String type = (idType == ID_Type.INPUT_ID_TYPE) ?
                     request.getInputIDType() : request.getOutputIDType();
