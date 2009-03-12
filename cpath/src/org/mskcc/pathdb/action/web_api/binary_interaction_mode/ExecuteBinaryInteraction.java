@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.9 2009-03-12 16:55:14 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.10 2009-03-12 17:12:18 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -130,7 +130,7 @@ public class ExecuteBinaryInteraction {
 			for (String binaryInteraction : binaryInteractions) {
 				// sif format:  ID\tINTERACTION_TYPE\tID
 				String[] components = binaryInteraction.split("\t");
-				if (components.length == 30) {
+				if (components.length == 3) {
 					if (binaryInteractionRuleTypes.contains(components[1])) {
 						// (if version < 3.0, we need to convert interaction type tags)
 						if (version < version3) {
