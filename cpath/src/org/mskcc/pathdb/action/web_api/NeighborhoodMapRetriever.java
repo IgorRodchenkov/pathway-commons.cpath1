@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.17 2009-02-25 22:00:53 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.18 2009-03-12 16:53:42 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -94,6 +94,8 @@ public class NeighborhoodMapRetriever {
 	private static int SVG_HEIGHT_SMALL = 150;
 	private static int SVG_WIDTH_LARGE = 585;
 	private static int SVG_HEIGHT_LARGE = 540;
+	private static int IPHONE_WIDTH = 320;
+	private static int IPHONE_HEIGHT = 416;
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
 	private static Set<String> ALL_DATA_SOURCES;
 	public static class NeighborhoodMapSize {
@@ -291,12 +293,20 @@ public class NeighborhoodMapRetriever {
 
 		// output
 		String output = PROTOCOL_REQUEST.getOutput();
-		WANT_THUMBNAIL = (output != null && output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL));
-		WANT_FRAMESET = (output != null && output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET));
+		if (output != null && output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_IPHONE)) {
+			WIDTH = IPHONE_WIDTH;
+			HEIGHT = IPHONE_HEIGHT;
+			WANT_THUMBNAIL = false;
+			WANT_FRAMESET = false;
+		}
+		else {
+			WANT_THUMBNAIL = (output != null && output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL));
+			WANT_FRAMESET = (output != null && output.equals(ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET));
 
-		// if WANT_FRAMESET, these will be ignored
-		WIDTH = (WANT_THUMBNAIL) ? SVG_WIDTH_SMALL : SVG_WIDTH_LARGE;
-		HEIGHT = (WANT_THUMBNAIL) ? SVG_HEIGHT_SMALL : SVG_HEIGHT_LARGE;
+			// if WANT_FRAMESET, these will be ignored
+			WIDTH = (WANT_THUMBNAIL) ? SVG_WIDTH_SMALL : SVG_WIDTH_LARGE;
+			HEIGHT = (WANT_THUMBNAIL) ? SVG_HEIGHT_SMALL : SVG_HEIGHT_LARGE;
+		}
 
 		// grab entire snapshot master term set
 		if (ALL_DATA_SOURCES == null) {
