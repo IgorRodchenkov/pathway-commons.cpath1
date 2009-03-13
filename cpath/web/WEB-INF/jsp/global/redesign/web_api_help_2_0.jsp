@@ -217,14 +217,14 @@ parameter list for more information</a>.  The simple text file contains three co
 <h3>Detecting matches:</h3>
 
 <ul>
-<li>If we are unable to find an external database identifier for a specified record, the third column of the tab-delimited text file will contain the keyword: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %></li>
+<li>In the case of <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%> output, if we are unable to find an external database identifier for a specified record, the third column of the tab-delimited text file will contain the keyword: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %>.  In the case of <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> output, if we are unable to find an external database identifier for a specified record, the external identifier will be set to: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %>.</li>
 </ul>
 
 <h3>Example Query:</h3>
 
 Below is an example query.  Note: this query is not guaranteed to return results.<br>
 
-<a href="webservice.do?version=2.0&cmd=get_neighbors&q=9854">webservice.do?version=2.0&cmd=get_neighbors&q=9854</a>
+<a href="webservice.do?version=3.0&cmd=get_neighbors&q=9854">webservice.do?version=3.0&cmd=get_neighbors&q=9854</a>
 
 <h2><a NAME="get_parents"></a>[4]  Command:  <%= ProtocolConstantsVersion2.COMMAND_GET_PARENT_SUMMARIES %></h2>
 
@@ -285,6 +285,12 @@ use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id
 <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> parameter</a> below.
 If not specified, the internal <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
+</ul>
+
+<h3>Detecting matches:</h3>
+
+<ul>
+<li>In the case of <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> output, if we are unable to find an external database identifier for a specified record, the external identifier will be set to: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %>.</li>
 </ul>
 
 <h3>Example Query:</h3>
