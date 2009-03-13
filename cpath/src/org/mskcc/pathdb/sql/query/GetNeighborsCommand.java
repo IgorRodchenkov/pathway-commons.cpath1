@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.15 2009-03-12 20:15:36 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.16 2009-03-13 12:40:15 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -358,9 +358,9 @@ public class GetNeighborsCommand extends Query {
 					}
 				}
 				// made it here - we should be an external id,
-				// if we equals an internal id, set id to UNKNOWN
+				// but none was found
 				if (externalID.equals(neighborRecordIDStr)) {
-					externalID = "UNKNOWN";
+					externalID = NO_MATCHING_EXTERNAL_ID_FOUND;
 				}
 			}
 			// create neighbor object & add to return set
