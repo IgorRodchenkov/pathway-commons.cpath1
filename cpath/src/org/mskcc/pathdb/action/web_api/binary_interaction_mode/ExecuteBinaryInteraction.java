@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.11 2009-03-12 20:19:51 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.12 2009-03-13 12:42:04 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,7 @@ import org.mskcc.pathdb.protocol.ProtocolStatusCode;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
 import org.mskcc.pathdb.protocol.ProtocolConstantsVersion3;
 import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -251,8 +252,8 @@ public class ExecuteBinaryInteraction {
 			}
 		}
 
-		// made it here, set external id to error number (Long.minVALUE)
-		externalID = "UNKNOWN";
+		// made it here, no external id found
+		externalID = GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND;
 		outputIDMap.put(internalID, externalID);
 		return externalID;
 	}
