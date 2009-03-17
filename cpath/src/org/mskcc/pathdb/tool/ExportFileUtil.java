@@ -18,6 +18,7 @@ public class ExportFileUtil {
     public static final int PC_OUTPUT = 2;
     public static final int SIF_OUTPUT = 3;
     public static final int TAB_DELIM_OUTPUT = 4;
+    public static final int BIOPAX_OUTPUT = 5;
     private File exportDir;
 
     //  HashMap that will contain multiple open file writers
@@ -36,6 +37,7 @@ public class ExportFileUtil {
         initDir (PC_OUTPUT);
         initDir (SIF_OUTPUT);
         initDir (TAB_DELIM_OUTPUT);
+        initDir (BIOPAX_OUTPUT);
     }
 
     /**
@@ -89,6 +91,8 @@ public class ExportFileUtil {
             return ".txt";
         } else if (outputFormat == ExportFileUtil.SIF_OUTPUT) {
             return ".sif";
+        } else if (outputFormat == ExportFileUtil.BIOPAX_OUTPUT) {
+            return ".owl";
         } else {
             return ".txt";
         }
@@ -146,6 +150,8 @@ public class ExportFileUtil {
             return new File (exportDir, "sif");
         } else if (outputFormat == ExportFileUtil.TAB_DELIM_OUTPUT) {
             return new File (exportDir, "tab_delim_network");
+        } else if (outputFormat == ExportFileUtil.BIOPAX_OUTPUT) {
+            return new File (exportDir, "biopax");
         } else {
             return null;
         }
