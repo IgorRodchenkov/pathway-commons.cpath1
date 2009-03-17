@@ -52,6 +52,7 @@ public class ExportAll {
         ExportFileUtil exportUtil = new ExportFileUtil(exportDir);
         ExportGeneSets exportGeneSets = new ExportGeneSets(exportUtil);
         ExportNetworks exportInteractions = new ExportNetworks (exportUtil, pMonitor);
+		ExportBioPAX exportBioPAX = new ExportBioPAX(exportUtil);
 
         //  Iterate through all cPath Records in blocks
         try {
@@ -79,6 +80,11 @@ public class ExportAll {
                     } else if (record.getType() == CPathRecordType.INTERACTION) {
                         exportInteractions.exportInteractionRecord(record);
                     }
+
+					// export biopax
+					if (record.getType() != CPathRecordType.PHYSICAL_ENTITY) {
+						exportBioPAX.exportRecord(record);
+					}
                 }
                 JdbcUtil.closeAll(con, pstmt, rs);
             }
