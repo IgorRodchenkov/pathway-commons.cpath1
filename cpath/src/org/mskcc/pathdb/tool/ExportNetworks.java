@@ -29,16 +29,19 @@ import com.hp.hpl.jena.shared.JenaException;
 public class ExportNetworks {
     private ExportFileUtil exportFileUtil;
     private ProgressMonitor pMonitor;
+	private List<String> processedSIFs;
     private final static String TAB = "\t";
 
     /**
      * Constructor.
      *
      * @param exportFileUtil Export File Util Object.
+	 * @param pMonitor ProgressMonitor
      */
     public ExportNetworks(ExportFileUtil exportFileUtil, ProgressMonitor pMonitor) {
         this.exportFileUtil = exportFileUtil;
         this.pMonitor = pMonitor;
+		processedSIFs = new ArrayList<String>();
     }
 
     /**
@@ -79,8 +82,15 @@ public class ExportNetworks {
                     record.getId(), sif);
 
             for (Interaction interaction:  interactionList) {
-                exportRecord(dbTerm, interaction, ExportFileUtil.SIF_OUTPUT);
-                exportRecord(dbTerm, interaction, ExportFileUtil.TAB_DELIM_OUTPUT);
+				String finalSIF = getFinalSIF(interaction);
+				// more than one sif string can come out of single cpath interaction record
+				// for each sif string, check and see if we have already created similiar sif
+				if (processedSIFs.contains(finalSIF)) {
+					continue;
+				}
+                exportRecord(dbTerm, interaction, finalSIF, ExportFileUtil.SIF_OUTPUT);
+                exportRecord(dbTerm, interaction, finalSIF, ExportFileUtil.TAB_DELIM_OUTPUT);
+				processedSIFs.add(finalSIF);
             }
         } catch (JenaException e) {
             pMonitor.logWarning("Got JenaException:  " + e.getMessage() + ".  Occurred "
@@ -89,12 +99,17 @@ public class ExportNetworks {
         }
     }
 
-    private void exportRecord(String dbTerm, Interaction interaction, int outputFormat)
-            throws IOException, DaoException {
-        StringBuffer finalSif = new StringBuffer();
+	private String getFinalSIF(Interaction interaction) {
+		StringBuffer finalSif = new StringBuffer();
         finalSif.append(interaction.getGeneA() + TAB);
         finalSif.append(interaction.getInteractionType() + TAB);
         finalSif.append(interaction.getGeneB());
+		return finalSif.toString();
+	}
+
+    private void exportRecord(String dbTerm, Interaction interaction, String sif, int outputFormat)
+            throws IOException, DaoException {
+		StringBuffer finalSif = new StringBuffer(sif);
         if (outputFormat == ExportFileUtil.TAB_DELIM_OUTPUT) {
             finalSif.append(TAB + interaction.getDbSource());
         }
