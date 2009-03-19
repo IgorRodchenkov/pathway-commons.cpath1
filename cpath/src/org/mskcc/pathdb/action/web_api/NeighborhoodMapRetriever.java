@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.18 2009-03-12 16:53:42 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.19 2009-03-19 21:09:00 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -440,7 +440,7 @@ public class NeighborhoodMapRetriever {
 		stream.println("<head>");
 		stream.println("<title>Neighborhood Map</title>");
 		stream.println("</head>");
-        stream.println("<frameset cols=\"60%,40%\"");
+        stream.println("<frameset cols=\"60%,40%\">");
         stream.println("<frame src=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
 					   "&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 					   "&" + ProtocolRequest.ARG_QUERY + "=" + Long.toString(PHYSICAL_ENTITY_RECORD_ID)  +
