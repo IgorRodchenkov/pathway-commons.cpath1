@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.29 2009-02-25 15:57:08 grossben Exp $
+// $Id: BioPaxToIndex.java,v 1.30 2009-03-23 19:21:49 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -314,6 +314,7 @@ public class BioPaxToIndex implements ItemToIndex {
 
 		// interate through record list
 		DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
+		ArrayList<String> processedMasterTerms = new ArrayList<String>();
 		for (CPathRecord sourceRecord : recordList) {
 		
 			// get the snapshot id
@@ -329,7 +330,12 @@ public class BioPaxToIndex implements ItemToIndex {
 
 			// get name of external db from external db record and append to buffer
             if (!externalDatabaseRecord.getDbType().equals(ReferenceType.PROTEIN_UNIFICATION)) {
-                dataSourceBuffer.append(externalDatabaseRecord.getMasterTerm() + " ");
+				String masterTerm = externalDatabaseRecord.getMasterTerm();
+				if (processedMasterTerms.contains(masterTerm)) {
+					continue;
+				}
+                dataSourceBuffer.append(masterTerm + " ");
+				processedMasterTerms.add(masterTerm);
             }
         }
 
