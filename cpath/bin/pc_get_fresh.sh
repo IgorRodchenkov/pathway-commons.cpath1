@@ -33,11 +33,18 @@ wget --passive-ftp -P $FRESH_HOME/uniprot ftp://ftp.uniprot.org/pub/databases/un
 echo Retrieving rodent data from UniProt...
 wget --passive-ftp -P $FRESH_HOME/uniprot ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/uniprot_sprot_rodents.dat.gz
 
+# Get yeast data
+echo Retrieving yeast data from UniProt...
+wget --passive-ftp -P $FRESH_HOME/uniprot ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/uniprot_sprot_fungi.dat.gz
+
 echo Unzipping Human UniProt file...
 gunzip $FRESH_HOME/uniprot/uniprot_sprot_human.dat.gz
 
 echo Unzipping Rodent UniProt file...
 gunzip $FRESH_HOME/uniprot/uniprot_sprot_rodents.dat.gz
+
+echo Unzipping Yeast UniProt file...
+gunzip $FRESH_HOME/uniprot/uniprot_sprot_fungi.dat.gz
 
 ###########################################################
 # Retrieve "Fresh" Reactome BioPAX directly from Reactome
