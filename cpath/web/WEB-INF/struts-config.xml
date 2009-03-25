@@ -203,6 +203,25 @@
             <forward name="failure" path="/WEB-INF/jsp/pages/AdminMiniMapsConfig.jsp"/>
         </action>
 
+        <action path="/adminSnapshotDownloadConfig"
+            type="org.mskcc.pathdb.action.admin.AdminSnapshotDownloadConfigAction"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/AdminSnapshotDownloadConfig.jsp"
+			scope="request"
+			validate="false">
+			<forward name="success" path="/WEB-INF/jsp/pages/AdminSnapshotDownloadConfig.jsp"/>
+        </action>
+
+        <action path="/adminUpdateSnapshotDownloadConfig"
+            type="org.mskcc.pathdb.action.admin.AdminUpdateSnapshotDownloadConfigAction"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/AdminSnapshotDownloadConfig.jsp"
+            scope="request"
+			validate="true">
+            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+            <forward name="failure" path="/WEB-INF/jsp/pages/AdminSnapshotDownloadConfig.jsp"/>
+        </action>
+
         <action path="/adminRemoveTask"
             type="org.mskcc.pathdb.action.admin.AdminRemoveTask">
             <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
