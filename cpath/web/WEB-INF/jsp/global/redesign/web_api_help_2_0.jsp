@@ -172,18 +172,27 @@ the physical entity of interest. For example, the following query uses a UniProt
     <%= ProtocolRequest.ARG_INPUT_ID_TYPE %> parameter</a> below.  If not specified, the internal
     <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> (default),
-<%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>, <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, 
-<%=ProtocolConstantsVersion2.FORMAT_IMAGE_MAP%>, <%=ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL%>, 
-or <%=ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET%>.
-When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX
+<%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>, <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>
+<%
+	if (webUIBean.getEnableMiniMaps()) {
+        out.println(", " + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP + ", " +
+        ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + ", or " + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET);
+    }
+%>
+.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, the client will receive a complete BioPAX
 representation of the neighborhood.  When set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>,
 the client will receive a list of all physical entities in the neighborhood (see below).
 When set to <%= ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a text file
-in the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.  When set to
- <%=ProtocolConstantsVersion2.FORMAT_IMAGE_MAP%>, the client will receive a png image representing the neighborhood.
-  When set to <%=ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL%>, the client will receive a thumbnail
- size version of the png image.  Finally, when set to <%=ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET%>,
- the client will receive an html frameset that contains both a neighborhood image and legend.
+in the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.
+<%
+	if (webUIBean.getEnableMiniMaps()) {
+	    out.println("  When set to " + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP + ", " +
+		"the client will receive a png image representing the neighborhood.  When set to " +
+		ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_THUMBNAIL + ", the client will receive a thumbnail" +
+		" size version of the png image.  Finally, when set to " + ProtocolConstantsVersion2.FORMAT_IMAGE_MAP_FRAMESET + 
+		", the client will receive an html frameset that contains both a neighborhood image and legend.");
+    }
+%>
 </li>
 <li>[Optional] <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> = internal or external database.
 This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%>
