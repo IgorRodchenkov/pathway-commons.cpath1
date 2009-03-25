@@ -28,6 +28,7 @@
 		webUIBean.setImageMapServerURL("http://toro.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
 		webUIBean.setFilterInteractions("IN_SAME_COMPONENT,CO_CONTROL_DEPENDENT_SIMILAR,CO_CONTROL_DEPENDENT_ANTI,CO_CONTROL_INDEPENDENT_SIMILAR,CO_CONTROL_INDEPENDENT_ANTI");
 		webUIBean.setMaxMiniMapSize(200);
+		webUIBean.setSnapshotDownloadBaseURL("http://toro.cbio.mskcc.org:8080/pc/snapshots");
 		CPathUIConfig.setWebUIBean(webUIBean);
     }
 %>
