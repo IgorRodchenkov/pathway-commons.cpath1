@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.21 2008-12-10 05:30:31 grossben Exp $
+// $Id: WebUIBean.java,v 1.22 2009-03-25 17:40:12 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -129,6 +129,11 @@ public class WebUIBean extends ActionForm {
 	private String filterInteractions = ("IN_SAME_COMPONENT,CO_CONTROL_DEPENDENT_SIMILAR," +
 										 "CO_CONTROL_DEPENDENT_ANTI,CO_CONTROL_INDEPENDENT_SIMILAR," +
 										 "CO_CONTROL_INDEPENDENT_ANTI");
+
+	/**
+	 * Snapshot download base URL
+	 */
+	private String snapshotDownloadBaseURL = "";
 
     /**
      * List of Supported ID Types.
@@ -397,7 +402,7 @@ public class WebUIBean extends ActionForm {
 	}
 
 	/**
-	 * Sets image map server url
+	 * Sets image map server url.
 	 *
 	 * @param imageMapServerURL String
 	 */
@@ -453,11 +458,32 @@ public class WebUIBean extends ActionForm {
 	}
 
 	/**
+	 * Sets snapshot download base url.
+	 *
+	 * @param snapshotDownloadBaseURL String
+	 */
+    public void setSnapshotDownloadBaseURL(String snapshotDownloadBaseURL)
+    {
+        this.snapshotDownloadBaseURL = snapshotDownloadBaseURL;
+    }
+
+	/**
+	 * Gets snapshot download base url.
+	 *
+	 * @return String
+	 */
+    public String getSnapshotDownloadBaseURL()
+    {
+        return snapshotDownloadBaseURL;
+    }
+
+	/**
 	 * Validates Mini-Map entries.
 	 */
 	public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
 		ActionErrors errors = new ActionErrors();
-		if (enableMiniMaps) {
+		String requestURI = request.getRequestURI();
+		if (requestURI.contains("MiniMaps") && enableMiniMaps) {
 			if (imageMapServerURL == null || imageMapServerURL.equals("")) {
 				errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.mini_maps_config_form.required", "Image Map Server URL"));
 			}
@@ -473,6 +499,23 @@ public class WebUIBean extends ActionForm {
 				errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.mini_maps_config_form.invalid_maxMiniMapSize"));
 			}
 		}
+
+		// snapshot download validation
+		if (requestURI.contains("SnapshotDownload")) {
+			if (snapshotDownloadBaseURL == null || snapshotDownloadBaseURL.equals("")) {
+				errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.snapshot_download_config_form.required", "Snapshot Download Base URL"));
+			}
+			else {
+				try {
+					java.net.URL url = new java.net.URL(snapshotDownloadBaseURL);
+				}
+				catch (java.net.MalformedURLException e) {
+					errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.snapshot_download_config_form.invalid_snapshotDownloadBaseURL"));
+				}
+			}
+		}
+
+		// outta here
 		return errors;
 	}
 }
