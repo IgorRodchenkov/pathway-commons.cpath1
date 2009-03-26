@@ -203,6 +203,25 @@
             <forward name="failure" path="/WEB-INF/jsp/pages/AdminMiniMapsConfig.jsp"/>
         </action>
 
+        <action path="/adminCytoscapeConfig"
+            type="org.mskcc.pathdb.action.admin.AdminCytoscapeConfigAction"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/AdminCytoscapeConfig.jsp"
+			scope="request"
+			validate="false">
+			<forward name="success" path="/WEB-INF/jsp/pages/AdminCytoscapeConfig.jsp"/>
+        </action>
+
+        <action path="/adminUpdateCytoscapeConfig"
+            type="org.mskcc.pathdb.action.admin.AdminUpdateCytoscapeConfigAction"
+            name="webUIForm"
+			input="/WEB-INF/jsp/pages/AdminCytoscapeConfig.jsp"
+            scope="request"
+			validate="true">
+            <forward name="success" path="/WEB-INF/jsp/pages/Admin.jsp"/>
+            <forward name="failure" path="/WEB-INF/jsp/pages/AdminCytoscapeConfig.jsp"/>
+        </action>
+
         <action path="/adminSnapshotDownloadConfig"
             type="org.mskcc.pathdb.action.admin.AdminSnapshotDownloadConfigAction"
             name="webUIForm"
