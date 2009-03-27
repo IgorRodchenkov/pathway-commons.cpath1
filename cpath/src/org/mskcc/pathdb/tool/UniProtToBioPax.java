@@ -254,8 +254,10 @@ public class UniProtToBioPax {
             Model bpModel) {
         String acList[] = acNames.split(";");
         if (acList.length > 0) {
-            String ac = acList[0].trim();
-            setUnificationXRef(ExternalDatabaseConstants.UNIPROT, ac, currentProtein, bpModel);
+			for (String acEntry : acList) {
+				String ac = acEntry.trim();
+				setUnificationXRef(ExternalDatabaseConstants.UNIPROT, ac, currentProtein, bpModel);
+			}
         }
     }
 
