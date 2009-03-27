@@ -13,10 +13,14 @@
 
 	   webUIBean.setDisplayBrowseByOrganismTab(false);
 	   webUIBean.setDisplayBrowseByPathwayTab(true);
-	   webUIBean.setWantCytoscape(true);
+	   webUIBean.setWantCytoscape(false);
 	   webUIBean.setDisplayWebServiceTab(true);
 	   webUIBean.setDisplayFilterTab(true);
 	   webUIBean.setWebApiVersion(ProtocolConstantsVersion2.VERSION_2);    
+	   webUIBean.setImageMapServerURL("");
+	   webUIBean.setFilterInteractions("");
+	   webUIBean.setMaxMiniMapSize(200);
+	   webUIBean.setSnapshotDownloadBaseURL("");
 	   CPathUIConfig.setWebUIBean(webUIBean);
     }
 %>
