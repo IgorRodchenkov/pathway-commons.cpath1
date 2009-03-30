@@ -67,7 +67,11 @@ public class ExportBioPAX {
 		String xmlString = assembly.getXmlString();
 
 		// dump the biopax
-		exportFileUtil.appendToSpeciesFile(xmlString, record.getNcbiTaxonomyId(), ExportFileUtil.BIOPAX_OUTPUT);
+		ArrayList<Integer> ncbiTaxonomyIDs = new ArrayList<Integer>();
+		ExportUtil.getNCBITaxonomyIDs(record, ncbiTaxonomyIDs, new ArrayList<Long>());
+		for (Integer taxID : ncbiTaxonomyIDs) {
+			exportFileUtil.appendToSpeciesFile(xmlString, taxID, ExportFileUtil.BIOPAX_OUTPUT);
+		}
 		exportFileUtil.appendToDataSourceFile (xmlString, dbTerm, ExportFileUtil.BIOPAX_OUTPUT);
 
 		// save id of record we have just processed - to prevent processing in future
