@@ -88,8 +88,8 @@ public class ExportNetworks {
 				if (processedSIFs.contains(finalSIF)) {
 					continue;
 				}
-                exportRecord(dbTerm, interaction, finalSIF, ExportFileUtil.SIF_OUTPUT);
-                exportRecord(dbTerm, interaction, finalSIF, ExportFileUtil.TAB_DELIM_OUTPUT);
+                exportRecord(record, dbTerm, interaction, finalSIF, ExportFileUtil.SIF_OUTPUT);
+                exportRecord(record, dbTerm, interaction, finalSIF, ExportFileUtil.TAB_DELIM_OUTPUT);
 				processedSIFs.add(finalSIF);
             }
         } catch (JenaException e) {
@@ -107,7 +107,7 @@ public class ExportNetworks {
 		return finalSif.toString();
 	}
 
-    private void exportRecord(String dbTerm, Interaction interaction, String sif, int outputFormat)
+    private void exportRecord(CPathRecord record, String dbTerm, Interaction interaction, String sif, int outputFormat)
             throws IOException, DaoException {
 		StringBuffer finalSif = new StringBuffer(sif);
         if (outputFormat == ExportFileUtil.TAB_DELIM_OUTPUT) {
@@ -118,19 +118,12 @@ public class ExportNetworks {
         //  Export to data source file
         exportFileUtil.appendToDataSourceFile(finalSif.toString(), dbTerm, outputFormat);
 
-        //  Export to species specific file(s)
-        if (interaction.getCPathRecordA().getNcbiTaxonomyId()
-                == interaction.getCPathRecordA().getNcbiTaxonomyId()) {
-            exportFileUtil.appendToSpeciesFile(finalSif.toString(),
-                    interaction.getCPathRecordA().getNcbiTaxonomyId(), outputFormat);
-        } else {
-            //  If we have an interaction between two species, we need to export the
-            //  interaction in two places, once for each species.
-            exportFileUtil.appendToSpeciesFile(finalSif.toString(),
-                    interaction.getCPathRecordA().getNcbiTaxonomyId(), outputFormat);
-            exportFileUtil.appendToSpeciesFile(finalSif.toString(),
-                    interaction.getCPathRecordB().getNcbiTaxonomyId(), outputFormat);
-        }
+		// Export to species specific file(s)
+		ArrayList<Integer> ncbiTaxonomyIDs = new ArrayList<Integer>();
+		ExportUtil.getNCBITaxonomyIDs(record, ncbiTaxonomyIDs, new ArrayList<Long>());
+		for (Integer taxID : ncbiTaxonomyIDs) {
+			exportFileUtil.appendToSpeciesFile(finalSif.toString(), taxID, outputFormat);
+		}
     }
 
     private ArrayList <Interaction> convertToInteractionList (String dbSource, long interactionId,
