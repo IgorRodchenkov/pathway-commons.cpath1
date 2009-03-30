@@ -3,6 +3,7 @@ package org.mskcc.pathdb.tool;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.model.Organism;
+import org.mskcc.pathdb.model.CPathRecord;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,9 +31,12 @@ public class ExportFileUtil {
      */
     public ExportFileUtil (File exportDir) {
         this.exportDir = exportDir;
-        if (!exportDir.exists()) {
-            exportDir.mkdir();
+        
+		if (exportDir.exists()) {
+			exportDir.delete();
         }
+		exportDir.mkdir();
+
         initDir (GSEA_OUTPUT);
         initDir (PC_OUTPUT);
         initDir (SIF_OUTPUT);
@@ -119,7 +123,7 @@ public class ExportFileUtil {
      */
     public void appendToSpeciesFile(String line, int ncbiTaxonomyId, int outputFormat)
             throws IOException, DaoException {
-        if (ncbiTaxonomyId == -9999) {
+        if (ncbiTaxonomyId == CPathRecord.TAXONOMY_NOT_SPECIFIED) {
             return;
         }
         String fdKey = outputFormat + Integer.toString(ncbiTaxonomyId);
