@@ -57,7 +57,7 @@ public class ExportFileUtil {
             fileWriter.close();
         }
     }
-
+ 
     /**
      * Initializes output directories.  This method creates a structure like so:
      * - xxxx
@@ -144,7 +144,8 @@ public class ExportFileUtil {
         if (writer == null) {
             DaoOrganism daoOrganism = new DaoOrganism();
             Organism organism = daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId);
-            String speciesName = organism.getSpeciesName().replaceAll(" ", "_");
+			String regex = "[\\[|\\]|\\(|\\)|\\/|\\\\| ]";
+			String speciesName = organism.getSpeciesName().replaceAll(regex, "-");
 			String fileName = speciesName.toLowerCase() + getKey(outputFormat) + fileExtension;
             writer = new FileWriter (new File (dir, fileName));
             fileWriters.put(fdKey, writer);
