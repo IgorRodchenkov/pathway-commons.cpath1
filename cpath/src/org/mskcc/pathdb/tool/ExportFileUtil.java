@@ -18,9 +18,13 @@ public class ExportFileUtil {
     public static final int GSEA_OUTPUT = 1;
     public static final int PC_OUTPUT = 2;
     public static final int SIF_OUTPUT = 3;
-    public static final int TAB_DELIM_OUTPUT = 4;
-    public static final int BIOPAX_OUTPUT = 5;
+    public static final int TAB_DELIM_EDGE_OUTPUT = 4;
+    public static final int TAB_DELIM_NODE_OUTPUT = 5;
+    public static final int BIOPAX_OUTPUT = 6;
+
     private File exportDir;
+	private static final String EDGE_ATTRIBUTE_FILE_SUFFIX = "_edge_attributes";
+	private static final String NODE_ATTRIBUTE_FILE_SUFFIX = "_node_attributes";
 
     //  HashMap that will contain multiple open file writers
     private HashMap<String, FileWriter> fileWriters = new HashMap <String, FileWriter>();
@@ -32,15 +36,14 @@ public class ExportFileUtil {
     public ExportFileUtil (File exportDir) {
         this.exportDir = exportDir;
         
-		if (exportDir.exists()) {
-			exportDir.delete();
+		if (!exportDir.exists()) {
+			exportDir.mkdir();
         }
-		exportDir.mkdir();
 
         initDir (GSEA_OUTPUT);
         initDir (PC_OUTPUT);
         initDir (SIF_OUTPUT);
-        initDir (TAB_DELIM_OUTPUT);
+        initDir (TAB_DELIM_EDGE_OUTPUT); // edge and node go into same subdir
         initDir (BIOPAX_OUTPUT);
     }
 
@@ -67,20 +70,25 @@ public class ExportFileUtil {
 
         //  create the xxxx base directory
         if (!newDir.exists()) {
-            newDir.mkdir();
+			newDir.mkdir();
         }
 
+			
         // create the xxxx/by_species directory
         File bySpeciesDir = getBySpeciesDir (outputFormat);
         if (!bySpeciesDir.exists()) {
-            bySpeciesDir.mkdir();
+			bySpeciesDir.mkdir();
         }
+
 
         //  create the xxxx/by_source directory
         File byDataSourceDir = getBySourceDir (outputFormat);
         if (!byDataSourceDir.exists()) {
-            byDataSourceDir.mkdir();
+			byDataSourceDir.mkdir();
         }
+
+
+		// outta here
         return newDir;
     }
     /**
@@ -108,11 +116,13 @@ public class ExportFileUtil {
     public void appendToDataSourceFile (String line, String dbTerm, int outputFormat)
         throws IOException {
         String fdKey = outputFormat + dbTerm;
+		fdKey += getKey(outputFormat);
         String fileExtension = getFileExtension (outputFormat);
         FileWriter writer = fileWriters.get(fdKey);
         File dir = getBySourceDir (outputFormat);
         if (writer == null) {
-            writer = new FileWriter (new File (dir, dbTerm.toLowerCase() + fileExtension));
+			String fileName = dbTerm.toLowerCase() + getKey(outputFormat) + fileExtension;
+            writer = new FileWriter (new File (dir, fileName));
             fileWriters.put(fdKey, writer);
         }
         writer.write(line);
@@ -127,6 +137,7 @@ public class ExportFileUtil {
             return;
         }
         String fdKey = outputFormat + Integer.toString(ncbiTaxonomyId);
+		fdKey += getKey(outputFormat);
         String fileExtension = getFileExtension (outputFormat);
         FileWriter writer = fileWriters.get(fdKey);
         File dir = getBySpeciesDir (outputFormat);
@@ -134,7 +145,8 @@ public class ExportFileUtil {
             DaoOrganism daoOrganism = new DaoOrganism();
             Organism organism = daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId);
             String speciesName = organism.getSpeciesName().replaceAll(" ", "_");
-            writer = new FileWriter (new File (dir, speciesName.toLowerCase() + fileExtension));
+			String fileName = speciesName.toLowerCase() + getKey(outputFormat) + fileExtension;
+            writer = new FileWriter (new File (dir, fileName));
             fileWriters.put(fdKey, writer);
         }
         writer.write(line);
@@ -152,7 +164,9 @@ public class ExportFileUtil {
             return new File (exportDir, "gene_sets");
         } else if (outputFormat == ExportFileUtil.SIF_OUTPUT) {
             return new File (exportDir, "sif");
-        } else if (outputFormat == ExportFileUtil.TAB_DELIM_OUTPUT) {
+        } else if (outputFormat == ExportFileUtil.TAB_DELIM_EDGE_OUTPUT) {
+            return new File (exportDir, "tab_delim_network");
+        } else if (outputFormat == ExportFileUtil.TAB_DELIM_NODE_OUTPUT) {
             return new File (exportDir, "tab_delim_network");
         } else if (outputFormat == ExportFileUtil.BIOPAX_OUTPUT) {
             return new File (exportDir, "biopax");
@@ -179,4 +193,24 @@ public class ExportFileUtil {
     private File getBySourceDir (int outputFormat) {
         return new File (getFormatSpecificDir(outputFormat), "by_source");
     }
+
+	/**
+	 * This routine was created to support both edge and node
+	 * attribute files.
+	 *
+	 * @param outputFormat int
+	 * @return String
+	 */
+	private String getKey (int outputFormat) {
+		
+		if (outputFormat == TAB_DELIM_EDGE_OUTPUT) {
+			return EDGE_ATTRIBUTE_FILE_SUFFIX;
+		}
+		else if (outputFormat == TAB_DELIM_NODE_OUTPUT) {
+			return NODE_ATTRIBUTE_FILE_SUFFIX;
+		}
+
+		// outta here
+		return "";
+	}
 }
