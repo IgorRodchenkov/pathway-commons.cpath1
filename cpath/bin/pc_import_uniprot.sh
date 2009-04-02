@@ -26,6 +26,9 @@ logProgress "Converting Human UniProt Files to BioPAX"
 logProgress "Converting Rodent UniProt Files to BioPAX"
 ./uniprot2biopax.pl $FRESH_HOME/uniprot/uniprot_sprot_rodents.dat
 
+logProgress "Converting Fungi UniProt Files to BioPAX"
+./uniprot2biopax.pl $FRESH_HOME/uniprot/uniprot_sprot_fungi.dat
+
 mv $FRESH_HOME/uniprot/*.owl $FRESH_HOME/uniprot/biopax
 cp $FRESH_HOME/uniprot/db.info $FRESH_HOME/uniprot/biopax
 
