@@ -23,8 +23,8 @@ public class ExportFileUtil {
     public static final int BIOPAX_OUTPUT = 6;
 
     private File exportDir;
-	private static final String EDGE_ATTRIBUTE_FILE_SUFFIX = "_edge_attributes";
-	private static final String NODE_ATTRIBUTE_FILE_SUFFIX = "_node_attributes";
+	private static final String EDGE_ATTRIBUTE_FILE_SUFFIX = "-edge-attributes";
+	private static final String NODE_ATTRIBUTE_FILE_SUFFIX = "-node-attributes";
 
     //  HashMap that will contain multiple open file writers
     private HashMap<String, FileWriter> fileWriters = new HashMap <String, FileWriter>();
