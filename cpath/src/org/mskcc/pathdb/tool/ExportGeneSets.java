@@ -110,9 +110,9 @@ public class ExportGeneSets {
                 } else {
                     line.append (NA + COLON);
                 }
-                line.append (getXRef (uniprotAccession) + COLON);
-                line.append (getXRef (geneSymbol) + COLON);
-                line.append (getXRef (entrezGeneId));
+                line.append (ExportUtil.getXRef (uniprotAccession) + COLON);
+                line.append (ExportUtil.getXRef (geneSymbol) + COLON);
+                line.append (ExportUtil.getXRef (entrezGeneId));
                 line.append (TAB);
             }
         }
@@ -125,13 +125,4 @@ public class ExportGeneSets {
             exportFileUtil.appendToDataSourceFile (line.toString(), dbTerm, outputFormat);
         }
     }
-
-    private String getXRef (String id) {
-        if (id == null) {
-            return NA;
-        } else {
-            return id;
-        }
-    }
-
 }
