@@ -155,6 +155,12 @@ function importBioGRID {
 	rm -vf $BIOGRID_HOME/biopax/{*.owl,db.info}
 }
 
+function importIMID {
+	logProgress "Loading IMID."
+	local IMID_HOME="$CPATH_HOME/../pathway-commons/imid/03-01-2009"
+	./admin.pl -f $IMID_HOME import
+}
+
 function importiHop {
 	#echo "Importing iHOP file..."
 	local IHOP_HOME="$CPATH_HOME/../pathway-commons/ihop/03-14-2008/"
@@ -198,6 +204,7 @@ importHumanCyc
 importNci
 importCellMap
 importBioGRID
+importIMID
 fetchPublications
 index
 neighborhoodMaps
