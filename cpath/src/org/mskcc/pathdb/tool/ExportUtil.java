@@ -16,6 +16,8 @@ import java.util.HashMap;
  */
 public class ExportUtil {
 
+    private final static String NA = "NOT_SPECIFIED";
+
     /**
      * XRef Look up.
      */
@@ -29,6 +31,14 @@ public class ExportUtil {
             xrefMap.put(dbMasterTerm, xrefId);
         }
         return xrefMap;
+    }
+
+    public static String getXRef (String id) {
+        if (id == null) {
+            return NA;
+        } else {
+            return id.trim().toUpperCase();
+        }
     }
 
 	/**
