@@ -144,8 +144,11 @@ public class ExportFileUtil {
         if (writer == null) {
             DaoOrganism daoOrganism = new DaoOrganism();
             Organism organism = daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId);
-			String regex = "[\\[|\\]|\\(|\\)|\\/|\\\\| ]";
+			// remove all illegal chars from filename
+			String regex = "[\\[|\\]|\\(|\\)|\\/|\\\\|\\.| ]";
 			String speciesName = organism.getSpeciesName().replaceAll(regex, "-");
+			// now remove all strings of two or more - and replace with one -
+			speciesName = speciesName.replaceAll("-{2,}", "-");
 			String fileName = speciesName.toLowerCase() + getKey(outputFormat) + fileExtension;
             writer = new FileWriter (new File (dir, fileName));
             fileWriters.put(fdKey, writer);
