@@ -94,4 +94,12 @@
             <master_term>REACTOME</master_term>
         </controlled_terms>
     </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>IMID</name>
+        <description>General Repository for Interaction Datasets</description>
+        <icon_path>sbny.png</icon_path>
+        <controlled_terms>
+		    <master_term>IMID</master_term>
+	    </controlled_terms>
+    </external_database>
 </external_database_list>
