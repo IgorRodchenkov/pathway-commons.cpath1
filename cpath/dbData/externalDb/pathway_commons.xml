@@ -4,6 +4,7 @@
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>BioGRID</name>
         <description>General Repository for Interaction Datasets</description>
+        <home_page_url>http://www.thebiogrid.org/</home_page_url>
         <entity_url>
             <url_pattern>http://www.thebiogrid.org/search.php?keywords=%ID%</url_pattern>
             <sample_id>113010</sample_id>
@@ -25,6 +26,7 @@
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>HPRD</name>
         <description>Human Protein Reference Database (HPRD)</description>
+        <home_page_url>http://www.hprd.org/</home_page_url>
         <entity_url>
             <url_pattern>http://hprd.org/protein/%ID%</url_pattern>
             <sample_id>01284</sample_id>
@@ -50,6 +52,7 @@
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>IntAct</name>
         <description>IntAct database of protein interaction data</description>
+        <home_page_url>http://www.ebi.ac.uk/intact/site/index.jsf</home_page_url>
         <entity_url>
             <url_pattern>http://www.ebi.ac.uk/intact/search/do/search?searchString=%ID%</url_pattern>
             <sample_id>EBI-366083</sample_id>
@@ -62,6 +65,7 @@
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>MINT</name>
         <description>Molecular INTeraction database (MINT)</description>
+        <home_page_url>http://mint.bio.uniroma2.it/</home_page_url>
         <entity_url>
             <url_pattern>http://mint.bio.uniroma2.it/mint/search/db_view_interaction.php?mint_id=%ID%</url_pattern>
             <sample_id>mint_14046</sample_id>
@@ -84,9 +88,9 @@
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>Reactome</name>
         <description>Reactome: a knowledgebase of biological processes</description>
-        <home_page_url>http://reactome.org</home_page_url>
+        <home_page_url>http://www.reactome.org</home_page_url>
         <entity_url>
-            <url_pattern>http://reactome.org/cgi-bin/eventbrowser?DB=gk_current&amp;ID=%ID%</url_pattern>
+            <url_pattern>http://www.reactome.org/cgi-bin/eventbrowser?DB=gk_current&amp;ID=%ID%</url_pattern>
             <sample_id>12345</sample_id>
         </entity_url>
         <icon_path>Reactome.png</icon_path>
@@ -97,6 +101,7 @@
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>IMID</name>
         <description>General Repository for Interaction Datasets</description>
+        <home_page_url>http://www.sbcny.org</home_page_url>
         <icon_path>sbny.png</icon_path>
         <controlled_terms>
 		    <master_term>IMID</master_term>
