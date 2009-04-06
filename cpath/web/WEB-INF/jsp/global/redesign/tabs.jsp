@@ -83,8 +83,8 @@
 	    }
 	}
 
-    tabNames.add("Stats");
-    String browseUrl = "dbStats.do";
+    tabNames.add("DB Sources");
+    String browseUrl = "dbSources.do";
     tabUrls.add(browseUrl);
     if (url.equals(browseUrl) &&
         !referer.equals(BaseAction.FORWARD_HOME)) {
