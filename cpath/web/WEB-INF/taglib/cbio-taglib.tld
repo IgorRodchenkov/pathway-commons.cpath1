@@ -78,6 +78,11 @@
     <tag-class>org.mskcc.pathdb.taglib.DataSourceListTable</tag-class>
     <body-content>empty</body-content>
     <description>Displays Data Source List Table</description>
+    <attribute>
+       <name>renderForHomepage</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>      
   </tag>
 
   <tag>
