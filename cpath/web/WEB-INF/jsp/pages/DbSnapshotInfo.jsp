@@ -6,6 +6,8 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="org.mskcc.pathdb.model.ImportRecord"%>
 <%@ page import="org.mskcc.pathdb.model.CPathRecord"%>
+<%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
+<%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "JspError.jsp" %>
 
@@ -14,6 +16,9 @@
     ExternalDatabaseSnapshotRecord snapshotRecord = (ExternalDatabaseSnapshotRecord)
             request.getAttribute("SNAPSHOT_RECORD");
     request.setAttribute(BaseAction.ATTRIBUTE_TITLE, snapshotRecord.getExternalDatabase().getName());
+
+    // get ui bean
+    WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 %>
 
 <jsp:include page="../global/redesign/header.jsp" flush="true" />
@@ -64,6 +69,7 @@
     ArrayList list = daoImport.getImportRecordsBySnapshotId(snapshotRecord.getId());
 %>
 <p>&nbsp;</p>
+<h1>Batch download Pathway Commons Data <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">here.</a></h1>
 <h1>Original Data Files from <%= snapshotRecord.getExternalDatabase().getName()%></h1>
 <table>
     <tr>
