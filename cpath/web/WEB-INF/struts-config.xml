@@ -50,6 +50,12 @@
             <forward name="success" path="/WEB-INF/jsp/pages/DbStats.jsp"/>
         </action>
 
+        <!--  Database Sources / Information -->
+        <action path="/dbSources"
+            type="org.mskcc.pathdb.action.HomeAction">
+            <forward name="success" path="/WEB-INF/jsp/pages/DbSources.jsp"/>
+        </action>
+
         <!--  Database Snapshot Information -->
         <action path="/dbSnapshot"
             type="org.mskcc.pathdb.action.ShowDataSourceDetails">
