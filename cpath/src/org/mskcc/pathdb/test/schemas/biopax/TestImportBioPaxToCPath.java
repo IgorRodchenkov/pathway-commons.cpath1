@@ -1,4 +1,4 @@
-// $Id: TestImportBioPaxToCPath.java,v 1.17 2007-01-05 22:22:34 cerami Exp $
+// $Id: TestImportBioPaxToCPath.java,v 1.18 2009-04-07 17:24:16 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -88,7 +88,7 @@ public class TestImportBioPaxToCPath extends TestCase {
         String xml = reader.retrieveContent
                 ("testData/biopax/biopax1_sample1.owl");
         ProgressMonitor pMonitor = new ProgressMonitor();
-        ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
+        ImportBioPaxToCPath importer = new ImportBioPaxToCPath(false);
 
         SnapshotReader snapshotReader = new SnapshotReader(
                 new File ("testData/biopax"), "db.info");
@@ -167,7 +167,7 @@ public class TestImportBioPaxToCPath extends TestCase {
         assertEquals ("1.0", snapshotRecord.getSnapshotVersion());
 
         //  Try Saving Again
-        importer = new ImportBioPaxToCPath();
+        importer = new ImportBioPaxToCPath(false);
         summary = importer.addRecord(xml, snapshotId, false, pMonitor);
 
         //  Because the pathway has a unification xref, it should not
