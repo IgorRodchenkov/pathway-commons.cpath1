@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.73 2008-12-10 04:58:32 grossben Exp $
+// $Id: Admin.java,v 1.74 2009-04-07 17:11:41 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -73,6 +73,7 @@ public class Admin {
     public static final String CPATH_HOME = "CPATH_HOME";
     private static final String COMMAND_INDEX = "index";
     private static final String COMMAND_IMPORT = "import";
+    private static final String COMMAND_IMPORT_UNIPROT = "import_uniprot_annotation";
 	private static final String COMMAND_POPULATE_REFERENCE_TABLE = "pop_ref";
     private static final String COMMAND_PRE_COMPUTE = "precompute";
     private static final String COMMAND_IMAGES = "images";
@@ -170,7 +171,9 @@ public class Admin {
                 ExternalDbImageUtil imageUtil = new ExternalDbImageUtil();
                 imageUtil.createDbImages();
             } else if (command.equals(COMMAND_IMPORT)) {
-                importData();
+                importData(false);
+            } else if (command.equals(COMMAND_IMPORT_UNIPROT)) {
+				importData(true);
 			} else if (command.equals(COMMAND_POPULATE_REFERENCE_TABLE)) {
 				// populate the reference table
 				PopulateReferenceTableTask referenceTableTask = new PopulateReferenceTableTask(true, xdebug);
@@ -263,8 +266,10 @@ public class Admin {
 
     /**
      * Imports a BioPAX, PSI-MI or an External Reference File.
+	 *
+	 * @param uniport boolean (indicates we are importing uniport annotation)
      */
-    private static void importData() throws Exception,
+    private static void importData(boolean uniprotAnnotation) throws Exception,
             DataServiceException {
         if (fileName != null) {
             File file = new File(fileName);
@@ -289,7 +294,7 @@ public class Admin {
                         if (!files[i].getName().startsWith(".")) {
                             System.out.println(">  Loading File:  "
                                     + files[i].getAbsolutePath());
-                            importDataFromSingleFile(files[i]);
+                            importDataFromSingleFile(files[i], uniprotAnnotation);
                         }
                     }
                 } else {
@@ -299,7 +304,7 @@ public class Admin {
             } else {
                 boolean fileValid = validateSingleFile(file);
                 if (fileValid) {
-                    importDataFromSingleFile(file);
+                    importDataFromSingleFile(file, uniprotAnnotation);
                 }
             }
         }
@@ -395,7 +400,7 @@ public class Admin {
         }
     }
 
-    private static void importDataFromSingleFile(File file) throws IOException,
+    private static void importDataFromSingleFile(File file, boolean uniprotAnnotation) throws IOException,
             DaoException, SAXException, DataServiceException,
             ImportException, JDOMException {
         long importId = NOT_SET;
@@ -427,8 +432,8 @@ public class Admin {
         }
         if (importId != NOT_SET) {
             ImportRecordTask importTask = new ImportRecordTask(importId,
-                    strictValidation, removeAllInteractionXrefs,
-                    true);
+															   strictValidation, removeAllInteractionXrefs,
+															   true, uniprotAnnotation);
             importTask.transferRecord();
         }
     }
