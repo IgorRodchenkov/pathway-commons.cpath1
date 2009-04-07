@@ -1,4 +1,4 @@
-// $Id: CPathServlet.java,v 1.41 2008-12-10 04:57:07 grossben Exp $
+// $Id: CPathServlet.java,v 1.42 2009-04-07 17:12:28 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -214,7 +214,7 @@ public final class CPathServlet extends ActionServlet {
             adminLogger.getLogRecords();
             DaoOrganism dao = new DaoOrganism();
             log.info("Attempting to retrieve Entity Records...");
-            dao.countAllOrganisms();
+            dao.organismCount(false);
             log.info("Database Connection -->  [OK]");
         } catch (DaoException e) {
             log.fatal("****  Fatal Error.  Could not connect to "
