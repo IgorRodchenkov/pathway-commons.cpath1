@@ -2258,11 +2258,11 @@ INSERT INTO `internal_link` VALUES (862, 490, 419);
 -- Dumping data for table `organism`
 -- 
 
-INSERT INTO `organism` VALUES (-9999, 'N/A', '');
-INSERT INTO `organism` VALUES (83333, 'Escherichia coli K-12', '');
-INSERT INTO `organism` VALUES (9606, 'Homo sapiens', '');
-INSERT INTO `organism` VALUES (10116, 'Rattus norvegicus', '');
-INSERT INTO `organism` VALUES (10090, 'Mus musculus', '');
+INSERT INTO `organism` VALUES (-9999, 'N/A', '', 1);
+INSERT INTO `organism` VALUES (83333, 'Escherichia coli K-12', '', 1);
+INSERT INTO `organism` VALUES (9606, 'Homo sapiens', '', 1);
+INSERT INTO `organism` VALUES (10116, 'Rattus norvegicus', '', 1);
+INSERT INTO `organism` VALUES (10090, 'Mus musculus', '', 1);
 
 # Insert Fictional External DB Snapshot
 INSERT INTO `external_db_snapshot` (`EXTERNAL_DB_SNAPSHOT_ID`, `EXTERNAL_DB_ID`, `SNAPSHOT_DATE`, `SNAPSHOT_VERSION`) VALUES (1, 19, '1970-01-01', 'FICTIONAL_RELEASE');
