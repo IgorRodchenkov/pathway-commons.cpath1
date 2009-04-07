@@ -39,7 +39,7 @@ public class DatabaseStats {
         numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
         numPhysicalEntities = dao.getNumPhysicalEntities(true);
         DaoOrganism daoOrganism = new DaoOrganism();
-        numOrganisms = daoOrganism.getAllOrganisms().size();
+		numOrganisms = daoOrganism.organismCount(true);
     }
 
     /**
