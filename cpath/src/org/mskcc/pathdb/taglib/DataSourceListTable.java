@@ -78,7 +78,7 @@ public class DataSourceListTable extends HtmlTable {
 			ProtocolRequest protocolRequest = getProtocolRequest(webUIBean);
 			GlobalFilterSettings filterSettings = new GlobalFilterSettings();
 			if (renderForHomepage) {
-				renderRenderForHomepage(filterSettings, protocolRequest, webUIBean, list);
+				renderForHomepage(filterSettings, protocolRequest, webUIBean, list);
 			}
 			else {
 				renderStatsPage(filterSettings, protocolRequest, webUIBean, list);
@@ -99,7 +99,7 @@ public class DataSourceListTable extends HtmlTable {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	private void renderRenderForHomepage(GlobalFilterSettings filterSettings, ProtocolRequest protocolRequest, WebUIBean webUIBean, ArrayList list) 
+	private void renderForHomepage(GlobalFilterSettings filterSettings, ProtocolRequest protocolRequest, WebUIBean webUIBean, ArrayList list) 
 		throws QueryException, DaoException, AssemblyException, IOException, ParseException {
 
 		ArrayList<String> typeList = new ArrayList();
