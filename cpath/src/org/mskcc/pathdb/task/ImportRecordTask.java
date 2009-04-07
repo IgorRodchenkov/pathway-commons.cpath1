@@ -1,4 +1,4 @@
-// $Id: ImportRecordTask.java,v 1.23 2006-11-16 15:45:58 cerami Exp $
+// $Id: ImportRecordTask.java,v 1.24 2009-04-07 17:15:16 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -50,6 +50,7 @@ public class ImportRecordTask extends Task {
     private ImportSummary summary;
     private boolean strictValidation;
     private boolean removeAllInteractionXRefs;
+	private boolean importUniprotAnnotation;
     private ProgressMonitor pMonitor;
 
     /**
@@ -62,10 +63,26 @@ public class ImportRecordTask extends Task {
      */
     public ImportRecordTask(long importId, boolean strictValidation,
             boolean removeAllInteractionXRefs, boolean consoleMode) {
+		this(importId, strictValidation, removeAllInteractionXRefs, consoleMode, false);
+	}
+
+    /**
+     * Constructor.
+     *
+     * @param importId                  Import ID.
+     * @param strictValidation          Strict Validation Flag
+     * @param removeAllInteractionXRefs Flag to Remove all Interaction XRefs.
+     * @param consoleMode               Console Mode.
+	 * @param importUniprotAnnotation   Flag to indicate we are importing uniprot annotation
+     */
+    public ImportRecordTask(long importId, boolean strictValidation,
+							boolean removeAllInteractionXRefs, boolean consoleMode,
+							boolean importUniprotAnnotation) {
         super("Import PSI-MI/BioPAX Record", consoleMode);
         this.importId = importId;
         this.strictValidation = strictValidation;
         this.removeAllInteractionXRefs = removeAllInteractionXRefs;
+		this.importUniprotAnnotation = importUniprotAnnotation;
         pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Processing file...");
         pMonitor.setConsoleMode(consoleMode);
@@ -94,11 +111,11 @@ public class ImportRecordTask extends Task {
         String xml = record.getData();
         try {
             if (record.getXmlType().equals(XmlRecordType.PSI_MI)) {
-                ImportPsiToCPath importer = new ImportPsiToCPath();
+                ImportPsiToCPath importer = new ImportPsiToCPath(importUniprotAnnotation);
                 summary = importer.addRecord(xml, strictValidation,
                         removeAllInteractionXRefs, pMonitor);
             } else {
-                ImportBioPaxToCPath importer = new ImportBioPaxToCPath();
+                ImportBioPaxToCPath importer = new ImportBioPaxToCPath(importUniprotAnnotation);
                 summary = importer.addRecord(xml, record.getSnapshotId(),
                         strictValidation, pMonitor);
             }
