@@ -155,6 +155,7 @@ CREATE TABLE `organism` (
   `NCBI_TAXONOMY_ID` int(11) NOT NULL default '0',
   `SPECIES_NAME` varchar(255) NOT NULL default '',
   `COMMON_NAME` varchar(255) NOT NULL default '',
+  `FROM_PATHWAY_OR_INTERACTION` tinyint(1) NOT NULL default '0' COMMENT 'Indicates that organism comes from pathway or interaction (as oppose to uniport annotation).',
   UNIQUE KEY `ncbi_taxonomy_id` (`NCBI_TAXONOMY_ID`)
 ) TYPE=MyISAM COMMENT='Stores Organism Data';
 # --------------------------------------------------------
