@@ -1,4 +1,4 @@
-// $Id: TestImportPsiToCPath.java,v 1.10 2006-02-22 22:47:51 grossb Exp $
+// $Id: TestImportPsiToCPath.java,v 1.11 2009-04-07 17:25:20 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -65,7 +65,7 @@ public class TestImportPsiToCPath extends TestCase {
         ContentReader reader = new ContentReader();
         String file = new String("testData/psi_mi/psi_sample_mixed.xml");
         String xml = reader.retrieveContent(file);
-        ImportPsiToCPath importer = new ImportPsiToCPath();
+        ImportPsiToCPath importer = new ImportPsiToCPath(false);
         ImportSummary summary = importer.addRecord(xml, true,
                 false, pMonitor);
         assertEquals(0, summary.getNumPhysicalEntitiesFound());
@@ -133,7 +133,7 @@ public class TestImportPsiToCPath extends TestCase {
         ContentReader reader = new ContentReader();
         String psiFile = new String("testData/psi_mi/psi_sample_id_map.xml");
         String xml = reader.retrieveContent(psiFile);
-        ImportPsiToCPath importer = new ImportPsiToCPath();
+        ImportPsiToCPath importer = new ImportPsiToCPath(false);
         ImportSummary summary = importer.addRecord(xml, true,
                 false, pMonitor);
 
