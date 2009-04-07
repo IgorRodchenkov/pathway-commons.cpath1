@@ -33,4 +33,4 @@ mv $FRESH_HOME/uniprot/*.owl $FRESH_HOME/uniprot/biopax
 cp $FRESH_HOME/uniprot/db.info $FRESH_HOME/uniprot/biopax
 
 logProgress "Importing UniProt BioPax Files"
-./admin.pl -f $FRESH_HOME/uniprot/biopax import
+./admin.pl -f $FRESH_HOME/uniprot/biopax import_uniprot_annotation
