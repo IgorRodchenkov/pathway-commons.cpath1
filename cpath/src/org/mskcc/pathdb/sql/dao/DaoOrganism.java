@@ -1,4 +1,4 @@
-// $Id: DaoOrganism.java,v 1.13 2007-01-02 16:56:32 cerami Exp $
+// $Id: DaoOrganism.java,v 1.14 2009-04-07 17:07:46 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -57,7 +57,7 @@ public class DaoOrganism {
      * @throws DaoException Error Connecting to Database.
      */
     public synchronized void addRecord(int taxonomyId, String speciesName,
-            String commonName) throws DaoException {
+									   String commonName, boolean fromPathwayOrInteraction) throws DaoException {
         if (speciesName == null) {
             throw new IllegalArgumentException("Species Name is null");
         }
@@ -71,11 +71,12 @@ public class DaoOrganism {
             con = JdbcUtil.getCPathConnection();
             pstmt = con.prepareStatement
                     ("INSERT INTO organism (`ncbi_taxonomy_id`, "
-                            + "`species_name`, `common_name`)"
-                            + " VALUES (?,?,?)");
+                            + "`species_name`, `common_name`, `from_pathway_or_interaction`)"
+                            + " VALUES (?,?,?,?)");
             pstmt.setInt(1, taxonomyId);
             pstmt.setString(2, speciesName);
             pstmt.setString(3, commonName);
+            pstmt.setBoolean(4, fromPathwayOrInteraction);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -83,6 +84,26 @@ public class DaoOrganism {
             JdbcUtil.closeAll(con, pstmt, rs);
         }
     }
+
+	public boolean updateFromPathwayOrInteraction(int ncbiTaxonomyId, boolean fromPathwayOrInteraction) throws DaoException {
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement("UPDATE organism SET `FROM_PATHWAY_OR_INTERACTION` = ? WHERE `NCBI_TAXONOMY_ID` = ?");
+            pstmt.setBoolean(1, fromPathwayOrInteraction);
+            pstmt.setInt(2, ncbiTaxonomyId);
+            int rows = pstmt.executeUpdate();
+            return (rows > 0) ? true : false;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+	}
 
     /**
      * Gets Organism by TaxonomyID
@@ -149,11 +170,11 @@ public class DaoOrganism {
     }
 
     /**
-     * @return the number of rows in the organism table, or -1 if
-     *         none are found
+	 * @param consider organisms imported from pathway or interaction only, or all organisms (ie from uniprot annotation tables)
+     * @return the number of rows in the organism table, or -1 if none are found
      * @throws DaoException Error Connecting to Database.
      */
-    public int countAllOrganisms() throws DaoException {
+    public int organismCount(boolean pathwayOrInteractionOnly) throws DaoException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -161,8 +182,11 @@ public class DaoOrganism {
         int organismCount = -1;
         try {
             con = JdbcUtil.getCPathConnection();
-            pstmt = con.prepareStatement
-                    ("select count(*) from organism order by species_name");
+			String statement = "select count(*) from organism";
+			if (pathwayOrInteractionOnly) {
+				statement += " where from_pathway_or_interaction = 1";
+			}
+            pstmt = con.prepareStatement(statement);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 organismCount = rs.getInt(1);
