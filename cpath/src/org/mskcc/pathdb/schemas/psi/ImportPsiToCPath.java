@@ -1,4 +1,4 @@
-// $Id: ImportPsiToCPath.java,v 1.14 2007-03-26 19:39:25 cerami Exp $
+// $Id: ImportPsiToCPath.java,v 1.15 2009-04-07 17:14:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -138,6 +138,16 @@ public class ImportPsiToCPath {
     private ImportSummary summary;
     private ProgressMonitor pMonitor;
     private Logger log = Logger.getLogger(ImportPsiToCPath.class);
+	private boolean importUniprotAnnotation;
+
+	/**
+     * Constructor().
+     *
+     * @param importUniprotAnnotation boolean
+	 */
+	public ImportPsiToCPath(boolean importUniprotAnnotation) {
+		this.importUniprotAnnotation = importUniprotAnnotation;
+	}
 
     /**
      * Contains a HashMap of Protein IDs in the original XML file
@@ -489,7 +499,7 @@ public class ImportPsiToCPath {
                 NamesType namesType = organism.getNames();
                 if (namesType.getFullName() != null) {
                     daoOrganism.addRecord(taxId, namesType.getFullName(),
-                            namesType.getShortLabel());
+										  namesType.getShortLabel(), importUniprotAnnotation);
                 }
             }
         }

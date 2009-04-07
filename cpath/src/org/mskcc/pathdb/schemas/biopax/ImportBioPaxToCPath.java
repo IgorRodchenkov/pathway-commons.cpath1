@@ -1,4 +1,4 @@
-// $Id: ImportBioPaxToCPath.java,v 1.40 2008-12-11 23:08:30 grossben Exp $
+// $Id: ImportBioPaxToCPath.java,v 1.41 2009-04-07 17:13:38 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -42,6 +42,7 @@ import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ImportSummary;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.Reference;
+import org.mskcc.pathdb.model.Organism;
 import org.mskcc.pathdb.model.ExternalDatabaseRecord;
 import org.mskcc.pathdb.sql.assembly.CPathIdFilter;
 import org.mskcc.pathdb.sql.dao.*;
@@ -75,6 +76,16 @@ public class ImportBioPaxToCPath {
     private ImportSummary importSummary;
     private long snapshotId;
     private String xml;
+	private boolean importUniprotAnnotation;
+
+	/**
+     * Constructor().
+     *
+     * @param importUniprotAnnotation boolean
+	 */
+	public ImportBioPaxToCPath(boolean importUniprotAnnotation) {
+		this.importUniprotAnnotation = importUniprotAnnotation;
+	}
 
     /**
      * Adds BioPAX Data to cPath.
@@ -472,9 +483,17 @@ public class ImportBioPaxToCPath {
                         xpath.selectSingleNode(resource);
                 if (speciesName != null) {
                     daoOrganism.addRecord(record.getNcbiTaxonomyId(),
-                            speciesName.getTextNormalize(), null);
+										  speciesName.getTextNormalize(), null, !importUniprotAnnotation);
                 }
             }
+			else {
+				Organism org = daoOrganism.getOrganismByTaxonomyId(record.getNcbiTaxonomyId());
+				// we are not importing uniprot annotation and current fromPathwayOrInteraction
+				// flag is false - update organism record and set fromPathwayOrInteraction to true
+				if (!importUniprotAnnotation && !org.fromPathwayOrInteraction()) {
+					daoOrganism.updateFromPathwayOrInteraction(record.getNcbiTaxonomyId(), true);
+				}
+			}
         }
     }
 
