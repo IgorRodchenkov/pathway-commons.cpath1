@@ -1,4 +1,4 @@
-// $Id: TestDaoOrganism.java,v 1.15 2007-01-02 16:56:14 cerami Exp $
+// $Id: TestDaoOrganism.java,v 1.16 2009-04-07 17:17:06 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -56,13 +56,13 @@ public class TestDaoOrganism extends TestCase {
     public void testAccess() throws DaoException {
         DaoOrganism dao = new DaoOrganism();
 
-        int beforeCount = dao.countAllOrganisms();
+        int beforeCount = dao.organismCount(false);
 
         //  Clear out record (if it already exists)
         dao.deleteRecord(taxId);
 
         //  Add New Record
-        dao.addRecord(taxId, speciesName, commonName);
+        dao.addRecord(taxId, speciesName, commonName, true);
         assertTrue(dao.recordExists(taxId));
         ArrayList organisms = dao.getAllOrganisms();
         assertTrue(organisms.size() > 0);
@@ -76,7 +76,7 @@ public class TestDaoOrganism extends TestCase {
         assertEquals (speciesName, organism2.getSpeciesName());
 
         // count the organisms
-        int afterCount = dao.countAllOrganisms();
+        int afterCount = dao.organismCount(false);
         assertTrue(afterCount > beforeCount);
 
         //  Delete Record
