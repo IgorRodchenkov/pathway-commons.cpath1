@@ -1,9 +1,11 @@
 package org.mskcc.pathdb.tool;
 
+import org.mskcc.pathdb.model.Organism;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
 import org.mskcc.pathdb.sql.dao.DaoCPath;
+import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
@@ -75,17 +77,24 @@ public class ExportUtil {
 					ExportUtil.getNCBITaxonomyIDs(descendentRecord, taxIDs, recIDs);
 				}
 				else {
-					if (!taxIDs.contains(descendentRecord.getNcbiTaxonomyId())) {
-						taxIDs.add(descendentRecord.getNcbiTaxonomyId());
+					int taxID = descendentRecord.getNcbiTaxonomyId();
+					if (!taxIDs.contains(taxID) && organismFromPathwayOrInteraction(taxID)) {
+						taxIDs.add(taxID);
 					}
 				}
 			}
 		}
 		// add rec tax id directly and bail
 		else {
-			if (!taxIDs.contains(ncbiTaxonomyID)) {
+			if (!taxIDs.contains(ncbiTaxonomyID) && organismFromPathwayOrInteraction(ncbiTaxonomyID)) {
 				taxIDs.add(ncbiTaxonomyID);
 			}
 		}
+	}
+
+	private static boolean organismFromPathwayOrInteraction(int taxID) throws DaoException {
+		DaoOrganism dao = new DaoOrganism();
+		Organism organism = dao.getOrganismByTaxonomyId(taxID);
+		return (organism == null) ? false : organism.fromPathwayOrInteraction();
 	}
 }
