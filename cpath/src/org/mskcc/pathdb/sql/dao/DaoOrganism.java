@@ -1,4 +1,4 @@
-// $Id: DaoOrganism.java,v 1.14 2009-04-07 17:07:46 grossben Exp $
+// $Id: DaoOrganism.java,v 1.15 2009-04-08 19:45:48 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -125,8 +125,8 @@ public class DaoOrganism {
                 int taxonomyId = rs.getInt("ncbi_taxonomy_id");
                 String speciesName = rs.getString("species_name");
                 String commonName = rs.getString("common_name");
-                Organism organism = new Organism(taxonomyId,
-                        speciesName, commonName);
+				boolean fromPathwayOrInteraction = rs.getBoolean("from_pathway_or_interaction");
+                Organism organism = new Organism(taxonomyId, speciesName, commonName, fromPathwayOrInteraction);
                 return organism;
             }
             return null;
@@ -157,8 +157,8 @@ public class DaoOrganism {
                 int taxonomyId = rs.getInt("ncbi_taxonomy_id");
                 String speciesName = rs.getString("species_name");
                 String commonName = rs.getString("common_name");
-                Organism organism = new Organism(taxonomyId,
-                        speciesName, commonName);
+				boolean fromPathwayOrInteraction = rs.getBoolean("from_pathway_or_interaction");
+                Organism organism = new Organism(taxonomyId, speciesName, commonName, fromPathwayOrInteraction);
                 organisms.add(organism);
             }
             return organisms;

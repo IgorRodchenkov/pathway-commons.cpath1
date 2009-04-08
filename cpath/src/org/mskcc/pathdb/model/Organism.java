@@ -1,4 +1,4 @@
-// $Id: Organism.java,v 1.10 2009-04-07 17:16:02 grossben Exp $
+// $Id: Organism.java,v 1.11 2009-04-08 19:45:39 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -53,10 +53,11 @@ public class Organism implements Serializable {
      * @param commonName  CommonName.
      */
     public Organism(int taxonomyId, String speciesName,
-            String commonName) {
+					String commonName, boolean fromPathwayOrInteraction) {
         this.taxonomyId = taxonomyId;
         this.speciesName = speciesName;
         this.commonName = commonName;
+		this.fromPathwayOrInteraction = fromPathwayOrInteraction;
         this.numInteractions = 0;
     }
 
