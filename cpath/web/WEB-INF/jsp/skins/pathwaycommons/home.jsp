@@ -28,21 +28,18 @@ or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%=
 <p>To restrict your search to specific data sources or specific organisms, update your
 <a href="filter.do">global filter settings</a>.</p>
 </div>
-<h4>Using Pathway Commons:</h4>
-<p><b>Biologists:</b>
-Browse and search pathways across multiple valuable public pathway databases.
-</p>
-<p><b>Computational biologists:</b>
-Download an integrated set of pathways in BioPAX format for global analysis.</p>
-<p><b>Software developers:</b>
-Build software on top of Pathway Commons using our <a href="webservice.do?cmd=help">web service API</a>.
-Download and install the <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a> to
-create a local mirror.</p>
-
-
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;March 1, 2009:
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;April 15, 2009:
+    <ul>
+        <li>Batch Download Support added <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">here.</a></li>
+        <li>Systems Biology Center New York - IMID data set (December 17, 2008 Version 27).</li>
+        <li>Latest HumanCyc data set (March 10, 2009 Version 13).</li>
+        <li>All yeast proteins are now annotated with UniProt functional annotation.</li>
+        <li>Numerous bug fixes and performance improvements.</li>
+    </ul>
+</li>
+<li>March 1, 2009:
     <ul>
         <li>BioGRID data set added to repository (January 28, 2009 Version 2.0.49).</li>
         <li>Latest Reactome data set (December 17, 2008 Version 27).</li>
@@ -69,10 +66,23 @@ Improved <a href="webservice.do?cmd=help">web service API</a>.</li>
 <td width=20>&nbsp;</td>
 <td valign="top">
 
+<h4>Using Pathway Commons:</h4>
+<p><b>Biologists:</b>
+Browse and search pathways across multiple valuable public pathway databases.
+</p>
+<p><b>Computational biologists:</b>
+Download an integrated set of pathways in BioPAX format for global analysis.</p>
+<p><b>Software developers:</b>
+Build software on top of Pathway Commons using our <a href="webservice.do?cmd=help">web service API</a>.
+Download and install the <a href="http://cbio.mskcc.org/dev_site/cpath/">cPath software</a> to
+create a local mirror.</p>
+
+
 <h4>Current Data Sources:</h4>
 
-<%= webUIBean.getApplicationName() %> currently contains the following data sources:</p>
-<cbio:dataSourceListTable/>
+<%= webUIBean.getApplicationName() %> currently contains the following data sources (batch download <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">here</a>):</p>
+<% boolean renderForHomepage = true; %>
+<cbio:dataSourceListTable renderForHomepage="<%= renderForHomepage %>"/>
 <div class="home_page_box">
 <jsp:include page="../../global/redesign/dbStatsMini.jsp" flush="true" />
 </div>
