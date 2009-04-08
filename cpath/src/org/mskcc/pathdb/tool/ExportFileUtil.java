@@ -122,6 +122,7 @@ public class ExportFileUtil {
         File dir = getBySourceDir (outputFormat);
         if (writer == null) {
 			String fileName = dbTerm.toLowerCase() + getKey(outputFormat) + fileExtension;
+			fileName = fileName.replaceAll("_", "-");
             writer = new FileWriter (new File (dir, fileName));
             fileWriters.put(fdKey, writer);
         }
