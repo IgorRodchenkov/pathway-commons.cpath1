@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssemblyFactory.java,v 1.2 2008-12-04 20:42:53 grossben Exp $
+// $Id: BinaryInteractionAssemblyFactory.java,v 1.3 2009-04-08 17:41:48 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -37,7 +37,8 @@ import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.io.jena.JenaIOHandler;
 
 import java.util.List;
-import java.io.StringBufferInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Factory for instantiating BinaryInteractionAssembly objects.
@@ -74,7 +75,14 @@ public class BinaryInteractionAssemblyFactory {
 														   String owlXML) {
 
 		// construct paxtools model with this owlXML
-		Model level2 = jenaIOHandler.convertFromOWL(new StringBufferInputStream(owlXML));
+		Model level2 = null;
+		try {
+			level2 = jenaIOHandler.convertFromOWL(new ByteArrayInputStream(owlXML.getBytes("UTF-8")));
+		}
+		catch (UnsupportedEncodingException e) {
+			// should never get here
+			level2 = jenaIOHandler.convertFromOWL(new ByteArrayInputStream(owlXML.getBytes()));
+		}
 
 		// return the proper assembly type
 		if (assemblyType == AssemblyType.SIF) {
