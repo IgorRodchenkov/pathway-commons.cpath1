@@ -116,31 +116,26 @@ public class DataSourceListTable extends HtmlTable {
 				if (!tableCreated) {
 					append("<table class='datasource_homepage_table'>");
 					tableCreated = true;
-				}
-				if (rowIconCounter == -1) {
 					append ("<tr valign=top>");
 				}
-				if (++rowIconCounter < NUM_ICONS_ROW) {
-					append("<td class='datasource_homepage_table_cell'");
-					if (dbRecord.getIconFileExtension() != null) {
-						append("<a href=" + "'" + dbRecord.getHomePageUrl() + "'>" +
-							   "<img class='data_source_logo' src='jsp/images/database/" +
-							   "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension() + "'" +
-							   "title='" + DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId(), false) + "'" +
-							   "/>" + "</a>");
-					}
-					append ("</td>");
-				}
-				else {
+				if (++rowIconCounter > NUM_ICONS_ROW) {
 					endRow();
 					rowIconCounter = -1;
+					append ("<tr valign=top>");
+				}
+				if (dbRecord.getIconFileExtension() != null) {
+					append("<td class='datasource_homepage_table_cell'");
+					append("<a href=" + "'" + dbRecord.getHomePageUrl() + "'>" +
+						   "<img class='data_source_logo' src='jsp/images/database/" +
+						   "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension() + "'" +
+						   "title='" + DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId(), false) + "'" +
+						   "/>" + "</a>");
+					append ("</td>");
 				}
 			}
 		}
 		if (tableCreated) {
-			if (rowIconCounter != -1) {
-				endRow();
-			}
+			endRow();
 			endTable();
 		}
 	}
