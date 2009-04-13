@@ -43,7 +43,7 @@ if not os.path.isdir(SNAPSHOT_DUMP_DIR):
 
 COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -ea -Xmx8192M" +
 		   " -cp " + CLASSPATH + " -DCPATH_HOME=" + CPATH_HOME + " org.mskcc.pathdb.tool.ExportAll " + SNAPSHOT_DUMP_DIR)
-#os.system(COMMAND)
+os.system(COMMAND)
 
 # ------------------------------------------------------------------------------
 # now interate over snapshot dir and zip all files (.owl, .txt, .gmt, .sif)
