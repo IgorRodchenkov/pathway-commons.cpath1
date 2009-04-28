@@ -32,7 +32,7 @@ or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%=
 <ul>
 <li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;April 15, 2009:
     <ul>
-        <li>Batch Download Support added <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">here.</a></li>
+        <li>Batch Download Support added <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>" target="_blank">here.</a></li>
         <li>Systems Biology Center New York - IMID data set (December 17, 2008 Version 27).</li>
         <li>Latest HumanCyc data set (March 10, 2009 Version 13).</li>
         <li>All yeast proteins are now annotated with UniProt functional annotation.</li>
@@ -80,7 +80,7 @@ create a local mirror.</p>
 
 <h4>Current Data Sources:</h4>
 
-<%= webUIBean.getApplicationName() %> currently contains the following data sources (batch download <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">here</a>):</p>
+<%= webUIBean.getApplicationName() %> currently contains the following data sources (batch download <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>" target="_blank">here</a>):</p>
 <% boolean renderForHomepage = true; %>
 <cbio:dataSourceListTable renderForHomepage="<%= renderForHomepage %>"/>
 <div class="home_page_box">

@@ -69,7 +69,7 @@
     ArrayList list = daoImport.getImportRecordsBySnapshotId(snapshotRecord.getId());
 %>
 <p>&nbsp;</p>
-<h1>Batch download Pathway Commons Data <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">here.</a></h1>
+<h1>Batch download Pathway Commons Data <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>" target="_blank">here.</a></h1>
 <h1>Original Data Files from <%= snapshotRecord.getExternalDatabase().getName()%></h1>
 <table>
     <tr>

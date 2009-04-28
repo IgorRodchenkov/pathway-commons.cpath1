@@ -25,10 +25,11 @@
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.ENTREZ_GENE);
 		webUIBean.setTagLine("Search and visualize public biological pathway information.  Single point of access. [<a href='faq.do'>more...</a>]");
 		webUIBean.setEnableMiniMaps(true);
+		//webUIBean.setImageMapServerURL("http://www.pathwaycommons.org/nms/retrieve-neighborhood-map.do");
 		webUIBean.setImageMapServerURL("http://toro.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
 		webUIBean.setFilterInteractions("IN_SAME_COMPONENT,CO_CONTROL_DEPENDENT_SIMILAR,CO_CONTROL_DEPENDENT_ANTI,CO_CONTROL_INDEPENDENT_SIMILAR,CO_CONTROL_INDEPENDENT_ANTI");
 		webUIBean.setMaxMiniMapSize(200);
-		webUIBean.setSnapshotDownloadBaseURL("http://toro.cbio.mskcc.org:8080/pc/snapshots");
+		webUIBean.setSnapshotDownloadBaseURL("http://toro.cbio.mskcc.org/pc-snapshot/");
 		CPathUIConfig.setWebUIBean(webUIBean);
     }
 %>
