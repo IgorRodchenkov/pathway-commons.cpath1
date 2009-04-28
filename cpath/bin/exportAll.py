@@ -56,3 +56,7 @@ for file_format_dir in os.listdir(SNAPSHOT_DUMP_DIR):
 			filename = category_dir + "/" + filename
 			COMMAND = "zip -T " + filename + ".zip " + filename + " ; rm -f " + filename
 			os.system(COMMAND)
+
+# ------------------------------------------------------------------------------
+# lastly, move readme file over
+os.system("cp ../dbData/SNAPSHOT-README.txt " + SNAPSHOT_DUMP_DIR + "/README.TXT")
