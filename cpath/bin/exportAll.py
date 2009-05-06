@@ -49,13 +49,16 @@ os.system(COMMAND)
 # now interate over snapshot dir and zip all files (.owl, .txt, .gmt, .sif)
 
 for file_format_dir in os.listdir(SNAPSHOT_DUMP_DIR):
-	file_format_dir = SNAPSHOT_DUMP_DIR + "/" + file_format_dir
-	for category_dir in os.listdir(file_format_dir):
-		category_dir = file_format_dir + "/" + category_dir
-		for filename in os.listdir(category_dir):
-			filename = category_dir + "/" + filename
-			COMMAND = "zip -jT " + filename + ".zip " + filename + " ; rm -f " + filename
-			os.system(COMMAND)
+	if os.path.isdir(file_format_dir):
+		file_format_dir = SNAPSHOT_DUMP_DIR + "/" + file_format_dir
+		for category_dir in os.listdir(file_format_dir):
+			if os.path.isdir(category_dir):
+				category_dir = file_format_dir + "/" + category_dir
+				for filename in os.listdir(category_dir):
+					if os.path.isFile(filename):
+						filename = category_dir + "/" + filename
+						COMMAND = "zip -jT " + filename + ".zip " + filename + " ; rm -f " + filename
+						os.system(COMMAND)
 
 # ------------------------------------------------------------------------------
 # lastly, move readme file over
