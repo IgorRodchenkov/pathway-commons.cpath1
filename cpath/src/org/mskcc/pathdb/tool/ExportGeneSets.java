@@ -5,9 +5,10 @@ import org.mskcc.pathdb.sql.dao.*;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Command Line Utility to Export Gene Sets.
@@ -88,6 +89,14 @@ public class ExportGeneSets {
         int numParticipantsOutput = 0;
         for (int i=0; i < cpathRecordList.size(); i++) {
             CPathRecord participantRecord = cpathRecordList.get(i);
+			// per spec, GSEA & PC does not support cross-species interactions
+			if (participantRecord.getType() == CPathRecordType.INTERACTION) {
+				HashSet<Integer> ncbiTaxonomyIDs = new HashSet<Integer>();
+				ExportUtil.getNCBITaxonomyIDs(record, ncbiTaxonomyIDs, new ArrayList<Long>());
+				if (ncbiTaxonomyIDs.size() > 1) {
+					continue;
+				}
+			}
             long descendentId = participantRecord.getId();
             HashMap <String, String> xrefMap = xrefList.get(i);
             String geneSymbol = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
