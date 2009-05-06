@@ -14,10 +14,11 @@ import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import com.hp.hpl.jena.shared.JenaException;
 
@@ -76,9 +77,9 @@ public class ExportNetworks {
         // get binary interaction assembly
         try {
             BinaryInteractionAssembly sifAssembly =
-                    BinaryInteractionAssemblyFactory.createAssembly
-                            (binaryInteractionAssemblyType, binaryInteractionRuleTypes,
-                                    xmlAssembly.getXmlString());
+				BinaryInteractionAssemblyFactory.createAssembly
+				(binaryInteractionAssemblyType, binaryInteractionRuleTypes, true,
+				 xmlAssembly.getXmlString());
             String sif = sifAssembly.getBinaryInteractionString();
             ArrayList <Interaction> interactionList = convertToInteractionList (dbTerm,
                     record.getId(), sif);
@@ -87,13 +88,21 @@ public class ExportNetworks {
 				ArrayList<String> finalSIFs = getFinalSIFs(interaction, ExportFileUtil.SIF_OUTPUT);
 				// more than one sif string can come out of single cpath interaction record
 				// for each sif string, check and see if we have already created similiar sif
-				if (processedSIFs.containsKey(finalSIFs.get(0))) {
+				ArrayList<String> finalSIFsClone = (ArrayList<String>)finalSIFs.clone();
+				for (String sifClone : finalSIFsClone) {
+					if (processedSIFs.containsKey(sifClone)) {
+						finalSIFs.remove(sifClone);
+					}
+				}
+				if (finalSIFs.isEmpty()) {
 					continue;
 				}
                 exportRecord(record, dbTerm, interaction, finalSIFs, ExportFileUtil.SIF_OUTPUT);
                 exportRecord(record, dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.TAB_DELIM_EDGE_OUTPUT), ExportFileUtil.TAB_DELIM_EDGE_OUTPUT);
 				exportRecord(record, dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.TAB_DELIM_NODE_OUTPUT), ExportFileUtil.TAB_DELIM_NODE_OUTPUT);
-				processedSIFs.put(finalSIFs.get(0), "");
+				for (String processedSIF : finalSIFs) {
+					processedSIFs.put(processedSIF, "");
+				}
             }
         } catch (JenaException e) {
             pMonitor.logWarning("Got JenaException:  " + e.getMessage() + ".  Occurred "
@@ -137,15 +146,18 @@ public class ExportNetworks {
 		else if (outputFormat == ExportFileUtil.TAB_DELIM_NODE_OUTPUT) {
 			for (int lc = 0; lc < 2; lc++) {
 				StringBuffer finalSif = new StringBuffer();
-				long geneID = (lc == 0) ? interaction.getCPathRecordA().getId() : interaction.getCPathRecordB().getId();
+				CPathRecord record = (lc == 0) ? interaction.getCPathRecordA() : interaction.getCPathRecordB();
+				long geneID = record.getId();
 				String geneSymbol = (lc == 0) ? interaction.getGeneA() : interaction.getGeneB();
 				HashMap<String, String> xrefMap = ExportUtil.getXRefMap(geneID);
 				String entrezGeneId = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
 				String uniprotAccession = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
+				int taxID = record.getNcbiTaxonomyId();
 				finalSif.append(geneID + TAB);
 				finalSif.append(geneSymbol + TAB);
 				finalSif.append(ExportUtil.getXRef(uniprotAccession) + TAB);
-				finalSif.append(ExportUtil.getXRef(entrezGeneId));
+				finalSif.append(ExportUtil.getXRef(entrezGeneId) + TAB);
+				finalSif.append(taxID);
 				finalSif.append("\n");
 				toReturn.add(finalSif.toString());
 			}
@@ -170,10 +182,20 @@ public class ExportNetworks {
     private void exportRecord(CPathRecord record, String dbTerm, Interaction interaction, ArrayList<String> finalSifs, int outputFormat)
             throws IOException, DaoException {
 
+		// export to species specific file(s)
+		HashSet<Integer> ncbiTaxonomyIDs = new HashSet<Integer>();
+		ExportUtil.getNCBITaxonomyIDs(record, ncbiTaxonomyIDs, new ArrayList<Long>());
+
+		// per spec, SIF should not include cross-species interactions
+		if (outputFormat == ExportFileUtil.SIF_OUTPUT && ncbiTaxonomyIDs.size() > 1) {
+			return;
+		}
+
 		for (String finalSif : finalSifs) {
 
 			// export to data file
-			String key = dbTerm + TAB + finalSif;
+			String outputFormatStr = exportFileUtil.getOutputFormatString(outputFormat);
+			String key = outputFormatStr + TAB + dbTerm + TAB + finalSif;
 			boolean exportToDataFile = ((outputFormat != ExportFileUtil.TAB_DELIM_NODE_OUTPUT) ||
 										(outputFormat == ExportFileUtil.TAB_DELIM_NODE_OUTPUT && !processedInteractors.containsKey(key)));
 			if (exportToDataFile) {
@@ -183,10 +205,8 @@ public class ExportNetworks {
 				}
 			}
 			// export to species specific file(s)
-			ArrayList<Integer> ncbiTaxonomyIDs = new ArrayList<Integer>();
-			ExportUtil.getNCBITaxonomyIDs(record, ncbiTaxonomyIDs, new ArrayList<Long>());
 			for (Integer taxID : ncbiTaxonomyIDs) {
-				key = taxID + TAB + finalSif;
+				key = outputFormat + TAB + taxID + TAB + finalSif;
 				boolean exportToSpeciesFile = ((outputFormat != ExportFileUtil.TAB_DELIM_NODE_OUTPUT) ||
 											   (outputFormat == ExportFileUtil.TAB_DELIM_NODE_OUTPUT && !processedInteractors.containsKey(key)));
 				if (exportToSpeciesFile) {
@@ -233,9 +253,17 @@ public class ExportNetworks {
     }
 
     private String getGeneSymbol(long cpathId) throws DaoException {
-        HashMap<String, String> xrefMap = ExportUtil.getXRefMap(cpathId);
-		String toReturn = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
-        return (toReturn != null) ? toReturn.trim().toUpperCase() : null;
+		// get record
+        DaoCPath daoCPath = DaoCPath.getInstance();
+		CPathRecord record = daoCPath.getRecordById(cpathId);
+		if (record.getSpecificType().equalsIgnoreCase(org.mskcc.pathdb.schemas.biopax.BioPaxConstants.COMPLEX)) {
+			return record.getName().trim().toUpperCase();
+		}
+		else {
+			HashMap<String, String> xrefMap = ExportUtil.getXRefMap(cpathId);
+			String toReturn = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
+			return (toReturn != null) ? toReturn.trim().toUpperCase() : null;
+		}
     }
 }
 
