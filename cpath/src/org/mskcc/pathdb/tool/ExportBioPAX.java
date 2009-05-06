@@ -14,6 +14,7 @@ import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 
 import java.util.List;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.io.IOException;
 
@@ -67,7 +68,7 @@ public class ExportBioPAX {
 		String xmlString = assembly.getXmlString();
 
 		// dump the biopax
-		ArrayList<Integer> ncbiTaxonomyIDs = new ArrayList<Integer>();
+		HashSet<Integer> ncbiTaxonomyIDs = new HashSet<Integer>();
 		ExportUtil.getNCBITaxonomyIDs(record, ncbiTaxonomyIDs, new ArrayList<Long>());
 		for (Integer taxID : ncbiTaxonomyIDs) {
 			exportFileUtil.appendToSpeciesFile(xmlString, taxID, ExportFileUtil.BIOPAX_OUTPUT);
