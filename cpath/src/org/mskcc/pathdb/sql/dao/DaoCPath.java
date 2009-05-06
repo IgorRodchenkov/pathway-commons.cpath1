@@ -1,4 +1,4 @@
-// $Id: DaoCPath.java,v 1.36 2008-04-18 17:38:04 cerami Exp $
+// $Id: DaoCPath.java,v 1.37 2009-05-06 17:54:32 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,6 +62,8 @@ public class DaoCPath extends ManagedDAO {
 		"GET_NUM_PHYSICAL_ENTITIES_NO_KEY";
     private static final String GET_NUM_PHYSICAL_ENTITIES_GEN_KEY =
 		"GET_NUM_PHYSICAL_ENTITIES_GEN_KEY";
+    private static final String GET_NUM_PHYSICAL_ENTITIES_P_OR_I_ONLY_KEY =
+		"GET_NUM_PHYSICAL_ENTITIES_P_OR_I_ONLY_KEY";
 
     //  Note added by Ethan (March 26, 2007)
     //  Previously, this SQL query was set to:
@@ -77,9 +79,12 @@ public class DaoCPath extends ManagedDAO {
 	// retains the original records for retrieval.  We need a query to filter 
 	// out or include the cpath generated records from the entire set of physical entity records.
 	private static final String GET_NUM_PHYSICAL_ENTITIES_NO_GEN =
-            "select count(*) from cpath where type = ? and CPATH_GENERATED = 0";
+        "select count(*) from cpath where type = ? and CPATH_GENERATED = 0";
 	private static final String GET_NUM_PHYSICAL_ENTITIES_GEN =
-            "select count(*) from cpath where type = ? and CPATH_GENERATED = 1";
+        "select count(*) from cpath where type = ? and CPATH_GENERATED = 1";
+	private static final String GET_NUM_PHYSICAL_ENTITIES_P_OR_I_ONLY =
+		"select count(*) from cpath left join organism on cpath.ncbi_tax_id = organism.ncbi_taxonomy_id" +
+		" where cpath.type = ? and cpath.cpath_generated = 1 and organism.from_pathway_or_interaction = 1";
 
     //  Insert SQL
     private static final String INSERT_KEY = "INSERT_KEY";
@@ -178,6 +183,7 @@ public class DaoCPath extends ManagedDAO {
         addPreparedStatement(GET_NUM_ENTITIES_KEY, GET_NUM_ENTITIES);
         addPreparedStatement(GET_NUM_PHYSICAL_ENTITIES_NO_GEN_KEY, GET_NUM_PHYSICAL_ENTITIES_NO_GEN);
         addPreparedStatement(GET_NUM_PHYSICAL_ENTITIES_GEN_KEY, GET_NUM_PHYSICAL_ENTITIES_GEN);
+        addPreparedStatement(GET_NUM_PHYSICAL_ENTITIES_P_OR_I_ONLY_KEY, GET_NUM_PHYSICAL_ENTITIES_P_OR_I_ONLY);
         addPreparedStatement(INSERT_KEY, INSERT);
         addPreparedStatement(GET_MAX_ID_KEY, GET_MAX_ID);
         addPreparedStatement(GET_ALL_KEY, GET_ALL);
@@ -191,6 +197,16 @@ public class DaoCPath extends ManagedDAO {
         addPreparedStatement(UPDATE_XML_KEY, UPDATE_XML);
         addPreparedStatement(SELECT_MAX_CPATH_ID_KEY, SELECT_MAX_CPATH_ID);
     }
+
+    /**
+     * Gets Total Number of Physical Entities that are from cpath generated records and
+	 * derive from pathway or interaction data sources (no uniprot annotation records).
+     *
+     * @throws DaoException Indicates Error in Data access.
+     */
+    public int getNumPhysicalEntitiesFromPathwayOrInteractionOnly() throws DaoException {
+		return getNumEntities(CPathRecordType.PHYSICAL_ENTITY, GET_NUM_PHYSICAL_ENTITIES_P_OR_I_ONLY_KEY);
+	}
 
     /**
      * Gets Total Number of Entities which match the specified Record Type.
