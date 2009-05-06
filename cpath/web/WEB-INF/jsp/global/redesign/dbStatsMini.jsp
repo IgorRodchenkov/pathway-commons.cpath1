@@ -23,7 +23,7 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     </tr>
     <tr>
         <td>Number of Physical Entities:</td>
-        <td><%= formatter.format(dbStats.getNumPhysicalEntities()) %></td>
+        <td><%= formatter.format(dbStats.getNumPhysicalEntitiesPathwayOrInteractionOnly()) %></td>
     </tr>
     <tr>
         <td>Number of Organisms:</td>
