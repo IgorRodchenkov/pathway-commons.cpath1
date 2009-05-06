@@ -32,20 +32,18 @@ or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%=
 <ul>
 <li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;April 15, 2009:
     <ul>
-        <li>Batch Download Support added <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>" target="_blank">here.</a></li>
+        <li><a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">Batch Download</a> of all Pathway Commons data in multiple file formats is now available.</li>
         <li>Systems Biology Center New York - IMID data set (December 17, 2008 Version 27).</li>
         <li>Latest HumanCyc data set (March 10, 2009 Version 13).</li>
         <li>All yeast proteins are now annotated with UniProt functional annotation.</li>
-        <li>Numerous bug fixes and performance improvements.</li>
     </ul>
 </li>
 <li>March 1, 2009:
     <ul>
-        <li>BioGRID data set added to repository (January 28, 2009 Version 2.0.49).</li>
+        <li>BioGRID data set (January 28, 2009 Version 2.0.49).</li>
         <li>Latest Reactome data set (December 17, 2008 Version 27).</li>
         <li>Latest HumanCyc data set (October 15, 2008 Version 12.5).</li>
         <li>Neighborhood maps added to protein pages.</li>
-        <li>Numerous bug fixes and performance improvements.</li>
     </ul>
 </li>
 <li>July 24, 2008:
@@ -54,7 +52,6 @@ or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%=
         <li>All human, mouse and rat proteins are now annotated with UniProt functional annotation.</li>
         <li>Improved search support for gene symbols.</li>
         <li>Stable links now available for linking out to protein pages.</li>
-        <li>Numerous bug fixes and performance improvements.</li>
     </ul>
 </li>
 <li>April 1, 2008: New features for visualizing pathways using Cytoscape [<a href="cytoscape.do">Details</a>].
@@ -80,7 +77,7 @@ create a local mirror.</p>
 
 <h4>Current Data Sources:</h4>
 
-<%= webUIBean.getApplicationName() %> currently contains the following data sources (batch download <a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>" target="_blank">here</a>):</p>
+<%= webUIBean.getApplicationName() %> currently contains the following data sources (<a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">batch download</a>):</p>
 <% boolean renderForHomepage = true; %>
 <cbio:dataSourceListTable renderForHomepage="<%= renderForHomepage %>"/>
 <div class="home_page_box">
