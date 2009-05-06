@@ -83,11 +83,20 @@
 	    }
 	}
 
-    tabNames.add("DB Sources");
+    tabNames.add("Data Sources");
     String browseUrl = "dbSources.do";
     tabUrls.add(browseUrl);
     if (url.equals(browseUrl) &&
         !referer.equals(BaseAction.FORWARD_HOME)) {
+        tabActive.add (Boolean.TRUE);
+    } else {
+        tabActive.add (Boolean.FALSE);
+    }
+
+    tabNames.add("Download");
+    String downloadUrl = webUIBean.getSnapshotDownloadBaseURL();
+    tabUrls.add(downloadUrl);
+    if (url.equals(downloadUrl)) {
         tabActive.add (Boolean.TRUE);
     } else {
         tabActive.add (Boolean.FALSE);
