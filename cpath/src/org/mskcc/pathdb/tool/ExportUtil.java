@@ -10,8 +10,9 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Export Utility Class.
@@ -47,11 +48,11 @@ public class ExportUtil {
 	 * NCBI Taxonomy ID lookup.
 	 *
 	 * @param record CPathRecord
-	 * @param taxIDs ArrayList<Integer>
+	 * @param taxIDs HashSet<Integer>
 	 * @param recIDs ArrayList<Integer>
      * @throws DaoException         Database Error.
 	 */
-	public static void getNCBITaxonomyIDs(CPathRecord record, ArrayList<Integer> taxIDs, ArrayList<Long> recIDs)
+	public static void getNCBITaxonomyIDs(CPathRecord record, HashSet<Integer> taxIDs, ArrayList<Long> recIDs)
 		throws DaoException {
 
 		// prevent infinite looping
