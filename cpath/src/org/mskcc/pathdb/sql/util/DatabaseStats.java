@@ -15,6 +15,7 @@ public class DatabaseStats {
     private int numPathways;
     private int numInteractions;
     private int numPhysicalEntities;
+	private int numPhysicalEntitiesPathwayOrInteractionOnly;
     private int numOrganisms;
 
     /**
@@ -38,6 +39,8 @@ public class DatabaseStats {
         numPathways = dao.getNumEntities(CPathRecordType.PATHWAY);
         numInteractions = dao.getNumEntities(CPathRecordType.INTERACTION);
         numPhysicalEntities = dao.getNumPhysicalEntities(true);
+		numPhysicalEntitiesPathwayOrInteractionOnly =
+			dao.getNumPhysicalEntitiesFromPathwayOrInteractionOnly();
         DaoOrganism daoOrganism = new DaoOrganism();
 		numOrganisms = daoOrganism.organismCount(true);
     }
@@ -64,6 +67,15 @@ public class DatabaseStats {
      */
     public int getNumPhysicalEntities() {
         return numPhysicalEntities;
+    }
+
+    /**
+     * Gets Total Number of Physical Entities from
+	 * pathway or interaction datasources (no uniprot annotation records)
+     * @return number of physical entities.
+     */
+    public int getNumPhysicalEntitiesPathwayOrInteractionOnly() {
+        return numPhysicalEntitiesPathwayOrInteractionOnly;
     }
 
     /**
