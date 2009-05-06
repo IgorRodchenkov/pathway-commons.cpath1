@@ -48,6 +48,36 @@ public class ExportFileUtil {
     }
 
     /**
+	 * Given output format id, return equivalent string.
+	 *
+	 * @param outputFormat int
+	 * @return String
+	 */
+   	public String getOutputFormatString(int outputFormat) {
+		if (outputFormat == GSEA_OUTPUT) {
+			return "GSEA_OUTPUT";
+		}
+		else if (outputFormat == PC_OUTPUT) {
+			return "PC_OUTPUT";
+		}
+		else if (outputFormat == SIF_OUTPUT) {
+			return "SIF_OUTPUT";
+		}
+		else if (outputFormat == TAB_DELIM_EDGE_OUTPUT) {
+			return "TAB_DELIM_EDGE_OUTPUT";
+		}
+		else if (outputFormat == TAB_DELIM_NODE_OUTPUT) {
+			return "TAB_DELIM_NODE_OUTPUT";
+		}
+		else if (outputFormat == BIOPAX_OUTPUT) {
+			return "BIOPAX_OUTPUT";
+		}
+		else {
+			return "UNKNOWN_OUTPUT";
+		}
+	}
+
+    /**
      * Cloes all open file descriptors.
      * @throws java.io.IOException IO Error.
      */
