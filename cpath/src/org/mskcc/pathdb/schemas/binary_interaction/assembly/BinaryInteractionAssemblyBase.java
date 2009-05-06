@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssemblyBase.java,v 1.4 2008-02-29 12:35:56 grossben Exp $
+// $Id: BinaryInteractionAssemblyBase.java,v 1.5 2009-05-06 17:55:43 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,23 +67,28 @@ public abstract class BinaryInteractionAssemblyBase {
 	 * @param bpModel Model
 	 * @pararm ruleTypes List<String>
 	 */
-	public BinaryInteractionAssemblyBase(Model bpModel, List<String> ruleTypes) {
+	public BinaryInteractionAssemblyBase(Model bpModel, List<String> ruleTypes, boolean reduceComplexes) {
 
 		// init args
 		this.bpModel = bpModel;
-		this.converter = createConverter(ruleTypes);
+		this.converter = createConverter(ruleTypes, reduceComplexes);
 	}
 
 	/**
 	 * Creates a simple converter.
 	 *
 	 * @param ruleTypes List<String>
+	 * @param reduceComplexes boolean
 	 * @return SimpleInteractionConverter
 	 */
-	private SimpleInteractionConverter createConverter(List<String> ruleTypes) {
+	private SimpleInteractionConverter createConverter(List<String> ruleTypes, boolean reduceComplexes) {
 
 		InteractionRule[] rules = BinaryInteractionUtil.getRuleClasses();
-		Map<String, Boolean> options = new HashMap<String, Boolean>();
+		Map options = new HashMap();
+
+		if (reduceComplexes) {
+			options.put(SimpleInteractionConverter.REDUCE_COMPLEXES, true);
+		}
 
 		for (InteractionRule rule : rules) {
 			for (BinaryInteractionType ruleType : rule.getRuleTypes()) {

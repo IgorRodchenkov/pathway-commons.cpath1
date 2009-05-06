@@ -1,4 +1,4 @@
-// $Id: SIFAssembly.java,v 1.3 2008-01-21 22:08:34 cerami Exp $
+// $Id: SIFAssembly.java,v 1.4 2009-05-06 17:56:46 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -56,7 +56,19 @@ public class SIFAssembly extends BinaryInteractionAssemblyBase implements Binary
 	 */
 	public SIFAssembly(Model bpModel, List<String> ruleTypes) {
 		// init args
-		super(bpModel, ruleTypes);
+		this(bpModel, ruleTypes, false);
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param bpModel Model
+	 * @param reduceComplexes boolean
+	 * @pararm ruleTypes List<String>
+	 */
+	public SIFAssembly(Model bpModel, List<String> ruleTypes, boolean reduceComplexes) {
+		// init args
+		super(bpModel, ruleTypes, reduceComplexes);
 	}
 
     /**

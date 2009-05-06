@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssemblyFactory.java,v 1.3 2009-04-08 17:41:48 grossben Exp $
+// $Id: BinaryInteractionAssemblyFactory.java,v 1.4 2009-05-06 17:56:13 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -74,6 +74,22 @@ public class BinaryInteractionAssemblyFactory {
 														   List<String> ruleTypes,
 														   String owlXML) {
 
+		return BinaryInteractionAssemblyFactory.createAssembly(assemblyType, ruleTypes, false, owlXML);
+	}
+
+    /**
+     * Creates a BinaryAssembly based on specified AssemblyType
+     *
+	 * @param assemblyType AssemblyType
+	 * @param ruleTypes List<String>
+	 * @param reduceComplexes boolean
+	 * @param owlXML String
+	 * @return BinaryInteractionAssembly
+     */
+    public static BinaryInteractionAssembly createAssembly(AssemblyType assemblyType,
+														   List<String> ruleTypes,
+														   boolean reduceComplexes,
+														   String owlXML) {
 		// construct paxtools model with this owlXML
 		Model level2 = null;
 		try {
@@ -86,7 +102,7 @@ public class BinaryInteractionAssemblyFactory {
 
 		// return the proper assembly type
 		if (assemblyType == AssemblyType.SIF) {
-			return new SIFAssembly(level2, ruleTypes);
+			return new SIFAssembly(level2, ruleTypes, reduceComplexes);
 		}
 
 		// shouldnt get here
