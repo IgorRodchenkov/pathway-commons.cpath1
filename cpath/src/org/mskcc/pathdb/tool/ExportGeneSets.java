@@ -38,15 +38,22 @@ public class ExportGeneSets {
     private final static String COLON = ":";
     private final static String NA = "NOT_SPECIFIED";
     private ExportFileUtil exportFileUtil;
+	private HashMap<Long, String> processedRecords;
 
     public ExportGeneSets (ExportFileUtil exportFileUtil) {
         this.exportFileUtil = exportFileUtil;
+		processedRecords = new HashMap<Long, String>();
     }
 
     /**
      * Dumps the Pathway Record in the specified file format.
      */
     public void exportPathwayRecord(CPathRecord record) throws DaoException, IOException {
+
+		// don't process already processed records
+		if(processedRecords.containsKey(record.getId())) {
+			return;
+		}
 
         //  Gets the Database Term
         DaoExternalDbSnapshot daoSnapshot = new DaoExternalDbSnapshot();
@@ -74,6 +81,9 @@ public class ExportGeneSets {
         //  Dump to both file formats.
         exportGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportFileUtil.GSEA_OUTPUT);
         exportGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportFileUtil.PC_OUTPUT);
+
+		// add to processed list
+		processedRecords.put(record.getId(), "");
     }
 
     /**
