@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.74 2009-04-07 17:11:41 grossben Exp $
+// $Id: Admin.java,v 1.75 2009-05-07 19:19:37 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -77,6 +77,7 @@ public class Admin {
 	private static final String COMMAND_POPULATE_REFERENCE_TABLE = "pop_ref";
     private static final String COMMAND_PRE_COMPUTE = "precompute";
     private static final String COMMAND_IMAGES = "images";
+    private static final String COMMAND_UPDATE_IMAGES = "update_images";
     private static final String COMMAND_COUNT_IDS = "count_ids";
     private static final String COMMAND_QUERY = "query";
     private static final String COMMAND_DUMP_ALL_BIOPAX = "dump_all_biopax";
@@ -170,6 +171,10 @@ public class Admin {
             } else if (command.equals(COMMAND_IMAGES)) {
                 ExternalDbImageUtil imageUtil = new ExternalDbImageUtil();
                 imageUtil.createDbImages();
+            } else if (command.equals(COMMAND_UPDATE_IMAGES) && fileName != null) {
+				File file = new File(fileName);
+				ExternalDbImageUtil imageUtil = new ExternalDbImageUtil();
+				imageUtil.updateDbImages(file);
             } else if (command.equals(COMMAND_IMPORT)) {
                 importData(false);
             } else if (command.equals(COMMAND_IMPORT_UNIPROT)) {
