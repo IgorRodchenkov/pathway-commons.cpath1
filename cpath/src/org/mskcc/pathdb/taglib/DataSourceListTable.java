@@ -24,7 +24,7 @@ import java.io.IOException;
  */
 public class DataSourceListTable extends HtmlTable {
 	
-	private static int NUM_ICONS_ROW = 4;
+	private static int NUM_ICONS_ROW = 3;
 
 	private boolean renderForHomepage;
     private Logger log = Logger.getLogger(DataSourceListTable.class);
@@ -118,11 +118,6 @@ public class DataSourceListTable extends HtmlTable {
 					tableCreated = true;
 					append ("<tr valign=top>");
 				}
-				if (++rowIconCounter > NUM_ICONS_ROW) {
-					endRow();
-					rowIconCounter = -1;
-					append ("<tr valign=top>");
-				}
 				if (dbRecord.getIconFileExtension() != null) {
 					append("<td class='datasource_homepage_table_cell'");
 					append("<a href=" + "'" + dbRecord.getHomePageUrl() + "'>" +
@@ -131,6 +126,11 @@ public class DataSourceListTable extends HtmlTable {
 						   "title='" + DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId(), false) + "'" +
 						   "/>" + "</a>");
 					append ("</td>");
+				}
+				if (++rowIconCounter == NUM_ICONS_ROW-1) {
+					endRow();
+					rowIconCounter = -1;
+					append ("<tr valign=top>");
 				}
 			}
 		}
@@ -169,7 +169,7 @@ public class DataSourceListTable extends HtmlTable {
 				append("<table border='0' cellspacing='2' cellpadding='3' "
 					   + "width='100%' class='datasource_table'>");
 				append ("<tr class='c' valign=top>");
-				append("<td valign=top width=50>");
+				append("<td valign=top");
 				if (dbRecord.getIconFileExtension() != null) {
 					append("<img class='data_source_logo' src='jsp/images/database/"
 						   + "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension()
