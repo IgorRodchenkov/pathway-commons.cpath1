@@ -119,7 +119,7 @@ public class DataSourceListTable extends HtmlTable {
 					append ("<tr valign=top>");
 				}
 				if (dbRecord.getIconFileExtension() != null) {
-					append("<td class='datasource_homepage_table_cell'");
+					append("<td class='datasource_logo_table_cell'");
 					append("<a href=" + "'" + dbRecord.getHomePageUrl() + "'>" +
 						   "<img class='data_source_logo' src='jsp/images/database/" +
 						   "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension() + "'" +
@@ -169,14 +169,14 @@ public class DataSourceListTable extends HtmlTable {
 				append("<table border='0' cellspacing='2' cellpadding='3' "
 					   + "width='100%' class='datasource_table'>");
 				append ("<tr class='c' valign=top>");
-				append("<td valign=top");
+				append("<td class='datasource_logo_table_cell' valign=top");
 				if (dbRecord.getIconFileExtension() != null) {
 					append("<img class='data_source_logo' src='jsp/images/database/"
 						   + "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension()
 						   + "'/>");
 				}
 				append ("</td>");
-				append ("<td valign=center>"
+				append ("<td class='datasource_link_table_cell' valign=center>"
 						+ DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId()));
 				// set proper data source for lucene query
 				ArrayList<Long> dataSourceList = new ArrayList();
