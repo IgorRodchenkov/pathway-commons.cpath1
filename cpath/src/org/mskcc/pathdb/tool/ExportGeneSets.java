@@ -38,11 +38,11 @@ public class ExportGeneSets {
     private final static String COLON = ":";
     private final static String NA = "NOT_SPECIFIED";
     private ExportFileUtil exportFileUtil;
-	private HashMap<Long, String> processedRecords;
+	private HashMap<String, Integer> processedRecords;
 
     public ExportGeneSets (ExportFileUtil exportFileUtil) {
         this.exportFileUtil = exportFileUtil;
-		processedRecords = new HashMap<Long, String>();
+		processedRecords = new HashMap<String, Integer>();
     }
 
     /**
@@ -50,9 +50,12 @@ public class ExportGeneSets {
      */
     public void exportPathwayRecord(CPathRecord record) throws DaoException, IOException {
 
-		// don't process already processed records
-		if(processedRecords.containsKey(record.getId())) {
-			return;
+		// this processed record count
+		int count = (processedRecords.containsKey(record.getName())) ?
+			processedRecords.get(record.getName()) : 0;
+
+		if (count > 0) {
+			record.setName(record.getName() + " - " + count+1);
 		}
 
         //  Gets the Database Term
@@ -83,7 +86,7 @@ public class ExportGeneSets {
         exportGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportFileUtil.PC_OUTPUT);
 
 		// add to processed list
-		processedRecords.put(record.getId(), "");
+		processedRecords.put(record.getName(), ++count);
     }
 
     /**
