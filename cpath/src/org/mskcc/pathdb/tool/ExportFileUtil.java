@@ -157,6 +157,7 @@ public class ExportFileUtil {
             fileWriters.put(fdKey, writer);
         }
         writer.write(line);
+		writer.flush();
     }
 
     /**
@@ -189,6 +190,7 @@ public class ExportFileUtil {
             fileWriters.put(fdKey, writer);
         }
         writer.write(line);
+		writer.flush();
     }
 
     /**
