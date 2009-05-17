@@ -1,4 +1,4 @@
-// $Id: SIFAssembly.java,v 1.4 2009-05-06 17:56:46 grossben Exp $
+// $Id: SIFAssembly.java,v 1.5 2009-05-17 23:39:50 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,6 +38,7 @@ import org.biopax.paxtools.io.sif.SimpleInteraction;
 import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 
@@ -85,16 +86,49 @@ public class SIFAssembly extends BinaryInteractionAssemblyBase implements Binary
 		// write out binary interactions
 		converter.writeInteractionsInSIF(bpModel, out);
 
+        // get return string
+		String toReturn = cookSIFString(out.toString());
+		out.close();
+
+		// outta here
+		return toReturn;
+	}
+
+    /**
+     * Our implementation of BinaryInteractionAssembly.getBinaryInteractionStrings().
+     *
+     * @return List<String> - size 2, first string is edges, second string is nodes
+	 * @throws IOException
+     */
+    public List<String> getExtendedBinaryInteractionStrings() throws IOException {
+
+		// create outputstream to pass into simple interaction converter
+		ByteArrayOutputStream edges = new ByteArrayOutputStream();
+		ByteArrayOutputStream nodes = new ByteArrayOutputStream();
+
+		// write out binary interactions
+		converter.writeInteractionsInSIFNX(bpModel, edges, nodes, true, "NAME", "XREF");
+
         // do a bit of cooking
-		String toReturn = out.toString();
-        if (toReturn.indexOf("http://cbio.mskcc.org/cpath#CPATH") > -1) {
-            toReturn = toReturn.replaceAll("http://cbio.mskcc.org/cpath#CPATH-", "");
-        } else if (toReturn.indexOf("http://www.biopax.org/examples/proteomics-interaction") > -1){
-            //  This is a special case to handle the unit test data.
-            toReturn = toReturn.replaceAll("http://www.biopax.org/examples/proteomics-interaction#", "");
-        }
+		String edgesString = cookSIFString(edges.toString());
+		String nodesString = cookSIFString(nodes.toString());
 
         // outta here
+		List<String> toReturn = new ArrayList<String>();
+		toReturn.add(edgesString);
+		toReturn.add(nodesString);
 		return toReturn;
+	}
+
+	private String cookSIFString(String sifString) {
+
+        if (sifString.indexOf("http://cbio.mskcc.org/cpath#CPATH") > -1) {
+            sifString = sifString.replaceAll("http://cbio.mskcc.org/cpath#CPATH-", "");
+        } else if (sifString.indexOf("http://www.biopax.org/examples/proteomics-interaction") > -1){
+            //  This is a special case to handle the unit test data.
+            sifString = sifString.replaceAll("http://www.biopax.org/examples/proteomics-interaction#", "");
+        }
+
+		return sifString;
 	}
 }

@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssembly.java,v 1.1 2008-01-16 02:04:46 grossben Exp $
+// $Id: BinaryInteractionAssembly.java,v 1.2 2009-05-17 23:40:32 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.schemas.binary_interaction.assembly;
 
 // imports
+import java.util.List;
 import java.io.IOException;
 
 /**
@@ -48,4 +49,12 @@ public interface BinaryInteractionAssembly {
 	 * @throws IOException
      */
     public String getBinaryInteractionString() throws IOException;
+
+    /**
+     * Our implementation of BinaryInteractionAssembly.getBinaryInteractionString().
+     *
+     * @return List<String> - size 2, first string is edges, second string is nodes
+	 * @throws IOException
+     */
+    public List<String> getExtendedBinaryInteractionStrings() throws IOException;
 }
