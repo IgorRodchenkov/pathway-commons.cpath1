@@ -85,6 +85,7 @@ public class ExportFileUtil {
         Collection<FileWriter> fds = fileWriters.values();
         for (FileWriter fileWriter:  fds) {
             fileWriter.close();
+			fileWriters.remove(fileWriter);
         }
     }
  
@@ -153,7 +154,7 @@ public class ExportFileUtil {
         if (writer == null) {
 			String fileName = dbTerm.toLowerCase() + getKey(outputFormat) + fileExtension;
 			fileName = fileName.replaceAll("_", "-");
-            writer = new FileWriter (new File (dir, fileName));
+            writer = createFileWriter(dir, fileName);
             fileWriters.put(fdKey, writer);
         }
         writer.write(line);
@@ -186,7 +187,7 @@ public class ExportFileUtil {
 				speciesName = speciesName.substring(0, speciesName.length()-1);
 			}
 			String fileName = speciesName.toLowerCase() + getKey(outputFormat) + fileExtension;
-            writer = new FileWriter (new File (dir, fileName));
+            writer = createFileWriter(dir, fileName);
             fileWriters.put(fdKey, writer);
         }
         writer.write(line);
@@ -253,5 +254,30 @@ public class ExportFileUtil {
 
 		// outta here
 		return "";
+	}
+
+	/**
+	 * Creates a filewriter.
+	 *
+	 * @param dir File
+	 * @param fileName String
+	 * @return FileWriter
+	 * @throw IOException
+	 */
+	private FileWriter createFileWriter(File dir, String fileName) throws IOException {
+		
+		try {
+			return new FileWriter(new File(dir, fileName), true);
+		}
+		catch (IOException e) {
+			if (e.getMessage().contains("Too many open files")) {
+				// tried closing "some" handles and doesn't always work - close all
+				closeAllOpenFileDescriptors();
+				return new FileWriter(new File(dir, fileName), true);
+			}
+			else {
+				throw(e);
+			}
+		}
 	}
 }
