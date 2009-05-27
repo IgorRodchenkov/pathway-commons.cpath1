@@ -32,8 +32,8 @@ public class ExportNetworks {
     private ProgressMonitor pMonitor;
 	private HashMap<String, String> processedSIFs;
     private final static String TAB = "\t";
-	private final static String GENE_SYMBOL_UNAVAILABLE = "GENE_SYMBOL_UNAVAILABLE";
-	private final static String PMID_UNAVAILABLE = "PMID_UNAVAILABLE";
+	private final static String GENE_SYMBOL_UNAVAILABLE = "NOT_SPECIFIED";
+	private final static String PMID_UNAVAILABLE = "NOT_SPECIFIED";
 
     /**
      * Constructor.
