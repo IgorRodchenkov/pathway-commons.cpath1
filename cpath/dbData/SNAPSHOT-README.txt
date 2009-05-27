@@ -36,12 +36,13 @@ Tab Delimited Network
 ---------------------
 
 Tab Delimited Network: Similar to the basic SIF export, except that each 
-snapshot will be specified with two files The first file will be SIF (using 
+snapshot will be specified with two files.  The first file will be SIF (using 
 CPATH_ID instead of GENE_SYMBOL) plus edge attributes. Current edge attributes 
-consist of the Participant-A GENE_SYMBOL, Participant-B GENE_SYMBOL, & 
-interaction data source. The second file will be participant CPATH_ID followed 
-by node attributes. Current node attributes consist of GENE_SYMBOL, 
-UNIPROT_ACCESSION, ENTREZ_GENE_ID, CPATH_ID.
+consist of the Participant-A GENE_SYMBOL, Participant-B GENE_SYMBOL, interaction 
+data source and PubMed ID.  The second file will be participant CPATH_ID followed
+by node attributes.  Current node attributes consist of GENE_SYMBOL,
+UNIPROT_ACCESSION, ENTREZ_GENE_ID and Organism (ncbi tax id).  If an attribute
+cannot be determined, "NOT SPECIFIED" will be used.
 
 BioPAX
 ------
