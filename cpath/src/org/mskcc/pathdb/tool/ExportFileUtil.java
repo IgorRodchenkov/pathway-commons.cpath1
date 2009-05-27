@@ -87,6 +87,7 @@ public class ExportFileUtil {
             fileWriter.close();
 			fileWriters.remove(fileWriter);
         }
+		fileWriters = new HashMap<String, FileWriter>();
     }
  
     /**
