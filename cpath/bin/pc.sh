@@ -118,8 +118,10 @@ function importReactome {
 	local REACTOME_HOME="$FRESH_HOME/reactome/"
 	mv -f $REACTOME_HOME/"Homo sapiens.owl" $REACTOME_HOME/Homo_sapiens.owl.bak
 	iconv -f ISO8859-1 -t UTF-8 $REACTOME_HOME/Homo_sapiens.owl.bak > $REACTOME_HOME/Homo_sapiens.owl.iconv
-	$CPATH_HOME/../pathway-commons/bin/reactome-cooker.py < $REACTOME_HOME/Homo_sapiens.owl.iconv > $REACTOME_HOME/Homo_sapiens.owl
+	$CPATH_HOME/../pathway-commons/bin/reactome-cooker.py < $REACTOME_HOME/Homo_sapiens.owl.iconv > $REACTOME_HOME/Homo_sapiens_to_fix.owl
 	rm -f $REACTOME_HOME/Homo_sapiens.owl.iconv
+    $CPATH_HOME/../pathway-commons/bin/reactome-fix.sh $REACTOME_HOME/Homo_sapiens_to_fix.owl $REACTOME_HOME/Homo_sapiens.owl
+    rm -f $REACTOME_HOME/Homo_sapiens_to_fix.owl
 	logProgress "Loading Reactome."
 	./admin.pl -f $REACTOME_HOME/Homo_sapiens.owl import
 	mv -f $REACTOME_HOME/Homo_sapiens.owl.bak $REACTOME_HOME/"Homo sapiens.owl"
