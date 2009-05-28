@@ -123,7 +123,7 @@ COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,addres
 os.system(COMMAND)
 
 # ------------------------------------------------------------------------------
-# we have to post process biopax files and remove intrafile root nodes
+# we have to post process biopax files and remove embedded root nodes
 
 process_biopax_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_species/")
 process_biopax_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_source/")
