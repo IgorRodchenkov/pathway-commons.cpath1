@@ -3,8 +3,82 @@
 # ------------------------------------------------------------------------------
 # imports
 
+import re
 import os
 import sys
+
+# ------------------------------------------------------------------------------
+# sub-routines
+
+#
+# for the give biopax file, removed embedded root nodes
+#
+def process_biopax_file(BIOPAX_FILENAME):
+
+    # open files
+    BIOPAX_FILE = open(BIOPAX_FILENAME, 'r')
+    COOKED_BIOPAX_FILENAME = BIOPAX_FILENAME + ".tmp"
+    COOKED_BIOPAX_FILE = open(COOKED_BIOPAX_FILENAME, 'w')
+
+    dump_root = True
+    # interate over biopax
+    for line in BIOPAX_FILE:
+        # check for embedded <?xml> element
+        element = re.match('^\s*<\?xml .*$', line)
+        if element is not None:
+            if dump_root:
+                print >> COOKED_BIOPAX_FILE, line,
+            continue
+        # check for embedded <rdf:RDF> element
+        element = re.match('^\s*<rdf:RDF .*$', line)
+        if element is not None:
+            if dump_root:
+                print >> COOKED_BIOPAX_FILE, line,
+            continue
+        # check for embedded <owl:Ontology> element
+        element = re.match('^\s*<owl:Ontology .*$', line)
+        if element is not None:
+            if dump_root:
+                print >> COOKED_BIOPAX_FILE, line,
+            continue
+        # check for embedded <owl:imports> element
+        element = re.match('^\s*<owl:imports .*$', line)
+        if element is not None:
+            if dump_root:
+                print >> COOKED_BIOPAX_FILE, line,
+            continue
+        # finally check for </owl:Ontology>, signifies end of what we want to capture
+        element = re.match('^\s*</owl:Ontology>', line)
+        if element is not None:
+            if dump_root:
+                print >> COOKED_BIOPAX_FILE, line,
+                dump_root = False
+            continue
+        # remove all </rdf:RDF>
+        element = re.match('^\s*</rdf:RDF>', line)
+        if element is not None:
+            continue
+        # made it here, dump the line
+        print >> COOKED_BIOPAX_FILE, line,
+
+    # cap cooked file
+    print >> COOKED_BIOPAX_FILE, "</rdf:RDF>"
+
+    # close files
+    COOKED_BIOPAX_FILE.close()
+    BIOPAX_FILE.close()
+
+    # replace biopax file with cooked file
+    os.system("mv " + COOKED_BIOPAX_FILENAME + " " + BIOPAX_FILENAME)
+
+#
+# run process_biopax_file on files within given biopax directory
+#
+def process_biopax_directory(biopax_directory):
+    for biopax_filename in os.listdir(biopax_directory):
+        biopax_filename = biopax_directory + "/" + biopax_filename
+        if os.path.isfile(biopax_filename):
+            process_biopax_file(biopax_filename)
 
 # ------------------------------------------------------------------------------
 # check for tcga environment var
@@ -41,9 +115,18 @@ if not os.path.isdir(SNAPSHOT_DUMP_DIR):
 # ------------------------------------------------------------------------------
 # execute java program
 
+# for profiling
+#-agentlib:jprofilerti=port=5005,nowait,id=139,config=/home/grossb/.jprofiler5/config.xml  -Xbootclasspath/a:/home/grossb/local/jprofiler5/bin/agent.jar
+
 COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -ea -Xmx8192M" +
 		   " -cp " + CLASSPATH + " -DCPATH_HOME=" + CPATH_HOME + " org.mskcc.pathdb.tool.ExportAll " + SNAPSHOT_DUMP_DIR)
 os.system(COMMAND)
+
+# ------------------------------------------------------------------------------
+# we have to post process biopax files and remove intrafile root nodes
+
+process_biopax_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_species/")
+process_biopax_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_source/")
 
 # ------------------------------------------------------------------------------
 # now interate over snapshot dir and zip all files (.owl, .txt, .gmt, .sif)
