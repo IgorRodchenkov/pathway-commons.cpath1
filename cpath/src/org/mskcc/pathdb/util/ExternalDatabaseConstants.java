@@ -42,4 +42,9 @@ public class ExternalDatabaseConstants {
      */
     public static String INTERNAL_DATABASE = "CPATH_ID";
 
+	/**
+	 * ChEBI.
+	 */
+	public static String CHEBI = "ChEBI";
+
 }
