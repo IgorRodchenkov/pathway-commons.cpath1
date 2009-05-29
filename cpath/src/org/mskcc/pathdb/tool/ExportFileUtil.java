@@ -26,6 +26,22 @@ public class ExportFileUtil {
 	private static final String EDGE_ATTRIBUTE_FILE_SUFFIX = "-edge-attributes";
 	private static final String NODE_ATTRIBUTE_FILE_SUFFIX = "-node-attributes";
 
+    private final static String TAB = "\t";
+    private static final String TAB_DELIM_EDGE_OUTPUT_HEADER = ("CPATH_RECORD_ID_A" + TAB +
+                                                                "INTERACTION_TYPE" + TAB +
+                                                                "CPATH_RECORD_ID_B" + TAB +
+                                                                "GENE_SYMBOL_A" + TAB +
+																"GENE_SYMBOL_B" + TAB +
+																"INTERACTION_DATA_SOURCE" + TAB +
+																"INTERACTION_PUBMED_ID");
+    private static final String TAB_DELIM_NODE_OUTPUT_HEADER = ("CPATH_RECORD_ID" + TAB +
+																"GENE_SYMBOL" + TAB +
+																"UNIPROT_ACCESSION" + TAB +
+																"ENTREZ_GENE_ID" + TAB +
+																"CHEBI_ID" + TAB +
+																"NODE_TYPE" + TAB +
+																"NCBI_TAX_ID");
+
     //  HashMap that will contain multiple open file writers
     private HashMap<String, FileWriter> fileWriters = new HashMap <String, FileWriter>();
 
@@ -155,7 +171,13 @@ public class ExportFileUtil {
         if (writer == null) {
 			String fileName = dbTerm.toLowerCase() + getKey(outputFormat) + fileExtension;
 			fileName = fileName.replaceAll("_", "-");
-            writer = createFileWriter(dir, fileName);
+			File dataSourceFile = new File(dir, fileName);
+			boolean fileExists = dataSourceFile.exists();
+			boolean writeHeader = (!fileExists || (fileExists && dataSourceFile.length() == 0));
+            writer = createFileWriter(dataSourceFile);
+			if (writeHeader) {
+				writeHeader(writer, outputFormat);
+			}
             fileWriters.put(fdKey, writer);
         }
         writer.write(line);
@@ -188,7 +210,13 @@ public class ExportFileUtil {
 				speciesName = speciesName.substring(0, speciesName.length()-1);
 			}
 			String fileName = speciesName.toLowerCase() + getKey(outputFormat) + fileExtension;
-            writer = createFileWriter(dir, fileName);
+			File speciesFile = new File(dir, fileName);
+			boolean fileExists = speciesFile.exists();
+			boolean writeHeader = (!fileExists || (fileExists && speciesFile.length() == 0));
+            writer = createFileWriter(speciesFile);
+			if (writeHeader) {
+				writeHeader(writer, outputFormat);
+			}
             fileWriters.put(fdKey, writer);
         }
         writer.write(line);
@@ -260,25 +288,43 @@ public class ExportFileUtil {
 	/**
 	 * Creates a filewriter.
 	 *
-	 * @param dir File
-	 * @param fileName String
+	 * @param outputFile File
 	 * @return FileWriter
 	 * @throw IOException
 	 */
-	private FileWriter createFileWriter(File dir, String fileName) throws IOException {
+	private FileWriter createFileWriter(File outputFile) throws IOException {
 		
 		try {
-			return new FileWriter(new File(dir, fileName), true);
+			return new FileWriter(outputFile, true);
 		}
 		catch (IOException e) {
 			if (e.getMessage().contains("Too many open files")) {
 				// tried closing "some" handles and doesn't always work - close all
 				closeAllOpenFileDescriptors();
-				return new FileWriter(new File(dir, fileName), true);
+				return new FileWriter(outputFile, true);
 			}
 			else {
 				throw(e);
 			}
+		}
+	}
+
+	/**
+	 * Writes header into the given file.
+	 *
+	 * @param writer FileWriter
+	 * @param int outputFormat
+	 * @throws IOException
+	 */
+	private void writeHeader(FileWriter writer, int outputFormat) throws IOException {
+
+		if (outputFormat == TAB_DELIM_EDGE_OUTPUT) {
+			writer.write(TAB_DELIM_EDGE_OUTPUT_HEADER + "\n");
+			writer.flush();
+		}
+		else if (outputFormat == TAB_DELIM_NODE_OUTPUT) {
+			writer.write(TAB_DELIM_NODE_OUTPUT_HEADER + "\n");
+			writer.flush();
 		}
 	}
 }
