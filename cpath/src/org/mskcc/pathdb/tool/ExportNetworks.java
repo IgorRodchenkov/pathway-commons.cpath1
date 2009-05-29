@@ -34,6 +34,7 @@ public class ExportNetworks {
     private final static String TAB = "\t";
 	private final static String GENE_SYMBOL_UNAVAILABLE = "NOT_SPECIFIED";
 	private final static String PMID_UNAVAILABLE = "NOT_SPECIFIED";
+	private final static String TAXID_UNAVAILABLE = "NOT_SPECIFIED";
 
     /**
      * Constructor.
@@ -125,6 +126,7 @@ public class ExportNetworks {
 			finalSif.append("\n");
 			toReturn.add(finalSif.toString());
 		}
+        // note: if order or set of attributes changes, modify ExportFileUtil.TAB_DELIM_EDGE_OUTPUT_HEADER
 		else if (outputFormat == ExportFileUtil.TAB_DELIM_EDGE_OUTPUT) {
 			StringBuffer finalSif = new StringBuffer();
 			finalSif.append(interaction.getCPathRecordA().getId() + TAB);
@@ -137,6 +139,7 @@ public class ExportNetworks {
 			finalSif.append("\n");
 			toReturn.add(finalSif.toString());
 		}
+        // note: if order or set of attributes changes, update ExportFileUtil.TAB_DELIM_NODE_OUTPUT_HEADER
 		else if (outputFormat == ExportFileUtil.TAB_DELIM_NODE_OUTPUT) {
 			for (int lc = 0; lc < 2; lc++) {
 				StringBuffer finalSif = new StringBuffer();
@@ -146,11 +149,15 @@ public class ExportNetworks {
 				HashMap<String, String> xrefMap = ExportUtil.getXRefMap(geneID);
 				String entrezGeneId = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
 				String uniprotAccession = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
-				int taxID = record.getNcbiTaxonomyId();
+				String chebi = xrefMap.get(ExternalDatabaseConstants.CHEBI);
+				String taxID = (record.getNcbiTaxonomyId() == CPathRecord.TAXONOMY_NOT_SPECIFIED) ?
+					TAXID_UNAVAILABLE : Integer.toString(record.getNcbiTaxonomyId());
 				finalSif.append(geneID + TAB);
 				finalSif.append(geneSymbol + TAB);
 				finalSif.append(ExportUtil.getXRef(uniprotAccession) + TAB);
 				finalSif.append(ExportUtil.getXRef(entrezGeneId) + TAB);
+				finalSif.append(ExportUtil.getXRef(chebi) + TAB);
+                finalSif.append(record.getSpecificType() + TAB);
 				finalSif.append(taxID);
 				finalSif.append("\n");
 				toReturn.add(finalSif.toString());
@@ -186,7 +193,7 @@ public class ExportNetworks {
 
 			// export to data file
 			String outputFormatStr = exportFileUtil.getOutputFormatString(outputFormat);
-			String key = outputFormatStr + TAB + dbTerm + TAB + finalSif;
+			String key = outputFormatStr + "-" + dbTerm + "-" + finalSif;
 
 			// prevent duplicate output in node
 			if (!processedSIFs.containsKey(key)) {
@@ -195,7 +202,7 @@ public class ExportNetworks {
 			}
 			// export to species specific file(s)
 			for (Integer taxID : ncbiTaxonomyIDs) {
-				key = outputFormatStr + TAB + taxID + TAB + finalSif;
+				key = outputFormatStr + "-" + taxID + "-" + finalSif;
 				if (!processedSIFs.containsKey(key)) {
 					exportFileUtil.appendToSpeciesFile(finalSif, taxID, outputFormat);
 					processedSIFs.put(key, "");
