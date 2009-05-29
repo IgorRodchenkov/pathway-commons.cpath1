@@ -124,6 +124,7 @@ function importReactome {
     rm -f $REACTOME_HOME/Homo_sapiens_to_fix.owl
 	logProgress "Loading Reactome."
 	./admin.pl -f $REACTOME_HOME/Homo_sapiens.owl import
+	rm -f $REACTOME_HOME/Homo_sapiens.owl
 	mv -f $REACTOME_HOME/Homo_sapiens.owl.bak $REACTOME_HOME/"Homo sapiens.owl"
 }
 
