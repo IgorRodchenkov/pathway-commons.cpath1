@@ -102,13 +102,9 @@ public class ExportGeneSets {
         int numParticipantsOutput = 0;
         for (int i=0; i < cpathRecordList.size(); i++) {
             CPathRecord participantRecord = cpathRecordList.get(i);
-			// per spec, GSEA & PC does not support cross-species interactions
-			if (participantRecord.getType() == CPathRecordType.INTERACTION) {
-				HashSet<Integer> ncbiTaxonomyIDs = new HashSet<Integer>();
-				ExportUtil.getNCBITaxonomyIDs(record, ncbiTaxonomyIDs, new ArrayList<Long>());
-				if (ncbiTaxonomyIDs.size() > 1) {
-					continue;
-				}
+			// per spec, GSEA & PC should not contain cross-species genes
+			if (participantRecord.getNcbiTaxonomyId() != record.getNcbiTaxonomyId()) {
+                continue;
 			}
             long descendentId = participantRecord.getId();
             HashMap <String, String> xrefMap = xrefList.get(i);
