@@ -75,16 +75,16 @@ public class ExportAll {
                     }
                     record = dao.extractRecord(rs);
 
+					// only pathways exported in GSEA / PC gene set format
                     if (record.getType() == CPathRecordType.PATHWAY) {
                         exportGeneSets.exportPathwayRecord(record);
-                    } else if (record.getType() == CPathRecordType.INTERACTION) {
-                        exportInteractions.exportInteractionRecord(record);
                     }
-
-					// export biopax
-					if (record.getType() != CPathRecordType.PHYSICAL_ENTITY) {
+					// all pathways and interactions exported in biopax, sif and tab-delimited
+					if (record.getType() == CPathRecordType.PATHWAY ||
+						record.getType() == CPathRecordType.INTERACTION) {
+                        exportInteractions.exportInteractionRecord(record);
 						exportBioPAX.exportRecord(record);
-					}
+                    }
                 }
                 JdbcUtil.closeAll(con, pstmt, rs);
             }
