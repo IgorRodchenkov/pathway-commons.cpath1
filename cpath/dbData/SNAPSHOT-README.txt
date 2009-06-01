@@ -16,7 +16,8 @@ Pathway Commons Data is available in the following file formats:
 BioPAX
 ------
 
-Complete BioPAX (level 2) dump of all pathways and interactions.
+Complete BioPAX (level 2) dump of all pathways and interactions within Pathway 
+Commons.
 
 Pathway Commons Gene Set Format
 -------------------------------
@@ -55,7 +56,8 @@ http://cytoscape.org/cgi-bin/moin.cgi/Cytoscape_User_Manual/Network_Formats.
 All participants will be specified as GENE_SYMBOL (if an official gene symbol is
  not available for all members of the interaction, the interaction will not be 
 exported - this is why fewer species may be listed here as compared to other file 
-formats). This format is available for all pathways and interactions in Pathway Commons.
+formats). This format is available for all pathways and interactions within 
+Pathway Commons.
 
 Tab Delimited Network
 ---------------------
@@ -71,4 +73,4 @@ taxonomy id).  If an attribute cannot be determined, "NOT SPECIFIED" will be
 used. This format is suitable for Cytoscape - Attribute Table import.  To 
 prevent an unsuccessful import into Cytoscape due to missing attribute values, 
 users should specify during import that all columns are strings.  This format 
-is available for all pathways and interactions in Pathway Commons.
+is available for all pathways and interactions within Pathway Commons.
