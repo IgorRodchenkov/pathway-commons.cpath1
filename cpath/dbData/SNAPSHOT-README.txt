@@ -16,16 +16,17 @@ Pathway Commons Data is available in the following file formats:
 BioPAX
 ------
 
-Complete BioPAX (level 2) dump of all pathways and interactions within Pathway 
-Commons.
+BioPAX is a data exchange format for biological pathway data.  All pathways 
+and interactions within Pathway Commons are available in BioPAX Level 2.  
+For more information on the BioPAX exchange format, visit: http://www.biopax.org.
 
 Pathway Commons Gene Set Format
 -------------------------------
 
-Similar to the MSigDB format, except that all participants will be micro-encoded
- with multiple identifiers. For example, each participant would be specified as: 
-CPATH_ID:RECORD_TYPE:NAME:UNIPROT_ACCESION:GENE_SYMBOL:ENTREZ_GENE_ID. Also 
-available for all explicit pathways within Pathway Commons, e.g. all pathways 
+Similar to the MSigDB format (see below), except that all participants will be 
+micro-encoded with multiple identifiers. For example, each participant would be 
+specified as: CPATH_ID:RECORD_TYPE:NAME:UNIPROT_ACCESION:GENE_SYMBOL:ENTREZ_GENE_ID. 
+Also available for all explicit pathways within Pathway Commons, e.g. all pathways 
 from Reactome, Cell Map, and NCI-Nature.  This file format ensures that a gene set 
 for a given organism should only contain genes from that species.  Therefore some genes 
 from these gene sets are removed.  This format is available for all explicit pathways 
