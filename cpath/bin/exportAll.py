@@ -72,13 +72,28 @@ def process_biopax_file(BIOPAX_FILENAME):
     os.system("mv " + COOKED_BIOPAX_FILENAME + " " + BIOPAX_FILENAME)
 
 #
-# run process_biopax_file on files within given biopax directory
+# for the give file, remove duplicates (using sort -unique)
 #
-def process_biopax_directory(biopax_directory):
-    for biopax_filename in os.listdir(biopax_directory):
-        biopax_filename = biopax_directory + "/" + biopax_filename
-        if os.path.isfile(biopax_filename):
-            process_biopax_file(biopax_filename)
+def remove_duplicates(FILE_TO_PROCESS):
+
+    # our temp file
+	TEMP_FILE = FILE_TO_PROCESS + ".tmp"
+
+	# execute command
+	COMMAND = ("sort -u < " + FILE_TO_PROCESS + " > " + TEMP_FILE)
+	os.system(COMMAND)
+
+	# replace processed file with temp file
+	os.system("mv " + TEMP_FILE + " " + FILE_TO_PROCESS)
+
+#
+# runs given function on all files in given directory
+#
+def process_directory(directory, function):
+    for filename in os.listdir(directory):
+        filename = directory + "/" + filename
+        if os.path.isfile(filename):
+            function(filename)
 
 # ------------------------------------------------------------------------------
 # check for tcga environment var
@@ -118,15 +133,23 @@ if not os.path.isdir(SNAPSHOT_DUMP_DIR):
 # for profiling
 #-agentlib:jprofilerti=port=5005,nowait,id=139,config=/home/grossb/.jprofiler5/config.xml  -Xbootclasspath/a:/home/grossb/local/jprofiler5/bin/agent.jar
 
-COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -ea -Xmx8192M" +
+COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx8192M" +
 		   " -cp " + CLASSPATH + " -DCPATH_HOME=" + CPATH_HOME + " org.mskcc.pathdb.tool.ExportAll " + SNAPSHOT_DUMP_DIR)
-os.system(COMMAND)
+#os.system(COMMAND)
 
 # ------------------------------------------------------------------------------
-# we have to post process biopax files and remove embedded root nodes
+# post process biopax files and remove embedded root nodes
 
-process_biopax_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_species/")
-process_biopax_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_source/")
+process_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_species/", process_biopax_file)
+process_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_source/", process_biopax_file)
+
+# ------------------------------------------------------------------------------
+# post process sif & tab delimited to remove duplicates
+
+process_directory(SNAPSHOT_DUMP_DIR + "/sif/by_species/", remove_duplicates)
+process_directory(SNAPSHOT_DUMP_DIR + "/sif/by_source/", remove_duplicates)
+process_directory(SNAPSHOT_DUMP_DIR + "/tab_delim_network/by_species/", remove_duplicates)
+process_directory(SNAPSHOT_DUMP_DIR + "/tab_delim_network/by_source/", remove_duplicates)
 
 # ------------------------------------------------------------------------------
 # now interate over snapshot dir and zip all files (.owl, .txt, .gmt, .sif)
