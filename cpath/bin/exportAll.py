@@ -135,7 +135,7 @@ if not os.path.isdir(SNAPSHOT_DUMP_DIR):
 
 COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx8192M" +
 		   " -cp " + CLASSPATH + " -DCPATH_HOME=" + CPATH_HOME + " org.mskcc.pathdb.tool.ExportAll " + SNAPSHOT_DUMP_DIR)
-#os.system(COMMAND)
+os.system(COMMAND)
 
 # ------------------------------------------------------------------------------
 # post process biopax files and remove embedded root nodes
