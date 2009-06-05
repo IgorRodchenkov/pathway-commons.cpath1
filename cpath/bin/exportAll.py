@@ -79,9 +79,17 @@ def remove_duplicates(FILE_TO_PROCESS):
     # our temp file
 	TEMP_FILE = FILE_TO_PROCESS + ".tmp"
 
-	# execute command
-	COMMAND = ("sort -u < " + FILE_TO_PROCESS + " > " + TEMP_FILE)
-	os.system(COMMAND)
+	# we special case tab delimited - sort all lines in file but first (header)
+	header = re.match('.*tab_delim_network.*', FILE_TO_PROCESS)
+	if header is not None:
+		COMMAND = ("head -1 < " + FILE_TO_PROCESS + " > " + TEMP_FILE)
+		os.system(COMMAND)
+		COMMAND = ("sed 1d < " + FILE_TO_PROCESS + " | sort -u >> " + TEMP_FILE)
+		os.system(COMMAND)
+	else:
+		# execute sort on entire file
+		COMMAND = ("sort -u < " + FILE_TO_PROCESS + " > " + TEMP_FILE)
+		os.system(COMMAND)
 
 	# replace processed file with temp file
 	os.system("mv " + TEMP_FILE + " " + FILE_TO_PROCESS)
@@ -168,4 +176,4 @@ for file_format_dir in os.listdir(SNAPSHOT_DUMP_DIR):
 
 # ------------------------------------------------------------------------------
 # lastly, move readme file over
-os.system("cp ../dbData/SNAPSHOT-README.txt " + SNAPSHOT_DUMP_DIR + "/README.TXT")
+#os.system("cp ../dbData/SNAPSHOT-README.txt " + SNAPSHOT_DUMP_DIR + "/README.TXT")
