@@ -23,14 +23,15 @@ import java.util.ArrayList;
 import com.hp.hpl.jena.shared.JenaException;
 
 /**
- * Command Line Utility to Export Interaction Networks.
+ * Command Line Utility to Export Interaction Networks.  This class does not concern
+ * itself with exporting duplicate records.  It is assume post processing on output
+ * will be performed to remove duplicate entries (sort -u).
  *
  * @author Ethan Cerami.
  */
 public class ExportNetworks {
     private ExportFileUtil exportFileUtil;
     private ProgressMonitor pMonitor;
-	private HashMap<String, String> processedSIFs;
     private final static String TAB = "\t";
 	private final static String GENE_SYMBOL_UNAVAILABLE = "NOT_SPECIFIED";
 	private final static String PMID_UNAVAILABLE = "NOT_SPECIFIED";
@@ -45,7 +46,6 @@ public class ExportNetworks {
     public ExportNetworks(ExportFileUtil exportFileUtil, ProgressMonitor pMonitor) {
         this.exportFileUtil = exportFileUtil;
         this.pMonitor = pMonitor;
-		processedSIFs = new HashMap<String, String>();
     }
 
     /**
@@ -83,8 +83,6 @@ public class ExportNetworks {
 				 xmlAssembly.getXmlString());
             List<String> sifs = sifAssembly.getExtendedBinaryInteractionStrings();
             ArrayList <Interaction> interactionList = convertToInteractionList (dbTerm, record.getId(), sifs.get(0));
-			//String sif = sifAssembly.getBinaryInteractionString();
-			//ArrayList <Interaction> interactionList = convertToInteractionList (dbTerm, record.getId(), sif);
 
 			// get list of all organisms associated with this record (organisms of participants)
 			HashSet<Integer> ncbiTaxonomyIDs = new HashSet<Integer>();
@@ -93,10 +91,10 @@ public class ExportNetworks {
             for (Interaction interaction:  interactionList) {
 				// per spec, if official gene symbol is not found for any members of interaction, the interaction is not exported in SIF
 				if (!interaction.getGeneA().equals(GENE_SYMBOL_UNAVAILABLE) && !interaction.getGeneB().equals(GENE_SYMBOL_UNAVAILABLE)) {
-					exportRecord(record, dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.SIF_OUTPUT), ExportFileUtil.SIF_OUTPUT, ncbiTaxonomyIDs);
+					exportInteraction(dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.SIF_OUTPUT), ExportFileUtil.SIF_OUTPUT, ncbiTaxonomyIDs);
 				}
-				exportRecord(record, dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.TAB_DELIM_EDGE_OUTPUT), ExportFileUtil.TAB_DELIM_EDGE_OUTPUT, ncbiTaxonomyIDs);
-				exportRecord(record, dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.TAB_DELIM_NODE_OUTPUT), ExportFileUtil.TAB_DELIM_NODE_OUTPUT, ncbiTaxonomyIDs);
+				exportInteraction(dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.TAB_DELIM_EDGE_OUTPUT), ExportFileUtil.TAB_DELIM_EDGE_OUTPUT, ncbiTaxonomyIDs);
+				exportInteraction(dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.TAB_DELIM_NODE_OUTPUT), ExportFileUtil.TAB_DELIM_NODE_OUTPUT, ncbiTaxonomyIDs);
             }
         } catch (JenaException e) {
             pMonitor.logWarning("Got JenaException:  " + e.getMessage() + ".  Occurred "
@@ -170,18 +168,14 @@ public class ExportNetworks {
 
 	/**
 	 * This routine exports records to data / species files.
-	 * We are making sure not to export duplicate entries to SIF_OUTPUT & TAB_DELIM_EDGE_OUTPUT in exportInteractionRecord().
-	 * In this routine we make sure we don't export duplicate entries to TAB_DELIM_NODE_OUTPUT.  This is a bit tedious since we have
-	 * to export to multiple data source and species files.  So, we need to take into account the dbTerm and/or taxID respectively.
 	 *
-	 * @param record CPathRecord
 	 * @param dbTerm String
 	 * @param interaction Interaction
 	 * @param finalSifs ArrayList<String>
 	 * @param outputFormat int
 	 * @param ncbiTaxonomyIDs HashSet<Integer>
 	 */
-    private void exportRecord(CPathRecord record, String dbTerm, Interaction interaction, ArrayList<String> finalSifs, int outputFormat, HashSet<Integer> ncbiTaxonomyIDs)
+    private void exportInteraction(String dbTerm, Interaction interaction, ArrayList<String> finalSifs, int outputFormat, HashSet<Integer> ncbiTaxonomyIDs)
             throws IOException, DaoException {
 
 		// per spec, SIF should not include cross-species interactions
@@ -191,22 +185,12 @@ public class ExportNetworks {
 
 		for (String finalSif : finalSifs) {
 
-			// export to data file
-			String outputFormatStr = exportFileUtil.getOutputFormatString(outputFormat);
-			String key = outputFormatStr + "-" + dbTerm + "-" + finalSif;
+			// export to data source specific file
+			exportFileUtil.appendToDataSourceFile(finalSif, dbTerm, outputFormat);
 
-			// prevent duplicate output in node
-			if (!processedSIFs.containsKey(key)) {
-				exportFileUtil.appendToDataSourceFile(finalSif, dbTerm, outputFormat);
-				processedSIFs.put(key, "");
-			}
 			// export to species specific file(s)
 			for (Integer taxID : ncbiTaxonomyIDs) {
-				key = outputFormatStr + "-" + taxID + "-" + finalSif;
-				if (!processedSIFs.containsKey(key)) {
-					exportFileUtil.appendToSpeciesFile(finalSif, taxID, outputFormat);
-					processedSIFs.put(key, "");
-				}
+				exportFileUtil.appendToSpeciesFile(finalSif, taxID, outputFormat);
 			}
 		}
     }
