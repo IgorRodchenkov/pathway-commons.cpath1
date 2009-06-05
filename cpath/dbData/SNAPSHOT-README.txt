@@ -36,16 +36,18 @@ MSigDB GMT
 ----------
 
 Gene Matrix Transposed file format (*.gmt) Format: This is the main tab-delimited 
-file format specified by the Broad Molecular Signature Database. Each pathway is 
-specified on one line. All participants in the pathway are specified as official 
+file format specified by the Broad Molecular Signature Database in which each 
+pathway is specified on one line.  We provide two versions of this file format.  
+In the first, all participants in the pathway are specified as official 
 gene symbols (if an official gene symbol is not available, participant will not 
-be exported).   We have ensured that all participants for a pathway must come
-from the same species as the pathway.  Therefore some participants from these 
-pathways are removed.  Exporting to the MSigDB format will enable computational 
-biologists to use pathway commons data within gene set enrichment algorithms, 
-such as GSEA. Available for all explicit pathways within Pathway Commons, e.g. 
-all pathways from Reactome, Cell Map, and NCI-Nature. Full data format details 
-are available at: Broad GSEA Wiki, 
+be exported).   In the second, all participants are specified as Entrez Gene IDs 
+(if an Entrez Gene ID is not available, participant will not be exported).  We 
+have ensured that all participants for a pathway must come from the same species 
+as the pathway.  Therefore some participants from these pathways are removed.  
+Exporting to the MSigDB format will enable computational biologists to use pathway 
+commons data within gene set enrichment algorithms, such as GSEA. Available for all 
+explicit pathways within Pathway Commons, e.g. all pathways from Reactome, Cell Map, 
+and NCI-Nature. Full data format details are available at: Broad GSEA Wiki, 
 http://www.broad.mit.edu/cancer/software/gsea/wiki/index.php/Data_formats.
 
 
