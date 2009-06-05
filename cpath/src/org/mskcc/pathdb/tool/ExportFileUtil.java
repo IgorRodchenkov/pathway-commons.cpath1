@@ -15,16 +15,20 @@ import java.util.Collection;
  * Export File Utility Class.
  */
 public class ExportFileUtil {
-    public static final int GSEA_OUTPUT = 1;
-    public static final int PC_OUTPUT = 2;
-    public static final int SIF_OUTPUT = 3;
-    public static final int TAB_DELIM_EDGE_OUTPUT = 4;
-    public static final int TAB_DELIM_NODE_OUTPUT = 5;
-    public static final int BIOPAX_OUTPUT = 6;
+    public static final int GSEA_GENE_SYMBOL_OUTPUT = 1;
+    public static final int GSEA_ENTREZ_GENE_ID_OUTPUT = 2;
+    public static final int PC_OUTPUT = 3;
+    public static final int SIF_OUTPUT = 4;
+    public static final int TAB_DELIM_EDGE_OUTPUT = 5;
+    public static final int TAB_DELIM_NODE_OUTPUT = 6;
+    public static final int BIOPAX_OUTPUT = 7;
 
     private File exportDir;
 	private static final String EDGE_ATTRIBUTE_FILE_SUFFIX = "-edge-attributes";
 	private static final String NODE_ATTRIBUTE_FILE_SUFFIX = "-node-attributes";
+
+	private static final String GSEA_GENE_SYMBOL_FILE_SUFFIX = "-gene-symbol";
+	private static final String GSEA_ENTREZ_GENE_ID_SUFFIX = "-entrez-gene-id";
 
     private final static String TAB = "\t";
     private static final String TAB_DELIM_EDGE_OUTPUT_HEADER = ("CPATH_RECORD_ID_A" + TAB +
@@ -56,7 +60,7 @@ public class ExportFileUtil {
 			exportDir.mkdir();
         }
 
-        initDir (GSEA_OUTPUT);
+        initDir (GSEA_GENE_SYMBOL_OUTPUT);  // gene symbol and entrez gene id go into same directory
         initDir (PC_OUTPUT);
         initDir (SIF_OUTPUT);
         initDir (TAB_DELIM_EDGE_OUTPUT); // edge and node go into same subdir
@@ -70,8 +74,11 @@ public class ExportFileUtil {
 	 * @return String
 	 */
    	public String getOutputFormatString(int outputFormat) {
-		if (outputFormat == GSEA_OUTPUT) {
-			return "GSEA_OUTPUT";
+		if (outputFormat == GSEA_GENE_SYMBOL_OUTPUT) {
+			return "GSEA_GENE_SYMBOL_OUTPUT";
+		}
+		else if (outputFormat == GSEA_ENTREZ_GENE_ID_OUTPUT) {
+			return "GSEA_ENTREZ_GENE_ID_OUTPUT";
 		}
 		else if (outputFormat == PC_OUTPUT) {
 			return "PC_OUTPUT";
@@ -145,7 +152,9 @@ public class ExportFileUtil {
      * @return file extension, e.g. ".txt";
      */
     private String getFileExtension (int outputFormat) {
-        if (outputFormat == ExportFileUtil.GSEA_OUTPUT) {
+        if (outputFormat == ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT) {
+            return ".gmt";
+        } else if (outputFormat == ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT) {
             return ".gmt";
         } else if (outputFormat == ExportFileUtil.PC_OUTPUT) {
             return ".txt";
@@ -229,7 +238,9 @@ public class ExportFileUtil {
      * @return Directory.
      */
     private File getFormatSpecificDir(int outputFormat) {
-        if (outputFormat == ExportFileUtil.GSEA_OUTPUT) {
+        if (outputFormat == ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT) {
+            return new File (exportDir, "gsea");
+        } else if (outputFormat == ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT) {
             return new File (exportDir, "gsea");
         } else if (outputFormat == ExportFileUtil.PC_OUTPUT) {
             return new File (exportDir, "gene_sets");
@@ -267,14 +278,20 @@ public class ExportFileUtil {
 
 	/**
 	 * This routine was created to support both edge and node
-	 * attribute files.
+	 * attribute files and gsea gene symbol and gsea entrez gene id
 	 *
 	 * @param outputFormat int
 	 * @return String
 	 */
 	private String getKey (int outputFormat) {
 		
-		if (outputFormat == TAB_DELIM_EDGE_OUTPUT) {
+		if (outputFormat == GSEA_GENE_SYMBOL_OUTPUT) {
+			return GSEA_GENE_SYMBOL_FILE_SUFFIX;
+		}
+		else if (outputFormat == GSEA_ENTREZ_GENE_ID_OUTPUT) {
+			return GSEA_ENTREZ_GENE_ID_SUFFIX;
+		}
+		else if (outputFormat == TAB_DELIM_EDGE_OUTPUT) {
 			return EDGE_ATTRIBUTE_FILE_SUFFIX;
 		}
 		else if (outputFormat == TAB_DELIM_NODE_OUTPUT) {

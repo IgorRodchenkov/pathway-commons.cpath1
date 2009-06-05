@@ -82,7 +82,8 @@ public class ExportGeneSets {
         }
 
         //  Dump to both file formats.
-        exportGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportFileUtil.GSEA_OUTPUT);
+        exportGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT);
+        exportGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT);
         exportGeneSet(record, dbTerm, cpathRecordList, xrefList, ExportFileUtil.PC_OUTPUT);
 
 		// add to processed list
@@ -111,12 +112,19 @@ public class ExportGeneSets {
             String geneSymbol = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
             String entrezGeneId = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
             String uniprotAccession = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
-            if (outputFormat == ExportFileUtil.GSEA_OUTPUT) {
+            if (outputFormat == ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT) {
                 if (geneSymbol != null) {
                     numParticipantsOutput++;
                     line.append (geneSymbol + TAB);
                 }
-            } else {
+			}
+			else if (outputFormat == ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT) {
+				if (entrezGeneId != null) {
+                    numParticipantsOutput++;
+                    line.append (entrezGeneId + TAB);
+                }
+            }
+			else if (outputFormat == ExportFileUtil.PC_OUTPUT) {
                 numParticipantsOutput++;
                 line.append (descendentId + COLON);
                 line.append (participantRecord.getSpecificType() + COLON);
