@@ -176,4 +176,4 @@ for file_format_dir in os.listdir(SNAPSHOT_DUMP_DIR):
 
 # ------------------------------------------------------------------------------
 # lastly, move readme file over
-#os.system("cp ../dbData/SNAPSHOT-README.txt " + SNAPSHOT_DUMP_DIR + "/README.TXT")
+os.system("cp ../dbData/SNAPSHOT-README.txt " + SNAPSHOT_DUMP_DIR + "/README.TXT")
