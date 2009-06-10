@@ -148,20 +148,25 @@ os.system(COMMAND)
 # ------------------------------------------------------------------------------
 # post process biopax files and remove embedded root nodes
 
+print "Postprocessing BioPAX files to remove embedded root nodes..."
 process_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_species/", process_biopax_file)
 process_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_source/", process_biopax_file)
+print "Postprocessing of BioPAX files is complete..."
 
 # ------------------------------------------------------------------------------
 # post process sif & tab delimited to remove duplicates
 
+print "Postprocessing sif and tab_delim_network files to remove duplicate entries..."
 process_directory(SNAPSHOT_DUMP_DIR + "/sif/by_species/", remove_duplicates)
 process_directory(SNAPSHOT_DUMP_DIR + "/sif/by_source/", remove_duplicates)
 process_directory(SNAPSHOT_DUMP_DIR + "/tab_delim_network/by_species/", remove_duplicates)
 process_directory(SNAPSHOT_DUMP_DIR + "/tab_delim_network/by_source/", remove_duplicates)
+print "Postprocessing of sif and tab_delim_network files is complete..."
 
 # ------------------------------------------------------------------------------
 # now interate over snapshot dir and zip all files (.owl, .txt, .gmt, .sif)
 
+print "Zipping all files..."
 for file_format_dir in os.listdir(SNAPSHOT_DUMP_DIR):
 	file_format_dir = SNAPSHOT_DUMP_DIR + "/" + file_format_dir
 	if os.path.isdir(file_format_dir):
@@ -173,7 +178,10 @@ for file_format_dir in os.listdir(SNAPSHOT_DUMP_DIR):
 					if os.path.isfile(filename):
 						COMMAND = "zip -jT " + filename + ".zip " + filename + " ; rm -f " + filename
 						os.system(COMMAND)
-
+print "Zipping of files complete..."
 # ------------------------------------------------------------------------------
 # lastly, move readme file over
+print "Moving SNAPSHOT-README.txt to README.txt..."
 os.system("cp ../dbData/SNAPSHOT-README.txt " + SNAPSHOT_DUMP_DIR + "/README.TXT")
+
+print "Dump complete!"
