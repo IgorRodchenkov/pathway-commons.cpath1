@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.7 2009-02-25 15:56:09 grossben Exp $
+// $Id: LuceneResults.java,v 1.8 2009-06-24 19:42:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -254,6 +254,9 @@ public class LuceneResults {
         term = term.trim();
         if (term.matches("^[^\"]*\\s[^\"]*$")) {
             term = "\"" + term + "\"";
+        }
+        if (term.contains("*")) {
+            term = term.replace("*", "");
         }
         return term;
     }
