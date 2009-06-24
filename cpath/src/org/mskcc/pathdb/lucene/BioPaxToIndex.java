@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.30 2009-03-23 19:21:49 grossben Exp $
+// $Id: BioPaxToIndex.java,v 1.31 2009-06-24 19:45:00 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -135,10 +135,17 @@ public class BioPaxToIndex implements ItemToIndex {
         //  Index cPath ID --> FIELD_CPATH_ID
 		fields.add(new Field(LuceneConfig.FIELD_CPATH_ID, Long.toString(cpathId), Field.Store.YES, Field.Index.UN_TOKENIZED));
 
-		// index entity type --> FIELD_ENTITY_TYPE
+        // This will soon be deleted...
+        // index entity type --> FIELD_ENTITY_TYPE
 		fields.add(new Field(LuceneConfig.FIELD_ENTITY_TYPE, record.getSpecificType(), Field.Store.YES, Field.Index.TOKENIZED));
 
-		// data source --> FIELD_DATA_SOURCE
+		// index record type --> FIELD_RECORD_TYPE
+		fields.add(new Field(LuceneConfig.FIELD_RECORD_TYPE, record.getType().toString(), Field.Store.YES, Field.Index.TOKENIZED));
+
+		// index specific type --> FIELD_SPECIFIC_TYPE
+		fields.add(new Field(LuceneConfig.FIELD_SPECIFIC_TYPE, record.getSpecificType(), Field.Store.YES, Field.Index.TOKENIZED));        
+
+        // data source --> FIELD_DATA_SOURCE
 		String dataSource = getDataSources(record);
 		fields.add(new Field(LuceneConfig.FIELD_DATA_SOURCE, dataSource, Field.Store.YES, Field.Index.TOKENIZED));
 
