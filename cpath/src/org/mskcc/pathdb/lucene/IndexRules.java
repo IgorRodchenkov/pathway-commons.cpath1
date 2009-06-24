@@ -1,4 +1,4 @@
-// $Id: IndexRules.java,v 1.7 2006-11-02 15:12:03 grossb Exp $
+// $Id: IndexRules.java,v 1.8 2009-06-24 19:44:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.sql.assembly.XmlAssemblyFactory;
+import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
 /**
  * Encapsulates rules for what/how cPath records should be indexed by Lucene.
@@ -67,12 +68,15 @@ public class IndexRules {
             }
         } else if (record.getXmlType().equals(XmlRecordType.BIO_PAX)) {
             //  Rules for BioPAX
-            if (record.getType().equals(CPathRecordType.PATHWAY))
+            if (record.getType().equals(CPathRecordType.PATHWAY)) {
 				return XmlAssemblyFactory.XML_ABBREV;
-			if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY) &&
-				record.isCpathGenerated())
+            } else if (record.getType().equals(CPathRecordType.PHYSICAL_ENTITY) &&
+				record.isCpathGenerated()) {
 				return XmlAssemblyFactory.XML_ABBREV;
-        }
-        return NO_INDEX;
+            } else if (record.getSpecificType().equalsIgnoreCase(BioPaxConstants.COMPLEX)) {
+                return XmlAssemblyFactory.XML_ABBREV; 
+            }
+       }
+       return NO_INDEX;
     }
 }
