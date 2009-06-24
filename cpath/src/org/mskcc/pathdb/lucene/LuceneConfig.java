@@ -1,4 +1,4 @@
-// $Id: LuceneConfig.java,v 1.16 2008-12-30 16:38:54 grossben Exp $
+// $Id: LuceneConfig.java,v 1.17 2009-06-24 19:43:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -68,6 +68,16 @@ public class LuceneConfig {
      * Lucene Field for Storing Entity Type.
      */
     public static final String FIELD_ENTITY_TYPE = "entity_type";
+
+    /**
+     * Lucene Field for Storing Record Type, e.g. PATHWAY or PHYSICAL_ENTITY.
+     */
+    public static final String FIELD_RECORD_TYPE = "record_type";
+
+    /**
+     * Lucene Field for Storing Specific Type, e.g. pathway, protein or complex.
+     */
+    public static final String FIELD_SPECIFIC_TYPE = "specific_type";
 
     /**
      * Lucene Field for Storing Data Sources.
