@@ -37,7 +37,7 @@ public class LuceneAutoFilter {
 		revisedQuery = processOrganismFilter(revisedQuery, filterSettings);
 
 		// entity type
-		revisedQuery = processEntityTypeFilter(revisedQuery, filterSettings);
+		revisedQuery = processRecordTypeFilter(revisedQuery, filterSettings);
 
 		// outta here
 		return revisedQuery;
@@ -102,14 +102,14 @@ public class LuceneAutoFilter {
 	}
 
 	/**
-	 * Process entity type filter
+	 * Process record type filter
 	 *
 	 * @param q String
 	 * @param filterSettings GlobalFilterSettings
 	 *
 	 * @return String
 	 */
-	private static String processEntityTypeFilter(String q, GlobalFilterSettings filterSettings) {
+	private static String processRecordTypeFilter(String q, GlobalFilterSettings filterSettings) {
 
 		Set<String>  entityTypeSet = filterSettings.getEntityTypeSet();
 		List entityTypeList = new ArrayList();
@@ -124,7 +124,7 @@ public class LuceneAutoFilter {
 
 		// skip entity type filter if "All types" filter option was choosen
 		return (!allEntityTypeFilterSet) ?
-			addFiltersToQuery (q, LuceneConfig.FIELD_ENTITY_TYPE, entityTypeList) : q;
+			addFiltersToQuery (q, LuceneConfig.FIELD_RECORD_TYPE, entityTypeList) : q;
 	}
 
     /**
