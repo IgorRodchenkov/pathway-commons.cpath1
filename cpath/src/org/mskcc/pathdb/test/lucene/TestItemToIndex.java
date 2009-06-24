@@ -1,4 +1,4 @@
-// $Id: TestItemToIndex.java,v 1.27 2008-12-30 17:13:20 grossben Exp $
+// $Id: TestItemToIndex.java,v 1.28 2009-06-24 19:45:36 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -143,21 +143,25 @@ public class TestItemToIndex extends TestCase {
 
         //  Validate Number of Fields
         int numFields = item.getNumFields();
-        assertEquals(13, numFields);
+        assertEquals(15, numFields);
 
         Field allField = item.getField(0);
         Field idField = item.getField(1);
 		Field entityType = item.getField(2);
-		Field dataSource = item.getField(3);
-        Field nameField = item.getField(4);
-        Field organismField = item.getField(5);
+        Field recordType = item.getField(3);
+        Field specificType = item.getField(4);
+        Field dataSource = item.getField(5);
+        Field nameField = item.getField(6);
+        Field organismField = item.getField(7);
 
         //  Validate Individual Fields
         assertTrue(allField.stringValue().startsWith
                 ("This pathway is freely available to all users and may be"));
         assertEquals("5", idField.stringValue());
 		assertEquals("pathway", entityType.stringValue());
-		assertEquals("REACTOME", dataSource.stringValue());
+        assertEquals("PATHWAY", recordType.stringValue());
+        assertEquals("pathway", specificType.stringValue());
+        assertEquals("REACTOME", dataSource.stringValue());
         assertEquals("glycolysis I glycolysis I", nameField.stringValue().trim());
         assertTrue(organismField.stringValue().startsWith
                 ("Escherichia coli K-12 83333"));
