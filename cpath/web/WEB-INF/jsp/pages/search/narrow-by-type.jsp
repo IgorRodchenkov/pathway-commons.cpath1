@@ -15,7 +15,7 @@
     Map<String, Integer> hitByTypeMap =
             (Map<String, Integer>) request.getAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP);
     Map sortedHitByTypeMap = new TreeMap(hitByTypeMap);
-    String keyType = request.getParameter(ProtocolRequest.ARG_RECORD_TYPE);
+    String recordType = protocolRequest.getRecordType();
     String keyDataSource = request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
 %>
 <div class="results_tab_box">
@@ -28,7 +28,7 @@
             typePlainEnglish = "Proteins";
         }
         String label = typePlainEnglish + " (" + hitByTypeMap.get(type) + ")";
-	    if (type.equals(keyType)) {
+	    if (type.equals(recordType)) {
 		   out.println("<span class='results_tab_active'>" + label + "</span>");
 	    }
 	    else {
