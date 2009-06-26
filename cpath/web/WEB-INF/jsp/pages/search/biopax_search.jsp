@@ -46,7 +46,7 @@
     ArrayList<Integer> numParentPathwaysList = luceneResults.getNumParentPathwaysList();
     ArrayList<Integer> numParentInteractionsList = luceneResults.getNumParentInteractionsList();
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
-    String keyType = protocolRequest.getEntityType();
+    String recordType = protocolRequest.getRecordType();
     String keyDataSource = request.getParameter
             (GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
     // server name
@@ -252,12 +252,16 @@ else {
     <jsp:include page="../../global/redesign/currentFilterSettings.jsp" flush="true" />
 	</div>
     <div class="splitcontentright">
+    <form action="#">
+    <fieldset>
+    <legend>
     <jsp:include page="./narrow-by-type.jsp" flush="true" />
+    </legend>
 <%
 	Pager pager = new Pager (protocolRequest, totalNumHits);
 	out.println("<div class='search_buttons'>");
 	out.println("<srp>" + pager.getHeaderHtmlForSearchPage("white",
-	ProtocolRequest.ARG_ENTITY_TYPE + "=" + keyType + "&" +
+	ProtocolRequest.ARG_RECORD_TYPE + "=" + recordType + "&" +
 	GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource) + "</srp>");
 	out.println ("</div>");
 %>
@@ -407,6 +411,8 @@ else {
         }
     }
     out.println("</table>");
+    out.println("</fieldset>");
+    out.println("</form>");
 	out.println("</div>");
 }
 %>
