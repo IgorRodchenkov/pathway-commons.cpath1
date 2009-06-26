@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="jsp/css/andreas08.css" type="text/css" media="screen,projection" />
+<link rel="stylesheet" href="jsp/css/revised.css" type="text/css" media="screen,projection" />
 <link rel="stylesheet" href="jsp/javascript/highslide/highslide-with-html.css" type="text/css" />
 
 <%-- Explicitly Set Character Encoding
