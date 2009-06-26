@@ -69,11 +69,12 @@ border:1px solid #a0a0a0;
 }
 
 #searchbutton{
-width:auto;
+/**width:auto;
 padding:0 1px;
 border:1px solid #808080;
 font-size:0.8em;
 text-align:center;
+**/
 }
 
 .search_bar_box {
@@ -150,3 +151,6 @@ text-align:center;
   border: 1px solid #aaaaaa;
 }
 
+input {
+  /**font-size:120%;**/
+}
