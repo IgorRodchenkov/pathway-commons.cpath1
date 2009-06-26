@@ -1,0 +1,152 @@
+/*****************************************************
+* Home Page Search Box
+*****************************************************/
+.search_tab_box {
+  padding: 10px;
+  margin-bottom:5px;
+  border:2px solid #aaaaaa;
+}
+
+/* Do not underline text inside the tabs */
+.search_tabs a{
+  text-decoration:none !important;
+}
+
+/* Active Search Tab, with Hover Effect*/
+.search_tab_active {
+  padding-top:2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  background: #578bb8;
+  border: 1px solid #578bb8;
+  color:white;
+}
+.search_tab_active:hover {
+   background: #578bb8;
+   color:white;
+}
+
+/* Inactive Search Tab, with Hover Effect */
+.search_tab_inactive {
+  padding-top:2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  #background: #AAAAAA;
+  border: 1px solid #aaaaaa;
+}
+.search_tab_inactive:hover {
+   background: #aaaaaa;
+   color:white;
+}
+
+/* Highlight Text to the User */
+.search_highlight{
+    font-weight: bold;
+}
+
+/*****************************************************
+* Search Bar in the Upper Right Corner of the Page
+*****************************************************/
+#searchbar{
+float:right;
+padding-left: 10px;
+padding-right: 10px;
+padding-bottom: 10px;
+padding-top: 10px;
+margin-top:30px;
+margin-right: 40px;
+border: 1px solid #aaaaaa;
+}
+#searchbar form fieldset{margin-left:10px; border:0 solid;}
+
+#searchbar #s{
+height:1.2em;
+width:110px;
+margin:0 5px 0 0;
+border:1px solid #a0a0a0;
+}
+
+#searchbutton{
+width:auto;
+padding:0 1px;
+border:1px solid #808080;
+font-size:0.8em;
+text-align:center;
+}
+
+.search_bar_box {
+}
+
+.search_bar_tabs {
+  padding-bottom: 5px;
+  font-size:70%;
+}
+
+.search_bar_tabs a{
+  text-decoration:none !important;
+}
+
+.search_bar_tab_active {
+  margin: 0px;
+  background:#80b0da;
+  color:#ffffff;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top:3px;
+  padding-bottom:3px;
+  font-weight:bold;
+}
+
+.search_bar_tab_active:hover {
+   background: #80b0da;
+   color:white;
+}
+
+.search_bar_tab_inactive {
+  margin: 0px;
+  background:#578bb8;
+  color:#ffffff;
+  #border-right:1px solid #ffffff;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top:3px;
+  padding-bottom:3px;
+}
+
+.search_bar_tab_inactive:hover {
+   background: #578bb8;
+   color:white;
+}
+
+/*****************************************************
+* Search Results Tabs
+*****************************************************/
+
+.results_tab_box {
+  padding-top:5px;
+  padding-bottom:7px;
+  margin-bottom:5px;
+}
+
+.results_tab_active {
+  padding-top:2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  background: #578bb8;
+  border: 1px solid #578bb8;
+  color:white;
+}
+
+.results_tab_inactive {
+  padding-top:2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  margin-right:5px;
+  background: #DDDDDD;
+  border: 1px solid #aaaaaa;
+}
+
