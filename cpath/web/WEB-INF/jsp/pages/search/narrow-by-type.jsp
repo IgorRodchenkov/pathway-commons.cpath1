@@ -18,8 +18,7 @@
     String recordType = protocolRequest.getRecordType();
     String keyDataSource = request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
 %>
-<div class="results_tab_box">
-<div class="results_tabs">
+<span class="results_tabs">
 <%
     for (String type : (Set<String>)sortedHitByTypeMap.keySet()) {
 	    // label
@@ -47,5 +46,4 @@
 	    }
     }
 %>
-</div>
-</div>
+</span>
