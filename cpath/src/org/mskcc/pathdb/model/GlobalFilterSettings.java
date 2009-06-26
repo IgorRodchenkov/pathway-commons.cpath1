@@ -32,6 +32,16 @@ public class GlobalFilterSettings implements Cloneable {
     public final static String NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL = "ALL_ENTITY_TYPE";
 
     /**
+     * Flag to indicate that user wants only pathway records.
+     */
+    public final static String NARROW_BY_RECORD_TYPES_PATHWAYS = "PATHWAY";
+
+    /**
+     * Flag to indicate that user wants only physical entity records.
+     */
+    public final static String NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES = "PHYSICAL_ENTITY";    
+
+    /**
      * Session / Parameter Argument for Data Source.
      */
     public final static String NARROW_BY_DATA_SOURCES_FILTER_NAME = "snapshot_id";
