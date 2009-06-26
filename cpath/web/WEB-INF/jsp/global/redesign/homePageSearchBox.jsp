@@ -52,12 +52,14 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     return false;
   }
 </script>
-
-<div class="search_tab_box">
-<div class="search_tabs">
+<form name='searchbox' id='searchbox' action='webservice.do' method='get'>
+<fieldset>
+<legend>
+<span class="search_tabs">
     <a href="#" id="pathway_tab_tab" class="search_tab_active" onclick="showSearchTab('pathway_tab')">Find Pathways</a>
     <a href="#" id="protein_tab_tab" class="search_tab_inactive" onclick="showSearchTab('protein_tab')">Find Proteins</a>
-</div>
+</span>
+</legend>
 <p>
 <%  outputSearchForm(out, webUIBean, GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS); %>
 </p>
@@ -68,12 +70,13 @@ keyword "BRCA1", and a list pathways that contain the BRCA1 gene.
 <div id="protein_tab" style="display:none;">
 <P>For example, if you enter: <a href="#" onClick="submitSearch('BRCA1')">BRCA1</a>, you will <span class="search_highlight">get back a list of proteins, genes, or small molecules</span>
 that contain the keyword "BRCA1".
+</div>    
 </p>
-</div>
+</fieldset>
+</form>
 
 <%!
     private void outputSearchForm(JspWriter out, WebUIBean webUIBean, String recordType) throws IOException {
-        out.println ("<form name='searchbox' id='searchbox' action='webservice.do' method='get'>");
         out.println ("<input type='hidden' name='" + ProtocolRequest.ARG_VERSION + "' value='" + webUIBean.getWebApiVersion() +"'>");
         out.println ("<input type='hidden' name='" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME
                 + "' value='" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL + "'>");
@@ -87,7 +90,6 @@ that contain the keyword "BRCA1".
                 + ProtocolConstants.FORMAT_HTML + "'/>");
         out.println ("<input type='hidden' name='" + ProtocolRequest.ARG_COMMAND
             + "' size='25' value='" + ProtocolConstants.COMMAND_GET_BY_KEYWORD + "'/>");
-        out.println ("</form>");
     }
 %>
-</div>    
+   

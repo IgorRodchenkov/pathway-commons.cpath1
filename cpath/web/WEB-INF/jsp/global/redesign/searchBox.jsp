@@ -80,12 +80,15 @@
     }
 
 %>
-    <div class="search_bar_tabs">
+<form name="searchbox" action="webservice.do" method="get">
+<fieldset>
+<legend>
+    <span class="search_bar_tabs">
         <a href="#" id="pathway_tab_tab" class="<%= pathwayTabClass %>" onclick="showSearchBarTab('pathway_tab')">Find Pathways</a>
         <a href="#" id="protein_tab_tab" class="<%= proteinTabClass %>" onclick="showSearchBarTab('protein_tab')">Find Proteins</a>
-    </div>
+    </span>
+</legend>
 <% } %>
-<form name="searchbox" action="webservice.do" method="get">
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="<%= webUIBean.getWebApiVersion() %>"/>
     <input type="text" id="<%= ProtocolRequest.ARG_QUERY %>" name="<%= ProtocolRequest.ARG_QUERY %>" size="25" value='<%= searchTerm %>'/>
     <input type="submit" id="searchbutton" value="Search"/>
@@ -129,6 +132,7 @@
         </select>
         <% } %>
     <% } %>
+</fieldset>    
 </form>
 </div>
 </div>
