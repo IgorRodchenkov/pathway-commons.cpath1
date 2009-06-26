@@ -207,32 +207,6 @@ background-color:inherit;
 .menublock li ul li{margin-bottom:0;}
 .menublock li ul a{font-weight:normal;}
 
-
-/**************** Searchbar styles ****************/
-
-#searchbar{
-float:right;
-width:200px;
-padding: 50px 0px 0px 0px;
-margin:0 0 20px 0;
-}
-#searchbar form fieldset{margin-left:10px; border:0 solid;}
-
-#searchbar #s{
-height:1.2em;
-width:110px;
-margin:0 5px 0 0;
-border:1px solid #a0a0a0;
-}
-
-#searchbutton{
-width:auto;
-padding:0 1px;
-border:1px solid #808080;
-font-size:0.9em;
-text-align:center;
-}
-
 /**************** Footer styles ****************/
 
 #footer{
