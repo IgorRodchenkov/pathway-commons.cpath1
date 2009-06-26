@@ -14,11 +14,16 @@
     String taxId = new String("");
     ProtocolRequest pRequest = (ProtocolRequest) request.getAttribute
             (BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
+    String recordType = null;
     if (pRequest != null) {
         if (pRequest.getQuery() != null) {
             searchTerm = pRequest.getQuery();
         }
         taxId = pRequest.getOrganism();
+        recordType = pRequest.getRecordType();
+    }
+    if (recordType == null) {
+        recordType = GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS;
     }
     String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
     String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
@@ -29,12 +34,6 @@
     }
     if (showSearchBox) { %>
 <div id="searchbar">
-<%
-    String recordType = request.getParameter(ProtocolRequest.ARG_RECORD_TYPE);
-    if (recordType == null) {
-        recordType = GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS;
-    }
-%>
 
 <script>
   var tabs = ["pathway_tab_tab", "protein_tab_tab"];
@@ -88,7 +87,7 @@
 <% } %>
 <form name="searchbox" action="webservice.do" method="get">
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="<%= webUIBean.getWebApiVersion() %>"/>
-    <input type="text" id="<%= ProtocolRequest.ARG_QUERY %>" name="<%= ProtocolRequest.ARG_QUERY %>" size="30" value='<%= searchTerm %>'/>
+    <input type="text" id="<%= ProtocolRequest.ARG_QUERY %>" name="<%= ProtocolRequest.ARG_QUERY %>" size="25" value='<%= searchTerm %>'/>
     <input type="submit" id="searchbutton" value="Search"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
