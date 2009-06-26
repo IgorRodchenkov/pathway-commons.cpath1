@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.31 2009-03-12 16:51:36 grossben Exp $
+// $Id: ProtocolRequest.java,v 1.32 2009-06-26 14:24:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -172,6 +172,13 @@ public class ProtocolRequest implements PagedResult {
 	 * An optional parameter which filters the output by data source.
 	 */
 	public static final String ARG_DATA_SOURCE = "data_source";
+
+    /**
+     * Record Type.
+     *
+     * A parameter which filters the output by record type.
+     */
+    public static final String ARG_RECORD_TYPE = "record_type";
 
     /**
      * Entity Type.
