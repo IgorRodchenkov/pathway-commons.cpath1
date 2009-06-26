@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.14 2008-07-15 13:40:47 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.15 2009-06-26 14:25:32 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -124,9 +124,9 @@ public class ExecuteHtmlResponse {
 		Set<Integer> organismTaxIdSet = filterSettings.getOrganismTaxonomyIdSet();
 
         // grab user selected entity type, and set it in global settings
-        String userSelectedEntityType = protocolRequest.getEntityType();
+        String recordType = getRecordType (request);
         List<String> typeList = new ArrayList();
-        typeList.add(userSelectedEntityType);
+        typeList.add(recordType);
         filterSettings.setEntityTypeSelected(typeList);
 
         hitByDataSourceMap.put(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL,
@@ -168,8 +168,6 @@ public class ExecuteHtmlResponse {
         // grab data source
         String userSelectedDataSource =
                 request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
-        // grab user selected entity type
-        String userSelectedEntityType = protocolRequest.getEntityType();
 
         // we are going to be modifying global filter settings, lets make a clone
         GlobalFilterSettings filterSettings = globalFilterSettings.clone();
@@ -184,9 +182,11 @@ public class ExecuteHtmlResponse {
 
         // setup types map
         HashMap<String, Integer> hitByTypeMap = new HashMap<String, Integer>();
-        HashMap typesMap = BioPaxEntityTypeMap.getIndexedEntitiesOnly();
-        typesMap.put(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL,
-                GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
+        HashMap typesMap = new HashMap ();
+        String recordType = getRecordType (request);
+        xdebug.logMsg(this, "Record type set to:  " + recordType);
+        typesMap.put(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS, 1);
+        typesMap.put(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES, 1);
 
         // interate through all types, and store query hits by type
         for (String type : (Set<String>) typesMap.keySet()) {
@@ -199,7 +199,7 @@ public class ExecuteHtmlResponse {
             LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
             long cpathIds[] = search.executeSearch();
             LuceneResults luceneResults = search.getLuceneResults();
-            if (userSelectedEntityType.equals(type)) {
+            if (recordType.equals(type)) {
                 request.setAttribute(BaseAction.ATTRIBUTE_LUCENE_RESULTS, luceneResults);
             }
             if (luceneResults.getNumHits() > 0) {
@@ -212,5 +212,13 @@ public class ExecuteHtmlResponse {
         // add hits by record type map to request object
         request.setAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP, hitByTypeMap);
         return totalHitsAllEntities;
+    }
+
+    private String getRecordType (HttpServletRequest request) {
+        String recordType = request.getParameter(ProtocolRequest.ARG_RECORD_TYPE);
+        if (recordType == null) {
+            recordType = GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES;
+        }
+        return recordType;
     }
 }
