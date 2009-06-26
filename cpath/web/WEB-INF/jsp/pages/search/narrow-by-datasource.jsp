@@ -17,8 +17,8 @@
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
     Map<String, Integer> hitByDataSourceMap =
         (Map<String, Integer>)request.getAttribute(BaseAction.ATTRIBUTE_HITS_BY_DATA_SOURCE_MAP);
-    String keyType = protocolRequest.getEntityType();
-    String keyDataSource = (String)request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
+    String keyType = request.getParameter(ProtocolRequest.ARG_RECORD_TYPE);
+    String keyDataSource = request.getParameter(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME);
 
     // we have list of snapshot id's from request object, lets get the name to go with the id's
     DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
@@ -55,7 +55,7 @@
 			                "<a href='webservice.do?version=" + webUIBean.getWebApiVersion() +
                             "&q=" + protocolRequest.getQuery() +
 			                "&format=html&cmd=get_by_keyword&" +
-			                ProtocolRequest.ARG_ENTITY_TYPE + "=" + keyType + "&" +
+			                ProtocolRequest.ARG_RECORD_TYPE + "=" + keyType + "&" +
 		   				    GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + dataSourceNameMap.get(dataSource) +
 				            "'>" + label +
 				            "</a>" +
