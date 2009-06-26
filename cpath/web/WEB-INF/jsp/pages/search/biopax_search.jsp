@@ -247,12 +247,12 @@ else {
 
     <div class="box">
     <h3>Narrow Results</h3>
-    <jsp:include page="./narrow-by-type.jsp" flush="true" />
     <jsp:include page="./narrow-by-datasource.jsp" flush="true" />
     </div>
     <jsp:include page="../../global/redesign/currentFilterSettings.jsp" flush="true" />
 	</div>
     <div class="splitcontentright">
+    <jsp:include page="./narrow-by-type.jsp" flush="true" />
 <%
 	Pager pager = new Pager (protocolRequest, totalNumHits);
 	out.println("<div class='search_buttons'>");
