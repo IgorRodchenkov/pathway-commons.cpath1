@@ -2,6 +2,8 @@ package org.mskcc.pathdb.model;
 
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.query.QueryException;
+import org.mskcc.pathdb.lucene.OrganismStats;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -188,4 +190,53 @@ public class GlobalFilterSettings implements Cloneable {
     public GlobalFilterSettings clone() throws CloneNotSupportedException {
 		return (GlobalFilterSettings)super.clone();
 	}
+
+    /**
+     * Gets the Filter Summary.
+     * @return Filter Summary.
+     */
+    public String getFilterSummary() throws DaoException, QueryException {
+        OrganismStats orgStats = OrganismStats.getInstance();
+        List<Organism> allOrganismsList = orgStats.getListSortedByName();
+
+        // construct organism list into string used by autocomplete box
+        StringBuffer summary = new StringBuffer();
+        int numOrganismsSelected = 0;
+        for (Organism organism : allOrganismsList) {
+            if (isOrganismSelected(organism.getTaxonomyId())) {
+                numOrganismsSelected++;
+                summary.append (organism.getSpeciesName());
+            }
+        }
+
+        if (numOrganismsSelected == 0) {
+            summary.append("All Organisms");
+        }
+
+        DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
+        ArrayList list = dao.getAllNetworkDatabaseSnapshots();
+
+        int numDataSourcesSelected = 0;
+        int numDataSources=0;
+        for (int i = 0; i < list.size(); i++) {
+            ExternalDatabaseSnapshotRecord snapshotRecord =
+                    (ExternalDatabaseSnapshotRecord) list.get(i);
+            if(snapshotRecord.getExternalDatabase().getIconFileExtension() != null) {
+                numDataSources++;
+            }
+            if (isSnapshotSelected(snapshotRecord.getId())) {
+                numDataSourcesSelected++;
+            }
+        }
+        if (numDataSourcesSelected == numDataSources) {
+            summary.append (", All Data Sources.");
+        } else {
+            if (numDataSourcesSelected == 1) {
+                summary.append (", " + numDataSourcesSelected + " Data Source");
+            } else {
+                summary.append (", " + numDataSourcesSelected + " Data Sources");
+            }
+        }
+        return summary.toString();
+    }
 }
