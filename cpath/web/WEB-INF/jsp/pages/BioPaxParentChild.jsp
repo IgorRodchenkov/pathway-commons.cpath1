@@ -148,6 +148,9 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
 %>
 
 <%!
+    /**
+    * Indicates if the record has details to show within a twisty.
+    */
     private boolean hasDetails(BioPaxRecordSummary bpSummary,
             ArrayList<ExternalLinkRecord> referenceLinks, InteractionSummary interactionSummary,
             List<String> interactionSummaryStringList, int NUM_PREVIEW_INTERACTION_PARTICIPANTS) {
