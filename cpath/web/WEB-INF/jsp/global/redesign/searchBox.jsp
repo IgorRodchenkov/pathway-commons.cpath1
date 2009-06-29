@@ -27,6 +27,13 @@
     }
     String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
     String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
+
+    GlobalFilterSettings filterSettings = (GlobalFilterSettings)
+            session.getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+    if (filterSettings == null) {
+        filterSettings = new GlobalFilterSettings();
+        session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS, filterSettings);
+    }
 %>
 <%  boolean showSearchBox = true;
     if (CPathUIConfig.getWebMode() == CPathUIConfig.WEB_MODE_BIOPAX && uri != null  && uri.endsWith("home.do")) {
@@ -92,6 +99,7 @@
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="<%= webUIBean.getWebApiVersion() %>"/>
     <input type="text" id="<%= ProtocolRequest.ARG_QUERY %>" name="<%= ProtocolRequest.ARG_QUERY %>" size="25" value='<%= searchTerm %>'/>
     <input type="submit" id="searchbutton" value="Search"/>
+    <small><br>Current filters:  <%= filterSettings.getFilterSummary() %>.&nbsp;<a href='filter.do'>Set filters.</a></small>
     <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
