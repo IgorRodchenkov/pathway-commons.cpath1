@@ -1,4 +1,4 @@
-// $Id: Pager.java,v 1.18 2007-12-28 14:44:37 cerami Exp $
+// $Id: Pager.java,v 1.19 2009-06-29 17:40:27 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -176,7 +176,7 @@ public class Pager {
      *
      * @return HTML Text.
      */
-    public String getHeaderHtmlForSearchPage(String color, String entityTypeParameter) {
+    public String getHeaderHtmlForSearchPage(String color, String recordTypeParameter) {
         NumberFormat formatter = new DecimalFormat("#,###,###");
         String bar = "&nbsp;|&nbsp;";
         StringBuffer text = new StringBuffer();
@@ -188,17 +188,17 @@ public class Pager {
         String previousUrl = this.getPreviousUrl();
         String nextUrl = this.getNextUrl();
         if (nextUrl != null) {
-			nextUrl += ("&" + entityTypeParameter);
+			nextUrl += ("&" + recordTypeParameter);
             String link = createLink("<font color=\"" + color + "\">Next " + hitsPerPage + "</font>", nextUrl);
             text.append(bar + link);
         }
         if (previousUrl != null) {
-			previousUrl += ("&" + entityTypeParameter);
+			previousUrl += ("&" + recordTypeParameter);
             String link = createLink("<font color=\"" + color + "\">Previous " + hitsPerPage + "</font>", previousUrl);
             text.append(bar + link);
         }
         if (firstUrl != null) {
-			firstUrl += ("&" + entityTypeParameter);
+			firstUrl += ("&" + recordTypeParameter);
             String link = createLink("<font color=\"" + color + "\">First Page</font>", firstUrl);
             text.append(bar + link);
         }
