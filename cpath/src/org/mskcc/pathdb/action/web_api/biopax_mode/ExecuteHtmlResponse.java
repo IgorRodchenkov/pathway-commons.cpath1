@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.15 2009-06-26 14:25:32 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.16 2009-06-29 17:39:49 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -124,7 +124,7 @@ public class ExecuteHtmlResponse {
 		Set<Integer> organismTaxIdSet = filterSettings.getOrganismTaxonomyIdSet();
 
         // grab user selected entity type, and set it in global settings
-        String recordType = getRecordType (request);
+        String recordType = protocolRequest.getRecordType ();
         List<String> typeList = new ArrayList();
         typeList.add(recordType);
         filterSettings.setEntityTypeSelected(typeList);
@@ -183,7 +183,7 @@ public class ExecuteHtmlResponse {
         // setup types map
         HashMap<String, Integer> hitByTypeMap = new HashMap<String, Integer>();
         HashMap typesMap = new HashMap ();
-        String recordType = getRecordType (request);
+        String recordType = protocolRequest.getRecordType();
         xdebug.logMsg(this, "Record type set to:  " + recordType);
         typesMap.put(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS, 1);
         typesMap.put(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES, 1);
@@ -212,13 +212,5 @@ public class ExecuteHtmlResponse {
         // add hits by record type map to request object
         request.setAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP, hitByTypeMap);
         return totalHitsAllEntities;
-    }
-
-    private String getRecordType (HttpServletRequest request) {
-        String recordType = request.getParameter(ProtocolRequest.ARG_RECORD_TYPE);
-        if (recordType == null) {
-            recordType = GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES;
-        }
-        return recordType;
     }
 }
