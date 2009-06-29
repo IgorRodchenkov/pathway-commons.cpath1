@@ -42,7 +42,6 @@
     Map sortedDataSourceNameMap = new TreeMap(dataSourceNameMap);
 %>
 <%
-    out.println("<h0>Data Source:</h0>");
     out.println("<ul>");
     for (String dataSource : (Set<String>)sortedDataSourceNameMap.keySet()) {
 	    String label = dataSource + " (" + hitByDataSourceMap.get(dataSourceNameMap.get(dataSource)) + ")";
