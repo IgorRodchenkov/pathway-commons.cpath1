@@ -52,7 +52,7 @@
     boolean organismSelected = false; // used to check "All organisms" check box below
     String organismListStr = "";
     for (Organism organism : allOrganismsList) {
-	    organismListStr += "\"" + organism.getSpeciesName() + "\", ";
+        organismListStr += "\"" + organism.getSpeciesName() + "\", ";
 		if (settings.isOrganismSelected(organism.getTaxonomyId())) {
 			organismSelected = true;
 		}
