@@ -1,7 +1,6 @@
 <%@ page import="org.mskcc.pathdb.action.BaseAction,
                  org.mskcc.pathdb.protocol.ProtocolRequest,
                  org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
-                 org.mskcc.pathdb.protocol.ProtocolConstantsVersion1,
                  org.mskcc.pathdb.protocol.ProtocolConstantsVersion2,
                  org.mskcc.pathdb.form.WebUIBean,
                  org.mskcc.pathdb.servlet.CPathUIConfig,
@@ -127,7 +126,7 @@
         return html.toString();
     }
 
-    private String getPathwaySummaryHtml(CPathRecord record,
+    private String getRecordSummaryHtml(CPathRecord record,
             BioPaxRecordSummary summary,
             ProtocolRequest request) {
         // only show pathway summary info
@@ -207,7 +206,7 @@
 <%
 if (protocolRequest.getQuery() != null) {
 %>
-<h1>Searched for:  <%= protocolRequest.getQuery() %></h1>
+<h1>Searched for:  <%= protocolRequest.getQuery() %> [<%= filterSettings.getFilterSummary()%>]</h1>
 <%
 }
 %>
@@ -246,10 +245,9 @@ else {
 	<div class="splitcontentleft">
 
     <div class="box">
-    <h3>Narrow Results</h3>
+    <h3>Narrow Results:</h3>
     <jsp:include page="./narrow-by-datasource.jsp" flush="true" />
     </div>
-    <jsp:include page="../../global/redesign/currentFilterSettings.jsp" flush="true" />
 	</div>
     <div class="splitcontentright">
     <form action="#">
@@ -350,14 +348,20 @@ else {
             out.println("</th>");
 			// inspection button
 			out.println("<th align=right>");
-			out.println(getInspectorButtonHtml(record.getId()));
+
+            String recordSummaryHtml = getRecordSummaryHtml(record, summary, protocolRequest);
+            String dataSourceHtml = getDataSourceHtml (record.getId(), recordDataSources);
+			boolean hasDetails = detailsExist (recordSummaryHtml, dataSourceHtml);
+			if (hasDetails) {
+    			out.println(getInspectorButtonHtml(record.getId()));
+            }
 			out.println("</th>");
 			out.println("</tr>");
 			// details
 			out.println("<tr><td colspan=\"3\">");
 			out.println("<div id='cpath_" + record.getId() + "_details' class='details'>");
-			out.println(getPathwaySummaryHtml(record, summary, protocolRequest));
-			out.println(getDataSourceHtml(record.getId(), recordDataSources));
+			out.println(recordSummaryHtml);
+			out.println(dataSourceHtml);
 			out.println("</div>");
 			out.println("</td></tr>");
         } catch (IllegalArgumentException e) {
@@ -370,7 +374,7 @@ else {
 			out.println("<div class='search_fragment'>");
 			String htmlFragments = getFragmentsHtml(fragments.get(i), summaryLabel, header, 40);
 			if (htmlFragments.length() > 0) {
-				out.println("<p><b>Excerpts:</b></p>\n\r");
+				out.println("<br>");
 				out.println(htmlFragments);
 			}
 			boolean pathwayType = record.getType() == CPathRecordType.PATHWAY;
@@ -415,6 +419,17 @@ else {
     out.println("</form>");
 	out.println("</div>");
 }
+%>
+
+<%!
+    public boolean detailsExist(String summary, String dataSourceSummary) {
+        if (summary != null && summary.trim().length() > 0) {
+            return true;
+        } else if (dataSourceSummary != null && dataSourceSummary.trim().length() > 0) {
+            return true;
+        }
+        return false;
+    }
 %>
 <p/>
 <jsp:include page="../../global/redesign/footer.jsp" flush="true" />
