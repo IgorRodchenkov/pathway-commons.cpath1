@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.32 2009-06-26 14:24:11 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.33 2009-06-29 17:34:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.mskcc.pathdb.model.PagedResult;
+import org.mskcc.pathdb.model.GlobalFilterSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -274,6 +275,11 @@ public class ProtocolRequest implements PagedResult {
     private String entityType;
 
     /**
+     * Record Type Parameter.
+     */
+    private String recordType;
+
+    /**
      * EmptyParameterSet.
      */
     private boolean emptyParameterSet;
@@ -343,6 +349,7 @@ public class ProtocolRequest implements PagedResult {
         }
 
         this.entityType = (String) parameterMap.get(ProtocolRequest.ARG_ENTITY_TYPE);
+        this.recordType = (String) parameterMap.get(ProtocolRequest.ARG_RECORD_TYPE);
 
         // start get_neighbors parameters
 		this.inputIDType = (String)parameterMap.get(ProtocolRequest.ARG_INPUT_ID_TYPE);
@@ -695,6 +702,17 @@ public class ProtocolRequest implements PagedResult {
      */
     public String getEntityType() {
         return entityType;
+    }
+
+    /**
+     * Gets the Record Type.
+     */
+    public String getRecordType() {
+        if (recordType == null) {
+            return GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS;
+        } else {
+            return recordType;
+        }
     }
 
     /**
