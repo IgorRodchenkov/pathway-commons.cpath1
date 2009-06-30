@@ -1,4 +1,4 @@
-// $Id: TestItemToIndex.java,v 1.28 2009-06-24 19:45:36 cerami Exp $
+// $Id: TestItemToIndex.java,v 1.29 2009-06-30 20:53:29 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -162,7 +162,7 @@ public class TestItemToIndex extends TestCase {
         assertEquals("PATHWAY", recordType.stringValue());
         assertEquals("pathway", specificType.stringValue());
         assertEquals("REACTOME", dataSource.stringValue());
-        assertEquals("glycolysis I glycolysis I", nameField.stringValue().trim());
+        assertEquals("glycolysis I", nameField.stringValue().trim());
         assertTrue(organismField.stringValue().startsWith
                 ("Escherichia coli K-12 83333"));
     }
