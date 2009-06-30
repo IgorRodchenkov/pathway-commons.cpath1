@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.31 2009-06-24 19:45:00 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.32 2009-06-30 15:17:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -47,11 +47,7 @@ import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Encapsulates a BioPAX Record scheduled for indexing in Lucene.
@@ -426,14 +422,17 @@ public class BioPaxToIndex implements ItemToIndex {
 			BioPaxRecordSummary summary =
 				BioPaxRecordUtil.createBioPaxRecordSummary(descendentRecord);
 
-			// names
-			bufferToReturn.append(" " + getNamesForField(summary));
+            HashSet <String> nameMap = new HashSet <String> ();
 
-			// synonyms
-			bufferToReturn.append(" " + getSynonymsForField(summary));
+            getNamesSet(summary, nameMap);
+            getSynonymsSet(summary, nameMap);
+            getExternalRefsSet(summary, nameMap);
 
-			// external refs
-			bufferToReturn.append(" " + getExternalRefsForField(summary));
+            Iterator <String> nameIterator = nameMap.iterator();
+            while (nameIterator.hasNext()) {
+                String currentName = nameIterator.next();
+                bufferToReturn.append(currentName + " ");
+            }
 		}
 
 		// outta here
@@ -472,26 +471,33 @@ public class BioPaxToIndex implements ItemToIndex {
 
 		StringBuffer bufferToReturn = new StringBuffer();
 
-		// name
+        HashSet nameSet = new HashSet<String>();
+        // name
 		String name = summary.getName();
 		if (name != null && name.length() > 0) {
-			bufferToReturn.append(name);
+			nameSet.add(name);
 		}
 
-		// label
+
+        // label
 		String label = summary.getLabel();
-		if (label != null && label.length() > 0) {
-			bufferToReturn.append(" " + label);
+		if (label != null && label.length() > 0 && !label.equals(name)) {
+			nameSet.add(label);
 		}
 
 		// short name
 		String shortName = summary.getShortName();
 		if (shortName != null && shortName.length() > 0) {
-			bufferToReturn.append(" " + shortName);
+			nameSet.add(shortName);
 		}
 
 		// outta here
-		return bufferToReturn.toString();
+        Iterator <String> nameIterator = nameSet.iterator();
+        while (nameIterator.hasNext()) {
+            String currentName = nameIterator.next();
+            bufferToReturn.append(currentName + " ");
+        }
+        return bufferToReturn.toString();
 	}
 
 	private String getSynonymsForField(BioPaxRecordSummary summary) {
@@ -530,7 +536,49 @@ public class BioPaxToIndex implements ItemToIndex {
 		return toReturn.replaceAll(XmlStripper.ELEMENT_DELIMITER + "$", "");
 	}
 
-	private String getGeneSymbol (BioPaxRecordSummary summary) {
+	private void getNamesSet(BioPaxRecordSummary summary, HashSet<String> nameSet) {
+        // name
+		String name = summary.getName();
+		if (name != null && name.length() > 0) {
+			nameSet.add(name);
+		}
+
+        // label
+		String label = summary.getLabel();
+		if (label != null && label.length() > 0 && !label.equals(name)) {
+			nameSet.add(label);
+		}
+
+		// short name
+		String shortName = summary.getShortName();
+		if (shortName != null && shortName.length() > 0) {
+			nameSet.add(shortName);
+		}
+	}
+
+	private void getSynonymsSet(BioPaxRecordSummary summary, HashSet<String> nameSet) {
+		List<String> synonyms = (List<String>)summary.getSynonyms();
+		if (synonyms != null) {
+			for (String synonym : synonyms) {
+				if (synonym != null && synonym.length() > 0) {
+					nameSet.add(synonym);
+				}
+			}
+		}
+	}
+
+	private void getExternalRefsSet(BioPaxRecordSummary summary, HashSet<String> nameSet) {
+		if (summary.getExternalLinks() != null) {
+			for (ExternalLinkRecord link : (List<ExternalLinkRecord>)summary.getExternalLinks()) {
+				String dbName = link.getExternalDatabase().getName();
+				if (! dbName.equalsIgnoreCase("PUBMED")) {
+					nameSet.add(link.getLinkedToId());
+				}
+			}
+		}
+	}
+
+    private String getGeneSymbol (BioPaxRecordSummary summary) {
 		StringBuffer bufferToReturn = new StringBuffer();
 		if (summary.getExternalLinks() != null) {
 			for (ExternalLinkRecord link : (List<ExternalLinkRecord>)summary.getExternalLinks()) {
