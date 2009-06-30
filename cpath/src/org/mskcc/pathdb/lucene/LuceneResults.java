@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.8 2009-06-24 19:42:58 cerami Exp $
+// $Id: LuceneResults.java,v 1.9 2009-06-30 15:16:56 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -67,7 +67,7 @@ import java.util.ArrayList;
 public class LuceneResults {
     public static final String START_TAG = "<b>";
     public static final String END_TAG = "</b>";
-    public static final String MEMBER_OF = "is a member of";
+    public static final String MEMBER_OF = "contains a molecule or protein with the keyword:  ";
     private long cpathIds[];
     private List<List<String>> fragments;
     private Map<Long,Set<String>> dataSourceMap;
@@ -236,12 +236,11 @@ public class LuceneResults {
             throws IOException {
         String fragment = getFragment(doc, highLighter);
         // if fragment is null, assume descendent ?
-        if ((fragment == null || fragment.length() == 0) &&
-            term.contains(" entity_type:pathway ")){
+        if ((fragment == null || fragment.length() == 0)) {
             String value = doc.getField(LuceneConfig.FIELD_NAME).stringValue();
             if (value != null && value.length() > 0) {
                 List<String> listToReturn = new ArrayList<String>();
-                listToReturn.add(START_TAG + term + END_TAG + " " + MEMBER_OF);
+                listToReturn.add(MEMBER_OF + START_TAG + term.toUpperCase() + END_TAG);
                 fragments.add(listToReturn);
                 return;
             }
@@ -290,7 +289,7 @@ public class LuceneResults {
 	 * @return String
 	 * @throws IOException
 	 */
-	private String getFragment(Document doc, QueryHighlightExtractor highLighter)
+	private String  getFragment(Document doc, QueryHighlightExtractor highLighter)
 		throws IOException {
 
 		String[] fields = {LuceneConfig.FIELD_ALL,
