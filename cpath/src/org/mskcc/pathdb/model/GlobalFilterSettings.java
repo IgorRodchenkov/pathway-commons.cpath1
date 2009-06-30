@@ -201,35 +201,39 @@ public class GlobalFilterSettings implements Cloneable {
 
         // construct organism list into string used by autocomplete box
         StringBuffer summary = new StringBuffer();
+
+        StringBuffer organismBuffer = new StringBuffer();
         int numOrganismsSelected = 0;
         for (Organism organism : allOrganismsList) {
             if (isOrganismSelected(organism.getTaxonomyId())) {
                 numOrganismsSelected++;
-                summary.append (organism.getSpeciesName());
+                if (numOrganismsSelected ==1) {
+                    organismBuffer.append(organism.getSpeciesName());
+                }
             }
         }
 
         if (numOrganismsSelected == 0) {
             summary.append("All Organisms");
+        } else if (numOrganismsSelected > 1) {
+            summary.append(numOrganismsSelected + " Organisms");
+        } else {
+            summary.append (organismBuffer.toString());
         }
 
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
         ArrayList list = dao.getAllNetworkDatabaseSnapshots();
 
         int numDataSourcesSelected = 0;
-        int numDataSources=0;
         for (int i = 0; i < list.size(); i++) {
             ExternalDatabaseSnapshotRecord snapshotRecord =
                     (ExternalDatabaseSnapshotRecord) list.get(i);
-            if(snapshotRecord.getExternalDatabase().getIconFileExtension() != null) {
-                numDataSources++;
-            }
             if (isSnapshotSelected(snapshotRecord.getId())) {
                 numDataSourcesSelected++;
             }
         }
-        if (numDataSourcesSelected == numDataSources) {
-            summary.append (", All Data Sources.");
+        if (numDataSourcesSelected == list.size()) {
+            summary.append (", All Data Sources");
         } else {
             if (numDataSourcesSelected == 1) {
                 summary.append (", " + numDataSourcesSelected + " Data Source");
