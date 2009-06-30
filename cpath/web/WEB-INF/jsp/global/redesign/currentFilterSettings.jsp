@@ -19,7 +19,7 @@
     Set<Long> snapshotIdSet = settings.getSnapshotIdSet();
 %>
 <div class="box">
-<h0>Data Source:</h0>
+<h0>Filter by Data Source:</h0>
 <%
     out.println("<ul>");
     if (snapshotIdSet.size() == dao.getAllNetworkDatabaseSnapshots().size()) {
@@ -37,7 +37,7 @@
     }
     out.println("</ul>");
 %>
-<h0>Organism:</h0>
+<h0>Filter by Organism:</h0>
 <%
     out.println("<ul>");
     DaoOrganism daoOrganism = new DaoOrganism();
