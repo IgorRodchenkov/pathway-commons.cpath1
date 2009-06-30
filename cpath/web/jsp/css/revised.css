@@ -179,3 +179,8 @@ input {
   padding-right:10px;
   margin-bottom:10px;
 }
+
+.first_sentence {
+  font-weight:normal;
+  font-size:90%;
+}

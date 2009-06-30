@@ -473,7 +473,7 @@ cursor:pointer;
 .search_fragment {
     font-size:85%;
     line-height:1.2em;
-    margin-top:0px;
+    margin-top:5px;
     margin-bottom:10px;
 }
 .search_fragment ul {list-style-type:square; margin-bottom:0px !important}
