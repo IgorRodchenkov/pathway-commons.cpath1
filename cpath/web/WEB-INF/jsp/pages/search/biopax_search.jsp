@@ -8,10 +8,6 @@
                  org.mskcc.pathdb.sql.dao.DaoCPath,
                  org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot,
                  org.mskcc.pathdb.lucene.LuceneResults,
-                 org.mskcc.pathdb.model.CPathRecord,
-                 org.mskcc.pathdb.model.CPathRecordType,
-                 org.mskcc.pathdb.model.GlobalFilterSettings,
-                 org.mskcc.pathdb.model.ExternalDatabaseSnapshotRecord,
                  org.mskcc.pathdb.util.html.HtmlUtil,
                  org.mskcc.pathdb.schemas.biopax.BioPaxConstants,
                  org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryUtils,
@@ -21,6 +17,7 @@
                  java.net.URLEncoder"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="java.util.*" %>
+<%@ page import="org.mskcc.pathdb.model.*" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
@@ -153,7 +150,7 @@
     }
 
     private String getFragmentsHtml(List<String> fragments, String summaryLabel,
-            String header, int maxLength) {
+            BioPaxRecordSummary summary, int maxLength) {
 
         // check args
         if (fragments == null || fragments.size() == 0) return "";
@@ -174,7 +171,16 @@
                     && fragmentCopy.length() <= summaryLabel.length())
                 continue;
             if (fragment.indexOf(LuceneResults.MEMBER_OF) != -1) {
-                fragment += " " + header + ".";
+                String recordType = summary.getType();
+                HashMap entityTypeMap = BioPaxEntityTypeMap.getCompleteMap();
+
+                if (recordType != null) {
+                    recordType = (String) entityTypeMap.get(recordType);
+                }
+                if (recordType == null) {
+                    recordType = "Record";
+                }
+                fragment = recordType + " " + fragment + ".";
                 appendPrefix = appendSuffix = false;
             }
             // write out the html, add "..." in front and back of fragment as needed
@@ -300,8 +306,9 @@ else {
 		    + SCOREBOARD_HEIGHT + "\" alt=\"" + String.valueOf(percentage) + "%\"></td>") : "";
 		String summaryLabel = "";
 		String header = "";
+		BioPaxRecordSummary summary = null;
         try {
-            BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
+            summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
 			summaryLabel = summary.getLabel();
             header = BioPaxRecordSummaryUtils.getBioPaxRecordHeaderString(summary);
 			// if protein, add organism information
@@ -372,7 +379,7 @@ else {
 			// fragments
             out.println("<tr><td colspan=\"3\">");
 			out.println("<div class='search_fragment'>");
-			String htmlFragments = getFragmentsHtml(fragments.get(i), summaryLabel, header, 40);
+			String htmlFragments = getFragmentsHtml(fragments.get(i), summaryLabel, summary, 40);
 			if (htmlFragments.length() > 0) {
 				out.println("<br>");
 				out.println(htmlFragments);
