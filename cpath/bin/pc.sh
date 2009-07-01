@@ -130,7 +130,7 @@ function importReactome {
 
 function importHumanCyc {
 	logProgress "Loading HumanCyc."
-	local HUMANCYC_HOME="$CPATH_HOME/../pathway-commons/humancyc/10-15-2008"
+	local HUMANCYC_HOME="$CPATH_HOME/../pathway-commons/humancyc/06-22-2009"
 	#mv -vf $HUMANCYC_HOME/biopax.owl $HUMANCYC_HOME/biopax.owl.bak
 	#$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $HUMANCYC_HOME/biopax.owl.bak > $HUMANCYC_HOME/biopax.owl
 	./admin.pl -d -f $HUMANCYC_HOME/biopax.owl import
