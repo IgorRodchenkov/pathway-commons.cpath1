@@ -242,7 +242,7 @@ public class ShowBioPaxRecord2 extends BaseAction {
 
 		// set number of neighbors
 		if (CPathUIConfig.getWebUIBean().getEnableMiniMaps() && bpSummary.getType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
-			request.setAttribute(NUM_NEIGHBORS_ATTRIBUTE, getNumNeighbors(xdebug, request, snapshotIdSet));
+			request.setAttribute(NUM_NEIGHBORS_ATTRIBUTE, getNumNeighbors(xdebug, request, id, snapshotIdSet));
 		}
 
         //  Forward to JSP page for HTML creation.
@@ -380,15 +380,16 @@ public class ShowBioPaxRecord2 extends BaseAction {
 	 *
 	 * @param request HttpServletRequest
      * @param xdebug XDebug Object.
+	 * @param id String
 	 * @param snapshotIdSet Set<Long>
 	 * @return Integer
 	 * @throws Exception
 	 */
-	private Integer getNumNeighbors(XDebug xdebug, HttpServletRequest request, Set<Long> snapshotIdSet) throws Exception {
+	private Integer getNumNeighbors(XDebug xdebug, HttpServletRequest request, String id, Set<Long> snapshotIdSet) throws Exception {
 		xdebug.logMsg(this, "getting number of neighbors in map, snapshotIdSet size: " + snapshotIdSet.size());
 		HashMap parameterMap = 	XssFilter.filterAllParameters(request.getParameterMap());
         ProtocolRequest protocolRequest = new ProtocolRequest(parameterMap);
-		protocolRequest.setQuery(request.getParameter(ID_PARAMETER));
+		protocolRequest.setQuery(id);
 		protocolRequest.setInputIDType("CPATH_ID");
 		String dataSources = "";
 		DaoExternalDbSnapshot daoSnapShot = new DaoExternalDbSnapshot();
