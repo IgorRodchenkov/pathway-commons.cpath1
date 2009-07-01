@@ -1,4 +1,4 @@
-// $Id: PsiInteractorExtractor.java,v 1.13 2008-03-10 15:02:59 grossben Exp $
+// $Id: PsiInteractorExtractor.java,v 1.14 2009-07-01 14:21:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,7 +36,9 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.highlight.QueryHighlightExtractor;
+import org.apache.lucene.search.highlight.Highlighter;
+import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.apache.lucene.search.highlight.QueryScorer;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.mskcc.dataservices.schemas.psi.Entry;
@@ -64,7 +66,7 @@ public class PsiInteractorExtractor {
     private Query query;
     private StandardAnalyzer analyzer;
     private IndexReader reader;
-    private QueryHighlightExtractor highLighter;
+    private Highlighter highLighter;
     private EntrySet entrySet;
     private XDebug xdebug;
 
@@ -98,8 +100,8 @@ public class PsiInteractorExtractor {
 				QueryParser queryParser = new QueryParser(LuceneConfig.FIELD_ALL, analyzer);
 				query = queryParser.parse(queryStr);
                 query = query.rewrite(reader);
-                highLighter = new QueryHighlightExtractor(query, analyzer,
-                        START_SPAN_TAG + COLOR + END_TAG, END_SPAN_TAG);
+                SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
+                highLighter = new Highlighter (htmlFormatter, new QueryScorer(query));
                 checkAllEntries();
             }
         } finally {
@@ -139,7 +141,7 @@ public class PsiInteractorExtractor {
         xdebug.logMsg(this, "Checking interactor:  " + interactorText);
 
         if (interactorText != null) {
-            String highLight = highLighter.highlightText(interactorText);
+            String highLight = null;
             //  If not null, we have a match
             if (highLight != null) {
                 xdebug.logMsg(this, "...  Match Found:  " + highLight);

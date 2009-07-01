@@ -1,4 +1,4 @@
-// $Id: QueryFullText.java,v 1.19 2008-03-10 15:01:07 grossben Exp $
+// $Id: QueryFullText.java,v 1.20 2009-07-01 14:21:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,18 +32,24 @@
 package org.mskcc.pathdb.tool;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.highlight.QueryHighlightExtractor;
+import org.apache.lucene.search.highlight.*;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
 import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.lucene.LuceneReader;
 import org.mskcc.pathdb.sql.query.QueryException;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.File;
 
 /**
  * Command Line Tool for Querying Full Text Indexer.
@@ -69,20 +75,50 @@ public class QueryFullText {
         System.out.println("Total Number of Hits:  " + hits.length());
         if (hits.length() > 0) {
 
+            //  Standard Analyzer to extract words using a list of English stop words.
             StandardAnalyzer analyzer = new StandardAnalyzer();
-			QueryParser queryParser = new QueryParser(LuceneConfig.FIELD_ALL, analyzer);
-			Query query = queryParser.parse(term);
-            QueryHighlightExtractor highLighter =
-                    new QueryHighlightExtractor(query, analyzer, "[", "]");
+
+            //  Standard Query Parser
+            QueryParser queryParser = new QueryParser(LuceneConfig.FIELD_ALL, analyzer);
+
+            // for the usage of highlighting with wildcards
+            // Necessary to expand search terms
+            IndexReader reader = IndexReader.open (new File(LuceneConfig.getLuceneDirectory()));
+            Query luceneQuery = queryParser.parse(term);
+            luceneQuery = luceneQuery.rewrite(reader);
+
+            //  Scorer implementation which scores text fragments by the number of
+            //  unique query terms found.
+            QueryScorer queryScorer = new QueryScorer(luceneQuery);
+
+            //  HTML Formatted surrounds matching text with <B></B> tags.
+            SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
+
+            //  Highligher Class
+            Highlighter highLighter = new Highlighter(htmlFormatter, queryScorer);
+
+            //  XXX Characters Max in Each Fragment
+            Fragmenter fragmenter = new SimpleFragmenter(100);
+            highLighter.setTextFragmenter(fragmenter);
 
             System.out.println("Showing hits:  0-" + (num - 1));
             for (int i = 0; i < num; i++) {
-                Document doc = hits.doc(i);
-                Field field = doc.getField(LuceneConfig.FIELD_ALL);
-                String value = field.stringValue();
+                System.out.print ("Hit " + i + ":  ");
 
-                String fragment = highLighter.getBestFragment(value, 70);
-                System.out.println(i + ".  " + fragment.trim());
+                //  Get the Matching Hit
+                Document doc = hits.doc(i);
+
+                //  Get the Field of Interest
+                Field field = doc.getField(LuceneConfig.FIELD_ALL);
+
+                //  Create the Token Stream
+                TokenStream tokenStream = new StandardAnalyzer().tokenStream
+                        (LuceneConfig.FIELD_ALL, new StringReader(field.stringValue()));
+
+                //  Get the Best Fragment
+                String formattedText = highLighter.getBestFragments(tokenStream,
+                        field.stringValue(), 5, "...");
+                System.out.println(formattedText);
             }
         }
     }

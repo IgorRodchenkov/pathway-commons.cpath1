@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.9 2009-06-30 15:16:56 cerami Exp $
+// $Id: LuceneResults.java,v 1.10 2009-07-01 14:21:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -32,6 +32,7 @@
 package org.mskcc.pathdb.lucene;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
@@ -39,8 +40,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.highlight.QueryHighlightExtractor;
-import org.mskcc.pathdb.lucene.LuceneConfig;
+import org.apache.lucene.search.highlight.*;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.sql.dao.DaoException;
@@ -52,12 +52,15 @@ import org.mskcc.pathdb.model.GlobalFilterSettings;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+
+import jena.query;
 
 /**
  * Query Utility Class.
@@ -108,10 +111,10 @@ public class LuceneResults {
 
         DaoExternalDb dao = new DaoExternalDb();
         int index = 0;
-        QueryHighlightExtractor highLighter = null;
+        Highlighter highLighter = null;
 
         if (term != null) {
-            term = reformatTerm(term);
+            //term = reformatTerm(term);
             highLighter = createHighlighter(term);
         }
 
@@ -232,9 +235,9 @@ public class LuceneResults {
         }
 	}
 
-    private void extractFragment(Document doc, QueryHighlightExtractor highLighter, String term)
+    private void extractFragment(Document doc, Highlighter highLighter, String term)
             throws IOException {
-        String fragment = getFragment(doc, highLighter);
+        String fragment = getFragment(doc, highLighter, term);
         // if fragment is null, assume descendent ?
         if ((fragment == null || fragment.length() == 0)) {
             String value = doc.getField(LuceneConfig.FIELD_NAME).stringValue();
@@ -260,23 +263,35 @@ public class LuceneResults {
         return term;
     }
 
-    private QueryHighlightExtractor createHighlighter (String term) throws IOException,
+    private Highlighter createHighlighter (String term) throws IOException,
             ParseException {
 
-            QueryParser parser = new QueryParser(LuceneConfig.FIELD_ALL,
-                    new StandardAnalyzer());
-            Query luceneQuery = parser.parse(term);
+        //  Standard Analyzer to extract words using a list of English stop words.
+        StandardAnalyzer analyzer = new StandardAnalyzer();
 
-            // Necessary to expand search terms
-            IndexReader reader = IndexReader.open
-                    (new File(LuceneConfig.getLuceneDirectory()));
-            luceneQuery = luceneQuery.rewrite(reader);
+        //  Standard Query Parser
+        QueryParser queryParser = new QueryParser(LuceneConfig.FIELD_ALL, analyzer);
 
-            // we do our own highlighting since this one will highlight meta-data,
-            // like 'NCI_NATURE' or 'AND' or 'pathway' in a query like the following:
-            // 'data_source:"NCI_NATURE" AND entity_type:pathway'
-            return new QueryHighlightExtractor(luceneQuery,
-                    new StandardAnalyzer(), "","");
+        // for the usage of highlighting with wildcards
+        // Necessary to expand search terms
+        IndexReader reader = IndexReader.open (new File(LuceneConfig.getLuceneDirectory()));
+        Query luceneQuery = queryParser.parse(term);
+        luceneQuery = luceneQuery.rewrite(reader);
+
+        //  Scorer implementation which scores text fragments by the number of
+        //  unique query terms found.
+        QueryScorer queryScorer = new QueryScorer(luceneQuery);
+
+        //  HTML Formatted surrounds matching text with <B></B> tags.
+        SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
+
+        //  Highligher Class
+        Highlighter highLighter = new Highlighter(htmlFormatter, queryScorer);
+
+        //  XXX Characters Max in Each Fragment
+        Fragmenter fragmenter = new SimpleFragmenter(100);
+        highLighter.setTextFragmenter(fragmenter);
+        return highLighter;
     }
 
 	/**
@@ -289,7 +304,7 @@ public class LuceneResults {
 	 * @return String
 	 * @throws IOException
 	 */
-	private String  getFragment(Document doc, QueryHighlightExtractor highLighter)
+	private String  getFragment(Document doc, Highlighter highLighter, String term)
 		throws IOException {
 
 		String[] fields = {LuceneConfig.FIELD_ALL,
@@ -297,10 +312,19 @@ public class LuceneResults {
 						   LuceneConfig.FIELD_EXTERNAL_REFS};
 
 		for (String fieldName : fields) {
-			Field field = doc.getField(fieldName);
-			String value = field.stringValue();
-			String fragment = highLighter.getBestFragment(value, 200);
-			if (fragment != null && fragment.length() > 0) return fragment;
+            //  Get the Field of Interest
+            Field field = doc.getField(fieldName);
+
+            //  Create the Token Stream
+            TokenStream tokenStream = new StandardAnalyzer().tokenStream
+                    (LuceneConfig.FIELD_ALL, new StringReader(field.stringValue()));
+
+            //  Get the Best Fragment
+            String formattedText = highLighter.getBestFragments(tokenStream,
+                    field.stringValue(), 5, "...");
+			if (formattedText != null && formattedText.length() > 0) {
+                return formattedText;
+            }
 		}
 
 		// made it here, assume descendent ?
