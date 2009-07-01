@@ -30,6 +30,7 @@
 		webUIBean.setFilterInteractions("IN_SAME_COMPONENT,CO_CONTROL_DEPENDENT_SIMILAR,CO_CONTROL_DEPENDENT_ANTI,CO_CONTROL_INDEPENDENT_SIMILAR,CO_CONTROL_INDEPENDENT_ANTI");
 		webUIBean.setMaxMiniMapSize(200);
 		webUIBean.setSnapshotDownloadBaseURL("http://awabi.cbio.mskcc.org/pcdl/");
+		//webUIBean.setSnapshotDownloadBaseURL("http://www.pathwaycommons.org/pc-snapshot/");
 		CPathUIConfig.setWebUIBean(webUIBean);
     }
 %>
