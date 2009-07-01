@@ -199,48 +199,65 @@ public class GlobalFilterSettings implements Cloneable {
         OrganismStats orgStats = OrganismStats.getInstance();
         List<Organism> allOrganismsList = orgStats.getListSortedByName();
 
-        // construct organism list into string used by autocomplete box
         StringBuffer summary = new StringBuffer();
 
-        StringBuffer organismBuffer = new StringBuffer();
-        int numOrganismsSelected = 0;
+        //  Process Organisms
+        ArrayList <String> organismsSelected = new ArrayList <String>();
         for (Organism organism : allOrganismsList) {
             if (isOrganismSelected(organism.getTaxonomyId())) {
-                numOrganismsSelected++;
-                if (numOrganismsSelected ==1) {
-                    organismBuffer.append(organism.getSpeciesName());
-                }
+                organismsSelected.add(organism.getSpeciesName());
             }
         }
 
-        if (numOrganismsSelected == 0) {
+        //  Then, do different things, depending on All, 1, or >1 Organisms Selected.
+        if (organismsSelected.size() == 0) {
             summary.append("All Organisms");
-        } else if (numOrganismsSelected > 1) {
-            summary.append(numOrganismsSelected + " Organisms");
+        } else if (organismsSelected.size() == 1) {
+            summary.append(organismsSelected.get(0));
         } else {
-            summary.append (organismBuffer.toString());
+            createToolTip("Organisms Selected:" , "Organisms", summary, organismsSelected);
         }
 
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
         ArrayList list = dao.getAllNetworkDatabaseSnapshots();
 
-        int numDataSourcesSelected = 0;
+        //  Process Data Sources
+        //  First, figure out which data sources are selected.
+        ArrayList <String> dataSourcesSelected = new ArrayList <String>();
         for (int i = 0; i < list.size(); i++) {
             ExternalDatabaseSnapshotRecord snapshotRecord =
                     (ExternalDatabaseSnapshotRecord) list.get(i);
             if (isSnapshotSelected(snapshotRecord.getId())) {
-                numDataSourcesSelected++;
+                dataSourcesSelected.add(snapshotRecord.getExternalDatabase().getName());
             }
         }
-        if (numDataSourcesSelected == list.size()) {
-            summary.append (", All Data Sources");
+
+        //  Then, do different things, depending on All, 1, or >1 Data Sources Selected.
+        summary.append (", ");
+        if (dataSourcesSelected.size() == list.size()) {
+            summary.append ("All Data Sources");
+        } else if (dataSourcesSelected.size() == 1) {
+                summary.append (dataSourcesSelected.get(0));
         } else {
-            if (numDataSourcesSelected == 1) {
-                summary.append (", " + numDataSourcesSelected + " Data Source");
-            } else {
-                summary.append (", " + numDataSourcesSelected + " Data Sources");
-            }
+            createToolTip("Data Sources Selected:" , "Data Sources", summary, dataSourcesSelected);
         }
         return summary.toString();
+    }
+
+    /**
+     * Creates a Tool Tip Using the Overlib Javascript Library.
+     */
+    private void createToolTip(String title, String linkName, StringBuffer summary,
+            ArrayList<String> list) {
+        summary.append ("<span class='filter_details'><a href=\"#\" " +
+                "onmouseover=\"return overlib('<DIV CLASS=popup>" +
+                "<DIV CLASS=popup_caption>" + title + "</DIV><DIV CLASS=popup_text>" +
+                "<UL>");
+        for (String item: list) {
+            summary.append ("<LI>" + item + "</LI>");
+        }
+        summary.append ("</UL></DIV></DIV>', FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); " +
+                "return true;\" onmouseout=\"return nd();\"> "
+                + list.size() + " " + linkName + "</a></span>");
     }
 }
