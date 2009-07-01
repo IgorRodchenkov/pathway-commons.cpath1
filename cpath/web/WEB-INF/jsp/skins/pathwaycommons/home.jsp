@@ -30,11 +30,12 @@ or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%=
 </div>
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;April 15, 2009:
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;July 2, 2009:
     <ul>
         <li><a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">Batch Download</a> of all Pathway Commons data in multiple file formats is now available.</li>
         <li>Systems Biology Center New York - IMID data set (December 17, 2008 Version 27).</li>
-        <li>Latest HumanCyc data set (March 10, 2009 Version 13).</li>
+        <li>Latest Reactome data set (June 24, 2009 Version 29).</li>
+        <li>Latest HumanCyc data set (June 22, 2009 Version 13.1).</li>
         <li>All yeast proteins are now annotated with UniProt functional annotation.</li>
     </ul>
 </li>
