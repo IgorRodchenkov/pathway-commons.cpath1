@@ -184,3 +184,9 @@ input {
   font-weight:normal;
   font-size:90%;
 }
+
+.filter_details a {
+   border-bottom-style: dotted;
+   border-bottom-width: thin;
+   text-decoration: none;
+}
