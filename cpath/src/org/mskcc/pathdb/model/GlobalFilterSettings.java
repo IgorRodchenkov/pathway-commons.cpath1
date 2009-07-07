@@ -195,18 +195,22 @@ public class GlobalFilterSettings implements Cloneable {
      * Gets the Filter Summary.
      * @return Filter Summary.
      */
-    public String getFilterSummary() throws DaoException, QueryException {
-        OrganismStats orgStats = OrganismStats.getInstance();
-        List<Organism> allOrganismsList = orgStats.getListSortedByName();
-
+    public String getFilterSummary() {
+        ArrayList <String> organismsSelected = new ArrayList <String>();
         StringBuffer summary = new StringBuffer();
 
-        //  Process Organisms
-        ArrayList <String> organismsSelected = new ArrayList <String>();
-        for (Organism organism : allOrganismsList) {
-            if (isOrganismSelected(organism.getTaxonomyId())) {
-                organismsSelected.add(organism.getSpeciesName());
+        try {
+            OrganismStats orgStats = OrganismStats.getInstance();
+            List<Organism> allOrganismsList = orgStats.getListSortedByName();
+
+            //  Process Organisms
+            for (Organism organism : allOrganismsList) {
+                if (isOrganismSelected(organism.getTaxonomyId())) {
+                    organismsSelected.add(organism.getSpeciesName());
+                }
             }
+        } catch (QueryException e) {
+        } catch (DaoException e) {
         }
 
         //  Then, do different things, depending on All, 1, or >1 Organisms Selected.
@@ -219,7 +223,11 @@ public class GlobalFilterSettings implements Cloneable {
         }
 
         DaoExternalDbSnapshot dao = new DaoExternalDbSnapshot();
-        ArrayList list = dao.getAllNetworkDatabaseSnapshots();
+        ArrayList list = null;
+        try {
+            list = dao.getAllNetworkDatabaseSnapshots();
+        } catch (DaoException e) {
+        }
 
         //  Process Data Sources
         //  First, figure out which data sources are selected.
