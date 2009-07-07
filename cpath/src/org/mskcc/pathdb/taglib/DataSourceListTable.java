@@ -6,6 +6,7 @@ import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
+import org.mskcc.pathdb.protocol.ProtocolConstants;
 import org.mskcc.pathdb.lucene.LuceneQuery;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
@@ -78,7 +79,7 @@ public class DataSourceListTable extends HtmlTable {
 			ProtocolRequest protocolRequest = getProtocolRequest(webUIBean);
 			GlobalFilterSettings filterSettings = new GlobalFilterSettings();
 			if (renderForHomepage) {
-				renderForHomepage(filterSettings, protocolRequest, webUIBean, list);
+				renderForHomepage(filterSettings, list);
 			}
 			else {
 				renderStatsPage(filterSettings, protocolRequest, webUIBean, list);
@@ -90,8 +91,6 @@ public class DataSourceListTable extends HtmlTable {
 	 * Routine to render data source list table on home page.
 	 *
 	 * @param filterSettings GlobalFilterSettings
-	 * @param request ProtocolRequest
-	 * @param webUIBean WebUIBean
 	 * @param list ArrayList
 	 * @throws QueryException
 	 * @throws DaoException
@@ -99,11 +98,11 @@ public class DataSourceListTable extends HtmlTable {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	private void renderForHomepage(GlobalFilterSettings filterSettings, ProtocolRequest protocolRequest, WebUIBean webUIBean, ArrayList list) 
+	private void renderForHomepage(GlobalFilterSettings filterSettings, ArrayList list)
 		throws QueryException, DaoException, AssemblyException, IOException, ParseException {
 
 		ArrayList<String> typeList = new ArrayList();
-		typeList.add("pathway");
+		typeList.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS);
 		filterSettings.setEntityTypeSelected(typeList);
 		int rowIconCounter = -1;
 		boolean tableCreated = false;
@@ -143,22 +142,14 @@ public class DataSourceListTable extends HtmlTable {
 	/**
 	 * Routine to render data source list table on stats page.
 	 *
-	 * @param filterSettings GlobalFilterSettings
-	 * @param protocolRequest ProtocolRequest
-	 * @param webUIBean WebUIBean
-	 * @param list ArrayList
-	 * @throws QueryException
-	 * @throws DaoException
-	 * @throws AssemblyException
-	 * @throws IOException
-	 * @throws ParseException
 	 */
-	private void renderStatsPage(GlobalFilterSettings filterSettings, ProtocolRequest protocolRequest, WebUIBean webUIBean, ArrayList list)
+	private void renderStatsPage(GlobalFilterSettings filterSettings, ProtocolRequest protocolRequest,
+                                 WebUIBean webUIBean, ArrayList list)
 		throws QueryException, DaoException, AssemblyException, IOException, ParseException {
 
 		// set proper type list for lucene query
 		ArrayList<String> typeList = new ArrayList();
-		typeList.add("pathway");
+		typeList.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS);
 		filterSettings.setEntityTypeSelected(typeList);
 		for (int i = 0; i < list.size(); i++) {
 			ExternalDatabaseSnapshotRecord snapshotRecord =
@@ -191,8 +182,10 @@ public class DataSourceListTable extends HtmlTable {
 				append (webUIBean.getWebApiVersion());
 				append ("&format=html&cmd=get_by_keyword");
 				append ("&" + ProtocolRequest.ARG_RECORD_TYPE + "=" + (search.getLuceneResults().getNumHits() > 0
-                        ? GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS : GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES));
-				append ("&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL);
+                        ? GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS
+                        : GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES));
+				append ("&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME
+                        + "=" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL);
 				append ("&q=data_source%3A" + dbRecord.getMasterTerm() + "\">");
 				append ("Browse</a>");
 				append ("</td>");
@@ -209,9 +202,9 @@ public class DataSourceListTable extends HtmlTable {
 	private ProtocolRequest getProtocolRequest(WebUIBean webUIBean) {
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		parameters.put(ProtocolRequest.ARG_VERSION, webUIBean.getWebApiVersion());
-		parameters.put(ProtocolRequest.ARG_FORMAT, "html");
-		parameters.put(ProtocolRequest.ARG_COMMAND, "get_by_keyword");
-		parameters.put(ProtocolRequest.ARG_RECORD_TYPE, "pathway");
+		parameters.put(ProtocolRequest.ARG_FORMAT, ProtocolConstants.FORMAT_HTML);
+		parameters.put(ProtocolRequest.ARG_COMMAND, ProtocolConstants.COMMAND_GET_BY_KEYWORD);
+		parameters.put(ProtocolRequest.ARG_RECORD_TYPE, GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS);
 		return new ProtocolRequest(parameters);
 	}
 }
