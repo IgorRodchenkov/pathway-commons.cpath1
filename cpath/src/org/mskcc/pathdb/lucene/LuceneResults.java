@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.10 2009-07-01 14:21:57 cerami Exp $
+// $Id: LuceneResults.java,v 1.11 2009-07-07 16:58:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -419,7 +419,6 @@ public class LuceneResults {
 		// see BioPaxToIndex for fields to check here...
 		return (term.contains(LuceneConfig.FIELD_ALL + ":") ||
 				term.contains(LuceneConfig.FIELD_CPATH_ID + ":") ||
-				term.contains(LuceneConfig.FIELD_ENTITY_TYPE + ":") ||
 				term.contains(LuceneConfig.FIELD_DATA_SOURCE + ":") ||
 				term.contains(LuceneConfig.FIELD_NAME + ":") ||
 				term.contains(LuceneConfig.FIELD_ORGANISM + ":") ||
