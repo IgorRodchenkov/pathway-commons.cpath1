@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.34 2009-07-07 16:34:34 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.35 2009-07-07 17:00:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -261,11 +261,6 @@ public class ProtocolRequest implements PagedResult {
 	 * (see ProtocolRequest.ARG_DATA_SOURCE)
 	 */
 	private String dataSource;
-
-    /**
-     * Entity Type Parameter.
-     */
-    private String entityType;
 
     /**
      * Record Type Parameter.
@@ -689,14 +684,6 @@ public class ProtocolRequest implements PagedResult {
     }
 
     /**
-     * Gets the BioPAX Entity Type.
-     * @return BioPAX Entity Type.
-     */
-    public String getEntityType() {
-        return entityType;
-    }
-
-    /**
      * Gets the Record Type.
      */
     public String getRecordType() {
@@ -705,14 +692,6 @@ public class ProtocolRequest implements PagedResult {
         } else {
             return recordType;
         }
-    }
-
-    /**
-     * Sets the BioPAX Entity Type.
-     * @param entityType BioPAX Entity Type.
-     */
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
     }
 
     /**
