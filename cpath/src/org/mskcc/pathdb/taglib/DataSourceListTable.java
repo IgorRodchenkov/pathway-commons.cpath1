@@ -144,7 +144,7 @@ public class DataSourceListTable extends HtmlTable {
 	 * Routine to render data source list table on stats page.
 	 *
 	 * @param filterSettings GlobalFilterSettings
-	 * @param request ProtocolRequest
+	 * @param protocolRequest ProtocolRequest
 	 * @param webUIBean WebUIBean
 	 * @param list ArrayList
 	 * @throws QueryException
@@ -190,7 +190,8 @@ public class DataSourceListTable extends HtmlTable {
 				append ("<br><a href=\"webservice.do?version=");
 				append (webUIBean.getWebApiVersion());
 				append ("&format=html&cmd=get_by_keyword");
-				append ("&" + ProtocolRequest.ARG_RECORD_TYPE + "=" + (search.getLuceneResults().getNumHits() > 0 ? "pathway" : "protein"));
+				append ("&" + ProtocolRequest.ARG_RECORD_TYPE + "=" + (search.getLuceneResults().getNumHits() > 0
+                        ? GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS : GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES));
 				append ("&" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL);
 				append ("&q=data_source%3A" + dbRecord.getMasterTerm() + "\">");
 				append ("Browse</a>");
