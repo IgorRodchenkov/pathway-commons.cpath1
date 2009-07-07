@@ -228,11 +228,11 @@ if (totalNumHits == 0) {
 	if (daoSnapShot.getAllNetworkDatabaseSnapshots().size() !=
             filterSettings.getSnapshotIdSet().size() ||
 		!organismIdSet.contains(GlobalFilterSettings.ALL_ORGANISMS_FILTER_VALUE)) {
-		out.println("<div class=\"user_message\"><b>Oops.  No Matching Records Found. " +
+		out.println("<div class=\"user_message\"><b>No Matching Records Found. " +
                 "Try updating your filter settings or try a different search term.</b></div></p>");
 	}
 	else {
-		out.println("<div class=\"user_message\"><b>Oops.  No Matching Records Found.  Please try " +
+		out.println("<div class=\"user_message\"><b>No Matching Records Found.  Please try " +
                 "a different search term.</b></div>");
 	}
 %>
