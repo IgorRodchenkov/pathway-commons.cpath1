@@ -184,4 +184,4 @@ print "Zipping of files complete..."
 print "Moving SNAPSHOT-README.txt to README.txt..."
 os.system("cp ../dbData/SNAPSHOT-README.txt " + SNAPSHOT_DUMP_DIR + "/README.TXT")
 
-print "Dump complete!"
+print "Dump complete!!"
