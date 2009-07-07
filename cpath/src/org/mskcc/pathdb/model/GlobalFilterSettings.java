@@ -29,9 +29,9 @@ public class GlobalFilterSettings implements Cloneable {
     public final static int ALL_ORGANISMS_FILTER_VALUE = Integer.MAX_VALUE;
 
     /**
-     * Flag to indicate that users wants _all_ entity types.
+     * Flag to indicate that users wants _all_ record types.
      */
-    public final static String NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL = "ALL_ENTITY_TYPE";
+    public final static String NARROW_BY_RECORD_TYPES_ALL = "ALL";
 
     /**
      * Flag to indicate that user wants only pathway records.
@@ -70,7 +70,7 @@ public class GlobalFilterSettings implements Cloneable {
             snapshotSet.add(new Long(snapshotRecord.getId()));
         }
         organismSet.add(ALL_ORGANISMS_FILTER_VALUE);
-        entityTypeSet.add(NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
+        entityTypeSet.add(NARROW_BY_RECORD_TYPES_ALL);
     }
 
     /**
@@ -89,7 +89,7 @@ public class GlobalFilterSettings implements Cloneable {
             snapshotSet.add(new Long(snapshotRecord.getId()));
         }
         organismSet.add(ALL_ORGANISMS_FILTER_VALUE);
-        entityTypeSet.add(NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL);
+        entityTypeSet.add(NARROW_BY_RECORD_TYPES_ALL);
     }
 
     /**

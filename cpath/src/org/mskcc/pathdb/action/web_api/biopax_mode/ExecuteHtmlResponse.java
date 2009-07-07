@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.16 2009-06-29 17:39:49 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.17 2009-07-07 18:21:13 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -38,7 +38,6 @@ import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
-import org.mskcc.pathdb.model.BioPaxEntityTypeMap;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.query.QueryException;
@@ -205,7 +204,7 @@ public class ExecuteHtmlResponse {
             if (luceneResults.getNumHits() > 0) {
                 hitByTypeMap.put(type, luceneResults.getNumHits());
             }
-            if (type.equals(GlobalFilterSettings.NARROW_BY_ENTITY_TYPES_FILTER_VALUE_ALL)) {
+            if (type.equals(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_ALL)) {
                 totalHitsAllEntities = luceneResults.getNumHits();
             }
         }
