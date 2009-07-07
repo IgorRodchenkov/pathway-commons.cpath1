@@ -1,15 +1,9 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
 <%@ page import="org.mskcc.pathdb.model.GlobalFilterSettings"%>
-<%@ page import="org.mskcc.pathdb.protocol.ProtocolRequest" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
-String entityValue = "ALL_ENTITY_TYPE";
-String entityName = ProtocolRequest.ARG_ENTITY_TYPE;
-String dataSourceName = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME;
-String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL;
-
 %>
 <table cellspacing=0>
 <tr valign="top">
@@ -19,11 +13,6 @@ String dataSourceValue = GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALU
 <h1>Search <%= webUIBean.getApplicationName() %>:</h1>
 <p>
 <jsp:include page="../../global/redesign/homePageSearchBox.jsp" flush="true" />
-</p>
-<p>To get started, enter a gene name, gene identifier or pathway name in the text box above.
-For example: <a href="webservice.do?version=2.0&q=BRCA1&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">BRCA1</a>,
-<a href="webservice.do?version=2.0&q=P38398&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">P38398</a>
-or  <a href="webservice.do?version=2.0&q=mtor&format=html&cmd=get_by_keyword&<%= entityName %>=<%= entityValue %>&<%= dataSourceName %>=<%= dataSourceValue %>">mTOR</a>.
 </p>
 <p>To restrict your search to specific data sources or specific organisms, update your
 <a href="filter.do">global filter settings</a>.</p>
