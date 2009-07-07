@@ -9,6 +9,7 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="org.mskcc.pathdb.schemas.biopax.BioPaxConstants" %>
+<%@ page import="org.mskcc.pathdb.taglib.SearchTabs" %>
 <%
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     ProtocolRequest protocolRequest = (ProtocolRequest) request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
@@ -22,9 +23,9 @@
 <%
     for (String type : (Set<String>)sortedHitByTypeMap.keySet()) {
 	    // label
-        String typePlainEnglish = "Pathways";
+        String typePlainEnglish = SearchTabs.PATHWAYS_TAB_TITLE;
         if (type.equals("PHYSICAL_ENTITY")) {
-            typePlainEnglish = "Proteins";
+            typePlainEnglish = SearchTabs.PHYSICAL_ENTITIES_TAB_TITLE;
         }
         String label = typePlainEnglish + " (" + hitByTypeMap.get(type) + ")";
 	    if (type.equals(recordType)) {

@@ -7,6 +7,7 @@
 				 org.mskcc.pathdb.model.GlobalFilterSettings"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
+<%@ page import="org.mskcc.pathdb.taglib.SearchTabs" %>
 <%
     WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     String uri = (String) request.getAttribute("servlet_name");
@@ -91,8 +92,8 @@
 <fieldset>
 <legend>
     <span class="search_bar_tabs">
-        <a href="#" id="pathway_tab_tab" class="<%= pathwayTabClass %>" onclick="showSearchBarTab('pathway_tab')">Find Pathways</a>
-        <a href="#" id="protein_tab_tab" class="<%= proteinTabClass %>" onclick="showSearchBarTab('protein_tab')">Find Proteins</a>
+        <a href="#" id="pathway_tab_tab" class="<%= pathwayTabClass %>" onclick="showSearchBarTab('pathway_tab')">Find <%= SearchTabs.PATHWAYS_TAB_TITLE %></a>
+        <a href="#" id="protein_tab_tab" class="<%= proteinTabClass %>" onclick="showSearchBarTab('protein_tab')">Find <%= SearchTabs.PHYSICAL_ENTITIES_TAB_TITLE %></a>
     </span>
 </legend>
 <% } %>

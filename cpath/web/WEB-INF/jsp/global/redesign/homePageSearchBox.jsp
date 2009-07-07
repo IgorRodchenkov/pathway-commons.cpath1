@@ -4,6 +4,7 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="java.io.IOException" %>
+<%@ page import="org.mskcc.pathdb.taglib.SearchTabs" %>
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 %>
@@ -56,8 +57,8 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 <fieldset>
 <legend>
 <span class="search_tabs">
-    <a href="#" id="pathway_tab_tab" class="search_tab_active" onclick="showSearchTab('pathway_tab')">Find Pathways</a>
-    <a href="#" id="protein_tab_tab" class="search_tab_inactive" onclick="showSearchTab('protein_tab')">Find Proteins</a>
+    <a href="#" id="pathway_tab_tab" class="search_tab_active" onclick="showSearchTab('pathway_tab')">Find <%= SearchTabs.PATHWAYS_TAB_TITLE %></a>
+    <a href="#" id="protein_tab_tab" class="search_tab_inactive" onclick="showSearchTab('protein_tab')">Find <%= SearchTabs.PHYSICAL_ENTITIES_TAB_TITLE %></a>
 </span>
 </legend>
 <p>
