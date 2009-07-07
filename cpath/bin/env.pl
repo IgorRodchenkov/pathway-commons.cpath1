@@ -1,3 +1,4 @@
+
 #  Set up Environment for Running cPath Java Tools
 
 # Check to see if CPATH_HOME is set via command line arguments
