@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.33 2009-06-29 17:34:26 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.34 2009-07-07 16:34:34 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -182,13 +182,6 @@ public class ProtocolRequest implements PagedResult {
     public static final String ARG_RECORD_TYPE = "record_type";
 
     /**
-     * Entity Type.
-     *
-     * An optional parameter which filters the output by entity type.
-     */
-    public static final String ARG_ENTITY_TYPE = "entity_type";
-
-    /**
      * Command.
      */
     private String command;
@@ -348,7 +341,6 @@ public class ProtocolRequest implements PagedResult {
             useOptimizedCode = true;
         }
 
-        this.entityType = (String) parameterMap.get(ProtocolRequest.ARG_ENTITY_TYPE);
         this.recordType = (String) parameterMap.get(ProtocolRequest.ARG_RECORD_TYPE);
 
         // start get_neighbors parameters

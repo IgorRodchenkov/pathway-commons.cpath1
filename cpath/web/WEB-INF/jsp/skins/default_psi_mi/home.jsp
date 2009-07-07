@@ -7,7 +7,6 @@
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
 String entityValue =  "pathway";
-String entityName = ProtocolRequest.ARG_ENTITY_TYPE;
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 %>
 
@@ -28,7 +27,7 @@ cPath is a database and software suite for storing, visualizing, and analyzing b
     <input type="hidden" name="<%= ProtocolRequest.ARG_FORMAT %>" value="<%= ProtocolConstants.FORMAT_HTML %>"/>
     <input type="hidden" name="<%= ProtocolRequest.ARG_COMMAND %>"
         size="25" value='<%= ProtocolConstants.COMMAND_GET_BY_KEYWORD %>'/>
-    <input type="hidden" name="<%= entityName %>" value="<%= entityValue %>"/>
+    <input type="hidden" name="<%= ProtocolRequest.ARG_RECORD_TYPE %>" value="<%= entityValue %>"/>
     </form>
     <p>To get started, enter a gene name or identifier in the text box above.</p>
     <p>To restrict your search to specific data sources or specific organisms, update your
