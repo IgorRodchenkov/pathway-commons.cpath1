@@ -19,7 +19,6 @@ import org.mskcc.pathdb.schemas.search_response.*;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummary;
 import org.mskcc.pathdb.util.biopax.BioPaxRecordUtil;
-import org.mskcc.pathdb.taglib.ReactomeCommentUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +31,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
 import java.math.BigInteger;
 
 /**
@@ -74,7 +72,7 @@ public class ExecuteSearchXmlResponse {
         GlobalFilterSettings filterSettings = new GlobalFilterSettings();
         ArrayList<String> entityTypes = new ArrayList<String>();
         entityTypes.add("protein");
-        filterSettings.setEntityTypeSelected(entityTypes);
+        filterSettings.setRecordTypeSelected(entityTypes);
 
         //  Extract and set Organism Taxonomy ID
         String organism = protocolRequest.getOrganism();

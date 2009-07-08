@@ -103,7 +103,7 @@ public class DataSourceListTable extends HtmlTable {
 
 		ArrayList<String> typeList = new ArrayList();
 		typeList.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS);
-		filterSettings.setEntityTypeSelected(typeList);
+		filterSettings.setRecordTypeSelected(typeList);
 		int rowIconCounter = -1;
 		boolean tableCreated = false;
 		for (int i = 0; i < list.size(); i++) {
@@ -150,7 +150,7 @@ public class DataSourceListTable extends HtmlTable {
 		// set proper type list for lucene query
 		ArrayList<String> typeList = new ArrayList();
 		typeList.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS);
-		filterSettings.setEntityTypeSelected(typeList);
+		filterSettings.setRecordTypeSelected(typeList);
 		for (int i = 0; i < list.size(); i++) {
 			ExternalDatabaseSnapshotRecord snapshotRecord =
 				(ExternalDatabaseSnapshotRecord) list.get(i);

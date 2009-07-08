@@ -111,7 +111,7 @@ public class LuceneAutoFilter {
 	 */
 	private static String processRecordTypeFilter(String q, GlobalFilterSettings filterSettings) {
 
-		Set<String>  entityTypeSet = filterSettings.getEntityTypeSet();
+		Set<String>  entityTypeSet = filterSettings.getRecordTypeSet();
 		List entityTypeList = new ArrayList();
 		boolean allEntityTypeFilterSet = false;
 		for (String type : entityTypeSet) {
