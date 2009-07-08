@@ -341,6 +341,15 @@ else {
 				String text = (numDescendents == 1) ? "1 participant" : numDescendents + " participants";
 				text = (numDescendents == 0) ? "" : text;
 				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
+
+				//  Output first sentence in description
+				String comments[] = summary.getComments();
+				if (comments != null && comments.length > 0) {
+				    String comment = ReactomeCommentUtil.massageComment(comments[0]);
+				    String sentences[] = comment.split("\\.");
+				    out.println ("<div class='first_sentence'>" + sentences[0] +".</span>");
+                }
+
             }
 			else if (record.getSpecificType().equalsIgnoreCase(BioPaxConstants.PROTEIN)) {
 				String textPathways = (numParentPathways == 1) ? "1 pathway" : numParentPathways + " pathways";
@@ -351,6 +360,12 @@ else {
 					String delimiter = (textPathways.length() > 0 && textInteractions.length() > 0) ? ", " : "";
 					out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + textPathways + delimiter + textInteractions +"]</span>");
 				}
+
+				//  Show full protein name
+				//String name = summary.getName();
+				//if (name != null && summary.getLabel() != null && (!name.equals(summary.getLabel()))) {
+			    //    out.println ("<div class='first_sentence'>" + name + "</div>");
+                //}
 			}
             out.println("</th>");
 			// inspection button
@@ -358,7 +373,8 @@ else {
 
             String recordSummaryHtml = getRecordSummaryHtml(record, summary, protocolRequest);
             String dataSourceHtml = getDataSourceHtml (record.getId(), recordDataSources);
-			boolean hasDetails = detailsExist (recordSummaryHtml, dataSourceHtml);
+			//  Since all results have Cytoscape links, we assume all have details
+			boolean hasDetails = true;
 			if (hasDetails) {
     			out.println(getInspectorButtonHtml(record.getId()));
             }
@@ -369,21 +385,8 @@ else {
 			out.println("<div id='cpath_" + record.getId() + "_details' class='details'>");
 			out.println(recordSummaryHtml);
 			out.println(dataSourceHtml);
-			out.println("</div>");
-			out.println("</td></tr>");
-        } catch (IllegalArgumentException e) {
-            out.println("<div>" +
-                    "<a href=\"" + url + "\">" + record.getName() + "</a></div>");
-        }
-        if (organismFlag == null) {
-			// fragments
-            out.println("<tr><td colspan=\"3\">");
-			out.println("<div class='search_fragment'>");
-			String htmlFragments = getFragmentsHtml(fragments.get(i), summaryLabel, summary, 40);
-			if (htmlFragments.length() > 0) {
-				out.println("<br>");
-				out.println(htmlFragments);
-			}
+
+			//  Cytoscape Links
 			boolean pathwayType = record.getType() == CPathRecordType.PATHWAY;
 			if (webUIBean.getWantCytoscape() && showCytoscape) {
 				// add link to cytoscape
@@ -396,9 +399,9 @@ else {
 								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i])  +
 								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 								"\"" + " id=\"" + String.valueOf(cpathIds[i]) +"\"" +
-								//" onmouseover=\"return overlib(toolTip, WIDTH, 25, FULLHTML, WRAP, CELLPAD, 5, OFFSETY, 0); return true;\"" +
-								//" onmouseout=\"return nd();\"" +
-								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', " + "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, " + "'"
+								+ ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID + "', "
+								+ "'empty_title', '" + encodedDataSourceParameter + "'); return false;\"" +
 								">View pathway in Cytoscape</a>");
 				}
 				else {
@@ -408,14 +411,30 @@ else {
 								"?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion2.VERSION_2 +
 								"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
 								"&" + ProtocolRequest.ARG_OUTPUT + "=" + ProtocolConstantsVersion1.FORMAT_BIO_PAX +
-								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) + 
+								"&" + ProtocolRequest.ARG_QUERY + "=" + String.valueOf(cpathIds[i]) +
 								"&" + ProtocolRequest.ARG_DATA_SOURCE + "=" + encodedDataSourceParameter +
 								"&" + ProtocolRequest.ARG_NEIGHBORHOOD_TITLE + "=" + encodedNeighborhoodTitle + "\"" +
 								" id=\"" + String.valueOf(cpathIds[i]) +"\"" +
-								" onclick=\"appRequest(this.href, this.id, " + "'" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '" + encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
+								" onclick=\"appRequest(this.href, this.id, " + "'"
+								+ ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS + "', '"
+								+ encodedNeighborhoodTitle + "', '" + encodedDataSourceParameter + "'); return false;\"" +
 								">View network neighborhood in Cytoscape</a>");
 				}
 				out.println("<a href=\"cytoscape.do\">(help)</a></p>");
+			}
+			out.println("</div>");
+			out.println("</td></tr>");
+        } catch (IllegalArgumentException e) {
+            out.println("<div>" +
+                    "<a href=\"" + url + "\">" + record.getName() + "</a></div>");
+        }
+        if (organismFlag == null) {
+			// fragments
+            out.println("<tr><td colspan=\"3\">");
+			out.println("<div class='search_fragment'>");
+			String htmlFragments = getFragmentsHtml(fragments.get(i), summaryLabel, summary, 40);
+			if (htmlFragments.length() > 0) {
+				out.println(htmlFragments);
 			}
 			out.println("</div>");
 			out.println("</td></tr>");
