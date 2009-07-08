@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.11 2009-07-07 16:58:46 cerami Exp $
+// $Id: LuceneResults.java,v 1.12 2009-07-08 15:45:20 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -242,7 +242,13 @@ public class LuceneResults {
         if ((fragment == null || fragment.length() == 0)) {
             String value = doc.getField(LuceneConfig.FIELD_NAME).stringValue();
             if (value != null && value.length() > 0) {
+                //  Do not show sentences like this:
+                //  Protein contains a molecule or protein with the keyword: DATA_SOURCE:REACTOME.
                 List<String> listToReturn = new ArrayList<String>();
+                if (term != null && term.indexOf(LuceneConfig.FIELD_DATA_SOURCE) > -1) {
+                    fragments.add(listToReturn);
+                    return;
+                }
                 listToReturn.add(MEMBER_OF + START_TAG + term.toUpperCase() + END_TAG);
                 fragments.add(listToReturn);
                 return;
