@@ -55,7 +55,7 @@ public class GlobalFilterSettings implements Cloneable {
 
     private HashSet<Long> snapshotSet = new HashSet<Long>();
     private HashSet<Integer> organismSet = new HashSet<Integer>();
-	private HashSet<String> entityTypeSet = new HashSet<String>();
+	private HashSet<String> recordTypeSet = new HashSet<String>();
 
     /**
      * Constructor.
@@ -70,7 +70,7 @@ public class GlobalFilterSettings implements Cloneable {
             snapshotSet.add(new Long(snapshotRecord.getId()));
         }
         organismSet.add(ALL_ORGANISMS_FILTER_VALUE);
-        entityTypeSet.add(NARROW_BY_RECORD_TYPES_ALL);
+        recordTypeSet.add(NARROW_BY_RECORD_TYPES_ALL);
     }
 
     /**
@@ -89,7 +89,7 @@ public class GlobalFilterSettings implements Cloneable {
             snapshotSet.add(new Long(snapshotRecord.getId()));
         }
         organismSet.add(ALL_ORGANISMS_FILTER_VALUE);
-        entityTypeSet.add(NARROW_BY_RECORD_TYPES_ALL);
+        recordTypeSet.add(NARROW_BY_RECORD_TYPES_ALL);
     }
 
     /**
@@ -111,12 +111,12 @@ public class GlobalFilterSettings implements Cloneable {
     }
 
     /**
-     * Is the specified Entity Type currently selected by the user.
-     * @param entityType Entity Type.
+     * Is the specified Record Type currently selected by the user.
+     * @param recordType Record Type.
      * @return true or false.
      */
-    public boolean isEntityTypeSelected (String entityType) {
-        return entityTypeSet.contains(entityType);
+    public boolean isRecordTypeSelected(String recordType) {
+        return recordTypeSet.contains(recordType);
     }
 
     /**
@@ -136,11 +136,11 @@ public class GlobalFilterSettings implements Cloneable {
     }
 
     /**
-     * Gets the set of all currently selected entity types.
+     * Gets the set of all currently selected record types.
      * @return Set of String Values.
      */
-    public Set<String> getEntityTypeSet() {
-        return entityTypeSet;
+    public Set<String> getRecordTypeSet() {
+        return recordTypeSet;
     }
 
     /**
@@ -170,14 +170,14 @@ public class GlobalFilterSettings implements Cloneable {
     }
 
     /**
-     * Stores all specified entity types as selected.
-     * @param entityTypes List of Entity Types.
+     * Stores all specified record types as selected.
+     * @param recordTypes List of Record Types.
      */
-    public void setEntityTypeSelected (List<String> entityTypes) {
-        entityTypeSet = new HashSet();
-        if (entityTypes != null) {
-			for (String type : entityTypes) {
-                entityTypeSet.add(type);
+    public void setRecordTypeSelected(List<String> recordTypes) {
+        recordTypeSet = new HashSet();
+        if (recordTypes != null) {
+			for (String type : recordTypes) {
+                recordTypeSet.add(type);
             }
         }
     }
