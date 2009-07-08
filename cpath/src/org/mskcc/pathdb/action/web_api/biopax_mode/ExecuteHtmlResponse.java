@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.17 2009-07-07 18:21:13 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.18 2009-07-08 16:10:40 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -111,7 +111,7 @@ public class ExecuteHtmlResponse {
             int totalHitsAllEntities)
             throws QueryException, DaoException, IOException,
             AssemblyException, ParseException, CloneNotSupportedException {
-        xdebug.logMsg(this, "Querying by Data Source");
+        xdebug.logMsg(this, "Querying by Data Source, total hits:  " + totalHitsAllEntities);
 
         // needed vars
         int totalNumberHits = 0;
@@ -122,11 +122,11 @@ public class ExecuteHtmlResponse {
         GlobalFilterSettings filterSettings = globalFilterSettings.clone();
 		Set<Integer> organismTaxIdSet = filterSettings.getOrganismTaxonomyIdSet();
 
-        // grab user selected entity type, and set it in global settings
+        // grab user selected record type, and set it in global settings
         String recordType = protocolRequest.getRecordType ();
         List<String> typeList = new ArrayList();
         typeList.add(recordType);
-        filterSettings.setEntityTypeSelected(typeList);
+        filterSettings.setRecordTypeSelected(typeList);
 
         hitByDataSourceMap.put(GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL,
                     totalHitsAllEntities);
@@ -141,7 +141,7 @@ public class ExecuteHtmlResponse {
             dataSourceList.add(id);
             filterSettings.setSnapshotsSelected(dataSourceList);
             // set the type list
-            filterSettings.setEntityTypeSelected(typeList);
+            filterSettings.setRecordTypeSelected(typeList);
             // perform the query
             search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
             search.executeSearch();
@@ -162,7 +162,7 @@ public class ExecuteHtmlResponse {
             throws QueryException, DaoException, IOException,
             AssemblyException, ParseException, CloneNotSupportedException {
         int totalHitsAllEntities = 0;
-        xdebug.logMsg(this, "Querying by BioPax Entity Type");
+        xdebug.logMsg(this, "Querying by BioPax Record Type");
 
         // grab data source
         String userSelectedDataSource =
@@ -189,17 +189,18 @@ public class ExecuteHtmlResponse {
 
         // interate through all types, and store query hits by type
         for (String type : (Set<String>) typesMap.keySet()) {
-            xdebug.logMsg(this, "Querying by entity type:  " + type);
+            xdebug.logMsg(this, "Querying by record type:  " + type);
             // setup global filters setting - types filter
             List<String> typeList = new ArrayList();
             typeList.add(type);
-            filterSettings.setEntityTypeSelected(typeList);
+            filterSettings.setRecordTypeSelected(typeList);
             // perform the query
             LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
             long cpathIds[] = search.executeSearch();
             LuceneResults luceneResults = search.getLuceneResults();
             if (recordType.equals(type)) {
                 request.setAttribute(BaseAction.ATTRIBUTE_LUCENE_RESULTS, luceneResults);
+                totalHitsAllEntities = luceneResults.getNumHits();
             }
             if (luceneResults.getNumHits() > 0) {
                 hitByTypeMap.put(type, luceneResults.getNumHits());
