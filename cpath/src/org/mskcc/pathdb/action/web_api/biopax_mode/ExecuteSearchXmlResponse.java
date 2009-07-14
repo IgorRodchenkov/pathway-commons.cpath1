@@ -65,7 +65,7 @@ public class ExecuteSearchXmlResponse {
      */
     public ActionForward processRequest(XDebug xdebug, ProtocolRequest protocolRequest,
             HttpServletRequest request, HttpServletResponse response, ActionMapping mapping)
-            throws QueryException, IOException, AssemblyException, ParseException,
+            throws IOException, AssemblyException, ParseException,
             ProtocolException, DaoException, CloneNotSupportedException, JAXBException,
             BioPaxRecordSummaryException {
         log.info ("Processing Search XML Response");
@@ -102,7 +102,17 @@ public class ExecuteSearchXmlResponse {
         }
 
         LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
-        long cpathIds[] = search.executeSearch();
+        long cpathIds[];
+		try {
+			cpathIds = search.executeSearch();
+		}
+		catch (QueryException e) {
+			// QueryException can encapsulate at least IOException and ParseException, there convert
+			// to more general ProtocolException - INTERNAL_ERROR.
+			throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR,
+										("An internal error occurred while executing query: " + protocolRequest.getQuery() + "." +
+										 "  The specific cause is: " + e.getMessage() + "."));
+		}
         log.info("Total number of matches found:  "+ cpathIds.length);
         LuceneResults luceneResults = search.getLuceneResults();
         List<List<String>> textFragments = luceneResults.getFragments();
