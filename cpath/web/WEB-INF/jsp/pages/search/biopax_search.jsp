@@ -347,7 +347,7 @@ else {
 				if (comments != null && comments.length > 0) {
 				    String comment = ReactomeCommentUtil.massageComment(comments[0]);
 				    String sentences[] = comment.split("\\.");
-				    out.print ("<div class='first_sentence'>" + sentences[0] +".");
+				    out.print ("<div class='first_sentence'>" + sentences[0].trim() +".");
 				    //  Don't end with the word dr.
 			        if (sentences[0].toLowerCase().endsWith("dr")) {
 			            if (sentences.length > 1) {
