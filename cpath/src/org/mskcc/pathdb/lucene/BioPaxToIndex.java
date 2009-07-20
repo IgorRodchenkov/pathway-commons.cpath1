@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.35 2009-07-20 14:11:04 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.36 2009-07-20 14:33:55 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,6 +55,7 @@ import java.util.*;
  * @author Ethan Cerami, Benjamin Gross.
  */
 public class BioPaxToIndex implements ItemToIndex {
+    private float boost = 1.0f;
 
     /**
      * Internal List of all Fields scheduled for Indexing.
@@ -137,6 +138,14 @@ public class BioPaxToIndex implements ItemToIndex {
         // * NOTE: IF MORE FIELDS ARE INDEXED, LuceneResults.addTerm SHOULD BE UPDATES *
     }
 
+    /**
+     * Indexes the Number of Parents and automatically boosts the document, based on the number of parents.
+     * Boosting is directly proportional to number of parents.
+     * For example, if record is involved in 4 pathways and 5 interactions, it's boosting factor is set to 9.0.
+     * 
+     * @param record CPathRecord.
+     * @throws DaoException Database Error.
+     */
     private void indexNumParents(CPathRecord record) throws DaoException {
         DaoInternalLink daoInternalLink = new DaoInternalLink();
         List<InternalLinkRecord>  parentList = daoInternalLink.getSources(record.getId());
@@ -164,6 +173,7 @@ public class BioPaxToIndex implements ItemToIndex {
 			dataSourcesToInteractionCountMap.put(dataSource, 0);
 			Integer count = daoInternalFamily.getAncestorIdCount(record.getId(),
                     CPathRecordType.PATHWAY, snapshotIds, organismIds);
+            boost += count;
 			numParentPathways.append(dataSource + ":" + count + "\t");
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, numParentPathways.toString().trim(),
@@ -191,6 +201,7 @@ public class BioPaxToIndex implements ItemToIndex {
 		// create string of total interactions by data source
 		for (String dataSource : dataSourcesToInteractionCountMap.keySet()) {
 			Integer numInteractionForDataSource = dataSourcesToInteractionCountMap.get(dataSource);
+            boost += numInteractionForDataSource;
 			numParentInteractions.append(dataSource + ":" + numInteractionForDataSource + "\t");
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, numParentInteractions.toString().trim(),
@@ -222,8 +233,8 @@ public class BioPaxToIndex implements ItemToIndex {
      * @return 1.0.
      */
     public float getBoost() {
-        return 1.0f;
-    }    
+        return boost;
+    }
 
     /**
      * Removes CPATH IDs from an abritrary String.
