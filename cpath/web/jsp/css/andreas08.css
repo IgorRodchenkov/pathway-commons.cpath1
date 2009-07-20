@@ -477,7 +477,7 @@ cursor:pointer;
     margin-bottom:10px;
 }
 .search_fragment ul {list-style-type:square; margin-bottom:0px !important}
-.search_fragment li {margin-left:-20px;padding-left:0px}
+.search_fragment li {margin-left:-20px;padding-left:0px;padding-top:4px;}
 .search_fragment p {margin-top: 6px;}
 
 #comment_remainder {
