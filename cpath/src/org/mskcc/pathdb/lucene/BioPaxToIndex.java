@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.36 2009-07-20 14:33:55 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.37 2009-07-20 17:08:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,7 +55,7 @@ import java.util.*;
  * @author Ethan Cerami, Benjamin Gross.
  */
 public class BioPaxToIndex implements ItemToIndex {
-    private float boost = 1.0f;
+    private float boost = 0.5f;
 
     /**
      * Internal List of all Fields scheduled for Indexing.
@@ -141,8 +141,7 @@ public class BioPaxToIndex implements ItemToIndex {
     /**
      * Indexes the Number of Parents and automatically boosts the document, based on the number of parents.
      * Boosting is directly proportional to number of parents.
-     * For example, if record is involved in 4 pathways and 5 interactions, it's boosting factor is set to 9.0.
-     * 
+     *
      * @param record CPathRecord.
      * @throws DaoException Database Error.
      */
@@ -151,6 +150,10 @@ public class BioPaxToIndex implements ItemToIndex {
         List<InternalLinkRecord>  parentList = daoInternalLink.getSources(record.getId());
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENTS, Integer.toString(parentList.size()),
                 Field.Store.YES, Field.Index.NO));
+        boost = parentList.size();
+        if (parentList.size() == 0) {
+            boost = 0.5f;
+        }
 
 		// populate parent pathway - we use internal family table because we will only
         // get interaction links via internal link table
@@ -173,7 +176,6 @@ public class BioPaxToIndex implements ItemToIndex {
 			dataSourcesToInteractionCountMap.put(dataSource, 0);
 			Integer count = daoInternalFamily.getAncestorIdCount(record.getId(),
                     CPathRecordType.PATHWAY, snapshotIds, organismIds);
-            boost += count;
 			numParentPathways.append(dataSource + ":" + count + "\t");
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, numParentPathways.toString().trim(),
@@ -201,7 +203,6 @@ public class BioPaxToIndex implements ItemToIndex {
 		// create string of total interactions by data source
 		for (String dataSource : dataSourcesToInteractionCountMap.keySet()) {
 			Integer numInteractionForDataSource = dataSourcesToInteractionCountMap.get(dataSource);
-            boost += numInteractionForDataSource;
 			numParentInteractions.append(dataSource + ":" + numInteractionForDataSource + "\t");
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, numParentInteractions.toString().trim(),
@@ -228,9 +229,9 @@ public class BioPaxToIndex implements ItemToIndex {
     }
 
     /**
-     * Gets the Document Boost Factor;  Default is 1.0.
+     * Gets the Document Boost Factor;  Default is 0.5.
      *
-     * @return 1.0.
+     * @return boost factor.
      */
     public float getBoost() {
         return boost;
