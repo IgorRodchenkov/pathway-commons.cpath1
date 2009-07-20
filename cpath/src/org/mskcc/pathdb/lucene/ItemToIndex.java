@@ -1,4 +1,4 @@
-// $Id: ItemToIndex.java,v 1.6 2006-02-22 22:47:50 grossb Exp $
+// $Id: ItemToIndex.java,v 1.7 2009-07-20 13:57:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -56,4 +56,11 @@ public interface ItemToIndex {
      * @return Lucene Field Object.
      */
     Field getField(int index);
+
+    /**
+     * Gets the Document Boost Factor;  Default is 1.0.
+     *
+     * @return Document Boost Factor.
+     */
+    float getBoost();
 }

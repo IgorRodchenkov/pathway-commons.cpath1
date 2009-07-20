@@ -1,4 +1,4 @@
-// $Id: LuceneWriter.java,v 1.14 2008-03-10 15:04:35 grossben Exp $
+// $Id: LuceneWriter.java,v 1.15 2009-07-20 13:57:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -112,6 +112,7 @@ public class LuceneWriter {
         try {
             //  Index all Fields in ItemToIndex
             Document document = new Document();
+            document.setBoost(item.getBoost());
             int numFields = item.getNumFields();
             for (int i = 0; i < numFields; i++) {
                 Field field = item.getField(i);

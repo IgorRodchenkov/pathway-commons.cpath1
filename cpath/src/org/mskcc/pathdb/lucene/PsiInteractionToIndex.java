@@ -1,4 +1,4 @@
-// $Id: PsiInteractionToIndex.java,v 1.21 2008-03-10 15:03:54 grossben Exp $
+// $Id: PsiInteractionToIndex.java,v 1.22 2009-07-20 13:57:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -209,6 +209,15 @@ public class PsiInteractionToIndex implements ItemToIndex {
      */
     public Field getField(int index) {
         return (Field) fields.get(index);
+    }
+
+    /**
+     * Gets the Document Boost Factor;  Default is 1.0.
+     * 
+     * @return 1.0.
+     */
+    public float getBoost() {
+        return 1.0f;
     }
 
     /**

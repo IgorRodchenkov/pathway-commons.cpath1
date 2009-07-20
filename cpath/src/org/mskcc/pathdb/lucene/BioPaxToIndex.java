@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.33 2009-07-07 16:58:46 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.34 2009-07-20 13:57:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -244,6 +244,15 @@ public class BioPaxToIndex implements ItemToIndex {
     public Field getField(int index) {
         return (Field) fields.get(index);
     }
+
+    /**
+     * Gets the Document Boost Factor;  Default is 1.0.
+     *
+     * @return 1.0.
+     */
+    public float getBoost() {
+        return 1.0f;
+    }    
 
     /**
      * Removes CPATH IDs from an abritrary String.
