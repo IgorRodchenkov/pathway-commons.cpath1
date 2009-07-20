@@ -362,10 +362,10 @@ else {
 				}
 
 				//  Show full protein name
-				//String name = summary.getName();
-				//if (name != null && summary.getLabel() != null && (!name.equals(summary.getLabel()))) {
-			    //    out.println ("<div class='first_sentence'>" + name + "</div>");
-                //}
+				String name = summary.getName();
+				if (name != null && summary.getLabel() != null && (!name.equals(summary.getLabel()))) {
+			        out.println ("<div class='first_sentence'>" + name + "</div>");
+                }
 			}
             out.println("</th>");
 			// inspection button
