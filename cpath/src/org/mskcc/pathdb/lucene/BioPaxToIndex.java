@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.37 2009-07-20 17:08:25 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.38 2009-07-20 17:23:58 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,7 +55,7 @@ import java.util.*;
  * @author Ethan Cerami, Benjamin Gross.
  */
 public class BioPaxToIndex implements ItemToIndex {
-    private float boost = 0.5f;
+    private float boost = 1.0f;
 
     /**
      * Internal List of all Fields scheduled for Indexing.
@@ -150,10 +150,6 @@ public class BioPaxToIndex implements ItemToIndex {
         List<InternalLinkRecord>  parentList = daoInternalLink.getSources(record.getId());
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENTS, Integer.toString(parentList.size()),
                 Field.Store.YES, Field.Index.NO));
-        boost = parentList.size();
-        if (parentList.size() == 0) {
-            boost = 0.5f;
-        }
 
 		// populate parent pathway - we use internal family table because we will only
         // get interaction links via internal link table
@@ -176,6 +172,7 @@ public class BioPaxToIndex implements ItemToIndex {
 			dataSourcesToInteractionCountMap.put(dataSource, 0);
 			Integer count = daoInternalFamily.getAncestorIdCount(record.getId(),
                     CPathRecordType.PATHWAY, snapshotIds, organismIds);
+            boost += count;
 			numParentPathways.append(dataSource + ":" + count + "\t");
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, numParentPathways.toString().trim(),
@@ -204,6 +201,7 @@ public class BioPaxToIndex implements ItemToIndex {
 		for (String dataSource : dataSourcesToInteractionCountMap.keySet()) {
 			Integer numInteractionForDataSource = dataSourcesToInteractionCountMap.get(dataSource);
 			numParentInteractions.append(dataSource + ":" + numInteractionForDataSource + "\t");
+            boost += numInteractionForDataSource;
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, numParentInteractions.toString().trim(),
 							 Field.Store.YES, Field.Index.NO));
