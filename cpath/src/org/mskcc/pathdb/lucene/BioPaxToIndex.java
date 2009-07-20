@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.34 2009-07-20 13:57:47 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.35 2009-07-20 14:11:04 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -51,45 +51,8 @@ import java.util.*;
 
 /**
  * Encapsulates a BioPAX Record scheduled for indexing in Lucene.
- * <p/>
- * Currently indexes the following content:
- * <TABLE WIDTH=100%>
- * <TR>
- * <TH ALIGN=LEFT><B>Content</B></TH>
- * <TH ALIGN=LEFT><B>Field</B></TH>
- * <TH ALIGN=LEFT><B>Notes</B></TH>
- * </TR>
- * <TR>
- * <TD>All terms after XML Stripping</TD>
- * <TD>FIELD_ALL</TD>
- * </TR>
- * <TR>
- * <TD>NAME/SHORT-NAME</TD>
- * <TD>FIELD_NAME</TD>
- * </TR>
- * <TR>
- * <TD>cPath ID</TD>
- * <TD>FIELD_CPATH_ID</TD>
- * </TR>
- * </TR>
- * <TR>
- * <TD>entity type</TD>
- * <TD>FIELD_ENTITY_TYPE</TD>
- * </TR>
- * <TR>
- * <TD>data source(s)</TD>
- * <TD>FIELD_DATA_SOURCE</TD>
- * </TR>
- * <TR>
- * <TD VALIGN=TOP>Organism Data</TD>
- * <TD VALIGN=TOP>FIELD_ORGANISM</TD>
- * <TD VALIGN=TOP>The "Browse by Organism" web page and the "Quick Browse"
- * web component work by automatically running queries on the FIELD_ORGANISM.
- * </TD>
- * </TR>
- * </TABLE>
  *
- * @author Ethan Cerami
+ * @author Ethan Cerami, Benjamin Gross.
  */
 public class BioPaxToIndex implements ItemToIndex {
 
@@ -129,13 +92,16 @@ public class BioPaxToIndex implements ItemToIndex {
 		fields.add(new Field(LuceneConfig.FIELD_ALL, terms, Field.Store.YES, Field.Index.TOKENIZED));
 
         //  Index cPath ID --> FIELD_CPATH_ID
-		fields.add(new Field(LuceneConfig.FIELD_CPATH_ID, Long.toString(cpathId), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		fields.add(new Field(LuceneConfig.FIELD_CPATH_ID, Long.toString(cpathId),
+                Field.Store.YES, Field.Index.UN_TOKENIZED));
 
 		// index record type --> FIELD_RECORD_TYPE
-		fields.add(new Field(LuceneConfig.FIELD_RECORD_TYPE, record.getType().toString(), Field.Store.YES, Field.Index.TOKENIZED));
+		fields.add(new Field(LuceneConfig.FIELD_RECORD_TYPE, record.getType().toString(),
+                Field.Store.YES, Field.Index.TOKENIZED));
 
 		// index specific type --> FIELD_SPECIFIC_TYPE
-		fields.add(new Field(LuceneConfig.FIELD_SPECIFIC_TYPE, record.getSpecificType(), Field.Store.YES, Field.Index.TOKENIZED));        
+		fields.add(new Field(LuceneConfig.FIELD_SPECIFIC_TYPE, record.getSpecificType(),
+                Field.Store.YES, Field.Index.TOKENIZED));
 
         // data source --> FIELD_DATA_SOURCE
 		String dataSource = getDataSources(record);
@@ -146,20 +112,23 @@ public class BioPaxToIndex implements ItemToIndex {
 			BioPaxRecordUtil.createBioPaxRecordSummary(record);
 
         //  Index Name/Short Name --> FIELD_NAME
-		fields.add(new Field(LuceneConfig.FIELD_NAME, getNamesForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
+		fields.add(new Field(LuceneConfig.FIELD_NAME, getNamesForField(summary),
+                Field.Store.YES, Field.Index.TOKENIZED));
 
         //  Index Organism Data --> FIELD_ORGANISM
         indexOrganismData(xmlAssembly);
 
 		// Index Synonyms --> FIELD_SYNONYMS
-		fields.add(new Field(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
+		fields.add(new Field(LuceneConfig.FIELD_SYNONYMS, getSynonymsForField(summary),
+                Field.Store.YES, Field.Index.TOKENIZED));
 
         // Index Gene Symbol(s)
         fields.add(new Field(LuceneConfig.FIELD_GENE_SYMBOLS, getGeneSymbol(summary), Field.Store.YES,
                 Field.Index.TOKENIZED));
 
         // Index Ext Refs --> FIELD_EXTERNAL_REFS
-		fields.add(new Field(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary), Field.Store.YES, Field.Index.TOKENIZED));
+		fields.add(new Field(LuceneConfig.FIELD_EXTERNAL_REFS, getExternalRefsForField(summary),
+                Field.Store.YES, Field.Index.TOKENIZED));
 
 		// Index Descendents --> FIELD_DESCENDENTS
 		indexDescendents(cpath, record);
@@ -174,7 +143,8 @@ public class BioPaxToIndex implements ItemToIndex {
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENTS, Integer.toString(parentList.size()),
                 Field.Store.YES, Field.Index.NO));
 
-		// populate parent pathway - we use internal family table because we will only get interaction links via internal link table
+		// populate parent pathway - we use internal family table because we will only
+        // get interaction links via internal link table
 		// and the task that populates this table gets run before indexing
 		DaoInternalFamily daoInternalFamily = new DaoInternalFamily();
 		Set<Integer> organismIds = new HashSet<Integer>();
@@ -192,7 +162,8 @@ public class BioPaxToIndex implements ItemToIndex {
 			Set<Long> snapshotIds = getSnapshotIDs(dataSource);
 			dataSourcesToSnapshotIdMap.put(dataSource, snapshotIds);
 			dataSourcesToInteractionCountMap.put(dataSource, 0);
-			Integer count = daoInternalFamily.getAncestorIdCount(record.getId(), CPathRecordType.PATHWAY, snapshotIds, organismIds);
+			Integer count = daoInternalFamily.getAncestorIdCount(record.getId(),
+                    CPathRecordType.PATHWAY, snapshotIds, organismIds);
 			numParentPathways.append(dataSource + ":" + count + "\t");
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, numParentPathways.toString().trim(),
@@ -393,7 +364,8 @@ public class BioPaxToIndex implements ItemToIndex {
             }
         }
         if (organismTokens.length() > 0) {
-			fields.add(new Field(LuceneConfig.FIELD_ORGANISM, organismTokens.toString(), Field.Store.YES, Field.Index.TOKENIZED));
+			fields.add(new Field(LuceneConfig.FIELD_ORGANISM, organismTokens.toString(),
+                    Field.Store.YES, Field.Index.TOKENIZED));
         }
     }
 
