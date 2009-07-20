@@ -29,11 +29,11 @@
         }
         String label = typePlainEnglish + " (" + hitByTypeMap.get(type) + ")";
 	    if (type.equals(recordType)) {
-		   out.println("<span class='results_tab_active'>" + label + "</span>");
+		   out.print("<span class='results_tab_active'>" + label + "</span>");
 	    }
 	    else {
 		    if (hitByTypeMap.get(type) > 0) {
-                out.println("<span class='results_tab_inactive'>");
+                out.print("<span class='results_tab_inactive'>");
                 out.println("<a href='webservice.do?version=" +
                             webUIBean.getWebApiVersion() +
                             "&q=" + protocolRequest.getQuery() +
@@ -41,8 +41,7 @@
 			                ProtocolRequest.ARG_RECORD_TYPE + "=" + type + "&" +
 						    GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource +
 				            "'>" + label +
-				            "</a>");
-                out.println("</span>");
+				            "</a></span>");
             }
 	    }
     }
