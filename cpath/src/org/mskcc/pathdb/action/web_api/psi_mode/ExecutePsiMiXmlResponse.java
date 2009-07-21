@@ -1,4 +1,4 @@
-// $Id: ExecutePsiMiXmlResponse.java,v 1.1 2007-09-17 18:23:52 cerami Exp $
+// $Id: ExecutePsiMiXmlResponse.java,v 1.2 2009-07-21 16:52:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,6 +34,7 @@ package org.mskcc.pathdb.action.web_api.psi_mode;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.xdebug.XDebugUtil;
 import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
 import org.mskcc.pathdb.action.web_api.WebApiUtil;
@@ -64,7 +65,8 @@ public class ExecutePsiMiXmlResponse {
             HttpServletResponse response, ActionMapping mapping) throws ProtocolException {
         String xml = null;
         XmlAssembly xmlAssembly = null;
-        xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
+        boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+        xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest, debugMode);
         if (xmlAssembly == null || xmlAssembly.isEmpty()) {
             String q = protocolRequest.getQuery();
             if (q == null && protocolRequest.getOrganism() != null) {

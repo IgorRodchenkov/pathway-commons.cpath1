@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.18 2009-07-08 16:10:40 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.19 2009-07-21 16:53:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.lucene.queryParser.ParseException;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.xdebug.XDebugUtil;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.model.GlobalFilterSettings;
@@ -143,7 +144,9 @@ public class ExecuteHtmlResponse {
             // set the type list
             filterSettings.setRecordTypeSelected(typeList);
             // perform the query
-            search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
+
+            boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+            search = new LuceneQuery(protocolRequest, filterSettings, xdebug, debugMode);
             search.executeSearch();
             totalNumberHits = search.getLuceneResults().getNumHits();
             if (totalNumberHits > 0) {
@@ -195,7 +198,8 @@ public class ExecuteHtmlResponse {
             typeList.add(type);
             filterSettings.setRecordTypeSelected(typeList);
             // perform the query
-            LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
+            boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+            LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug, debugMode);
             long cpathIds[] = search.executeSearch();
             LuceneResults luceneResults = search.getLuceneResults();
             if (recordType.equals(type)) {

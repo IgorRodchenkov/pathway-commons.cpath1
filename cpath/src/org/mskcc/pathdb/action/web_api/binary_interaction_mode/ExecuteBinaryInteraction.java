@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.12 2009-03-13 12:42:04 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.13 2009-07-21 16:53:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -36,6 +36,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.log4j.Logger;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.xdebug.XDebugUtil;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.protocol.ProtocolStatusCode;
@@ -100,7 +101,8 @@ public class ExecuteBinaryInteraction {
             throws QueryException, IOException, AssemblyException, ParseException, ProtocolException,
 				   DaoException, CloneNotSupportedException, NumberFormatException {
 
-        XmlAssembly xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
+        boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+        XmlAssembly xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest, debugMode);
         if (xmlAssembly == null || xmlAssembly.isEmpty()) {
             String q = protocolRequest.getQuery();
             throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,

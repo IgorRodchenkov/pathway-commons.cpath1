@@ -1,4 +1,4 @@
-// $Id: WebApiUtil.java,v 1.10 2008-07-10 15:30:54 cerami Exp $
+// $Id: WebApiUtil.java,v 1.11 2009-07-21 16:53:26 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -58,16 +58,17 @@ public class WebApiUtil {
      *
      * @param xdebug          XDebug Object.
      * @param protocolRequest ProtocolRequest Object.
+     * @param debugMode       DebugMode.
      * @return XMLAssembly:  PSI-MI or BioPAX.
      * @throws ProtocolException Protocol Error.
      */
     public static XmlAssembly fetchXmlAssembly(XDebug xdebug,
-            ProtocolRequest protocolRequest) throws ProtocolException {
+            ProtocolRequest protocolRequest, boolean debugMode) throws ProtocolException {
         XmlAssembly xmlAssembly;
         try {
             QueryManager queryManager = new QueryManager(xdebug);
             xmlAssembly = queryManager.executeQuery(protocolRequest,
-                    protocolRequest.getCheckXmlCache());
+                    protocolRequest.getCheckXmlCache(), debugMode);
         } catch (QueryException e) {
             throw new ProtocolException(ProtocolStatusCode.INTERNAL_ERROR, e);
         }

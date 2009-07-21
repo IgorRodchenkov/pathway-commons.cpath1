@@ -5,6 +5,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.log4j.Logger;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.xdebug.XDebugUtil;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.protocol.ProtocolStatusCode;
@@ -101,7 +102,8 @@ public class ExecuteSearchXmlResponse {
                + "down for maintenance");
         }
 
-        LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug);
+        boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+        LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug, debugMode);
         long cpathIds[];
 		try {
 			cpathIds = search.executeSearch();

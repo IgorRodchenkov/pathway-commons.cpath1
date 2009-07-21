@@ -1,4 +1,4 @@
-// $Id: ExecuteBioPaxXmlResponse.java,v 1.1 2007-09-17 18:23:52 cerami Exp $
+// $Id: ExecuteBioPaxXmlResponse.java,v 1.2 2009-07-21 16:53:15 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.lucene.queryParser.ParseException;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.xdebug.XDebugUtil;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.protocol.ProtocolStatusCode;
@@ -83,7 +84,8 @@ public class ExecuteBioPaxXmlResponse {
             DaoException, CloneNotSupportedException {
         String xml;
         XmlAssembly xmlAssembly;
-        xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
+        boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+        xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest, debugMode);
         if (xmlAssembly == null || xmlAssembly.isEmpty()) {
             String q = protocolRequest.getQuery();
             throw new ProtocolException(ProtocolStatusCode.NO_RESULTS_FOUND,

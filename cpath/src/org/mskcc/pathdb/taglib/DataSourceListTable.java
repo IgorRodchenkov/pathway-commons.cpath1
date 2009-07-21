@@ -175,7 +175,7 @@ public class DataSourceListTable extends HtmlTable {
 				filterSettings.setSnapshotsSelected(dataSourceList);
 				protocolRequest.setQuery("data_source:" + dbRecord.getMasterTerm());
 				// do lucene query
-				LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, new XDebug());
+				LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, new XDebug(), false);
 				search.executeSearch();
 				// create the html
 				append ("<br><a href=\"webservice.do?version=");

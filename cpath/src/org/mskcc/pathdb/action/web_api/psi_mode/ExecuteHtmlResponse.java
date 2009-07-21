@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.4 2007-09-12 14:57:22 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.5 2009-07-21 16:52:57 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -35,6 +35,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.lucene.queryParser.ParseException;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.mskcc.pathdb.xdebug.XDebugUtil;
 import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.protocol.ProtocolException;
 import org.mskcc.pathdb.sql.assembly.XmlAssembly;
@@ -84,7 +85,8 @@ public class ExecuteHtmlResponse {
         request.setAttribute(BaseAction.PAGE_IS_SEARCH_RESULT, BaseAction.YES);
 
         //  Fetch the PSI-MI XML Assembly w/ search results.
-        XmlAssembly xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest);
+        boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+        XmlAssembly xmlAssembly = WebApiUtil.fetchXmlAssembly(xdebug, protocolRequest, debugMode);
         request.setAttribute(BaseAction.ATTRIBUTE_XML_ASSEMBLY, xmlAssembly);
 
         //  Extract (Protein) Interactors, for display in left or right column.

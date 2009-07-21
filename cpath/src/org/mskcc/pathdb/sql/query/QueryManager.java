@@ -1,4 +1,4 @@
-// $Id: QueryManager.java,v 1.14 2007-06-27 16:07:15 grossben Exp $
+// $Id: QueryManager.java,v 1.15 2009-07-21 16:55:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -55,6 +55,7 @@ import java.util.Date;
  */
 public class QueryManager {
     private XDebug xdebug;
+    private boolean debugMode;
     private Logger log = Logger.getLogger(QueryManager.class);
 
     /**
@@ -76,8 +77,9 @@ public class QueryManager {
      * @throws QueryException Indicates Query Error.
      */
     public XmlAssembly executeQuery(ProtocolRequest request,
-            boolean checkCache) throws QueryException {
+            boolean checkCache, boolean debugMode) throws QueryException {
         DaoXmlCache dao = new DaoXmlCache(xdebug);
+        this.debugMode = debugMode;
         XmlAssembly xmlAssembly = null;
         XmlAssembly cachedXml = null;
         log.info("Query is:  " + request.getUrlParameterString());
@@ -169,7 +171,7 @@ public class QueryManager {
         } else if (request.getCommand().equals(ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS)) {
             query = new GetNeighborsCommand(request, xdebug);
         } else {
-            query = new SearchCommand(request);
+            query = new SearchCommand(request, debugMode);
         }
         return query;
     }

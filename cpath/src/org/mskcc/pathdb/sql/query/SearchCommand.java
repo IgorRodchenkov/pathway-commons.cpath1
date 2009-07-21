@@ -1,4 +1,4 @@
-// $Id: SearchCommand.java,v 1.12 2009-02-25 15:55:46 grossben Exp $
+// $Id: SearchCommand.java,v 1.13 2009-07-21 16:55:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -56,6 +56,7 @@ import java.io.IOException;
 class SearchCommand extends Query {
     private String searchTerms;
     private ProtocolRequest request;
+    private boolean debugMode;
     private Logger log = Logger.getLogger(SearchCommand.class);
 
 
@@ -65,8 +66,9 @@ class SearchCommand extends Query {
      *
      * @param request ProtocolRequest Object.
      */
-    SearchCommand(ProtocolRequest request) {
+    SearchCommand(ProtocolRequest request, boolean debugMode) {
         this.request = request;
+        this.debugMode = debugMode;
         this.searchTerms = RequestAdapter.getSearchTerms(request);
     }
 
@@ -82,9 +84,12 @@ class SearchCommand extends Query {
         LuceneReader indexer = new LuceneReader();
         try {
             XmlAssembly xmlAssembly;
-            Hits hits = executeLuceneSearch(indexer);
+            Hits hits = indexer.executeQuery(searchTerms);
+            xdebug.logMsg(this, "Total Number of Matching Hits "
+                    + "Found:  " + hits.length());
             Pager pager = new Pager(request, hits.length());
-            LuceneResults luceneResults = new LuceneResults(pager, hits, null, null);
+            LuceneResults luceneResults = new LuceneResults(pager, indexer.getQuery(), indexer.getIndexSearcher(),
+                    hits, null, null, debugMode);
             long[] cpathIds = luceneResults.getCpathIds();
             xmlAssembly = createXmlAssembly(cpathIds, hits);
             xmlAssembly.setNumHits(hits.length());
@@ -129,15 +134,4 @@ class SearchCommand extends Query {
         return xmlAssembly;
     }
 
-
-    /**
-     * Executes Lucene Search.
-     */
-    private Hits executeLuceneSearch(LuceneReader indexer)
-            throws QueryException {
-        Hits hits = indexer.executeQuery(searchTerms);
-        xdebug.logMsg(this, "Total Number of Matching Hits "
-                + "Found:  " + hits.length());
-        return hits;
-    }
 }
