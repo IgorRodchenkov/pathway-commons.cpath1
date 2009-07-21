@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.15 2008-05-29 00:43:25 cerami Exp $
+// $Id: LuceneReader.java,v 1.16 2009-07-21 16:51:45 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,6 +59,7 @@ public class LuceneReader {
      * Index Search Object (for querying Lucene).
      */
     private IndexSearcher reader;
+    private BooleanQuery queryToSearch;
 
     /**
      * Closes the Index Searcher.
@@ -96,7 +97,7 @@ public class LuceneReader {
             fields[0] = LuceneConfig.FIELD_ALL;
             fields[1] = LuceneConfig.FIELD_EXTERNAL_REFS;
 			BooleanClause.Occur[] flags = { BooleanClause.Occur.SHOULD, BooleanClause.Occur.SHOULD };
-			BooleanQuery queryToSearch = (BooleanQuery)MultiFieldQueryParser.parse(term, fields, flags, analyzer);
+			queryToSearch = (BooleanQuery)MultiFieldQueryParser.parse(term, fields, flags, analyzer);
 
 			// create query on FIELD_GENE_SYMBOL and boost it
 			QueryParser nameQueryParser = new QueryParser(LuceneConfig.FIELD_GENE_SYMBOLS, analyzer);
@@ -147,5 +148,21 @@ public class LuceneReader {
         //  Because, to extract data out of the Hits object,
         //  the reader must be open.
         //  Client code is responsibe for calling close in a finally block.
+    }
+
+    /**
+     * Gets the Index Searcher.
+     * @return Index Searcher.
+     */
+    public IndexSearcher getIndexSearcher() {
+        return reader;
+    }
+
+    /**
+     * Gets the Query Object.
+     * @return Query Object.
+     */
+    public Query getQuery() {
+        return queryToSearch;
     }
 }
