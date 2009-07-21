@@ -190,3 +190,10 @@ input {
    border-bottom-width: thin;
    text-decoration: none;
 }
+
+.lucene_explain {
+  background: pink;
+  font-size:80%;
+  padding:10px;
+  margin-bottom:5px;
+}

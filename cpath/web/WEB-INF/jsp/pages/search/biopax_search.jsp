@@ -18,6 +18,8 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="java.util.*" %>
 <%@ page import="org.mskcc.pathdb.model.*" %>
+<%@ page import="org.mskcc.pathdb.xdebug.XDebugUtil" %>
+<%@ page import="org.apache.lucene.search.Explanation" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
@@ -41,6 +43,7 @@
     ArrayList<Integer> numParentsList = luceneResults.getNumParentsList();
     ArrayList<Integer> numParentPathwaysList = luceneResults.getNumParentPathwaysList();
     ArrayList<Integer> numParentInteractionsList = luceneResults.getNumParentInteractionsList();
+    Map<Long, Explanation> explanationMap = luceneResults.getExplanationMap();
     String organismFlag = request.getParameter(ProtocolRequest.ARG_ORGANISM);
     String recordType = protocolRequest.getRecordType();
     String keyDataSource = request.getParameter
@@ -68,6 +71,7 @@
         // encode
         encodedDataSourceParameter = URLEncoder.encode(encodedDataSourceParameter, "UTF-8");
     }
+    boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
 %>
 <script type="text/javascript">
     //  Toggles details on single row
@@ -444,6 +448,12 @@ else {
 				out.println(htmlFragments);
 			}
 			out.println("</div>");
+			if (debugMode) {
+			    out.println ("<div class='lucene_explain'>");
+			    Explanation explanation = explanationMap.get(cpathIds[i]);
+			    out.println ("<B>Lucene Score Explanation:</B>  " + explanation.toHtml());
+			    out.println ("</div>");
+            }
 			out.println("</td></tr>");
         }
     }
