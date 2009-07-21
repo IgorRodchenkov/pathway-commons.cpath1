@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.12 2009-07-08 15:45:20 cerami Exp $
+// $Id: LuceneResults.java,v 1.13 2009-07-21 16:51:09 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -40,6 +40,8 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.highlight.*;
 import org.mskcc.pathdb.sql.dao.DaoExternalDb;
 import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
@@ -78,11 +80,13 @@ public class LuceneResults {
     private ArrayList<Integer> numParentsList;
     private ArrayList<Integer> numParentPathwaysList;
     private ArrayList<Integer> numParentInteractionsList;
+    private Map<Long,Explanation> explanationMap = new HashMap<Long,Explanation>();
     private Map<Long,Float> scores;
     private int numHits;
 	private Set<String> globalDataSources;
 
-    public LuceneResults(Pager pager, Hits hits, String term, GlobalFilterSettings globalFilterSettings) throws IOException,
+    public LuceneResults(Pager pager, Query query, IndexSearcher indexSearcher, Hits hits, String term,
+                         GlobalFilterSettings globalFilterSettings, boolean debug) throws IOException,
         ParseException, DaoException {
         numHits = hits.length();
         int size = pager.getEndIndex() - pager.getStartIndex();
@@ -120,10 +124,17 @@ public class LuceneResults {
 
         for (int i = pager.getStartIndex(); i < pager.getEndIndex(); i++) {
             Document doc = hits.doc(i);
+
+
             Field field = doc.getField(LuceneConfig.FIELD_CPATH_ID);
             if (field != null) {
                 cpathIds[index++] = Long.parseLong(field.stringValue());
                 scores.put(Long.parseLong(field.stringValue()), new Float(hits.score(i)));
+
+                if (debug) {
+                    explanationMap.put(Long.parseLong(field.stringValue()),
+                            indexSearcher.explain(query, hits.id(i)));
+                }
             }
 
             if (highLighter != null) {
@@ -168,6 +179,10 @@ public class LuceneResults {
 
     public ArrayList<Integer> getNumParentInteractionsList() {
         return numParentInteractionsList;
+    }
+
+    public Map <Long, Explanation> getExplanationMap() {
+        return explanationMap;
     }
 
     public Map<Long, Float> getScores() {
