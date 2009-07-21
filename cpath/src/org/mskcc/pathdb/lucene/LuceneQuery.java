@@ -1,4 +1,4 @@
-// $Id: LuceneQuery.java,v 1.18 2009-02-25 15:56:24 grossben Exp $
+// $Id: LuceneQuery.java,v 1.19 2009-07-21 16:52:12 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,6 +59,7 @@ public class LuceneQuery {
     private ProtocolRequest request;
     private XDebug xdebug;
     private int totalNumHits;
+    private boolean debugMode;
     private LuceneResults luceneResults;
 	private GlobalFilterSettings globalFilterSettings;
 
@@ -69,9 +70,10 @@ public class LuceneQuery {
      * @param xdebug  XDebug Object.
      */
     public LuceneQuery(ProtocolRequest request, GlobalFilterSettings globalFilterSettings,
-            XDebug xdebug) throws DaoException {
+            XDebug xdebug, boolean debugMode) throws DaoException {
         this.request = request;
         this.xdebug = xdebug;
+        this.debugMode = debugMode;
 		this.globalFilterSettings = globalFilterSettings;
         this.searchTerms = RequestAdapter.getSearchTerms(request);
         if (globalFilterSettings != null) {
@@ -98,13 +100,17 @@ public class LuceneQuery {
                 + "Using search term(s):  " + searchTerms);
         LuceneReader indexer = new LuceneReader();
         try {
-            Hits hits = executeLuceneSearch(indexer);
+            Hits hits = indexer.executeQuery(searchTerms);
+            xdebug.logMsg(this, "Total Number of Hits Found:  " + hits.length());
+            this.totalNumHits = hits.length();
             Pager pager = new Pager(request, hits.length());
 
             if (queryFromUser != null) {
-                luceneResults = new LuceneResults(pager, hits, queryFromUser, globalFilterSettings);
+                luceneResults = new LuceneResults(pager, indexer.getQuery(), indexer.getIndexSearcher(),
+                        hits, queryFromUser, globalFilterSettings, debugMode);
             } else {
-                luceneResults = new LuceneResults(pager, hits, searchTerms, globalFilterSettings);
+                luceneResults = new LuceneResults(pager, indexer.getQuery(), indexer.getIndexSearcher(),
+                        hits, searchTerms, globalFilterSettings, debugMode);
             }
             return luceneResults.getCpathIds();
         } finally {
@@ -118,16 +124,5 @@ public class LuceneQuery {
      */
     public LuceneResults getLuceneResults() {
         return luceneResults;
-    }
-
-    /**
-     * Executes Lucene Search.
-     */
-    private Hits executeLuceneSearch(LuceneReader indexer)
-            throws QueryException {
-        Hits hits = indexer.executeQuery(searchTerms);
-        xdebug.logMsg(this, "Total Number of Hits Found:  " + hits.length());
-        this.totalNumHits = hits.length();
-        return hits;
     }
 }
