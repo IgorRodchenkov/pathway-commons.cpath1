@@ -1,4 +1,4 @@
-// $Id: TestItemToIndex.java,v 1.29 2009-06-30 20:53:29 cerami Exp $
+// $Id: TestItemToIndex.java,v 1.30 2009-07-29 19:50:39 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -143,22 +143,20 @@ public class TestItemToIndex extends TestCase {
 
         //  Validate Number of Fields
         int numFields = item.getNumFields();
-        assertEquals(15, numFields);
+        assertEquals(14, numFields);
 
         Field allField = item.getField(0);
         Field idField = item.getField(1);
-		Field entityType = item.getField(2);
-        Field recordType = item.getField(3);
-        Field specificType = item.getField(4);
-        Field dataSource = item.getField(5);
-        Field nameField = item.getField(6);
-        Field organismField = item.getField(7);
+        Field recordType = item.getField(2);
+        Field specificType = item.getField(3);
+        Field dataSource = item.getField(4);
+        Field nameField = item.getField(5);
+        Field organismField = item.getField(6);
 
         //  Validate Individual Fields
         assertTrue(allField.stringValue().startsWith
                 ("This pathway is freely available to all users and may be"));
         assertEquals("5", idField.stringValue());
-		assertEquals("pathway", entityType.stringValue());
         assertEquals("PATHWAY", recordType.stringValue());
         assertEquals("pathway", specificType.stringValue());
         assertEquals("REACTOME", dataSource.stringValue());
