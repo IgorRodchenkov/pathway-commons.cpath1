@@ -35,6 +35,7 @@
     ProtocolRequest protocolRequest = (ProtocolRequest)
             request.getAttribute(BaseAction.ATTRIBUTE_PROTOCOL_REQUEST);
     long cpathIds[] = luceneResults.getCpathIds();
+    long geneSymbolHitIds[] = (long[]) request.getAttribute(BaseAction.ATTRIBUTE_GENE_SYMBOL_HIT_LIST);
     int totalNumHits = luceneResults.getNumHits();
     List<List<String>> fragments = luceneResults.getFragments();
     Map<Long, Set<String>> recordDataSources = luceneResults.getDataSourceMap();
@@ -265,6 +266,21 @@ else {
     <legend>
     <jsp:include page="./narrow-by-type.jsp" flush="true" />
     </legend>
+
+    <%
+        if (geneSymbolHitIds.length > 0) {
+            out.println ("<div class='exact_matches'>Exact Matches:  " );
+            DaoCPath dao = DaoCPath.getInstance();
+            for (int i=0; i<geneSymbolHitIds.length; i++) {
+                CPathRecord record = dao.getRecordById(geneSymbolHitIds[i]);
+                BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
+                out.println("<a href='record2.do?id=" + record.getId()
+                    + "'>" + protocolRequest.getQuery() + "</a> [" + summary.getOrganism() + "]&nbsp;");
+            }
+            out.println ("</div>");
+        }
+    %>
+
 <%
 	Pager pager = new Pager (protocolRequest, totalNumHits);
 	out.println("<div class='search_buttons'>");
