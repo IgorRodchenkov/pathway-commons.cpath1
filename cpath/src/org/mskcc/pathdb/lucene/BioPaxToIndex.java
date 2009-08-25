@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.39 2009-07-21 16:52:31 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.40 2009-08-25 19:21:51 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -172,7 +172,7 @@ public class BioPaxToIndex implements ItemToIndex {
 			dataSourcesToInteractionCountMap.put(dataSource, 0);
 			Integer count = daoInternalFamily.getAncestorIdCount(record.getId(),
                     CPathRecordType.PATHWAY, snapshotIds, organismIds);
-            boost += (count * 100);
+            boost += (count * 1);
 			numParentPathways.append(dataSource + ":" + count + "\t");
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, numParentPathways.toString().trim(),
