@@ -20,6 +20,7 @@
 <%@ page import="org.mskcc.pathdb.model.*" %>
 <%@ page import="org.mskcc.pathdb.xdebug.XDebugUtil" %>
 <%@ page import="org.apache.lucene.search.Explanation" %>
+<%@ page import="org.mskcc.pathdb.util.ExternalDatabaseConstants" %>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%@ page errorPage = "../JspError.jsp" %>
 <%	request.setAttribute(BaseAction.ATTRIBUTE_TITLE, "Search Results"); %>
@@ -274,8 +275,16 @@ else {
             for (int i=0; i<geneSymbolHitIds.length; i++) {
                 CPathRecord record = dao.getRecordById(geneSymbolHitIds[i]);
                 BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
+                List<ExternalLinkRecord> linkList = summary.getExternalLinks();
+                String geneSymbol = protocolRequest.getQuery();
+                for (ExternalLinkRecord externalLink:  linkList) {
+                    if (externalLink.getExternalDatabase().getMasterTerm().equals
+                    (ExternalDatabaseConstants.GENE_SYMBOL)) {
+                        geneSymbol = externalLink.getLinkedToId();
+                    }
+                }
                 out.println("<a href='record2.do?id=" + record.getId()
-                    + "'>" + protocolRequest.getQuery() + "</a> [" + summary.getOrganism() + "]&nbsp;");
+                    + "'>" + geneSymbol + "</a> [" + summary.getOrganism() + "]&nbsp;");
             }
             out.println ("</div>");
         }
