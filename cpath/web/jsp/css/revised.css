@@ -197,3 +197,9 @@ input {
   padding:10px;
   margin-bottom:5px;
 }
+
+.exact_matches {
+  border: 1px solid #ffcccc;
+  background: #CCCCFF;
+  padding: 10px;
+}
