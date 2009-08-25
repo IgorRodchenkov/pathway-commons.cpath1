@@ -23,6 +23,7 @@ public class ToolSuite extends TestCase {
         suite.addTestSuite(TestUniProtParser.class);
         suite.addTestSuite(TestUniProtToBioPaxParser.class);
         suite.addTestSuite(TestEntrezGeneParser.class);
+        suite.addTestSuite(TestExportGeneSets.class);
         suite.setName("Tool Tests");
         return suite;
     }
