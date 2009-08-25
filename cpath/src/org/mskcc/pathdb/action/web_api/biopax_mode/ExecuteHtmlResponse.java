@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.19 2009-07-21 16:53:15 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.20 2009-08-25 19:18:22 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -45,6 +45,7 @@ import org.mskcc.pathdb.sql.query.QueryException;
 import org.mskcc.pathdb.sql.assembly.AssemblyException;
 import org.mskcc.pathdb.lucene.LuceneQuery;
 import org.mskcc.pathdb.lucene.LuceneResults;
+import org.mskcc.pathdb.lucene.LuceneConfig;
 import org.mskcc.pathdb.action.BaseAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -215,6 +216,19 @@ public class ExecuteHtmlResponse {
         }
         // add hits by record type map to request object
         request.setAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP, hitByTypeMap);
+
+        String originalQuery = protocolRequest.getQuery();
+        xdebug.logMsg(this, "Querying by Gene Symbol");
+        boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+        List<String> typeList = new ArrayList();
+        typeList.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES);
+        filterSettings.setRecordTypeSelected(typeList);
+        protocolRequest.setQuery(LuceneConfig.FIELD_GENE_SYMBOLS + ":" + originalQuery);
+        LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug, debugMode);
+        long cpathIds[] = search.executeSearch();
+        protocolRequest.setQuery(originalQuery);
+        request.setAttribute(BaseAction.ATTRIBUTE_GENE_SYMBOL_HIT_LIST, cpathIds);
+
         return totalHitsAllEntities;
     }
 }
