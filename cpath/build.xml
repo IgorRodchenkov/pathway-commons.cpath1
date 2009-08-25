@@ -395,6 +395,14 @@
             <arg line="-f load_test_data"/>
             <env key="CPATH_HOME" value="${cPath.home}"/>
         </exec>
+        <exec dir="${basedir}/bin" executable="${basedir}/bin/admin.pl">
+            <arg line="-f ../testData/biopax/mTOR.xml import"/>
+            <env key="CPATH_HOME" value="${cPath.home}"/>
+        </exec>
+        <exec dir="${basedir}/bin" executable="${basedir}/bin/admin.pl">
+            <arg line="index"/>
+            <env key="CPATH_HOME" value="${cPath.home}"/>
+        </exec>
 	</target>
 
     <!-- ==================== test Target ================================ -->
