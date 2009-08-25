@@ -1,4 +1,4 @@
-// $Id: BaseAction.java,v 1.45 2008-12-10 04:53:46 grossben Exp $
+// $Id: BaseAction.java,v 1.46 2009-08-25 19:20:54 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -145,6 +145,12 @@ public abstract class BaseAction extends Action {
      * Page Attribute:  Hits by record type map.
      */
     public static final String ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP = "hits_by_record_type";
+
+    /**
+     * Page Attribute:  Gene Symbol Hit List.
+     */
+    public static final String ATTRIBUTE_GENE_SYMBOL_HIT_LIST = "gene_symbol_hit_list";
+
 
     /**
      * Page Attribute:  Hits by data source map.
