@@ -50,7 +50,7 @@ public class ExportAll {
 
         // Initialize output directories and exporters
         ExportFileUtil exportUtil = new ExportFileUtil(exportDir);
-        ExportGeneSets exportGeneSets = new ExportGeneSets(exportUtil);
+        ExportGeneSets exportGeneSets = new ExportGeneSets();
         ExportNetworks exportInteractions = new ExportNetworks (exportUtil, pMonitor);
 		ExportBioPAX exportBioPAX = new ExportBioPAX(exportUtil);
 
@@ -77,7 +77,7 @@ public class ExportAll {
 
 					// only pathways exported in GSEA / PC gene set format
                     if (record.getType() == CPathRecordType.PATHWAY) {
-                        exportGeneSets.exportPathwayRecord(record);
+                        exportGeneSets.exportPathwayRecordAllFormats(record, exportUtil);
                     }
 					// all pathways and interactions exported in biopax, sif and tab-delimited
 					if (record.getType() == CPathRecordType.PATHWAY ||
