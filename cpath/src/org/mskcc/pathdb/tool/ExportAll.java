@@ -85,6 +85,14 @@ public class ExportAll {
                         exportInteractions.exportInteractionRecord(record);
 						exportBioPAX.exportRecord(record);
                     }
+					// export cpath generated PE to BioPAX - and all complexes
+					// we do it here because we are no longer grabbing PE's by getting
+					// XML_FULL versions of pathways & interactions - that causes
+					// exported biopax to have multiple PE instances
+					if (record.getType() == CPathRecordType.PHYSICAL_ENTITY &&
+						(record.isCpathGenerated() || record.getSpecificType().contains("complex"))) {
+						exportBioPAX.exportRecord(record);
+					}
                 }
                 JdbcUtil.closeAll(con, pstmt, rs);
             }
