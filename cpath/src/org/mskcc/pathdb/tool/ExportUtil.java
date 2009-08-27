@@ -49,7 +49,7 @@ public class ExportUtil {
 	 *
 	 * @param record CPathRecord
 	 * @param taxIDs HashSet<Integer>
-	 * @param recIDs ArrayList<Integer>
+	 * @param recIDs ArrayList<Long>
      * @throws DaoException         Database Error.
 	 */
 	public static void getNCBITaxonomyIDs(CPathRecord record, HashSet<Integer> taxIDs, ArrayList<Long> recIDs)
@@ -74,7 +74,8 @@ public class ExportUtil {
 			for (int i = 0; i < internalLinks.size(); i++) {
 				CPathRecord descendentRecord = (CPathRecord) internalLinks.get(i);
 				if (descendentRecord.getType() == CPathRecordType.PATHWAY ||
-					descendentRecord.getType() == CPathRecordType.INTERACTION) {
+					descendentRecord.getType() == CPathRecordType.INTERACTION ||
+					descendentRecord.getSpecificType().contains("complex")) {
 					ExportUtil.getNCBITaxonomyIDs(descendentRecord, taxIDs, recIDs);
 				}
 				else {
