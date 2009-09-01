@@ -74,7 +74,7 @@ Participant-B GENE_SYMBOL, interaction data source and PubMed ID.  The second
 file contains participant CPATH_ID followed by node attributes.  Current node 
 attributes are GENE_SYMBOL, UNIPROT_ACCESSION, ENTREZ_GENE_ID, CHEBI_ID, 
 NODE_TYPE, and Organism (NCBI taxonomy id).  If an attribute cannot be 
-determined, "NOT SPECIFIED" will be used. This format is suitable for Cytoscape 
+determined, "NOT_SPECIFIED" will be used. This format is suitable for Cytoscape 
 - Attribute Table import and loading into Excel.  To prevent an unsuccessful 
 import into Cytoscape due to missing attribute values, users should specify 
 during import that all columns are strings.  This format is available for all 
