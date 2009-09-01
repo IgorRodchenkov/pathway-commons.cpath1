@@ -226,7 +226,7 @@ parameter list for more information</a>.  The simple text file contains three co
 <h3>Detecting matches:</h3>
 
 <ul>
-<li>In the case of <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%> output, if we are unable to find an external database identifier for a specified record, the third column of the tab-delimited text file will contain the keyword: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %>.  In the case of <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> output, if we are unable to find an external database identifier for a specified record, the external identifier will be set to: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %>.</li>
+<li>In the case of <%=ProtocolConstantsVersion2.FORMAT_ID_LIST%> output, if we are unable to find an external database identifier for a specified record, the third column of the tab-delimited text file will contain the keyword: <%= GetNeighborsCommand.NOT_SPECIFIED %>.  In the case of <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> output, if we are unable to find an external database identifier for a specified record, the external identifier will be set to: <%= GetNeighborsCommand.NOT_SPECIFIED %>.</li>
 </ul>
 
 <h3>Example Query:</h3>
@@ -280,26 +280,39 @@ For example, get the complete Apoptosis pathway from Reactome.
 <li>[Required] <%= ProtocolRequest.ARG_VERSION%>=<%= ProtocolConstantsVersion2.VERSION_2 %></li>
 <li>[Required] <%= ProtocolRequest.ARG_QUERY%>= a comma delimited list of internal identifiers, used to identify the pathways, interactions
 or physical entities of interest.</li>
-<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%> or
- <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>.  When set to <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>,
-the client will receive a complete BioPAX representation of the desired record.
-When set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, the client will receive a text file
-in the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.
-Note that <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> is only relevant if the
-query parameter <%= ProtocolRequest.ARG_QUERY%> corresponds to a pathway or interaction record.</li>
+<li>[Required] <%= ProtocolRequest.ARG_OUTPUT%> = <%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>, <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>,
+    <%= ProtocolConstantsVersion2.FORMAT_GSEA %>, or <%= ProtocolConstantsVersion2.FORMAT_PC_GENE_SET %>.
+    <ul>
+        <li><%=ProtocolConstantsVersion1.FORMAT_BIO_PAX%>:  client will receive a complete
+            <a href="http://www.biopax.org">BioPAX</a> representation of the desired record.</li>
+        <li><%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>:  client will receive a text file
+        in the <a href="sif_interaction_rules.do">Simple Interaction Format (SIF)</a>.</li>
+        <li><%= ProtocolConstantsVersion2.FORMAT_GSEA %>:  client will receive a tab-delimited
+        text file in file format specified by the
+        <a href="http://www.broad.mit.edu/gsea/msigdb/">Broad Molecular Signature Database</a>.
+        By default, this will output the cPath IDs of all genes within a pathway.  To output different identifiers,
+        such as gene symbols or UniProt identifies, you must specify a
+        <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> parameter (see below).</li> 
+        <li><%= ProtocolConstantsVersion2.FORMAT_PC_GENE_SET %>:  client will receive a tab-delimited text file similar
+        to the gsea format (see above), except that all participants are micro-encoded with multiple identifiers.
+        Each participant is specified as: CPATH_ID:RECORD_TYPE:NAME:UNIPROT_ACCESION:GENE_SYMBOL:ENTREZ_GENE_ID.</li>
+    </ul>
 <li>[Optional] <%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> = internal or external database.
-This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> 
-and is used to specify which external identifiers should be  used to identify the physical entities.  For example, to output UniProt IDs, 
-use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for
-<%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> parameter</a> below.
-If not specified, the internal <%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
+This option is only valid when the output parameter has been set to <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>
+or <%=ProtocolConstantsVersion2.FORMAT_GSEA %>.  It specifies which external identifiers to use for physical entities.
+For example, to output UniProt IDs, use: <%= ExternalDatabaseConstants.UNIPROT %>.  See the <a href=#valid_output_id_type>valid values for
+<%= ProtocolRequest.ARG_OUTPUT_ID_TYPE%> parameter</a> below. If not specified, the internal
+<%= ExternalDatabaseConstants.INTERNAL_DATABASE%> is assumed.</li>
 <li>[Optional] <%= ProtocolRequest.ARG_BINARY_INTERACTION_RULE %> = <%= binaryInteractionRule %></li>
 </ul>
 
 <h3>Detecting matches:</h3>
 
 <ul>
-<li>In the case of <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%> output, if we are unable to find an external database identifier for a specified record, the external identifier will be set to: <%= GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND %>.</li>
+<li>In the case of <%=ProtocolConstantsVersion2.FORMAT_BINARY_SIF%>, <%= ProtocolConstantsVersion2.FORMAT_GSEA %>, and
+    <%= ProtocolConstantsVersion2.FORMAT_PC_GENE_SET %> output, if we are unable to find
+    an attribute for a specified record, such as a gene symbol or <%= ExternalDatabaseConstants.UNIPROT %> identifier,
+    we will output the field as: <%= GetNeighborsCommand.NOT_SPECIFIED %>.</li>
 </ul>
 
 <h3>Example Query:</h3>
