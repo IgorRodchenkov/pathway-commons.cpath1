@@ -9,6 +9,7 @@ import org.mskcc.pathdb.sql.dao.DaoOrganism;
 import org.mskcc.pathdb.sql.dao.DaoException;
 import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
+import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,8 +19,6 @@ import java.util.ArrayList;
  * Export Utility Class.
  */
 public class ExportUtil {
-
-    private final static String NA = "NOT_SPECIFIED";
 
     /**
      * XRef Look up.
@@ -38,7 +37,7 @@ public class ExportUtil {
 
     public static String getXRef (String id) {
         if (id == null) {
-            return NA;
+            return GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND;
         } else {
             return id.trim().toUpperCase();
         }
