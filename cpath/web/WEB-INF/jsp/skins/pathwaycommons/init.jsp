@@ -23,6 +23,7 @@
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.UNIPROT);
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.INTERNAL_DATABASE);
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.ENTREZ_GENE);
+        webUIBean.addSupportedIdType(ExternalDatabaseConstants.GENE_SYMBOL);
 		webUIBean.setTagLine("Search and visualize public biological pathway information.  Single point of access. [<a href='faq.do'>more...</a>]");
 		webUIBean.setEnableMiniMaps(true);
 		//webUIBean.setImageMapServerURL("http://www.pathwaycommons.org/nms/retrieve-neighborhood-map.do");
