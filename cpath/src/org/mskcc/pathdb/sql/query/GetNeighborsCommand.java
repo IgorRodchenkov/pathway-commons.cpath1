@@ -1,4 +1,4 @@
-// $Id: GetNeighborsCommand.java,v 1.16 2009-03-13 12:40:15 grossben Exp $
+// $Id: GetNeighborsCommand.java,v 1.17 2009-09-01 19:39:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2007 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,14 +44,12 @@ import org.mskcc.pathdb.protocol.ProtocolRequest;
 import org.mskcc.pathdb.model.CPathRecord;
 import org.mskcc.pathdb.model.XmlRecordType;
 import org.mskcc.pathdb.model.ExternalLinkRecord;
-import org.mskcc.pathdb.model.GlobalFilterSettings;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 
 import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * Gets Neighbors of given physical entity.
@@ -68,7 +66,7 @@ public class GetNeighborsCommand extends Query {
 	/**
 	 * ref to no matching external id string
 	 */
-	public static String NO_MATCHING_EXTERNAL_ID_FOUND = "EXTERNAL_ID_NOT_FOUND";
+	public static String NOT_SPECIFIED = "NOT_SPECIFIED";
 
 	/**
 	 * ref to XDebug
@@ -105,7 +103,7 @@ public class GetNeighborsCommand extends Query {
 	 */
 	private boolean outputIDList;
 
-	/**
+    /**
 	 * Inner class - Neighbor object - set of 
 	 * these returned from getNeighbors query.
 	 */
@@ -280,7 +278,7 @@ public class GetNeighborsCommand extends Query {
 		outputIDTerm = (outputIDTerm == null) ? ExternalDatabaseConstants.INTERNAL_DATABASE : outputIDTerm;
 		for (Neighbor neighbor : neighbors) {
 			String externalID = neighbor.getExternalID();
-			externalID = (externalID.equals(minLongStr)) ? NO_MATCHING_EXTERNAL_ID_FOUND : externalID;
+			externalID = (externalID.equals(minLongStr)) ? NOT_SPECIFIED : externalID;
 			String output = (neighbor.getName() + "\t" +
 							 String.valueOf(neighbor.getCPathID()) + "\t" +
 							 outputIDTerm + ":" + externalID + "\n");
@@ -360,7 +358,7 @@ public class GetNeighborsCommand extends Query {
 				// made it here - we should be an external id,
 				// but none was found
 				if (externalID.equals(neighborRecordIDStr)) {
-					externalID = NO_MATCHING_EXTERNAL_ID_FOUND;
+					externalID = NOT_SPECIFIED;
 				}
 			}
 			// create neighbor object & add to return set

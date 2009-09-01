@@ -235,7 +235,7 @@ public class ExportGeneSets {
                     name = name.replaceAll(":", "-");
                     line.append (participantRecord.getName() + COLON);
                 } else {
-                    line.append (GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND + COLON);
+                    line.append (GetNeighborsCommand.NOT_SPECIFIED + COLON);
                 }
                 line.append (ExportUtil.getXRef (uniprotAccession) + COLON);
                 line.append (ExportUtil.getXRef (geneSymbol) + COLON);
@@ -258,7 +258,7 @@ public class ExportGeneSets {
         if (geneSymbol != null) {
             line.append (geneSymbol + TAB);
         } else {
-            line.append (GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND + TAB);
+            line.append (GetNeighborsCommand.NOT_SPECIFIED + TAB);
         }
     }
 }

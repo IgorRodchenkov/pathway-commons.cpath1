@@ -37,7 +37,7 @@ public class ExportUtil {
 
     public static String getXRef (String id) {
         if (id == null) {
-            return GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND;
+            return GetNeighborsCommand.NOT_SPECIFIED;
         } else {
             return id.trim().toUpperCase();
         }

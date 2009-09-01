@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.13 2009-07-21 16:53:26 cerami Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.14 2009-09-01 19:39:35 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -61,7 +61,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.io.IOException;
@@ -255,7 +254,7 @@ public class ExecuteBinaryInteraction {
 		}
 
 		// made it here, no external id found
-		externalID = GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND;
+		externalID = GetNeighborsCommand.NOT_SPECIFIED;
 		outputIDMap.put(internalID, externalID);
 		return externalID;
 	}
