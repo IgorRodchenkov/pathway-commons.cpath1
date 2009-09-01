@@ -1,4 +1,4 @@
-// $Id: ExecuteTextResponse.java,v 1.4 2007-12-28 21:09:08 cerami Exp $
+// $Id: ExecuteTextResponse.java,v 1.5 2009-09-01 18:14:53 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,17 +33,20 @@ package org.mskcc.pathdb.action.web_api.biopax_mode;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.mskcc.pathdb.protocol.ProtocolRequest;
-import org.mskcc.pathdb.protocol.ProtocolException;
-import org.mskcc.pathdb.protocol.ProtocolConstantsVersion2;
+import org.mskcc.pathdb.protocol.*;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.dao.DaoCPath;
 import org.mskcc.pathdb.query.batch.PathwayBatchQuery;
 import org.mskcc.pathdb.query.batch.PhysicalEntityWithPathwayList;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import org.mskcc.pathdb.action.web_api.WebApiUtil;
+import org.mskcc.pathdb.model.CPathRecord;
+import org.mskcc.pathdb.model.CPathRecordType;
+import org.mskcc.pathdb.tool.ExportGeneSets;
+import org.mskcc.pathdb.tool.ExportFileUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -83,6 +86,9 @@ public class ExecuteTextResponse {
         } else if (protocolRequest.getCommand().equals
                 (ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
             return getPathwayListHandler(protocolRequest, response);
+        } else if (protocolRequest.getCommand().equals
+                (ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)) {
+            return getGeneSetsHandler (protocolRequest, response);
         }
         return null;
     }
@@ -123,6 +129,59 @@ public class ExecuteTextResponse {
         }
         String table = batchQuery.outputTabDelimitedText(list);
         WebApiUtil.returnText(response, table);
+        return null;
+	}
+
+    /**
+     * Special-Case handler for getGeneSets Command.
+     */
+    private ActionForward getGeneSetsHandler(ProtocolRequest protocolRequest, HttpServletResponse response)
+            throws ProtocolException, DaoException, BioPaxRecordSummaryException {
+
+        //  Split by comma;  then make sure to trim
+        //  We assume that IDs have already been validated as Ints.
+        String idStr[] = protocolRequest.getQuery().split(",");
+        int ids[] = new int [idStr.length];
+        for (int i=0; i< ids.length; i++) {
+            ids[i] = Integer.parseInt(idStr[i].trim());
+        }
+
+        //  Set up Export Gene Sets Object.
+        ExportGeneSets exporter = new ExportGeneSets();
+        DaoCPath dao = DaoCPath.getInstance();
+        StringBuffer buf = new StringBuffer();
+
+        //  Determine Requested Output Format
+        int outputFormat;
+        if (protocolRequest.getOutput().equals(ProtocolConstantsVersion2.FORMAT_GSEA)) {
+            outputFormat = ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT;
+        } else {
+            outputFormat = ExportFileUtil.PC_OUTPUT;
+        }
+
+        //  Iterate through all requested records
+        for (int i=0; i<ids.length; i++) {
+            CPathRecord record = dao.getRecordById(ids[i]);
+            if (record == null) {
+                //  Throw a protocol exception if client requests a non-existing record.
+                throw new ProtocolException (ProtocolStatusCode.INVALID_ARGUMENT, "Internal ID:  "
+                    + ids[i] + " does not exist in the database.");
+            }
+            if (record.getType() == CPathRecordType.PATHWAY) {
+                try {
+                    //  Append to String Buffer.
+                    buf.append (exporter.exportPathwayRecord(record, outputFormat) + "\n");
+                } catch (IOException e) {
+                    throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
+                }
+            } else {
+                //  Throw a protocol exception if client requests a non-pathway record.
+                throw new ProtocolException (ProtocolStatusCode.INVALID_ARGUMENT, "Internal ID:  "
+                    + ids[i] + " does not reference a pathway record.");
+            }
+
+        }
+        WebApiUtil.returnText(response, buf.toString());
         return null;
 	}
 }
