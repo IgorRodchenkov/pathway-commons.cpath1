@@ -1,4 +1,4 @@
-// $Id: ExecuteWebApi.java,v 1.26 2009-03-12 16:56:04 grossben Exp $
+// $Id: ExecuteWebApi.java,v 1.27 2009-09-01 18:14:11 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -245,7 +245,16 @@ public class ExecuteWebApi extends BaseAction {
                 }
             } else if (command.equals(ProtocolConstantsVersion2.COMMAND_GET_PATHWAY_LIST)) {
                 return true;
+            } else if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)
+                    && protocolRequest.getOutput()!= null
+                    && protocolRequest.getOutput().equals(ProtocolConstantsVersion2.FORMAT_GSEA)) {
+                return true;
+            } else if (command.equals(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID)
+                    && protocolRequest.getOutput()!= null
+                    && protocolRequest.getOutput().equals(ProtocolConstantsVersion2.FORMAT_PC_GENE_SET)) {
+                return true;
             }
+
         }
         return false;
     }
