@@ -2,6 +2,7 @@ package org.mskcc.pathdb.tool;
 
 import org.mskcc.pathdb.model.*;
 import org.mskcc.pathdb.sql.dao.*;
+import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 
 import java.util.HashMap;
@@ -39,7 +40,6 @@ import java.util.ArrayList;
 public class ExportGeneSets {
     private final static String TAB = "\t";
     private final static String COLON = ":";
-    private final static String NA = "NOT_SPECIFIED";
 	private HashMap<String, Integer> processedRecords;
 
     /**
@@ -192,7 +192,6 @@ public class ExportGeneSets {
         line.append (record.getName() + TAB);
         line.append (dbTermMasterTerm + TAB);
 
-        int numParticipantsOutput = 0;
         for (int i=0; i < participantsList.size(); i++) {
             CPathRecord participantRecord = participantsList.get(i);
 			// per spec, GSEA & PC should not contain cross-species genes
@@ -206,18 +205,19 @@ public class ExportGeneSets {
             String uniprotAccession = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
             if (outputFormat == ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT) {
                 if (geneSymbol != null) {
-                    numParticipantsOutput++;
                     line.append (geneSymbol + TAB);
+                } else {
+                    line.append (GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND + TAB);
                 }
 			}
 			else if (outputFormat == ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT) {
 				if (entrezGeneId != null) {
-                    numParticipantsOutput++;
                     line.append (entrezGeneId + TAB);
+                } else {
+                    line.append (GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND + TAB);
                 }
             }
 			else if (outputFormat == ExportFileUtil.PC_OUTPUT) {
-                numParticipantsOutput++;
                 line.append (descendentId + COLON);
                 line.append (participantRecord.getSpecificType() + COLON);
                 String name = participantRecord.getName();
@@ -226,7 +226,7 @@ public class ExportGeneSets {
                     name = name.replaceAll(":", "-");
                     line.append (participantRecord.getName() + COLON);
                 } else {
-                    line.append (NA + COLON);
+                    line.append (GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND + COLON);
                 }
                 line.append (ExportUtil.getXRef (uniprotAccession) + COLON);
                 line.append (ExportUtil.getXRef (geneSymbol) + COLON);
@@ -235,10 +235,6 @@ public class ExportGeneSets {
             }
         }
         line.append ("\n");
-        if (numParticipantsOutput > 0) {
-            return line.toString();
-        } else {
-            return line.toString();
-        }
+        return line.toString();
     }
 }
