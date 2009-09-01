@@ -73,11 +73,11 @@ public class ExportGeneSets {
 
         //  Dump to all file formats.
         exportGeneSet(record, dbMasterTerm, participantRecordList, xrefList, exportFileUtil,
-                ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT);
+                ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT, null);
         exportGeneSet(record, dbMasterTerm, participantRecordList, xrefList, exportFileUtil,
-                ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT);
+                ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT, null);
         exportGeneSet(record, dbMasterTerm, participantRecordList, xrefList, exportFileUtil,
-                ExportFileUtil.PC_OUTPUT);
+                ExportFileUtil.PC_OUTPUT, null);
 
 		// add to processed list
 		processedRecords.put(record.getName(), ++count);
@@ -87,8 +87,11 @@ public class ExportGeneSets {
      * Exports the Pathway Record in the Specified Output Format.
      * 
      * @param record CPath Record.
+     * @param exportOutputFormat  Must be set to ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT,
+     * ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT, ExportFileUtil.GSEA_OUTPUT or ExportFileUtil.PC_OUTPUT.
+     * @param outputId External IDs to output.  Can be null.  Can be set to, e.g. External Database Constants. 
      */
-    public String exportPathwayRecord (CPathRecord record, int exportOutputFormat)
+    public String exportRecord(CPathRecord record, int exportOutputFormat, String outputId)
             throws DaoException, IOException {
 
         //  Gets the Database Term
@@ -99,7 +102,7 @@ public class ExportGeneSets {
         ArrayList<HashMap<String, String>> xrefList = getParticipantXRefs(participantRecordList);
 
         String exportText = exportGeneSetToText (record, dbMasterTerm, participantRecordList, xrefList,
-                exportOutputFormat);
+                exportOutputFormat, outputId);
         return exportText;
     }
 
@@ -132,9 +135,21 @@ public class ExportGeneSets {
         DaoInternalFamily daoInternalFamily = new DaoInternalFamily();
         long[] descendentIds = daoInternalFamily.getDescendentIds(record.getId(),
                 CPathRecordType.PHYSICAL_ENTITY);
+
         DaoCPath daoCPath = DaoCPath.getInstance();
-        for (long descendentId : descendentIds) {
-            participantRecordList.add(daoCPath.getRecordById(descendentId));
+        //  If nothing is found in the descendent IDs table, we may have a complex or interaction.
+        //  In that case, try the DaoInternalLink.getAllDescendents method.
+        if (descendentIds.length == 0) {
+            DaoInternalLink daoInternalLink = new DaoInternalLink();
+            ArrayList descIdList = daoInternalLink.getAllDescendents(record.getId());
+            for (int i=0; i<descIdList.size(); i++) {
+                long descendentId = (Long) descIdList.get(i);
+                participantRecordList.add(daoCPath.getRecordById(descendentId));
+            }
+        } else {
+            for (long descendentId : descendentIds) {
+                participantRecordList.add(daoCPath.getRecordById(descendentId));
+            }
         }
         return participantRecordList;
     }
@@ -161,10 +176,10 @@ public class ExportGeneSets {
      */
     private void exportGeneSet(CPathRecord record, String dbTerm, ArrayList <CPathRecord>
             cpathRecordList, ArrayList<HashMap<String, String>> xrefList, ExportFileUtil exportFileUtil,
-           int outputFormat)
+           int outputFormat, String outputId)
             throws IOException, DaoException {
         String text = exportGeneSetToText (record, dbTerm, cpathRecordList, xrefList,
-                outputFormat);
+                outputFormat, outputId);
 
         //  Append to the correct output files
         if (text != null) {
@@ -186,7 +201,7 @@ public class ExportGeneSets {
      * @throws DaoException         Database Error.
      */
     private String exportGeneSetToText(CPathRecord record, String dbTermMasterTerm, ArrayList <CPathRecord>
-            participantsList, ArrayList<HashMap<String, String>> xrefList, int outputFormat)
+            participantsList, ArrayList<HashMap<String, String>> xrefList, int outputFormat, String outputId)
             throws IOException, DaoException {
         StringBuffer line = new StringBuffer();
         line.append (record.getName() + TAB);
@@ -204,18 +219,10 @@ public class ExportGeneSets {
             String entrezGeneId = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
             String uniprotAccession = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
             if (outputFormat == ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT) {
-                if (geneSymbol != null) {
-                    line.append (geneSymbol + TAB);
-                } else {
-                    line.append (GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND + TAB);
-                }
-			}
+                outputExternalId(line, geneSymbol);
+            }
 			else if (outputFormat == ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT) {
-				if (entrezGeneId != null) {
-                    line.append (entrezGeneId + TAB);
-                } else {
-                    line.append (GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND + TAB);
-                }
+                outputExternalId(line, entrezGeneId);
             }
 			else if (outputFormat == ExportFileUtil.PC_OUTPUT) {
                 line.append (descendentId + COLON);
@@ -232,9 +239,24 @@ public class ExportGeneSets {
                 line.append (ExportUtil.getXRef (geneSymbol) + COLON);
                 line.append (ExportUtil.getXRef (entrezGeneId));
                 line.append (TAB);
+            } else if (outputFormat == ExportFileUtil.GSEA_OUTPUT) {
+                String externalId =  Long.toString(descendentId);
+                if (outputId != null && outputId.trim().length() > 0 &&
+                        ! outputId.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
+                    externalId = xrefMap.get(outputId);
+                }
+                outputExternalId(line, externalId);
             }
         }
         line.append ("\n");
         return line.toString();
+    }
+
+    private void outputExternalId(StringBuffer line, String geneSymbol) {
+        if (geneSymbol != null) {
+            line.append (geneSymbol + TAB);
+        } else {
+            line.append (GetNeighborsCommand.NO_MATCHING_EXTERNAL_ID_FOUND + TAB);
+        }
     }
 }

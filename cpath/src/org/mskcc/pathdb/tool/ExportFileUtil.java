@@ -22,6 +22,7 @@ public class ExportFileUtil {
     public static final int TAB_DELIM_EDGE_OUTPUT = 5;
     public static final int TAB_DELIM_NODE_OUTPUT = 6;
     public static final int BIOPAX_OUTPUT = 7;
+    public static final int GSEA_OUTPUT = 8;
 
     private File exportDir;
 	private static final String EDGE_ATTRIBUTE_FILE_SUFFIX = "-edge-attributes";
