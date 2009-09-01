@@ -229,12 +229,24 @@ class ProtocolValidatorVersion2 {
                                 + "' is not specified." + ProtocolValidator.HELP_MESSAGE,
                         "You did not specify an output format.  Please try again.");
             } else {
-                if (!(output.equalsIgnoreCase(ProtocolConstantsVersion1.FORMAT_BIO_PAX) ||
-					  output.equalsIgnoreCase(ProtocolConstantsVersion2.FORMAT_BINARY_SIF))) {
+                boolean validFormat = false;
+                if (output.equals(ProtocolConstantsVersion1.FORMAT_BIO_PAX)) {
+                    validFormat = true;
+                } else if (output.equals(ProtocolConstantsVersion2.FORMAT_BINARY_SIF)) {
+                    validFormat = true;
+                } else if (output.equals(ProtocolConstantsVersion2.FORMAT_GSEA)) {
+                    validFormat = true;
+                } else if (output.equals(ProtocolConstantsVersion2.FORMAT_PC_GENE_SET)) {
+                    validFormat = true;
+                }
+                if (validFormat == false) {
                     throw new ProtocolException(ProtocolStatusCode.INVALID_ARGUMENT,
                             ProtocolRequest.ARG_OUTPUT +
                                     " must be set to: " +
-                                    ProtocolConstantsVersion1.FORMAT_BIO_PAX + ".");
+                                    ProtocolConstantsVersion1.FORMAT_BIO_PAX + ", " +
+                                    ProtocolConstantsVersion2.FORMAT_BINARY_SIF + ", " +
+                                    ProtocolConstantsVersion2.FORMAT_GSEA + ", or " +
+                                    ProtocolConstantsVersion2.FORMAT_PC_GENE_SET + ".");
                 }
             }
         }
