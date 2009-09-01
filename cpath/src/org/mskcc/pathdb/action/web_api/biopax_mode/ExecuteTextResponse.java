@@ -1,4 +1,4 @@
-// $Id: ExecuteTextResponse.java,v 1.5 2009-09-01 18:14:53 cerami Exp $
+// $Id: ExecuteTextResponse.java,v 1.6 2009-09-01 19:04:47 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,7 +44,6 @@ import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 import org.mskcc.pathdb.action.web_api.WebApiUtil;
 import org.mskcc.pathdb.model.CPathRecord;
-import org.mskcc.pathdb.model.CPathRecordType;
 import org.mskcc.pathdb.tool.ExportGeneSets;
 import org.mskcc.pathdb.tool.ExportFileUtil;
 
@@ -53,8 +52,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 import java.util.ArrayList;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 /**
  * BioPAX Web Mode:  Response is of type Text.
@@ -154,7 +151,7 @@ public class ExecuteTextResponse {
         //  Determine Requested Output Format
         int outputFormat;
         if (protocolRequest.getOutput().equals(ProtocolConstantsVersion2.FORMAT_GSEA)) {
-            outputFormat = ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT;
+            outputFormat = ExportFileUtil.GSEA_OUTPUT;
         } else {
             outputFormat = ExportFileUtil.PC_OUTPUT;
         }
@@ -167,19 +164,12 @@ public class ExecuteTextResponse {
                 throw new ProtocolException (ProtocolStatusCode.INVALID_ARGUMENT, "Internal ID:  "
                     + ids[i] + " does not exist in the database.");
             }
-            if (record.getType() == CPathRecordType.PATHWAY) {
-                try {
-                    //  Append to String Buffer.
-                    buf.append (exporter.exportPathwayRecord(record, outputFormat) + "\n");
-                } catch (IOException e) {
-                    throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
-                }
-            } else {
-                //  Throw a protocol exception if client requests a non-pathway record.
-                throw new ProtocolException (ProtocolStatusCode.INVALID_ARGUMENT, "Internal ID:  "
-                    + ids[i] + " does not reference a pathway record.");
+            try {
+                //  Append to String Buffer.
+                buf.append (exporter.exportRecord(record, outputFormat, protocolRequest.getOutputIDType()));
+            } catch (IOException e) {
+                throw new ProtocolException (ProtocolStatusCode.INTERNAL_ERROR, e);
             }
-
         }
         WebApiUtil.returnText(response, buf.toString());
         return null;
