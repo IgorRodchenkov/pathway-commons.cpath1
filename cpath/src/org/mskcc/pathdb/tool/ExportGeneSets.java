@@ -89,7 +89,9 @@ public class ExportGeneSets {
      * @param record CPath Record.
      * @param exportOutputFormat  Must be set to ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT,
      * ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT, ExportFileUtil.GSEA_OUTPUT or ExportFileUtil.PC_OUTPUT.
-     * @param outputId External IDs to output.  Can be null.  Can be set to, e.g. External Database Constants. 
+     * @param outputId External IDs to output.  Only applicable if exportOutputFormat is set to ExportFileUtil.GSEA_OUTPUT.
+     * Can be null.  Can be set to, e.g. External Database Constants.  If exportOutputFormat is set to
+     * ExportFileUtil.GSEA_OUTPUT and this is null, the method outputs cPath IDs. 
      */
     public String exportRecord(CPathRecord record, int exportOutputFormat, String outputId)
             throws DaoException, IOException {
