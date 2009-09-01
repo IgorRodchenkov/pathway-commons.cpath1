@@ -24,7 +24,7 @@ public class TestExportGeneSets extends TestCase {
         ExportGeneSets exportUtil = new ExportGeneSets();
 
         //  Verify that the PC Output File Format Works
-        String output = exportUtil.exportPathwayRecord(record, ExportFileUtil.PC_OUTPUT);
+        String output = exportUtil.exportRecord(record, ExportFileUtil.PC_OUTPUT, null);
         assertTrue(output.startsWith("mTOR signaling pathway\tNA\t588:protein:FRAP2:Q9Y4I3:" +
                 "EXTERNAL_ID_NOT_FOUND:EXTERNAL_ID_NOT_FOUND"));
     }
