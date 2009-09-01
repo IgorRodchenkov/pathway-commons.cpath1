@@ -44,6 +44,16 @@ public class ProtocolConstantsVersion2 {
     public static final String FORMAT_BINARY_SIF = "binary_sif";
 
     /**
+     * FORMAT_GSEA_ENTREZ_GENE_ID.
+     */
+    public static final String FORMAT_GSEA = "gsea";
+
+    /**
+     * FORMAT_PC_OUTPUT
+     */
+    public static final String FORMAT_PC_GENE_SET = "pc_gene_set";
+
+    /**
      * IMAGE_MAP Format / Output.
      */
     public static final String FORMAT_IMAGE_MAP = "image_map";
