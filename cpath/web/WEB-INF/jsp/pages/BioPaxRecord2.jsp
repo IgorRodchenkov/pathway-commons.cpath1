@@ -620,7 +620,42 @@ enable Javascript support within your web browser.
     }
 %>
 <%
-    if (acStableLinkId != null) {
+	//  Output BioPAX Links
+    if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
+            (CPathRecordType.PATHWAY.toString())) {
+            ProtocolRequest pRequest = new ProtocolRequest();
+            pRequest.setVersion(ProtocolConstantsVersion2.VERSION_2);
+            pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
+            pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
+            pRequest.setOutput(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
+
+            ProtocolRequest tempRequest = new ProtocolRequest();
+            tempRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
+            tempRequest.setQuery(Long.toString(bpSummary.getRecordID()));
+            tempRequest.setOutput(ProtocolConstantsVersion2.FORMAT_GSEA);
+            tempRequest.setOutputIDType(ExternalDatabaseConstants.GENE_SYMBOL);
+            tempRequest.setVersion(ProtocolConstantsVersion2.VERSION_2);
+            out.println ("<div class=\"box\">");
+            out.println("<h3>Download:</h3>");
+            out.println("<ul>");
+            out.println("<li><a href='downloadBioPax.do?id=" + bpSummary.getRecordID() + "'>"
+                + "BioPAX (.xml)" + "</a></li>");
+            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400')\">"
+                + "Gene Set:  Gene Symbols (.txt)" + "</a></li>");
+            tempRequest.setOutputIDType(ExternalDatabaseConstants.ENTREZ_GENE);
+            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400')\">"
+            + "Gene Set:  Entrez Gene IDs (.txt)" + "</a></li>");
+            tempRequest.setOutputIDType(ExternalDatabaseConstants.UNIPROT);
+            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400')\">"
+            + "Gene Set:  UniProt IDs (.txt)" + "</a></li>");
+            out.println ("</ul>");
+            out.println("</div>");
+
+    }
+%>    
+<%
+    if (acStableLinkId != null || bpSummary.getType().equalsIgnoreCase
+            (CPathRecordType.PATHWAY.toString())) {
         out.println ("<div class=\"box\">");
         out.println("<h3>Stable Link:</h3>");
 %>
@@ -630,22 +665,6 @@ enable Javascript support within your web browser.
         </jsp:include>
         </div>
 <%
-    }
-%>
-<%
-	//  Output BioPAX Links
-    if (bpSummary.getType() != null && bpSummary.getType().equalsIgnoreCase
-            (CPathRecordType.PATHWAY.toString())) {
-            ProtocolRequest pRequest = new ProtocolRequest();
-            pRequest.setVersion(ProtocolConstantsVersion2.VERSION_2);
-            pRequest.setCommand(ProtocolConstants.COMMAND_GET_RECORD_BY_CPATH_ID);
-            pRequest.setQuery(Long.toString(bpSummary.getRecordID()));
-            pRequest.setOutput(ProtocolConstantsVersion1.FORMAT_BIO_PAX);
-            out.println ("<div class=\"box\">");
-            out.println("<h3>Download:</h3>");
-            out.println("<P>&nbsp;<img src='jsp/images/xml_doc.gif' align='ABSMIDDLE'>&nbsp;&nbsp;<a href='downloadBioPax.do?id=" + bpSummary.getRecordID() + "'>"
-                + "Download BioPAX" + "</a></P>");
-            out.println("</div>");
     }
 %>
 <%
