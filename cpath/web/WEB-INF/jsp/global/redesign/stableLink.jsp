@@ -5,8 +5,17 @@
     String acStableLinkId = request.getParameter("acStableLinkId");
     String peName = request.getParameter("peName");
     String currentUrl = (String) request.getAttribute(BaseAction.ATTRIBUTE_URL_BEFORE_FORWARDING);
-    String stableUrl = UrlUtil.rewriteUrl(currentUrl, "stable.do") +
+    String stableUrl = null;
+    String href = null;
+    if (!acStableLinkId.equals("null") && !peName.equals("null")) {
+        stableUrl = UrlUtil.rewriteUrl(currentUrl, "stable.do") +
             "?db=" + ExternalDatabaseConstants.UNIPROT + "&id=" + acStableLinkId;
+        href = "<a href='" + stableUrl + "'>" + peName + "</a>";
+    } else {
+        stableUrl = "Stable links are not currently available to pathways.";
+        href = stableUrl;
+    }
+
 %>
 
 <script>
@@ -36,7 +45,7 @@
         <div class="bd">Paste HTML to embed in website:
             <div class="url_box">
             <form>
-            <input type="text" size=40 value="<a href='<%= stableUrl %>'><%= peName %></a>"></input>
+            <input type="text" size=40 value="<%= href %>"></input>
             </form>
             </div>
         </div>        
