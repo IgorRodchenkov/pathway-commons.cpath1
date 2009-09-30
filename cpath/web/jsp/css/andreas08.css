@@ -364,10 +364,9 @@ display:none;
 }
 
 .button {
-font-size:85%;
-color:#467aa7;
-text-decoration:underline;
-cursor:pointer;
+font-size:100% !important;
+text-decoration:underline !important;
+cursor:pointer !important;
 }
 
 .record_page_category a:hover {color: black !important;}

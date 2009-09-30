@@ -97,6 +97,7 @@
     </span>
 </legend>
 <% } %>
+    <div class="input_search_box2">
     <input type="hidden" name="<%= ProtocolRequest.ARG_VERSION %>" value="<%= webUIBean.getWebApiVersion() %>"/>
     <input type="text" id="<%= ProtocolRequest.ARG_QUERY %>" name="<%= ProtocolRequest.ARG_QUERY %>" size="25" value='<%= searchTerm %>'/>
     <input type="submit" id="searchbutton" value="Search"/>
@@ -141,6 +142,7 @@
         </select>
         <% } %>
     <% } %>
+    </div>
 </fieldset>    
 </form>
 </div>
