@@ -42,8 +42,6 @@ border:2px solid #a0a0a0;
 
 #header{
 height:120px;
-width:100%;
-/* margin:  top, right, bottom, left */
 margin:0 1px 0px 1px;
 background:#467aa7;
 color:#ffffff;
@@ -72,11 +70,12 @@ font-weight:normal;
 }
 
 #navigation{
-float:left;
 height:1.7em;
 line-height:1.7em;
-width:100%;
-margin:0 1px;
+margin-top:0px;
+margin-bottom:0px;
+margin-left:1px;
+margin-right:1px;
 background:#578bb8;
 color:#ffffff;
 }
@@ -207,7 +206,6 @@ background-color:inherit;
 
 #footer{
 clear:both;
-width:100%;
 padding:5px 0;
 margin:0 1px;
 font-size:0.7em;
