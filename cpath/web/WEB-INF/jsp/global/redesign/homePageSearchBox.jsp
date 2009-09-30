@@ -61,15 +61,15 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
     <a href="#" id="protein_tab_tab" class="search_tab_inactive" onclick="showSearchTab('protein_tab')">Find <%= SearchTabs.PHYSICAL_ENTITIES_TAB_TITLE %></a>
 </span>
 </legend>
-<p>
+<div class="input_search_box">
 <%  outputSearchForm(out, webUIBean, GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS); %>
-</p>
+</div>
 <div id="pathway_tab" style="display:block;">
-<P>For example, if you enter: <a href="#" onClick="submitSearch('BRCA1')">BRCA1</a>, you will <span class="search_highlight">get back a list of pathways</span> containing the
+<P>For example, if you enter: <a href="#" onClick="submitSearch('BRCA1')">BRCA1</a>, you will <span class="search_highlight">get back the list of pathways</span> containing the
 keyword "BRCA1", and a list pathways that contain the BRCA1 gene.
 </div>
 <div id="protein_tab" style="display:none;">
-<P>For example, if you enter: <a href="#" onClick="submitSearch('BRCA1')">BRCA1</a>, you will <span class="search_highlight">get back a list of proteins, genes, or small molecules</span>
+<P>For example, if you enter: <a href="#" onClick="submitSearch('BRCA1')">BRCA1</a>, you will <span class="search_highlight">get back the list of proteins, genes, or small molecules</span>
 that contain the keyword "BRCA1".
 </div>    
 </p>
@@ -84,9 +84,9 @@ that contain the keyword "BRCA1".
         out.println ("<input type='hidden' id='" + ProtocolRequest.ARG_RECORD_TYPE
                 + "' name='" + ProtocolRequest.ARG_RECORD_TYPE + "' value='"
                 + recordType + "'>");
-        out.println ("<input type='text' id='" + ProtocolRequest.ARG_QUERY
+        out.println ("<input class='text_box' type='text' id='" + ProtocolRequest.ARG_QUERY
                 + "' name='" + ProtocolRequest.ARG_QUERY + "' size='30'>");
-        out.println ("<input type='submit' value='Search'/>");
+        out.println ("<input class='button' type='submit' value='Search'/>");
         out.println ("<input type='hidden' name='"+ ProtocolRequest.ARG_FORMAT + "' value='"
                 + ProtocolConstants.FORMAT_HTML + "'/>");
         out.println ("<input type='hidden' name='" + ProtocolRequest.ARG_COMMAND
