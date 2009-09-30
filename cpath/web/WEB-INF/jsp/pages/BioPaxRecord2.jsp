@@ -640,13 +640,13 @@ enable Javascript support within your web browser.
             out.println("<ul>");
             out.println("<li><a href='downloadBioPax.do?id=" + bpSummary.getRecordID() + "'>"
                 + "BioPAX (.xml)" + "</a></li>");
-            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400')\">"
+            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400,status=1,toolbar=1,menubar=1,scrollbars=1')\">"
                 + "Gene Set:  Gene Symbols (.txt)" + "</a></li>");
             tempRequest.setOutputIDType(ExternalDatabaseConstants.ENTREZ_GENE);
-            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400')\">"
+            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400,status=1,toolbar=1,menubar=1,scrollbars=1')\">"
             + "Gene Set:  Entrez Gene IDs (.txt)" + "</a></li>");
             tempRequest.setOutputIDType(ExternalDatabaseConstants.UNIPROT);
-            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400')\">"
+            out.println("<li><a href=\"#\" onClick=\"window.open('"+ tempRequest.getUri() +"','mywindow','top=200,left=200,width=600,height=400,status=1,toolbar=1,menubar=1,scrollbars=1')\">"
             + "Gene Set:  UniProt IDs (.txt)" + "</a></li>");
             out.println ("</ul>");
             out.println("</div>");
