@@ -1,6 +1,5 @@
 <%@ page import="org.mskcc.pathdb.servlet.CPathUIConfig"%>
 <%@ page import="org.mskcc.pathdb.form.WebUIBean"%>
-<%@ page import="org.mskcc.pathdb.model.GlobalFilterSettings"%>
 <%@ taglib uri="/WEB-INF/taglib/cbio-taglib.tld" prefix="cbio" %>
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
@@ -14,8 +13,7 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 <p>
 <jsp:include page="../../global/redesign/homePageSearchBox.jsp" flush="true" />
 </p>
-<p>To restrict your search to specific data sources or specific organisms, update your
-<a href="filter.do">global filter settings</a>.</p>
+
 </div>
 <h2>What's New:</h2>
 <ul>

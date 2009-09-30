@@ -5,8 +5,15 @@
 <%@ page import="org.mskcc.pathdb.protocol.ProtocolConstants"%>
 <%@ page import="java.io.IOException" %>
 <%@ page import="org.mskcc.pathdb.taglib.SearchTabs" %>
+<%@ page import="java.util.Date" %>
 <%
 WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
+GlobalFilterSettings filterSettings = (GlobalFilterSettings)
+        session.getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
+if (filterSettings == null) {
+    filterSettings = new GlobalFilterSettings();
+    session.setAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS, filterSettings);
+}
 %>
 
 <script>
@@ -93,4 +100,6 @@ that contain the keyword "BRCA1".
             + "' size='25' value='" + ProtocolConstants.COMMAND_GET_BY_KEYWORD + "'/>");
     }
 %>
+<p>Current filter settings:  <%= filterSettings.getFilterSummary() %>.&nbsp;<a href='filter.do'>Set filters.</a>
+</p>
    
