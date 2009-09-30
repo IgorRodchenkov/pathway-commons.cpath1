@@ -114,7 +114,6 @@ text-align:center;
   padding-right: 5px;
   padding-top:3px;
   padding-bottom:3px;
-  #border:1px solid #dddddd;
 }
 
 .search_bar_tab_active:hover {
@@ -126,12 +125,10 @@ text-align:center;
   margin: 0px;
   background:#aaaaaa;
   color:#ffffff;
-  #border-right:1px solid #ffffff;
   padding-left: 5px;
   padding-right: 5px;
   padding-top:3px;
   padding-bottom:3px;
-  #border:1px solid #bbbbbb;
 }
 
 .search_bar_tab_inactive:hover {

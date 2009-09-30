@@ -351,15 +351,17 @@ else {
 			// score bar
 			//out.println("<th align=left>" + String.valueOf(score) + "</th>");
 			out.println("<th align=left width=\"" + MAX_SCOREBOARD_WIDTH + "\">");
+			out.println("<div class='scoreboard'>");
 			out.println("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#ffffff\">");
-			out.println("<div id='scoreboard'><tr>");
-			out.println("<tr><td><img src=\"jsp/images/relevance.gif\" width=\"" +
+			out.println("<tr>");
+			out.println("<tr valign=top><td><img src=\"jsp/images/relevance.gif\" width=\"" +
 			            String.valueOf(scoreboardWidth) +
 			            "\" height=\"" + SCOREBOARD_HEIGHT + "\" alt=\"" +
 			            String.valueOf(percentage) +
 			            "%\">" + "</td>" + spacerString);
-			out.println("</tr></div>");
+			out.println("</tr>");
 		    out.println("</table>");
+		    out.println("</div>");
 			out.println("</th>");
 			// record header
             out.println("<th align=left width=\"90%\">");
