@@ -202,6 +202,7 @@ input {
   border: 1px solid #ffcccc;
   background: #CCCCFF;
   padding: 10px;
+  margin-top:4px;
 }
 
 .input_search_box {
@@ -216,3 +217,17 @@ input {
     font-size:large !important;
     background: #EEEEEE !important;
 }
+
+.srp{
+font-size:0.9em;
+font-weight:normal;
+display:block;
+margin:5px 0 5px 0;
+padding-left:5px;
+height:1.7em;
+line-height:1.7em;
+background-color:#578bb8;
+color:#ffffff;
+}
+
+.srp a:hover,#subcontent a:hover{color:white;text-decoration:underline;}

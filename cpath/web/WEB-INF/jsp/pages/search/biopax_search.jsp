@@ -293,9 +293,9 @@ else {
 <%
 	Pager pager = new Pager (protocolRequest, totalNumHits);
 	out.println("<div class='search_buttons'>");
-	out.println("<srp>" + pager.getHeaderHtmlForSearchPage("white",
+	out.println("<span class='srp'>" + pager.getHeaderHtmlForSearchPage("white",
 	ProtocolRequest.ARG_RECORD_TYPE + "=" + recordType + "&" +
-	GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource) + "</srp>");
+	GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_NAME + "=" + keyDataSource) + "</span>");
 	out.println ("</div>");
 %>
     <table cellpadding="2" cellspacing="0" border="0" width="100%">
