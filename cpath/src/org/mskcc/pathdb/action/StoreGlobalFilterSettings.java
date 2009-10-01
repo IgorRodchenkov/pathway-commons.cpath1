@@ -83,7 +83,7 @@ public class StoreGlobalFilterSettings extends BaseAction {
         settings.setOrganismSelected(idList);
 
         //  Redirect user back to where they originally came from.
-        String userMessage = "Global Filters Set";
+        String userMessage = "Global Filters Updated.";
         request.setAttribute("userMsg", userMessage);
         String referalUrl = (String) session.getAttribute("Referer");
         if (referalUrl != null) {
