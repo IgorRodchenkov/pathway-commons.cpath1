@@ -17,7 +17,13 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 </div>
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;July 2, 2009:
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;October 15, 2009:
+    <ul>
+        <li>Improved search functionality.</li>
+    </ul>
+</li>
+
+<li>July 2, 2009:
     <ul>
         <li><a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">Batch Download</a> of all Pathway Commons data in multiple file formats is now available.</li>
         <li>Systems Biology Center New York - IMID data set (December 17, 2008 Version 27).</li>
