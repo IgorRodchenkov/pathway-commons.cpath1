@@ -78,7 +78,11 @@
            border:1px solid #467aa7;
         }
     </style>
-
+    <%
+    //  Do not include the highslide javascript on the home page,
+    //  as we don't include any of the javascript libraries on the home page, as on optimization measure.
+    String tempUri = (String) request.getAttribute("servlet_name");
+    if (tempUri != null  && !tempUri.endsWith("home.do")) { %>
     <!-- highslide setup  -->
     <script type="text/javascript">
         hs.graphicsDir = 'jsp/javascript/highslide/graphics/';
@@ -86,6 +90,7 @@
         hs.outlineWhileAnimating = true;
         hs.showCredits = false;
     </script>
+    <% } %>
 </head>
 
 <body>
