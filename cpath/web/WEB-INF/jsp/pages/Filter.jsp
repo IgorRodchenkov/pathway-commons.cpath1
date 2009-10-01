@@ -24,9 +24,7 @@
 
     // setup some globals
     String referer = request.getHeader("Referer");
-    if (referer != null &&
-		(referer.indexOf("record2.do") > 0 ||
-		 (referer.indexOf("webservice.do") > 0 && referer.indexOf("webservice.do?cmd=help") == -1))) {
+    if (referer != null) {
 		session.setAttribute("Referer", referer);
     }
     else {
