@@ -24,17 +24,9 @@
 
     // setup some globals
     String referer = request.getHeader("Referer");
-    if (referer != null) {
+    if (referer != null && (referer.indexOf("filter.do") < 0)) {
 		session.setAttribute("Referer", referer);
     }
-    else {
-		String filterURL = null;
-		if (referer != null) {
-	        String debug = (referer.indexOf("debug=1") > 0) ? "?debug=1" : "";
-	        filterURL = referer.substring(0, referer.lastIndexOf('/')) + "/filter.do" + debug;
-		}
-	    session.setAttribute("Referer", filterURL);
-	}
     GlobalFilterSettings settings = (GlobalFilterSettings)
             session.getAttribute(GlobalFilterSettings.GLOBAL_FILTER_SETTINGS);
     if (settings == null) {
