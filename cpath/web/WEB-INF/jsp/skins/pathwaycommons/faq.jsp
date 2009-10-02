@@ -71,6 +71,30 @@ BioPAX level 3 concepts can already be represented in SBGN Process
 Diagrams. We will start providing neighborhood maps in SBGN once we
 update our software and resolve remaining mapping issues.
 </p>
+<h3>How do I link to Pathway Commons?</h3>
+<p>Pathway Commons supports stable identifiers provided through source databases for
+Proteins (BioPax Level2 Protein PhysicalEntities). Stable links to Pathway Commons are
+provided through integrated external annotations (BioPax Level 2 UnificationXrefs)
+using the unique identifiers from databases Uniprot, Entrez Gene and RefSeq.
+To link to Pathway Commons using these identifiers, use the following URL
+http://www.pathwaycommons.org/pc/stable.do?db=X&id=Y
+where X can be one of: UNIPROT, ENTREZ_GENE or REFSEQ and Y is the
+identifiers defined within that resource.
+</p>
+<P>For example, the URL below returns the Pathway Commons data for the protein P48754:
+<a href="http://www.pathwaycommons.org/pc/stable.do?db=UNIPROT&id=P48754">http://www.pathwaycommons.org/pc/stable.do?db=UNIPROT&id=P48754</a>.
+An example Entrez Gene ID URL would look like:
+<a href="http://www.pathwaycommons.org/pc/stable.do?db=ENTREZ_GENE&id=672">http://www.pathwaycommons.org/pc/stable.do?db=ENTREZ_GENE&id=672</a>.
+An example link RefSeq Acession number URL would look like:
+<a href="http://www.pathwaycommons.org/pc/stable.do?db=REFSEQ&id=NP_000312">http://www.pathwaycommons.org/pc/stable.do?db=REFSEQ&id=NP_000312</a>
+</P>
+<P>
+Currently, stable identifiers to interactions and pathways are not available. The pathway commons database,
+cPath, uses internally generated identifiers (cPath IDs) for pathways, reactions, complexes and
+small molecules. These identifiers are unique within the cPath database, however, they are not stable
+between releases. We therefore, do not recommend linking to pathway commons with URLs that use cPath IDs.
+</P>
+
 
 <h2><a name="bio"></a>For Biologists</h2>
 <h3>What can I do with this information?</h3>
