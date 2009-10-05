@@ -269,7 +269,7 @@ else {
     </legend>
 
     <%
-        if (geneSymbolHitIds.length > 0) {
+        if (geneSymbolHitIds != null && geneSymbolHitIds.length > 0) {
             out.println ("<div class='exact_matches'>Exact Matches:  " );
             DaoCPath dao = DaoCPath.getInstance();
             for (int i=0; i<geneSymbolHitIds.length; i++) {
@@ -277,14 +277,16 @@ else {
                 BioPaxRecordSummary summary = BioPaxRecordUtil.createBioPaxRecordSummary(record);
                 List<ExternalLinkRecord> linkList = summary.getExternalLinks();
                 String geneSymbol = protocolRequest.getQuery();
-                for (ExternalLinkRecord externalLink:  linkList) {
-                    if (externalLink.getExternalDatabase().getMasterTerm().equals
-                    (ExternalDatabaseConstants.GENE_SYMBOL)) {
-                        geneSymbol = externalLink.getLinkedToId();
+                if (linkList != null) {
+                    for (ExternalLinkRecord externalLink:  linkList) {
+                        if (externalLink.getExternalDatabase().getMasterTerm().equals
+                        (ExternalDatabaseConstants.GENE_SYMBOL)) {
+                            geneSymbol = externalLink.getLinkedToId();
+                        }
                     }
+                    out.println("<a href='record2.do?id=" + record.getId()
+                        + "'>" + geneSymbol + "</a> [" + summary.getOrganism() + "]&nbsp;");
                 }
-                out.println("<a href='record2.do?id=" + record.getId()
-                    + "'>" + geneSymbol + "</a> [" + summary.getOrganism() + "]&nbsp;");
             }
             out.println ("</div>");
         }
