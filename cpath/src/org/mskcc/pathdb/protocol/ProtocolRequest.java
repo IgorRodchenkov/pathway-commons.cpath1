@@ -1,4 +1,4 @@
-// $Id: ProtocolRequest.java,v 1.35 2009-07-07 17:00:47 cerami Exp $
+// $Id: ProtocolRequest.java,v 1.36 2009-10-05 18:03:49 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -362,7 +362,12 @@ public class ProtocolRequest implements PagedResult {
     private String massageQuery(String temp) {
         if (temp != null && temp.length() > 0) {
             temp = temp.replace(SINGLE_QUOTE, DOUBLE_QUOTE);
-            return temp;
+            String parts[] = query.trim().split("\\s+");
+            StringBuffer buf = new StringBuffer ();
+            for (String part:  parts) {
+                buf.append (part + " ");
+            }
+            return buf.toString().trim();
         } else {
             return null;
         }

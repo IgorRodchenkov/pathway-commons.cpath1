@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.21 2009-10-05 17:55:41 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.22 2009-10-05 18:03:49 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -222,7 +222,7 @@ public class ExecuteHtmlResponse {
         //  Search for Exact Gene Matches
         if (originalQuery != null) {
             //  Only perform search if user has entered exactly one search term
-            String parts[] = originalQuery.split("\\s");
+            String parts[] = originalQuery.split("\\s+");
             if (parts.length == 1) {
                 xdebug.logMsg(this, "Querying by Gene Symbol");
                 boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
