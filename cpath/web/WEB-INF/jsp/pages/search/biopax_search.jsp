@@ -371,7 +371,7 @@ else {
 
 			//  Show pathway or protein (interaction & pathway) size
 			if (record.getType() == CPathRecordType.PATHWAY) {
-				String text = (numDescendents == 1) ? "1 participant" : numDescendents + " participants";
+				String text = (numDescendents == 1) ? "1 molecule" : numDescendents + " molecules";
 				text = (numDescendents == 0) ? "" : text;
 				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
 
