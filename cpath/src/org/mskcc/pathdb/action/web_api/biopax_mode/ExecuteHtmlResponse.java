@@ -1,4 +1,4 @@
-// $Id: ExecuteHtmlResponse.java,v 1.20 2009-08-25 19:18:22 cerami Exp $
+// $Id: ExecuteHtmlResponse.java,v 1.21 2009-10-05 17:55:41 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -218,17 +218,24 @@ public class ExecuteHtmlResponse {
         request.setAttribute(BaseAction.ATTRIBUTE_HITS_BY_RECORD_TYPE_MAP, hitByTypeMap);
 
         String originalQuery = protocolRequest.getQuery();
-        xdebug.logMsg(this, "Querying by Gene Symbol");
-        boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
-        List<String> typeList = new ArrayList();
-        typeList.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES);
-        filterSettings.setRecordTypeSelected(typeList);
-        protocolRequest.setQuery(LuceneConfig.FIELD_GENE_SYMBOLS + ":" + originalQuery);
-        LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug, debugMode);
-        long cpathIds[] = search.executeSearch();
-        protocolRequest.setQuery(originalQuery);
-        request.setAttribute(BaseAction.ATTRIBUTE_GENE_SYMBOL_HIT_LIST, cpathIds);
 
+        //  Search for Exact Gene Matches
+        if (originalQuery != null) {
+            //  Only perform search if user has entered exactly one search term
+            String parts[] = originalQuery.split("\\s");
+            if (parts.length == 1) {
+                xdebug.logMsg(this, "Querying by Gene Symbol");
+                boolean debugMode = XDebugUtil.xdebugIsEnabled(request);
+                List<String> typeList = new ArrayList();
+                typeList.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES);
+                filterSettings.setRecordTypeSelected(typeList);
+                protocolRequest.setQuery(LuceneConfig.FIELD_GENE_SYMBOLS + ":" + originalQuery);
+                LuceneQuery search = new LuceneQuery(protocolRequest, filterSettings, xdebug, debugMode);
+                long cpathIds[] = search.executeSearch();
+                protocolRequest.setQuery(originalQuery);
+                request.setAttribute(BaseAction.ATTRIBUTE_GENE_SYMBOL_HIT_LIST, cpathIds);
+            }
+        }
         return totalHitsAllEntities;
     }
 }
