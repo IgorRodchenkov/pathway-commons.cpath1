@@ -73,7 +73,7 @@ if (filterSettings == null) {
 </div>
 <div id="pathway_tab" style="display:block;">
 <P>For example, if you enter: <a href="#" onClick="submitSearch('BRCA1')">BRCA1</a>, you will <span class="search_highlight">get back the list of pathways</span> containing the
-keyword "BRCA1", and the list pathways that contain the BRCA1 gene.
+keyword "BRCA1", and the list of pathways that contain the BRCA1 gene.
 </div>
 <div id="protein_tab" style="display:none;">
 <P>For example, if you enter: <a href="#" onClick="submitSearch('BRCA1')">BRCA1</a>, you will <span class="search_highlight">get back the list of proteins, genes, or small molecules</span>
