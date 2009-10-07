@@ -24,6 +24,28 @@
         </controlled_terms>
     </external_database>
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>Pathway Commons</name>
+        <description>Pathway Commons Memorial Sloan-Kettering Cancer Center</description>
+        <home_page_url>http://pathwaycommons.org</home_page_url>
+        <icon_path>MSKCC.png</icon_path>
+        <controlled_terms>
+            <master_term>PATHWAY_COMMONS</master_term>
+        </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>iHOP</name>
+        <description>Information Hyperlinked over Proteins</description>
+        <home_page_url>http://www.ihop-net.org/UniPub/iHOP/</home_page_url>
+        <entity_url>
+            <url_pattern>http://www.ihop-net.org/UniPub/iHOP/go?ID1=%ID%</url_pattern>
+            <sample_id>32484</sample_id>
+        </entity_url>
+        <icon_path>iHOP.png</icon_path>
+        <controlled_terms>
+		<master_term>IHOP</master_term>
+        </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>HPRD</name>
         <description>Human Protein Reference Database (HPRD)</description>
         <home_page_url>http://www.hprd.org/</home_page_url>
