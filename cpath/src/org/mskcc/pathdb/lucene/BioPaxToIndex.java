@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.40 2009-08-25 19:21:51 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.41 2009-10-12 18:47:25 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -56,6 +56,9 @@ import java.util.*;
  */
 public class BioPaxToIndex implements ItemToIndex {
     private float boost = 1.0f;
+    private static final double PATHWAY_FACTOR = 1.0;
+    private static final double INTERACTION_FACTOR = 1.0;
+
 
     /**
      * Internal List of all Fields scheduled for Indexing.
@@ -172,7 +175,11 @@ public class BioPaxToIndex implements ItemToIndex {
 			dataSourcesToInteractionCountMap.put(dataSource, 0);
 			Integer count = daoInternalFamily.getAncestorIdCount(record.getId(),
                     CPathRecordType.PATHWAY, snapshotIds, organismIds);
-            boost += (count * 1);
+
+            //  boosting based on number of parent pathways
+            if (!record.getType().equals(CPathRecordType.PATHWAY)) {
+                boost += (count * PATHWAY_FACTOR);
+            }
 			numParentPathways.append(dataSource + ":" + count + "\t");
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_PATHWAYS, numParentPathways.toString().trim(),
@@ -181,7 +188,11 @@ public class BioPaxToIndex implements ItemToIndex {
 		// interate over parent list to populate parent interaction field
 		StringBuffer numParentInteractions = new StringBuffer();
 		DaoCPath cpath = DaoCPath.getInstance();
-		HashMap<String,Integer> num_parent_interactions = new HashMap<String, Integer>();
+
+        if (!record.getType().equals(CPathRecordType.PATHWAY)) {
+            boost += (parentList.size() * INTERACTION_FACTOR);
+        }
+
 		for (InternalLinkRecord internalLinkRecord : parentList) {
 			// get cpath record
 			CPathRecord srcRecord = cpath.getRecordById(internalLinkRecord.getSourceId());
@@ -201,7 +212,8 @@ public class BioPaxToIndex implements ItemToIndex {
 		for (String dataSource : dataSourcesToInteractionCountMap.keySet()) {
 			Integer numInteractionForDataSource = dataSourcesToInteractionCountMap.get(dataSource);
 			numParentInteractions.append(dataSource + ":" + numInteractionForDataSource + "\t");
-            boost += (numInteractionForDataSource * 100);
+
+            //  boostig based on number of interactions
 		}
         fields.add(new Field(LuceneConfig.FIELD_NUM_PARENT_INTERACTIONS, numParentInteractions.toString().trim(),
 							 Field.Store.YES, Field.Index.NO));
