@@ -72,7 +72,7 @@ public class ExecuteSearchXmlResponse {
         log.info ("Processing Search XML Response");
         GlobalFilterSettings filterSettings = new GlobalFilterSettings();
         ArrayList<String> entityTypes = new ArrayList<String>();
-        entityTypes.add("protein");
+        entityTypes.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PHYSICAL_ENTITIES);
         filterSettings.setRecordTypeSelected(entityTypes);
 
         //  Extract and set Organism Taxonomy ID
