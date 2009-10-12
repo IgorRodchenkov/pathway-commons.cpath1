@@ -228,3 +228,7 @@ color:#ffffff;
 }
 
 .srp a:hover,#subcontent a:hover{color:white;text-decoration:underline;}
+
+.data_source_logo{
+  margin:10px;
+}
