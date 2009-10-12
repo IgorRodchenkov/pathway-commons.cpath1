@@ -1,4 +1,4 @@
-// $Id: LuceneReader.java,v 1.16 2009-07-21 16:51:45 cerami Exp $
+// $Id: LuceneReader.java,v 1.17 2009-10-12 18:18:44 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -110,7 +110,7 @@ public class LuceneReader {
             // create query on FIELD_NAME and boost it
 		    nameQueryParser = new QueryParser(LuceneConfig.FIELD_NAME, analyzer);
 			nameQuery = nameQueryParser.parse(term);
-			nameQuery.setBoost((float)2.0);
+			nameQuery.setBoost((float)100.0);
 
 			// add query on FIELD_NAME to search query
 			queryToSearch.add(nameQuery, BooleanClause.Occur.SHOULD);
