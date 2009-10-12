@@ -373,7 +373,9 @@ else {
 			if (record.getType() == CPathRecordType.PATHWAY) {
 				String text = (numDescendents == 1) ? "1 molecule" : numDescendents + " molecules";
 				text = (numDescendents == 0) ? "" : text;
-				out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
+				if (numDescendents > 0) {
+				    out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
+                }
 
 				//  Output first sentence in description
 				String comments[] = summary.getComments();
