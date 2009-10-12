@@ -1,4 +1,4 @@
-// $Id: LuceneResults.java,v 1.13 2009-07-21 16:51:09 cerami Exp $
+// $Id: LuceneResults.java,v 1.14 2009-10-12 18:23:46 cerami Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -261,6 +261,12 @@ public class LuceneResults {
                 //  Protein contains a molecule or protein with the keyword: DATA_SOURCE:REACTOME.
                 List<String> listToReturn = new ArrayList<String>();
                 if (term != null && term.indexOf(LuceneConfig.FIELD_DATA_SOURCE) > -1) {
+                    fragments.add(listToReturn);
+                    return;
+                }
+                //  Do not show sentences like this:
+                //  Protein contains a molecule or protein with the keyword: dna repair.
+                if (term != null && term.trim().indexOf(" ") > 0) {
                     fragments.add(listToReturn);
                     return;
                 }
