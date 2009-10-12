@@ -73,6 +73,7 @@
         }
         #demo .yui-nav li a {
           border:1px solid #467aa7;
+          margin-bottom:5px;
         }
         #demo .yui-content {
            border:1px solid #467aa7;

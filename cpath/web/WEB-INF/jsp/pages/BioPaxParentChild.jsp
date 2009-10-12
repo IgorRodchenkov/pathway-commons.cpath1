@@ -270,7 +270,7 @@ for (int i = 0; i < bpSummaryList.size(); i++) {
         buf.append("<td>");
         if (bpSummary.getCPathRecord() != null) {
             CPathRecord record = bpSummary.getCPathRecord();
-            if (record.getSnapshotId() > 0) {
+            if (!record.getType().equals(CPathRecordType.PHYSICAL_ENTITY) && record.getSnapshotId() > 0) {
                 buf.append("<div class='data_source'> " + getDataSourceString(bpSummary, record) + "</div>");
             }
         }
