@@ -66,7 +66,7 @@ public class ExportUtil {
 		int ncbiTaxonomyID = record.getNcbiTaxonomyId();
 
 		// we need to iterate over all participants and get list of organism ids
-		if (ncbiTaxonomyID == -9999) {
+		if (ncbiTaxonomyID == CPathRecord.TAXONOMY_NOT_SPECIFIED) {
 			DaoCPath daoCPath = DaoCPath.getInstance();
 			DaoInternalLink internalLinker = new DaoInternalLink();
 			ArrayList internalLinks = internalLinker.getTargetsWithLookUp(record.getId());
