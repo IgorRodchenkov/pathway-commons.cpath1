@@ -211,16 +211,27 @@ public class ExportGeneSets {
     private String exportGeneSetToText(CPathRecord record, String dbTermMasterTerm, ArrayList<CPathRecord>
             participantsList, ArrayList<HashMap<String, String>> xrefList, int outputFormat, String outputId)
             throws IOException, DaoException {
+
         StringBuffer line = new StringBuffer();
         line.append(record.getName() + TAB);
         line.append(dbTermMasterTerm + TAB);
 
+		boolean skipCrossSpeciesCheck = skipCrossSpeciesCheck(record, participantsList);
+
         for (int i = 0; i < participantsList.size(); i++) {
             CPathRecord participantRecord = participantsList.get(i);
-            // per spec, GSEA & PC should not contain cross-species genes
-            if (participantRecord.getNcbiTaxonomyId() != record.getNcbiTaxonomyId()) {
-                continue;
-            }
+
+			// see method definition for this boolean
+			if (!skipCrossSpeciesCheck) {
+				// per spec, GSEA & PC should not contain cross-species genes
+				// - only check for proteins (skip small molecules)
+				if (participantRecord.getSpecificType().equals(BioPaxConstants.PROTEIN)) {
+					if (participantRecord.getNcbiTaxonomyId() != record.getNcbiTaxonomyId()) {
+						continue;
+					}
+				}
+			}
+
             long descendentId = participantRecord.getId();
             HashMap<String, String> xrefMap = xrefList.get(i);
             String geneSymbol = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
@@ -273,4 +284,46 @@ public class ExportGeneSets {
             line.append(GetNeighborsCommand.NOT_SPECIFIED + TAB);
         }
     }
+
+	/**
+	 * Helper function used when parent record taxid = -9999.  If all participant
+	 * records have a taxid that are equal, assume parent record taxid equals
+	 * participants taxid.  This was motivated by humancyc pathways. taxid of pathway
+	 * is not assigned, but protein records are assigned.   -9999 != 9606, therefore
+	 * participants were not getting exported.
+	 *
+	 * @param parent CPathRecord
+	 * @param participantsList ArrayList<CPathRecord>
+	 * @return boolean
+	 */
+	private boolean skipCrossSpeciesCheck(CPathRecord parent, ArrayList<CPathRecord> participantsList) {
+
+		boolean toReturn = true;
+
+		if (parent.getType() == CPathRecordType.PATHWAY &&
+			parent.getNcbiTaxonomyId() == CPathRecord.TAXONOMY_NOT_SPECIFIED) {
+			int taxID = CPathRecord.TAXONOMY_NOT_SPECIFIED;
+			for (CPathRecord participant : participantsList) {
+				if (participant.getSpecificType().equals(BioPaxConstants.PROTEIN)) {
+					// set taxID - may as well use the first ID we encounter -
+					// we assume taxID of protein(s) are specified
+					if (taxID == CPathRecord.TAXONOMY_NOT_SPECIFIED) {
+						taxID = participant.getNcbiTaxonomyId();
+					}
+					// check that this participant's tax id equals taxID
+					if (participant.getNcbiTaxonomyId() != taxID) {
+						toReturn = false;
+						break;
+					}
+				}
+					
+			}
+		}
+		else {
+			toReturn = false;
+		}
+
+		// outta here
+		return toReturn;
+	}
 }
