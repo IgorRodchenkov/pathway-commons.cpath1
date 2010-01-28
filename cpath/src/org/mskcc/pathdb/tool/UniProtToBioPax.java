@@ -93,20 +93,20 @@ public class UniProtToBioPax {
 
                     String idParts[] = id.toString().split("\\s");
                     String shortName = idParts[0];
-                    BioPAXElement currentProtein = getPhysicalEntity(shortName);
+                    BioPAXElement currentProteinOrER = getPhysicalEntity(shortName);
 
-                    setNameAndSynonyms(currentProtein, deField.toString());
-                    setOrganism(organismName.toString(), organismTaxId.toString(), currentProtein);
+                    setNameAndSynonyms(currentProteinOrER, deField.toString());
+                    setOrganism(organismName.toString(), organismTaxId.toString(), currentProteinOrER);
                     String geneSyns = null;
                     if (geneName != null) {
-                        geneSyns= setGeneSymbolAndSynonyms(geneName.toString(), currentProtein);
+                        geneSyns= setGeneSymbolAndSynonyms(geneName.toString(), currentProteinOrER);
                     }
                     if (comments != null) {
-                        setComments (comments.toString(), geneSyns, currentProtein);
+                        setComments (comments.toString(), geneSyns, currentProteinOrER);
                     }
-                    setUniProtAccessionNumbers(acNames.toString(), currentProtein);
+                    setUniProtAccessionNumbers(acNames.toString(), currentProteinOrER);
                     if (xrefs != null) {
-                        setXRefs (xrefs.toString(), currentProtein);
+                        setXRefs (xrefs.toString(), currentProteinOrER);
                     }
                     dataElements = new HashMap();
                     numProteinsInCurrentBatch++;
@@ -146,7 +146,7 @@ public class UniProtToBioPax {
         return totalNumProteinsProcessed;
     }
 
-    private void setNameAndSynonyms (BioPAXElement currentProtein, String deField) {
+    private void setNameAndSynonyms (BioPAXElement currentProteinOrER, String deField) {
         //  With the latest UNIPROT Export, the DE Line contains multiple fields.
         //  For example:
         //  DE   RecName: Full=14-3-3 protein beta/alpha;
@@ -165,17 +165,17 @@ public class UniProtToBioPax {
                     String fieldValue = parts[1].trim();
                     if (fieldName.length() > 0 && fieldName.equals("RecName: Full")) {
 						if (bpLevel == BioPAXLevel.L2) {
-							((physicalEntity)currentProtein).setNAME(fieldValue);
+							((physicalEntity)currentProteinOrER).setNAME(fieldValue);
 						}
 						else if (bpLevel == BioPAXLevel.L3) {
-							((SimplePhysicalEntity)currentProtein).setStandardName(fieldValue);
+							((EntityReference)currentProteinOrER).setStandardName(fieldValue);
 						}
                     } else {
 						if (bpLevel == BioPAXLevel.L2) {
-							((physicalEntity)currentProtein).addSYNONYMS(fieldValue);
+							((physicalEntity)currentProteinOrER).addSYNONYMS(fieldValue);
 						}
 						else if (bpLevel == BioPAXLevel.L3) {
-							((SimplePhysicalEntity)currentProtein).addName(fieldValue);
+							((EntityReference)currentProteinOrER).addName(fieldValue);
 						}
                     }
                 }
@@ -202,7 +202,7 @@ public class UniProtToBioPax {
     /**
      * Sets the Current Organism Information.
      */
-    private void setOrganism(String organismName, String organismTaxId, BioPAXElement currentProtein) {
+    private void setOrganism(String organismName, String organismTaxId, BioPAXElement currentProteinOrER) {
         organismTaxId = organismTaxId.replaceAll(";", "");
         String parts[] = organismTaxId.split("=");
         String taxId = parts[1];
@@ -211,10 +211,10 @@ public class UniProtToBioPax {
         String rdfId = "BIO_SOURCE_NCBI_" + taxId;
 		BioPAXElement bpSource = getBioSource(rdfId, taxId, name);
 		if (bpLevel == BioPAXLevel.L2) {
-			((protein)currentProtein).setORGANISM((bioSource)bpSource);
+			((protein)currentProteinOrER).setORGANISM((bioSource)bpSource);
 		}
 		else if (bpLevel == BioPAXLevel.L3) {
-			SequenceEntityReference ser = (SequenceEntityReference)((SimplePhysicalEntity)currentProtein).getEntityReference();
+			SequenceEntityReference ser = (SequenceEntityReference)currentProteinOrER;
 			ser.setOrganism((BioSource)bpSource);
 		}
     }
@@ -222,7 +222,7 @@ public class UniProtToBioPax {
     /**
      * Sets Multiple Comments.
      */
-    private void setComments (String comments, String geneSynonyms, BioPAXElement currentProtein) {
+    private void setComments (String comments, String geneSynonyms, BioPAXElement currentProteinOrER) {
         String commentParts[] = comments.split("-!- ");
         StringBuffer reducedComments = new StringBuffer();
         for (int i=0; i<commentParts.length; i++) {
@@ -245,10 +245,10 @@ public class UniProtToBioPax {
         HashSet <String> commentSet = new HashSet();
         commentSet.add(reducedComments.toString());
 		if (bpLevel == BioPAXLevel.L2) {
-			((Level2Element)currentProtein).setCOMMENT(commentSet);
+			((Level2Element)currentProteinOrER).setCOMMENT(commentSet);
 		}
 		else if (bpLevel == BioPAXLevel.L3) {
-			((Level3Element)currentProtein).setComment(commentSet);
+			((Level3Element)currentProteinOrER).setComment(commentSet);
 		}
     }
 
@@ -257,12 +257,12 @@ public class UniProtToBioPax {
      * However, we only take the 0th element, which is referred in UniProt as the
      * "Primary Accession Number".
      */
-    private void setUniProtAccessionNumbers (String acNames, BioPAXElement currentProtein) {
+    private void setUniProtAccessionNumbers (String acNames, BioPAXElement currentProteinOrER) {
         String acList[] = acNames.split(";");
         if (acList.length > 0) {
 			for (String acEntry : acList) {
 				String ac = acEntry.trim();
-				setUnificationXRef(ExternalDatabaseConstants.UNIPROT, ac, currentProtein);
+				setUnificationXRef(ExternalDatabaseConstants.UNIPROT, ac, currentProteinOrER);
 			}
         }
     }
@@ -270,7 +270,7 @@ public class UniProtToBioPax {
     /**
      * Sets Multiple Types of XRefs, e.g. Entrez Gene ID and RefSeq.
      */
-    private void setXRefs (String acNames, BioPAXElement currentProtein) {
+    private void setXRefs (String acNames, BioPAXElement currentProteinOrER) {
         String xrefList[] = acNames.split("\\.");
 
         for (int i=0; i<xrefList.length; i++) {
@@ -279,7 +279,7 @@ public class UniProtToBioPax {
                 xref = xref.replaceAll("; -.", "");
                 String parts[] = xref.split(";");
                 String entrezGeneId = parts[1];
-                setRelationshipXRef(ExternalDatabaseConstants.ENTREZ_GENE, entrezGeneId, currentProtein);
+                setRelationshipXRef(ExternalDatabaseConstants.ENTREZ_GENE, entrezGeneId, currentProteinOrER);
             } else if (xref.startsWith("RefSeq")) {
                 xref = xref.replaceAll("; -.", "");
                 String parts[] = xref.split(";");
@@ -288,7 +288,7 @@ public class UniProtToBioPax {
                     parts = refSeqId.split("\\.");
                     refSeqId = parts[0];
                 }
-                setRelationshipXRef(ExternalDatabaseConstants.REF_SEQ, refSeqId, currentProtein);
+                setRelationshipXRef(ExternalDatabaseConstants.REF_SEQ, refSeqId, currentProteinOrER);
             }
         }
     }
@@ -296,7 +296,7 @@ public class UniProtToBioPax {
     /**
      * Sets the HUGO Gene Symbol and Synonyms.
      */
-    private String setGeneSymbolAndSynonyms(String geneName, BioPAXElement currentProtein) {
+    private String setGeneSymbolAndSynonyms(String geneName, BioPAXElement currentProteinOrER) {
         StringBuffer synBuffer = new StringBuffer();
         String parts[] = geneName.split(";");
         for (int i=0; i<parts.length; i++) {
@@ -304,7 +304,7 @@ public class UniProtToBioPax {
             // Set HUGO Gene Name
             if (subParts[0].trim().equals("Name")) {
                 geneName = subParts[1];
-                setRelationshipXRef(ExternalDatabaseConstants.GENE_SYMBOL, geneName, currentProtein);
+                setRelationshipXRef(ExternalDatabaseConstants.GENE_SYMBOL, geneName, currentProteinOrER);
             } else if (subParts[0].trim().equals("Synonyms")) {
                 String synList[] = subParts[1].split(",");
                 for (int j=0; j<synList.length; j++) {
@@ -319,31 +319,31 @@ public class UniProtToBioPax {
     /**
      * Sets Relationship XRefs.
      */
-    private void setRelationshipXRef(String dbName, String id, BioPAXElement currentProtein) {
+    private void setRelationshipXRef(String dbName, String id, BioPAXElement currentProteinOrER) {
         id = id.trim();
         Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
         String rdfId = dbName + "_" +  id;
         if (bpMap.containsKey(rdfId)) {
 			if (bpLevel == BioPAXLevel.L2) {
 				relationshipXref rXRef = (relationshipXref) bpMap.get(rdfId);
-				((physicalEntity)currentProtein).addXREF(rXRef);
+				((physicalEntity)currentProteinOrER).addXREF(rXRef);
 			}
 			else if (bpLevel == BioPAXLevel.L3) {
 				RelationshipXref rXRef = (RelationshipXref) bpMap.get(rdfId);
-				((SimplePhysicalEntity)currentProtein).addXref(rXRef);
+				((EntityReference)currentProteinOrER).addXref(rXRef);
 			}
         } else {
 			if (bpLevel == BioPAXLevel.L2) {
 				relationshipXref rXRef = (relationshipXref)bpModel.addNew(relationshipXref.class, rdfId);
 				rXRef.setDB(dbName);
 				rXRef.setID(id);
-				((physicalEntity)currentProtein).addXREF(rXRef);
+				((physicalEntity)currentProteinOrER).addXREF(rXRef);
 			}
 			else if (bpLevel == BioPAXLevel.L3) {
 				RelationshipXref rXRef = (RelationshipXref)bpModel.addNew(RelationshipXref.class, rdfId);
 				rXRef.setDb(dbName);
 				rXRef.setId(id);
-				((SimplePhysicalEntity)currentProtein).addXref(rXRef);
+				((EntityReference)currentProteinOrER).addXref(rXRef);
 			}
         }
     }
@@ -351,37 +351,37 @@ public class UniProtToBioPax {
     /**
      * Sets Unification XRefs.
      */
-    private void setUnificationXRef(String dbName, String id, BioPAXElement currentProtein) {
+    private void setUnificationXRef(String dbName, String id, BioPAXElement currentProteinOrER) {
         id = id.trim();
         Map<String, BioPAXElement> bpMap = bpModel.getIdMap();
         String rdfId = dbName + "_" +  id;
         if (bpMap.containsKey(rdfId)) {
 			if (bpLevel == BioPAXLevel.L2) {
 				unificationXref rXRef = (unificationXref) bpMap.get(rdfId);
-				((physicalEntity)currentProtein).addXREF(rXRef);
+				((physicalEntity)currentProteinOrER).addXREF(rXRef);
 			}
 			else if (bpLevel == BioPAXLevel.L3) {
 				UnificationXref rXRef = (UnificationXref) bpMap.get(rdfId);
-				((SimplePhysicalEntity)currentProtein).addXref(rXRef);
+				((EntityReference)currentProteinOrER).addXref(rXRef);
 			}
         } else {
 			if (bpLevel == BioPAXLevel.L2) {
 				unificationXref rXRef = (unificationXref)bpModel.addNew(unificationXref.class, rdfId);
 				rXRef.setDB(dbName);
 				rXRef.setID(id);
-				((physicalEntity)currentProtein).addXREF(rXRef);
+				((physicalEntity)currentProteinOrER).addXREF(rXRef);
 			}
 			else if (bpLevel == BioPAXLevel.L3) {
 				UnificationXref rXRef = (UnificationXref)bpModel.addNew(UnificationXref.class, rdfId);
 				rXRef.setDb(dbName);
 				rXRef.setId(id);
-				((SimplePhysicalEntity)currentProtein).addXref(rXRef);
+				((EntityReference)currentProteinOrER).addXref(rXRef);
 			}
         }
     }
 
 	/**
-	 * Gets a physical entity.
+	 * Gets a physical entity (or Entity Reference in L3)
 	 *
 	 * @param shortName String
 	 * @return <T extends BioPAXElement>
@@ -394,10 +394,8 @@ public class UniProtToBioPax {
 			return (T)toReturn;
 		}
 		else if (bpLevel == BioPAXLevel.L3) {
-			SimplePhysicalEntity toReturn = (SimplePhysicalEntity)bpModel.addNew(Protein.class, shortName);
-			SequenceEntityReference ser = (SequenceEntityReference)bpModel.addNew(ProteinReference.class, shortName + "_ER");
+			SequenceEntityReference toReturn = (SequenceEntityReference)bpModel.addNew(ProteinReference.class, shortName + "_ER");
 			toReturn.setDisplayName(shortName);
-			toReturn.setEntityReference(ser);
 			return (T)toReturn;
 		}
 
