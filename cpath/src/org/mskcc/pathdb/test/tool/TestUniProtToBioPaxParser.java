@@ -8,7 +8,7 @@ import org.biopax.paxtools.model.level2.protein;
 import org.biopax.paxtools.model.level2.bioSource;
 import org.biopax.paxtools.model.level2.unificationXref;
 import org.biopax.paxtools.model.level2.xref;
-import org.biopax.paxtools.io.jena.JenaIOHandler;
+import org.biopax.paxtools.io.simpleIO.SimpleReader;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +38,8 @@ public class TestUniProtToBioPaxParser extends TestCase {
         assertEquals (4, numRecords);
         File bpFile = new File ("testData/uniprot/bp_0_human.owl");
         FileInputStream inStream = new FileInputStream (bpFile);
-        JenaIOHandler jenaIOHandler = new JenaIOHandler();
-        Model model = jenaIOHandler.convertFromOWL(inStream);
+		SimpleReader handler = new SimpleReader();
+        Model model = handler.convertFromOWL(inStream);
         Map<String, BioPAXElement> bpMap = model.getIdMap();
         protein targetProtein = (protein) bpMap.get("1433B_HUMAN");
         assertEquals ("1433B_HUMAN", targetProtein.getSHORT_NAME());

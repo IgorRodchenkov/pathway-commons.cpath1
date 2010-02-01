@@ -1,4 +1,4 @@
-// $Id: TestBioPaxUtil.java,v 1.21 2008-04-22 16:36:51 cerami Exp $
+// $Id: TestBioPaxUtil.java,v 1.22 2010-02-01 22:30:56 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,7 +48,7 @@ import org.mskcc.pathdb.util.rdf.RdfConstants;
 import org.mskcc.pathdb.util.rdf.RdfUtil;
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.model.BioPAXLevel;
-import org.biopax.paxtools.io.jena.JenaIOHandler;
+import org.biopax.paxtools.io.simpleIO.SimpleReader;
 
 import java.io.FileReader;
 import java.io.StringBufferInputStream;
@@ -148,9 +148,8 @@ public class TestBioPaxUtil extends TestCase {
         out.output(doc, writer);
 		StringBufferInputStream in = new StringBufferInputStream(writer.toString());
 		try {
-			JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
-			jenaIOHandler.setStrict(true);
-			Model bpModel = jenaIOHandler.convertFromOWL(in);
+			SimpleReader handler = new SimpleReader();
+			Model bpModel = handler.convertFromOWL(in);
 		}
 		catch(Exception e) {
 			assertTrue("Newly generated XML document contains invalid RDF", false);

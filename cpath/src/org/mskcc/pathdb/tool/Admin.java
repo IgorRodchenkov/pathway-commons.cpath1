@@ -1,4 +1,4 @@
-// $Id: Admin.java,v 1.75 2009-05-07 19:19:37 grossben Exp $
+// $Id: Admin.java,v 1.76 2010-02-01 22:27:07 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -52,7 +52,7 @@ import org.xml.sax.SAXParseException;
 import org.jdom.JDOMException;
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.model.BioPAXLevel;
-import org.biopax.paxtools.io.jena.JenaIOHandler;
+import org.biopax.paxtools.io.simpleIO.SimpleReader;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -331,9 +331,8 @@ public class Admin {
             System.out.print ("Testing for PaxTools Validity.");
             try {
                 FileInputStream in = new FileInputStream(file);
-                JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
-                jenaIOHandler.setStrict(true);
-                Model bpModel = jenaIOHandler.convertFromOWL(in);
+				SimpleReader handler = new SimpleReader();
+                Model bpModel = handler.convertFromOWL(in);
             } catch(Exception e) {
                 System.out.println(" --> Invalid");
                 if (!strictValidation) {

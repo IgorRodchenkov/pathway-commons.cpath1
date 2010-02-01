@@ -1,4 +1,4 @@
-// $Id: TestXmlAssembly.java,v 1.14 2008-07-01 20:11:31 cerami Exp $
+// $Id: TestXmlAssembly.java,v 1.15 2010-02-01 22:28:48 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -48,7 +48,7 @@ import org.mskcc.pathdb.util.xml.XmlValidator;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.model.BioPAXLevel;
-import org.biopax.paxtools.io.jena.JenaIOHandler;
+import org.biopax.paxtools.io.simpleIO.SimpleReader;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -277,9 +277,8 @@ public class TestXmlAssembly extends TestCase {
 
 		StringBufferInputStream in = new StringBufferInputStream(xmlAssembly);
 		try {
-			JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
-			jenaIOHandler.setStrict(true);
-			Model bpModel = jenaIOHandler.convertFromOWL(in);
+			SimpleReader handler = new SimpleReader();
+			Model bpModel = handler.convertFromOWL(in);
 		}
 		catch(Exception e) {
 			assertTrue(false);
