@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.14 2009-09-01 19:39:35 cerami Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.15 2010-02-01 22:13:47 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -135,7 +135,7 @@ public class ExecuteBinaryInteraction {
 		String[] binaryInteractions = (assembly.getBinaryInteractionString() != null) ?
 			assembly.getBinaryInteractionString().split("\n") : null;
 		if (binaryInteractions != null && binaryInteractions.length > 0) {
-			Map<String, String> tagMap = BinaryInteractionType.getTagMap();
+			//Map<String, String> tagMap = BinaryInteractionType.getTagMap();
 			for (String binaryInteraction : binaryInteractions) {
 				// sif format:  ID\tINTERACTION_TYPE\tID
 				String[] components = binaryInteraction.split("\t");
@@ -147,7 +147,7 @@ public class ExecuteBinaryInteraction {
 							components[2] = getOutputID(outputIDType, components[2], outputIDMap);
 						}
 						// (if version < 3.0, we need to convert interaction type tags)
-						String interactionType = (version < version3) ? tagMap.get(components[1]) : components[1];
+						String interactionType = (version < version3) ? getOldInteractionTypeTag(components[1]) : components[1];
 						sifBuffer.append(components[0] + "\t" + interactionType + "\t" + components[2] + "\n");
 					}
 				}
@@ -257,5 +257,16 @@ public class ExecuteBinaryInteraction {
 		externalID = GetNeighborsCommand.NOT_SPECIFIED;
 		outputIDMap.put(internalID, externalID);
 		return externalID;
+	}
+
+	private String getOldInteractionTypeTag(String newTypeTag) {
+
+		for (BinaryInteractionType bit : BinaryInteractionType.values()) {
+			if (newTypeTag.equals(bit.getTag())) {
+				return bit.getOldtag();
+			}
+		}
+		// should not get here
+		return "";
 	}
 }
