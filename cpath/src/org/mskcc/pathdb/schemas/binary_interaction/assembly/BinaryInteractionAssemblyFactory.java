@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionAssemblyFactory.java,v 1.4 2009-05-06 17:56:13 grossben Exp $
+// $Id: BinaryInteractionAssemblyFactory.java,v 1.5 2010-02-02 17:21:02 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -34,7 +34,7 @@ package org.mskcc.pathdb.schemas.binary_interaction.assembly;
 // imports
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.model.BioPAXLevel;
-import org.biopax.paxtools.io.jena.JenaIOHandler;
+import org.biopax.paxtools.io.simpleIO.SimpleReader;
 
 import java.util.List;
 import java.io.ByteArrayInputStream;
@@ -52,14 +52,6 @@ public class BinaryInteractionAssemblyFactory {
 	 */
 	public static enum AssemblyType {
 		SIF;
-	}
-
-	/**
-	 * JenaIOHandler - initialize here since this is time consuming
-	 */
-	private static JenaIOHandler jenaIOHandler = new JenaIOHandler(null, BioPAXLevel.L2);
-	static {
-		jenaIOHandler.setStrict(true);
 	}
 
     /**
@@ -92,12 +84,13 @@ public class BinaryInteractionAssemblyFactory {
 														   String owlXML) {
 		// construct paxtools model with this owlXML
 		Model level2 = null;
+		SimpleReader handler = new SimpleReader();
 		try {
-			level2 = jenaIOHandler.convertFromOWL(new ByteArrayInputStream(owlXML.getBytes("UTF-8")));
+			level2 = handler.convertFromOWL(new ByteArrayInputStream(owlXML.getBytes("UTF-8")));
 		}
 		catch (UnsupportedEncodingException e) {
 			// should never get here
-			level2 = jenaIOHandler.convertFromOWL(new ByteArrayInputStream(owlXML.getBytes()));
+			level2 = handler.convertFromOWL(new ByteArrayInputStream(owlXML.getBytes()));
 		}
 
 		// return the proper assembly type
