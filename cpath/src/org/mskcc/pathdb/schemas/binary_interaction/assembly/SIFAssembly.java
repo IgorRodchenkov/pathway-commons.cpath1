@@ -1,4 +1,4 @@
-// $Id: SIFAssembly.java,v 1.5 2009-05-17 23:39:50 grossben Exp $
+// $Id: SIFAssembly.java,v 1.6 2010-02-02 17:22:29 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -33,7 +33,9 @@ package org.mskcc.pathdb.schemas.binary_interaction.assembly;
 
 // imports
 import org.biopax.paxtools.model.Model;
+import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.io.sif.SimpleInteraction;
+import org.biopax.paxtools.io.simpleIO.SimpleEditorMap;
 
 import java.util.List;
 import java.util.Set;
@@ -107,7 +109,7 @@ public class SIFAssembly extends BinaryInteractionAssemblyBase implements Binary
 		ByteArrayOutputStream nodes = new ByteArrayOutputStream();
 
 		// write out binary interactions
-		converter.writeInteractionsInSIFNX(bpModel, edges, nodes, true, "NAME", "XREF");
+		converter.writeInteractionsInSIFNX(bpModel, edges, nodes, true, new SimpleEditorMap(BioPAXLevel.L2), "NAME", "XREF");
 
         // do a bit of cooking
 		String edgesString = cookSIFString(edges.toString());
