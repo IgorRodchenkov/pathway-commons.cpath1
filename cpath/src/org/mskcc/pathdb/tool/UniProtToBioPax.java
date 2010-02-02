@@ -260,9 +260,14 @@ public class UniProtToBioPax {
     private void setUniProtAccessionNumbers (String acNames, BioPAXElement currentProteinOrER) {
         String acList[] = acNames.split(";");
         if (acList.length > 0) {
+			boolean createRDFId = true; // first id in list is primary
 			for (String acEntry : acList) {
 				String ac = acEntry.trim();
 				setUnificationXRef(ExternalDatabaseConstants.UNIPROT, ac, currentProteinOrER);
+				if (createRDFId) {
+					currentProteinOrER.setRDFId("http://uniprot.org#urn%3Amiriam%3Auniprot%3A" + acEntry);
+					createRDFId = false;
+				}
 			}
         }
     }
@@ -447,6 +452,9 @@ public class UniProtToBioPax {
 		else if (bpLevel == BioPAXLevel.L3) {
 			bpModel = BioPAXLevel.L3.getDefaultFactory().createModel();
 		}
+		// setup base
+		Map<String, String> nsMap = bpModel.getNameSpacePrefixMap();
+		nsMap.put("", "http://uniprot.org#");
 	}
 
     /**
