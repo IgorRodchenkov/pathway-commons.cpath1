@@ -117,9 +117,12 @@ function importReactome {
 	logProgress "Cooking and Char Converting Reactome Human Files."
 	local REACTOME_HOME="$FRESH_HOME/reactome/"
 	mv -f $REACTOME_HOME/"Homo sapiens.owl" $REACTOME_HOME/Homo_sapiens.owl.bak
+	logProgress "Running character conversion iconv utility"
 	iconv -f ISO8859-1 -t UTF-8 $REACTOME_HOME/Homo_sapiens.owl.bak > $REACTOME_HOME/Homo_sapiens.owl.iconv
+	logProgress "Running pathway-commons/bin/reactome-cooker.py"
 	$CPATH_HOME/../pathway-commons/bin/reactome-cooker.py < $REACTOME_HOME/Homo_sapiens.owl.iconv > $REACTOME_HOME/Homo_sapiens_to_fix.owl
 	rm -f $REACTOME_HOME/Homo_sapiens.owl.iconv
+	logProgress "Running pathway-commons/bin/reactome-fix.sh"
     $CPATH_HOME/../pathway-commons/bin/reactome-fix.sh $REACTOME_HOME/Homo_sapiens_to_fix.owl $REACTOME_HOME/Homo_sapiens.owl
     rm -f $REACTOME_HOME/Homo_sapiens_to_fix.owl
 	logProgress "Loading Reactome."
@@ -139,7 +142,7 @@ function importHumanCyc {
 
 function importNci {
 	logProgress "Loading NCI / Nature PID."
-	./admin.pl -f $CPATH_HOME/../pathway-commons/nci/11-12-2008 import
+	./admin.pl -d -f $CPATH_HOME/../pathway-commons/nci/06-08-2010 import
 }
 
 function importCellMap {
