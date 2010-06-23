@@ -69,11 +69,13 @@ public class ExportAll {
                 rs = pstmt.executeQuery();
 
                 while (rs.next()) {
-                    if (pMonitor != null) {
-                        pMonitor.incrementCurValue();
-                        ConsoleUtil.showProgress(pMonitor);
-                    }
                     record = dao.extractRecord(rs);
+                    if (pMonitor != null) {
+                        //pMonitor.incrementCurValue();
+                        //ConsoleUtil.showProgress(pMonitor);
+                        pMonitor.setCurrentMessage("Exporting Record:  " + record.getId()
+                            + ", " + record.getType() + "," + record.getName());
+                    }
 
 					// only pathways exported in GSEA / PC gene set format
                     if (record.getType() == CPathRecordType.PATHWAY) {
