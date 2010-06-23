@@ -82,10 +82,12 @@ public class ExportAll {
                         exportGeneSets.exportPathwayRecordAllFormats(record, exportUtil);
                     }
 					// all pathways and interactions exported in biopax, sif and tab-delimited
-					if (record.getType() == CPathRecordType.PATHWAY ||
-						record.getType() == CPathRecordType.INTERACTION) {
-                        exportInteractions.exportInteractionRecord(record);
+					if (record.getType() == CPathRecordType.PATHWAY) { 
 						exportBioPAX.exportRecord(record);
+                    }
+                    if (record.getType() == CPathRecordType.INTERACTION) {
+                        exportInteractions.exportInteractionRecord(record);
+                        exportBioPAX.exportRecord(record);
                     }
 					// export cpath generated PE to BioPAX - and all complexes
 					// we do it here because we are no longer grabbing PE's by getting
