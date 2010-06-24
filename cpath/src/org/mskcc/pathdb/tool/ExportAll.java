@@ -74,7 +74,8 @@ public class ExportAll {
                         //pMonitor.incrementCurValue();
                         //ConsoleUtil.showProgress(pMonitor);
                         pMonitor.setCurrentMessage("Exporting Record:  " + record.getId()
-                            + ", " + record.getType() + "," + record.getName());
+                            + ", " + record.getType() + "," + record.getName()
+                                + ", cPath Generated:  " + record.isCpathGenerated());
                     }
 
 					// only pathways exported in GSEA / PC gene set format

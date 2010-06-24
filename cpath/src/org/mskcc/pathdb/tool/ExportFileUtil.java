@@ -190,6 +190,8 @@ public class ExportFileUtil {
 			}
             fileWriters.put(fdKey, writer);
         }
+        System.out.println ("   - Writing to:  " + dbTerm + ", Output Format:  "
+                + getOutputFormatString(outputFormat));
         writer.write(line);
 		writer.flush();
     }
