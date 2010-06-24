@@ -42,8 +42,8 @@ public class ExportBioPAX {
     }
 
     /**
-     * Exports the specified interaction record.
-     * @param record        CPath Interaction Record.
+     * Exports the specified cPath record.
+     * @param record                CPath Record.
      * @throws DaoException         Database Error.
      * @throws AssemblyException    XML Assembly Error.
      * @throws IOException          IO Error.
@@ -61,12 +61,12 @@ public class ExportBioPAX {
 		String xmlString = assembly.getXmlString();
 
         //  dump biopax to data source file
-		ArrayList<Long> snapshotIDs = new ArrayList<Long>();
+		HashSet<Long> snapshotIDs = new HashSet<Long>();
 		if (recordTypePE) {
             DaoSourceTracker daoSourceTracker = new DaoSourceTracker();
 			ArrayList<CPathRecord> records = daoSourceTracker.getSourceRecords(record.getId());
 			for (CPathRecord sourceRecord : records) {
-				snapshotIDs.add(sourceRecord.getId());
+				snapshotIDs.add(sourceRecord.getSnapshotId());
 			}
 		}
 		else {
@@ -79,7 +79,10 @@ public class ExportBioPAX {
 			if (snapshotRecord != null) {
 				String dbTerm = snapshotRecord.getExternalDatabase().getMasterTerm();
 				if (dbTerm != null && dbTerm.length() > 0) {
-					exportFileUtil.appendToDataSourceFile (xmlString, dbTerm, ExportFileUtil.BIOPAX_OUTPUT);
+                    if (!dbTerm.equals(ExternalDatabaseConstants.UNIPROT)) {
+                        exportFileUtil.appendToDataSourceFile (xmlString, dbTerm,
+                                ExportFileUtil.BIOPAX_OUTPUT);
+                    }
 				}
 			}
 		}
