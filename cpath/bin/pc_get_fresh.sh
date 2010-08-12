@@ -89,6 +89,99 @@ echo Unzipping Mint file...
 unzip -d $FRESH_HOME/mint $FRESH_HOME/mint/full.psi25.zip
 rm -v $FRESH_HOME/mint/full.psi25.zip
 
+###########################################################
+# Retrieve "Fresh" BioGRID PSI25 directly from BioGRID
+###########################################################
+echo Retrieving Fresh BioGRID PSI25 directly from BioGRID
+echo Deleting all previous BioGRID Files
+if [ -d $FRESH_HOME/biogrid ]; then
+	rm -v $FRESH_HOME/biogrid/*
+else 
+	mkdir $FRESH_HOME/biogrid
+fi
+
+#echo -n "Enter file to retrieve from BioGRID, e.g., BIOGRID-ORGANISM-2.0.60.psi25.zip:  "
+#read biogrid_file
+biogrid_file=BIOGRID-ORGANISM-3.0.67.psi25.zip
+
+# Get file from BioGRID
+echo Retrieving file $biogrid_file from BioGRID...
+#wget -O $biogrid_file http://www.thebiogrid.org/blocks/DownloadsBlock/JQueryFetchDownload.php?fetchFile=/Current%20Release/$biogrid_file
+wget -O $biogrid_file http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.0.67/$biogrid_file
+mv $biogrid_file $FRESH_HOME/biogrid
+
+#echo Unzipping BioGRID file...
+unzip -d $FRESH_HOME/biogrid $FRESH_HOME/biogrid/$biogrid_file
+
+###########################################################
+# Retrieve "Fresh" HPRD PSI25 directly from HPRD
+# note single file causes problems with intact psi-mi lib, use multiple file version
+###########################################################
+echo Retrieving Fresh HPRD PSI25 directly from HPRD
+echo Deleting all previous HPRD Files
+rm -v $FRESH_HOME/hprd/*
+
+#echo -n "Enter file to retrieve from HPRD without the extension, e.g., HPRD_SINGLE_PSIMI_070609:  "
+#read hprd_file
+hprd_file=HPRD_PSIMI_041310.tar.gz
+
+# Get file from HPRD
+echo Retrieving file $hprd_file from HPRD...
+#wget -P $FRESH_HOME/hprd http://www.hprd.org/edownload/$hprd_file
+wget -P $FRESH_HOME/hprd http://www.hprd.org/RELEASE9/$hprd_file
+
+echo Unzipping HPRD file...
+tar -xvzf $FRESH_HOME/hprd/$hprd_file -C $FRESH_HOME/hprd
+# use follow in single file is not used
+find $FRESH_HOME/hprd -name *.xml | xargs -i% mv % .
+rm -rf $FRESH_HOME/hprd/PSIMI_XML
+rm -v $FRESH_HOME/hprd/*.gz
+
+
+###########################################################
+# Retrieve "Fresh" HumanCyc BioPAX directly from HumanCyc
+###########################################################
+echo Retrieving Fresh HumanCyc BioPAX directly from HumanCyc
+echo Deleting all previous HumanCyc Files
+rm -v $FRESH_HOME/humancyc/*
+
+# Get file from HumanCyc
+echo Retrieving file from HumanCyc...
+wget -P $FRESH_HOME/humancyc http://brg.ai.sri.com/ecocyc/dist/flatfiles-52983746/human.zip
+
+echo Unzipping HumanCyc file...
+unzip -j -d $FRESH_HOME/humancyc $FRESH_HOME/humancyc/human.zip
+find $FRESH_HOME/humancyc -type f ! -name "biopax-level2.owl" -exec rm -f {} \;
+
+#!/bin/sh
+FRESH_HOME=$CPATH_HOME/../pathway-commons/fresh
+
+###########################################################
+# Retrieve "Fresh" SBCNY BioPAX directly from SBCNY
+###########################################################
+echo Retrieving Fresh SBCNY BioPAX directly from SBCNY
+echo Deleting all previous SBCNY Files
+rm -v $FRESH_HOME/sbcny/*
+
+# Get file from SBCNY
+echo Retrieving files from SBCNY...
+wget -P $FRESH_HOME/sbcny http://www.sbcny.org/datasets/neuronal_signaling.owl
+wget -P $FRESH_HOME/sbcny http://www.sbcny.org/datasets/presynaptome.owl
+
+###########################################################
+# Retrieve "Fresh" Nature PID BioPAX directly from NCI
+###########################################################
+echo Retrieving Fresh Nature PID BioPAX directly from NCI
+echo Deleting all previous Nature PID Files
+rm -v $FRESH_HOME/nci/*
+
+# Get files from NCI
+echo Retrieving files from NCI...
+wget --passive-ftp -P $FRESH_HOME/nci ftp://ftp1.nci.nih.gov/pub/PID/BioPAX/NCI-Nature_Curated.owl.gz
+#wget --passive-ftp -P $FRESH_HOME/nci ftp://ftp1.nci.nih.gov/pub/PID/BioPAX/BioCarta.owl.gz
+
+echo Unzipping Nature-PID files...
+gunzip $FRESH_HOME/nci/*.gz
 
 ###########################################################
 # Setup db.info files 
@@ -138,7 +231,61 @@ db_snapshot_date=$date
 END
 
 echo
+echo -n "Enter version number for BioGRID:  "
+read version
+echo -n "Enter date for BioGRID (MM/DD/YYYY):  "
+read date
+cat << END > $FRESH_HOME/biogrid/db.info
+db_name=BIOGRID
+db_snapshot_version=$version
+db_snapshot_date=$date
+END
+
+echo
+echo -n "Enter version number for HPRD:  "
+read version
+echo -n "Enter date for HPRD (MM/DD/YYYY):  "
+read date
+cat << END > $FRESH_HOME/hprd/db.info
+db_name=HPRD
+db_snapshot_version=$version
+db_snapshot_date=$date
+END
+
+echo
+echo -n "Enter version number for HumanCyc:  "
+read version
+echo -n "Enter date for HumanCyc (MM/DD/YYYY):  "
+read date
+cat << END > $FRESH_HOME/humancyc/db.info
+db_name=HUMANCYC
+db_snapshot_version=$version
+db_snapshot_date=$date
+END
+
+echo
+echo -n "Enter version number for SBCNY:  "
+read version
+echo -n "Enter date for SBCNY (MM/DD/YYYY):  "
+read date
+cat << END > $FRESH_HOME/sbcny/db.info
+db_name=SBCNY
+db_snapshot_version=$version
+db_snapshot_date=$date
+END
+
+echo
+echo -n "Enter version number for Nature PID:  "
+read version
+echo -n "Enter date for Nature PID (MM/DD/YYYY):  "
+read date
+cat << END > $FRESH_HOME/nci/db.info
+db_name=NCI_NATURE
+db_snapshot_version=$version
+db_snapshot_date=$date
+END
+
+echo
 echo Downloads Complete.
 echo Check pathway-commons/fresh for new files.
 echo
-
