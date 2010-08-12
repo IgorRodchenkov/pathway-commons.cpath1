@@ -236,12 +236,12 @@ public class ExportNetworks {
         DaoCPath daoCPath = DaoCPath.getInstance();
 		CPathRecord record = daoCPath.getRecordById(cpathId);
 		if (record.getSpecificType().equalsIgnoreCase(org.mskcc.pathdb.schemas.biopax.BioPaxConstants.COMPLEX)) {
-			return record.getName().trim().toUpperCase();
+			return record.getName().trim();
 		}
 		else {
 			HashMap<String, String> xrefMap = ExportUtil.getXRefMap(cpathId);
 			String toReturn = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
-			return (toReturn != null) ? toReturn.trim().toUpperCase() : null;
+			return (toReturn != null) ? toReturn.trim() : null;
 		}
     }
 }
