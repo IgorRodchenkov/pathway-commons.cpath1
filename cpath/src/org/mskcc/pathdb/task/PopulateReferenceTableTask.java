@@ -274,6 +274,11 @@ public class PopulateReferenceTableTask extends Task {
 			// iterate over the article set
 			for (Element article : articleList) {
 
+                // only process pubmed articles, not pubmed book articles
+                if ("PubmedBookArticle".equals(article.getName())) {
+                    continue;
+                }
+
 				// reference object to add to reference table
 				Reference reference = new Reference();
 				// get pointer to medline citation element
