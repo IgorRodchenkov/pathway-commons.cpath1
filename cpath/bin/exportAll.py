@@ -141,7 +141,7 @@ if not os.path.isdir(SNAPSHOT_DUMP_DIR):
 # for profiling
 #-agentlib:jprofilerti=port=5005,nowait,id=139,config=/home/grossb/.jprofiler5/config.xml  -Xbootclasspath/a:/home/grossb/local/jprofiler5/bin/agent.jar
 
-COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx8192M" +
+COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx16384M" +
 		   " -cp " + CLASSPATH + " -DCPATH_HOME=" + CPATH_HOME + " org.mskcc.pathdb.tool.ExportAll " + SNAPSHOT_DUMP_DIR)
 os.system(COMMAND)
 
