@@ -17,12 +17,22 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 </div>
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;October 15, 2009:
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;September 7, 2010:
+    <ul>
+     <li>BioGRID data set (July 31, 2010 Version 30.0.67).</li>
+      <li>HPRD data set (April 13, 2010 Version 9).</li>
+      <li>HumanCyc data set (June 16, 2010 Version 14.1).</li>
+      <li>IntAct data set (August 8, 2010 Version 3.1, r14760).</li>
+      <li>MINT data set (July 28, 2010).</li>
+      <li>NCI/Nature Pathway Interaction Database (August 10, 2010).</li>
+      <li>Reactome data set (June 18, 2010 Version 33).</li>
+  </ul>
+</li>
+<li>October 15, 2009:
     <ul>
         <li>Improved search functionality.</li>
     </ul>
 </li>
-
 <li>July 2, 2009:
     <ul>
         <li><a href="<%= webUIBean.getSnapshotDownloadBaseURL() %>">Batch Download</a> of all Pathway Commons data in multiple file formats is now available.</li>
