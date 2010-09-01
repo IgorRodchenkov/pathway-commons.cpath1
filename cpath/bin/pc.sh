@@ -29,6 +29,41 @@ function checkDependencies {
 		echo "Fresh Reactome data files not found!  Run pc_get_fresh.sh first. Aborting..."
 		exit
 	fi
+
+	if [ ! -f $FRESH_HOME/intact/db.info ]; then
+		echo "Fresh Intact data files not found!  Run pc_get_fresh.sh first. Aborting..."
+		exit
+	fi
+
+	if [ ! -f $FRESH_HOME/mint/db.info ]; then
+		echo "Fresh Mint data files not found!  Run pc_get_fresh.sh first. Aborting..."
+		exit
+	fi
+
+	if [ ! -f $FRESH_HOME/biogrid/db.info ]; then
+		echo "Fresh BioGRID data files not found!  Run pc_get_fresh.sh first. Aborting..."
+		exit
+	fi
+
+	if [ ! -f $FRESH_HOME/hprd/db.info ]; then
+		echo "Fresh HPRD data files not found!  Run pc_get_fresh.sh first. Aborting..."
+		exit
+	fi
+
+	if [ ! -f $FRESH_HOME/humancyc/db.info ]; then
+		echo "Fresh HumanCyc data files not found!  Run pc_get_fresh.sh first. Aborting..."
+		exit
+	fi
+
+	if [ ! -f $FRESH_HOME/sbcny/db.info ]; then
+		echo "Fresh SBCNY data files not found!  Run pc_get_fresh.sh first. Aborting..."
+		exit
+	fi
+
+	if [ ! -f $FRESH_HOME/nci/db.info ]; then
+		echo "Fresh Nature-PID data files not found!  Run pc_get_fresh.sh first. Aborting..."
+		exit
+	fi
 }
 
 function init {
@@ -73,56 +108,56 @@ function importUnificationRefs {
 # Load intact first, as it has broad coverage, and good protein annotations
 function importIntAct {
 	logProgress "Loading IntAct."
-	local INTACT_HOME="$CPATH_HOME/../pathway-commons/intact/12-14-2007"
-	#$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py intact-cooker.py $INTACT_HOME $INTACT_HOME/biopax
-	#$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $INTACT_HOME/biopax $INTACT_HOME/biopax
-	#rm -f $INTACT_HOME/biopax/*.xml
-	#for i in $INTACT_HOME/biopax/*.owl
-	#do
-	#	iconv -f ISO-8859-1 -t UTF-8 $i > $i.iconv;
-	#	mv $i.iconv $i
-	#done
-	#cp $INTACT_HOME/db.info $INTACT_HOME/biopax
+	local INTACT_HOME="$FRESH_HOME/intact"
+	mkdir $INTACT_HOME/biopax
+	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py intact-cooker.py $INTACT_HOME $INTACT_HOME/biopax
+	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py 2 $INTACT_HOME/biopax $INTACT_HOME/biopax
+	find $INTACT_HOME/biopax/ -name *.xml | xargs -i% rm -f %
+	for i in $INTACT_HOME/biopax/*.owl
+	do
+		iconv -f ISO-8859-1 -t UTF-8 $i > $i.iconv;
+		mv $i.iconv $i
+	done
+	cp $INTACT_HOME/db.info $INTACT_HOME/biopax
 	./admin.pl -f $INTACT_HOME/biopax import
-	#rm -f $INTACT_HOME/biopax/{*.owl,db.info}
+	rm -rfv $INTACT_HOME/biopax
 }
 
 # Then, mint, as it also has broad coverage, and good protein annotations
 function importMint {
 	logProgress "Loading MINT."
-	local MINT_HOME="$CPATH_HOME/../pathway-commons/mint/12-21-2007"
+	local MINT_HOME="$FRESH_HOME/mint"
+	mkdir $MINT_HOME/biopax
 	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py mint-cooker.py $MINT_HOME $MINT_HOME/biopax
-	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $MINT_HOME/biopax $MINT_HOME/biopax
+	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py 2 $MINT_HOME/biopax $MINT_HOME/biopax
 	rm -fv $MINT_HOME/biopax/*.xml
 	cp $MINT_HOME/db.info $MINT_HOME/biopax
 	./admin.pl -f $MINT_HOME/biopax import
-	rm -vf $MINT_HOME/biopax/{*.owl,db.info}
+	rm -rfv $MINT_HOME/biopax
 }
 
 # Then hprd, as it also has broad coverage, and good protein annotations
 # note to self:  as of 4/29/08:  HPRD incorrectly annotates some proteins as "Mammalia", but annotates
-# them with Human UniPROT Accession IDs.
+# them with Human UniPROT Accession IDs.  Lookout for OMIM/UNIPROT secondary refs that have erroneous ids, like id="-"
 function importHPRD {
 	logProgress "Loading HPRD."
-	local HPRD_HOME="$CPATH_HOME/../pathway-commons/hprd/09-01-2007"
+	local HPRD_HOME="$FRESH_HOME/hprd"
+	mkdir $HPRD_HOME/biopax
 	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py hprd-cooker.py $HPRD_HOME $HPRD_HOME/biopax
-	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $HPRD_HOME/biopax $HPRD_HOME/biopax
-	rm -fv $HPRD_HOME/biopax/*.xml
+	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py 2 $HPRD_HOME/biopax $HPRD_HOME/biopax
+	find $HPRD_HOME/biopax/ -name *.xml | xargs -i% rm -f %
 	cp $HPRD_HOME/db.info $HPRD_HOME/biopax
-	./admin.pl -f $HPRD_HOME/biopax import
-	rm -fv $HPRD_HOME/biopax/{*.owl,db.info}
+	./admin.pl -d -f $HPRD_HOME/biopax import
+	rm -rfv $HPRD_HOME/biopax
 }
 
 function importReactome {
 	logProgress "Cooking and Char Converting Reactome Human Files."
 	local REACTOME_HOME="$FRESH_HOME/reactome/"
 	mv -f $REACTOME_HOME/"Homo sapiens.owl" $REACTOME_HOME/Homo_sapiens.owl.bak
-	logProgress "Running character conversion iconv utility"
 	iconv -f ISO8859-1 -t UTF-8 $REACTOME_HOME/Homo_sapiens.owl.bak > $REACTOME_HOME/Homo_sapiens.owl.iconv
-	logProgress "Running pathway-commons/bin/reactome-cooker.py"
 	$CPATH_HOME/../pathway-commons/bin/reactome-cooker.py < $REACTOME_HOME/Homo_sapiens.owl.iconv > $REACTOME_HOME/Homo_sapiens_to_fix.owl
 	rm -f $REACTOME_HOME/Homo_sapiens.owl.iconv
-	logProgress "Running pathway-commons/bin/reactome-fix.sh"
     $CPATH_HOME/../pathway-commons/bin/reactome-fix.sh $REACTOME_HOME/Homo_sapiens_to_fix.owl $REACTOME_HOME/Homo_sapiens.owl
     rm -f $REACTOME_HOME/Homo_sapiens_to_fix.owl
 	logProgress "Loading Reactome."
@@ -133,16 +168,17 @@ function importReactome {
 
 function importHumanCyc {
 	logProgress "Loading HumanCyc."
-	local HUMANCYC_HOME="$CPATH_HOME/../pathway-commons/humancyc/06-22-2009"
+	local HUMANCYC_HOME="$FRESH_HOME/humancyc"
 	#mv -vf $HUMANCYC_HOME/biopax.owl $HUMANCYC_HOME/biopax.owl.bak
 	#$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $HUMANCYC_HOME/biopax.owl.bak > $HUMANCYC_HOME/biopax.owl
-	./admin.pl -d -f $HUMANCYC_HOME/biopax.owl import
+	./admin.pl -d -f $HUMANCYC_HOME import
 	#mv -vf $HUMANCYC_HOME/biopax.owl.bak $HUMANCYC_HOME/biopax.owl
 }
 
 function importNci {
 	logProgress "Loading NCI / Nature PID."
-	./admin.pl -d -f $CPATH_HOME/../pathway-commons/nci/06-08-2010 import
+	local NCI_HOME="$FRESH_HOME/nci"
+	./admin.pl -f $NCI_HOME import
 }
 
 function importCellMap {
@@ -152,19 +188,20 @@ function importCellMap {
 
 function importBioGRID {
 	logProgress "Loading BioGRID."
-	local BIOGRID_HOME="$CPATH_HOME/../pathway-commons/biogrid/01-28-2009"
-	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py biogrid-cooker.py $BIOGRID_HOME $BIOGRID_HOME/biopax
-	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py $BIOGRID_HOME/biopax $BIOGRID_HOME/biopax
+	local BIOGRID_HOME="$FRESH_HOME/biogrid"
+	mkdir $BIOGRID_HOME/biopax
+	#$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-cooker.py biogrid-cooker.py $BIOGRID_HOME $BIOGRID_HOME/biopax
+	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py 2 $BIOGRID_HOME/ $BIOGRID_HOME/biopax
 	rm -fv $BIOGRID_HOME/biopax/*.xml
 	cp $BIOGRID_HOME/db.info $BIOGRID_HOME/biopax
-	./admin.pl -f $BIOGRID_HOME/biopax import
-	rm -vf $BIOGRID_HOME/biopax/{*.owl,db.info}
+	./admin.pl -f $BIOGRID_HOME/biopax/ import
+	rm -rfv $BIOGRID_HOME/biopax
 }
 
 function importIMID {
 	logProgress "Loading IMID."
-	local IMID_HOME="$CPATH_HOME/../pathway-commons/imid/03-01-2009"
-	./admin.pl -f $IMID_HOME import
+	local SBCNY_HOME="$FRESH_HOME/sbcny"
+	./admin.pl -f $SBCNY_HOME import
 }
 
 function importiHop {
