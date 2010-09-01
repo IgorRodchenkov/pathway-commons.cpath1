@@ -129,6 +129,27 @@
         return html.toString();
     }
 
+    /**
+	 * Method used to print datasource on first line of search result (next to Pathway: or Protein:)
+	 */
+    private String getDataSourceHtml2(long cPathId, Map<Long, Set<String>> recordDataSources) {
+        StringBuffer html = new StringBuffer();
+        Set<String> dataSourceSet = recordDataSources.get(cPathId);
+        if (dataSourceSet.size() > 0) {
+            html.append("from ");
+            // loop here
+            int counter = 0;
+            for (String dataSource : recordDataSources.get(cPathId)) {
+                html.append(dataSource);
+                if (counter < recordDataSources.get(cPathId).size() -1) {
+                    html.append (", ");
+                }
+                counter++;
+            }
+        }
+        return html.toString();
+    }
+
     private String getRecordSummaryHtml(CPathRecord record,
             BioPaxRecordSummary summary,
             ProtocolRequest request) {
@@ -369,12 +390,15 @@ else {
             out.println("<th align=left width=\"90%\">");
 			out.println("<a href=\"" + url + "\">" + header + "</a>");
 
+			// create data source text
+            String dataSourceHtml = getDataSourceHtml2(record.getId(), recordDataSources);
+
 			//  Show pathway or protein (interaction & pathway) size
 			if (record.getType() == CPathRecordType.PATHWAY) {
 				String text = (numDescendents == 1) ? "1 molecule" : numDescendents + " molecules";
 				text = (numDescendents == 0) ? "" : text;
 				if (numDescendents > 0) {
-				    out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + text +"]</span>");
+				    out.println ("&nbsp;<span class='small_no_bold'>" + dataSourceHtml + "&nbsp;&nbsp;[" + text +"]</span>");
                 }
 
 				//  Output first sentence in description
@@ -400,7 +424,7 @@ else {
 				textInteractions = (numParentInteractions == 0) ? "" : textInteractions;
 				if (textPathways.length() > 0 || textInteractions.length() > 0) {
 					String delimiter = (textPathways.length() > 0 && textInteractions.length() > 0) ? ", " : "";
-					out.println ("&nbsp;&nbsp;<span class='small_no_bold'>[" + textPathways + delimiter + textInteractions +"]</span>");
+					out.println ("&nbsp;<span class='small_no_bold'>" + dataSourceHtml  + "&nbsp;&nbsp;[" + textPathways + delimiter + textInteractions +"]</span>");
 				}
 
 				//  Show full protein name
@@ -409,12 +433,15 @@ else {
 			        out.println ("<div class='first_sentence'>" + name + "</div>");
                 }
 			}
+            else {
+                    out.println("&nbsp;<span class='small_no_bold'>" + dataSourceHtml + "</span>");
+            }
             out.println("</th>");
 			// inspection button
 			out.println("<th align=right>");
 
             String recordSummaryHtml = getRecordSummaryHtml(record, summary, protocolRequest);
-            String dataSourceHtml = getDataSourceHtml (record.getId(), recordDataSources);
+            dataSourceHtml = getDataSourceHtml (record.getId(), recordDataSources);
 			//  Since all results have Cytoscape links, we assume all have details
 			boolean hasDetails = true;
 			if (hasDetails) {
@@ -426,7 +453,7 @@ else {
 			out.println("<tr><td colspan=\"3\">");
 			out.println("<div id='cpath_" + record.getId() + "_details' class='details'>");
 			out.println(recordSummaryHtml);
-			out.println(dataSourceHtml);
+			//out.println(dataSourceHtml);
 
 			//  Cytoscape Links
 			boolean pathwayType = record.getType() == CPathRecordType.PATHWAY;
