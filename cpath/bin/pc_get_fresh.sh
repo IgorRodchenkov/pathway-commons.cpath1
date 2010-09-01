@@ -112,6 +112,7 @@ mv $biogrid_file $FRESH_HOME/biogrid
 
 #echo Unzipping BioGRID file...
 unzip -d $FRESH_HOME/biogrid $FRESH_HOME/biogrid/$biogrid_file
+rm -v $FRESH_HOME/biogrid/$biogrid_file
 
 ###########################################################
 # Retrieve "Fresh" HPRD PSI25 directly from HPRD
@@ -123,7 +124,7 @@ rm -v $FRESH_HOME/hprd/*
 
 #echo -n "Enter file to retrieve from HPRD without the extension, e.g., HPRD_SINGLE_PSIMI_070609:  "
 #read hprd_file
-hprd_file=HPRD_PSIMI_041310.tar.gz
+hprd_file=HPRD_SINGLE_PSIMI_041210.tar.gz
 
 # Get file from HPRD
 echo Retrieving file $hprd_file from HPRD...
@@ -132,9 +133,9 @@ wget -P $FRESH_HOME/hprd http://www.hprd.org/RELEASE9/$hprd_file
 
 echo Unzipping HPRD file...
 tar -xvzf $FRESH_HOME/hprd/$hprd_file -C $FRESH_HOME/hprd
-# use follow in single file is not used
-find $FRESH_HOME/hprd -name *.xml | xargs -i% mv % .
-rm -rf $FRESH_HOME/hprd/PSIMI_XML
+# use follow if single file is used
+#find $FRESH_HOME/hprd -name *.xml | xargs -i% mv % .
+#rm -rf $FRESH_HOME/hprd/PSIMI_XML
 rm -v $FRESH_HOME/hprd/*.gz
 
 
