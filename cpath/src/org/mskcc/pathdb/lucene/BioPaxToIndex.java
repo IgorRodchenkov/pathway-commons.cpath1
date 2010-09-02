@@ -1,4 +1,4 @@
-// $Id: BioPaxToIndex.java,v 1.41 2009-10-12 18:47:25 cerami Exp $
+// $Id: BioPaxToIndex.java,v 1.42 2010-09-02 12:52:53 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -303,7 +303,8 @@ public class BioPaxToIndex implements ItemToIndex {
 
 		// create record list to process
 		ArrayList<CPathRecord> recordList = new ArrayList<CPathRecord>();
-		if (record.getType().equals(CPathRecordType.PATHWAY)) {
+		if (record.getType().equals(CPathRecordType.PATHWAY) ||
+            record.getSpecificType().equalsIgnoreCase(BioPaxConstants.COMPLEX)) {
 			// we can use the record itself
 			recordList.add(record);
 		}
@@ -311,6 +312,9 @@ public class BioPaxToIndex implements ItemToIndex {
 			// get list of source records
 			DaoSourceTracker sourceTracker = new DaoSourceTracker();
 			recordList = sourceTracker.getSourceRecords(record.getId());
+            if (recordList.size() == 0) {
+                recordList.add(record);
+            }
 		}
 
 		// interate through record list
