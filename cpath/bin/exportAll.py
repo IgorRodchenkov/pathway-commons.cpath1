@@ -10,6 +10,12 @@ import sys
 # ------------------------------------------------------------------------------
 # sub-routines
 
+def remove_carriage_returns(FILENAME):
+
+    COOKED_FILENAME = FILENAME + ".tmp"
+    os.system("cat " + FILENAME + " | tr -d \"\\r\" > " + COOKED_FILENAME)
+    os.system("mv " + COOKED_FILENAME + " " + FILENAME)
+
 #
 # for the give biopax file, removed embedded root nodes
 #
@@ -29,6 +35,7 @@ def process_biopax_file(BIOPAX_FILENAME):
             if dump_root:
                 print >> COOKED_BIOPAX_FILE, line,
             continue
+
         # check for embedded <rdf:RDF> element
         element = re.match('^\s*<rdf:RDF .*$', line)
         if element is not None:
@@ -141,16 +148,18 @@ if not os.path.isdir(SNAPSHOT_DUMP_DIR):
 # for profiling
 #-agentlib:jprofilerti=port=5005,nowait,id=139,config=/home/grossb/.jprofiler5/config.xml  -Xbootclasspath/a:/home/grossb/local/jprofiler5/bin/agent.jar
 
-COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx16384M" +
+COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx32768M" +
 		   " -cp " + CLASSPATH + " -DCPATH_HOME=" + CPATH_HOME + " org.mskcc.pathdb.tool.ExportAll " + SNAPSHOT_DUMP_DIR)
 os.system(COMMAND)
 
 # ------------------------------------------------------------------------------
 # post process biopax files and remove embedded root nodes
 
-print "Postprocessing BioPAX files to remove embedded root nodes..."
+print "Postprocessing BioPAX files to remove embedded root nodes and carriage returns..."
 process_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_species/", process_biopax_file)
 process_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_source/", process_biopax_file)
+process_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_species/", remove_carriage_returns)
+process_directory(SNAPSHOT_DUMP_DIR + "/biopax/by_source/", remove_carriage_returns)
 print "Postprocessing of BioPAX files is complete..."
 
 # ------------------------------------------------------------------------------
