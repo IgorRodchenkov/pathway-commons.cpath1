@@ -18,7 +18,7 @@ pc-info@pathwaycommons.org
 Pathway Commons Data is available in the following file formats:
 
 BioPAX OWL (RDF/XML)
-------------------
+--------------------
 
 BioPAX is the native format of Pathway Commons and offers complete
 access to all the details that can be stored in the system.  This
@@ -35,7 +35,7 @@ Paxtools, a Java library for working with BioPAX
 (http://www.biopax.org/paxtools.php).
 
 Gene Set Enrichment Formats (GSEA - MSigDB GMT)
-----------------------------------------
+-----------------------------------------------
 
 Over-representation analysis (ORA) is frequently used to assess the
 statistical enrichment of known gene sets (e.g. pathways) in a
@@ -85,7 +85,7 @@ pathway.  Therefore some participants from cross-species pathways are
 removed.
 
 Simple Interaction Format (SIF)
-------------------------
+-------------------------------
 
 Many network analysis algorithms require pairwise interaction networks 
 as input.  A BioPAX network often contains more complex relationships
@@ -103,8 +103,9 @@ network analysis tools, like Cytoscape
 All participants will be specified as GENE_SYMBOL.  If an official
 gene symbol is not available for all members of the interaction, the
 interaction will not be exported.  This is why fewer species may be
-listed here as compared to other file formats.  This format is
-available for all pathways and interactions within Pathway Commons.
+listed here as compared to other file formats.  This format does not contain
+any cross-species interactions and is available for all pathways and
+interactions within Pathway Commons.
 
 Tab Delimited Network
 ---------------------
