@@ -236,6 +236,9 @@ CREATE TABLE `external_db_snapshot` (
   `EXTERNAL_DB_ID` int(11) NOT NULL default '0',
   `SNAPSHOT_DATE` date NOT NULL default '0000-00-00',
   `SNAPSHOT_VERSION` varchar(255) NOT NULL default '',
+  `NUMBER_OF_PATHWAYS` int(11) NOT NULL default '-1',
+  `NUMBER_OF_INTERACTIONS` int(11) NOT NULL default '-1',
+  `NUMBER_OF_PHYSICAL_ENTITIES` int(11) NOT NULL default '-1',
   PRIMARY KEY  (`EXTERNAL_DB_SNAPSHOT_ID`),
   KEY `EXTERNAL_DB_ID` (`EXTERNAL_DB_ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Contains database snapshot information.' AUTO_INCREMENT=1;

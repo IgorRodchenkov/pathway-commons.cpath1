@@ -1,4 +1,4 @@
-// $Id: TestDaoInternalFamily.java,v 1.6 2006-12-11 19:27:34 grossb Exp $
+// $Id: TestDaoInternalFamily.java,v 1.7 2010-10-08 16:25:34 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -59,7 +59,7 @@ public class TestDaoInternalFamily extends TestCase {
 		databaseRecord.setName("database name");
 		ExternalDatabaseSnapshotRecord snapshotRecord = 
 			new ExternalDatabaseSnapshotRecord
-			(databaseRecord, new Date(System.currentTimeMillis()), "1");
+			(databaseRecord, new Date(System.currentTimeMillis()), "1", 0, 0, 0);
 		snapshotRecord.setId(1);
 
         DaoInternalFamily dao = new DaoInternalFamily();

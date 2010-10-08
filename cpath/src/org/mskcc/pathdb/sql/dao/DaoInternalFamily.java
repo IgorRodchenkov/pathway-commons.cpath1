@@ -1,4 +1,4 @@
-// $Id: DaoInternalFamily.java,v 1.17 2007-06-05 20:32:40 cerami Exp $
+// $Id: DaoInternalFamily.java,v 1.18 2010-10-08 16:21:50 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -489,7 +489,7 @@ public class DaoInternalFamily {
 			String snapshotVersion = rs.getString(7);
 			ExternalDatabaseSnapshotRecord snapshotRecord =
 				new ExternalDatabaseSnapshotRecord
-				(databaseRecord, new Date(date.getTime()), snapshotVersion);
+				(databaseRecord, new Date(date.getTime()), snapshotVersion, 0, 0, 0);
 			snapshotRecord.setId(snapshotId);
 			summary.setExternalDatabaseSnapshotRecord(snapshotRecord);
 			summarySet.add(summary);

@@ -38,7 +38,7 @@ public class TestPathwayBatchQuery extends TestCase {
         dao.deleteAllRecords();
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         Date date = format.parse("01/01/1970");
-        long id = dao.addRecord(19, date, "FICTIONAL_RELEASE");
+        long id = dao.addRecord(19, date, "FICTIONAL_RELEASE", 0, 0, 0);
         assertTrue (id > 0);
 
         //  Populate internal family tables

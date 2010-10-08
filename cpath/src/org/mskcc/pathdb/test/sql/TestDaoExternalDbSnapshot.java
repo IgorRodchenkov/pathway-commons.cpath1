@@ -1,4 +1,4 @@
-// $Id: TestDaoExternalDbSnapshot.java,v 1.5 2008-05-29 00:41:25 cerami Exp $
+// $Id: TestDaoExternalDbSnapshot.java,v 1.6 2010-10-08 16:25:34 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -62,11 +62,11 @@ public class TestDaoExternalDbSnapshot extends TestCase {
         // external db record
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         Date date = format.parse("12/31/2004");
-        long id = dao.addRecord(1, date, "Version 1.0");
+        long id = dao.addRecord(1, date, "Version 1.0", 0, 0, 0);
         assertTrue (id > 0);
 
         date = format.parse("6/24/2006");
-        id = dao.addRecord(1, date, "Version 2.0");
+        id = dao.addRecord(1, date, "Version 2.0", 0, 0, 0);
         assertTrue (id > 0);
 
         //  Try retrieving the snapshot by snapshot ID

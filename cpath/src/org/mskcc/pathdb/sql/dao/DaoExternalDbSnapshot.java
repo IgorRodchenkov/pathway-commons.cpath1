@@ -1,4 +1,4 @@
-// $Id: DaoExternalDbSnapshot.java,v 1.10 2008-06-03 14:05:19 cerami Exp $
+// $Id: DaoExternalDbSnapshot.java,v 1.11 2010-10-08 16:21:39 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -81,11 +81,14 @@ public class DaoExternalDbSnapshot {
      * @param externalDbId    External database identifier.
      * @param snapshotDate    Date of snapshot.
      * @param snapshotVersion Version / release number of snapshot.
+     * @param numPathways     Number of pathways introduced into pc by this snapshot.
+     * @param numInteractions Number of interactions introduced into pc by this snapshot.
+     * @param numPhysicalEntities Number of physical entities introduced into pc by this snapshot.
      * @return ID of new external database snapshot record.
      * @throws DaoException Error connecting to the databse.
      */
-    public synchronized long addRecord(int externalDbId,
-            Date snapshotDate, String snapshotVersion) throws DaoException {
+    public synchronized long addRecord(int externalDbId, Date snapshotDate, String snapshotVersion,
+									   long numPathways, long numInteractions, long numPhysicalEntities) throws DaoException {
         long externalDbSnapshotId;
 
         //  Make sure record does not already exist.
@@ -105,12 +108,18 @@ public class DaoExternalDbSnapshot {
                     ("INSERT INTO external_db_snapshot "
                             + "(`EXTERNAL_DB_ID`, "
                             + "`SNAPSHOT_DATE`,"
-                            + "`SNAPSHOT_VERSION`)"
-                            + " VALUES (?,?,?)");
+                            + "`SNAPSHOT_VERSION`,"
+                            + "`NUMBER_OF_PATHWAYS`,"
+                            + "`NUMBER_OF_INTERACTIONS`,"
+                            + "`NUMBER_OF_PHYSICAL_ENTITIES`)"
+                            + " VALUES (?,?,?,?,?,?)");
             pstmt.setLong(1, externalDbId);
             java.sql.Date date = new java.sql.Date(snapshotDate.getTime());
             pstmt.setDate(2, date);
             pstmt.setString(3, snapshotVersion);
+			pstmt.setLong(4, numPathways);
+			pstmt.setLong(5, numInteractions);
+			pstmt.setLong(6, numPhysicalEntities);
             pstmt.executeUpdate();
 
             //  Get New External DB Snapshot ID
@@ -126,6 +135,30 @@ public class DaoExternalDbSnapshot {
         }
         return externalDbSnapshotId;
     }
+
+	public boolean updatePathwayInteractionPEStats(ExternalDatabaseSnapshotRecord snapshotRecord) throws DaoException {
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = JdbcUtil.getCPathConnection();
+            pstmt = con.prepareStatement("UPDATE external_db_snapshot SET `NUMBER_OF_PATHWAYS` = ?, " +
+										 "`NUMBER_OF_INTERACTIONS` = ?, `NUMBER_OF_PHYSICAL_ENTITIES` = ? " +
+										 "WHERE `EXTERNAL_DB_SNAPSHOT_ID` = ?");
+            pstmt.setLong(1, snapshotRecord.getNumPathways());
+            pstmt.setLong(2, snapshotRecord.getNumInteractions());
+            pstmt.setLong(3, snapshotRecord.getNumPhysicalEntities());
+            pstmt.setLong(4, snapshotRecord.getId());
+            int rows = pstmt.executeUpdate();
+            return (rows > 0) ? true : false;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            JdbcUtil.closeAll(con, pstmt, rs);
+        }
+	}
 
     /**
      * Gets the specified snapshot record by ID.
@@ -252,7 +285,10 @@ public class DaoExternalDbSnapshot {
                     ("select external_db_snapshot.EXTERNAL_DB_SNAPSHOT_ID,"
                         + "external_db_snapshot.EXTERNAL_DB_ID, "
                         + "external_db_snapshot.SNAPSHOT_DATE, "
-                        + "external_db_snapshot.SNAPSHOT_VERSION from external_db_snapshot, "
+                        + "external_db_snapshot.SNAPSHOT_VERSION, "
+                        + "external_db_snapshot.NUMBER_OF_PATHWAYS, "
+                        + "external_db_snapshot.NUMBER_OF_INTERACTIONS, "
+                        + "external_db_snapshot.NUMBER_OF_PHYSICAL_ENTITIES from external_db_snapshot, "
                         + "external_db "
                         + "where external_db_snapshot.EXTERNAL_DB_ID = external_db.EXTERNAL_DB_ID "
                         + "ORDER BY external_db.NAME, "
@@ -281,7 +317,10 @@ public class DaoExternalDbSnapshot {
                     ("select external_db_snapshot.EXTERNAL_DB_SNAPSHOT_ID,"
                         + "external_db_snapshot.EXTERNAL_DB_ID, "
                         + "external_db_snapshot.SNAPSHOT_DATE, "
-                        + "external_db_snapshot.SNAPSHOT_VERSION from external_db_snapshot, "
+                        + "external_db_snapshot.SNAPSHOT_VERSION, "
+                        + "external_db_snapshot.NUMBER_OF_PATHWAYS, "
+                        + "external_db_snapshot.NUMBER_OF_INTERACTIONS, "
+                        + "external_db_snapshot.NUMBER_OF_PHYSICAL_ENTITIES from external_db_snapshot, "
                         + "external_db "
                         + "where external_db_snapshot.EXTERNAL_DB_ID = external_db.EXTERNAL_DB_ID "
                         + "ORDER BY external_db.NAME, "
@@ -308,18 +347,19 @@ public class DaoExternalDbSnapshot {
                 int externalDbId = rs.getInt("EXTERNAL_DB_ID");
                 String snapshotVersion = rs.getString("SNAPSHOT_VERSION");
                 java.sql.Date date = rs.getDate("SNAPSHOT_DATE");
+				long numPathways = rs.getLong("NUMBER_OF_PATHWAYS");
+				long numInteractions = rs.getLong("NUMBER_OF_INTERACTIONS");
+				long numPhysicalEntities = rs.getLong("NUMBER_OF_PHYSICAL_ENTITIES");
                 DaoExternalDb daoExternalDb = new DaoExternalDb();
-                ExternalDatabaseRecord dbRecord =
-                        daoExternalDb.getRecordById(externalDbId);
+                ExternalDatabaseRecord dbRecord = daoExternalDb.getRecordById(externalDbId);
                 boolean addSnapshot = true;
-                if (includeNetworkSnapshotsOnly
-                        && dbRecord.getDbType().equals(ReferenceType.PROTEIN_UNIFICATION)) {
+                if (includeNetworkSnapshotsOnly && dbRecord.getDbType().equals(ReferenceType.PROTEIN_UNIFICATION)) {
                     addSnapshot = false;
                 }
                 if (addSnapshot) {
                     ExternalDatabaseSnapshotRecord snapshotRecord =
-                            new ExternalDatabaseSnapshotRecord
-                                    (dbRecord, new Date(date.getTime()), snapshotVersion);
+						new ExternalDatabaseSnapshotRecord(dbRecord, new Date(date.getTime()),
+														   snapshotVersion, numPathways, numInteractions, numPhysicalEntities);
                     snapshotRecord.setId(id);
                     snapshotList.add(snapshotRecord);
                 }

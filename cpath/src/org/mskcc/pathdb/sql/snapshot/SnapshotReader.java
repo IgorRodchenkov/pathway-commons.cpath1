@@ -1,4 +1,4 @@
-// $Id: SnapshotReader.java,v 1.5 2008-05-28 16:30:01 cerami Exp $
+// $Id: SnapshotReader.java,v 1.6 2010-10-08 16:24:35 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -152,7 +152,7 @@ public class SnapshotReader {
 
         //  If snapshot does not exist, go create it
         if (snapshotRecord == null) {
-            dao.addRecord(dbRecord.getId(), snapshotDate, snapshotVersion);
+            dao.addRecord(dbRecord.getId(), snapshotDate, snapshotVersion, 0, 0, 0);
             snapshotRecord = dao.getDatabaseSnapshot(dbRecord.getId(),
                     snapshotDate);
         }

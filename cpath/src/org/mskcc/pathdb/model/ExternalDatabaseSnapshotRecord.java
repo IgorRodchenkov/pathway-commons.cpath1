@@ -1,4 +1,4 @@
-// $Id: ExternalDatabaseSnapshotRecord.java,v 1.2 2006-10-05 19:36:20 cerami Exp $
+// $Id: ExternalDatabaseSnapshotRecord.java,v 1.3 2010-10-08 16:22:54 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -44,18 +44,27 @@ public class ExternalDatabaseSnapshotRecord implements Serializable {
     private ExternalDatabaseRecord externalDatabase;
     private Date snapshotDate;
     private String snapshotVersion;
+	private long numPathways;
+	private long numInteractions;
+	private long numPhysicalEntities;
 
     /**
      * Constructor.
      * @param externalDatabase      ExternalDatabaseRecord.
      * @param snapshotDate          Snapshot date.
      * @param snapshotVersion       Snapshot verision #.
+	 * @param numPathways
+	 * @param numInteractions
+	 * @param numPhysicalEntities;
      */
-    public ExternalDatabaseSnapshotRecord (ExternalDatabaseRecord
-            externalDatabase, Date snapshotDate, String snapshotVersion) {
+    public ExternalDatabaseSnapshotRecord (ExternalDatabaseRecord externalDatabase, Date snapshotDate, String snapshotVersion,
+										   long numPathways, long numInteractions, long numPhysicalEntities) {
         this.externalDatabase = externalDatabase;
         this.snapshotDate = snapshotDate;
         this.snapshotVersion = snapshotVersion;
+		this.numPathways = numPathways;
+		this.numInteractions = numInteractions;
+		this.numPhysicalEntities = numPhysicalEntities;
     }
 
     /**
@@ -96,5 +105,53 @@ public class ExternalDatabaseSnapshotRecord implements Serializable {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * Gets number of pathways introduced by this snapshot.
+     * @return long
+     */
+    public long getNumPathways() {
+        return this.numPathways;
+    }
+
+    /**
+     * Sets the number of pathways introduced by this snapshot.
+     * @param numPathways long
+     */
+    public void setNumPathways(long numPathways) {
+        this.numPathways = numPathways;
+    }
+
+    /**
+     * Gets number of interactions introduced by this snapshot.
+     * @return long
+     */
+    public long getNumInteractions() {
+        return this.numInteractions;
+    }
+
+    /**
+     * Sets the number of interactions introduced by this snapshot.
+     * @param numInteractions long
+     */
+    public void setNumInteractions(long numInteractions) {
+        this.numInteractions = numInteractions;
+    }
+
+    /**
+     * Gets number of physical entities introduced by this snapshot.
+     * @return long
+     */
+    public long getNumPhysicalEntities() {
+        return this.numPhysicalEntities;
+    }
+
+    /**
+     * Sets the number of physical entities introduced by this snapshot.
+     * @param numPhysicalEntities long
+     */
+    public void setNumPhysicalEntities(long numPhysicalEntities) {
+        this.numPhysicalEntities = numPhysicalEntities;
     }
 }

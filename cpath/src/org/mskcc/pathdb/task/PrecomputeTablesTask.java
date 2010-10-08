@@ -2,6 +2,7 @@ package org.mskcc.pathdb.task;
 
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.mskcc.pathdb.sql.dao.DaoException;
+import org.mskcc.pathdb.sql.transfer.PopulateDatabaseSnapshotStats;
 import org.mskcc.pathdb.sql.transfer.PopulateInternalFamilyLookUpTable;
 import org.mskcc.pathdb.schemas.biopax.summary.BioPaxRecordSummaryException;
 
@@ -47,6 +48,8 @@ public class PrecomputeTablesTask extends Task {
         ProgressMonitor pMonitor = this.getProgressMonitor();
         pMonitor.setCurrentMessage("Storing Pathway Membership Data");
         savePathwayFamilyMembership(pMonitor);
+		pMonitor.setCurrentMessage("Updating Database Snapshot Stats, this may take a while...");
+		saveDatabaseSnapshotStats(pMonitor);
         pMonitor.setCurrentMessage("Done");
         xdebug.stopTimer();
     }
@@ -61,6 +64,16 @@ public class PrecomputeTablesTask extends Task {
 		throws DaoException, BioPaxRecordSummaryException {
         PopulateInternalFamilyLookUpTable populator = new
                 PopulateInternalFamilyLookUpTable(pMonitor);
+        populator.execute();
+    }
+
+    /**
+     * Updates Database Snapshot Stats.
+     *
+     * @throws DaoException Database access error.
+     */
+    private void saveDatabaseSnapshotStats(ProgressMonitor pMonitor) throws DaoException {
+        PopulateDatabaseSnapshotStats populator = new PopulateDatabaseSnapshotStats(pMonitor);
         populator.execute();
     }
 }

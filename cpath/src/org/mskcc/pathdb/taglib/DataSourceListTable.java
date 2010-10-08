@@ -14,6 +14,9 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.log4j.Logger;
 import org.mskcc.pathdb.sql.query.QueryException;
 
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -147,6 +150,9 @@ public class DataSourceListTable extends HtmlTable {
                                  WebUIBean webUIBean, ArrayList list)
 		throws QueryException, DaoException, AssemblyException, IOException, ParseException {
 
+		// used to format some stats
+		NumberFormat formatter = new DecimalFormat("#,###,###");
+
 		// set proper type list for lucene query
 		ArrayList<String> typeList = new ArrayList();
 		typeList.add(GlobalFilterSettings.NARROW_BY_RECORD_TYPES_PATHWAYS);
@@ -167,6 +173,7 @@ public class DataSourceListTable extends HtmlTable {
 						   + "'/>");
 				}
 				append ("</td>");
+				// start snapshot links here
 				append ("<td class='datasource_link_table_cell' valign=center>"
 						+ DbSnapshotInfo.getDbSnapshotHtml(snapshotRecord.getId()));
 				// set proper data source for lucene query
@@ -188,6 +195,13 @@ public class DataSourceListTable extends HtmlTable {
                         + "=" + GlobalFilterSettings.NARROW_BY_DATA_SOURCES_FILTER_VALUE_GLOBAL);
 				append ("&q=data_source%3A" + dbRecord.getMasterTerm() + "\">");
 				append ("Browse</a>");
+				// db stats
+				append("<br>");
+				append("Number of Pathways:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + formatter.format(snapshotRecord.getNumPathways()));
+				append("<br>");
+				append("Number of Interactions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + formatter.format(snapshotRecord.getNumInteractions()));
+				append("<br>");
+				append("Number of Physical Entities:&nbsp;&nbsp;" + formatter.format(snapshotRecord.getNumPhysicalEntities()));
 				append ("</td>");
 				endRow();
 				endTable();
