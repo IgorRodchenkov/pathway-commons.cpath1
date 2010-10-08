@@ -41,7 +41,7 @@ public class PopulateDatabaseSnapshotStats {
         public String toString() { return stats; }
     }
 
-	private static final String GET_NUM_PATHWAYS = "select count(*) from cpath where type = \"pathways\" and external_db_snapshot_id = ?";
+	private static final String GET_NUM_PATHWAYS = "select count(*) from cpath where type = \"pathway\" and external_db_snapshot_id = ?";
 	private static final String GET_NUM_INTERACTIONS = "select count(*) from cpath where type = \"interaction\" and external_db_snapshot_id = ?";
 	private static final String GET_NUM_PHYSICAL_ENTITIES = "select count(*) from cpath where type = \"physical_entity\" and external_db_snapshot_id = ?";
 
