@@ -1,4 +1,4 @@
-// $Id: BioPaxAssembly.java,v 1.12 2006-06-09 19:22:03 cerami Exp $
+// $Id: BioPaxAssembly.java,v 1.13 2010-10-08 17:01:41 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -327,9 +327,9 @@ public class BioPaxAssembly implements XmlAssembly {
             //  elements.  To clean things up, we therefore remove these black listed elements.
             //  Note also that those elements which are black listed will not be indexed by lucene
             //  either.
-            if (mode == XmlAssemblyFactory.XML_ABBREV) {
-                BioPaxElementFilter.removeBlackListedElements(localRoot);
-            }
+            //if (mode == XmlAssemblyFactory.XML_ABBREV) {
+            //    BioPaxElementFilter.removeBlackListedElements(localRoot);
+            //}
 
             globalRoot.addContent(localRoot);
         }
