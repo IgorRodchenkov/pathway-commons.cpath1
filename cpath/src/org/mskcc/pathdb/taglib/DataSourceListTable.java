@@ -197,9 +197,9 @@ public class DataSourceListTable extends HtmlTable {
 				append ("Browse</a>");
 				// db stats
 				append("<br>");
-				append("Number of Pathways:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + formatter.format(snapshotRecord.getNumPathways()));
+				append("Number of Pathways:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + formatter.format(snapshotRecord.getNumPathways()));
 				append("<br>");
-				append("Number of Interactions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + formatter.format(snapshotRecord.getNumInteractions()));
+				append("Number of Interactions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + formatter.format(snapshotRecord.getNumInteractions()));
 				append("<br>");
 				append("Number of Physical Entities:&nbsp;&nbsp;" + formatter.format(snapshotRecord.getNumPhysicalEntities()));
 				append ("</td>");
