@@ -24,7 +24,14 @@ if ($cpathHome eq "") {
 	die "CPATH_HOME Environment Variable is not set.  Please set, and try again.\n";
 }
 
+# check for JAVA_HOME
+$JAVA_HOME = $ENV{JAVA_HOME};
+if ($JAVA_HOME eq "") {
+	die "JAVA_HOME Environment Variable is not set.  Please set, and try again.\n";
+}
+
 # Set up Classpath to use all JAR files in lib dir.
+print "Using JAVA_HOME $JAVA_HOME\n";
 print "Using CPATH_HOME $cpathHome\n";
 $cp="$cpathHome/build/WEB-INF/classes";
 @jar_files = glob ("$cpathHome/lib/*.jar");

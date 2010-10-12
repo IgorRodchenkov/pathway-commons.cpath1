@@ -111,7 +111,18 @@ def process_directory(directory, function):
             function(filename)
 
 # ------------------------------------------------------------------------------
-# check for tcga environment var
+# check for java_home environment var
+
+JAVA_HOME_FOUND = 0
+for key in os.environ.keys():
+	if key == "JAVA_HOME":
+		JAVA_HOME_FOUND = 1
+		break
+if not JAVA_HOME_FOUND:
+	sys.exit("error: JAVA_HOME environment variable needs to be set")
+
+# ------------------------------------------------------------------------------
+# check for cpath_home environment var
 
 CPATH_HOME_FOUND = 0
 for key in os.environ.keys():
@@ -145,10 +156,12 @@ if not os.path.isdir(SNAPSHOT_DUMP_DIR):
 # ------------------------------------------------------------------------------
 # execute java program
 
+JAVA_HOME = os.environ['JAVA_HOME']
+
 # for profiling
 #-agentlib:jprofilerti=port=5005,nowait,id=139,config=/home/grossb/.jprofiler5/config.xml  -Xbootclasspath/a:/home/grossb/local/jprofiler5/bin/agent.jar
 
-COMMAND = ("java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx32768M" +
+COMMAND = ("JAVA_HOME/bin/java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx32768M" +
 		   " -cp " + CLASSPATH + " -DCPATH_HOME=" + CPATH_HOME + " org.mskcc.pathdb.tool.ExportAll " + SNAPSHOT_DUMP_DIR)
 os.system(COMMAND)
 
