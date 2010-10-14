@@ -98,7 +98,7 @@ function importEntrezGeneIds {
 	./admin.pl -f $CPATH_HOME/../pathway-commons/fresh/ncbi/uniprot_2_entrez_gene_id.txt import
 }
 
-# Import the Unification ID Mapping Files
+# Import the Unification ID Mapping Files - no longer required - comes from UniProt background now
 function importUnificationRefs {
 	logProgress "Importing UniProt and RefSeq Mapping Files."
 	./admin.pl -f $CPATH_HOME/../pathway-commons/ids/cpath_unification_uniprot2uniprot.txt import
@@ -147,7 +147,7 @@ function importHPRD {
 	$CPATH_HOME/../pathway-commons/bin/psi-mi-batch-converter.py 2 $HPRD_HOME/biopax $HPRD_HOME/biopax
 	find $HPRD_HOME/biopax/ -name *.xml | xargs -i% rm -f %
 	cp $HPRD_HOME/db.info $HPRD_HOME/biopax
-	./admin.pl -d -f $HPRD_HOME/biopax import
+	./admin.pl -f $HPRD_HOME/biopax import
 	rm -rfv $HPRD_HOME/biopax
 }
 
@@ -171,7 +171,7 @@ function importHumanCyc {
 	local HUMANCYC_HOME="$FRESH_HOME/humancyc"
 	#mv -vf $HUMANCYC_HOME/biopax.owl $HUMANCYC_HOME/biopax.owl.bak
 	#$CPATH_HOME/../pathway-commons/bin/humancyc-cooker.py < $HUMANCYC_HOME/biopax.owl.bak > $HUMANCYC_HOME/biopax.owl
-	./admin.pl -d -f $HUMANCYC_HOME import
+	./admin.pl -f $HUMANCYC_HOME import
 	#mv -vf $HUMANCYC_HOME/biopax.owl.bak $HUMANCYC_HOME/biopax.owl
 }
 
@@ -235,19 +235,23 @@ function wrapUp {
 
 init
 checkDependencies
+
 initDB
+
 importUniProtBackground
 importEntrezGeneIds
-importUnificationRefs
 importIntAct
 importMint
 importHPRD
+
 importReactome
 importHumanCyc
 importNci
 importCellMap
-importBioGRID
 importIMID
+
+importBioGRID
+
 fetchPublications
 index
 neighborhoodMaps
