@@ -161,7 +161,7 @@ JAVA_HOME = os.environ['JAVA_HOME']
 # for profiling
 #-agentlib:jprofilerti=port=5005,nowait,id=139,config=/home/grossb/.jprofiler5/config.xml  -Xbootclasspath/a:/home/grossb/local/jprofiler5/bin/agent.jar
 
-COMMAND = ("JAVA_HOME/bin/java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx32768M" +
+COMMAND = ("$JAVA_HOME/bin/java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5555 -ea -Xmx32768M" +
 		   " -cp " + CLASSPATH + " -DCPATH_HOME=" + CPATH_HOME + " org.mskcc.pathdb.tool.ExportAll " + SNAPSHOT_DUMP_DIR)
 os.system(COMMAND)
 
