@@ -1,4 +1,4 @@
-// $Id: BinaryInteractionUtil.java,v 1.4 2008-02-19 21:18:03 grossben Exp $
+// $Id: BinaryInteractionUtil.java,v 1.5 2010-11-08 21:41:25 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -49,11 +49,11 @@ import java.util.ArrayList;
 public class BinaryInteractionUtil {
 
 	// possible rules
-	private static final List<InteractionRule> possibleRules = Arrays.asList(new ComponentRule(),
-																			 new ConsecutiveCatalysisRule(),
-																			 new ControlRule(),
-																			 new ControlsTogetherRule(),
-																			 new ParticipatesRule());
+	private static final List<InteractionRuleL2> possibleRules = Arrays.asList(new ComponentRule(),
+																			   new ConsecutiveCatalysisRule(),
+																			   new ControlRule(),
+																			   new ControlsTogetherRule(),
+																			   new ParticipatesRule());
 
 	// initialive rule type list and binaryInteractionTypeMap
 	private static final ArrayList<String> ruleTypes = new ArrayList<String>();

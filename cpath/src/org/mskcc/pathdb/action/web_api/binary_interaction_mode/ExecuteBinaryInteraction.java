@@ -1,4 +1,4 @@
-// $Id: ExecuteBinaryInteraction.java,v 1.15 2010-02-01 22:13:47 grossben Exp $
+// $Id: ExecuteBinaryInteraction.java,v 1.16 2010-11-08 21:41:25 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -146,9 +146,7 @@ public class ExecuteBinaryInteraction {
 							components[0] = getOutputID(outputIDType, components[0], outputIDMap);
 							components[2] = getOutputID(outputIDType, components[2], outputIDMap);
 						}
-						// (if version < 3.0, we need to convert interaction type tags)
-						String interactionType = (version < version3) ? getOldInteractionTypeTag(components[1]) : components[1];
-						sifBuffer.append(components[0] + "\t" + interactionType + "\t" + components[2] + "\n");
+						sifBuffer.append(components[0] + "\t" + components[1] + "\t" + components[2] + "\n");
 					}
 				}
 			}
@@ -257,16 +255,5 @@ public class ExecuteBinaryInteraction {
 		externalID = GetNeighborsCommand.NOT_SPECIFIED;
 		outputIDMap.put(internalID, externalID);
 		return externalID;
-	}
-
-	private String getOldInteractionTypeTag(String newTypeTag) {
-
-		for (BinaryInteractionType bit : BinaryInteractionType.values()) {
-			if (newTypeTag.equals(bit.getTag())) {
-				return bit.getOldtag();
-			}
-		}
-		// should not get here
-		return "";
 	}
 }

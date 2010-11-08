@@ -242,13 +242,13 @@ public class UniProtToBioPax {
                     + "UniProt Consortium (http://www.uniprot.org/).  Distributed under "
                     + "the Creative Commons Attribution-NoDerivs License.");
         }
-        HashSet <String> commentSet = new HashSet();
-        commentSet.add(reducedComments.toString());
 		if (bpLevel == BioPAXLevel.L2) {
+			HashSet <String> commentSet = new HashSet();
+			commentSet.add(reducedComments.toString());
 			((Level2Element)currentProteinOrER).setCOMMENT(commentSet);
 		}
 		else if (bpLevel == BioPAXLevel.L3) {
-			((Level3Element)currentProteinOrER).setComment(commentSet);
+			((Level3Element)currentProteinOrER).addComment(reducedComments.toString());
 		}
     }
 
@@ -436,7 +436,7 @@ public class UniProtToBioPax {
 			UnificationXref taxonXref = (UnificationXref)bpModel.addNew(UnificationXref.class, "TAXON_NCBI_" + taxId);
 			taxonXref.setDb("NCBI_taxonomy");
             taxonXref.setId(taxId);
-			toReturn.setTaxonXref((UnificationXref)taxonXref);
+			toReturn.addXref((UnificationXref)taxonXref);
 			return (T)toReturn;
 		}
 
