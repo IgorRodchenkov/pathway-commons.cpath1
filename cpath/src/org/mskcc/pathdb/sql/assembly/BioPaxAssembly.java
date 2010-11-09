@@ -1,4 +1,4 @@
-// $Id: BioPaxAssembly.java,v 1.13 2010-10-08 17:01:41 grossben Exp $
+// $Id: BioPaxAssembly.java,v 1.14 2010-11-09 18:45:14 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -288,6 +288,9 @@ public class BioPaxAssembly implements XmlAssembly {
         //  Add Default Namespace Declaration (Annoying Requirement of Protege)
         globalRoot.addNamespaceDeclaration(Namespace.getNamespace("",
                 CPathConstants.CPATH_HOME_URI + "#"));
+
+		// Add XSD Namespace Declaration (without, jena parsing breaks)
+		globalRoot.addNamespaceDeclaration(Namespace.getNamespace("xsd", "http://www.w3.org/2001/XMLSchema"));
 
         //  Add OWL Import Element, so that we can Import BioPAX Ontology
         Element owlImports = new Element(OwlConstants.OWL_IMPORTS_ELEMENT,
