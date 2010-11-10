@@ -45,10 +45,7 @@
                                           BinaryInteractionType.INTERACTS_WITH.getTag(),
                                           BinaryInteractionType.SEQUENTIAL_CATALYSIS.getTag(),
                                           BinaryInteractionType.IN_SAME_COMPONENT.getTag(),
-                                          BinaryInteractionType.CO_CONTROL_DEPENDENT_ANTI.getTag(),
-                                          BinaryInteractionType.CO_CONTROL_DEPENDENT_SIMILAR.getTag(),
-                                          BinaryInteractionType.CO_CONTROL_INDEPENDENT_ANTI.getTag(),
-                                          BinaryInteractionType.CO_CONTROL_INDEPENDENT_SIMILAR.getTag()};
+                                         BinaryInteractionType.CO_CONTROL.getTag()};
 %>
 
 <head>
