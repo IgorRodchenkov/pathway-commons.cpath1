@@ -28,7 +28,7 @@
 		webUIBean.setEnableMiniMaps(true);
 		webUIBean.setImageMapServerURL("http://www.pathwaycommons.org/nms/retrieve-neighborhood-map.do");
 		//webUIBean.setImageMapServerURL("http://toro.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
-		webUIBean.setFilterInteractions("IN_SAME_COMPONENT,CO_CONTROL_DEPENDENT_SIMILAR,CO_CONTROL_DEPENDENT_ANTI,CO_CONTROL_INDEPENDENT_SIMILAR,CO_CONTROL_INDEPENDENT_ANTI");
+		webUIBean.setFilterInteractions("IN_SAME_COMPONENT,CO_CONTROL");
 		webUIBean.setMaxMiniMapSize(200);
 		//webUIBean.setSnapshotDownloadBaseURL("http://awabi.cbio.mskcc.org/pcdl/");
 		webUIBean.setSnapshotDownloadBaseURL("http://www.pathwaycommons.org/pc-snapshot/");
