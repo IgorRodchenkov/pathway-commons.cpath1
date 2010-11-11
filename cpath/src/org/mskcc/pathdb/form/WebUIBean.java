@@ -1,4 +1,4 @@
-// $Id: WebUIBean.java,v 1.22 2009-03-25 17:40:12 grossben Exp $
+// $Id: WebUIBean.java,v 1.23 2010-11-11 00:34:02 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2006 Memorial Sloan-Kettering Cancer Center.
  **
@@ -126,9 +126,7 @@ public class WebUIBean extends ActionForm {
 	/**
 	 * Filter Interactions
 	 */
-	private String filterInteractions = ("IN_SAME_COMPONENT,CO_CONTROL_DEPENDENT_SIMILAR," +
-										 "CO_CONTROL_DEPENDENT_ANTI,CO_CONTROL_INDEPENDENT_SIMILAR," +
-										 "CO_CONTROL_INDEPENDENT_ANTI");
+	private String filterInteractions = ("IN_SAME_COMPONENT,CO_CONTROL");
 
 	/**
 	 * Snapshot download base URL
