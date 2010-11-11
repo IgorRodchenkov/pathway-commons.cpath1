@@ -1,4 +1,4 @@
-// $Id: NeighborhoodMapRetriever.java,v 1.19 2009-03-19 21:09:00 grossben Exp $
+// $Id: NeighborhoodMapRetriever.java,v 1.20 2010-11-11 00:51:34 grossben Exp $
 //------------------------------------------------------------------------------
 /** Copyright (c) 2008 Memorial Sloan-Kettering Cancer Center.
  **
@@ -158,7 +158,7 @@ public class NeighborhoodMapRetriever {
 			// any maps greater - tdb: this size is not accurate - need to compute base on sif
 			if (neighborhoodMapSize.sifNeighborhoodSize > CPathUIConfig.getWebUIBean().getMaxMiniMapSize()) {
 				log.info("NeighborhoodMapRetriever.subExecute(), SIF Neighborhood Size > MaxMiniMapSize, filtering out " + BinaryInteractionType.INTERACTS_WITH.getTag());
-				UNWANTED_INTERACTIONS_STRING += UNWANTED_INTERACTIONS_STRING + BinaryInteractionType.INTERACTS_WITH.getTag();
+				UNWANTED_INTERACTIONS_STRING += (" " + BinaryInteractionType.INTERACTS_WITH.getTag());
 			}
 
 			// write out png
