@@ -138,7 +138,8 @@ function importMint {
 
 # Then hprd, as it also has broad coverage, and good protein annotations
 # note to self:  as of 4/29/08:  HPRD incorrectly annotates some proteins as "Mammalia", but annotates
-# them with Human UniPROT Accession IDs.  Lookout for OMIM/UNIPROT secondary refs that have erroneous ids, like id="-"
+# them with Human UniPROT Accession IDs.  Lookout for OMIM/UNIPROT secondary refs that have erroneous ids, like id="-" or
+# secondary refs with multiple accessions: id="Q9Y4L1,Q6IN67,A8C1Z0".
 function importHPRD {
 	logProgress "Loading HPRD."
 	local HPRD_HOME="$FRESH_HOME/hprd"
