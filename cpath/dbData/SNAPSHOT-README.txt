@@ -68,8 +68,8 @@ Note:
 We are aware of issues relating to Reactome gene sets.  Specifically,
 these gene sets contain more genes than their respective pathways.
 This is due to a bug in our export code which incorrectly traverses
-into sub-pathways gene set creation.  We are working on a fix and will
-generate a new GSEA export as soon as it is available.
+into sub-pathways during gene set creation.  We are working on a fix
+and will generate a new GSEA export as soon as it is available.
 
 Pathway Commons Gene Set Format
 -------------------------------
