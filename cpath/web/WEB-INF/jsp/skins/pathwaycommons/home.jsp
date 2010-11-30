@@ -90,6 +90,13 @@ create a local mirror.</p>
 <p>Integration of additional data sources is planned in the near future.  For a comprehensive directory
 of interaction and pathway databases, please refer to <a href="http://www.pathguide.org">Pathguide</a>.</p>
 
+<h4>Citing Pathway Commons:</h4>
+<p><b>To cite the Pathway Commons Project:</b>
+Cerami et al. Pathway Commons, a web resource for biological pathway data. Nucl. Acids Res. (2010)
+<a href="http://nar.oxfordjournals.org/content/early/2010/11/10/nar.gkq1039.abstract">doi: 10.1093/nar/gkq1039</a></p>
+<b>To cite the cPath Software:</b>
+Cerami et al. cPath: open source software for collecting, storing, and querying biological pathways. BMC Bioinformatics. (2006)
+<a href="http://www.biomedcentral.com/1471-2105/7/497/abstract">doi:10.1186/1471-2105-7-497</a></p> 
 </p>
 </td>
 </tr>
