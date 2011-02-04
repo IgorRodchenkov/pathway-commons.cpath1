@@ -257,20 +257,22 @@ public class ExportGeneSets {
                     }
                 }
             } else if (outputFormat == ExportFileUtil.PC_OUTPUT) {
-                line.append(descendentId + COLON);
-                line.append(participantRecord.getSpecificType() + COLON);
-                String name = participantRecord.getName();
-                if (name != null) {
-                    //  Replace all : with -, so that we don't mess up the default delimiter.
-                    name = name.replaceAll(":", "-");
-                    line.append(participantRecord.getName() + COLON);
-                } else {
-                    line.append(GetNeighborsCommand.NOT_SPECIFIED + COLON);
-                }
-                line.append(ExportUtil.getXRef(uniprotAccession) + COLON);
-                line.append(ExportUtil.getXRef(geneSymbol) + COLON);
-                line.append(ExportUtil.getXRef(entrezGeneId));
-                line.append(TAB);
+				if (participantRecord.getSpecificType().equals(BioPaxConstants.PROTEIN)) {
+					line.append(descendentId + COLON);
+					line.append(participantRecord.getSpecificType() + COLON);
+					String name = participantRecord.getName();
+					if (name != null) {
+						//  Replace all : with -, so that we don't mess up the default delimiter.
+						name = name.replaceAll(":", "-");
+						line.append(participantRecord.getName() + COLON);
+					} else {
+						line.append(GetNeighborsCommand.NOT_SPECIFIED + COLON);
+					}
+					line.append(ExportUtil.getXRef(uniprotAccession) + COLON);
+					line.append(ExportUtil.getXRef(geneSymbol) + COLON);
+					line.append(ExportUtil.getXRef(entrezGeneId));
+					line.append(TAB);
+				}
             }
         }
         line.append("\n");
