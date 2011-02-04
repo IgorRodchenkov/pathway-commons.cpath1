@@ -72,6 +72,19 @@
         </controlled_terms>
     </external_database>
     <external_database type="INTERACTION_PATHWAY_UNIFICATION">
+        <name>MetaCyc</name>
+        <description>A database of nonredundant, experimentally elucidated metabolic pathways</description>
+        <home_page_url>http://metacyc.org/</home_page_url>
+        <entity_url>
+            <url_pattern>http://biocyc.org/META/NEW-IMAGE?type=GENE&amp;object=%ID%</url_pattern>
+            <sample_id>EG11024</sample_id>
+        </entity_url>
+        <icon_path>MetaCyc.png</icon_path>
+        <controlled_terms>
+            <master_term>METACYC</master_term>
+        </controlled_terms>
+    </external_database>
+    <external_database type="INTERACTION_PATHWAY_UNIFICATION">
         <name>IntAct</name>
         <description>IntAct database of protein interaction data</description>
         <home_page_url>http://www.ebi.ac.uk/intact/site/index.jsf</home_page_url>
