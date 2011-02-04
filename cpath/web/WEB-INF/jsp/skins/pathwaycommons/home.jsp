@@ -17,15 +17,26 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 </div>
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;September 7, 2010:
-    <ul>
-     <li>BioGRID data set (July 31, 2010 Version 30.0.67).</li>
-      <li>HPRD data set (April 13, 2010 Version 9).</li>
-      <li>HumanCyc data set (June 16, 2010 Version 14.1).</li>
-      <li>IntAct data set (August 8, 2010 Version 3.1, r14760).</li>
-      <li>MINT data set (July 28, 2010).</li>
-      <li>NCI/Nature Pathway Interaction Database (August 10, 2010).</li>
-      <li>Reactome data set (June 18, 2010 Version 33).</li>
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;February 4, 2011:
+   <ul>
+     <li>Added MetaCyc data set (December 7, 2010 Version 14.6).</li>
+     <li>BioGRID data set (December 15, 2010 Version 3.1.72).</li>
+     <li>HumanCyc data set (October 7, 2010 Version 14.6).</li>
+     <li>IntAct data set (December 15, 2010).</li>
+     <li>Mint data set (December 21, 2010).</li>
+     <li>Nature PID (September 16, 2010).</li>
+     <li>Reactome data set (December 17, 2010 Version 35).</li>
+  </ul>
+</li>
+<li>September 7, 2010:
+  <ul>
+    <li>BioGRID data set (July 31, 2010 Velsion 30.0.67).</li>
+	<li>HPRD data set (April 13, 2010 Version 9).</li>
+	<li>HumanCyc data set (June 16, 2010 Version 14.1).</li>
+	<li>IntAct data set (August 8, 2010).</li>
+    <li>MINT data set (July 28, 2010).</li>
+    <li>NCI/Nature Pathway Interaction Database (August 10, 2010).</li>
+    <li>Reactome data set (June 18, 2010 Version 33).</li>
   </ul>
 </li>
 <li>October 15, 2009:
@@ -42,25 +53,6 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
         <li>All yeast proteins are now annotated with UniProt functional annotation.</li>
     </ul>
 </li>
-<li>March 1, 2009:
-    <ul>
-        <li>BioGRID data set (January 28, 2009 Version 2.0.49).</li>
-        <li>Latest Reactome data set (December 17, 2008 Version 27).</li>
-        <li>Latest HumanCyc data set (October 15, 2008 Version 12.5).</li>
-        <li>Neighborhood maps added to protein pages.</li>
-    </ul>
-</li>
-<li>July 24, 2008:
-    <ul>
-        <li>Latest Reactome data set (June 30, 2008 Version 25).</li>
-        <li>All human, mouse and rat proteins are now annotated with UniProt functional annotation.</li>
-        <li>Improved search support for gene symbols.</li>
-        <li>Stable links now available for linking out to protein pages.</li>
-    </ul>
-</li>
-<li>April 1, 2008: New features for visualizing pathways using Cytoscape [<a href="cytoscape.do">Details</a>].
-<li>February 1, 2008:  New data sources, including:  HPRD, IntAct, and MINT.
-Improved <a href="webservice.do?cmd=help">web service API</a>.</li>
 </ul>
 
 </td>
