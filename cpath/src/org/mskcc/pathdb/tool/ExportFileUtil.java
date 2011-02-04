@@ -213,7 +213,7 @@ public class ExportFileUtil {
             DaoOrganism daoOrganism = new DaoOrganism();
             Organism organism = daoOrganism.getOrganismByTaxonomyId(ncbiTaxonomyId);
 			// remove all illegal chars from filename
-			String regex = "[\\[|\\]|\\(|\\)|\\/|\\\\|\\.|;|\\:|\\<|\\>|\\,| ]";
+			String regex = "['|\\[|\\]|\\(|\\)|\\/|\\\\|\\.|;|\\:|\\<|\\>|\\,| ]";
 			String speciesName = organism.getSpeciesName().replaceAll(regex, "-");
 			// now remove all strings of two or more - and replace with one -
 			speciesName = speciesName.replaceAll("-{2,}", "-");
