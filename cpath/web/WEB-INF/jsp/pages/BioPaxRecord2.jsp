@@ -519,6 +519,10 @@ enable Javascript support within your web browser.
 			// use no neighbors found
 			out.println("<img src='jsp/images/maps/no-neighbors-found-thumbnail.png' onload='neighborhoodMapLoaded(false)'>");
 		}
+       else if (numNeighbors == Integer.MAX_VALUE) {
+			// use too many neighbors found
+			out.println("<img src='jsp/images/maps/too-many-neighbors-found-thumbnail.png' onload='neighborhoodMapLoaded(false)'>");
+      }
 		else {
 			out.println("<a href=\"webservice.do?" + ProtocolRequest.ARG_VERSION + "=" + ProtocolConstantsVersion3.VERSION_3 +
 						"&" + ProtocolRequest.ARG_COMMAND + "=" + ProtocolConstantsVersion2.COMMAND_GET_NEIGHBORS +
