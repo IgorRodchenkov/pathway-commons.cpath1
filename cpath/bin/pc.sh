@@ -55,6 +55,11 @@ function checkDependencies {
 		exit
 	fi
 
+	if [ ! -f $FRESH_HOME/metacyc/db.info ]; then
+		echo "Fresh MetaCyc data files not found!  Run pc_get_fresh.sh first. Aborting..."
+		exit
+	fi
+
 	if [ ! -f $FRESH_HOME/sbcny/db.info ]; then
 		echo "Fresh SBCNY data files not found!  Run pc_get_fresh.sh first. Aborting..."
 		exit
@@ -176,6 +181,15 @@ function importHumanCyc {
 	#mv -vf $HUMANCYC_HOME/biopax.owl.bak $HUMANCYC_HOME/biopax.owl
 }
 
+function importMetaCyc {
+	logProgress "Loading MetaCyc."
+	local METACYC_HOME="$FRESH_HOME/metacyc"
+	#mv -vf $METACYC_HOME/biopax.owl $METACYC_HOME/biopax.owl.bak
+	#$CPATH_HOME/../pathway-commons/bin/metacyc-cooker.py < $METACYC_HOME/biopax.owl.bak > $METACYC_HOME/biopax.owl
+	./admin.pl -f $METACYC_HOME import
+	#mv -vf $METACYC_HOME/biopax.owl.bak $METACYC_HOME/biopax.owl
+}
+
 function importNci {
 	logProgress "Loading NCI / Nature PID."
 	local NCI_HOME="$FRESH_HOME/nci"
@@ -241,12 +255,14 @@ initDB
 
 importUniProtBackground
 importEntrezGeneIds
+
 importIntAct
 importMint
 importHPRD
 
 importReactome
 importHumanCyc
+importMetaCyc
 importNci
 importCellMap
 importIMID
