@@ -56,6 +56,7 @@ import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.sql.util.NeighborsUtil;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 import org.biopax.paxtools.io.sif.BinaryInteractionType;
+import org.biopax.paxtools.io.sif.MaximumInteractionThresholdExceedException;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForward;
@@ -256,6 +257,9 @@ public class NeighborhoodMapRetriever {
 		}
 		catch (Exception e) {
 			log.info("NeighborhoodMapRetriever.getNeighborMapSize(), Exception caught: " + e.getMessage() + ", PHYSICAL_ENTITY_RECORD_ID: " + Long.toString(PHYSICAL_ENTITY_RECORD_ID));
+			if (e instanceof MaximumInteractionThresholdExceedException) {
+				toReturn.sifNeighborhoodSize = Integer.MAX_VALUE;
+			}
 			return toReturn;
 		}
 
