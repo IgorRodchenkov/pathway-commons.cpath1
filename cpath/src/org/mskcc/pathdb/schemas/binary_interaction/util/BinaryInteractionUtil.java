@@ -48,12 +48,16 @@ import java.util.ArrayList;
  */
 public class BinaryInteractionUtil {
 
+	public static final Integer COMPONENT_RULE_THRESHOLD = 100;
+	public static final Integer PARTICIPATES_RULE_THRESHOLD = 100;
+
+
 	// possible rules
-	private static final List<InteractionRuleL2> possibleRules = Arrays.asList(new ComponentRule(),
+	private static final List<InteractionRuleL2> possibleRules = Arrays.asList(new ComponentRule(COMPONENT_RULE_THRESHOLD),
 																			   new ConsecutiveCatalysisRule(),
 																			   new ControlRule(),
 																			   new ControlsTogetherRule(),
-																			   new ParticipatesRule());
+																			   new ParticipatesRule(PARTICIPATES_RULE_THRESHOLD));
 
 	// initialive rule type list and binaryInteractionTypeMap
 	private static final ArrayList<String> ruleTypes = new ArrayList<String>();
