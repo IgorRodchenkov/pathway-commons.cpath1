@@ -183,6 +183,9 @@ process_directory(SNAPSHOT_DUMP_DIR + "/sif/by_species/", remove_duplicates)
 process_directory(SNAPSHOT_DUMP_DIR + "/sif/by_source/", remove_duplicates)
 process_directory(SNAPSHOT_DUMP_DIR + "/tab_delim_network/by_species/", remove_duplicates)
 process_directory(SNAPSHOT_DUMP_DIR + "/tab_delim_network/by_source/", remove_duplicates)
+print "Removing genus species from MetaCyc, including Drosophila..."
+os.system("rm -f " SNAPSHOT_DUMP_DIR + "/tab_delim_network_by_species/drosophila-node-attributes.txt.zip")
+os.system("rm -f " SNAPSHOT_DUMP_DIR + "/tab_delim_network_by_species/drosophila-edge-attributes.txt.zip")
 print "Postprocessing of sif and tab_delim_network files is complete..."
 
 # ------------------------------------------------------------------------------
