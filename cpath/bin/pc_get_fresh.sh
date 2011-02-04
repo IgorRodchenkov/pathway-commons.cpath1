@@ -102,12 +102,11 @@ fi
 
 #echo -n "Enter file to retrieve from BioGRID, e.g., BIOGRID-ORGANISM-2.0.60.psi25.zip:  "
 #read biogrid_file
-biogrid_file=BIOGRID-ORGANISM-3.0.67.psi25.zip
+biogrid_file=BIOGRID-ORGANISM-3.1.72.psi25.zip
 
 # Get file from BioGRID
 echo Retrieving file $biogrid_file from BioGRID...
-#wget -O $biogrid_file http://www.thebiogrid.org/blocks/DownloadsBlock/JQueryFetchDownload.php?fetchFile=/Current%20Release/$biogrid_file
-wget -O $biogrid_file http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.0.67/$biogrid_file
+wget -O $biogrid_file http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.1.72/$biogrid_file
 mv $biogrid_file $FRESH_HOME/biogrid
 
 #echo Unzipping BioGRID file...
@@ -124,7 +123,7 @@ rm -v $FRESH_HOME/hprd/*
 
 #echo -n "Enter file to retrieve from HPRD without the extension, e.g., HPRD_SINGLE_PSIMI_070609:  "
 #read hprd_file
-hprd_file=HPRD_SINGLE_PSIMI_041210.tar.gz
+hprd_file=HPRD_SINGLE_PSIMI_041310.xml.tar.gz
 
 # Get file from HPRD
 echo Retrieving file $hprd_file from HPRD...
@@ -133,7 +132,7 @@ wget -P $FRESH_HOME/hprd http://www.hprd.org/RELEASE9/$hprd_file
 
 echo Unzipping HPRD file...
 tar -xvzf $FRESH_HOME/hprd/$hprd_file -C $FRESH_HOME/hprd
-# use follow if single file is used
+# use following if single file is used
 #find $FRESH_HOME/hprd -name *.xml | xargs -i% mv % .
 #rm -rf $FRESH_HOME/hprd/PSIMI_XML
 rm -v $FRESH_HOME/hprd/*.gz
@@ -153,6 +152,24 @@ wget -P $FRESH_HOME/humancyc http://brg.ai.sri.com/ecocyc/dist/flatfiles-5298374
 echo Unzipping HumanCyc file...
 unzip -j -d $FRESH_HOME/humancyc $FRESH_HOME/humancyc/human.zip
 find $FRESH_HOME/humancyc -type f ! -name "biopax-level2.owl" -exec rm -f {} \;
+
+#!/bin/sh
+FRESH_HOME=$CPATH_HOME/../pathway-commons/fresh
+
+###########################################################
+# Retrieve "Fresh" MetaCyc BioPAX directly from MetaCyc
+###########################################################
+echo Retrieving Fresh MetaCyc BioPAX directly from MetaCyc
+echo Deleting all previous MetaCyc Files
+rm -v $FRESH_HOME/metacyc/*
+
+# Get file from MetaCyc
+echo Retrieving file from MetaCyc...
+wget -P $FRESH_HOME/metacyc http://brg.ai.sri.com/ecocyc/dist/flatfiles-52983746/meta.zip
+
+echo Unzipping MetaCyc file...
+unzip -j -d $FRESH_HOME/metacyc $FRESH_HOME/metacyc/meta.zip
+find $FRESH_HOME/metacyc -type f ! -name "biopax-level2.owl" -exec rm -f {} \;
 
 #!/bin/sh
 FRESH_HOME=$CPATH_HOME/../pathway-commons/fresh
@@ -179,7 +196,6 @@ rm -v $FRESH_HOME/nci/*
 # Get files from NCI
 echo Retrieving files from NCI...
 wget --passive-ftp -P $FRESH_HOME/nci ftp://ftp1.nci.nih.gov/pub/PID/BioPAX/NCI-Nature_Curated.owl.gz
-#wget --passive-ftp -P $FRESH_HOME/nci ftp://ftp1.nci.nih.gov/pub/PID/BioPAX/BioCarta.owl.gz
 
 echo Unzipping Nature-PID files...
 gunzip $FRESH_HOME/nci/*.gz
@@ -260,6 +276,17 @@ echo -n "Enter date for HumanCyc (MM/DD/YYYY):  "
 read date
 cat << END > $FRESH_HOME/humancyc/db.info
 db_name=HUMANCYC
+db_snapshot_version=$version
+db_snapshot_date=$date
+END
+
+echo
+echo -n "Enter version number for MetaCyc:  "
+read version
+echo -n "Enter date for MetaCyc (MM/DD/YYYY):  "
+read date
+cat << END > $FRESH_HOME/metacyc/db.info
+db_name=METACYC
 db_snapshot_version=$version
 db_snapshot_date=$date
 END
