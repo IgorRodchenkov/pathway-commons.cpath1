@@ -13,6 +13,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalDbSnapshot;
 import org.mskcc.pathdb.task.ProgressMonitor;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
+import org.biopax.paxtools.io.sif.MaximumInteractionThresholdExceedException;
 
 import java.util.List;
 import java.util.HashMap;
@@ -96,6 +97,8 @@ public class ExportNetworks {
 				exportInteraction(dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.TAB_DELIM_EDGE_OUTPUT), ExportFileUtil.TAB_DELIM_EDGE_OUTPUT, ncbiTaxonomyIDs);
 				exportInteraction(dbTerm, interaction, getFinalSIFs(interaction, ExportFileUtil.TAB_DELIM_NODE_OUTPUT), ExportFileUtil.TAB_DELIM_NODE_OUTPUT, ncbiTaxonomyIDs);
             }
+		} catch (MaximumInteractionThresholdExceedException e) {
+			pMonitor.logWarning("Maximum interaction threshold exceeded, while generating sif assembly for record: " + record.getId());
         } catch (JenaException e) {
             pMonitor.logWarning("Got JenaException:  " + e.getMessage() + ".  Occurred "
                 + " while getting SIF for interaction:  " + record.getId() + ", Data Source:  "
