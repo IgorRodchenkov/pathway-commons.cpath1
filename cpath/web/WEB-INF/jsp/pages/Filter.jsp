@@ -42,7 +42,7 @@
     boolean organismSelected = false; // used to check "All organisms" check box below
     String organismListStr = "";
     for (Organism organism : allOrganismsList) {
-        organismListStr += "\"" + organism.getSpeciesName() + "\", ";
+        organismListStr += "\"" + organism.getSpeciesName() + ", Taxonomy ID: " + organism.getTaxonomyId()  + "\", ";
 		if (settings.isOrganismSelected(organism.getTaxonomyId())) {
 			organismSelected = true;
 		}
@@ -70,8 +70,10 @@
 	var javascriptOrganismMap = new Array();
 	<%
 		for (Organism organism : allOrganismsList) {
+	       String org = organism.getSpeciesName() + ", Taxonomy ID: " + organism.getTaxonomyId();
+	       org = org.replace("'", "");
 	%>
-	        javascriptOrganismMap['<%= organism.getSpeciesName()%>'] = <%= organism.getTaxonomyId()%>;
+	        javascriptOrganismMap['<%=org%>'] = <%= organism.getTaxonomyId()%>;
 	<%
 		}
     %>
@@ -179,8 +181,7 @@
 					checked = (isSelected) ? " checked=\"checked\"" : "";
 					String styleStr = (isSelected || topOrganismsString.contains(organism.getSpeciesName())) ? "style=\"display:table-row;\"" : "style=\"display:none;\"";
 					out.println("<tr id=\"" + orgTrID + "\" "  + styleStr + ">");
-					out.println("<td><input type=\"checkbox\" id=\"" + orgCbID + "\"" + " name=\"ORGANISM_TAXONOMY_ID\" value=\"" +
-								organism.getTaxonomyId() + "\"" + " onclick=\"organismCheckBoxClicked('" + organism.getTaxonomyId() + "', false)\"" + checked + "/>&nbsp;&nbsp;" + organism.getSpeciesName() + "</td>");
+					out.println("<td><input type=\"checkbox\" id=\"" + orgCbID + "\"" + " name=\"ORGANISM_TAXONOMY_ID\" value=\"" + organism.getTaxonomyId() + "\"" + "onclick=\"organismCheckBoxClicked('" + organism.getTaxonomyId() + "', false)\"" + checked + "/>&nbsp;&nbsp;" + organism.getSpeciesName() + ",&nbsp;Taxonomy ID:&nbsp;" + organism.getTaxonomyId() + "</td>");
 					out.println("</tr>");
 				}
 			}
