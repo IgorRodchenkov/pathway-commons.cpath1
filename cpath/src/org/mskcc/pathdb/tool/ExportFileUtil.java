@@ -221,7 +221,7 @@ public class ExportFileUtil {
 			if (speciesName.endsWith("-")) {
 				speciesName = speciesName.substring(0, speciesName.length()-1);
 			}
-			String fileName = speciesName.toLowerCase() + getKey(outputFormat) + fileExtension;
+			String fileName = speciesName.toLowerCase() + "-" + ncbiTaxonomyId  + getKey(outputFormat) + fileExtension;
 			File speciesFile = new File(dir, fileName);
 			boolean fileExists = speciesFile.exists();
 			boolean writeHeader = (!fileExists || (fileExists && speciesFile.length() == 0));
