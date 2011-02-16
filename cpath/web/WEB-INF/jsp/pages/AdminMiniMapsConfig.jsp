@@ -43,6 +43,12 @@
 				</td>
 			</tr>
 			<tr>
+			<th align="LEFT">SIF Converter Threshold</th>
+				<td>
+					<html:textarea property="converterThreshold" cols="72"/>
+				</td>
+			</tr>
+			<tr>
             <th align="LEFT">Interactions to Filter</th>
 				<td>
 					<html:textarea property="filterInteractions" rows="5" cols="72"/>
