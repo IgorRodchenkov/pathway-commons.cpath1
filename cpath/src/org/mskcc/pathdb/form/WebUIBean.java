@@ -124,6 +124,11 @@ public class WebUIBean extends ActionForm {
 	private Integer maxMiniMapSize;
 
 	/**
+	 * SIF Converter Threshold.
+	 */
+	private Integer converterThreshold = 100;
+
+	/**
 	 * Filter Interactions
 	 */
 	private String filterInteractions = ("IN_SAME_COMPONENT,CO_CONTROL");
@@ -438,6 +443,24 @@ public class WebUIBean extends ActionForm {
 	}
 
 	/**
+	 * Sets the SIF Converter threshold (participates, component rule).
+	 *
+	 * @param threshold Integer
+	 */
+	public void setConverterThreshold(Integer converterThreshold) {
+		this.converterThreshold = converterThreshold;
+	}
+
+	/**
+	 * Gets SIF Converter threshold.
+	 *
+	 * @return Integer
+	 */
+	public Integer getConverterThreshold() {
+		return converterThreshold;
+	}
+
+	/**
 	 * Sets filter interactions string (comma delimited list of interactions).
 	 *
 	 * @param filterInteractions
@@ -495,6 +518,10 @@ public class WebUIBean extends ActionForm {
 			}
 			if (maxMiniMapSize <= 0) {
 				errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.mini_maps_config_form.invalid_maxMiniMapSize"));
+			}
+
+			if (converterThreshold <= 0) {
+				errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.mini_maps_config_form.invalid_converterThreshold"));
 			}
 		}
 
