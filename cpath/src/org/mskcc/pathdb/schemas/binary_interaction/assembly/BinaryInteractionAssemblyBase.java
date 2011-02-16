@@ -83,7 +83,7 @@ public abstract class BinaryInteractionAssemblyBase {
 	 */
 	private SimpleInteractionConverter createConverter(List<String> ruleTypes, boolean reduceComplexes) {
 
-		InteractionRule[] rules = BinaryInteractionUtil.getRuleClasses();
+		InteractionRule[] rules = (new BinaryInteractionUtil()).getRuleClasses();
 		Map options = new HashMap();
 
 		if (reduceComplexes) {
