@@ -68,6 +68,7 @@ public class AdminMiniMapsConfigAction extends AdminBaseAction {
 			formBean.setEnableMiniMaps(currentBean.getEnableMiniMaps());
 			formBean.setImageMapServerURL(currentBean.getImageMapServerURL());
 			formBean.setMaxMiniMapSize(currentBean.getMaxMiniMapSize());
+			formBean.setConverterThreshold(currentBean.getConverterThreshold());
 			formBean.setFilterInteractions(currentBean.getFilterInteractions());
 		}
     }
