@@ -74,7 +74,7 @@ public class ExportNetworks {
                 BinaryInteractionAssemblyFactory.AssemblyType.SIF;
 
         // contruct rule types
-        List<String> binaryInteractionRuleTypes = BinaryInteractionUtil.getRuleTypes();
+        List<String> binaryInteractionRuleTypes = (new BinaryInteractionUtil()).getRuleTypes();
 
         // get binary interaction assembly
         try {
