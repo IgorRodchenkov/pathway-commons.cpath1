@@ -171,7 +171,7 @@ public class ExecuteBinaryInteraction {
 	public static List<String> getRuleTypesForDisplay() {
 
 		// get rule types
-		List<String> ruleTypes = BinaryInteractionUtil.getRuleTypes();
+		List<String> ruleTypes = (new BinaryInteractionUtil()).getRuleTypes();
 
 		// sort
 		Collections.sort(ruleTypes);
@@ -187,7 +187,7 @@ public class ExecuteBinaryInteraction {
 	 * @return String
 	 */
 	public static String getRuleTypeDescription(String ruleType) {
-		return BinaryInteractionUtil.getRuleTypeDescription(ruleType);
+		return (new BinaryInteractionUtil()).getRuleTypeDescription(ruleType);
 	}
 
 	/*
@@ -210,7 +210,7 @@ public class ExecuteBinaryInteraction {
 			}
 		}
 		else {
-			toReturn = BinaryInteractionUtil.getRuleTypes();
+			toReturn = (new BinaryInteractionUtil()).getRuleTypes();
 		}
 
 		// outta here
