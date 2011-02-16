@@ -34,6 +34,8 @@ package org.mskcc.pathdb.schemas.binary_interaction.util;
 // imports
 import org.biopax.paxtools.io.sif.*;
 import org.biopax.paxtools.io.sif.level2.*;
+import org.mskcc.pathdb.form.WebUIBean;
+import org.mskcc.pathdb.servlet.CPathUIConfig;
 
 import java.util.Map;
 import java.util.List;
@@ -48,22 +50,27 @@ import java.util.ArrayList;
  */
 public class BinaryInteractionUtil {
 
-	public static final Integer COMPONENT_RULE_THRESHOLD = 100;
-	public static final Integer PARTICIPATES_RULE_THRESHOLD = 100;
+	// member vars
+	private ArrayList<String> ruleTypes;
+	private List<InteractionRuleL2> possibleRules;
+	private Map<String, BinaryInteractionType> binaryInteractionTypeMap;
 
+	/**
+	 * Constructor.
+	 */
+	public BinaryInteractionUtil() {
 
-	// possible rules
-	private static final List<InteractionRuleL2> possibleRules = Arrays.asList(new ComponentRule(COMPONENT_RULE_THRESHOLD),
-																			   new ConsecutiveCatalysisRule(),
-																			   new ControlRule(),
-																			   new ControlsTogetherRule(),
-																			   new ParticipatesRule(PARTICIPATES_RULE_THRESHOLD));
+		WebUIBean bean = (CPathUIConfig.getWebUIBean() != null) ? CPathUIConfig.getWebUIBean() : new WebUIBean();
 
-	// initialive rule type list and binaryInteractionTypeMap
-	private static final ArrayList<String> ruleTypes = new ArrayList<String>();
-	private static final Map<String, BinaryInteractionType> binaryInteractionTypeMap = new HashMap<String, BinaryInteractionType>();
-	static {
+		possibleRules = Arrays.asList(new ComponentRule(bean.getConverterThreshold()),
+									  new ConsecutiveCatalysisRule(),
+									  new ControlRule(),
+									  new ControlsTogetherRule(),
+									  new ParticipatesRule(bean.getConverterThreshold()));
+
 		// interate through each rule class and get each rule type
+		ruleTypes = new ArrayList<String>();
+		binaryInteractionTypeMap = new HashMap<String, BinaryInteractionType>();
 		for (InteractionRule rule : possibleRules) {
 			for (BinaryInteractionType ruleType : rule.getRuleTypes()) {
 				// add ruleType to ruletype list
@@ -84,7 +91,7 @@ public class BinaryInteractionUtil {
 	 *
 	 * @return InteractionRule[]
 	 */
-	public static InteractionRule[] getRuleClasses() {
+	public InteractionRule[] getRuleClasses() {
 		return possibleRules.toArray(new InteractionRule[possibleRules.size()]);
 	}
 
@@ -93,7 +100,7 @@ public class BinaryInteractionUtil {
 	 *
 	 * @return List<String>
 	 */
-	public static List<String> getRuleTypes() {
+	public List<String> getRuleTypes() {
 
 		// outta here
 		return (List<String>)ruleTypes.clone();
@@ -105,7 +112,7 @@ public class BinaryInteractionUtil {
 	 * @param ruleType String
 	 * @return String
 	 */
-	public static String getRuleTypeDescription(String ruleType) {
+	public String getRuleTypeDescription(String ruleType) {
 		return binaryInteractionTypeMap.get(ruleType).getDescription();
 	}
 }
