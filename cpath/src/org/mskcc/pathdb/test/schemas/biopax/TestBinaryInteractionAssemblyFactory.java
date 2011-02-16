@@ -34,7 +34,7 @@ public class TestBinaryInteractionAssemblyFactory extends TestCase {
             line = buf.readLine();
         }
 
-        List<String> rulesList =  BinaryInteractionUtil.getRuleTypes();
+        List<String> rulesList =  (new BinaryInteractionUtil()).getRuleTypes();
         BinaryInteractionAssembly binaryAssembly = BinaryInteractionAssemblyFactory.createAssembly
                 (BinaryInteractionAssemblyFactory.AssemblyType.SIF, rulesList,
                         lineBuffer.toString());
