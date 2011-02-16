@@ -18,6 +18,7 @@
 	   webUIBean.setImageMapServerURL("");
 	   webUIBean.setFilterInteractions("");
 	   webUIBean.setMaxMiniMapSize(200);
+	   webUIBean.setSIFConverterThreshold(100);
 	   webUIBean.setSnapshotDownloadBaseURL("");
 	   CPathUIConfig.setWebUIBean(webUIBean);
     }
