@@ -231,12 +231,13 @@ public class NeighborhoodMapRetriever {
 			if (neighborIDs.length == 0) return toReturn;
 
 			// create sif assembly
+			BinaryInteractionUtil binaryInteractionUtil = new BinaryInteractionUtil();
 			XmlAssembly biopaxAssembly = XmlAssemblyFactory.createXmlAssembly(neighborIDs, XmlRecordType.BIO_PAX, 1,
 																			  XmlAssemblyFactory.XML_FULL, true, new XDebug());
 			toReturn.biopaxAssembly = biopaxAssembly;
 			BinaryInteractionAssembly sifAssembly =
 				BinaryInteractionAssemblyFactory.createAssembly(BinaryInteractionAssemblyFactory.AssemblyType.SIF,
-																BinaryInteractionUtil.getRuleTypes(),
+																binaryInteractionUtil.getRuleTypes(),
 																biopaxAssembly.getXmlString());
 
 			// filter out unwanted interactions
