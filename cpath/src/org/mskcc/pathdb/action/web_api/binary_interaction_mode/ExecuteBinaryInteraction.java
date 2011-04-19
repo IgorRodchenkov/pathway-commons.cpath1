@@ -120,6 +120,7 @@ public class ExecuteBinaryInteraction {
 		// get binary interaction assembly
 		BinaryInteractionAssembly assembly =
 			BinaryInteractionAssemblyFactory.createAssembly(binaryInteractionAssemblyType,
+															new BinaryInteractionUtil(),
 															binaryInteractionRuleTypes,
 															xmlAssembly.getXmlString());
 
