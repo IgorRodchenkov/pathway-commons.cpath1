@@ -65,11 +65,9 @@ http://www.broad.mit.edu/cancer/software/gsea/wiki/index.php/Data_formats.
 
 Note:
 
-We are aware of issues relating to Reactome gene sets.  Specifically,
-these gene sets contain more genes than their respective pathways.
-This is due to a bug in our export code which incorrectly traverses
-into sub-pathways during gene set creation.  We are working on a fix
-and will generate a new GSEA export as soon as it is available.
+Issues relating to Reactome gene sets due to incorrect traversal into
+sub-pathways during gene set creation has been repaired.  If you have
+any questions, please contact us at pc-info@pathwaycommons.org.
 
 Pathway Commons Gene Set Format
 -------------------------------
