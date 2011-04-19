@@ -126,7 +126,7 @@ public class WebUIBean extends ActionForm {
 	/**
 	 * SIF Converter Threshold.
 	 */
-	private Integer converterThreshold = 100;
+	private Integer converterThreshold = 1000;
 
 	/**
 	 * Filter Interactions
