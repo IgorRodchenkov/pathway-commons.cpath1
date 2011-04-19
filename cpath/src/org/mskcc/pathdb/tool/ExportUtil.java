@@ -11,6 +11,7 @@ import org.mskcc.pathdb.sql.dao.DaoExternalLink;
 import org.mskcc.pathdb.sql.dao.DaoInternalLink;
 import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
 
+import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ArrayList;
@@ -23,14 +24,16 @@ public class ExportUtil {
     /**
      * XRef Look up.
      */
-    public static HashMap<String, String> getXRefMap(long cpathId) throws DaoException {
-        HashMap<String, String> xrefMap = new HashMap<String, String>();
+    public static HashMap<String, Set<String>> getXRefMap(long cpathId) throws DaoException {
+        HashMap<String, Set<String>> xrefMap = new HashMap<String, Set<String>>();
         DaoExternalLink daoExternalLink = DaoExternalLink.getInstance();
         ArrayList<ExternalLinkRecord> xrefList = daoExternalLink.getRecordsByCPathId(cpathId);
         for (ExternalLinkRecord xref : xrefList) {
             String dbMasterTerm = xref.getExternalDatabase().getMasterTerm();
+			Set<String> dbSet = ((xrefMap.get(dbMasterTerm)) == null) ? new HashSet<String>() : xrefMap.get(dbMasterTerm);
             String xrefId = xref.getLinkedToId();
-            xrefMap.put(dbMasterTerm, xrefId);
+			dbSet.add(xrefId);
+            xrefMap.put(dbMasterTerm, dbSet);
         }
         return xrefMap;
     }
