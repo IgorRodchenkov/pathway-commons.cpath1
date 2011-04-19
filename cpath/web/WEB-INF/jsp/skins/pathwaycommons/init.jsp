@@ -26,7 +26,6 @@
         webUIBean.addSupportedIdType(ExternalDatabaseConstants.GENE_SYMBOL);
 		webUIBean.setTagLine("Search and visualize public biological pathway information.  Single point of access. [<a href='faq.do'>more...</a>]");
 		webUIBean.setEnableMiniMaps(true);
-        //webUIBean.setImageMapServerURL("http://www.pathwaycommons.org/nms/retrieve-neighborhood-map.do");
         //webUIBean.setImageMapServerURL("http://miso-dev.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
         webUIBean.setImageMapServerURL("http://miso.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
 		webUIBean.setFilterInteractions("IN_SAME_COMPONENT,CO_CONTROL");
