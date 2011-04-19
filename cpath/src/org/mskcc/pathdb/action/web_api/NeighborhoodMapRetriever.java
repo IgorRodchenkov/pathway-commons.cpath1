@@ -97,6 +97,7 @@ public class NeighborhoodMapRetriever {
 	private static int SVG_HEIGHT_LARGE = 540;
 	private static int IPHONE_WIDTH = 320;
 	private static int IPHONE_HEIGHT = 416;
+	private static int SIF_CONVERTER_THRESHOLD = 1000;
     private static Logger log = Logger.getLogger(NeighborhoodMapRetriever.class);
 	private static Set<String> ALL_DATA_SOURCES;
 	public static class NeighborhoodMapSize {
@@ -231,12 +232,16 @@ public class NeighborhoodMapRetriever {
 			if (neighborIDs.length == 0) return toReturn;
 
 			// create sif assembly
-			BinaryInteractionUtil binaryInteractionUtil = new BinaryInteractionUtil();
 			XmlAssembly biopaxAssembly = XmlAssemblyFactory.createXmlAssembly(neighborIDs, XmlRecordType.BIO_PAX, 1,
 																			  XmlAssemblyFactory.XML_FULL, true, new XDebug());
 			toReturn.biopaxAssembly = biopaxAssembly;
+
+			WebUIBean webUIBean = new WebUIBean();
+			webUIBean.setConverterThreshold(SIF_CONVERTER_THRESHOLD);
+			BinaryInteractionUtil binaryInteractionUtil = new BinaryInteractionUtil(webUIBean);
 			BinaryInteractionAssembly sifAssembly =
 				BinaryInteractionAssemblyFactory.createAssembly(BinaryInteractionAssemblyFactory.AssemblyType.SIF,
+																binaryInteractionUtil,
 																binaryInteractionUtil.getRuleTypes(),
 																biopaxAssembly.getXmlString());
 
