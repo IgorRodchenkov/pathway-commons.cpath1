@@ -37,6 +37,8 @@ import org.biopax.paxtools.io.sif.level2.*;
 import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.servlet.CPathUIConfig;
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
@@ -50,6 +52,8 @@ import java.util.ArrayList;
  */
 public class BinaryInteractionUtil {
 
+    private static Logger log = Logger.getLogger(BinaryInteractionUtil.class);
+
 	// member vars
 	private ArrayList<String> ruleTypes;
 	private List<InteractionRuleL2> possibleRules;
@@ -60,7 +64,17 @@ public class BinaryInteractionUtil {
 	 */
 	public BinaryInteractionUtil() {
 
-		WebUIBean bean = (CPathUIConfig.getWebUIBean() != null) ? CPathUIConfig.getWebUIBean() : new WebUIBean();
+		// we need a been for sif converter threshold values
+		// if one is not passed in, use from converter
+		this ((CPathUIConfig.getWebUIBean() != null) ? CPathUIConfig.getWebUIBean() : new WebUIBean());
+	}
+
+	/**
+	 * Constructor.
+	 */
+	public BinaryInteractionUtil(WebUIBean bean) {
+
+		log.info("BinaryInteractionUtil(), bean threshold: " + bean.getConverterThreshold());
 
 		possibleRules = Arrays.asList(new ComponentRule(bean.getConverterThreshold()),
 									  new ConsecutiveCatalysisRule(),
