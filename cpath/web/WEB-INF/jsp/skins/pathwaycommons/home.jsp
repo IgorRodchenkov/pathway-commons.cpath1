@@ -17,8 +17,15 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 </div>
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;February 4, 2011:
-   <ul>
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;April 25, 2011:
+  <ul>
+      <li>Reactome data set (March 15, 2011 Version 36).</li>
+      <li>IntAct data set (February 3, 2011 Version 138).</li>
+      <li>Bug fixes to import pipeline and batch download exporter.</li>
+  </ul>
+</li>
+<li>February 4, 2010:
+  <ul>
      <li>Added MetaCyc data set (December 7, 2010 Version 14.6).</li>
      <li>BioGRID data set (December 15, 2010 Version 3.1.72).</li>
      <li>HumanCyc data set (October 7, 2010 Version 14.6).</li>
