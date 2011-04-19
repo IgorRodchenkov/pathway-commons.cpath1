@@ -96,6 +96,10 @@ public final class CPathServlet extends ActionServlet {
         String webSkin = config.getInitParameter("web_skin");
         String adminModeActive = config.getInitParameter(BaseAction.PROPERTY_ADMIN_MODE_ACTIVE);
 
+        log.info("setting headless mode...");
+        System.setProperty("java.awt.headless", "true");
+        log.info("headless mode [OK]");
+
         String psiSchemaUrl = config.getInitParameter
                 (CPathConstants.PROPERTY_PSI_SCHEMA_LOCATION);
         log.info("web.xml param:  db_host --> " + dbHost + " [OK]");
