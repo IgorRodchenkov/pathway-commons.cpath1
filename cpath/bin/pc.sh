@@ -262,7 +262,6 @@ importHPRD
 
 importReactome
 importHumanCyc
-importMetaCyc
 importNci
 importCellMap
 importIMID
