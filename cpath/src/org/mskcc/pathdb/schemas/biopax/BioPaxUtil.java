@@ -578,7 +578,9 @@ public class BioPaxUtil {
             List children = e.getChildren();
             for (int i = 0; i < children.size(); i++) {
                 Element child = (Element) children.get(i);
-                makeHierachical(child, false);
+				if (!child.getName().equals("NEXT-STEP")) {
+					makeHierachical(child, false);
+				}
             }
         }
     }
