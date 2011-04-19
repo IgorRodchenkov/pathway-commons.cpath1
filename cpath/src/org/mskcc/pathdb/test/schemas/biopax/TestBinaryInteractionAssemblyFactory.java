@@ -34,10 +34,10 @@ public class TestBinaryInteractionAssemblyFactory extends TestCase {
             line = buf.readLine();
         }
 
-        List<String> rulesList =  (new BinaryInteractionUtil()).getRuleTypes();
+		BinaryInteractionUtil binaryInteractionUtil = new BinaryInteractionUtil();
         BinaryInteractionAssembly binaryAssembly = BinaryInteractionAssemblyFactory.createAssembly
-                (BinaryInteractionAssemblyFactory.AssemblyType.SIF, rulesList,
-                        lineBuffer.toString());
+			(BinaryInteractionAssemblyFactory.AssemblyType.SIF, binaryInteractionUtil,
+			 binaryInteractionUtil.getRuleTypes(), lineBuffer.toString());
         String sifString = binaryAssembly.getBinaryInteractionString();
         System.out.println(sifString);
         int index = sifString.indexOf("protein2\tParticipates.Interaction\tprotein1");
