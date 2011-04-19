@@ -36,6 +36,8 @@ import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.io.simpleIO.SimpleReader;
 
+import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
+
 import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -58,27 +60,31 @@ public class BinaryInteractionAssemblyFactory {
      * Creates a BinaryAssembly based on specified AssemblyType
      *
 	 * @param assemblyType AssemblyType
+	 * @param binaryInteractionUtil BinaryInteractionUtil
 	 * @param ruleTypes List<String>
 	 * @param owlXML String
 	 * @return BinaryInteractionAssembly
      */
     public static BinaryInteractionAssembly createAssembly(AssemblyType assemblyType,
+														   BinaryInteractionUtil binaryInteractionUtil,
 														   List<String> ruleTypes,
 														   String owlXML) {
 
-		return BinaryInteractionAssemblyFactory.createAssembly(assemblyType, ruleTypes, false, owlXML);
+		return BinaryInteractionAssemblyFactory.createAssembly(assemblyType, binaryInteractionUtil, ruleTypes, false, owlXML);
 	}
 
     /**
      * Creates a BinaryAssembly based on specified AssemblyType
      *
 	 * @param assemblyType AssemblyType
+	 * @param binaryInteractionUtil BinaryInteractionUtil
 	 * @param ruleTypes List<String>
 	 * @param reduceComplexes boolean
 	 * @param owlXML String
 	 * @return BinaryInteractionAssembly
      */
     public static BinaryInteractionAssembly createAssembly(AssemblyType assemblyType,
+														   BinaryInteractionUtil binaryInteractionUtil,
 														   List<String> ruleTypes,
 														   boolean reduceComplexes,
 														   String owlXML) {
@@ -95,7 +101,7 @@ public class BinaryInteractionAssemblyFactory {
 
 		// return the proper assembly type
 		if (assemblyType == AssemblyType.SIF) {
-			return new SIFAssembly(level2, ruleTypes, reduceComplexes);
+			return new SIFAssembly(level2, binaryInteractionUtil, ruleTypes, reduceComplexes);
 		}
 
 		// shouldnt get here
