@@ -6,6 +6,8 @@ import org.mskcc.pathdb.sql.query.GetNeighborsCommand;
 import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.schemas.biopax.BioPaxConstants;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,7 +73,7 @@ public class ExportGeneSets {
         ArrayList<CPathRecord> participantRecordList = getParticipants(record);
 
         //  Get XRefs for all Participants
-        ArrayList<HashMap<String, String>> xrefList = getParticipantXRefs(participantRecordList);
+        ArrayList<HashMap<String, Set<String>>> xrefList = getParticipantXRefs(participantRecordList);
 
         //  Dump to all file formats.
         exportGeneSet(record, dbMasterTerm, participantRecordList, xrefList, exportFileUtil,
@@ -103,7 +105,7 @@ public class ExportGeneSets {
         ArrayList<CPathRecord> participantRecordList = getParticipants(record);
 
         //  Get XRefs for all Participants
-        ArrayList<HashMap<String, String>> xrefList = getParticipantXRefs(participantRecordList);
+        ArrayList<HashMap<String, Set<String>>> xrefList = getParticipantXRefs(participantRecordList);
 
         String exportText = exportGeneSetToText(record, dbMasterTerm, participantRecordList, xrefList,
                 exportOutputFormat, outputId);
@@ -167,12 +169,12 @@ public class ExportGeneSets {
      * @return Participant XRefs.
      * @throws DaoException Database Error.
      */
-    private ArrayList<HashMap<String, String>> getParticipantXRefs(ArrayList<CPathRecord> participantRecordList)
+    private ArrayList<HashMap<String, Set<String>>> getParticipantXRefs(ArrayList<CPathRecord> participantRecordList)
             throws DaoException {
-        ArrayList<HashMap<String, String>> xrefList =
-                new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String, Set<String>>> xrefList =
+                new ArrayList<HashMap<String, Set<String>>>();
         for (CPathRecord participantRecord : participantRecordList) {
-            HashMap<String, String> xrefMap = ExportUtil.getXRefMap(participantRecord.getId());
+            HashMap<String, Set<String>> xrefMap = ExportUtil.getXRefMap(participantRecord.getId());
             xrefList.add(xrefMap);
         }
         return xrefList;
@@ -182,7 +184,7 @@ public class ExportGeneSets {
      * Actual Output of the Gene Set.
      */
     private void exportGeneSet(CPathRecord record, String dbTerm, ArrayList<CPathRecord>
-            cpathRecordList, ArrayList<HashMap<String, String>> xrefList, ExportFileUtil exportFileUtil,
+            cpathRecordList, ArrayList<HashMap<String, Set<String>>> xrefList, ExportFileUtil exportFileUtil,
                                int outputFormat, String outputId)
             throws IOException, DaoException {
         String text = exportGeneSetToText(record, dbTerm, cpathRecordList, xrefList,
@@ -209,9 +211,10 @@ public class ExportGeneSets {
      * @throws DaoException Database Error.
      */
     private String exportGeneSetToText(CPathRecord record, String dbTermMasterTerm, ArrayList<CPathRecord>
-            participantsList, ArrayList<HashMap<String, String>> xrefList, int outputFormat, String outputId)
+            participantsList, ArrayList<HashMap<String, Set<String>>> xrefList, int outputFormat, String outputId)
             throws IOException, DaoException {
 
+        Set<String> outputSet = null;
         StringBuffer line = new StringBuffer();
         line.append(record.getName() + TAB);
         line.append(dbTermMasterTerm + TAB);
@@ -233,27 +236,31 @@ public class ExportGeneSets {
 			}
 
             long descendentId = participantRecord.getId();
-            HashMap<String, String> xrefMap = xrefList.get(i);
-            String geneSymbol = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
-            String entrezGeneId = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
-            String uniprotAccession = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
+            HashMap<String, Set<String>> xrefMap = xrefList.get(i);
+            Set<String> geneSymbols = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
+            Set<String> entrezGeneIds = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
+            Set<String> uniprotAccessions = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
 
             //  These three file formats only support the output of Genes / Proteins
             if (outputFormat == ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT ||
                     outputFormat == ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT ||
                     outputFormat == ExportFileUtil.GSEA_OUTPUT) {
+                // create an output set collection if necessary
+                outputSet = (outputSet == null) ? new HashSet<String>() : outputSet;
                 if (participantRecord.getSpecificType().equals(BioPaxConstants.PROTEIN)) {
                     if (outputFormat == ExportFileUtil.GSEA_GENE_SYMBOL_OUTPUT) {
-                        outputExternalId(line, geneSymbol);
+                        outputExternalId(outputSet, geneSymbols);
                     } else if (outputFormat == ExportFileUtil.GSEA_ENTREZ_GENE_ID_OUTPUT) {
-                        outputExternalId(line, entrezGeneId);
+                        outputExternalId(outputSet, entrezGeneIds);
                     } else if (outputFormat == ExportFileUtil.GSEA_OUTPUT) {
+						Set<String> externalIds = new HashSet<String>();
                         String externalId = Long.toString(descendentId);
+						externalIds.add(externalId);
                         if (outputId != null && outputId.trim().length() > 0 &&
                                 !outputId.equals(ExternalDatabaseConstants.INTERNAL_DATABASE)) {
-                            externalId = xrefMap.get(outputId);
+                            externalIds = xrefMap.get(outputId);
                         }
-                        outputExternalId(line, externalId);
+                        outputExternalId(outputSet, externalIds);
                     }
                 }
             } else if (outputFormat == ExportFileUtil.PC_OUTPUT) {
@@ -268,20 +275,48 @@ public class ExportGeneSets {
 					} else {
 						line.append(GetNeighborsCommand.NOT_SPECIFIED + COLON);
 					}
-					line.append(ExportUtil.getXRef(uniprotAccession) + COLON);
-					line.append(ExportUtil.getXRef(geneSymbol) + COLON);
-					line.append(ExportUtil.getXRef(entrezGeneId));
+                    if (uniprotAccessions != null) {
+                        for (String uniprotAccession : uniprotAccessions) {
+                            line.append(ExportUtil.getXRef(uniprotAccession) + COLON);
+                        }
+                    }
+                    if (geneSymbols != null) {
+                        for (String geneSymbol : geneSymbols) {
+                            line.append(ExportUtil.getXRef(geneSymbol) + COLON);
+                        }
+                    }
+                    if (entrezGeneIds != null) {
+                        for (String entrezGeneId : entrezGeneIds) {
+                            line.append(ExportUtil.getXRef(entrezGeneId));
+                        }
+                    }
 					line.append(TAB);
 				}
             }
         }
+
+        if (outputSet != null) {
+            outputExternalId(line, outputSet);
+        }
+
         line.append("\n");
         return line.toString();
     }
 
-    private void outputExternalId(StringBuffer line, String geneSymbol) {
-        if (geneSymbol != null) {
-            line.append(geneSymbol + TAB);
+    // use this to prevent duplicate id's in output across participants
+    private void outputExternalId(Set<String> outputSet, Set<String> geneSymbols) {
+        if (geneSymbols != null && geneSymbols.size() > 0) {
+			for (String geneSymbol : geneSymbols) {
+				outputSet.add(geneSymbol);
+			}
+        }
+    }
+
+    private void outputExternalId(StringBuffer line, Set<String> geneSymbols) {
+        if (geneSymbols != null && geneSymbols.size() > 0) {
+			for (String geneSymbol : geneSymbols) {
+				line.append(geneSymbol + TAB);
+			}
         } else {
             line.append(GetNeighborsCommand.NOT_SPECIFIED + TAB);
         }
