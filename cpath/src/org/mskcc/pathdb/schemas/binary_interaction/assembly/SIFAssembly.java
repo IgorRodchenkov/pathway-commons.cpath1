@@ -37,6 +37,8 @@ import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.io.sif.SimpleInteraction;
 import org.biopax.paxtools.io.simpleIO.SimpleEditorMap;
 
+import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
+
 import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
@@ -55,23 +57,25 @@ public class SIFAssembly extends BinaryInteractionAssemblyBase implements Binary
 	 * Constructor.
 	 *
 	 * @param bpModel Model
-	 * @pararm ruleTypes List<String>
+	 * @param binaryInteractionUtil BinaryInteractionUtil
+	 * @param ruleTypes List<String>
 	 */
-	public SIFAssembly(Model bpModel, List<String> ruleTypes) {
+	public SIFAssembly(Model bpModel, BinaryInteractionUtil binaryInteractionUtil, List<String> ruleTypes) {
 		// init args
-		this(bpModel, ruleTypes, false);
+		this(bpModel, binaryInteractionUtil, ruleTypes, false);
 	}
 
 	/**
 	 * Constructor.
 	 *
 	 * @param bpModel Model
+	 * @param binaryInteractionUtil BinaryInteractionUtil
+	 * @param ruleTypes List<String>
 	 * @param reduceComplexes boolean
-	 * @pararm ruleTypes List<String>
 	 */
-	public SIFAssembly(Model bpModel, List<String> ruleTypes, boolean reduceComplexes) {
+	public SIFAssembly(Model bpModel, BinaryInteractionUtil binaryInteractionUtil, List<String> ruleTypes, boolean reduceComplexes) {
 		// init args
-		super(bpModel, ruleTypes, reduceComplexes);
+		super(bpModel, binaryInteractionUtil, ruleTypes, reduceComplexes);
 	}
 
     /**
