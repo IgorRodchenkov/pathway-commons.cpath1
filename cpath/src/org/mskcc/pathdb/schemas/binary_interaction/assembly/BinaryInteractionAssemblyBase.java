@@ -65,25 +65,27 @@ public abstract class BinaryInteractionAssemblyBase {
 	 * Constructor.
 	 *
 	 * @param bpModel Model
-	 * @pararm ruleTypes List<String>
+	 * @param binaryInteractionUtil BinaryInteractionUtil
+	 * @param ruleTypes List<String>
 	 */
-	public BinaryInteractionAssemblyBase(Model bpModel, List<String> ruleTypes, boolean reduceComplexes) {
+	public BinaryInteractionAssemblyBase(Model bpModel, BinaryInteractionUtil binaryInteractionUtil, List<String> ruleTypes, boolean reduceComplexes) {
 
 		// init args
 		this.bpModel = bpModel;
-		this.converter = createConverter(ruleTypes, reduceComplexes);
+		this.converter = createConverter(binaryInteractionUtil, ruleTypes, reduceComplexes);
 	}
 
 	/**
 	 * Creates a simple converter.
 	 *
+	 * @param binaryInteractionUtil BinaryInteractionUtil
 	 * @param ruleTypes List<String>
 	 * @param reduceComplexes boolean
 	 * @return SimpleInteractionConverter
 	 */
-	private SimpleInteractionConverter createConverter(List<String> ruleTypes, boolean reduceComplexes) {
+	private SimpleInteractionConverter createConverter(BinaryInteractionUtil binaryInteractionUtil, List<String> ruleTypes, boolean reduceComplexes) {
 
-		InteractionRule[] rules = (new BinaryInteractionUtil()).getRuleClasses();
+		InteractionRule[] rules = binaryInteractionUtil.getRuleClasses();
 		Map options = new HashMap();
 
 		if (reduceComplexes) {
