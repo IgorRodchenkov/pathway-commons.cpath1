@@ -1,6 +1,7 @@
 package org.mskcc.pathdb.tool;
 
 import org.mskcc.pathdb.model.*;
+import org.mskcc.pathdb.form.WebUIBean;
 import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssembly;
 import org.mskcc.pathdb.schemas.binary_interaction.assembly.BinaryInteractionAssemblyFactory;
 import org.mskcc.pathdb.schemas.binary_interaction.util.BinaryInteractionUtil;
@@ -15,6 +16,7 @@ import org.mskcc.pathdb.util.ExternalDatabaseConstants;
 import org.mskcc.pathdb.xdebug.XDebug;
 import org.biopax.paxtools.io.sif.MaximumInteractionThresholdExceedException;
 
+import java.util.Set;
 import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,6 +39,7 @@ public class ExportNetworks {
 	private final static String GENE_SYMBOL_UNAVAILABLE = "NOT_SPECIFIED";
 	private final static String PMID_UNAVAILABLE = "NOT_SPECIFIED";
 	private final static String TAXID_UNAVAILABLE = "NOT_SPECIFIED";
+	private static int SIF_CONVERTER_THRESHOLD = 1000;
 
     /**
      * Constructor.
@@ -73,14 +76,16 @@ public class ExportNetworks {
         BinaryInteractionAssemblyFactory.AssemblyType binaryInteractionAssemblyType =
                 BinaryInteractionAssemblyFactory.AssemblyType.SIF;
 
-        // contruct rule types
-        List<String> binaryInteractionRuleTypes = (new BinaryInteractionUtil()).getRuleTypes();
+        // create binary interaction util
+		WebUIBean webUIBean = new WebUIBean();
+		webUIBean.setConverterThreshold(SIF_CONVERTER_THRESHOLD);
+        BinaryInteractionUtil binaryInteractionUtil = new BinaryInteractionUtil(webUIBean);
 
         // get binary interaction assembly
         try {
             BinaryInteractionAssembly sifAssembly =
 				BinaryInteractionAssemblyFactory.createAssembly
-				(binaryInteractionAssemblyType, binaryInteractionRuleTypes, true,
+				(binaryInteractionAssemblyType, binaryInteractionUtil, binaryInteractionUtil.getRuleTypes(), true,
 				 xmlAssembly.getXmlString());
             List<String> sifs = sifAssembly.getExtendedBinaryInteractionStrings();
             ArrayList <Interaction> interactionList = convertToInteractionList (dbTerm, record.getId(), sifs.get(0));
@@ -147,17 +152,29 @@ public class ExportNetworks {
 				CPathRecord record = (lc == 0) ? interaction.getCPathRecordA() : interaction.getCPathRecordB();
 				long geneID = record.getId();
 				String geneSymbol = (lc == 0) ? interaction.getGeneA() : interaction.getGeneB();
-				HashMap<String, String> xrefMap = ExportUtil.getXRefMap(geneID);
-				String entrezGeneId = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
-				String uniprotAccession = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
-				String chebi = xrefMap.get(ExternalDatabaseConstants.CHEBI);
+				HashMap<String, Set<String>> xrefMap = ExportUtil.getXRefMap(geneID);
+				Set<String> entrezGeneIds = xrefMap.get(ExternalDatabaseConstants.ENTREZ_GENE);
+				Set<String> uniprotAccessions = xrefMap.get(ExternalDatabaseConstants.UNIPROT);
+				Set<String> chebis = xrefMap.get(ExternalDatabaseConstants.CHEBI);
 				String taxID = (record.getNcbiTaxonomyId() == CPathRecord.TAXONOMY_NOT_SPECIFIED) ?
 					TAXID_UNAVAILABLE : Integer.toString(record.getNcbiTaxonomyId());
 				finalSif.append(geneID + TAB);
 				finalSif.append(geneSymbol + TAB);
-				finalSif.append(ExportUtil.getXRef(uniprotAccession) + TAB);
-				finalSif.append(ExportUtil.getXRef(entrezGeneId) + TAB);
-				finalSif.append(ExportUtil.getXRef(chebi) + TAB);
+                if (uniprotAccessions != null) {
+                    for (String uniprotAccession : uniprotAccessions) {
+                        finalSif.append(ExportUtil.getXRef(uniprotAccession) + TAB);
+                    }
+                }
+                if (entrezGeneIds != null) {
+                    for (String entrezGeneId : entrezGeneIds) {
+                        finalSif.append(ExportUtil.getXRef(entrezGeneId) + TAB);
+                    }
+                }
+                if (chebis != null) {
+                    for (String chebi : chebis) {
+                        finalSif.append(ExportUtil.getXRef(chebi) + TAB);
+                    }
+                }
                 finalSif.append(record.getSpecificType() + TAB);
 				finalSif.append(taxID);
 				finalSif.append("\n");
@@ -242,9 +259,13 @@ public class ExportNetworks {
 			return record.getName().trim();
 		}
 		else {
-			HashMap<String, String> xrefMap = ExportUtil.getXRefMap(cpathId);
-			String toReturn = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
-			return (toReturn != null) ? toReturn.trim() : null;
+			HashMap<String, Set<String>> xrefMap = ExportUtil.getXRefMap(cpathId);
+			// should only be one
+			Set<String> geneSymbols = xrefMap.get(ExternalDatabaseConstants.GENE_SYMBOL);
+			if (geneSymbols == null || geneSymbols.size() == 0) {
+				return null;
+			}
+			return geneSymbols.iterator().next().trim();
 		}
     }
 }
