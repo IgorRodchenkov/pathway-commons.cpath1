@@ -21,6 +21,8 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
   <ul>
       <li>Reactome data set (March 15, 2011 Version 36).</li>
       <li>IntAct data set (February 3, 2011 Version 138).</li>
+      <li>MetaCyc removed due to organism generic pathways - will be
+      brought back when these pathways are supported in Pathway Commons.</li>
       <li>Bug fixes to import pipeline and batch download exporter.</li>
   </ul>
 </li>
