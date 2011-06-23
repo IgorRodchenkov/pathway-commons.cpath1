@@ -161,19 +161,13 @@ public class ExportNetworks {
 				finalSif.append(geneID + TAB);
 				finalSif.append(geneSymbol + TAB);
                 if (uniprotAccessions != null) {
-                    for (String uniprotAccession : uniprotAccessions) {
-                        finalSif.append(ExportUtil.getXRef(uniprotAccession) + TAB);
-                    }
+					appendXref(finalSif, uniprotAccessions);
                 }
                 if (entrezGeneIds != null) {
-                    for (String entrezGeneId : entrezGeneIds) {
-                        finalSif.append(ExportUtil.getXRef(entrezGeneId) + TAB);
-                    }
+					appendXref(finalSif, entrezGeneIds);
                 }
                 if (chebis != null) {
-                    for (String chebi : chebis) {
-                        finalSif.append(ExportUtil.getXRef(chebi) + TAB);
-                    }
+					appendXref(finalSif, chebis);
                 }
                 finalSif.append(record.getSpecificType() + TAB);
 				finalSif.append(taxID);
@@ -268,6 +262,19 @@ public class ExportNetworks {
 			return geneSymbols.iterator().next().trim();
 		}
     }
+
+	private void appendXref(StringBuffer finalSif, Set<String> xrefs) {
+
+		String toAppend = "";
+		for (String xref : xrefs) {
+			// colon delimit each xref
+			toAppend += ExportUtil.getXRef(xref) + ":";
+		}
+		if (toAppend.length() > 0) {
+			// zap off final ":" and add tab delimited
+			finalSif.append(toAppend.substring(0, toAppend.length() - 1) + TAB);
+		}
+	}
 }
 
 class Interaction {
