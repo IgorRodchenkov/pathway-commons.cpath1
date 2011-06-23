@@ -55,10 +55,10 @@ function checkDependencies {
 		exit
 	fi
 
-	if [ ! -f $FRESH_HOME/metacyc/db.info ]; then
-		echo "Fresh MetaCyc data files not found!  Run pc_get_fresh.sh first. Aborting..."
-		exit
-	fi
+	#if [ ! -f $FRESH_HOME/metacyc/db.info ]; then
+	#	echo "Fresh MetaCyc data files not found!  Run pc_get_fresh.sh first. Aborting..."
+	#	exit
+	#fi
 
 	if [ ! -f $FRESH_HOME/sbcny/db.info ]; then
 		echo "Fresh SBCNY data files not found!  Run pc_get_fresh.sh first. Aborting..."
