@@ -25,7 +25,7 @@ def get_uniprot():
   src = '/tmp/uniprot.txt'
   #old = './uniprot.txt.old'
   #shutil.copyfile(filename,old)
-  conn = MySQLdb.connect (host = "localhost", user = "cbio", passwd = "cbio", db = "pc")
+  conn = MySQLdb.connect (host = "localhost", user = "cbio", passwd = "cbio", db = "cpath")
   cur = conn.cursor()
   d = datetime.datetime.now()
   d = d.strftime("%Y%m%dT%H%M%S")
