@@ -212,6 +212,14 @@ public class ImportBioPaxToCPath {
 			if (!existingRecord.getType().equals(record.getType())) {
 				cPathId = -1;
 			}
+			// do not merge small molecules
+			//
+			// this was motivated because HumanCyc:NAD and HumanCyc:NADH both have unification xrefs
+			// to CAS 53-84-9.  cPath merges these two small molecules incorrectly.
+			//
+			else if (existingRecord.getSpecificType().equalsIgnoreCase(BioPaxConstants.SMALL_MOLECULE)) {
+				cPathId = -1;
+			}
 		}
 
         //  If record does not exist, save it.
