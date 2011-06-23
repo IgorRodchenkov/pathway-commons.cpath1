@@ -102,11 +102,11 @@ fi
 
 #echo -n "Enter file to retrieve from BioGRID, e.g., BIOGRID-ORGANISM-2.0.60.psi25.zip:  "
 #read biogrid_file
-biogrid_file=BIOGRID-ORGANISM-3.1.72.psi25.zip
+biogrid_file=BIOGRID-ORGANISM-3.1.76.psi25.zip
 
 # Get file from BioGRID
 echo Retrieving file $biogrid_file from BioGRID...
-wget -O $biogrid_file http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.1.72/$biogrid_file
+wget -O $biogrid_file http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.1.76/$biogrid_file
 mv $biogrid_file $FRESH_HOME/biogrid
 
 #echo Unzipping BioGRID file...
@@ -195,7 +195,7 @@ rm -v $FRESH_HOME/nci/*
 
 # Get files from NCI
 echo Retrieving files from NCI...
-wget --passive-ftp -P $FRESH_HOME/nci ftp://ftp1.nci.nih.gov/pub/PID/BioPAX/NCI-Nature_Curated.owl.gz
+wget --passive-ftp -P $FRESH_HOME/nci ftp://ftp1.nci.nih.gov/pub/PID/BioPAX_Level_2/NCI-Nature_Curated.bp2.owl.gz
 
 echo Unzipping Nature-PID files...
 gunzip $FRESH_HOME/nci/*.gz
