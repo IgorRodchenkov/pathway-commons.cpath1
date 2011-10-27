@@ -38,11 +38,13 @@ import java.util.ArrayList;
  * ------- by_species
  * ------- by source
  *
- * @author Benjamin Gross, Ethan Cerami.
+ * @author Ethan Cerami, Benjamin Gross.
  */
 public class ExportGeneSets {
     private final static String TAB = "\t";
     private final static String COLON = ":";
+    private final static String COMMA = ",";
+	private final static String NOT_SPECIFIED = "NOT_SPECIFIED";
     private HashMap<String, Integer> processedRecords;
 
     /**
@@ -192,8 +194,15 @@ public class ExportGeneSets {
 
         //  Append to the correct output files
         if (text != null) {
-            exportFileUtil.appendToSpeciesFile(text, record.getNcbiTaxonomyId(),
-                    outputFormat);
+			System.out.println("Writing to species and data source files");
+			System.out.println("record tax id: " + record.getNcbiTaxonomyId());
+			System.out.println("db term: " + dbTerm);
+			// some insurance for HUMANCYC - big hack
+			int taxID = record.getNcbiTaxonomyId();
+			if (taxID == CPathRecord.TAXONOMY_NOT_SPECIFIED && dbTerm.contains("HUMANCYC")) {
+				taxID = 9606;
+			}
+			exportFileUtil.appendToSpeciesFile(text, taxID, outputFormat);
             exportFileUtil.appendToDataSourceFile(text, dbTerm, outputFormat);
         }
     }
@@ -277,19 +286,31 @@ public class ExportGeneSets {
 					}
                     if (uniprotAccessions != null) {
                         for (String uniprotAccession : uniprotAccessions) {
-                            line.append(ExportUtil.getXRef(uniprotAccession) + COLON);
+                            line.append(ExportUtil.getXRef(uniprotAccession) + COMMA);
                         }
-                    }
+						// replace last COMMA with COLON
+						line = line.replace(line.lastIndexOf(COMMA), line.lastIndexOf(COMMA)+1, COLON);
+                    } else {
+						line.append(GetNeighborsCommand.NOT_SPECIFIED + COLON);
+					}
                     if (geneSymbols != null) {
                         for (String geneSymbol : geneSymbols) {
-                            line.append(ExportUtil.getXRef(geneSymbol) + COLON);
+                            line.append(ExportUtil.getXRef(geneSymbol) + COMMA);
                         }
-                    }
+						// replace last COMMA with COLON
+						line = line.replace(line.lastIndexOf(COMMA), line.lastIndexOf(COMMA)+1, COLON);
+                    } else {
+						line.append(GetNeighborsCommand.NOT_SPECIFIED + COLON);
+					}
                     if (entrezGeneIds != null) {
                         for (String entrezGeneId : entrezGeneIds) {
-                            line.append(ExportUtil.getXRef(entrezGeneId));
+                            line.append(ExportUtil.getXRef(entrezGeneId) + COMMA);
                         }
-                    }
+						// remove last COMMA
+						line = line.deleteCharAt(line.lastIndexOf(COMMA));
+                    } else {
+						line.append(GetNeighborsCommand.NOT_SPECIFIED);
+					}
 					line.append(TAB);
 				}
             }
