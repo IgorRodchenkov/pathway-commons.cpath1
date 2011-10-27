@@ -75,12 +75,14 @@ Pathway Commons Gene Set Format
 Similar to the MSigDB format (see above), except that all participants
 are micro-encoded with multiple identifiers. Each participant is
 specified as:
-CPATH_ID:RECORD_TYPE:NAME:UNIPROT_ACCESION:GENE_SYMBOL:ENTREZ_GENE_ID.
-Also available for all explicit pathways within Pathway Commons (only
-from pathway database sources, not interaction database sources).  All
-participants for a pathway must come from the same species as the
-pathway.  Therefore some participants from cross-species pathways are
-removed.
+CPATH_ID:RECORD_TYPE:NAME:UNIPROT_ACCESSION:GENE_SYMBOL:ENTREZ_GENE_ID.
+If more than one Uniprot Accession, Gene Symbol, or Entrez Gene ID is
+available, each id will be delimited by a comma ','.  If an id is not
+available, "NOT_SPECIFIED" will be used. Also available for all
+explicit pathways within Pathway Commons (only from pathway database
+sources, not interaction database sources).  All participants for a
+pathway must come from the same species as the pathway.  Therefore
+some participants from cross-species pathways are removed.
 
 Simple Interaction Format (SIF)
 -------------------------------
@@ -115,7 +117,7 @@ attributes.  Current edge attributes are the Participant-A GENE_SYMBOL,
 Participant-B GENE_SYMBOL, interaction data source and PubMed ID.  The
 second file contains participant CPATH_ID followed by node attributes.
 Current node attributes are GENE_SYMBOL, UNIPROT_ACCESSION,
-ENTREZ_GENE_ID, CHEBI_ID, NODE_TYPE, and Organism (NCBI taxonomy id).
+ENTREZ_GENE_ID, CHEBI_ID, NODE_TYPE, and Organism (NCBI taxonomy id). 
 If an attribute cannot be determined, "NOT_SPECIFIED" will be
 used. This format is suitable for Cytoscape - Attribute Table import
 and loading into Excel.  To prevent an unsuccessful import into
