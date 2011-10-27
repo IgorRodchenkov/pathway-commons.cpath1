@@ -51,7 +51,7 @@ public class ExportAll {
         // Initialize output directories and exporters
         ExportFileUtil exportUtil = new ExportFileUtil(exportDir);
         ExportGeneSets exportGeneSets = new ExportGeneSets();
-        ExportNetworks exportInteractions = new ExportNetworks (exportUtil, pMonitor);
+        ExportNetworks exportNetworks = new ExportNetworks (exportUtil, pMonitor);
 		ExportBioPAX exportBioPAX = new ExportBioPAX(exportUtil);
 
         //  Iterate through all cPath Records in blocks
@@ -87,10 +87,10 @@ public class ExportAll {
 						exportBioPAX.exportRecord(record);
                     }
                     if (record.getType() == CPathRecordType.INTERACTION) {
-                        exportInteractions.exportInteractionRecord(record);
+                        exportNetworks.exportInteractionRecord(record);
                         exportBioPAX.exportRecord(record);
                     }
-					// export cpath generated PE to BioPAX - and all complexes
+					// export cpath generated PE to BioPAX - add all complexes
 					// we do it here because we are no longer grabbing PE's by getting
 					// XML_FULL versions of pathways & interactions - that causes
 					// exported biopax to have multiple PE instances
@@ -98,7 +98,7 @@ public class ExportAll {
 						(record.isCpathGenerated() || record.getSpecificType().contains("complex"))) {
 						exportBioPAX.exportRecord(record);
 					}
-                }
+				}
                 JdbcUtil.closeAll(con, pstmt, rs);
             }
         } finally {
