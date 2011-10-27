@@ -36,6 +36,7 @@ public class ExportNetworks {
     private ExportFileUtil exportFileUtil;
     private ProgressMonitor pMonitor;
     private final static String TAB = "\t";
+	private final static String NOT_SPECIFIED = "NOT_SPECIFIED";
 	private final static String GENE_SYMBOL_UNAVAILABLE = "NOT_SPECIFIED";
 	private final static String PMID_UNAVAILABLE = "NOT_SPECIFIED";
 	private final static String TAXID_UNAVAILABLE = "NOT_SPECIFIED";
@@ -160,15 +161,9 @@ public class ExportNetworks {
 					TAXID_UNAVAILABLE : Integer.toString(record.getNcbiTaxonomyId());
 				finalSif.append(geneID + TAB);
 				finalSif.append(geneSymbol + TAB);
-                if (uniprotAccessions != null) {
-					appendXref(finalSif, uniprotAccessions);
-                }
-                if (entrezGeneIds != null) {
-					appendXref(finalSif, entrezGeneIds);
-                }
-                if (chebis != null) {
-					appendXref(finalSif, chebis);
-                }
+				appendXref(finalSif, uniprotAccessions);
+				appendXref(finalSif, entrezGeneIds);
+				appendXref(finalSif, chebis);
                 finalSif.append(record.getSpecificType() + TAB);
 				finalSif.append(taxID);
 				finalSif.append("\n");
@@ -264,6 +259,12 @@ public class ExportNetworks {
     }
 
 	private void appendXref(StringBuffer finalSif, Set<String> xrefs) {
+
+		// handle null/empty xrefs - 
+		if (xrefs == null || xrefs.size() == 0) {
+			finalSif.append(NOT_SPECIFIED + TAB);
+			return;
+		}
 
 		String toAppend = "";
 		for (String xref : xrefs) {
