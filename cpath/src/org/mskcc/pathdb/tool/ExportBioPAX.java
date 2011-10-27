@@ -53,6 +53,7 @@ public class ExportBioPAX {
 
 		// save type of record
 		boolean recordTypePE = (record.getType() == CPathRecordType.PHYSICAL_ENTITY);
+		boolean recordIsComplex = record.getSpecificType().contains("complex");
 
 		// get biopax xml string
 		int mode = (recordTypePE) ?
@@ -62,7 +63,7 @@ public class ExportBioPAX {
 
         //  dump biopax to data source file
 		HashSet<Long> snapshotIDs = new HashSet<Long>();
-		if (recordTypePE) {
+		if (recordTypePE && !recordIsComplex) {
             DaoSourceTracker daoSourceTracker = new DaoSourceTracker();
 			ArrayList<CPathRecord> records = daoSourceTracker.getSourceRecords(record.getId());
 			for (CPathRecord sourceRecord : records) {
