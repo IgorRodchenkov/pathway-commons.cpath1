@@ -16,7 +16,7 @@ All data is freely available, under the license terms of each contributing datab
 </p>
 
 <h2>About cBio @ MSKCC</h2>
-<p>The <a href="http://cbio.mkscc.org">Computational Biology Center</a> at
+<p>The <a href="http://cbio.mskcc.org">Computational Biology Center</a> at
 <a href="http://www.mskcc.org">Memorial Sloan-Kettering Cancer Center</a>
 pursues computational biology research projects and the development of bioinformatics
 resources in the areas of:
