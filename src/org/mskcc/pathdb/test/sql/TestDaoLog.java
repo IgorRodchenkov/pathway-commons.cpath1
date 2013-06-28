@@ -49,7 +49,7 @@ public class TestDaoLog extends TestCase {
     private static final String STACK_TRACE = "Stack Trace would go here:"
             + "'test1' \"test2\"";
     private static final String WEB_URL = "webservice.do";
-    private static final String REMOTE_HOST = "cbio.mkscc.org";
+    private static final String REMOTE_HOST = "cbio.mskcc.org";
     private static final String REMOTE_IP = "192.192.55.22";
 
     /**
