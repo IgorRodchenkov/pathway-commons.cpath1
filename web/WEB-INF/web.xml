@@ -116,7 +116,7 @@
 	        <param-name>admin_mode_active</param-name>
             <param-value>admin_mode_active__value</param-value>
         </init-param>
-        <load-on-startup/>
+	<load-on-startup>1</load-on-startup>
     </servlet>
 	<servlet>
 	  <servlet-name>CytoscapeJnlpServlet</servlet-name>
