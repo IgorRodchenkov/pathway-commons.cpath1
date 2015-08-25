@@ -17,7 +17,21 @@ WebUIBean webUIBean = CPathUIConfig.getWebUIBean();
 </div>
 <h2>What's New:</h2>
 <ul>
-<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;Oct 27, 2011:
+<h2>What's New:</h2>
+<ul>
+<li><img src="jsp/images/new.jpg" alt="New!"/>&nbsp;&nbsp;August 25, 2015:
+	<ul>
+		<li>This version of Pathway Commons <b>has not been updated</b> since October 2011. Please use <a href="http://purl.org/pc2/current/" target="_blank">the new version</a> that is regularly updated.</li>
+	</ul>
+</li>
+<li>May 28, 2013:
+	<ul>
+		<li>This portal <b>will not be updated</b> in the future and we are working on a replacement Pathway Commons service for expected release in mid-2013.</li>
+		<li>We encourage you to test <a href="http://purl.org/pc2/current/" target="_blank">the new service</a> and switch to it once it is released.</li>
+		<li>Please <a href="http://www.pathwaycommons.org/pc/get_feedback.do" target="_blank">send us</a> questions and feedback.</li>
+	</ul>
+</li>
+<li>Oct 27, 2011:
   <ul>
       <li>BioGRID data set (September 25, 2011 Version 3.1.81).</li>
       <li>IntAct data set (September 29, 2011 Version 3.1.17288).</li>
