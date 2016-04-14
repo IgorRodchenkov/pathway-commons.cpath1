@@ -13,29 +13,30 @@
 		webUIBean.setWantCytoscape(true);
 		webUIBean.setDisplayWebServiceTab(true);
 		webUIBean.setDisplayFilterTab(true);
-		webUIBean.setDefaultUserMessage("This version of Pathway Commons <b>has not been updated</b> since October " +
-        "2011. Please use <a href=\"http://purl.org/pc2/current/\" " +
-        "target=\"_blank\">the new version</a> that is regularly updated. " +
-        "<hr style=\"margin-bottom: 5px; margin-top: 5px;\">" +
-        "Send us your <a href='get_feedback.do'>feedback</a>." +
+		webUIBean.setDefaultUserMessage("This portal <b>has not been updated</b> since October " +
+        "2011. Please use the new <a href=\"http://www.pathwaycommons.org/pc2/\" " +
+        "target=\"_blank\">PC2 web services</a>. <hr style=\"margin-bottom: 5px; margin-top: 5px;\">" +
+        "Send us your <a href='https://groups.google.com/forum/#!forum/pathway-commons-help/join'>feedback</a>." +
         "&nbsp;&nbsp;Sign up for Pathway Commons <a href='get_subscribe.do'>announcements</a>." +
-        "&nbsp;&nbsp;<a href=\"http://groups.google.com/group/pathway-commons-announce/feed/rss_v2_0_msgs.xml\"><img src=\"jsp/images/rss.gif\" alt=\"RSS Logo\"/></a> <a href=\"http://groups.google.com/group/pathway-commons-announcements/feed/rss_v2_0_msgs.xml\">RSS Feed</a>");
-		webUIBean.setBaseURL("pathwaycommons.org");
+        "&nbsp;&nbsp;<a href=\"http://groups.google.com/group/pathway-commons-announce/feed/rss_v2_0_msgs.xml\">" +
+		"<img src=\"jsp/images/rss.gif\" alt=\"RSS Logo\"/></a> " +
+		"<a href=\"http://groups.google.com/group/pathway-commons-announcements/feed/rss_v2_0_msgs.xml\">RSS Feed</a>");
+		webUIBean.setBaseURL("www.pathwaycommons.org");
 		webUIBean.setSmtpHost("cbio.mskcc.org");
-		webUIBean.setFeedbackEmailTo("pc-info@pathwaycommons.org");
+		webUIBean.setFeedbackEmailTo("pathway-commons-help@googlegroups.org");
 		webUIBean.setWebApiVersion(ProtocolConstantsVersion3.VERSION_3);
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.UNIPROT);
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.INTERNAL_DATABASE);
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.ENTREZ_GENE);
         webUIBean.addSupportedIdType(ExternalDatabaseConstants.GENE_SYMBOL);
-		webUIBean.setTagLine("Search and visualize public biological pathway information.  Single point of access. [<a href='faq.do'>more...</a>]");
+		webUIBean.setTagLine("Search and visualize public biological pathway information.  " +
+				"Single point of access. [<a href='faq.do'>more...</a>]");
 		webUIBean.setEnableMiniMaps(true);
-        //webUIBean.setImageMapServerURL("http://miso-dev.cbio.mskcc.org:8080/nms/retrieve-neighborhood-map.do");
-        webUIBean.setImageMapServerURL("http://miso.cbio.mskcc.org:18080/nms/retrieve-neighborhood-map.do");
+        webUIBean.setImageMapServerURL("http://localhost:8080/nms/retrieve-neighborhood-map.do");
 		webUIBean.setFilterInteractions("IN_SAME_COMPONENT,CO_CONTROL");
 		webUIBean.setMaxMiniMapSize(100);
 		webUIBean.setConverterThreshold(1000);
-		webUIBean.setSnapshotDownloadBaseURL("http://www.pathwaycommons.org/pc-snapshot/");
+		webUIBean.setSnapshotDownloadBaseURL("http://www.pathwaycommons.org/archives/");
 		CPathUIConfig.setWebUIBean(webUIBean);
     }
 %>

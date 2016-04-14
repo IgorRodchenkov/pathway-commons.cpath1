@@ -59,8 +59,13 @@ public class LogUtil {
      * @param host      Remote Host of User.
      * @param ip        Remote IP Address of User.
      */
-    public static void logException(Throwable throwable, String url,
-            String host, String ip) {
+    public static void logException(Throwable throwable, String url, String host, String ip) {
+        if(throwable == null) {
+            log.error("BUG: failed to provide details (due to root cause is null) " +
+                    "for the error occurred while processing web request: " + url);
+            return;
+        }
+
         StringWriter writer = new StringWriter();
         PrintWriter pWriter = new PrintWriter(writer);
         throwable.printStackTrace(pWriter);

@@ -4,35 +4,35 @@
 <web-app>
     <display-name>cPath: Pathway Database</display-name>
 
+    <!-- Compression Filter -->
+    <!--<filter>-->
+       <!--<filter-name>GZIPFilter</filter-name>-->
+       <!--<filter-class>org.mskcc.pathdb.servlet.compressionFilters.GZIPFilter</filter-class>-->
+    <!--</filter>-->
+
+    <!--&lt;!&ndash; Apply Compression Filter to everything, except for images &ndash;&gt;-->
+    <!--<filter-mapping>-->
+       <!--<filter-name>GZIPFilter</filter-name>-->
+       <!--<url-pattern>*.do</url-pattern>-->
+    <!--</filter-mapping>-->
+    <!--<filter-mapping>-->
+       <!--<filter-name>GZIPFilter</filter-name>-->
+       <!--<url-pattern>*.js</url-pattern>-->
+    <!--</filter-mapping>-->
+    <!--<filter-mapping>-->
+       <!--<filter-name>GZIPFilter</filter-name>-->
+       <!--<url-pattern>*.css</url-pattern>-->
+    <!--</filter-mapping>-->
+    <!--<filter-mapping>-->
+       <!--<filter-name>GZIPFilter</filter-name>-->
+       <!--<url-pattern>/jsp/all_scripts.jsp</url-pattern>-->
+    <!--</filter-mapping>-->
+
     <!-- Cache Filter-->
     <filter>
         <filter-name>Cache</filter-name>
         <filter-class>org.mskcc.pathdb.servlet.CacheFilter</filter-class>
     </filter>
-
-    <!-- Compression Filter -->
-    <filter>
-       <filter-name>GZIPFilter</filter-name>
-       <filter-class>org.mskcc.pathdb.servlet.compressionFilters.GZIPFilter</filter-class>
-    </filter>
-
-    <!-- Apply Compression Filter to everything, except for images -->
-    <filter-mapping>
-       <filter-name>GZIPFilter</filter-name>
-       <url-pattern>*.do</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-       <filter-name>GZIPFilter</filter-name>
-       <url-pattern>*.js</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-       <filter-name>GZIPFilter</filter-name>
-       <url-pattern>*.css</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-       <filter-name>GZIPFilter</filter-name>
-       <url-pattern>/jsp/all_scripts.jsp</url-pattern>
-    </filter-mapping>
 
     <!-- Apply the Filter Cache to select Struts actions -->
     <filter-mapping>
@@ -118,13 +118,8 @@
         </init-param>
 	<load-on-startup>1</load-on-startup>
     </servlet>
-	<servlet>
-	  <servlet-name>CytoscapeJnlpServlet</servlet-name>
-	  <servlet-class>org.mskcc.pathdb.servlet.CytoscapeJnlpServlet</servlet-class>
-	</servlet>
 
     <!-- Servlet Mappings -->
-
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>
@@ -133,10 +128,15 @@
         <servlet-name>action</servlet-name>
         <url-pattern>*.xml</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CytoscapeJnlpServlet</servlet-name>
-        <url-pattern>/cytoscape.jnlp</url-pattern>
-    </servlet-mapping>
+
+    <!--<servlet>-->
+    <!--<servlet-name>CytoscapeJnlpServlet</servlet-name>-->
+    <!--<servlet-class>org.mskcc.pathdb.servlet.CytoscapeJnlpServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>CytoscapeJnlpServlet</servlet-name>-->
+        <!--<url-pattern>/cytoscape.jnlp</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <!-- MIME Mapping -->
 	<mime-mapping>
@@ -167,6 +167,5 @@
         <taglib-uri>/WEB-INF/taglib/struts-bean.tld</taglib-uri>
         <taglib-location>/WEB-INF/taglib/struts-bean.tld</taglib-location>
     </taglib>
-
 
 </web-app>
