@@ -121,7 +121,7 @@ public class DataSourceListTable extends HtmlTable {
 					append ("<tr valign=top>");
 				}
 				if (dbRecord.getIconFileExtension() != null) {
-					append("<td class='datasource_logo_table_cell'");
+					append("<td class='datasource_logo_table_cell'>");
 					append("<a href=" + "'" + dbRecord.getHomePageUrl() + "'>" +
 						   "<img class='data_source_logo' src='jsp/images/database/" +
 						   "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension() + "'" +
