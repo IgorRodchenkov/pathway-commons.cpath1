@@ -73,7 +73,7 @@ public class DataSourceListTable extends HtmlTable {
         if (list.size() == 0) {
             startTable();
             startRow();
-            append("<TD COLSPAN=2>No Data Sources Available.</TD>");
+            append("<td colspan=2>No Data Sources Available.</td>");
             endRow();
             endTable();
         }
@@ -166,7 +166,7 @@ public class DataSourceListTable extends HtmlTable {
 				append("<table border='0' cellspacing='2' cellpadding='3' "
 					   + "width='100%' class='datasource_table'>");
 				append ("<tr class='c' valign=top>");
-				append("<td class='datasource_logo_table_cell' valign=top");
+				append("<td class='datasource_logo_table_cell' valign=top>");
 				if (dbRecord.getIconFileExtension() != null) {
 					append("<img class='data_source_logo' src='jsp/images/database/"
 						   + "db_" + dbRecord.getId() + "." + dbRecord.getIconFileExtension()
