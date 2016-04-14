@@ -525,7 +525,7 @@ color:#ffffff;
 .datasource_logo_table_cell {
 	width: 125px;
 	height: 60px;
-	valign: top;
+	vertical-align: top;
 	border-top: 1px solid;
 	border-left: 1px solid;
 	border-bottom: 1px solid;
