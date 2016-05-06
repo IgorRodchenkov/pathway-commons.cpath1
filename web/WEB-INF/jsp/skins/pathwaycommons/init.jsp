@@ -10,7 +10,7 @@
     	webUIBean.setApplicationName("Pathway Commons");
 		webUIBean.setDisplayBrowseByOrganismTab(false);
 		webUIBean.setDisplayBrowseByPathwayTab(false);
-		webUIBean.setWantCytoscape(true);
+		webUIBean.setWantCytoscape(false);
 		webUIBean.setDisplayWebServiceTab(true);
 		webUIBean.setDisplayFilterTab(true);
 		webUIBean.setDefaultUserMessage("This portal <b>has not been updated</b> since October " +
