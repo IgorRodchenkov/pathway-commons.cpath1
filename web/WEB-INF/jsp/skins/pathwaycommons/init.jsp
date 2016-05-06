@@ -23,7 +23,7 @@
 		"<a href=\"http://groups.google.com/group/pathway-commons-announcements/feed/rss_v2_0_msgs.xml\">RSS Feed</a>");
 		webUIBean.setBaseURL("www.pathwaycommons.org");
 		webUIBean.setSmtpHost("cbio.mskcc.org");
-		webUIBean.setFeedbackEmailTo("pathway-commons-help@googlegroups.org");
+		webUIBean.setFeedbackEmailTo("pathway-commons-help@googlegroups.com");
 		webUIBean.setWebApiVersion(ProtocolConstantsVersion3.VERSION_3);
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.UNIPROT);
 		webUIBean.addSupportedIdType(ExternalDatabaseConstants.INTERNAL_DATABASE);
